@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.informed"
+        applicationId "so.informed"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
