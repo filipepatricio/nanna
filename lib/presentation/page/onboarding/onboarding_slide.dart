@@ -9,13 +9,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class OnboardingSlide extends StatelessWidget {
   final String title, descriptionHeader, description, imageAsset;
 
-  const OnboardingSlide(
-      {required this.title,
-      required this.descriptionHeader,
-      required this.description,
-      required this.imageAsset,
-      Key? key})
-      : super(key: key);
+  const OnboardingSlide({
+    required this.title,
+    required this.descriptionHeader,
+    required this.description,
+    required this.imageAsset,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class OnboardingSlide extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.left,
-            style: AppTypography.primaryTextJakarta?.copyWith(color: AppColors.limeGreen),
+            style: AppTypography.primaryTextJakarta.copyWith(color: AppColors.limeGreen),
           ),
           const SizedBox(height: AppDimens.c),
           Expanded(
@@ -45,12 +45,12 @@ class OnboardingSlide extends StatelessWidget {
               children: [
                 Text(
                   descriptionHeader,
-                  style: AppTypography.h2Jakarta?.copyWith(color: AppColors.limeGreen),
+                  style: AppTypography.h2Jakarta.copyWith(color: AppColors.limeGreen),
                 ),
                 const SizedBox(height: AppDimens.m),
                 Text(
                   description,
-                  style: AppTypography.primaryTextJakarta?.copyWith(color: AppColors.limeGreen),
+                  style: AppTypography.primaryTextJakarta.copyWith(color: AppColors.limeGreen),
                 ),
               ],
             ),

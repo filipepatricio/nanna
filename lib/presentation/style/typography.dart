@@ -8,7 +8,7 @@ const fontFamilyLora = 'Lora';
 const fontFamilyPlusJakartaSans = 'PlusJakartaSans';
 
 class AppTypography {
-  static const TextStyle? primaryTextJakarta = TextStyle(
+  static const TextStyle primaryTextJakarta = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
     color: AppColors.textPrimary,
@@ -16,7 +16,7 @@ class AppTypography {
     height: 1.33,
   );
 
-  static const TextStyle? h2Jakarta = TextStyle(
+  static const TextStyle h2Jakarta = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     color: AppColors.textPrimary,
