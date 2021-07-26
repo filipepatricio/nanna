@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.informed"
+        applicationId "so.informed"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -106,3 +106,6 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
