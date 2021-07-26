@@ -20,7 +20,8 @@ class OnboardingSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(AppDimens.xxxl),
+      padding:
+          const EdgeInsets.only(left: AppDimens.xxl, right: AppDimens.xxl, top: AppDimens.xxxl, bottom: AppDimens.l),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -29,7 +30,7 @@ class OnboardingSlide extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.left,
-            style: AppTypography.primaryText?.copyWith(color: AppColors.limeGreen),
+            style: AppTypography.primaryTextJakarta?.copyWith(color: AppColors.limeGreen),
           ),
           const SizedBox(height: AppDimens.c),
           Expanded(
@@ -44,12 +45,12 @@ class OnboardingSlide extends StatelessWidget {
               children: [
                 Text(
                   descriptionHeader,
-                  style: AppTypography.h2?.copyWith(color: AppColors.limeGreen),
+                  style: AppTypography.h2Jakarta?.copyWith(color: AppColors.limeGreen),
                 ),
-                const SizedBox(height: AppDimens.s),
+                const SizedBox(height: AppDimens.m),
                 Text(
                   description,
-                  style: AppTypography.primaryText?.copyWith(color: AppColors.limeGreen),
+                  style: AppTypography.primaryTextJakarta?.copyWith(color: AppColors.limeGreen),
                 ),
               ],
             ),

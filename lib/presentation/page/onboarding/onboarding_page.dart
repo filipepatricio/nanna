@@ -48,19 +48,16 @@ class OnboardingPage extends HookWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(AppDimens.xxxl),
+            padding: const EdgeInsets.all(AppDimens.xxl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: AppDimens.m),
                 indicators(pageIndex, context),
                 const SizedBox(height: AppDimens.xxl),
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.limeGreen, width: 0.5),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(AppDimens.ml),
-                    ),
+                    border: Border.all(color: AppColors.limeGreen, width: 1),
+                    borderRadius: const BorderRadius.all(Radius.circular(AppDimens.s)),
                   ),
                   child: TextButton(
                     onPressed: () {
@@ -68,7 +65,7 @@ class OnboardingPage extends HookWidget {
                     },
                     child: Text(
                       isLastPage ? 'common.continue'.tr() : 'common.skip'.tr(),
-                      style: AppTypography.h2?.copyWith(color: AppColors.limeGreen),
+                      style: AppTypography.h2Jakarta?.copyWith(color: AppColors.limeGreen),
                     ),
                   ),
                 ),
