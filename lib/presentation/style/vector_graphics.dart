@@ -8,4 +8,9 @@ class AppVectorGraphics{
   static const String my_reads_selected_icon = 'assets/vector_graphics/my_reads_selected_ic.svg';
   static const String today_selected_icon = 'assets/vector_graphics/today_selected_ic.svg';
   static const String today_icon = 'assets/vector_graphics/today_ic.svg';
+
+  static const String info = 'assets/vector_graphics/info.svg';
+  static const String share = 'assets/vector_graphics/share.svg';
+  static const String follow = 'assets/vector_graphics/follow.svg';
+  static const String sun = 'assets/vector_graphics/sun.svg';
 }

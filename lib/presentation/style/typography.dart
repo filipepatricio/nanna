@@ -8,6 +8,20 @@ const fontFamilyLora = 'Lora';
 const fontFamilyPlusJakartaSans = 'PlusJakartaSans';
 
 class AppTypography {
+  static const TextStyle title = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 24,
+    height: 1.33,
+  );
+
+  static const TextStyle h1 = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 24,
+    height: 1.05,
+  );
+
   static const TextStyle primaryTextJakarta = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,

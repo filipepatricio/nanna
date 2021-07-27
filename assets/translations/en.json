@@ -16,5 +16,8 @@
     "today_tab": "Today",
     "explore_tab": "Explore",
     "my_reads_tab": "My Reads"
+  },
+  "dailyBrief": {
+    "title": "Daily Brief"
   }
 }
