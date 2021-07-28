@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_title_hero.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_topic_card.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -17,20 +16,11 @@ class DailyBriefPage extends HookWidget {
     final lastPageAnimationProgressState = useState(0.0);
 
     useEffect(() {
-      controller.addListener(() {
-        final realViewportSize = controller.position.viewportDimension * 0.9;
-        final viewportCount = (controller.position.maxScrollExtent / realViewportSize).round();
-        final position = controller.position.pixels;
-
-        final size = (viewportCount - 1) * realViewportSize;
-        if (position > size) {
-          final actual = (size - position).abs();
-          final factor = actual / realViewportSize;
-          lastPageAnimationProgressState.value = min(factor, 1.0);
-        } else {
-          lastPageAnimationProgressState.value = 0.0;
-        }
-      });
+      final listener = () {
+        lastPageAnimationProgressState.value = calculateLastPageShownFactor(controller, 0.9);
+      };
+      controller.addListener(listener);
+      return () => controller.removeListener(listener);
     }, [controller]);
 
     return Scaffold(
@@ -43,7 +33,16 @@ class DailyBriefPage extends HookWidget {
       ),
       body: Stack(
         children: [
-          RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+          Hero(
+            tag: 'relax-page',
+            flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
+              return Material(
+                color: Colors.transparent,
+                child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+              );
+            },
+            child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+          ),
           PageView(
             controller: controller,
             scrollDirection: Axis.horizontal,

@@ -32,6 +32,7 @@ class RelaxView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: AppDimens.m),
             Center(
               child: SvgPicture.asset(AppVectorGraphics.sun),
             ),

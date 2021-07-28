@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 Route<T> fadePageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) =>
     FadePageRoute<T>(builder: (context) => child, settings: page);
@@ -12,6 +13,7 @@ class FadePageRoute<T> extends PageRoute<T> {
     bool fullscreenDialog = false,
   }) : super(settings: settings, fullscreenDialog: fullscreenDialog);
 
+  ModalBottomSheetRoute? _nextModalRoute;
   final WidgetBuilder builder;
 
   @override
@@ -25,6 +27,21 @@ class FadePageRoute<T> extends PageRoute<T> {
 
   @override
   String? get barrierLabel => null;
+
+  @override
+  void didChangeNext(Route? nextRoute) {
+    if (nextRoute is ModalBottomSheetRoute) {
+      _nextModalRoute = nextRoute;
+    }
+
+    super.didChangeNext(nextRoute);
+  }
+
+  @override
+  bool didPop(T? result) {
+    _nextModalRoute = null;
+    return super.didPop(result);
+  }
 
   @override
   bool canTransitionFrom(TransitionRoute<dynamic> previousRoute) {
@@ -58,6 +75,16 @@ class FadePageRoute<T> extends PageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
+    final nextRoute = _nextModalRoute;
+    if (nextRoute != null) {
+      if (!secondaryAnimation.isDismissed) {
+        final defaultTransition = _FadeInPageTransition(routeAnimation: animation, child: child);
+        return nextRoute.getPreviousRouteTransition(context, secondaryAnimation, defaultTransition);
+      } else {
+        _nextModalRoute = null;
+      }
+    }
+
     return _FadeInPageTransition(routeAnimation: animation, child: child);
   }
 

@@ -1,10 +1,13 @@
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_title_hero.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 
@@ -22,6 +25,7 @@ class TopicPage extends HookWidget {
   Widget build(BuildContext context) {
     final controller = usePageController(initialPage: index);
     final pageTransitionAnimation = useAnimationController(duration: _animationDuration);
+    final lastPageAnimationProgressState = useState(0.0);
 
     final route = useMemoized(() => ModalRoute.of(context));
     useEffect(() {
@@ -34,21 +38,37 @@ class TopicPage extends HookWidget {
       });
     }, [route]);
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          _PageViewContent(
-            controller: controller,
-            onPageChanged: onPageChanged,
-            pageTransitionAnimation: pageTransitionAnimation,
-          ),
-          const Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: _TransparentAppBar(),
-          ),
-        ],
+    useEffect(() {
+      final listener = () {
+        lastPageAnimationProgressState.value = calculateLastPageShownFactor(controller, 1.0);
+      };
+      controller.addListener(listener);
+      return () => controller.removeListener(listener);
+    }, [controller]);
+
+    return CupertinoScaffold(
+      body: Material(
+        child: Stack(
+          children: [
+            SafeArea(
+              child: Hero(
+                tag: 'relax-page',
+                child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+              ),
+            ),
+            _PageViewContent(
+              controller: controller,
+              onPageChanged: onPageChanged,
+              pageTransitionAnimation: pageTransitionAnimation,
+            ),
+            const Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: _TransparentAppBar(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -96,6 +116,7 @@ class _PageViewContent extends StatelessWidget {
         TopicView(index: 0, pageTransitionAnimation: pageTransitionAnimation),
         TopicView(index: 1, pageTransitionAnimation: pageTransitionAnimation),
         TopicView(index: 2, pageTransitionAnimation: pageTransitionAnimation),
+        Container(),
       ],
     );
   }
