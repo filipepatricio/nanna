@@ -13,20 +13,20 @@ class OnboardingPage extends HookWidget {
   final List<OnboardingSlide> _pageList = <OnboardingSlide>[
     OnboardingSlide(
       title: LocaleKeys.onboarding_title.tr(),
-      descriptionHeader: LocaleKeys.onboarding_header_slide_one.tr(),
-      description: LocaleKeys.onboarding_description_slide_one.tr(),
+      descriptionHeader: LocaleKeys.onboarding_headerSlideOne.tr(),
+      description: LocaleKeys.onboarding_descriptionSlideOne.tr(),
       imageAsset: AppVectorGraphics.onboardingSlideOne,
     ),
     OnboardingSlide(
       title: LocaleKeys.onboarding_title.tr(),
-      descriptionHeader: LocaleKeys.onboarding_header_slide_two.tr(),
-      description: LocaleKeys.onboarding_description_slide_two.tr(), //TODO: Change for final text
+      descriptionHeader: LocaleKeys.onboarding_headerSlideTwo.tr(),
+      description: LocaleKeys.onboarding_descriptionSlideTwo.tr(), //TODO: Change for final text
       imageAsset: AppVectorGraphics.onboardingSlideTwo,
     ),
     OnboardingSlide(
       title: LocaleKeys.onboarding_title.tr(),
-      descriptionHeader: LocaleKeys.onboarding_header_slide_three.tr(),
-      description: LocaleKeys.onboarding_description_slide_three.tr(),
+      descriptionHeader: LocaleKeys.onboarding_headerSlideThree.tr(),
+      description: LocaleKeys.onboarding_descriptionSlideThree.tr(),
       imageAsset: AppVectorGraphics.onboardingSlideThree,
     ),
   ];

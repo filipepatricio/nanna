@@ -41,11 +41,11 @@ extension Attributes on MainTabs {
   String _title() {
     switch (this) {
       case MainTabs.today:
-        return LocaleKeys.main_today_tab.tr();
+        return LocaleKeys.main_todayTab.tr();
       case MainTabs.explore:
-        return LocaleKeys.main_explore_tab.tr();
+        return LocaleKeys.main_exploreTab.tr();
       case MainTabs.my_reads:
-        return LocaleKeys.main_my_reads_tab.tr();
+        return LocaleKeys.main_myReadsTab.tr();
     }
   }
 }
