@@ -50,4 +50,5 @@ class AppDimens {
 
   static const topicCardRadius = 16.0;
   static const topicCardBlurRadius = 16.0;
+  static const topicCardOffsetY = 3.0;
 }

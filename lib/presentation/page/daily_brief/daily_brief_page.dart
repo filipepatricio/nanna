@@ -29,7 +29,6 @@ class DailyBriefPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
         automaticallyImplyLeading: false,
         title: const DailyBriefTitleHero(),
         centerTitle: false,

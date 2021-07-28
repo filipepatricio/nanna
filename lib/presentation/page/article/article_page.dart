@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
 
 class ArticlePage extends StatelessWidget {
@@ -7,9 +8,9 @@ class ArticlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Article'),
+        title: const Text('Article'),
         centerTitle: true,
-        backgroundColor: const Color(0xFFBBF383),
+        backgroundColor: AppColors.limeGreen,
       ),
       body: Column(),
     );

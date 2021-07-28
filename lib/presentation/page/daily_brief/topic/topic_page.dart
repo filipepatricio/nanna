@@ -82,7 +82,6 @@ class _TransparentAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      elevation: 0,
       title: Hero(
         tag: HeroTag.dailyBriefTitle,
         child: Text(

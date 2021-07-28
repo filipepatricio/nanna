@@ -12,8 +12,7 @@ class DailyBriefTitleHero extends StatelessWidget {
     return Hero(
       tag: HeroTag.dailyBriefTitle,
       flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-        final colors = [Colors.black, Colors.white];
-        final colorTween = ColorTween(begin: colors[0], end: colors[1]).animate(anim);
+        final colorTween = ColorTween(begin: Colors.black, end: Colors.white).animate(anim);
 
         return Material(
           color: Colors.transparent,

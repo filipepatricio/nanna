@@ -31,7 +31,7 @@ class DailyBriefTopicCard extends HookWidget {
             borderRadius: BorderRadius.circular(AppDimens.topicCardRadius),
             boxShadow: [
               BoxShadow(
-                offset: const Offset(0, 3),
+                offset: const Offset(AppDimens.zero, AppDimens.topicCardOffsetY),
                 blurRadius: AppDimens.topicCardBlurRadius,
                 color: AppColors.shadowColor,
               ),
