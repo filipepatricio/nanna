@@ -18,6 +18,11 @@ class EntryPage extends StatelessWidget {
             child: const Text('Onboarding.'),
           ),
           const SizedBox(height: AppDimens.l),
+          TextButton(
+            onPressed: () => AutoRouter.of(context).push(const MainPageRoute()),
+            child: const Text('MainPage'),
+          ),
+          const SizedBox(height: AppDimens.l),
           const Loader()
         ],
       ),

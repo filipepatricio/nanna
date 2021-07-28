@@ -45,6 +45,5 @@ class AppDimens {
   static const xxxc = 80.0;
 
   static const indicatorSize = 4.0;
-
-  static const indicatorSelectedSize = 16.0;
+  static const naviBarFontSize = 14.0;
 }
