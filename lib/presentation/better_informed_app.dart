@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:flutter/material.dart';
+import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 class BetterInformedApp extends StatelessWidget {
   final MainRouter mainRouter;
@@ -16,6 +17,7 @@ class BetterInformedApp extends StatelessWidget {
       locale: context.locale,
       routeInformationParser: mainRouter.defaultRouteParser(),
       routerDelegate: mainRouter.delegate(),
+      theme: AppTheme.mainTheme,
     );
   }
 }

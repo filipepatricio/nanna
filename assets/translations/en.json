@@ -5,16 +5,19 @@
   },
   "onboarding": {
     "title": "How we use push notifications",
-    "header_slide_one": "New daily brief",
-    "header_slide_two": "Incoming topic",
-    "header_slide_three": "Product updates",
-    "description_slide_one": "Our small and dedicated editorial screens extensively the most reliable sources every day - and creates a daily brief for you.",
-    "description_slide_two": "We need some text here...",
-    "description_slide_three": "We will keep you posted about our constant improvements and new features of our app to give you the best experience."
+    "headerSlideOne": "New daily brief",
+    "headerSlideTwo": "Incoming topic",
+    "headerSlideThree": "Product updates",
+    "descriptionSlideOne": "Our small and dedicated editorial screens extensively the most reliable sources every day - and creates a daily brief for you.",
+    "descriptionSlideTwo": "We need some text here...",
+    "descriptionSlideThree": "We will keep you posted about our constant improvements and new features of our app to give you the best experience."
   },
   "main": {
-    "today_tab": "Today",
-    "explore_tab": "Explore",
-    "my_reads_tab": "My Reads"
+    "todayTab": "Today",
+    "exploreTab": "Explore",
+    "myReadsTab": "My Reads"
+  },
+  "dailyBrief": {
+    "title": "Daily Brief"
   }
 }

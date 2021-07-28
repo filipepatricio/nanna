@@ -46,4 +46,9 @@ class AppDimens {
 
   static const indicatorSize = 4.0;
   static const naviBarFontSize = 14.0;
+  static const indicatorSelectedSize = 16.0;
+
+  static const topicCardRadius = 16.0;
+  static const topicCardBlurRadius = 16.0;
+  static const topicCardOffsetY = 3.0;
 }
