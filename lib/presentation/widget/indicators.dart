@@ -23,7 +23,7 @@ class Indicators extends StatelessWidget {
   Widget _buildDot(int currentIndex, int index, BuildContext context) {
     return Container(
       height: AppDimens.indicatorSize,
-      width: currentIndex == index ? AppDimens.indicatorSelectedSize : AppDimens.indicatorSize,
+      width: currentIndex == index ? AppDimens.m : AppDimens.indicatorSize,
       margin: const EdgeInsets.only(right: AppDimens.xs),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.ml),

@@ -7,6 +7,7 @@ class AppColors {
   static const Color limeGreenBleached = Color(0x64BBF383);
   static const Color textPrimary = Color(0xff282B35);
   static const Color onboardingBackground = Color(0xff282B35);
+  static const Color bottomNaviBackground = Color(0xffFCFAF8);
   static const Color background = Color(0xffE5E5E5);
 }
 
