@@ -4,20 +4,23 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_title_hero.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_topic_card.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+const _pageViewportFraction = 0.9;
 
 class DailyBriefPage extends HookWidget {
   const DailyBriefPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = usePageController(viewportFraction: 0.9);
+    final controller = usePageController(viewportFraction: _pageViewportFraction);
     final lastPageAnimationProgressState = useState(0.0);
 
     useEffect(() {
       final listener = () {
-        lastPageAnimationProgressState.value = calculateLastPageShownFactor(controller, 0.9);
+        lastPageAnimationProgressState.value = calculateLastPageShownFactor(controller, _pageViewportFraction);
       };
       controller.addListener(listener);
       return () => controller.removeListener(listener);
@@ -34,7 +37,7 @@ class DailyBriefPage extends HookWidget {
       body: Stack(
         children: [
           Hero(
-            tag: 'relax-page',
+            tag: HeroTag.dailyBriefRelaxPage,
             flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
               return Material(
                 color: Colors.transparent,

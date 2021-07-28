@@ -1,9 +1,8 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
-const dailyBriefHeroTag = 'dailyBriefHeroTag';
 
 class DailyBriefTitleHero extends StatelessWidget {
   const DailyBriefTitleHero({Key? key}) : super(key: key);
@@ -11,7 +10,7 @@ class DailyBriefTitleHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: dailyBriefHeroTag,
+      tag: HeroTag.dailyBriefTitle,
       flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
         final colors = [Colors.black, Colors.white];
         final colorTween = ColorTween(begin: colors[0], end: colors[1]).animate(anim);

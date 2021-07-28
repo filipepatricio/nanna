@@ -1,9 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/material.dart';
 
 class EntryPage extends StatelessWidget {
@@ -15,13 +12,8 @@ class EntryPage extends StatelessWidget {
       appBar: AppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Loader(),
-          TextButton(
-            onPressed: () => AutoRouter.of(context).push(const DailyBriefPageRoute()),
-            child: const Text('Daily brief'),
-          ),
-          const SizedBox(height: AppDimens.l),
           TextButton(
             onPressed: () => AutoRouter.of(context).push(const OnboardingPageRoute()),
             child: const Text('Onboarding.'),

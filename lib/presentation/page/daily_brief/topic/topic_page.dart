@@ -1,15 +1,16 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_title_hero.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
+const _pageViewportFraction = 1.0;
 
 class TopicPage extends HookWidget {
   final int index;
@@ -23,7 +24,7 @@ class TopicPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = usePageController(initialPage: index);
+    final controller = usePageController(initialPage: index, viewportFraction: _pageViewportFraction);
     final pageTransitionAnimation = useAnimationController(duration: _animationDuration);
     final lastPageAnimationProgressState = useState(0.0);
 
@@ -40,7 +41,7 @@ class TopicPage extends HookWidget {
 
     useEffect(() {
       final listener = () {
-        lastPageAnimationProgressState.value = calculateLastPageShownFactor(controller, 1.0);
+        lastPageAnimationProgressState.value = calculateLastPageShownFactor(controller, _pageViewportFraction);
       };
       controller.addListener(listener);
       return () => controller.removeListener(listener);
@@ -52,7 +53,7 @@ class TopicPage extends HookWidget {
           children: [
             SafeArea(
               child: Hero(
-                tag: 'relax-page',
+                tag: HeroTag.dailyBriefRelaxPage,
                 child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
               ),
             ),
@@ -83,7 +84,7 @@ class _TransparentAppBar extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       title: Hero(
-        tag: dailyBriefHeroTag,
+        tag: HeroTag.dailyBriefTitle,
         child: Text(
           LocaleKeys.dailyBrief_title.tr(),
           style: AppTypography.title.copyWith(color: Colors.white),

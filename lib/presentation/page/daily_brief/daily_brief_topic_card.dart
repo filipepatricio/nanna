@@ -1,5 +1,7 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -26,12 +28,12 @@ class DailyBriefTopicCard extends HookWidget {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppDimens.topicCardRadius),
             boxShadow: [
               BoxShadow(
                 offset: const Offset(0, 3),
-                blurRadius: 16,
-                color: const Color(0xFF000000).withOpacity(0.12),
+                blurRadius: AppDimens.topicCardBlurRadius,
+                color: AppColors.shadowColor,
               ),
             ],
           ),
@@ -39,10 +41,12 @@ class DailyBriefTopicCard extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Hero(
-                tag: 'image-$index',
+                tag: HeroTag.dailyBriefTopicImage(index),
                 flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-                  final colors = [const Color(0x00282B35), const Color(0xFF282B35)];
-                  final colorTween = ColorTween(begin: colors[0], end: colors[1]).animate(anim);
+                  final colorTween = ColorTween(
+                    begin: AppColors.gradientOverlayEndColor,
+                    end: AppColors.gradientOverlayStartColor,
+                  ).animate(anim);
 
                   return AnimatedBuilder(
                     animation: colorTween,
@@ -64,7 +68,7 @@ class DailyBriefTopicCard extends HookWidget {
                                 end: Alignment.topCenter,
                                 colors: [
                                   colorTween.value!,
-                                  const Color(0x00282B35),
+                                  AppColors.gradientOverlayEndColor,
                                 ],
                               ),
                             ),
@@ -83,10 +87,9 @@ class DailyBriefTopicCard extends HookWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
                 child: Hero(
-                  tag: 'title-$index',
+                  tag: HeroTag.dailyBriefTopicTitle(index),
                   flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-                    final colors = [Colors.black, Colors.white];
-                    final colorTween = ColorTween(begin: colors[0], end: colors[1]).animate(anim);
+                    final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
 
                     return Material(
                       color: Colors.transparent,
@@ -111,10 +114,9 @@ class DailyBriefTopicCard extends HookWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
                 child: Hero(
-                  tag: 'content-$index',
+                  tag: HeroTag.dailyBriefTopicSummary(index),
                   flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-                    final colors = [Colors.black, Colors.white];
-                    final colorTween = ColorTween(begin: colors[0], end: colors[1]).animate(anim);
+                    final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
 
                     return Material(
                       color: Colors.transparent,

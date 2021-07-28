@@ -13,6 +13,7 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 24,
     height: 1.33,
+    color: AppColors.textPrimary,
   );
 
   static const TextStyle h1 = TextStyle(
@@ -20,6 +21,7 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 24,
     height: 1.05,
+    color: AppColors.textPrimary,
   );
 
   static const TextStyle primaryTextJakarta = TextStyle(

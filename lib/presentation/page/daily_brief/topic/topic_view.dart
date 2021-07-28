@@ -1,7 +1,9 @@
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -75,19 +77,17 @@ class _TopicHeader extends HookWidget {
         CupertinoScaffold.showCupertinoModalBottomSheet(
           context: context,
           builder: (context) => const ArticlePage(),
+          useRootNavigator: true,
         );
       },
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
           Hero(
-            tag: 'image-$index',
+            tag: HeroTag.dailyBriefTopicImage(index),
             child: Container(
               width: double.infinity,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.65,
+              height: MediaQuery.of(context).size.height * 0.65,
               child: Image.asset(
                 'assets/image/topic_placeholder.png',
                 fit: BoxFit.fitHeight,
@@ -102,8 +102,8 @@ class _TopicHeader extends HookWidget {
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Color(0xFF282B35),
-                    Color(0x00282B35),
+                    AppColors.gradientOverlayStartColor,
+                    AppColors.gradientOverlayEndColor,
                   ],
                 ),
               ),
@@ -134,7 +134,7 @@ class _TopicHeader extends HookWidget {
                   ),
                   const SizedBox(height: AppDimens.l),
                   Hero(
-                    tag: 'title-$index',
+                    tag: HeroTag.dailyBriefTopicTitle(index),
                     child: Text(
                       'Title $index',
                       style: AppTypography.h1.copyWith(color: Colors.white),
@@ -142,7 +142,7 @@ class _TopicHeader extends HookWidget {
                   ),
                   const SizedBox(height: AppDimens.s),
                   Hero(
-                    tag: 'content-$index',
+                    tag: HeroTag.dailyBriefTopicSummary(index),
                     child: Text(
                       'Content $index. The Chinese Communist Party has long done everything it can to erase memories of the massacre of pro-democracy protesters in Beijing\'s Tiananmen Square 32-years-ago today.',
                       style: AppTypography.primaryTextJakarta.copyWith(color: Colors.white),

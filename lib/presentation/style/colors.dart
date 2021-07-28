@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class AppColors {
   static const Color white = Color(0xffFFFFFF);
   static const Color black = Color(0xff000000);
@@ -9,6 +11,11 @@ class AppColors {
   static const Color onboardingBackground = Color(0xff282B35);
   static const Color bottomNaviBackground = Color(0xffFCFAF8);
   static const Color background = Color(0xffE5E5E5);
+
+  static const Color gradientOverlayStartColor = Color(0xFF282B35);
+  static const Color gradientOverlayEndColor = Color(0x00282B35);
+
+  static Color shadowColor = Colors.black.withOpacity(0.12);
 }
 
 abstract class AppColorsBase {

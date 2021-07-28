@@ -19,22 +19,22 @@ extension Attributes on MainTabs {
   Widget _icon() {
     switch (this) {
       case MainTabs.today:
-        return _BottomNavigationIcon(AppVectorGraphics.today_icon, _title(), isActive: false);
+        return _BottomNavigationIcon(AppVectorGraphics.today, _title(), isActive: false);
       case MainTabs.explore:
-        return _BottomNavigationIcon(AppVectorGraphics.explore_icon, _title(), isActive: false);
+        return _BottomNavigationIcon(AppVectorGraphics.explore, _title(), isActive: false);
       case MainTabs.my_reads:
-        return _BottomNavigationIcon(AppVectorGraphics.my_reads_icon, _title(), isActive: false);
+        return _BottomNavigationIcon(AppVectorGraphics.myReads, _title(), isActive: false);
     }
   }
 
   Widget _activeIcon() {
     switch (this) {
       case MainTabs.today:
-        return _BottomNavigationIcon(AppVectorGraphics.today_selected_icon, _title());
+        return _BottomNavigationIcon(AppVectorGraphics.todaySelected, _title());
       case MainTabs.explore:
-        return _BottomNavigationIcon(AppVectorGraphics.explore_selected_icon, _title());
+        return _BottomNavigationIcon(AppVectorGraphics.exploreSelected, _title());
       case MainTabs.my_reads:
-        return _BottomNavigationIcon(AppVectorGraphics.my_reads_selected_icon, _title());
+        return _BottomNavigationIcon(AppVectorGraphics.myReadsSelected, _title());
     }
   }
 
