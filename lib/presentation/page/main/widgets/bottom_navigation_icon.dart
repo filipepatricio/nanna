@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-enum DashboardTabs { today, explore, my_reads }
+enum MainTabs { today, explore, my_reads }
 
-extension Attributes on DashboardTabs {
+extension Attributes on MainTabs {
   Widget get icon => _icon();
 
   Widget get activeIcon => _activeIcon();
@@ -18,40 +18,34 @@ extension Attributes on DashboardTabs {
 
   Widget _icon() {
     switch (this) {
-      case DashboardTabs.today:
+      case MainTabs.today:
         return _BottomNavigationIcon(AppVectorGraphics.today_icon, _title(), isActive: false);
-      case DashboardTabs.explore:
+      case MainTabs.explore:
         return _BottomNavigationIcon(AppVectorGraphics.explore_icon, _title(), isActive: false);
-      case DashboardTabs.my_reads:
+      case MainTabs.my_reads:
         return _BottomNavigationIcon(AppVectorGraphics.my_reads_icon, _title(), isActive: false);
-      default:
-        return _BottomNavigationIcon(AppVectorGraphics.today_icon, _title(), isActive: false);
     }
   }
 
   Widget _activeIcon() {
     switch (this) {
-      case DashboardTabs.today:
+      case MainTabs.today:
         return _BottomNavigationIcon(AppVectorGraphics.today_selected_icon, _title());
-      case DashboardTabs.explore:
+      case MainTabs.explore:
         return _BottomNavigationIcon(AppVectorGraphics.explore_selected_icon, _title());
-      case DashboardTabs.my_reads:
+      case MainTabs.my_reads:
         return _BottomNavigationIcon(AppVectorGraphics.my_reads_selected_icon, _title());
-      default:
-        return _BottomNavigationIcon(AppVectorGraphics.today_selected_icon, _title());
     }
   }
 
   String _title() {
     switch (this) {
-      case DashboardTabs.today:
-        return LocaleKeys.dashboard_today_tab.tr();
-      case DashboardTabs.explore:
-        return LocaleKeys.dashboard_explore_tab.tr();
-      case DashboardTabs.my_reads:
-        return LocaleKeys.dashboard_my_reads_tab.tr();
-      default:
-        return LocaleKeys.dashboard_today_tab.tr();
+      case MainTabs.today:
+        return LocaleKeys.main_today_tab.tr();
+      case MainTabs.explore:
+        return LocaleKeys.main_explore_tab.tr();
+      case MainTabs.my_reads:
+        return LocaleKeys.main_my_reads_tab.tr();
     }
   }
 }

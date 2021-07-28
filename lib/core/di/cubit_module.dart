@@ -1,7 +1,7 @@
-import 'package:better_informed_mobile/presentation/page/dashboard/dashboard_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
 import 'package:injectable/injectable.dart';
 
 @module
 abstract class CubitModule {
-  DashboardCubit getDashboardCubit() => DashboardCubit();
+  MainCubit getMainCubit() => MainCubit();
 }

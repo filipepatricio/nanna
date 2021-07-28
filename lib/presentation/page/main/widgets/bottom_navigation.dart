@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/presentation/page/dashboard/dashboard_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/dashboard/dashboard_state.dart';
-import 'package:better_informed_mobile/presentation/page/dashboard/widgets/bottom_navigation_icon.dart';
+import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/main/main_state.dart';
+import 'package:better_informed_mobile/presentation/page/main/widgets/bottom_navigation_icon.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class BottomNavigation extends HookWidget {
-  final DashboardState state;
-  final DashboardCubit cubit;
+  final MainState state;
+  final MainCubit cubit;
   final TabsRouter tabsRouter;
 
   const BottomNavigation(this.state, this.cubit, this.tabsRouter);
@@ -21,7 +21,7 @@ class BottomNavigation extends HookWidget {
       init: () => BottomNavigationBar(
         backgroundColor: AppColors.bottomNaviBackground,
         items: [
-          ...DashboardTabs.values.map(
+          ...MainTabs.values.map(
             (tab) => BottomNavigationBarItem(
               icon: tab.icon,
               activeIcon: tab.activeIcon,

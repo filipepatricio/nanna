@@ -19,8 +19,8 @@ class EntryPage extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.l),
           TextButton(
-            onPressed: () => AutoRouter.of(context).push(const DashboardPageRoute()),
-            child: const Text('Dashboard'),
+            onPressed: () => AutoRouter.of(context).push(const MainPageRoute()),
+            child: const Text('MainPage'),
           ),
           const SizedBox(height: AppDimens.l),
           const Loader()
