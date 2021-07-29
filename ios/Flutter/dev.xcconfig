@@ -2,3 +2,4 @@
 #include "Generated.xcconfig"
 
 APP_DISPLAY_NAME=Informed Dev
+APP_LINKS_HOST=dev.informed.so
