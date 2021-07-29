@@ -36,17 +36,17 @@ class TopicView extends StatelessWidget {
                     SizedBox(height: AppDimens.l),
                     Text(
                       'So far, only a handful of cases of cerebral thrombosis have arisen, compared with 45 million doses of various vaccines given in the European Union. AstraZeneca has accounted for about 13-15% of shots given since the rollout started in total.',
-                      style: AppTypography.primaryTextJakarta,
+                      style: AppTypography.b1Medium,
                     ),
                     SizedBox(height: AppDimens.m),
                     Text(
                       'So far, only a handful of cases of cerebral thrombosis have arisen, compared with 45 million doses of various vaccines given in the European Union. AstraZeneca has accounted for about 13-15% of shots given since the rollout started in total.',
-                      style: AppTypography.primaryTextJakarta,
+                      style: AppTypography.b1Medium,
                     ),
                     SizedBox(height: AppDimens.m),
                     Text(
                       'So far, only a handful of cases of cerebral thrombosis have arisen, compared with 45 million doses of various vaccines given in the European Union. AstraZeneca has accounted for about 13-15% of shots given since the rollout started in total.',
-                      style: AppTypography.primaryTextJakarta,
+                      style: AppTypography.b1Medium,
                     ),
                     SizedBox(height: AppDimens.l),
                   ],
@@ -137,7 +137,7 @@ class _TopicHeader extends HookWidget {
                     tag: HeroTag.dailyBriefTopicTitle(index),
                     child: Text(
                       'Title $index',
-                      style: AppTypography.h1.copyWith(color: Colors.white),
+                      style: AppTypography.h1Bold.copyWith(color: Colors.white),
                     ),
                   ),
                   const SizedBox(height: AppDimens.s),
@@ -145,7 +145,7 @@ class _TopicHeader extends HookWidget {
                     tag: HeroTag.dailyBriefTopicSummary(index),
                     child: Text(
                       'Content $index. The Chinese Communist Party has long done everything it can to erase memories of the massacre of pro-democracy protesters in Beijing\'s Tiananmen Square 32-years-ago today.',
-                      style: AppTypography.primaryTextJakarta.copyWith(color: Colors.white),
+                      style: AppTypography.b1Medium.copyWith(color: Colors.white),
                     ),
                   ),
                   const SizedBox(height: AppDimens.l),

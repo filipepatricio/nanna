@@ -30,7 +30,7 @@ class OnboardingSlide extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.left,
-            style: AppTypography.primaryTextJakarta.copyWith(color: AppColors.limeGreen),
+            style: AppTypography.b1Medium.copyWith(color: AppColors.limeGreen),
           ),
           const SizedBox(height: AppDimens.c),
           Expanded(
@@ -45,12 +45,12 @@ class OnboardingSlide extends StatelessWidget {
               children: [
                 Text(
                   descriptionHeader,
-                  style: AppTypography.h2Jakarta.copyWith(color: AppColors.limeGreen),
+                  style: AppTypography.h3Bold.copyWith(color: AppColors.limeGreen),
                 ),
                 const SizedBox(height: AppDimens.m),
                 Text(
                   description,
-                  style: AppTypography.primaryTextJakarta.copyWith(color: AppColors.limeGreen),
+                  style: AppTypography.b1Medium.copyWith(color: AppColors.limeGreen),
                 ),
               ],
             ),

@@ -65,15 +65,10 @@ class _BottomNavigationIcon extends HookWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: AppDimens.s),
         SvgPicture.asset(iconName),
         const SizedBox(height: AppDimens.s),
-        Text(
-          title,
-          style: AppTypography.primaryTextJakarta.copyWith(
-            fontSize: AppDimens.naviBarFontSize,
-            fontWeight: FontWeight.w500,
-          ),
-        )
+        Text(title, style: AppTypography.navbarText)
       ],
     );
   }

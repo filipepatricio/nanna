@@ -98,7 +98,7 @@ class DailyBriefTopicCard extends HookWidget {
                         builder: (context, child) {
                           return Text(
                             'Title $index',
-                            style: AppTypography.h1.copyWith(color: colorTween.value),
+                            style: AppTypography.h1Bold.copyWith(color: colorTween.value),
                           );
                         },
                       ),
@@ -106,7 +106,7 @@ class DailyBriefTopicCard extends HookWidget {
                   },
                   child: Text(
                     'Title $index',
-                    style: AppTypography.h1,
+                    style: AppTypography.h1Bold,
                   ),
                 ),
               ),
@@ -125,7 +125,7 @@ class DailyBriefTopicCard extends HookWidget {
                         builder: (context, child) {
                           return Text(
                             'Content $index. The Chinese Communist Party has long done everything it can to erase memories of the massacre of pro-democracy protesters in Beijing\'s Tiananmen Square 32-years-ago today.',
-                            style: AppTypography.primaryTextJakarta.copyWith(color: colorTween.value),
+                            style: AppTypography.b1Medium.copyWith(color: colorTween.value),
                           );
                         },
                       ),
@@ -133,7 +133,7 @@ class DailyBriefTopicCard extends HookWidget {
                   },
                   child: Text(
                     'Content $index. The Chinese Communist Party has long done everything it can to erase memories of the massacre of pro-democracy protesters in Beijing\'s Tiananmen Square 32-years-ago today.',
-                    style: AppTypography.primaryTextJakarta,
+                    style: AppTypography.b1Medium,
                   ),
                 ),
               ),
