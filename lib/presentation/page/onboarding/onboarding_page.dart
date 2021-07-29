@@ -67,7 +67,7 @@ class OnboardingPage extends HookWidget {
                     },
                     child: Text(
                       isLastPage ? LocaleKeys.common_continue.tr() : LocaleKeys.common_skip.tr(),
-                      style: AppTypography.h2Jakarta.copyWith(color: AppColors.limeGreen),
+                      style: AppTypography.button.copyWith(color: AppColors.limeGreen),
                     ),
                   ),
                 ),

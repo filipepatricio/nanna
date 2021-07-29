@@ -39,13 +39,13 @@ class RelaxView extends StatelessWidget {
             const SizedBox(height: AppDimens.m),
             const Text(
               'You’re all informed now.',
-              style: AppTypography.h2Jakarta,
+              style: AppTypography.h3Bold,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimens.xl),
             const Text(
               'The term bulldog refers to an early edition of a newspaper, usually, the first of the day. Bulldog editions were typically printed and sold to distributors the night before, to be sold first thing in the morning.',
-              style: AppTypography.primaryTextJakarta,
+              style: AppTypography.b3Regular,
             ),
           ],
         ),

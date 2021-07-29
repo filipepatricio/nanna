@@ -21,7 +21,7 @@ class DailyBriefTitleHero extends StatelessWidget {
             builder: (context, child) {
               return Text(
                 LocaleKeys.dailyBrief_title.tr(),
-                style: AppTypography.title.copyWith(color: colorTween.value),
+                style: AppTypography.h1Bold.copyWith(color: colorTween.value),
               );
             },
           ),
@@ -29,7 +29,7 @@ class DailyBriefTitleHero extends StatelessWidget {
       },
       child: Text(
         LocaleKeys.dailyBrief_title.tr(),
-        style: AppTypography.title.copyWith(color: Colors.black),
+        style: AppTypography.h1Bold.copyWith(color: Colors.black),
       ),
     );
   }

@@ -86,7 +86,7 @@ class _TransparentAppBar extends StatelessWidget {
         tag: HeroTag.dailyBriefTitle,
         child: Text(
           LocaleKeys.dailyBrief_title.tr(),
-          style: AppTypography.title.copyWith(color: Colors.white),
+          style: AppTypography.h1Bold.copyWith(color: Colors.white),
         ),
       ),
       centerTitle: false,
