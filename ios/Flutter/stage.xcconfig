@@ -2,3 +2,4 @@
 #include "Generated.xcconfig"
 
 APP_DISPLAY_NAME=Informed Test
+APP_LINKS_HOST=stage.informed.so

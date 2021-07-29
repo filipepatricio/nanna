@@ -81,6 +81,7 @@ android {
             applicationIdSuffix ".dev"
 
             resValue "string", "app_name", "Informed Dev"
+            resValue "string", "app_link_host", "dev.informed.so"
         }
 
         stage {
@@ -89,12 +90,14 @@ android {
             applicationIdSuffix ".test"
 
             resValue "string", "app_name", "Informed Test"
+            resValue "string", "app_link_host", "staging.informed.so"
         }
 
         prod {
             dimension "env"
 
             resValue "string", "app_name", "Informed"
+            resValue "string", "app_link_host", "informed.so"
         }
     }
 }
