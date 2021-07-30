@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/better_informed_app.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fimber/fimber.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -16,6 +17,7 @@ Future<void> main() async {
 
   await EasyLocalization.ensureInitialized();
   await configureDependencies(environment);
+  await Firebase.initializeApp();
 
   setupFimber();
 
