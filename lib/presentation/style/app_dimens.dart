@@ -14,6 +14,9 @@ class AppDimens {
   ///8.0
   static const s = 8.0;
 
+  ///12.0
+  static const sl = 12.0;
+
   ///16.0
   static const m = 16.0;
 
@@ -47,6 +50,7 @@ class AppDimens {
   static const indicatorSize = 4.0;
   static const naviBarFontSize = 14.0;
   static const indicatorSelectedSize = 16.0;
+  static const appBarSize = 70.0;
 
   static const topicCardRadius = 16.0;
   static const topicCardBlurRadius = 16.0;
