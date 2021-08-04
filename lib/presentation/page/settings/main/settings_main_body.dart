@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/widgets/settings_main_item.dart';
@@ -68,17 +69,13 @@ class SettingsMainBody extends HookWidget {
                       SettingsMainItem(
                         label: LocaleKeys.settings_privacyPolicy.tr(),
                         icon: AppVectorGraphics.privacy,
-                        onTap: () => {
-                          //TODO: NAVIGATE TO POLICY
-                        },
+                        onTap: () => AutoRouter.of(context).push(PolicyTermsPageRoute(isPolicy: true)),
                       ),
                       const SizedBox(height: AppDimens.ml),
                       SettingsMainItem(
                         label: LocaleKeys.settings_termsOfService.tr(),
                         icon: AppVectorGraphics.terms,
-                        onTap: () => {
-                          //TODO: NAVIGATE TO TERMS
-                        },
+                        onTap: () => AutoRouter.of(context).push(PolicyTermsPageRoute(isPolicy: false)),
                       ),
                       const SizedBox(height: AppDimens.ml),
                       SettingsMainItem(

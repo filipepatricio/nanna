@@ -10,6 +10,8 @@ class AppVectorGraphics {
   static const String today = 'assets/vector_graphics/today_ic.svg';
   static const String todaySelected = 'assets/vector_graphics/today_selected_ic.svg';
 
+  static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
+
   static const String info = 'assets/vector_graphics/info.svg';
   static const String share = 'assets/vector_graphics/share.svg';
   static const String follow = 'assets/vector_graphics/follow.svg';
