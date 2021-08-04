@@ -16,4 +16,10 @@ class AppVectorGraphics {
   static const String sun = 'assets/vector_graphics/sun.svg';
 
   static const String settings = 'assets/vector_graphics/settings_ic.svg';
+  static const String account = 'assets/vector_graphics/account_ic.svg';
+  static const String terms = 'assets/vector_graphics/terms_ic.svg';
+  static const String subscription = 'assets/vector_graphics/subscription_ic.svg';
+  static const String privacy = 'assets/vector_graphics/privacy_ic.svg';
+  static const String notifications = 'assets/vector_graphics/notification_ic.svg';
+  static const String feedback = 'assets/vector_graphics/feedback_ic.svg';
 }

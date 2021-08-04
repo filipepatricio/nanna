@@ -1,7 +1,8 @@
 {
   "common": {
     "skip": "Skip",
-    "continue": "Continue"
+    "continue": "Continue",
+    "signOut": "Sign out"
   },
   "onboarding": {
     "title": "How we use push notifications",
@@ -19,5 +20,16 @@
   },
   "dailyBrief": {
     "title": "Daily Brief"
+  },
+  "settings": {
+    "settings": "Settings",
+    "profileHeader": "Profile",
+    "account": "Account",
+    "pushNotifications": "Push Notifications",
+    "subscription": "Subscription",
+    "aboutHeader": "About",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of service",
+    "giveFeedback": "Give feedback"
   }
 }

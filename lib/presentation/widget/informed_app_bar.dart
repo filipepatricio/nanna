@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -52,9 +54,7 @@ class _InformedAppBarState extends State<InformedAppBar> {
                     Text(title, style: AppTypography.h1Bold.copyWith(color: AppColors.white)),
                     if (showSettingsIcon)
                       GestureDetector(
-                        onTap: () {
-                          //TODO: NAVIGATE TO SETTINGS
-                        },
+                        onTap: ()  => AutoRouter.of(context).push(const SettingsMainPageRoute()),
                         child: SvgPicture.asset(
                           AppVectorGraphics.settings,
                           width: AppDimens.l,
