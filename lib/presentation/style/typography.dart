@@ -68,7 +68,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle subH2Medium = TextStyle(
+  static const TextStyle subH1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 14,

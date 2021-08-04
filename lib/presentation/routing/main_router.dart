@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/my_reads_tab/my_reads_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/policy_terms/policy_terms_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
 
@@ -16,6 +17,7 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
     AutoRoute(page: EntryPage, initial: true),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SettingsMainPage),
+    AutoRoute(page: PolicyTermsPage),
     dashboardTabRouter,
   ],
 )

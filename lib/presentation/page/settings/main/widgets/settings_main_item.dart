@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SettingsMainItem extends StatelessWidget {
@@ -16,8 +17,8 @@ class SettingsMainItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => {},
+    return InkWell(
+      onTap: () => onTap(),
       child: Container(
         height: AppDimens.xxl,
         child: Row(
