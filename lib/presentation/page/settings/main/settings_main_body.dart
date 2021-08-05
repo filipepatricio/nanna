@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/settings/main/widgets/settings_main_item.dart';
+import 'package:better_informed_mobile/presentation/page/settings/widgets/settings_main_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -48,9 +48,7 @@ class SettingsMainBody extends HookWidget {
                       SettingsMainItem(
                         label: LocaleKeys.settings_pushNotifications.tr(),
                         icon: AppVectorGraphics.notifications,
-                        onTap: () => {
-                          //TODO: NAVIGATE TO NOTIFI
-                        },
+                        onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
                       ),
                       const SizedBox(height: AppDimens.ml),
                       SettingsMainItem(
@@ -69,13 +67,13 @@ class SettingsMainBody extends HookWidget {
                       SettingsMainItem(
                         label: LocaleKeys.settings_privacyPolicy.tr(),
                         icon: AppVectorGraphics.privacy,
-                        onTap: () => AutoRouter.of(context).push(PolicyTermsPageRoute(isPolicy: true)),
+                        onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: true)),
                       ),
                       const SizedBox(height: AppDimens.ml),
                       SettingsMainItem(
                         label: LocaleKeys.settings_termsOfService.tr(),
                         icon: AppVectorGraphics.terms,
-                        onTap: () => AutoRouter.of(context).push(PolicyTermsPageRoute(isPolicy: false)),
+                        onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: false)),
                       ),
                       const SizedBox(height: AppDimens.ml),
                       SettingsMainItem(

@@ -9,10 +9,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-class PolicyTermsPage extends HookWidget {
+class SettingsPolicyTermsPage extends HookWidget {
   final bool isPolicy;
 
-  const PolicyTermsPage({required this.isPolicy});
+  const SettingsPolicyTermsPage({required this.isPolicy});
 
   @override
   Widget build(BuildContext context) {
