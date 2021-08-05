@@ -19,7 +19,7 @@ class SettingsSwitchItem extends HookWidget {
   Widget build(BuildContext context) {
     final switchState = useState(switchValue);
     return Container(
-      height: AppDimens.xxxl,
+      height: AppDimens.settingsItemHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

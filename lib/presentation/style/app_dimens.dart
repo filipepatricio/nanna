@@ -52,6 +52,10 @@ class AppDimens {
   static const indicatorSelectedSize = 16.0;
   static const appBarSize = 70.0;
 
+  static const settingsItemHeight = 43.0;
+  static const settingsCancelButtonWidth = 67.0;
+  static const settingsCancelButtonHeight = 30.0;
+
   static const topicCardRadius = 16.0;
   static const topicCardBlurRadius = 16.0;
   static const topicCardOffsetY = 3.0;
