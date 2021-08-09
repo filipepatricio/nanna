@@ -1,14 +1,15 @@
-import 'package:better_informed_mobile/data/auth/api/provider/oauth_provider_sign_in_data_source.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 
-class GoogleSignInDataSource implements OAuthProviderSignInDataSource {
+class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
   @override
   String get provider => SignInProviderDTO.google;
 
   @override
-  Future<OAuthCredential> signIn() async {
+  Future<OAuthCredential> getCredential() async {
     final googleSignIn = GoogleSignIn(
       scopes: [
         'email',
