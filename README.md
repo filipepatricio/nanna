@@ -21,4 +21,4 @@ Right now we have 3 app flavors: dev, stage and prod. This adds requirement for 
 
 If you want to set custom api host, that application connects to, just include additional argument in run command:
 
-`--dart-define=host=http://127.0.0.1:8080/graphql`
+`--dart-define=host=http://127.0.0.1:4000/graphql`

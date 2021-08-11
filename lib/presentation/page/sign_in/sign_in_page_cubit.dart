@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_default
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -33,7 +34,12 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   Future<void> signInWithProvider() async {
     emit(SignInPageState.processing());
-    await _signInWithDefaultProviderUseCase();
-    emit(SignInPageState.idle(false));
+    try {
+      await _signInWithDefaultProviderUseCase();
+    } catch (e, s) {
+      Fimber.e('Signing in with provider failed', ex: e, stacktrace: s);
+    } finally {
+      emit(SignInPageState.idle(false));
+    }
   }
 }

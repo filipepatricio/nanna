@@ -119,7 +119,7 @@ class _IdleContent extends HookWidget {
             ),
             if (!keyboardVisible) ...[
               const SizedBox(height: AppDimens.xl),
-              const SignInWithProviderView(),
+              SignInWithProviderView(onSignInTap: () => cubit.signInWithProvider()),
             ],
             const SizedBox(height: AppDimens.xxc),
             _EmailInput(
