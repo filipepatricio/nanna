@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_p
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:injectable/injectable.dart';
 
 class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
   @override

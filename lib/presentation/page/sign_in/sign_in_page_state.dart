@@ -10,4 +10,7 @@ class SignInPageState with _$SignInPageState {
 
   @Implements(BuildState)
   factory SignInPageState.magicLink() = _SignInPageStateMagicLink;
+
+  @Implements(BuildState)
+  factory SignInPageState.processing() = _SignInPageStateProcessing;
 }
