@@ -16,7 +16,7 @@ class SettingsAccountBody extends HookWidget {
   final SettingsAccountCubit cubit;
   final SettingsAccountData data;
 
-  SettingsAccountBody({required this.cubit, required this.data});
+  const SettingsAccountBody({required this.cubit, required this.data});
 
   @override
   Widget build(BuildContext context) {

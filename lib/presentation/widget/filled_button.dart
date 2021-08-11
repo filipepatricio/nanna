@@ -29,7 +29,7 @@ class FilledButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: onTap == null ? AppColors.lightGrey : fillColor,
           borderRadius: const BorderRadius.all(
-            Radius.circular(8),
+            Radius.circular(AppDimens.buttonRadius),
           ),
         ),
         child: Row(

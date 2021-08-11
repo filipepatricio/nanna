@@ -23,7 +23,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   }
 
   Future<void> sendMagicLink() async {
-    await _sendMagicLinkUseCase();
+    await _sendMagicLinkUseCase(_email);
     emit(SignInPageState.magicLink());
   }
 }

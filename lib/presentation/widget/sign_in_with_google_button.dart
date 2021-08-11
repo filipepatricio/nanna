@@ -21,7 +21,7 @@ class SignInWithGoogleButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppDimens.s, horizontal: AppDimens.s),
+        padding: const EdgeInsets.all(AppDimens.s),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(
