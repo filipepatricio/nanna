@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'settings_notifications_state.freezed.dart';
 
 @freezed
-abstract class SettingsNotificationsState with _$SettingsNotificationsState {
+class SettingsNotificationsState with _$SettingsNotificationsState {
   const factory SettingsNotificationsState.loading() = SettingsNotificationsStateLoading;
 
   const factory SettingsNotificationsState.notificationSettingsLoaded(SettingsNotificationsData data) =
