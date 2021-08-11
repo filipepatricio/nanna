@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_with_provider_view.dart';
@@ -215,13 +216,23 @@ class _Consents extends StatelessWidget {
           TextSpan(
             text: LocaleKeys.signIn_consentParts_terms.tr(),
             style: AppTypography.b3Regular.copyWith(color: AppColors.blue),
-            recognizer: TapGestureRecognizer()..onTap = () {},
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                AutoRouter.of(context).push(
+                  SettingsPolicyTermsPageRoute(isPolicy: false),
+                );
+              },
           ),
           TextSpan(text: LocaleKeys.signIn_consentParts_and.tr()),
           TextSpan(
             text: LocaleKeys.signIn_consentParts_privacy.tr(),
             style: AppTypography.b3Regular.copyWith(color: AppColors.blue),
-            recognizer: TapGestureRecognizer()..onTap = () {},
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                AutoRouter.of(context).push(
+                  SettingsPolicyTermsPageRoute(isPolicy: true),
+                );
+              },
           ),
         ],
       ),
