@@ -2,7 +2,8 @@
   "common": {
     "skip": "Skip",
     "continue": "Continue",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "cancel": "Cancel"
   },
   "onboarding": {
     "title": "How we use push notifications",
@@ -38,6 +39,10 @@
     "newDailyBrief": "NewDailyBrief",
     "incomingNewTopic": "Incoming new topic ",
     "productUpdates": "Product Updates",
-    "newFeatures": "New features & improvements"
+    "newFeatures": "New features & improvements",
+    "firstName": "First name",
+    "lastName": "LastName",
+    "emailAddress": "Email address",
+    "save": "Save"
   }
 }

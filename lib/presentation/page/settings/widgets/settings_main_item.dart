@@ -20,7 +20,7 @@ class SettingsMainItem extends StatelessWidget {
     return InkWell(
       onTap: () => onTap(),
       child: Container(
-        height: AppDimens.xxl,
+        height: AppDimens.settingsItemHeight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -14,6 +14,7 @@ class AppColors {
   static const Color appBarBackground = Color(0xff282B35);
   static const Color transparent = Color(0x00282b35);
   static const Color red = Color(0xffFF6969);
+  static const Color grey = Color(0xffe7e7e7);
 
   static const Color gradientOverlayStartColor = Color(0xFF282B35);
   static const Color gradientOverlayEndColor = Color(0x00282B35);
@@ -21,6 +22,7 @@ class AppColors {
   static Color shadowColor = Colors.black.withOpacity(0.12);
 
   static const Color settingsHeader = Color(0x44282B35);
+  static const Color settingsIcon = Color(0xff898A8D);
 }
 
 abstract class AppColorsBase {

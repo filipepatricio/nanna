@@ -24,4 +24,5 @@ class AppVectorGraphics {
   static const String privacy = 'assets/vector_graphics/privacy_ic.svg';
   static const String notifications = 'assets/vector_graphics/notification_ic.svg';
   static const String feedback = 'assets/vector_graphics/feedback_ic.svg';
+  static const String edit = 'assets/vector_graphics/edit_ic.svg';
 }

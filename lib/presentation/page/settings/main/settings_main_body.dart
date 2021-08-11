@@ -40,9 +40,7 @@ class SettingsMainBody extends HookWidget {
                       SettingsMainItem(
                         label: LocaleKeys.settings_account.tr(),
                         icon: AppVectorGraphics.account,
-                        onTap: () => {
-                          //TODO: NAVIGATE TO ACC
-                        },
+                        onTap: () => AutoRouter.of(context).push(const SettingsAccountPageRoute()),
                       ),
                       const SizedBox(height: AppDimens.ml),
                       SettingsMainItem(

@@ -171,7 +171,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle button = TextStyle(
+  static const TextStyle buttonBold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 16,
@@ -179,7 +179,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle input = TextStyle(
+  static const TextStyle input1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 16,
@@ -188,7 +188,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle inputBlack = TextStyle(
+  static const TextStyle input1MediumSmall = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 16,

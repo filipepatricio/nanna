@@ -32,6 +32,12 @@ class SettingsNotificationsBody extends HookWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: AppDimens.l),
+            Text(
+              LocaleKeys.settings_pushNotifications.tr(),
+              style: AppTypography.h3Bold,
+            ),
+            const SizedBox(height: AppDimens.l),
             Text(
               LocaleKeys.settings_newsUpdates.tr(),
               style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
