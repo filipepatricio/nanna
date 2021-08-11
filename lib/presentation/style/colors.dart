@@ -8,12 +8,13 @@ class AppColors {
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreenBleached = Color(0x64BBF383);
   static const Color textPrimary = Color(0xff282B35);
-  static const Color onboardingBackground = Color(0xff282B35);
-  static const Color bottomNaviBackground = Color(0xffFCFAF8);
+  static const Color darkGreyBackground = Color(0xff282B35);
+  static const Color lightGrey = Color(0xffFCFAF8);
   static const Color background = Color(0xffE5E5E5);
   static const Color appBarBackground = Color(0xff282B35);
   static const Color transparent = Color(0x00282b35);
   static const Color red = Color(0xffFF6969);
+  static const Color blue = Color(0xff4579FF);
   static const Color grey = Color(0xffe7e7e7);
 
   static const Color gradientOverlayStartColor = Color(0xFF282B35);

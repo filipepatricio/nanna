@@ -3,6 +3,7 @@
     "skip": "Skip",
     "continue": "Continue",
     "signOut": "Sign out",
+    "signUp": "Sign up",
     "cancel": "Cancel"
   },
   "onboarding": {
@@ -44,5 +45,26 @@
     "lastName": "LastName",
     "emailAddress": "Email address",
     "save": "Save"
+  },
+  "signIn": {
+    "header": {
+      "signIn": "Welcome to the smart & flexible news format",
+      "magicLink": "We’ve send you a magic link. Check your mail!"
+    },
+    "providerInfo": {
+      "apple": "Sign up with Apple or fill the form to continue",
+      "google": "Sign up with Google or fill the form to continue"
+    },
+    "providerButton": {
+      "apple": "Sign in with Apple",
+      "google": "Sign in with Google"
+    },
+    "emailHint": "E-mail address...",
+    "consentParts": {
+      "info": "By signing up, you agree to our ",
+      "terms": "Terms of Service",
+      "and": " and ",
+      "privacy": "Privacy Policy"
+    }
   }
 }

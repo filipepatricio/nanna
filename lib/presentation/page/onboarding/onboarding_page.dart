@@ -38,7 +38,7 @@ class OnboardingPage extends HookWidget {
     final isLastPage = pageIndex.value == _pageList.length - 1;
 
     return Scaffold(
-      backgroundColor: AppColors.onboardingBackground,
+      backgroundColor: AppColors.darkGreyBackground,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
