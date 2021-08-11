@@ -1,5 +1,7 @@
 import 'package:injectable/injectable.dart';
 
+const _environmentArgHost = 'host';
+
 class AppConfig {
   final String name;
   final String apiUrl;
@@ -9,21 +11,21 @@ class AppConfig {
   factory AppConfig.dev() {
     return AppConfig._(
       Environment.dev,
-      'apiUrl',
+      const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
     );
   }
 
   factory AppConfig.stage() {
     return AppConfig._(
       Environment.test,
-      'apiUrl',
+      const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
     );
   }
 
   factory AppConfig.prod() {
     return AppConfig._(
       Environment.prod,
-      'apiUrl',
+      const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
     );
   }
 }

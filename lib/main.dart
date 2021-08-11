@@ -16,8 +16,9 @@ Future<void> main() async {
   final environment = _getEnvironment();
 
   await EasyLocalization.ensureInitialized();
-  await configureDependencies(environment);
   await Firebase.initializeApp();
+
+  await configureDependencies(environment);
 
   setupFimber();
 
