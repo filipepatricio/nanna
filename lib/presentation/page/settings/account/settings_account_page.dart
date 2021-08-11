@@ -26,7 +26,6 @@ class SettingsAccountPage extends HookWidget {
           textAlign: TextAlign.center,
         ),
       ),
-      backgroundColor: AppColors.bottomNaviBackground,
       body: state.maybeWhen(
         loading: () => const Loader(),
         idle: (data) => SettingsAccountBody(cubit: cubit, data: data),

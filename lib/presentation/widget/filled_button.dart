@@ -38,7 +38,7 @@ class FilledButton extends StatelessWidget {
           children: [
             Text(
               text,
-              style: AppTypography.button.copyWith(
+              style: AppTypography.buttonBold.copyWith(
                 color: onTap == null ? AppColors.textPrimary.withOpacity(0.44) : AppColors.textPrimary,
               ),
             ),

@@ -164,11 +164,11 @@ class _EmailInput extends StatelessWidget {
             key: _emailInputKey,
             controller: controller,
             onChanged: cubit.updateEmail,
-            style: AppTypography.input.copyWith(color: AppColors.limeGreen),
+            style: AppTypography.input1Medium.copyWith(color: AppColors.limeGreen),
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: LocaleKeys.signIn_emailHint.tr(),
-              hintStyle: AppTypography.input.copyWith(color: AppColors.lightGrey.withOpacity(0.64)),
+              hintStyle: AppTypography.input1Medium.copyWith(color: AppColors.lightGrey.withOpacity(0.64)),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(bottom: 11), // TODO find a better way to center TextField content
             ),
