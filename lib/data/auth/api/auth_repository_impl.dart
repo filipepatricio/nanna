@@ -26,9 +26,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> requestMagicLink(String email) {
-    // TODO: implement requestMagicLink
-    throw UnimplementedError();
+  Future<void> requestMagicLink(String email) async {
+    final result = await _apiDataSource.sendMagicLink(email);
+    GraphQLResponseResolver.resolve(result, (raw) => null, rootKey: null);
   }
 
   @override

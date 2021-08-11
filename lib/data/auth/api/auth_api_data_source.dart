@@ -15,4 +15,12 @@ class AuthApiDataSource {
       ),
     );
   }
+
+  Future<QueryResult> sendMagicLink(String email) async {
+    return _client.mutate(
+      MutationOptions(
+        document: AuthGQL.sendLink(email),
+      ),
+    );
+  }
 }
