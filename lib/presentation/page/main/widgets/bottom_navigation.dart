@@ -19,7 +19,7 @@ class BottomNavigation extends HookWidget {
   Widget build(BuildContext context) {
     return state.maybeWhen(
       init: () => BottomNavigationBar(
-        backgroundColor: AppColors.bottomNaviBackground,
+        backgroundColor: AppColors.lightGrey,
         items: [
           ...MainTabs.values.map(
             (tab) => BottomNavigationBarItem(

@@ -180,7 +180,7 @@ class AppTypography {
   );
 
   static const TextStyle input1Medium = TextStyle(
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 16,
     height: 2.02,

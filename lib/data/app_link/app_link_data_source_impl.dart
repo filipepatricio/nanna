@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:fimber/fimber.dart';
-import 'package:injectable/injectable.dart';
 import 'package:uni_links/uni_links.dart';
 
 class AppLinkDataSourceImpl implements AppLinkDataSource {

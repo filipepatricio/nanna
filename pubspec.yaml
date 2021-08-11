@@ -43,6 +43,8 @@ dependencies:
   modal_bottom_sheet: 2.0.0
   uni_links: 0.5.1
   firebase_core: 1.4.0
+  flutter_keyboard_visibility: 5.0.2
+  email_validator: 2.0.1
 
 dev_dependencies:
   flutter_test:

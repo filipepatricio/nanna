@@ -25,4 +25,6 @@ class AppVectorGraphics {
   static const String notifications = 'assets/vector_graphics/notification_ic.svg';
   static const String feedback = 'assets/vector_graphics/feedback_ic.svg';
   static const String edit = 'assets/vector_graphics/edit_ic.svg';
+  static const String mail = 'assets/vector_graphics/mail.svg';
+  static const String googleSignIn = 'assets/vector_graphics/google_sign_in.svg';
 }

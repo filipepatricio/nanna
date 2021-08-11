@@ -100,11 +100,6 @@ class _FadeInPageTransition extends StatelessWidget {
   })  : _opacityAnimation = routeAnimation.drive(_easeInTween),
         super(key: key);
 
-  // Fractional offset from 1/4 screen below the top to fully on screen.
-  static final Tween<Offset> _bottomUpTween = Tween<Offset>(
-    begin: const Offset(0.0, 0.25),
-    end: Offset.zero,
-  );
   static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
 
   final Animation<double> _opacityAnimation;

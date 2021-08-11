@@ -15,6 +15,11 @@ class EntryPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextButton(
+            onPressed: () => AutoRouter.of(context).push(const SignInPageRoute()),
+            child: const Text('Sign in.'),
+          ),
+          const SizedBox(height: AppDimens.l),
+          TextButton(
             onPressed: () => AutoRouter.of(context).push(const OnboardingPageRoute()),
             child: const Text('Onboarding.'),
           ),

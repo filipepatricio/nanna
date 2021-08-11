@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/page/settings/account/settin
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/policy_terms/settings_policy_terms_page.dart';
+import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
 
@@ -18,6 +19,7 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
   routes: [
     AutoRoute(page: EntryPage, initial: true),
     AutoRoute(page: OnboardingPage),
+    AutoRoute(page: SignInPage),
     AutoRoute(page: SettingsMainPage),
     AutoRoute(page: SettingsPolicyTermsPage),
     AutoRoute(page: SettingsNotificationsPage),
