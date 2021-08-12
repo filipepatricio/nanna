@@ -163,7 +163,7 @@ class AppTypography {
   );
 
   static const TextStyle systemText = TextStyle(
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 14,
     height: 1.61,

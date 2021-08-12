@@ -4,7 +4,8 @@
     "continue": "Continue",
     "signOut": "Sign out",
     "signUp": "Sign up",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "generalError": "Something went wrong.\nTry again later."
   },
   "onboarding": {
     "title": "How we use push notifications",
