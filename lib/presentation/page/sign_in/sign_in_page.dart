@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class SignInPage extends HookWidget {
             builder: (context, visible) => AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               child: state.maybeMap(
+                processing: (_) => const Loader(),
                 magicLink: (state) => const _MagicLinkContent(),
                 idle: (state) => _IdleContent(
                   cubit: cubit,
@@ -117,7 +119,7 @@ class _IdleContent extends HookWidget {
             ),
             if (!keyboardVisible) ...[
               const SizedBox(height: AppDimens.xl),
-              const SignInWithProviderView(),
+              SignInWithProviderView(onSignInTap: () => cubit.signInWithProvider()),
             ],
             const SizedBox(height: AppDimens.xxc),
             _EmailInput(

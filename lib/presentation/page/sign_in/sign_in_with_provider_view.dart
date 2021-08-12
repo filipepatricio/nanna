@@ -11,7 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SignInWithProviderView extends HookWidget {
-  const SignInWithProviderView({Key? key}) : super(key: key);
+  final VoidCallback onSignInTap;
+
+  const SignInWithProviderView({
+    required this.onSignInTap,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,8 @@ class SignInWithProviderView extends HookWidget {
           style: AppTypography.b3Regular.copyWith(color: AppColors.lightGrey),
         ),
         const SizedBox(height: AppDimens.s),
-        if (Platform.isIOS) SignInWithAppleButton(onTap: () {}),
-        if (Platform.isAndroid) SignInWithGoogleButton(onTap: () {}),
+        if (Platform.isIOS) SignInWithAppleButton(onTap: onSignInTap),
+        if (Platform.isAndroid) SignInWithGoogleButton(onTap: onSignInTap),
       ],
     );
   }
