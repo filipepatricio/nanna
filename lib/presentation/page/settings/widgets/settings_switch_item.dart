@@ -7,9 +7,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class SettingsSwitchItem extends HookWidget {
   final String label;
   final Function(bool value) onSwitch;
-  bool switchValue;
+  final bool switchValue;
 
-  SettingsSwitchItem({
+  const SettingsSwitchItem({
     required this.label,
     required this.switchValue,
     required this.onSwitch,
