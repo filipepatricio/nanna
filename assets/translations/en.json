@@ -67,5 +67,16 @@
       "and": " and ",
       "privacy": "Privacy Policy"
     }
+  },
+  "article": {
+    "types": {
+      "freemium": "Free",
+      "premium": "Premium"
+    },
+    "appBar": {
+      "freemium": "Free Article",
+      "premium": "Premium Article"
+    },
+    "articleBy": "By {}"
   }
 }

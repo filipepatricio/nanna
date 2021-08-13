@@ -56,7 +56,6 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 14,
     height: 1.85,
-    letterSpacing: 16,
     color: AppColors.textPrimary,
   );
 
