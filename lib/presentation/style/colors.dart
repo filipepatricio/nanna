@@ -21,6 +21,7 @@ class AppColors {
   static const Color gradientOverlayEndColor = Color(0x00282B35);
 
   static Color shadowColor = Colors.black.withOpacity(0.12);
+  static Color greyFont = textPrimary.withOpacity(0.44);
 
   static const Color settingsHeader = Color(0x44282B35);
   static const Color settingsIcon = Color(0xff898A8D);

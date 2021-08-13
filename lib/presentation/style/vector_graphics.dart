@@ -16,6 +16,7 @@ class AppVectorGraphics {
   static const String share = 'assets/vector_graphics/share.svg';
   static const String follow = 'assets/vector_graphics/follow.svg';
   static const String sun = 'assets/vector_graphics/sun.svg';
+  static const String lock = 'assets/vector_graphics/lock_ic.svg';
 
   static const String settings = 'assets/vector_graphics/settings_ic.svg';
   static const String account = 'assets/vector_graphics/account_ic.svg';

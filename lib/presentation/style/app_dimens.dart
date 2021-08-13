@@ -61,4 +61,6 @@ class AppDimens {
   static const topicCardOffsetY = 3.0;
 
   static const buttonRadius = 8.0;
+  static const articleItemMargin = 10.0;
+  static const articleItemPhotoSize = 84.0;
 }
