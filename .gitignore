@@ -65,3 +65,5 @@ ios/build/
 
 # Idea configurations exception
 !.idea/runConfigurations/
+
+**/key_*.properties
