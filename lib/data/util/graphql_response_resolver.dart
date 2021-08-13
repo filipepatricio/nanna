@@ -6,8 +6,7 @@ class GraphQLResponseResolver<T> {
   static T? resolve<T>(
     QueryResult result,
     T Function(Map<String, dynamic> raw) mapper, {
-    String? innerKey,
-    String? rootKey = _defaultRootKey,
+    String? rootKey,
   }) {
     final optionalException = result.exception;
     if (result.hasException && optionalException != null) throw optionalException;
@@ -19,10 +18,6 @@ class GraphQLResponseResolver<T> {
 
     if (rootKey != null) {
       data = _getInnerData(data, rootKey);
-    }
-
-    if (innerKey != null) {
-      data = _getInnerData(data, innerKey);
     }
 
     final finalData = data;

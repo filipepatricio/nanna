@@ -20,8 +20,12 @@ class OnboardingSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          const EdgeInsets.only(left: AppDimens.xxl, right: AppDimens.xxl, top: AppDimens.xxxl, bottom: AppDimens.l),
+      padding: const EdgeInsets.only(
+        left: AppDimens.xxl,
+        right: AppDimens.xxl,
+        top: AppDimens.xxxl,
+        bottom: AppDimens.l,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -34,12 +38,12 @@ class OnboardingSlide extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.c),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: SvgPicture.asset(imageAsset, fit: BoxFit.contain),
           ),
           const SizedBox(height: AppDimens.c),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -25,10 +25,20 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def propertyFileNameMap = [
+        dev  : 'key_dev.properties',
+        stage: 'key_staging.properties',
+        prod : 'key_prod.properties'
+]
+def propertyMap = [:]
+
+for (fileNameEntry in propertyFileNameMap.entrySet()) {
+    def keystorePropertiesFile = rootProject.file(fileNameEntry.value)
+    if (keystorePropertiesFile.exists()) {
+        def keystoreProperties = new Properties()
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+        propertyMap.put(fileNameEntry.key, keystoreProperties)
+    }
 }
 
 android {
@@ -51,7 +61,24 @@ android {
     }
 
     signingConfigs {
-        release {
+        releaseDev {
+            def keystoreProperties = propertyMap['dev']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+
+        releaseStage {
+            def keystoreProperties = propertyMap['stage']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+
+        releaseProd {
+            def keystoreProperties = propertyMap['prod']
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
             storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
@@ -61,14 +88,16 @@ android {
 
     buildTypes {
         release {
-            if (keystorePropertiesFile.exists()) {
-                signingConfig signingConfigs.release
-            }
+            signingConfig signingConfigs.releaseDev
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.releaseDev
         }
     }
 
@@ -82,6 +111,10 @@ android {
 
             resValue "string", "app_name", "Informed Dev"
             resValue "string", "app_link_host", "dev.informed.so"
+
+            if (propertyMap.containsKey('dev')) {
+                signingConfig signingConfigs.releaseDev
+            }
         }
 
         stage {
@@ -91,6 +124,10 @@ android {
 
             resValue "string", "app_name", "Informed Test"
             resValue "string", "app_link_host", "staging.informed.so"
+
+            if (propertyMap.containsKey('stage')) {
+                signingConfig signingConfigs.releaseStage
+            }
         }
 
         prod {
@@ -98,6 +135,10 @@ android {
 
             resValue "string", "app_name", "Informed"
             resValue "string", "app_link_host", "informed.so"
+
+            if (propertyMap.containsKey('prod')) {
+                signingConfig signingConfigs.releaseProd
+            }
         }
     }
 }

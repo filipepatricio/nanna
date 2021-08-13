@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -62,9 +63,7 @@ class OnboardingPage extends HookWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(AppDimens.s)),
                   ),
                   child: TextButton(
-                    onPressed: () {
-                      //TODO: NAVIGATE TO DASHBOARD
-                    },
+                    onPressed: () => _navigateToMainPage(context),
                     child: Text(
                       isLastPage ? LocaleKeys.common_continue.tr() : LocaleKeys.common_skip.tr(),
                       style: AppTypography.buttonBold.copyWith(color: AppColors.limeGreen),
@@ -76,6 +75,14 @@ class OnboardingPage extends HookWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _navigateToMainPage(BuildContext context) {
+    AutoRouter.of(context).replaceAll(
+      [
+        const MainPageRoute(),
+      ],
     );
   }
 }

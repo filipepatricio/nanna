@@ -41,5 +41,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     } finally {
       emit(SignInPageState.idle(false));
     }
+
+    emit(SignInPageState.success());
   }
 }

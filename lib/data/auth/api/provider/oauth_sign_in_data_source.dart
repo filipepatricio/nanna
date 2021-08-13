@@ -17,15 +17,9 @@ class OAuthSignInDataSource {
     final credential = await _credentialProviderDataSource.getCredential();
     final provider = _credentialProviderDataSource.provider;
 
-    final result = await _firebaseAuth.signInWithCredential(credential);
-    final user = result.user;
+    final token = credential.idToken;
+    if (token == null) throw Exception('OAuth token is null');
 
-    if (user != null) {
-      final token = await user.getIdToken();
-
-      return OAuthProviderTokenDTO(provider, token);
-    }
-
-    throw Exception('User can not be null.');
+    return OAuthProviderTokenDTO(provider, token);
   }
 }
