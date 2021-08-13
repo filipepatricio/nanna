@@ -88,16 +88,18 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.releaseDev
-
             minifyEnabled true
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
 
+        profile {
+            signingConfig null
+        }
+
         debug {
-            signingConfig signingConfigs.releaseDev
+            signingConfig null
         }
     }
 
