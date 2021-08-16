@@ -1,7 +1,9 @@
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_data.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
   SettingsNotificationCubit() : super(const SettingsNotificationsState.loading()) {
     //TODO: REPLACE WITH USER SETTINGS WHEN AVAILABLE
