@@ -118,7 +118,7 @@ android {
             applicationIdSuffix ".dev"
 
             resValue "string", "app_name", "Informed Dev"
-            resValue "string", "app_link_host", "dev.informed.so"
+            resValue "string", "app_link_host", "localhost"
 
             if (propertyMap.containsKey('dev')) {
                 signingConfig signingConfigs.releaseDev
