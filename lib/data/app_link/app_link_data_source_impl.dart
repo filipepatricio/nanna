@@ -5,9 +5,9 @@ import 'package:fimber/fimber.dart';
 import 'package:uni_links/uni_links.dart';
 
 class AppLinkDataSourceImpl implements AppLinkDataSource {
-  final StreamController<String> _appLinkStream = StreamController.broadcast();
+  final StreamController<Uri> _appLinkStream = StreamController.broadcast();
 
-  String? _initialRoute;
+  Uri? _initialRoute;
   StreamSubscription? _appLinkStreamSubscription;
 
   AppLinkDataSourceImpl._();
@@ -20,12 +20,12 @@ class AppLinkDataSourceImpl implements AppLinkDataSource {
 
   Future<void> _initialize() async {
     try {
-      _initialRoute = await getInitialLink();
+      _initialRoute = await getInitialUri();
     } catch (e, s) {
       Fimber.e('Getting initial link failed', ex: e, stacktrace: s);
     }
 
-    _appLinkStreamSubscription = linkStream.listen((event) {
+    _appLinkStreamSubscription = uriLinkStream.listen((event) {
       if (event != null) {
         _appLinkStream.sink.add(event);
       }
@@ -33,12 +33,12 @@ class AppLinkDataSourceImpl implements AppLinkDataSource {
   }
 
   @override
-  Future<String?> getInitialAction() async {
+  Future<Uri?> getInitialAction() async {
     return _initialRoute;
   }
 
   @override
-  Stream<String> listenForIncomingActions() => _appLinkStream.stream;
+  Stream<Uri> listenForIncomingActions() => _appLinkStream.stream;
 
   @override
   Future<void> clear() async {

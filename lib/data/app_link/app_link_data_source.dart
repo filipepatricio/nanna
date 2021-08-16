@@ -1,7 +1,7 @@
 abstract class AppLinkDataSource {
-  Future<String?> getInitialAction();
+  Future<Uri?> getInitialAction();
 
-  Stream<String> listenForIncomingActions();
+  Stream<Uri> listenForIncomingActions();
 
   Future<void> clear();
 }
