@@ -23,7 +23,7 @@ class RefreshTokenService {
     final dto = GraphQLResponseResolver.resolve(
       result,
       (raw) => AuthTokenDTO.fromJson(raw),
-      innerKey: 'refresh',
+      rootKey: 'refresh',
     );
 
     if (dto == null) throw Exception('New token is null');

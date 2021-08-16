@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
-import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dart';
+import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dart';
 import 'package:better_informed_mobile/data/auth/api/mapper/auth_token_dto_mapper.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_sign_in_data_source.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
@@ -34,18 +34,19 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthToken> signInWithDefaultProvider() async {
     final oAuthToken = await _oAuthSignInDataSource.getProviderToken();
-
     final result = await _apiDataSource.signInWithProvider(oAuthToken.token, oAuthToken.provider);
-    if (result.hasException) throw Exception('Signing in failed');
 
-    final dto = GraphQLResponseResolver.resolve(
+    final response = GraphQLResponseResolver.resolve(
       result,
-      (raw) => AuthTokenDTO.fromJson(raw),
-      innerKey: 'signIn',
+      (raw) => AuthTokenResponseDTO.fromJson(raw),
+      rootKey: 'signIn',
     );
 
-    if (dto == null) throw Exception('Sign in result is null.');
+    if (response?.successful != true) throw Exception('Sign in failed.');
 
-    return _authTokenDTOMapper.from(dto);
+    final tokens = response?.tokens;
+    if (tokens == null) throw Exception('Sign in did not return auth tokens.');
+
+    return _authTokenDTOMapper.from(tokens);
   }
 }

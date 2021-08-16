@@ -10,4 +10,6 @@ class AuthTokenDTO {
   AuthTokenDTO(this.accessToken, this.refreshToken);
 
   factory AuthTokenDTO.fromJson(Map<String, dynamic> json) => _$AuthTokenDTOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AuthTokenDTOToJson(this);
 }

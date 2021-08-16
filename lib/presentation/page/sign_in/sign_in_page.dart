@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_with_provider_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -28,6 +29,17 @@ class SignInPage extends HookWidget {
     final cubit = useCubit<SignInPageCubit>();
     final state = useCubitBuilder(cubit);
     final emailController = useTextEditingController();
+
+    useCubitListener<SignInPageCubit, SignInPageState>(cubit, (cubit, state, context) {
+      state.maybeMap(
+        success: (_) => AutoRouter.of(context).replaceAll(
+          [
+            const OnboardingPageRoute(),
+          ],
+        ),
+        orElse: () {},
+      );
+    });
 
     return Scaffold(
       body: Container(
