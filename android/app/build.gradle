@@ -63,26 +63,32 @@ android {
     signingConfigs {
         releaseDev {
             def keystoreProperties = propertyMap['dev']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
+            if (keystoreProperties != null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
         }
 
         releaseStage {
             def keystoreProperties = propertyMap['stage']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
+            if (keystoreProperties != null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
         }
 
         releaseProd {
             def keystoreProperties = propertyMap['prod']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
+            if (keystoreProperties != null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
@@ -116,6 +122,8 @@ android {
 
             if (propertyMap.containsKey('dev')) {
                 signingConfig signingConfigs.releaseDev
+            } else {
+                signingConfig signingConfigs.debug
             }
         }
 
@@ -129,6 +137,8 @@ android {
 
             if (propertyMap.containsKey('stage')) {
                 signingConfig signingConfigs.releaseStage
+            } else {
+                signingConfig signingConfigs.debug
             }
         }
 
@@ -140,6 +150,8 @@ android {
 
             if (propertyMap.containsKey('prod')) {
                 signingConfig signingConfigs.releaseProd
+            } else {
+                signingConfig signingConfigs.debug
             }
         }
     }
