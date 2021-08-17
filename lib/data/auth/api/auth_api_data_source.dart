@@ -1,26 +1,7 @@
-import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:injectable/injectable.dart';
+import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dart';
 
-@lazySingleton
-class AuthApiDataSource {
-  final GraphQLClient _client;
+abstract class AuthApiDataSource {
+  Future<AuthTokenDTO> signInWithProvider(String token, String provider);
 
-  AuthApiDataSource(this._client);
-
-  Future<QueryResult> signInWithProvider(String token, String provider) async {
-    return _client.mutate(
-      MutationOptions(
-        document: AuthGQL.login(token, provider),
-      ),
-    );
-  }
-
-  Future<QueryResult> sendMagicLink(String email) async {
-    return _client.mutate(
-      MutationOptions(
-        document: AuthGQL.sendLink(email),
-      ),
-    );
-  }
+  Future<void> sendMagicLink(String email);
 }

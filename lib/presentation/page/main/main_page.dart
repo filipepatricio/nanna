@@ -15,6 +15,7 @@ class MainPage extends HookWidget {
 
     return state.maybeWhen(
       init: () => AutoTabsScaffold(
+        animationDuration: const Duration(),
         extendBody: false,
         routes: const [
           TodayTabGroupRouter(),
