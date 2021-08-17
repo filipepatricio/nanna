@@ -91,7 +91,7 @@ class SettingsMainBody extends HookWidget {
           TextButton(
             onPressed: () async => {
               //TODO: Maybe show some are you sure dialog
-              // await cubit.signOut()
+              await cubit.signOut()
             },
             child: Text(
               LocaleKeys.common_signOut.tr(),

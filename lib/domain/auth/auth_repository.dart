@@ -5,5 +5,7 @@ abstract class AuthRepository {
 
   Future<AuthToken> signInWithDefaultProvider();
 
+  Future<AuthToken> signInWithMagicLinkToken(String token);
+
   Future<void> logout();
 }

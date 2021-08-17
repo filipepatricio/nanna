@@ -41,6 +41,13 @@ class SignInPage extends HookWidget {
       );
     });
 
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(

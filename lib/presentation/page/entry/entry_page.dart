@@ -1,36 +1,36 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/page/entry/entry_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class EntryPage extends StatelessWidget {
+class EntryPage extends HookWidget {
   const EntryPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextButton(
-            onPressed: () => AutoRouter.of(context).push(const SignInPageRoute()),
-            child: const Text('Sign in.'),
-          ),
-          const SizedBox(height: AppDimens.l),
-          TextButton(
-            onPressed: () => AutoRouter.of(context).push(const OnboardingPageRoute()),
-            child: const Text('Onboarding.'),
-          ),
-          const SizedBox(height: AppDimens.l),
-          TextButton(
-            onPressed: () => AutoRouter.of(context).push(const MainPageRoute()),
-            child: const Text('MainPage'),
-          ),
-          const SizedBox(height: AppDimens.l),
-        ],
-      ),
+    final cubit = useCubit<EntryPageCubit>();
+
+    useCubitListener<EntryPageCubit, EntryPageState>(cubit, (cubit, state, context) {
+      state.maybeWhen(
+        alreadySignedIn: () => AutoRouter.of(context).popAndPush(const MainPageRoute()),
+        notSignedIn: () => AutoRouter.of(context).popAndPush(const SignInPageRoute()),
+        orElse: () {},
+      );
+    });
+
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
+
+    return const Scaffold(
+      body: Loader(),
     );
   }
 }
