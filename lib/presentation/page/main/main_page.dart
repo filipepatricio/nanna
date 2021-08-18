@@ -13,6 +13,20 @@ class MainPage extends HookWidget {
     final cubit = useCubit<MainCubit>();
     final state = useCubitBuilder<MainCubit, MainState>(cubit);
 
+    useCubitListener<MainCubit, MainState>(cubit, (cubit, state, context) {
+      state.maybeMap(
+        tokenExpired: (_) => _onTokenExpiredEvent(context),
+        orElse: () {},
+      );
+    });
+
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
+
     return state.maybeWhen(
       init: () => AutoTabsScaffold(
         animationDuration: const Duration(),
@@ -25,6 +39,14 @@ class MainPage extends HookWidget {
         bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(state, cubit, tabsRouter),
       ),
       orElse: () => Container(),
+    );
+  }
+
+  void _onTokenExpiredEvent(BuildContext context) {
+    AutoRouter.of(context).replaceAll(
+      [
+        const SignInPageRoute(),
+      ],
     );
   }
 }

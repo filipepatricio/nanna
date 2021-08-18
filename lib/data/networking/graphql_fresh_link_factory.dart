@@ -3,6 +3,9 @@ import 'package:better_informed_mobile/data/networking/store/graphql_token_stora
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
 
+const _errorCodeKey = 'code';
+const _unauthenticatedErrorValue = 'UNAUTHENTICATED';
+
 @lazySingleton
 class GraphqlFreshLinkFactory {
   final RefreshTokenService _refreshTokenService;
@@ -10,7 +13,7 @@ class GraphqlFreshLinkFactory {
 
   GraphqlFreshLinkFactory(this._refreshTokenService, this._storage);
 
-  FreshLink create() {
+  FreshLink<OAuth2Token> create() {
     return FreshLink.oAuth2(
       tokenStorage: _storage,
       refreshToken: (token, client) async {
@@ -21,8 +24,17 @@ class GraphqlFreshLinkFactory {
         return _refreshTokenService.refreshToken(refreshToken);
       },
       shouldRefresh: (response) {
-        print(response);
-        return true;
+        return response.errors?.any((error) {
+              final errorExtensions = error.extensions;
+
+              if (errorExtensions != null) {
+                final code = errorExtensions[_errorCodeKey];
+                return code == _unauthenticatedErrorValue;
+              }
+
+              return false;
+            }) ??
+            false;
       },
     );
   }

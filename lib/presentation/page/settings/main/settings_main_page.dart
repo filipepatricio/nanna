@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_body.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.dart';
@@ -40,13 +39,6 @@ class SettingsMainPage extends HookWidget {
 
   void _handleState(SettingsMainCubit cubit, SettingsMainState state, BuildContext context) {
     state.maybeWhen(
-      signedOut: () {
-        AutoRouter.of(context).replaceAll(
-          [
-            const SignInPageRoute(),
-          ],
-        );
-      },
       orElse: () {},
     );
   }

@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class GraphQLClientFactory {
   final AppConfig _appConfig;
-  final FreshLink _freshLink;
+  final FreshLink<OAuth2Token> _freshLink;
 
   GraphQLClientFactory(
     this._appConfig,

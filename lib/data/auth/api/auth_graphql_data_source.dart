@@ -10,7 +10,7 @@ import 'package:injectable/injectable.dart';
 class AuthGraphqlDataSource implements AuthApiDataSource {
   final GraphQLClient _client;
 
-  AuthGraphqlDataSource(this._client);
+  AuthGraphqlDataSource(@Named('unauthorized') this._client);
 
   @override
   Future<AuthTokenDTO> signInWithProvider(String token, String provider) async {

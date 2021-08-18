@@ -58,6 +58,6 @@ String _getEnvironment() {
 }
 
 Future<void> _prepareFreshLink() async {
-  final freshLink = getIt<FreshLink>();
+  final freshLink = getIt<FreshLink<OAuth2Token>>();
   await freshLink.token;
 }
