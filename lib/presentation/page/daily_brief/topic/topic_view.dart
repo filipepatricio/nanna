@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_data.dart';
+import 'package:better_informed_mobile/domain/article/data/article_data.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -55,7 +56,7 @@ class TopicView extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                color: Colors.white,
+                color: AppColors.lightGrey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -69,7 +70,7 @@ class TopicView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppDimens.l),
                     _ArticleItem(
-                      article: ArticleData(
+                      article: Article(
                         title:
                             'AstraZeneca vaccine suspension: Expert says that we have to go this is long text title 1',
                         content:
@@ -89,7 +90,7 @@ class TopicView extends StatelessWidget {
                       color: AppColors.textPrimary.withOpacity(0.14),
                     ),
                     _ArticleItem(
-                      article: ArticleData(
+                      article: Article(
                         title: 'Pfizer vaccine suspension: Expert says that we have to go this is long text title 1',
                         content:
                             'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
@@ -108,7 +109,7 @@ class TopicView extends StatelessWidget {
                       color: AppColors.textPrimary.withOpacity(0.14),
                     ),
                     _ArticleItem(
-                      article: ArticleData(
+                      article: Article(
                         title: 'Moderna vaccine suspension: Expert says that we have to go this is long text title 1',
                         content:
                             'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
@@ -134,7 +135,7 @@ class TopicView extends StatelessWidget {
 }
 
 class _ArticleItem extends HookWidget {
-  final ArticleData article;
+  final Article article;
 
   const _ArticleItem({required this.article});
 

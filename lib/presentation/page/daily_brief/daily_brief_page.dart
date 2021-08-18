@@ -5,7 +5,9 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_title_hero.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_topic_card.dart';
+import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -64,6 +66,7 @@ class DailyBriefPage extends HookWidget {
         ),
         centerTitle: false,
       ),
+      backgroundColor: AppColors.lightGrey,
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(

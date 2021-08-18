@@ -1,21 +1,30 @@
+import 'package:better_informed_mobile/domain/article/data/article_data.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_data.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ArticlePage extends HookWidget {
-  final ArticleData article;
+  final Article article;
 
   const ArticlePage({required this.article});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = useCubit<ArticleCubit>();
+    useEffect(() {
+      cubit.resetBannerState(article, 0.0, 0.0);
+    }, [cubit]);
+
+    final _scrollController = useScrollController(keepScrollOffset: true);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
@@ -37,24 +46,38 @@ class ArticlePage extends HookWidget {
         centerTitle: true,
         backgroundColor: article.type == ArticleType.premium ? AppColors.limeGreen : AppColors.white,
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                ArticleHeader(article: article),
-                ArticleContent(article: article),
-              ],
+      backgroundColor: AppColors.lightGrey,
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollNotification) {
+          if (scrollNotification is ScrollEndNotification) {
+            final scrollProgress = double.parse(
+              (_scrollController.offset.toInt() / _scrollController.position.maxScrollExtent.toInt())
+                  .toStringAsFixed(2),
+            );
+            cubit.updateReadingBannerState(article, scrollProgress, _scrollController.offset);
+          }
+          return true;
+        },
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  ArticleHeader(article: article),
+                  ArticleContent(article: article),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
 class ArticleHeader extends HookWidget {
-  final ArticleData article;
+  final Article article;
 
   const ArticleHeader({required this.article});
 
@@ -119,7 +142,7 @@ class ArticleHeader extends HookWidget {
 }
 
 class ArticleContent extends HookWidget {
-  final ArticleData article;
+  final Article article;
 
   const ArticleContent({required this.article});
 

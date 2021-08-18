@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dar
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
+import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
