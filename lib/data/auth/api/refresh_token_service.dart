@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
-import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dart';
+import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -18,16 +18,18 @@ class RefreshTokenService {
       ),
     );
 
-    if (result.hasException) throw Exception('Refresh token failed');
-
     final dto = GraphQLResponseResolver.resolve(
       result,
-      (raw) => AuthTokenDTO.fromJson(raw),
+      (raw) => AuthTokenResponseDTO.fromJson(raw),
       rootKey: 'refresh',
     );
 
-    if (dto == null) throw Exception('New token is null');
+    final tokensDto = dto?.tokens;
+    if (tokensDto == null) throw RevokeTokenException();
 
-    return OAuth2Token(accessToken: dto.accessToken, refreshToken: dto.refreshToken);
+    return OAuth2Token(
+      accessToken: tokensDto.accessToken,
+      refreshToken: tokensDto.refreshToken,
+    );
   }
 }

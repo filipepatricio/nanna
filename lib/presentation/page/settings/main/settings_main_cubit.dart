@@ -15,7 +15,6 @@ class SettingsMainCubit extends Cubit<SettingsMainState> {
 
     try {
       await _signOutUseCase();
-      emit(const SettingsMainState.signedOut());
     } catch (e, s) {
       Fimber.e('Signing out failed', ex: e, stacktrace: s);
       emit(const SettingsMainState.init());

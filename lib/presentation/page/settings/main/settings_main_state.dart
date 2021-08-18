@@ -10,6 +10,4 @@ class SettingsMainState with _$SettingsMainState {
 
   @Implements(BuildState)
   const factory SettingsMainState.loading() = SettingsMainStateLoading;
-
-  const factory SettingsMainState.signedOut() = SettingsMainStateSignOut;
 }

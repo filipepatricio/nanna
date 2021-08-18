@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 class InformedAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -35,53 +36,56 @@ class _InformedAppBarState extends State<InformedAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: AppDimens.zero, color: AppColors.appBarBackground),
-              color: AppColors.appBarBackground,
-            ),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.sl),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(title, style: AppTypography.h1Bold.copyWith(color: AppColors.white)),
-                    if (showSettingsIcon)
-                      GestureDetector(
-                        onTap: ()  => AutoRouter.of(context).push(const SettingsMainPageRoute()),
-                        child: SvgPicture.asset(
-                          AppVectorGraphics.settings,
-                          width: AppDimens.l,
-                          height: AppDimens.l,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        CustomPaint(
-          painter: ShadowPainter(isTriangleShaped: isTriangleShape),
-          child: ClipPath(
-            clipper: isTriangleShape ? const TriangleClipper() : const DiagonalClipper(),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Column(
+        children: [
+          Expanded(
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(width: AppDimens.zero, color: AppColors.appBarBackground),
                 color: AppColors.appBarBackground,
               ),
-              height: AppDimens.m,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.sl),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(title, style: AppTypography.h1Bold.copyWith(color: AppColors.white)),
+                      if (showSettingsIcon)
+                        GestureDetector(
+                          onTap: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
+                          child: SvgPicture.asset(
+                            AppVectorGraphics.settings,
+                            width: AppDimens.l,
+                            height: AppDimens.l,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
-      ],
+          CustomPaint(
+            painter: ShadowPainter(isTriangleShaped: isTriangleShape),
+            child: ClipPath(
+              clipper: isTriangleShape ? const TriangleClipper() : const DiagonalClipper(),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: AppDimens.zero, color: AppColors.appBarBackground),
+                  color: AppColors.appBarBackground,
+                ),
+                height: AppDimens.m,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

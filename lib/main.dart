@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fimber/fimber.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
 
 const _environmentArgKey = 'env';
@@ -19,6 +20,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   await configureDependencies(environment);
+  await _prepareFreshLink();
 
   setupFimber();
 
@@ -53,4 +55,9 @@ String _getEnvironment() {
     default:
       throw Exception('Unknown environment type: $env');
   }
+}
+
+Future<void> _prepareFreshLink() async {
+  final freshLink = getIt<FreshLink<OAuth2Token>>();
+  await freshLink.token;
 }
