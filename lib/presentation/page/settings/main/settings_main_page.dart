@@ -14,7 +14,7 @@ class SettingsMainPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsMainCubit>();
-    final state = useCubitBuilder<SettingsMainCubit, SettingsMainState>(cubit, buildWhen: _buildWhen);
+    final state = useCubitBuilder(cubit);
 
     useCubitListener(cubit, _handleState);
 
@@ -34,8 +34,6 @@ class SettingsMainPage extends HookWidget {
       ),
     );
   }
-
-  bool _buildWhen(SettingsMainState state) => state is! SettingsMainStateSignOut;
 
   void _handleState(SettingsMainCubit cubit, SettingsMainState state, BuildContext context) {
     state.maybeWhen(
