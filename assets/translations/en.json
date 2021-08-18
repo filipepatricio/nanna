@@ -22,7 +22,8 @@
     "myReadsTab": "My Reads"
   },
   "dailyBrief": {
-    "title": "Daily Brief"
+    "title": "Daily Brief",
+    "loading": "Just a sec.\nWe’re loading your brief."
   },
   "settings": {
     "settings": "Settings",

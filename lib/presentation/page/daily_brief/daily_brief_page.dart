@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/error.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -130,7 +131,7 @@ class _Loading extends StatelessWidget {
         SvgPicture.asset(AppVectorGraphics.briefLoading),
         const SizedBox(height: AppDimens.l),
         Text(
-          'Just a sec.\nWe’re loading your brief.',
+          LocaleKeys.dailyBrief_loading.tr(),
           style: AppTypography.b3Regular.copyWith(height: 1.61),
           textAlign: TextAlign.center,
         ),
