@@ -33,4 +33,6 @@ class AppVectorGraphics {
   static const String briefError = 'assets/vector_graphics/brief_error_ic.svg';
   static const String articleError = 'assets/vector_graphics/article_error_ic.svg';
   static const String readsExploreError = 'assets/vector_graphics/my_reads_explore_error_ic.svg';
+
+  static const String briefLoading = 'assets/vector_graphics/daily_brief_loading.svg';
 }

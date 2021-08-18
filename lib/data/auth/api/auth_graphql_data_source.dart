@@ -17,6 +17,7 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
     final result = await _client.mutate(
       MutationOptions(
         document: AuthGQL.login(token, provider),
+        fetchPolicy: FetchPolicy.noCache,
       ),
     );
 
@@ -28,6 +29,7 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
     final result = await _client.mutate(
       MutationOptions(
         document: AuthGQL.sendLink(email),
+        fetchPolicy: FetchPolicy.noCache,
       ),
     );
     GraphQLResponseResolver.resolve(result, (raw) => null, rootKey: null);

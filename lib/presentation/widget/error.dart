@@ -7,21 +7,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class AppError extends StatefulWidget {
+class AppError extends StatelessWidget {
   final String? message;
   final String? graphicPath;
 
-  const AppError({Key? key, this.message, this.graphicPath}) : super(key: key);
-
-  @override
-  _AppErrorState createState() => _AppErrorState(message, graphicPath);
-}
-
-class _AppErrorState extends State<AppError> {
-  final String? message;
-  final String? graphicPath;
-
-  _AppErrorState(this.message, this.graphicPath);
+  const AppError({
+    this.graphicPath,
+    this.message,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
