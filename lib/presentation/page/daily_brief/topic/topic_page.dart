@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
@@ -15,10 +16,12 @@ const _pageViewportFraction = 1.0;
 class TopicPage extends HookWidget {
   final int index;
   final Function(int pageIndex) onPageChanged;
+  final CurrentBrief currentBrief;
 
   const TopicPage({
     required this.index,
     required this.onPageChanged,
+    required this.currentBrief,
     Key? key,
   }) : super(key: key);
 
@@ -54,13 +57,17 @@ class TopicPage extends HookWidget {
             SafeArea(
               child: Hero(
                 tag: HeroTag.dailyBriefRelaxPage,
-                child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+                child: RelaxView(
+                  lastPageAnimationProgressState: lastPageAnimationProgressState,
+                  goodbyeHeadline: currentBrief.goodbye,
+                ),
               ),
             ),
             _PageViewContent(
               controller: controller,
               onPageChanged: onPageChanged,
               pageTransitionAnimation: pageTransitionAnimation,
+              currentBrief: currentBrief,
             ),
             const Positioned(
               top: 0,
@@ -98,11 +105,13 @@ class _PageViewContent extends StatelessWidget {
   final PageController controller;
   final Function(int pageIndex) onPageChanged;
   final AnimationController pageTransitionAnimation;
+  final CurrentBrief currentBrief;
 
   const _PageViewContent({
     required this.controller,
     required this.onPageChanged,
     required this.pageTransitionAnimation,
+    required this.currentBrief,
     Key? key,
   }) : super(key: key);
 
@@ -113,11 +122,22 @@ class _PageViewContent extends StatelessWidget {
       allowImplicitScrolling: true,
       onPageChanged: onPageChanged,
       children: [
-        TopicView(index: 0, pageTransitionAnimation: pageTransitionAnimation),
-        TopicView(index: 1, pageTransitionAnimation: pageTransitionAnimation),
-        TopicView(index: 2, pageTransitionAnimation: pageTransitionAnimation),
+        ..._buildTopicCards(),
         Container(),
       ],
     );
+  }
+
+  Iterable<Widget> _buildTopicCards() {
+    return currentBrief.topics.asMap().map<int, Widget>((key, value) {
+      return MapEntry(
+        key,
+        TopicView(
+          index: key,
+          pageTransitionAnimation: pageTransitionAnimation,
+          topic: value,
+        ),
+      );
+    }).values;
   }
 }

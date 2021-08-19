@@ -79,27 +79,22 @@ class _IdleContent extends HookWidget {
           flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
             return Material(
               color: Colors.transparent,
-              child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+              child: RelaxView(
+                lastPageAnimationProgressState: lastPageAnimationProgressState,
+                goodbyeHeadline: currentBrief.goodbye,
+              ),
             );
           },
-          child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+          child: RelaxView(
+            lastPageAnimationProgressState: lastPageAnimationProgressState,
+            goodbyeHeadline: currentBrief.goodbye,
+          ),
         ),
         PageView(
           controller: controller,
           scrollDirection: Axis.horizontal,
           children: [
-            DailyBriefTopicCard(
-              index: 0,
-              onPressed: () => _onTopicCardPressed(context, controller, 0),
-            ),
-            DailyBriefTopicCard(
-              index: 1,
-              onPressed: () => _onTopicCardPressed(context, controller, 1),
-            ),
-            DailyBriefTopicCard(
-              index: 2,
-              onPressed: () => _onTopicCardPressed(context, controller, 2),
-            ),
+            ..._buildTopicCards(context, controller, currentBrief),
             Container(),
           ],
         ),
@@ -107,13 +102,27 @@ class _IdleContent extends HookWidget {
     );
   }
 
-  void _onTopicCardPressed(BuildContext context, PageController controller, int index) {
+  Iterable<Widget> _buildTopicCards(BuildContext context, PageController controller, CurrentBrief currentBrief) {
+    return currentBrief.topics.asMap().map<int, Widget>((key, value) {
+      return MapEntry(
+        key,
+        DailyBriefTopicCard(
+          index: key,
+          onPressed: () => _onTopicCardPressed(context, controller, key, currentBrief),
+          topic: value,
+        ),
+      );
+    }).values;
+  }
+
+  void _onTopicCardPressed(BuildContext context, PageController controller, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
       TopicPageRoute(
         index: index,
         onPageChanged: (index) {
           controller.jumpToPage(index);
         },
+        currentBrief: currentBrief,
       ),
     );
   }

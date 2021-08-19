@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -8,10 +9,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class DailyBriefTopicCard extends HookWidget {
   final int index;
   final Function() onPressed;
+  final Topic topic;
 
   const DailyBriefTopicCard({
     required this.index,
     required this.onPressed,
+    required this.topic,
     Key? key,
   }) : super(key: key);
 
@@ -41,7 +44,7 @@ class DailyBriefTopicCard extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Hero(
-                tag: HeroTag.dailyBriefTopicImage(index),
+                tag: HeroTag.dailyBriefTopicImage(topic.id),
                 flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
                   final colorTween = ColorTween(
                     begin: AppColors.gradientOverlayEndColor,
@@ -84,37 +87,12 @@ class DailyBriefTopicCard extends HookWidget {
                 ),
               ),
               const SizedBox(height: AppDimens.m),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-                child: Hero(
-                  tag: HeroTag.dailyBriefTopicTitle(index),
-                  flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-                    final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
-
-                    return Material(
-                      color: Colors.transparent,
-                      child: AnimatedBuilder(
-                        animation: colorTween,
-                        builder: (context, child) {
-                          return Text(
-                            'Title $index',
-                            style: AppTypography.h1Bold.copyWith(color: colorTween.value),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'Title $index',
-                    style: AppTypography.h1Bold,
-                  ),
-                ),
-              ),
+              _Title(topic: topic),
               const SizedBox(height: AppDimens.m),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
                 child: Hero(
-                  tag: HeroTag.dailyBriefTopicSummary(index),
+                  tag: HeroTag.dailyBriefTopicSummary(topic.id),
                   flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
                     final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
 
@@ -124,7 +102,7 @@ class DailyBriefTopicCard extends HookWidget {
                         animation: colorTween,
                         builder: (context, child) {
                           return Text(
-                            'Content $index. The Chinese Communist Party has long done everything it can to erase memories of the massacre of pro-democracy protesters in Beijing\'s Tiananmen Square 32-years-ago today.',
+                            topic.introduction,
                             style: AppTypography.b1Medium.copyWith(color: colorTween.value),
                           );
                         },
@@ -132,13 +110,52 @@ class DailyBriefTopicCard extends HookWidget {
                     );
                   },
                   child: Text(
-                    'Content $index. The Chinese Communist Party has long done everything it can to erase memories of the massacre of pro-democracy protesters in Beijing\'s Tiananmen Square 32-years-ago today.',
+                    topic.introduction,
                     style: AppTypography.b1Medium,
                   ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Title extends StatelessWidget {
+  final Topic topic;
+
+  const _Title({
+    required this.topic,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+      child: Hero(
+        tag: HeroTag.dailyBriefTopicTitle(topic.id),
+        flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
+          final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
+
+          return Material(
+            color: Colors.transparent,
+            child: AnimatedBuilder(
+              animation: colorTween,
+              builder: (context, child) {
+                return Text(
+                  topic.title,
+                  style: AppTypography.h1Bold.copyWith(color: colorTween.value),
+                );
+              },
+            ),
+          );
+        },
+        child: Text(
+          topic.title,
+          style: AppTypography.h1Bold,
         ),
       ),
     );
