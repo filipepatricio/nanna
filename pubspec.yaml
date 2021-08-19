@@ -51,6 +51,7 @@ dependencies:
   flutter_keyboard_visibility: 5.0.2
   email_validator: 2.0.1
   flutter_markdown: 0.6.4
+  cloudinary_sdk: 3.0.1+7
 
 dev_dependencies:
   flutter_test:

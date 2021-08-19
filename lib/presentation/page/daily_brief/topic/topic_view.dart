@@ -6,8 +6,10 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -259,6 +261,8 @@ class _TopicHeader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageWidth = MediaQuery.of(context).size.width * 2;
+
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -267,8 +271,12 @@ class _TopicHeader extends HookWidget {
           child: Container(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.65,
-            child: Image.asset(
-              'assets/image/topic_placeholder.png',
+            child: Image.network(
+              CloudinaryImage.fromPublicId(cloudinaryCloudName, topic.image.publicId)
+                  .transform()
+                  .width(imageWidth.ceil())
+                  .fit()
+                  .generate()!,
               fit: BoxFit.fitHeight,
               alignment: Alignment.topLeft,
             ),
