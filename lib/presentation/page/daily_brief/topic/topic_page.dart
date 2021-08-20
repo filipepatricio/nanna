@@ -150,13 +150,13 @@ class _PageViewContent extends StatelessWidget {
       allowImplicitScrolling: true,
       onPageChanged: onPageChanged,
       children: [
-        ..._buildTopicCards(),
+        ..._buildTopicViews(),
         Container(),
       ],
     );
   }
 
-  Iterable<Widget> _buildTopicCards() {
+  Iterable<Widget> _buildTopicViews() {
     return currentBrief.topics.asMap().map<int, Widget>((key, value) {
       return MapEntry(
         key,

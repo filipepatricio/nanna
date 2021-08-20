@@ -31,24 +31,26 @@ class DailyBriefTopicCard extends HookWidget {
       ),
       child: GestureDetector(
         onTap: onPressed,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppDimens.topicCardRadius),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(AppDimens.topicCardRadius),
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(AppDimens.zero, AppDimens.topicCardOffsetY),
-                  blurRadius: AppDimens.topicCardBlurRadius,
-                  color: AppColors.shadowColor,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(AppDimens.topicCardRadius),
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(AppDimens.zero, AppDimens.topicCardOffsetY),
+                blurRadius: AppDimens.topicCardBlurRadius,
+                color: AppColors.shadowColor,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(AppDimens.topicCardRadius),
                 ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Hero(
+                child: Hero(
                   tag: HeroTag.dailyBriefTopicImage(topic.id),
                   flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
                     final colorTween = ColorTween(
@@ -106,37 +108,37 @@ class DailyBriefTopicCard extends HookWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: AppDimens.m),
-                _Title(topic: topic),
-                const SizedBox(height: AppDimens.m),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-                  child: Hero(
-                    tag: HeroTag.dailyBriefTopicSummary(topic.id),
-                    flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-                      final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
+              ),
+              const SizedBox(height: AppDimens.m),
+              _Title(topic: topic),
+              const SizedBox(height: AppDimens.m),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+                child: Hero(
+                  tag: HeroTag.dailyBriefTopicSummary(topic.id),
+                  flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
+                    final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
 
-                      return Material(
-                        color: Colors.transparent,
-                        child: AnimatedBuilder(
-                          animation: colorTween,
-                          builder: (context, child) {
-                            return Text(
-                              topic.introduction,
-                              style: AppTypography.b1Medium.copyWith(color: colorTween.value),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    child: Text(
-                      topic.introduction,
-                      style: AppTypography.b1Medium,
-                    ),
+                    return Material(
+                      color: Colors.transparent,
+                      child: AnimatedBuilder(
+                        animation: colorTween,
+                        builder: (context, child) {
+                          return Text(
+                            topic.introduction,
+                            style: AppTypography.b1Medium.copyWith(color: colorTween.value),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Text(
+                    topic.introduction,
+                    style: AppTypography.b1Medium,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
