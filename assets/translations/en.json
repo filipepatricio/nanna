@@ -23,7 +23,9 @@
   },
   "dailyBrief": {
     "title": "Daily Brief",
-    "loading": "Just a sec.\nWe’re loading your brief."
+    "loading": "Just a sec.\nWe’re loading your brief.",
+    "readingList": "Reading list",
+    "relax": "Relax"
   },
   "settings": {
     "settings": "Settings",

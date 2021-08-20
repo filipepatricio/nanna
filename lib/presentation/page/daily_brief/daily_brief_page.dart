@@ -26,6 +26,27 @@ class DailyBriefPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<DailyBriefPageCubit>();
     final state = useCubitBuilder(cubit);
+    final controller = usePageController(viewportFraction: _pageViewportFraction);
+    final relaxState = useState(false);
+
+    useEffect(
+      () {
+        final listener = () {
+          relaxState.value = state.maybeMap(
+            idle: (state) {
+              final topics = state.currentBrief.numberOfTopics;
+              final offset = topics - (controller.page ?? 0);
+              return topics > 0 && offset >= 0.0 && offset <= 0.5;
+            },
+            orElse: () => false,
+          );
+        };
+
+        controller.addListener(listener);
+        return () => controller.removeListener(listener);
+      },
+      [controller, state],
+    );
 
     useEffect(
       () {
@@ -38,13 +59,15 @@ class DailyBriefPage extends HookWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
-        title: const DailyBriefTitleHero(),
+        title: DailyBriefTitleHero(
+          title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
+        ),
         centerTitle: false,
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
-          idle: (state) => _IdleContent(currentBrief: state.currentBrief),
+          idle: (state) => _IdleContent(currentBrief: state.currentBrief, controller: controller),
           error: (_) => const AppError(graphicPath: AppVectorGraphics.briefError),
           loading: (_) => const _Loading(),
           orElse: () => const SizedBox(),
@@ -56,12 +79,16 @@ class DailyBriefPage extends HookWidget {
 
 class _IdleContent extends HookWidget {
   final CurrentBrief currentBrief;
+  final PageController controller;
 
-  const _IdleContent({required this.currentBrief, Key? key}) : super(key: key);
+  const _IdleContent({
+    required this.currentBrief,
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = usePageController(viewportFraction: _pageViewportFraction);
     final lastPageAnimationProgressState = useState(0.0);
 
     useEffect(() {
@@ -79,27 +106,22 @@ class _IdleContent extends HookWidget {
           flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
             return Material(
               color: Colors.transparent,
-              child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+              child: RelaxView(
+                lastPageAnimationProgressState: lastPageAnimationProgressState,
+                goodbyeHeadline: currentBrief.goodbye,
+              ),
             );
           },
-          child: RelaxView(lastPageAnimationProgressState: lastPageAnimationProgressState),
+          child: RelaxView(
+            lastPageAnimationProgressState: lastPageAnimationProgressState,
+            goodbyeHeadline: currentBrief.goodbye,
+          ),
         ),
         PageView(
           controller: controller,
           scrollDirection: Axis.horizontal,
           children: [
-            DailyBriefTopicCard(
-              index: 0,
-              onPressed: () => _onTopicCardPressed(context, controller, 0),
-            ),
-            DailyBriefTopicCard(
-              index: 1,
-              onPressed: () => _onTopicCardPressed(context, controller, 1),
-            ),
-            DailyBriefTopicCard(
-              index: 2,
-              onPressed: () => _onTopicCardPressed(context, controller, 2),
-            ),
+            ..._buildTopicCards(context, controller, currentBrief),
             Container(),
           ],
         ),
@@ -107,13 +129,27 @@ class _IdleContent extends HookWidget {
     );
   }
 
-  void _onTopicCardPressed(BuildContext context, PageController controller, int index) {
+  Iterable<Widget> _buildTopicCards(BuildContext context, PageController controller, CurrentBrief currentBrief) {
+    return currentBrief.topics.asMap().map<int, Widget>((key, value) {
+      return MapEntry(
+        key,
+        DailyBriefTopicCard(
+          index: key,
+          onPressed: () => _onTopicCardPressed(context, controller, key, currentBrief),
+          topic: value,
+        ),
+      );
+    }).values;
+  }
+
+  void _onTopicCardPressed(BuildContext context, PageController controller, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
       TopicPageRoute(
         index: index,
         onPageChanged: (index) {
           controller.jumpToPage(index);
         },
+        currentBrief: currentBrief,
       ),
     );
   }

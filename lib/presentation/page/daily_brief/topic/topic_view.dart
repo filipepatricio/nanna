@@ -1,22 +1,31 @@
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_data.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
+import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TopicView extends StatelessWidget {
   final int index;
   final AnimationController pageTransitionAnimation;
+  final Topic topic;
 
   const TopicView({
     required this.index,
     required this.pageTransitionAnimation,
+    required this.topic,
     Key? key,
   }) : super(key: key);
 
@@ -27,30 +36,22 @@ class TopicView extends StatelessWidget {
         SliverList(
           delegate: SliverChildListDelegate(
             [
-              _TopicHeader(index: index, pageTransitionAnimation: pageTransitionAnimation),
+              _TopicHeader(
+                index: index,
+                pageTransitionAnimation: pageTransitionAnimation,
+                topic: topic,
+              ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
                 color: Colors.white,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    SizedBox(height: AppDimens.l),
-                    Text(
-                      'So far, only a handful of cases of cerebral thrombosis have arisen, compared with 45 million doses of various vaccines given in the European Union. AstraZeneca has accounted for about 13-15% of shots given since the rollout started in total.',
-                      style: AppTypography.b1Medium,
-                    ),
-                    SizedBox(height: AppDimens.m),
-                    Text(
-                      'So far, only a handful of cases of cerebral thrombosis have arisen, compared with 45 million doses of various vaccines given in the European Union. AstraZeneca has accounted for about 13-15% of shots given since the rollout started in total.',
-                      style: AppTypography.b1Medium,
-                    ),
-                    SizedBox(height: AppDimens.m),
-                    Text(
-                      'So far, only a handful of cases of cerebral thrombosis have arisen, compared with 45 million doses of various vaccines given in the European Union. AstraZeneca has accounted for about 13-15% of shots given since the rollout started in total.',
-                      style: AppTypography.b1Medium,
-                    ),
-                    SizedBox(height: AppDimens.l),
-                  ],
+                child: MarkdownBody(
+                  data: topic.summary,
+                  styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+                      p: AppTypography.b1Medium,
+                      strong: AppTypography.h3Bold,
+                      listBullet: AppTypography.b1Medium,
+                      listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s)),
+                  bulletBuilder: (index, style) => const MarkdownBullet(),
                 ),
               ),
               Container(
@@ -61,7 +62,7 @@ class TopicView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Reading list',
+                      LocaleKeys.dailyBrief_readingList.tr(),
                       style: AppTypography.h3Bold.copyWith(
                         decoration: TextDecoration.underline,
                         decorationColor: AppColors.limeGreen,
@@ -168,13 +169,21 @@ class _ArticleItem extends HookWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (article.type == 'PREMIUM') ...[
+                      if (article.type == ArticleType.premium) ...[
                         Row(
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: AppDimens.xxs, horizontal: AppDimens.xs),
-                              color: AppColors.limeGreen,
-                              child: const Text('PREMIUM', style: AppTypography.labelText),
+                              decoration: const BoxDecoration(
+                                color: AppColors.limeGreen,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(AppDimens.xxs),
+                                ),
+                              ),
+                              child: Text(
+                                LocaleKeys.article_types_premium.tr().toUpperCase(),
+                                style: AppTypography.labelText,
+                              ),
                             ),
                             const SizedBox(width: AppDimens.xs),
                             SvgPicture.asset(AppVectorGraphics.lock),
@@ -241,25 +250,33 @@ class _ArticleItem extends HookWidget {
 class _TopicHeader extends HookWidget {
   final int index;
   final AnimationController pageTransitionAnimation;
+  final Topic topic;
 
   const _TopicHeader({
     required this.index,
     required this.pageTransitionAnimation,
+    required this.topic,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final imageWidth = MediaQuery.of(context).size.width * 2;
+
     return Stack(
       alignment: Alignment.topCenter,
       children: [
         Hero(
-          tag: HeroTag.dailyBriefTopicImage(index),
+          tag: HeroTag.dailyBriefTopicImage(topic.id),
           child: Container(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.65,
-            child: Image.asset(
-              'assets/image/topic_placeholder.png',
+            child: Image.network(
+              CloudinaryImageExtension.withPublicId(topic.image.publicId)
+                  .transform()
+                  .width(imageWidth.ceil())
+                  .fit()
+                  .generate()!,
               fit: BoxFit.fitHeight,
               alignment: Alignment.topLeft,
             ),
@@ -304,17 +321,17 @@ class _TopicHeader extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.l),
                 Hero(
-                  tag: HeroTag.dailyBriefTopicTitle(index),
+                  tag: HeroTag.dailyBriefTopicTitle(topic.id),
                   child: Text(
-                    'Title $index',
+                    topic.title,
                     style: AppTypography.h1Bold.copyWith(color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: AppDimens.s),
                 Hero(
-                  tag: HeroTag.dailyBriefTopicSummary(index),
+                  tag: HeroTag.dailyBriefTopicSummary(topic.id),
                   child: Text(
-                    'Content $index. The Chinese Communist Party has long done everything it can to erase memories of the massacre of pro-democracy protesters in Beijing\'s Tiananmen Square 32-years-ago today.',
+                    topic.introduction,
                     style: AppTypography.b1Medium.copyWith(color: Colors.white),
                   ),
                 ),

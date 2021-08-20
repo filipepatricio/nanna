@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -6,9 +7,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class RelaxView extends StatelessWidget {
   final ValueNotifier<double> lastPageAnimationProgressState;
+  final Headline goodbyeHeadline;
 
   const RelaxView({
     required this.lastPageAnimationProgressState,
+    required this.goodbyeHeadline,
     Key? key,
   }) : super(key: key);
 
@@ -37,14 +40,14 @@ class RelaxView extends StatelessWidget {
               child: SvgPicture.asset(AppVectorGraphics.sun),
             ),
             const SizedBox(height: AppDimens.m),
-            const Text(
-              'You’re all informed now.',
+            Text(
+              goodbyeHeadline.headline,
               style: AppTypography.h3Bold,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimens.xl),
-            const Text(
-              'The term bulldog refers to an early edition of a newspaper, usually, the first of the day. Bulldog editions were typically printed and sold to distributors the night before, to be sold first thing in the morning.',
+            Text(
+              goodbyeHeadline.message,
               style: AppTypography.b3Regular,
             ),
           ],
