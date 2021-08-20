@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
@@ -69,11 +71,11 @@ class TopicPage extends HookWidget {
               pageTransitionAnimation: pageTransitionAnimation,
               currentBrief: currentBrief,
             ),
-            const Positioned(
+            Positioned(
               top: 0,
               left: 0,
               right: 0,
-              child: _TransparentAppBar(),
+              child: _TransparentAppBar(lastPageAnimationProgressState: lastPageAnimationProgressState),
             ),
           ],
         ),
@@ -83,20 +85,46 @@ class TopicPage extends HookWidget {
 }
 
 class _TransparentAppBar extends StatelessWidget {
-  const _TransparentAppBar({Key? key}) : super(key: key);
+  final ValueNotifier<double> lastPageAnimationProgressState;
+
+  const _TransparentAppBar({
+    required this.lastPageAnimationProgressState,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      title: Hero(
-        tag: HeroTag.dailyBriefTitle,
-        child: Text(
-          LocaleKeys.dailyBrief_title.tr(),
-          style: AppTypography.h1Bold.copyWith(color: Colors.white),
-        ),
-      ),
-      centerTitle: false,
+    return AnimatedBuilder(
+      builder: (context, widget) {
+        final text = lastPageAnimationProgressState.value > 0.5
+            ? LocaleKeys.dailyBrief_relax.tr()
+            : LocaleKeys.dailyBrief_title.tr();
+
+        final color = ColorTween(
+          begin: AppColors.white,
+          end: AppColors.textPrimary,
+        ).transform(lastPageAnimationProgressState.value);
+
+        return AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: color,
+            onPressed: () {
+              AutoRouter.of(context).pop();
+            },
+          ),
+          backgroundColor: Colors.transparent,
+          title: Hero(
+            tag: HeroTag.dailyBriefTitle,
+            child: Text(
+              text,
+              style: AppTypography.h1Bold.copyWith(color: color),
+            ),
+          ),
+          centerTitle: false,
+        );
+      },
+      animation: lastPageAnimationProgressState,
     );
   }
 }

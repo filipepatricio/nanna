@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
-import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -69,7 +68,7 @@ class DailyBriefTopicCard extends HookWidget {
                                 topRight: Radius.circular(AppDimens.topicCardRadius),
                               ),
                               child: Image.network(
-                                CloudinaryImage.fromPublicId(cloudinaryCloudName, topic.image.publicId)
+                                CloudinaryImageExtension.withPublicId(topic.image.publicId)
                                     .transform()
                                     .width(imageWidth.ceil())
                                     .fit()
@@ -98,7 +97,7 @@ class DailyBriefTopicCard extends HookWidget {
                     );
                   },
                   child: Image.network(
-                    CloudinaryImage.fromPublicId(cloudinaryCloudName, topic.image.publicId)
+                    CloudinaryImageExtension.withPublicId(topic.image.publicId)
                         .transform()
                         .width(imageWidth.ceil())
                         .fit()

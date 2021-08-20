@@ -26,6 +26,27 @@ class DailyBriefPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<DailyBriefPageCubit>();
     final state = useCubitBuilder(cubit);
+    final controller = usePageController(viewportFraction: _pageViewportFraction);
+    final relaxState = useState(false);
+
+    useEffect(
+      () {
+        final listener = () {
+          relaxState.value = state.maybeMap(
+            idle: (state) {
+              final topics = state.currentBrief.numberOfTopics;
+              final offset = topics - (controller.page ?? 0);
+              return topics > 0 && offset >= 0.0 && offset <= 0.5;
+            },
+            orElse: () => false,
+          );
+        };
+
+        controller.addListener(listener);
+        return () => controller.removeListener(listener);
+      },
+      [controller, state],
+    );
 
     useEffect(
       () {
@@ -38,13 +59,15 @@ class DailyBriefPage extends HookWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
-        title: const DailyBriefTitleHero(),
+        title: DailyBriefTitleHero(
+          title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
+        ),
         centerTitle: false,
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
-          idle: (state) => _IdleContent(currentBrief: state.currentBrief),
+          idle: (state) => _IdleContent(currentBrief: state.currentBrief, controller: controller),
           error: (_) => const AppError(graphicPath: AppVectorGraphics.briefError),
           loading: (_) => const _Loading(),
           orElse: () => const SizedBox(),
@@ -56,12 +79,16 @@ class DailyBriefPage extends HookWidget {
 
 class _IdleContent extends HookWidget {
   final CurrentBrief currentBrief;
+  final PageController controller;
 
-  const _IdleContent({required this.currentBrief, Key? key}) : super(key: key);
+  const _IdleContent({
+    required this.currentBrief,
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = usePageController(viewportFraction: _pageViewportFraction);
     final lastPageAnimationProgressState = useState(0.0);
 
     useEffect(() {

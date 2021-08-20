@@ -272,7 +272,7 @@ class _TopicHeader extends HookWidget {
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.65,
             child: Image.network(
-              CloudinaryImage.fromPublicId(cloudinaryCloudName, topic.image.publicId)
+              CloudinaryImageExtension.withPublicId(topic.image.publicId)
                   .transform()
                   .width(imageWidth.ceil())
                   .fit()

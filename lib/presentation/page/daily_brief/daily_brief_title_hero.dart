@@ -5,7 +5,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DailyBriefTitleHero extends StatelessWidget {
-  const DailyBriefTitleHero({Key? key}) : super(key: key);
+  final String title;
+
+  const DailyBriefTitleHero({
+    required this.title,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class DailyBriefTitleHero extends StatelessWidget {
             animation: colorTween,
             builder: (context, child) {
               return Text(
-                LocaleKeys.dailyBrief_title.tr(),
+                title,
                 style: AppTypography.h1Bold.copyWith(color: colorTween.value),
               );
             },
@@ -28,7 +33,7 @@ class DailyBriefTitleHero extends StatelessWidget {
         );
       },
       child: Text(
-        LocaleKeys.dailyBrief_title.tr(),
+        title,
         style: AppTypography.h1Bold.copyWith(color: Colors.black),
       ),
     );
