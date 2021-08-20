@@ -1,8 +1,8 @@
+import 'package:better_informed_mobile/domain/article/data/article_data.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_data.dart';
-import 'package:better_informed_mobile/domain/article/data/article_data.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
+import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -31,105 +31,107 @@ class TopicView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              _TopicHeader(
-                index: index,
-                pageTransitionAnimation: pageTransitionAnimation,
-                topic: topic,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
-                color: Colors.white,
-                child: MarkdownBody(
-                  data: topic.summary,
-                  styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-                      p: AppTypography.b1Medium,
-                      strong: AppTypography.h3Bold,
-                      listBullet: AppTypography.b1Medium,
-                      listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s)),
-                  bulletBuilder: (index, style) => const MarkdownBullet(),
+    return ReadingBannerWrapper(
+      child: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                _TopicHeader(
+                  index: index,
+                  pageTransitionAnimation: pageTransitionAnimation,
+                  topic: topic,
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                color: AppColors.lightGrey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      LocaleKeys.dailyBrief_readingList.tr(),
-                      style: AppTypography.h3Bold.copyWith(
-                        decoration: TextDecoration.underline,
-                        decorationColor: AppColors.limeGreen,
-                      ),
-                    ),
-                    const SizedBox(height: AppDimens.l),
-                    _ArticleItem(
-                      article: Article(
-                        title:
-                            'AstraZeneca vaccine suspension: Expert says that we have to go this is long text title 1',
-                        content:
-                            'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
-                        publicationDate: '17 Feb',
-                        type: ArticleType.premium,
-                        timeToRead: '4 min read',
-                        sourceUrl: 'assets/image/topic_placeholder.png',
-                        publisherName: 'Euro news',
-                        authorName: 'Yenn Nee Lee',
-                        photoText:
-                            'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
-                      ),
-                    ),
-                    Divider(
-                      height: AppDimens.one,
-                      color: AppColors.textPrimary.withOpacity(0.14),
-                    ),
-                    _ArticleItem(
-                      article: Article(
-                        title: 'Pfizer vaccine suspension: Expert says that we have to go this is long text title 1',
-                        content:
-                            'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
-                        publicationDate: '12 Jan',
-                        type: ArticleType.freemium,
-                        timeToRead: '12 min read',
-                        sourceUrl: 'assets/image/topic_placeholder.png',
-                        publisherName: 'Polsat news',
-                        authorName: 'Yenn Nee Lee',
-                        photoText:
-                            'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
-                      ),
-                    ),
-                    Divider(
-                      height: AppDimens.one,
-                      color: AppColors.textPrimary.withOpacity(0.14),
-                    ),
-                    _ArticleItem(
-                      article: Article(
-                        title: 'Moderna vaccine suspension: Expert says that we have to go this is long text title 1',
-                        content:
-                            'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
-                        publicationDate: '1 Sep',
-                        type: ArticleType.premium,
-                        timeToRead: '2 min read',
-                        sourceUrl: 'assets/image/topic_placeholder.png',
-                        publisherName: 'Fake news',
-                        authorName: 'Yenn Nee Lee',
-                        photoText:
-                            'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
-                      ),
-                    ),
-                  ],
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
+                  color: AppColors.lightGrey,
+                  child: MarkdownBody(
+                    data: topic.summary,
+                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+                        p: AppTypography.b1Medium,
+                        strong: AppTypography.h3Bold,
+                        listBullet: AppTypography.b1Medium,
+                        listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s)),
+                    bulletBuilder: (index, style) => const MarkdownBullet(),
+                  ),
                 ),
-              ),
-            ],
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  color: AppColors.lightGrey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        LocaleKeys.dailyBrief_readingList.tr(),
+                        style: AppTypography.h3Bold.copyWith(
+                          decoration: TextDecoration.underline,
+                          decorationColor: AppColors.limeGreen,
+                        ),
+                      ),
+                      const SizedBox(height: AppDimens.l),
+                      _ArticleItem(
+                        article: Article(
+                          title:
+                              'AstraZeneca vaccine suspension: Expert says that we have to go this is long text title 1',
+                          content:
+                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
+                          publicationDate: '17 Feb',
+                          type: ArticleType.premium,
+                          timeToRead: '4 min read',
+                          sourceUrl: 'assets/image/topic_placeholder.png',
+                          publisherName: 'Euro news',
+                          authorName: 'Yenn Nee Lee',
+                          photoText:
+                              'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
+                        ),
+                      ),
+                      Divider(
+                        height: AppDimens.one,
+                        color: AppColors.textPrimary.withOpacity(0.14),
+                      ),
+                      _ArticleItem(
+                        article: Article(
+                          title: 'Pfizer vaccine suspension: Expert says that we have to go this is long text title 1',
+                          content:
+                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
+                          publicationDate: '12 Jan',
+                          type: ArticleType.freemium,
+                          timeToRead: '12 min read',
+                          sourceUrl: 'assets/image/topic_placeholder.png',
+                          publisherName: 'Polsat news',
+                          authorName: 'Yenn Nee Lee',
+                          photoText:
+                              'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
+                        ),
+                      ),
+                      Divider(
+                        height: AppDimens.one,
+                        color: AppColors.textPrimary.withOpacity(0.14),
+                      ),
+                      _ArticleItem(
+                        article: Article(
+                          title: 'Moderna vaccine suspension: Expert says that we have to go this is long text title 1',
+                          content:
+                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
+                          publicationDate: '1 Sep',
+                          type: ArticleType.premium,
+                          timeToRead: '2 min read',
+                          sourceUrl: 'assets/image/topic_placeholder.png',
+                          publisherName: 'Fake news',
+                          authorName: 'Yenn Nee Lee',
+                          photoText:
+                              'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

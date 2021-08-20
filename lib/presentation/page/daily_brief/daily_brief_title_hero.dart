@@ -1,7 +1,5 @@
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DailyBriefTitleHero extends StatelessWidget {

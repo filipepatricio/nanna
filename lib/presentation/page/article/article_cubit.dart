@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/article_data.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.dart';
+import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -16,7 +17,7 @@ class ArticleCubit extends Cubit<ArticleState> {
 
   void updateReadingBannerState(Article articleData, double progress, double scrollOffset) {
     if (!readingComplete) {
-      if (progress == 1.0) {
+      if (progress == scrollEnd) {
         readingComplete = true;
       }
       final readingBanner = ReadingBanner(article: articleData, scrollProgress: progress, scrollOffset: scrollOffset);

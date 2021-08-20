@@ -5,6 +5,8 @@ import 'package:better_informed_mobile/presentation/page/reading_banner/reading_
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
+const double scrollEnd = 1.0;
+
 @injectable
 class ReadingBannerCubit extends Cubit<ReadingBannerState> {
   final GetReadingBannerStreamUseCase _getReadingBannerStreamUseCase;
@@ -15,8 +17,7 @@ class ReadingBannerCubit extends Cubit<ReadingBannerState> {
 
   Future<void> initialize() async {
     readingBannerStream = _getReadingBannerStreamUseCase.call().listen((readingBanner) {
-      print('BANNER WITH VALUE ${readingBanner.scrollProgress}');
-      if (readingBanner.scrollProgress == 1.0) {
+      if (readingBanner.scrollProgress == scrollEnd) {
         emit(ReadingBannerState.notVisible());
       } else {
         emit(ReadingBannerState.visible(readingBanner));
