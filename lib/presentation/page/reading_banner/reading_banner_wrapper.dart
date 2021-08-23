@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_page.dart';
+import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_view.dart';
 import 'package:flutter/widgets.dart';
 
 class ReadingBannerWrapper extends StatelessWidget {
@@ -11,7 +11,7 @@ class ReadingBannerWrapper extends StatelessWidget {
     return Column(
       children: [
         Expanded(child: child),
-        ReadingBannerPage(),
+        ReadingBannerView(),
       ],
     );
   }

@@ -9,7 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class ReadingBannerPage extends HookWidget {
+class ReadingBannerView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<ReadingBannerCubit>();

@@ -50,10 +50,7 @@ class ArticlePage extends HookWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollNotification) {
           if (scrollNotification is ScrollEndNotification) {
-            final scrollProgress = double.parse(
-              (_scrollController.offset.toInt() / _scrollController.position.maxScrollExtent.toInt())
-                  .toStringAsFixed(2),
-            );
+            final scrollProgress = _scrollController.offset / _scrollController.position.maxScrollExtent;
             cubit.updateReadingBannerState(article, scrollProgress, _scrollController.offset);
           }
           return true;

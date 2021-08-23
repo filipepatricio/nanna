@@ -16,7 +16,7 @@ class ReadingBannerCubit extends Cubit<ReadingBannerState> {
   StreamSubscription? readingBannerStream;
 
   Future<void> initialize() async {
-    readingBannerStream = _getReadingBannerStreamUseCase.call().listen((readingBanner) {
+    readingBannerStream = _getReadingBannerStreamUseCase().listen((readingBanner) {
       if (readingBanner.scrollProgress == scrollEnd) {
         emit(ReadingBannerState.notVisible());
       } else {
