@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/domain/auth/auth_repository.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
-import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

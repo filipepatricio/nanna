@@ -1,6 +1,6 @@
-/// TEMP ARTICLE UI DATACLASS
+/// TEMP ARTICLE DATACLASS
 //TODO: CHECK AND MODIFY ACCORDING TO LOGIC IMPLEMENTATION
-class ArticleData {
+class Article {
   final String title;
   final String content;
   final String publicationDate;
@@ -11,7 +11,7 @@ class ArticleData {
   final String authorName;
   final String photoText;
 
-  ArticleData({
+  Article({
     required this.title,
     required this.content,
     required this.publicationDate,

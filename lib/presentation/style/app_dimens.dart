@@ -63,4 +63,6 @@ class AppDimens {
   static const buttonRadius = 8.0;
   static const articleItemMargin = 10.0;
   static const articleItemPhotoSize = 84.0;
+
+  static const readingBannerHeight = 50.0;
 }

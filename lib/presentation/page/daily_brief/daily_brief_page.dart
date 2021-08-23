@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_title_hero.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_topic_card.dart';
+import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -99,33 +100,35 @@ class _IdleContent extends HookWidget {
       return () => controller.removeListener(listener);
     }, [controller]);
 
-    return Stack(
-      children: [
-        Hero(
-          tag: HeroTag.dailyBriefRelaxPage,
-          flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-            return Material(
-              color: Colors.transparent,
-              child: RelaxView(
-                lastPageAnimationProgressState: lastPageAnimationProgressState,
-                goodbyeHeadline: currentBrief.goodbye,
-              ),
-            );
-          },
-          child: RelaxView(
-            lastPageAnimationProgressState: lastPageAnimationProgressState,
-            goodbyeHeadline: currentBrief.goodbye,
+    return ReadingBannerWrapper(
+      child: Stack(
+        children: [
+          Hero(
+            tag: HeroTag.dailyBriefRelaxPage,
+            flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
+              return Material(
+                color: Colors.transparent,
+                child: RelaxView(
+                  lastPageAnimationProgressState: lastPageAnimationProgressState,
+                  goodbyeHeadline: currentBrief.goodbye,
+                ),
+              );
+            },
+            child: RelaxView(
+              lastPageAnimationProgressState: lastPageAnimationProgressState,
+              goodbyeHeadline: currentBrief.goodbye,
+            ),
           ),
-        ),
-        PageView(
-          controller: controller,
-          scrollDirection: Axis.horizontal,
-          children: [
-            ..._buildTopicCards(context, controller, currentBrief),
-            Container(),
-          ],
-        ),
-      ],
+          PageView(
+            controller: controller,
+            scrollDirection: Axis.horizontal,
+            children: [
+              ..._buildTopicCards(context, controller, currentBrief),
+              Container(),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

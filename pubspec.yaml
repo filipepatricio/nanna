@@ -52,6 +52,7 @@ dependencies:
   email_validator: 2.0.1
   flutter_markdown: 0.6.4
   cloudinary_sdk: 3.0.1+7
+  rxdart: 0.26.0
 
 dev_dependencies:
   flutter_test:
