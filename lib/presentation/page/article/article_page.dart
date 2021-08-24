@@ -163,7 +163,7 @@ class ArticleHeaderView extends HookWidget {
           child: imageId != null
               ? Image.network(
                   CloudinaryImageExtension.withPublicId(imageId).url,
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.cover,
                   alignment: Alignment.topLeft,
                 )
               : Container(color: Colors.white),

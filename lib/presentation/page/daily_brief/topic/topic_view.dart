@@ -1,8 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
-import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -11,16 +10,16 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/custom_rich_text.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
+import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _articleIconSize = 400;
 
-class TopicView extends StatelessWidget {
+class TopicView extends HookWidget {
   final int index;
   final AnimationController pageTransitionAnimation;
   final Topic topic;
@@ -34,6 +33,7 @@ class TopicView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final articleController = usePageController(initialPage: 0);
     return ReadingBannerWrapper(
       child: CustomScrollView(
         slivers: [
@@ -55,11 +55,10 @@ class TopicView extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  color: AppColors.lightGrey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: PageView(
+                    controller: articleController,
+                    scrollDirection: Axis.vertical,
                     children: [
                       CustomRichText(
                         textSpan: TextSpan(
@@ -82,7 +81,7 @@ class TopicView extends StatelessWidget {
                           .take(topic.readingList.articles.length * 2 - 1),
                     ],
                   ),
-                ),
+                )
               ],
             ),
           ),
