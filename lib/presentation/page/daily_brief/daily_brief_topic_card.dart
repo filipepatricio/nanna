@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -112,29 +113,31 @@ class DailyBriefTopicCard extends HookWidget {
               const SizedBox(height: AppDimens.m),
               _Title(topic: topic),
               const SizedBox(height: AppDimens.m),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-                child: Hero(
-                  tag: HeroTag.dailyBriefTopicSummary(topic.id),
-                  flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-                    final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+                  child: Hero(
+                    tag: HeroTag.dailyBriefTopicSummary(topic.id),
+                    flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
+                      final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
 
-                    return Material(
-                      color: Colors.transparent,
-                      child: AnimatedBuilder(
-                        animation: colorTween,
-                        builder: (context, child) {
-                          return Text(
-                            topic.introduction,
-                            style: AppTypography.b1Medium.copyWith(color: colorTween.value),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Text(
-                    topic.introduction,
-                    style: AppTypography.b1Medium,
+                      return Material(
+                        color: Colors.transparent,
+                        child: AnimatedBuilder(
+                          animation: colorTween,
+                          builder: (context, child) {
+                            return InformedMarkdownBody(
+                              markdown: topic.introduction,
+                              baseTextStyle: AppTypography.b1Medium.copyWith(color: colorTween.value),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: InformedMarkdownBody(
+                      markdown: topic.introduction,
+                      baseTextStyle: AppTypography.b1Medium,
+                    ),
                   ),
                 ),
               ),

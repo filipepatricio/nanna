@@ -9,11 +9,10 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
-import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -45,14 +44,10 @@ class TopicView extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
                   color: AppColors.lightGrey,
-                  child: MarkdownBody(
-                    data: topic.summary,
-                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-                        p: AppTypography.b1Medium,
-                        strong: AppTypography.h3Bold,
-                        listBullet: AppTypography.b1Medium,
-                        listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s)),
-                    bulletBuilder: (index, style) => const MarkdownBullet(),
+                  child: InformedMarkdownBody(
+                    markdown: topic.summary,
+                    baseTextStyle: AppTypography.b1Medium,
+                    selectable: true,
                   ),
                 ),
                 Container(
@@ -75,7 +70,7 @@ class TopicView extends StatelessWidget {
                           title:
                               'AstraZeneca vaccine suspension: Expert says that we have to go this is long text title 1',
                           content:
-                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
+                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. **The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots** and is investigating.  Vaccine impact on global trade',
                           publicationDate: '17 Feb',
                           type: ArticleType.premium,
                           timeToRead: '4 min read',
@@ -94,7 +89,7 @@ class TopicView extends StatelessWidget {
                         article: Article(
                           title: 'Pfizer vaccine suspension: Expert says that we have to go this is long text title 1',
                           content:
-                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
+                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by **AstraZeneca and the University of Oxford**, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
                           publicationDate: '12 Jan',
                           type: ArticleType.freemium,
                           timeToRead: '12 min read',
@@ -324,17 +319,17 @@ class _TopicHeader extends HookWidget {
                 const SizedBox(height: AppDimens.l),
                 Hero(
                   tag: HeroTag.dailyBriefTopicTitle(topic.id),
-                  child: Text(
-                    topic.title,
-                    style: AppTypography.h1Bold.copyWith(color: Colors.white),
+                  child: InformedMarkdownBody(
+                    markdown: topic.title,
+                    baseTextStyle: AppTypography.h1Bold.copyWith(color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: AppDimens.s),
                 Hero(
                   tag: HeroTag.dailyBriefTopicSummary(topic.id),
-                  child: Text(
-                    topic.introduction,
-                    style: AppTypography.b1Medium.copyWith(color: Colors.white),
+                  child: InformedMarkdownBody(
+                    markdown: topic.introduction,
+                    baseTextStyle: AppTypography.b1Medium.copyWith(color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: AppDimens.l),
