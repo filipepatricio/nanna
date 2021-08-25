@@ -1,6 +1,9 @@
 import 'package:better_informed_mobile/domain/article/data/article_data.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/colored_cover.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_cover.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_stacked_cover.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -13,13 +16,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-const articleItemWidth = 298.0;
-const articleItemImageHeight = 490.0;
-
 class ArticleItemView extends HookWidget {
   final Article article;
+  final int index;
+  final int articleListLength;
 
-  const ArticleItemView({required this.article});
+  const ArticleItemView({required this.article, required this.index, required this.articleListLength});
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +34,28 @@ class ArticleItemView extends HookWidget {
         );
       },
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (article.sourceUrl == null)
-            _ColoredCover(
-              article: article,
-            )
-          else
-            _PhotoCover(article: article),
+          const SizedBox(height: AppDimens.l),
+          Text(
+            '${index + 1}/$articleListLength Afghanistan articles',
+            style: AppTypography.subH1Medium,
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(height: AppDimens.s),
+          Text(
+            'Editors note: US troops start to arrive for Afghanistan evacuation as Taliban close in on Kabul',
+            style: AppTypography.subH1Medium.copyWith(fontFamily: fontFamilyLora),
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(height: AppDimens.l),
+          //TODO: Change for proper statements (this is for mock purposes)
+          if (article.publisherName == 'Euro news') PhotoStackedCover(article: article),
+          if (article.sourceUrl == null) ColoredCover(article: article),
+          if (article.publisherName == 'Fake news') PhotoCover(article: article),
           const SizedBox(height: AppDimens.xl),
           Container(
-            width: articleItemWidth,
+            width: AppDimens.articleItemWidth,
             child: Row(
               children: [
                 Container(
@@ -52,13 +65,10 @@ class ArticleItemView extends HookWidget {
                   ),
                   child: IconButton(
                     onPressed: () {},
-                    icon: SvgPicture.asset(
-                      AppVectorGraphics.share,
-                      color: AppColors.black,
-                    ),
+                    icon: SvgPicture.asset(AppVectorGraphics.follow, color: AppColors.black),
                   ),
                 ),
-                const SizedBox(height: AppDimens.m),
+                const SizedBox(width: AppDimens.m),
                 Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -66,15 +76,12 @@ class ArticleItemView extends HookWidget {
                   ),
                   child: IconButton(
                     onPressed: () {},
-                    icon: SvgPicture.asset(
-                      AppVectorGraphics.follow,
-                      color: AppColors.black,
-                    ),
+                    icon: SvgPicture.asset(AppVectorGraphics.share, color: AppColors.black),
                   ),
                 ),
                 const Spacer(),
-                const Text(
-                  LocaleKeys.article_readMore,
+                Text(
+                  LocaleKeys.article_readMore.tr(),
                   style: AppTypography.h5BoldSmall,
                   textAlign: TextAlign.start,
                 ),
@@ -83,238 +90,6 @@ class ArticleItemView extends HookWidget {
               ],
             ),
           )
-        ],
-      ),
-    );
-  }
-}
-
-class _ColoredCover extends StatelessWidget {
-  final Article article;
-
-  const _ColoredCover({required this.article});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.rose,
-      width: articleItemWidth,
-      height: articleItemImageHeight,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (article.type == ArticleType.premium) ...[
-              const SizedBox(height: AppDimens.l),
-              Container(
-                padding: const EdgeInsets.all(AppDimens.s),
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(AppDimens.xs)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      LocaleKeys.article_types_premium.tr().toUpperCase(),
-                      style: AppTypography.labelText,
-                    ),
-                    const SizedBox(width: AppDimens.xs),
-                    SvgPicture.asset(AppVectorGraphics.lock),
-                  ],
-                ),
-              ),
-            ],
-            const Spacer(),
-            Text(
-              article.title,
-              style: AppTypography.h0SemiBold.copyWith(fontFamily: fontFamilyLora),
-              maxLines: 4,
-              textAlign: TextAlign.start,
-            ),
-            const Spacer(),
-            Row(
-              children: [
-                Text(article.publisherName, style: AppTypography.metadata1Regular),
-                const Text(' · ', style: AppTypography.metadata1Regular),
-                Text(article.publicationDate, style: AppTypography.metadata1Regular),
-                const Text(' · ', style: AppTypography.metadata1Regular),
-                Text(article.timeToRead, style: AppTypography.metadata1Regular),
-              ],
-            ),
-            const SizedBox(height: AppDimens.l),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _PhotoCover extends StatelessWidget {
-  final Article article;
-
-  const _PhotoCover({required this.article});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: articleItemWidth,
-      height: articleItemImageHeight,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  Image.asset(
-                    article.sourceUrl ?? 'assets/image/article_placeholder.png',
-                    fit: BoxFit.fill,
-                  ),
-                  if (article.type == ArticleType.premium) ...[
-                    Positioned(
-                      top: AppDimens.l,
-                      left: AppDimens.l,
-                      child: Container(
-                        padding: const EdgeInsets.all(AppDimens.s),
-                        decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(AppDimens.xs)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              LocaleKeys.article_types_premium.tr().toUpperCase(),
-                              style: AppTypography.labelText,
-                            ),
-                            const SizedBox(width: AppDimens.xs),
-                            SvgPicture.asset(AppVectorGraphics.lock),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            const SizedBox(height: AppDimens.l),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Text(article.publisherName, style: AppTypography.metadata1Regular),
-                    const Text(' · ', style: AppTypography.metadata1Regular),
-                    Text(article.publicationDate, style: AppTypography.metadata1Regular),
-                    const Text(' · ', style: AppTypography.metadata1Regular),
-                    Text(article.timeToRead, style: AppTypography.metadata1Regular),
-                  ],
-                ),
-                const SizedBox(height: AppDimens.l),
-                Text(
-                  article.title,
-                  style: AppTypography.h2Bold,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                ),
-                const SizedBox(height: AppDimens.l),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _PhotoStackedCover extends StatelessWidget {
-  final Article article;
-
-  const _PhotoStackedCover({required this.article});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: articleItemWidth,
-      height: articleItemImageHeight,
-      child: Stack(
-        children: [
-          Image.asset(
-            article.sourceUrl ?? 'assets/image/article_placeholder.png',
-            fit: BoxFit.cover,
-          ),
-          if (article.type == ArticleType.premium) ...[
-            Positioned(
-              top: AppDimens.l,
-              left: AppDimens.l,
-              child: Container(
-                padding: const EdgeInsets.all(AppDimens.s),
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(AppDimens.xs)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      LocaleKeys.article_types_premium.tr().toUpperCase(),
-                      style: AppTypography.labelText,
-                    ),
-                    const SizedBox(width: AppDimens.xs),
-                    SvgPicture.asset(AppVectorGraphics.lock),
-                  ],
-                ),
-              ),
-            ),
-          ],
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    article.title,
-                    style: AppTypography.h3Bold.copyWith(color: AppColors.white),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                  ),
-                  const SizedBox(height: AppDimens.l),
-                  Row(
-                    children: [
-                      Text(article.publisherName,
-                          style: AppTypography.metadata1Regular.copyWith(color: AppColors.white)),
-                      Text(
-                        ' · ',
-                        style: AppTypography.metadata1Regular.copyWith(color: AppColors.white),
-                      ),
-                      Text(
-                        article.publicationDate,
-                        style: AppTypography.metadata1Regular.copyWith(color: AppColors.white),
-                      ),
-                      Text(
-                        ' · ',
-                        style: AppTypography.metadata1Regular.copyWith(color: AppColors.white),
-                      ),
-                      Text(
-                        article.timeToRead,
-                        style: AppTypography.metadata1Regular.copyWith(color: AppColors.white),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppDimens.l),
-                ],
-              ),
-            ),
-          ),
         ],
       ),
     );
