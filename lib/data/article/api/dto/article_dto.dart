@@ -12,8 +12,8 @@ class ArticleDTO {
   final String type;
   final String publicationDate;
   final int timeToRead;
-  final ImageDTO image;
   final PublisherDTO publisher;
+  final ImageDTO? image;
   final ArticleContentDTO? text;
   final String? sourceUrl;
 

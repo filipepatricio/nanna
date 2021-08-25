@@ -8,8 +8,8 @@ class ArticleHeader {
   final ArticleType type;
   final String publicationDate;
   final int timeToRead;
-  final Image image;
   final Publisher publisher;
+  final Image? image;
 
   ArticleHeader({
     required this.slug,
@@ -17,7 +17,7 @@ class ArticleHeader {
     required this.type,
     required this.publicationDate,
     required this.timeToRead,
-    required this.image,
     required this.publisher,
+    required this.image,
   });
 }

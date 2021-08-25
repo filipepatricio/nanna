@@ -152,17 +152,21 @@ class ArticleHeaderView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageId = article.image?.publicId;
+
     return Stack(
       alignment: Alignment.topCenter,
       children: [
         Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.55,
-          child: Image.network(
-            CloudinaryImageExtension.withPublicId(article.image.publicId).url,
-            fit: BoxFit.fitHeight,
-            alignment: Alignment.topLeft,
-          ),
+          child: imageId != null
+              ? Image.network(
+                  CloudinaryImageExtension.withPublicId(imageId).url,
+                  fit: BoxFit.fitHeight,
+                  alignment: Alignment.topLeft,
+                )
+              : Container(color: Colors.white),
         ),
         Positioned.fill(
           child: Container(

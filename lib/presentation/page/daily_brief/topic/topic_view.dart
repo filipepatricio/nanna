@@ -99,6 +99,8 @@ class _ArticleItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageId = article.image?.publicId;
+
     return GestureDetector(
       onTap: () {
         CupertinoScaffold.showCupertinoModalBottomSheet(
@@ -115,14 +117,16 @@ class _ArticleItem extends HookWidget {
               width: AppDimens.articleItemPhotoSize,
               height: AppDimens.articleItemPhotoSize,
               decoration: const BoxDecoration(shape: BoxShape.rectangle),
-              child: Image.network(
-                CloudinaryImageExtension.withPublicId(article.image.publicId)
-                    .transform()
-                    .height(_articleIconSize)
-                    .fit()
-                    .generate()!,
-                fit: BoxFit.cover,
-              ),
+              child: imageId != null
+                  ? Image.network(
+                      CloudinaryImageExtension.withPublicId(imageId)
+                          .transform()
+                          .height(_articleIconSize)
+                          .fit()
+                          .generate()!,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(),
             ),
             const SizedBox(width: AppDimens.articleItemMargin),
             Expanded(
@@ -181,7 +185,7 @@ class _ArticleItem extends HookWidget {
                       Image.network(
                         CloudinaryImageExtension.withPublicId(article.publisher.logo.publicId)
                             .transform()
-                            .height(40)
+                            .height(AppDimens.articlePublisherLogoSize)
                             .fit()
                             .generate()!,
                         width: AppDimens.m,

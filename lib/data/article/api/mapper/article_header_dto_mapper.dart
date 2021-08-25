@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_dto.dart';
-import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/image_dto_mapper.dart';
@@ -21,13 +20,14 @@ class ArticleHeaderDTOMapper implements Mapper<ArticleDTO, ArticleHeader> {
 
   @override
   ArticleHeader call(ArticleDTO data) {
+    final image = data.image;
     return ArticleHeader(
       slug: data.slug,
       title: data.title,
       type: _articleTypeDTOMapper(data.type),
       publicationDate: data.publicationDate,
       timeToRead: data.timeToRead,
-      image: _imageDTOMapper(data.image),
+      image: image != null ? _imageDTOMapper(image) : null,
       publisher: _publisherDTOMapper(data.publisher),
     );
   }

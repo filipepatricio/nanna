@@ -37,6 +37,8 @@ class _ReadingBannerBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageId = readingBanner.article.image?.publicId;
+
     return GestureDetector(
       onTap: () {
         // TODO: this need to be called from page with cupertinoScaffold
@@ -66,14 +68,16 @@ class _ReadingBannerBody extends StatelessWidget {
                     width: AppDimens.xxxl,
                     height: AppDimens.xxxl,
                     decoration: const BoxDecoration(shape: BoxShape.rectangle),
-                    child: Image.network(
-                      CloudinaryImageExtension.withPublicId(readingBanner.article.image.publicId)
-                          .transform()
-                          .height(_iconSize)
-                          .fit()
-                          .generate()!,
-                      fit: BoxFit.cover,
-                    ),
+                    child: imageId != null
+                        ? Image.network(
+                            CloudinaryImageExtension.withPublicId(imageId)
+                                .transform()
+                                .height(_iconSize)
+                                .fit()
+                                .generate()!,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(),
                   ),
                   const SizedBox(width: AppDimens.s),
                   Expanded(
