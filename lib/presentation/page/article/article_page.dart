@@ -1,30 +1,37 @@
-import 'package:better_informed_mobile/domain/article/data/article_data.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article_content.dart';
+import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
+import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ArticlePage extends HookWidget {
-  final Article article;
+  final ArticleHeader article;
 
   const ArticlePage({required this.article});
 
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<ArticleCubit>();
+    final state = useCubitBuilder(cubit);
+
     useEffect(() {
-      cubit.resetBannerState(article, 0.0, 0.0);
+      cubit.initialize(article);
     }, [cubit]);
 
-    final _scrollController = useScrollController(keepScrollOffset: true);
+    final scrollController = useScrollController(keepScrollOffset: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -48,36 +55,100 @@ class ArticlePage extends HookWidget {
         backgroundColor: article.type == ArticleType.premium ? AppColors.limeGreen : AppColors.white,
       ),
       backgroundColor: AppColors.lightGrey,
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollNotification) {
-          if (scrollNotification is ScrollEndNotification) {
-            final scrollProgress = _scrollController.offset / _scrollController.position.maxScrollExtent;
-            cubit.updateReadingBannerState(article, scrollProgress, _scrollController.offset);
-          }
-          return true;
-        },
-        child: CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  ArticleHeader(article: article),
-                  ArticleContent(article: article),
-                ],
-              ),
-            ),
-          ],
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: state.maybeMap(
+          loading: (state) => _LoadingContent(
+            header: state.header,
+            controller: scrollController,
+          ),
+          idle: (state) => _IdleContent(
+            header: state.header,
+            content: state.content,
+            controller: scrollController,
+            cubit: cubit,
+          ),
+          orElse: () => const SizedBox(),
         ),
       ),
     );
   }
 }
 
-class ArticleHeader extends HookWidget {
-  final Article article;
+class _LoadingContent extends StatelessWidget {
+  final ArticleHeader header;
+  final ScrollController controller;
 
-  const ArticleHeader({required this.article});
+  const _LoadingContent({
+    required this.header,
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      controller: controller,
+      slivers: [
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              ArticleHeaderView(article: header),
+              const SizedBox(height: AppDimens.l),
+              const Loader(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _IdleContent extends StatelessWidget {
+  final ArticleHeader header;
+  final ArticleContent content;
+  final ScrollController controller;
+  final ArticleCubit cubit;
+
+  const _IdleContent({
+    required this.header,
+    required this.content,
+    required this.controller,
+    required this.cubit,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification scrollNotification) {
+        if (scrollNotification is ScrollEndNotification) {
+          final scrollProgress = controller.offset / controller.position.maxScrollExtent;
+          cubit.updateReadingBannerState(scrollProgress, controller.offset);
+        }
+        return true;
+      },
+      child: CustomScrollView(
+        controller: controller,
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                ArticleHeaderView(article: header),
+                ArticleContentView(article: header, content: content),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ArticleHeaderView extends HookWidget {
+  final ArticleHeader article;
+
+  const ArticleHeaderView({required this.article});
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +158,8 @@ class ArticleHeader extends HookWidget {
         Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.55,
-          child: Image.asset(
-            article.sourceUrl,
+          child: Image.network(
+            CloudinaryImageExtension.withPublicId(article.image.publicId).url,
             fit: BoxFit.fitHeight,
             alignment: Alignment.topLeft,
           ),
@@ -126,7 +197,7 @@ class ArticleHeader extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.l),
                 Text(
-                  article.photoText,
+                  article.title, // TODO missing data in object
                   style: AppTypography.b1Medium.copyWith(color: Colors.white),
                 ),
                 const SizedBox(height: AppDimens.l),
@@ -139,10 +210,15 @@ class ArticleHeader extends HookWidget {
   }
 }
 
-class ArticleContent extends HookWidget {
-  final Article article;
+class ArticleContentView extends HookWidget {
+  final ArticleHeader article;
+  final ArticleContent content;
 
-  const ArticleContent({required this.article});
+  const ArticleContentView({
+    required this.article,
+    required this.content,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +234,10 @@ class ArticleContent extends HookWidget {
             color: AppColors.textPrimary.withOpacity(0.14),
           ),
           const SizedBox(height: AppDimens.s),
-          Text(LocaleKeys.article_articleBy.tr(args: [article.authorName]), style: AppTypography.metadata1Medium),
+          Text(
+            LocaleKeys.article_articleBy.tr(args: ['David david']), // TODO missing data in object - author name
+            style: AppTypography.metadata1Medium,
+          ),
           const SizedBox(height: AppDimens.articleItemMargin),
           Row(
             children: [
@@ -169,12 +248,12 @@ class ArticleContent extends HookWidget {
               ),
               const SizedBox(width: AppDimens.xs),
               Text(
-                article.publisherName,
+                article.publisher.name,
                 style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
               ),
               const VerticalDivider(),
               Text(
-                article.timeToRead,
+                article.timeToRead.toString(),
                 style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
               ),
               const VerticalDivider(),
@@ -185,13 +264,48 @@ class ArticleContent extends HookWidget {
             ],
           ),
           const SizedBox(height: AppDimens.xl),
-          InformedMarkdownBody(
-            markdown: article.content + article.content + article.content,
-            baseTextStyle: AppTypography.b2MediumSerif,
-            selectable: true,
-          ),
+          if (content.type == ArticleContentType.markdown)
+            _ArticleContentMarkdown(markdown: content.content)
+          else if (content.type == ArticleContentType.html)
+            _ArticleContentHtml(html: content.content),
         ],
       ),
+    );
+  }
+}
+
+class _ArticleContentMarkdown extends StatelessWidget {
+  final String markdown;
+
+  const _ArticleContentMarkdown({
+    required this.markdown,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InformedMarkdownBody(
+      markdown: markdown,
+      baseTextStyle: AppTypography.b2MediumSerif,
+      selectable: true,
+    );
+  }
+}
+
+class _ArticleContentHtml extends StatelessWidget {
+  final String html;
+
+  const _ArticleContentHtml({
+    required this.html,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO displaying html with styles, probably opening WebView with local server (so CSS can be loaded)
+    return SelectableText(
+      html,
+      style: AppTypography.b2MediumSerif,
     );
   }
 }

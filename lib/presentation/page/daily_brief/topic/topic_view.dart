@@ -1,4 +1,5 @@
-import 'package:better_informed_mobile/domain/article/data/article_data.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
@@ -8,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/custom_rich_text.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+const _articleIconSize = 400;
 
 class TopicView extends StatelessWidget {
   final int index;
@@ -57,68 +61,25 @@ class TopicView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        LocaleKeys.dailyBrief_readingList.tr(),
-                        style: AppTypography.h3Bold.copyWith(
-                          decoration: TextDecoration.underline,
-                          decorationColor: AppColors.limeGreen,
+                      CustomRichText(
+                        textSpan: TextSpan(
+                          text: LocaleKeys.dailyBrief_readingList.tr(),
+                          style: AppTypography.h3Bold.copyWith(decoration: TextDecoration.underline),
                         ),
                       ),
                       const SizedBox(height: AppDimens.l),
-                      _ArticleItem(
-                        article: Article(
-                          title:
-                              'AstraZeneca vaccine suspension: Expert says that we have to go this is long text title 1',
-                          content:
-                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. **The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots** and is investigating.  Vaccine impact on global trade',
-                          publicationDate: '17 Feb',
-                          type: ArticleType.premium,
-                          timeToRead: '4 min read',
-                          sourceUrl: 'assets/image/topic_placeholder.png',
-                          publisherName: 'Euro news',
-                          authorName: 'Yenn Nee Lee',
-                          photoText:
-                              'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
-                        ),
-                      ),
-                      Divider(
-                        height: AppDimens.one,
-                        color: AppColors.textPrimary.withOpacity(0.14),
-                      ),
-                      _ArticleItem(
-                        article: Article(
-                          title: 'Pfizer vaccine suspension: Expert says that we have to go this is long text title 1',
-                          content:
-                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by **AstraZeneca and the University of Oxford**, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
-                          publicationDate: '12 Jan',
-                          type: ArticleType.freemium,
-                          timeToRead: '12 min read',
-                          sourceUrl: 'assets/image/topic_placeholder.png',
-                          publisherName: 'Polsat news',
-                          authorName: 'Yenn Nee Lee',
-                          photoText:
-                              'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
-                        ),
-                      ),
-                      Divider(
-                        height: AppDimens.one,
-                        color: AppColors.textPrimary.withOpacity(0.14),
-                      ),
-                      _ArticleItem(
-                        article: Article(
-                          title: 'Moderna vaccine suspension: Expert says that we have to go this is long text title 1',
-                          content:
-                              'SINGAPORE — Asia’s economic recovery could slow down as more countries suspend the use of the Covid-19 vaccine developed by AstraZeneca and the University of Oxford, warned the chief Asia-Pacific economist of Moody’s Analytics. Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries — many of them in Europe — to temporarily stop using the vaccine. The World Health Organization said there’s no link between the shot and an increased risk of developing blood clots and is investigating.  Vaccine impact on global trade',
-                          publicationDate: '1 Sep',
-                          type: ArticleType.premium,
-                          timeToRead: '2 min read',
-                          sourceUrl: 'assets/image/topic_placeholder.png',
-                          publisherName: 'Fake news',
-                          authorName: 'Yenn Nee Lee',
-                          photoText:
-                              'Reports of blood clots in some people who received the AstraZeneca-Oxford shot led several countries – many of them in Europe – to temporarily stop using  the vaccine.',
-                        ),
-                      ),
+                      ...topic.readingList.articles
+                          .map((e) => _ArticleItem(article: e))
+                          .expand(
+                            (element) => [
+                              element,
+                              Divider(
+                                height: AppDimens.one,
+                                color: AppColors.textPrimary.withOpacity(0.14),
+                              ),
+                            ],
+                          )
+                          .take(topic.readingList.articles.length * 2 - 1),
                     ],
                   ),
                 ),
@@ -132,7 +93,7 @@ class TopicView extends StatelessWidget {
 }
 
 class _ArticleItem extends HookWidget {
-  final Article article;
+  final ArticleHeader article;
 
   const _ArticleItem({required this.article});
 
@@ -154,8 +115,12 @@ class _ArticleItem extends HookWidget {
               width: AppDimens.articleItemPhotoSize,
               height: AppDimens.articleItemPhotoSize,
               decoration: const BoxDecoration(shape: BoxShape.rectangle),
-              child: Image.asset(
-                article.sourceUrl,
+              child: Image.network(
+                CloudinaryImageExtension.withPublicId(article.image.publicId)
+                    .transform()
+                    .height(_articleIconSize)
+                    .fit()
+                    .generate()!,
                 fit: BoxFit.cover,
               ),
             ),
@@ -211,14 +176,20 @@ class _ArticleItem extends HookWidget {
                   ),
                   const SizedBox(height: AppDimens.xs),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        AppVectorGraphics.notifications,
+                      Image.network(
+                        CloudinaryImageExtension.withPublicId(article.publisher.logo.publicId)
+                            .transform()
+                            .height(40)
+                            .fit()
+                            .generate()!,
                         width: AppDimens.m,
                         height: AppDimens.m,
+                        fit: BoxFit.contain,
                       ),
                       const SizedBox(width: AppDimens.xs),
-                      Text(article.publisherName, style: AppTypography.metadata1Regular),
+                      Text(article.publisher.name, style: AppTypography.metadata1Regular),
                       const Spacer(),
                       Text(
                         article.publicationDate,
@@ -229,7 +200,7 @@ class _ArticleItem extends HookWidget {
                         style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
                       ),
                       Text(
-                        article.timeToRead,
+                        article.timeToRead.toString(),
                         style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
                       ),
                     ],
