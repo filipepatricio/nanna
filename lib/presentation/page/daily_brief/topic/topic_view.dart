@@ -37,6 +37,7 @@ class TopicView extends HookWidget {
     final gestureManager = useMemoized(() => TopicCustomVerticalDragManager(listScrollController, articleController));
     //TODO: REMOVE MOCKED LIST (mocked for more length)
     final mockedList = topic.readingList.articles + topic.readingList.articles;
+    final statusBarHeight = MediaQuery.of(context).padding.top;
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{
@@ -60,7 +61,7 @@ class TopicView extends HookWidget {
             topic: topic,
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
+            padding: const EdgeInsets.all(AppDimens.l),
             color: AppColors.lightGrey,
             child: InformedMarkdownBody(
               markdown: topic.summary,
@@ -70,33 +71,37 @@ class TopicView extends HookWidget {
           ),
           Container(
             height: topicPageHeight,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xs),
-                  child: VerticalIndicators(
-                    currentIndex: pageIndex.value,
-                    pageListLength: mockedList.length,
-                  ),
-                ),
-                Expanded(
-                  child: PageView(
+                Container(
+                  width: double.infinity,
+                  child: PageView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     controller: articleController,
                     scrollDirection: Axis.vertical,
                     onPageChanged: (index) => pageIndex.value = index,
-                    children: [
-                      ...mockedList.map(
-                            (article) => ArticleItemView(
-                          article: article,
-                          index: index,
-                          articleListLength: mockedList.length,
-                        ),
-                      ),
-                    ],
+                    itemCount: mockedList.length,
+                    itemBuilder: (context, index) {
+                      return ArticleItemView(
+                        article: mockedList[index],
+                        index: index,
+                        articleListLength: mockedList.length,
+                        statusBarHeight: statusBarHeight,
+                      );
+                    },
                   ),
                 ),
+                Positioned.fill(
+                  top: statusBarHeight,
+                  right: null,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.s),
+                    child: VerticalIndicators(
+                      currentIndex: pageIndex.value,
+                      pageListLength: mockedList.length,
+                    ),
+                  ),
+                )
               ],
             ),
           ),
