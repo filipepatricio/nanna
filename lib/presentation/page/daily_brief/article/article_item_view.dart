@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article_data.dart';
+import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/colored_cover.dart';
@@ -17,7 +17,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ArticleItemView extends HookWidget {
-  final Article article;
+  final ArticleHeader article;
   final int index;
   final int articleListLength;
 
@@ -37,22 +37,29 @@ class ArticleItemView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: AppDimens.l),
-          Text(
-            '${index + 1}/$articleListLength Afghanistan articles',
-            style: AppTypography.subH1Medium,
-            textAlign: TextAlign.start,
+          Padding(
+            padding: const EdgeInsets.only(right: AppDimens.xxl),
+            child: Text(
+              '${index + 1}/$articleListLength Afghanistan articles',
+              style: AppTypography.subH1Medium,
+              textAlign: TextAlign.start,
+            ),
           ),
           const SizedBox(height: AppDimens.s),
-          Text(
-            'Editors note: US troops start to arrive for Afghanistan evacuation as Taliban close in on Kabul',
-            style: AppTypography.subH1Medium.copyWith(fontFamily: fontFamilyLora),
-            textAlign: TextAlign.start,
+          Padding(
+            padding: const EdgeInsets.only(right: AppDimens.xxl),
+            child: Text(
+              //TODO missing data in object - editors note
+              'Editors note: US troops start to arrive for Afghanistan evacuation as Taliban close in on Kabul',
+              style: AppTypography.subH1Medium.copyWith(fontFamily: fontFamilyLora),
+              textAlign: TextAlign.start,
+            ),
           ),
           const SizedBox(height: AppDimens.l),
           //TODO: Change for proper statements (this is for mock purposes)
-          if (article.publisherName == 'Euro news') PhotoStackedCover(article: article),
-          if (article.sourceUrl == null) ColoredCover(article: article),
-          if (article.publisherName == 'Fake news') PhotoCover(article: article),
+          if (article.publisher.name == 'Euronews') PhotoStackedCover(article: article),
+          if (article.publisher.name == 'DW') ColoredCover(article: article),
+          if (article.publisher.name == 'The Guardian') PhotoCover(article: article),
           const SizedBox(height: AppDimens.xl),
           Container(
             width: AppDimens.articleItemWidth,

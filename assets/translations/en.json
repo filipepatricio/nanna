@@ -81,7 +81,8 @@
       "premium": "Premium Article"
     },
     "articleBy": "By {}",
-    "readMore": "Read more"
+    "readMore": "Read more",
+    "readMinutes": "{} min"
   },
   "continueReading": "Continue reading"
 }
