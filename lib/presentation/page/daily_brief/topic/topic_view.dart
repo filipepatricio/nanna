@@ -6,8 +6,10 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -17,86 +19,79 @@ class TopicView extends HookWidget {
   final int index;
   final AnimationController pageTransitionAnimation;
   final Topic topic;
+  final double topicPageHeight;
 
   const TopicView({
     required this.index,
     required this.pageTransitionAnimation,
     required this.topic,
+    required this.topicPageHeight,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final pageIndex = useState(0);
+    final listScrollController = useScrollController();
     final articleController = usePageController();
-    final pageViewScrollPhysics = useState(const NeverScrollableScrollPhysics() as ScrollPhysics);
+    final gestureManager = useMemoized(() => TopicCustomVerticalDragManager(listScrollController, articleController));
     //TODO: REMOVE MOCKED LIST (mocked for more length)
     final mockedList = topic.readingList.articles + topic.readingList.articles;
 
-    return NotificationListener(
-      onNotification: (notification) {
-        if (notification is OverscrollNotification) {
-          if (notification.overscroll > 0) {
-            pageViewScrollPhysics.value = const ClampingScrollPhysics();
-          }
-        }
-        return false;
+    return RawGestureDetector(
+      gestures: <Type, GestureRecognizerFactory>{
+        VerticalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
+            () => VerticalDragGestureRecognizer(), (VerticalDragGestureRecognizer instance) {
+          instance
+            ..onStart = gestureManager.handleDragStart
+            ..onUpdate = gestureManager.handleDragUpdate
+            ..onEnd = gestureManager.handleDragEnd
+            ..onCancel = gestureManager.handleDragCancel;
+        })
       },
-      child: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                _TopicHeader(
-                  index: index,
-                  pageTransitionAnimation: pageTransitionAnimation,
-                  topic: topic,
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
-                  color: AppColors.lightGrey,
-                  child: InformedMarkdownBody(
-                    markdown: topic.summary,
-                    baseTextStyle: AppTypography.b1Medium,
-                    selectable: true,
+      behavior: HitTestBehavior.opaque,
+      child: ListView(
+        controller: listScrollController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          _TopicHeader(
+            index: index,
+            pageTransitionAnimation: pageTransitionAnimation,
+            topic: topic,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
+            color: AppColors.lightGrey,
+            child: InformedMarkdownBody(
+              markdown: topic.summary,
+              baseTextStyle: AppTypography.b1Medium,
+              selectable: true,
+            ),
+          ),
+          Container(
+            height: topicPageHeight,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xs),
+                  child: VerticalIndicators(
+                    currentIndex: pageIndex.value,
+                    pageListLength: mockedList.length,
                   ),
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                Expanded(
+                  child: PageView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: articleController,
+                    scrollDirection: Axis.vertical,
+                    onPageChanged: (index) => pageIndex.value = index,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xs),
-                        child: VerticalIndicators(
-                          currentIndex: pageIndex.value,
-                          pageListLength: mockedList.length,
-                        ),
-                      ),
-                      Expanded(
-                        child: NotificationListener(
-                          onNotification: (notification) {
-                            if (articleController.position.userScrollDirection == ScrollDirection.forward &&
-                                pageIndex.value == 0) {
-                              pageViewScrollPhysics.value = const NeverScrollableScrollPhysics();
-                            }
-                            return false;
-                          },
-                          child: PageView(
-                            physics: pageViewScrollPhysics.value,
-                            controller: articleController,
-                            scrollDirection: Axis.vertical,
-                            onPageChanged: (index) => pageIndex.value = index,
-                            children: [
-                              ...mockedList.map(
-                                (article) => ArticleItemView(
-                                  article: article,
-                                  index: index,
-                                  articleListLength: mockedList.length,
-                                ),
-                              ),
-                            ],
-                          ),
+                      ...mockedList.map(
+                            (article) => ArticleItemView(
+                          article: article,
+                          index: index,
+                          articleListLength: mockedList.length,
                         ),
                       ),
                     ],

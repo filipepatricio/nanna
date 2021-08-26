@@ -52,32 +52,35 @@ class TopicPage extends HookWidget {
       return () => controller.removeListener(listener);
     }, [controller]);
 
-    return CupertinoScaffold(
-      body: Material(
-        child: Stack(
-          children: [
-            SafeArea(
-              child: Hero(
-                tag: HeroTag.dailyBriefRelaxPage,
-                child: RelaxView(
-                  lastPageAnimationProgressState: lastPageAnimationProgressState,
-                  goodbyeHeadline: currentBrief.goodbye,
+    return LayoutBuilder(
+      builder: (context, constraints) => CupertinoScaffold(
+        body: Material(
+          child: Stack(
+            children: [
+              SafeArea(
+                child: Hero(
+                  tag: HeroTag.dailyBriefRelaxPage,
+                  child: RelaxView(
+                    lastPageAnimationProgressState: lastPageAnimationProgressState,
+                    goodbyeHeadline: currentBrief.goodbye,
+                  ),
                 ),
               ),
-            ),
-            _PageViewContent(
-              controller: controller,
-              onPageChanged: onPageChanged,
-              pageTransitionAnimation: pageTransitionAnimation,
-              currentBrief: currentBrief,
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: _TransparentAppBar(lastPageAnimationProgressState: lastPageAnimationProgressState),
-            ),
-          ],
+              _PageViewContent(
+                controller: controller,
+                onPageChanged: onPageChanged,
+                pageTransitionAnimation: pageTransitionAnimation,
+                currentBrief: currentBrief,
+                topicPageHeight: constraints.maxHeight,
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: _TransparentAppBar(lastPageAnimationProgressState: lastPageAnimationProgressState),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -134,38 +137,36 @@ class _PageViewContent extends StatelessWidget {
   final Function(int pageIndex) onPageChanged;
   final AnimationController pageTransitionAnimation;
   final CurrentBrief currentBrief;
+  final double topicPageHeight;
 
   const _PageViewContent({
     required this.controller,
     required this.onPageChanged,
     required this.pageTransitionAnimation,
     required this.currentBrief,
+    required this.topicPageHeight,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
+    return PageView.builder(
       controller: controller,
       allowImplicitScrolling: true,
       onPageChanged: onPageChanged,
-      children: [
-        ..._buildTopicViews(),
-        Container(),
-      ],
+      itemCount: currentBrief.topics.length + 1,
+      itemBuilder: (context, index) {
+        if (index == currentBrief.topics.length) {
+          return Container();
+        } else {
+          return TopicView(
+            index: index,
+            pageTransitionAnimation: pageTransitionAnimation,
+            topic: currentBrief.topics[index],
+            topicPageHeight: topicPageHeight,
+          );
+        }
+      },
     );
-  }
-
-  Iterable<Widget> _buildTopicViews() {
-    return currentBrief.topics.asMap().map<int, Widget>((key, value) {
-      return MapEntry(
-        key,
-        TopicView(
-          index: key,
-          pageTransitionAnimation: pageTransitionAnimation,
-          topic: value,
-        ),
-      );
-    }).values;
   }
 }
