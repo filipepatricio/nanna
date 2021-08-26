@@ -80,7 +80,9 @@
       "freemium": "Free Article",
       "premium": "Premium Article"
     },
-    "articleBy": "By {}"
+    "articleBy": "By {}",
+    "readMore": "Read more",
+    "readMinutes": "{} min"
   },
   "continueReading": "Continue reading"
 }

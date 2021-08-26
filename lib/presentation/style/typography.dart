@@ -8,6 +8,13 @@ const fontFamilyLora = 'Lora';
 const fontFamilyPlusJakartaSans = 'PlusJakartaSans';
 
 class AppTypography {
+  static const TextStyle h0SemiBold = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 36,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -127,7 +134,6 @@ class AppTypography {
     letterSpacing: 0.15,
     color: AppColors.textPrimary,
   );
-
 
   static const TextStyle metadata1Regular = TextStyle(
     fontWeight: FontWeight.w400,

@@ -16,6 +16,7 @@ class AppColors {
   static const Color red = Color(0xffFF6969);
   static const Color blue = Color(0xff4579FF);
   static const Color grey = Color(0xffe7e7e7);
+  static const Color rose = Color(0xffF3E5F4);
 
   static const Color gradientOverlayStartColor = Color(0xFF282B35);
   static const Color gradientOverlayEndColor = Color(0x00282B35);
