@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/category.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
+import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 
 class Topic {
   final String id;
@@ -8,6 +9,7 @@ class Topic {
   final String summary;
   final Category category;
   final Image image;
+  final ReadingList readingList;
 
   Topic({
     required this.id,
@@ -16,5 +18,6 @@ class Topic {
     required this.summary,
     required this.category,
     required this.image,
+    required this.readingList,
   });
 }

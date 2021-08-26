@@ -4,10 +4,13 @@ import 'package:better_informed_mobile/presentation/page/reading_banner/reading_
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+const _iconSize = 120;
 
 class ReadingBannerView extends HookWidget {
   @override
@@ -34,6 +37,8 @@ class _ReadingBannerBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageId = readingBanner.article.image?.publicId;
+
     return GestureDetector(
       onTap: () {
         // TODO: this need to be called from page with cupertinoScaffold
@@ -63,7 +68,16 @@ class _ReadingBannerBody extends StatelessWidget {
                     width: AppDimens.xxxl,
                     height: AppDimens.xxxl,
                     decoration: const BoxDecoration(shape: BoxShape.rectangle),
-                    child: Image.asset(readingBanner.article.sourceUrl, fit: BoxFit.cover),
+                    child: imageId != null
+                        ? Image.network(
+                            CloudinaryImageExtension.withPublicId(imageId)
+                                .transform()
+                                .height(_iconSize)
+                                .fit()
+                                .generate()!,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(),
                   ),
                   const SizedBox(width: AppDimens.s),
                   Expanded(

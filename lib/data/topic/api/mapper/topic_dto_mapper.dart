@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/mapper/category_dto_
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/image_dto_mapper.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dart';
+import 'package:better_informed_mobile/data/topic/api/mapper/reading_list_dto_mapper.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:injectable/injectable.dart';
 
@@ -9,10 +10,12 @@ import 'package:injectable/injectable.dart';
 class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
   final CategoryDTOMapper _categoryDTOMapper;
   final ImageDTOMapper _imageDTOMapper;
+  final ReadingListDTOMapper _readingListDTOMapper;
 
   TopicDTOMapper(
     this._categoryDTOMapper,
     this._imageDTOMapper,
+    this._readingListDTOMapper,
   );
 
   @override
@@ -24,6 +27,7 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
       summary: data.summary,
       category: _categoryDTOMapper(data.category),
       image: _imageDTOMapper(data.image),
+      readingList: _readingListDTOMapper(data.readingList),
     );
   }
 }

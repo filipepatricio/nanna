@@ -1,7 +1,7 @@
-import 'package:better_informed_mobile/domain/article/data/article_data.dart';
+import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 
 class ReadingBanner {
-  final Article article;
+  final ArticleHeader article;
   final double scrollProgress;
   final double scrollOffset;
 
