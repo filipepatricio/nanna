@@ -6,11 +6,16 @@ class VerticalIndicators extends StatelessWidget {
   final int currentIndex;
   final int pageListLength;
 
-  const VerticalIndicators({required this.currentIndex, required this.pageListLength, Key? key}) : super(key: key);
+  const VerticalIndicators({
+    required this.currentIndex,
+    required this.pageListLength,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: List.generate(
         pageListLength,
         (index) => Expanded(child: _buildDot(currentIndex, index, context)),
