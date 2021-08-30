@@ -125,4 +125,7 @@ class AppDimens {
 
   /// 35
   static const logoHeight = 35.0;
+
+  /// 20
+  static const shareBottomSheetRadius = 20.0;
 }

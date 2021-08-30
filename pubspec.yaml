@@ -70,6 +70,7 @@ dependencies:
   flutter_segment: 3.3.0
   fluttertoast: 8.0.8
   flutter_email_sender: 5.0.2
+  share_plus: 2.1.4
 
 dev_dependencies:
   flutter_test:
