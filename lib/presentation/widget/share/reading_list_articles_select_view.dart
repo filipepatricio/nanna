@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/util/date_helper.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_cubit.dart';
+import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -45,6 +46,18 @@ class ReadingListArticlesSelectView extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<ReadingListArticlesSelectViewCubit>();
     final state = useCubitBuilder(cubit);
+
+    useCubitListener<ReadingListArticlesSelectViewCubit, ReadingListArticlesSelectViewState>(
+      cubit,
+      (cubit, state, context) {
+        state.maybeMap(
+          shared: (_) {
+            AutoRouter.of(context).pop();
+          },
+          orElse: () {},
+        );
+      },
+    );
 
     useEffect(
       () {
