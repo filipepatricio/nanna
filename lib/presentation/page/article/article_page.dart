@@ -4,13 +4,14 @@ import 'package:better_informed_mobile/domain/article/data/article_content_type.
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/article/content/article_content_html.dart';
+import 'package:better_informed_mobile/presentation/page/article/content/article_content_markdown.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,9 @@ import 'package:flutter_svg/svg.dart';
 
 class ArticlePage extends HookWidget {
   final ArticleHeader article;
+  final double? bannerScroll;
 
-  const ArticlePage({required this.article});
+  const ArticlePage({required this.article, this.bannerScroll});
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class ArticlePage extends HookWidget {
             content: state.content,
             controller: scrollController,
             cubit: cubit,
+            readingBannerScroll: bannerScroll,
           ),
           orElse: () => const SizedBox(),
         ),
@@ -104,44 +107,84 @@ class _LoadingContent extends StatelessWidget {
   }
 }
 
-class _IdleContent extends StatelessWidget {
+class _IdleContent extends HookWidget {
   final ArticleHeader header;
   final ArticleContent content;
   final ScrollController controller;
   final ArticleCubit cubit;
+  final GlobalKey _articleContentKey = GlobalKey();
+  final GlobalKey articlePageKey = GlobalKey();
+  final double? readingBannerScroll;
+  var articleContentOffset = 0.0;
 
-  const _IdleContent({
+  _IdleContent({
     required this.header,
     required this.content,
     required this.controller,
     required this.cubit,
+    this.readingBannerScroll,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    useEffect(() {
+      calculateArticleContentOffset();
+    });
+
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollNotification) {
         if (scrollNotification is ScrollEndNotification) {
-          final scrollProgress = controller.offset / controller.position.maxScrollExtent;
+          final scrollProgress =
+              (controller.offset - articleContentOffset) / (controller.position.maxScrollExtent - articleContentOffset);
           cubit.updateReadingBannerState(scrollProgress, controller.offset);
         }
         return true;
       },
       child: CustomScrollView(
+        key: articlePageKey,
         controller: controller,
         slivers: [
           SliverList(
             delegate: SliverChildListDelegate(
               [
                 ArticleHeaderView(article: header),
-                ArticleContentView(article: header, content: content),
+                ArticleContentView(
+                  article: header,
+                  content: content,
+                  cubit: cubit,
+                  controller: controller,
+                  articleContentKey: _articleContentKey,
+                  scrollToPosition: () => scrollToPosition(readingBannerScroll),
+                ),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  void calculateArticleContentOffset() {
+    final contentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
+    final pageOffset = _calculateGlobalOffset(articlePageKey) ?? 0;
+    articleContentOffset = contentOffset - pageOffset;
+  }
+
+  void scrollToPosition(double? scrollPosition) {
+    if (scrollPosition != null) {
+      controller.animateTo(
+        scrollPosition,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  double? _calculateGlobalOffset(GlobalKey key) {
+    final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
+    final position = renderBox?.localToGlobal(Offset.zero);
+    return position?.dy;
   }
 }
 
@@ -217,10 +260,18 @@ class ArticleHeaderView extends HookWidget {
 class ArticleContentView extends HookWidget {
   final ArticleHeader article;
   final ArticleContent content;
+  final ArticleCubit cubit;
+  final ScrollController controller;
+  final Key articleContentKey;
+  final Function() scrollToPosition;
 
   const ArticleContentView({
     required this.article,
     required this.content,
+    required this.cubit,
+    required this.controller,
+    required this.articleContentKey,
+    required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
 
@@ -229,88 +280,65 @@ class ArticleContentView extends HookWidget {
     return Padding(
       padding: const EdgeInsets.all(AppDimens.l),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(article.title, style: AppTypography.h1Bold),
-          const SizedBox(height: AppDimens.l),
-          Divider(
-            height: AppDimens.one,
-            color: AppColors.textPrimary.withOpacity(0.14),
-          ),
-          const SizedBox(height: AppDimens.s),
-          Text(
-            LocaleKeys.article_articleBy.tr(args: ['David david']), // TODO missing data in object - author name
-            style: AppTypography.metadata1Medium,
-          ),
-          const SizedBox(height: AppDimens.articleItemMargin),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SvgPicture.asset(
-                AppVectorGraphics.notifications,
-                width: AppDimens.m,
-                height: AppDimens.m,
+              Text(article.title, style: AppTypography.h1Bold),
+              const SizedBox(height: AppDimens.l),
+              Divider(
+                height: AppDimens.one,
+                color: AppColors.textPrimary.withOpacity(0.14),
               ),
-              const SizedBox(width: AppDimens.xs),
+              const SizedBox(height: AppDimens.s),
               Text(
-                article.publisher.name,
-                style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                LocaleKeys.article_articleBy.tr(args: ['David david']), // TODO missing data in object - author name
+                style: AppTypography.metadata1Medium,
               ),
-              const VerticalDivider(),
-              Text(
-                article.timeToRead.toString(),
-                style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+              const SizedBox(height: AppDimens.articleItemMargin),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    AppVectorGraphics.notifications,
+                    width: AppDimens.m,
+                    height: AppDimens.m,
+                  ),
+                  const SizedBox(width: AppDimens.xs),
+                  Text(
+                    article.publisher.name,
+                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                  ),
+                  const VerticalDivider(),
+                  Text(
+                    LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
+                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                  ),
+                  const VerticalDivider(),
+                  Text(
+                    article.publicationDate,
+                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                  ),
+                ],
               ),
-              const VerticalDivider(),
-              Text(
-                article.publicationDate,
-                style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
-              ),
+              const SizedBox(height: AppDimens.xl),
             ],
           ),
-          const SizedBox(height: AppDimens.xl),
-          if (content.type == ArticleContentType.markdown)
-            _ArticleContentMarkdown(markdown: content.content)
-          else if (content.type == ArticleContentType.html)
-            _ArticleContentHtml(html: content.content),
+          Container(
+            key: articleContentKey,
+            child: getArticleContentType(content.type),
+          ),
         ],
       ),
     );
   }
-}
 
-class _ArticleContentMarkdown extends StatelessWidget {
-  final String markdown;
-
-  const _ArticleContentMarkdown({
-    required this.markdown,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InformedMarkdownBody(
-      markdown: markdown,
-      baseTextStyle: AppTypography.b2MediumSerif,
-      selectable: true,
-    );
-  }
-}
-
-class _ArticleContentHtml extends StatelessWidget {
-  final String html;
-
-  const _ArticleContentHtml({
-    required this.html,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO displaying html with styles, probably opening WebView with local server (so CSS can be loaded)
-    return SelectableText(
-      html,
-      style: AppTypography.b2MediumSerif,
-    );
+  Widget? getArticleContentType(ArticleContentType type) {
+    if (type == ArticleContentType.markdown) {
+      return ArticleContentMarkdown(markdown: content.content, scrollToPosition: scrollToPosition);
+    } else if (type == ArticleContentType.html) {
+      return ArticleContentHtml(html: content.content, cubit: cubit, scrollToPosition: scrollToPosition);
+    }
+    return null;
   }
 }
 
