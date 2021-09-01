@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -9,6 +10,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _iconSize = 120;
 
@@ -42,11 +44,14 @@ class _ReadingBannerBody extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // TODO: this need to be called from page with cupertinoScaffold
-        // CupertinoScaffold.showCupertinoModalBottomSheet(
-        //   context: context,
-        //   builder: (context) => ArticlePage(article: readingBanner.article),
-        //   useRootNavigator: true,
-        // );
+        CupertinoScaffold.showCupertinoModalBottomSheet(
+          context: context,
+          builder: (context) => ArticlePage(
+            article: readingBanner.article,
+            readArticleProgress: readingBanner.scrollProgress,
+          ),
+          useRootNavigator: true,
+        );
       },
       child: Align(
         alignment: Alignment.bottomCenter,

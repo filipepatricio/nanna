@@ -15,14 +15,15 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ArticlePage extends HookWidget {
   final ArticleHeader article;
-  final double? bannerScroll;
+  final double? readArticleProgress;
 
-  const ArticlePage({required this.article, this.bannerScroll});
+  const ArticlePage({required this.article, this.readArticleProgress});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,7 @@ class ArticlePage extends HookWidget {
             content: state.content,
             controller: scrollController,
             cubit: cubit,
-            readingBannerScroll: bannerScroll,
+            readArticleProgress: readArticleProgress,
           ),
           orElse: () => const SizedBox(),
         ),
@@ -107,72 +108,100 @@ class _LoadingContent extends StatelessWidget {
   }
 }
 
-class _IdleContent extends HookWidget {
+class _IdleContent extends StatelessWidget {
   final ArticleHeader header;
   final ArticleContent content;
   final ScrollController controller;
   final ArticleCubit cubit;
   final GlobalKey _articleContentKey = GlobalKey();
-  final GlobalKey articlePageKey = GlobalKey();
-  final double? readingBannerScroll;
-  var articleContentOffset = 0.0;
+  final GlobalKey _articlePageKey = GlobalKey();
+  final double? readArticleProgress;
 
   _IdleContent({
     required this.header,
     required this.content,
     required this.controller,
     required this.cubit,
-    this.readingBannerScroll,
+    this.readArticleProgress,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    useEffect(() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       calculateArticleContentOffset();
     });
 
-    return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollNotification) {
-        if (scrollNotification is ScrollEndNotification) {
-          final scrollProgress =
-              (controller.offset - articleContentOffset) / (controller.position.maxScrollExtent - articleContentOffset);
-          cubit.updateReadingBannerState(scrollProgress, controller.offset);
-        }
-        return true;
-      },
-      child: CustomScrollView(
-        key: articlePageKey,
-        controller: controller,
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                ArticleHeaderView(article: header),
-                ArticleContentView(
-                  article: header,
-                  content: content,
-                  cubit: cubit,
-                  controller: controller,
-                  articleContentKey: _articleContentKey,
-                  scrollToPosition: () => scrollToPosition(readingBannerScroll),
+    return LayoutBuilder(
+      builder: (context, constrains) {
+        return NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollNotification) {
+            if (scrollNotification is ScrollEndNotification) {
+              /// Here problem is different. All calculations are good when are scroll top edge of the webview
+              /// out of screen top boundry.
+              /// Problem is when i want to calculate scroll progress when we dont do that, and for example we scroll a
+              /// little and we have 1/3 of the screen in the webview.
+
+              var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
+              // if (readScrollOffset < 0) {
+              //   readScrollOffset = readScrollOffset.abs();
+              // }
+
+              cubit.setScrollData(
+                cubit.scrollData.copyWith(
+                  readArticleContentOffset: readScrollOffset,
+                  articleContentHeight: controller.position.maxScrollExtent - cubit.scrollData.contentOffset,
+                  articlePageHeight: controller.position.maxScrollExtent,
                 ),
-              ],
-            ),
+              );
+              final scrollProgress = cubit.scrollData.readArticleContentOffset / cubit.scrollData.articleContentHeight;
+              cubit.updateReadingBannerState(scrollProgress);
+            }
+            return true;
+          },
+          child: CustomScrollView(
+            key: _articlePageKey,
+            controller: controller,
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    ArticleHeaderView(article: header),
+                    ArticleContentView(
+                      article: header,
+                      content: content,
+                      cubit: cubit,
+                      controller: controller,
+                      articleContentKey: _articleContentKey,
+                      scrollToPosition: () => scrollToPosition(readArticleProgress),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   void calculateArticleContentOffset() {
-    final contentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
-    final pageOffset = _calculateGlobalOffset(articlePageKey) ?? 0;
-    articleContentOffset = contentOffset - pageOffset;
+    final globalContentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
+    final globalPageOffset = _calculateGlobalOffset(_articlePageKey) ?? 0;
+    cubit.setScrollData(
+      cubit.scrollData.copyWith(
+        contentOffset: globalContentOffset - globalPageOffset,
+      ),
+    );
   }
 
-  void scrollToPosition(double? scrollPosition) {
-    if (scrollPosition != null) {
+  void scrollToPosition(double? readArticleProgress) {
+    if (readArticleProgress != null && readArticleProgress != 1.0) {
+      /// TODO TO MAKE SCROLL POSSIBLE WE NEED HERE ArticleContentHeight
+      /// I have problem with getting info about controller.position.maxScrollExtent to count that
+      /// WHen called position Error "ScrollController attached to multiple scroll views."
+      final scrollPosition =
+          cubit.scrollData.contentOffset + (cubit.scrollData.articleContentHeight * readArticleProgress);
       controller.animateTo(
         scrollPosition,
         duration: const Duration(milliseconds: 500),
@@ -334,7 +363,7 @@ class ArticleContentView extends HookWidget {
 
   Widget? getArticleContentType(ArticleContentType type) {
     if (type == ArticleContentType.markdown) {
-      return ArticleContentMarkdown(markdown: content.content, scrollToPosition: scrollToPosition);
+      return ArticleContentMarkdown(markdown: markdownMock, scrollToPosition: scrollToPosition);
     } else if (type == ArticleContentType.html) {
       return ArticleContentHtml(html: content.content, cubit: cubit, scrollToPosition: scrollToPosition);
     }
@@ -356,3 +385,149 @@ class VerticalDivider extends StatelessWidget {
     );
   }
 }
+
+final markdownMock = ''' 
+---
+__Advertisement :)__
+
+- __[pica](https://nodeca.github.io/pica/demo/)__ - high quality and fast image
+  resize in browser.
+- __[babelfish](https://github.com/nodeca/babelfish/)__ - developer friendly
+  i18n with plurals support and easy syntax.
+
+You will like those projects!
+
+---
+
+# h1 Heading 8-)
+## h2 Heading
+### h3 Heading
+#### h4 Heading
+##### h5 Heading
+###### h6 Heading
+
+
+## Horizontal Rules
+
+___
+
+---
+
+***
+
+
+## Typographic replacements
+
+Enable typographer option to see result.
+
+(c) (C) (r) (R) (tm) (TM) (p) (P) +-
+
+test.. test... test..... test?..... test!....
+
+!!!!!! ???? ,,  -- ---
+
+"Smartypants, double quotes" and 'single quotes'
+
+
+## Emphasis
+
+**This is bold text**
+
+__This is bold text__
+
+*This is italic text*
+
+_This is italic text_
+
+~~Strikethrough~~
+
+
+## Blockquotes
+
+
+> Blockquotes can also be nested...
+>> ...by using additional greater-than signs right next to each other...
+> > > ...or with spaces between arrows.
+
+
+## Lists
+
+Unordered
+
++ Create a list by starting a line with `+`, `-`, or `*`
++ Sub-lists are made by indenting 2 spaces:
+  - Marker character change forces new list start:
+    * Ac tristique libero volutpat at
+    + Facilisis in pretium nisl aliquet
+    - Nulla volutpat aliquam velit
++ Very easy!
+
+Ordered
+
+1. Lorem ipsum dolor sit amet
+2. Consectetur adipiscing elit
+3. Integer molestie lorem at massa
+
+
+1. You can use sequential numbers...
+1. ...or keep all the numbers as `1.`
+
+Start numbering with offset:
+
+57. foo
+1. bar
+
+
+## Code
+
+Inline `code`
+
+Indented code
+
+    // Some comments
+    line 1 of code
+    line 2 of code
+    line 3 of code
+
+
+Block code "fences"
+
+```
+Sample text here...
+```
+
+Syntax highlighting
+
+``` js
+var foo = function (bar) {
+  return bar++;
+};
+
+console.log(foo(5));
+```
+
+## Tables
+
+| Option | Description |
+| ------ | ----------- |
+| data   | path to data files to supply the data that will be passed into templates. |
+| engine | engine to be used for processing templates. Handlebars is the default. |
+| ext    | extension to be used for dest files. |
+
+Right aligned columns
+
+| Option | Description |
+| ------:| -----------:|
+| data   | path to data files to supply the data that will be passed into templates. |
+| engine | engine to be used for processing templates. Handlebars is the default. |
+| ext    | extension to be used for dest files. |
+
+
+## Links
+
+[link text](http://dev.nodeca.com)
+
+[link with title](http://nodeca.github.io/pica/demo/ "title text!")
+
+Autoconverted link https://github.com/nodeca/pica (enable linkify to see)
+''';
