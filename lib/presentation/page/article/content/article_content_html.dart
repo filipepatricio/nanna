@@ -51,7 +51,9 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
         onLoadStop: (controller, url) async {
           // Event fired when the WebView finishes loading an url
           await resizeWebViewHeight(controller);
-          scrollToArticlePosition();
+          Future.delayed(const Duration(milliseconds: 500), () async {
+            await scrollToArticlePosition();
+          });
         },
         androidOnPermissionRequest: (controller, origin, resources) async {
           return PermissionRequestResponse(resources: resources, action: PermissionRequestResponseAction.GRANT);

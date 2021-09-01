@@ -76,6 +76,6 @@ class ArticleCubit extends Cubit<ArticleState> {
       contentOffset: articleScrollData.contentOffset,
       readArticleContentOffset: articleScrollData.readArticleContentOffset,
     );
-    print("** scroll data cubit ${scrollData.toString()}");
+    print("** SAVE SCROLL DATA ${scrollData.toString()}");
   }
 }

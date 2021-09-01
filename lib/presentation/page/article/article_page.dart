@@ -15,7 +15,6 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -137,15 +136,10 @@ class _IdleContent extends StatelessWidget {
         return NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollNotification) {
             if (scrollNotification is ScrollEndNotification) {
-              /// Here problem is different. All calculations are good when are scroll top edge of the webview
-              /// out of screen top boundry.
-              /// Problem is when i want to calculate scroll progress when we dont do that, and for example we scroll a
-              /// little and we have 1/3 of the screen in the webview.
-
               var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
-              // if (readScrollOffset < 0) {
-              //   readScrollOffset = readScrollOffset.abs();
-              // }
+              if (readScrollOffset < 0) {
+                readScrollOffset = constrains.maxHeight - (cubit.scrollData.contentOffset - controller.offset);
+              }
 
               cubit.setScrollData(
                 cubit.scrollData.copyWith(
@@ -154,6 +148,7 @@ class _IdleContent extends StatelessWidget {
                   articlePageHeight: controller.position.maxScrollExtent,
                 ),
               );
+
               final scrollProgress = cubit.scrollData.readArticleContentOffset / cubit.scrollData.articleContentHeight;
               cubit.updateReadingBannerState(scrollProgress);
             }
@@ -197,11 +192,8 @@ class _IdleContent extends StatelessWidget {
 
   void scrollToPosition(double? readArticleProgress) {
     if (readArticleProgress != null && readArticleProgress != 1.0) {
-      /// TODO TO MAKE SCROLL POSSIBLE WE NEED HERE ArticleContentHeight
-      /// I have problem with getting info about controller.position.maxScrollExtent to count that
-      /// WHen called position Error "ScrollController attached to multiple scroll views."
-      final scrollPosition =
-          cubit.scrollData.contentOffset + (cubit.scrollData.articleContentHeight * readArticleProgress);
+      final scrollPosition = cubit.scrollData.contentOffset +
+          ((controller.position.maxScrollExtent - cubit.scrollData.contentOffset) * readArticleProgress);
       controller.animateTo(
         scrollPosition,
         duration: const Duration(milliseconds: 500),
@@ -363,6 +355,7 @@ class ArticleContentView extends HookWidget {
 
   Widget? getArticleContentType(ArticleContentType type) {
     if (type == ArticleContentType.markdown) {
+      //TODO: REMOVE MOCKED markdown, change to content.content
       return ArticleContentMarkdown(markdown: markdownMock, scrollToPosition: scrollToPosition);
     } else if (type == ArticleContentType.html) {
       return ArticleContentHtml(html: content.content, cubit: cubit, scrollToPosition: scrollToPosition);
