@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/indicators.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,8 @@ class OnboardingPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = useCubit<OnboardingPageCubit>();
+
     final pageIndex = useState(0);
     final _controller = usePageController();
     final isLastPage = pageIndex.value == _pageList.length - 1;
@@ -63,7 +67,7 @@ class OnboardingPage extends HookWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(AppDimens.s)),
                   ),
                   child: TextButton(
-                    onPressed: () => _navigateToMainPage(context),
+                    onPressed: () => _navigateToMainPage(context, cubit),
                     child: Text(
                       isLastPage ? LocaleKeys.common_continue.tr() : LocaleKeys.common_skip.tr(),
                       style: AppTypography.buttonBold.copyWith(color: AppColors.limeGreen),
@@ -78,7 +82,8 @@ class OnboardingPage extends HookWidget {
     );
   }
 
-  void _navigateToMainPage(BuildContext context) {
+  void _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit) {
+    cubit.requestNotificationPermission();
     AutoRouter.of(context).replaceAll(
       [
         const MainPageRoute(),
