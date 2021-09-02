@@ -51,8 +51,8 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
         onLoadStop: (controller, url) async {
           // Event fired when the WebView finishes loading an url
           await resizeWebViewHeight(controller);
-          Future.delayed(const Duration(milliseconds: 500), () async {
-            await scrollToArticlePosition();
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            scrollToArticlePosition();
           });
         },
         androidOnPermissionRequest: (controller, origin, resources) async {
@@ -64,9 +64,8 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
 
   Future<void> resizeWebViewHeight(InAppWebViewController controller) async {
     await controller.evaluateJavascript(source: 'document.documentElement.scrollHeight').then((height) {
-      setState(() {
-        _height = double.parse(height.toString());
-      });
+      _height = double.parse(height.toString());
+      setState(() {});
     });
   }
 }
