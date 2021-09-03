@@ -64,8 +64,6 @@ class AppDimens {
   static const articleItemMargin = 10.0;
   static const articleItemPhotoSize = 84.0;
 
-  static const readingBannerHeight = 50.0;
-
   static const articlePublisherLogoSize = 40;
 
   static const articleItemWidth = 298.0;

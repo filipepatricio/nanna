@@ -58,6 +58,7 @@ dependencies:
       path: packages/flutter_markdown
   cloudinary_sdk: 3.0.1+7
   rxdart: 0.26.0
+  flutter_inappwebview: 5.3.2
 
 dev_dependencies:
   flutter_test:

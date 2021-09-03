@@ -4,13 +4,14 @@ import 'package:better_informed_mobile/domain/article/data/article_content_type.
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/article/content/article_content_html.dart';
+import 'package:better_informed_mobile/presentation/page/article/content/article_content_markdown.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,9 @@ import 'package:flutter_svg/svg.dart';
 
 class ArticlePage extends HookWidget {
   final ArticleHeader article;
+  final double? readArticleProgress;
 
-  const ArticlePage({required this.article});
+  const ArticlePage({required this.article, this.readArticleProgress});
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class ArticlePage extends HookWidget {
             content: state.content,
             controller: scrollController,
             cubit: cubit,
+            readArticleProgress: readArticleProgress,
           ),
           orElse: () => const SizedBox(),
         ),
@@ -109,39 +112,100 @@ class _IdleContent extends StatelessWidget {
   final ArticleContent content;
   final ScrollController controller;
   final ArticleCubit cubit;
+  final GlobalKey _articleContentKey = GlobalKey();
+  final GlobalKey _articlePageKey = GlobalKey();
+  final double? readArticleProgress;
 
-  const _IdleContent({
+  _IdleContent({
     required this.header,
     required this.content,
     required this.controller,
     required this.cubit,
+    this.readArticleProgress,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollNotification) {
-        if (scrollNotification is ScrollEndNotification) {
-          final scrollProgress = controller.offset / controller.position.maxScrollExtent;
-          cubit.updateReadingBannerState(scrollProgress, controller.offset);
-        }
-        return true;
-      },
-      child: CustomScrollView(
-        controller: controller,
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                ArticleHeaderView(article: header),
-                ArticleContentView(article: header, content: content),
-              ],
-            ),
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      calculateArticleContentOffset();
+    });
+
+    return LayoutBuilder(
+      builder: (context, constrains) {
+        return NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollNotification) {
+            if (scrollNotification is ScrollEndNotification) {
+              var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
+              if (readScrollOffset < 0) {
+                readScrollOffset = constrains.maxHeight - (cubit.scrollData.contentOffset - controller.offset);
+              }
+
+              cubit.setScrollData(
+                cubit.scrollData.copyWith(
+                  readArticleContentOffset: readScrollOffset,
+                  articleContentHeight: controller.position.maxScrollExtent - cubit.scrollData.contentOffset,
+                  articlePageHeight: controller.position.maxScrollExtent,
+                ),
+              );
+
+              final scrollProgress = cubit.scrollData.readArticleContentOffset / cubit.scrollData.articleContentHeight;
+              cubit.updateReadingBannerState(scrollProgress);
+            }
+            return true;
+          },
+          child: CustomScrollView(
+            key: _articlePageKey,
+            controller: controller,
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    ArticleHeaderView(article: header),
+                    ArticleContentView(
+                      article: header,
+                      content: content,
+                      cubit: cubit,
+                      controller: controller,
+                      articleContentKey: _articleContentKey,
+                      scrollToPosition: () => scrollToPosition(readArticleProgress),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        );
+      },
+    );
+  }
+
+  void calculateArticleContentOffset() {
+    final globalContentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
+    final globalPageOffset = _calculateGlobalOffset(_articlePageKey) ?? 0;
+    cubit.setScrollData(
+      cubit.scrollData.copyWith(
+        contentOffset: globalContentOffset - globalPageOffset,
       ),
     );
+  }
+
+  void scrollToPosition(double? readArticleProgress) {
+    if (readArticleProgress != null && readArticleProgress != 1.0) {
+      final scrollPosition = cubit.scrollData.contentOffset +
+          ((controller.position.maxScrollExtent - cubit.scrollData.contentOffset) * readArticleProgress);
+      controller.animateTo(
+        scrollPosition,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  double? _calculateGlobalOffset(GlobalKey key) {
+    final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
+    final position = renderBox?.localToGlobal(Offset.zero);
+    return position?.dy;
   }
 }
 
@@ -217,10 +281,18 @@ class ArticleHeaderView extends HookWidget {
 class ArticleContentView extends HookWidget {
   final ArticleHeader article;
   final ArticleContent content;
+  final ArticleCubit cubit;
+  final ScrollController controller;
+  final Key articleContentKey;
+  final Function() scrollToPosition;
 
   const ArticleContentView({
     required this.article,
     required this.content,
+    required this.cubit,
+    required this.controller,
+    required this.articleContentKey,
+    required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
 
@@ -229,88 +301,66 @@ class ArticleContentView extends HookWidget {
     return Padding(
       padding: const EdgeInsets.all(AppDimens.l),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(article.title, style: AppTypography.h1Bold),
-          const SizedBox(height: AppDimens.l),
-          Divider(
-            height: AppDimens.one,
-            color: AppColors.textPrimary.withOpacity(0.14),
-          ),
-          const SizedBox(height: AppDimens.s),
-          Text(
-            LocaleKeys.article_articleBy.tr(args: ['David david']), // TODO missing data in object - author name
-            style: AppTypography.metadata1Medium,
-          ),
-          const SizedBox(height: AppDimens.articleItemMargin),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SvgPicture.asset(
-                AppVectorGraphics.notifications,
-                width: AppDimens.m,
-                height: AppDimens.m,
+              Text(article.title, style: AppTypography.h1Bold),
+              const SizedBox(height: AppDimens.l),
+              Divider(
+                height: AppDimens.one,
+                color: AppColors.textPrimary.withOpacity(0.14),
               ),
-              const SizedBox(width: AppDimens.xs),
+              const SizedBox(height: AppDimens.s),
               Text(
-                article.publisher.name,
-                style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                LocaleKeys.article_articleBy.tr(args: ['David david']), // TODO missing data in object - author name
+                style: AppTypography.metadata1Medium,
               ),
-              const VerticalDivider(),
-              Text(
-                article.timeToRead.toString(),
-                style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+              const SizedBox(height: AppDimens.articleItemMargin),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    AppVectorGraphics.notifications,
+                    width: AppDimens.m,
+                    height: AppDimens.m,
+                  ),
+                  const SizedBox(width: AppDimens.xs),
+                  Text(
+                    article.publisher.name,
+                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                  ),
+                  const VerticalDivider(),
+                  Text(
+                    LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
+                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                  ),
+                  const VerticalDivider(),
+                  Text(
+                    article.publicationDate,
+                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                  ),
+                ],
               ),
-              const VerticalDivider(),
-              Text(
-                article.publicationDate,
-                style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
-              ),
+              const SizedBox(height: AppDimens.xl),
             ],
           ),
-          const SizedBox(height: AppDimens.xl),
-          if (content.type == ArticleContentType.markdown)
-            _ArticleContentMarkdown(markdown: content.content)
-          else if (content.type == ArticleContentType.html)
-            _ArticleContentHtml(html: content.content),
+          Container(
+            key: articleContentKey,
+            child: getArticleContentType(content.type),
+          ),
         ],
       ),
     );
   }
-}
 
-class _ArticleContentMarkdown extends StatelessWidget {
-  final String markdown;
-
-  const _ArticleContentMarkdown({
-    required this.markdown,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InformedMarkdownBody(
-      markdown: markdown,
-      baseTextStyle: AppTypography.b2MediumSerif,
-      selectable: true,
-    );
-  }
-}
-
-class _ArticleContentHtml extends StatelessWidget {
-  final String html;
-
-  const _ArticleContentHtml({
-    required this.html,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO displaying html with styles, probably opening WebView with local server (so CSS can be loaded)
-    return SelectableText(
-      html,
-      style: AppTypography.b2MediumSerif,
-    );
+  Widget? getArticleContentType(ArticleContentType type) {
+    if (type == ArticleContentType.markdown) {
+      //TODO: REMOVE MOCKED markdown, change to content.content
+      return ArticleContentMarkdown(markdown: markdownMock, scrollToPosition: scrollToPosition);
+    } else if (type == ArticleContentType.html) {
+      return ArticleContentHtml(html: content.content, cubit: cubit, scrollToPosition: scrollToPosition);
+    }
+    return null;
   }
 }
 
@@ -328,3 +378,149 @@ class VerticalDivider extends StatelessWidget {
     );
   }
 }
+
+final markdownMock = ''' 
+---
+__Advertisement :)__
+
+- __[pica](https://nodeca.github.io/pica/demo/)__ - high quality and fast image
+  resize in browser.
+- __[babelfish](https://github.com/nodeca/babelfish/)__ - developer friendly
+  i18n with plurals support and easy syntax.
+
+You will like those projects!
+
+---
+
+# h1 Heading 8-)
+## h2 Heading
+### h3 Heading
+#### h4 Heading
+##### h5 Heading
+###### h6 Heading
+
+
+## Horizontal Rules
+
+___
+
+---
+
+***
+
+
+## Typographic replacements
+
+Enable typographer option to see result.
+
+(c) (C) (r) (R) (tm) (TM) (p) (P) +-
+
+test.. test... test..... test?..... test!....
+
+!!!!!! ???? ,,  -- ---
+
+"Smartypants, double quotes" and 'single quotes'
+
+
+## Emphasis
+
+**This is bold text**
+
+__This is bold text__
+
+*This is italic text*
+
+_This is italic text_
+
+~~Strikethrough~~
+
+
+## Blockquotes
+
+
+> Blockquotes can also be nested...
+>> ...by using additional greater-than signs right next to each other...
+> > > ...or with spaces between arrows.
+
+
+## Lists
+
+Unordered
+
++ Create a list by starting a line with `+`, `-`, or `*`
++ Sub-lists are made by indenting 2 spaces:
+  - Marker character change forces new list start:
+    * Ac tristique libero volutpat at
+    + Facilisis in pretium nisl aliquet
+    - Nulla volutpat aliquam velit
++ Very easy!
+
+Ordered
+
+1. Lorem ipsum dolor sit amet
+2. Consectetur adipiscing elit
+3. Integer molestie lorem at massa
+
+
+1. You can use sequential numbers...
+1. ...or keep all the numbers as `1.`
+
+Start numbering with offset:
+
+57. foo
+1. bar
+
+
+## Code
+
+Inline `code`
+
+Indented code
+
+    // Some comments
+    line 1 of code
+    line 2 of code
+    line 3 of code
+
+
+Block code "fences"
+
+```
+Sample text here...
+```
+
+Syntax highlighting
+
+``` js
+var foo = function (bar) {
+  return bar++;
+};
+
+console.log(foo(5));
+```
+
+## Tables
+
+| Option | Description |
+| ------ | ----------- |
+| data   | path to data files to supply the data that will be passed into templates. |
+| engine | engine to be used for processing templates. Handlebars is the default. |
+| ext    | extension to be used for dest files. |
+
+Right aligned columns
+
+| Option | Description |
+| ------:| -----------:|
+| data   | path to data files to supply the data that will be passed into templates. |
+| engine | engine to be used for processing templates. Handlebars is the default. |
+| ext    | extension to be used for dest files. |
+
+
+## Links
+
+[link text](http://dev.nodeca.com)
+
+[link with title](http://nodeca.github.io/pica/demo/ "title text!")
+
+Autoconverted link https://github.com/nodeca/pica (enable linkify to see)
+''';
