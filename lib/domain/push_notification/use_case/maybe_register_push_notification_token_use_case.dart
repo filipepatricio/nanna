@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:clock/clock.dart';
@@ -18,21 +19,21 @@ class MaybeRegisterPushNotificationTokenUseCase {
   Future<void> call() async {
     final storedToken = await _pushNotificationStore.load();
 
-    if (storedToken == null || _isExpired(storedToken.updatedAt) || await _hasChanged(storedToken.token)) {
+    if (storedToken == null || _isExpired(storedToken) || await _hasChanged(storedToken)) {
       final registeredToken = await _pushNotificationRepository.registerToken();
       await _pushNotificationStore.save(registeredToken);
     }
   }
 
-  bool _isExpired(DateTime updatedAt) {
+  bool _isExpired(RegisteredPushToken registeredPushToken) {
     final now = clock.now();
-    final expirationDate = updatedAt.add(const Duration(days: daysToExpire));
+    final expirationDate = registeredPushToken.updatedAt.add(const Duration(days: daysToExpire));
 
     return !now.isBefore(expirationDate);
   }
 
-  Future<bool> _hasChanged(String storedToken) async {
+  Future<bool> _hasChanged(RegisteredPushToken registeredPushToken) async {
     final currentToken = await _pushNotificationRepository.getCurrentToken();
-    return storedToken != currentToken;
+    return registeredPushToken.token != currentToken;
   }
 }
