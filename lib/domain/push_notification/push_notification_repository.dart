@@ -3,6 +3,8 @@ import 'package:better_informed_mobile/domain/push_notification/data/push_notifi
 abstract class PushNotificationRepository {
   Future<void> registerToken();
 
+  Future<String> getCurrentToken();
+
   Future<void> initialize();
 
   Future<bool> hasPermission();

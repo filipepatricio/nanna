@@ -53,4 +53,9 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   }
 
   bool _isAuthorized(NotificationSettings result) => result.authorizationStatus == AuthorizationStatus.authorized;
+
+  @override
+  Future<String> getCurrentToken() async {
+    return await _firebaseMessaging.getToken() ?? (throw Exception('Push notification token can not be null'));
+  }
 }
