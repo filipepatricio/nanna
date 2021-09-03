@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 
 const _environmentArgKey = 'env';
@@ -27,6 +28,7 @@ Future<void> main() async {
 
   setupFimber();
 
+  await Hive.initFlutter();
   final mainRouter = MainRouter();
 
   if (Platform.isAndroid) {

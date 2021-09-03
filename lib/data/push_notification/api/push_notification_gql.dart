@@ -7,6 +7,8 @@ class PushNotificationGQL {
   static DocumentNode register(String token) => gql('''
     mutation {
       savePushDeviceToken(token: "$token") {
+        token
+        updatedAt
       }
     }
   ''');
