@@ -49,6 +49,7 @@ class AppDimens {
 
   static const indicatorSize = 4.0;
   static const naviBarFontSize = 14.0;
+  static const backArrowSize = 14.0;
   static const indicatorSelectedSize = 16.0;
   static const appBarSize = 70.0;
 
@@ -59,6 +60,7 @@ class AppDimens {
   static const topicCardRadius = 16.0;
   static const topicCardBlurRadius = 16.0;
   static const topicCardOffsetY = 3.0;
+  static const topicControlsMargin = 36.0;
 
   static const buttonRadius = 8.0;
   static const articleItemMargin = 10.0;

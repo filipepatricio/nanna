@@ -161,28 +161,9 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-      child: Hero(
-        tag: HeroTag.dailyBriefTopicTitle(topic.id),
-        flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-          final colorTween = ColorTween(begin: AppColors.textPrimary, end: AppColors.white).animate(anim);
-
-          return Material(
-            color: Colors.transparent,
-            child: AnimatedBuilder(
-              animation: colorTween,
-              builder: (context, child) {
-                return Text(
-                  topic.title,
-                  style: AppTypography.h1Bold.copyWith(color: colorTween.value),
-                );
-              },
-            ),
-          );
-        },
-        child: Text(
-          topic.title,
-          style: AppTypography.h1Bold,
-        ),
+      child: Text(
+        topic.title,
+        style: AppTypography.h1Bold,
       ),
     );
   }
