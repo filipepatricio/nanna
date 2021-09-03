@@ -16,15 +16,18 @@ class ArticleContentHtml extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  ArticleContentHtmlState createState() =>
-      ArticleContentHtmlState(url: html, cubit: cubit, scrollToArticlePosition: scrollToPosition);
+  ArticleContentHtmlState createState() => ArticleContentHtmlState(
+        url: html,
+        cubit: cubit,
+        scrollToArticlePosition: scrollToPosition,
+      );
 }
 
 class ArticleContentHtmlState extends State<ArticleContentHtml> {
   final String url;
   final ArticleCubit cubit;
   final Function() scrollToArticlePosition;
-  double _height = 1.0;
+  double _height = 0.0;
 
   final GlobalKey webViewKey = GlobalKey();
   InAppWebViewController? webViewController;
@@ -34,7 +37,11 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
     ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true),
   );
 
-  ArticleContentHtmlState({required this.cubit, required this.url, required this.scrollToArticlePosition});
+  ArticleContentHtmlState({
+    required this.cubit,
+    required this.url,
+    required this.scrollToArticlePosition,
+  });
 
   @override
   Widget build(BuildContext context) {

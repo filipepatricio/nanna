@@ -57,7 +57,6 @@ class _ReadingBannerBody extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Container(
           color: AppColors.lightGrey,
-          height: AppDimens.readingBannerHeight,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -70,8 +69,8 @@ class _ReadingBannerBody extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    width: AppDimens.xxxl,
-                    height: AppDimens.xxxl,
+                    width: AppDimens.xc,
+                    height: AppDimens.xc,
                     decoration: const BoxDecoration(shape: BoxShape.rectangle),
                     child: imageId != null
                         ? Image.network(
@@ -89,15 +88,18 @@ class _ReadingBannerBody extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: AppDimens.m),
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
                             LocaleKeys.continueReading.tr(),
-                            style: AppTypography.subH2RegularSmall.copyWith(color: AppColors.greyFont),
+                            style: AppTypography.subH2RegularSmall.copyWith(color: AppColors.greyFont, height: 1),
                           ),
+                          const SizedBox(height: AppDimens.s),
                           Text(
                             readingBanner.article.title,
-                            style: AppTypography.h5BoldSmall,
+                            style: AppTypography.h5BoldSmall.copyWith(height: 1),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
