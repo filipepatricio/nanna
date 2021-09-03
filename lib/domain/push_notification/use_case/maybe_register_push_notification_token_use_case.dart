@@ -16,10 +16,11 @@ class MaybeRegisterPushNotificationTokenUseCase {
   );
 
   Future<void> call() async {
-    final registeredToken = await _pushNotificationStore.load();
+    final storedToken = await _pushNotificationStore.load();
 
-    if (registeredToken == null || _isExpired(registeredToken.updatedAt) || await _hasChanged(registeredToken.token)) {
-      await _pushNotificationRepository.registerToken();
+    if (storedToken == null || _isExpired(storedToken.updatedAt) || await _hasChanged(storedToken.token)) {
+      final registeredToken = await _pushNotificationRepository.registerToken();
+      await _pushNotificationStore.save(registeredToken);
     }
   }
 

@@ -28,43 +28,55 @@ void main() {
 
   group('registers new token', () {
     test('when store is empty', () async {
+      final registeredToken = RegisteredPushToken(token: '000-000', updatedAt: DateTime(2021));
+
       when(store.load()).thenAnswer((realInvocation) async => null);
+      when(repository.registerToken()).thenAnswer((realInvocation) async => registeredToken);
 
       await useCase();
 
       verify(repository.registerToken());
+      verify(store.save(registeredToken));
     });
 
     test('when stored one is different than current one', () async {
+      final registeredToken = RegisteredPushToken(token: '000-000', updatedAt: DateTime(2021));
+
       const storedToken = '000-000';
       const currentToken = '111-111';
-      final registeredToken = RegisteredPushToken(
+
+      final storedRegisteredToken = RegisteredPushToken(
         token: storedToken,
         updatedAt: DateTime(2021),
       );
 
-      when(store.load()).thenAnswer((realInvocation) async => registeredToken);
+      when(store.load()).thenAnswer((realInvocation) async => storedRegisteredToken);
       when(repository.getCurrentToken()).thenAnswer((realInvocation) async => currentToken);
+      when(repository.registerToken()).thenAnswer((realInvocation) async => registeredToken);
 
       await useCase();
 
       verify(repository.registerToken());
+      verify(store.save(registeredToken));
     });
 
     test('when stored one is older than $daysToExpire days', () async {
+      final registeredToken = RegisteredPushToken(token: '000-000', updatedAt: DateTime(2021));
+
       const storedToken = '000-000';
       const currentToken = '000-000';
 
       final storedTokenDate = DateTime(2021, 01, 01);
       final currentDate = storedTokenDate.add(const Duration(days: daysToExpire));
 
-      final registeredToken = RegisteredPushToken(
+      final storedRegisteredToken = RegisteredPushToken(
         token: storedToken,
         updatedAt: storedTokenDate,
       );
 
-      when(store.load()).thenAnswer((realInvocation) async => registeredToken);
+      when(store.load()).thenAnswer((realInvocation) async => storedRegisteredToken);
       when(repository.getCurrentToken()).thenAnswer((realInvocation) async => currentToken);
+      when(repository.registerToken()).thenAnswer((realInvocation) async => registeredToken);
 
       await withClock(
         Clock.fixed(currentDate),
@@ -72,6 +84,7 @@ void main() {
       );
 
       verify(repository.registerToken());
+      verify(store.save(registeredToken));
     });
   });
 
@@ -97,6 +110,7 @@ void main() {
       );
 
       verifyNever(repository.registerToken());
+      verifyNever(store.save(any));
     });
   });
 }

@@ -8,4 +8,8 @@ class RegisteredPushTokenDTO {
   final String updatedAt;
 
   RegisteredPushTokenDTO(this.token, this.updatedAt);
+
+  factory RegisteredPushTokenDTO.fromJson(Map<String, dynamic> json) => _$RegisteredPushTokenDTOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RegisteredPushTokenDTOToJson(this);
 }
