@@ -28,33 +28,41 @@ void main() {
 
   group('registers new token', () {
     test('when store is empty', () async {
-      final registeredToken = RegisteredPushToken(token: '000-000', updatedAt: DateTime(2021));
+      final now = DateTime(2021);
+      final registeredToken = RegisteredPushToken(token: '000-000', updatedAt: now);
 
       when(store.load()).thenAnswer((realInvocation) async => null);
       when(repository.registerToken()).thenAnswer((realInvocation) async => registeredToken);
 
-      await useCase();
+      await withClock(
+        Clock.fixed(now),
+        () => useCase(),
+      );
 
       verify(repository.registerToken());
       verify(store.save(registeredToken));
     });
 
     test('when stored one is different than current one', () async {
-      final registeredToken = RegisteredPushToken(token: '000-000', updatedAt: DateTime(2021));
-
       const storedToken = '000-000';
       const currentToken = '111-111';
 
+      final registeredToken = RegisteredPushToken(token: currentToken, updatedAt: DateTime(2021));
+
+      final now = DateTime(2021);
       final storedRegisteredToken = RegisteredPushToken(
         token: storedToken,
-        updatedAt: DateTime(2021),
+        updatedAt: now,
       );
 
       when(store.load()).thenAnswer((realInvocation) async => storedRegisteredToken);
       when(repository.getCurrentToken()).thenAnswer((realInvocation) async => currentToken);
       when(repository.registerToken()).thenAnswer((realInvocation) async => registeredToken);
 
-      await useCase();
+      await withClock(
+        Clock.fixed(now),
+        () => useCase(),
+      );
 
       verify(repository.registerToken());
       verify(store.save(registeredToken));
