@@ -24,7 +24,7 @@ class AppVersionLinkTransformer {
     final appVersion = await _appInfoDataSource.getAppVersion();
     final appName = await _appInfoDataSource.getAppName();
 
-    return '${appName}:$appVersion';
+    return '${appName.toLowerCase()}:$appVersion';
   }
 
   Request _transformRequest(Request request, String appVersionHeaderValue) {

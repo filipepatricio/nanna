@@ -117,7 +117,7 @@ android {
 
             applicationIdSuffix ".dev"
 
-            resValue "string", "app_name", "Informed Dev"
+            resValue "string", "app_name", "informed dev"
             resValue "string", "app_link_host", "localhost"
 
             if (propertyMap.containsKey('dev')) {
@@ -132,7 +132,7 @@ android {
 
             applicationIdSuffix ".test"
 
-            resValue "string", "app_name", "Informed Test"
+            resValue "string", "app_name", "informed test"
             resValue "string", "app_link_host", "staging.informed.so"
 
             if (propertyMap.containsKey('stage')) {
@@ -145,7 +145,7 @@ android {
         prod {
             dimension "env"
 
-            resValue "string", "app_name", "Informed"
+            resValue "string", "app_name", "informed"
             resValue "string", "app_link_host", "informed.so"
 
             if (propertyMap.containsKey('prod')) {
