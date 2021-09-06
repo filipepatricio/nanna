@@ -31,7 +31,7 @@ void main() {
     );
     const appName1 = 'informed';
     const appVersion1 = '1.0.0';
-    const expectedHeader1 = 'informed_1.0.0';
+    const expectedHeader1 = 'informed:1.0.0';
 
     when(appInfoDataSource.getAppName()).thenAnswer((realInvocation) async => appName1);
     when(appInfoDataSource.getAppVersion()).thenAnswer((realInvocation) async => appVersion1);
@@ -51,7 +51,7 @@ void main() {
     );
     const appName2 = 'informed dev';
     const appVersion2 = '0.1.1';
-    const expectedHeader2 = 'informed dev_0.1.1';
+    const expectedHeader2 = 'informed dev:0.1.1';
 
     when(appInfoDataSource.getAppName()).thenAnswer((realInvocation) async => appName2);
     when(appInfoDataSource.getAppVersion()).thenAnswer((realInvocation) async => appVersion2);
@@ -70,7 +70,7 @@ void main() {
           document: gql(''),
         ),
       );
-      final expectedHeaders = {appVersionHeaderKey: 'informed_0.0.1'};
+      final expectedHeaders = {appVersionHeaderKey: 'informed:0.0.1'};
 
       when(appInfoDataSource.getAppName()).thenAnswer((realInvocation) async => 'informed');
       when(appInfoDataSource.getAppVersion()).thenAnswer((realInvocation) async => '0.0.1');
@@ -99,7 +99,7 @@ void main() {
       final expectedHeaders = Map.of(originalHeaders)
         ..addAll(
           {
-            appVersionHeaderKey: 'informed_0.0.1',
+            appVersionHeaderKey: 'informed:0.0.1',
           },
         );
 

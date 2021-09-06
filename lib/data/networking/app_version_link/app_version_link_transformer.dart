@@ -7,8 +7,8 @@ const appVersionHeaderKey = 'X-App-Version';
 /// Transforms request by adding [appVersionHeaderKey] to it's headers
 /// If header map does not exist it will create one
 ///
-/// Header value is app name and app version separated by underscore '_'
-/// Example: {'X-App-Version': 'informed dev_0.0.1'}
+/// Header value is app name and app version separated by colon ':'
+/// Example: {'X-App-Version': 'informed dev:0.0.1'}
 @injectable
 class AppVersionLinkTransformer {
   final AppInfoDataSource _appInfoDataSource;
@@ -24,7 +24,7 @@ class AppVersionLinkTransformer {
     final appVersion = await _appInfoDataSource.getAppVersion();
     final appName = await _appInfoDataSource.getAppName();
 
-    return '${appName}_$appVersion';
+    return '${appName}:$appVersion';
   }
 
   Request _transformRequest(Request request, String appVersionHeaderValue) {
