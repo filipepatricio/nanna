@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 
 const appVersionHeaderKey = 'X-App-Version';
 
-/// Transforms request by adding [appVersionHeaderKey] to it's headers
+/// Transforms request by adding [appVersionHeaderKey] to its headers
 /// If header map does not exist it will create one
 ///
 /// Header value is app name and app version separated by underscore '_'
