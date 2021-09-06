@@ -1,9 +1,10 @@
 import 'package:better_informed_mobile/domain/push_notification/data/push_notification_message.dart';
+import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
 
 abstract class PushNotificationRepository {
-  Future<void> registerToken();
+  Future<RegisteredPushToken> registerToken();
 
-  Future<void> initialize();
+  Future<String> getCurrentToken();
 
   Future<bool> hasPermission();
 
