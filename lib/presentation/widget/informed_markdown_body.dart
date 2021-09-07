@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/custom_rich_text.dart';
 import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ class InformedMarkdownBody extends StatelessWidget {
   final String markdown;
   final TextStyle baseTextStyle;
   final bool selectable;
+  final Color highlightColor;
   final int? maxLines;
 
   const InformedMarkdownBody({
@@ -15,6 +17,8 @@ class InformedMarkdownBody extends StatelessWidget {
     required this.baseTextStyle,
     this.maxLines,
     this.selectable = false,
+    this.highlightColor = AppColors.limeGreen,
+    this.maxLines,
     Key? key,
   }) : super(key: key);
 
@@ -33,6 +37,7 @@ class InformedMarkdownBody extends StatelessWidget {
       richTextBuilder: (span, selectable, {textAlign, key}) {
         return CustomRichText(
           textSpan: span!,
+          highlightColor: highlightColor,
           selectable: selectable,
           maxLines: maxLines,
         );
