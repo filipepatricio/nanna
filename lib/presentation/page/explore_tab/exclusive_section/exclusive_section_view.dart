@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as articleImage;
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/exclusive_section/exclusive_article_list_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -15,6 +16,7 @@ import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _mainArticleHeight = 366.0;
 const _mainArticleCoverBottomMargin = 100.0;
@@ -110,44 +112,51 @@ class _MainArticle extends StatelessWidget {
   Widget build(BuildContext context) {
     final imageId = articleHeader.image?.publicId;
 
-    return LayoutBuilder(
-      builder: (context, constraints) => Stack(
-        children: [
-          Container(
-            height: _mainArticleHeight,
-            child: imageId != null
-                ? Image.network(
-                    CloudinaryImageExtension.withPublicId(imageId).url,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.bottomLeft,
-                  )
-                : Container(),
-          ),
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.3),
+    return GestureDetector(
+      onTap: () => CupertinoScaffold.showCupertinoModalBottomSheet(
+        context: context,
+        builder: (context) => ArticlePage(article: articleHeader),
+        useRootNavigator: true,
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) => Stack(
+          children: [
+            Container(
+              height: _mainArticleHeight,
+              child: imageId != null
+                  ? Image.network(
+                      CloudinaryImageExtension.withPublicId(imageId).url,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.bottomLeft,
+                    )
+                  : Container(),
             ),
-          ),
-          Positioned(
-            top: AppDimens.zero,
-            left:  AppDimens.zero,
-            bottom: _mainArticleCoverBottomMargin,
-            right: constraints.maxWidth * 0.45,
-            child: _MainArticleCover(articleHeader: articleHeader),
-          ),
-          Positioned(
-            top: AppDimens.l,
-            right: AppDimens.l,
-            child: ShareButton(onTap: () {}),
-          ),
-          const Positioned(
-            bottom: AppDimens.l,
-            right: AppDimens.l,
-            child: ReadMoreLabel(
-              foregroundColor: AppColors.white,
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.3),
+              ),
             ),
-          ),
-        ],
+            Positioned(
+              top: AppDimens.zero,
+              left: AppDimens.zero,
+              bottom: _mainArticleCoverBottomMargin,
+              right: constraints.maxWidth * 0.45,
+              child: _MainArticleCover(articleHeader: articleHeader),
+            ),
+            Positioned(
+              top: AppDimens.l,
+              right: AppDimens.l,
+              child: ShareButton(onTap: () {}),
+            ),
+            const Positioned(
+              bottom: AppDimens.l,
+              right: AppDimens.l,
+              child: ReadMoreLabel(
+                foregroundColor: AppColors.white,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
