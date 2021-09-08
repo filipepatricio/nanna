@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/data/push_notification/api/dto/registered_push_token_dto.dart';
+
 abstract class PushNotificationApiDataSource {
-  Future<void> registerToken(String token);
+  Future<RegisteredPushTokenDTO> registerToken(String token);
 }
