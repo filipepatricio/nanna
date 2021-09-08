@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/exclusive_section/exclusive_section_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/reading_list_section/reading_list_section_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -76,6 +77,7 @@ class _Idle extends StatelessWidget {
       delegate: SliverChildListDelegate(
         [
           const ExclusiveSectionView(),
+          const ReadingListSectionView(),
         ],
       ),
     );
