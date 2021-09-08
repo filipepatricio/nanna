@@ -37,4 +37,6 @@ class AppVectorGraphics {
   static const String briefLoading = 'assets/vector_graphics/daily_brief_loading.svg';
 
   static const String arrowRight = 'assets/vector_graphics/arrow_right_ic.svg';
+  static const String articles = 'assets/vector_graphics/articles_ic.svg';
+  static const String clock = 'assets/vector_graphics/clock_ic.svg';
 }

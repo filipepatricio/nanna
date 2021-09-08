@@ -8,10 +8,12 @@ class InformedMarkdownBody extends StatelessWidget {
   final String markdown;
   final TextStyle baseTextStyle;
   final bool selectable;
+  final int? maxLines;
 
   const InformedMarkdownBody({
     required this.markdown,
     required this.baseTextStyle,
+    this.maxLines,
     this.selectable = false,
     Key? key,
   }) : super(key: key);
@@ -29,7 +31,11 @@ class InformedMarkdownBody extends StatelessWidget {
       ),
       bulletBuilder: (index, style) => const MarkdownBullet(),
       richTextBuilder: (span, selectable, {textAlign, key}) {
-        return CustomRichText(textSpan: span!, selectable: selectable);
+        return CustomRichText(
+          textSpan: span!,
+          selectable: selectable,
+          maxLines: maxLines,
+        );
       },
     );
   }
