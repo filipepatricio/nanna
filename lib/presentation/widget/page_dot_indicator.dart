@@ -42,10 +42,10 @@ class PageDotIndicator extends HookWidget {
     );
 
     final leftDotIndex = currentPageState.value.floor();
-    final leftDotProgress = inBetweenProgress;
+    final leftDotProgress = 1 - inBetweenProgress;
 
     final rightDotIndex = currentPageState.value.ceil();
-    final rightDotProgress = 1 - inBetweenProgress;
+    final rightDotProgress = inBetweenProgress;
 
     if (leftDotIndex == rightDotIndex) {
       return Row(
@@ -112,7 +112,7 @@ class _Dot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = _dotMinSize + (_dotMaxSize - _dotMinSize) * progress;
-    final alpha = _dotMinAlpha + (_dotMaxAlpha - _dotMaxAlpha) * progress;
+    final alpha = _dotMinAlpha + (_dotMaxAlpha - _dotMinAlpha) * progress;
 
     return Container(
       width: size,

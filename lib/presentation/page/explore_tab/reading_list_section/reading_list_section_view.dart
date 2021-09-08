@@ -16,39 +16,51 @@ class ReadingListSectionView extends HookWidget {
   Widget build(BuildContext context) {
     final controller = usePageController();
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const SizedBox(height: AppDimens.xc),
-        Row(
-          children: [
-            const Expanded(
-              child: InformedMarkdownBody(
-                markdown: '**Reading** list',
-                baseTextStyle: AppTypography.h1,
-              ),
+    return Container(
+      color: AppColors.background,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: AppDimens.xc),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: InformedMarkdownBody(
+                    markdown: '**Reading** list',
+                    baseTextStyle: AppTypography.h1,
+                  ),
+                ),
+                const SizedBox(width: AppDimens.s),
+                SeeAllButton(onTap: () {}),
+              ],
             ),
-            const SizedBox(width: AppDimens.s),
-            SeeAllButton(onTap: () {}),
-          ],
-        ),
-        const SizedBox(height: AppDimens.l),
-        Container(
-          height: _pageViewHeight,
-          child: PageView.builder(
-            controller: controller,
-            itemBuilder: (context, index) => Container(color: AppColors.white),
-            itemCount: 5,
           ),
-        ),
-        const SizedBox(height: AppDimens.l),
-        PageDotIndicator(
-          pageCount: 5,
-          controller: controller,
-        ),
-        const SizedBox(height: AppDimens.l),
-      ],
+          const SizedBox(height: AppDimens.l),
+          Container(
+            height: _pageViewHeight,
+            child: PageView.builder(
+              controller: controller,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(50),
+                child: Container(color: AppColors.white),
+              ),
+              itemCount: 5,
+            ),
+          ),
+          const SizedBox(height: AppDimens.l),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: PageDotIndicator(
+              pageCount: 5,
+              controller: controller,
+            ),
+          ),
+          const SizedBox(height: AppDimens.l),
+        ],
+      ),
     );
   }
 }
