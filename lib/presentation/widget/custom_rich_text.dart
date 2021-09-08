@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -11,10 +10,12 @@ class CustomRichText extends HookWidget implements RichTextBase {
   final TextSpan textSpan;
 
   final bool selectable;
+  final Color highlightColor;
   final int? maxLines;
 
   const CustomRichText({
     required this.textSpan,
+    required this.highlightColor,
     this.selectable = false,
     this.maxLines,
     Key? key,
@@ -29,6 +30,7 @@ class CustomRichText extends HookWidget implements RichTextBase {
         size: size,
         spans: spans,
         selectable: selectable,
+        highlightColor: highlightColor,
         maxLines: maxLines,
       ),
     );
@@ -39,13 +41,15 @@ class _CustomTextPainter extends HookWidget {
   final BoxConstraints size;
   final List<InlineSpan> spans;
   final bool selectable;
+  final Color highlightColor;
   final int? maxLines;
 
   const _CustomTextPainter({
     required this.size,
     required this.spans,
     required this.selectable,
-    required this.maxLines,
+    required this.highlightColor,
+    this.maxLines,
     Key? key,
   }) : super(key: key);
 
@@ -112,7 +116,7 @@ class _CustomTextPainter extends HookWidget {
 
     return CustomPaint(
       size: textPainter.size,
-      painter: _CustomHighlightTextPainter(textPainter, underlined),
+      painter: _CustomHighlightTextPainter(textPainter, underlined, highlightColor),
       child: selectable
           ? SelectableText.rich(
               TextSpan(children: spansWithoutDecoration),
@@ -130,8 +134,9 @@ class _CustomTextPainter extends HookWidget {
 class _CustomHighlightTextPainter extends CustomPainter {
   final TextPainter textPainter;
   final List<Offset> offsets;
+  final Color highlightColor;
 
-  _CustomHighlightTextPainter(this.textPainter, this.offsets);
+  _CustomHighlightTextPainter(this.textPainter, this.offsets, this.highlightColor);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -172,17 +177,17 @@ class _CustomHighlightTextPainter extends CustomPainter {
 
   void _paintHighlight(double startPos, LineMetrics line, double endPos, Canvas canvas) {
     final path = Path()
-      ..moveTo(startPos - 2, line.height * 0.60 + _calculateBaselineOffset(line))
-      ..lineTo(endPos * 1.0, line.height * 0.55 + _calculateBaselineOffset(line))
-      ..lineTo(endPos * 1.01, line.height * 0.95 + _calculateBaselineOffset(line))
-      ..lineTo(startPos, line.height * 0.92 + _calculateBaselineOffset(line))
+      ..moveTo(startPos - 2, line.height * 0.30 + _calculateBaselineOffset(line))
+      ..lineTo(endPos - 3, line.height * 0.35 + _calculateBaselineOffset(line))
+      ..lineTo(endPos, line.height * 0.95 + _calculateBaselineOffset(line))
+      ..lineTo(startPos + 2, line.height * 0.92 + _calculateBaselineOffset(line))
       ..close();
 
     if (_isVisualGlitch(path)) {
       return;
     }
 
-    canvas.drawPath(path, Paint()..color = AppColors.limeGreen);
+    canvas.drawPath(path, Paint()..color = highlightColor);
   }
 
   double _calculateBaselineOffset(LineMetrics line) => line.baseline + line.descent - line.height;

@@ -249,7 +249,7 @@ class _SummaryContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               InformedMarkdownBody(
-                markdown: "The __bigger picture__",
+                markdown: 'The __bigger picture__',
                 baseTextStyle: AppTypography.h1Bold.copyWith(fontSize: 28),
               ),
               const SizedBox(height: AppDimens.l),
