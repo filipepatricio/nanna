@@ -125,7 +125,6 @@ class _CustomTextPainter extends HookWidget {
           : RichText(
               maxLines: maxLines,
               text: TextSpan(children: spansWithoutDecoration),
-              maxLines: maxLines,
               overflow: TextOverflow.ellipsis,
             ),
     );

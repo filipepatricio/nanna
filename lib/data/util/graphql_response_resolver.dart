@@ -1,7 +1,5 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-const _defaultRootKey = 'data';
-
 class GraphQLResponseResolver<T> {
   static T? resolve<T>(
     QueryResult result,

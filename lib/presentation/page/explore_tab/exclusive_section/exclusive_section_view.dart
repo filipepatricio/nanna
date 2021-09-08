@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as articleImage;
+import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as article_image;
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/exclusive_section/exclusive_article_list_item.dart';
@@ -30,8 +30,8 @@ final mockedArticleList = [
     type: ArticleType.premium,
     publicationDate: '2021-02-03',
     timeToRead: 5,
-    publisher: Publisher(name: 'NYT', logo: articleImage.Image(publicId: 'publishers/the_economist')),
-    image: articleImage.Image(publicId: 'articles/storm'),
+    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    image: article_image.Image(publicId: 'articles/storm'),
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -39,8 +39,8 @@ final mockedArticleList = [
     type: ArticleType.premium,
     publicationDate: '2021-02-09',
     timeToRead: 3,
-    publisher: Publisher(name: 'NYT', logo: articleImage.Image(publicId: 'publishers/the_economist')),
-    image: articleImage.Image(publicId: 'articles/storm'),
+    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    image: article_image.Image(publicId: 'articles/storm'),
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -48,8 +48,8 @@ final mockedArticleList = [
     type: ArticleType.premium,
     publicationDate: '2021-02-08',
     timeToRead: 6,
-    publisher: Publisher(name: 'NYT', logo: articleImage.Image(publicId: 'publishers/the_economist')),
-    image: articleImage.Image(publicId: 'articles/storm'),
+    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    image: article_image.Image(publicId: 'articles/storm'),
   ),
 ];
 

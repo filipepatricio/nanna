@@ -18,7 +18,6 @@ class InformedMarkdownBody extends StatelessWidget {
     this.maxLines,
     this.selectable = false,
     this.highlightColor = AppColors.limeGreen,
-    this.maxLines,
     Key? key,
   }) : super(key: key);
 
