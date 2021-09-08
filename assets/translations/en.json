@@ -75,7 +75,8 @@
   "article": {
     "types": {
       "freemium": "Free",
-      "premium": "Premium"
+      "premium": "Premium",
+      "exclusive": "Exclusive"
     },
     "appBar": {
       "freemium": "Free Article",

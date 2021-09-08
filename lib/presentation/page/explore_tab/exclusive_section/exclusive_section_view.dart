@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/exclusive_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
@@ -20,6 +21,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _mainArticleHeight = 366.0;
 const _mainArticleCoverBottomMargin = 100.0;
+const _publisherLogoSize = 24.0;
 
 final mockedArticleList = [
   ArticleHeader(
@@ -66,7 +68,7 @@ class ExclusiveSectionView extends StatelessWidget {
             children: [
               const Expanded(
                 child: InformedMarkdownBody(
-                  markdown: '**Exclusive** news',
+                  markdown: '**Exclusive** news', // TODO should be coming from API
                   baseTextStyle: AppTypography.h1,
                   highlightColor: AppColors.background,
                 ),
@@ -133,7 +135,7 @@ class _MainArticle extends StatelessWidget {
             ),
             Positioned.fill(
               child: Container(
-                color: Colors.black.withOpacity(0.3),
+                color: AppColors.black.withOpacity(0.3),
               ),
             ),
             Positioned(
@@ -188,11 +190,11 @@ class _MainArticleCover extends StatelessWidget {
             child: Image.network(
               CloudinaryImageExtension.withPublicId(articleHeader.publisher.logo.publicId)
                   .transform()
-                  .width((AppDimens.l * 4).round())
+                  .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                   .fit()
                   .generate()!,
-              width: AppDimens.l,
-              height: AppDimens.l,
+              width: _publisherLogoSize,
+              height: _publisherLogoSize,
               fit: BoxFit.contain,
             ),
           ),

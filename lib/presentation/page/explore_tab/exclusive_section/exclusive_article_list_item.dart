@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/exclusive_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
@@ -12,6 +13,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const listItemWidth = 155.0;
 const listItemHeight = 260.0;
+const _publisherLogoSize = 24.0;
 
 class ExclusiveArticleListItem extends StatelessWidget {
   final ArticleHeader articleHeader;
@@ -47,11 +49,11 @@ class ExclusiveArticleListItem extends StatelessWidget {
               child: Image.network(
                 CloudinaryImageExtension.withPublicId(articleHeader.publisher.logo.publicId)
                     .transform()
-                    .width((AppDimens.l * 4).round())
+                    .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                     .fit()
                     .generate()!,
-                width: AppDimens.l,
-                height: AppDimens.l,
+                width: _publisherLogoSize,
+                height: _publisherLogoSize,
                 fit: BoxFit.contain,
               ),
             ),
