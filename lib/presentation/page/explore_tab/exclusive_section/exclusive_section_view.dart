@@ -58,46 +58,50 @@ class ExclusiveSectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: Row(
-            children: [
-              const Expanded(
-                child: InformedMarkdownBody(
-                  markdown: '**Exclusive** news', // TODO should be coming from API
-                  baseTextStyle: AppTypography.h1,
-                  highlightColor: AppColors.background,
-                ),
-              ),
-              SeeAllButton(onTap: () {}),
-            ],
-          ),
-        ),
-        const SizedBox(height: AppDimens.l),
-        Container(
-          padding: const EdgeInsets.only(left: AppDimens.l),
-          height: _mainArticleHeight,
-          child: _MainArticle(
-            articleHeader: mockedArticleList[0],
-          ),
-        ),
-        const SizedBox(height: AppDimens.l),
-        SizedBox(
-          height: listItemHeight,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
+    return Container(
+      color: AppColors.limeGreen,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: AppDimens.xc),
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            itemBuilder: (context, index) => ExclusiveArticleListItem(articleHeader: mockedArticleList[index]),
-            separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-            itemCount: mockedArticleList.length,
+            child: Row(
+              children: [
+                const Expanded(
+                  child: InformedMarkdownBody(
+                    markdown: '**Exclusive** news', // TODO should be coming from API
+                    baseTextStyle: AppTypography.h1,
+                    highlightColor: AppColors.background,
+                  ),
+                ),
+                SeeAllButton(onTap: () {}),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: AppDimens.xxl),
-      ],
+          const SizedBox(height: AppDimens.l),
+          Container(
+            padding: const EdgeInsets.only(left: AppDimens.l),
+            height: _mainArticleHeight,
+            child: _MainArticle(
+              articleHeader: mockedArticleList[0],
+            ),
+          ),
+          const SizedBox(height: AppDimens.l),
+          SizedBox(
+            height: listItemHeight,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              itemBuilder: (context, index) => ExclusiveArticleListItem(articleHeader: mockedArticleList[index]),
+              separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
+              itemCount: mockedArticleList.length,
+            ),
+          ),
+          const SizedBox(height: AppDimens.xxl),
+        ],
+      ),
     );
   }
 }

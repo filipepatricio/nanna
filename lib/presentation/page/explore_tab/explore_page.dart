@@ -35,7 +35,6 @@ class ExplorePage extends HookWidget {
     return CupertinoScaffold(
       body: ReadingBannerWrapper(
         child: Scaffold(
-          backgroundColor: AppColors.limeGreen,
           body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.dark,
             child: CustomScrollView(
@@ -44,9 +43,6 @@ class ExplorePage extends HookWidget {
                   delegate: SliverChildListDelegate(
                     [
                       const _Header(),
-                      const SizedBox(
-                        height: AppDimens.xc,
-                      )
                     ],
                   ),
                 ),
@@ -89,7 +85,8 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: AppColors.limeGreen,
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
