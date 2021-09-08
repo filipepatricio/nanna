@@ -34,7 +34,7 @@ class BottomNavigation extends HookWidget {
         onTap: tabsRouter.setActiveIndex,
         currentIndex: tabsRouter.activeIndex,
       ),
-      orElse: () => Container(),
+      orElse: () => const SizedBox(),
     );
   }
 }
