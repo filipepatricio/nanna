@@ -99,6 +99,9 @@
     "articleCount": "{} articles"
   },
   "continueReading": "Continue reading",
+  "myReads":{
+    "articlesRead": "/{} articles read"
+  },
   "explore": {
     "title": "Explore"
   }
