@@ -131,3 +131,4 @@ flutter:
   assets:
     - assets/translations/
     - assets/vector_graphics/
+    - assets/raster_graphics/

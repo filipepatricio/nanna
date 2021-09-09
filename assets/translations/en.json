@@ -6,7 +6,8 @@
     "signUp": "Sign up",
     "cancel": "Cancel",
     "generalError": "Something went wrong.\nTry again later.",
-    "seeAll": "See All"
+    "seeAll": "See All",
+    "search": "Search"
   },
   "onboarding": {
     "title": "How we use push notifications",
@@ -86,6 +87,9 @@
     "articleBy": "By {}",
     "readMore": "Read more",
     "readMinutes": "{} min"
+  },
+  "readingList": {
+    "articleCount": "{} articles"
   },
   "continueReading": "Continue reading"
 }

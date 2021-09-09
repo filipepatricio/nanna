@@ -1,10 +1,7 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
-import 'package:better_informed_mobile/domain/article/data/publisher.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as article_image;
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/exclusive_section/exclusive_article_list_item.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/article_section/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -23,81 +20,62 @@ const _mainArticleHeight = 366.0;
 const _mainArticleCoverBottomMargin = 100.0;
 const _publisherLogoSize = 24.0;
 
-final mockedArticleList = [
-  ArticleHeader(
-    slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
-    title: 'Israel’s opposition has finally mustered a majority to dislodge Binyamin Netanyahu',
-    type: ArticleType.premium,
-    publicationDate: '2021-02-03',
-    timeToRead: 5,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
-    image: article_image.Image(publicId: 'articles/storm'),
-  ),
-  ArticleHeader(
-    slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
-    title: 'Israels government: End of Netanyahu era?',
-    type: ArticleType.premium,
-    publicationDate: '2021-02-09',
-    timeToRead: 3,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
-    image: article_image.Image(publicId: 'articles/storm'),
-  ),
-  ArticleHeader(
-    slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
-    title: 'China allows three children in major policy shift',
-    type: ArticleType.premium,
-    publicationDate: '2021-02-08',
-    timeToRead: 6,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
-    image: article_image.Image(publicId: 'articles/storm'),
-  ),
-];
+class ArticleSectionView extends StatelessWidget {
+  final List<ArticleHeader> articles;
+  final Color backgroundColor;
 
-class ExclusiveSectionView extends StatelessWidget {
-  const ExclusiveSectionView({Key? key}) : super(key: key);
+  const ArticleSectionView({
+    required this.articles,
+    required this.backgroundColor,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: Row(
-            children: [
-              const Expanded(
-                child: InformedMarkdownBody(
-                  markdown: '**Exclusive** news', // TODO should be coming from API
-                  baseTextStyle: AppTypography.h1,
-                  highlightColor: AppColors.background,
-                ),
-              ),
-              SeeAllButton(onTap: () {}),
-            ],
-          ),
-        ),
-        const SizedBox(height: AppDimens.l),
-        Container(
-          padding: const EdgeInsets.only(left: AppDimens.l),
-          height: _mainArticleHeight,
-          child: _MainArticle(
-            articleHeader: mockedArticleList[0],
-          ),
-        ),
-        const SizedBox(height: AppDimens.l),
-        SizedBox(
-          height: listItemHeight,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
+    return Container(
+      color: backgroundColor,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: AppDimens.xc),
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            itemBuilder: (context, index) => ExclusiveArticleListItem(articleHeader: mockedArticleList[index]),
-            separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-            itemCount: mockedArticleList.length,
+            child: Row(
+              children: [
+                const Expanded(
+                  child: InformedMarkdownBody(
+                    markdown: '**Exclusive** news', // TODO should be coming from API
+                    baseTextStyle: AppTypography.h1,
+                    highlightColor: AppColors.background,
+                  ),
+                ),
+                SeeAllButton(onTap: () {}),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: AppDimens.xxl),
-      ],
+          const SizedBox(height: AppDimens.l),
+          Container(
+            padding: const EdgeInsets.only(left: AppDimens.l),
+            height: _mainArticleHeight,
+            child: _MainArticle(
+              articleHeader: articles[0],
+            ),
+          ),
+          const SizedBox(height: AppDimens.l),
+          SizedBox(
+            height: listItemHeight,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              itemBuilder: (context, index) => ArticleListItem(articleHeader: articles[index]),
+              separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
+              itemCount: articles.length,
+            ),
+          ),
+          const SizedBox(height: AppDimens.xxl),
+        ],
+      ),
     );
   }
 }

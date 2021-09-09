@@ -15,10 +15,10 @@ const listItemWidth = 155.0;
 const listItemHeight = 260.0;
 const _publisherLogoSize = 24.0;
 
-class ExclusiveArticleListItem extends StatelessWidget {
+class ArticleListItem extends StatelessWidget {
   final ArticleHeader articleHeader;
 
-  const ExclusiveArticleListItem({
+  const ArticleListItem({
     required this.articleHeader,
     Key? key,
   }) : super(key: key);

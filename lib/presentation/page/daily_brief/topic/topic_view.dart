@@ -66,7 +66,7 @@ class TopicView extends HookWidget {
         context: context,
         child: ListView(
           controller: listScrollController,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
           children: [
             Container(
               child: _TopicHeader(
@@ -333,7 +333,7 @@ class _ArticleContent extends StatelessWidget {
           Container(
             width: double.infinity,
             child: PageView.builder(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
               controller: controller,
               scrollDirection: Axis.vertical,
               onPageChanged: (index) => pageIndex.value = index,

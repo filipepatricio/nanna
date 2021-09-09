@@ -190,6 +190,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle metadata2Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 14,
+    height: 1.28,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle labelText = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
