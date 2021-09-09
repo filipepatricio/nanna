@@ -82,7 +82,10 @@ class ExplorePage extends HookWidget {
                 ),
                 state.maybeMap(
                   initialLoading: (_) => const SliverToBoxAdapter(
-                    child: Loader(),
+                    child: Padding(
+                      padding: EdgeInsets.all(AppDimens.l),
+                      child: Loader(),
+                    ),
                   ),
                   idle: (state) => const _Idle(),
                   orElse: () => const SliverToBoxAdapter(
@@ -106,8 +109,9 @@ class _Idle extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          ArticleSectionView(articles: mockedArticleList),
+          ArticleSectionView(articles: mockedArticleList, backgroundColor: AppColors.limeGreen),
           const ReadingListSectionView(),
+          ArticleSectionView(articles: mockedArticleList, backgroundColor: AppColors.pastelGreen),
         ],
       ),
     );
@@ -142,7 +146,7 @@ class _Header extends StatelessWidget {
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimens.xl),
               ),
-              hintText: 'Search',
+              hintText: tr(LocaleKeys.common_search),
               hintStyle: AppTypography.h3Normal,
               prefixIcon: Padding(
                 padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.m),
@@ -152,6 +156,7 @@ class _Header extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: AppDimens.l),
         ],
       ),
     );

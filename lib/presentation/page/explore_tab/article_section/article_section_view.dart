@@ -22,13 +22,18 @@ const _publisherLogoSize = 24.0;
 
 class ArticleSectionView extends StatelessWidget {
   final List<ArticleHeader> articles;
+  final Color backgroundColor;
 
-  const ArticleSectionView({required this.articles, Key? key}) : super(key: key);
+  const ArticleSectionView({
+    required this.articles,
+    required this.backgroundColor,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.limeGreen,
+      color: backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

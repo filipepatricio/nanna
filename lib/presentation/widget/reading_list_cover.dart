@@ -1,8 +1,10 @@
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class ReadingListCover extends StatelessWidget {
@@ -46,10 +48,13 @@ class ReadingListCover extends StatelessWidget {
               padding: const EdgeInsets.all(AppDimens.l),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Text('7 articles', style: AppTypography.metadata1Regular),
-                  Spacer(),
-                  ReadMoreLabel(),
+                children: [
+                  Text(
+                    LocaleKeys.readingList_articleCount.tr(args: ['7']),
+                    style: AppTypography.metadata1Regular,
+                  ),
+                  const Spacer(),
+                  const ReadMoreLabel(),
                 ],
               ),
             ),
@@ -69,13 +74,9 @@ class _AuthorRow extends StatelessWidget {
       children: [
         Image.asset(AppRasterGraphics.editorSample),
         const SizedBox(width: AppDimens.s),
-        const Text(
+        Text(
           'By Editorial Team', // TODO probably will be coming from API
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-            fontStyle: FontStyle.italic,
-          ),
+          style: AppTypography.metadata2Bold.copyWith(fontStyle: FontStyle.italic),
         ),
       ],
     );

@@ -32,7 +32,7 @@ class ReadingListSectionView extends HookWidget {
               children: [
                 const Expanded(
                   child: InformedMarkdownBody(
-                    markdown: '**Reading** list',
+                    markdown: '**Reading** list',   // TODO will be from API
                     baseTextStyle: AppTypography.h1,
                   ),
                 ),
