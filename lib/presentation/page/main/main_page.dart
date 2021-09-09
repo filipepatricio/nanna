@@ -38,7 +38,7 @@ class MainPage extends HookWidget {
         ],
         bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(state, cubit, tabsRouter),
       ),
-      orElse: () => Container(),
+      orElse: () => const SizedBox(),
     );
   }
 

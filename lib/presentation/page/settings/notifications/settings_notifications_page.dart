@@ -16,7 +16,7 @@ class SettingsNotificationsPage extends HookWidget {
     return state.maybeWhen(
       loading: () => const Loader(),
       notificationSettingsLoaded: (data) => SettingsNotificationsBody(cubit: cubit, data: data),
-      orElse: () => Container(),
+      orElse: () => const SizedBox(),
     );
   }
 }

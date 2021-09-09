@@ -30,7 +30,7 @@ class SettingsMainPage extends HookWidget {
       body: state.maybeWhen(
         init: () => SettingsMainBody(cubit),
         loading: () => const Loader(),
-        orElse: () => Container(),
+        orElse: () => const SizedBox(),
       ),
     );
   }

@@ -23,12 +23,14 @@ class TopicView extends HookWidget {
   final AnimationController pageTransitionAnimation;
   final Topic topic;
   final double topicPageHeight;
+  final int? appBarMargin;
 
   const TopicView({
     required this.index,
     required this.pageTransitionAnimation,
     required this.topic,
     required this.topicPageHeight,
+    this.appBarMargin,
     Key? key,
   }) : super(key: key);
 
@@ -39,7 +41,11 @@ class TopicView extends HookWidget {
     final listScrollController = useScrollController();
     final articleController = usePageController();
     final notesController = usePageController(viewportFraction: 0.8);
-    final gestureManager = useMemoized(() => TopicCustomVerticalDragManager(listScrollController, articleController));
+    final gestureManager = useMemoized(() => TopicCustomVerticalDragManager(
+          generalViewController: listScrollController,
+          pageViewController: articleController,
+          topMargin: appBarMargin,
+        ));
     //TODO: REMOVE MOCKED LIST (mocked for more length)
     final mockedList = topic.readingList.articles + topic.readingList.articles;
 
@@ -110,7 +116,7 @@ class _TopicHeader extends HookWidget {
           tag: HeroTag.dailyBriefTopicImage(topic.id),
           child: Container(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.76,
+            height: MediaQuery.of(context).size.height * 0.66,
             child: Image.network(
               CloudinaryImageExtension.withPublicId(topic.image.publicId)
                   .transform()
