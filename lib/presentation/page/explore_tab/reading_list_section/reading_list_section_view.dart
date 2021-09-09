@@ -3,11 +3,13 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
+import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _pageViewHeight = 550.0;
+const _pageViewHeight = 500.0;
 
 class ReadingListSectionView extends HookWidget {
   const ReadingListSectionView({Key? key}) : super(key: key);
@@ -15,6 +17,7 @@ class ReadingListSectionView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = usePageController();
+    final width = MediaQuery.of(context).size.width;
 
     return Container(
       color: AppColors.background,
@@ -43,9 +46,9 @@ class ReadingListSectionView extends HookWidget {
             height: _pageViewHeight,
             child: PageView.builder(
               controller: controller,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(50),
-                child: Container(color: AppColors.white),
+              itemBuilder: (context, index) => ReadingListStackedCards(
+                coverSize: Size(width * 0.9, _pageViewHeight),
+                child: const ReadingListCover(),
               ),
               itemCount: 5,
             ),
