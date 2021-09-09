@@ -5,7 +5,8 @@
     "signOut": "Sign out",
     "signUp": "Sign up",
     "cancel": "Cancel",
-    "generalError": "Something went wrong.\nTry again later."
+    "generalError": "Something went wrong.\nTry again later.",
+    "seeAll": "See All"
   },
   "onboarding": {
     "title": "How we use push notifications",
@@ -75,7 +76,8 @@
   "article": {
     "types": {
       "freemium": "Free",
-      "premium": "Premium"
+      "premium": "Premium",
+      "exclusive": "Exclusive"
     },
     "appBar": {
       "freemium": "Free Article",

@@ -47,8 +47,6 @@ void main() {
     });
 
     test('throws [RevokeTokenException] when tokens in response are [null]', () async {
-      const accessToken = 'abcd1234';
-      const refreshToken = 'bcda4321';
       final result = QueryResult(
         source: QueryResultSource.network,
         data: {
@@ -70,8 +68,6 @@ void main() {
     });
 
     test('throws [OperationException] when result has [OperationException]', () async {
-      const accessToken = 'abcd1234';
-      const refreshToken = 'bcda4321';
       final result = QueryResult(
         exception: OperationException(),
         source: QueryResultSource.network,

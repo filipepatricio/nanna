@@ -15,10 +15,25 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h0Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 36,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 24,
+    height: 1.29,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h1 = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 28,
     height: 1.29,
     color: AppColors.textPrimary,
   );
@@ -38,6 +53,22 @@ class AppTypography {
     fontSize: 16,
     height: 1.25,
     letterSpacing: 0.15,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h3Normal = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 18,
+    height: 1.25,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h3bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 18,
+    height: 1.25,
     color: AppColors.textPrimary,
   );
 
