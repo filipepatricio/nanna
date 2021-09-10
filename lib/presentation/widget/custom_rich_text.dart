@@ -127,7 +127,7 @@ class _CustomTextPainter extends HookWidget {
           text: TextSpan(children: computedSpans),
           textAlign: TextAlign.left,
         );
-        startWidth.layout(maxWidth: size.maxWidth);
+        endWidth.layout(maxWidth: size.maxWidth);
         final endPosition = _computeTextWidth(endWidth);
 
         yield Offset(startPosition, endPosition);
