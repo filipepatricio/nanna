@@ -18,10 +18,10 @@ class ReadingListStackedCards extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final bottomCardHeight = coverSize.height - AppDimens.l;
-    final bottomCardWidth = coverSize.width - coverSize.width / 5;
+    final bottomCardWidth = coverSize.width - coverSize.width / 7;
 
     final topCardHeight = coverSize.height - AppDimens.l - 40;
-    final topCardWidth = coverSize.width - coverSize.width / 6;
+    final topCardWidth = coverSize.width - coverSize.width / 8;
 
     final middleCardTopMargin = (coverSize.height - topCardHeight) / 2 + AppDimens.l / 2;
     final middleCardHeight = topCardHeight - 10;
@@ -31,7 +31,7 @@ class ReadingListStackedCards extends HookWidget {
       children: [
         Container(color: AppColors.background),
         Align(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: Transform.rotate(
             angle: -3 * pi / 180,
             child: Container(
@@ -42,7 +42,7 @@ class ReadingListStackedCards extends HookWidget {
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadowColor,
-                    offset: const Offset(0.0, 3.0),
+                    offset: const Offset(0.0, 4.0),
                     blurRadius: 2.0,
                     spreadRadius: -1.0,
                   ),
@@ -52,7 +52,7 @@ class ReadingListStackedCards extends HookWidget {
           ),
         ),
         Positioned(
-          left: AppDimens.l / 2 + 40,
+          left: 0,
           top: middleCardTopMargin,
           child: Transform.rotate(
             angle: -5 * pi / 180,
@@ -64,7 +64,7 @@ class ReadingListStackedCards extends HookWidget {
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadowColor,
-                    offset: const Offset(0.0, 3.0),
+                    offset: const Offset(0.0, 4.0),
                     blurRadius: 1,
                     spreadRadius: -1,
                   ),
@@ -74,7 +74,7 @@ class ReadingListStackedCards extends HookWidget {
           ),
         ),
         Align(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: Container(
             height: topCardHeight,
             width: topCardWidth,
@@ -83,7 +83,7 @@ class ReadingListStackedCards extends HookWidget {
               boxShadow: [
                 BoxShadow(
                   color: AppColors.shadowColor,
-                  offset: const Offset(0.0, 3.0),
+                  offset: const Offset(0.0, 4.0),
                   blurRadius: 2.0,
                   spreadRadius: -1.0,
                 ),

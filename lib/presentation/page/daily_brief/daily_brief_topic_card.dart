@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class DailyBriefTopicCard extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageWidth = MediaQuery.of(context).size.width * 2;
+    final imageWidth = DimensionUtil.getPhysicalPixelsAsInt(MediaQuery.of(context).size.width, context);
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -73,7 +74,7 @@ class DailyBriefTopicCard extends HookWidget {
                               child: Image.network(
                                 CloudinaryImageExtension.withPublicId(topic.image.publicId)
                                     .transform()
-                                    .width(imageWidth.ceil())
+                                    .width(imageWidth)
                                     .fit()
                                     .generate()!,
                                 fit: BoxFit.fitHeight,
@@ -102,7 +103,7 @@ class DailyBriefTopicCard extends HookWidget {
                   child: Image.network(
                     CloudinaryImageExtension.withPublicId(topic.image.publicId)
                         .transform()
-                        .width(imageWidth.ceil())
+                        .width(imageWidth)
                         .fit()
                         .generate()!,
                     loadingBuilder: (context, widget, event) => widget,
