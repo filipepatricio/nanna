@@ -80,6 +80,10 @@
       "premium": "Premium",
       "exclusive": "Exclusive"
     },
+    "label": {
+      "opinion": "Opinion",
+      "feature": "Feature"
+    },
     "appBar": {
       "freemium": "Free Article",
       "premium": "Premium Article"

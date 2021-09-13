@@ -55,37 +55,10 @@ class _CustomTextPainter extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final underlined = useMemoized(() {
-      final underlined = <Offset>[];
-      final computedSpans = <InlineSpan>[];
-      var totalLength = 0.0;
-
-      for (final span in spans) {
-        computedSpans.add(span);
-
-        final textPainter = TextPainter(
-          textDirection: TextDirection.ltr,
-          text: TextSpan(children: computedSpans),
-          textAlign: TextAlign.left,
-        );
-        textPainter.layout(maxWidth: size.maxWidth);
-
-        final width = textPainter
-            .computeLineMetrics()
-            .map((lineMetrics) => lineMetrics.width)
-            .reduce((value, element) => value + element);
-
-        if (span.style?.decoration?.contains(TextDecoration.underline) == true) {
-          final start = totalLength;
-          final end = width;
-          underlined.add(Offset(start, end));
-        }
-
-        totalLength = width;
-      }
-
-      return underlined;
-    }, [size, spans]);
+    final underlined = useMemoized(
+      () => _computeUnderlinedOffsets().toList(growable: false),
+      [size, spans],
+    );
 
     final textPainter = useMemoized(() {
       final textPainter = TextPainter(
@@ -102,7 +75,7 @@ class _CustomTextPainter extends HookWidget {
     final spansWithoutDecoration = useMemoized(() {
       return spans.map(
         (span) {
-          if (span is TextSpan && span.style?.decoration?.contains(TextDecoration.underline) == true) {
+          if (span is TextSpan && _isHighlighted(span)) {
             return TextSpan(
               text: span.text,
               style: span.style?.copyWith(decoration: TextDecoration.none),
@@ -116,7 +89,11 @@ class _CustomTextPainter extends HookWidget {
 
     return CustomPaint(
       size: textPainter.size,
-      painter: _CustomHighlightTextPainter(textPainter, underlined, highlightColor),
+      painter: _CustomHighlightTextPainter(
+        textPainter,
+        underlined,
+        highlightColor,
+      ),
       child: selectable
           ? SelectableText.rich(
               TextSpan(children: spansWithoutDecoration),
@@ -125,9 +102,48 @@ class _CustomTextPainter extends HookWidget {
           : RichText(
               maxLines: maxLines,
               text: TextSpan(children: spansWithoutDecoration),
-              overflow: TextOverflow.ellipsis,
+              overflow: maxLines != null ? TextOverflow.ellipsis : TextOverflow.clip,
             ),
     );
+  }
+
+  Iterable<Offset> _computeUnderlinedOffsets() sync* {
+    final computedSpans = <InlineSpan>[];
+
+    for (final span in spans) {
+      if (_isHighlighted(span)) {
+        final startWidth = TextPainter(
+          textDirection: TextDirection.ltr,
+          text: TextSpan(children: computedSpans),
+          textAlign: TextAlign.left,
+        );
+        startWidth.layout(maxWidth: size.maxWidth);
+        final startPosition = _computeTextWidth(startWidth);
+
+        computedSpans.add(span);
+
+        final endWidth = TextPainter(
+          textDirection: TextDirection.ltr,
+          text: TextSpan(children: computedSpans),
+          textAlign: TextAlign.left,
+        );
+        endWidth.layout(maxWidth: size.maxWidth);
+        final endPosition = _computeTextWidth(endWidth);
+
+        yield Offset(startPosition, endPosition);
+      } else {
+        computedSpans.add(span);
+      }
+    }
+  }
+
+  bool _isHighlighted(InlineSpan span) => span.style?.decoration?.contains(TextDecoration.underline) == true;
+
+  double _computeTextWidth(TextPainter textPainter) {
+    return textPainter
+        .computeLineMetrics()
+        .map((lineMetrics) => lineMetrics.width)
+        .reduce((value, element) => value + element);
   }
 }
 

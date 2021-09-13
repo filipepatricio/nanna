@@ -97,6 +97,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h5MediumSmall = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 14,
+    height: 1.85,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle subH1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,

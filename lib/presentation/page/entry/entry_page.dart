@@ -16,8 +16,14 @@ class EntryPage extends HookWidget {
 
     useCubitListener<EntryPageCubit, EntryPageState>(cubit, (cubit, state, context) {
       state.maybeWhen(
-        alreadySignedIn: () => AutoRouter.of(context).popAndPush(const MainPageRoute()),
-        notSignedIn: () => AutoRouter.of(context).popAndPush(const SignInPageRoute()),
+        alreadySignedIn: () => AutoRouter.of(context).pushAndPopUntil(
+          const MainPageRoute(),
+          predicate: (_) => false,
+        ),
+        notSignedIn: () => AutoRouter.of(context).pushAndPopUntil(
+          const SignInPageRoute(),
+          predicate: (_) => false,
+        ),
         orElse: () {},
       );
     });

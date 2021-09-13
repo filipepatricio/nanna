@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -12,12 +13,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 const _pageViewHeight = 500.0;
 
 class ReadingListSectionView extends HookWidget {
-  const ReadingListSectionView({Key? key}) : super(key: key);
+  final ExploreContentSectionReadingLists section;
+
+  const ReadingListSectionView({
+    required this.section,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = usePageController();
-    final width = MediaQuery.of(context).size.width;
+    final controller = usePageController(viewportFraction: 0.9);
+    final width = MediaQuery.of(context).size.width * 0.9;
 
     return Container(
       color: AppColors.background,
@@ -30,9 +36,9 @@ class ReadingListSectionView extends HookWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: InformedMarkdownBody(
-                    markdown: '**Reading** list',   // TODO will be from API
+                    markdown: section.title,
                     baseTextStyle: AppTypography.h1,
                   ),
                 ),
@@ -45,19 +51,25 @@ class ReadingListSectionView extends HookWidget {
           Container(
             height: _pageViewHeight,
             child: PageView.builder(
+              padEnds: false,
               controller: controller,
-              itemBuilder: (context, index) => ReadingListStackedCards(
-                coverSize: Size(width * 0.9, _pageViewHeight),
-                child: const ReadingListCover(),
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.only(left: AppDimens.l),
+                child: ReadingListStackedCards(
+                  coverSize: Size(width, _pageViewHeight),
+                  child: ReadingListCover(
+                    topic: section.topics[index],
+                  ),
+                ),
               ),
-              itemCount: 5,
+              itemCount: section.topics.length,
             ),
           ),
           const SizedBox(height: AppDimens.l),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: PageDotIndicator(
-              pageCount: 5,
+              pageCount: section.topics.length,
               controller: controller,
             ),
           ),

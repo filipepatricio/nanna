@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -5,7 +6,8 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
-import 'package:better_informed_mobile/presentation/widget/exclusive_label.dart';
+import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
+import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +19,11 @@ const _publisherLogoSize = 24.0;
 
 class ArticleListItem extends StatelessWidget {
   final ArticleHeader articleHeader;
+  final Color themeColor;
 
   const ArticleListItem({
     required this.articleHeader,
+    required this.themeColor,
     Key? key,
   }) : super(key: key);
 
@@ -39,9 +43,11 @@ class ArticleListItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
-              child: ExclusiveLabel(),
+              child: articleHeader.type == ArticleType.premium
+                  ? const ExclusiveLabel()
+                  : ArticleLabel.opinion(backgroundColor: themeColor),
             ),
             const Spacer(),
             Align(

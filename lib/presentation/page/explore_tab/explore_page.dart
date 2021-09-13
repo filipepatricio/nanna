@@ -1,7 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
-import 'package:better_informed_mobile/domain/article/data/publisher.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as article_image;
+import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_section/article_section_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_cubit.dart';
@@ -22,36 +19,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _topMargin = 80.0;
-
-final mockedArticleList = [
-  ArticleHeader(
-    slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
-    title: 'Israel’s opposition has finally mustered a majority to dislodge Binyamin Netanyahu',
-    type: ArticleType.premium,
-    publicationDate: '2021-02-03',
-    timeToRead: 5,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
-    image: article_image.Image(publicId: 'articles/storm'),
-  ),
-  ArticleHeader(
-    slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
-    title: 'Israels government: End of Netanyahu era?',
-    type: ArticleType.premium,
-    publicationDate: '2021-02-09',
-    timeToRead: 3,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
-    image: article_image.Image(publicId: 'articles/storm'),
-  ),
-  ArticleHeader(
-    slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
-    title: 'China allows three children in major policy shift',
-    type: ArticleType.premium,
-    publicationDate: '2021-02-08',
-    timeToRead: 6,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
-    image: article_image.Image(publicId: 'articles/storm'),
-  ),
-];
 
 class ExplorePage extends HookWidget {
   @override
@@ -87,7 +54,7 @@ class ExplorePage extends HookWidget {
                       child: Loader(),
                     ),
                   ),
-                  idle: (state) => const _Idle(),
+                  idle: (state) => _Idle(sections: state.sections),
                   orElse: () => const SliverToBoxAdapter(
                     child: SizedBox(),
                   ),
@@ -102,17 +69,18 @@ class ExplorePage extends HookWidget {
 }
 
 class _Idle extends StatelessWidget {
-  const _Idle({Key? key}) : super(key: key);
+  final List<ExploreContentSection> sections;
+
+  const _Idle({
+    required this.sections,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildListDelegate(
-        [
-          ArticleSectionView(articles: mockedArticleList, backgroundColor: AppColors.limeGreen),
-          const ReadingListSectionView(),
-          ArticleSectionView(articles: mockedArticleList, backgroundColor: AppColors.pastelGreen),
-        ],
+        sections.map((section) => _Section(section: section)).toList(growable: false),
       ),
     );
   }
@@ -159,6 +127,23 @@ class _Header extends StatelessWidget {
           const SizedBox(height: AppDimens.l),
         ],
       ),
+    );
+  }
+}
+
+class _Section extends StatelessWidget {
+  final ExploreContentSection section;
+
+  const _Section({
+    required this.section,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return section.map(
+      articles: (section) => ArticleSectionView(section: section),
+      readingLists: (section) => ReadingListSectionView(section: section),
     );
   }
 }

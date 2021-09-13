@@ -1,4 +1,6 @@
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_section/article_list_item.dart';
@@ -7,7 +9,8 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
-import 'package:better_informed_mobile/presentation/widget/exclusive_label.dart';
+import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
+import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
@@ -21,19 +24,19 @@ const _mainArticleCoverBottomMargin = 100.0;
 const _publisherLogoSize = 24.0;
 
 class ArticleSectionView extends StatelessWidget {
-  final List<ArticleHeader> articles;
-  final Color backgroundColor;
+  final ExploreContentSectionArticles section;
 
   const ArticleSectionView({
-    required this.articles,
-    required this.backgroundColor,
+    required this.section,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = Color(section.themeColor);
+
     return Container(
-      color: backgroundColor,
+      color: themeColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,11 +46,12 @@ class ArticleSectionView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: InformedMarkdownBody(
-                    markdown: '**Exclusive** news', // TODO should be coming from API
+                    markdown: section.title,
                     baseTextStyle: AppTypography.h1,
                     highlightColor: AppColors.background,
+                    maxLines: 2,
                   ),
                 ),
                 SeeAllButton(onTap: () {}),
@@ -59,7 +63,8 @@ class ArticleSectionView extends StatelessWidget {
             padding: const EdgeInsets.only(left: AppDimens.l),
             height: _mainArticleHeight,
             child: _MainArticle(
-              articleHeader: articles[0],
+              articleHeader: section.articles[0],
+              themeColor: themeColor,
             ),
           ),
           const SizedBox(height: AppDimens.l),
@@ -68,9 +73,12 @@ class ArticleSectionView extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              itemBuilder: (context, index) => ArticleListItem(articleHeader: articles[index]),
+              itemBuilder: (context, index) => ArticleListItem(
+                articleHeader: section.articles[index],
+                themeColor: themeColor,
+              ),
               separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-              itemCount: articles.length,
+              itemCount: section.articles.length,
             ),
           ),
           const SizedBox(height: AppDimens.xxl),
@@ -82,9 +90,11 @@ class ArticleSectionView extends StatelessWidget {
 
 class _MainArticle extends StatelessWidget {
   final ArticleHeader articleHeader;
+  final Color themeColor;
 
   const _MainArticle({
     required this.articleHeader,
+    required this.themeColor,
     Key? key,
   }) : super(key: key);
 
@@ -105,7 +115,11 @@ class _MainArticle extends StatelessWidget {
               height: _mainArticleHeight,
               child: imageId != null
                   ? Image.network(
-                      CloudinaryImageExtension.withPublicId(imageId).url,
+                      CloudinaryImageExtension.withPublicId(imageId)
+                          .transform()
+                          .width(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxWidth, context))
+                          .fit()
+                          .generate()!,
                       fit: BoxFit.cover,
                       alignment: Alignment.bottomLeft,
                     )
@@ -121,7 +135,10 @@ class _MainArticle extends StatelessWidget {
               left: AppDimens.zero,
               bottom: _mainArticleCoverBottomMargin,
               right: constraints.maxWidth * 0.45,
-              child: _MainArticleCover(articleHeader: articleHeader),
+              child: _MainArticleCover(
+                articleHeader: articleHeader,
+                themeColor: themeColor,
+              ),
             ),
             Positioned(
               top: AppDimens.l,
@@ -144,9 +161,11 @@ class _MainArticle extends StatelessWidget {
 
 class _MainArticleCover extends StatelessWidget {
   final ArticleHeader articleHeader;
+  final Color themeColor;
 
   const _MainArticleCover({
     required this.articleHeader,
+    required this.themeColor,
     Key? key,
   }) : super(key: key);
 
@@ -158,9 +177,11 @@ class _MainArticleCover extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
-            child: ExclusiveLabel(),
+            child: articleHeader.type == ArticleType.premium
+                ? const ExclusiveLabel()
+                : ArticleLabel.opinion(backgroundColor: themeColor),
           ),
           const Spacer(),
           Align(
