@@ -15,6 +15,22 @@ class DailyBriefTitleHero extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: HeroTag.dailyBriefTitle,
+      flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
+        final colorTween = ColorTween(begin: Colors.black, end: Colors.white).animate(anim);
+
+        return Material(
+          color: Colors.transparent,
+          child: AnimatedBuilder(
+            animation: colorTween,
+            builder: (context, child) {
+              return Text(
+                title,
+                style: AppTypography.h1Bold.copyWith(color: colorTween.value),
+              );
+            },
+          ),
+        );
+      },
       child: Text(
         title,
         style: AppTypography.h1Bold.copyWith(color: AppColors.textPrimary),
