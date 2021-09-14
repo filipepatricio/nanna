@@ -12,6 +12,13 @@ class ExploreContentSection with _$ExploreContentSection {
     required List<ArticleHeader> articles,
   }) = ExploreContentSectionArticles;
 
+  factory ExploreContentSection.articleWithCover({
+    required String title,
+    required int themeColor,
+    required ArticleHeader coverArticle,
+    required List<ArticleHeader> articles,
+  }) = ExploreContentSectionArticleWithCover;
+
   factory ExploreContentSection.readingLists({
     required String title,
     required List<Topic> topics,
