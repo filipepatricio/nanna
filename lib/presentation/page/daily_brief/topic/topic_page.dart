@@ -21,18 +21,22 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 const _animationDuration = Duration(milliseconds: 200);
 const _pageViewportFraction = 1.0;
 const animationRangeFactor = 40.0;
+const appBarHeightDefault = 92.0;
+GlobalKey _keyRed = GlobalKey();
 
 class TopicPage extends HookWidget {
   final int index;
   final Function(int pageIndex) onPageChanged;
   final CurrentBrief currentBrief;
 
-  const TopicPage({
+  TopicPage({
     required this.index,
     required this.onPageChanged,
     required this.currentBrief,
     Key? key,
   }) : super(key: key);
+
+  final scrollPositionMapNotifier = ValueNotifier(<int, double>{});
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +44,8 @@ class TopicPage extends HookWidget {
     final pageTransitionAnimation = useAnimationController(duration: _animationDuration);
     final lastPageAnimationProgressState = useState(0.0);
     final pageIndexHook = useState(index);
-    final scrollPositionMap = useState(<int, double>{});
-
     final route = useMemoized(() => ModalRoute.of(context));
+
     useEffect(() {
       route?.animation?.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -61,19 +64,20 @@ class TopicPage extends HookWidget {
       return () => controller.removeListener(listener);
     }, [controller]);
 
+    final appBarHeight = getAppBarHeight();
+
     return LayoutBuilder(
       builder: (context, pageConstraints) => CupertinoScaffold(
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.axis == Axis.vertical) {
-              scrollPositionMap.value.update(
+              scrollPositionMapNotifier.value.update(
                 pageIndexHook.value,
                 (existingValue) => scrollInfo.metrics.pixels,
                 ifAbsent: () => scrollInfo.metrics.pixels,
               );
 
-              /// Recreate to force hook trigger rebuild
-              scrollPositionMap.value = Map.of(scrollPositionMap.value);
+              scrollPositionMapNotifier.value = Map.of(scrollPositionMapNotifier.value);
             }
             return false;
           },
@@ -95,20 +99,26 @@ class TopicPage extends HookWidget {
                     onPageChanged: onPageChanged,
                     pageTransitionAnimation: pageTransitionAnimation,
                     currentBrief: currentBrief,
-                    topicPageHeight: pageViewConstraints.maxHeight,
+                    articleContentHeight: pageViewConstraints.maxHeight - appBarHeight,
                     pageIndexHook: pageIndexHook,
-                    appBarMargin: (pageConstraints.maxHeight - pageViewConstraints.maxHeight).round(),
+                    appBarMargin: appBarHeight.toInt(),
                   ),
                 ),
                 Positioned(
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: _TopicAppBar(
-                    lastPageAnimationProgressState: lastPageAnimationProgressState,
-                    pageCount: currentBrief.topics.length,
-                    currentPageIndex: pageIndexHook.value,
-                    scrollPositionMap: scrollPositionMap,
+                  child: ValueListenableBuilder(
+                    valueListenable: scrollPositionMapNotifier,
+                    builder: (_, __, ___) {
+                      return _TopicAppBar(
+                        key: _keyRed,
+                        lastPageAnimationProgressState: lastPageAnimationProgressState,
+                        pageCount: currentBrief.topics.length,
+                        currentPageIndex: pageIndexHook.value,
+                        scrollPositionMap: scrollPositionMapNotifier.value,
+                      );
+                    },
                   ),
                 ),
               ],
@@ -118,13 +128,23 @@ class TopicPage extends HookWidget {
       ),
     );
   }
+
+  double getAppBarHeight() {
+    double? appBarHeight;
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      final renderBoxRed = _keyRed.currentContext?.findRenderObject() as RenderBox?;
+      appBarHeight = renderBoxRed?.size.height;
+      print('app bar $appBarHeight');
+    });
+    return appBarHeight ?? appBarHeightDefault;
+  }
 }
 
 class _TopicAppBar extends HookWidget {
   final ValueNotifier<double> lastPageAnimationProgressState;
   final int pageCount;
   final int currentPageIndex;
-  final ValueNotifier<Map<int, double>> scrollPositionMap;
+  final Map<int, double> scrollPositionMap;
 
   const _TopicAppBar({
     required this.lastPageAnimationProgressState,
@@ -141,6 +161,8 @@ class _TopicAppBar extends HookWidget {
     final fadeInOutController = useAnimationController(duration: const Duration(milliseconds: 300));
     final animation = Tween(begin: 1.0, end: 0.0).animate(fadeInOutController);
 
+    print("** REBUILD APPBAR :) with ${scrollPositionMap[currentPageIndex]}");
+
     useEffect(() {
       if (lastPageAnimationProgressState.value > 0.5) {
         fadeInOutController.forward();
@@ -148,7 +170,6 @@ class _TopicAppBar extends HookWidget {
         fadeInOutController.reverse();
       }
     });
-
     return AnimatedBuilder(
       animation: lastPageAnimationProgressState,
       builder: (context, widget) {
@@ -156,7 +177,7 @@ class _TopicAppBar extends HookWidget {
             ? LocaleKeys.dailyBrief_relax.tr()
             : LocaleKeys.dailyBrief_title.tr();
 
-        final currentPageScrollValue = scrollPositionMap.value[currentPageIndex] ?? 0;
+        final currentPageScrollValue = scrollPositionMap[currentPageIndex] ?? 0;
 
         final toBlackHorizontalTween = whiteToBlack.transform(lastPageAnimationProgressState.value);
         final toWhiteVerticalTween = transparentToWhite.transform(currentPageScrollValue / animationRangeFactor);
@@ -226,7 +247,7 @@ class _PageViewContent extends StatelessWidget {
   final Function(int pageIndex) onPageChanged;
   final AnimationController pageTransitionAnimation;
   final CurrentBrief currentBrief;
-  final double topicPageHeight;
+  final double articleContentHeight;
   final ValueNotifier pageIndexHook;
   final int? appBarMargin;
 
@@ -235,7 +256,7 @@ class _PageViewContent extends StatelessWidget {
     required this.onPageChanged,
     required this.pageTransitionAnimation,
     required this.currentBrief,
-    required this.topicPageHeight,
+    required this.articleContentHeight,
     required this.pageIndexHook,
     this.appBarMargin,
     Key? key,
@@ -259,7 +280,7 @@ class _PageViewContent extends StatelessWidget {
             index: index,
             pageTransitionAnimation: pageTransitionAnimation,
             topic: currentBrief.topics[index],
-            topicPageHeight: topicPageHeight,
+            articleContentHeight: articleContentHeight,
             appBarMargin: appBarMargin,
           );
         }

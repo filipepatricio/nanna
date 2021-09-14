@@ -22,14 +22,14 @@ class TopicView extends HookWidget {
   final int index;
   final AnimationController pageTransitionAnimation;
   final Topic topic;
-  final double topicPageHeight;
+  final double articleContentHeight;
   final int? appBarMargin;
 
   const TopicView({
     required this.index,
     required this.pageTransitionAnimation,
     required this.topic,
-    required this.topicPageHeight,
+    required this.articleContentHeight,
     this.appBarMargin,
     Key? key,
   }) : super(key: key);
@@ -46,6 +46,7 @@ class TopicView extends HookWidget {
           pageViewController: articleController,
           topMargin: appBarMargin,
         ));
+
     //TODO: REMOVE MOCKED LIST (mocked for more length)
     final mockedList = topic.readingList.articles + topic.readingList.articles;
 
@@ -81,7 +82,7 @@ class TopicView extends HookWidget {
               pageNotesIndex: pageNotesIndex,
             ),
             _ArticleContent(
-              topicPageHeight: topicPageHeight,
+              articleContentHeight: articleContentHeight,
               controller: articleController,
               pageIndex: pageIndex,
               articleList: mockedList,
@@ -311,13 +312,13 @@ class _SummaryContent extends StatelessWidget {
 }
 
 class _ArticleContent extends StatelessWidget {
-  final double topicPageHeight;
+  final double articleContentHeight;
   final PageController controller;
   final ValueNotifier<int> pageIndex;
   final List<ArticleHeader> articleList;
 
   const _ArticleContent({
-    required this.topicPageHeight,
+    required this.articleContentHeight,
     required this.controller,
     required this.pageIndex,
     required this.articleList,
@@ -327,7 +328,7 @@ class _ArticleContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
-      height: topicPageHeight,
+      height: articleContentHeight,
       child: Stack(
         children: [
           Container(
