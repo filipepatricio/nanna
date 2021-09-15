@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -19,18 +20,23 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _pageViewportFraction = 1.0;
+const animationRangeFactor = 40.0;
+const appBarHeightDefault = 92.0;
+GlobalKey _keyRed = GlobalKey();
 
 class TopicPage extends HookWidget {
   final int index;
   final Function(int pageIndex) onPageChanged;
   final CurrentBrief currentBrief;
 
-  const TopicPage({
+  TopicPage({
     required this.index,
     required this.onPageChanged,
     required this.currentBrief,
     Key? key,
   }) : super(key: key);
+
+  final scrollPositionMapNotifier = ValueNotifier(<int, double>{});
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +44,8 @@ class TopicPage extends HookWidget {
     final pageTransitionAnimation = useAnimationController(duration: _animationDuration);
     final lastPageAnimationProgressState = useState(0.0);
     final pageIndexHook = useState(index);
-
     final route = useMemoized(() => ModalRoute.of(context));
+
     useEffect(() {
       route?.animation?.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -58,64 +64,112 @@ class TopicPage extends HookWidget {
       return () => controller.removeListener(listener);
     }, [controller]);
 
+    final appBarHeight = getAppBarHeight();
+
     return LayoutBuilder(
       builder: (context, pageConstraints) => CupertinoScaffold(
-        body: Material(
-          child: Column(
-            children: [
-              _TopicAppBar(
-                lastPageAnimationProgressState: lastPageAnimationProgressState,
-                pageCount: currentBrief.topics.length,
-                currentPageIndex: pageIndexHook.value,
-              ),
-              Expanded(
-                child: Stack(
-                  children: [
-                    SafeArea(
-                      child: Hero(
-                        tag: HeroTag.dailyBriefRelaxPage,
-                        child: RelaxView(
-                          lastPageAnimationProgressState: lastPageAnimationProgressState,
-                          goodbyeHeadline: currentBrief.goodbye,
-                        ),
-                      ),
+        body: NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            if (scrollInfo.metrics.axis == Axis.vertical) {
+              scrollPositionMapNotifier.value.update(
+                pageIndexHook.value,
+                (existingValue) => scrollInfo.metrics.pixels,
+                ifAbsent: () => scrollInfo.metrics.pixels,
+              );
+
+              scrollPositionMapNotifier.value = Map.of(scrollPositionMapNotifier.value);
+            }
+            return false;
+          },
+          child: Material(
+            child: Stack(
+              children: [
+                SafeArea(
+                  child: Hero(
+                    tag: HeroTag.dailyBriefRelaxPage,
+                    child: RelaxView(
+                      lastPageAnimationProgressState: lastPageAnimationProgressState,
+                      goodbyeHeadline: currentBrief.goodbye,
                     ),
-                    LayoutBuilder(
-                      builder: (context, pageViewConstraints) => _PageViewContent(
-                        controller: controller,
-                        onPageChanged: onPageChanged,
-                        pageTransitionAnimation: pageTransitionAnimation,
-                        currentBrief: currentBrief,
-                        topicPageHeight: pageViewConstraints.maxHeight,
-                        pageIndexHook: pageIndexHook,
-                        appBarMargin: (pageConstraints.maxHeight - pageViewConstraints.maxHeight).round(),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                LayoutBuilder(
+                  builder: (context, pageViewConstraints) => _PageViewContent(
+                    controller: controller,
+                    onPageChanged: onPageChanged,
+                    pageTransitionAnimation: pageTransitionAnimation,
+                    currentBrief: currentBrief,
+                    articleContentHeight: pageViewConstraints.maxHeight - appBarHeight,
+                    pageIndexHook: pageIndexHook,
+                    appBarMargin: appBarHeight.toInt(),
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: ValueListenableBuilder(
+                    valueListenable: scrollPositionMapNotifier,
+                    builder: (_, __, ___) {
+                      return _TopicAppBar(
+                        key: _keyRed,
+                        lastPageAnimationProgressState: lastPageAnimationProgressState,
+                        pageCount: currentBrief.topics.length,
+                        currentPageIndex: pageIndexHook.value,
+                        scrollPositionMap: scrollPositionMapNotifier.value,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  double getAppBarHeight() {
+    double? appBarHeight;
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      final renderBoxRed = _keyRed.currentContext?.findRenderObject() as RenderBox?;
+      appBarHeight = renderBoxRed?.size.height;
+      print('app bar $appBarHeight');
+    });
+    return appBarHeight ?? appBarHeightDefault;
+  }
 }
 
-class _TopicAppBar extends StatelessWidget {
+class _TopicAppBar extends HookWidget {
   final ValueNotifier<double> lastPageAnimationProgressState;
   final int pageCount;
   final int currentPageIndex;
+  final Map<int, double> scrollPositionMap;
 
   const _TopicAppBar({
     required this.lastPageAnimationProgressState,
     required this.pageCount,
     required this.currentPageIndex,
+    required this.scrollPositionMap,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final whiteToBlack = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
+    final transparentToWhite = ColorTween(begin: AppColors.transparent, end: AppColors.background);
+    final fadeInOutController = useAnimationController(duration: const Duration(milliseconds: 300));
+    final animation = Tween(begin: 1.0, end: 0.0).animate(fadeInOutController);
+
+    print("** REBUILD APPBAR :) with ${scrollPositionMap[currentPageIndex]}");
+
+    useEffect(() {
+      if (lastPageAnimationProgressState.value > 0.5) {
+        fadeInOutController.forward();
+      } else {
+        fadeInOutController.reverse();
+      }
+    });
     return AnimatedBuilder(
       animation: lastPageAnimationProgressState,
       builder: (context, widget) {
@@ -123,18 +177,21 @@ class _TopicAppBar extends StatelessWidget {
             ? LocaleKeys.dailyBrief_relax.tr()
             : LocaleKeys.dailyBrief_title.tr();
 
-        /// Going from 1 to 0 when swipe to relax page
-        final opacityValue = 1 * (1 - lastPageAnimationProgressState.value);
-        final isOnTopicPage = currentPageIndex < pageCount;
+        final currentPageScrollValue = scrollPositionMap[currentPageIndex] ?? 0;
+
+        final toBlackHorizontalTween = whiteToBlack.transform(lastPageAnimationProgressState.value);
+        final toWhiteVerticalTween = transparentToWhite.transform(currentPageScrollValue / animationRangeFactor);
+        final toBlackVerticalTween = whiteToBlack.transform(currentPageScrollValue / animationRangeFactor);
+
+        final textIconColorTween =
+            lastPageAnimationProgressState.value > 0.5 ? toBlackHorizontalTween : toBlackVerticalTween;
 
         return Material(
-          elevation: isOnTopicPage ? opacityValue : 0,
+          color: toWhiteVerticalTween,
           child: AppBar(
             titleSpacing: 0,
             automaticallyImplyLeading: false,
-            backwardsCompatibility: false,
             systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: AppColors.transparent),
-            brightness: Brightness.light,
             centerTitle: false,
             title: Row(
               children: [
@@ -145,6 +202,7 @@ class _TopicAppBar extends StatelessWidget {
                     child: SvgPicture.asset(
                       AppVectorGraphics.arrowRight,
                       height: AppDimens.backArrowSize,
+                      color: textIconColorTween,
                     ),
                   ),
                 ),
@@ -152,25 +210,23 @@ class _TopicAppBar extends StatelessWidget {
                   tag: HeroTag.dailyBriefTitle,
                   child: Text(
                     text,
-                    style: AppTypography.h1Bold,
+                    style: AppTypography.h1Bold.copyWith(color: textIconColorTween),
                   ),
                 ),
-                if (isOnTopicPage) ...[
-                  const SizedBox(width: AppDimens.m),
-                  Expanded(
-                    child: Opacity(
-                      opacity: opacityValue,
-                      child: LinearPercentIndicator(
-                        lineHeight: AppDimens.xs,
-                        percent: _countProgressValue(),
-                        linearStrokeCap: LinearStrokeCap.roundAll,
-                        backgroundColor: AppColors.grey.withOpacity(0.44),
-                        progressColor: AppColors.limeGreen,
-                      ),
+                const SizedBox(width: AppDimens.m),
+                Expanded(
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: LinearPercentIndicator(
+                      lineHeight: AppDimens.xs,
+                      percent: _countProgressValue(),
+                      linearStrokeCap: LinearStrokeCap.roundAll,
+                      backgroundColor: AppColors.grey.withOpacity(0.44),
+                      progressColor: AppColors.limeGreen,
                     ),
                   ),
-                  const SizedBox(width: AppDimens.l),
-                ],
+                ),
+                const SizedBox(width: AppDimens.l),
               ],
             ),
           ),
@@ -191,7 +247,7 @@ class _PageViewContent extends StatelessWidget {
   final Function(int pageIndex) onPageChanged;
   final AnimationController pageTransitionAnimation;
   final CurrentBrief currentBrief;
-  final double topicPageHeight;
+  final double articleContentHeight;
   final ValueNotifier pageIndexHook;
   final int? appBarMargin;
 
@@ -200,7 +256,7 @@ class _PageViewContent extends StatelessWidget {
     required this.onPageChanged,
     required this.pageTransitionAnimation,
     required this.currentBrief,
-    required this.topicPageHeight,
+    required this.articleContentHeight,
     required this.pageIndexHook,
     this.appBarMargin,
     Key? key,
@@ -224,7 +280,7 @@ class _PageViewContent extends StatelessWidget {
             index: index,
             pageTransitionAnimation: pageTransitionAnimation,
             topic: currentBrief.topics[index],
-            topicPageHeight: topicPageHeight,
+            articleContentHeight: articleContentHeight,
             appBarMargin: appBarMargin,
           );
         }
