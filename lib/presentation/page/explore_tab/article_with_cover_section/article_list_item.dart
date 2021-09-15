@@ -20,10 +20,12 @@ const _publisherLogoSize = 24.0;
 class ArticleListItem extends StatelessWidget {
   final ArticleHeader articleHeader;
   final Color themeColor;
+  final Color cardColor;
 
   const ArticleListItem({
     required this.articleHeader,
     required this.themeColor,
+    this.cardColor = AppColors.background,
     Key? key,
   }) : super(key: key);
 
@@ -36,7 +38,7 @@ class ArticleListItem extends StatelessWidget {
         useRootNavigator: true,
       ),
       child: Container(
-        color: AppColors.background,
+        color: cardColor,
         padding: const EdgeInsets.all(AppDimens.m),
         height: listItemHeight,
         width: listItemWidth,

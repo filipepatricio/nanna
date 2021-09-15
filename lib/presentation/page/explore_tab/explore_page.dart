@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_section/article_section_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_with_cover_section_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/reading_list_section/reading_list_section_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
@@ -143,6 +144,7 @@ class _Section extends StatelessWidget {
   Widget build(BuildContext context) {
     return section.map(
       articles: (section) => ArticleSectionView(section: section),
+      articleWithCover: (section) => ArticleWithCoverSectionView(section: section),
       readingLists: (section) => ReadingListSectionView(section: section),
     );
   }

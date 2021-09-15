@@ -80,15 +80,23 @@ final mockedArticleList2 = [
   ),
 ];
 
-final exclusiveSection = ExploreContentSection.articles(
+final exclusiveSection = ExploreContentSection.articleWithCover(
   title: 'Exclusive news',
   themeColor: AppColors.limeGreen.value,
+  coverArticle: mockedArticleList2[0],
   articles: mockedArticleList1,
 );
 
-final editorTeamSection = ExploreContentSection.articles(
+final editorTeamSection = ExploreContentSection.articleWithCover(
   title: 'By our Editorial team',
   themeColor: AppColors.pastelGreen.value,
+  coverArticle: mockedArticleList1[0],
+  articles: mockedArticleList2,
+);
+
+final missedArticlesSection = ExploreContentSection.articles(
+  title: 'In case you missed',
+  themeColor: AppColors.background.value,
   articles: mockedArticleList2,
 );
 
@@ -155,6 +163,7 @@ class GetExploreContentUseCase {
       sections: [
         exclusiveSection,
         readingListSection,
+        missedArticlesSection,
         editorTeamSection,
       ],
     );
