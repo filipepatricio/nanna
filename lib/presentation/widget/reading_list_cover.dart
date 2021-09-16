@@ -21,100 +21,72 @@ class ReadingListCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: LayoutBuilder(
-        builder: (context, constraints) => Container(
-          // decoration: const BoxDecoration(
-          //   image: DecorationImage(
-          //     image: NetworkImage('url'),  // TODO will be coming from API
-          //     fit: BoxFit.cover,
-          //     alignment: Alignment.center,
-          //   ),
-          // ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(AppDimens.l),
-                child: AuthorRow(topic: topic),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: const Alignment(0.0, 0.0),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                    child: InformedMarkdownBody(
-                      markdown: topic.title,
-                      baseTextStyle: AppTypography.h0SemiBold,
-                      maxLines: 3,
-                    ),
+    return LayoutBuilder(
+      builder: (context, constraints) => Container(
+        // decoration: const BoxDecoration(
+        //   image: DecorationImage(
+        //     image: NetworkImage('url'),  // TODO will be coming from API
+        //     fit: BoxFit.cover,
+        //     alignment: Alignment.center,
+        //   ),
+        // ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(AppDimens.l),
+              child: AuthorRow(topic: topic),
+            ),
+            Expanded(
+              child: Align(
+                alignment: const Alignment(0.0, 0.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: InformedMarkdownBody(
+                    markdown: topic.title,
+                    baseTextStyle: AppTypography.h0Bold,
+                    maxLines: 3,
                   ),
                 ),
               ),
-              const SizedBox(height: AppDimens.s),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: _EditorsNote(),
-              ),
-              const SizedBox(height: AppDimens.xl),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: _PublisherLogoRow(topic: topic),
-              ),
-              const SizedBox(height: AppDimens.l),
-              Container(
-                height: 1.0,
-                color: AppColors.textPrimary,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(AppDimens.l),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      LocaleKeys.readingList_articleCount.tr(
-                        args: [
-                          topic.readingList.articles.length.toString(),
-                        ],
-                      ),
-                      style: AppTypography.b3Medium,
+            ),
+            const SizedBox(height: AppDimens.s),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: _EditorsNote(),
+            ),
+            const SizedBox(height: AppDimens.xl),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: _PublisherLogoRow(topic: topic),
+            ),
+            const SizedBox(height: AppDimens.l),
+            Container(
+              height: 1.0,
+              color: AppColors.textPrimary,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(AppDimens.l),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    LocaleKeys.readingList_articleCount.tr(
+                      args: [topic.readingList.articles.length.toString()],
                     ),
-                    const Spacer(),
-                    UpdatedLabel(
-                      text: 'Updated 2 days ago'.toUpperCase(),
-                      backgroundColor: AppColors.pastelGreen,
-                    ),
-                  ],
-                ),
+                    style: AppTypography.b3Medium,
+                  ),
+                  const Spacer(),
+                  UpdatedLabel(
+                    text: 'Updated 2 days ago'.toUpperCase(),
+                    backgroundColor: AppColors.pastelGreen,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
-}
-
-class _AuthorRow extends StatelessWidget {
-  final Topic topic;
-
-  const _AuthorRow({
-    required this.topic,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Image.asset(AppRasterGraphics.editorSample),
-        const SizedBox(width: AppDimens.s),
-        Text(
-          'By Editorial Team', // TODO probably will be coming from API
-          style: AppTypography.metadata2Bold.copyWith(fontStyle: FontStyle.italic),
-        ),
-      ],
     );
   }
 }
