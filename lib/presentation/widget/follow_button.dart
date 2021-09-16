@@ -4,10 +4,10 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ShareButton extends StatelessWidget {
+class FollowButton extends StatelessWidget {
   final VoidCallback onTap;
 
-  const ShareButton({
+  const FollowButton({
     required this.onTap,
     Key? key,
   }) : super(key: key);
@@ -23,7 +23,8 @@ class ShareButton extends StatelessWidget {
           color: AppColors.white,
         ),
         child: SvgPicture.asset(
-          AppVectorGraphics.share,
+          AppVectorGraphics.follow,
+          color: AppColors.black,
         ),
       ),
     );

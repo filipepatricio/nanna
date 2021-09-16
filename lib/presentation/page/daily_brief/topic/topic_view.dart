@@ -4,13 +4,19 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/vertical_indicators.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
+import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
+import 'package:better_informed_mobile/presentation/widget/follow_button.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
+import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +46,6 @@ class TopicView extends HookWidget {
     final pageNotesIndex = useState(0);
     final listScrollController = useScrollController();
     final articleController = usePageController();
-    final notesController = usePageController(viewportFraction: 0.8);
     final gestureManager = useMemoized(() => TopicCustomVerticalDragManager(
           generalViewController: listScrollController,
           pageViewController: articleController,
@@ -78,7 +83,6 @@ class TopicView extends HookWidget {
             ),
             _SummaryContent(
               topic: topic,
-              controller: notesController,
               pageNotesIndex: pageNotesIndex,
             ),
             _ArticleContent(
@@ -157,17 +161,12 @@ class _TopicHeader extends HookWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    //TODO: missing data
-                    Text(
-                      'Updated 5 hours ago',
-                      style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
-                    ),
+                    AuthorRow(topic: topic),
                     const SizedBox(height: AppDimens.m),
-                    //TODO: Add hero animation to title
                     InformedMarkdownBody(
                       markdown: topic.title,
                       baseTextStyle: AppTypography.h1Bold.copyWith(fontSize: 44),
-                      maxLines: 4,
+                      maxLines: 2,
                     ),
                     const SizedBox(height: AppDimens.ml),
                     Row(
@@ -176,8 +175,9 @@ class _TopicHeader extends HookWidget {
                         SvgPicture.asset(AppVectorGraphics.articles),
                         const SizedBox(width: AppDimens.s),
                         Text(
-                          LocaleKeys.dailyBrief_selectedArticles
-                              .tr(args: [topic.readingList.articles.length.toString()]),
+                          LocaleKeys.dailyBrief_selectedArticles.tr(
+                            args: [topic.readingList.articles.length.toString()],
+                          ),
                           style: AppTypography.b3Regular.copyWith(height: 1),
                           textAlign: TextAlign.center,
                         ),
@@ -188,33 +188,14 @@ class _TopicHeader extends HookWidget {
                       opacity: pageTransitionAnimation,
                       child: Row(
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.grey),
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset(AppVectorGraphics.follow, color: AppColors.black),
-                            ),
-                          ),
+                          FollowButton(onTap: () {}),
                           const SizedBox(width: AppDimens.m),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.grey),
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset(AppVectorGraphics.share, color: AppColors.black),
-                            ),
-                          ),
+                          ShareButton(onTap: () {}),
                           const Spacer(),
-                          SvgPicture.asset(AppVectorGraphics.clock),
-                          const SizedBox(width: AppDimens.s),
-                          Text(
-                            LocaleKeys.article_readMinutes.tr(args: ['45']),
-                            style: AppTypography.b3Regular.copyWith(height: 1),
+                          //TODO: add missing data
+                          UpdatedLabel(
+                            text: 'Updated 2 days ago'.toUpperCase(),
+                            backgroundColor: AppColors.white,
                           ),
                         ],
                       ),
@@ -231,23 +212,21 @@ class _TopicHeader extends HookWidget {
   }
 }
 
-class _SummaryContent extends StatelessWidget {
-  final PageController controller;
+class _SummaryContent extends HookWidget {
   final ValueNotifier<int> pageNotesIndex;
   final Topic topic;
 
   const _SummaryContent({
     required this.topic,
-    required this.controller,
     required this.pageNotesIndex,
   });
 
   @override
   Widget build(BuildContext context) {
+    final controller = usePageController(viewportFraction: 0.8);
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.86,
-      padding: const EdgeInsets.all(AppDimens.l),
+      height: MediaQuery.of(context).size.height * 0.74,
       color: AppColors.lightGrey,
       child: Stack(
         children: [
@@ -255,54 +234,62 @@ class _SummaryContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              InformedMarkdownBody(
-                markdown: 'The __bigger picture__',
-                baseTextStyle: AppTypography.h1Bold.copyWith(fontSize: 28),
+              const SizedBox(height: AppDimens.l),
+              Padding(
+                padding: const EdgeInsets.only(left: AppDimens.l),
+                child: Text(
+                  LocaleKeys.dailyBrief_biggerPicture.tr(),
+                  style: AppTypography.h1Medium,
+                ),
               ),
               const SizedBox(height: AppDimens.l),
-              Expanded(
-                child: PageView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: controller,
-                  onPageChanged: (index) => pageNotesIndex.value = index,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.45,
-                        color: AppColors.limeGreenBleached,
-                        child: const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(AppDimens.l),
-                            child: Text(
-                              'Lashkar Gah and the rest of the Helmand province have been at the heart of the US and British military campaigns.',
-                              style: AppTypography.b2MediumSerif,
+              Padding(
+                padding: const EdgeInsets.only(left: AppDimens.m),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: PageView.builder(
+                    padEnds: false,
+                    controller: controller,
+                    onPageChanged: (index) => pageNotesIndex.value = index,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+                        child: Container(
+                          color: AppColors.mockedColors[index % AppColors.mockedColors.length],
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(AppDimens.l),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: AppDimens.c),
+                                  //TODO: Get data from api, remove if statement
+                                  if (index % 2 == 0) Image.asset(AppRasterGraphics.mockedComputerMan),
+                                  const SizedBox(height: AppDimens.l),
+                                  const InformedMarkdownBody(
+                                    markdown:
+                                        '* Lashkar Gah and the rest of the Helmand province have been at the heart of the US and British military campaigns.',
+                                    baseTextStyle: AppTypography.b2MediumSerif,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: AppDimens.c),
-              if (topic.summary.isNotEmpty) ...[
-                InformedMarkdownBody(
-                  markdown: 'Why does it __matter to you?__',
-                  baseTextStyle: AppTypography.h1Bold.copyWith(fontSize: 28),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(AppDimens.l),
-                  color: AppColors.lightGrey,
-                  child: InformedMarkdownBody(
-                    markdown: topic.summary,
-                    baseTextStyle: AppTypography.b1Medium,
-                    selectable: true,
+                      );
+                    },
                   ),
                 ),
-              ],
+              ),
+              const SizedBox(height: AppDimens.xl),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: PageDotIndicator(
+                  pageCount: 5,
+                  controller: controller,
+                ),
+              ),
             ],
           ),
         ],

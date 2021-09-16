@@ -29,7 +29,7 @@ class SeeAllButton extends StatelessWidget {
         child: Center(
           child: Text(
             tr(LocaleKeys.common_seeAll),
-            style: AppTypography.systemText.copyWith(height: 1),
+            style: AppTypography.b3Medium.copyWith(height: 1),
           ),
         ),
       ),

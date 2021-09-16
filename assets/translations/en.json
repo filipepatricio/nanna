@@ -28,7 +28,8 @@
     "loading": "Just a sec.\nWe’re loading your brief.",
     "readingList": "Reading list",
     "relax": "Relax",
-    "selectedArticles": "{} selected articles"
+    "selectedArticles": "{} selected articles",
+    "biggerPicture": "The bigger picture"
   },
   "settings": {
     "settings": "Settings",

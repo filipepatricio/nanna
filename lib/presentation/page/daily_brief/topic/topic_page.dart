@@ -20,7 +20,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _pageViewportFraction = 1.0;
-const animationRangeFactor = 40.0;
+const animationRangeFactor = 70.0;
 const appBarHeightDefault = 92.0;
 GlobalKey _keyRed = GlobalKey();
 
@@ -160,8 +160,6 @@ class _TopicAppBar extends HookWidget {
     final transparentToWhite = ColorTween(begin: AppColors.transparent, end: AppColors.background);
     final fadeInOutController = useAnimationController(duration: const Duration(milliseconds: 300));
     final animation = Tween(begin: 1.0, end: 0.0).animate(fadeInOutController);
-
-    print("** REBUILD APPBAR :) with ${scrollPositionMap[currentPageIndex]}");
 
     useEffect(() {
       if (lastPageAnimationProgressState.value > 0.5) {
