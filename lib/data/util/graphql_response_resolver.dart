@@ -1,6 +1,8 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLResponseResolver<T> {
+  const GraphQLResponseResolver._();
+
   static T? resolve<T>(
     QueryResult result,
     T Function(Map<String, dynamic> raw) mapper, {
