@@ -1,28 +1,25 @@
-import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_data.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/get_notification_preferences_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
-  SettingsNotificationCubit() : super(const SettingsNotificationsState.loading()) {
-    //TODO: REPLACE WITH USER SETTINGS WHEN AVAILABLE
-    emit(
-      SettingsNotificationsState.notificationSettingsLoaded(
-        SettingsNotificationsData(dailyBrief: false, incomingNewTopic: true, newFeatures: false),
-      ),
-    );
-  }
+  final GetNotificationPreferencesUseCase _getNotificationPreferencesUseCase;
 
-  Future<void> onDailyBriefChange(bool value) async {
-    //TODO: SAVE USER PREFERENCES
-  }
+  SettingsNotificationCubit(
+    this._getNotificationPreferencesUseCase,
+  ) : super(SettingsNotificationsState.loading());
 
-  Future<void> onIncomingNewTopicChange(bool value) async {
-    //TODO: SAVE USER PREFERENCES
-  }
+  Future<void> initialize() async {
+    emit(SettingsNotificationsState.loading());
 
-  Future<void> onNewFeaturesChange(bool value) async {
-    //TODO: SAVE USER PREFERENCES
+    try {
+      final preferences = await _getNotificationPreferencesUseCase();
+      emit(SettingsNotificationsState.notificationSettingsLoaded(preferences.groups));
+    } catch (e, s) {
+      Fimber.e('Getting notification preferences failed', ex: e, stacktrace: s);
+    }
   }
 }

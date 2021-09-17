@@ -31,6 +31,7 @@ class PushNotificationGQL {
     mutation {
       setNotificationChannelPreferences(id: "$id", pushEnabled: $pushEnabled, emailEnabled: $emailEnabled) {
         id
+        name
         pushEnabled
         emailEnabled
       }

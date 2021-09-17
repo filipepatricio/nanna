@@ -42,8 +42,10 @@ class PushNotificationGraphqlApiDataSource implements PushNotificationApiDataSou
     final dto = GraphQLResponseResolver.resolve(
       result,
       (raw) {
-        final groupsRaw = raw['getNotificationPreferences'] as List<Map<String, dynamic>>;
-        final groups = groupsRaw.map((json) => NotificationPreferencesGroupDTO.fromJson(json)).toList(growable: false);
+        final groupsRaw = raw['getNotificationPreferences'] as List<dynamic>;
+        final groups = groupsRaw
+            .map((json) => NotificationPreferencesGroupDTO.fromJson(json as Map<String, dynamic>))
+            .toList(growable: false);
         return NotificationPreferencesDTO(groups);
       },
     );
