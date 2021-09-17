@@ -122,20 +122,17 @@ class _IdleContent extends HookWidget {
               goodbyeHeadline: currentBrief.goodbye,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: AppDimens.s),
-            child: Center(
-              child: Container(
-                height: heightPageView,
-                child: PageView(
-                  padEnds: false,
-                  controller: controller,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ..._buildTopicCards(context, controller, currentBrief, width, heightPageView),
-                    Container(),
-                  ],
-                ),
+          Center(
+            child: Container(
+              height: heightPageView,
+              child: PageView(
+                padEnds: false,
+                controller: controller,
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ..._buildTopicCards(context, controller, currentBrief, width, heightPageView),
+                  Container(),
+                ],
               ),
             ),
           ),
@@ -155,12 +152,12 @@ class _IdleContent extends HookWidget {
       return MapEntry(
         key,
         Padding(
-          padding: const EdgeInsets.only(left: AppDimens.l),
+          padding: const EdgeInsets.only(left: AppDimens.xl),
           child: ReadingListStackedCards(
             coverSize: Size(width, heightPageView),
             child: ReadingListCover(
               topic: currentBrief.topics[key],
-              onPressed: () => _onTopicCardPressed(context, controller, key, currentBrief),
+              onTap: () => _onTopicCardPressed(context, controller, key, currentBrief),
             ),
           ),
         ),
