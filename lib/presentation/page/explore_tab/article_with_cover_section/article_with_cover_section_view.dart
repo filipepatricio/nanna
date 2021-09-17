@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
@@ -11,6 +12,7 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
+import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
@@ -47,14 +49,25 @@ class ArticleWithCoverSectionView extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: InformedMarkdownBody(
-                    markdown: section.title,
-                    baseTextStyle: AppTypography.h1,
-                    highlightColor: AppColors.background,
-                    maxLines: 2,
+                  child: Hero(
+                    // TODO change to some ID or UUID if available
+                    tag: HeroTag.exploreArticleTitle(section.title.hashCode),
+                    child: InformedMarkdownBody(
+                      markdown: section.title,
+                      baseTextStyle: AppTypography.h1,
+                      highlightColor: AppColors.background,
+                      maxLines: 2,
+                    ),
                   ),
                 ),
-                SeeAllButton(onTap: () {}),
+                SeeAllButton(
+                  onTap: () => AutoRouter.of(context).push(
+                    ArticleSeeAllPageRoute(
+                      title: section.title,
+                      articles: section.articles,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

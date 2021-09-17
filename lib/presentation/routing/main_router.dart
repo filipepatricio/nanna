@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article_see_all_page.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list_see_all_page.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/my_reads_tab/my_reads_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
@@ -51,6 +53,8 @@ const dashboardTabRouter = AutoRoute(
       page: HeroEmptyRouterPage,
       children: [
         AutoRoute(path: '', page: ExplorePage),
+        AutoRoute(page: ArticleSeeAllPage),
+        AutoRoute(page: ReadingListSeeAllPage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),

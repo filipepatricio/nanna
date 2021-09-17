@@ -11,77 +11,82 @@ import 'package:flutter/material.dart';
 
 class ReadingListCover extends StatelessWidget {
   final Topic topic;
+  final VoidCallback? onTap;
 
   const ReadingListCover({
     required this.topic,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) => Container(
-        // decoration: const BoxDecoration(
-        //   image: DecorationImage(
-        //     image: NetworkImage('url'),  // TODO will be coming from API
-        //     fit: BoxFit.cover,
-        //     alignment: Alignment.center,
-        //   ),
-        // ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(AppDimens.l),
-              child: _AuthorRow(topic: topic),
-            ),
-            Expanded(
-              child: Align(
-                alignment: const Alignment(0.0, 0.0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  child: InformedMarkdownBody(
-                    markdown: topic.title,
-                    baseTextStyle: AppTypography.h0SemiBold,
-                    maxLines: 3,
+    return GestureDetector(
+      onTap: onTap,
+      child: LayoutBuilder(
+        builder: (context, constraints) => Container(
+          // decoration: const BoxDecoration(
+          //   image: DecorationImage(
+          //     image: NetworkImage('url'),  // TODO will be coming from API
+          //     fit: BoxFit.cover,
+          //     alignment: Alignment.center,
+          //   ),
+          // ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(AppDimens.l),
+                child: _AuthorRow(topic: topic),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: const Alignment(0.0, 0.0),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                    child: InformedMarkdownBody(
+                      markdown: topic.title,
+                      baseTextStyle: AppTypography.h0SemiBold,
+                      maxLines: 3,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: AppDimens.s),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: _EditorsNote(),
-            ),
-            const SizedBox(height: AppDimens.m),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: _PublisherLogoRow(topic: topic),
-            ),
-            const SizedBox(height: AppDimens.m),
-            Container(
-              height: 1.0,
-              color: AppColors.textPrimary,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppDimens.l),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    LocaleKeys.readingList_articleCount.tr(
-                      args: [
-                        topic.readingList.articles.length.toString(),
-                      ],
-                    ),
-                    style: AppTypography.metadata1Regular,
-                  ),
-                  const Spacer(),
-                  const ReadMoreLabel(),
-                ],
+              const SizedBox(height: AppDimens.s),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: _EditorsNote(),
               ),
-            ),
-          ],
+              const SizedBox(height: AppDimens.m),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: _PublisherLogoRow(topic: topic),
+              ),
+              const SizedBox(height: AppDimens.m),
+              Container(
+                height: 1.0,
+                color: AppColors.textPrimary,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(AppDimens.l),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      LocaleKeys.readingList_articleCount.tr(
+                        args: [
+                          topic.readingList.articles.length.toString(),
+                        ],
+                      ),
+                      style: AppTypography.metadata1Regular,
+                    ),
+                    const Spacer(),
+                    const ReadMoreLabel(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
