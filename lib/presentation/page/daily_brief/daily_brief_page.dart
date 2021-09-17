@@ -79,8 +79,6 @@ class DailyBriefPage extends HookWidget {
   }
 }
 
-// const _pageViewHeight = 700.0;
-
 class _IdleContent extends HookWidget {
   final CurrentBrief currentBrief;
   final PageController controller;

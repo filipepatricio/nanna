@@ -24,6 +24,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
+const _summaryPageViewHeight = 365.0;
+const _topicHeaderHeight = 350.0;
+
 class TopicView extends HookWidget {
   final int index;
   final AnimationController pageTransitionAnimation;
@@ -71,15 +74,14 @@ class TopicView extends HookWidget {
         removeTop: true,
         context: context,
         child: ListView(
+          shrinkWrap: true,
           controller: listScrollController,
           physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
           children: [
-            Container(
-              child: _TopicHeader(
-                index: index,
-                pageTransitionAnimation: pageTransitionAnimation,
-                topic: topic,
-              ),
+            _TopicHeader(
+              index: index,
+              pageTransitionAnimation: pageTransitionAnimation,
+              topic: topic,
             ),
             _SummaryContent(
               topic: topic,
@@ -153,7 +155,7 @@ class _TopicHeader extends HookWidget {
           child: FadeTransition(
             opacity: pageTransitionAnimation,
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.85,
+              width: _topicHeaderHeight,
               color: AppColors.background,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.m),
@@ -166,7 +168,7 @@ class _TopicHeader extends HookWidget {
                     InformedMarkdownBody(
                       markdown: topic.title,
                       baseTextStyle: AppTypography.h1Bold.copyWith(fontSize: 44),
-                      maxLines: 2,
+                      maxLines: 3,
                     ),
                     const SizedBox(height: AppDimens.ml),
                     Row(
@@ -224,74 +226,73 @@ class _SummaryContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = usePageController(viewportFraction: 0.8);
+
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.74,
+      constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height * 0.74),
       color: AppColors.lightGrey,
-      child: Stack(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: AppDimens.l),
-              Padding(
-                padding: const EdgeInsets.only(left: AppDimens.l),
-                child: Text(
-                  LocaleKeys.dailyBrief_biggerPicture.tr(),
-                  style: AppTypography.h1Medium,
-                ),
-              ),
-              const SizedBox(height: AppDimens.l),
-              Padding(
-                padding: const EdgeInsets.only(left: AppDimens.m),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  child: PageView.builder(
-                    padEnds: false,
-                    controller: controller,
-                    onPageChanged: (index) => pageNotesIndex.value = index,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-                        child: Container(
-                          color: AppColors.mockedColors[index % AppColors.mockedColors.length],
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(AppDimens.l),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: AppDimens.c),
-                                  //TODO: Get data from api, remove if statement
-                                  if (index % 2 == 0) Image.asset(AppRasterGraphics.mockedComputerMan),
-                                  const SizedBox(height: AppDimens.l),
-                                  const InformedMarkdownBody(
-                                    markdown:
-                                        '* Lashkar Gah and the rest of the Helmand province have been at the heart of the US and British military campaigns.',
-                                    baseTextStyle: AppTypography.b2MediumSerif,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppDimens.xl),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: PageDotIndicator(
-                  pageCount: 5,
-                  controller: controller,
-                ),
-              ),
-            ],
+          const SizedBox(height: AppDimens.l),
+          Padding(
+            padding: const EdgeInsets.only(left: AppDimens.l),
+            child: Text(
+              LocaleKeys.dailyBrief_biggerPicture.tr(),
+              style: AppTypography.h1Medium,
+            ),
           ),
+          const SizedBox(height: AppDimens.l),
+          Padding(
+            padding: const EdgeInsets.only(left: AppDimens.m),
+            child: Container(
+              height: _summaryPageViewHeight,
+              child: PageView.builder(
+                padEnds: false,
+                controller: controller,
+                onPageChanged: (index) => pageNotesIndex.value = index,
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        left: AppDimens.l,
+                        right: AppDimens.l,
+                        bottom: AppDimens.l,
+                      ),
+                      color: AppColors.mockedColors[index % AppColors.mockedColors.length],
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+                          //TODO: Get data from api, remove if statement
+                          if (index % 2 == 0) Image.asset(AppRasterGraphics.mockedComputerMan),
+                          const SizedBox(height: AppDimens.l),
+                          const InformedMarkdownBody(
+                            markdown:
+                                '* Lashkar Gah and the rest of the Helmand province have been at the heart of the US and British military campaigns.',
+                            baseTextStyle: AppTypography.b2MediumSerif,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          const SizedBox(height: AppDimens.xl),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: PageDotIndicator(
+              pageCount: 5,
+              controller: controller,
+            ),
+          ),
+          const SizedBox(height: AppDimens.xl),
         ],
       ),
     );
