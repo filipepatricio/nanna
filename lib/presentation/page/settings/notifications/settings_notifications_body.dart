@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences_group.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_type.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -31,7 +32,16 @@ class SettingsNotificationsBody extends HookWidget {
           ),
           const SizedBox(height: AppDimens.l),
           ...groups
-              .map((e) => _NotificationGroup(group: e))
+              .map((e) => _NotificationGroup(group: e, notificationType: NotificationType.push))
+              .expand((element) => [element, const SizedBox(height: AppDimens.l)]),
+          const SizedBox(height: AppDimens.c),
+          Text(
+            LocaleKeys.settings_emailNotifications.tr(),
+            style: AppTypography.h3Bold,
+          ),
+          const SizedBox(height: AppDimens.l),
+          ...groups
+              .map((e) => _NotificationGroup(group: e, notificationType: NotificationType.email))
               .expand((element) => [element, const SizedBox(height: AppDimens.l)]),
         ],
       ),
@@ -41,9 +51,11 @@ class SettingsNotificationsBody extends HookWidget {
 
 class _NotificationGroup extends StatelessWidget {
   final NotificationPreferencesGroup group;
+  final NotificationType notificationType;
 
   const _NotificationGroup({
     required this.group,
+    required this.notificationType,
     Key? key,
   }) : super(key: key);
 
@@ -57,7 +69,12 @@ class _NotificationGroup extends StatelessWidget {
           style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
         ),
         const SizedBox(height: AppDimens.m),
-        ...group.channels.map((e) => NotificationSettingSwitch(channel: e)),
+        ...group.channels.map(
+          (e) => NotificationSettingSwitch(
+            channel: e,
+            notificationType: notificationType,
+          ),
+        ),
       ],
     );
   }

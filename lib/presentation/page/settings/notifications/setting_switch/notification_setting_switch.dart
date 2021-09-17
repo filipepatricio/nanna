@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_type.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -9,9 +10,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class NotificationSettingSwitch extends HookWidget {
   final NotificationChannel channel;
+  final NotificationType notificationType;
 
   const NotificationSettingSwitch({
     required this.channel,
+    required this.notificationType,
     Key? key,
   }) : super(key: key);
 
@@ -23,7 +26,7 @@ class NotificationSettingSwitch extends HookWidget {
 
     useEffect(
       () {
-        cubit.initialize(channel);
+        cubit.initialize(channel, notificationType);
       },
       [cubit],
     );
