@@ -167,7 +167,7 @@ class _TopicHeader extends HookWidget {
                     const SizedBox(height: AppDimens.m),
                     InformedMarkdownBody(
                       markdown: topic.title,
-                      baseTextStyle: AppTypography.h1Bold.copyWith(fontSize: 44),
+                      baseTextStyle: AppTypography.hBold,
                       maxLines: 3,
                     ),
                     const SizedBox(height: AppDimens.ml),

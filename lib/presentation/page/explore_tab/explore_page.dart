@@ -101,7 +101,7 @@ class _Header extends StatelessWidget {
           const SizedBox(height: _topMargin),
           Text(
             LocaleKeys.main_exploreTab.tr(),
-            style: AppTypography.h0Bold,
+            style: AppTypography.hBold,
           ),
           const SizedBox(height: AppDimens.l),
           TextField(

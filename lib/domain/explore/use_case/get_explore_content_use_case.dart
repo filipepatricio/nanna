@@ -88,7 +88,7 @@ final exclusiveSection = ExploreContentSection.articleWithCover(
 );
 
 final editorTeamSection = ExploreContentSection.articleWithCover(
-  title: 'By our **Editorial team**w',
+  title: 'By our **Editorial team**',
   themeColor: AppColors.pastelGreen.value,
   coverArticle: mockedArticleList1[0],
   articles: mockedArticleList2,

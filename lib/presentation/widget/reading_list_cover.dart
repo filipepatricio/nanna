@@ -23,6 +23,7 @@ class ReadingListCover extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: LayoutBuilder(
         builder: (context, constraints) => Container(
           // decoration: const BoxDecoration(
