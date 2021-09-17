@@ -21,16 +21,22 @@ class ArticleListItem extends StatelessWidget {
   final ArticleHeader articleHeader;
   final Color themeColor;
   final Color cardColor;
+  final double? height;
+  final double? width;
 
   const ArticleListItem({
     required this.articleHeader,
     required this.themeColor,
     this.cardColor = AppColors.background,
+    this.height = listItemHeight,
+    this.width = listItemWidth,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final imageId = articleHeader.image?.publicId;
+
     return GestureDetector(
       onTap: () => CupertinoScaffold.showCupertinoModalBottomSheet(
         context: context,
@@ -38,41 +44,59 @@ class ArticleListItem extends StatelessWidget {
         useRootNavigator: true,
       ),
       child: Container(
-        color: cardColor,
-        padding: const EdgeInsets.all(AppDimens.m),
-        height: listItemHeight,
-        width: listItemWidth,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: articleHeader.type == ArticleType.premium
-                  ? const ExclusiveLabel()
-                  : ArticleLabel.opinion(backgroundColor: themeColor),
-            ),
-            const Spacer(),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Image.network(
-                CloudinaryImageExtension.withPublicId(articleHeader.publisher.logo.publicId)
-                    .transform()
-                    .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
-                    .fit()
-                    .generate()!,
-                width: _publisherLogoSize,
-                height: _publisherLogoSize,
-                fit: BoxFit.contain,
+        decoration: BoxDecoration(
+          image: imageId == null
+              ? null
+              : DecorationImage(
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  image: NetworkImage(
+                    CloudinaryImageExtension.withPublicId(imageId).url,
+                  ),
+                ),
+        ),
+        child: Container(
+          color: imageId == null ? cardColor : AppColors.black.withOpacity(0.6),
+          padding: const EdgeInsets.all(AppDimens.m),
+          height: height,
+          width: width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: articleHeader.type == ArticleType.premium
+                    ? const ExclusiveLabel()
+                    : ArticleLabel.opinion(backgroundColor: themeColor),
               ),
-            ),
-            InformedMarkdownBody(
-              markdown: articleHeader.title,
-              baseTextStyle: AppTypography.h5BoldSmall.copyWith(height: 1.4),
-              maxLines: 4,
-            ),
-            const Spacer(),
-            const ReadMoreLabel(),
-          ],
+              const Spacer(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Image.network(
+                  CloudinaryImageExtension.withPublicId(articleHeader.publisher.logo.publicId)
+                      .transform()
+                      .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
+                      .fit()
+                      .generate()!,
+                  width: _publisherLogoSize,
+                  height: _publisherLogoSize,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              InformedMarkdownBody(
+                markdown: articleHeader.title,
+                baseTextStyle: AppTypography.h5BoldSmall.copyWith(
+                  height: 1.4,
+                  color: imageId == null ? AppColors.textPrimary : AppColors.white,
+                ),
+                maxLines: 4,
+              ),
+              const Spacer(),
+              ReadMoreLabel(
+                foregroundColor: imageId == null ? AppColors.textPrimary : AppColors.white,
+              ),
+            ],
+          ),
         ),
       ),
     );

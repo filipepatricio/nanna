@@ -95,5 +95,8 @@
   "readingList": {
     "articleCount": "{} articles"
   },
-  "continueReading": "Continue reading"
+  "continueReading": "Continue reading",
+  "explore": {
+    "title": "Explore"
+  }
 }

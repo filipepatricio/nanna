@@ -81,14 +81,14 @@ final mockedArticleList2 = [
 ];
 
 final exclusiveSection = ExploreContentSection.articleWithCover(
-  title: 'Exclusive news',
+  title: '**Exclusive** news',
   themeColor: AppColors.limeGreen.value,
   coverArticle: mockedArticleList2[0],
   articles: mockedArticleList1,
 );
 
 final editorTeamSection = ExploreContentSection.articleWithCover(
-  title: 'By our Editorial team',
+  title: 'By our **Editorial team**w',
   themeColor: AppColors.pastelGreen.value,
   coverArticle: mockedArticleList1[0],
   articles: mockedArticleList2,
@@ -101,7 +101,7 @@ final missedArticlesSection = ExploreContentSection.articles(
 );
 
 final readingListSection = ExploreContentSection.readingLists(
-  title: 'Reading list',
+  title: '**Reading** list',
   topics: [
     Topic(
       id: '0',
