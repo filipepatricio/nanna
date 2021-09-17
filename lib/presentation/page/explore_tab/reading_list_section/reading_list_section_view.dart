@@ -13,7 +13,7 @@ import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _pageViewHeight = 500.0;
+const _pageViewHeight = 550.0;
 
 class ReadingListSectionView extends HookWidget {
   final ExploreContentSectionReadingLists section;

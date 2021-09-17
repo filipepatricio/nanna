@@ -5,9 +5,9 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/article/cov
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_stacked_cover.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -86,27 +86,7 @@ class ArticleItemView extends HookWidget {
               width: AppDimens.articleItemWidth,
               child: Row(
                 children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(AppVectorGraphics.follow, color: AppColors.black),
-                    ),
-                  ),
-                  const SizedBox(width: AppDimens.m),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(AppVectorGraphics.share, color: AppColors.black),
-                    ),
-                  ),
+                  ShareButton(onTap: () {}),
                   const Spacer(),
                   Text(
                     LocaleKeys.article_readMore.tr(),
