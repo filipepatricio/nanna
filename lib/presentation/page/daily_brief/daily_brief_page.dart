@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_title_hero.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_topic_card.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -13,6 +12,8 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/error.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
+import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -90,6 +91,8 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width * 0.9;
+    final heightPageView = MediaQuery.of(context).size.height * 0.65;
     final lastPageAnimationProgressState = useState(0.0);
 
     useEffect(() {
@@ -119,27 +122,44 @@ class _IdleContent extends HookWidget {
               goodbyeHeadline: currentBrief.goodbye,
             ),
           ),
-          PageView(
-            controller: controller,
-            scrollDirection: Axis.horizontal,
-            children: [
-              ..._buildTopicCards(context, controller, currentBrief),
-              Container(),
-            ],
+          Center(
+            child: Container(
+              height: heightPageView,
+              child: PageView(
+                padEnds: false,
+                controller: controller,
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ..._buildTopicCards(context, controller, currentBrief, width, heightPageView),
+                  Container(),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Iterable<Widget> _buildTopicCards(BuildContext context, PageController controller, CurrentBrief currentBrief) {
+  Iterable<Widget> _buildTopicCards(
+    BuildContext context,
+    PageController controller,
+    CurrentBrief currentBrief,
+    double width,
+    double heightPageView,
+  ) {
     return currentBrief.topics.asMap().map<int, Widget>((key, value) {
       return MapEntry(
         key,
-        DailyBriefTopicCard(
-          index: key,
-          onPressed: () => _onTopicCardPressed(context, controller, key, currentBrief),
-          topic: value,
+        Padding(
+          padding: const EdgeInsets.only(left: AppDimens.xl),
+          child: ReadingListStackedCards(
+            coverSize: Size(width, heightPageView),
+            child: ReadingListCover(
+              topic: currentBrief.topics[key],
+              onTap: () => _onTopicCardPressed(context, controller, key, currentBrief),
+            ),
+          ),
         ),
       );
     }).values;

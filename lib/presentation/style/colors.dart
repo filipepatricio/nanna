@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color white = Color(0xffFFFFFF);
+  static const Color white = Color(0xffffffff);
   static const Color black = Color(0xff000000);
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreenBleached = Color(0x64BBF383);
@@ -28,29 +28,10 @@ class AppColors {
 
   static const Color settingsHeader = Color(0x44282B35);
   static const Color settingsIcon = Color(0xff898A8D);
-}
 
-abstract class AppColorsBase {
-  late Color white;
-  late Color black;
-  late Color limeGreen;
-  late Color textPrimary;
-  late Color background;
-}
-
-class AppStandardColors implements AppColorsBase {
-  @override
-  Color background = AppColors.background;
-
-  @override
-  Color black = AppColors.black;
-
-  @override
-  Color limeGreen = AppColors.limeGreen;
-
-  @override
-  Color textPrimary = AppColors.textPrimary;
-
-  @override
-  Color white = AppColors.white;
+  static const mockedColors = [
+    AppColors.pastelGreen,
+    AppColors.rose,
+    AppColors.beige,
+  ];
 }

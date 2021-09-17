@@ -30,6 +30,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h1Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 28,
+    height: 1.29,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h1 = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,

@@ -20,9 +20,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _pageViewportFraction = 1.0;
-const animationRangeFactor = 40.0;
+const _animationRangeFactor = 40.0;
 const appBarHeightDefault = 92.0;
-GlobalKey _keyRed = GlobalKey();
+GlobalKey appbarKey = GlobalKey();
 
 class TopicPage extends HookWidget {
   final int index;
@@ -93,15 +93,17 @@ class TopicPage extends HookWidget {
                     ),
                   ),
                 ),
-                LayoutBuilder(
-                  builder: (context, pageViewConstraints) => _PageViewContent(
-                    controller: controller,
-                    onPageChanged: onPageChanged,
-                    pageTransitionAnimation: pageTransitionAnimation,
-                    currentBrief: currentBrief,
-                    articleContentHeight: pageViewConstraints.maxHeight - appBarHeight,
-                    pageIndexHook: pageIndexHook,
-                    appBarMargin: appBarHeight.toInt(),
+                Positioned.fill(
+                  child: LayoutBuilder(
+                    builder: (context, pageViewConstraints) => _PageViewContent(
+                      controller: controller,
+                      onPageChanged: onPageChanged,
+                      pageTransitionAnimation: pageTransitionAnimation,
+                      currentBrief: currentBrief,
+                      articleContentHeight: pageViewConstraints.maxHeight - (appBarHeight ?? 0),
+                      pageIndexHook: pageIndexHook,
+                      appBarMargin: appBarHeight?.toInt(),
+                    ),
                   ),
                 ),
                 Positioned(
@@ -112,7 +114,7 @@ class TopicPage extends HookWidget {
                     valueListenable: scrollPositionMapNotifier,
                     builder: (_, __, ___) {
                       return _TopicAppBar(
-                        key: _keyRed,
+                        key: appbarKey,
                         lastPageAnimationProgressState: lastPageAnimationProgressState,
                         pageCount: currentBrief.topics.length,
                         currentPageIndex: pageIndexHook.value,
@@ -129,12 +131,11 @@ class TopicPage extends HookWidget {
     );
   }
 
-  double getAppBarHeight() {
+  double? getAppBarHeight() {
     double? appBarHeight;
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      final renderBoxRed = _keyRed.currentContext?.findRenderObject() as RenderBox?;
+      final renderBoxRed = appbarKey.currentContext?.findRenderObject() as RenderBox?;
       appBarHeight = renderBoxRed?.size.height;
-      print('app bar $appBarHeight');
     });
     return appBarHeight ?? appBarHeightDefault;
   }
@@ -161,8 +162,6 @@ class _TopicAppBar extends HookWidget {
     final fadeInOutController = useAnimationController(duration: const Duration(milliseconds: 300));
     final animation = Tween(begin: 1.0, end: 0.0).animate(fadeInOutController);
 
-    print("** REBUILD APPBAR :) with ${scrollPositionMap[currentPageIndex]}");
-
     useEffect(() {
       if (lastPageAnimationProgressState.value > 0.5) {
         fadeInOutController.forward();
@@ -180,8 +179,8 @@ class _TopicAppBar extends HookWidget {
         final currentPageScrollValue = scrollPositionMap[currentPageIndex] ?? 0;
 
         final toBlackHorizontalTween = whiteToBlack.transform(lastPageAnimationProgressState.value);
-        final toWhiteVerticalTween = transparentToWhite.transform(currentPageScrollValue / animationRangeFactor);
-        final toBlackVerticalTween = whiteToBlack.transform(currentPageScrollValue / animationRangeFactor);
+        final toWhiteVerticalTween = transparentToWhite.transform(currentPageScrollValue / _animationRangeFactor);
+        final toBlackVerticalTween = whiteToBlack.transform(currentPageScrollValue / _animationRangeFactor);
 
         final textIconColorTween =
             lastPageAnimationProgressState.value > 0.5 ? toBlackHorizontalTween : toBlackVerticalTween;

@@ -78,9 +78,9 @@ class ArticleItemView extends HookWidget {
             ),
             const SizedBox(height: AppDimens.l),
             //TODO: Change for proper statements (this is for mock purposes)
-            if (article.publisher.name == 'Euronews') Expanded(child: PhotoStackedCover(article: article)),
-            if (article.publisher.name == 'DW') Expanded(child: ColoredCover(article: article)),
-            if (article.publisher.name == 'The Guardian') Expanded(child: PhotoCover(article: article)),
+            if (index % articleListLength == 0) Expanded(child: PhotoStackedCover(article: article)),
+            if (index % articleListLength == 1) Expanded(child: ColoredCover(article: article)),
+            if (index % articleListLength == 2) Expanded(child: PhotoCover(article: article)),
             const SizedBox(height: AppDimens.xl),
             Container(
               width: AppDimens.articleItemWidth,

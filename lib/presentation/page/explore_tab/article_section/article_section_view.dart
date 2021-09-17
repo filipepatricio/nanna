@@ -10,12 +10,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:flutter/material.dart';
 
-const _colors = [
-  AppColors.pastelGreen,
-  AppColors.rose,
-  AppColors.beige,
-];
-
 class ArticleSectionView extends StatelessWidget {
   final ExploreContentSectionArticles section;
 
@@ -71,7 +65,7 @@ class ArticleSectionView extends StatelessWidget {
               itemBuilder: (context, index) => ArticleListItem(
                 articleHeader: section.articles[index],
                 themeColor: AppColors.background,
-                cardColor: _colors[index % _colors.length],
+                cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
               ),
               separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
               itemCount: section.articles.length,
