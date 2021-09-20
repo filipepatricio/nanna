@@ -11,7 +11,7 @@ class SetChannelEmailSettingUseCase {
   Future<NotificationChannel> call(NotificationChannel channel, bool enabled) async {
     return _pushNotificationRepository.setNotificationChannel(
       channel.id,
-      channel.pushEnabled,
+      null,
       enabled,
     );
   }

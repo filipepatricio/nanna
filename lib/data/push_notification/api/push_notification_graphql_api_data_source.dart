@@ -54,7 +54,7 @@ class PushNotificationGraphqlApiDataSource implements PushNotificationApiDataSou
   }
 
   @override
-  Future<NotificationChannelDTO> setNotificationChannel(String id, bool pushEnabled, bool emailEnabled) async {
+  Future<NotificationChannelDTO> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled) async {
     final result = await _client.mutate(
       MutationOptions(
         document: PushNotificationGQL.setNotificationPreferences(

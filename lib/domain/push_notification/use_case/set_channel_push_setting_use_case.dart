@@ -12,7 +12,7 @@ class SetChannelPushSettingUseCase {
     return _pushNotificationRepository.setNotificationChannel(
       channel.id,
       enabled,
-      channel.emailEnabled,
+      null,
     );
   }
 }

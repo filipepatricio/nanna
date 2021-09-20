@@ -27,7 +27,7 @@ class PushNotificationGQL {
     }
   ''');
 
-  static DocumentNode setNotificationPreferences(String id, bool pushEnabled, bool emailEnabled) => gql('''
+  static DocumentNode setNotificationPreferences(String id, bool? pushEnabled, bool? emailEnabled) => gql('''
     mutation {
       setNotificationChannelPreferences(id: "$id", pushEnabled: $pushEnabled, emailEnabled: $emailEnabled) {
         id

@@ -7,5 +7,5 @@ abstract class PushNotificationApiDataSource {
 
   Future<NotificationPreferencesDTO> getNotificationPreferences();
 
-  Future<NotificationChannelDTO> setNotificationChannel(String id, bool pushEnabled, bool emailEnabled);
+  Future<NotificationChannelDTO> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled);
 }

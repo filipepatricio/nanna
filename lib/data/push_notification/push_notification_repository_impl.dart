@@ -73,7 +73,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   }
 
   @override
-  Future<NotificationChannel> setNotificationChannel(String id, bool pushEnabled, bool emailEnabled) async {
+  Future<NotificationChannel> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled) async {
     final dto = await _pushNotificationApiDataSource.setNotificationChannel(id, pushEnabled, emailEnabled);
     return _notificationChannelDTOMapper.to(dto);
   }
