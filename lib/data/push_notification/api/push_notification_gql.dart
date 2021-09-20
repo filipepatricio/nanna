@@ -12,4 +12,29 @@ class PushNotificationGQL {
       }
     }
   ''');
+
+  static DocumentNode getNotificationPreferences() => gql('''
+    query {
+      getNotificationPreferences {
+        name
+        channels {
+          id
+          name
+          pushEnabled
+          emailEnabled
+        }
+      }
+    }
+  ''');
+
+  static DocumentNode setNotificationPreferences(String id, bool? pushEnabled, bool? emailEnabled) => gql('''
+    mutation {
+      setNotificationChannelPreferences(id: "$id", pushEnabled: $pushEnabled, emailEnabled: $emailEnabled) {
+        id
+        name
+        pushEnabled
+        emailEnabled
+      }
+    }
+  ''');
 }

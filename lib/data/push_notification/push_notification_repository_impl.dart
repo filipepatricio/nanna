@@ -1,7 +1,11 @@
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.dart';
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/push_notiication_message_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/registered_push_token_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/push_notification_api_data_source.dart';
 import 'package:better_informed_mobile/data/push_notification/push_notification_messenger.dart';
+import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
+import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/push_notification_message.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
@@ -15,6 +19,8 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   final PushNotificationMessageDTOMapper _pushNotificationMessageDTOMapper;
   final PushNotificationMessenger _pushNotificationMessenger;
   final RegisteredPushTokenDTOMapper _registeredPushTokenDTOMapper;
+  final NotificationPreferencesDTOMapper _notificationPreferencesDTOMapper;
+  final NotificationChannelDTOMapper _notificationChannelDTOMapper;
 
   PushNotificationRepositoryImpl(
     this._firebaseMessaging,
@@ -22,6 +28,8 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
     this._pushNotificationMessageDTOMapper,
     this._pushNotificationMessenger,
     this._registeredPushTokenDTOMapper,
+    this._notificationPreferencesDTOMapper,
+    this._notificationChannelDTOMapper,
   );
 
   @override
@@ -57,4 +65,16 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   }
 
   bool _isAuthorized(NotificationSettings result) => result.authorizationStatus == AuthorizationStatus.authorized;
+
+  @override
+  Future<NotificationPreferences> getNotificationPreferences() async {
+    final dto = await _pushNotificationApiDataSource.getNotificationPreferences();
+    return _notificationPreferencesDTOMapper(dto);
+  }
+
+  @override
+  Future<NotificationChannel> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled) async {
+    final dto = await _pushNotificationApiDataSource.setNotificationChannel(id, pushEnabled, emailEnabled);
+    return _notificationChannelDTOMapper.to(dto);
+  }
 }
