@@ -32,7 +32,7 @@ class SettingsNotificationsBody extends HookWidget {
           ),
           const SizedBox(height: AppDimens.l),
           ...groups
-              .map((e) => _NotificationGroup(group: e, notificationType: NotificationType.push))
+              .map((group) => _NotificationGroup(group: group, notificationType: NotificationType.push))
               .expand((element) => [element, const SizedBox(height: AppDimens.l)]),
           const SizedBox(height: AppDimens.c),
           Text(
@@ -41,7 +41,7 @@ class SettingsNotificationsBody extends HookWidget {
           ),
           const SizedBox(height: AppDimens.l),
           ...groups
-              .map((e) => _NotificationGroup(group: e, notificationType: NotificationType.email))
+              .map((group) => _NotificationGroup(group: group, notificationType: NotificationType.email))
               .expand((element) => [element, const SizedBox(height: AppDimens.l)]),
         ],
       ),
@@ -70,8 +70,8 @@ class _NotificationGroup extends StatelessWidget {
         ),
         const SizedBox(height: AppDimens.m),
         ...group.channels.map(
-          (e) => NotificationSettingSwitch(
-            channel: e,
+          (channel) => NotificationSettingSwitch(
+            channel: channel,
             notificationType: notificationType,
           ),
         ),
