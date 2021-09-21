@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
@@ -36,7 +35,7 @@ class TopicView extends HookWidget {
   final AnimationController pageTransitionAnimation;
   final Topic topic;
   final double articleContentHeight;
-  final int? appBarMargin;
+  final double? appBarMargin;
 
   const TopicView({
     required this.index,
@@ -53,11 +52,14 @@ class TopicView extends HookWidget {
     final pageNotesIndex = useState(0);
     final listScrollController = useScrollController();
     final articleController = usePageController();
-    final gestureManager = useMemoized(() => TopicCustomVerticalDragManager(
-          generalViewController: listScrollController,
-          pageViewController: articleController,
-          topMargin: appBarMargin,
-        ));
+    final gestureManager = useMemoized(
+      () => TopicCustomVerticalDragManager(
+        generalViewController: listScrollController,
+        pageViewController: articleController,
+        topMargin: appBarMargin,
+      ),
+      [appBarMargin],
+    );
 
     //TODO: REMOVE MOCKED LIST (mocked for more length)
     final mockedList = topic.readingList.articles + topic.readingList.articles;

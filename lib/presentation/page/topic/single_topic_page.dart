@@ -10,7 +10,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _animationRangeFactor = 40.0;
-const _appBarHeightDefault = 92;
+const _appBarHeightDefault = 92.0;
 
 class SingleTopicPage extends HookWidget {
   final Topic topic;
@@ -24,6 +24,15 @@ class SingleTopicPage extends HookWidget {
   Widget build(BuildContext context) {
     final pageTransitionAnimation = useAnimationController(duration: _animationDuration);
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
+    final appBarKey = useMemoized(() => GlobalKey());
+    final appBarHeightState = useState(_appBarHeightDefault);
+
+    useEffect(() {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        final renderBoxRed = appBarKey.currentContext?.findRenderObject() as RenderBox?;
+        appBarHeightState.value = renderBoxRed?.size.height ?? _appBarHeightDefault;
+      });
+    }, []);
 
     return LayoutBuilder(
       builder: (context, pageConstraints) => CupertinoScaffold(
@@ -43,8 +52,8 @@ class SingleTopicPage extends HookWidget {
                       index: 0,
                       pageTransitionAnimation: pageTransitionAnimation,
                       topic: topic,
-                      articleContentHeight: pageViewConstraints.maxHeight - _appBarHeightDefault,
-                      appBarMargin: _appBarHeightDefault, // TODO calculate
+                      articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
+                      appBarMargin: appBarHeightState.value,
                     ),
                   ),
                 ),
@@ -52,7 +61,10 @@ class SingleTopicPage extends HookWidget {
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: _AppBar(scrollPositionNotifier: scrollPositionNotifier),
+                  child: _AppBar(
+                    key: appBarKey,
+                    scrollPositionNotifier: scrollPositionNotifier,
+                  ),
                 ),
               ],
             ),

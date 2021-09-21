@@ -15,8 +15,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 const _animationDuration = Duration(milliseconds: 200);
 const _pageViewportFraction = 1.0;
 const _animationRangeFactor = 40.0;
-const appBarHeightDefault = 92.0;
-GlobalKey appbarKey = GlobalKey();
+const _appBarHeightDefault = 92.0;
 
 class TopicPage extends HookWidget {
   final int index;
@@ -39,6 +38,15 @@ class TopicPage extends HookWidget {
     final lastPageAnimationProgressState = useState(0.0);
     final pageIndexHook = useState(index);
     final route = useMemoized(() => ModalRoute.of(context));
+    final appBarKey = useMemoized(() => GlobalKey());
+    final appBarHeightState = useState(_appBarHeightDefault);
+
+    useEffect(() {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        final renderBoxRed = appBarKey.currentContext?.findRenderObject() as RenderBox?;
+        appBarHeightState.value = renderBoxRed?.size.height ?? _appBarHeightDefault;
+      });
+    }, []);
 
     useEffect(() {
       route?.animation?.addStatusListener((status) {
@@ -57,8 +65,6 @@ class TopicPage extends HookWidget {
       controller.addListener(listener);
       return () => controller.removeListener(listener);
     }, [controller]);
-
-    final appBarHeight = getAppBarHeight();
 
     return LayoutBuilder(
       builder: (context, pageConstraints) => CupertinoScaffold(
@@ -94,9 +100,9 @@ class TopicPage extends HookWidget {
                       onPageChanged: onPageChanged,
                       pageTransitionAnimation: pageTransitionAnimation,
                       currentBrief: currentBrief,
-                      articleContentHeight: pageViewConstraints.maxHeight - (appBarHeight ?? 0),
+                      articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
                       pageIndexHook: pageIndexHook,
-                      appBarMargin: appBarHeight?.toInt(),
+                      appBarMargin: appBarHeightState.value,
                     ),
                   ),
                 ),
@@ -108,7 +114,7 @@ class TopicPage extends HookWidget {
                     valueListenable: scrollPositionMapNotifier,
                     builder: (_, __, ___) {
                       return _TopicAppBar(
-                        key: appbarKey,
+                        key: appBarKey,
                         lastPageAnimationProgressState: lastPageAnimationProgressState,
                         pageCount: currentBrief.topics.length,
                         currentPageIndex: pageIndexHook.value,
@@ -123,15 +129,6 @@ class TopicPage extends HookWidget {
         ),
       ),
     );
-  }
-
-  double? getAppBarHeight() {
-    double? appBarHeight;
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      final renderBoxRed = appbarKey.currentContext?.findRenderObject() as RenderBox?;
-      appBarHeight = renderBoxRed?.size.height;
-    });
-    return appBarHeight ?? appBarHeightDefault;
   }
 }
 
@@ -180,7 +177,6 @@ class _TopicAppBar extends HookWidget {
             lastPageAnimationProgressState.value > 0.5 ? toBlackHorizontalTween : toBlackVerticalTween;
 
         return TopicAppBar(
-          key: appbarKey,
           title: text,
           backgroundColor: toWhiteVerticalTween,
           textIconColor: textIconColorTween,
@@ -205,7 +201,7 @@ class _PageViewContent extends StatelessWidget {
   final CurrentBrief currentBrief;
   final double articleContentHeight;
   final ValueNotifier pageIndexHook;
-  final int? appBarMargin;
+  final double? appBarMargin;
 
   const _PageViewContent({
     required this.controller,
