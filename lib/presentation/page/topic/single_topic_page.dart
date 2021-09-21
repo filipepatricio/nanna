@@ -10,8 +10,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _animationRangeFactor = 40.0;
-
-const appBarHeightDefault = 92;
+const _appBarHeightDefault = 92;
 
 class SingleTopicPage extends HookWidget {
   final Topic topic;
@@ -44,8 +43,8 @@ class SingleTopicPage extends HookWidget {
                       index: 0,
                       pageTransitionAnimation: pageTransitionAnimation,
                       topic: topic,
-                      articleContentHeight: pageViewConstraints.maxHeight - appBarHeightDefault,
-                      appBarMargin: appBarHeightDefault, // TODO calculate
+                      articleContentHeight: pageViewConstraints.maxHeight - _appBarHeightDefault,
+                      appBarMargin: _appBarHeightDefault, // TODO calculate
                     ),
                   ),
                 ),

@@ -58,24 +58,41 @@ class TopicAppBar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppDimens.m),
-            if (progress == null || fadeAnimation == null)
-              Container()
-            else
+            if (progress != null && fadeAnimation != null)
               Expanded(
-                child: FadeTransition(
-                  opacity: fadeAnimation,
-                  child: LinearPercentIndicator(
-                    lineHeight: AppDimens.xs,
-                    percent: progress,
-                    linearStrokeCap: LinearStrokeCap.roundAll,
-                    backgroundColor: AppColors.grey.withOpacity(0.44),
-                    progressColor: AppColors.limeGreen,
-                  ),
+                child: _Progress(
+                  progress: progress,
+                  fadeAnimation: fadeAnimation,
                 ),
               ),
             const SizedBox(width: AppDimens.l),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _Progress extends StatelessWidget {
+  final double progress;
+  final Animation<double> fadeAnimation;
+
+  const _Progress({
+    required this.progress,
+    required this.fadeAnimation,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: fadeAnimation,
+      child: LinearPercentIndicator(
+        lineHeight: AppDimens.xs,
+        percent: progress,
+        linearStrokeCap: LinearStrokeCap.roundAll,
+        backgroundColor: AppColors.grey.withOpacity(0.44),
+        progressColor: AppColors.limeGreen,
       ),
     );
   }
