@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/article/cov
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_stacked_cover.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
@@ -33,14 +34,8 @@ class ArticleItemView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: change when there will be final colors or if source will be specified (for example: backend)
-    const articleTestColors = <Color>[
-      Color(0xffF2E8E7),
-      Color(0xffFCFAF8),
-      Color(0xffF3E5F4),
-    ];
-
     return Container(
-      color: articleTestColors[index % articleTestColors.length],
+      color: AppColors.mockedColors[index % AppColors.mockedColors.length],
       padding: EdgeInsets.only(
         top: statusBarHeight,
         bottom: AppDimens.m,

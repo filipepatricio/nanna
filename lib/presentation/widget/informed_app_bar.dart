@@ -139,7 +139,7 @@ class ShadowPainter extends CustomPainter {
     }
     path.close();
 
-    canvas.drawShadow(path, Colors.black87, 3.0, false);
+    canvas.drawShadow(path, Colors.black87, 2.0, false);
   }
 
   @override
