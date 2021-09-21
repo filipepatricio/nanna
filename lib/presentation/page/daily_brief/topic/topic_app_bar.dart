@@ -11,15 +11,13 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TopicAppBar extends StatelessWidget {
   final String title;
-  final Color? backgroundColor;
-  final Color? textIconColor;
+  final double animationFactor;
   final double? progress;
   final Animation<double>? fadeAnimation;
 
   const TopicAppBar({
     required this.title,
-    required this.backgroundColor,
-    required this.textIconColor,
+    required this.animationFactor,
     this.progress,
     this.fadeAnimation,
     Key? key,
@@ -27,47 +25,50 @@ class TopicAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final whiteToBlack = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
+    final transparentToWhite = ColorTween(begin: AppColors.transparent, end: AppColors.background);
+
     final progress = this.progress;
     final fadeAnimation = this.fadeAnimation;
 
-    return Material(
-      color: backgroundColor,
-      child: AppBar(
-        titleSpacing: 0,
-        automaticallyImplyLeading: false,
-        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: AppColors.transparent),
-        centerTitle: false,
-        title: Row(
-          children: [
-            IconButton(
-              onPressed: () => AutoRouter.of(context).pop(),
-              icon: RotatedBox(
-                quarterTurns: 2,
-                child: SvgPicture.asset(
-                  AppVectorGraphics.arrowRight,
-                  height: AppDimens.backArrowSize,
-                  color: textIconColor,
-                ),
+    return AppBar(
+      backgroundColor: transparentToWhite.transform(animationFactor),
+      elevation: animationFactor >= 0.9 ? 3.0 : 0.0,
+      shadowColor: AppColors.black.withOpacity(0.4),
+      titleSpacing: 0,
+      automaticallyImplyLeading: false,
+      systemOverlayStyle: animationFactor >= 0.5 ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
+      centerTitle: false,
+      title: Row(
+        children: [
+          IconButton(
+            onPressed: () => AutoRouter.of(context).pop(),
+            icon: RotatedBox(
+              quarterTurns: 2,
+              child: SvgPicture.asset(
+                AppVectorGraphics.arrowRight,
+                height: AppDimens.backArrowSize,
+                color: whiteToBlack.transform(animationFactor),
               ),
             ),
-            Hero(
-              tag: HeroTag.dailyBriefTitle,
-              child: Text(
-                title,
-                style: AppTypography.h1Bold.copyWith(color: textIconColor),
+          ),
+          Hero(
+            tag: HeroTag.dailyBriefTitle,
+            child: Text(
+              title,
+              style: AppTypography.h1Bold.copyWith(color: whiteToBlack.transform(animationFactor)),
+            ),
+          ),
+          const SizedBox(width: AppDimens.m),
+          if (progress != null && fadeAnimation != null)
+            Expanded(
+              child: _Progress(
+                progress: progress,
+                fadeAnimation: fadeAnimation,
               ),
             ),
-            const SizedBox(width: AppDimens.m),
-            if (progress != null && fadeAnimation != null)
-              Expanded(
-                child: _Progress(
-                  progress: progress,
-                  fadeAnimation: fadeAnimation,
-                ),
-              ),
-            const SizedBox(width: AppDimens.l),
-          ],
-        ),
+          const SizedBox(width: AppDimens.l),
+        ],
       ),
     );
   }

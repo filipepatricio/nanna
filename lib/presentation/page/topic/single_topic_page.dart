@@ -2,15 +2,13 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
-const _animationRangeFactor = 40.0;
-const _appBarHeightDefault = 92.0;
 
 class SingleTopicPage extends HookWidget {
   final Topic topic;
@@ -25,12 +23,12 @@ class SingleTopicPage extends HookWidget {
     final pageTransitionAnimation = useAnimationController(duration: _animationDuration);
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
     final appBarKey = useMemoized(() => GlobalKey());
-    final appBarHeightState = useState(_appBarHeightDefault);
+    final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         final renderBoxRed = appBarKey.currentContext?.findRenderObject() as RenderBox?;
-        appBarHeightState.value = renderBoxRed?.size.height ?? _appBarHeightDefault;
+        appBarHeightState.value = renderBoxRed?.size.height ?? AppDimens.topicAppBarDefaultHeight;
       });
     }, []);
 
@@ -85,19 +83,12 @@ class _AppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final whiteToBlack = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
-    final transparentToWhite = ColorTween(begin: AppColors.transparent, end: AppColors.background);
-
     return ValueListenableBuilder<double>(
       valueListenable: scrollPositionNotifier,
       builder: (_, value, ___) {
-        final toWhiteVerticalTween = transparentToWhite.transform(value / _animationRangeFactor);
-        final toBlackVerticalTween = whiteToBlack.transform(value / _animationRangeFactor);
-
         return TopicAppBar(
           title: tr(LocaleKeys.readingList_title),
-          backgroundColor: toWhiteVerticalTween,
-          textIconColor: toBlackVerticalTween,
+          animationFactor: value / AppDimens.topicAppBarAnimationFactor,
         );
       },
     );

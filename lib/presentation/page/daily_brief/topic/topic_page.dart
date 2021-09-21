@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,8 +14,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _pageViewportFraction = 1.0;
-const _animationRangeFactor = 40.0;
-const _appBarHeightDefault = 92.0;
 
 class TopicPage extends HookWidget {
   final int index;
@@ -39,12 +37,12 @@ class TopicPage extends HookWidget {
     final pageIndexHook = useState(index);
     final route = useMemoized(() => ModalRoute.of(context));
     final appBarKey = useMemoized(() => GlobalKey());
-    final appBarHeightState = useState(_appBarHeightDefault);
+    final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         final renderBoxRed = appBarKey.currentContext?.findRenderObject() as RenderBox?;
-        appBarHeightState.value = renderBoxRed?.size.height ?? _appBarHeightDefault;
+        appBarHeightState.value = renderBoxRed?.size.height ?? AppDimens.topicAppBarDefaultHeight;
       });
     }, []);
 
@@ -148,8 +146,6 @@ class _TopicAppBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final whiteToBlack = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
-    final transparentToWhite = ColorTween(begin: AppColors.transparent, end: AppColors.background);
     final fadeInOutController = useAnimationController(duration: const Duration(milliseconds: 300));
     final animation = Tween(begin: 1.0, end: 0.0).animate(fadeInOutController);
 
@@ -169,17 +165,9 @@ class _TopicAppBar extends HookWidget {
 
         final currentPageScrollValue = scrollPositionMap[currentPageIndex] ?? 0;
 
-        final toBlackHorizontalTween = whiteToBlack.transform(lastPageAnimationProgressState.value);
-        final toWhiteVerticalTween = transparentToWhite.transform(currentPageScrollValue / _animationRangeFactor);
-        final toBlackVerticalTween = whiteToBlack.transform(currentPageScrollValue / _animationRangeFactor);
-
-        final textIconColorTween =
-            lastPageAnimationProgressState.value > 0.5 ? toBlackHorizontalTween : toBlackVerticalTween;
-
         return TopicAppBar(
           title: text,
-          backgroundColor: toWhiteVerticalTween,
-          textIconColor: textIconColorTween,
+          animationFactor: currentPageScrollValue / AppDimens.topicAppBarAnimationFactor,
           progress: _countProgressValue(),
           fadeAnimation: animation,
         );
