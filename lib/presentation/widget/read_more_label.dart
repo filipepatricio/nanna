@@ -9,9 +9,11 @@ import 'package:flutter_svg/svg.dart';
 
 class ReadMoreLabel extends StatelessWidget {
   final Color foregroundColor;
+  final double fontSize;
 
   const ReadMoreLabel({
     this.foregroundColor = AppColors.textPrimary,
+    this.fontSize = 14,
     Key? key,
   }) : super(key: key);
 
@@ -24,6 +26,7 @@ class ReadMoreLabel extends StatelessWidget {
           LocaleKeys.article_readMore.tr(),
           style: AppTypography.h5BoldSmall.copyWith(
             decoration: TextDecoration.underline,
+            fontSize: fontSize,
             height: 1.0,
             color: foregroundColor,
           ),
