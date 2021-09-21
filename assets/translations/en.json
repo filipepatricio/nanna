@@ -95,6 +95,7 @@
     "readMinutes": "{} min"
   },
   "readingList": {
+    "title": "Reading list",
     "articleCount": "{} articles"
   },
   "continueReading": "Continue reading",

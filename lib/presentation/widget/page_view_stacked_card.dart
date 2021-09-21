@@ -17,15 +17,15 @@ class ReadingListStackedCards extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bottomCardHeight = coverSize.height - AppDimens.l;
+    final bottomCardHeight = coverSize.height - coverSize.height / 24;
     final bottomCardWidth = coverSize.width - coverSize.width / 7;
 
-    final topCardHeight = coverSize.height - AppDimens.l - 40;
+    final topCardHeight = coverSize.height - coverSize.height / 12;
     final topCardWidth = coverSize.width - coverSize.width / 8;
 
     final middleCardTopMargin = (coverSize.height - topCardHeight) / 2 + AppDimens.l / 2;
     final middleCardHeight = topCardHeight - 10;
-    final middleCardWidth = topCardWidth - 40;
+    final middleCardWidth = topCardWidth - topCardWidth / 12;
 
     return Stack(
       children: [
