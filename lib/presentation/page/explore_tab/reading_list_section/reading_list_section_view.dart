@@ -72,6 +72,7 @@ class ReadingListSectionView extends HookWidget {
                   coverSize: Size(width, _pageViewHeight),
                   child: ReadingListCover(
                     topic: section.topics[index],
+                    onTap: () => onReadingListTap(context, index),
                   ),
                 ),
               ),
@@ -88,6 +89,14 @@ class ReadingListSectionView extends HookWidget {
           ),
           const SizedBox(height: AppDimens.l),
         ],
+      ),
+    );
+  }
+
+  void onReadingListTap(BuildContext context, int index) {
+    AutoRouter.of(context).push(
+      SingleTopicPageRoute(
+        topic: section.topics[index],
       ),
     );
   }

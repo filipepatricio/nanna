@@ -79,19 +79,30 @@ class ReadingListSeeAllPage extends StatelessWidget {
                 ),
                 itemCount: topics.length,
                 itemBuilder: (context, index) {
-                  return LayoutBuilder(
-                    builder: (context, constraints) {
-                      return ReadingListStackedCards(
-                        coverSize: Size(constraints.maxWidth, _itemHeight),
-                        child: ReadingListCoverSmall(topic: topics[index]),
-                      );
-                    },
+                  return GestureDetector(
+                    onTap: () => _onReadingListTap(context, index),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return ReadingListStackedCards(
+                          coverSize: Size(constraints.maxWidth, _itemHeight),
+                          child: ReadingListCoverSmall(topic: topics[index]),
+                        );
+                      },
+                    ),
                   );
                 },
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _onReadingListTap(BuildContext context, int index) {
+    AutoRouter.of(context).push(
+      SingleTopicPageRoute(
+        topic: topics[index],
       ),
     );
   }

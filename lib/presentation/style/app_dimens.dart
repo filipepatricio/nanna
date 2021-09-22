@@ -71,4 +71,7 @@ class AppDimens {
   static const articleItemWidth = 298.0;
 
   static const verticalIndicatorWidth = 5.0;
+
+  static const topicAppBarDefaultHeight = 92.0;
+  static const topicAppBarAnimationFactor = 80.0;
 }

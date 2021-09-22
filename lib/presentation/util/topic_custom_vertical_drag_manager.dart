@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class TopicCustomVerticalDragManager {
   final ScrollController generalViewController;
   final PageController pageViewController;
-  final int? topMargin;
+  final double? topMargin;
 
   Drag? _drag;
   ScrollController? _activeController;
@@ -12,7 +12,7 @@ class TopicCustomVerticalDragManager {
   TopicCustomVerticalDragManager({
     required this.generalViewController,
     required this.pageViewController,
-    this.topMargin = 0,
+    this.topMargin = 0.0,
   });
 
   void handleDragStart(DragStartDetails details) {
@@ -22,7 +22,7 @@ class TopicCustomVerticalDragManager {
 
       if (renderBox != null) {
         final globalRect = renderBox.paintBounds.shift(renderBox.localToGlobal(Offset.zero));
-        if (globalRect.top.round() == topMargin) {
+        if (globalRect.top.floor() == topMargin?.floor()) {
           _activeController = pageViewController;
           _drag = pageViewController.position.drag(details, disposeDrag);
           return;
