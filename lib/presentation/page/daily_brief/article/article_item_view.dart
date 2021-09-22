@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/colored_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_cover.dart';
@@ -7,14 +6,12 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/article/cov
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ArticleItemView extends HookWidget {
@@ -34,8 +31,11 @@ class ArticleItemView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: change when there will be final colors or if source will be specified (for example: backend)
+    final mockColoredCoverCondition = index % 3 == 1;
     return Container(
-      color: AppColors.mockedColors[index % AppColors.mockedColors.length],
+      color: mockColoredCoverCondition
+          ? AppColors.background
+          : AppColors.mockedColors[index % AppColors.mockedColors.length],
       padding: EdgeInsets.only(
         top: statusBarHeight,
         bottom: AppDimens.m,
@@ -50,7 +50,8 @@ class ArticleItemView extends HookWidget {
           );
         },
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: AppDimens.l),
             Padding(
@@ -73,24 +74,39 @@ class ArticleItemView extends HookWidget {
             ),
             const SizedBox(height: AppDimens.l),
             //TODO: Change for proper statements (this is for mock purposes)
-            if (index % articleListLength == 0) Expanded(child: PhotoStackedCover(article: article)),
-            if (index % articleListLength == 1) Expanded(child: ColoredCover(article: article)),
-            if (index % articleListLength == 2) Expanded(child: PhotoCover(article: article)),
+            if (index % 3 == 0)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: AppDimens.l),
+                  child: PhotoStackedCover(article: article),
+                ),
+              ),
+            if (mockColoredCoverCondition)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: AppDimens.l),
+                  child: ColoredCover(article: article),
+                ),
+              ),
+            if (index % 3 == 2)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: AppDimens.m),
+                  child: PhotoCover(article: article),
+                ),
+              ),
             const SizedBox(height: AppDimens.xl),
-            Container(
-              width: AppDimens.articleItemWidth,
-              child: Row(
-                children: [
-                  ShareButton(onTap: () {}),
-                  const Spacer(),
-                  Text(
-                    LocaleKeys.article_readMore.tr(),
-                    style: AppTypography.h5BoldSmall,
-                    textAlign: TextAlign.start,
-                  ),
-                  const SizedBox(width: AppDimens.s),
-                  SvgPicture.asset(AppVectorGraphics.arrowRight),
-                ],
+            Padding(
+              padding: const EdgeInsets.only(right: AppDimens.l),
+              child: Container(
+                width: AppDimens.articleItemWidth,
+                child: Row(
+                  children: [
+                    ShareButton(onTap: () {}),
+                    const Spacer(),
+                    const ReadMoreLabel(fontSize: AppDimens.m),
+                  ],
+                ),
               ),
             ),
           ],
