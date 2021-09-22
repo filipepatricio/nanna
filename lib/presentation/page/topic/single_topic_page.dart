@@ -9,6 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
+const _mainScrollDepth = 0;
 
 class SingleTopicPage extends HookWidget {
   final Topic topic;
@@ -36,7 +37,7 @@ class SingleTopicPage extends HookWidget {
       builder: (context, pageConstraints) => CupertinoScaffold(
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.axis == Axis.vertical) {
+            if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == _mainScrollDepth) {
               scrollPositionNotifier.value = scrollInfo.metrics.pixels;
             }
             return false;

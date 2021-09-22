@@ -14,6 +14,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
 const _pageViewportFraction = 1.0;
+const _mainScrollDepth = 1;
 
 class TopicPage extends HookWidget {
   final int index;
@@ -68,7 +69,7 @@ class TopicPage extends HookWidget {
       builder: (context, pageConstraints) => CupertinoScaffold(
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.axis == Axis.vertical) {
+            if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == _mainScrollDepth) {
               scrollPositionMapNotifier.value.update(
                 pageIndexHook.value,
                 (existingValue) => scrollInfo.metrics.pixels,
