@@ -9,6 +9,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _animationDuration = Duration(milliseconds: 200);
+
+/// Make sure that changes to the view won't change depth of the main scroll
+/// If they do, adjust depth accordingly
+/// Depth is being changed by modifying scroll nest layers (adding or removing scrollable widget)
 const _mainScrollDepth = 0;
 
 class SingleTopicPage extends HookWidget {
