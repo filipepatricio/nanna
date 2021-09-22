@@ -88,7 +88,9 @@ class _AppBar extends StatelessWidget {
       builder: (_, value, ___) {
         return TopicAppBar(
           title: tr(LocaleKeys.readingList_title),
-          animationFactor: value / AppDimens.topicAppBarAnimationFactor,
+          backgroundAnimationFactor: value / AppDimens.topicAppBarAnimationFactor,
+          foregroundAnimationFactor: value / AppDimens.topicAppBarAnimationFactor,
+          elevation: value / AppDimens.topicAppBarAnimationFactor > 0.95 ? 3.0 : 0.0,
         );
       },
     );

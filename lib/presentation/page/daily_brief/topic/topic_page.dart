@@ -165,9 +165,19 @@ class _TopicAppBar extends HookWidget {
 
         final currentPageScrollValue = scrollPositionMap[currentPageIndex] ?? 0;
 
+        final pageScrollAnimationFactor = currentPageScrollValue / AppDimens.topicAppBarAnimationFactor;
+        final foregroundAnimationFactor = lastPageAnimationProgressState.value > 0.5
+            ? lastPageAnimationProgressState.value
+            : pageScrollAnimationFactor;
+
+        final elevation =
+            lastPageAnimationProgressState.value > 0.0 ? 0.0 : (pageScrollAnimationFactor >= 0.95 ? 3.0 : 0.0);
+
         return TopicAppBar(
           title: text,
-          animationFactor: currentPageScrollValue / AppDimens.topicAppBarAnimationFactor,
+          backgroundAnimationFactor: pageScrollAnimationFactor,
+          foregroundAnimationFactor: foregroundAnimationFactor,
+          elevation: elevation,
           progress: _countProgressValue(),
           fadeAnimation: animation,
         );

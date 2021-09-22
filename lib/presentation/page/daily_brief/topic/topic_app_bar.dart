@@ -11,13 +11,17 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TopicAppBar extends StatelessWidget {
   final String title;
-  final double animationFactor;
+  final double backgroundAnimationFactor;
+  final double foregroundAnimationFactor;
+  final double elevation;
   final double? progress;
   final Animation<double>? fadeAnimation;
 
   const TopicAppBar({
     required this.title,
-    required this.animationFactor,
+    required this.backgroundAnimationFactor,
+    required this.foregroundAnimationFactor,
+    this.elevation = 3.0,
     this.progress,
     this.fadeAnimation,
     Key? key,
@@ -32,12 +36,12 @@ class TopicAppBar extends StatelessWidget {
     final fadeAnimation = this.fadeAnimation;
 
     return AppBar(
-      backgroundColor: transparentToWhite.transform(animationFactor),
-      elevation: animationFactor >= 0.9 ? 3.0 : 0.0,
+      backgroundColor: transparentToWhite.transform(backgroundAnimationFactor),
+      elevation: elevation,
       shadowColor: AppColors.black.withOpacity(0.4),
       titleSpacing: 0,
       automaticallyImplyLeading: false,
-      systemOverlayStyle: animationFactor >= 0.5 ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
+      systemOverlayStyle: backgroundAnimationFactor >= 0.5 ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
       centerTitle: false,
       title: Row(
         children: [
@@ -48,7 +52,7 @@ class TopicAppBar extends StatelessWidget {
               child: SvgPicture.asset(
                 AppVectorGraphics.arrowRight,
                 height: AppDimens.backArrowSize,
-                color: whiteToBlack.transform(animationFactor),
+                color: whiteToBlack.transform(foregroundAnimationFactor),
               ),
             ),
           ),
@@ -56,7 +60,7 @@ class TopicAppBar extends StatelessWidget {
             tag: HeroTag.dailyBriefTitle,
             child: Text(
               title,
-              style: AppTypography.h1Bold.copyWith(color: whiteToBlack.transform(animationFactor)),
+              style: AppTypography.h1Bold.copyWith(color: whiteToBlack.transform(foregroundAnimationFactor)),
             ),
           ),
           const SizedBox(width: AppDimens.m),
