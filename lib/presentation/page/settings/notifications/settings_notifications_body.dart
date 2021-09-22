@@ -34,15 +34,6 @@ class SettingsNotificationsBody extends HookWidget {
           ...groups
               .map((group) => _NotificationGroup(group: group, notificationType: NotificationType.push))
               .expand((element) => [element, const SizedBox(height: AppDimens.l)]),
-          const SizedBox(height: AppDimens.c),
-          Text(
-            LocaleKeys.settings_emailNotifications.tr(),
-            style: AppTypography.h3Bold,
-          ),
-          const SizedBox(height: AppDimens.l),
-          ...groups
-              .map((group) => _NotificationGroup(group: group, notificationType: NotificationType.email))
-              .expand((element) => [element, const SizedBox(height: AppDimens.l)]),
         ],
       ),
     );
