@@ -11,7 +11,10 @@ class UpdatedLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: backgroundColor,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(AppDimens.xs),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(AppDimens.s),
         child: Text(text, style: AppTypography.labelText),

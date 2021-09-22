@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _topMargin = 80.0;
 
@@ -29,21 +30,27 @@ class MyReadsPage extends HookWidget {
       [cubit],
     );
 
-    return ReadingBannerWrapper(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: _topMargin),
-            const _MyReadsHeader(),
-            const SizedBox(height: AppDimens.xl),
-            state.maybeMap(
-              initialLoading: (_) => const Loader(),
-              idle: (state) => const _Idle(),
-              orElse: () => const SizedBox(),
+    return CupertinoScaffold(
+      body: Scaffold(
+        body: ReadingBannerWrapper(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: _topMargin),
+                const _MyReadsHeader(),
+                const SizedBox(height: AppDimens.m),
+                Expanded(
+                  child: state.maybeMap(
+                    initialLoading: (_) => const Loader(),
+                    idle: (state) => const _Idle(),
+                    orElse: () => const SizedBox(),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -62,9 +69,9 @@ class _MyReadsHeader extends StatelessWidget {
           LocaleKeys.main_myReadsTab.tr(),
           style: AppTypography.h0Bold,
         ),
-        GestureDetector(
-          onTap: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
-          child: SvgPicture.asset(
+        IconButton(
+          onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
+          icon: SvgPicture.asset(
             AppVectorGraphics.settings,
             width: AppDimens.ml,
             height: AppDimens.ml,
@@ -82,36 +89,30 @@ class _Idle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text('5 items', style: AppTypography.b1Medium),
-          const SizedBox(height: AppDimens.s),
-          Container(height: 1, color: AppColors.grey),
-          const SizedBox(height: AppDimens.l),
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      MyReadsListItem(),
-                      Container(height: 1, color: AppColors.grey),
-                      const SizedBox(height: AppDimens.l),
-                      MyReadsListItem(),
-                      Container(height: 1, color: AppColors.grey),
-                      const SizedBox(height: AppDimens.l),
-                      MyReadsListItem(),
-                      const SizedBox(height: AppDimens.l),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+    return CustomScrollView(
+      slivers: [
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              const SizedBox(height: AppDimens.m),
+              const Text('5 items', style: AppTypography.b1Medium),
+              const SizedBox(height: AppDimens.s),
+              Container(height: 1, color: AppColors.grey),
+              const SizedBox(height: AppDimens.l),
+              MyReadsListItem(),
+              const SizedBox(height: AppDimens.l),
+              Container(height: 1, color: AppColors.grey),
+              const SizedBox(height: AppDimens.l),
+              MyReadsListItem(),
+              const SizedBox(height: AppDimens.l),
+              Container(height: 1, color: AppColors.grey),
+              const SizedBox(height: AppDimens.l),
+              MyReadsListItem(),
+              const SizedBox(height: AppDimens.l),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
