@@ -29,6 +29,7 @@ class SingleTopicPage extends HookWidget {
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
     final appBarKey = useMemoized(() => GlobalKey());
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
+    final route = useMemoized(() => ModalRoute.of(context));
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -36,6 +37,16 @@ class SingleTopicPage extends HookWidget {
         appBarHeightState.value = renderBoxRed?.size.height ?? AppDimens.topicAppBarDefaultHeight;
       });
     }, []);
+
+    useEffect(() {
+      route?.animation?.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          pageTransitionAnimation.forward();
+        } else if (status == AnimationStatus.reverse) {
+          pageTransitionAnimation.reset();
+        }
+      });
+    }, [route]);
 
     return LayoutBuilder(
       builder: (context, pageConstraints) => CupertinoScaffold(
@@ -49,16 +60,11 @@ class SingleTopicPage extends HookWidget {
           child: Material(
             child: Stack(
               children: [
-                LayoutBuilder(
-                  builder: (context, pageViewConstraints) => Positioned.fill(
-                    child: TopicView(
-                      index: 0,
-                      pageTransitionAnimation: pageTransitionAnimation,
-                      topic: topic,
-                      articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
-                      appBarMargin: appBarHeightState.value,
-                    ),
-                  ),
+                TopicView(
+                  pageTransitionAnimation: pageTransitionAnimation,
+                  topic: topic,
+                  articleContentHeight: pageConstraints.maxHeight - appBarHeightState.value,
+                  appBarMargin: appBarHeightState.value,
                 ),
                 Positioned(
                   top: 0,

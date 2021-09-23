@@ -7,12 +7,13 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-const _iconSize = 120;
+const _iconSize = 80.0;
 
 class ReadingBannerView extends HookWidget {
   @override
@@ -61,7 +62,7 @@ class _ReadingBannerBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               LinearProgressIndicator(
-                minHeight: AppDimens.xxs,
+                minHeight: AppDimens.xs,
                 value: readingBanner.scrollProgress,
                 valueColor: const AlwaysStoppedAnimation<Color>(AppColors.limeGreen),
                 backgroundColor: AppColors.limeGreen.withOpacity(0.44),
@@ -69,14 +70,14 @@ class _ReadingBannerBody extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    width: AppDimens.xc,
-                    height: AppDimens.xc,
+                    width: _iconSize,
+                    height: _iconSize,
                     decoration: const BoxDecoration(shape: BoxShape.rectangle),
                     child: imageId != null
                         ? Image.network(
                             CloudinaryImageExtension.withPublicId(imageId)
                                 .transform()
-                                .height(_iconSize)
+                                .height(DimensionUtil.getPhysicalPixelsAsInt(_iconSize, context))
                                 .fit()
                                 .generate()!,
                             fit: BoxFit.cover,

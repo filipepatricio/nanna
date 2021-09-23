@@ -44,6 +44,7 @@ class ReadingListSectionView extends HookWidget {
                     tag: HeroTag.exploreReadingListTitle(section.title.hashCode),
                     child: InformedMarkdownBody(
                       markdown: section.title,
+                      highlightColor: AppColors.transparent,
                       baseTextStyle: AppTypography.h1Medium,
                     ),
                   ),

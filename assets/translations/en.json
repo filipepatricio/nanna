@@ -99,6 +99,17 @@
     "articleCount": "{} articles"
   },
   "continueReading": "Continue reading",
+  "myReads":{
+    "articlesRead": "/{} articles read",
+    "itemsCount": {
+      "zero":"No items",
+      "one": "{} item",
+      "two": "{} items",
+      "few": "{} items",
+      "many": "{} items",
+      "other": "{} items"
+    }
+  },
   "explore": {
     "title": "Explore"
   }

@@ -66,6 +66,7 @@ const dashboardTabRouter = AutoRoute(
       page: HeroEmptyRouterPage,
       children: [
         AutoRoute(path: '', page: MyReadsPage),
+        AutoRoute(page: SingleTopicPage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),

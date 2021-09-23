@@ -2,11 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dart';
 import 'package:better_informed_mobile/presentation/page/main/widgets/bottom_navigation_icon.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+const _bottomBarElevation = 4.0;
 
 class BottomNavigation extends HookWidget {
   final MainState state;
@@ -29,7 +30,7 @@ class BottomNavigation extends HookWidget {
             ),
           )
         ],
-        elevation: AppDimens.zero,
+        elevation: _bottomBarElevation,
         type: BottomNavigationBarType.fixed,
         onTap: tabsRouter.setActiveIndex,
         currentIndex: tabsRouter.activeIndex,

@@ -31,6 +31,7 @@ class ArticleSeeAllPage extends StatelessWidget {
       body: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.background,
+          centerTitle: false,
           elevation: 0,
           title: Hero(
             tag: HeroTag.exploreArticleTitle,
@@ -62,6 +63,7 @@ class ArticleSeeAllPage extends StatelessWidget {
                 tag: HeroTag.exploreArticleTitle(title.hashCode),
                 child: InformedMarkdownBody(
                   markdown: title,
+                  highlightColor: AppColors.transparent,
                   baseTextStyle: AppTypography.h1,
                 ),
               ),

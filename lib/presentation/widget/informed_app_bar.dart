@@ -55,16 +55,6 @@ class _InformedAppBarState extends State<InformedAppBar> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(title, style: AppTypography.h1Bold.copyWith(color: AppColors.white)),
-                      if (showSettingsIcon)
-                        GestureDetector(
-                          onTap: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
-                          child: SvgPicture.asset(
-                            AppVectorGraphics.settings,
-                            width: AppDimens.l,
-                            height: AppDimens.l,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
                     ],
                   ),
                 ),

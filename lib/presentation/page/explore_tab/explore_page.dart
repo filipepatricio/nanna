@@ -35,9 +35,9 @@ class ExplorePage extends HookWidget {
     );
 
     return CupertinoScaffold(
-      body: ReadingBannerWrapper(
-        child: Scaffold(
-          body: AnnotatedRegion<SystemUiOverlayStyle>(
+      body: Scaffold(
+        body: ReadingBannerWrapper(
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.dark,
             child: CustomScrollView(
               slivers: [

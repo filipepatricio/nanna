@@ -32,6 +32,7 @@ class ReadingListSeeAllPage extends StatelessWidget {
       body: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.background,
+          centerTitle: false,
           elevation: 0,
           title: Text(
             tr(LocaleKeys.explore_title),
@@ -60,6 +61,7 @@ class ReadingListSeeAllPage extends StatelessWidget {
                 tag: HeroTag.exploreReadingListTitle(title.hashCode),
                 child: InformedMarkdownBody(
                   markdown: title,
+                  highlightColor: AppColors.transparent,
                   baseTextStyle: AppTypography.h1,
                 ),
               ),
