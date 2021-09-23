@@ -118,8 +118,8 @@ class MyReadsListItem extends HookWidget {
     );
   }
 
-  Future<Object?> _onTap(BuildContext context) {
-    return AutoRouter.of(context).push(
+  void _onTap(BuildContext context) {
+    AutoRouter.of(context).push(
       SingleTopicPageRoute(
         topic: item.topic,
       ),

@@ -232,7 +232,6 @@ class _PageViewContent extends StatelessWidget {
           return const SizedBox();
         } else {
           return TopicView(
-            index: index,
             pageTransitionAnimation: pageTransitionAnimation,
             topic: currentBrief.topics[index],
             articleContentHeight: articleContentHeight,

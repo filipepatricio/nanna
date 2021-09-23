@@ -1,4 +1,3 @@
-
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -10,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
@@ -34,14 +34,12 @@ const _topicHeaderImageHeight = 620.0;
 const _topicHeaderHeight = 350.0;
 
 class TopicView extends HookWidget {
-  final int index;
   final AnimationController pageTransitionAnimation;
   final Topic topic;
   final double articleContentHeight;
   final double? appBarMargin;
 
   const TopicView({
-    required this.index,
     required this.pageTransitionAnimation,
     required this.topic,
     required this.articleContentHeight,
@@ -88,7 +86,6 @@ class TopicView extends HookWidget {
           physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
           children: [
             _TopicHeader(
-              index: index,
               pageTransitionAnimation: pageTransitionAnimation,
               topic: topic,
             ),
@@ -110,12 +107,10 @@ class TopicView extends HookWidget {
 }
 
 class _TopicHeader extends HookWidget {
-  final int index;
   final AnimationController pageTransitionAnimation;
   final Topic topic;
 
   const _TopicHeader({
-    required this.index,
     required this.pageTransitionAnimation,
     required this.topic,
     Key? key,
@@ -123,8 +118,6 @@ class _TopicHeader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageWidth = MediaQuery.of(context).size.width * 2;
-
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -136,7 +129,7 @@ class _TopicHeader extends HookWidget {
             child: Image.network(
               CloudinaryImageExtension.withPublicId(topic.image.publicId)
                   .transform()
-                  .width(imageWidth.ceil())
+                  .height(DimensionUtil.getPhysicalPixelsAsInt(_topicHeaderImageHeight, context))
                   .fit()
                   .generate()!,
               fit: BoxFit.fitHeight,
