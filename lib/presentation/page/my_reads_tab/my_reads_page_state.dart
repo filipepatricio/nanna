@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/my_reads/data/my_reads_content.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,5 +10,5 @@ class MyReadsPageState with _$MyReadsPageState {
   factory MyReadsPageState.initialLoading() = _MyReadsPageStateInitialLoading;
 
   @Implements(BuildState)
-  factory MyReadsPageState.idle() = _MyReadsPageStateIdle;
+  factory MyReadsPageState.idle(MyReadsContent content) = _MyReadsPageStateIdle;
 }

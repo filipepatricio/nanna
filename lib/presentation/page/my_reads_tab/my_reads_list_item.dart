@@ -1,20 +1,34 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/my_reads/data/my_reads_item.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+const _rowHeight = 261.0;
+
 class MyReadsListItem extends HookWidget {
+  final MyReadsItem item;
+
+  const MyReadsListItem({
+    required this.item,
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 260,
+      height: _rowHeight,
       child: Row(
         children: [
           Expanded(
@@ -26,22 +40,15 @@ class MyReadsListItem extends HookWidget {
                     constraints.maxWidth,
                     constraints.maxHeight,
                   ),
-                  child: Container(
-                    color: AppColors.limeGreen,
+                  child: ReadingListCoverSmall(
+                    topic: item.topic,
+                    onTap: () => _onTap(context),
                   ),
                 ),
               ),
             ),
           ),
           const SizedBox(width: AppDimens.m),
-          //TODO: implement Stacked cards, fix resizing
-          // ReadingListStackedCards(
-          //   coverSize: Size(
-          //     // MediaQuery.of(context).size.width * 0.42,
-          //     // MediaQuery.of(context).size.height * 0.32,
-          //   ),
-          //   child: const ReadingListCover(),
-          // ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +56,7 @@ class MyReadsListItem extends HookWidget {
                 LinearPercentIndicator(
                   padding: EdgeInsets.zero,
                   lineHeight: AppDimens.xs,
-                  percent: 5/7,
+                  percent: item.finishedArticlesCount / item.articlesCount,
                   linearStrokeCap: LinearStrokeCap.roundAll,
                   backgroundColor: AppColors.grey.withOpacity(0.44),
                   progressColor: AppColors.limeGreen,
@@ -59,11 +66,11 @@ class MyReadsListItem extends HookWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: '5',
+                        text: item.finishedArticlesCount.toString(),
                         style: AppTypography.systemText.copyWith(fontWeight: FontWeight.w800),
                       ),
                       TextSpan(
-                        text: '/7 articles read',
+                        text: LocaleKeys.myReads_articlesRead.tr(args: [item.articlesCount.toString()]),
                         style: AppTypography.systemText,
                       ),
                     ],
@@ -107,6 +114,14 @@ class MyReadsListItem extends HookWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<Object?> _onTap(BuildContext context) {
+    return AutoRouter.of(context).push(
+      SingleTopicPageRoute(
+        topic: item.topic,
       ),
     );
   }

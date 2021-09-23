@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/my_reads/data/my_reads_content.dart';
+import 'package:better_informed_mobile/domain/my_reads/data/my_reads_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/my_reads_tab/my_reads_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/my_reads_tab/my_reads_page_cubit.dart';
@@ -33,23 +35,20 @@ class MyReadsPage extends HookWidget {
     return CupertinoScaffold(
       body: Scaffold(
         body: ReadingBannerWrapper(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: _topMargin),
-                const _MyReadsHeader(),
-                const SizedBox(height: AppDimens.m),
-                Expanded(
-                  child: state.maybeMap(
-                    initialLoading: (_) => const Loader(),
-                    idle: (state) => const _Idle(),
-                    orElse: () => const SizedBox(),
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: _topMargin),
+              const _MyReadsHeader(),
+              const SizedBox(height: AppDimens.m),
+              Expanded(
+                child: state.maybeMap(
+                  initialLoading: (_) => const Loader(),
+                  idle: (state) => _Idle(content: state.content),
+                  orElse: () => const SizedBox(),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -63,12 +62,13 @@ class _MyReadsHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        const SizedBox(width: AppDimens.l),
         Text(
           LocaleKeys.main_myReadsTab.tr(),
           style: AppTypography.h0Bold,
         ),
+        const Spacer(),
         IconButton(
           onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
           icon: SvgPicture.asset(
@@ -79,13 +79,19 @@ class _MyReadsHeader extends StatelessWidget {
             fit: BoxFit.contain,
           ),
         ),
+        const SizedBox(width: AppDimens.l),
       ],
     );
   }
 }
 
 class _Idle extends StatelessWidget {
-  const _Idle({Key? key}) : super(key: key);
+  final MyReadsContent content;
+
+  const _Idle({
+    required this.content,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,24 +101,72 @@ class _Idle extends StatelessWidget {
           delegate: SliverChildListDelegate(
             [
               const SizedBox(height: AppDimens.m),
-              const Text('5 items', style: AppTypography.b1Medium),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: _ItemsCountHeader(itemsCount: content.itemsCount),
+              ),
               const SizedBox(height: AppDimens.s),
-              Container(height: 1, color: AppColors.grey),
-              const SizedBox(height: AppDimens.l),
-              MyReadsListItem(),
-              const SizedBox(height: AppDimens.l),
-              Container(height: 1, color: AppColors.grey),
-              const SizedBox(height: AppDimens.l),
-              MyReadsListItem(),
-              const SizedBox(height: AppDimens.l),
-              Container(height: 1, color: AppColors.grey),
-              const SizedBox(height: AppDimens.l),
-              MyReadsListItem(),
-              const SizedBox(height: AppDimens.l),
             ],
           ),
         ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => _ItemWithDivider(item: content.items[index]),
+            childCount: content.itemsCount,
+          ),
+        ),
       ],
+    );
+  }
+}
+
+class _ItemsCountHeader extends StatelessWidget {
+  final int itemsCount;
+
+  const _ItemsCountHeader({
+    required this.itemsCount,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      LocaleKeys.myReads_itemsCount.plural(itemsCount),
+      style: AppTypography.b1Medium,
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  const _Divider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(height: 1, color: AppColors.grey);
+  }
+}
+
+class _ItemWithDivider extends StatelessWidget {
+  final MyReadsItem item;
+
+  const _ItemWithDivider({
+    required this.item,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _Divider(),
+          const SizedBox(height: AppDimens.l),
+          MyReadsListItem(item: item),
+          const SizedBox(height: AppDimens.l),
+        ],
+      ),
     );
   }
 }
