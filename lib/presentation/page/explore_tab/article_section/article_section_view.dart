@@ -40,11 +40,12 @@ class ArticleSectionView extends StatelessWidget {
                     child: InformedMarkdownBody(
                       markdown: section.title,
                       baseTextStyle: AppTypography.h1,
-                      highlightColor: AppColors.background,
+                      highlightColor: AppColors.transparent,
                       maxLines: 2,
                     ),
                   ),
                 ),
+                const SizedBox(width: AppDimens.s),
                 SeeAllButton(
                   onTap: () => AutoRouter.of(context).push(
                     ArticleSeeAllPageRoute(

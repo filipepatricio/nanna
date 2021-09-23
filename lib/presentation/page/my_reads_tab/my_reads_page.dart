@@ -33,8 +33,8 @@ class MyReadsPage extends HookWidget {
     );
 
     return CupertinoScaffold(
-      body: Scaffold(
-        body: ReadingBannerWrapper(
+      body: Material(
+        child: ReadingBannerWrapper(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -73,9 +73,6 @@ class _MyReadsHeader extends StatelessWidget {
           onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
           icon: SvgPicture.asset(
             AppVectorGraphics.settings,
-            width: AppDimens.ml,
-            height: AppDimens.ml,
-            color: Colors.black,
             fit: BoxFit.contain,
           ),
         ),
