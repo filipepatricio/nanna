@@ -8,7 +8,8 @@ class Topic {
   final String introduction;
   final String summary;
   final Category category;
-  final Image image;
+  final Image heroImage;
+  final Image coverImage;
   final ReadingList readingList;
 
   Topic({
@@ -17,7 +18,8 @@ class Topic {
     required this.introduction,
     required this.summary,
     required this.category,
-    required this.image,
+    required this.heroImage,
+    required this.coverImage,
     required this.readingList,
   });
 }

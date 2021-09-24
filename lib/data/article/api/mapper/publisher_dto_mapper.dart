@@ -14,7 +14,8 @@ class PublisherDTOMapper implements Mapper<PublisherDTO, Publisher> {
   Publisher call(PublisherDTO data) {
     return Publisher(
       name: data.name,
-      logo: _imageDTOMapper(data.logo),
+      lightLogo: _imageDTOMapper(data.lightLogo),
+      darkLogo: _imageDTOMapper(data.darkLogo),
     );
   }
 }

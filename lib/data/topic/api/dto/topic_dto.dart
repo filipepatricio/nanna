@@ -12,7 +12,8 @@ class TopicDTO {
   final String introduction;
   final String summary;
   final CategoryDTO category;
-  final ImageDTO image;
+  final ImageDTO heroImage;
+  final ImageDTO coverImage;
   final ReadingListDTO readingList;
 
   TopicDTO(
@@ -21,7 +22,8 @@ class TopicDTO {
     this.introduction,
     this.summary,
     this.category,
-    this.image,
+    this.heroImage,
+    this.coverImage,
     this.readingList,
   );
 

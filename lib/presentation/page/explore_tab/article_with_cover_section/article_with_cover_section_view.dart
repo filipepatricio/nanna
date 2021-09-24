@@ -201,7 +201,7 @@ class _MainArticleCover extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Image.network(
-              CloudinaryImageExtension.withPublicId(articleHeader.publisher.logo.publicId)
+              CloudinaryImageExtension.withPublicId(articleHeader.publisher.lightLogo.publicId)
                   .transform()
                   .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                   .fit()

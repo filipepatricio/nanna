@@ -16,6 +16,7 @@ class ArticleDTO {
   final ImageDTO? image;
   final ArticleContentDTO? text;
   final String? sourceUrl;
+  final String author;
 
   ArticleDTO(
     this.slug,
@@ -27,6 +28,7 @@ class ArticleDTO {
     this.sourceUrl,
     this.image,
     this.publisher,
+    this.author,
   );
 
   factory ArticleDTO.fromJson(Map<String, dynamic> json) => _$ArticleDTOFromJson(json);

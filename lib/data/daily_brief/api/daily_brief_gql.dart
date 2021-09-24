@@ -21,7 +21,10 @@ class DailyBriefGql {
           title
           introduction
           summary
-          image {
+          coverImage {
+            publicId
+          }
+          heroImage {
             publicId
           }
           category {
@@ -31,6 +34,7 @@ class DailyBriefGql {
             id
             articles {
               slug
+              author
               title
               type
               publicationDate
@@ -40,7 +44,10 @@ class DailyBriefGql {
               }
               publisher {
                 name
-                logo {
+                lightLogo {
+                  publicId
+                }
+                darkLogo {
                   publicId
                 }
               }

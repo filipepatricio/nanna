@@ -127,7 +127,7 @@ class _TopicHeader extends HookWidget {
             width: double.infinity,
             height: _topicHeaderImageHeight,
             child: Image.network(
-              CloudinaryImageExtension.withPublicId(topic.image.publicId)
+              CloudinaryImageExtension.withPublicId(topic.heroImage.publicId)
                   .transform()
                   .height(DimensionUtil.getPhysicalPixelsAsInt(_topicHeaderImageHeight, context))
                   .fit()

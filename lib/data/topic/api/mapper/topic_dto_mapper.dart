@@ -26,7 +26,8 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
       introduction: data.introduction,
       summary: data.summary,
       category: _categoryDTOMapper(data.category),
-      image: _imageDTOMapper(data.image),
+      heroImage: _imageDTOMapper(data.heroImage),
+      coverImage: _imageDTOMapper(data.coverImage),
       readingList: _readingListDTOMapper(data.readingList),
     );
   }

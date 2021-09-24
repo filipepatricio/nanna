@@ -18,8 +18,13 @@ final mockedArticleList1 = [
     type: ArticleType.premium,
     publicationDate: '2021-02-03',
     timeToRead: 5,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    publisher: Publisher(
+      name: 'NYT',
+      lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+      darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+    ),
     image: article_image.Image(publicId: 'articles/storm'),
+    author: 'John Doe',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -27,8 +32,13 @@ final mockedArticleList1 = [
     type: ArticleType.premium,
     publicationDate: '2021-02-09',
     timeToRead: 3,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    publisher: Publisher(
+      name: 'NYT',
+      lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+      darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+    ),
     image: article_image.Image(publicId: 'articles/storm'),
+    author: 'John Doe',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -36,8 +46,13 @@ final mockedArticleList1 = [
     type: ArticleType.premium,
     publicationDate: '2021-02-08',
     timeToRead: 6,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    publisher: Publisher(
+      name: 'NYT',
+      lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+      darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+    ),
     image: article_image.Image(publicId: 'articles/storm'),
+    author: 'John Doe',
   ),
 ];
 
@@ -48,8 +63,13 @@ final mockedArticleList2 = [
     type: ArticleType.freemium,
     publicationDate: '2021-02-03',
     timeToRead: 5,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    publisher: Publisher(
+      name: 'NYT',
+      lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+      darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+    ),
     image: article_image.Image(publicId: 'articles/storm'),
+    author: 'John Doe',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -57,8 +77,13 @@ final mockedArticleList2 = [
     type: ArticleType.freemium,
     publicationDate: '2021-02-09',
     timeToRead: 4,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    publisher: Publisher(
+      name: 'NYT',
+      lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+      darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+    ),
     image: article_image.Image(publicId: 'articles/storm'),
+    author: 'John Doe',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -66,8 +91,13 @@ final mockedArticleList2 = [
     type: ArticleType.freemium,
     publicationDate: '2021-02-08',
     timeToRead: 6,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    publisher: Publisher(
+      name: 'NYT',
+      lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+      darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+    ),
     image: article_image.Image(publicId: 'articles/storm'),
+    author: 'John Doe',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -75,8 +105,13 @@ final mockedArticleList2 = [
     type: ArticleType.freemium,
     publicationDate: '2021-02-08',
     timeToRead: 11,
-    publisher: Publisher(name: 'NYT', logo: article_image.Image(publicId: 'publishers/the_economist')),
+    publisher: Publisher(
+      name: 'NYT',
+      lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+      darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+    ),
     image: article_image.Image(publicId: 'articles/storm'),
+    author: 'John Doe',
   ),
 ];
 
@@ -109,11 +144,12 @@ final readingListSection = ExploreContentSection.readingLists(
       introduction: 'introduction',
       summary: '',
       category: Category(name: 'name'),
-      image: Image(publicId: ''),
+      heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList2,
         id: '0',
       ),
+      coverImage: Image(publicId: ''),
     ),
     Topic(
       id: '0',
@@ -121,11 +157,12 @@ final readingListSection = ExploreContentSection.readingLists(
       introduction: 'introduction',
       summary: '',
       category: Category(name: 'name'),
-      image: Image(publicId: ''),
+      heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList1,
         id: '0',
       ),
+      coverImage: Image(publicId: ''),
     ),
     Topic(
       id: '0',
@@ -133,11 +170,12 @@ final readingListSection = ExploreContentSection.readingLists(
       introduction: 'introduction',
       summary: '',
       category: Category(name: 'name'),
-      image: Image(publicId: ''),
+      heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList2,
         id: '0',
       ),
+      coverImage: Image(publicId: ''),
     ),
     Topic(
       id: '0',
@@ -145,11 +183,12 @@ final readingListSection = ExploreContentSection.readingLists(
       introduction: 'introduction',
       summary: '',
       category: Category(name: 'name'),
-      image: Image(publicId: ''),
+      heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList1,
         id: '0',
       ),
+      coverImage: Image(publicId: ''),
     ),
   ],
 );

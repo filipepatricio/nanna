@@ -29,6 +29,7 @@ class ArticleHeaderDTOMapper implements Mapper<ArticleDTO, ArticleHeader> {
       timeToRead: data.timeToRead,
       image: image != null ? _imageDTOMapper(image) : null,
       publisher: _publisherDTOMapper(data.publisher),
+      author: data.author,
     );
   }
 }
