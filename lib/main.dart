@@ -24,7 +24,6 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   await configureDependencies(environment);
-  await _prepareFreshLink();
 
   setupFimber();
 
@@ -64,9 +63,4 @@ String _getEnvironment() {
     default:
       throw Exception('Unknown environment type: $env');
   }
-}
-
-Future<void> _prepareFreshLink() async {
-  final freshLink = getIt<FreshLink<OAuth2Token>>();
-  await freshLink.token;
 }
