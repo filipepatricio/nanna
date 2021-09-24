@@ -16,8 +16,8 @@ class GraphqlFreshLinkFactory {
     this._shouldRefreshValidator,
   );
 
-  FreshLink<OAuth2Token> create() {
-    return FreshLink.oAuth2(
+  Future<FreshLink<OAuth2Token>> create() async {
+    final link = FreshLink.oAuth2(
       tokenStorage: _storage,
       refreshToken: (token, client) async {
         final refreshToken = token?.refreshToken;
@@ -28,5 +28,9 @@ class GraphqlFreshLinkFactory {
       },
       shouldRefresh: _shouldRefreshValidator,
     );
+
+    await link.authenticationStatus.where((event) => event != AuthenticationStatus.initial).first;
+
+    return link;
   }
 }

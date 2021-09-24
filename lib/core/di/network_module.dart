@@ -7,8 +7,8 @@ import 'package:injectable/injectable.dart';
 
 @module
 abstract class NetworkModule {
-  @lazySingleton
-  FreshLink<OAuth2Token> createFreshLink(GraphqlFreshLinkFactory factory) => factory.create();
+  @preResolve
+  Future<FreshLink<OAuth2Token>> createFreshLink(GraphqlFreshLinkFactory factory) => factory.create();
 
   @Named('unauthorized')
   @lazySingleton
