@@ -9,11 +9,12 @@ import 'package:fimber/fimber.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _environmentArgKey = 'env';
+const _sentryEventDns = 'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,15 +35,20 @@ Future<void> main() async {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
 
-  runApp(
-    EasyLocalization(
-      path: 'assets/translations',
-      supportedLocales: availableLocales.values.toList(),
-      fallbackLocale: availableLocales[fallbackLanguageCode],
-      useOnlyLangCode: true,
-      saveLocale: true,
-      child: BetterInformedApp(
-        mainRouter: mainRouter,
+  await SentryFlutter.init(
+    (options) => options
+      ..dsn = _sentryEventDns
+      ..environment = environment,
+    appRunner: () => runApp(
+      EasyLocalization(
+        path: 'assets/translations',
+        supportedLocales: availableLocales.values.toList(),
+        fallbackLocale: availableLocales[fallbackLanguageCode],
+        useOnlyLangCode: true,
+        saveLocale: true,
+        child: BetterInformedApp(
+          mainRouter: mainRouter,
+        ),
       ),
     ),
   );

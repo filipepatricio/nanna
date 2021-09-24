@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/domain/article/use_case/set_reading_banne
 import 'package:better_informed_mobile/presentation/page/article/article_scroll_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
 import 'article_state.dart';
@@ -36,8 +37,11 @@ class ArticleCubit extends Cubit<ArticleState> {
 
     emit(ArticleState.loading(_header));
     _resetBannerState();
-
-    _fullArticle = await _getFullArticleUseCase(_header.slug);
+    try {
+      _fullArticle = await _getFullArticleUseCase(_header.slug);
+    } catch (e, s) {
+      Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
+    }
     _showIdleState();
   }
 
