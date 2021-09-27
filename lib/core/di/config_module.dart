@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/util/sentry_reporting_tree.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
@@ -10,12 +11,21 @@ abstract class ConfigModule {
 
   @test
   @singleton
-  AppConfig get stateEnv => AppConfig.stage();
+  AppConfig get stageEnv => AppConfig.stage();
 
   @prod
   @singleton
   AppConfig get prodEnv => AppConfig.prod();
 
+  @dev
   @singleton
   LogTree get devLogTree => DebugTree(useColors: true);
+
+  @prod
+  @singleton
+  LogTree get prodLogTree => SentryReportingTree();
+
+  @test
+  @singleton
+  LogTree get stagingLogTree => SentryReportingTree();
 }
