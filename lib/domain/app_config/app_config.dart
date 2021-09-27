@@ -6,12 +6,16 @@ class AppConfig {
   final String name;
   final String apiUrl;
 
-  AppConfig._(this.name, this.apiUrl);
+  /// The DSN tells where to send events so the events are associated with the correct project.
+  final String sentryEventDns;
+
+  AppConfig._(this.name, this.apiUrl, this.sentryEventDns);
 
   factory AppConfig.dev() {
     return AppConfig._(
       Environment.dev,
       const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
+      '',
     );
   }
 
@@ -19,6 +23,7 @@ class AppConfig {
     return AppConfig._(
       Environment.test,
       const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
+      'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
     );
   }
 
@@ -26,6 +31,7 @@ class AppConfig {
     return AppConfig._(
       Environment.prod,
       const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
+      'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
     );
   }
 }

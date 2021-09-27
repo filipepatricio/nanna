@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/better_informed_app.dart';
@@ -14,7 +15,6 @@ import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _environmentArgKey = 'env';
-const _sentryEventDns = 'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,10 +34,11 @@ Future<void> main() async {
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
+  final appConfig = getIt.get<AppConfig>();
 
   await SentryFlutter.init(
     (options) => options
-      ..dsn = _sentryEventDns
+      ..dsn = appConfig.sentryEventDns
       ..environment = environment,
     appRunner: () => runApp(
       EasyLocalization(
