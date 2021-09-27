@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,8 +36,9 @@ class PhotoCover extends StatelessWidget {
                         child: Image.network(
                           CloudinaryImageExtension.withPublicId(imageId)
                               .transform()
-                              .width(DimensionUtil.getPhysicalPixelsAsInt(constrains.maxHeight, context))
-                              .generate()!,
+                              .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
+                              .autoGravity()
+                              .generateNotNull(),
                           fit: BoxFit.cover,
                         ),
                       ),

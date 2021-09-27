@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
@@ -118,6 +117,8 @@ class _TopicHeader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -129,9 +130,9 @@ class _TopicHeader extends HookWidget {
             child: Image.network(
               CloudinaryImageExtension.withPublicId(topic.heroImage.publicId)
                   .transform()
-                  .height(DimensionUtil.getPhysicalPixelsAsInt(_topicHeaderImageHeight, context))
-                  .fit()
-                  .generate()!,
+                  .withLogicalSize(screenWidth, _topicHeaderImageHeight, context)
+                  .autoGravity()
+                  .generateNotNull(),
               fit: BoxFit.fitHeight,
               alignment: Alignment.topLeft,
             ),

@@ -35,7 +35,7 @@ class ReadingListCover extends StatelessWidget {
                     .transform()
                     .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
                     .fit()
-                    .generate()!,
+                    .generateNotNull(),
               ),
               fit: BoxFit.cover,
               alignment: Alignment.center,
@@ -50,7 +50,7 @@ class ReadingListCover extends StatelessWidget {
               ),
               Expanded(
                 child: Align(
-                  alignment: const Alignment(0.0, 0.0),
+                  alignment: const Alignment(0.0, -0.25),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                     child: InformedMarkdownBody(

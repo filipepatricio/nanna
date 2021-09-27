@@ -77,7 +77,7 @@ class ArticleListItem extends StatelessWidget {
                       .transform()
                       .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                       .fit()
-                      .generate()!,
+                      .generateNotNull(),
                   width: _publisherLogoSize,
                   height: _publisherLogoSize,
                   fit: BoxFit.contain,

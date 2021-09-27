@@ -131,9 +131,9 @@ class _MainArticle extends StatelessWidget {
                   ? Image.network(
                       CloudinaryImageExtension.withPublicId(imageId)
                           .transform()
-                          .width(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxWidth, context))
-                          .fit()
-                          .generate()!,
+                          .withLogicalSize(constraints.maxWidth, constraints.maxHeight, context)
+                          .autoGravity()
+                          .generateNotNull(),
                       fit: BoxFit.cover,
                       alignment: Alignment.bottomLeft,
                     )
@@ -205,7 +205,7 @@ class _MainArticleCover extends StatelessWidget {
                   .transform()
                   .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                   .fit()
-                  .generate()!,
+                  .generateNotNull(),
               width: _publisherLogoSize,
               height: _publisherLogoSize,
               fit: BoxFit.contain,

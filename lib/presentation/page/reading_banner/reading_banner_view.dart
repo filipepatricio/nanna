@@ -77,9 +77,9 @@ class _ReadingBannerBody extends StatelessWidget {
                         ? Image.network(
                             CloudinaryImageExtension.withPublicId(imageId)
                                 .transform()
-                                .height(DimensionUtil.getPhysicalPixelsAsInt(_iconSize, context))
-                                .fit()
-                                .generate()!,
+                                .withLogicalSize(_iconSize, _iconSize, context)
+                                .autoGravity()
+                                .generateNotNull(),
                             fit: BoxFit.cover,
                           )
                         : const SizedBox(),

@@ -28,7 +28,7 @@ class DottedArticleInfo extends StatelessWidget {
                 .transform()
                 .width(DimensionUtil.getPhysicalPixelsAsInt(AppDimens.l, context))
                 .fit()
-                .generate()!,
+                .generateNotNull(),
             width: AppDimens.l,
             height: AppDimens.l,
             fit: BoxFit.contain,

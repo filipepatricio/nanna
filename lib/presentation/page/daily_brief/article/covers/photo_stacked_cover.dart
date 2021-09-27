@@ -34,8 +34,9 @@ class PhotoStackedCover extends StatelessWidget {
                   return Image.network(
                     CloudinaryImageExtension.withPublicId(imageId)
                         .transform()
-                        .height(DimensionUtil.getPhysicalPixelsAsInt(constrains.maxHeight, context))
-                        .generate()!,
+                        .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
+                        .autoGravity()
+                        .generateNotNull(),
                     fit: BoxFit.cover,
                   );
                 },
