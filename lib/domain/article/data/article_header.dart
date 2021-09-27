@@ -10,6 +10,7 @@ class ArticleHeader {
   final int timeToRead;
   final Publisher publisher;
   final Image? image;
+  final String author;
 
   ArticleHeader({
     required this.slug,
@@ -19,5 +20,6 @@ class ArticleHeader {
     required this.timeToRead,
     required this.publisher,
     required this.image,
+    required this.author,
   });
 }

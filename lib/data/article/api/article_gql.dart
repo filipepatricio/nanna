@@ -6,6 +6,7 @@ class ArticleGQL {
     query {
       article(slug: "$slug") {
         slug
+        author
         title
         text {
           content
@@ -20,7 +21,10 @@ class ArticleGQL {
         }
         publisher {
           name
-          logo {
+          lightLogo {
+            publicId
+          }
+          darkLogo {
             publicId
           }
         }

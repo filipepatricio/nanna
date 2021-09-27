@@ -24,11 +24,11 @@ class DottedArticleInfo extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Image.network(
-            CloudinaryImageExtension.withPublicId(article.publisher.logo.publicId)
+            CloudinaryImageExtension.withPublicId(article.publisher.lightLogo.publicId)
                 .transform()
                 .width(DimensionUtil.getPhysicalPixelsAsInt(AppDimens.l, context))
                 .fit()
-                .generate()!,
+                .generateNotNull(),
             width: AppDimens.l,
             height: AppDimens.l,
             fit: BoxFit.contain,

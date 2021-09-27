@@ -313,7 +313,7 @@ class ArticleContentView extends HookWidget {
               ),
               const SizedBox(height: AppDimens.s),
               Text(
-                LocaleKeys.article_articleBy.tr(args: ['David david']), // TODO missing data in object - author name
+                LocaleKeys.article_articleBy.tr(args: [article.author]),
                 style: AppTypography.metadata1Medium,
               ),
               const SizedBox(height: AppDimens.articleItemMargin),

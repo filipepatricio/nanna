@@ -65,6 +65,7 @@ class _CustomTextPainter extends HookWidget {
         textDirection: TextDirection.ltr,
         text: TextSpan(children: spans),
         textAlign: TextAlign.left,
+        maxLines: maxLines,
       );
 
       textPainter.layout(maxWidth: size.maxWidth);
@@ -116,6 +117,7 @@ class _CustomTextPainter extends HookWidget {
           textDirection: TextDirection.ltr,
           text: TextSpan(children: computedSpans),
           textAlign: TextAlign.left,
+          maxLines: maxLines,
         );
         startWidth.layout(maxWidth: size.maxWidth);
         final startPosition = _computeTextWidth(startWidth);
@@ -126,6 +128,7 @@ class _CustomTextPainter extends HookWidget {
           textDirection: TextDirection.ltr,
           text: TextSpan(children: computedSpans),
           textAlign: TextAlign.left,
+          maxLines: maxLines,
         );
         endWidth.layout(maxWidth: size.maxWidth);
         final endPosition = _computeTextWidth(endWidth);

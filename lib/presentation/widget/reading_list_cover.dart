@@ -3,6 +3,8 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
@@ -26,13 +28,19 @@ class ReadingListCover extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: LayoutBuilder(
         builder: (context, constraints) => Container(
-          // decoration: const BoxDecoration(
-          //   image: DecorationImage(
-          //     image: NetworkImage('url'),  // TODO will be coming from API
-          //     fit: BoxFit.cover,
-          //     alignment: Alignment.center,
-          //   ),
-          // ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                CloudinaryImageExtension.withPublicId(topic.coverImage.publicId)
+                    .transform()
+                    .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
+                    .fit()
+                    .generateNotNull(),
+              ),
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -42,7 +50,7 @@ class ReadingListCover extends StatelessWidget {
               ),
               Expanded(
                 child: Align(
-                  alignment: const Alignment(0.0, 0.0),
+                  alignment: const Alignment(0.0, -0.25),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                     child: InformedMarkdownBody(
