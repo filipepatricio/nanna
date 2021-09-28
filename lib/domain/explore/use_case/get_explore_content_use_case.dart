@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/category.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as article_image;
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
@@ -143,7 +142,6 @@ final readingListSection = ExploreContentSection.readingLists(
       title: 'Afghanistan stories',
       introduction: 'introduction',
       summary: '',
-      category: Category(name: 'name'),
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList2,
@@ -156,7 +154,6 @@ final readingListSection = ExploreContentSection.readingLists(
       title: 'All the crypto coins',
       introduction: 'introduction',
       summary: '',
-      category: Category(name: 'name'),
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList1,
@@ -169,7 +166,6 @@ final readingListSection = ExploreContentSection.readingLists(
       title: 'Female Leadership',
       introduction: 'introduction',
       summary: '',
-      category: Category(name: 'name'),
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList2,
@@ -182,7 +178,6 @@ final readingListSection = ExploreContentSection.readingLists(
       title: 'Afghanistan falls to the Taliban',
       introduction: 'introduction',
       summary: '',
-      category: Category(name: 'name'),
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList1,
