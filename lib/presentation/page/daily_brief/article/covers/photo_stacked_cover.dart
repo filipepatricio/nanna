@@ -5,20 +5,21 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class PhotoStackedCover extends StatelessWidget {
+class PhotoStackedCover extends HookWidget {
   final ArticleHeader article;
 
   const PhotoStackedCover({required this.article});
 
   @override
   Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
     final containerHeight = MediaQuery.of(context).size.height * 0.52;
 
@@ -32,7 +33,8 @@ class PhotoStackedCover extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (context, constrains) {
                   return Image.network(
-                    CloudinaryImageExtension.withPublicId(imageId)
+                    cloudinaryProvider
+                        .withPublicId(imageId)
                         .transform()
                         .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
                         .autoGravity()

@@ -10,8 +10,9 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class ReadingListCover extends StatelessWidget {
+class ReadingListCover extends HookWidget {
   final Topic topic;
   final VoidCallback? onTap;
 
@@ -23,6 +24,8 @@ class ReadingListCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
+
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -31,7 +34,8 @@ class ReadingListCover extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
-                CloudinaryImageExtension.withPublicId(topic.coverImage.publicId)
+                cloudinaryProvider
+                    .withPublicId(topic.coverImage.publicId)
                     .transform()
                     .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
                     .fit()

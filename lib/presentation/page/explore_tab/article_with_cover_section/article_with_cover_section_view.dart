@@ -19,6 +19,7 @@ import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _mainArticleHeight = 366.0;
@@ -102,7 +103,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
   }
 }
 
-class _MainArticle extends StatelessWidget {
+class _MainArticle extends HookWidget {
   final ArticleHeader articleHeader;
   final Color themeColor;
 
@@ -114,6 +115,7 @@ class _MainArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
     final imageId = articleHeader.image?.publicId;
 
     return GestureDetector(
@@ -129,7 +131,8 @@ class _MainArticle extends StatelessWidget {
               height: _mainArticleHeight,
               child: imageId != null
                   ? Image.network(
-                      CloudinaryImageExtension.withPublicId(imageId)
+                      cloudinaryProvider
+                          .withPublicId(imageId)
                           .transform()
                           .withLogicalSize(constraints.maxWidth, constraints.maxHeight, context)
                           .autoGravity()
@@ -173,7 +176,7 @@ class _MainArticle extends StatelessWidget {
   }
 }
 
-class _MainArticleCover extends StatelessWidget {
+class _MainArticleCover extends HookWidget {
   final ArticleHeader articleHeader;
   final Color themeColor;
 
@@ -185,6 +188,8 @@ class _MainArticleCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
+
     return Container(
       padding: const EdgeInsets.all(AppDimens.m),
       color: AppColors.background,
@@ -201,7 +206,8 @@ class _MainArticleCover extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Image.network(
-              CloudinaryImageExtension.withPublicId(articleHeader.publisher.lightLogo.publicId)
+              cloudinaryProvider
+                  .withPublicId(articleHeader.publisher.lightLogo.publicId)
                   .transform()
                   .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                   .fit()

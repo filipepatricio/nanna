@@ -16,7 +16,7 @@ class ArticleDTO {
   final ImageDTO? image;
   final ArticleContentDTO? text;
   final String? sourceUrl;
-  final String author;
+  final String? author;
 
   ArticleDTO(
     this.slug,

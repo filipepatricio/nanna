@@ -1,13 +1,23 @@
+import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _cloudinaryCloudName = 'informed-development';
+class CloudinaryImageProvider {
+  final String _cloudName;
 
-extension CloudinaryImageExtension on CloudinaryImage {
-  static CloudinaryImage withPublicId(String publicId) {
-    return CloudinaryImage.fromPublicId(_cloudinaryCloudName, publicId);
-  }
+  CloudinaryImageProvider._(this._cloudName);
+
+  CloudinaryImage withPublicId(String publicId) => CloudinaryImage.fromPublicId(_cloudName, publicId);
+}
+
+CloudinaryImageProvider useCloudinaryProvider() {
+  return useMemoized(() {
+    final cloudName = getIt<AppConfig>().cloudinaryCloudName;
+    return CloudinaryImageProvider._(cloudName);
+  });
 }
 
 extension CloudinaryTransformationExtension on CloudinaryTransformation {
