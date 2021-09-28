@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -33,13 +32,14 @@ class ReadingBannerView extends HookWidget {
   }
 }
 
-class _ReadingBannerBody extends StatelessWidget {
+class _ReadingBannerBody extends HookWidget {
   final ReadingBanner readingBanner;
 
   const _ReadingBannerBody(this.readingBanner, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
     final imageId = readingBanner.article.image?.publicId;
 
     return GestureDetector(
@@ -75,7 +75,8 @@ class _ReadingBannerBody extends StatelessWidget {
                     decoration: const BoxDecoration(shape: BoxShape.rectangle),
                     child: imageId != null
                         ? Image.network(
-                            CloudinaryImageExtension.withPublicId(imageId)
+                            cloudinaryProvider
+                                .withPublicId(imageId)
                                 .transform()
                                 .withLogicalSize(_iconSize, _iconSize, context)
                                 .autoGravity()

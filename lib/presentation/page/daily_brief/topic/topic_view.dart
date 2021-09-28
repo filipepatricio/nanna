@@ -117,6 +117,7 @@ class _TopicHeader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Stack(
@@ -128,7 +129,8 @@ class _TopicHeader extends HookWidget {
             width: double.infinity,
             height: _topicHeaderImageHeight,
             child: Image.network(
-              CloudinaryImageExtension.withPublicId(topic.heroImage.publicId)
+              cloudinaryProvider
+                  .withPublicId(topic.heroImage.publicId)
                   .transform()
                   .withLogicalSize(screenWidth, _topicHeaderImageHeight, context)
                   .autoGravity()

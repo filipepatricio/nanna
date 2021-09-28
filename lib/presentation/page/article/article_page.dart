@@ -216,6 +216,7 @@ class ArticleHeaderView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
 
     return Stack(
@@ -226,7 +227,7 @@ class ArticleHeaderView extends HookWidget {
           height: MediaQuery.of(context).size.height * 0.55,
           child: imageId != null
               ? Image.network(
-                  CloudinaryImageExtension.withPublicId(imageId).url,
+                  cloudinaryProvider.withPublicId(imageId).url,
                   fit: BoxFit.cover,
                   alignment: Alignment.topLeft,
                 )
@@ -298,6 +299,8 @@ class ArticleContentView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final author = article.author;
+
     return Padding(
       padding: const EdgeInsets.all(AppDimens.l),
       child: Column(
@@ -312,10 +315,11 @@ class ArticleContentView extends HookWidget {
                 color: AppColors.textPrimary.withOpacity(0.14),
               ),
               const SizedBox(height: AppDimens.s),
-              Text(
-                LocaleKeys.article_articleBy.tr(args: [article.author]),
-                style: AppTypography.metadata1Medium,
-              ),
+              if (author != null)
+                Text(
+                  LocaleKeys.article_articleBy.tr(args: [author]),
+                  style: AppTypography.metadata1Medium,
+                ),
               const SizedBox(height: AppDimens.articleItemMargin),
               Row(
                 children: [

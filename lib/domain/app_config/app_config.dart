@@ -5,33 +5,45 @@ const _environmentArgHost = 'host';
 class AppConfig {
   final String name;
   final String apiUrl;
+  final String cloudinaryCloudName;
 
   /// The DSN tells where to send events so the events are associated with the correct project.
   final String sentryEventDns;
 
-  AppConfig._(this.name, this.apiUrl, this.sentryEventDns);
+  AppConfig._({
+    required this.name,
+    required this.apiUrl,
+    required this.cloudinaryCloudName,
+    required this.sentryEventDns,
+  });
 
   factory AppConfig.dev() {
     return AppConfig._(
-      Environment.dev,
-      const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
-      '',
+      name: Environment.dev,
+      apiUrl: const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
+      cloudinaryCloudName: 'informed-development',
+      sentryEventDns: '',
     );
   }
 
   factory AppConfig.stage() {
     return AppConfig._(
-      Environment.test,
-      const String.fromEnvironment(_environmentArgHost, defaultValue: 'https://api.staging.informed.so/graphql'),
-      'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
+      name: Environment.test,
+      apiUrl: const String.fromEnvironment(
+        _environmentArgHost,
+        defaultValue: 'https://api.staging.informed.so/graphql',
+      ),
+      cloudinaryCloudName: 'informed-staging',
+      sentryEventDns: 'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
     );
   }
 
   factory AppConfig.prod() {
     return AppConfig._(
-      Environment.prod,
-      const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
-      'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
+      name: Environment.prod,
+      apiUrl: const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
+      cloudinaryCloudName: '',
+      sentryEventDns: 'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
     );
   }
 }

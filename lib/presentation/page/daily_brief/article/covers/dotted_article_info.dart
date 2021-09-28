@@ -6,8 +6,9 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class DottedArticleInfo extends StatelessWidget {
+class DottedArticleInfo extends HookWidget {
   final ArticleHeader article;
   final Color? textColor;
 
@@ -19,12 +20,15 @@ class DottedArticleInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
+
     return Row(
       children: [
         Align(
           alignment: Alignment.centerLeft,
           child: Image.network(
-            CloudinaryImageExtension.withPublicId(article.publisher.lightLogo.publicId)
+            cloudinaryProvider
+                .withPublicId(article.publisher.lightLogo.publicId)
                 .transform()
                 .width(DimensionUtil.getPhysicalPixelsAsInt(AppDimens.l, context))
                 .fit()
