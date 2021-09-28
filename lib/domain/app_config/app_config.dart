@@ -22,7 +22,7 @@ class AppConfig {
   factory AppConfig.stage() {
     return AppConfig._(
       Environment.test,
-      const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
+      const String.fromEnvironment(_environmentArgHost, defaultValue: 'https://api.staging.informed.so/graphql'),
       'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
     );
   }
