@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_relax_view.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/relax/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
