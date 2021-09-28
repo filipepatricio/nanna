@@ -27,9 +27,6 @@ class DailyBriefGql {
           heroImage {
             publicId
           }
-          category {
-            name
-          }
           readingList {
             id
             articles {

@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/data/daily_brief/api/dto/category_dto.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/reading_list_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -11,7 +10,6 @@ class TopicDTO {
   final String title;
   final String introduction;
   final String summary;
-  final CategoryDTO category;
   final ImageDTO heroImage;
   final ImageDTO coverImage;
   final ReadingListDTO readingList;
@@ -21,7 +19,6 @@ class TopicDTO {
     this.title,
     this.introduction,
     this.summary,
-    this.category,
     this.heroImage,
     this.coverImage,
     this.readingList,

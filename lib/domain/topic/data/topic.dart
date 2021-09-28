@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/category.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 
@@ -7,7 +6,6 @@ class Topic {
   final String title;
   final String introduction;
   final String summary;
-  final Category category;
   final Image heroImage;
   final Image coverImage;
   final ReadingList readingList;
@@ -17,7 +15,6 @@ class Topic {
     required this.title,
     required this.introduction,
     required this.summary,
-    required this.category,
     required this.heroImage,
     required this.coverImage,
     required this.readingList,
