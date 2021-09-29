@@ -42,4 +42,7 @@ class AppVectorGraphics {
   static const String arrowRight = 'assets/vector_graphics/arrow_right_ic.svg';
   static const String articles = 'assets/vector_graphics/articles_ic.svg';
   static const String clock = 'assets/vector_graphics/clock_ic.svg';
+  static const String happySun = 'assets/vector_graphics/happy_sun_face.svg';
+  static const String sunRays = 'assets/vector_graphics/sun_rays.svg';
+  static const String sadSun = 'assets/vector_graphics/sad_sun.svg';
 }

@@ -8,10 +8,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class ReadingListStackedCards extends HookWidget {
   final Size coverSize;
   final Widget child;
+  final bool center;
 
   const ReadingListStackedCards({
     required this.coverSize,
     required this.child,
+    this.center = false,
     Key? key,
   }) : super(key: key);
 
@@ -31,7 +33,7 @@ class ReadingListStackedCards extends HookWidget {
       children: [
         Container(color: AppColors.background),
         Align(
-          alignment: Alignment.centerLeft,
+          alignment: center ? Alignment.center : Alignment.centerLeft,
           child: Transform.rotate(
             angle: -3 * pi / 180,
             child: Container(
@@ -52,29 +54,33 @@ class ReadingListStackedCards extends HookWidget {
           ),
         ),
         Positioned(
-          left: 0,
+          left: center ? -20 : 0,
+          right: 0,
           top: middleCardTopMargin,
-          child: Transform.rotate(
-            angle: -5 * pi / 180,
-            child: Container(
-              height: middleCardHeight,
-              width: middleCardWidth,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.shadowColor,
-                    offset: const Offset(0.0, 4.0),
-                    blurRadius: 1,
-                    spreadRadius: -1,
-                  ),
-                ],
+          child: Align(
+            alignment: center ? Alignment.center : Alignment.centerLeft,
+            child: Transform.rotate(
+              angle: -5 * pi / 180,
+              child: Container(
+                height: middleCardHeight,
+                width: middleCardWidth,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.shadowColor,
+                      offset: const Offset(0.0, 4.0),
+                      blurRadius: 1,
+                      spreadRadius: -1,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
         Align(
-          alignment: Alignment.centerLeft,
+          alignment: center ? Alignment.center : Alignment.centerLeft,
           child: Container(
             height: topCardHeight,
             width: topCardWidth,
