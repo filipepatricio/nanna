@@ -21,7 +21,6 @@ class GraphqlFreshLinkFactory {
       tokenStorage: _storage,
       refreshToken: (token, client) async {
         final refreshToken = token?.refreshToken;
-
         if (token == null || refreshToken == null) return null;
 
         return _refreshTokenService.refreshToken(refreshToken);

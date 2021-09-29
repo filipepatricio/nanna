@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
@@ -87,6 +89,54 @@ void main() {
           isA<OperationException>(),
         ),
       );
+    });
+
+    test('simultaneous calls will not resolve in concurrent token refresh', () async {
+      const accessToken = 'abcd1234';
+      const refreshToken = 'bcda4321';
+      final result = QueryResult(
+        source: QueryResultSource.network,
+        data: {
+          'refresh': {
+            'successful': true,
+            'tokens': {
+              'accessToken': accessToken,
+              'refreshToken': refreshToken,
+            }
+          }
+        },
+      );
+      final resultCompleter = Completer<QueryResult>();
+
+      when(graphQLClient.mutate(any)).thenAnswer((realInvocation) => resultCompleter.future);
+
+      final simultaneousCalls = [
+        service.refreshToken('someToken'),
+        service.refreshToken('someToken'),
+        service.refreshToken('someToken'),
+        service.refreshToken('someToken'),
+      ];
+
+      resultCompleter.complete(result);
+
+      await expectLater(
+        Stream.fromFutures(simultaneousCalls),
+        emitsThrough(
+          isA<OAuth2Token>()
+              .having(
+                (token) => token.refreshToken,
+                'refreshToken',
+                refreshToken,
+              )
+              .having(
+                (token) => token.accessToken,
+                'accessToken',
+                accessToken,
+              ),
+        ),
+      );
+
+      verify(graphQLClient.mutate(any)).called(1);
     });
   });
 }
