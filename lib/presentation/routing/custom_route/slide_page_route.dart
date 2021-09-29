@@ -50,7 +50,7 @@ class SlideTopPageRoute<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 400);
+  Duration get transitionDuration => const Duration(milliseconds: 300);
 }
 
 class _TopSlidePageTransition extends StatelessWidget {

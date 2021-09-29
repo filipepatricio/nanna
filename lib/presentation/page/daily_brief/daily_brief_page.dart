@@ -139,21 +139,27 @@ class _IdleContent extends HookWidget {
                       scrollDirection: Axis.horizontal,
                       children: [
                         ..._buildTopicCards(
-                      context,
-                      controller,
-                      currentBrief,
-                      cardStackWidth,
-                      constraints.maxHeight,
-                    ),
+                          context,
+                          controller,
+                          currentBrief,
+                          cardStackWidth,
+                          constraints.maxHeight,
+                        ),
                         Container(),
                       ],
                     );
                   },
                 ),
               ),
-              AnimatedOpacity(
-                opacity: lastPageAnimationProgressState.value < 0.5 ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 300),
+              ValueListenableBuilder(
+                valueListenable: lastPageAnimationProgressState,
+                builder: (BuildContext context, double value, Widget? child) {
+                  return AnimatedOpacity(
+                    opacity: value < 0.5 ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 300),
+                    child: child,
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: AppDimens.l,
