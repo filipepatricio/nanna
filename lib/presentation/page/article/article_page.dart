@@ -383,7 +383,7 @@ class VerticalDivider extends StatelessWidget {
   }
 }
 
-final markdownMock = ''' 
+const markdownMock = ''' 
 ---
 __Advertisement :)__
 

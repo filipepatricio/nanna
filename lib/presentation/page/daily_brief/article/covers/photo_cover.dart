@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -36,14 +37,14 @@ class PhotoCover extends HookWidget {
                   children: [
                     if (imageId != null) ...[
                       Positioned.fill(
-                        child: Image.network(
-                          cloudinaryProvider
+                        child: CloudinaryProgressiveImage(
+                          cloudinaryTransformation: cloudinaryProvider
                               .withPublicId(imageId)
                               .transform()
                               .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
-                              .autoGravity()
-                              .generateNotNull(),
-                          fit: BoxFit.cover,
+                              .autoGravity(),
+                          height: constrains.maxHeight,
+                          width: constrains.maxWidth,
                         ),
                       ),
                     ],
