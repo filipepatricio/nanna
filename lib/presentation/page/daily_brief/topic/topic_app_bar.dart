@@ -95,6 +95,9 @@ class _Progress extends StatelessWidget {
       child: LinearPercentIndicator(
         lineHeight: AppDimens.xs,
         percent: progress,
+        animateFromLastPercent: true,
+        animation: true,
+        animationDuration: 300,
         linearStrokeCap: LinearStrokeCap.roundAll,
         backgroundColor: AppColors.grey.withOpacity(0.44),
         progressColor: AppColors.limeGreen,
