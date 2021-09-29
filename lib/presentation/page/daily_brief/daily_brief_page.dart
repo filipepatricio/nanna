@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
+import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -68,8 +69,11 @@ class DailyBriefPage extends HookWidget {
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
-          idle: (state) =>
-              _IdleContent(currentBrief: state.currentBrief, controller: controller, cardStackWidth: cardStackWidth),
+          idle: (state) => _IdleContent(
+            currentBrief: state.currentBrief,
+            controller: controller,
+            cardStackWidth: cardStackWidth,
+          ),
           error: (_) => StackedCardsErrorView(cardStackWidth: cardStackWidth),
           loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
           orElse: () => const SizedBox(),
@@ -93,7 +97,6 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final heightPageView = MediaQuery.of(context).size.height * 0.65;
     final lastPageAnimationProgressState = useState(0.0);
 
     useEffect(() {
@@ -123,24 +126,41 @@ class _IdleContent extends HookWidget {
               goodbyeHeadline: currentBrief.goodbye,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: AppDimens.xl,
-              top: AppDimens.ml,
-            ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return PageView(
-                  padEnds: false,
-                  controller: controller,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ..._buildTopicCards(context, controller, currentBrief, cardStackWidth, constraints.maxHeight),
-                    Container(),
-                  ],
-                );
-              },
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: AppDimens.m),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return PageView(
+                      padEnds: false,
+                      controller: controller,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        ..._buildTopicCards(context, controller, currentBrief, cardStackWidth, constraints.maxHeight),
+                        Container(),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              AnimatedOpacity(
+                opacity: lastPageAnimationProgressState.value < 0.5 ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 300),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppDimens.l,
+                    top: AppDimens.l,
+                    bottom: AppDimens.l,
+                  ),
+                  child: PageDotIndicator(
+                    pageCount: currentBrief.topics.length,
+                    controller: controller,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
