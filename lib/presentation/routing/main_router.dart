@@ -43,7 +43,7 @@ const dashboardTabRouter = AutoRoute(
         AutoRoute(path: '', page: DailyBriefPage),
         CustomRoute(
           page: TopicPage,
-          customRouteBuilder: fadePageRouteBuilder,
+          customRouteBuilder: slidePageRouteBuilder,
         ),
         RedirectRoute(path: '*', redirectTo: ''),
       ],

@@ -1,26 +1,21 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-Route<T> fadePageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) =>
-    FadePageRoute<T>(builder: (context) => child, settings: page);
+final _slideTween = Tween(begin: const Offset(0, 0.2), end: Offset.zero).chain(CurveTween(curve: Curves.easeIn));
+final _scaleTween = Tween(begin: 0.8, end: 1.0).chain(CurveTween(curve: Curves.linear));
+final _fadeTween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeOut));
 
-class FadePageRoute<T> extends PageRoute<T> {
-  FadePageRoute({
-    required this.builder,
-    required RouteSettings settings,
-    this.maintainState = true,
-    bool fullscreenDialog = false,
-  }) : super(settings: settings, fullscreenDialog: fullscreenDialog);
+Route<T> slidePageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) =>
+    SlideTopPageRoute<T>(builder: (context) => child, settings: page);
 
-  ModalBottomSheetRoute? _nextModalRoute;
+class SlideTopPageRoute<T> extends PageRoute<T> {
   final WidgetBuilder builder;
 
-  @override
-  final bool maintainState;
-
-  @override
-  Duration get transitionDuration => const Duration(milliseconds: 400);
+  SlideTopPageRoute({
+    required this.builder,
+    required RouteSettings settings,
+    bool fullscreenDialog = false,
+  }) : super(settings: settings, fullscreenDialog: fullscreenDialog);
 
   @override
   Color? get barrierColor => null;
@@ -29,37 +24,7 @@ class FadePageRoute<T> extends PageRoute<T> {
   String? get barrierLabel => null;
 
   @override
-  void didChangeNext(Route? nextRoute) {
-    if (nextRoute is ModalBottomSheetRoute) {
-      _nextModalRoute = nextRoute;
-    }
-
-    super.didChangeNext(nextRoute);
-  }
-
-  @override
-  bool didPop(T? result) {
-    _nextModalRoute = null;
-    return super.didPop(result);
-  }
-
-  @override
-  bool canTransitionFrom(TransitionRoute<dynamic> previousRoute) {
-    return previousRoute is FadePageRoute;
-  }
-
-  @override
-  bool canTransitionTo(TransitionRoute<dynamic> nextRoute) {
-    // Don't perform outgoing animation if the next route is a fullscreen dialog.
-    return nextRoute is FadePageRoute && !nextRoute.fullscreenDialog;
-  }
-
-  @override
-  Widget buildPage(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-  ) {
+  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
     final result = builder(context);
     return Semantics(
       scopesRoute: true,
@@ -75,41 +40,45 @@ class FadePageRoute<T> extends PageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    final nextRoute = _nextModalRoute;
-    if (nextRoute != null) {
-      if (!secondaryAnimation.isDismissed) {
-        final defaultTransition = _FadeInPageTransition(routeAnimation: animation, child: child);
-        return nextRoute.getPreviousRouteTransition(context, secondaryAnimation, defaultTransition);
-      } else {
-        _nextModalRoute = null;
-      }
-    }
-
-    return _FadeInPageTransition(routeAnimation: animation, child: child);
+    return _TopSlidePageTransition(
+      routeAnimation: animation,
+      child: child,
+    );
   }
 
   @override
-  String get debugLabel => '${super.debugLabel}(${settings.name})';
+  bool get maintainState => true;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 400);
 }
 
-class _FadeInPageTransition extends StatelessWidget {
-  _FadeInPageTransition({
+class _TopSlidePageTransition extends StatelessWidget {
+  final Animation<Offset> _transition;
+  final Animation<double> _scale;
+  final Animation<double> _fade;
+  final Widget child;
+
+  _TopSlidePageTransition({
     required Animation<double> routeAnimation,
     required this.child,
     Key? key,
-  })  : _opacityAnimation = routeAnimation.drive(_easeInTween),
+  })  : _transition = _slideTween.animate(routeAnimation),
+        _scale = _scaleTween.animate(routeAnimation),
+        _fade = _fadeTween.animate(routeAnimation),
         super(key: key);
-
-  static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
-
-  final Animation<double> _opacityAnimation;
-  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
-      opacity: _opacityAnimation,
-      child: child,
+      opacity: _fade,
+      child: ScaleTransition(
+        scale: _scale,
+        child: SlideTransition(
+          position: _transition,
+          child: child,
+        ),
+      ),
     );
   }
 }
