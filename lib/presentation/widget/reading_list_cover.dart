@@ -132,17 +132,17 @@ class _EditorsNote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
-      text: const TextSpan(
+      text: TextSpan(
         children: [
           TextSpan(
             // TODO will be coming from API
             text: 'Editors note: ',
-            style: AppTypography.h5BoldSmall,
+            style: AppTypography.h5BoldSmall.copyWith(height: 1.12, fontFamily: fontFamilyLora),
           ),
           TextSpan(
             // TODO will be coming from API
             text: 'Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift.',
-            style: AppTypography.h5MediumSmall,
+            style: AppTypography.h5MediumSmall.copyWith(height: 1.12, fontFamily: fontFamilyLora),
           ),
         ],
       ),

@@ -11,6 +11,7 @@ class InformedMarkdownBody extends StatelessWidget {
   final bool selectable;
   final Color highlightColor;
   final int? maxLines;
+  final TextAlign? textAlignment;
 
   const InformedMarkdownBody({
     required this.markdown,
@@ -18,6 +19,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.maxLines,
     this.selectable = false,
     this.highlightColor = AppColors.limeGreen,
+    this.textAlignment,
     Key? key,
   }) : super(key: key);
 
@@ -39,6 +41,7 @@ class InformedMarkdownBody extends StatelessWidget {
           highlightColor: highlightColor,
           selectable: selectable,
           maxLines: maxLines,
+          textAlign: textAlignment,
         );
       },
     );

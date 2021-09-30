@@ -64,13 +64,25 @@ class TopicAppBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppDimens.m),
-          if (progress != null && fadeAnimation != null)
+          if (progress != null && fadeAnimation != null) ...[
             Expanded(
               child: _Progress(
                 progress: progress,
                 fadeAnimation: fadeAnimation,
               ),
             ),
+          ],
+          FadeTransition(
+            opacity: AlwaysStoppedAnimation<double>(foregroundAnimationFactor),
+            child: Container(
+              height: AppDimens.s,
+              width: AppDimens.s,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppDimens.xxs),
+                color: AppColors.limeGreen,
+              ),
+            ),
+          ),
           const SizedBox(width: AppDimens.l),
         ],
       ),
