@@ -12,12 +12,14 @@ class CustomRichText extends HookWidget implements RichTextBase {
   final bool selectable;
   final Color highlightColor;
   final int? maxLines;
+  final TextAlign? textAlign;
 
   const CustomRichText({
     required this.textSpan,
     required this.highlightColor,
     this.selectable = false,
     this.maxLines,
+    this.textAlign,
     Key? key,
   }) : super(key: key);
 
@@ -32,6 +34,7 @@ class CustomRichText extends HookWidget implements RichTextBase {
         selectable: selectable,
         highlightColor: highlightColor,
         maxLines: maxLines,
+        textAlign: textAlign,
       ),
     );
   }
@@ -43,6 +46,7 @@ class _CustomTextPainter extends HookWidget {
   final bool selectable;
   final Color highlightColor;
   final int? maxLines;
+  final TextAlign? textAlign;
 
   const _CustomTextPainter({
     required this.size,
@@ -50,6 +54,7 @@ class _CustomTextPainter extends HookWidget {
     required this.selectable,
     required this.highlightColor,
     this.maxLines,
+    this.textAlign,
     Key? key,
   }) : super(key: key);
 
@@ -99,11 +104,13 @@ class _CustomTextPainter extends HookWidget {
           ? SelectableText.rich(
               TextSpan(children: spansWithoutDecoration),
               maxLines: maxLines,
+              textAlign: textAlign,
             )
           : RichText(
               maxLines: maxLines,
               text: TextSpan(children: spansWithoutDecoration),
               overflow: maxLines != null ? TextOverflow.ellipsis : TextOverflow.clip,
+              textAlign: textAlign ?? TextAlign.start,
             ),
     );
   }

@@ -1,11 +1,13 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class RelaxView extends StatelessWidget {
+class RelaxView extends HookWidget {
   final ValueNotifier<double> lastPageAnimationProgressState;
   final Headline goodbyeHeadline;
 
@@ -33,22 +35,30 @@ class RelaxView extends StatelessWidget {
           );
         },
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const SizedBox(height: AppDimens.m),
-            Center(
-              child: SvgPicture.asset(AppVectorGraphics.sun),
-            ),
-            const SizedBox(height: AppDimens.m),
-            Text(
-              goodbyeHeadline.headline,
-              style: AppTypography.h3Bold,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppDimens.xl),
-            Text(
-              goodbyeHeadline.message,
-              style: AppTypography.b3Regular,
+            //TODO: Show image from api, and remove MockedComputerMan
+            // if (goodbyeHeadline.icon != null) ...[
+            //   Image.network(
+            //     cloudinaryProvider
+            //         .withPublicId(goodbyeHeadline.icon)
+            //         .transform()
+            //         .width(DimensionUtil.getPhysicalPixelsAsInt(168.0, context))
+            //         .fit()
+            //         .generateNotNull(),
+            //   ),
+            // ],
+            Image.asset(AppRasterGraphics.mockedComputerMan),
+            const SizedBox(height: AppDimens.l),
+            Padding(
+              padding: const EdgeInsets.only(left: AppDimens.c),
+              child: InformedMarkdownBody(
+                markdown: goodbyeHeadline.headline,
+                baseTextStyle: AppTypography.h1Medium,
+                highlightColor: AppColors.limeGreen,
+                textAlignment: TextAlign.end,
+              ),
             ),
           ],
         ),

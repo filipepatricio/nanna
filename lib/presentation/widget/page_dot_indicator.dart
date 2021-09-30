@@ -49,10 +49,12 @@ class PageDotIndicator extends HookWidget {
 
     if (leftDotIndex == rightDotIndex) {
       return Row(
+        mainAxisSize: MainAxisSize.min,
         children: _generateDotsWithSingleActive(leftDotIndex),
       );
     } else {
       return Row(
+        mainAxisSize: MainAxisSize.min,
         children: _generateDots(
           leftDotIndex,
           rightDotIndex,

@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/stacked_car
 import 'package:better_informed_mobile/presentation/page/daily_brief/stacked_cards_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
@@ -63,8 +64,25 @@ class DailyBriefPage extends HookWidget {
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        title: DailyBriefTitleHero(
-          title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
+        title: Row(
+          children: [
+            DailyBriefTitleHero(
+              title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
+            ),
+            const Spacer(),
+            Visibility(
+              visible: relaxState.value,
+              child: Container(
+                height: AppDimens.s,
+                width: AppDimens.s,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppDimens.xxs),
+                  color: AppColors.limeGreen,
+                ),
+              ),
+            ),
+            const SizedBox(width: AppDimens.s),
+          ],
         ),
         centerTitle: false,
       ),
@@ -110,30 +128,30 @@ class _IdleContent extends HookWidget {
     }, [controller]);
 
     return ReadingBannerWrapper(
-      child: Stack(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Hero(
-            tag: HeroTag.dailyBriefRelaxPage,
-            flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-              return Material(
-                color: Colors.transparent,
-                child: RelaxView(
-                  lastPageAnimationProgressState: lastPageAnimationProgressState,
-                  goodbyeHeadline: currentBrief.goodbye,
+          Expanded(
+            child: Stack(
+              children: [
+                Hero(
+                  tag: HeroTag.dailyBriefRelaxPage,
+                  flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
+                    return Material(
+                      color: Colors.transparent,
+                      child: RelaxView(
+                        lastPageAnimationProgressState: lastPageAnimationProgressState,
+                        goodbyeHeadline: currentBrief.goodbye,
+                      ),
+                    );
+                  },
+                  child: RelaxView(
+                    lastPageAnimationProgressState: lastPageAnimationProgressState,
+                    goodbyeHeadline: currentBrief.goodbye,
+                  ),
                 ),
-              );
-            },
-            child: RelaxView(
-              lastPageAnimationProgressState: lastPageAnimationProgressState,
-              goodbyeHeadline: currentBrief.goodbye,
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: AppDimens.m),
-              Expanded(
-                child: LayoutBuilder(
+                LayoutBuilder(
                   builder: (context, constraints) {
                     return PageView(
                       padEnds: false,
@@ -152,30 +170,25 @@ class _IdleContent extends HookWidget {
                     );
                   },
                 ),
-              ),
-              ValueListenableBuilder(
-                valueListenable: lastPageAnimationProgressState,
-                builder: (BuildContext context, double value, Widget? child) {
-                  return AnimatedOpacity(
-                    opacity: value < 0.5 ? 1.0 : 0.0,
-                    duration: const Duration(milliseconds: 300),
-                    child: child,
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: AppDimens.l,
-                    top: AppDimens.l,
-                    bottom: AppDimens.l,
-                  ),
-                  child: PageDotIndicator(
-                    pageCount: currentBrief.topics.length,
-                    controller: controller,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
+          const SizedBox(height: AppDimens.l),
+          ValueListenableBuilder(
+            valueListenable: lastPageAnimationProgressState,
+            builder: (BuildContext context, double value, Widget? child) {
+              return AnimatedOpacity(
+                opacity: value < 0.5 ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 300),
+                child: child,
+              );
+            },
+            child: PageDotIndicator(
+              pageCount: currentBrief.topics.length,
+              controller: controller,
+            ),
+          ),
+          const SizedBox(height: AppDimens.l),
         ],
       ),
     );
