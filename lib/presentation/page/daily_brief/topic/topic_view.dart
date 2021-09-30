@@ -14,7 +14,6 @@ import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/follow_button.dart';
-import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
@@ -151,18 +150,12 @@ class _TopicHeader extends HookWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Hero(
-                    tag: HeroTag.dailyBriefTopicAuthor(topic.id),
-                    child: AuthorRow(topic: topic),
-                  ),
+                  AuthorRow(topic: topic),
                   const SizedBox(height: AppDimens.m),
-                  Hero(
-                    tag: HeroTag.dailyBriefTopicTitle(topic.id),
-                    child: InformedMarkdownBody(
-                      markdown: topic.title,
-                      baseTextStyle: AppTypography.hBold,
-                      maxLines: 3,
-                    ),
+                  InformedMarkdownBody(
+                    markdown: topic.title,
+                    baseTextStyle: AppTypography.hBold,
+                    maxLines: 3,
                   ),
                   const SizedBox(height: AppDimens.ml),
                   Row(
