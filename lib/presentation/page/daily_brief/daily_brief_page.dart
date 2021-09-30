@@ -97,7 +97,7 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lastPageAnimationProgressState = useState(0.0);
+    final lastPageAnimationProgressState = useMemoized(() => ValueNotifier(0.0));
 
     useEffect(() {
       final listener = () {
@@ -138,16 +138,28 @@ class _IdleContent extends HookWidget {
                       controller: controller,
                       scrollDirection: Axis.horizontal,
                       children: [
-                        ..._buildTopicCards(context, controller, currentBrief, cardStackWidth, constraints.maxHeight),
+                        ..._buildTopicCards(
+                          context,
+                          controller,
+                          currentBrief,
+                          cardStackWidth,
+                          constraints.maxHeight,
+                        ),
                         Container(),
                       ],
                     );
                   },
                 ),
               ),
-              AnimatedOpacity(
-                opacity: lastPageAnimationProgressState.value < 0.5 ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 300),
+              ValueListenableBuilder(
+                valueListenable: lastPageAnimationProgressState,
+                builder: (BuildContext context, double value, Widget? child) {
+                  return AnimatedOpacity(
+                    opacity: value < 0.5 ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 300),
+                    child: child,
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: AppDimens.l,

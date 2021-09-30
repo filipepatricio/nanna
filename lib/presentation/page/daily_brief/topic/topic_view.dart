@@ -123,21 +123,18 @@ class _TopicHeader extends HookWidget {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        Hero(
-          tag: HeroTag.dailyBriefTopicImage(topic.id),
-          child: Container(
-            width: double.infinity,
-            height: _topicHeaderImageHeight,
-            child: Image.network(
-              cloudinaryProvider
-                  .withPublicId(topic.heroImage.publicId)
-                  .transform()
-                  .withLogicalSize(screenWidth, _topicHeaderImageHeight, context)
-                  .autoGravity()
-                  .generateNotNull(),
-              fit: BoxFit.fitHeight,
-              alignment: Alignment.topLeft,
-            ),
+        Container(
+          width: double.infinity,
+          height: _topicHeaderImageHeight,
+          child: Image.network(
+            cloudinaryProvider
+                .withPublicId(topic.heroImage.publicId)
+                .transform()
+                .withLogicalSize(screenWidth, _topicHeaderImageHeight, context)
+                .autoGravity()
+                .generateNotNull(),
+            fit: BoxFit.fitHeight,
+            alignment: Alignment.topLeft,
           ),
         ),
         Positioned.fill(
@@ -158,59 +155,59 @@ class _TopicHeader extends HookWidget {
           left: 0,
           bottom: _topicHeaderPadding,
           right: _topicHeaderPadding,
-          child: FadeTransition(
-            opacity: pageTransitionAnimation,
-            child: Container(
-              width: _topicHeaderHeight,
-              color: AppColors.background,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.m),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    AuthorRow(topic: topic),
-                    const SizedBox(height: AppDimens.m),
-                    InformedMarkdownBody(
+          child: Container(
+            width: _topicHeaderHeight,
+            color: AppColors.background,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.m),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Hero(
+                    tag: HeroTag.dailyBriefTopicAuthor(topic.id),
+                    child: AuthorRow(topic: topic),
+                  ),
+                  const SizedBox(height: AppDimens.m),
+                  Hero(
+                    tag: HeroTag.dailyBriefTopicTitle(topic.id),
+                    child: InformedMarkdownBody(
                       markdown: topic.title,
                       baseTextStyle: AppTypography.hBold,
                       maxLines: 3,
                     ),
-                    const SizedBox(height: AppDimens.ml),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(AppVectorGraphics.articles),
-                        const SizedBox(width: AppDimens.s),
-                        Text(
-                          LocaleKeys.dailyBrief_selectedArticles.tr(
-                            args: [topic.readingList.articles.length.toString()],
-                          ),
-                          style: AppTypography.b3Regular.copyWith(height: 1),
-                          textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppDimens.ml),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(AppVectorGraphics.articles),
+                      const SizedBox(width: AppDimens.s),
+                      Text(
+                        LocaleKeys.dailyBrief_selectedArticles.tr(
+                          args: [topic.readingList.articles.length.toString()],
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: AppDimens.topicControlsMargin),
-                    FadeTransition(
-                      opacity: pageTransitionAnimation,
-                      child: Row(
-                        children: [
-                          FollowButton(onTap: () {}),
-                          const SizedBox(width: AppDimens.m),
-                          ShareButton(onTap: () {}),
-                          const Spacer(),
-                          //TODO: add missing data
-                          UpdatedLabel(
-                            text: 'Updated 2 days ago'.toUpperCase(),
-                            backgroundColor: AppColors.white,
-                          ),
-                        ],
+                        style: AppTypography.b3Regular.copyWith(height: 1),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    const SizedBox(height: AppDimens.s),
-                  ],
-                ),
+                    ],
+                  ),
+                  const SizedBox(height: AppDimens.topicControlsMargin),
+                  Row(
+                    children: [
+                      FollowButton(onTap: () {}),
+                      const SizedBox(width: AppDimens.m),
+                      ShareButton(onTap: () {}),
+                      const Spacer(),
+                      //TODO: add missing data
+                      UpdatedLabel(
+                        text: 'Updated 2 days ago'.toUpperCase(),
+                        backgroundColor: AppColors.white,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppDimens.s),
+                ],
               ),
             ),
           ),
