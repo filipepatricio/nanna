@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-const _animationDuration = Duration(milliseconds: 200);
 const _pageViewportFraction = 1.0;
 
 /// Make sure that changes to the view won't change depth of the main scroll
@@ -37,10 +36,8 @@ class TopicPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = usePageController(initialPage: index, viewportFraction: _pageViewportFraction);
-    final pageTransitionAnimation = useAnimationController(duration: _animationDuration);
-    final lastPageAnimationProgressState = useState(0.0);
+    final lastPageAnimationProgressState = useMemoized(() => ValueNotifier(0.0));
     final pageIndexHook = useState(index);
-    final route = useMemoized(() => ModalRoute.of(context));
     final appBarKey = useMemoized(() => GlobalKey());
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
 
@@ -50,16 +47,6 @@ class TopicPage extends HookWidget {
         appBarHeightState.value = renderBoxRed?.size.height ?? AppDimens.topicAppBarDefaultHeight;
       });
     }, []);
-
-    useEffect(() {
-      route?.animation?.addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          pageTransitionAnimation.forward();
-        } else if (status == AnimationStatus.reverse) {
-          pageTransitionAnimation.reset();
-        }
-      });
-    }, [route]);
 
     useEffect(() {
       final listener = () {
@@ -101,7 +88,6 @@ class TopicPage extends HookWidget {
                     builder: (context, pageViewConstraints) => _PageViewContent(
                       controller: controller,
                       onPageChanged: onPageChanged,
-                      pageTransitionAnimation: pageTransitionAnimation,
                       currentBrief: currentBrief,
                       articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
                       pageIndexHook: pageIndexHook,
@@ -152,31 +138,28 @@ class _TopicAppBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final fadeInOutController = useAnimationController(duration: const Duration(milliseconds: 300));
-    final animation = Tween(begin: 1.0, end: 0.0).animate(fadeInOutController);
+    final animation = useMemoized(
+      () => Tween(begin: 1.0, end: 0.0).animate(fadeInOutController),
+      [fadeInOutController],
+    );
 
-    useEffect(() {
-      if (lastPageAnimationProgressState.value > 0.5) {
-        fadeInOutController.forward();
-      } else {
-        fadeInOutController.reverse();
-      }
-    });
-    return AnimatedBuilder(
-      animation: lastPageAnimationProgressState,
-      builder: (context, widget) {
-        final text = lastPageAnimationProgressState.value > 0.5
-            ? LocaleKeys.dailyBrief_relax.tr()
-            : LocaleKeys.dailyBrief_title.tr();
+    return ValueListenableBuilder<double>(
+      valueListenable: lastPageAnimationProgressState,
+      builder: (context, value, widget) {
+        if (value > 0.5) {
+          fadeInOutController.forward();
+        } else {
+          fadeInOutController.reverse();
+        }
+
+        final text = value > 0.5 ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr();
 
         final currentPageScrollValue = scrollPositionMap[currentPageIndex] ?? 0;
 
         final pageScrollAnimationFactor = currentPageScrollValue / AppDimens.topicAppBarAnimationFactor;
-        final foregroundAnimationFactor = lastPageAnimationProgressState.value > 0.5
-            ? lastPageAnimationProgressState.value
-            : pageScrollAnimationFactor;
+        final foregroundAnimationFactor = value > 0.5 ? value : pageScrollAnimationFactor;
 
-        final elevation =
-            lastPageAnimationProgressState.value > 0.0 ? 0.0 : (pageScrollAnimationFactor >= 0.95 ? 3.0 : 0.0);
+        final elevation = value > 0.0 ? 0.0 : (pageScrollAnimationFactor >= 0.95 ? 3.0 : 0.0);
 
         return TopicAppBar(
           title: text,
@@ -200,7 +183,6 @@ class _TopicAppBar extends HookWidget {
 class _PageViewContent extends StatelessWidget {
   final PageController controller;
   final Function(int pageIndex) onPageChanged;
-  final AnimationController pageTransitionAnimation;
   final CurrentBrief currentBrief;
   final double articleContentHeight;
   final ValueNotifier pageIndexHook;
@@ -209,7 +191,6 @@ class _PageViewContent extends StatelessWidget {
   const _PageViewContent({
     required this.controller,
     required this.onPageChanged,
-    required this.pageTransitionAnimation,
     required this.currentBrief,
     required this.articleContentHeight,
     required this.pageIndexHook,
@@ -232,7 +213,6 @@ class _PageViewContent extends StatelessWidget {
           return const SizedBox();
         } else {
           return TopicView(
-            pageTransitionAnimation: pageTransitionAnimation,
             topic: currentBrief.topics[index],
             articleContentHeight: articleContentHeight,
             appBarMargin: appBarMargin,
