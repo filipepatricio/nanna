@@ -113,7 +113,7 @@ class ReadingListCover extends HookWidget {
                     const Spacer(),
                     UpdatedLabel(
                       text: 'Updated 2 days ago'.toUpperCase(),
-                      backgroundColor: AppColors.pastelGreen,
+                      backgroundColor: AppColors.white,
                     ),
                   ],
                 ),

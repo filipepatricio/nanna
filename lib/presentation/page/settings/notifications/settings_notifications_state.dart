@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences_group.dart';
-import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_data.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

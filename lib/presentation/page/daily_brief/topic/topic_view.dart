@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/follow_button.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
@@ -126,15 +127,15 @@ class _TopicHeader extends HookWidget {
         Container(
           width: double.infinity,
           height: _topicHeaderImageHeight,
-          child: Image.network(
-            cloudinaryProvider
+          child: CloudinaryProgressiveImage(
+            fit: BoxFit.fitHeight,
+            width: screenWidth,
+            height: _topicHeaderImageHeight,
+            cloudinaryTransformation: cloudinaryProvider
                 .withPublicId(topic.heroImage.publicId)
                 .transform()
                 .withLogicalSize(screenWidth, _topicHeaderImageHeight, context)
-                .autoGravity()
-                .generateNotNull(),
-            fit: BoxFit.fitHeight,
-            alignment: Alignment.topLeft,
+                .autoGravity(),
           ),
         ),
         Positioned.fill(
