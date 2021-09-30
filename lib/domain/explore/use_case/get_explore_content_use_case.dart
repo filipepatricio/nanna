@@ -141,7 +141,7 @@ final readingListSection = ExploreContentSection.readingLists(
       id: '0',
       title: 'Afghanistan stories',
       introduction: 'introduction',
-      summary: '',
+      summary: [],
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList2,
@@ -153,7 +153,7 @@ final readingListSection = ExploreContentSection.readingLists(
       id: '0',
       title: 'All the crypto coins',
       introduction: 'introduction',
-      summary: '',
+      summary: [],
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList1,
@@ -165,7 +165,7 @@ final readingListSection = ExploreContentSection.readingLists(
       id: '0',
       title: 'Female Leadership',
       introduction: 'introduction',
-      summary: '',
+      summary: [],
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList2,
@@ -177,7 +177,7 @@ final readingListSection = ExploreContentSection.readingLists(
       id: '0',
       title: 'Afghanistan falls to the Taliban',
       introduction: 'introduction',
-      summary: '',
+      summary: [],
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         articles: mockedArticleList1,

@@ -207,9 +207,7 @@ class _TopicHeader extends HookWidget {
 class _SummaryContent extends HookWidget {
   final Topic topic;
 
-  const _SummaryContent({
-    required this.topic,
-  });
+  const _SummaryContent({required this.topic, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -240,12 +238,15 @@ class _SummaryContent extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimens.l),
-                _BiggerPictureCards(controller: controller),
+                _BiggerPictureCards(
+                  topic: topic,
+                  controller: controller,
+                ),
                 const SizedBox(height: AppDimens.xl),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                   child: PageDotIndicator(
-                    pageCount: 5,
+                    pageCount: topic.summary.length,
                     controller: controller,
                   ),
                 ),
@@ -261,9 +262,11 @@ class _SummaryContent extends HookWidget {
 }
 
 class _BiggerPictureCards extends StatelessWidget {
+  final Topic topic;
   final PageController controller;
 
   const _BiggerPictureCards({
+    required this.topic,
     required this.controller,
     Key? key,
   }) : super(key: key);
@@ -275,7 +278,7 @@ class _BiggerPictureCards extends StatelessWidget {
       child: PageView.builder(
         controller: controller,
         scrollDirection: Axis.horizontal,
-        itemCount: 5,
+        itemCount: topic.summary.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: AppDimens.m),
@@ -289,13 +292,12 @@ class _BiggerPictureCards extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+                  const SizedBox(height: AppDimens.l),
                   //TODO: Get data from api, remove if statement
                   if (index % 2 == 0) Image.asset(AppRasterGraphics.mockedComputerMan),
                   const SizedBox(height: AppDimens.l),
-                  const InformedMarkdownBody(
-                    markdown:
-                        '* Lashkar Gah and the rest of the Helmand province have been at the heart of the US and British military campaigns.',
+                  InformedMarkdownBody(
+                    markdown: topic.summary[index].content,
                     baseTextStyle: AppTypography.b2MediumSerif,
                   ),
                 ],
