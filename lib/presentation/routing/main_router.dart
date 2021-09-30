@@ -16,7 +16,7 @@ import 'package:better_informed_mobile/presentation/page/settings/policy_terms/s
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/single_topic_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
-import 'package:better_informed_mobile/presentation/routing/custom_route/slide_page_route.dart';
+import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 
 @AdaptiveAutoRouter(
   routes: [
@@ -43,7 +43,7 @@ const dashboardTabRouter = AutoRoute(
         AutoRoute(path: '', page: DailyBriefPage),
         CustomRoute(
           page: TopicPage,
-          customRouteBuilder: slidePageRouteBuilder,
+          customRouteBuilder: fadePageRouteBuilder,
         ),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
