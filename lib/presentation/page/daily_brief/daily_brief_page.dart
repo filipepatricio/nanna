@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/presentation/widget/page_view_stacked_car
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _pageViewportFraction = 0.9;
@@ -61,6 +62,7 @@ class DailyBriefPage extends HookWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         title: DailyBriefTitleHero(
           title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
         ),

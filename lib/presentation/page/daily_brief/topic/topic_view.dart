@@ -34,13 +34,11 @@ const _topicHeaderImageHeight = 620.0;
 const _topicHeaderHeight = 350.0;
 
 class TopicView extends HookWidget {
-  final AnimationController pageTransitionAnimation;
   final Topic topic;
   final double articleContentHeight;
   final double? appBarMargin;
 
   const TopicView({
-    required this.pageTransitionAnimation,
     required this.topic,
     required this.articleContentHeight,
     this.appBarMargin,
@@ -50,7 +48,6 @@ class TopicView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageIndex = useState(0);
-    final pageNotesIndex = useState(0);
     final listScrollController = useScrollController();
     final articleController = usePageController();
     final gestureManager = useMemoized(
@@ -61,9 +58,6 @@ class TopicView extends HookWidget {
       ),
       [appBarMargin],
     );
-
-    //TODO: REMOVE MOCKED LIST (mocked for more length)
-    final mockedList = topic.readingList.articles + topic.readingList.articles;
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{
@@ -85,19 +79,13 @@ class TopicView extends HookWidget {
           controller: listScrollController,
           physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
           children: [
-            _TopicHeader(
-              pageTransitionAnimation: pageTransitionAnimation,
-              topic: topic,
-            ),
-            _SummaryContent(
-              topic: topic,
-              pageNotesIndex: pageNotesIndex,
-            ),
+            _TopicHeader(topic: topic),
+            _SummaryContent(topic: topic),
             _ArticleContent(
               articleContentHeight: articleContentHeight,
               controller: articleController,
               pageIndex: pageIndex,
-              articleList: mockedList,
+              articleList: topic.readingList.articles,
             ),
           ],
         ),
@@ -107,11 +95,9 @@ class TopicView extends HookWidget {
 }
 
 class _TopicHeader extends HookWidget {
-  final AnimationController pageTransitionAnimation;
   final Topic topic;
 
   const _TopicHeader({
-    required this.pageTransitionAnimation,
     required this.topic,
     Key? key,
   }) : super(key: key);
@@ -219,17 +205,14 @@ class _TopicHeader extends HookWidget {
 }
 
 class _SummaryContent extends HookWidget {
-  final ValueNotifier<int> pageNotesIndex;
   final Topic topic;
 
-  const _SummaryContent({
-    required this.topic,
-    required this.pageNotesIndex,
-  });
+  const _SummaryContent({required this.topic, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = usePageController(viewportFraction: 0.8);
+    final controller = usePageController(viewportFraction: 0.85);
+
     return Container(
       width: double.infinity,
       height: _summaryViewHeight,
@@ -255,51 +238,15 @@ class _SummaryContent extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimens.l),
-                Padding(
-                  padding: const EdgeInsets.only(left: AppDimens.m),
-                  child: Container(
-                    height: _summaryPageViewHeight,
-                    child: PageView.builder(
-                      padEnds: false,
-                      controller: controller,
-                      onPageChanged: (index) => pageNotesIndex.value = index,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                              left: AppDimens.l,
-                              right: AppDimens.l,
-                              bottom: AppDimens.l,
-                            ),
-                            color: AppColors.mockedColors[index % AppColors.mockedColors.length],
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-                                //TODO: Get data from api, remove if statement
-                                if (index % 2 == 0) Image.asset(AppRasterGraphics.mockedComputerMan),
-                                const SizedBox(height: AppDimens.l),
-                                const InformedMarkdownBody(
-                                  markdown:
-                                      '* Lashkar Gah and the rest of the Helmand province have been at the heart of the US and British military campaigns.',
-                                  baseTextStyle: AppTypography.b2MediumSerif,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                _BiggerPictureCards(
+                  topic: topic,
+                  controller: controller,
                 ),
                 const SizedBox(height: AppDimens.xl),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                   child: PageDotIndicator(
-                    pageCount: 5,
+                    pageCount: topic.summary.length,
                     controller: controller,
                   ),
                 ),
@@ -309,6 +256,55 @@ class _SummaryContent extends HookWidget {
           ),
           const BottomStackedCards(),
         ],
+      ),
+    );
+  }
+}
+
+class _BiggerPictureCards extends StatelessWidget {
+  final Topic topic;
+  final PageController controller;
+
+  const _BiggerPictureCards({
+    required this.topic,
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _summaryPageViewHeight,
+      child: PageView.builder(
+        controller: controller,
+        scrollDirection: Axis.horizontal,
+        itemCount: topic.summary.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(right: AppDimens.m),
+            child: Container(
+              padding: const EdgeInsets.only(
+                left: AppDimens.l,
+                right: AppDimens.l,
+                bottom: AppDimens.l,
+              ),
+              color: AppColors.mockedColors[index % AppColors.mockedColors.length],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: AppDimens.l),
+                  //TODO: Get data from api, remove if statement
+                  if (index % 2 == 0) Image.asset(AppRasterGraphics.mockedComputerMan),
+                  const SizedBox(height: AppDimens.l),
+                  InformedMarkdownBody(
+                    markdown: topic.summary[index].content,
+                    baseTextStyle: AppTypography.b2MediumSerif,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

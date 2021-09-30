@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +19,7 @@ class SettingsPolicyTermsPage extends HookWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
         title: Text(
           LocaleKeys.settings_settingsOverview.tr(),

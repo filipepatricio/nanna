@@ -19,13 +19,13 @@ class RelaxView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppDimens.xxxl),
-      child: AnimatedBuilder(
-        animation: lastPageAnimationProgressState,
-        builder: (context, child) {
-          final animation = AlwaysStoppedAnimation(Offset(0.25 - 0.25 * lastPageAnimationProgressState.value, 0));
+      child: ValueListenableBuilder<double>(
+        valueListenable: lastPageAnimationProgressState,
+        builder: (context, value, child) {
+          final animation = AlwaysStoppedAnimation(Offset(0.25 - 0.25 * value, 0));
 
           return Opacity(
-            opacity: lastPageAnimationProgressState.value,
+            opacity: value,
             child: SlideTransition(
               position: animation,
               child: child,

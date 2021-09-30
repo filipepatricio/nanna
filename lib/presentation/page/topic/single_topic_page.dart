@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-const _animationDuration = Duration(milliseconds: 200);
-
 /// Make sure that changes to the view won't change depth of the main scroll
 /// If they do, adjust depth accordingly
 /// Depth is being changed by modifying scroll nest layers (adding or removing scrollable widget)
@@ -25,11 +23,9 @@ class SingleTopicPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageTransitionAnimation = useAnimationController(duration: _animationDuration);
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
     final appBarKey = useMemoized(() => GlobalKey());
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
-    final route = useMemoized(() => ModalRoute.of(context));
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -37,16 +33,6 @@ class SingleTopicPage extends HookWidget {
         appBarHeightState.value = renderBoxRed?.size.height ?? AppDimens.topicAppBarDefaultHeight;
       });
     }, []);
-
-    useEffect(() {
-      route?.animation?.addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          pageTransitionAnimation.forward();
-        } else if (status == AnimationStatus.reverse) {
-          pageTransitionAnimation.reset();
-        }
-      });
-    }, [route]);
 
     return LayoutBuilder(
       builder: (context, pageConstraints) => CupertinoScaffold(
@@ -61,7 +47,6 @@ class SingleTopicPage extends HookWidget {
             child: Stack(
               children: [
                 TopicView(
-                  pageTransitionAnimation: pageTransitionAnimation,
                   topic: topic,
                   articleContentHeight: pageConstraints.maxHeight - appBarHeightState.value,
                   appBarMargin: appBarHeightState.value,
