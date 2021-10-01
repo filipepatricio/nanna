@@ -208,9 +208,12 @@ class _IdleContent extends HookWidget {
           padding: const EdgeInsets.only(left: AppDimens.xl),
           child: ReadingListStackedCards(
             coverSize: Size(width, heightPageView),
-            child: ReadingListCover(
-              topic: currentBrief.topics[key],
-              onTap: () => _onTopicCardPressed(context, controller, key, currentBrief),
+            child: GestureDetector(
+              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(context, controller, key, currentBrief),
+              child: ReadingListCover(
+                topic: currentBrief.topics[key],
+                onTap: () => _onTopicCardPressed(context, controller, key, currentBrief),
+              ),
             ),
           ),
         ),
