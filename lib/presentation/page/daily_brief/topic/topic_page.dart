@@ -168,6 +168,7 @@ class _TopicAppBar extends HookWidget {
           elevation: elevation,
           progress: _countProgressValue(),
           fadeAnimation: animation,
+          lastPageTransition: value,
         );
       },
     );
