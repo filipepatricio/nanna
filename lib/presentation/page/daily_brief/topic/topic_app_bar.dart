@@ -13,6 +13,7 @@ class TopicAppBar extends StatelessWidget {
   final String title;
   final double backgroundAnimationFactor;
   final double foregroundAnimationFactor;
+  final double lastPageTransition;
   final double elevation;
   final double? progress;
   final Animation<double>? fadeAnimation;
@@ -21,6 +22,7 @@ class TopicAppBar extends StatelessWidget {
     required this.title,
     required this.backgroundAnimationFactor,
     required this.foregroundAnimationFactor,
+    this.lastPageTransition = 0.0,
     this.elevation = 3.0,
     this.progress,
     this.fadeAnimation,
@@ -73,7 +75,7 @@ class TopicAppBar extends StatelessWidget {
             ),
           ],
           FadeTransition(
-            opacity: AlwaysStoppedAnimation<double>(foregroundAnimationFactor),
+            opacity: AlwaysStoppedAnimation<double>(lastPageTransition),
             child: Container(
               height: AppDimens.s,
               width: AppDimens.s,
