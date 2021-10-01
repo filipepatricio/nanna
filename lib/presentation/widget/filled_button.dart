@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class FilledButton extends StatelessWidget {
-  final VoidCallback? onTap;
   final String text;
+  final bool isEnabled;
+  final VoidCallback? onTap;
   final String? iconPath;
   final Color fillColor;
 
   const FilledButton({
-    required this.onTap,
     required this.text,
+    this.isEnabled = true,
+    this.onTap,
     this.fillColor = AppColors.limeGreen,
     this.iconPath,
     Key? key,
@@ -23,11 +25,14 @@ class FilledButton extends StatelessWidget {
     final iconPath = this.iconPath;
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: isEnabled ? onTap : () => {},
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppDimens.s, horizontal: AppDimens.l),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppDimens.s,
+          horizontal: AppDimens.l,
+        ),
         decoration: BoxDecoration(
-          color: onTap == null ? AppColors.lightGrey : fillColor,
+          color: isEnabled ? fillColor : AppColors.lightGrey,
           borderRadius: const BorderRadius.all(
             Radius.circular(AppDimens.buttonRadius),
           ),
@@ -39,7 +44,7 @@ class FilledButton extends StatelessWidget {
             Text(
               text,
               style: AppTypography.buttonBold.copyWith(
-                color: onTap == null ? AppColors.textPrimary.withOpacity(0.44) : AppColors.textPrimary,
+                color: isEnabled ? AppColors.textPrimary : AppColors.textPrimary.withOpacity(0.44),
               ),
             ),
             if (iconPath != null) ...[
