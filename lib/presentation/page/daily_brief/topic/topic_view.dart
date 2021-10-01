@@ -239,7 +239,7 @@ class _SummaryContent extends HookWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                   child: PageDotIndicator(
-                    pageCount: topic.summary.length,
+                    pageCount: 5,
                     controller: controller,
                   ),
                 ),
@@ -271,11 +271,12 @@ class _BiggerPictureCards extends StatelessWidget {
       child: PageView.builder(
         controller: controller,
         scrollDirection: Axis.horizontal,
-        itemCount: topic.summary.length,
+        itemCount: 5,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: AppDimens.m),
             child: Container(
+              height: _summaryPageViewHeight,
               padding: const EdgeInsets.only(
                 left: AppDimens.l,
                 right: AppDimens.l,
@@ -283,15 +284,19 @@ class _BiggerPictureCards extends StatelessWidget {
               ),
               color: AppColors.mockedColors[index % AppColors.mockedColors.length],
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(height: AppDimens.l),
                   //TODO: Get data from api, remove if statement
-                  if (index % 2 == 0) Image.asset(AppRasterGraphics.mockedComputerMan),
-                  const SizedBox(height: AppDimens.l),
-                  InformedMarkdownBody(
-                    markdown: topic.summary[index].content,
-                    baseTextStyle: AppTypography.b2MediumSerif,
+                  if (index % 2 == 0) ...[
+                    Image.asset(AppRasterGraphics.mockedComputerMan),
+                    const SizedBox(height: AppDimens.l),
+                  ],
+                  const Expanded(
+                    child: InformedMarkdownBody(
+                      markdown:
+                          '* Lashkar Gah and the rest of the Helmand province have been at the heart of the US and British military campaigns.',
+                      baseTextStyle: AppTypography.b2MediumSerif,
+                    ),
                   ),
                 ],
               ),
