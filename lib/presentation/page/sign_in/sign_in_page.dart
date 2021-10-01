@@ -126,34 +126,38 @@ class _IdleContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: AppDimens.xxc),
-            Text(
-              LocaleKeys.signIn_header_signIn.tr(),
-              style: AppTypography.h1Bold.copyWith(color: AppColors.lightGrey),
-            ),
-            if (!keyboardVisible) ...[
-              const SizedBox(height: AppDimens.xl),
-              SignInWithProviderView(onSignInTap: () => cubit.signInWithProvider()),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: AppDimens.xxc),
+              Text(
+                LocaleKeys.signIn_header_signIn.tr(),
+                style: AppTypography.h1Bold.copyWith(color: AppColors.lightGrey),
+              ),
+              if (!keyboardVisible) ...[
+                const SizedBox(height: AppDimens.xl),
+                SignInWithProviderView(onSignInTap: () => cubit.signInWithProvider()),
+              ],
+              const SizedBox(height: AppDimens.xxc),
+              _EmailInput(
+                controller: emailController,
+                cubit: cubit,
+              ),
+              const Spacer(),
+              if (keyboardVisible) ...[
+                _SignInButton(cubit: cubit, isEmailValid: isEmailValid),
+                const SizedBox(height: AppDimens.m),
+              ] else ...[
+                const _Consents(),
+                const SizedBox(height: AppDimens.xxl),
+              ],
             ],
-            const SizedBox(height: AppDimens.xxc),
-            _EmailInput(
-              controller: emailController,
-              cubit: cubit,
-            ),
-            const Spacer(),
-            if (keyboardVisible) ...[
-              _SignInButton(cubit: cubit, isEmailValid: isEmailValid),
-              const SizedBox(height: AppDimens.m),
-            ] else ...[
-              const _Consents(),
-              const SizedBox(height: AppDimens.xxl),
-            ],
-          ],
+          ),
         ),
       ),
     );
@@ -216,8 +220,9 @@ class _SignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton(
+      isEnabled: isEmailValid,
       text: LocaleKeys.common_signUp.tr(),
-      onTap: isEmailValid ? () => cubit.sendMagicLink() : null,
+      onTap: () => cubit.sendMagicLink(),
     );
   }
 }
