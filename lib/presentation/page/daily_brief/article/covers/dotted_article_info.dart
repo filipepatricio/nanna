@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
@@ -48,7 +49,7 @@ class DottedArticleInfo extends HookWidget {
           style: AppTypography.metadata1Regular.copyWith(color: textColor),
         ),
         Text(
-          article.publicationDate,
+          DateFormatUtil.formatShortMonthNameDay(article.publicationDate),
           style: AppTypography.metadata1Regular.copyWith(color: textColor),
         ),
         Text(

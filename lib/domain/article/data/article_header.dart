@@ -6,7 +6,7 @@ class ArticleHeader {
   final String slug;
   final String title;
   final ArticleType type;
-  final String publicationDate;
+  final DateTime publicationDate;
   final int timeToRead;
   final Publisher publisher;
   final Image? image;
