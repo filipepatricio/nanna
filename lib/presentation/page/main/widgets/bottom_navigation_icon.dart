@@ -63,13 +63,9 @@ class _BottomNavigationIcon extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: AppDimens.s),
-        SvgPicture.asset(iconName),
-        const SizedBox(height: AppDimens.s),
-        Text(title, style: AppTypography.navbarText)
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+      child: SvgPicture.asset(iconName),
     );
   }
 }

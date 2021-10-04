@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -7,6 +8,12 @@ class AppTheme {
         appBarTheme: const AppBarTheme(
           color: Colors.transparent,
           elevation: 0,
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedLabelStyle: AppTypography.navbarText,
+          unselectedLabelStyle: AppTypography.navbarText,
+          selectedItemColor: AppColors.textPrimary,
+          unselectedItemColor: AppColors.textPrimary,
         ),
       );
 }
