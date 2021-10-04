@@ -151,24 +151,26 @@ class _IdleContent extends HookWidget {
                     goodbyeHeadline: currentBrief.goodbye,
                   ),
                 ),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    return PageView(
-                      padEnds: false,
-                      controller: controller,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        ..._buildTopicCards(
-                          context,
-                          controller,
-                          currentBrief,
-                          cardStackWidth,
-                          constraints.maxHeight,
-                        ),
-                        Container(),
-                      ],
-                    );
-                  },
+                Positioned.fill(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return PageView(
+                        padEnds: false,
+                        controller: controller,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          ..._buildTopicCards(
+                            context,
+                            controller,
+                            currentBrief,
+                            cardStackWidth,
+                            constraints.maxHeight,
+                          ),
+                          Container(),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

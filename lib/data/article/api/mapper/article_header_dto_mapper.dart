@@ -25,7 +25,7 @@ class ArticleHeaderDTOMapper implements Mapper<ArticleDTO, ArticleHeader> {
       slug: data.slug,
       title: data.title,
       type: _articleTypeDTOMapper(data.type),
-      publicationDate: data.publicationDate,
+      publicationDate: DateTime.parse(data.publicationDate).toLocal(),
       timeToRead: data.timeToRead,
       image: image != null ? _imageDTOMapper(image) : null,
       publisher: _publisherDTOMapper(data.publisher),

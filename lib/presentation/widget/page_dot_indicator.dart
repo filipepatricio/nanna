@@ -47,13 +47,15 @@ class PageDotIndicator extends HookWidget {
     final rightDotIndex = currentPageState.value.ceil();
     final rightDotProgress = inBetweenProgress;
 
+    Widget content;
+
     if (leftDotIndex == rightDotIndex) {
-      return Row(
+      content = Row(
         mainAxisSize: MainAxisSize.min,
         children: _generateDotsWithSingleActive(leftDotIndex),
       );
     } else {
-      return Row(
+      content = Row(
         mainAxisSize: MainAxisSize.min,
         children: _generateDots(
           leftDotIndex,
@@ -63,6 +65,11 @@ class PageDotIndicator extends HookWidget {
         ),
       );
     }
+
+    return Container(
+      height: _dotMaxSize,
+      child: content,
+    );
   }
 
   List<Widget> _generateDotsWithSingleActive(int position) {

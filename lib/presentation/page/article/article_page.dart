@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -340,7 +341,7 @@ class ArticleContentView extends HookWidget {
                   ),
                   const VerticalDivider(),
                   Text(
-                    article.publicationDate,
+                    DateFormatUtil.formatFullMonthNameDayYear(article.publicationDate),
                     style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
                   ),
                 ],
