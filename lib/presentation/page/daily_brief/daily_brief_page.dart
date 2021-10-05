@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/stacked_car
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
@@ -19,8 +20,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-const _pageViewportFraction = 0.9;
+const _pageViewportFraction = 0.85;
 
 class DailyBriefPage extends HookWidget {
   const DailyBriefPage({Key? key}) : super(key: key);
@@ -31,7 +33,7 @@ class DailyBriefPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final controller = usePageController(viewportFraction: _pageViewportFraction);
     final relaxState = useState(false);
-    final cardStackWidth = MediaQuery.of(context).size.width * 0.9;
+    final cardStackWidth = MediaQuery.of(context).size.width * _pageViewportFraction;
 
     useEffect(
       () {
@@ -59,44 +61,46 @@ class DailyBriefPage extends HookWidget {
       [cubit],
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        title: Row(
-          children: [
-            DailyBriefTitleHero(
-              title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
-            ),
-            const Spacer(),
-            Visibility(
-              visible: relaxState.value,
-              child: Container(
-                height: AppDimens.s,
-                width: AppDimens.s,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppDimens.xxs),
-                  color: AppColors.limeGreen,
+    return CupertinoScaffold(
+      body: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          title: Row(
+            children: [
+              DailyBriefTitleHero(
+                title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
+              ),
+              const Spacer(),
+              Visibility(
+                visible: relaxState.value,
+                child: Container(
+                  height: AppDimens.s,
+                  width: AppDimens.s,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppDimens.xxs),
+                    color: AppColors.limeGreen,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: AppDimens.s),
-          ],
-        ),
-        centerTitle: false,
-      ),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        child: state.maybeMap(
-          idle: (state) => _IdleContent(
-            currentBrief: state.currentBrief,
-            controller: controller,
-            cardStackWidth: cardStackWidth,
+              const SizedBox(width: AppDimens.s),
+            ],
           ),
-          error: (_) => StackedCardsErrorView(cardStackWidth: cardStackWidth),
-          loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
-          orElse: () => const SizedBox(),
+          centerTitle: false,
+        ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          child: state.maybeMap(
+            idle: (state) => _IdleContent(
+              currentBrief: state.currentBrief,
+              controller: controller,
+              cardStackWidth: cardStackWidth,
+            ),
+            error: (_) => StackedCardsErrorView(cardStackWidth: cardStackWidth),
+            loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
+            orElse: () => const SizedBox(),
+          ),
         ),
       ),
     );
@@ -130,8 +134,17 @@ class _IdleContent extends HookWidget {
     return ReadingBannerWrapper(
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const SizedBox(height: AppDimens.l),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: _Greeting(
+              currentBrief: currentBrief,
+              lastPageAnimationProgressState: lastPageAnimationProgressState,
+            ),
+          ),
+          const SizedBox(height: AppDimens.l),
           Expanded(
             child: Stack(
               children: [
@@ -155,7 +168,6 @@ class _IdleContent extends HookWidget {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return PageView(
-                        padEnds: false,
                         controller: controller,
                         scrollDirection: Axis.horizontal,
                         children: [
@@ -176,17 +188,10 @@ class _IdleContent extends HookWidget {
             ),
           ),
           const SizedBox(height: AppDimens.l),
-          ValueListenableBuilder(
-            valueListenable: lastPageAnimationProgressState,
-            builder: (BuildContext context, double value, Widget? child) {
-              return AnimatedOpacity(
-                opacity: value < 0.5 ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 300),
-                child: child,
-              );
-            },
-            child: PageDotIndicator(
-              pageCount: currentBrief.topics.length,
+          Center(
+            child: _DotIndicator(
+              currentBrief: currentBrief,
+              lastPageAnimationProgressState: lastPageAnimationProgressState,
               controller: controller,
             ),
           ),
@@ -231,6 +236,67 @@ class _IdleContent extends HookWidget {
           controller.jumpToPage(index);
         },
         currentBrief: currentBrief,
+      ),
+    );
+  }
+}
+
+class _Greeting extends StatelessWidget {
+  final CurrentBrief currentBrief;
+  final ValueNotifier<double> lastPageAnimationProgressState;
+
+  const _Greeting({
+    required this.currentBrief,
+    required this.lastPageAnimationProgressState,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: lastPageAnimationProgressState,
+      builder: (BuildContext context, double value, Widget? child) {
+        return AnimatedOpacity(
+          opacity: value < 0.5 ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 300),
+          child: child,
+        );
+      },
+      child: Text(
+        currentBrief.greeting.message,
+        textAlign: TextAlign.left,
+        style: AppTypography.b1Regular,
+      ),
+    );
+  }
+}
+
+class _DotIndicator extends StatelessWidget {
+  final CurrentBrief currentBrief;
+  final ValueNotifier<double> lastPageAnimationProgressState;
+  final PageController controller;
+
+  const _DotIndicator({
+    required this.currentBrief,
+    required this.lastPageAnimationProgressState,
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: lastPageAnimationProgressState,
+      builder: (BuildContext context, double value, Widget? child) {
+        return AnimatedOpacity(
+          opacity: value < 0.5 ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 300),
+          child: child,
+        );
+      },
+      child: PageDotIndicator(
+        pageCount: currentBrief.topics.length,
+        controller: controller,
       ),
     );
   }

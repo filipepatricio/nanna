@@ -3,8 +3,10 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dart';
 import 'package:better_informed_mobile/presentation/page/main/widgets/bottom_navigation.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class MainPage extends HookWidget {
@@ -27,18 +29,25 @@ class MainPage extends HookWidget {
       [cubit],
     );
 
-    return state.maybeWhen(
-      init: () => AutoTabsScaffold(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark.copyWith(
+        systemNavigationBarColor: AppColors.background,
+        systemNavigationBarDividerColor: AppColors.background,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+      child: AutoTabsScaffold(
         animationDuration: const Duration(),
-        extendBody: false,
         routes: const [
           TodayTabGroupRouter(),
           ExploreTabGroupRouter(),
           MyReadsTabGroupRouter(),
         ],
-        bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(state, cubit, tabsRouter),
+        bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(
+          state,
+          cubit,
+          tabsRouter,
+        ),
       ),
-      orElse: () => const SizedBox(),
     );
   }
 

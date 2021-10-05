@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get mainTheme => ThemeData(
         scaffoldBackgroundColor: AppColors.background,
+        backgroundColor: AppColors.background,
         appBarTheme: const AppBarTheme(
           color: Colors.transparent,
           elevation: 0,

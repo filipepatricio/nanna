@@ -145,6 +145,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle b1Regular = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 16,
+    height: 1.3,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle b1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
