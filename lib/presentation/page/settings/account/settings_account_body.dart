@@ -16,11 +16,16 @@ class SettingsAccountBody extends HookWidget {
   final SettingsAccountCubit cubit;
   final SettingsAccountData data;
 
-  const SettingsAccountBody({required this.cubit, required this.data});
+  const SettingsAccountBody({
+    required this.cubit,
+    required this.data,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final isEditable = useState(false);
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(AppDimens.l),
