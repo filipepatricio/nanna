@@ -1,10 +1,14 @@
+import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()
 class SettingsAccountCubit extends Cubit<SettingsAccountState> {
+  final GetUserUseCase _getUserUseCase;
+
   SettingsAccountData _accountData = SettingsAccountData(
     name: '',
     lastName: '',
@@ -14,17 +18,20 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     emailValidator: null,
   );
 
-  SettingsAccountCubit() : super(const SettingsAccountState.loading()) {
-    //TODO: REPLACE WITH USER DATA WHEN AVAILABLE
-    _accountData = SettingsAccountData(
-      name: 'satoshi',
-      lastName: 'Kaminski',
-      email: 'john.appleseed@gmail.com',
-      lastNameValidator: null,
-      nameValidator: null,
-      emailValidator: null,
-    );
-    emit(SettingsAccountState.idle(_accountData));
+  SettingsAccountCubit(this._getUserUseCase) : super(const SettingsAccountState.loading());
+
+  Future<void> initialize() async {
+    try {
+      final user = await _getUserUseCase();
+      _accountData = _accountData.copyWith(
+        name: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      );
+      emit(SettingsAccountState.idle(_accountData));
+    } catch (e, s) {
+      Fimber.e('Querying user failed', ex: e, stacktrace: s);
+    }
   }
 
   Future<void> saveAccountData() async {

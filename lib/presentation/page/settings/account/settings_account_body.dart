@@ -16,98 +16,117 @@ class SettingsAccountBody extends HookWidget {
   final SettingsAccountCubit cubit;
   final SettingsAccountData data;
 
-  const SettingsAccountBody({required this.cubit, required this.data});
+  const SettingsAccountBody({
+    required this.cubit,
+    required this.data,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final isEditable = useState(false);
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(AppDimens.l),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: AppDimens.l),
-                Container(
-                  height: AppDimens.settingsItemHeight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(AppDimens.l),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        LocaleKeys.settings_account.tr(),
-                        style: AppTypography.h3Bold,
+                      const SizedBox(height: AppDimens.l),
+                      Container(
+                        height: AppDimens.settingsItemHeight,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              LocaleKeys.settings_account.tr(),
+                              style: AppTypography.h3Bold,
+                            ),
+                            GestureDetector(
+                              onTap: () => isEditable.value = !isEditable.value,
+                              child: isEditable.value
+                                  ? Container(
+                                      width: AppDimens.settingsCancelButtonWidth,
+                                      height: AppDimens.settingsCancelButtonHeight,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.grey,
+                                        borderRadius: BorderRadius.all(Radius.circular(AppDimens.m)),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          LocaleKeys.common_cancel.tr(),
+                                          textAlign: TextAlign.center,
+                                          style: AppTypography.metadata1Medium.copyWith(height: AppDimens.one),
+                                        ),
+                                      ),
+                                    )
+                                  : SvgPicture.asset(AppVectorGraphics.edit, fit: BoxFit.contain),
+                            ),
+                          ],
+                        ),
                       ),
-                      GestureDetector(
-                        onTap: () => isEditable.value = !isEditable.value,
-                        child: isEditable.value
-                            ? Container(
-                                width: AppDimens.settingsCancelButtonWidth,
-                                height: AppDimens.settingsCancelButtonHeight,
-                                decoration: const BoxDecoration(
-                                  color: AppColors.grey,
-                                  borderRadius: BorderRadius.all(Radius.circular(AppDimens.m)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    LocaleKeys.common_cancel.tr(),
-                                    textAlign: TextAlign.center,
-                                    style: AppTypography.metadata1Medium.copyWith(height: AppDimens.one),
-                                  ),
-                                ),
-                              )
-                            : SvgPicture.asset(AppVectorGraphics.edit, fit: BoxFit.contain),
+                      const SizedBox(height: AppDimens.l),
+                      SettingsInputItem(
+                        label: LocaleKeys.settings_firstName.tr(),
+                        initialInput: data.name,
+                        isEditable: isEditable.value,
+                        onChanged: (String inputText) => cubit.updateName(inputText),
+                        validator: (String? value) => data.nameValidator,
+                        onClear: () => cubit.clearNameInput(),
                       ),
+                      const SizedBox(height: AppDimens.l),
+                      SettingsInputItem(
+                        label: LocaleKeys.settings_lastName.tr(),
+                        initialInput: data.lastName,
+                        isEditable: isEditable.value,
+                        onChanged: (String inputText) => cubit.updateLastName(inputText),
+                        validator: (String? value) => data.lastNameValidator,
+                        onClear: () => cubit.clearLastNameInput(),
+                      ),
+                      const SizedBox(height: AppDimens.l),
+                      SettingsInputItem(
+                        label: LocaleKeys.settings_emailAddress.tr(),
+                        initialInput: data.email,
+                        isEditable: isEditable.value,
+                        onChanged: (String inputText) => cubit.updateEmail(inputText),
+                        validator: (String? value) => data.emailValidator,
+                        onClear: () => cubit.clearEmailInput(),
+                      ),
+                      const SizedBox(height: AppDimens.l),
                     ],
                   ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: AppDimens.l),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: GestureDetector(
+              onTap: () => cubit.saveAccountData(),
+              child: Container(
+                height: AppDimens.xxl,
+                decoration: const BoxDecoration(
+                  color: AppColors.limeGreen,
+                  borderRadius: BorderRadius.all(Radius.circular(AppDimens.s)),
                 ),
-                const SizedBox(height: AppDimens.l),
-                SettingsInputItem(
-                  label: LocaleKeys.settings_firstName.tr(),
-                  initialInput: data.name,
-                  isEditable: isEditable.value,
-                  onChanged: (String inputText) => cubit.updateName(inputText),
-                  validator: (String? value) => data.nameValidator,
-                  onClear: () => cubit.clearNameInput(),
-                ),
-                const SizedBox(height: AppDimens.l),
-                SettingsInputItem(
-                  label: LocaleKeys.settings_lastName.tr(),
-                  initialInput: data.lastName,
-                  isEditable: isEditable.value,
-                  onChanged: (String inputText) => cubit.updateLastName(inputText),
-                  validator: (String? value) => data.lastNameValidator,
-                  onClear: () => cubit.clearLastNameInput(),
-                ),
-                const SizedBox(height: AppDimens.l),
-                SettingsInputItem(
-                  label: LocaleKeys.settings_lastName.tr(),
-                  initialInput: data.email,
-                  isEditable: isEditable.value,
-                  onChanged: (String inputText) => cubit.updateEmail(inputText),
-                  validator: (String? value) => data.emailValidator,
-                  onClear: () => cubit.clearEmailInput(),
-                ),
-                const SizedBox(height: AppDimens.c),
-                GestureDetector(
-                  onTap: () => cubit.saveAccountData(),
-                  child: Container(
-                    height: AppDimens.xxl,
-                    decoration: const BoxDecoration(
-                      color: AppColors.limeGreen,
-                      borderRadius: BorderRadius.all(Radius.circular(AppDimens.s)),
-                    ),
-                    child: Center(
-                      child: Text(LocaleKeys.settings_save.tr(), style: AppTypography.buttonBold),
-                    ),
+                child: Center(
+                  child: Text(
+                    LocaleKeys.settings_save.tr(),
+                    style: AppTypography.buttonBold,
                   ),
                 ),
-              ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
