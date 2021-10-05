@@ -4,8 +4,8 @@ part 'user_dto.g.dart';
 
 @JsonSerializable()
 class UserDTO {
-  final String firstName;
-  final String lastName;
+  final String? firstName;
+  final String? lastName;
   final String email;
 
   UserDTO(this.firstName, this.lastName, this.email);
