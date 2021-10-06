@@ -20,7 +20,11 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
 
 @AdaptiveAutoRouter(
   routes: [
-    AutoRoute(page: EntryPage, initial: true),
+    CustomRoute(
+      page: EntryPage,
+      initial: true,
+      customRouteBuilder: fadePageRouteBuilder,
+    ),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
     AutoRoute(page: SettingsMainPage),
@@ -32,8 +36,9 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
 )
 class $MainRouter {}
 
-const dashboardTabRouter = AutoRoute(
+const dashboardTabRouter = CustomRoute(
   page: MainPage,
+  durationInMilliseconds: 0,
   children: [
     AutoRoute(
       path: 'todayTab',
