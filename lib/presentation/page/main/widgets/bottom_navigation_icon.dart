@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -63,13 +62,9 @@ class _BottomNavigationIcon extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: AppDimens.s),
-        SvgPicture.asset(iconName),
-        const SizedBox(height: AppDimens.s),
-        Text(title, style: AppTypography.navbarText)
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+      child: SvgPicture.asset(iconName),
     );
   }
 }

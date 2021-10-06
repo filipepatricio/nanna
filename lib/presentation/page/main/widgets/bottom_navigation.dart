@@ -14,7 +14,12 @@ class BottomNavigation extends HookWidget {
   final MainCubit cubit;
   final TabsRouter tabsRouter;
 
-  const BottomNavigation(this.state, this.cubit, this.tabsRouter);
+  const BottomNavigation(
+    this.state,
+    this.cubit,
+    this.tabsRouter, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +31,7 @@ class BottomNavigation extends HookWidget {
             (tab) => BottomNavigationBarItem(
               icon: tab.icon,
               activeIcon: tab.activeIcon,
-              label: '',
+              label: tab.title,
             ),
           )
         ],
