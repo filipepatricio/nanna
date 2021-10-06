@@ -1,4 +1,6 @@
 class AppDimens {
+  const AppDimens._();
+
   ///0.0
   static const zero = 0.0;
 

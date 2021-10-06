@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
-import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -51,34 +50,18 @@ class ReadingListCover extends HookWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(AppDimens.l),
-                child: Hero(
-                  tag: HeroTag.dailyBriefTopicAuthor(topic.id),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: AuthorRow(topic: topic),
-                  ),
-                ),
+                child: AuthorRow(topic: topic),
               ),
               Expanded(
-                child: Align(
-                  alignment: const Alignment(0.0, -0.25),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                    child: Hero(
-                      tag: HeroTag.dailyBriefTopicTitle(topic.id),
-                      flightShuttleBuilder: (_, anim, dir, from, to) {
-                        return OverflowBox(
-                          maxHeight: double.infinity,
-                          child: to.widget,
-                        );
-                      },
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: InformedMarkdownBody(
-                          markdown: topic.title,
-                          baseTextStyle: AppTypography.h0Bold,
-                          maxLines: 3,
-                        ),
+                child: ClipRect(
+                  child: Align(
+                    alignment: const Alignment(0.0, -0.25),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                      child: InformedMarkdownBody(
+                        markdown: topic.title,
+                        baseTextStyle: AppTypography.h0Bold,
+                        maxLines: 3,
                       ),
                     ),
                   ),
@@ -89,7 +72,7 @@ class ReadingListCover extends HookWidget {
                 padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: _EditorsNote(),
               ),
-              const SizedBox(height: AppDimens.xl),
+              const SizedBox(height: AppDimens.l),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: _PublisherLogoRow(topic: topic),
@@ -100,7 +83,10 @@ class ReadingListCover extends HookWidget {
                 color: AppColors.textPrimary,
               ),
               Padding(
-                padding: const EdgeInsets.all(AppDimens.l),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimens.l,
+                  vertical: AppDimens.m,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
