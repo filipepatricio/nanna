@@ -45,19 +45,6 @@ class ArticleCubit extends Cubit<ArticleState> {
     _showIdleState();
   }
 
-  void updateReadingBannerState(double progress) {
-    final article = _fullArticle;
-    if (article == null) return;
-
-    if (!readingComplete) {
-      if (progress == scrollEnd) {
-        readingComplete = true;
-      }
-      final readingBanner = ReadingBanner(article: _header, scrollProgress: progress);
-      _setStartedArticleStreamUseCase.call(readingBanner);
-    }
-  }
-
   void _resetBannerState() {
     readingComplete = false;
     final readingBanner = ReadingBanner(article: _header, scrollProgress: 0.0);
@@ -73,12 +60,33 @@ class ArticleCubit extends Cubit<ArticleState> {
     }
   }
 
-  void setScrollData(ArticleScrollData articleScrollData) {
+  void setupScrollData(double globalContentOffset, double globalPageOffset) {
     scrollData = scrollData.copyWith(
-      articlePageHeight: articleScrollData.articlePageHeight,
-      articleContentHeight: articleScrollData.articleContentHeight,
-      contentOffset: articleScrollData.contentOffset,
-      readArticleContentOffset: articleScrollData.readArticleContentOffset,
+      contentOffset: globalContentOffset - globalPageOffset,
     );
+  }
+
+  void updateScrollData(double scrollOffset, double maxExtent) {
+    scrollData = scrollData.copyWith(
+      readArticleContentOffset: scrollOffset,
+      articleContentHeight: maxExtent - scrollData.contentOffset,
+      articlePageHeight: maxExtent,
+    );
+
+    final progress = scrollData.readArticleContentOffset / scrollData.articleContentHeight;
+    _updateReadingBannerState(progress);
+  }
+
+  void _updateReadingBannerState(double progress) {
+    final article = _fullArticle;
+    if (article == null) return;
+
+    if (!readingComplete) {
+      if (progress == scrollEnd) {
+        readingComplete = true;
+      }
+      final readingBanner = ReadingBanner(article: _header, scrollProgress: progress);
+      _setStartedArticleStreamUseCase.call(readingBanner);
+    }
   }
 }

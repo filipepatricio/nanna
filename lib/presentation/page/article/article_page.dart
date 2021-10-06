@@ -142,16 +142,10 @@ class _IdleContent extends StatelessWidget {
                 readScrollOffset = constrains.maxHeight - (cubit.scrollData.contentOffset - controller.offset);
               }
 
-              cubit.setScrollData(
-                cubit.scrollData.copyWith(
-                  readArticleContentOffset: readScrollOffset,
-                  articleContentHeight: controller.position.maxScrollExtent - cubit.scrollData.contentOffset,
-                  articlePageHeight: controller.position.maxScrollExtent,
-                ),
+              cubit.updateScrollData(
+                readScrollOffset,
+                controller.position.maxScrollExtent,
               );
-
-              final scrollProgress = cubit.scrollData.readArticleContentOffset / cubit.scrollData.articleContentHeight;
-              cubit.updateReadingBannerState(scrollProgress);
             }
             return true;
           },
@@ -184,11 +178,7 @@ class _IdleContent extends StatelessWidget {
   void calculateArticleContentOffset() {
     final globalContentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
     final globalPageOffset = _calculateGlobalOffset(_articlePageKey) ?? 0;
-    cubit.setScrollData(
-      cubit.scrollData.copyWith(
-        contentOffset: globalContentOffset - globalPageOffset,
-      ),
-    );
+    cubit.setupScrollData(globalContentOffset, globalPageOffset);
   }
 
   void scrollToPosition(double? readArticleProgress) {
@@ -213,7 +203,7 @@ class _IdleContent extends StatelessWidget {
 class ArticleHeaderView extends HookWidget {
   final ArticleHeader article;
 
-  const ArticleHeaderView({required this.article});
+  const ArticleHeaderView({required this.article, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
