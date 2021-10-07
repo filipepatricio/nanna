@@ -17,14 +17,14 @@ class ArticleContentHtml extends StatefulWidget {
 
   @override
   ArticleContentHtmlState createState() => ArticleContentHtmlState(
-        url: html,
+        htmlContent: html,
         cubit: cubit,
         scrollToArticlePosition: scrollToPosition,
       );
 }
 
 class ArticleContentHtmlState extends State<ArticleContentHtml> {
-  final String url;
+  final String htmlContent;
   final ArticleCubit cubit;
   final Function() scrollToArticlePosition;
   double _height = 0.0;
@@ -39,7 +39,7 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
 
   ArticleContentHtmlState({
     required this.cubit,
-    required this.url,
+    required this.htmlContent,
     required this.scrollToArticlePosition,
   });
 
@@ -50,7 +50,9 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
       height: _height,
       child: InAppWebView(
         key: webViewKey,
-        initialUrlRequest: URLRequest(url: Uri.parse('https://pugjs.org/language/plain-text.html')),
+        initialData: InAppWebViewInitialData(
+          data: makeHtmlContentResponsive(htmlContent),
+        ),
         initialOptions: options,
         onWebViewCreated: (controller) {
           webViewController = controller;
@@ -74,5 +76,15 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
       _height = double.parse(height.toString());
       setState(() {});
     });
+  }
+
+  String makeHtmlContentResponsive(String htmlContent) {
+    return '''<!DOCTYPE html>
+      <html>
+        <head>
+          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+        </head>
+        $htmlContent
+      </html>''';
   }
 }
