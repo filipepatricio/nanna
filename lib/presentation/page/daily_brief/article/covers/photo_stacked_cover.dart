@@ -47,7 +47,7 @@ class PhotoStackedCover extends HookWidget {
             ),
             Positioned.fill(
               child: Container(
-                color: Colors.black.withOpacity(0.30),
+                color: Colors.black.withOpacity(0.40),
               ),
             ),
           ],
