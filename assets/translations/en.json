@@ -95,7 +95,8 @@
     },
     "articleBy": "By {}",
     "readMore": "Read more",
-    "readMinutes": "{} min"
+    "readMinutes": "{} min",
+    "loadingNext": "Loading next article"
   },
   "readingList": {
     "title": "Reading list",

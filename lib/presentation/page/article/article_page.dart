@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_markdown.dart';
+import 'package:better_informed_mobile/presentation/page/article/pull_up_indicator_action/pull_up_indicator_action.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -18,6 +19,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+
+const _loadNextArticleIndicatorHeight = 150.0;
 
 class ArticlePage extends HookWidget {
   final ArticleHeader article;
@@ -150,6 +153,7 @@ class _IdleContent extends StatelessWidget {
             return true;
           },
           child: CustomScrollView(
+            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             key: _articlePageKey,
             controller: controller,
             slivers: [
@@ -167,6 +171,11 @@ class _IdleContent extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              SliverPullUpIndicatorAction(
+                builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
+                fullExtentHeight: _loadNextArticleIndicatorHeight,
+                triggerExtent: _loadNextArticleIndicatorHeight,
               ),
             ],
           ),
@@ -197,6 +206,41 @@ class _IdleContent extends StatelessWidget {
     final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     final position = renderBox?.localToGlobal(Offset.zero);
     return position?.dy;
+  }
+}
+
+class _LoadingNextArticleIndicator extends StatelessWidget {
+  final double factor;
+
+  const _LoadingNextArticleIndicator({
+    required this.factor,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: AlwaysStoppedAnimation(factor),
+      child: ScaleTransition(
+        scale: AlwaysStoppedAnimation(factor),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: SvgPicture.asset(
+                AppVectorGraphics.loadNextArticle,
+              ),
+            ),
+            const SizedBox(height: AppDimens.s),
+            Text(
+              LocaleKeys.article_loadingNext.tr(),
+              style: AppTypography.b3Regular.copyWith(height: 1.8),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
