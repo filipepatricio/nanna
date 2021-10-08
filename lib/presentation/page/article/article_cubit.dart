@@ -87,7 +87,9 @@ class ArticleCubit extends Cubit<ArticleState> {
 
         scrollData = ArticleScrollData.initial();
         _resetBannerState();
+
         _showIdleState();
+        emit(ArticleState.nextPageLoaded(_index));
       } catch (e, s) {
         Fimber.e('Fetching next full article failed', ex: e, stacktrace: s);
       }

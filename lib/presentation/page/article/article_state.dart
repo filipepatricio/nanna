@@ -25,4 +25,6 @@ class ArticleState with _$ArticleState {
     ArticleHeader header,
     ArticleContent content,
   ) = ArticleStateIdleSingleArticle;
+
+  const factory ArticleState.nextPageLoaded(int index) = _ArticleStateNextPageLoaded;
 }

@@ -342,6 +342,7 @@ class _ArticleContent extends StatelessWidget {
                   allArticles: articleList,
                   index: index,
                   statusBarHeight: statusBarHeight,
+                  navigationCallback: (index) => controller.jumpToPage(index),
                 );
               },
             ),

@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/article/data/article_content_type.
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_state.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_markdown.dart';
 import 'package:better_informed_mobile/presentation/page/article/pull_up_indicator_action/pull_up_indicator_action.dart';
@@ -22,16 +23,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
+typedef ArticleNavigationCallback = void Function(int index);
+
 const _loadNextArticleIndicatorHeight = 150.0;
 
 class ArticlePage extends HookWidget {
   final double? readArticleProgress;
   final int index;
   final List<ArticleHeader> articleList;
+  final ArticleNavigationCallback? navigationCallback;
 
   ArticlePage.singleArticle({
     required ArticleHeader article,
     this.readArticleProgress,
+    this.navigationCallback,
     Key? key,
   })  : index = 0,
         articleList = [article],
@@ -41,6 +46,7 @@ class ArticlePage extends HookWidget {
     required this.index,
     required this.articleList,
     this.readArticleProgress,
+    this.navigationCallback,
     Key? key,
   }) : super(key: key);
 
@@ -48,6 +54,12 @@ class ArticlePage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<ArticleCubit>();
     final state = useCubitBuilder(cubit);
+
+    useCubitListener<ArticleCubit, ArticleState>(cubit, (cubit, state, context) {
+      state.mapOrNull(nextPageLoaded: (state) {
+        navigationCallback?.call(state.index);
+      });
+    });
 
     final articleType = useMemoized(
       () => articleList[index].type,

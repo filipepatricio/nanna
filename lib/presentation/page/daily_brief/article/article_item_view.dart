@@ -19,12 +19,14 @@ class ArticleItemView extends HookWidget {
   final List<ArticleHeader> allArticles;
   final int index;
   final double statusBarHeight;
+  final ArticleNavigationCallback navigationCallback;
 
   const ArticleItemView({
     required this.article,
     required this.allArticles,
     required this.index,
     required this.statusBarHeight,
+    required this.navigationCallback,
     Key? key,
   }) : super(key: key);
 
@@ -48,6 +50,7 @@ class ArticleItemView extends HookWidget {
             builder: (context) => ArticlePage.multipleArticles(
               articleList: allArticles,
               index: index,
+              navigationCallback: navigationCallback,
             ),
             useRootNavigator: true,
           );
