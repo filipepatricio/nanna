@@ -47,7 +47,7 @@ class _ReadingBannerBody extends HookWidget {
         // TODO: this need to be called from page with cupertinoScaffold
         CupertinoScaffold.showCupertinoModalBottomSheet(
           context: context,
-          builder: (context) => ArticlePage(
+          builder: (context) => ArticlePage.singleArticle(
             article: readingBanner.article,
             readArticleProgress: readingBanner.scrollProgress,
           ),

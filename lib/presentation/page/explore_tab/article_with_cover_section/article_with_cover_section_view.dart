@@ -121,7 +121,7 @@ class _MainArticle extends HookWidget {
     return GestureDetector(
       onTap: () => CupertinoScaffold.showCupertinoModalBottomSheet(
         context: context,
-        builder: (context) => ArticlePage(article: articleHeader),
+        builder: (context) => ArticlePage.singleArticle(article: articleHeader),
         useRootNavigator: true,
       ),
       child: LayoutBuilder(

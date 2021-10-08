@@ -10,12 +10,14 @@ class FilledButton extends StatelessWidget {
   final VoidCallback? onTap;
   final String? iconPath;
   final Color fillColor;
+  final Color textColor;
 
   const FilledButton({
     required this.text,
     this.isEnabled = true,
     this.onTap,
     this.fillColor = AppColors.limeGreen,
+    this.textColor = AppColors.textPrimary,
     this.iconPath,
     Key? key,
   }) : super(key: key);
@@ -44,7 +46,7 @@ class FilledButton extends StatelessWidget {
             Text(
               text,
               style: AppTypography.buttonBold.copyWith(
-                color: isEnabled ? AppColors.textPrimary : AppColors.textPrimary.withOpacity(0.44),
+                color: isEnabled ? textColor : textColor.withOpacity(0.44),
               ),
             ),
             if (iconPath != null) ...[

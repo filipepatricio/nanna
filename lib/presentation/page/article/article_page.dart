@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
@@ -14,6 +15,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -23,18 +25,37 @@ import 'package:flutter_svg/svg.dart';
 const _loadNextArticleIndicatorHeight = 150.0;
 
 class ArticlePage extends HookWidget {
-  final ArticleHeader article;
   final double? readArticleProgress;
+  final int index;
+  final List<ArticleHeader> articleList;
 
-  const ArticlePage({required this.article, this.readArticleProgress});
+  ArticlePage.singleArticle({
+    required ArticleHeader article,
+    this.readArticleProgress,
+    Key? key,
+  })  : index = 0,
+        articleList = [article],
+        super(key: key);
+
+  const ArticlePage.multipleArticles({
+    required this.index,
+    required this.articleList,
+    this.readArticleProgress,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<ArticleCubit>();
     final state = useCubitBuilder(cubit);
 
+    final articleType = useMemoized(
+      () => articleList[index].type,
+      [articleList],
+    );
+
     useEffect(() {
-      cubit.initialize(article);
+      cubit.initialize(articleList, index);
     }, [cubit]);
 
     final scrollController = useScrollController(keepScrollOffset: true);
@@ -43,7 +64,7 @@ class ArticlePage extends HookWidget {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
         title: Text(
-          article.type == ArticleType.premium
+          articleType == ArticleType.premium
               ? LocaleKeys.article_appBar_premium.tr()
               : LocaleKeys.article_appBar_freemium.tr(),
           style: AppTypography.h5BoldSmall,
@@ -58,7 +79,7 @@ class ArticlePage extends HookWidget {
           ),
         ],
         centerTitle: true,
-        backgroundColor: article.type == ArticleType.premium ? AppColors.limeGreen : AppColors.white,
+        backgroundColor: articleType == ArticleType.premium ? AppColors.limeGreen : AppColors.white,
       ),
       backgroundColor: AppColors.lightGrey,
       body: AnimatedSwitcher(
@@ -68,9 +89,20 @@ class ArticlePage extends HookWidget {
             header: state.header,
             controller: scrollController,
           ),
-          idle: (state) => _IdleContent(
+          idleMultiArticles: (state) => _IdleContent(
             header: state.header,
             content: state.content,
+            hasNextArticle: state.hasNext,
+            multipleArticles: true,
+            controller: scrollController,
+            cubit: cubit,
+            readArticleProgress: readArticleProgress,
+          ),
+          idleSingleArticle: (state) => _IdleContent(
+            header: state.header,
+            content: state.content,
+            hasNextArticle: false,
+            multipleArticles: false,
             controller: scrollController,
             cubit: cubit,
             readArticleProgress: readArticleProgress,
@@ -114,8 +146,10 @@ class _LoadingContent extends StatelessWidget {
 class _IdleContent extends StatelessWidget {
   final ArticleHeader header;
   final ArticleContent content;
-  final ScrollController controller;
   final ArticleCubit cubit;
+  final ScrollController controller;
+  final bool hasNextArticle;
+  final bool multipleArticles;
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
   final double? readArticleProgress;
@@ -123,6 +157,8 @@ class _IdleContent extends StatelessWidget {
   _IdleContent({
     required this.header,
     required this.content,
+    required this.hasNextArticle,
+    required this.multipleArticles,
     required this.controller,
     required this.cubit,
     this.readArticleProgress,
@@ -172,11 +208,17 @@ class _IdleContent extends StatelessWidget {
                   ],
                 ),
               ),
-              SliverPullUpIndicatorAction(
-                builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
-                fullExtentHeight: _loadNextArticleIndicatorHeight,
-                triggerExtent: _loadNextArticleIndicatorHeight,
-              ),
+              if (hasNextArticle)
+                SliverPullUpIndicatorAction(
+                  builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
+                  fullExtentHeight: _loadNextArticleIndicatorHeight,
+                  triggerExtent: _loadNextArticleIndicatorHeight,
+                  triggerFunction: (completer) => cubit.loadNextArticle(completer),
+                )
+              else if (multipleArticles)
+                const SliverToBoxAdapter(
+                  child: _AllArticlesRead(),
+                ),
             ],
           ),
         );
@@ -239,6 +281,41 @@ class _LoadingNextArticleIndicator extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _AllArticlesRead extends StatelessWidget {
+  const _AllArticlesRead({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: AppDimens.l),
+          Center(
+            child: SvgPicture.asset(AppVectorGraphics.noNextArticle),
+          ),
+          const SizedBox(height: AppDimens.s),
+          Text(
+            LocaleKeys.article_allArticlesRead.tr(),
+            style: AppTypography.b3Regular.copyWith(height: 1.8),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: AppDimens.xl),
+          FilledButton(
+            text: LocaleKeys.article_goBackToTopic.tr(),
+            fillColor: AppColors.textPrimary,
+            textColor: AppColors.white,
+            onTap: () => AutoRouter.of(context).pop(),
+          ),
+          const SizedBox(height: AppDimens.l),
+        ],
       ),
     );
   }

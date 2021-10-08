@@ -30,6 +30,7 @@ class AppVectorGraphics {
   static const String edit = 'assets/vector_graphics/edit_ic.svg';
   static const String search = 'assets/vector_graphics/search.svg';
   static const String loadNextArticle = 'assets/vector_graphics/load_next_article.svg';
+  static const String noNextArticle = 'assets/vector_graphics/no_next_article.svg';
 
   static const String mail = 'assets/vector_graphics/mail.svg';
   static const String googleSignIn = 'assets/vector_graphics/google_sign_in.svg';

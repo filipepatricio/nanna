@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -5,14 +6,17 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 typedef IndicatorBuilder = Widget Function(BuildContext context, double factor);
+typedef TriggerFunction = void Function(Completer completer);
 
 class SliverPullUpIndicatorAction extends HookWidget {
   final IndicatorBuilder builder;
   final double fullExtentHeight;
   final double triggerExtent;
+  final TriggerFunction triggerFunction;
 
   const SliverPullUpIndicatorAction({
     required this.builder,
+    required this.triggerFunction,
     this.fullExtentHeight = 100.0,
     this.triggerExtent = 120.0,
     Key? key,
@@ -30,10 +34,12 @@ class SliverPullUpIndicatorAction extends HookWidget {
           if (constraints.maxHeight > triggerExtent && !keepExtent.value) {
             WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
               keepExtent.value = true;
-            });
 
-            Future.delayed(const Duration(seconds: 2), () {
-              keepExtent.value = false;
+              final completer = Completer();
+              completer.future.then((value) {
+                keepExtent.value = false;
+              });
+              triggerFunction(completer);
             });
           }
 

@@ -16,14 +16,14 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ArticleItemView extends HookWidget {
   final ArticleHeader article;
+  final List<ArticleHeader> allArticles;
   final int index;
-  final int articleListLength;
   final double statusBarHeight;
 
   const ArticleItemView({
     required this.article,
+    required this.allArticles,
     required this.index,
-    required this.articleListLength,
     required this.statusBarHeight,
     Key? key,
   }) : super(key: key);
@@ -45,7 +45,10 @@ class ArticleItemView extends HookWidget {
         onTap: () {
           CupertinoScaffold.showCupertinoModalBottomSheet(
             context: context,
-            builder: (context) => ArticlePage(article: article),
+            builder: (context) => ArticlePage.multipleArticles(
+              articleList: allArticles,
+              index: index,
+            ),
             useRootNavigator: true,
           );
         },
@@ -57,7 +60,7 @@ class ArticleItemView extends HookWidget {
             Padding(
               padding: const EdgeInsets.only(right: AppDimens.xxl),
               child: Text(
-                '${index + 1}/$articleListLength Afghanistan articles',
+                '${index + 1}/${allArticles.length} Afghanistan articles',
                 style: AppTypography.subH1Medium,
                 textAlign: TextAlign.start,
               ),

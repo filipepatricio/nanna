@@ -10,4 +10,11 @@ class ArticleScrollData with _$ArticleScrollData {
     required double articleContentHeight,
     required double articlePageHeight,
   }) = _ArticleScrollData;
+
+  factory ArticleScrollData.initial() => ArticleScrollData(
+        contentOffset: 0,
+        articlePageHeight: 0,
+        articleContentHeight: 0,
+        readArticleContentOffset: 0,
+      );
 }
