@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
@@ -11,18 +12,18 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DottedArticleInfo extends HookWidget {
   final ArticleHeader article;
-  final Color? textColor;
+  final bool isLight;
 
   const DottedArticleInfo({
     required this.article,
-    this.textColor,
+    required this.isLight,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-
+    final mainColor = isLight ? AppColors.white : AppColors.black;
     return Row(
       children: [
         Align(
@@ -42,23 +43,23 @@ class DottedArticleInfo extends HookWidget {
         const SizedBox(width: AppDimens.s),
         Text(
           article.publisher.name,
-          style: AppTypography.metadata1Regular.copyWith(color: textColor),
+          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
         ),
         Text(
           ' · ',
-          style: AppTypography.metadata1Regular.copyWith(color: textColor),
+          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
         ),
         Text(
           DateFormatUtil.formatShortMonthNameDay(article.publicationDate),
-          style: AppTypography.metadata1Regular.copyWith(color: textColor),
+          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
         ),
         Text(
           ' · ',
-          style: AppTypography.metadata1Regular.copyWith(color: textColor),
+          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
         ),
         Text(
           LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
-          style: AppTypography.metadata1Regular.copyWith(color: textColor),
+          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
         ),
       ],
     );

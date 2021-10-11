@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -34,6 +35,7 @@ class ArticleItemView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final editorsNote = article.note;
     // TODO: change when there will be final colors or if source will be specified (for example: backend)
     final mockColoredCoverCondition = index % 3 == 1;
     return Container(
@@ -71,15 +73,22 @@ class ArticleItemView extends HookWidget {
               ),
             ),
             const SizedBox(height: AppDimens.s),
-            Padding(
-              padding: const EdgeInsets.only(right: AppDimens.xxl),
-              child: Text(
-                //TODO missing data in object - editors note
-                'Editors note: US troops start to arrive for Afghanistan evacuation as Taliban close in on Kabul',
-                style: AppTypography.subH1Medium.copyWith(fontFamily: fontFamilyLora),
-                textAlign: TextAlign.start,
+            if (editorsNote != null)
+              Padding(
+                padding: const EdgeInsets.only(right: AppDimens.xxl),
+                child: RichText(
+                  text: TextSpan(
+                    style: AppTypography.subH1Medium.copyWith(fontFamily: fontFamilyLora, height: 1.12),
+                    children: [
+                      TextSpan(
+                        text: LocaleKeys.readingList_editorsNote.tr(),
+                        style: AppTypography.h5BoldSmall.copyWith(fontFamily: fontFamilyLora, height: 1.12),
+                      ),
+                      TextSpan(text: editorsNote),
+                    ],
+                  ),
+                ),
               ),
-            ),
             const SizedBox(height: AppDimens.l),
             //TODO: Change for proper statements (this is for mock purposes)
             if (index % 3 == 0)

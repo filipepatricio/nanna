@@ -65,7 +65,7 @@ class PhotoCover extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              DottedArticleInfo(article: article),
+              DottedArticleInfo(article: article, isLight: false),
               const SizedBox(height: AppDimens.s),
               Text(
                 article.title,

@@ -24,6 +24,10 @@ final mockedArticleList1 = [
     ),
     image: article_image.Image(publicId: 'articles/storm'),
     author: 'John Doe',
+    note: null,
+    wordCount: 6687,
+    sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
+    id: "8efc4520-f512-4a31-9ba7-c65267e34a0b",
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -38,6 +42,10 @@ final mockedArticleList1 = [
     ),
     image: article_image.Image(publicId: 'articles/storm'),
     author: 'John Doe',
+    note: null,
+    wordCount: 587,
+    sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
+    id: "8e664720-f512-4a31-9ba7-c65267e34a0b",
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -52,6 +60,10 @@ final mockedArticleList1 = [
     ),
     image: article_image.Image(publicId: 'articles/storm'),
     author: 'John Doe',
+    note: null,
+    wordCount: 1587,
+    sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
+    id: "8ef774720-f512-4a31-9ba7-c65267e34a0b",
   ),
 ];
 
@@ -69,6 +81,10 @@ final mockedArticleList2 = [
     ),
     image: article_image.Image(publicId: 'articles/storm'),
     author: 'John Doe',
+    note: null,
+    wordCount: 1687,
+    sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
+    id: "8efc4720-f512-4a31-9ba7-c65267e34a0b",
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -83,6 +99,10 @@ final mockedArticleList2 = [
     ),
     image: article_image.Image(publicId: 'articles/storm'),
     author: 'John Doe',
+    note: 'Quos dolorem et eos cum optio sequi nostrum praesentium.',
+    wordCount: 1287,
+    sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
+    id: "22333-f512-4a31-9ba7-c65267e34a0b",
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -97,6 +117,10 @@ final mockedArticleList2 = [
     ),
     image: article_image.Image(publicId: 'articles/storm'),
     author: 'John Doe',
+    note: null,
+    wordCount: 1187,
+    sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
+    id: "8e3320-f512-4a31-9ba7-c65267e34a0b",
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -111,6 +135,10 @@ final mockedArticleList2 = [
     ),
     image: article_image.Image(publicId: 'articles/storm'),
     author: 'John Doe',
+    note: 'Quos dolorem et eos cum optio sequi nostrum praesentium.',
+    wordCount: 687,
+    sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
+    id: "8e3443720-f512-4a31-9ba7-c65267e34a0b",
   ),
 ];
 

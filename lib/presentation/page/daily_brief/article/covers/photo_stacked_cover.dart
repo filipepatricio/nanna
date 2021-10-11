@@ -74,7 +74,7 @@ class PhotoStackedCover extends HookWidget {
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: AppDimens.l),
-                  DottedArticleInfo(article: article, textColor: AppColors.white),
+                  DottedArticleInfo(article: article, isLight: true),
                   const SizedBox(height: AppDimens.l),
                 ],
               ),
