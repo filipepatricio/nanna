@@ -339,9 +339,10 @@ class _ArticleContent extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ArticleItemView(
                   article: articleList[index],
+                  allArticles: articleList,
                   index: index,
-                  articleListLength: articleList.length,
                   statusBarHeight: statusBarHeight,
+                  navigationCallback: (index) => controller.jumpToPage(index),
                 );
               },
             ),
