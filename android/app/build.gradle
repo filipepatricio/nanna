@@ -130,7 +130,7 @@ android {
         stage {
             dimension "env"
 
-            applicationIdSuffix ".test"
+            applicationIdSuffix ".staging"
 
             resValue "string", "app_name", "informed test"
             resValue "string", "app_link_host", "staging.informed.so"
@@ -166,4 +166,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'

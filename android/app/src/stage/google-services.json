@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "225091758315",
+    "project_id": "frontend-staging-328408",
+    "storage_bucket": "frontend-staging-328408.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225091758315:android:d57eb02835ccf845ab76ae",
+        "android_client_info": {
+          "package_name": "so.informed.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225091758315-2cnim1h0dj3c1bv2jtrfv5n7m4100s0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC62ekk2HqqjPgXeeO7dyxMkVnQ89K9ONc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225091758315-2cnim1h0dj3c1bv2jtrfv5n7m4100s0m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "225091758315-3ittpr4eoc11u7d699gm0l59jm5sijf6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "so.informed.staging",
+                "app_store_id": "1587844260"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
