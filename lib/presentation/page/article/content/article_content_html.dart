@@ -7,11 +7,13 @@ class ArticleContentHtml extends StatefulWidget {
   final String html;
   final ArticleCubit cubit;
   final Function() scrollToPosition;
+  final Function() onLoaded;
 
   const ArticleContentHtml({
     required this.html,
     required this.cubit,
     required this.scrollToPosition,
+    required this.onLoaded,
     Key? key,
   }) : super(key: key);
 
@@ -62,6 +64,7 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
           await resizeWebViewHeight(controller);
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
             scrollToArticlePosition();
+            widget.onLoaded();
           });
         },
         androidOnPermissionRequest: (controller, origin, resources) async {
