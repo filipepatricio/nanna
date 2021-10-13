@@ -101,10 +101,7 @@ class ArticlePage extends HookWidget {
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
-          loading: (state) => _LoadingContent(
-            header: state.header,
-            controller: scrollController,
-          ),
+          loading: (state) => const _LoadingContent(),
           idleMultiArticles: (state) => _IdleContent(
             header: state.header,
             content: state.content,
@@ -123,6 +120,7 @@ class ArticlePage extends HookWidget {
             cubit: cubit,
             readArticleProgress: readArticleProgress,
           ),
+          error: (state) => _ErrorContent(header: state.articleHeader),
           orElse: () => const SizedBox(),
         ),
       ),
@@ -131,28 +129,42 @@ class ArticlePage extends HookWidget {
 }
 
 class _LoadingContent extends StatelessWidget {
-  final ArticleHeader header;
-  final ScrollController controller;
-
   const _LoadingContent({
-    required this.header,
-    required this.controller,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: controller,
-      slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              ArticleHeaderView(article: header),
-              const SizedBox(height: AppDimens.l),
-              const Loader(),
-            ],
-          ),
+    return const Center(child: Loader());
+  }
+}
+
+class _ErrorContent extends StatelessWidget {
+  final ArticleHeader header;
+
+  const _ErrorContent({
+    required this.header,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: AppDimens.l),
+        SvgPicture.asset(AppVectorGraphics.sadSun),
+        const SizedBox(height: AppDimens.l),
+        Text(
+          LocaleKeys.dailyBrief_ups.tr(),
+          style: AppTypography.h3bold,
+          textAlign: TextAlign.center,
+        ),
+        Text(
+          LocaleKeys.dailyBrief_tryAgainLater.tr(),
+          style: AppTypography.h3Normal,
+          textAlign: TextAlign.center,
         ),
       ],
     );

@@ -39,13 +39,14 @@ class ArticleCubit extends Cubit<ArticleState> {
 
     final currentHeader = _allHeaders[_index];
 
-    emit(ArticleState.loading(currentHeader));
+    emit(const ArticleState.loading());
     _resetBannerState();
 
     try {
       _currentFullArticle = await _getArticleUseCase(currentHeader);
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
+      emit(ArticleState.error(_getCurrentHeader()));
     }
 
     _showIdleState();
@@ -92,6 +93,7 @@ class ArticleCubit extends Cubit<ArticleState> {
         emit(ArticleState.nextPageLoaded(_index));
       } catch (e, s) {
         Fimber.e('Fetching next full article failed', ex: e, stacktrace: s);
+        emit(ArticleState.error(_getCurrentHeader()));
       }
     }
 
@@ -107,7 +109,7 @@ class ArticleCubit extends Cubit<ArticleState> {
   void _showIdleState() {
     final article = _currentFullArticle;
     if (article == null) {
-      emit(ArticleState.loading(_getCurrentHeader()));
+      emit(ArticleState.error(_getCurrentHeader()));
     } else {
       if (_allHeaders.length > 1) {
         final hasNextArticle = _index < _allHeaders.length - 1;

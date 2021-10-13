@@ -11,7 +11,7 @@ class ArticleState with _$ArticleState {
   const factory ArticleState.initializing() = _ArticleStateInitializing;
 
   @Implements(BuildState)
-  const factory ArticleState.loading(ArticleHeader header) = _ArticleStateLoading;
+  const factory ArticleState.loading() = _ArticleStateLoading;
 
   @Implements(BuildState)
   const factory ArticleState.idleMultiArticles(
@@ -27,4 +27,7 @@ class ArticleState with _$ArticleState {
   ) = ArticleStateIdleSingleArticle;
 
   const factory ArticleState.nextPageLoaded(int index) = _ArticleStateNextPageLoaded;
+
+  @Implements(BuildState)
+  const factory ArticleState.error(ArticleHeader articleHeader) = _ArticleStateError;
 }
