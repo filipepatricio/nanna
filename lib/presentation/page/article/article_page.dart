@@ -429,27 +429,37 @@ class ArticleContentView extends HookWidget {
   Widget build(BuildContext context) {
     final author = article.author;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppDimens.l),
-      child: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(article.title, style: AppTypography.h1Bold),
-              const SizedBox(height: AppDimens.l),
-              Divider(
-                height: AppDimens.one,
-                color: AppColors.textPrimary.withOpacity(0.14),
+    return Column(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: AppDimens.l),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(article.title, style: AppTypography.h1Bold),
+                  const SizedBox(height: AppDimens.l),
+                  Divider(
+                    height: AppDimens.one,
+                    color: AppColors.textPrimary.withOpacity(0.14),
+                  ),
+                  if (author != null) ...[
+                    const SizedBox(height: AppDimens.s),
+                    Text(
+                      LocaleKeys.article_articleBy.tr(args: [author]),
+                      style: AppTypography.metadata1Medium,
+                    ),
+                  ],
+                ],
               ),
-              const SizedBox(height: AppDimens.s),
-              if (author != null)
-                Text(
-                  LocaleKeys.article_articleBy.tr(args: [author]),
-                  style: AppTypography.metadata1Medium,
-                ),
-              const SizedBox(height: AppDimens.articleItemMargin),
-              Row(
+            ),
+            const SizedBox(height: AppDimens.articleItemMargin),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: Row(
                 children: [
                   SvgPicture.asset(
                     AppVectorGraphics.notifications,
@@ -473,15 +483,16 @@ class ArticleContentView extends HookWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppDimens.xl),
-            ],
-          ),
-          Container(
-            key: articleContentKey,
-            child: getArticleContentType(content.type),
-          ),
-        ],
-      ),
+            ),
+            const SizedBox(height: AppDimens.xl),
+          ],
+        ),
+        Container(
+          key: articleContentKey,
+          child: getArticleContentType(content.type),
+        ),
+        const SizedBox(height: AppDimens.l),
+      ],
     );
   }
 

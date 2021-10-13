@@ -83,6 +83,37 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
       <html>
         <head>
           <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+          <style>
+              body { background-color: #FCFAF8; }
+              p { color: #282B35; font-family: Lora; padding-left: 24px; padding-right: 24px; }
+              h1, h2, h3, h4, h5, h6 { 
+                color: #282B35; font-family: Lora; 
+                padding-left: 24px; 
+                padding-right: 24px; 
+              }
+              img { width: 100% }
+              
+              /* Marker highlighting stroke */
+              .highlight {
+                position: relative;
+                padding: 0 0.1rem;
+                margin: 0 -0.1rem;
+                z-index: 1;
+              }
+              
+              .highlight::before {
+                background-color: #BBF383;
+                clip-path: polygon(2% 100%, 0% 63%, 98% 49%, 100% 85.47%);
+                position: absolute;
+                content: " ";
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+              }
+          </style>
+          <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora" />
         </head>
         $htmlContent
       </html>''';
