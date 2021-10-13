@@ -22,7 +22,6 @@ class ArticleDTOMapper implements Mapper<ArticleDTO, Article> {
 
     return Article(
       content: _articleContentDTOMapper(content),
-      sourceUrl: data.sourceUrl,
       header: _articleHeaderDTOMapper(data),
     );
   }

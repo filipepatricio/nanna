@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart'
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-const CONTENT_KEY = 'text';
+const _contentKey = 'text';
 
 @LazySingleton(as: ArticleApiDataSource)
 class ArticleGraphqlDataSource implements ArticleApiDataSource {
@@ -24,7 +24,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     final dto = GraphQLResponseResolver.resolve(
       result,
       (raw) {
-        final content = raw[CONTENT_KEY] as Map<String, dynamic>;
+        final content = raw[_contentKey] as Map<String, dynamic>;
         return ArticleContentDTO.fromJson(content);
       },
       rootKey: 'article',

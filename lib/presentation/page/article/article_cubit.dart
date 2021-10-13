@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
-import 'package:better_informed_mobile/domain/article/use_case/get_article_content_use_case.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_scroll_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
@@ -18,7 +17,7 @@ import 'article_state.dart';
 @injectable
 class ArticleCubit extends Cubit<ArticleState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
-  final GetArticleContentUseCase _getArticleContentUseCase;
+  final GetArticleUseCase _getArticleUseCase;
 
   late List<ArticleHeader> _allHeaders;
   late int _index;
@@ -29,7 +28,7 @@ class ArticleCubit extends Cubit<ArticleState> {
 
   ArticleCubit(
     this._setStartedArticleStreamUseCase,
-    this._getArticleContentUseCase,
+    this._getArticleUseCase,
   ) : super(const ArticleState.initializing());
 
   var readingComplete = false;
@@ -44,12 +43,7 @@ class ArticleCubit extends Cubit<ArticleState> {
     _resetBannerState();
 
     try {
-      final articleContent = await _getArticleContentUseCase(currentHeader.slug);
-      _currentFullArticle = Article(
-        content: articleContent,
-        sourceUrl: currentHeader.sourceUrl,
-        header: currentHeader,
-      );
+      _currentFullArticle = await _getArticleUseCase(currentHeader);
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
     }
@@ -80,19 +74,15 @@ class ArticleCubit extends Cubit<ArticleState> {
       final nextArticleHeader = _allHeaders[nextIndex];
 
       try {
-        final articleFuture = _getArticleContentUseCase(nextArticleHeader.slug);
+        final articleFuture = _getArticleUseCase(nextArticleHeader);
         final delay = Future.delayed(const Duration(seconds: 2));
-        final nextArticleContent = await Rx.zip2<ArticleContent, dynamic, ArticleContent>(
+        final nextArticle = await Rx.zip2<Article, dynamic, Article>(
           articleFuture.asStream(),
           delay.asStream(),
           (a, b) => a,
         ).last;
 
-        _currentFullArticle = Article(
-          header: nextArticleHeader,
-          sourceUrl: nextArticleHeader.sourceUrl,
-          content: nextArticleContent,
-        );
+        _currentFullArticle = nextArticle;
         _index = nextIndex;
 
         scrollData = ArticleScrollData.initial();
