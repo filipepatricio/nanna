@@ -1,5 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/colored_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_stacked_cover.dart';
@@ -12,7 +15,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ArticleItemView extends HookWidget {
   final ArticleHeader article;
@@ -45,14 +47,14 @@ class ArticleItemView extends HookWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          CupertinoScaffold.showCupertinoModalBottomSheet(
-            context: context,
-            builder: (context) => ArticlePage.multipleArticles(
-              articleList: allArticles,
-              index: index,
-              navigationCallback: navigationCallback,
+          AutoRouter.of(context).push(
+            ArticlePageRoute(
+              pageData: ArticlePageData.multipleArticles(
+                index: index,
+                articleList: allArticles,
+                navigationCallback: navigationCallback,
+              ),
             ),
-            useRootNavigator: true,
           );
         },
         child: Column(

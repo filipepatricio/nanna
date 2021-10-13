@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/article/data/article_content_type.
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_state.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_markdown.dart';
@@ -33,22 +34,24 @@ class ArticlePage extends HookWidget {
   final List<ArticleHeader> articleList;
   final ArticleNavigationCallback? navigationCallback;
 
-  ArticlePage.singleArticle({
-    required ArticleHeader article,
-    this.readArticleProgress,
-    this.navigationCallback,
+  ArticlePage({
+    required ArticlePageData pageData,
     Key? key,
-  })  : index = 0,
-        articleList = [article],
+  })  : index = _getIndex(pageData),
+        articleList = _getArticles(pageData),
+        navigationCallback = pageData.navigationCallback,
+        readArticleProgress = pageData.readArticleProgress,
         super(key: key);
 
-  const ArticlePage.multipleArticles({
-    required this.index,
-    required this.articleList,
-    this.readArticleProgress,
-    this.navigationCallback,
-    Key? key,
-  }) : super(key: key);
+  static int _getIndex(ArticlePageData pageData) => pageData.map(
+        singleArticle: (data) => 0,
+        multipleArticles: (data) => data.index,
+      );
+
+  static List<ArticleHeader> _getArticles(ArticlePageData pageData) => pageData.map(
+        singleArticle: (data) => [data.article],
+        multipleArticles: (data) => data.articleList,
+      );
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/main.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
@@ -10,7 +11,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _pageViewportFraction = 1.0;
 
@@ -57,63 +57,61 @@ class TopicPage extends HookWidget {
     }, [controller]);
 
     return LayoutBuilder(
-      builder: (context, pageConstraints) => CupertinoScaffold(
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == _mainScrollDepth) {
-              scrollPositionMapNotifier.value.update(
-                pageIndexHook.value,
-                (existingValue) => scrollInfo.metrics.pixels,
-                ifAbsent: () => scrollInfo.metrics.pixels,
-              );
+      builder: (context, pageConstraints) => NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == _mainScrollDepth) {
+            scrollPositionMapNotifier.value.update(
+              pageIndexHook.value,
+              (existingValue) => scrollInfo.metrics.pixels,
+              ifAbsent: () => scrollInfo.metrics.pixels,
+            );
 
-              scrollPositionMapNotifier.value = Map.of(scrollPositionMapNotifier.value);
-            }
-            return false;
-          },
-          child: Material(
-            child: Stack(
-              children: [
-                SafeArea(
-                  child: Hero(
-                    tag: HeroTag.dailyBriefRelaxPage,
-                    child: RelaxView(
+            scrollPositionMapNotifier.value = Map.of(scrollPositionMapNotifier.value);
+          }
+          return false;
+        },
+        child: Material(
+          child: Stack(
+            children: [
+              SafeArea(
+                child: Hero(
+                  tag: HeroTag.dailyBriefRelaxPage,
+                  child: RelaxView(
+                    lastPageAnimationProgressState: lastPageAnimationProgressState,
+                    goodbyeHeadline: currentBrief.goodbye,
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                child: LayoutBuilder(
+                  builder: (context, pageViewConstraints) => _PageViewContent(
+                    controller: controller,
+                    onPageChanged: onPageChanged,
+                    currentBrief: currentBrief,
+                    articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
+                    pageIndexHook: pageIndexHook,
+                    appBarMargin: appBarHeightState.value,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: ValueListenableBuilder(
+                  valueListenable: scrollPositionMapNotifier,
+                  builder: (_, __, ___) {
+                    return _TopicAppBar(
+                      key: appBarKey,
                       lastPageAnimationProgressState: lastPageAnimationProgressState,
-                      goodbyeHeadline: currentBrief.goodbye,
-                    ),
-                  ),
+                      pageCount: currentBrief.topics.length,
+                      currentPageIndex: pageIndexHook.value,
+                      scrollPositionMap: scrollPositionMapNotifier.value,
+                    );
+                  },
                 ),
-                Positioned.fill(
-                  child: LayoutBuilder(
-                    builder: (context, pageViewConstraints) => _PageViewContent(
-                      controller: controller,
-                      onPageChanged: onPageChanged,
-                      currentBrief: currentBrief,
-                      articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
-                      pageIndexHook: pageIndexHook,
-                      appBarMargin: appBarHeightState.value,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: ValueListenableBuilder(
-                    valueListenable: scrollPositionMapNotifier,
-                    builder: (_, __, ___) {
-                      return _TopicAppBar(
-                        key: appBarKey,
-                        lastPageAnimationProgressState: lastPageAnimationProgressState,
-                        pageCount: currentBrief.topics.length,
-                        currentPageIndex: pageIndexHook.value,
-                        scrollPositionMap: scrollPositionMapNotifier.value,
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

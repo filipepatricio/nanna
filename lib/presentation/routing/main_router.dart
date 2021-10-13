@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
@@ -17,6 +18,7 @@ import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.da
 import 'package:better_informed_mobile/presentation/page/topic/single_topic_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
+import 'package:better_informed_mobile/presentation/routing/custom_route/cupertino_bottom_sheet_route_builder.dart';
 
 @AdaptiveAutoRouter(
   routes: [
@@ -31,6 +33,7 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
     AutoRoute(page: SettingsPolicyTermsPage),
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
+    CustomRoute(page: ArticlePage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     dashboardTabRouter,
   ],
 )

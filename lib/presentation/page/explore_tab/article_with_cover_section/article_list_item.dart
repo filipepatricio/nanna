@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -12,7 +14,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const listItemWidth = 155.0;
 const listItemHeight = 260.0;
@@ -40,10 +41,12 @@ class ArticleListItem extends HookWidget {
     final imageId = articleHeader.image?.publicId;
 
     return GestureDetector(
-      onTap: () => CupertinoScaffold.showCupertinoModalBottomSheet(
-        context: context,
-        builder: (context) => ArticlePage.singleArticle(article: articleHeader),
-        useRootNavigator: true,
+      onTap: () => AutoRouter.of(context).push(
+        ArticlePageRoute(
+          pageData: ArticlePageData.singleArticle(
+            article: articleHeader,
+          ),
+        ),
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -75,7 +78,8 @@ class ArticleListItem extends HookWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Image.network(
-                  cloudinaryProvider.withPublicId(articleHeader.publisher.lightLogo.publicId)
+                  cloudinaryProvider
+                      .withPublicId(articleHeader.publisher.lightLogo.publicId)
                       .transform()
                       .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                       .fit()

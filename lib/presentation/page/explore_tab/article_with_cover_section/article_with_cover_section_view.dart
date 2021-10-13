@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
+import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -119,10 +120,12 @@ class _MainArticle extends HookWidget {
     final imageId = articleHeader.image?.publicId;
 
     return GestureDetector(
-      onTap: () => CupertinoScaffold.showCupertinoModalBottomSheet(
-        context: context,
-        builder: (context) => ArticlePage.singleArticle(article: articleHeader),
-        useRootNavigator: true,
+      onTap: () => AutoRouter.of(context).push(
+        ArticlePageRoute(
+          pageData: ArticlePageData.singleArticle(
+            article: articleHeader,
+          ),
+        ),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) => Stack(
