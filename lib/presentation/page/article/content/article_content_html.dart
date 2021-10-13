@@ -87,10 +87,16 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
         <head>
           <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
           <style>
-              body { background-color: #FCFAF8; }
-              p { color: #282B35; font-family: Lora; padding-left: 24px; padding-right: 24px; }
+              body { 
+                background-color: #FCFAF8; 
+                color: #282B35; 
+                font-family: Lora; 
+              }
+              p { 
+                padding-left: 24px; 
+                padding-right: 24px; 
+              }
               h1, h2, h3, h4, h5, h6 { 
-                color: #282B35; font-family: Lora; 
                 padding-left: 24px; 
                 padding-right: 24px; 
               }
@@ -114,6 +120,36 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
                 width: 100%;
                 height: 100%;
                 z-index: -1;
+              }
+              
+              .raw h3 {
+                line-height: 2rem;
+                font-weight: 700;
+                margin-bottom: 0.75rem;
+              }
+              
+              .raw p {
+                margin-bottom: 1.5rem;
+              }
+              
+              .raw ul {
+                list-style-type: none;
+                margin-bottom: 1rem;
+                padding-left: 0;
+              }
+              
+              .raw ul>li {
+                font-size: 1rem;
+                line-height: 1.4rem;
+                padding-bottom: 0.5rem;
+              }
+              
+              .raw ul>li::before {
+                content: "■";
+                font-size: 1rem;
+                line-height: 1rem;
+                color: #bbf383;
+                margin-right: 0.4rem;
               }
           </style>
           <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lora" />
