@@ -64,9 +64,10 @@ class ArticlePage extends HookWidget {
       });
     });
 
-    final articleType = useMemoized(
-      () => articleList[index].type,
-      [articleList],
+    final articleType = state.mapOrNull(
+      loading: (state) => state.header.type,
+      idleSingleArticle: (state) => state.header.type,
+      idleMultiArticles: (state) => state.header.type,
     );
 
     useEffect(() {
