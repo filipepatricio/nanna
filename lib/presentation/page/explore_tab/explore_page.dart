@@ -17,7 +17,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _topMargin = 80.0;
 
@@ -34,34 +33,32 @@ class ExplorePage extends HookWidget {
       [cubit],
     );
 
-    return CupertinoScaffold(
-      body: Scaffold(
-        body: ReadingBannerWrapper(
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.dark,
-            child: CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      const _Header(),
-                    ],
+    return Scaffold(
+      body: ReadingBannerWrapper(
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    const _Header(),
+                  ],
+                ),
+              ),
+              state.maybeMap(
+                initialLoading: (_) => const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.all(AppDimens.l),
+                    child: Loader(),
                   ),
                 ),
-                state.maybeMap(
-                  initialLoading: (_) => const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.all(AppDimens.l),
-                      child: Loader(),
-                    ),
-                  ),
-                  idle: (state) => _Idle(sections: state.sections),
-                  orElse: () => const SliverToBoxAdapter(
-                    child: SizedBox(),
-                  ),
+                idle: (state) => _Idle(sections: state.sections),
+                orElse: () => const SliverToBoxAdapter(
+                  child: SizedBox(),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

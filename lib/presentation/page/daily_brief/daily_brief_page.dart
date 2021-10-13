@@ -20,7 +20,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _pageViewportFraction = 0.85;
 
@@ -61,46 +60,44 @@ class DailyBriefPage extends HookWidget {
       [cubit],
     );
 
-    return CupertinoScaffold(
-      body: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          title: Row(
-            children: [
-              DailyBriefTitleHero(
-                title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
-              ),
-              const Spacer(),
-              Visibility(
-                visible: relaxState.value,
-                child: Container(
-                  height: AppDimens.s,
-                  width: AppDimens.s,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppDimens.xxs),
-                    color: AppColors.limeGreen,
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        title: Row(
+          children: [
+            DailyBriefTitleHero(
+              title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
+            ),
+            const Spacer(),
+            Visibility(
+              visible: relaxState.value,
+              child: Container(
+                height: AppDimens.s,
+                width: AppDimens.s,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppDimens.xxs),
+                  color: AppColors.limeGreen,
                 ),
               ),
-              const SizedBox(width: AppDimens.s),
-            ],
-          ),
-          centerTitle: false,
-        ),
-        body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 250),
-          child: state.maybeMap(
-            idle: (state) => _IdleContent(
-              currentBrief: state.currentBrief,
-              controller: controller,
-              cardStackWidth: cardStackWidth,
             ),
-            error: (_) => StackedCardsErrorView(cardStackWidth: cardStackWidth),
-            loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
-            orElse: () => const SizedBox(),
+            const SizedBox(width: AppDimens.s),
+          ],
+        ),
+        centerTitle: false,
+      ),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: state.maybeMap(
+          idle: (state) => _IdleContent(
+            currentBrief: state.currentBrief,
+            controller: controller,
+            cardStackWidth: cardStackWidth,
           ),
+          error: (_) => StackedCardsErrorView(cardStackWidth: cardStackWidth),
+          loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
+          orElse: () => const SizedBox(),
         ),
       ),
     );

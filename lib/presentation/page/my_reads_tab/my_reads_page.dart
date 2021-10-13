@@ -17,7 +17,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const _topMargin = 80.0;
 
@@ -33,26 +32,24 @@ class MyReadsPage extends HookWidget {
       [cubit],
     );
 
-    return CupertinoScaffold(
-      body: Material(
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: ReadingBannerWrapper(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: _topMargin),
-                const _MyReadsHeader(),
-                const SizedBox(height: AppDimens.m),
-                Expanded(
-                  child: state.maybeMap(
-                    initialLoading: (_) => const Loader(),
-                    idle: (state) => _Idle(content: state.content),
-                    orElse: () => const SizedBox(),
-                  ),
+    return Material(
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: ReadingBannerWrapper(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: _topMargin),
+              const _MyReadsHeader(),
+              const SizedBox(height: AppDimens.m),
+              Expanded(
+                child: state.maybeMap(
+                  initialLoading: (_) => const Loader(),
+                  idle: (state) => _Idle(content: state.content),
+                  orElse: () => const SizedBox(),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
