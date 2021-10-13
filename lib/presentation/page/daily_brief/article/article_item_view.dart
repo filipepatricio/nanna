@@ -35,7 +35,6 @@ class ArticleItemView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final editorsNote = article.note;
     // TODO: change when there will be final colors or if source will be specified (for example: backend)
     final mockColoredCoverCondition = index % 3 == 1;
     return Container(
@@ -73,7 +72,7 @@ class ArticleItemView extends HookWidget {
               ),
             ),
             const SizedBox(height: AppDimens.s),
-            if (editorsNote != null)
+            if (article.note != null)
               Padding(
                 padding: const EdgeInsets.only(right: AppDimens.xxl),
                 child: RichText(
@@ -84,7 +83,7 @@ class ArticleItemView extends HookWidget {
                         text: LocaleKeys.readingList_editorsNote.tr(),
                         style: AppTypography.h5BoldSmall.copyWith(fontFamily: fontFamilyLora, height: 1.12),
                       ),
-                      TextSpan(text: editorsNote),
+                      TextSpan(text: article.note),
                     ],
                   ),
                 ),

@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
-import 'package:better_informed_mobile/domain/article/use_case/get_full_article_use_case.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_article_content_use_case.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_scroll_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
@@ -17,7 +18,7 @@ import 'article_state.dart';
 @injectable
 class ArticleCubit extends Cubit<ArticleState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
-  final GetFullArticleUseCase _getFullArticleUseCase;
+  final GetArticleContentUseCase _getArticleContentUseCase;
 
   late List<ArticleHeader> _allHeaders;
   late int _index;
@@ -28,7 +29,7 @@ class ArticleCubit extends Cubit<ArticleState> {
 
   ArticleCubit(
     this._setStartedArticleStreamUseCase,
-    this._getFullArticleUseCase,
+    this._getArticleContentUseCase,
   ) : super(const ArticleState.initializing());
 
   var readingComplete = false;
@@ -43,7 +44,12 @@ class ArticleCubit extends Cubit<ArticleState> {
     _resetBannerState();
 
     try {
-      _currentFullArticle = await _getFullArticleUseCase(currentHeader.slug);
+      final articleContent = await _getArticleContentUseCase(currentHeader.slug);
+      _currentFullArticle = Article(
+        content: articleContent,
+        sourceUrl: currentHeader.sourceUrl,
+        header: currentHeader,
+      );
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
     }
@@ -74,15 +80,19 @@ class ArticleCubit extends Cubit<ArticleState> {
       final nextArticleHeader = _allHeaders[nextIndex];
 
       try {
-        final articleFuture = _getFullArticleUseCase(nextArticleHeader.slug);
+        final articleFuture = _getArticleContentUseCase(nextArticleHeader.slug);
         final delay = Future.delayed(const Duration(seconds: 2));
-        final result = await Rx.zip2<Article, dynamic, Article>(
+        final nextArticleContent = await Rx.zip2<ArticleContent, dynamic, ArticleContent>(
           articleFuture.asStream(),
           delay.asStream(),
           (a, b) => a,
         ).last;
 
-        _currentFullArticle = result;
+        _currentFullArticle = Article(
+          header: nextArticleHeader,
+          sourceUrl: nextArticleHeader.sourceUrl,
+          content: nextArticleContent,
+        );
         _index = nextIndex;
 
         scrollData = ArticleScrollData.initial();

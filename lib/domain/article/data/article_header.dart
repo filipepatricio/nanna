@@ -6,7 +6,7 @@ class ArticleHeader {
   final int wordCount;
   final String? note;
   final String id;
-  final String? sourceUrl;
+  final String sourceUrl;
   final String slug;
   final String title;
   final ArticleType type;

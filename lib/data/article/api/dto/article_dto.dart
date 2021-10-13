@@ -19,7 +19,7 @@ class ArticleDTO {
   final PublisherDTO publisher;
   final ImageDTO? image;
   final ArticleContentDTO? text;
-  final String? sourceUrl;
+  final String sourceUrl;
   final String? author;
 
   ArticleDTO(
