@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 
 abstract class ArticleRepository {
@@ -6,5 +6,5 @@ abstract class ArticleRepository {
 
   Future<void> setReadingBannerState(ReadingBanner readingBanner);
 
-  Future<Article> getFullArticle(String slug);
+  Future<ArticleContent> getArticleContent(String slug);
 }

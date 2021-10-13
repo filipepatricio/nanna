@@ -29,22 +29,27 @@ class DailyBriefGql {
           }
           readingList {
             id
-            articles {
+            articles { 
+              wordCount
+              sourceUrl
               slug
+              note
+              id
               author
               title
               type
               publicationDate
-              timeToRead
+              timeToRead 
               image {
                 publicId
               }
               publisher {
                 name
-                lightLogo {
+                id
+                darkLogo{
                   publicId
                 }
-                darkLogo {
+                lightLogo {
                   publicId
                 }
               }

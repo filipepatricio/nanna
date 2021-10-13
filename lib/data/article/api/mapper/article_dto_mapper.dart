@@ -20,12 +20,8 @@ class ArticleDTOMapper implements Mapper<ArticleDTO, Article> {
     final content = data.text;
     if (content == null) throw Exception('Content is missing');
 
-    final sourceUrl = data.sourceUrl;
-    if (sourceUrl == null) throw Exception('Source url is missing');
-
     return Article(
       content: _articleContentDTOMapper(content),
-      sourceUrl: sourceUrl,
       header: _articleHeaderDTOMapper(data),
     );
   }

@@ -40,7 +40,7 @@ class ColoredCover extends StatelessWidget {
               maxLines: 4,
             ),
             const Spacer(),
-            DottedArticleInfo(article: article),
+            DottedArticleInfo(article: article, isLight: false),
             const SizedBox(height: AppDimens.l),
           ],
         ),

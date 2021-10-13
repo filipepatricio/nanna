@@ -3,6 +3,10 @@ import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
 
 class ArticleHeader {
+  final int wordCount;
+  final String? note;
+  final String id;
+  final String sourceUrl;
   final String slug;
   final String title;
   final ArticleType type;
@@ -13,6 +17,10 @@ class ArticleHeader {
   final String? author;
 
   ArticleHeader({
+    required this.wordCount,
+    required this.note,
+    required this.id,
+    required this.sourceUrl,
     required this.slug,
     required this.title,
     required this.type,
