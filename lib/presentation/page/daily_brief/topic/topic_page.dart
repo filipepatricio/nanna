@@ -1,6 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/main.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _pageViewportFraction = 1.0;
+const _pageCloseRelaxFactor = 0.95;
 
 /// Make sure that changes to the view won't change depth of the main scroll
 /// If they do, adjust depth accordingly
@@ -50,12 +51,20 @@ class TopicPage extends HookWidget {
 
     useEffect(() {
       final listener = () {
-        lastPageAnimationProgressState.value = calculateLastPageShownFactor(controller, _pageViewportFraction);
+        final factor = calculateLastPageShownFactor(controller, _pageViewportFraction);
+
+        if (lastPageAnimationProgressState.value >= _pageCloseRelaxFactor) {
+          if (AutoRouter.of(context).current.name == TopicPageRoute.name) {
+            AutoRouter.of(context).pop();
+          }
+          return;
+        }
+
+        lastPageAnimationProgressState.value = factor;
       };
       controller.addListener(listener);
       return () => controller.removeListener(listener);
     }, [controller]);
-
     return LayoutBuilder(
       builder: (context, pageConstraints) => NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {

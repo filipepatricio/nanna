@@ -1,3 +1,4 @@
+
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
@@ -15,8 +16,19 @@ class DailyBriefTitleHero extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: HeroTag.dailyBriefTitle,
-      flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-        final colorTween = ColorTween(begin: Colors.black, end: Colors.white).animate(anim);
+      flightShuttleBuilder: (context, anim, direction, from, to) {
+        Color fromColor;
+        Color toColor;
+
+        if (direction == HeroFlightDirection.push) {
+          fromColor = ((from.widget as Hero).child as Text).style?.color ?? AppColors.black;
+          toColor = ((to.widget as Hero).child as Text).style?.color ?? AppColors.black;
+        } else {
+          fromColor = ((to.widget as Hero).child as Text).style?.color ?? AppColors.black;
+          toColor = ((from.widget as Hero).child as Text).style?.color ?? AppColors.black;
+        }
+
+        final colorTween = ColorTween(begin: fromColor, end: toColor).animate(anim);
 
         return Material(
           color: Colors.transparent,
