@@ -44,12 +44,11 @@ class ArticleCubit extends Cubit<ArticleState> {
 
     try {
       _currentFullArticle = await _getArticleUseCase(currentHeader);
+      _showIdleOrErrorState();
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
       emit(ArticleState.error(_getCurrentHeader()));
     }
-
-    _showIdleState();
   }
 
   void setupScrollData(double globalContentOffset, double globalPageOffset) {
@@ -89,7 +88,7 @@ class ArticleCubit extends Cubit<ArticleState> {
         scrollData = ArticleScrollData.initial();
         _resetBannerState();
 
-        _showIdleState();
+        _showIdleOrErrorState();
         emit(ArticleState.nextPageLoaded(_index));
       } catch (e, s) {
         Fimber.e('Fetching next full article failed', ex: e, stacktrace: s);
@@ -106,7 +105,7 @@ class ArticleCubit extends Cubit<ArticleState> {
     _setStartedArticleStreamUseCase(readingBanner);
   }
 
-  void _showIdleState() {
+  void _showIdleOrErrorState() {
     final article = _currentFullArticle;
     if (article == null) {
       emit(ArticleState.error(_getCurrentHeader()));
