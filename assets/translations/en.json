@@ -98,7 +98,8 @@
     "readMinutes": "{} min",
     "loadingNext": "Loading next article",
     "allArticlesRead": "Nice! You’ve read all articles in the reading list.",
-    "goBackToTopic": "Back to topic overview"
+    "goBackToTopic": "Back to topic overview",
+    "openSourceUrl": "Open source url"
   },
   "readingList": {
     "title": "Reading list",
