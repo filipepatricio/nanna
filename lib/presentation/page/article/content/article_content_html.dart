@@ -100,7 +100,11 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
                 padding-left: 24px; 
                 padding-right: 24px; 
               }
-              img { width: 100% }
+              img { 
+                object-fit: cover;
+                width: 100%;
+                height: auto;
+              }
               
               /* Marker highlighting stroke */
               .highlight {
