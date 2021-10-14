@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
@@ -259,10 +260,10 @@ class _Greeting extends StatelessWidget {
           child: child,
         );
       },
-      child: Text(
-        currentBrief.greeting.message,
-        textAlign: TextAlign.left,
-        style: AppTypography.b1Regular,
+      child: InformedMarkdownBody(
+        markdown: currentBrief.greeting.message,
+        baseTextStyle: AppTypography.b1Regular,
+        textAlignment: TextAlign.left,
       ),
     );
   }

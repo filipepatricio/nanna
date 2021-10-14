@@ -82,10 +82,7 @@ class _CustomTextPainter extends HookWidget {
       return spans.map(
         (span) {
           if (span is TextSpan && _isHighlighted(span)) {
-            return TextSpan(
-              text: span.text,
-              style: span.style?.copyWith(fontStyle: FontStyle.normal),
-            );
+            return _modifyHighlightedText(span);
           }
 
           return span;
@@ -148,6 +145,13 @@ class _CustomTextPainter extends HookWidget {
   }
 
   bool _isHighlighted(InlineSpan span) => span.style?.fontStyle == FontStyle.italic;
+
+  TextSpan _modifyHighlightedText(TextSpan span) {
+    return TextSpan(
+      text: span.text,
+      style: span.style?.copyWith(fontStyle: FontStyle.normal),
+    );
+  }
 
   double _computeTextWidth(TextPainter textPainter) {
     return textPainter

@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/widget/custom_rich_text.dart
 import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown/markdown.dart' as md;
 
 class InformedMarkdownBody extends StatelessWidget {
   final String markdown;
@@ -28,9 +29,13 @@ class InformedMarkdownBody extends StatelessWidget {
     return MarkdownBody(
       data: markdown,
       selectable: selectable,
+      extensionSet: md.ExtensionSet(
+        md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+        [md.EmojiSyntax(), ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes],
+      ),
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
         p: baseTextStyle,
-        strong: baseTextStyle.copyWith(decoration: TextDecoration.underline),
+        strong: baseTextStyle.copyWith(fontWeight: FontWeight.bold),
         listBullet: baseTextStyle,
         listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s),
       ),
