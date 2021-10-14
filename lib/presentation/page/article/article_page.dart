@@ -64,9 +64,10 @@ class ArticlePage extends HookWidget {
       });
     });
 
-    final articleType = useMemoized(
-      () => articleList[index].type,
-      [articleList],
+    final articleType = state.mapOrNull(
+      loading: (state) => state.header.type,
+      idleSingleArticle: (state) => state.header.type,
+      idleMultiArticles: (state) => state.header.type,
     );
 
     useEffect(() {
@@ -158,7 +159,7 @@ class _LoadingContent extends StatelessWidget {
   }
 }
 
-class _IdleContent extends StatelessWidget {
+class _IdleContent extends HookWidget {
   final ArticleHeader header;
   final ArticleContent content;
   final ArticleCubit cubit;
@@ -182,6 +183,17 @@ class _IdleContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loadedState = useState(false);
+
+    useEffect(
+      () {
+        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+          loadedState.value = false;
+        });
+      },
+      [content],
+    );
+
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       calculateArticleContentOffset();
     });
@@ -219,21 +231,27 @@ class _IdleContent extends StatelessWidget {
                       controller: controller,
                       articleContentKey: _articleContentKey,
                       scrollToPosition: () => scrollToPosition(readArticleProgress),
+                      onLoaded: () {
+                        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                          loadedState.value = true;
+                        });
+                      },
                     ),
                   ],
                 ),
               ),
-              if (hasNextArticle)
-                SliverPullUpIndicatorAction(
-                  builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
-                  fullExtentHeight: _loadNextArticleIndicatorHeight,
-                  triggerExtent: _loadNextArticleIndicatorHeight,
-                  triggerFunction: (completer) => cubit.loadNextArticle(completer),
-                )
-              else if (multipleArticles)
-                const SliverToBoxAdapter(
-                  child: _AllArticlesRead(),
-                ),
+              if (loadedState.value)
+                if (hasNextArticle)
+                  SliverPullUpIndicatorAction(
+                    builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
+                    fullExtentHeight: _loadNextArticleIndicatorHeight,
+                    triggerExtent: _loadNextArticleIndicatorHeight,
+                    triggerFunction: (completer) => cubit.loadNextArticle(completer),
+                  )
+                else if (multipleArticles)
+                  const SliverToBoxAdapter(
+                    child: _AllArticlesRead(),
+                  ),
             ],
           ),
         );
@@ -406,13 +424,14 @@ class ArticleHeaderView extends HookWidget {
   }
 }
 
-class ArticleContentView extends HookWidget {
+class ArticleContentView extends StatelessWidget {
   final ArticleHeader article;
   final ArticleContent content;
   final ArticleCubit cubit;
   final ScrollController controller;
   final Key articleContentKey;
   final Function() scrollToPosition;
+  final Function() onLoaded;
 
   const ArticleContentView({
     required this.article,
@@ -421,6 +440,7 @@ class ArticleContentView extends HookWidget {
     required this.controller,
     required this.articleContentKey,
     required this.scrollToPosition,
+    required this.onLoaded,
     Key? key,
   }) : super(key: key);
 
@@ -428,27 +448,37 @@ class ArticleContentView extends HookWidget {
   Widget build(BuildContext context) {
     final author = article.author;
 
-    return Padding(
-      padding: const EdgeInsets.all(AppDimens.l),
-      child: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(article.title, style: AppTypography.h1Bold),
-              const SizedBox(height: AppDimens.l),
-              Divider(
-                height: AppDimens.one,
-                color: AppColors.textPrimary.withOpacity(0.14),
+    return Column(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: AppDimens.l),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(article.title, style: AppTypography.h1Bold),
+                  const SizedBox(height: AppDimens.l),
+                  Divider(
+                    height: AppDimens.one,
+                    color: AppColors.textPrimary.withOpacity(0.14),
+                  ),
+                  if (author != null) ...[
+                    const SizedBox(height: AppDimens.s),
+                    Text(
+                      LocaleKeys.article_articleBy.tr(args: [author]),
+                      style: AppTypography.metadata1Medium,
+                    ),
+                  ],
+                ],
               ),
-              const SizedBox(height: AppDimens.s),
-              if (author != null)
-                Text(
-                  LocaleKeys.article_articleBy.tr(args: [author]),
-                  style: AppTypography.metadata1Medium,
-                ),
-              const SizedBox(height: AppDimens.articleItemMargin),
-              Row(
+            ),
+            const SizedBox(height: AppDimens.articleItemMargin),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: Row(
                 children: [
                   SvgPicture.asset(
                     AppVectorGraphics.notifications,
@@ -472,23 +502,36 @@ class ArticleContentView extends HookWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppDimens.xl),
-            ],
+            ),
+            const SizedBox(height: AppDimens.xl),
+          ],
+        ),
+        Container(
+          key: articleContentKey,
+          child: getArticleContentType(
+            content.type,
+            onLoaded,
           ),
-          Container(
-            key: articleContentKey,
-            child: getArticleContentType(content.type),
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: AppDimens.l),
+      ],
     );
   }
 
-  Widget? getArticleContentType(ArticleContentType type) {
+  Widget? getArticleContentType(ArticleContentType type, Function() onLoaded) {
     if (type == ArticleContentType.markdown) {
-      return ArticleContentMarkdown(markdown: content.content, scrollToPosition: scrollToPosition);
+      return ArticleContentMarkdown(
+        markdown: content.content,
+        scrollToPosition: scrollToPosition,
+        onLoaded: onLoaded,
+      );
     } else if (type == ArticleContentType.html) {
-      return ArticleContentHtml(html: content.content, cubit: cubit, scrollToPosition: scrollToPosition);
+      return ArticleContentHtml(
+        html: content.content,
+        cubit: cubit,
+        scrollToPosition: scrollToPosition,
+        onLoaded: onLoaded,
+      );
     }
     return null;
   }

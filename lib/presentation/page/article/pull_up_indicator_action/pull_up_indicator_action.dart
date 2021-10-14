@@ -113,10 +113,9 @@ class _RenderPullUpIndicatorActionSliver extends RenderSliver with RenderObjectW
 
   @override
   void performLayout() {
-    final viewportOverscrolled = constraints.precedingScrollExtent >= constraints.viewportMainAxisExtent;
     final overscrollExtent = constraints.remainingPaintExtent > 0.0 ? constraints.remainingPaintExtent : 0.0;
     final layoutExtent = _keepExtent ? _fullExtentHeight : 0.0;
-    final active = (constraints.remainingPaintExtent > 0.0 || layoutExtent > 0.0) && viewportOverscrolled;
+    final active = constraints.remainingPaintExtent > 0.0 || layoutExtent > 0.0;
 
     child!.layout(
       constraints.asBoxConstraints(
