@@ -11,15 +11,15 @@ class CustomRichText extends HookWidget implements RichTextBase {
 
   final bool selectable;
   final Color highlightColor;
+  final TextAlign textAlign;
   final int? maxLines;
-  final TextAlign? textAlign;
 
   const CustomRichText({
     required this.textSpan,
     required this.highlightColor,
     this.selectable = false,
+    this.textAlign = TextAlign.start,
     this.maxLines,
-    this.textAlign,
     Key? key,
   }) : super(key: key);
 
@@ -45,16 +45,16 @@ class _CustomTextPainter extends HookWidget {
   final List<InlineSpan> spans;
   final bool selectable;
   final Color highlightColor;
+  final TextAlign textAlign;
   final int? maxLines;
-  final TextAlign? textAlign;
 
   const _CustomTextPainter({
     required this.size,
     required this.spans,
     required this.selectable,
     required this.highlightColor,
+    required this.textAlign,
     this.maxLines,
-    this.textAlign,
     Key? key,
   }) : super(key: key);
 
@@ -69,7 +69,7 @@ class _CustomTextPainter extends HookWidget {
       final textPainter = TextPainter(
         textDirection: TextDirection.ltr,
         text: TextSpan(children: spans),
-        textAlign: TextAlign.left,
+        textAlign: textAlign,
         maxLines: maxLines,
       );
 
@@ -84,7 +84,7 @@ class _CustomTextPainter extends HookWidget {
           if (span is TextSpan && _isHighlighted(span)) {
             return TextSpan(
               text: span.text,
-              style: span.style?.copyWith(decoration: TextDecoration.none),
+              style: span.style?.copyWith(fontStyle: FontStyle.normal),
             );
           }
 
@@ -110,7 +110,7 @@ class _CustomTextPainter extends HookWidget {
               maxLines: maxLines,
               text: TextSpan(children: spansWithoutDecoration),
               overflow: maxLines != null ? TextOverflow.ellipsis : TextOverflow.clip,
-              textAlign: textAlign ?? TextAlign.start,
+              textAlign: textAlign,
             ),
     );
   }
@@ -123,7 +123,7 @@ class _CustomTextPainter extends HookWidget {
         final startWidth = TextPainter(
           textDirection: TextDirection.ltr,
           text: TextSpan(children: computedSpans),
-          textAlign: TextAlign.left,
+          textAlign: textAlign,
           maxLines: maxLines,
         );
         startWidth.layout(maxWidth: size.maxWidth);
@@ -134,7 +134,7 @@ class _CustomTextPainter extends HookWidget {
         final endWidth = TextPainter(
           textDirection: TextDirection.ltr,
           text: TextSpan(children: computedSpans),
-          textAlign: TextAlign.left,
+          textAlign: textAlign,
           maxLines: maxLines,
         );
         endWidth.layout(maxWidth: size.maxWidth);
@@ -147,7 +147,7 @@ class _CustomTextPainter extends HookWidget {
     }
   }
 
-  bool _isHighlighted(InlineSpan span) => span.style?.decoration?.contains(TextDecoration.underline) == true;
+  bool _isHighlighted(InlineSpan span) => span.style?.fontStyle == FontStyle.italic;
 
   double _computeTextWidth(TextPainter textPainter) {
     return textPainter
@@ -203,10 +203,10 @@ class _CustomHighlightTextPainter extends CustomPainter {
 
   void _paintHighlight(double startPos, LineMetrics line, double endPos, Canvas canvas) {
     final path = Path()
-      ..moveTo(startPos - 2, line.height * 0.30 + _calculateBaselineOffset(line))
-      ..lineTo(endPos - 3, line.height * 0.35 + _calculateBaselineOffset(line))
-      ..lineTo(endPos, line.height * 0.95 + _calculateBaselineOffset(line))
-      ..lineTo(startPos + 2, line.height * 0.92 + _calculateBaselineOffset(line))
+      ..moveTo(line.left + startPos - 2, line.height * 0.30 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + endPos - 3, line.height * 0.35 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + endPos, line.height * 0.95 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + startPos + 2, line.height * 0.92 + _calculateBaselineOffset(line))
       ..close();
 
     if (_isVisualGlitch(path)) {
