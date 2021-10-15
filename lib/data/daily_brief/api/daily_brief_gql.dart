@@ -21,6 +21,12 @@ class DailyBriefGql {
           title
           introduction
           summary
+          highlightedPublishers {
+            name
+          }
+          category {
+            name
+          }
           coverImage {
             publicId
           }

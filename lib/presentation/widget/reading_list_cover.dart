@@ -6,7 +6,9 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
+import 'package:better_informed_mobile/presentation/widget/editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -68,9 +70,10 @@ class ReadingListCover extends HookWidget {
                 ),
               ),
               const SizedBox(height: AppDimens.s),
+              //TODO: Note should be from API
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: _EditorsNote(),
+                child: EditorsNote(note: 'Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift.'),
               ),
               const SizedBox(height: AppDimens.l),
               Padding(
@@ -112,31 +115,7 @@ class ReadingListCover extends HookWidget {
   }
 }
 
-class _EditorsNote extends StatelessWidget {
-  const _EditorsNote({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            // TODO will be coming from API
-            text: 'Editors note: ',
-            style: AppTypography.h5BoldSmall.copyWith(height: 1.12, fontFamily: fontFamilyLora),
-          ),
-          TextSpan(
-            // TODO will be coming from API
-            text: 'Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift.',
-            style: AppTypography.h5MediumSmall.copyWith(height: 1.12, fontFamily: fontFamilyLora),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PublisherLogoRow extends StatelessWidget {
+class _PublisherLogoRow extends HookWidget {
   final Topic topic;
 
   const _PublisherLogoRow({
@@ -146,13 +125,19 @@ class _PublisherLogoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final providers = topic.highlightedPublisherList;
     return Row(
       children: [
-        Container(width: AppDimens.l, height: AppDimens.l, color: AppColors.black),
-        const SizedBox(width: AppDimens.s),
-        Container(width: AppDimens.l, height: AppDimens.l, color: AppColors.black),
-        const SizedBox(width: AppDimens.s),
-        Container(width: AppDimens.l, height: AppDimens.l, color: AppColors.black),
+        ...?providers?.map(
+          (publisher) {
+            return Row(
+              children: [
+                PublisherLogo.dark(publisher: publisher),
+                if (publisher.darkLogo != null) const SizedBox(width: AppDimens.s),
+              ],
+            );
+          },
+        ),
       ],
     );
   }

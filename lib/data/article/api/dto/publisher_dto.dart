@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 part 'publisher_dto.g.dart';
 
@@ -8,8 +7,8 @@ part 'publisher_dto.g.dart';
 class PublisherDTO {
   final String name;
   final String id;
-  final ImageDTO darkLogo;
-  final ImageDTO lightLogo;
+  final ImageDTO? darkLogo;
+  final ImageDTO? lightLogo;
 
   PublisherDTO(
     this.name,
