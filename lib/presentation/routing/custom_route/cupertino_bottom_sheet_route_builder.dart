@@ -206,6 +206,7 @@ class _ModalBottomSheet<T> extends StatefulWidget {
     this.expanded = false,
     this.enableDrag = true,
     this.animationCurve,
+    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -216,6 +217,7 @@ class _ModalBottomSheet<T> extends StatefulWidget {
   final bool enableDrag;
   final AnimationController? secondAnimationController;
   final Curve? animationCurve;
+  final ScrollController? controller;
 
   @override
   _ModalBottomSheetState<T> createState() => _ModalBottomSheetState<T>();
@@ -245,6 +247,7 @@ class _ModalBottomSheetState<T> extends State<_ModalBottomSheet<T>> {
   @override
   void initState() {
     widget.route.animation?.addListener(updateController);
+    _scrollController = widget.controller;
     super.initState();
   }
 
@@ -266,7 +269,7 @@ class _ModalBottomSheetState<T> extends State<_ModalBottomSheet<T>> {
   Widget build(BuildContext context) {
     assert(debugCheckHasMediaQuery(context));
     assert(widget.route._animationController != null);
-    final scrollController = PrimaryScrollController.of(context) ?? (_scrollController ??= ScrollController());
+    final scrollController = _scrollController ?? (PrimaryScrollController.of(context) ?? ScrollController());
     return ModalScrollController(
       controller: scrollController,
       child: Builder(
@@ -384,6 +387,7 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
         bounce: bounce,
         enableDrag: enableDrag,
         animationCurve: animationCurve,
+        controller: scrollController,
       ),
     );
     return bottomSheet;
