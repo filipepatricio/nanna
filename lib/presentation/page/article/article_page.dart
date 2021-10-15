@@ -20,10 +20,13 @@ import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 typedef ArticleNavigationCallback = void Function(int index);
 
@@ -65,6 +68,10 @@ class ArticlePage extends HookWidget {
       });
     });
 
+    final scrollController = useMemoized(
+      () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
+    );
+
     final articleType = state.mapOrNull(
       idleSingleArticle: (state) => state.header.type,
       idleMultiArticles: (state) => state.header.type,
@@ -73,8 +80,6 @@ class ArticlePage extends HookWidget {
     useEffect(() {
       cubit.initialize(articleList, index);
     }, [cubit]);
-
-    final scrollController = useScrollController(keepScrollOffset: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -231,10 +236,10 @@ class _IdleContent extends HookWidget {
                 controller.position.maxScrollExtent,
               );
             }
-            return true;
+            return false;
           },
           child: CustomScrollView(
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             key: _articlePageKey,
             controller: controller,
             slivers: [
