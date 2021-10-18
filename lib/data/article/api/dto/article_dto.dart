@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 part 'article_dto.g.dart';
 

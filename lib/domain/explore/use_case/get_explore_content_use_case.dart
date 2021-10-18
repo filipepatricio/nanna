@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/domain/explore/data/explore_content.dart'
 import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
 import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_category.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:injectable/injectable.dart';
 
@@ -27,7 +28,7 @@ final mockedArticleList1 = [
     note: null,
     wordCount: 6687,
     sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
-    id: "8efc4520-f512-4a31-9ba7-c65267e34a0b",
+    id: '8efc4520-f512-4a31-9ba7-c65267e34a0b',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -45,7 +46,7 @@ final mockedArticleList1 = [
     note: null,
     wordCount: 587,
     sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
-    id: "8e664720-f512-4a31-9ba7-c65267e34a0b",
+    id: '8e664720-f512-4a31-9ba7-c65267e34a0b',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -63,7 +64,7 @@ final mockedArticleList1 = [
     note: null,
     wordCount: 1587,
     sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
-    id: "8ef774720-f512-4a31-9ba7-c65267e34a0b",
+    id: '8ef774720-f512-4a31-9ba7-c65267e34a0b',
   ),
 ];
 
@@ -84,7 +85,7 @@ final mockedArticleList2 = [
     note: null,
     wordCount: 1687,
     sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
-    id: "8efc4720-f512-4a31-9ba7-c65267e34a0b",
+    id: '8efc4720-f512-4a31-9ba7-c65267e34a0b',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -102,7 +103,7 @@ final mockedArticleList2 = [
     note: 'Quos dolorem et eos cum optio sequi nostrum praesentium.',
     wordCount: 1287,
     sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
-    id: "22333-f512-4a31-9ba7-c65267e34a0b",
+    id: '22333-f512-4a31-9ba7-c65267e34a0b',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -120,7 +121,7 @@ final mockedArticleList2 = [
     note: null,
     wordCount: 1187,
     sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
-    id: "8e3320-f512-4a31-9ba7-c65267e34a0b",
+    id: '8e3320-f512-4a31-9ba7-c65267e34a0b',
   ),
   ArticleHeader(
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
@@ -138,7 +139,7 @@ final mockedArticleList2 = [
     note: 'Quos dolorem et eos cum optio sequi nostrum praesentium.',
     wordCount: 687,
     sourceUrl: 'https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html',
-    id: "8e3443720-f512-4a31-9ba7-c65267e34a0b",
+    id: '8e3443720-f512-4a31-9ba7-c65267e34a0b',
   ),
 ];
 
@@ -176,6 +177,19 @@ final readingListSection = ExploreContentSection.readingLists(
         id: '0',
       ),
       coverImage: Image(publicId: ''),
+      category: TopicCategory(name: 'Afghanistan stories'),
+      highlightedPublisherList: [
+        Publisher(
+          name: 'NYT',
+          lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+          darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+        ),
+        Publisher(
+          name: 'NYT',
+          lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+          darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+        )
+      ],
     ),
     Topic(
       id: '0',
@@ -188,6 +202,8 @@ final readingListSection = ExploreContentSection.readingLists(
         id: '0',
       ),
       coverImage: Image(publicId: ''),
+      category: TopicCategory(name: 'Crypto stories'),
+      highlightedPublisherList: [],
     ),
     Topic(
       id: '0',
@@ -200,6 +216,14 @@ final readingListSection = ExploreContentSection.readingLists(
         id: '0',
       ),
       coverImage: Image(publicId: ''),
+      category: TopicCategory(name: 'Female stories'),
+      highlightedPublisherList: [
+        Publisher(
+          name: 'NYT',
+          lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+          darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+        ),
+      ],
     ),
     Topic(
       id: '0',
@@ -212,6 +236,34 @@ final readingListSection = ExploreContentSection.readingLists(
         id: '0',
       ),
       coverImage: Image(publicId: ''),
+      category: TopicCategory(name: 'Afghanistan stories'),
+      highlightedPublisherList: [
+        Publisher(
+          name: 'NYT',
+          lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+          darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+        ),
+        Publisher(
+          name: 'NYT',
+          lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+          darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+        ),
+        Publisher(
+          name: 'NYT',
+          lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+          darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+        ),
+        Publisher(
+          name: 'NYT',
+          lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+          darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+        ),
+        Publisher(
+          name: 'NYT',
+          lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
+          darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
+        )
+      ],
     ),
   ],
 );

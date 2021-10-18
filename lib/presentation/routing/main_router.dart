@@ -16,9 +16,9 @@ import 'package:better_informed_mobile/presentation/page/settings/notifications/
 import 'package:better_informed_mobile/presentation/page/settings/policy_terms/settings_policy_terms_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/single_topic_page.dart';
+import 'package:better_informed_mobile/presentation/routing/custom_route/cupertino_bottom_sheet_route_builder.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
-import 'package:better_informed_mobile/presentation/routing/custom_route/cupertino_bottom_sheet_route_builder.dart';
 
 @AdaptiveAutoRouter(
   routes: [

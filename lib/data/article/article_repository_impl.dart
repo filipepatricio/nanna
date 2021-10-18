@@ -1,8 +1,6 @@
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.dart';
-import 'package:better_informed_mobile/data/article/api/mapper/article_dto_mapper.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:injectable/injectable.dart';

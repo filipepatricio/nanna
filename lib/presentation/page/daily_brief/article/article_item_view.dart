@@ -9,9 +9,9 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/article/cov
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
-import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -37,6 +37,7 @@ class ArticleItemView extends HookWidget {
   Widget build(BuildContext context) {
     // TODO: change when there will be final colors or if source will be specified (for example: backend)
     final mockColoredCoverCondition = index % 3 == 1;
+    final editorsNote = article.note;
     return Container(
       color: mockColoredCoverCondition
           ? AppColors.background
@@ -72,21 +73,10 @@ class ArticleItemView extends HookWidget {
               ),
             ),
             const SizedBox(height: AppDimens.s),
-            if (article.note != null)
+            if (editorsNote != null)
               Padding(
                 padding: const EdgeInsets.only(right: AppDimens.xxl),
-                child: RichText(
-                  text: TextSpan(
-                    style: AppTypography.subH1Medium.copyWith(fontFamily: fontFamilyLora, height: 1.12),
-                    children: [
-                      TextSpan(
-                        text: LocaleKeys.readingList_editorsNote.tr(),
-                        style: AppTypography.h5BoldSmall.copyWith(fontFamily: fontFamilyLora, height: 1.12),
-                      ),
-                      TextSpan(text: article.note),
-                    ],
-                  ),
-                ),
+                child: EditorsNote(note: editorsNote),
               ),
             const SizedBox(height: AppDimens.l),
             //TODO: Change for proper statements (this is for mock purposes)

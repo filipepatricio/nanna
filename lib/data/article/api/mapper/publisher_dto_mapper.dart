@@ -12,10 +12,12 @@ class PublisherDTOMapper implements Mapper<PublisherDTO, Publisher> {
 
   @override
   Publisher call(PublisherDTO data) {
+    final lightLogo = data.lightLogo;
+    final darkLogo = data.darkLogo;
     return Publisher(
       name: data.name,
-      lightLogo: _imageDTOMapper(data.lightLogo),
-      darkLogo: _imageDTOMapper(data.darkLogo),
+      lightLogo: lightLogo == null ? null : _imageDTOMapper(lightLogo),
+      darkLogo: darkLogo == null ? null : _imageDTOMapper(darkLogo),
     );
   }
 }
