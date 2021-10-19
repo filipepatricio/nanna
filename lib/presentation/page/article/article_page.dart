@@ -470,6 +470,7 @@ class ArticleContentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final author = article.author;
+    final publicationDate = article.publicationDate;
 
     return Column(
       children: [
@@ -518,11 +519,13 @@ class ArticleContentView extends StatelessWidget {
                     LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
                     style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
                   ),
-                  const VerticalDivider(),
-                  Text(
-                    DateFormatUtil.formatFullMonthNameDayYear(article.publicationDate),
-                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
-                  ),
+                  if (publicationDate != null) ...[
+                    const VerticalDivider(),
+                    Text(
+                      DateFormatUtil.formatFullMonthNameDayYear(publicationDate),
+                      style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
+                    ),
+                  ],
                 ],
               ),
             ),

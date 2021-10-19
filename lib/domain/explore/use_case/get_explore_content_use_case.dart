@@ -16,7 +16,7 @@ final mockedArticleList1 = [
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
     title: 'Israel’s opposition has finally mustered a majority to dislodge Binyamin Netanyahu',
     type: ArticleType.premium,
-    publicationDate: DateTime.parse('2021-02-08'),
+    publicationDate: null,
     timeToRead: 5,
     publisher: Publisher(
       name: 'NYT',
@@ -91,7 +91,7 @@ final mockedArticleList2 = [
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
     title: 'Israels government: End of Netanyahu era?',
     type: ArticleType.freemium,
-    publicationDate: DateTime.parse('2021-02-08'),
+    publicationDate: null,
     timeToRead: 4,
     publisher: Publisher(
       name: 'NYT',
@@ -127,7 +127,7 @@ final mockedArticleList2 = [
     slug: '2021-07-27-israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu',
     title: 'China allows three children in major policy shift',
     type: ArticleType.freemium,
-    publicationDate: DateTime.parse('2021-02-08'),
+    publicationDate: null,
     timeToRead: 11,
     publisher: Publisher(
       name: 'NYT',

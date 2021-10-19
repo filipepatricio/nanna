@@ -21,6 +21,7 @@ class DottedArticleInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainColor = isLight ? AppColors.white : AppColors.black;
+    final publicationDate = article.publicationDate;
     return Row(
       children: [
         PublisherLogo.light(publisher: article.publisher),
@@ -33,14 +34,16 @@ class DottedArticleInfo extends StatelessWidget {
           ' · ',
           style: AppTypography.metadata1Regular.copyWith(color: mainColor),
         ),
-        Text(
-          DateFormatUtil.formatShortMonthNameDay(article.publicationDate),
-          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
-        ),
-        Text(
-          ' · ',
-          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
-        ),
+        if (publicationDate != null) ...[
+          Text(
+            DateFormatUtil.formatShortMonthNameDay(publicationDate),
+            style: AppTypography.metadata1Regular.copyWith(color: mainColor),
+          ),
+          Text(
+            ' · ',
+            style: AppTypography.metadata1Regular.copyWith(color: mainColor),
+          ),
+        ],
         Text(
           LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
           style: AppTypography.metadata1Regular.copyWith(color: mainColor),
