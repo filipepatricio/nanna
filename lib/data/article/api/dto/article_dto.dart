@@ -13,7 +13,7 @@ class ArticleDTO {
   final String slug;
   final String title;
   final String type;
-  final String publicationDate;
+  final String? publicationDate;
   final int timeToRead;
   final PublisherDTO publisher;
   final ImageDTO? image;

@@ -21,11 +21,12 @@ class ArticleHeaderDTOMapper implements Mapper<ArticleDTO, ArticleHeader> {
   @override
   ArticleHeader call(ArticleDTO data) {
     final image = data.image;
+    final publicationDate = data.publicationDate;
     return ArticleHeader(
       slug: data.slug,
       title: data.title,
       type: _articleTypeDTOMapper(data.type),
-      publicationDate: DateTime.parse(data.publicationDate).toLocal(),
+      publicationDate: publicationDate != null ? DateTime.parse(publicationDate).toLocal() : null,
       timeToRead: data.timeToRead,
       image: image != null ? _imageDTOMapper(image) : null,
       publisher: _publisherDTOMapper(data.publisher),
