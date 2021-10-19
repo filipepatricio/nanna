@@ -200,11 +200,31 @@ class _TopicHeader extends HookWidget {
 class _SummaryContent extends HookWidget {
   final Topic topic;
 
-  const _SummaryContent({required this.topic, Key? key}) : super(key: key);
+  const _SummaryContent({
+    required this.topic,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final controller = usePageController(viewportFraction: 0.85);
+
+    if (topic.summary.isEmpty) {
+      return const SizedBox();
+    }
+
+    final content = topic.summary.length > 1
+        ? _SummaryCardPageView(
+            topic: topic,
+            controller: controller,
+          )
+        : Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: _SummaryCard(
+              index: 0,
+              topic: topic,
+            ),
+        );
 
     return Container(
       width: double.infinity,
@@ -231,19 +251,18 @@ class _SummaryContent extends HookWidget {
                   ),
                 ),
                 const SizedBox(height: AppDimens.l),
-                _BiggerPictureCards(
-                  topic: topic,
-                  controller: controller,
-                ),
+                content,
                 const SizedBox(height: AppDimens.xl),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  child: PageDotIndicator(
-                    pageCount: 5,
-                    controller: controller,
+                if (topic.summary.length > 1) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                    child: PageDotIndicator(
+                      pageCount: topic.summary.length,
+                      controller: controller,
+                    ),
                   ),
-                ),
-                const SizedBox(height: AppDimens.xl),
+                  const SizedBox(height: AppDimens.xl),
+                ],
               ],
             ),
           ),
@@ -254,11 +273,11 @@ class _SummaryContent extends HookWidget {
   }
 }
 
-class _BiggerPictureCards extends StatelessWidget {
+class _SummaryCardPageView extends StatelessWidget {
   final Topic topic;
   final PageController controller;
 
-  const _BiggerPictureCards({
+  const _SummaryCardPageView({
     required this.topic,
     required this.controller,
     Key? key,
@@ -271,38 +290,56 @@ class _BiggerPictureCards extends StatelessWidget {
       child: PageView.builder(
         controller: controller,
         scrollDirection: Axis.horizontal,
-        itemCount: 5,
+        itemCount: topic.summary.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: AppDimens.m),
-            child: Container(
-              height: _summaryPageViewHeight,
-              padding: const EdgeInsets.only(
-                left: AppDimens.l,
-                right: AppDimens.l,
-                bottom: AppDimens.l,
-              ),
-              color: AppColors.mockedColors[index % AppColors.mockedColors.length],
-              child: Column(
-                children: [
-                  const SizedBox(height: AppDimens.l),
-                  //TODO: Get data from api, remove if statement
-                  if (index % 2 == 0) ...[
-                    Image.asset(AppRasterGraphics.mockedComputerMan),
-                    const SizedBox(height: AppDimens.l),
-                  ],
-                  const Expanded(
-                    child: InformedMarkdownBody(
-                      markdown:
-                          '* Lashkar Gah and the rest of the Helmand province have been at the heart of the US and British military campaigns.',
-                      baseTextStyle: AppTypography.b2MediumSerif,
-                    ),
-                  ),
-                ],
-              ),
+            child: _SummaryCard(
+              topic: topic,
+              index: index,
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _SummaryCard extends StatelessWidget {
+  final int index;
+  final Topic topic;
+
+  const _SummaryCard({
+    required this.index,
+    required this.topic,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _summaryPageViewHeight,
+      padding: const EdgeInsets.only(
+        left: AppDimens.l,
+        right: AppDimens.l,
+        bottom: AppDimens.l,
+      ),
+      color: AppColors.mockedColors[index % AppColors.mockedColors.length],
+      child: Column(
+        children: [
+          const SizedBox(height: AppDimens.l),
+          //TODO: Get data from api, remove if statement
+          if (index % 2 == 0) ...[
+            Image.asset(AppRasterGraphics.mockedComputerMan),
+            const SizedBox(height: AppDimens.l),
+          ],
+          Expanded(
+            child: InformedMarkdownBody(
+              markdown: topic.summary[index].content,
+              baseTextStyle: AppTypography.b2MediumSerif,
+            ),
+          ),
+        ],
       ),
     );
   }

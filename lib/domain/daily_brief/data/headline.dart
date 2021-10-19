@@ -1,7 +1,7 @@
 class Headline {
   final String headline;
-  final String message;
-  final String icon;
+  final String? message;
+  final String? icon;
 
   Headline({
     required this.headline,
