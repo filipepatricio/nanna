@@ -22,3 +22,23 @@ Right now we have 3 app flavors: dev, stage and prod. This adds requirement for 
 If you want to set custom api host, that application connects to, just include additional argument in run command:
 
 `--dart-define=host=http://127.0.0.1:4000/graphql`
+
+## Project Setup Troubleshoot
+
+- [ ]  Problem Sign in with Google:
+
+* It is needed to add your device SHA on Firebase and download new `google-services.json` file
+
+* [https://stackoverflow.com/a/58767500/3100254](https://stackoverflow.com/a/58767500/3100254)
+
+- [ ]  Bug Sign in with Apple on iOS simulator:
+
+* [https://developer.apple.com/forums/thread/651533](https://developer.apple.com/forums/thread/651533?page=3)
+
+- [ ]  Sign in with provider - SocketException: OS Error: Connection refused, errno = 111
+
+* Start app with:
+
+```—dart-define=host=http://<your machine ip on the network>:4000/graphql```
+
+* [https://fluttercorner.com/socketexception-os-error-connection-refused-errno-111-in-flutter/](https://fluttercorner.com/socketexception-os-error-connection-refused-errno-111-in-flutter/)
