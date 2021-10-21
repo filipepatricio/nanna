@@ -28,7 +28,6 @@ class ReadingListCover extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final daysBetweenLastUpdatedDate = DateFormatUtil.daysBetween(topic.lastUpdatedAt, DateTime.now());
 
     return GestureDetector(
       onTap: onTap,
@@ -103,7 +102,7 @@ class ReadingListCover extends HookWidget {
                     ),
                     const Spacer(),
                     UpdatedLabel(
-                      text: 'Updated $daysBetweenLastUpdatedDate days ago'.toUpperCase(),
+                      text: topic.lastUpdatedAtLabel().toUpperCase(),
                       backgroundColor: AppColors.white,
                     ),
                   ],

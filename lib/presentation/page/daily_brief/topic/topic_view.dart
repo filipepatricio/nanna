@@ -106,7 +106,6 @@ class _TopicHeader extends HookWidget {
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
     final screenWidth = MediaQuery.of(context).size.width;
-    final daysBetweenLastUpdatedDate = DateFormatUtil.daysBetween(topic.lastUpdatedAt, DateTime.now());
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -182,7 +181,7 @@ class _TopicHeader extends HookWidget {
                       ShareButton(onTap: () {}),
                       const Spacer(),
                       UpdatedLabel(
-                        text: 'Updated $daysBetweenLastUpdatedDate days ago'.toUpperCase(),
+                        text: topic.lastUpdatedAtLabel().toUpperCase(),
                         backgroundColor: AppColors.white,
                       ),
                     ],

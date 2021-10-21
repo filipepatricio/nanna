@@ -3,6 +3,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_category.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
+import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Topic {
   final String id;
@@ -15,6 +17,21 @@ class Topic {
   final Image heroImage;
   final Image coverImage;
   final ReadingList readingList;
+
+  String _daysCount(int howMany) => Intl.plural(
+    howMany,
+    one: 'Updated $howMany day ago',
+    other: 'Updated $howMany days ago',
+    name: 'day',
+    args: [howMany],
+    examples: const {'howMany': 42},
+    desc: 'How many days since updated',
+  );
+
+  String lastUpdatedAtLabel() {
+    final daysBetweenLastUpdatedDate = DateFormatUtil.daysBetween(lastUpdatedAt, DateTime.now());
+    return _daysCount(daysBetweenLastUpdatedDate);
+  }
 
   Topic({
     required this.id,
