@@ -8,6 +8,7 @@ class Topic {
   final String id;
   final String title;
   final String introduction;
+  final DateTime lastUpdatedAt;
   final List<TopicSummary> summary;
   final List<Publisher> highlightedPublishers;
   final TopicCategory category;
@@ -19,6 +20,7 @@ class Topic {
     required this.id,
     required this.title,
     required this.introduction,
+    required this.lastUpdatedAt,
     required this.summary,
     required this.highlightedPublishers,
     required this.category,

@@ -19,6 +19,7 @@ class DailyBriefGql {
         topics {
           id
           title
+          lastUpdatedAt
           summaryCards {
             text
           }

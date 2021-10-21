@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
@@ -105,6 +106,7 @@ class _TopicHeader extends HookWidget {
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
     final screenWidth = MediaQuery.of(context).size.width;
+    final daysBetweenLastUpdatedDate = DateFormatUtil.daysBetween(topic.lastUpdatedAt, DateTime.now());
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -179,9 +181,8 @@ class _TopicHeader extends HookWidget {
                       const SizedBox(width: AppDimens.m),
                       ShareButton(onTap: () {}),
                       const Spacer(),
-                      //TODO: add missing data
                       UpdatedLabel(
-                        text: 'Updated 2 days ago'.toUpperCase(),
+                        text: 'Updated $daysBetweenLastUpdatedDate days ago'.toUpperCase(),
                         backgroundColor: AppColors.white,
                       ),
                     ],

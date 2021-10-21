@@ -170,6 +170,7 @@ final readingListSection = ExploreContentSection.readingLists(
       id: '0',
       title: 'Afghanistan stories',
       introduction: 'introduction',
+      lastUpdatedAt: DateTime.parse('2021-10-18T13:52:37Z'),
       summary: [],
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
@@ -195,6 +196,7 @@ final readingListSection = ExploreContentSection.readingLists(
       id: '0',
       title: 'All the crypto coins',
       introduction: 'introduction',
+      lastUpdatedAt: DateTime.parse('2021-10-18T13:52:37Z'),
       summary: [],
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
@@ -209,6 +211,7 @@ final readingListSection = ExploreContentSection.readingLists(
       id: '0',
       title: 'Female Leadership',
       introduction: 'introduction',
+      lastUpdatedAt: DateTime.parse('2021-10-18T13:52:37Z'),
       summary: [],
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
@@ -229,6 +232,7 @@ final readingListSection = ExploreContentSection.readingLists(
       id: '0',
       title: 'Afghanistan falls to the Taliban',
       introduction: 'introduction',
+      lastUpdatedAt: DateTime.parse('2021-10-18T13:52:37Z'),
       summary: [],
       heroImage: Image(publicId: ''),
       readingList: ReadingList(

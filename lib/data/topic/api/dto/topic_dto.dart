@@ -12,6 +12,7 @@ class TopicDTO {
   final String id;
   final String title;
   final String introduction;
+  final String lastUpdatedAt;
   final List<PublisherDTO> highlightedPublishers;
   final TopicCategoryDTO category;
   final ImageDTO heroImage;
@@ -23,6 +24,7 @@ class TopicDTO {
     this.id,
     this.title,
     this.introduction,
+    this.lastUpdatedAt,
     this.highlightedPublishers,
     this.category,
     this.heroImage,
