@@ -178,7 +178,7 @@ final readingListSection = ExploreContentSection.readingLists(
       ),
       coverImage: Image(publicId: ''),
       category: TopicCategory(name: 'Afghanistan stories'),
-      highlightedPublisherList: [
+      highlightedPublishers: [
         Publisher(
           name: 'NYT',
           lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
@@ -203,7 +203,7 @@ final readingListSection = ExploreContentSection.readingLists(
       ),
       coverImage: Image(publicId: ''),
       category: TopicCategory(name: 'Crypto stories'),
-      highlightedPublisherList: [],
+      highlightedPublishers: [],
     ),
     Topic(
       id: '0',
@@ -217,7 +217,7 @@ final readingListSection = ExploreContentSection.readingLists(
       ),
       coverImage: Image(publicId: ''),
       category: TopicCategory(name: 'Female stories'),
-      highlightedPublisherList: [
+      highlightedPublishers: [
         Publisher(
           name: 'NYT',
           lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
@@ -237,7 +237,7 @@ final readingListSection = ExploreContentSection.readingLists(
       ),
       coverImage: Image(publicId: ''),
       category: TopicCategory(name: 'Afghanistan stories'),
-      highlightedPublisherList: [
+      highlightedPublishers: [
         Publisher(
           name: 'NYT',
           lightLogo: article_image.Image(publicId: 'publishers/the_economist'),
