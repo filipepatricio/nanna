@@ -5,8 +5,8 @@ part 'headline_dto.g.dart';
 @JsonSerializable()
 class HeadlineDTO {
   final String headline;
-  final String message;
-  final String icon;
+  final String? message;
+  final String? icon;
 
   HeadlineDTO(this.headline, this.message, this.icon);
 

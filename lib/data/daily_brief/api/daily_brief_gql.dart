@@ -19,8 +19,10 @@ class DailyBriefGql {
         topics {
           id
           title
+          summaryCards {
+            text
+          }
           introduction
-          summary
           highlightedPublishers {
             name
           }
