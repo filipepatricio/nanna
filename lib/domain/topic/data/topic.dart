@@ -9,7 +9,7 @@ class Topic {
   final String title;
   final String introduction;
   final List<TopicSummary> summary;
-  final List<Publisher>? highlightedPublisherList;
+  final List<Publisher> highlightedPublishers;
   final TopicCategory category;
   final Image heroImage;
   final Image coverImage;
@@ -20,7 +20,7 @@ class Topic {
     required this.title,
     required this.introduction,
     required this.summary,
-    required this.highlightedPublisherList,
+    required this.highlightedPublishers,
     required this.category,
     required this.heroImage,
     required this.coverImage,
