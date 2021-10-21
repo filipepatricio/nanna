@@ -261,7 +261,7 @@ class _Greeting extends StatelessWidget {
         );
       },
       child: InformedMarkdownBody(
-        markdown: currentBrief.greeting.message,
+        markdown: currentBrief.greeting.headline,
         baseTextStyle: AppTypography.b1Regular,
         textAlignment: TextAlign.left,
       ),
