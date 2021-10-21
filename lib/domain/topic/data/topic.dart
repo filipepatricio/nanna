@@ -28,9 +28,20 @@ class Topic {
     desc: 'How many days since updated',
   );
 
+  String _hoursCount(int howMany) => Intl.plural(
+    howMany,
+    one: 'Updated $howMany hour ago',
+    other: 'Updated $howMany hours ago',
+    name: 'hour',
+    args: [howMany],
+    examples: const {'howMany': 42},
+    desc: 'How many hour since updated',
+  );
+
   String lastUpdatedAtLabel() {
     final daysBetweenLastUpdatedDate = DateFormatUtil.daysBetween(lastUpdatedAt, DateTime.now());
-    return _daysCount(daysBetweenLastUpdatedDate);
+    final hoursBetweenLastUpdatedDate = DateFormatUtil.hoursBetween(lastUpdatedAt, DateTime.now());
+    return daysBetweenLastUpdatedDate > 0 ? _daysCount(daysBetweenLastUpdatedDate) : _hoursCount(hoursBetweenLastUpdatedDate);
   }
 
   Topic({
