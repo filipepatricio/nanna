@@ -25,7 +25,14 @@ class DailyBriefGql {
           }
           introduction
           highlightedPublishers {
+            id
             name
+            darkLogo{
+              publicId
+            }
+            lightLogo {
+              publicId
+            }
           }
           category {
             name
