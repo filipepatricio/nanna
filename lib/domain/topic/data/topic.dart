@@ -3,8 +3,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_category.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
-import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:jiffy/jiffy.dart';
 
 class Topic {
   final String id;
@@ -18,30 +18,9 @@ class Topic {
   final Image coverImage;
   final ReadingList readingList;
 
-  String _daysCount(int howMany) => Intl.plural(
-    howMany,
-    one: 'Updated $howMany day ago',
-    other: 'Updated $howMany days ago',
-    name: 'day',
-    args: [howMany],
-    examples: const {'howMany': 42},
-    desc: 'How many days since updated',
-  );
-
-  String _hoursCount(int howMany) => Intl.plural(
-    howMany,
-    one: 'Updated $howMany hour ago',
-    other: 'Updated $howMany hours ago',
-    name: 'hour',
-    args: [howMany],
-    examples: const {'howMany': 42},
-    desc: 'How many hour since updated',
-  );
-
   String lastUpdatedAtLabel() {
-    final daysBetweenLastUpdatedDate = DateFormatUtil.daysBetween(lastUpdatedAt, DateTime.now());
-    final hoursBetweenLastUpdatedDate = DateFormatUtil.hoursBetween(lastUpdatedAt, DateTime.now());
-    return daysBetweenLastUpdatedDate > 0 ? _daysCount(daysBetweenLastUpdatedDate) : _hoursCount(hoursBetweenLastUpdatedDate);
+    final dateTest = DateTime.parse('2021-10-22T09:32:37Z').toLocal();
+    return 'Updated ${Jiffy(dateTest).fromNow()}';
   }
 
   Topic({
