@@ -12,7 +12,7 @@ class TopicDTO {
   final String id;
   final String title;
   final String introduction;
-  final List<PublisherDTO>? highlightedPublisherList;
+  final List<PublisherDTO> highlightedPublishers;
   final TopicCategoryDTO category;
   final ImageDTO heroImage;
   final ImageDTO coverImage;
@@ -23,7 +23,7 @@ class TopicDTO {
     this.id,
     this.title,
     this.introduction,
-    this.highlightedPublisherList,
+    this.highlightedPublishers,
     this.category,
     this.heroImage,
     this.coverImage,

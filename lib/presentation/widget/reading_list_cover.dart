@@ -125,10 +125,10 @@ class _PublisherLogoRow extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final providers = topic.highlightedPublisherList;
+    final providers = topic.highlightedPublishers;
     return Row(
       children: [
-        ...?providers?.map(
+        ...providers.map(
           (publisher) {
             return Row(
               children: [
