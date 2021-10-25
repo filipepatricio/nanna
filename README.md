@@ -27,9 +27,8 @@ If you want to set custom api host, that application connects to, just include a
 
 - [ ]  Problem Sign in with Google:
 
-* It is needed to add your device SHA on Firebase and download new `google-services.json` file
-
-* [https://stackoverflow.com/a/58767500/3100254](https://stackoverflow.com/a/58767500/3100254)
+* Add the `key_<env>.properties` files on the `/android` folder
+* Add the `informed.keystore` to an external folder and edit `key_<env>.properties` files `storeFile=` property to have the path of the `informed.keystore`
 
 - [ ]  Bug Sign in with Apple on iOS simulator:
 
