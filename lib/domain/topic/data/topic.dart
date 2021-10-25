@@ -10,7 +10,7 @@ class Topic {
   final String introduction;
   final List<TopicSummary> summary;
   final List<Publisher> highlightedPublishers;
-  final TopicCategory category;
+  final TopicCategory? category;
   final Image heroImage;
   final Image coverImage;
   final ReadingList readingList;
@@ -21,9 +21,9 @@ class Topic {
     required this.introduction,
     required this.summary,
     required this.highlightedPublishers,
-    required this.category,
     required this.heroImage,
     required this.coverImage,
     required this.readingList,
+    this.category,
   });
 }

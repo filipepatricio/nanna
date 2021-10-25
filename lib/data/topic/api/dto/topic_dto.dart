@@ -13,7 +13,7 @@ class TopicDTO {
   final String title;
   final String introduction;
   final List<PublisherDTO> highlightedPublishers;
-  final TopicCategoryDTO category;
+  final TopicCategoryDTO? category;
   final ImageDTO heroImage;
   final ImageDTO coverImage;
   final ReadingListDTO readingList;
