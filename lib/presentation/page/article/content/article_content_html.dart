@@ -1,9 +1,14 @@
 import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' as html_parser;
+import 'package:url_launcher/url_launcher.dart';
+
+const _listElementTag = 'li';
 
 class ArticleContentHtml extends HookWidget {
   final String html;
@@ -21,8 +26,9 @@ class ArticleContentHtml extends HookWidget {
   Widget build(BuildContext context) {
     final document = useMemoized(
       () => html_parser.parse(
-        makeHtmlContentResponsive(html),
+        _makeHtmlContentResponsive(html),
       ),
+      [html],
     );
 
     useEffect(() {
@@ -34,11 +40,35 @@ class ArticleContentHtml extends HookWidget {
     return Html.fromDom(
       document: document,
       shrinkWrap: true,
+      onLinkTap: _onLinkTap,
+      customRender: {
+        _listElementTag: (RenderContext context, Widget widget) {
+          return Row(
+            children: [
+              const MarkdownBullet(),
+              const SizedBox(width: AppDimens.m),
+              widget,
+            ],
+          );
+        },
+      },
     );
+  }
+
+  Future<void> _onLinkTap(String? url, context, attrs, element) async {
+    if (url != null) {
+      if (await canLaunch(url)) {
+        await launch(
+          url,
+          forceSafariVC: true,
+          forceWebView: true,
+        );
+      }
+    }
   }
 }
 
-String makeHtmlContentResponsive(String htmlContent) {
+String _makeHtmlContentResponsive(String htmlContent) {
   return '''<!DOCTYPE html>
       <html>
         <head>
@@ -48,6 +78,14 @@ String makeHtmlContentResponsive(String htmlContent) {
                 background-color: #FCFAF8; 
                 color: #282B35; 
                 font-family: Lora; 
+              }
+              ol {
+                padding-left: 24px; 
+                padding-right: 24px;
+              }
+              ul {
+                padding-left: 24px; 
+                padding-right: 24px;
               }
               p { 
                 padding-left: 24px; 
@@ -61,26 +99,6 @@ String makeHtmlContentResponsive(String htmlContent) {
                 object-fit: cover;
                 width: 100%;
                 height: auto;
-              }
-              
-              /* Marker highlighting stroke */
-              .highlight {
-                position: relative;
-                padding: 0 0.1rem;
-                margin: 0 -0.1rem;
-                z-index: 1;
-              }
-              
-              .highlight::before {
-                background-color: #BBF383;
-                clip-path: polygon(2% 100%, 0% 63%, 98% 49%, 100% 85.47%);
-                position: absolute;
-                content: " ";
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
               }
               
               .raw h3 {
