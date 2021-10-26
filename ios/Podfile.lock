@@ -233,7 +233,7 @@ SPEC CHECKSUMS:
   flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
-  google_sign_in: 952c378b33dc5a0bf4bcb2d12afe9ac70b3239fb
+  google_sign_in: c5cecea71f3be43282263550556e311c4cc03582
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: 3df19e3c24f7bbc291d8b5809aa6b0d41e642437
@@ -254,4 +254,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 67b6c74bed98035e686e7cb3dd0195729da0645f
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
