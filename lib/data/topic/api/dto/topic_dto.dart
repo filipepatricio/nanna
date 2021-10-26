@@ -14,7 +14,7 @@ class TopicDTO {
   final String introduction;
   final String lastUpdatedAt;
   final List<PublisherDTO> highlightedPublishers;
-  final TopicCategoryDTO category;
+  final TopicCategoryDTO? category;
   final ImageDTO heroImage;
   final ImageDTO coverImage;
   final ReadingListDTO readingList;

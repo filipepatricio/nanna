@@ -1,88 +1,75 @@
 import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' as html_parser;
+import 'package:url_launcher/url_launcher.dart';
 
-class ArticleContentHtml extends StatefulWidget {
+const _listElementTag = 'li';
+
+class ArticleContentHtml extends HookWidget {
   final String html;
   final ArticleCubit cubit;
   final Function() scrollToPosition;
-  final Function() onLoaded;
 
   const ArticleContentHtml({
     required this.html,
     required this.cubit,
     required this.scrollToPosition,
-    required this.onLoaded,
     Key? key,
   }) : super(key: key);
 
   @override
-  ArticleContentHtmlState createState() => ArticleContentHtmlState(
-        htmlContent: html,
-        cubit: cubit,
-        scrollToArticlePosition: scrollToPosition,
-      );
-}
-
-class ArticleContentHtmlState extends State<ArticleContentHtml> {
-  final String htmlContent;
-  final ArticleCubit cubit;
-  final Function() scrollToArticlePosition;
-  double _height = 0.0;
-
-  final GlobalKey webViewKey = GlobalKey();
-  InAppWebViewController? webViewController;
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-    crossPlatform: InAppWebViewOptions(useShouldOverrideUrlLoading: true, mediaPlaybackRequiresUserGesture: false),
-    android: AndroidInAppWebViewOptions(useHybridComposition: true),
-    ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true),
-  );
-
-  ArticleContentHtmlState({
-    required this.cubit,
-    required this.htmlContent,
-    required this.scrollToArticlePosition,
-  });
-
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: _height,
-      child: InAppWebView(
-        key: webViewKey,
-        initialData: InAppWebViewInitialData(
-          data: makeHtmlContentResponsive(htmlContent),
-        ),
-        initialOptions: options,
-        onWebViewCreated: (controller) {
-          webViewController = controller;
-        },
-        onLoadStop: (controller, url) async {
-          // Event fired when the WebView finishes loading an url
-          await resizeWebViewHeight(controller);
-          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-            scrollToArticlePosition();
-            widget.onLoaded();
-          });
-        },
-        androidOnPermissionRequest: (controller, origin, resources) async {
-          return PermissionRequestResponse(resources: resources, action: PermissionRequestResponseAction.GRANT);
-        },
+    final document = useMemoized(
+      () => html_parser.parse(
+        _makeHtmlContentResponsive(html),
       ),
+      [html],
+    );
+
+    useEffect(() {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        scrollToPosition();
+      });
+    }, []);
+
+    return Html.fromDom(
+      document: document,
+      shrinkWrap: true,
+      onLinkTap: _onLinkTap,
+      customRender: {
+        _listElementTag: (RenderContext context, Widget widget) {
+          return Row(
+            children: [
+              const MarkdownBullet(),
+              const SizedBox(width: AppDimens.m),
+              widget,
+            ],
+          );
+        },
+      },
     );
   }
 
-  Future<void> resizeWebViewHeight(InAppWebViewController controller) async {
-    await controller.evaluateJavascript(source: 'document.documentElement.scrollHeight').then((height) {
-      _height = double.parse(height.toString());
-      setState(() {});
-    });
+  Future<void> _onLinkTap(String? url, context, attrs, element) async {
+    if (url != null) {
+      if (await canLaunch(url)) {
+        await launch(
+          url,
+          forceSafariVC: true,
+          forceWebView: true,
+        );
+      }
+    }
   }
+}
 
-  String makeHtmlContentResponsive(String htmlContent) {
-    return '''<!DOCTYPE html>
+String _makeHtmlContentResponsive(String htmlContent) {
+  return '''<!DOCTYPE html>
       <html>
         <head>
           <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
@@ -91,6 +78,14 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
                 background-color: #FCFAF8; 
                 color: #282B35; 
                 font-family: Lora; 
+              }
+              ol {
+                padding-left: 24px; 
+                padding-right: 24px;
+              }
+              ul {
+                padding-left: 24px; 
+                padding-right: 24px;
               }
               p { 
                 padding-left: 24px; 
@@ -104,26 +99,6 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
                 object-fit: cover;
                 width: 100%;
                 height: auto;
-              }
-              
-              /* Marker highlighting stroke */
-              .highlight {
-                position: relative;
-                padding: 0 0.1rem;
-                margin: 0 -0.1rem;
-                z-index: 1;
-              }
-              
-              .highlight::before {
-                background-color: #BBF383;
-                clip-path: polygon(2% 100%, 0% 63%, 98% 49%, 100% 85.47%);
-                position: absolute;
-                content: " ";
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
               }
               
               .raw h3 {
@@ -160,5 +135,4 @@ class ArticleContentHtmlState extends State<ArticleContentHtml> {
         </head>
         $htmlContent
       </html>''';
-  }
 }
