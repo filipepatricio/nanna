@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/editors_note.dart';
@@ -102,7 +101,7 @@ class ReadingListCover extends HookWidget {
                     ),
                     const Spacer(),
                     UpdatedLabel(
-                      text: topic.lastUpdatedAtLabel().toUpperCase(),
+                      dateTime: topic.lastUpdatedAt,
                       backgroundColor: AppColors.white,
                     ),
                   ],

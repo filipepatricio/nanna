@@ -3,8 +3,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_category.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:jiffy/jiffy.dart';
 
 class Topic {
   final String id;
@@ -17,11 +15,6 @@ class Topic {
   final Image heroImage;
   final Image coverImage;
   final ReadingList readingList;
-
-  String lastUpdatedAtLabel() {
-    final dateTest = DateTime.parse('2021-10-22T09:32:37Z').toLocal();
-    return 'Updated ${Jiffy(dateTest).fromNow()}';
-  }
 
   Topic({
     required this.id,

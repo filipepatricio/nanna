@@ -87,7 +87,7 @@ class MyReadsListItem extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.m),
                 UpdatedLabel(
-                  text: 'Updated 30 min ago'.toUpperCase(),
+                  dateTime: item.topic.lastUpdatedAt,
                   backgroundColor: AppColors.pastelGreen,
                 ),
                 const SizedBox(height: AppDimens.l),

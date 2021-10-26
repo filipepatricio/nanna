@@ -181,7 +181,7 @@ class _TopicHeader extends HookWidget {
                       ShareButton(onTap: () {}),
                       const Spacer(),
                       UpdatedLabel(
-                        text: topic.lastUpdatedAtLabel().toUpperCase(),
+                        dateTime: topic.lastUpdatedAt,
                         backgroundColor: AppColors.white,
                       ),
                     ],
