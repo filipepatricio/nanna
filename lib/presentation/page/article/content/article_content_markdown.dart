@@ -7,21 +7,22 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class ArticleContentMarkdown extends HookWidget {
   final String markdown;
   final Function() scrollToPosition;
-  final Function() onLoaded;
 
   const ArticleContentMarkdown({
     required this.markdown,
     required this.scrollToPosition,
-    required this.onLoaded,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) => scrollToPosition());
-    useEffect(() {
-      onLoaded();
-    }, []);
+    useEffect(
+      () {
+        WidgetsBinding.instance?.addPostFrameCallback((_) => scrollToPosition());
+      },
+      [],
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       child: InformedMarkdownBody(

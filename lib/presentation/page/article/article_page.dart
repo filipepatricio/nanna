@@ -206,17 +206,6 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loadedState = useState(false);
-
-    useEffect(
-      () {
-        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-          loadedState.value = false;
-        });
-      },
-      [content],
-    );
-
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       calculateArticleContentOffset();
     });
@@ -254,27 +243,21 @@ class _IdleContent extends HookWidget {
                       controller: controller,
                       articleContentKey: _articleContentKey,
                       scrollToPosition: () => scrollToPosition(readArticleProgress),
-                      onLoaded: () {
-                        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                          loadedState.value = true;
-                        });
-                      },
                     ),
                   ],
                 ),
               ),
-              if (loadedState.value)
-                if (hasNextArticle)
-                  SliverPullUpIndicatorAction(
-                    builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
-                    fullExtentHeight: _loadNextArticleIndicatorHeight,
-                    triggerExtent: _loadNextArticleIndicatorHeight,
-                    triggerFunction: (completer) => cubit.loadNextArticle(completer),
-                  )
-                else if (multipleArticles)
-                  const SliverToBoxAdapter(
-                    child: _AllArticlesRead(),
-                  ),
+              if (hasNextArticle)
+                SliverPullUpIndicatorAction(
+                  builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
+                  fullExtentHeight: _loadNextArticleIndicatorHeight,
+                  triggerExtent: _loadNextArticleIndicatorHeight,
+                  triggerFunction: (completer) => cubit.loadNextArticle(completer),
+                )
+              else if (multipleArticles)
+                const SliverToBoxAdapter(
+                  child: _AllArticlesRead(),
+                ),
             ],
           ),
         );
@@ -454,7 +437,6 @@ class ArticleContentView extends StatelessWidget {
   final ScrollController controller;
   final Key articleContentKey;
   final Function() scrollToPosition;
-  final Function() onLoaded;
 
   const ArticleContentView({
     required this.article,
@@ -463,7 +445,6 @@ class ArticleContentView extends StatelessWidget {
     required this.controller,
     required this.articleContentKey,
     required this.scrollToPosition,
-    required this.onLoaded,
     Key? key,
   }) : super(key: key);
 
@@ -536,7 +517,6 @@ class ArticleContentView extends StatelessWidget {
           key: articleContentKey,
           child: getArticleContentType(
             content.type,
-            onLoaded,
           ),
         ),
         const SizedBox(height: AppDimens.l),
@@ -544,19 +524,17 @@ class ArticleContentView extends StatelessWidget {
     );
   }
 
-  Widget? getArticleContentType(ArticleContentType type, Function() onLoaded) {
+  Widget? getArticleContentType(ArticleContentType type) {
     if (type == ArticleContentType.markdown) {
       return ArticleContentMarkdown(
         markdown: content.content,
         scrollToPosition: scrollToPosition,
-        onLoaded: onLoaded,
       );
     } else if (type == ArticleContentType.html) {
       return ArticleContentHtml(
         html: content.content,
         cubit: cubit,
         scrollToPosition: scrollToPosition,
-        onLoaded: onLoaded,
       );
     }
     return null;
