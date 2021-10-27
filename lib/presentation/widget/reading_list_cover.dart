@@ -75,7 +75,7 @@ class ReadingListCover extends HookWidget {
                 padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: EditorsNote(note: 'Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift.'),
               ),
-              const SizedBox(height: AppDimens.l),
+              const SizedBox(height: AppDimens.s),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: _PublisherLogoRow(topic: topic),
@@ -101,7 +101,7 @@ class ReadingListCover extends HookWidget {
                     ),
                     const Spacer(),
                     UpdatedLabel(
-                      text: 'Updated 2 days ago'.toUpperCase(),
+                      dateTime: topic.lastUpdatedAt,
                       backgroundColor: AppColors.white,
                     ),
                   ],

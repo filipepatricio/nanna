@@ -106,6 +106,9 @@
     "articleCount": "{} articles",
     "editorsNote": "Editors note: "
   },
+  "topic": {
+    "updated": "Updated {}"
+  },
   "continueReading": "Continue reading",
   "myReads": {
     "articlesRead": "/{} articles read",

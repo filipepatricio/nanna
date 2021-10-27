@@ -1,12 +1,21 @@
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jiffy/jiffy.dart';
 
 class UpdatedLabel extends StatelessWidget {
-  final String text;
+  final DateTime dateTime;
   final Color backgroundColor;
 
-  const UpdatedLabel({required this.text, required this.backgroundColor, Key? key}) : super(key: key);
+  const UpdatedLabel({required this.dateTime, required this.backgroundColor, Key? key}) : super(key: key);
+
+  String updatedAtLabel() {
+    return LocaleKeys.topic_updated.tr(
+      args: ['${Jiffy(dateTime).fromNow()}'],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +26,8 @@ class UpdatedLabel extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppDimens.s),
-        child: Text(text, style: AppTypography.labelText),
+        child: Text(updatedAtLabel().toUpperCase(),
+            style: AppTypography.labelText),
       ),
     );
   }
