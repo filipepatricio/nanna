@@ -74,7 +74,7 @@ class ReadingListCoverSmall extends HookWidget {
                 child: Text(
                   LocaleKeys.readingList_articleCount.tr(
                     args: [
-                      topic.readingList.articles.length.toString(),
+                      topic.readingList.entries.length.toString(),
                     ],
                   ),
                   style: AppTypography.metadata1Regular.copyWith(fontSize: 10),

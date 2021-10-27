@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -10,8 +11,9 @@ import 'package:flutter_svg/svg.dart';
 
 class StackedCardsErrorView extends HookWidget {
   final double cardStackWidth;
+  final DailyBriefPageCubit cubit;
 
-  const StackedCardsErrorView({required this.cardStackWidth, Key? key}) : super(key: key);
+  const StackedCardsErrorView({required this.cardStackWidth, required this.cubit, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,26 +24,29 @@ class StackedCardsErrorView extends HookWidget {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return ReadingListStackedCards(
-            coverSize: Size(cardStackWidth, constraints.maxHeight),
-            center: true,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(AppVectorGraphics.sadSun),
-                const SizedBox(height: AppDimens.l),
-                Text(
-                  LocaleKeys.dailyBrief_ups.tr(),
-                  style: AppTypography.h3bold,
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  LocaleKeys.dailyBrief_tryAgainLater.tr(),
-                  style: AppTypography.h3Normal,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+          return GestureDetector(
+            onTap: () async => {await cubit.initialize()},
+            child: ReadingListStackedCards(
+              coverSize: Size(cardStackWidth, constraints.maxHeight),
+              center: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(AppVectorGraphics.sadSun),
+                  const SizedBox(height: AppDimens.l),
+                  Text(
+                    LocaleKeys.dailyBrief_ups.tr(),
+                    style: AppTypography.h3bold,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    LocaleKeys.dailyBrief_tryAgainLater.tr(),
+                    style: AppTypography.h3Normal,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           );
         },

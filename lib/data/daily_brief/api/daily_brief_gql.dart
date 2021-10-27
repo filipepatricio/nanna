@@ -20,9 +20,7 @@ class DailyBriefGql {
           id
           title
           lastUpdatedAt
-          summaryCards {
-            text
-          }
+          summary
           introduction
           highlightedPublishers {
             id
@@ -45,34 +43,40 @@ class DailyBriefGql {
           }
           readingList {
             id
-            articles { 
-              wordCount
-              sourceUrl
-              slug
-              note
-              id
-              author
-              title
-              type
-              publicationDate
-              timeToRead 
-              image {
-                publicId
-              }
-              publisher {
-                name
-                id
-                darkLogo{
-                  publicId
+            name
+            entries {
+             note
+             item {
+                __typename
+                ... on Article {
+                  wordCount
+                  sourceUrl
+                  slug
+                  note
+                  id
+                  author
+                  title
+                  type
+                  publicationDate
+                  timeToRead 
+                  image {
+                    publicId
+                  }
+                  publisher {
+                    name
+                    id
+                    darkLogo{
+                      publicId
+                    }
+                     lightLogo {
+                      publicId
+                    }
+                  }
                 }
-                lightLogo {
-                  publicId
-                }
-              }
-            }
+             }
           }
         }
       }
     }
+  }
   ''');
-}

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 class BottomBouncingScrollPhysics extends ScrollPhysics {
   /// Creates scroll physics that bounce back from the edge.
-  const BottomBouncingScrollPhysics({ ScrollPhysics? parent }) : super(parent: parent);
+  const BottomBouncingScrollPhysics({ScrollPhysics? parent}) : super(parent: parent);
 
   @override
   BottomBouncingScrollPhysics applyTo(ScrollPhysics? ancestor) {
@@ -34,11 +34,10 @@ class BottomBouncingScrollPhysics extends ScrollPhysics {
     final overscrollPastStart = math.max(position.minScrollExtent - position.pixels, 0.0);
     final overscrollPastEnd = math.max(position.pixels - position.maxScrollExtent, 0.0);
     final overscrollPast = math.max(overscrollPastStart, overscrollPastEnd);
-    final easing = (overscrollPastStart > 0.0 && offset < 0.0)
-        || (overscrollPastEnd > 0.0 && offset > 0.0);
+    final easing = (overscrollPastStart > 0.0 && offset < 0.0) || (overscrollPastEnd > 0.0 && offset > 0.0);
 
     final friction = easing
-    // Apply less resistance when easing the overscroll vs tensioning.
+        // Apply less resistance when easing the overscroll vs tensioning.
         ? frictionFactor((overscrollPast - offset.abs()) / position.viewportDimension)
         : frictionFactor(overscrollPast / position.viewportDimension);
     final direction = offset.sign;
@@ -105,8 +104,7 @@ class BottomBouncingScrollPhysics extends ScrollPhysics {
   /// calculations.
   @override
   double carriedMomentum(double existingVelocity) {
-    return existingVelocity.sign *
-        math.min(0.000816 * math.pow(existingVelocity.abs(), 1.967).toDouble(), 40000.0);
+    return existingVelocity.sign * math.min(0.000816 * math.pow(existingVelocity.abs(), 1.967).toDouble(), 40000.0);
   }
 
   // Eyeballed from observation to counter the effect of an unintended scroll

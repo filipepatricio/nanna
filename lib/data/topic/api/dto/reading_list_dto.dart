@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_dto.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'reading_list_dto.g.dart';
@@ -6,9 +7,14 @@ part 'reading_list_dto.g.dart';
 @JsonSerializable()
 class ReadingListDTO {
   final String id;
-  final List<ArticleDTO> articles;
+  final String name;
+  final List<EntryDTO> entries;
 
-  ReadingListDTO(this.id, this.articles);
+  ReadingListDTO(
+    this.id,
+    this.name,
+    this.entries,
+  );
 
   factory ReadingListDTO.fromJson(Map<String, dynamic> json) => _$ReadingListDTOFromJson(json);
 

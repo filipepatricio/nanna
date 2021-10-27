@@ -1,11 +1,13 @@
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 
 class ReadingList {
   final String id;
-  final List<ArticleHeader> articles;
+  final String name;
+  final List<Entry> entries;
 
   ReadingList({
     required this.id,
-    required this.articles,
+    required this.name,
+    required this.entries,
   });
 }
