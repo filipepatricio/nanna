@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="dev" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="additionalArgs" value="--dart-define=env=dev" />
+    <option name="additionalArgs" value="--dart-define=env=dev --dart-define=host=http://192.168.0.16:4000/graphql" />
     <option name="buildFlavor" value="dev" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
     <method v="2" />

@@ -1,5 +1,7 @@
+import 'package:better_informed_mobile/data/auth/api/dto/oauth_usermeta_credentials_dto.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
+import 'package:better_informed_mobile/domain/user/data/user_meta.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -8,7 +10,7 @@ class AppleCredentialDataSource implements OAuthCredentialProviderDataSource {
   String get provider => SignInProviderDTO.apple;
 
   @override
-  Future<OAuthCredential> getCredential() async {
+  Future<OAuthUserMetaCredentialsDTO> getUserMetaCredential() async {
     final credentials = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
@@ -18,9 +20,11 @@ class AppleCredentialDataSource implements OAuthCredentialProviderDataSource {
 
     final oAuthProvider = OAuthProvider('apple.com');
 
-    return oAuthProvider.credential(
+    final userMeta = UserMeta(null, credentials.givenName, credentials.familyName);
+
+    return OAuthUserMetaCredentialsDTO(userMeta, oAuthProvider.credential(
       idToken: credentials.identityToken,
       accessToken: credentials.authorizationCode,
-    );
+    ));
   }
 }

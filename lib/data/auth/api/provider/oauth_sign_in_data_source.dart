@@ -9,12 +9,13 @@ class OAuthSignInDataSource {
   OAuthSignInDataSource(this._credentialProviderDataSource);
 
   Future<OAuthProviderTokenDTO> getProviderToken() async {
-    final credential = await _credentialProviderDataSource.getCredential();
+    final userMetaCredentials = await _credentialProviderDataSource.getUserMetaCredential();
     final provider = _credentialProviderDataSource.provider;
 
-    final token = credential.idToken;
+    final userMeta = userMetaCredentials.userMeta;
+    final token = userMetaCredentials.credentials.idToken;
     if (token == null) throw Exception('OAuth token is null');
 
-    return OAuthProviderTokenDTO(provider, token);
+    return OAuthProviderTokenDTO(provider, token, userMeta);
   }
 }

@@ -2,9 +2,9 @@ import 'package:gql/src/ast/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AuthGQL {
-  static DocumentNode login(String token, String provider) => gql('''
-    mutation {
-      signIn(idToken: "$token", provider: "$provider", information: {}) {
+  static DocumentNode login() => gql('''
+    mutation signIn(\$token: String!, \$provider: String!, \$meta: UserMeta!) {
+      signIn(idToken: \$token, provider: \$provider, information: \$meta) {
         successful
         errorMessage
         tokens {

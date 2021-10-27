@@ -36,14 +36,14 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthToken> signInWithDefaultProvider() async {
     final oAuthToken = await _oAuthSignInDataSource.getProviderToken();
-    final result = await _apiDataSource.signInWithProvider(oAuthToken.token, oAuthToken.provider);
+    final result = await _apiDataSource.signInWithProvider(oAuthToken.token, oAuthToken.provider, oAuthToken.userMeta);
 
     return _authTokenDTOMapper.from(result);
   }
 
   @override
   Future<AuthToken> signInWithMagicLinkToken(String token) async {
-    final result = await _apiDataSource.signInWithProvider(token, SignInProviderDTO.informed);
+    final result = await _apiDataSource.signInWithProvider(token, SignInProviderDTO.informed, null);
 
     return _authTokenDTOMapper.from(result);
   }

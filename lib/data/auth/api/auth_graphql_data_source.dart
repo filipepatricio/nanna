@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
+import 'package:better_informed_mobile/domain/user/data/user_meta.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,10 +14,19 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
   AuthGraphqlDataSource(@Named('unauthorized') this._client);
 
   @override
-  Future<AuthTokenDTO> signInWithProvider(String token, String provider) async {
+  Future<AuthTokenDTO> signInWithProvider(String token, String provider, UserMeta? userMeta) async {
     final result = await _client.mutate(
       MutationOptions(
-        document: AuthGQL.login(token, provider),
+        document: AuthGQL.login(),
+        variables: {
+          'token': token,
+          'provider': provider,
+          'meta': {
+            'avatarUrl': userMeta?.avatarUrl,
+            'firstName': userMeta?.firstName,
+            'lastName': userMeta?.lastName
+          }
+        },
         fetchPolicy: FetchPolicy.noCache,
       ),
     );
