@@ -6,15 +6,15 @@ class AppConfig {
   final String name;
   final String apiUrl;
   final String cloudinaryCloudName;
-
-  /// The DSN tells where to send events so the events are associated with the correct project.
   final String sentryEventDns;
+  final String? segmentWriteKey;
 
   AppConfig._({
     required this.name,
     required this.apiUrl,
     required this.cloudinaryCloudName,
     required this.sentryEventDns,
+    this.segmentWriteKey,
   });
 
   factory AppConfig.dev() {
@@ -35,6 +35,7 @@ class AppConfig {
       ),
       cloudinaryCloudName: 'informed-staging',
       sentryEventDns: 'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
+      segmentWriteKey: 'jmJAkhCovDOdxwUqbDBgpFW4xWkpLUte',
     );
   }
 
