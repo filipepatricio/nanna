@@ -11,12 +11,6 @@ class UpdatedLabel extends StatelessWidget {
 
   const UpdatedLabel({required this.dateTime, required this.backgroundColor, Key? key}) : super(key: key);
 
-  String updatedAtLabel() {
-    return LocaleKeys.topic_updated.tr(
-      args: ['${Jiffy(dateTime).fromNow()}'],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,9 +20,17 @@ class UpdatedLabel extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppDimens.s),
-        child: Text(updatedAtLabel().toUpperCase(),
-            style: AppTypography.labelText),
+        child: Text(
+          _updatedAtLabel().toUpperCase(),
+          style: AppTypography.labelText,
+        ),
       ),
+    );
+  }
+
+  String _updatedAtLabel() {
+    return LocaleKeys.topic_updated.tr(
+      args: ['${Jiffy(dateTime).fromNow()}'],
     );
   }
 }

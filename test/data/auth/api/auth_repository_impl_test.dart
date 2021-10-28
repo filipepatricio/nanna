@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/auth_repository_impl.dart';
 import 'package:better_informed_mobile/data/auth/api/mapper/auth_token_dto_mapper.dart';
+import 'package:better_informed_mobile/data/auth/api/mapper/login_response_dto_mapper.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_sign_in_data_source.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
@@ -15,26 +16,27 @@ import 'auth_repository_impl_test.mocks.dart';
     OAuthSignInDataSource,
     AuthTokenDTOMapper,
     FreshLink,
+    LoginResponseDTOMapper,
   ],
 )
 void main() {
   late MockAuthApiDataSource authApiDataSource;
   late MockOAuthSignInDataSource oAuthSignInDataSource;
-  late MockAuthTokenDTOMapper authTokenDTOMapper;
   late MockFreshLink<OAuth2Token> freshLink;
+  late MockLoginResponseDTOMapper loginDtoMapper;
   late AuthRepositoryImpl repository;
 
   setUp(() {
     authApiDataSource = MockAuthApiDataSource();
     oAuthSignInDataSource = MockOAuthSignInDataSource();
-    authTokenDTOMapper = MockAuthTokenDTOMapper();
     freshLink = MockFreshLink();
+    loginDtoMapper = MockLoginResponseDTOMapper();
 
     repository = AuthRepositoryImpl(
       authApiDataSource,
       oAuthSignInDataSource,
-      authTokenDTOMapper,
       freshLink,
+      loginDtoMapper,
     );
   });
 

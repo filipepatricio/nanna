@@ -1,11 +1,11 @@
-import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
+import 'package:better_informed_mobile/domain/auth/data/auth_result.dart';
 
 abstract class AuthRepository {
   Future<void> requestMagicLink(String email);
 
-  Future<AuthToken> signInWithDefaultProvider();
+  Future<AuthResult> signInWithDefaultProvider();
 
-  Future<AuthToken> signInWithMagicLinkToken(String token);
+  Future<AuthResult> signInWithMagicLinkToken(String token);
 
   Stream<void> tokenExpirationStream();
 
