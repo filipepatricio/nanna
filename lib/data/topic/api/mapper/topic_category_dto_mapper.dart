@@ -4,9 +4,10 @@ import 'package:better_informed_mobile/domain/topic/data/topic_category.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class TopicCategoryDTOMapper implements Mapper<TopicCategoryDTO, TopicCategory> {
+class TopicCategoryDTOMapper implements Mapper<TopicCategoryDTO?, TopicCategory?> {
   @override
-  TopicCategory call(TopicCategoryDTO data) {
+  TopicCategory? call(TopicCategoryDTO? data) {
+    if (data == null) return null;
     return TopicCategory(name: data.name);
   }
 }

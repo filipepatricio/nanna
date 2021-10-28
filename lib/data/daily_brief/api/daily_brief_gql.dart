@@ -5,35 +5,18 @@ class DailyBriefGql {
   static DocumentNode currentBrief() => gql('''
     query currentBriefForStartupScreen {
       currentBrief {
-        greeting {
-          headline
-          message
-          icon
-        }
-        goodbye {
-          headline
-          message
-          icon
-        }
+        $greeting
+        $goodbye
         numberOfTopics
         topics {
           id
           title
           lastUpdatedAt
-          summaryCards {
+          summaryCards{
             text
           }
           introduction
-          highlightedPublishers {
-            id
-            name
-            darkLogo{
-              publicId
-            }
-            lightLogo {
-              publicId
-            }
-          }
+          $highlightedPublishers
           category {
             name
           }
@@ -45,34 +28,73 @@ class DailyBriefGql {
           }
           readingList {
             id
-            articles { 
-              wordCount
-              sourceUrl
-              slug
-              note
-              id
-              author
-              title
-              type
-              publicationDate
-              timeToRead 
-              image {
-                publicId
-              }
-              publisher {
-                name
-                id
-                darkLogo{
-                  publicId
+            name
+            entries {
+             note
+             item {
+                __typename
+                ... on Article {
+                  $articleBody
                 }
-                lightLogo {
-                  publicId
-                }
-              }
-            }
+             }
           }
         }
       }
     }
+  }
   ''');
 }
+
+String greeting = '''
+  greeting {
+    headline
+    message
+    icon
+  }
+''';
+String goodbye = '''
+  goodbye {
+    headline
+    message
+    icon
+  }
+''';
+
+String highlightedPublishers = '''
+  highlightedPublishers {
+    id
+    name
+    darkLogo{
+      publicId
+    }
+    lightLogo {
+      publicId
+    }
+  }
+''';
+
+String articleBody = '''
+  wordCount
+  sourceUrl
+  slug
+  note
+  id
+  author
+  title
+  type
+  publicationDate
+  timeToRead 
+  image {
+    publicId
+  }
+  publisher {
+    name
+    id
+    darkLogo{
+      publicId
+    }
+     lightLogo {
+      publicId
+    }
+  }
+''';

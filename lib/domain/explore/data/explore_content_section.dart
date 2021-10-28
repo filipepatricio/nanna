@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,14 +9,14 @@ class ExploreContentSection with _$ExploreContentSection {
   factory ExploreContentSection.articles({
     required String title,
     required int themeColor,
-    required List<ArticleHeader> articles,
+    required List<Entry> entries,
   }) = ExploreContentSectionArticles;
 
   factory ExploreContentSection.articleWithCover({
     required String title,
     required int themeColor,
-    required ArticleHeader coverArticle,
-    required List<ArticleHeader> articles,
+    required Entry coverEntry,
+    required List<Entry> entries,
   }) = ExploreContentSectionArticleWithCover;
 
   factory ExploreContentSection.readingLists({

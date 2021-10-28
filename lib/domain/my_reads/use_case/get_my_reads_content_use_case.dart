@@ -21,7 +21,7 @@ class GetMyReadsContentUseCase {
 
     final items = brief.topics.take(itemsCount).map(
       (topic) {
-        final articlesCount = topic.readingList.articles.length;
+        final articlesCount = topic.readingList.entries.length;
         return MyReadsItem(
           topic: topic,
           articlesCount: articlesCount,

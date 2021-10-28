@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/presentation/page/article/article_scroll_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:bloc/bloc.dart';
@@ -12,42 +12,42 @@ import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'article_state.dart';
+import 'media_item_state.dart';
 
 @injectable
-class ArticleCubit extends Cubit<ArticleState> {
+class MediaItemCubit extends Cubit<MediaItemState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
   final GetArticleUseCase _getArticleUseCase;
 
-  late List<ArticleHeader> _allHeaders;
+  late List<Entry> _allEntries;
   late int _index;
 
   Article? _currentFullArticle;
 
   ArticleScrollData scrollData = ArticleScrollData.initial();
 
-  ArticleCubit(
+  MediaItemCubit(
     this._setStartedArticleStreamUseCase,
     this._getArticleUseCase,
-  ) : super(const ArticleState.initializing());
+  ) : super(const MediaItemState.initializing());
 
   var readingComplete = false;
 
-  Future<void> initialize(List<ArticleHeader> headers, int index) async {
-    _allHeaders = headers;
+  Future<void> initialize(List<Entry> entries, int index) async {
+    _allEntries = entries;
     _index = index;
 
-    final currentHeader = _allHeaders[_index];
+    final currentEntry = _allEntries[_index];
 
-    emit(const ArticleState.loading());
+    emit(const MediaItemState.loading());
     _resetBannerState();
 
     try {
-      _currentFullArticle = await _getArticleUseCase(currentHeader);
+      _currentFullArticle = await _getArticleUseCase(currentEntry);
       _showIdleOrErrorState();
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
-      emit(ArticleState.error(_getCurrentHeader()));
+      emit(MediaItemState.error(_getCurrentHeader()));
     }
   }
 
@@ -70,8 +70,8 @@ class ArticleCubit extends Cubit<ArticleState> {
 
   Future<void> loadNextArticle(Completer completer) async {
     final nextIndex = _index + 1;
-    if (nextIndex < _allHeaders.length) {
-      final nextArticleHeader = _allHeaders[nextIndex];
+    if (nextIndex < _allEntries.length) {
+      final nextArticleHeader = _allEntries[nextIndex];
 
       try {
         final articleFuture = _getArticleUseCase(nextArticleHeader);
@@ -89,10 +89,10 @@ class ArticleCubit extends Cubit<ArticleState> {
         _resetBannerState();
 
         _showIdleOrErrorState();
-        emit(ArticleState.nextPageLoaded(_index));
+        emit(MediaItemState.nextPageLoaded(_index));
       } catch (e, s) {
         Fimber.e('Fetching next full article failed', ex: e, stacktrace: s);
-        emit(ArticleState.error(_getCurrentHeader()));
+        emit(MediaItemState.error(_getCurrentHeader()));
       }
     }
 
@@ -101,20 +101,20 @@ class ArticleCubit extends Cubit<ArticleState> {
 
   void _resetBannerState() {
     readingComplete = false;
-    final readingBanner = ReadingBanner(article: _getCurrentHeader(), scrollProgress: 0.0);
+    final readingBanner = ReadingBanner(entry: _getCurrentHeader(), scrollProgress: 0.0);
     _setStartedArticleStreamUseCase(readingBanner);
   }
 
   void _showIdleOrErrorState() {
     final article = _currentFullArticle;
     if (article == null) {
-      emit(ArticleState.error(_getCurrentHeader()));
+      emit(MediaItemState.error(_getCurrentHeader()));
     } else {
-      if (_allHeaders.length > 1) {
-        final hasNextArticle = _index < _allHeaders.length - 1;
-        emit(ArticleState.idleMultiArticles(article.header, article.content, hasNextArticle));
+      if (_allEntries.length > 1) {
+        final hasNextArticle = _index < _allEntries.length - 1;
+        emit(MediaItemState.idleMultiItems(article.entry, article.content, hasNextArticle));
       } else {
-        emit(ArticleState.idleSingleArticle(article.header, article.content));
+        emit(MediaItemState.idleSingleItem(article.entry, article.content));
       }
     }
   }
@@ -127,10 +127,10 @@ class ArticleCubit extends Cubit<ArticleState> {
       if (progress == scrollEnd) {
         readingComplete = true;
       }
-      final readingBanner = ReadingBanner(article: _getCurrentHeader(), scrollProgress: progress);
+      final readingBanner = ReadingBanner(entry: _getCurrentHeader(), scrollProgress: progress);
       _setStartedArticleStreamUseCase.call(readingBanner);
     }
   }
 
-  ArticleHeader _getCurrentHeader() => _allHeaders[_index];
+  Entry _getCurrentHeader() => _allEntries[_index];
 }

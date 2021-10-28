@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -9,7 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 
 class DottedArticleInfo extends StatelessWidget {
-  final ArticleHeader article;
+  final MediaItemArticle article;
   final bool isLight;
 
   const DottedArticleInfo({

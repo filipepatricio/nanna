@@ -95,7 +95,7 @@ class ReadingListCover extends HookWidget {
                   children: [
                     Text(
                       LocaleKeys.readingList_articleCount.tr(
-                        args: [topic.readingList.articles.length.toString()],
+                        args: [topic.readingList.entries.length.toString()],
                       ),
                       style: AppTypography.b3Medium,
                     ),

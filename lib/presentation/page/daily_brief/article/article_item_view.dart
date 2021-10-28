@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/colored_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_stacked_cover.dart';
@@ -18,15 +19,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ArticleItemView extends HookWidget {
-  final ArticleHeader article;
-  final List<ArticleHeader> allArticles;
+  final MediaItemArticle article;
+  final List<Entry> allEntries;
   final int index;
   final double statusBarHeight;
-  final ArticleNavigationCallback navigationCallback;
+  final MediaItemNavigationCallback navigationCallback;
 
   const ArticleItemView({
     required this.article,
-    required this.allArticles,
+    required this.allEntries,
     required this.index,
     required this.statusBarHeight,
     required this.navigationCallback,
@@ -50,10 +51,10 @@ class ArticleItemView extends HookWidget {
       child: GestureDetector(
         onTap: () {
           AutoRouter.of(context).push(
-            ArticlePageRoute(
-              pageData: ArticlePageData.multipleArticles(
+            MediaItemPageRoute(
+              pageData: MediaItemPageData.multipleItems(
                 index: index,
-                articleList: allArticles,
+                entryList: allEntries,
                 navigationCallback: navigationCallback,
               ),
             ),
@@ -67,7 +68,7 @@ class ArticleItemView extends HookWidget {
             Padding(
               padding: const EdgeInsets.only(right: AppDimens.xxl),
               child: Text(
-                '${index + 1}/${allArticles.length} Afghanistan articles',
+                '${index + 1}/${allEntries.length} Afghanistan articles',
                 style: AppTypography.subH1Medium,
                 textAlign: TextAlign.start,
               ),
