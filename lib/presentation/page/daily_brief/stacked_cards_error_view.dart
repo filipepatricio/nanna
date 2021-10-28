@@ -24,29 +24,26 @@ class StackedCardsErrorView extends HookWidget {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return GestureDetector(
-            onTap: () async => {await cubit.initialize()},
-            child: ReadingListStackedCards(
-              coverSize: Size(cardStackWidth, constraints.maxHeight),
-              center: true,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(AppVectorGraphics.sadSun),
-                  const SizedBox(height: AppDimens.l),
-                  Text(
-                    LocaleKeys.dailyBrief_ups.tr(),
-                    style: AppTypography.h3bold,
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    LocaleKeys.dailyBrief_tryAgainLater.tr(),
-                    style: AppTypography.h3Normal,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+          return ReadingListStackedCards(
+            coverSize: Size(cardStackWidth, constraints.maxHeight),
+            center: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(AppVectorGraphics.sadSun),
+                const SizedBox(height: AppDimens.l),
+                Text(
+                  LocaleKeys.dailyBrief_ups.tr(),
+                  style: AppTypography.h3bold,
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  LocaleKeys.dailyBrief_tryAgainLater.tr(),
+                  style: AppTypography.h3Normal,
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           );
         },

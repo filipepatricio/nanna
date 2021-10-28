@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -41,8 +41,8 @@ class ArticleListItem extends HookWidget {
 
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
-        ArticlePageRoute(
-          pageData: ArticlePageData.singleArticle(
+        MediaItemPageRoute(
+          pageData: MediaItemPageData.singleItem(
             entry: entry,
           ),
         ),

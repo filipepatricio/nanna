@@ -12,10 +12,10 @@ import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'article_state.dart';
+import 'media_item_state.dart';
 
 @injectable
-class ArticleCubit extends Cubit<ArticleState> {
+class MediaItemCubit extends Cubit<MediaItemState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
   final GetArticleUseCase _getArticleUseCase;
 
@@ -26,10 +26,10 @@ class ArticleCubit extends Cubit<ArticleState> {
 
   ArticleScrollData scrollData = ArticleScrollData.initial();
 
-  ArticleCubit(
+  MediaItemCubit(
     this._setStartedArticleStreamUseCase,
     this._getArticleUseCase,
-  ) : super(const ArticleState.initializing());
+  ) : super(const MediaItemState.initializing());
 
   var readingComplete = false;
 
@@ -39,7 +39,7 @@ class ArticleCubit extends Cubit<ArticleState> {
 
     final currentEntry = _allEntries[_index];
 
-    emit(const ArticleState.loading());
+    emit(const MediaItemState.loading());
     _resetBannerState();
 
     try {
@@ -47,7 +47,7 @@ class ArticleCubit extends Cubit<ArticleState> {
       _showIdleOrErrorState();
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
-      emit(ArticleState.error(_getCurrentHeader()));
+      emit(MediaItemState.error(_getCurrentHeader()));
     }
   }
 
@@ -89,10 +89,10 @@ class ArticleCubit extends Cubit<ArticleState> {
         _resetBannerState();
 
         _showIdleOrErrorState();
-        emit(ArticleState.nextPageLoaded(_index));
+        emit(MediaItemState.nextPageLoaded(_index));
       } catch (e, s) {
         Fimber.e('Fetching next full article failed', ex: e, stacktrace: s);
-        emit(ArticleState.error(_getCurrentHeader()));
+        emit(MediaItemState.error(_getCurrentHeader()));
       }
     }
 
@@ -108,13 +108,13 @@ class ArticleCubit extends Cubit<ArticleState> {
   void _showIdleOrErrorState() {
     final article = _currentFullArticle;
     if (article == null) {
-      emit(ArticleState.error(_getCurrentHeader()));
+      emit(MediaItemState.error(_getCurrentHeader()));
     } else {
       if (_allEntries.length > 1) {
         final hasNextArticle = _index < _allEntries.length - 1;
-        emit(ArticleState.idleMultiArticles(article.entry, article.content, hasNextArticle));
+        emit(MediaItemState.idleMultiItems(article.entry, article.content, hasNextArticle));
       } else {
-        emit(ArticleState.idleSingleArticle(article.entry, article.content));
+        emit(MediaItemState.idleSingleItem(article.entry, article.content));
       }
     }
   }

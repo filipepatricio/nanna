@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/data/article/api/dto/article_dto.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 

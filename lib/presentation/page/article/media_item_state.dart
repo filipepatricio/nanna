@@ -3,31 +3,31 @@ import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'article_state.freezed.dart';
+part 'media_item_state.freezed.dart';
 
 @freezed
-class ArticleState with _$ArticleState {
+class MediaItemState with _$MediaItemState {
   @Implements(BuildState)
-  const factory ArticleState.initializing() = _ArticleStateInitializing;
+  const factory MediaItemState.initializing() = _MediaItemStateInitializing;
 
   @Implements(BuildState)
-  const factory ArticleState.loading() = _ArticleStateLoading;
+  const factory MediaItemState.loading() = _MediaItemStateLoading;
 
   @Implements(BuildState)
-  const factory ArticleState.idleMultiArticles(
+  const factory MediaItemState.idleMultiItems(
     Entry header,
     ArticleContent content,
     bool hasNext,
-  ) = ArticleStateIdleMultiArticles;
+  ) = MultiMediaItemStateIdle;
 
   @Implements(BuildState)
-  const factory ArticleState.idleSingleArticle(
+  const factory MediaItemState.idleSingleItem(
     Entry header,
     ArticleContent content,
-  ) = ArticleStateIdleSingleArticle;
+  ) = SingleMediaItemStateIdle;
 
-  const factory ArticleState.nextPageLoaded(int index) = _ArticleStateNextPageLoaded;
+  const factory MediaItemState.nextPageLoaded(int index) = _MediaItemStateNextPageLoaded;
 
   @Implements(BuildState)
-  const factory ArticleState.error(Entry entry) = _ArticleStateError;
+  const factory MediaItemState.error(Entry entry) = _MediaItemStateError;
 }

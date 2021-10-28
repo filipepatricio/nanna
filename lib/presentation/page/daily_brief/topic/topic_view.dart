@@ -82,7 +82,7 @@ class TopicView extends HookWidget {
           children: [
             _TopicHeader(topic: topic),
             _SummaryContent(topic: topic),
-            _ArticleContent(
+            _MediaItemContent(
               articleContentHeight: articleContentHeight,
               controller: articleController,
               pageIndex: pageIndex,
@@ -210,11 +210,11 @@ class _SummaryContent extends HookWidget {
   Widget build(BuildContext context) {
     final controller = usePageController(viewportFraction: 0.85);
 
-    if (topic.summary.isEmpty) {
+    if (topic.topicSummaryList.isEmpty) {
       return const SizedBox();
     }
 
-    final content = topic.summary.length > 1
+    final content = topic.topicSummaryList.length > 1
         ? _SummaryCardPageView(
             topic: topic,
             controller: controller,
@@ -254,11 +254,11 @@ class _SummaryContent extends HookWidget {
                 const SizedBox(height: AppDimens.l),
                 content,
                 const SizedBox(height: AppDimens.xl),
-                if (topic.summary.length > 1) ...[
+                if (topic.topicSummaryList.length > 1) ...[
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                     child: PageDotIndicator(
-                      pageCount: topic.summary.length,
+                      pageCount: topic.topicSummaryList.length,
                       controller: controller,
                     ),
                   ),
@@ -291,7 +291,7 @@ class _SummaryCardPageView extends StatelessWidget {
       child: PageView.builder(
         controller: controller,
         scrollDirection: Axis.horizontal,
-        itemCount: topic.summary.length,
+        itemCount: topic.topicSummaryList.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: AppDimens.m),
@@ -336,7 +336,7 @@ class _SummaryCard extends StatelessWidget {
           ],
           Expanded(
             child: InformedMarkdownBody(
-              markdown: topic.summary,
+              markdown: topic.topicSummaryList[index].content,
               baseTextStyle: AppTypography.b2MediumSerif,
             ),
           ),
@@ -346,13 +346,13 @@ class _SummaryCard extends StatelessWidget {
   }
 }
 
-class _ArticleContent extends StatelessWidget {
+class _MediaItemContent extends StatelessWidget {
   final double articleContentHeight;
   final PageController controller;
   final ValueNotifier<int> pageIndex;
   final List<Entry> entryList;
 
-  const _ArticleContent({
+  const _MediaItemContent({
     required this.articleContentHeight,
     required this.controller,
     required this.pageIndex,
@@ -362,8 +362,6 @@ class _ArticleContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
-    final articleList = entryList.map((entry) => entry.item).whereType<MediaItemArticle>().toList();
-
     return Container(
       height: articleContentHeight,
       child: Stack(
@@ -377,13 +375,19 @@ class _ArticleContent extends StatelessWidget {
               onPageChanged: (index) => pageIndex.value = index,
               itemCount: entryList.length,
               itemBuilder: (context, index) {
-                return ArticleItemView(
-                  article: articleList[index],
-                  allEntries: entryList,
-                  index: index,
-                  statusBarHeight: statusBarHeight,
-                  navigationCallback: (index) => controller.jumpToPage(index),
-                );
+                final currentMediaItem = entryList[index].item;
+                //TODO: Handling different media types
+                if (currentMediaItem is MediaItemArticle) {
+                  return ArticleItemView(
+                    article: currentMediaItem,
+                    allEntries: entryList,
+                    index: index,
+                    statusBarHeight: statusBarHeight,
+                    navigationCallback: (index) => controller.jumpToPage(index),
+                  );
+                } else {
+                  return const SizedBox();
+                }
               },
             ),
           ),

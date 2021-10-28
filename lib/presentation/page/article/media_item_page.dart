@@ -4,11 +4,11 @@ import 'package:better_informed_mobile/domain/article/data/article_content.dart'
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_state.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_markdown.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_state.dart';
 import 'package:better_informed_mobile/presentation/page/article/pull_up_indicator_action/pull_up_indicator_action.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -28,18 +28,18 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-typedef ArticleNavigationCallback = void Function(int index);
+typedef MediaItemNavigationCallback = void Function(int index);
 
 const _loadNextArticleIndicatorHeight = 150.0;
 
-class ArticlePage extends HookWidget {
+class MediaItemPage extends HookWidget {
   final double? readArticleProgress;
   final int index;
   final List<Entry> entryList;
-  final ArticleNavigationCallback? navigationCallback;
+  final MediaItemNavigationCallback? navigationCallback;
 
-  ArticlePage({
-    required ArticlePageData pageData,
+  MediaItemPage({
+    required MediaItemPageData pageData,
     Key? key,
   })  : index = _getIndex(pageData),
         entryList = _getEntries(pageData),
@@ -47,22 +47,22 @@ class ArticlePage extends HookWidget {
         readArticleProgress = pageData.readArticleProgress,
         super(key: key);
 
-  static int _getIndex(ArticlePageData pageData) => pageData.map(
-        singleArticle: (data) => 0,
-        multipleArticles: (data) => data.index,
+  static int _getIndex(MediaItemPageData pageData) => pageData.map(
+        singleItem: (data) => 0,
+        multipleItems: (data) => data.index,
       );
 
-  static List<Entry> _getEntries(ArticlePageData pageData) => pageData.map(
-        singleArticle: (data) => [data.entry],
-        multipleArticles: (data) => data.entryList,
+  static List<Entry> _getEntries(MediaItemPageData pageData) => pageData.map(
+        singleItem: (data) => [data.entry],
+        multipleItems: (data) => data.entryList,
       );
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<ArticleCubit>();
+    final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
 
-    useCubitListener<ArticleCubit, ArticleState>(cubit, (cubit, state, context) {
+    useCubitListener<MediaItemCubit, MediaItemState>(cubit, (cubit, state, context) {
       state.mapOrNull(nextPageLoaded: (state) {
         navigationCallback?.call(state.index);
       });
@@ -73,8 +73,8 @@ class ArticlePage extends HookWidget {
     );
 
     final articleType = state.mapOrNull(
-      idleSingleArticle: (state) => state.header.item.type,
-      idleMultiArticles: (state) => state.header.item.type,
+      idleSingleItem: (state) => state.header.item.type,
+      idleMultiItems: (state) => state.header.item.type,
     );
 
     useEffect(() {
@@ -107,7 +107,7 @@ class ArticlePage extends HookWidget {
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
           loading: (state) => const _LoadingContent(),
-          idleMultiArticles: (state) => _IdleContent(
+          idleMultiItems: (state) => _IdleContent(
             entry: state.header,
             content: state.content,
             hasNextArticle: state.hasNext,
@@ -116,7 +116,7 @@ class ArticlePage extends HookWidget {
             cubit: cubit,
             readArticleProgress: readArticleProgress,
           ),
-          idleSingleArticle: (state) => _IdleContent(
+          idleSingleItem: (state) => _IdleContent(
             entry: state.header,
             content: state.content,
             hasNextArticle: false,
@@ -185,7 +185,7 @@ class _ErrorContent extends StatelessWidget {
 class _IdleContent extends HookWidget {
   final Entry entry;
   final ArticleContent content;
-  final ArticleCubit cubit;
+  final MediaItemCubit cubit;
   final ScrollController controller;
   final bool hasNextArticle;
   final bool multipleArticles;
@@ -433,7 +433,7 @@ class ArticleHeaderView extends HookWidget {
 class ArticleContentView extends StatelessWidget {
   final Entry entry;
   final ArticleContent content;
-  final ArticleCubit cubit;
+  final MediaItemCubit cubit;
   final ScrollController controller;
   final Key articleContentKey;
   final Function() scrollToPosition;

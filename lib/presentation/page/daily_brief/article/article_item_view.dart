@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/colored_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_stacked_cover.dart';
@@ -23,7 +23,7 @@ class ArticleItemView extends HookWidget {
   final List<Entry> allEntries;
   final int index;
   final double statusBarHeight;
-  final ArticleNavigationCallback navigationCallback;
+  final MediaItemNavigationCallback navigationCallback;
 
   const ArticleItemView({
     required this.article,
@@ -51,8 +51,8 @@ class ArticleItemView extends HookWidget {
       child: GestureDetector(
         onTap: () {
           AutoRouter.of(context).push(
-            ArticlePageRoute(
-              pageData: ArticlePageData.multipleArticles(
+            MediaItemPageRoute(
+              pageData: MediaItemPageData.multipleItems(
                 index: index,
                 entryList: allEntries,
                 navigationCallback: navigationCallback,

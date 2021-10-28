@@ -104,7 +104,6 @@ final readingListSection = ExploreContentSection.readingLists(
       title: 'Afghanistan stories',
       introduction: 'introduction',
       lastUpdatedAt: DateTime.parse('2021-10-18T13:52:37Z'),
-      summary: '',
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
         id: '0',
@@ -125,12 +124,12 @@ final readingListSection = ExploreContentSection.readingLists(
           darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
         )
       ],
+      topicSummaryList: [],
     ),
     Topic(
       id: '0',
       title: 'All the crypto coins',
       introduction: 'introduction',
-      summary: 'Summary example 1',
       lastUpdatedAt: DateTime.parse('2021-10-18T13:52:37Z'),
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
@@ -141,15 +140,15 @@ final readingListSection = ExploreContentSection.readingLists(
       coverImage: Image(publicId: ''),
       category: TopicCategory(name: 'Crypto stories'),
       highlightedPublishers: [],
+      topicSummaryList: [],
     ),
     Topic(
       id: '0',
       title: 'Female Leadership',
       introduction: 'introduction',
-      summary: '',
       lastUpdatedAt: DateTime.parse('2021-10-18T13:52:37Z'),
       heroImage: Image(publicId: ''),
-      readingList: ReadingList(]
+      readingList: ReadingList(
         id: '0',
         name: '',
         entries: mockedEntries,
@@ -163,12 +162,12 @@ final readingListSection = ExploreContentSection.readingLists(
           darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
         ),
       ],
+      topicSummaryList: [],
     ),
     Topic(
       id: '0',
       title: 'Afghanistan falls to the Taliban',
       introduction: 'introduction',
-      summary: 'Summary example',
       lastUpdatedAt: DateTime.parse('2021-10-18T13:52:37Z'),
       heroImage: Image(publicId: ''),
       readingList: ReadingList(
@@ -205,6 +204,7 @@ final readingListSection = ExploreContentSection.readingLists(
           darkLogo: article_image.Image(publicId: 'publishers/the_economist'),
         )
       ],
+      topicSummaryList: [],
     ),
   ],
 );
@@ -217,7 +217,6 @@ class GetExploreContentUseCase {
     return ExploreContent(
       sections: [
         exclusiveSection,
-        readingListSection,
         missedArticlesSection,
         editorTeamSection,
       ],

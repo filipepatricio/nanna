@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/reading_list_dto.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_category_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -17,7 +18,7 @@ class TopicDTO {
   final ImageDTO heroImage;
   final ImageDTO coverImage;
   final ReadingListDTO readingList;
-  final String summary;
+  final List<SummaryCardDTO> summaryCards;
 
   TopicDTO(
     this.id,
@@ -29,7 +30,7 @@ class TopicDTO {
     this.heroImage,
     this.coverImage,
     this.readingList,
-    this.summary,
+    this.summaryCards,
   );
 
   factory TopicDTO.fromJson(Map<String, dynamic> json) => _$TopicDTOFromJson(json);
