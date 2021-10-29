@@ -36,7 +36,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthResult> signInWithDefaultProvider() async {
     final oAuthToken = await _oAuthSignInDataSource.getProviderToken();
-    final result = await _apiDataSource.signInWithProvider(oAuthToken.token, oAuthToken.provider);
+    final result = await _apiDataSource.signInWithProvider(oAuthToken.token, oAuthToken.provider, oAuthToken.userMeta);
     final response = _loginResponseDTOMapper(result);
 
     return AuthResult(response.tokens, oAuthToken.provider, response.user.id);
