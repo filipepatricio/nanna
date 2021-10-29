@@ -7,6 +7,7 @@ class UserGQL {
   static DocumentNode queryUser() => gql('''
     query {
       me {
+        id
         email
         firstName
         lastName

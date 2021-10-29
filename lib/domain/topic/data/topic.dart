@@ -8,8 +8,8 @@ class Topic {
   final String id;
   final String title;
   final String introduction;
+  final List<TopicSummary> topicSummaryList;
   final DateTime lastUpdatedAt;
-  final List<TopicSummary> summary;
   final List<Publisher> highlightedPublishers;
   final TopicCategory? category;
   final Image heroImage;
@@ -21,7 +21,7 @@ class Topic {
     required this.title,
     required this.introduction,
     required this.lastUpdatedAt,
-    required this.summary,
+    required this.topicSummaryList,
     required this.highlightedPublishers,
     required this.heroImage,
     required this.coverImage,

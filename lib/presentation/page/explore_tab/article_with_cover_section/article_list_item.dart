@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -19,14 +19,14 @@ const listItemWidth = 155.0;
 const listItemHeight = 260.0;
 
 class ArticleListItem extends HookWidget {
-  final ArticleHeader articleHeader;
+  final Entry entry;
   final Color themeColor;
   final Color cardColor;
   final double? height;
   final double? width;
 
   const ArticleListItem({
-    required this.articleHeader,
+    required this.entry,
     required this.themeColor,
     this.cardColor = AppColors.background,
     this.height = listItemHeight,
@@ -37,13 +37,13 @@ class ArticleListItem extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = articleHeader.image?.publicId;
+    final imageId = entry.item.image?.publicId;
 
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
-        ArticlePageRoute(
-          pageData: ArticlePageData.singleArticle(
-            article: articleHeader,
+        MediaItemPageRoute(
+          pageData: MediaItemPageData.singleItem(
+            entry: entry,
           ),
         ),
       ),
@@ -69,14 +69,14 @@ class ArticleListItem extends HookWidget {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: articleHeader.type == ArticleType.premium
+                child: entry.item.type == ArticleType.premium
                     ? const ExclusiveLabel()
                     : ArticleLabel.opinion(backgroundColor: themeColor),
               ),
               const Spacer(),
-              PublisherLogo.light(publisher: articleHeader.publisher),
+              PublisherLogo.light(publisher: entry.item.publisher),
               InformedMarkdownBody(
-                markdown: articleHeader.title,
+                markdown: entry.item.title,
                 baseTextStyle: AppTypography.h5BoldSmall.copyWith(
                   height: 1.4,
                   color: imageId == null ? AppColors.textPrimary : AppColors.white,

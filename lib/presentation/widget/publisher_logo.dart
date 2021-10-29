@@ -36,7 +36,7 @@ class PublisherLogo extends HookWidget {
             alignment: Alignment.centerLeft,
             child: Image.network(
               cloudinaryProvider
-                  .withPublicId(publisherLogoId)
+                  .withPublicIdAsPng(publisherLogoId)
                   .transform()
                   .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                   .fit()

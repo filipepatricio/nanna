@@ -50,7 +50,7 @@ class ArticleSectionView extends StatelessWidget {
                   onTap: () => AutoRouter.of(context).push(
                     ArticleSeeAllPageRoute(
                       title: section.title,
-                      articles: section.articles,
+                      entries: section.entries,
                     ),
                   ),
                 ),
@@ -64,12 +64,12 @@ class ArticleSectionView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               itemBuilder: (context, index) => ArticleListItem(
-                articleHeader: section.articles[index],
+                entry: section.entries[index],
                 themeColor: AppColors.background,
                 cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
               ),
               separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-              itemCount: section.articles.length,
+              itemCount: section.entries.length,
             ),
           ),
           const SizedBox(height: AppDimens.xxl),

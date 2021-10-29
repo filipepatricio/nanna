@@ -5,12 +5,17 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+const String pngExtension = '.png';
+
 class CloudinaryImageProvider {
   final String _cloudName;
 
   CloudinaryImageProvider._(this._cloudName);
 
   CloudinaryImage withPublicId(String publicId) => CloudinaryImage.fromPublicId(_cloudName, publicId);
+
+  CloudinaryImage withPublicIdAsPng(String publicId) =>
+      CloudinaryImage.fromPublicId(_cloudName, publicId + pngExtension);
 }
 
 CloudinaryImageProvider useCloudinaryProvider() {

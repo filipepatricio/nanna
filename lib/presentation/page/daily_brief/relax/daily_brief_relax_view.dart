@@ -42,7 +42,7 @@ class RelaxView extends HookWidget {
             // if (goodbyeHeadline.icon != null) ...[
             //   Image.network(
             //     cloudinaryProvider
-            //         .withPublicId(goodbyeHeadline.icon)
+            //         .withPublicIdAsPng(goodbyeHeadline.icon)
             //         .transform()
             //         .width(DimensionUtil.getPhysicalPixelsAsInt(168.0, context))
             //         .fit()

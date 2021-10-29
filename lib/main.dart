@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -30,11 +31,12 @@ Future<void> main() async {
 
   await configureDependencies(environment);
 
-  setupFimber();
+  final appConfig = getIt.get<AppConfig>();
+  _setupFimber();
+  _setupSegment(appConfig);
 
   await Hive.initFlutter();
   final mainRouter = MainRouter();
-  final appConfig = getIt.get<AppConfig>();
 
   await SentryFlutter.init(
     (options) => options
@@ -55,7 +57,21 @@ Future<void> main() async {
   );
 }
 
-void setupFimber() => Fimber.plantTree(getIt());
+void _setupFimber() => Fimber.plantTree(getIt());
+
+void _setupSegment(AppConfig config) {
+  final writeKey = config.segmentWriteKey;
+  if (writeKey == null) return;
+
+  Segment.config(
+    options: SegmentConfig(
+      writeKey: writeKey,
+      trackApplicationLifecycleEvents: true,
+      amplitudeIntegrationEnabled: false,
+      debug: kDebugMode,
+    ),
+  );
+}
 
 String _getEnvironment() {
   const env = String.fromEnvironment(_environmentArgKey, defaultValue: Environment.dev);

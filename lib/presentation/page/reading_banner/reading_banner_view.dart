@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -40,14 +40,14 @@ class _ReadingBannerBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = readingBanner.article.image?.publicId;
+    final imageId = readingBanner.entry.item.image?.publicId;
 
     return GestureDetector(
       onTap: () {
         AutoRouter.of(context).push(
-          ArticlePageRoute(
-            pageData: ArticlePageData.singleArticle(
-              article: readingBanner.article,
+          MediaItemPageRoute(
+            pageData: MediaItemPageData.singleItem(
+              entry: readingBanner.entry,
               readArticleProgress: readingBanner.scrollProgress,
             ),
           ),
@@ -99,7 +99,7 @@ class _ReadingBannerBody extends HookWidget {
                           ),
                           const SizedBox(height: AppDimens.s),
                           Text(
-                            readingBanner.article.title,
+                            readingBanner.entry.item.title,
                             style: AppTypography.h5BoldSmall.copyWith(height: 1),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

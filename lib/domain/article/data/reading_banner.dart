@@ -1,11 +1,11 @@
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 
 class ReadingBanner {
-  final ArticleHeader article;
+  final Entry entry;
   final double scrollProgress;
 
   ReadingBanner({
-    required this.article,
+    required this.entry,
     required this.scrollProgress,
   });
 }

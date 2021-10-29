@@ -96,7 +96,7 @@ class DailyBriefPage extends HookWidget {
             controller: controller,
             cardStackWidth: cardStackWidth,
           ),
-          error: (_) => StackedCardsErrorView(cardStackWidth: cardStackWidth),
+          error: (_) => StackedCardsErrorView(cardStackWidth: cardStackWidth, cubit: cubit),
           loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
           orElse: () => const SizedBox(),
         ),

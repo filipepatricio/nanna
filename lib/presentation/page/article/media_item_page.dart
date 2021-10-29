@@ -2,13 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page_data.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_state.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/article/content/article_content_markdown.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_state.dart';
 import 'package:better_informed_mobile/presentation/page/article/pull_up_indicator_action/pull_up_indicator_action.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -28,41 +28,41 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-typedef ArticleNavigationCallback = void Function(int index);
+typedef MediaItemNavigationCallback = void Function(int index);
 
 const _loadNextArticleIndicatorHeight = 150.0;
 
-class ArticlePage extends HookWidget {
+class MediaItemPage extends HookWidget {
   final double? readArticleProgress;
   final int index;
-  final List<ArticleHeader> articleList;
-  final ArticleNavigationCallback? navigationCallback;
+  final List<Entry> entryList;
+  final MediaItemNavigationCallback? navigationCallback;
 
-  ArticlePage({
-    required ArticlePageData pageData,
+  MediaItemPage({
+    required MediaItemPageData pageData,
     Key? key,
   })  : index = _getIndex(pageData),
-        articleList = _getArticles(pageData),
+        entryList = _getEntries(pageData),
         navigationCallback = pageData.navigationCallback,
         readArticleProgress = pageData.readArticleProgress,
         super(key: key);
 
-  static int _getIndex(ArticlePageData pageData) => pageData.map(
-        singleArticle: (data) => 0,
-        multipleArticles: (data) => data.index,
+  static int _getIndex(MediaItemPageData pageData) => pageData.map(
+        singleItem: (data) => 0,
+        multipleItems: (data) => data.index,
       );
 
-  static List<ArticleHeader> _getArticles(ArticlePageData pageData) => pageData.map(
-        singleArticle: (data) => [data.article],
-        multipleArticles: (data) => data.articleList,
+  static List<Entry> _getEntries(MediaItemPageData pageData) => pageData.map(
+        singleItem: (data) => [data.entry],
+        multipleItems: (data) => data.entryList,
       );
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<ArticleCubit>();
+    final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
 
-    useCubitListener<ArticleCubit, ArticleState>(cubit, (cubit, state, context) {
+    useCubitListener<MediaItemCubit, MediaItemState>(cubit, (cubit, state, context) {
       state.mapOrNull(nextPageLoaded: (state) {
         navigationCallback?.call(state.index);
       });
@@ -73,12 +73,12 @@ class ArticlePage extends HookWidget {
     );
 
     final articleType = state.mapOrNull(
-      idleSingleArticle: (state) => state.header.type,
-      idleMultiArticles: (state) => state.header.type,
+      idleSingleItem: (state) => state.header.item.type,
+      idleMultiItems: (state) => state.header.item.type,
     );
 
     useEffect(() {
-      cubit.initialize(articleList, index);
+      cubit.initialize(entryList, index);
     }, [cubit]);
 
     return Scaffold(
@@ -107,8 +107,8 @@ class ArticlePage extends HookWidget {
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
           loading: (state) => const _LoadingContent(),
-          idleMultiArticles: (state) => _IdleContent(
-            header: state.header,
+          idleMultiItems: (state) => _IdleContent(
+            entry: state.header,
             content: state.content,
             hasNextArticle: state.hasNext,
             multipleArticles: true,
@@ -116,8 +116,8 @@ class ArticlePage extends HookWidget {
             cubit: cubit,
             readArticleProgress: readArticleProgress,
           ),
-          idleSingleArticle: (state) => _IdleContent(
-            header: state.header,
+          idleSingleItem: (state) => _IdleContent(
+            entry: state.header,
             content: state.content,
             hasNextArticle: false,
             multipleArticles: false,
@@ -125,7 +125,7 @@ class ArticlePage extends HookWidget {
             cubit: cubit,
             readArticleProgress: readArticleProgress,
           ),
-          error: (state) => _ErrorContent(header: state.articleHeader),
+          error: (state) => _ErrorContent(entry: state.entry),
           orElse: () => const SizedBox(),
         ),
       ),
@@ -145,10 +145,10 @@ class _LoadingContent extends StatelessWidget {
 }
 
 class _ErrorContent extends StatelessWidget {
-  final ArticleHeader header;
+  final Entry entry;
 
   const _ErrorContent({
-    required this.header,
+    required this.entry,
     Key? key,
   }) : super(key: key);
 
@@ -174,7 +174,7 @@ class _ErrorContent extends StatelessWidget {
         const SizedBox(height: AppDimens.l),
         //TODO: Change for proper label and design
         OpenWebButton(
-          url: header.sourceUrl,
+          url: entry.item.sourceUrl,
           buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
         ),
       ],
@@ -183,9 +183,9 @@ class _ErrorContent extends StatelessWidget {
 }
 
 class _IdleContent extends HookWidget {
-  final ArticleHeader header;
+  final Entry entry;
   final ArticleContent content;
-  final ArticleCubit cubit;
+  final MediaItemCubit cubit;
   final ScrollController controller;
   final bool hasNextArticle;
   final bool multipleArticles;
@@ -194,7 +194,7 @@ class _IdleContent extends HookWidget {
   final double? readArticleProgress;
 
   _IdleContent({
-    required this.header,
+    required this.entry,
     required this.content,
     required this.hasNextArticle,
     required this.multipleArticles,
@@ -235,9 +235,9 @@ class _IdleContent extends HookWidget {
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
-                    ArticleHeaderView(article: header),
+                    ArticleHeaderView(entry: entry),
                     ArticleContentView(
-                      article: header,
+                      entry: entry,
                       content: content,
                       cubit: cubit,
                       controller: controller,
@@ -361,14 +361,14 @@ class _AllArticlesRead extends StatelessWidget {
 }
 
 class ArticleHeaderView extends HookWidget {
-  final ArticleHeader article;
+  final Entry entry;
 
-  const ArticleHeaderView({required this.article, Key? key}) : super(key: key);
+  const ArticleHeaderView({required this.entry, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = article.image?.publicId;
+    final imageId = entry.item.image?.publicId;
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -378,7 +378,7 @@ class ArticleHeaderView extends HookWidget {
           height: MediaQuery.of(context).size.height * 0.55,
           child: imageId != null
               ? Image.network(
-                  cloudinaryProvider.withPublicId(imageId).url,
+                  cloudinaryProvider.withPublicIdAsPng(imageId).url,
                   fit: BoxFit.cover,
                   alignment: Alignment.topLeft,
                 )
@@ -417,7 +417,7 @@ class ArticleHeaderView extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.l),
                 Text(
-                  article.title, // TODO missing data in object
+                  entry.item.title, // TODO missing data in object
                   style: AppTypography.b1Medium.copyWith(color: Colors.white),
                 ),
                 const SizedBox(height: AppDimens.l),
@@ -431,15 +431,15 @@ class ArticleHeaderView extends HookWidget {
 }
 
 class ArticleContentView extends StatelessWidget {
-  final ArticleHeader article;
+  final Entry entry;
   final ArticleContent content;
-  final ArticleCubit cubit;
+  final MediaItemCubit cubit;
   final ScrollController controller;
   final Key articleContentKey;
   final Function() scrollToPosition;
 
   const ArticleContentView({
-    required this.article,
+    required this.entry,
     required this.content,
     required this.cubit,
     required this.controller,
@@ -450,8 +450,8 @@ class ArticleContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final author = article.author;
-    final publicationDate = article.publicationDate;
+    final author = entry.item.author;
+    final publicationDate = entry.item.publicationDate;
 
     return Column(
       children: [
@@ -464,7 +464,7 @@ class ArticleContentView extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(article.title, style: AppTypography.h1Bold),
+                  Text(entry.item.title, style: AppTypography.h1Bold),
                   const SizedBox(height: AppDimens.l),
                   Divider(
                     height: AppDimens.one,
@@ -492,12 +492,12 @@ class ArticleContentView extends StatelessWidget {
                   ),
                   const SizedBox(width: AppDimens.xs),
                   Text(
-                    article.publisher.name,
+                    entry.item.publisher.name,
                     style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
                   ),
                   const VerticalDivider(),
                   Text(
-                    LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
+                    LocaleKeys.article_readMinutes.tr(args: [entry.item.timeToRead.toString()]),
                     style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
                   ),
                   if (publicationDate != null) ...[

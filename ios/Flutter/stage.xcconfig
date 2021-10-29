@@ -3,3 +3,4 @@
 
 APP_DISPLAY_NAME=informed test
 APP_LINKS_HOST=stage.informed.so
+SEGMENT_WRITE_KEY=jmJAkhCovDOdxwUqbDBgpFW4xWkpLUte

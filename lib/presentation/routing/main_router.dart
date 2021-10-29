@@ -1,6 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_page.dart';
+import 'package:better_informed_mobile/presentation/page/article/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
@@ -33,7 +33,7 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
     AutoRoute(page: SettingsPolicyTermsPage),
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
-    CustomRoute(page: ArticlePage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
+    CustomRoute(page: MediaItemPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     dashboardTabRouter,
   ],
 )

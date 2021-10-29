@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
-import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dart';
-import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dart';
+import 'package:better_informed_mobile/data/auth/api/dto/login_response_dto.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/user_meta_dto.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -16,7 +15,7 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
   AuthGraphqlDataSource(@Named('unauthorized') this._client);
 
   @override
-  Future<AuthTokenDTO> signInWithProvider(String token, String provider, [UserMetaDTO? userMeta]) async {
+  Future<LoginResponseDTO> signInWithProvider(String token, String provider, [UserMetaDTO? userMeta]) async {
     final result = await _client.mutate(
       MutationOptions(
         document: AuthGQL.login(),
@@ -43,18 +42,19 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
     GraphQLResponseResolver.resolve(result, (raw) => null, rootKey: null);
   }
 
-  AuthTokenDTO _processSignInResponse(QueryResult result) {
+  LoginResponseDTO _processSignInResponse(QueryResult result) {
     final response = GraphQLResponseResolver.resolve(
       result,
-      (raw) => AuthTokenResponseDTO.fromJson(raw),
+      (raw) => LoginResponseDTO.fromJson(raw),
       rootKey: 'signIn',
     );
 
-    if (response?.successful != true) throw Exception('Sign in failed.');
+    if (response == null) throw Exception('Sign in failed.');
+    if (response.successful != true) throw Exception('Sign in failed.');
 
-    final tokens = response?.tokens;
+    final tokens = response.tokens;
     if (tokens == null) throw Exception('Sign in did not return auth tokens.');
 
-    return tokens;
+    return response;
   }
 }

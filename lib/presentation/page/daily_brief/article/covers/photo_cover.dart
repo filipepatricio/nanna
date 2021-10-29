@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class PhotoCover extends HookWidget {
-  final ArticleHeader article;
+  final MediaItemArticle article;
 
   const PhotoCover({required this.article});
 
@@ -39,7 +39,7 @@ class PhotoCover extends HookWidget {
                       Positioned.fill(
                         child: CloudinaryProgressiveImage(
                           cloudinaryTransformation: cloudinaryProvider
-                              .withPublicId(imageId)
+                              .withPublicIdAsPng(imageId)
                               .transform()
                               .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
                               .autoGravity(),

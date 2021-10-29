@@ -11,6 +11,12 @@ class AuthGQL {
           accessToken
           refreshToken 
         }
+        account {
+          id
+          firstName
+          lastName
+          email
+        }
       }
     }
   ''');

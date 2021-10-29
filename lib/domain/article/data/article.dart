@@ -1,13 +1,13 @@
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 
 class Article {
   final ArticleContent content;
-  final ArticleHeader header;
+  final Entry entry;
 
   Article({
     required this.content,
-    required this.header,
+    required this.entry,
   });
 }
 
