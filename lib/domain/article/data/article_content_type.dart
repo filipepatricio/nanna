@@ -1,0 +1,1 @@
+enum ArticleContentType { html, markdown }

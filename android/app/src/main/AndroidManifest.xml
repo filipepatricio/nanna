@@ -1,7 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.informed.better_informed_mobile">
-   <application
-        android:label="better_informed_mobile"
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -30,6 +38,21 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <!-- App Links -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                        android:scheme="http"
+                        android:host="@string/app_link_host"
+                        android:pathPrefix="/magic"/>
+                <data
+                        android:scheme="https"
+                        android:host="@string/app_link_host"
+                        android:pathPrefix="/magic"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

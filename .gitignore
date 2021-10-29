@@ -45,6 +45,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /android/settings_aar.gradle
+/android/.idea
 .gradle
 
 # iOS
@@ -65,3 +66,5 @@ ios/build/
 
 # Idea configurations exception
 !.idea/runConfigurations/
+
+**/key_*.properties

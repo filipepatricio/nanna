@@ -16,6 +16,7 @@ analyzer:
     - "lib/generated/**"
     - "lib/res/**"
     - "**.g.dart"
+    - "**/*.mocks.dart"
   strong-mode:
     implicit-casts: false
   

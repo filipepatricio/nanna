@@ -1,4 +1,6 @@
 #include "Pods/Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"
 #include "Generated.xcconfig"
 
-APP_DISPLAY_NAME=Informed Dev
+APP_DISPLAY_NAME=informed dev
+APP_LINKS_HOST=dev.informed.so
+SEGMENT_WRITE_KEY=jmJAkhCovDOdxwUqbDBgpFW4xWkpLUte

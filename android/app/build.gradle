@@ -25,10 +25,20 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def propertyFileNameMap = [
+        dev  : 'key_dev.properties',
+        stage: 'key_staging.properties',
+        prod : 'key_prod.properties'
+]
+def propertyMap = [:]
+
+for (fileNameEntry in propertyFileNameMap.entrySet()) {
+    def keystorePropertiesFile = rootProject.file(fileNameEntry.value)
+    if (keystorePropertiesFile.exists()) {
+        def keystoreProperties = new Properties()
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+        propertyMap.put(fileNameEntry.key, keystoreProperties)
+    }
 }
 
 android {
@@ -38,8 +48,12 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     defaultConfig {
-        applicationId "com.informed"
+        applicationId "so.informed"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -47,24 +61,51 @@ android {
     }
 
     signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
+        releaseDev {
+            def keystoreProperties = propertyMap['dev']
+            if (keystoreProperties != null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+
+        releaseStage {
+            def keystoreProperties = propertyMap['stage']
+            if (keystoreProperties != null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+
+        releaseProd {
+            def keystoreProperties = propertyMap['prod']
+            if (keystoreProperties != null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
     buildTypes {
         release {
-            if (keystorePropertiesFile.exists()) {
-                signingConfig signingConfigs.release
-            }
-
             minifyEnabled true
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
+        }
+
+        profile {
+            signingConfig null
+        }
+
+        debug {
+            signingConfig null
         }
     }
 
@@ -76,21 +117,42 @@ android {
 
             applicationIdSuffix ".dev"
 
-            resValue "string", "app_name", "Informed Dev"
+            resValue "string", "app_name", "informed dev"
+            resValue "string", "app_link_host", "localhost"
+
+            if (propertyMap.containsKey('dev')) {
+                signingConfig signingConfigs.releaseDev
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
 
         stage {
             dimension "env"
 
-            applicationIdSuffix ".test"
+            applicationIdSuffix ".staging"
 
-            resValue "string", "app_name", "Informed Test"
+            resValue "string", "app_name", "informed test"
+            resValue "string", "app_link_host", "staging.informed.so"
+
+            if (propertyMap.containsKey('stage')) {
+                signingConfig signingConfigs.releaseStage
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
 
         prod {
             dimension "env"
 
-            resValue "string", "app_name", "Informed"
+            resValue "string", "app_name", "informed"
+            resValue "string", "app_link_host", "informed.so"
+
+            if (propertyMap.containsKey('prod')) {
+                signingConfig signingConfigs.releaseProd
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
     }
 }
@@ -102,3 +164,5 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,4 +1,127 @@
 {
   "common": {
+    "skip": "Skip",
+    "continue": "Continue",
+    "signOut": "Sign out",
+    "signUp": "Sign up",
+    "cancel": "Cancel",
+    "generalError": "Something went wrong.\nTry again later.",
+    "seeAll": "See All",
+    "search": "Search"
+  },
+  "onboarding": {
+    "title": "How we use push notifications",
+    "headerSlideOne": "New daily brief",
+    "headerSlideTwo": "Incoming topic",
+    "headerSlideThree": "Product updates",
+    "descriptionSlideOne": "Our small and dedicated editorial screens extensively the most reliable sources every day - and creates a daily brief for you.",
+    "descriptionSlideTwo": "We need some text here...",
+    "descriptionSlideThree": "We will keep you posted about our constant improvements and new features of our app to give you the best experience."
+  },
+  "main": {
+    "todayTab": "Today",
+    "exploreTab": "Explore",
+    "myReadsTab": "My Reads"
+  },
+  "dailyBrief": {
+    "title": "Daily Brief",
+    "justSec": "Just a sec...",
+    "loading": "We’re loading your brief",
+    "ups": "Uuups!",
+    "tryAgainLater": "Something went wrong\n try again later",
+    "readingList": "Reading list",
+    "relax": "Relax",
+    "selectedArticles": "{} selected articles",
+    "biggerPicture": "The bigger picture"
+  },
+  "settings": {
+    "settings": "Settings",
+    "profileHeader": "Profile",
+    "account": "Account",
+    "pushNotifications": "Push Notifications",
+    "emailNotifications": "E-Mail Notifications",
+    "subscription": "Subscription",
+    "aboutHeader": "About",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of service",
+    "giveFeedback": "Give feedback",
+    "settingsOverview": "Settings Overview",
+    "privacyPolicyContent": "This is a placerholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
+    "termsContent": "This is a placerholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
+    "newsUpdates": "News Updates",
+    "newDailyBrief": "NewDailyBrief",
+    "incomingNewTopic": "Incoming new topic ",
+    "productUpdates": "Product Updates",
+    "newFeatures": "New features & improvements",
+    "firstName": "First name",
+    "lastName": "LastName",
+    "emailAddress": "Email address",
+    "save": "Save"
+  },
+  "signIn": {
+    "header": {
+      "signIn": "Welcome to the smart & flexible news format",
+      "magicLink": "We’ve send you a magic link. Check your mail!"
+    },
+    "providerInfo": {
+      "apple": "Sign up with Apple or fill the form to continue",
+      "google": "Sign up with Google or fill the form to continue"
+    },
+    "providerButton": {
+      "apple": "Sign in with Apple",
+      "google": "Sign in with Google"
+    },
+    "emailHint": "E-mail address...",
+    "consentParts": {
+      "info": "By signing up, you agree to our ",
+      "terms": "Terms of Service",
+      "and": " and ",
+      "privacy": "Privacy Policy"
+    }
+  },
+  "article": {
+    "types": {
+      "freemium": "Free",
+      "premium": "Premium",
+      "exclusive": "Exclusive"
+    },
+    "label": {
+      "opinion": "Opinion",
+      "feature": "Feature"
+    },
+    "appBar": {
+      "freemium": "Free Article",
+      "premium": "Premium Article"
+    },
+    "articleBy": "By {}",
+    "readMore": "Read more",
+    "readMinutes": "{} min",
+    "loadingNext": "Loading next article",
+    "allArticlesRead": "Nice! You’ve read all articles in the reading list.",
+    "goBackToTopic": "Back to topic overview",
+    "openSourceUrl": "Open source url"
+  },
+  "readingList": {
+    "title": "Reading list",
+    "articleCount": "{} articles",
+    "editorsNote": "Editors note: "
+  },
+  "topic": {
+    "updated": "Updated {}"
+  },
+  "continueReading": "Continue reading",
+  "myReads": {
+    "articlesRead": "/{} articles read",
+    "itemsCount": {
+      "zero": "No items",
+      "one": "{} item",
+      "two": "{} items",
+      "few": "{} items",
+      "many": "{} items",
+      "other": "{} items"
+    }
+  },
+  "explore": {
+    "title": "Explore"
   }
 }
