@@ -39,7 +39,7 @@ class PhotoCover extends HookWidget {
                       Positioned.fill(
                         child: CloudinaryProgressiveImage(
                           cloudinaryTransformation: cloudinaryProvider
-                              .withPublicId(imageId)
+                              .withPublicIdAsPng(imageId)
                               .transform()
                               .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
                               .autoGravity(),

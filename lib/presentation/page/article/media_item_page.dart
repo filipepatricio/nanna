@@ -378,7 +378,7 @@ class ArticleHeaderView extends HookWidget {
           height: MediaQuery.of(context).size.height * 0.55,
           child: imageId != null
               ? Image.network(
-                  cloudinaryProvider.withPublicId(imageId).url,
+                  cloudinaryProvider.withPublicIdAsPng(imageId).url,
                   fit: BoxFit.cover,
                   alignment: Alignment.topLeft,
                 )
