@@ -43,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<AuthToken> signInWithMagicLinkToken(String token) async {
-    final result = await _apiDataSource.signInWithProvider(token, SignInProviderDTO.informed, null);
+    final result = await _apiDataSource.signInWithProvider(token, SignInProviderDTO.informed);
 
     return _authTokenDTOMapper.from(result);
   }
