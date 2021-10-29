@@ -13,7 +13,9 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   @override
   Future<void> initialize() async {
     final writeKey = _config.segmentWriteKey;
-    if (writeKey == null) return;
+    if (writeKey == null) {
+      return Segment.disable();
+    }
 
     await Segment.config(
       options: SegmentConfig(
@@ -23,14 +25,6 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
         debug: kDebugMode,
       ),
     );
-
-    await Segment.setContext(
-      {
-        'app': {
-          'name': 'informed',
-        }
-      },
-    );
   }
 
   @override
@@ -38,7 +32,7 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
     await Segment.identify(
       userId: userId,
       traits: {
-        'login_method': method,
+        'loginMethod': method,
       },
     );
   }
