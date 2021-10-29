@@ -42,9 +42,10 @@ class AppConfig {
   factory AppConfig.prod() {
     return AppConfig._(
       name: Environment.prod,
-      apiUrl: const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
-      cloudinaryCloudName: '',
+      apiUrl: const String.fromEnvironment(_environmentArgHost, defaultValue: 'https://api.informed.so/graphql'),
+      cloudinaryCloudName: 'informed',
       sentryEventDns: 'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
+      segmentWriteKey: 'Jp2reNsfGRxapvFlgmDYBsRJ2LA2TLSP',
     );
   }
 }
