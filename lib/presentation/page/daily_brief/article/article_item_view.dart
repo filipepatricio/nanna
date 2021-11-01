@@ -68,7 +68,7 @@ class ArticleItemView extends HookWidget {
             Padding(
               padding: const EdgeInsets.only(right: AppDimens.xxl),
               child: Text(
-                '${index + 1}/${allEntries.length} Afghanistan articles',
+                '${index + 1}/${allEntries.length} articles',
                 style: AppTypography.subH1Medium,
                 textAlign: TextAlign.start,
               ),
