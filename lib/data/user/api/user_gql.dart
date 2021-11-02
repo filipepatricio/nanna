@@ -14,4 +14,16 @@ class UserGQL {
       }
     }
   ''');
+
+  static DocumentNode updateUser() => gql(''' 
+    mutation updateUserMeta(\$firstName: String, \$lastName: String) {
+      updateUserMeta(information: {firstName: \$firstName, lastName: \$lastName}) {
+        id
+        email
+        firstName
+        lastName
+      }
+    }
+  ''');
 }
+

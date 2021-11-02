@@ -24,7 +24,8 @@ class SettingsAccountBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEditable = useState(false);
+    final isEditable = useState(true);
+    final isEmailEditable = useState(false);
 
     return SafeArea(
       child: Column(
@@ -75,10 +76,10 @@ class SettingsAccountBody extends HookWidget {
                       const SizedBox(height: AppDimens.l),
                       SettingsInputItem(
                         label: LocaleKeys.settings_firstName.tr(),
-                        initialInput: data.name,
+                        initialInput: data.firstName,
                         isEditable: isEditable.value,
-                        onChanged: (String inputText) => cubit.updateName(inputText),
-                        validator: (String? value) => data.nameValidator,
+                        onChanged: (String inputText) => cubit.updateFirstName(inputText),
+                        validator: (String? value) => data.firstNameValidator,
                         onClear: () => cubit.clearNameInput(),
                       ),
                       const SizedBox(height: AppDimens.l),
@@ -94,7 +95,7 @@ class SettingsAccountBody extends HookWidget {
                       SettingsInputItem(
                         label: LocaleKeys.settings_emailAddress.tr(),
                         initialInput: data.email,
-                        isEditable: isEditable.value,
+                        isEditable: isEmailEditable.value,
                         onChanged: (String inputText) => cubit.updateEmail(inputText),
                         validator: (String? value) => data.emailValidator,
                         onClear: () => cubit.clearEmailInput(),
