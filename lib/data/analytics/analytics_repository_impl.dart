@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/analytics/analytics_login_event.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
