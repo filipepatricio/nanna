@@ -29,6 +29,14 @@ class ExploreContentSectionDTOMapper implements Mapper<ExploreContentSectionDTO,
       ),
       articlesWithFeature: (section) {
         final items = section.articles.map<MediaItemArticle>(_articleDTOToMediaItemMapper).toList();
+
+        if (items.isEmpty) {
+          return ExploreContentSection.articles(
+            title: section.name,
+            articles: [],
+          );
+        }
+
         final feature = items.first;
         final list = items.skip(1).toList();
 
