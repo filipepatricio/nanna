@@ -6,7 +6,7 @@ Nanna is our Flutter-based mobile app named after [Nanna](<https://en.wikipedia.
 
 Follow those steps to start:
 
-- Make sure you have installed Flutter 2.2.3 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
+- Check Flutter version in "Mobile introduction" section below
 - Run `flutter pub get` to get dependencies
 - Run `flutter pub run build_runner build --delete-conflicting-outputs` to generate code (routing, json serializers etc.)
 - Run `fvm flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart` to generate translation files
@@ -50,7 +50,7 @@ If you want to set custom api host, that application connects to, just include a
 
 * [ ] Mobile app stack:
 
-- Flutter : 2.5.2
+- Flutter : 2.5.2 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
 - Navigation : auto_route
 - Immutable data class : freezed
 - Logs: fimber
