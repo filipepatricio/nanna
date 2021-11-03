@@ -101,28 +101,6 @@ class _Header extends StatelessWidget {
             style: AppTypography.hBold,
           ),
           const SizedBox(height: AppDimens.l),
-          TextField(
-            decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.xl),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.xl),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimens.xl),
-              ),
-              hintText: tr(LocaleKeys.common_search),
-              hintStyle: AppTypography.h3Normal,
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.m),
-                child: SvgPicture.asset(
-                  AppVectorGraphics.search,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: AppDimens.l),
         ],
       ),
     );
