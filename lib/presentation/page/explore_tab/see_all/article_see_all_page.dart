@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -17,7 +18,7 @@ const _itemHeight = 250.0;
 
 class ArticleSeeAllPage extends StatelessWidget {
   final String title;
-  final List<Entry> entries;
+  final List<MediaItemArticle> entries;
 
   const ArticleSeeAllPage({
     required this.title,

@@ -8,8 +8,9 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: DailyBriefApiDataSource)
 class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   final GraphQLClient _client;
+  final GraphQLResponseResolver _responseResolver;
 
-  DailyBriefGraphqlDataSource(this._client);
+  DailyBriefGraphqlDataSource(this._client, this._responseResolver);
 
   @override
   Future<CurrentBriefDTO> currentBrief() async {
@@ -19,7 +20,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
       ),
     );
 
-    final dto = GraphQLResponseResolver.resolve(
+    final dto = _responseResolver.resolve(
       result,
       (raw) => CurrentBriefDTO.fromJson(raw),
       rootKey: 'currentBrief',

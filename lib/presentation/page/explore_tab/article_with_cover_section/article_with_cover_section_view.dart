@@ -1,10 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_list_item.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -25,7 +26,7 @@ const _mainArticleHeight = 366.0;
 const _mainArticleCoverBottomMargin = 100.0;
 
 class ArticleWithCoverSectionView extends StatelessWidget {
-  final ExploreContentSectionArticleWithCover section;
+  final ExploreContentSectionArticleWithFeature section;
 
   const ArticleWithCoverSectionView({
     required this.section,
@@ -34,7 +35,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeColor = Color(section.themeColor);
+    final themeColor = Color(section.backgroundColor);
 
     return Container(
       color: themeColor,
@@ -64,7 +65,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
                   onTap: () => AutoRouter.of(context).push(
                     ArticleSeeAllPageRoute(
                       title: section.title,
-                      entries: section.entries,
+                      entries: section.articles,
                     ),
                   ),
                 ),
@@ -76,7 +77,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
             padding: const EdgeInsets.only(left: AppDimens.l),
             height: _mainArticleHeight,
             child: _MainArticle(
-              entry: section.coverEntry,
+              entry: section.featuredArticle,
               themeColor: themeColor,
             ),
           ),
@@ -87,11 +88,11 @@ class ArticleWithCoverSectionView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               itemBuilder: (context, index) => ArticleListItem(
-                entry: section.entries[index],
+                entry: section.articles[index],
                 themeColor: themeColor,
               ),
               separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-              itemCount: section.entries.length,
+              itemCount: section.articles.length,
             ),
           ),
           const SizedBox(height: AppDimens.xxl),
@@ -102,7 +103,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
 }
 
 class _MainArticle extends HookWidget {
-  final Entry entry;
+  final MediaItemArticle entry;
   final Color themeColor;
 
   const _MainArticle({
@@ -114,7 +115,7 @@ class _MainArticle extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = entry.item.image?.publicId;
+    final imageId = entry.image?.publicId;
 
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
@@ -177,7 +178,7 @@ class _MainArticle extends HookWidget {
 }
 
 class _MainArticleCover extends StatelessWidget {
-  final Entry entry;
+  final MediaItemArticle entry;
   final Color themeColor;
 
   const _MainArticleCover({
@@ -196,21 +197,21 @@ class _MainArticleCover extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.centerLeft,
-            child: entry.item.type == ArticleType.premium
+            child: entry.type == ArticleType.premium
                 ? const ExclusiveLabel()
                 : ArticleLabel.opinion(backgroundColor: themeColor),
           ),
           const Spacer(),
-          PublisherLogo.light(publisher: entry.item.publisher),
+          PublisherLogo.light(publisher: entry.publisher),
           InformedMarkdownBody(
-            markdown: entry.item.title,
+            markdown: entry.title,
             baseTextStyle: AppTypography.h3bold,
             maxLines: 4,
           ),
           const Spacer(),
           Text(
             LocaleKeys.article_readMinutes.tr(
-              args: [entry.item.timeToRead.toString()],
+              args: [entry.timeToRead.toString()],
             ),
             style: AppTypography.metadata1Regular,
           ),

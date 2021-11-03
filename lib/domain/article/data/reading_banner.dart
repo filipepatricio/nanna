@@ -1,7 +1,8 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 
 class ReadingBanner {
-  final Entry entry;
+  final MediaItemArticle entry;
   final double scrollProgress;
 
   ReadingBanner({
