@@ -114,7 +114,7 @@ Example:
 on the view are listening for cubit emission, and we are changing UI accordingly.
 example:
 
-````
+```
     Expanded(
         child: state.maybeMap(
             initialLoading: (_) => const Loader(),
@@ -124,6 +124,5 @@ example:
     ),
 ```
 
-* Hint, you can spend some time and read cubit_hooks.dart file in our project. Because in there we have our own custom hooks for cubits.
-When we create public widgets we use named parameters.
-````
+- Hint, you can spend some time and read cubit_hooks.dart file in our project. Because in there we have our own custom hooks for cubits.
+  When we create public widgets we use named parameters.
