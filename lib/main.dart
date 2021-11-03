@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -9,7 +10,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_segment/flutter_segment.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -33,7 +33,7 @@ Future<void> main() async {
 
   final appConfig = getIt.get<AppConfig>();
   _setupFimber();
-  _setupSegment(appConfig);
+  await _setupAnalytics();
 
   await Hive.initFlutter();
   final mainRouter = MainRouter();
@@ -59,19 +59,7 @@ Future<void> main() async {
 
 void _setupFimber() => Fimber.plantTree(getIt());
 
-void _setupSegment(AppConfig config) {
-  final writeKey = config.segmentWriteKey;
-  if (writeKey == null) return;
-
-  Segment.config(
-    options: SegmentConfig(
-      writeKey: writeKey,
-      trackApplicationLifecycleEvents: true,
-      amplitudeIntegrationEnabled: false,
-      debug: kDebugMode,
-    ),
-  );
-}
+Future<void> _setupAnalytics() => getIt<InitializeAnalyticsUseCase>()();
 
 String _getEnvironment() {
   const env = String.fromEnvironment(_environmentArgKey, defaultValue: Environment.dev);
