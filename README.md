@@ -63,9 +63,10 @@ If you want to set custom api host, that application connects to, just include a
 - Firebase and more in the pubspec :slightly_smiling_face:
 
 * [ ] Workflow:
-      Basically we are going with git flow. So we have master, develop (our main branch) and we are creating branches per task, with prefix feature/
 
-  So when you go to linear create task, and you can click copy git branch name to clipboard and later create branch like that "feature/inf-135-share-reading-list"
+  Basically we are going with git flow. So we have master, develop (our main branch) and we are creating branches per task, with prefix feature/
+
+  So when you go to Linear -> Create task, you can click "Copy git branch name to clipboard" and later create branch like that "feature/inf-135-share-reading-list"
 
   When you create Merge request, post URL to you MR on this channel and we will check it. To merge request we have to have at least one approve.
 
