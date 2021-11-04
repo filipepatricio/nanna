@@ -34,6 +34,7 @@ class SettingsAccountPage extends HookWidget {
       ),
       body: state.maybeWhen(
         loading: () => const Loader(),
+        updating: (data) => SettingsAccountBody(cubit: cubit, data: data),
         idle: (data) => SettingsAccountBody(cubit: cubit, data: data),
         orElse: () => const SizedBox(),
       ),

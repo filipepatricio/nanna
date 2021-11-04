@@ -1,11 +1,14 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';
+import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dart';
 import 'package:better_informed_mobile/presentation/page/settings/widgets/settings_input_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,6 +27,7 @@ class SettingsAccountBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
     final isEditable = useState(true);
     final isEmailEditable = useState(false);
 
@@ -54,20 +58,20 @@ class SettingsAccountBody extends HookWidget {
                               onTap: () => isEditable.value = !isEditable.value,
                               child: isEditable.value
                                   ? Container(
-                                      width: AppDimens.settingsCancelButtonWidth,
-                                      height: AppDimens.settingsCancelButtonHeight,
-                                      decoration: const BoxDecoration(
-                                        color: AppColors.grey,
-                                        borderRadius: BorderRadius.all(Radius.circular(AppDimens.m)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          LocaleKeys.common_cancel.tr(),
-                                          textAlign: TextAlign.center,
-                                          style: AppTypography.metadata1Medium.copyWith(height: AppDimens.one),
-                                        ),
-                                      ),
-                                    )
+                                width: AppDimens.settingsCancelButtonWidth,
+                                height: AppDimens.settingsCancelButtonHeight,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.grey,
+                                  borderRadius: BorderRadius.all(Radius.circular(AppDimens.m)),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    LocaleKeys.common_cancel.tr(),
+                                    textAlign: TextAlign.center,
+                                    style: AppTypography.metadata1Medium.copyWith(height: AppDimens.one),
+                                  ),
+                                ),
+                              )
                                   : SvgPicture.asset(AppVectorGraphics.edit, fit: BoxFit.contain),
                             ),
                           ],
@@ -119,14 +123,19 @@ class SettingsAccountBody extends HookWidget {
                   borderRadius: BorderRadius.all(Radius.circular(AppDimens.s)),
                 ),
                 child: Center(
-                  child: Text(
-                    LocaleKeys.settings_save.tr(),
-                    style: AppTypography.buttonBold,
+                  child: state.maybeWhen(
+                    updating: (data) => const CircularProgressIndicator(color: AppColors.textPrimary),
+                    idle: (data) => Text(
+                      LocaleKeys.settings_save.tr(),
+                      style: AppTypography.buttonBold,
+                    ),
+                    orElse: () => const SizedBox(),
                   ),
                 ),
               ),
             ),
           ),
+          const SizedBox(height: AppDimens.s),
         ],
       ),
     );

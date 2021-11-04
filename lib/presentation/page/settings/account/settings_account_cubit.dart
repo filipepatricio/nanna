@@ -36,6 +36,7 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     if (_accountData.firstNameValidator == null &&
         _accountData.lastNameValidator == null &&
         _accountData.emailValidator == null) {
+      emit(SettingsAccountState.updating(_accountData));
       final user = await _updateUserUseCase(_accountData);
       await setAccountData(user);
     }

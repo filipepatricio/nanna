@@ -38,6 +38,8 @@ If you want to set custom api host, that application connects to, just include a
 
 * Start app with:
 
-```—dart-define=host=http://<your machine ip on the network>:4000/graphql```
+```—dart-define=host=http://localhost:4000/graphql```
 
-* [https://fluttercorner.com/socketexception-os-error-connection-refused-errno-111-in-flutter/](https://fluttercorner.com/socketexception-os-error-connection-refused-errno-111-in-flutter/)
+```adb reverse tcp:4000 tcp:4000```
+
+* https://stackoverflow.com/a/60655655/3100254

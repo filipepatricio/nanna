@@ -10,5 +10,8 @@ class SettingsAccountState with _$SettingsAccountState {
   const factory SettingsAccountState.loading() = SettingsAccountStateLoading;
 
   @Implements(BuildState)
+  const factory SettingsAccountState.updating(SettingsAccountData data) = SettingsAccountStateUpdating;
+
+  @Implements(BuildState)
   const factory SettingsAccountState.idle(SettingsAccountData data) = SettingsAccountStateLoaded;
 }
