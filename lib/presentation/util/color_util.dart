@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 class HexColor extends Color {
   static int _fromHex(String hexCode) {
     var colorCode = hexCode.toUpperCase().replaceAll('#', '');
-    if (colorCode.length == 6) {
-      colorCode = 'FF' + colorCode;
-    }
+    colorCode = colorCode.padLeft(8, 'F');
     return int.parse(colorCode, radix: 16);
   }
 
