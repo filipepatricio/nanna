@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as article_image;
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
@@ -10,6 +11,7 @@ import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_category.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/util/color_util.dart';
 import 'package:injectable/injectable.dart';
 
 final mediaItemArticle = MediaItemArticle(
@@ -69,11 +71,14 @@ final mediaItemArticle3 = MediaItemArticle(
   id: '8e3320-f512-4a31-9ba7-c65267e34a0b',
 );
 
+final entryStyleBig = EntryStyle(color: HexColor('#F2E8E7'), type: EntryStyleType.articleCoverWithBigImage);
+final entryStyleSmall = EntryStyle(color: HexColor('#E4F1E2'), type: EntryStyleType.articleCoverWithSmallImage);
+
 final mockedEntries = [
-  Entry(note: null, item: mediaItemArticle),
-  Entry(note: null, item: mediaItemArticle2),
-  Entry(note: null, item: mediaItemArticle3),
-  Entry(note: null, item: mediaItemArticle),
+  Entry(note: null, item: mediaItemArticle, style: entryStyleBig),
+  Entry(note: null, item: mediaItemArticle2, style: entryStyleBig),
+  Entry(note: null, item: mediaItemArticle3, style: entryStyleSmall),
+  Entry(note: null, item: mediaItemArticle, style: entryStyleSmall),
 ];
 
 final exclusiveSection = ExploreContentSection.articleWithCover(

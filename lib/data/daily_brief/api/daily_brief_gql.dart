@@ -30,18 +30,22 @@ class DailyBriefGql {
             id
             name
             entries {
-             note
-             item {
+              note
+              style {
+                color
+                type
+              }
+              item {
                 __typename
                 ... on Article {
                   $articleBody
                 }
-             }
+              }
+            }
           }
         }
       }
     }
-  }
   ''');
 }
 
@@ -83,7 +87,7 @@ String articleBody = '''
   title
   type
   publicationDate
-  timeToRead 
+  timeToRead
   image {
     publicId
   }
