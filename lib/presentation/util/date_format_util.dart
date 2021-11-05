@@ -26,5 +26,4 @@ class DateFormatUtil {
     final toDate = DateTime(to.year, to.month, to.day);
     return toDate.difference(fromDate).inHours.round();
   }
-
 }
