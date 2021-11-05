@@ -394,7 +394,7 @@ class _MediaItemContent extends StatelessWidget {
             top: statusBarHeight,
             right: null,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.s),
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
               child: VerticalIndicators(
                 currentIndex: pageIndex.value,
                 pageListLength: entryList.length,

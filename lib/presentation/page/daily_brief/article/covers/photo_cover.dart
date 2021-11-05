@@ -22,11 +22,10 @@ class PhotoCover extends HookWidget {
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
-    final containerHeight = MediaQuery.of(context).size.height * 0.52;
 
     return Container(
       width: AppDimens.articleItemWidth,
-      height: containerHeight,
+      height: AppDimens.articleItemHeight(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -61,21 +60,24 @@ class PhotoCover extends HookWidget {
             ),
           ),
           const SizedBox(height: AppDimens.m),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DottedArticleInfo(article: article, isLight: false),
-              const SizedBox(height: AppDimens.s),
-              Text(
-                article.title,
-                style: AppTypography.h3bold,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(height: AppDimens.l),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(right: AppDimens.l),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DottedArticleInfo(article: article, isLight: false),
+                const SizedBox(height: AppDimens.s),
+                Text(
+                  article.title,
+                  style: AppTypography.h3bold,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                ),
+                const SizedBox(height: AppDimens.l),
+              ],
+            ),
           ),
         ],
       ),

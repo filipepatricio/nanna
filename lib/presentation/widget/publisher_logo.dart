@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as publisher_logo;
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:flutter/widgets.dart';
@@ -32,18 +33,21 @@ class PublisherLogo extends HookWidget {
 
     return publisherLogoId == null
         ? const SizedBox()
-        : Align(
-            alignment: Alignment.centerLeft,
-            child: Image.network(
-              cloudinaryProvider
-                  .withPublicIdAsPng(publisherLogoId)
-                  .transform()
-                  .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
-                  .fit()
-                  .generateNotNull(),
-              width: _publisherLogoSize,
-              height: _publisherLogoSize,
-              fit: BoxFit.contain,
+        : Padding(
+            padding: const EdgeInsets.only(right: AppDimens.s),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Image.network(
+                cloudinaryProvider
+                    .withPublicIdAsPng(publisherLogoId)
+                    .transform()
+                    .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
+                    .fit()
+                    .generateNotNull(),
+                width: _publisherLogoSize,
+                height: _publisherLogoSize,
+                fit: BoxFit.contain,
+              ),
             ),
           );
   }

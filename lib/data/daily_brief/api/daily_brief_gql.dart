@@ -31,18 +31,22 @@ class DailyBriefGql {
             id
             name
             entries {
-             note
-             item {
+              note
+              style {
+                color
+                type
+              }
+              item {
                 __typename
                 ... on Article {
                   ${CommonGQLModels.article}
                 }
-             }
+              }
+            }
           }
         }
       }
     }
-  }
   ''');
 
   static const String _greeting = '''

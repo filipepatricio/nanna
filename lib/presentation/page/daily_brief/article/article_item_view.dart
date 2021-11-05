@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/colored_cover.dart';
@@ -36,13 +37,12 @@ class ArticleItemView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: change when there will be final colors or if source will be specified (for example: backend)
-    final mockColoredCoverCondition = index % 3 == 1;
-    final editorsNote = article.note;
+    final currentEntry = allEntries[index];
+
     return Container(
-      color: mockColoredCoverCondition
+      color: currentEntry.style.type == EntryStyleType.articleCoverWithoutImage
           ? AppColors.background
-          : AppColors.mockedColors[index % AppColors.mockedColors.length],
+          : currentEntry.style.color,
       padding: EdgeInsets.only(
         top: statusBarHeight,
         bottom: AppDimens.m,
@@ -64,44 +64,30 @@ class ArticleItemView extends HookWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: AppDimens.l),
             Padding(
-              padding: const EdgeInsets.only(right: AppDimens.xxl),
-              child: Text(
-                '${index + 1}/${allEntries.length} articles',
-                style: AppTypography.subH1Medium,
-                textAlign: TextAlign.start,
+              padding: const EdgeInsets.only(top: AppDimens.l, right: AppDimens.xxl),
+              child: Row(
+                children: [
+                  Text(
+                    '${index + 1}',
+                    style: AppTypography.subH1Bold,
+                  ),
+                  Text(
+                    '/${allEntries.length} articles',
+                    style: AppTypography.subH1Regular,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: AppDimens.s),
-            if (editorsNote != null)
+            if (currentEntry.note != null) ...[
+              const SizedBox(height: AppDimens.m),
               Padding(
                 padding: const EdgeInsets.only(right: AppDimens.xxl),
-                child: EditorsNote(note: editorsNote),
+                child: EditorsNote(note: currentEntry.note!),
               ),
+            ],
             const SizedBox(height: AppDimens.l),
-            //TODO: Change for proper statements (this is for mock purposes)
-            if (index % 3 == 0)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: AppDimens.l),
-                  child: PhotoStackedCover(article: article),
-                ),
-              ),
-            if (mockColoredCoverCondition)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: AppDimens.l),
-                  child: ColoredCover(article: article),
-                ),
-              ),
-            if (index % 3 == 2)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: AppDimens.m),
-                  child: PhotoCover(article: article),
-                ),
-              ),
+            _ArticleCover(entry: currentEntry, article: article),
             const SizedBox(height: AppDimens.xl),
             Padding(
               padding: const EdgeInsets.only(right: AppDimens.l),
@@ -123,4 +109,37 @@ class ArticleItemView extends HookWidget {
   }
 
   double _calculateIndicatorWidth() => AppDimens.l * 2 + AppDimens.verticalIndicatorWidth;
+}
+
+class _ArticleCover extends StatelessWidget {
+  const _ArticleCover({required this.entry, required this.article});
+  final Entry entry;
+  final MediaItemArticle article;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (entry.style.type) {
+      case EntryStyleType.articleCoverWithBigImage:
+        return Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(right: AppDimens.l),
+            child: PhotoStackedCover(article: article),
+          ),
+        );
+      case EntryStyleType.articleCoverWithSmallImage:
+        return Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: AppDimens.m),
+            child: PhotoCover(article: article),
+          ),
+        );
+      case EntryStyleType.articleCoverWithoutImage:
+        return Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(right: AppDimens.l),
+            child: ColoredCover(backgroundColor: entry.style.color, article: article),
+          ),
+        );
+    }
+  }
 }
