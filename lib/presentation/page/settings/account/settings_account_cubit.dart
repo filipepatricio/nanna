@@ -3,8 +3,10 @@ import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.da
 import 'package:better_informed_mobile/domain/user/use_case/update_user_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()
@@ -39,6 +41,14 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
       emit(SettingsAccountState.updating(_accountData));
       final user = await _updateUserUseCase(_accountData);
       await setAccountData(user);
+      await Fluttertoast.showToast(
+          msg: 'Your information was saved successfully',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0
+      );
+      hideKeyboard();
     }
   }
 
