@@ -58,13 +58,10 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     try {
       await _signInWithDefaultProviderUseCase();
       emit(SignInPageState.success());
+    } on SignInAbortedException {
+      // Do nothing
     } catch (e, s) {
-      if ((e is SignInWithAppleAuthorizationException && e.code == AuthorizationErrorCode.canceled) ||
-          e is SignInAbortedException) {
-        emit(SignInPageState.idle(false));
-      } else {
-        Fimber.e('Signing in with provider failed', ex: e, stacktrace: s);
-      }
+      Fimber.e('Signing in with provider failed', ex: e, stacktrace: s);
     } finally {
       emit(SignInPageState.idle(false));
     }
