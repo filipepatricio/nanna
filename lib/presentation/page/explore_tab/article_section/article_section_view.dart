@@ -20,61 +20,56 @@ class ArticleSectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeColor = Color(section.themeColor);
-
-    return Container(
-      color: themeColor,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: AppDimens.xc),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Hero(
-                    // TODO change to some ID or UUID if available
-                    tag: HeroTag.exploreArticleTitle(section.title.hashCode),
-                    child: InformedMarkdownBody(
-                      markdown: section.title,
-                      baseTextStyle: AppTypography.h1,
-                      highlightColor: AppColors.transparent,
-                      maxLines: 2,
-                    ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: AppDimens.xc),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: Row(
+            children: [
+              Expanded(
+                child: Hero(
+                  // TODO change to some ID or UUID if available
+                  tag: HeroTag.exploreArticleTitle(section.title.hashCode),
+                  child: InformedMarkdownBody(
+                    markdown: section.title,
+                    baseTextStyle: AppTypography.h1,
+                    highlightColor: AppColors.transparent,
+                    maxLines: 2,
                   ),
                 ),
-                const SizedBox(width: AppDimens.s),
-                SeeAllButton(
-                  onTap: () => AutoRouter.of(context).push(
-                    ArticleSeeAllPageRoute(
-                      title: section.title,
-                      entries: section.entries,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: AppDimens.l),
-          SizedBox(
-            height: listItemHeight,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              itemBuilder: (context, index) => ArticleListItem(
-                entry: section.entries[index],
-                themeColor: AppColors.background,
-                cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
               ),
-              separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-              itemCount: section.entries.length,
-            ),
+              const SizedBox(width: AppDimens.s),
+              SeeAllButton(
+                onTap: () => AutoRouter.of(context).push(
+                  ArticleSeeAllPageRoute(
+                    title: section.title,
+                    entries: section.articles,
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: AppDimens.xxl),
-        ],
-      ),
+        ),
+        const SizedBox(height: AppDimens.l),
+        SizedBox(
+          height: listItemHeight,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            itemBuilder: (context, index) => ArticleListItem(
+              entry: section.articles[index],
+              themeColor: AppColors.background,
+              cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+            ),
+            separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
+            itemCount: section.articles.length,
+          ),
+        ),
+        const SizedBox(height: AppDimens.xxl),
+      ],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -40,7 +40,7 @@ class _ReadingBannerBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = readingBanner.entry.item.image?.publicId;
+    final imageId = readingBanner.entry.image?.publicId;
 
     return GestureDetector(
       onTap: () {
@@ -99,7 +99,7 @@ class _ReadingBannerBody extends HookWidget {
                           ),
                           const SizedBox(height: AppDimens.s),
                           Text(
-                            readingBanner.entry.item.title,
+                            readingBanner.entry.title,
                             style: AppTypography.h5BoldSmall.copyWith(height: 1),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

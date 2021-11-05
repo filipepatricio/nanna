@@ -16,7 +16,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 const _pageViewHeight = 550.0;
 
 class ReadingListSectionView extends HookWidget {
-  final ExploreContentSectionReadingLists section;
+  final ExploreContentSectionTopics section;
 
   const ReadingListSectionView({
     required this.section,
@@ -28,69 +28,66 @@ class ReadingListSectionView extends HookWidget {
     final controller = usePageController(viewportFraction: 0.9);
     final width = MediaQuery.of(context).size.width * 0.9;
 
-    return Container(
-      color: AppColors.background,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: AppDimens.xc),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Hero(
-                    tag: HeroTag.exploreReadingListTitle(section.title.hashCode),
-                    child: InformedMarkdownBody(
-                      markdown: section.title,
-                      highlightColor: AppColors.transparent,
-                      baseTextStyle: AppTypography.h1Medium,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: AppDimens.s),
-                SeeAllButton(
-                  onTap: () => AutoRouter.of(context).push(
-                    ReadingListSeeAllPageRoute(
-                      title: section.title,
-                      topics: section.topics,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: AppDimens.l),
-          Container(
-            height: _pageViewHeight,
-            child: PageView.builder(
-              padEnds: false,
-              controller: controller,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(left: AppDimens.l),
-                child: ReadingListStackedCards(
-                  coverSize: Size(width, _pageViewHeight),
-                  child: ReadingListCover(
-                    topic: section.topics[index],
-                    onTap: () => onReadingListTap(context, index),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: AppDimens.xc),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: Row(
+            children: [
+              Expanded(
+                child: Hero(
+                  tag: HeroTag.exploreReadingListTitle(section.title.hashCode),
+                  child: InformedMarkdownBody(
+                    markdown: section.title,
+                    highlightColor: AppColors.transparent,
+                    baseTextStyle: AppTypography.h1Medium,
                   ),
                 ),
               ),
-              itemCount: section.topics.length,
-            ),
+              const SizedBox(width: AppDimens.s),
+              SeeAllButton(
+                onTap: () => AutoRouter.of(context).push(
+                  ReadingListSeeAllPageRoute(
+                    title: section.title,
+                    topics: section.topics,
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: AppDimens.l),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: PageDotIndicator(
-              pageCount: section.topics.length,
-              controller: controller,
+        ),
+        const SizedBox(height: AppDimens.l),
+        Container(
+          height: _pageViewHeight,
+          child: PageView.builder(
+            padEnds: false,
+            controller: controller,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(left: AppDimens.l),
+              child: ReadingListStackedCards(
+                coverSize: Size(width, _pageViewHeight),
+                child: ReadingListCover(
+                  topic: section.topics[index],
+                  onTap: () => onReadingListTap(context, index),
+                ),
+              ),
             ),
+            itemCount: section.topics.length,
           ),
-          const SizedBox(height: AppDimens.l),
-        ],
-      ),
+        ),
+        const SizedBox(height: AppDimens.l),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: PageDotIndicator(
+            pageCount: section.topics.length,
+            controller: controller,
+          ),
+        ),
+        const SizedBox(height: AppDimens.l),
+      ],
     );
   }
 
