@@ -11,6 +11,6 @@ class SignOutUseCase {
 
   Future<void> call() async {
     await _authStore.delete();
-    _analyticsRepository.logout();
+    await _analyticsRepository.logout();
   }
 }

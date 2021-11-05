@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -19,7 +19,7 @@ const listItemWidth = 155.0;
 const listItemHeight = 260.0;
 
 class ArticleListItem extends HookWidget {
-  final Entry entry;
+  final MediaItemArticle entry;
   final Color themeColor;
   final Color cardColor;
   final double? height;
@@ -37,7 +37,7 @@ class ArticleListItem extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = entry.item.image?.publicId;
+    final imageId = entry.image?.publicId;
 
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
@@ -69,14 +69,14 @@ class ArticleListItem extends HookWidget {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: entry.item.type == ArticleType.premium
+                child: entry.type == ArticleType.premium
                     ? const ExclusiveLabel()
                     : ArticleLabel.opinion(backgroundColor: themeColor),
               ),
               const Spacer(),
-              PublisherLogo.light(publisher: entry.item.publisher),
+              PublisherLogo.light(publisher: entry.publisher),
               InformedMarkdownBody(
-                markdown: entry.item.title,
+                markdown: entry.title,
                 baseTextStyle: AppTypography.h5BoldSmall.copyWith(
                   height: 1.4,
                   color: imageId == null ? AppColors.textPrimary : AppColors.white,
