@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/presentation/page/article/media_item_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
 import 'package:flutter/foundation.dart';
@@ -44,10 +44,11 @@ class ArticleContentHtml extends HookWidget {
       customRender: {
         _listElementTag: (RenderContext context, Widget widget) {
           return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const MarkdownBullet(),
               const SizedBox(width: AppDimens.m),
-              widget,
+              Expanded(child: widget),
             ],
           );
         },
@@ -74,55 +75,55 @@ String _makeHtmlContentResponsive(String htmlContent) {
         <head>
           <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
           <style>
-              body { 
-                background-color: #FCFAF8; 
-                color: #282B35; 
-                font-family: Lora; 
+              body {
+                background-color: #FCFAF8;
+                color: #282B35;
+                font-family: Lora;
               }
               ol {
-                padding-left: 24px; 
+                padding-left: 24px;
                 padding-right: 24px;
               }
               ul {
-                padding-left: 24px; 
+                padding-left: 24px;
                 padding-right: 24px;
               }
-              p { 
-                padding-left: 24px; 
-                padding-right: 24px; 
+              p {
+                padding-left: 24px;
+                padding-right: 24px;
               }
-              h1, h2, h3, h4, h5, h6 { 
-                padding-left: 24px; 
-                padding-right: 24px; 
+              h1, h2, h3, h4, h5, h6 {
+                padding-left: 24px;
+                padding-right: 24px;
               }
-              img { 
+              img {
                 object-fit: cover;
                 width: 100%;
                 height: auto;
               }
-              
+
               .raw h3 {
                 line-height: 2rem;
                 font-weight: 700;
                 margin-bottom: 0.75rem;
               }
-              
+
               .raw p {
                 margin-bottom: 1.5rem;
               }
-              
+
               .raw ul {
                 list-style-type: none;
                 margin-bottom: 1rem;
                 padding-left: 0;
               }
-              
+
               .raw ul>li {
                 font-size: 1rem;
                 line-height: 1.4rem;
                 padding-bottom: 0.5rem;
               }
-              
+
               .raw ul>li::before {
                 content: "■";
                 font-size: 1rem;

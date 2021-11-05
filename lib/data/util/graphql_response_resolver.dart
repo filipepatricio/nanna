@@ -1,9 +1,9 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:injectable/injectable.dart';
 
-class GraphQLResponseResolver<T> {
-  const GraphQLResponseResolver._();
-
-  static T? resolve<T>(
+@singleton
+class GraphQLResponseResolver {
+  T? resolve<T>(
     QueryResult result,
     T Function(Map<String, dynamic> raw) mapper, {
     String? rootKey,
@@ -26,7 +26,7 @@ class GraphQLResponseResolver<T> {
     return mapper(finalData);
   }
 
-  static Map<String, dynamic>? _getInnerData(Map<String, dynamic>? data, String key) {
+  Map<String, dynamic>? _getInnerData(Map<String, dynamic>? data, String key) {
     return data?[key] as Map<String, dynamic>?;
   }
 }

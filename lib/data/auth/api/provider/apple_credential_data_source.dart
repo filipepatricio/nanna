@@ -20,11 +20,13 @@ class AppleCredentialDataSource implements OAuthCredentialProviderDataSource {
 
     final oAuthProvider = OAuthProvider('apple.com');
 
-    final userMeta = UserMetaDTO(credentials.givenName, credentials.familyName);
+    final userMetaDto = UserMetaDTO(credentials.givenName, credentials.familyName);
 
-    return OAuthUserMetaCredentialsDTO(userMeta, oAuthProvider.credential(
-      idToken: credentials.identityToken,
-      accessToken: credentials.authorizationCode,
-    ));
+    return OAuthUserMetaCredentialsDTO(
+        userMetaDto,
+        oAuthProvider.credential(
+          idToken: credentials.identityToken,
+          accessToken: credentials.authorizationCode,
+        ));
   }
 }

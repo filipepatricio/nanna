@@ -20,7 +20,8 @@ class ReadingBannerCubit extends Cubit<ReadingBannerState> {
       if (readingBanner.scrollProgress == scrollEnd) {
         emit(ReadingBannerState.notVisible());
       } else {
-        emit(ReadingBannerState.visible(readingBanner));
+        // TODO: Don't show banner until reading progress is tracked server-side
+        emit(ReadingBannerState.notVisible());
       }
     });
   }

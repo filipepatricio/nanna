@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/login_response_dto.dart';
@@ -11,19 +9,16 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: AuthApiDataSource)
 class AuthGraphqlDataSource implements AuthApiDataSource {
   final GraphQLClient _client;
+  final GraphQLResponseResolver _responseResolver;
 
-  AuthGraphqlDataSource(@Named('unauthorized') this._client);
+  AuthGraphqlDataSource(@Named('unauthorized') this._client, this._responseResolver);
 
   @override
   Future<LoginResponseDTO> signInWithProvider(String token, String provider, [UserMetaDTO? userMeta]) async {
     final result = await _client.mutate(
       MutationOptions(
         document: AuthGQL.login(),
-        variables: {
-          'token': token,
-          'provider': provider,
-          'meta': userMeta
-        },
+        variables: {'token': token, 'provider': provider, 'meta': userMeta},
         fetchPolicy: FetchPolicy.noCache,
       ),
     );
@@ -39,11 +34,11 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
         fetchPolicy: FetchPolicy.noCache,
       ),
     );
-    GraphQLResponseResolver.resolve(result, (raw) => null, rootKey: null);
+    _responseResolver.resolve(result, (raw) => null, rootKey: null);
   }
 
   LoginResponseDTO _processSignInResponse(QueryResult result) {
-    final response = GraphQLResponseResolver.resolve(
+    final response = _responseResolver.resolve(
       result,
       (raw) => LoginResponseDTO.fromJson(raw),
       rootKey: 'signIn',

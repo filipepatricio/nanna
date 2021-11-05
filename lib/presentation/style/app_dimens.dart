@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AppDimens {
   const AppDimens._();
 
@@ -49,31 +51,66 @@ class AppDimens {
   ///80.0
   static const xxxc = 80.0;
 
+  /// 4
   static const indicatorSize = 4.0;
+
+  /// 14
   static const naviBarFontSize = 14.0;
+
+  /// 14
   static const backArrowSize = 14.0;
+
+  /// 16
   static const indicatorSelectedSize = 16.0;
+
+  /// 70
   static const appBarSize = 70.0;
 
+  /// 43
   static const settingsItemHeight = 43.0;
+
+  /// 67
   static const settingsCancelButtonWidth = 67.0;
+
+  /// 30
   static const settingsCancelButtonHeight = 30.0;
 
+  /// 16
   static const topicCardRadius = 16.0;
+
+  /// 16
   static const topicCardBlurRadius = 16.0;
+
+  /// 3
   static const topicCardOffsetY = 3.0;
+
+  /// 36
   static const topicControlsMargin = 36.0;
 
+  /// 8
   static const buttonRadius = 8.0;
+
+  /// 10
   static const articleItemMargin = 10.0;
+
+  /// 84
   static const articleItemPhotoSize = 84.0;
 
+  /// 40
   static const articlePublisherLogoSize = 40;
 
+  /// 298
   static const articleItemWidth = 298.0;
 
-  static const verticalIndicatorWidth = 5.0;
+  /// 52%
+  static double articleItemHeight(BuildContext context) => MediaQuery.of(context).size.height * 0.52;
 
+  /// 4
+  static const verticalIndicatorWidth = 4.0;
+
+  /// 92
   static const topicAppBarDefaultHeight = 92.0;
+
+  /// 80
   static const topicAppBarAnimationFactor = 80.0;
 }

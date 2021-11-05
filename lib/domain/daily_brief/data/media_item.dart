@@ -9,7 +9,6 @@ part 'media_item.freezed.dart';
 @freezed
 class MediaItem with _$MediaItem {
   const factory MediaItem.article({
-    required int wordCount,
     required String id,
     required String slug,
     required String title,
@@ -17,6 +16,7 @@ class MediaItem with _$MediaItem {
     required int timeToRead,
     required Publisher publisher,
     required String sourceUrl,
+    int? wordCount,
     DateTime? publicationDate,
     String? note,
     Image? image,

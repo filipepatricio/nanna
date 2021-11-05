@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.da
 import 'package:better_informed_mobile/domain/user/use_case/update_user_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dart';
-import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -48,7 +47,6 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
           timeInSecForIosWeb: 1,
           fontSize: 16.0
       );
-      hideKeyboard();
     }
   }
 

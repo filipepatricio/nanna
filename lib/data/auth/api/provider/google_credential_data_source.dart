@@ -27,10 +27,12 @@ class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
       final userNameParts = account.displayName?.split(' ');
       final userMeta = UserMetaDTO(userNameParts?.first, userNameParts?.sublist(1).join(' '), account.photoUrl);
       final auth = await account.authentication;
-      return OAuthUserMetaCredentialsDTO(userMeta, GoogleAuthProvider.credential(
-        accessToken: auth.accessToken,
-        idToken: auth.idToken,
-      ));
+      return OAuthUserMetaCredentialsDTO(
+          userMeta,
+          GoogleAuthProvider.credential(
+            accessToken: auth.accessToken,
+            idToken: auth.idToken,
+          ));
     }
 
     throw Exception('Account was not received from google');

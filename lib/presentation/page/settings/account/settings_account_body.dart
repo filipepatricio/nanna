@@ -6,15 +6,12 @@ import 'package:better_informed_mobile/presentation/page/settings/widgets/settin
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
-import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SettingsAccountBody extends HookWidget {
   final SettingsAccountCubit cubit;
@@ -111,7 +108,7 @@ class SettingsAccountBody extends HookWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               child: GestureDetector(
-                onTap: () => cubit.saveAccountData(),
+                onTap: () => {onDismissTextFormFocus(), cubit.saveAccountData()},
                 child: Container(
                   height: AppDimens.xxl,
                   decoration: const BoxDecoration(

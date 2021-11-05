@@ -9,8 +9,9 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: UserDataSource)
 class UserGraphqlDataSource implements UserDataSource {
   final GraphQLClient _client;
+  final GraphQLResponseResolver _responseResolver;
 
-  UserGraphqlDataSource(this._client);
+  UserGraphqlDataSource(this._client, this._responseResolver);
 
   @override
   Future<UserDTO> getUser() async {
@@ -21,7 +22,7 @@ class UserGraphqlDataSource implements UserDataSource {
       ),
     );
 
-    final dto = GraphQLResponseResolver.resolve(
+    final dto = _responseResolver.resolve(
       result,
       (raw) => UserDTO.fromJson(raw),
       rootKey: 'me',
@@ -43,7 +44,7 @@ class UserGraphqlDataSource implements UserDataSource {
       ),
     );
 
-    final dto = GraphQLResponseResolver.resolve(
+    final dto = _responseResolver.resolve(
       result,
           (raw) => UserDTO.fromJson(raw),
       rootKey: 'updateUserMeta',

@@ -13,22 +13,22 @@ import 'package:flutter/widgets.dart';
 
 class ColoredCover extends StatelessWidget {
   final MediaItemArticle article;
-
-  const ColoredCover({required this.article});
+  final Color backgroundColor;
+  const ColoredCover({required this.backgroundColor, required this.article});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.rose,
+      color: backgroundColor,
       width: AppDimens.articleItemWidth,
-      height: MediaQuery.of(context).size.height * 0.52,
+      height: AppDimens.articleItemHeight(context),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: AppDimens.l, left: AppDimens.s),
+              padding: const EdgeInsets.only(top: AppDimens.l),
               child: article.type == ArticleType.premium
                   ? const ExclusiveLabel()
                   : ArticleLabel.opinion(backgroundColor: AppColors.background),
