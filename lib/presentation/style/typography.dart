@@ -136,6 +136,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle subH1Regular = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 14,
+    height: 2.21,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle subH2RegularSmall = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,

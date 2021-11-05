@@ -11,8 +11,9 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: PushNotificationApiDataSource)
 class PushNotificationGraphqlApiDataSource implements PushNotificationApiDataSource {
   final GraphQLClient _client;
+  final GraphQLResponseResolver _responseResolver;
 
-  PushNotificationGraphqlApiDataSource(this._client);
+  PushNotificationGraphqlApiDataSource(this._client, this._responseResolver);
 
   @override
   Future<RegisteredPushTokenDTO> registerToken(String token) async {
@@ -22,7 +23,7 @@ class PushNotificationGraphqlApiDataSource implements PushNotificationApiDataSou
       ),
     );
 
-    final dto = GraphQLResponseResolver.resolve(
+    final dto = _responseResolver.resolve(
       result,
       (raw) => RegisteredPushTokenDTO.fromJson(raw),
       rootKey: 'savePushDeviceToken',
@@ -39,7 +40,7 @@ class PushNotificationGraphqlApiDataSource implements PushNotificationApiDataSou
       ),
     );
 
-    final dto = GraphQLResponseResolver.resolve(
+    final dto = _responseResolver.resolve(
       result,
       (raw) {
         final groupsRaw = raw['getNotificationPreferences'] as List<dynamic>;
@@ -65,7 +66,7 @@ class PushNotificationGraphqlApiDataSource implements PushNotificationApiDataSou
       ),
     );
 
-    final dto = GraphQLResponseResolver.resolve(
+    final dto = _responseResolver.resolve(
       result,
       (raw) => NotificationChannelDTO.fromJson(raw),
       rootKey: 'setNotificationChannelPreferences',

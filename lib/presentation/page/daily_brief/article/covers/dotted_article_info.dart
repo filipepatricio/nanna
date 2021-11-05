@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
@@ -24,26 +23,19 @@ class DottedArticleInfo extends StatelessWidget {
     final publicationDate = article.publicationDate;
     return Row(
       children: [
-        PublisherLogo.light(publisher: article.publisher),
-        const SizedBox(width: AppDimens.s),
+        if (isLight)
+          PublisherLogo.light(publisher: article.publisher)
+        else
+          PublisherLogo.dark(publisher: article.publisher),
         Text(
-          article.publisher.name,
+          '${article.publisher.name} · ',
           style: AppTypography.metadata1Regular.copyWith(color: mainColor),
         ),
-        Text(
-          ' · ',
-          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
-        ),
-        if (publicationDate != null) ...[
+        if (publicationDate != null)
           Text(
-            DateFormatUtil.formatShortMonthNameDay(publicationDate),
+            '${DateFormatUtil.formatShortMonthNameDay(publicationDate)} · ',
             style: AppTypography.metadata1Regular.copyWith(color: mainColor),
           ),
-          Text(
-            ' · ',
-            style: AppTypography.metadata1Regular.copyWith(color: mainColor),
-          ),
-        ],
         Text(
           LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
           style: AppTypography.metadata1Regular.copyWith(color: mainColor),

@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
@@ -395,7 +394,7 @@ class _MediaItemContent extends StatelessWidget {
             top: statusBarHeight,
             right: null,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.s),
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
               child: VerticalIndicators(
                 currentIndex: pageIndex.value,
                 pageListLength: entryList.length,

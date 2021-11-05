@@ -4,8 +4,8 @@ import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
-import 'package:better_informed_mobile/presentation/page/article/article_scroll_data.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -19,12 +19,12 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
   final GetArticleUseCase _getArticleUseCase;
 
-  late List<Entry> _allEntries;
+  late List<MediaItemArticle> _allEntries;
   late int _index;
 
   Article? _currentFullArticle;
 
-  ArticleScrollData scrollData = ArticleScrollData.initial();
+  MediaItemScrollData scrollData = MediaItemScrollData.initial();
 
   MediaItemCubit(
     this._setStartedArticleStreamUseCase,
@@ -33,7 +33,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
 
   var readingComplete = false;
 
-  Future<void> initialize(List<Entry> entries, int index) async {
+  Future<void> initialize(List<MediaItemArticle> entries, int index) async {
     _allEntries = entries;
     _index = index;
 
@@ -60,11 +60,11 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   void updateScrollData(double scrollOffset, double maxExtent) {
     scrollData = scrollData.copyWith(
       readArticleContentOffset: scrollOffset,
-      articleContentHeight: maxExtent - scrollData.contentOffset,
-      articlePageHeight: maxExtent,
+      contentHeight: maxExtent - scrollData.contentOffset,
+      pageHeight: maxExtent,
     );
 
-    final progress = scrollData.readArticleContentOffset / scrollData.articleContentHeight;
+    final progress = scrollData.readArticleContentOffset / scrollData.contentHeight;
     _updateReadingBannerState(progress);
   }
 
@@ -85,7 +85,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
         _currentFullArticle = nextArticle;
         _index = nextIndex;
 
-        scrollData = ArticleScrollData.initial();
+        scrollData = MediaItemScrollData.initial();
         _resetBannerState();
 
         _showIdleOrErrorState();
@@ -132,5 +132,5 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     }
   }
 
-  Entry _getCurrentHeader() => _allEntries[_index];
+  MediaItemArticle _getCurrentHeader() => _allEntries[_index];
 }

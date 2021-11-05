@@ -1,0 +1,1 @@
+class SignInAbortedException implements Exception {}
