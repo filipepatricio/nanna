@@ -6,7 +6,7 @@ class Entry {
   final MediaItem item;
   final EntryStyle style;
 
-  const Entry({
+  Entry({
     required this.note,
     required this.item,
     required this.style,
