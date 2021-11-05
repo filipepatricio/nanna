@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/send_magic_link_use_case.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_default_provider_use_case.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_magic_link_token_use_case.dart';
@@ -9,6 +10,7 @@ import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_st
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 @injectable
 class SignInPageCubit extends Cubit<SignInPageState> {
@@ -56,6 +58,8 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     try {
       await _signInWithDefaultProviderUseCase();
       emit(SignInPageState.success());
+    } on SignInAbortedException {
+      // Do nothing
     } catch (e, s) {
       Fimber.e('Signing in with provider failed', ex: e, stacktrace: s);
     } finally {
