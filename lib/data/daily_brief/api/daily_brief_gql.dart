@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/gql/common_gql.dart';
 import 'package:gql/src/ast/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -5,8 +6,8 @@ class DailyBriefGql {
   static DocumentNode currentBrief() => gql('''
     query currentBriefForStartupScreen {
       currentBrief {
-        $greeting
-        $goodbye
+        $_greeting
+        $_goodbye
         numberOfTopics
         topics {
           id
@@ -16,7 +17,7 @@ class DailyBriefGql {
             text
           }
           introduction
-          $highlightedPublishers
+          ${CommonGQLModels.highlightedPublishers}
           category {
             name
           }
@@ -30,71 +31,37 @@ class DailyBriefGql {
             id
             name
             entries {
-             note
-             item {
+              note
+              style {
+                color
+                type
+              }
+              item {
                 __typename
                 ... on Article {
-                  $articleBody
+                  ${CommonGQLModels.article}
                 }
-             }
+              }
+            }
           }
         }
       }
     }
-  }
   ''');
+
+  static const String _greeting = '''
+    greeting {
+      headline
+      message
+      icon
+    }
+  ''';
+
+  static const String _goodbye = '''
+    goodbye {
+      headline
+      message
+      icon
+    }
+  ''';
 }
-
-String greeting = '''
-  greeting {
-    headline
-    message
-    icon
-  }
-''';
-String goodbye = '''
-  goodbye {
-    headline
-    message
-    icon
-  }
-''';
-
-String highlightedPublishers = '''
-  highlightedPublishers {
-    id
-    name
-    darkLogo{
-      publicId
-    }
-    lightLogo {
-      publicId
-    }
-  }
-''';
-
-String articleBody = '''
-  wordCount
-  sourceUrl
-  slug
-  note
-  id
-  author
-  title
-  type
-  publicationDate
-  timeToRead 
-  image {
-    publicId
-  }
-  publisher {
-    name
-    id
-    darkLogo{
-      publicId
-    }
-     lightLogo {
-      publicId
-    }
-  }
-''';

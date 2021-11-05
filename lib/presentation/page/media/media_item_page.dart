@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/article/content/article_content_html.dart';
-import 'package:better_informed_mobile/presentation/page/article/content/article_content_markdown.dart';
-import 'package:better_informed_mobile/presentation/page/article/media_item_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/article/media_item_page_data.dart';
-import 'package:better_informed_mobile/presentation/page/article/media_item_state.dart';
-import 'package:better_informed_mobile/presentation/page/article/pull_up_indicator_action/pull_up_indicator_action.dart';
+import 'package:better_informed_mobile/presentation/page/media/content/article_content_html.dart';
+import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_state.dart';
+import 'package:better_informed_mobile/presentation/page/media/pull_up_indicator_action/pull_up_indicator_action.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -35,7 +35,7 @@ const _loadNextArticleIndicatorHeight = 150.0;
 class MediaItemPage extends HookWidget {
   final double? readArticleProgress;
   final int index;
-  final List<Entry> entryList;
+  final List<MediaItemArticle> entryList;
   final MediaItemNavigationCallback? navigationCallback;
 
   MediaItemPage({
@@ -52,7 +52,7 @@ class MediaItemPage extends HookWidget {
         multipleItems: (data) => data.index,
       );
 
-  static List<Entry> _getEntries(MediaItemPageData pageData) => pageData.map(
+  static List<MediaItemArticle> _getEntries(MediaItemPageData pageData) => pageData.map(
         singleItem: (data) => [data.entry],
         multipleItems: (data) => data.entryList,
       );
@@ -73,8 +73,8 @@ class MediaItemPage extends HookWidget {
     );
 
     final articleType = state.mapOrNull(
-      idleSingleItem: (state) => state.header.item.type,
-      idleMultiItems: (state) => state.header.item.type,
+      idleSingleItem: (state) => state.header.type,
+      idleMultiItems: (state) => state.header.type,
     );
 
     useEffect(() {
@@ -145,7 +145,7 @@ class _LoadingContent extends StatelessWidget {
 }
 
 class _ErrorContent extends StatelessWidget {
-  final Entry entry;
+  final MediaItemArticle entry;
 
   const _ErrorContent({
     required this.entry,
@@ -174,7 +174,7 @@ class _ErrorContent extends StatelessWidget {
         const SizedBox(height: AppDimens.l),
         //TODO: Change for proper label and design
         OpenWebButton(
-          url: entry.item.sourceUrl,
+          url: entry.sourceUrl,
           buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
         ),
       ],
@@ -183,7 +183,7 @@ class _ErrorContent extends StatelessWidget {
 }
 
 class _IdleContent extends HookWidget {
-  final Entry entry;
+  final MediaItemArticle entry;
   final ArticleContent content;
   final MediaItemCubit cubit;
   final ScrollController controller;
@@ -361,14 +361,14 @@ class _AllArticlesRead extends StatelessWidget {
 }
 
 class ArticleHeaderView extends HookWidget {
-  final Entry entry;
+  final MediaItemArticle entry;
 
   const ArticleHeaderView({required this.entry, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = entry.item.image?.publicId;
+    final imageId = entry.image?.publicId;
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -417,7 +417,7 @@ class ArticleHeaderView extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.l),
                 Text(
-                  entry.item.title, // TODO missing data in object
+                  entry.title, // TODO missing data in object
                   style: AppTypography.b1Medium.copyWith(color: Colors.white),
                 ),
                 const SizedBox(height: AppDimens.l),
@@ -431,7 +431,7 @@ class ArticleHeaderView extends HookWidget {
 }
 
 class ArticleContentView extends StatelessWidget {
-  final Entry entry;
+  final MediaItemArticle entry;
   final ArticleContent content;
   final MediaItemCubit cubit;
   final ScrollController controller;
@@ -450,8 +450,8 @@ class ArticleContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final author = entry.item.author;
-    final publicationDate = entry.item.publicationDate;
+    final author = entry.author;
+    final publicationDate = entry.publicationDate;
 
     return Column(
       children: [
@@ -464,7 +464,7 @@ class ArticleContentView extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(entry.item.title, style: AppTypography.h1Bold),
+                  Text(entry.title, style: AppTypography.h1Bold),
                   const SizedBox(height: AppDimens.l),
                   Divider(
                     height: AppDimens.one,
@@ -492,12 +492,12 @@ class ArticleContentView extends StatelessWidget {
                   ),
                   const SizedBox(width: AppDimens.xs),
                   Text(
-                    entry.item.publisher.name,
+                    entry.publisher.name,
                     style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
                   ),
                   const VerticalDivider(),
                   Text(
-                    LocaleKeys.article_readMinutes.tr(args: [entry.item.timeToRead.toString()]),
+                    LocaleKeys.article_readMinutes.tr(args: [entry.timeToRead.toString()]),
                     style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
                   ),
                   if (publicationDate != null) ...[

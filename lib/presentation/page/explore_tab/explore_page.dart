@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_section/article_section_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_with_cover_section_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/reading_list_section/reading_list_section_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -33,6 +34,8 @@ class ExplorePage extends HookWidget {
       [cubit],
     );
 
+    final headerColor = _getHeaderColor(state);
+
     return Scaffold(
       body: ReadingBannerWrapper(
         child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -42,7 +45,7 @@ class ExplorePage extends HookWidget {
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
-                    const _Header(),
+                    _Header(color: headerColor),
                   ],
                 ),
               ),
@@ -62,6 +65,19 @@ class ExplorePage extends HookWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Color _getHeaderColor(ExplorePageState state) {
+    return state.maybeMap(
+      idle: (idle) {
+        final firstSection = idle.sections.first;
+        return firstSection.maybeMap(
+          articleWithFeature: (state) => Color(state.backgroundColor),
+          orElse: () => AppColors.background,
+        );
+      },
+      orElse: () => AppColors.background,
     );
   }
 }
@@ -85,12 +101,17 @@ class _Idle extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({Key? key}) : super(key: key);
+  final Color color;
+
+  const _Header({
+    required this.color,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.limeGreen,
+      color: color,
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,8 +140,8 @@ class _Section extends StatelessWidget {
   Widget build(BuildContext context) {
     return section.map(
       articles: (section) => ArticleSectionView(section: section),
-      articleWithCover: (section) => ArticleWithCoverSectionView(section: section),
-      readingLists: (section) => ReadingListSectionView(section: section),
+      articleWithFeature: (section) => ArticleWithCoverSectionView(section: section),
+      topics: (section) => ReadingListSectionView(section: section),
     );
   }
 }

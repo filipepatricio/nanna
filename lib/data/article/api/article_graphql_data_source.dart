@@ -10,8 +10,9 @@ const _contentKey = 'text';
 @LazySingleton(as: ArticleApiDataSource)
 class ArticleGraphqlDataSource implements ArticleApiDataSource {
   final GraphQLClient _client;
+  final GraphQLResponseResolver _responseResolver;
 
-  ArticleGraphqlDataSource(this._client);
+  ArticleGraphqlDataSource(this._client, this._responseResolver);
 
   @override
   Future<ArticleContentDTO> getArticleContent(String slug) async {
@@ -21,7 +22,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       ),
     );
 
-    final dto = GraphQLResponseResolver.resolve(
+    final dto = _responseResolver.resolve(
       result,
       (raw) {
         final content = raw[_contentKey] as Map<String, dynamic>;

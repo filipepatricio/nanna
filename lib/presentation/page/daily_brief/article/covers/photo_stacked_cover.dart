@@ -22,11 +22,10 @@ class PhotoStackedCover extends HookWidget {
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
-    final containerHeight = MediaQuery.of(context).size.height * 0.52;
 
     return Container(
       width: AppDimens.articleItemWidth,
-      height: containerHeight,
+      height: AppDimens.articleItemHeight(context),
       child: Stack(
         children: [
           if (imageId != null) ...[
@@ -61,9 +60,9 @@ class PhotoStackedCover extends HookWidget {
           Align(
             alignment: Alignment.bottomLeft,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+              padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.m, bottom: AppDimens.l),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
@@ -71,11 +70,9 @@ class PhotoStackedCover extends HookWidget {
                     style: AppTypography.h3bold.copyWith(color: AppColors.white),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: AppDimens.l),
                   DottedArticleInfo(article: article, isLight: true),
-                  const SizedBox(height: AppDimens.l),
                 ],
               ),
             ),
