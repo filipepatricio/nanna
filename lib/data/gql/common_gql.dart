@@ -2,36 +2,40 @@ class CommonGQLModels {
   const CommonGQLModels._();
 
   static const String topic = '''
-          id
-          title
-          lastUpdatedAt
-          summaryCards{
-            text
-          }
-          introduction
-          $highlightedPublishers
-          category {
-            name
-          }
-          coverImage {
-            publicId
-          }
-          heroImage {
-            publicId
-          }
-          readingList {
-            id
-            name
-            entries {
-             note
-             item {
-                __typename
-                ... on Article {
-                  $article
-                }
-             }
+    id
+    title
+    lastUpdatedAt
+    summaryCards{
+      text
+    }
+    introduction
+    $highlightedPublishers
+    category {
+      name
+    }
+    coverImage {
+      publicId
+    }
+    heroImage {
+      publicId
+    }
+    readingList {
+      id
+      name
+      entries {
+        note
+        style {
+          color
+          type
+        }
+        item {
+          __typename
+          ... on Article {
+            $article
           }
         }
+      }
+    }
   ''';
 
   static const String highlightedPublishers = '''
@@ -57,7 +61,7 @@ class CommonGQLModels {
       title
       type
       publicationDate
-      timeToRead 
+      timeToRead
       image {
         publicId
       }
