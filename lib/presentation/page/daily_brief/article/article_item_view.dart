@@ -11,9 +11,9 @@ import 'package:better_informed_mobile/presentation/page/media/media_item_page_d
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_introduction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -54,7 +54,10 @@ class ArticleItemView extends HookWidget {
             MediaItemPageRoute(
               pageData: MediaItemPageData.multipleItems(
                 index: index,
-                entryList: allEntries.map((e) => e.item).whereType<MediaItemArticle>().toList(),  //TODO fix when media page will accept other types
+                entryList: allEntries
+                    .map((e) => e.item)
+                    .whereType<MediaItemArticle>()
+                    .toList(), //TODO fix when media page will accept other types
                 navigationCallback: navigationCallback,
               ),
             ),
@@ -83,7 +86,7 @@ class ArticleItemView extends HookWidget {
               const SizedBox(height: AppDimens.m),
               Padding(
                 padding: const EdgeInsets.only(right: AppDimens.xxl),
-                child: EditorsNote(note: currentEntry.note!),
+                child: TopicIntroduction(introduction: currentEntry.note!),
               ),
             ],
             const SizedBox(height: AppDimens.l),

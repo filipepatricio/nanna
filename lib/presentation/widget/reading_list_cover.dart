@@ -6,9 +6,9 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
-import 'package:better_informed_mobile/presentation/widget/editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_introduction.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -70,10 +70,9 @@ class ReadingListCover extends HookWidget {
                 ),
               ),
               const SizedBox(height: AppDimens.s),
-              //TODO: Note should be from API
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: EditorsNote(note: 'Afghan capital on Sunday amid scenes of panic and chaos, bringing a swift.'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: TopicIntroduction(introduction: topic.introduction),
               ),
               const SizedBox(height: AppDimens.s),
               Padding(
