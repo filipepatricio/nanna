@@ -71,7 +71,7 @@ class RelaxView extends HookWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: goodbyeHeadline.message!,
+                      text: goodbyeHeadline.message,
                       style: AppTypography.b1Regular,
                     ),
                     TextSpan(
