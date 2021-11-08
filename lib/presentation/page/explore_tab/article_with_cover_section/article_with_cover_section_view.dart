@@ -50,7 +50,6 @@ class ArticleWithCoverSectionView extends StatelessWidget {
               children: [
                 Expanded(
                   child: Hero(
-                    // TODO change to some ID or UUID if available
                     tag: HeroTag.exploreArticleTitle(section.title.hashCode),
                     child: InformedMarkdownBody(
                       markdown: section.title,

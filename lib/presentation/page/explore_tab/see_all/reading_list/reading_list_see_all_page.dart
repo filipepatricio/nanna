@@ -1,9 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_list_item.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list/reading_list_see_all_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list/reading_list_see_all_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/see_all_load_more_indicator.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -13,34 +12,36 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-const _itemHeight = 250.0;
+const _itemHeight = 320.0;
 
-class ArticleSeeAllPage extends HookWidget {
+class ReadingListSeeAllPage extends HookWidget {
   final String sectionId;
   final String title;
-  final List<MediaItemArticle> entries;
+  final List<Topic> topics;
 
-  const ArticleSeeAllPage({
+  const ReadingListSeeAllPage({
     required this.sectionId,
     required this.title,
-    required this.entries,
+    required this.topics,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final cubit = useCubit<ArticleSeeAllPageCubit>();
-    final state = useCubitBuilder<ArticleSeeAllPageCubit, ArticleSeeAllPageState>(cubit);
+    final cubit = useCubit<ReadingListSeeAllPageCubit>();
+    final state = useCubitBuilder<ReadingListSeeAllPageCubit, ReadingListSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(sectionId));
 
     useEffect(() {
-      cubit.initialize(sectionId, entries);
+      cubit.initialize(sectionId, topics);
     }, [cubit]);
 
     final shouldListen = state.maybeMap(
@@ -67,12 +68,9 @@ class ArticleSeeAllPage extends HookWidget {
         backgroundColor: AppColors.background,
         centerTitle: false,
         elevation: 0,
-        title: Hero(
-          tag: HeroTag.exploreArticleTitle,
-          child: Text(
-            tr(LocaleKeys.explore_title),
-            style: AppTypography.h3bold,
-          ),
+        title: Text(
+          tr(LocaleKeys.explore_title),
+          style: AppTypography.h3bold,
         ),
         leading: IconButton(
           onPressed: () => AutoRouter.of(context).pop(),
@@ -88,9 +86,9 @@ class ArticleSeeAllPage extends HookWidget {
       ),
       body: _Body(
         title: title,
-        state: state,
-        scrollController: scrollController,
         pageStorageKey: pageStorageKey,
+        scrollController: scrollController,
+        state: state,
       ),
     );
   }
@@ -98,7 +96,7 @@ class ArticleSeeAllPage extends HookWidget {
 
 class _Body extends StatelessWidget {
   final String title;
-  final ArticleSeeAllPageState state;
+  final ReadingListSeeAllPageState state;
   final ScrollController scrollController;
   final PageStorageKey pageStorageKey;
 
@@ -114,24 +112,24 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return state.maybeMap(
       loading: (_) => const Loader(),
-      withPagination: (state) => _ArticleGrid(
+      withPagination: (state) => _TopicGrid(
         title: title,
         pageStorageKey: pageStorageKey,
-        articles: state.articles,
+        topics: state.topics,
         scrollController: scrollController,
         withLoader: false,
       ),
-      loadingMore: (state) => _ArticleGrid(
+      loadingMore: (state) => _TopicGrid(
         title: title,
         pageStorageKey: pageStorageKey,
-        articles: state.articles,
+        topics: state.topics,
         scrollController: scrollController,
         withLoader: true,
       ),
-      allLoaded: (state) => _ArticleGrid(
+      allLoaded: (state) => _TopicGrid(
         title: title,
         pageStorageKey: pageStorageKey,
-        articles: state.articles,
+        topics: state.topics,
         scrollController: scrollController,
         withLoader: false,
       ),
@@ -140,17 +138,17 @@ class _Body extends StatelessWidget {
   }
 }
 
-class _ArticleGrid extends StatelessWidget {
+class _TopicGrid extends StatelessWidget {
   final String title;
   final PageStorageKey pageStorageKey;
-  final List<MediaItemArticle> articles;
+  final List<Topic> topics;
   final ScrollController scrollController;
   final bool withLoader;
 
-  const _ArticleGrid({
+  const _TopicGrid({
     required this.title,
     required this.pageStorageKey,
-    required this.articles,
+    required this.topics,
     required this.scrollController,
     required this.withLoader,
     Key? key,
@@ -169,7 +167,7 @@ class _ArticleGrid extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: Hero(
-                  tag: HeroTag.exploreArticleTitle(title.hashCode),
+                  tag: HeroTag.exploreReadingListTitle(title.hashCode),
                   child: InformedMarkdownBody(
                     markdown: title,
                     highlightColor: AppColors.transparent,
@@ -185,14 +183,13 @@ class _ArticleGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _GridItem(article: articles[index]),
-              childCount: articles.length,
+              (context, index) => _GridItem(topic: topics[index]),
+              childCount: topics.length,
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisExtent: _itemHeight,
-              crossAxisSpacing: AppDimens.m,
-              mainAxisSpacing: AppDimens.xl,
+              mainAxisSpacing: AppDimens.m,
             ),
           ),
         ),
@@ -203,24 +200,33 @@ class _ArticleGrid extends StatelessWidget {
 }
 
 class _GridItem extends StatelessWidget {
-  final MediaItemArticle article;
+  final Topic topic;
 
   const _GridItem({
-    required this.article,
+    required this.topic,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return ArticleListItem(
-          entry: article,
-          themeColor: AppColors.background,
-          height: _itemHeight,
-          width: null,
-        );
-      },
+    return GestureDetector(
+      onTap: () => _onReadingListTap(context, topic),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return ReadingListStackedCards(
+            coverSize: Size(constraints.maxWidth, _itemHeight),
+            child: ReadingListCoverSmall(topic: topic),
+          );
+        },
+      ),
+    );
+  }
+
+  void _onReadingListTap(BuildContext context, Topic topic) {
+    AutoRouter.of(context).push(
+      SingleTopicPageRoute(
+        topic: topic,
+      ),
     );
   }
 }
