@@ -34,12 +34,14 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
     final result = await _client.query(
       QueryOptions(
         document: ExploreContentGQL.paginated(id, limit, offset),
+        fetchPolicy: FetchPolicy.noCache,
       ),
     );
 
     final dto = _responseResolver.resolve(
       result,
       (raw) => ExploreContentSectionDTO.fromJson(raw),
+      rootKey: 'getExploreArea',
     );
 
     return dto ?? (throw Exception('Explore content section can not be null'));

@@ -45,6 +45,7 @@ class ArticleSectionView extends StatelessWidget {
               SeeAllButton(
                 onTap: () => AutoRouter.of(context).push(
                   ArticleSeeAllPageRoute(
+                    sectionId: section.id,
                     title: section.title,
                     entries: section.articles,
                   ),
