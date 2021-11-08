@@ -103,8 +103,7 @@
   },
   "readingList": {
     "title": "Reading list",
-    "articleCount": "{} articles",
-    "editorsNote": "Editors note: "
+    "articleCount": "{} articles"
   },
   "topic": {
     "updated": "Updated {}"
