@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/auth/api/dto/oauth_usermeta_credenti
 import 'package:better_informed_mobile/data/auth/api/dto/user_meta_dto.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
+import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -11,11 +12,7 @@ class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
 
   @override
   Future<OAuthUserMetaCredentialsDTO> getUserMetaCredential() async {
-    final googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-      ],
-    );
+    final googleSignIn = GoogleSignIn(scopes: ['email']);
 
     if (await googleSignIn.isSignedIn()) {
       await googleSignIn.signOut();
@@ -35,6 +32,6 @@ class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
           ));
     }
 
-    throw Exception('Account was not received from google');
+    throw SignInAbortedException();
   }
 }
