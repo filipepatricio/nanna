@@ -20,9 +20,10 @@ double calculateLastPageShownFactor(PageController controller, double viewportFr
 class NoScrollGlow extends NotificationListener<OverscrollIndicatorNotification> {
   NoScrollGlow({required Widget child})
       : super(
-            onNotification: (overscroll) {
-              overscroll.disallowGlow();
-              return false;
-            },
-            child: child);
+          onNotification: (overscroll) {
+            overscroll.disallowGlow();
+            return false;
+          },
+          child: child,
+        );
 }
