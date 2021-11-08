@@ -32,7 +32,8 @@
     "readingList": "Reading list",
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
-    "biggerPicture": "The bigger picture"
+    "biggerPicture": "The bigger picture",
+    "goToExplore": "Go to explore"
   },
   "settings": {
     "settings": "Settings",

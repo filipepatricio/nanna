@@ -146,38 +146,30 @@ class _IdleContent extends HookWidget {
           Expanded(
             child: Stack(
               children: [
-                Hero(
-                  tag: HeroTag.dailyBriefRelaxPage,
-                  flightShuttleBuilder: (context, anim, direction, contextA, contextB) {
-                    return Material(
-                      color: Colors.transparent,
-                      child: RelaxView(
-                        lastPageAnimationProgressState: lastPageAnimationProgressState,
-                        goodbyeHeadline: currentBrief.goodbye,
-                      ),
-                    );
-                  },
-                  child: RelaxView(
-                    lastPageAnimationProgressState: lastPageAnimationProgressState,
-                    goodbyeHeadline: currentBrief.goodbye,
-                  ),
-                ),
                 Positioned.fill(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      return PageView(
-                        controller: controller,
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          ..._buildTopicCards(
-                            context,
-                            controller,
-                            currentBrief,
-                            cardStackWidth,
-                            constraints.maxHeight,
-                          ),
-                          Container(),
-                        ],
+                      return NoScrollGlow(
+                        child: PageView(
+                          controller: controller,
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            ..._buildTopicCards(
+                              context,
+                              controller,
+                              currentBrief,
+                              cardStackWidth,
+                              constraints.maxHeight,
+                            ),
+                            Hero(
+                              tag: HeroTag.dailyBriefRelaxPage,
+                              child: RelaxView(
+                                lastPageAnimationProgressState: lastPageAnimationProgressState,
+                                goodbyeHeadline: currentBrief.goodbye,
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
