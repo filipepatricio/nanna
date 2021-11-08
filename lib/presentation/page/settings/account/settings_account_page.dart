@@ -36,6 +36,7 @@ class SettingsAccountPage extends HookWidget {
         loading: () => const Loader(),
         updating: (data) => SettingsAccountBody(cubit: cubit, data: data),
         idle: (data) => SettingsAccountBody(cubit: cubit, data: data),
+        showMessage: (data, message) => SettingsAccountBody(cubit: cubit, data: data),
         orElse: () => const SizedBox(),
       ),
     );

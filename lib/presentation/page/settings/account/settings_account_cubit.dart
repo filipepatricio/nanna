@@ -40,13 +40,7 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
       emit(SettingsAccountState.updating(_accountData));
       final user = await _updateUserUseCase(_accountData);
       await setAccountData(user);
-      await Fluttertoast.showToast(
-          msg: 'Your information was saved successfully',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          fontSize: 16.0
-      );
+      emit(SettingsAccountState.showMessage(_accountData, 'Your information was saved successfully'));
     }
   }
 

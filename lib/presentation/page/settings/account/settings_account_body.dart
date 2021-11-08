@@ -8,13 +8,15 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SettingsAccountBody extends HookWidget {
-  final SettingsAccountCubit cubit;
+  final SettingsAccountCubit  cubit;
   final SettingsAccountData data;
 
   SettingsAccountBody({
@@ -26,9 +28,14 @@ class SettingsAccountBody extends HookWidget {
   final isFormFocused = useState(false);
   final isEditable = useState(false);
 
-  void onDismissTextFormFocus(){
+  void _onDismissTextFormFocus(){
     hideKeyboard();
     isFormFocused.value = false;
+  }
+
+  void _onSaveButtonTap(){
+    _onDismissTextFormFocus();
+    cubit.saveAccountData();
   }
 
   @override
@@ -36,9 +43,17 @@ class SettingsAccountBody extends HookWidget {
     final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
     final isEmailEditable = useState(false);
 
+    state.maybeWhen(showMessage: (data, message) => Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        fontSize: 16.0
+    ), orElse: () {});
+
     return SafeArea(
       child:GestureDetector(
-        onTap: () => onDismissTextFormFocus(),
+        onTap: _onDismissTextFormFocus,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -106,31 +121,14 @@ class SettingsAccountBody extends HookWidget {
             ),
             const SizedBox(height: AppDimens.l),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: GestureDetector(
-                onTap: () => {onDismissTextFormFocus(), cubit.saveAccountData()},
-                child: Container(
-                  height: AppDimens.xxl,
-                  decoration: const BoxDecoration(
-                    color: AppColors.limeGreen,
-                    borderRadius: BorderRadius.all(Radius.circular(AppDimens.s)),
-                  ),
-                  child: Center(
-                    child: state.maybeWhen(
-                      updating: (data) => const SizedBox(
-                          height: AppDimens.m,
-                          width: AppDimens.m,
-                          child: CircularProgressIndicator(color: AppColors.textPrimary, strokeWidth: AppDimens.xxs)
-                      ),
-                      idle: (data) => Text(
-                        LocaleKeys.settings_save.tr(),
-                        style: AppTypography.buttonBold,
-                      ),
-                      orElse: () => const SizedBox(),
-                    ),
-                  ),
-                ),
-              ),
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: FilledButton(
+                    text: LocaleKeys.settings_save.tr(),
+                    onTap: _onSaveButtonTap,
+                    fillColor: AppColors.limeGreen,
+                    textColor: AppColors.textPrimary,
+                    isLoading: state.maybeWhen(updating: (data) => true, idle: (data) => false, orElse: () => false)
+                )
             ),
             const SizedBox(height: AppDimens.s),
           ],
