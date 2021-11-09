@@ -103,13 +103,6 @@ class _ArticleImageOverlay extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: entry.type == ArticleType.premium
-                ? const ExclusiveLabel()
-                : ArticleLabel.opinion(backgroundColor: themeColor),
-          ),
-          const Spacer(),
           PublisherLogo.light(publisher: entry.publisher),
           InformedMarkdownBody(
             markdown: entry.title,
