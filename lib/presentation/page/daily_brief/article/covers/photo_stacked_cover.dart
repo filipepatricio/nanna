@@ -34,7 +34,7 @@ class PhotoStackedCover extends HookWidget {
                 builder: (context, constrains) {
                   return CloudinaryProgressiveImage(
                     cloudinaryTransformation: cloudinaryProvider
-                        .withPublicIdAsPng(imageId)
+                        .withPublicIdAsJpg(imageId)
                         .transform()
                         .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
                         .autoGravity(),

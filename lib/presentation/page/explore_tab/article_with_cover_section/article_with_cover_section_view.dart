@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
@@ -130,15 +131,14 @@ class _MainArticle extends HookWidget {
             Container(
               height: _mainArticleHeight,
               child: imageId != null
-                  ? Image.network(
-                      cloudinaryProvider
-                          .withPublicId(imageId)
+                  ? CloudinaryProgressiveImage(
+                      cloudinaryTransformation: cloudinaryProvider
+                          .withPublicIdAsJpg(imageId)
                           .transform()
                           .withLogicalSize(constraints.maxWidth, constraints.maxHeight, context)
-                          .autoGravity()
-                          .generateNotNull(),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.bottomLeft,
+                          .autoGravity(),
+                      height: constraints.maxHeight,
+                      width: constraints.maxWidth,
                     )
                   : Container(),
             ),

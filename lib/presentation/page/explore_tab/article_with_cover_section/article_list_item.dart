@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
@@ -22,17 +23,19 @@ class ArticleListItem extends HookWidget {
   final MediaItemArticle entry;
   final Color themeColor;
   final Color cardColor;
-  final double? height;
-  final double? width;
+  final double height;
+  final double width;
 
   const ArticleListItem({
     required this.entry,
     required this.themeColor,
     this.cardColor = AppColors.background,
-    this.height = listItemHeight,
-    this.width = listItemWidth,
+    double? height,
+    double? width,
     Key? key,
-  }) : super(key: key);
+  })  : height = height ?? listItemHeight,
+        width = width ?? listItemWidth,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,49 +50,80 @@ class ArticleListItem extends HookWidget {
           ),
         ),
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          image: imageId == null
-              ? null
-              : DecorationImage(
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                  image: NetworkImage(
-                    cloudinaryProvider.withPublicId(imageId).url,
-                  ),
-                ),
-        ),
-        child: Container(
-          color: imageId == null ? cardColor : AppColors.black.withOpacity(0.6),
-          padding: const EdgeInsets.all(AppDimens.m),
-          height: height,
-          width: width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: entry.type == ArticleType.premium
-                    ? const ExclusiveLabel()
-                    : ArticleLabel.opinion(backgroundColor: themeColor),
-              ),
-              const Spacer(),
-              PublisherLogo.light(publisher: entry.publisher),
-              InformedMarkdownBody(
-                markdown: entry.title,
-                baseTextStyle: AppTypography.h5BoldSmall.copyWith(
-                  height: 1.4,
-                  color: imageId == null ? AppColors.textPrimary : AppColors.white,
-                ),
-                maxLines: 4,
-              ),
-              const Spacer(),
-              ReadMoreLabel(
-                foregroundColor: imageId == null ? AppColors.textPrimary : AppColors.white,
-              ),
-            ],
+      child: Stack(
+        children: [
+          if (imageId != null)
+            CloudinaryProgressiveImage(
+              cloudinaryTransformation: cloudinaryProvider
+                  .withPublicIdAsJpg(imageId)
+                  .transform()
+                  .autoGravity()
+                  .withLogicalSize(width, height, context),
+              width: width,
+              height: height,
+            ),
+          _ArticleImageOverlay(
+            entry: entry,
+            themeColor: themeColor,
+            cardColor: cardColor,
+            height: height,
+            width: width,
           ),
-        ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ArticleImageOverlay extends StatelessWidget {
+  final MediaItemArticle entry;
+  final Color themeColor;
+  final Color cardColor;
+  final double? height;
+  final double? width;
+
+  const _ArticleImageOverlay(
+      {required this.entry,
+      required this.themeColor,
+      required this.cardColor,
+      required this.height,
+      required this.width,
+      Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final imageId = entry.image?.publicId;
+
+    return Container(
+      color: imageId == null ? cardColor : AppColors.black.withOpacity(0.6),
+      padding: const EdgeInsets.all(AppDimens.m),
+      height: height,
+      width: width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: entry.type == ArticleType.premium
+                ? const ExclusiveLabel()
+                : ArticleLabel.opinion(backgroundColor: themeColor),
+          ),
+          const Spacer(),
+          PublisherLogo.light(publisher: entry.publisher),
+          InformedMarkdownBody(
+            markdown: entry.title,
+            baseTextStyle: AppTypography.h5BoldSmall.copyWith(
+              height: 1.4,
+              color: imageId == null ? AppColors.textPrimary : AppColors.white,
+            ),
+            maxLines: 4,
+          ),
+          const Spacer(),
+          ReadMoreLabel(
+            foregroundColor: imageId == null ? AppColors.textPrimary : AppColors.white,
+          ),
+        ],
       ),
     );
   }
