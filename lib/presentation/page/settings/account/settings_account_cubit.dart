@@ -1,49 +1,62 @@
+import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.dart';
+import 'package:better_informed_mobile/domain/user/use_case/update_user_use_case.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:fimber/fimber.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()
 class SettingsAccountCubit extends Cubit<SettingsAccountState> {
   final GetUserUseCase _getUserUseCase;
+  final UpdateUserUseCase _updateUserUseCase;
 
   SettingsAccountData _accountData = SettingsAccountData(
-    name: '',
+    firstName: '',
     lastName: '',
     email: '',
     lastNameValidator: null,
-    nameValidator: null,
+    firstNameValidator: null,
     emailValidator: null,
   );
 
-  SettingsAccountCubit(this._getUserUseCase) : super(const SettingsAccountState.loading());
+  SettingsAccountCubit(this._getUserUseCase, this._updateUserUseCase) : super(const SettingsAccountState.loading());
 
   Future<void> initialize() async {
     try {
       final user = await _getUserUseCase();
-      _accountData = _accountData.copyWith(
-        name: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      );
-      emit(SettingsAccountState.idle(_accountData));
+      await setAccountData(user);
     } catch (e, s) {
       Fimber.e('Querying user failed', ex: e, stacktrace: s);
     }
   }
 
   Future<void> saveAccountData() async {
-    if (_accountData.nameValidator == null &&
+    if (_accountData.firstNameValidator == null &&
         _accountData.lastNameValidator == null &&
         _accountData.emailValidator == null) {
-      //TODO: UPDATE ACC DATA
+      emit(SettingsAccountState.updating(_accountData));
+      final user = await _updateUserUseCase(_accountData);
+      await setAccountData(user);
+      emit(SettingsAccountState.showMessage(LocaleKeys.settings_accountInfoSavedSuccessfully.tr()));
     }
   }
 
-  void updateName(String inputText) {
-    _accountData = _accountData.copyWith(name: inputText, nameValidator: _validateName(inputText));
+  Future<void> setAccountData(User user) async {
+    _accountData = _accountData.copyWith(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    );
+    emit(SettingsAccountState.idle(_accountData));
+  }
+
+  void updateFirstName(String inputText) {
+    _accountData = _accountData.copyWith(firstName: inputText, firstNameValidator: _validateFirstName(inputText));
     emit(SettingsAccountState.idle(_accountData));
   }
 
@@ -57,18 +70,18 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     emit(SettingsAccountState.idle(_accountData));
   }
 
-  String? _validateName(String? value) {
+  String? _validateFirstName(String? value) {
     if (value != null && value.isNotEmpty) {
       return null;
     }
-    return 'Wrong name input!';
+    return LocaleKeys.settings_wrongFirstNameInput.tr();
   }
 
   String? _validateLastName(String? value) {
     if (value != null && value.isNotEmpty) {
       return null;
     }
-    return 'Wrong last name input!';
+    return LocaleKeys.settings_wrongLastNameInput.tr();
   }
 
   String? _validateEmail(String? value) {
@@ -76,11 +89,11 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     if (value != null && value.isNotEmpty) {
       return null;
     }
-    return 'Wrong email input!';
+    return LocaleKeys.settings_wrongEmailInput.tr();
   }
 
   void clearNameInput() {
-    _accountData = _accountData.copyWith(name: '', nameValidator: _validateName(''));
+    _accountData = _accountData.copyWith(firstName: '', firstNameValidator: _validateFirstName(''));
     emit(SettingsAccountState.idle(_accountData));
   }
 

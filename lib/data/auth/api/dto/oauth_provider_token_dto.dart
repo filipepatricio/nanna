@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/auth/api/dto/user_meta_dto.dart';
+import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dart';
 
 class OAuthProviderTokenDTO {
   final String provider;

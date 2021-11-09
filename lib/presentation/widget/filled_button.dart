@@ -11,6 +11,7 @@ class FilledButton extends StatelessWidget {
   final String? iconPath;
   final Color fillColor;
   final Color textColor;
+  final bool isLoading;
 
   const FilledButton({
     required this.text,
@@ -19,6 +20,7 @@ class FilledButton extends StatelessWidget {
     this.fillColor = AppColors.limeGreen,
     this.textColor = AppColors.textPrimary,
     this.iconPath,
+    this.isLoading = false,
     Key? key,
   }) : super(key: key);
 
@@ -29,6 +31,7 @@ class FilledButton extends StatelessWidget {
     return GestureDetector(
       onTap: isEnabled ? onTap : () => {},
       child: Container(
+        height: AppDimens.xxl,
         padding: const EdgeInsets.symmetric(
           vertical: AppDimens.s,
           horizontal: AppDimens.l,
@@ -43,10 +46,17 @@ class FilledButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              text,
-              style: AppTypography.buttonBold.copyWith(
-                color: isEnabled ? textColor : textColor.withOpacity(0.44),
+            Center(
+              child: isLoading ?
+              const SizedBox(
+                  height: AppDimens.m,
+                  width: AppDimens.m,
+                  child: CircularProgressIndicator(color: AppColors.textPrimary, strokeWidth: AppDimens.xxs)
+              ) : Text(
+                text,
+                style: AppTypography.buttonBold.copyWith(
+                  color: isEnabled ? textColor : textColor.withOpacity(0.44),
+                ),
               ),
             ),
             if (iconPath != null) ...[
