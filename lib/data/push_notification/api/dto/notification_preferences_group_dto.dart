@@ -10,7 +10,8 @@ class NotificationPreferencesGroupDTO {
 
   NotificationPreferencesGroupDTO(this.name, this.channels);
 
-  factory NotificationPreferencesGroupDTO.fromJson(Map<String, dynamic> json) => _$NotificationPreferencesGroupDTOFromJson(json);
+  factory NotificationPreferencesGroupDTO.fromJson(Map<String, dynamic> json) =>
+      _$NotificationPreferencesGroupDTOFromJson(json);
 
   Map<String, dynamic> toJson() => _$NotificationPreferencesGroupDTOToJson(this);
 }
