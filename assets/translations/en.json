@@ -57,7 +57,11 @@
     "firstName": "First name",
     "lastName": "Last name",
     "emailAddress": "Email address",
-    "save": "Save"
+    "save": "Save",
+    "accountInfoSavedSuccessfully": "Your information was saved successfully",
+    "wrongFirstNameInput": "Wrong first name input",
+    "wrongLastNameInput": "Wrong last name input",
+    "wrongEmailInput": "Wrong email input"
   },
   "signIn": {
     "header": {

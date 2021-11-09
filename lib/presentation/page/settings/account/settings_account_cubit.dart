@@ -1,9 +1,11 @@
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.dart';
 import 'package:better_informed_mobile/domain/user/use_case/update_user_use_case.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:fimber/fimber.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:injectable/injectable.dart';
@@ -40,7 +42,7 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
       emit(const SettingsAccountState.updating());
       final user = await _updateUserUseCase(_accountData);
       await setAccountData(user);
-      emit(const SettingsAccountState.showMessage('Your information was saved successfully'));
+      emit(SettingsAccountState.showMessage(LocaleKeys.settings_accountInfoSavedSuccessfully.tr()));
     }
   }
 
@@ -72,14 +74,14 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     if (value != null && value.isNotEmpty) {
       return null;
     }
-    return 'Wrong first name input!';
+    return LocaleKeys.settings_wrongFirstNameInput.tr();
   }
 
   String? _validateLastName(String? value) {
     if (value != null && value.isNotEmpty) {
       return null;
     }
-    return 'Wrong last name input!';
+    return LocaleKeys.settings_wrongLastNameInput.tr();
   }
 
   String? _validateEmail(String? value) {
@@ -87,7 +89,7 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     if (value != null && value.isNotEmpty) {
       return null;
     }
-    return 'Wrong email input!';
+    return LocaleKeys.settings_wrongEmailInput.tr();
   }
 
   void clearNameInput() {
