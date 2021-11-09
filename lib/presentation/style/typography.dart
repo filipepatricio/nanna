@@ -157,7 +157,7 @@ class AppTypography {
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 16,
-    height: 1.3,
+    height: 1.5,
     color: AppColors.textPrimary,
   );
 
