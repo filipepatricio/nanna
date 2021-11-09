@@ -104,7 +104,8 @@
     "loadingNext": "Loading next article",
     "allArticlesRead": "Nice! You’ve read all articles in the reading list.",
     "goBackToTopic": "Back to topic overview",
-    "openSourceUrl": "Open source url"
+    "openSourceUrl": "Open in Browser",
+    "loadError": "Something went wrong\n during loading the article"
   },
   "readingList": {
     "title": "Reading list",
