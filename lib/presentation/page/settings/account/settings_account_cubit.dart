@@ -37,10 +37,10 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     if (_accountData.firstNameValidator == null &&
         _accountData.lastNameValidator == null &&
         _accountData.emailValidator == null) {
-      emit(SettingsAccountState.updating(_accountData));
+      emit(const SettingsAccountState.updating());
       final user = await _updateUserUseCase(_accountData);
       await setAccountData(user);
-      emit(SettingsAccountState.showMessage(_accountData, 'Your information was saved successfully'));
+      emit(const SettingsAccountState.showMessage('Your information was saved successfully'));
     }
   }
 

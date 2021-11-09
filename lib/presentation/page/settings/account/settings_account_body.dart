@@ -40,16 +40,21 @@ class SettingsAccountBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
     final isEmailEditable = useState(false);
+    final isUpdating = useState(false);
 
-    state.maybeWhen(showMessage: (data, message) => Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        fontSize: 16.0
-    ), orElse: () {});
+    useCubitListener<SettingsAccountCubit, SettingsAccountState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+          showMessage: (message) => Fluttertoast.showToast(
+              msg: message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              fontSize: 16.0
+          ),
+          updating: () => isUpdating.value = true,
+          idle: (data) => isUpdating.value = false);
+    });
 
     return SafeArea(
       child:GestureDetector(
@@ -127,7 +132,7 @@ class SettingsAccountBody extends HookWidget {
                     onTap: _onSaveButtonTap,
                     fillColor: AppColors.limeGreen,
                     textColor: AppColors.textPrimary,
-                    isLoading: state.maybeWhen(updating: (data) => true, idle: (data) => false, orElse: () => false)
+                    isLoading: isUpdating.value
                 )
             ),
             const SizedBox(height: AppDimens.s),

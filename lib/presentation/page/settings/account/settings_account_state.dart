@@ -10,11 +10,8 @@ class SettingsAccountState with _$SettingsAccountState {
   const factory SettingsAccountState.loading() = SettingsAccountStateLoading;
 
   @Implements(BuildState)
-  const factory SettingsAccountState.updating(SettingsAccountData data) = SettingsAccountStateUpdating;
-
-  @Implements(BuildState)
   const factory SettingsAccountState.idle(SettingsAccountData data) = SettingsAccountStateLoaded;
 
-  @Implements(BuildState)
-  const factory SettingsAccountState.showMessage(SettingsAccountData data, String message) = SettingsAccountStateShowMessage;
+  const factory SettingsAccountState.updating() = SettingsAccountStateUpdating;
+  const factory SettingsAccountState.showMessage(String message) = SettingsAccountStateShowMessage;
 }
