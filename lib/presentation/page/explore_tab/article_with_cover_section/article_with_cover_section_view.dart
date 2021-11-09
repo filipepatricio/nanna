@@ -144,7 +144,7 @@ class _MainArticle extends HookWidget {
             ),
             Positioned.fill(
               child: Container(
-                color: AppColors.black.withOpacity(0.3),
+                color: AppColors.black.withOpacity(0.4),
               ),
             ),
             Positioned(
