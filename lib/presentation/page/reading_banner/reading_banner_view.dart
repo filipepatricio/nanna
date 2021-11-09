@@ -40,14 +40,14 @@ class _ReadingBannerBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = readingBanner.entry.image?.publicId;
+    final imageId = readingBanner.article.image?.publicId;
 
     return GestureDetector(
       onTap: () {
         AutoRouter.of(context).push(
           MediaItemPageRoute(
             pageData: MediaItemPageData.singleItem(
-              entry: readingBanner.entry,
+              entry: readingBanner.article,
               readArticleProgress: readingBanner.scrollProgress,
             ),
           ),
@@ -99,7 +99,7 @@ class _ReadingBannerBody extends HookWidget {
                           ),
                           const SizedBox(height: AppDimens.s),
                           Text(
-                            readingBanner.entry.title,
+                            readingBanner.article.title,
                             style: AppTypography.h5BoldSmall.copyWith(height: 1),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

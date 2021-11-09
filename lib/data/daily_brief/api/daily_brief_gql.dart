@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/gql/common_gql.dart';
-import 'package:gql/src/ast/ast.dart' show DocumentNode;
+import 'package:gql/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class DailyBriefGql {

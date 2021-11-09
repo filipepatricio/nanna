@@ -13,6 +13,15 @@ Follow those steps to start:
 
 ...and you are ready to go.
 
+# To make the pre-commit hook work
+
+Just run these commands
+
+```
+chmod +x scripts/pre-commit.sh
+ln -s ../../scripts/pre-commit.sh .git/hooks/pre-commit
+```
+
 ## Running App
 
 Right now we have 3 app flavors: dev, stage and prod. This adds requirement for additional arguments when running flutter app:

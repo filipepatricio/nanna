@@ -30,21 +30,18 @@ class ArticleSectionView extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Hero(
-                  // TODO change to some ID or UUID if available
-                  tag: HeroTag.exploreArticleTitle(section.title.hashCode),
-                  child: InformedMarkdownBody(
-                    markdown: section.title,
-                    baseTextStyle: AppTypography.h1,
-                    highlightColor: AppColors.transparent,
-                    maxLines: 2,
-                  ),
+                child: InformedMarkdownBody(
+                  markdown: section.title,
+                  baseTextStyle: AppTypography.h1,
+                  highlightColor: AppColors.transparent,
+                  maxLines: 2,
                 ),
               ),
               const SizedBox(width: AppDimens.s),
               SeeAllButton(
                 onTap: () => AutoRouter.of(context).push(
                   ArticleSeeAllPageRoute(
+                    sectionId: section.id,
                     title: section.title,
                     entries: section.articles,
                   ),

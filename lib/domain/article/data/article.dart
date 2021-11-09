@@ -3,11 +3,11 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 
 class Article {
   final ArticleContent content;
-  final MediaItemArticle entry;
+  final MediaItemArticle article;
 
   Article({
     required this.content,
-    required this.entry,
+    required this.article,
   });
 }
 

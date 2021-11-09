@@ -9,11 +9,11 @@ class GetArticleUseCase {
 
   GetArticleUseCase(this._articleRepository);
 
-  Future<Article> call(MediaItemArticle entry) async {
-    final content = await _articleRepository.getArticleContent(entry.slug);
+  Future<Article> call(MediaItemArticle article) async {
+    final content = await _articleRepository.getArticleContent(article.slug);
     return Article(
       content: content,
-      entry: entry,
+      article: article,
     );
   }
 }
