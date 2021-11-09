@@ -7,11 +7,13 @@ part 'explore_content_section.freezed.dart';
 @freezed
 class ExploreContentSection with _$ExploreContentSection {
   factory ExploreContentSection.articles({
+    required String id,
     required String title,
     required List<MediaItemArticle> articles,
   }) = ExploreContentSectionArticles;
 
   factory ExploreContentSection.articleWithFeature({
+    required String id,
     required String title,
     required int backgroundColor,
     required MediaItemArticle featuredArticle,
@@ -19,6 +21,7 @@ class ExploreContentSection with _$ExploreContentSection {
   }) = ExploreContentSectionArticleWithFeature;
 
   factory ExploreContentSection.topics({
+    required String id,
     required String title,
     required List<Topic> topics,
   }) = ExploreContentSectionTopics;

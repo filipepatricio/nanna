@@ -101,7 +101,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
 
   void _resetBannerState() {
     readingComplete = false;
-    final readingBanner = ReadingBanner(entry: _getCurrentHeader(), scrollProgress: 0.0);
+    final readingBanner = ReadingBanner(article: _getCurrentHeader(), scrollProgress: 0.0);
     _setStartedArticleStreamUseCase(readingBanner);
   }
 
@@ -112,9 +112,9 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     } else {
       if (_allEntries.length > 1) {
         final hasNextArticle = _index < _allEntries.length - 1;
-        emit(MediaItemState.idleMultiItems(article.entry, article.content, hasNextArticle));
+        emit(MediaItemState.idleMultiItems(article.article, article.content, hasNextArticle));
       } else {
-        emit(MediaItemState.idleSingleItem(article.entry, article.content));
+        emit(MediaItemState.idleSingleItem(article.article, article.content));
       }
     }
   }
@@ -127,7 +127,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       if (progress == scrollEnd) {
         readingComplete = true;
       }
-      final readingBanner = ReadingBanner(entry: _getCurrentHeader(), scrollProgress: progress);
+      final readingBanner = ReadingBanner(article: _getCurrentHeader(), scrollProgress: progress);
       _setStartedArticleStreamUseCase.call(readingBanner);
     }
   }
