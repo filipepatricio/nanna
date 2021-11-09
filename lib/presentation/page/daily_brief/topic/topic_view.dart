@@ -129,16 +129,7 @@ class _TopicHeader extends HookWidget {
         ),
         Positioned.fill(
           child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.gradientOverlayStartColor,
-                  AppColors.gradientOverlayEndColor,
-                ],
-              ),
-            ),
+            color: AppColors.black.withOpacity(0.4),
           ),
         ),
         Positioned(
