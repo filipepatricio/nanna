@@ -73,14 +73,6 @@ class SettingsMainBody extends HookWidget {
                         icon: AppVectorGraphics.terms,
                         onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: false)),
                       ),
-                      const SizedBox(height: AppDimens.ml),
-                      SettingsMainItem(
-                        label: LocaleKeys.settings_giveFeedback.tr(),
-                        icon: AppVectorGraphics.feedback,
-                        onTap: () => {
-                          //TODO: NAVIGATE TO FEEDBACK
-                        },
-                      ),
                       const Spacer(),
                     ],
                   ),

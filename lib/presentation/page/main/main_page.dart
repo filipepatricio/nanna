@@ -45,7 +45,7 @@ class MainPage extends HookWidget {
           routes: const [
             TodayTabGroupRouter(),
             ExploreTabGroupRouter(),
-            MyReadsTabGroupRouter(),
+            ProfileTabGroupRouter(),
           ],
           bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(
             state,

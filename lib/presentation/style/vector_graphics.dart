@@ -7,10 +7,10 @@ class AppVectorGraphics {
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
   static const String exploreSelected = 'assets/vector_graphics/explore_selected_ic.svg';
-  static const String myReads = 'assets/vector_graphics/my_reads_ic.svg';
-  static const String myReadsSelected = 'assets/vector_graphics/my_reads_selected_ic.svg';
   static const String today = 'assets/vector_graphics/today_ic.svg';
   static const String todaySelected = 'assets/vector_graphics/today_selected_ic.svg';
+  static const String profile = 'assets/vector_graphics/profile_ic.svg';
+  static const String profileSelected = 'assets/vector_graphics/profile_selected_ic.svg';
 
   static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
 
@@ -47,4 +47,6 @@ class AppVectorGraphics {
   static const String happySun = 'assets/vector_graphics/happy_sun_face.svg';
   static const String sunRays = 'assets/vector_graphics/sun_rays.svg';
   static const String sadSun = 'assets/vector_graphics/sad_sun.svg';
+
+  static const String stayTuned = 'assets/vector_graphics/stay_tuned.svg';
 }
