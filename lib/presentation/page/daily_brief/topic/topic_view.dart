@@ -117,11 +117,10 @@ class _TopicHeader extends HookWidget {
           width: double.infinity,
           height: _topicHeaderImageHeight,
           child: CloudinaryProgressiveImage(
-            fit: BoxFit.fitHeight,
             width: screenWidth,
             height: _topicHeaderImageHeight,
             cloudinaryTransformation: cloudinaryProvider
-                .withPublicId(topic.heroImage.publicId)
+                .withPublicIdAsJpg(topic.heroImage.publicId)
                 .transform()
                 .withLogicalSize(screenWidth, _topicHeaderImageHeight, context)
                 .autoGravity(),
