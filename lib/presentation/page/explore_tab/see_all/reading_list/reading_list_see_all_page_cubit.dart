@@ -4,9 +4,11 @@ import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/rea
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list/reading_list_see_all_page_state.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 
 const _paginationLimit = 10;
 
+@injectable
 class ReadingListSeeAllPageCubit extends Cubit<ReadingListSeeAllPageState> {
   final GetExplorePaginatedTopicsUseCase _getExplorePaginatedTopicsUseCase;
   late NextTopicPageLoader _nextArticlePageLoader;

@@ -24,14 +24,14 @@ class PaginationEngine<T> {
   }
 
   Future<PaginationEngineState<T>> loadMore({int? limitOverride}) async {
-    final config = NextPageConfig(limitOverride ?? _limit, _data.length + 1);
+    final config = NextPageConfig(limitOverride ?? _limit, _data.length);
     final result = await _nextPageLoader(config);
 
     return _onDataLoaded(result, config.limit);
   }
 
   PaginationEngineState<T> _onDataLoaded(List<T> data, int requestedLimit) {
-    final allLoaded = data.length < requestedLimit - 1;
+    final allLoaded = data.length < requestedLimit;
     _data.addAll(data);
 
     return PaginationEngineState(

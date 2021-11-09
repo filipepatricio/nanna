@@ -32,7 +32,7 @@ class ExploreContentApiRepository implements ExploreContentRepository {
 
     return section.maybeMap(
       articles: (data) => data.articles,
-      articleWithFeature: (data) => data.articles,
+      articleWithFeature: (data) => [data.featuredArticle] + data.articles,
       orElse: () => [],
     );
   }

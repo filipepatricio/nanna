@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -67,12 +66,9 @@ class ArticleSeeAllPage extends HookWidget {
         backgroundColor: AppColors.background,
         centerTitle: false,
         elevation: 0,
-        title: Hero(
-          tag: HeroTag.exploreArticleTitle,
-          child: Text(
-            tr(LocaleKeys.explore_title),
-            style: AppTypography.h3bold,
-          ),
+        title: Text(
+          tr(LocaleKeys.explore_title),
+          style: AppTypography.h3bold,
         ),
         leading: IconButton(
           onPressed: () => AutoRouter.of(context).pop(),
@@ -168,13 +164,10 @@ class _ArticleGrid extends StatelessWidget {
               const SizedBox(height: AppDimens.xc),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: Hero(
-                  tag: HeroTag.exploreArticleTitle(title.hashCode),
-                  child: InformedMarkdownBody(
-                    markdown: title,
-                    highlightColor: AppColors.transparent,
-                    baseTextStyle: AppTypography.h1,
-                  ),
+                child: InformedMarkdownBody(
+                  markdown: title,
+                  highlightColor: AppColors.transparent,
+                  baseTextStyle: AppTypography.h1,
                 ),
               ),
               const SizedBox(height: AppDimens.m),

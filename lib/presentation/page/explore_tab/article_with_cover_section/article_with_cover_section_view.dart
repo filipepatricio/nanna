@@ -12,7 +12,6 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
-import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
@@ -49,14 +48,11 @@ class ArticleWithCoverSectionView extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Hero(
-                    tag: HeroTag.exploreArticleTitle(section.title.hashCode),
-                    child: InformedMarkdownBody(
-                      markdown: section.title,
-                      baseTextStyle: AppTypography.h1,
-                      highlightColor: AppColors.transparent,
-                      maxLines: 2,
-                    ),
+                  child: InformedMarkdownBody(
+                    markdown: section.title,
+                    baseTextStyle: AppTypography.h1,
+                    highlightColor: AppColors.transparent,
+                    maxLines: 2,
                   ),
                 ),
                 const SizedBox(width: AppDimens.s),
