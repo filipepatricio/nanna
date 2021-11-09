@@ -17,16 +17,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class SettingsAccountBody extends HookWidget {
   final SettingsAccountCubit  cubit;
+  final SettingsAccountState state;
   final SettingsAccountData data;
 
   SettingsAccountBody({
     required this.cubit,
+    required this.state,
     required this.data,
     Key? key,
   }) : super(key: key);
 
   final isFormFocused = useState(false);
-  final isEditable = useState(false);
 
   void _onDismissTextFormFocus(){
     hideKeyboard();
@@ -40,8 +41,6 @@ class SettingsAccountBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
-
     useCubitListener<SettingsAccountCubit, SettingsAccountState>(cubit, (cubit, state, context) {
       state.whenOrNull(
           showMessage: (message) => Fluttertoast.showToast(
