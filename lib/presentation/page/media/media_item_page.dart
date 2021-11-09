@@ -386,16 +386,7 @@ class ArticleHeaderView extends HookWidget {
         ),
         Positioned.fill(
           child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  AppColors.gradientOverlayStartColor,
-                  AppColors.gradientOverlayEndColor,
-                ],
-              ),
-            ),
+            color: Colors.black.withOpacity(0.40),
           ),
         ),
         Positioned(
