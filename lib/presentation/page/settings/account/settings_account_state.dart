@@ -12,6 +12,8 @@ class SettingsAccountState with _$SettingsAccountState {
   @Implements(BuildState)
   const factory SettingsAccountState.idle(SettingsAccountData data) = SettingsAccountStateLoaded;
 
-  const factory SettingsAccountState.updating() = SettingsAccountStateUpdating;
+  @Implements(BuildState)
+  const factory SettingsAccountState.updating(SettingsAccountData data) = SettingsAccountStateUpdating;
+
   const factory SettingsAccountState.showMessage(String message) = SettingsAccountStateShowMessage;
 }

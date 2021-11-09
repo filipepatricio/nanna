@@ -40,8 +40,7 @@ class SettingsAccountBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEmailEditable = useState(false);
-    final isUpdating = useState(false);
+    final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
 
     useCubitListener<SettingsAccountCubit, SettingsAccountState>(cubit, (cubit, state, context) {
       state.whenOrNull(
@@ -51,9 +50,7 @@ class SettingsAccountBody extends HookWidget {
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
               fontSize: 16.0
-          ),
-          updating: () => isUpdating.value = true,
-          idle: (data) => isUpdating.value = false);
+          ));
     });
 
     return SafeArea(
@@ -110,7 +107,7 @@ class SettingsAccountBody extends HookWidget {
                         SettingsInputItem(
                             label: LocaleKeys.settings_emailAddress.tr(),
                             initialInput: data.email,
-                            isEditable: isEmailEditable.value,
+                            isEditable: false,
                             isFormFocused: isFormFocused.value,
                             onChanged: (String inputText) => cubit.updateEmail(inputText),
                             validator: (String? value) => data.emailValidator,
@@ -132,7 +129,7 @@ class SettingsAccountBody extends HookWidget {
                     onTap: _onSaveButtonTap,
                     fillColor: AppColors.limeGreen,
                     textColor: AppColors.textPrimary,
-                    isLoading: isUpdating.value
+                    isLoading: state.maybeWhen(updating: (data) => true, orElse: () => false)
                 )
             ),
             const SizedBox(height: AppDimens.s),
