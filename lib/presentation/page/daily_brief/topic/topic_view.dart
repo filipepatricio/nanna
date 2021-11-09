@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
@@ -74,20 +75,22 @@ class TopicView extends HookWidget {
       child: MediaQuery.removePadding(
         removeTop: true,
         context: context,
-        child: ListView(
-          shrinkWrap: true,
-          controller: listScrollController,
-          physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-          children: [
-            _TopicHeader(topic: topic),
-            _SummaryContent(topic: topic),
-            _MediaItemContent(
-              articleContentHeight: articleContentHeight,
-              controller: articleController,
-              pageIndex: pageIndex,
-              entryList: topic.readingList.entries,
-            ),
-          ],
+        child: NoScrollGlow(
+          child: ListView(
+            shrinkWrap: true,
+            controller: listScrollController,
+            physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+            children: [
+              _TopicHeader(topic: topic),
+              _SummaryContent(topic: topic),
+              _MediaItemContent(
+                articleContentHeight: articleContentHeight,
+                controller: articleController,
+                pageIndex: pageIndex,
+                entryList: topic.readingList.entries,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -126,16 +129,7 @@ class _TopicHeader extends HookWidget {
         ),
         Positioned.fill(
           child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.gradientOverlayStartColor,
-                  AppColors.gradientOverlayEndColor,
-                ],
-              ),
-            ),
+            color: AppColors.black.withOpacity(0.4),
           ),
         ),
         Positioned(
@@ -367,27 +361,29 @@ class _MediaItemContent extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            child: PageView.builder(
-              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-              controller: controller,
-              scrollDirection: Axis.vertical,
-              onPageChanged: (index) => pageIndex.value = index,
-              itemCount: entryList.length,
-              itemBuilder: (context, index) {
-                final currentMediaItem = entryList[index].item;
-                //TODO: Handling different media types
-                if (currentMediaItem is MediaItemArticle) {
-                  return ArticleItemView(
-                    article: currentMediaItem,
-                    allEntries: entryList,
-                    index: index,
-                    statusBarHeight: statusBarHeight,
-                    navigationCallback: (index) => controller.jumpToPage(index),
-                  );
-                } else {
-                  return const SizedBox();
-                }
-              },
+            child: NoScrollGlow(
+              child: PageView.builder(
+                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                controller: controller,
+                scrollDirection: Axis.vertical,
+                onPageChanged: (index) => pageIndex.value = index,
+                itemCount: entryList.length,
+                itemBuilder: (context, index) {
+                  final currentMediaItem = entryList[index].item;
+                  //TODO: Handling different media types
+                  if (currentMediaItem is MediaItemArticle) {
+                    return ArticleItemView(
+                      article: currentMediaItem,
+                      allEntries: entryList,
+                      index: index,
+                      statusBarHeight: statusBarHeight,
+                      navigationCallback: (index) => controller.jumpToPage(index),
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
             ),
           ),
           Positioned.fill(

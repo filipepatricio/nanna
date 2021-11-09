@@ -82,14 +82,24 @@ class TopicPage extends HookWidget {
         child: Material(
           child: Stack(
             children: [
-              SafeArea(
-                child: Hero(
-                  tag: HeroTag.dailyBriefRelaxPage,
-                  child: RelaxView(
-                    lastPageAnimationProgressState: lastPageAnimationProgressState,
-                    goodbyeHeadline: currentBrief.goodbye,
+              Column(
+                children: [
+                  const SizedBox(height: kToolbarHeight),
+                  Expanded(
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: AppDimens.m, right: AppDimens.xl),
+                        child: Hero(
+                          tag: HeroTag.dailyBriefRelaxPage,
+                          child: RelaxView(
+                            lastPageAnimationProgressState: lastPageAnimationProgressState,
+                            goodbyeHeadline: currentBrief.goodbye,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
               Positioned.fill(
                 child: LayoutBuilder(
