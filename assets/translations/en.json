@@ -11,12 +11,19 @@
   },
   "onboarding": {
     "title": "How we use push notifications",
-    "headerSlideOne": "New daily brief",
-    "headerSlideTwo": "Incoming topic",
-    "headerSlideThree": "Product updates",
-    "descriptionSlideOne": "Our small and dedicated editorial screens extensively the most reliable sources every day - and creates a daily brief for you.",
-    "descriptionSlideTwo": "We need some text here...",
-    "descriptionSlideThree": "We will keep you posted about our constant improvements and new features of our app to give you the best experience."
+    "headerSlideOne": "Quality news. Handpicked. Just for you.",
+    "headerSlideTwo": "Non-partisan reporting, cutting through the noise",
+    "headerSlideThree": "Notifications",
+    "descriptionSlideOne": "Behind the tech, our editorial team selects the must know topics, sourcing the very best articles so they can carefully create your Daily Brief.",
+    "descriptionSlideTwo": "Providing an array of perspectives, as we strive to repair the divided media landscape, presenting you the context to understand this complex world.",
+    "notificationBulletPoints": {
+      "headerOne": "Daily News Brief",
+      "descOne": "Our skilled editorial team screens and selects the top articles of the day.",
+      "headerTwo": "Incoming Updates",
+      "descTwo": "Emerging updates and new topics will be provided for you on a rolling basis, every day.",
+      "headerThree": "Fresh App Updates",
+      "descThree": "We are constantly improving our product. We will keep you posted on new improvements and features."
+    }
   },
   "main": {
     "todayTab": "Today",
@@ -47,8 +54,8 @@
     "termsOfService": "Terms of service",
 
     "settingsOverview": "Settings Overview",
-    "privacyPolicyContent": "This is a placerholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
-    "termsContent": "This is a placerholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
+    "privacyPolicyContent": "This is a placeholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
+    "termsContent": "This is a placeholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "newsUpdates": "News Updates",
     "newDailyBrief": "NewDailyBrief",
     "incomingNewTopic": "Incoming new topic ",
