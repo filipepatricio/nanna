@@ -48,14 +48,14 @@ class MediaItemPage extends HookWidget {
         super(key: key);
 
   static int _getIndex(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => 0,
-        multipleItems: (data) => data.index,
-      );
+    singleItem: (data) => 0,
+    multipleItems: (data) => data.index,
+  );
 
   static List<MediaItemArticle> _getEntries(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => [data.entry],
-        multipleItems: (data) => data.entryList,
-      );
+    singleItem: (data) => [data.entry],
+    multipleItems: (data) => data.entryList,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -69,27 +69,25 @@ class MediaItemPage extends HookWidget {
     });
 
     final scrollController = useMemoized(
-      () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
+          () => ModalScrollController.of(context) ?? ScrollController( keepScrollOffset: true),
     );
 
-    final articleType = state.mapOrNull(
-      idleSingleItem: (state) => state.header.type,
-      idleMultiItems: (state) => state.header.type,
+    final articleTitle = state.maybeMap(
+      idleSingleItem: (state) => state.header.title,
+      idleMultiItems: (state) => state.header.title,
+      orElse: () => ''
     );
 
     useEffect(() {
       cubit.initialize(entryList, index);
     }, [cubit]);
 
+
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text(
-          articleType == ArticleType.premium
-              ? LocaleKeys.article_appBar_premium.tr()
-              : LocaleKeys.article_appBar_freemium.tr(),
-          style: AppTypography.h5BoldSmall,
-        ),
+        title: Text( articleTitle, style: AppTypography.h5BoldSmall),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: AppDimens.l),
@@ -100,7 +98,7 @@ class MediaItemPage extends HookWidget {
           ),
         ],
         centerTitle: true,
-        backgroundColor: articleType == ArticleType.premium ? AppColors.limeGreen : AppColors.white,
+        backgroundColor: AppColors.white,
       ),
       backgroundColor: AppColors.lightGrey,
       body: AnimatedSwitcher(
@@ -378,10 +376,10 @@ class ArticleHeaderView extends HookWidget {
           height: MediaQuery.of(context).size.height * 0.55,
           child: imageId != null
               ? Image.network(
-                  cloudinaryProvider.withPublicIdAsPng(imageId).url,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topLeft,
-                )
+            cloudinaryProvider.withPublicIdAsPng(imageId).url,
+            fit: BoxFit.cover,
+            alignment: Alignment.topLeft,
+          )
               : Container(color: Colors.white),
         ),
         Positioned.fill(
