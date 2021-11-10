@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/vertical_indicators.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -29,6 +28,7 @@ import 'package:flutter_svg/svg.dart';
 
 const _summaryPageViewHeight = 365.0;
 const _summaryViewHeight = 630.0;
+const _summaryMockedImageSize = 50.0;
 
 const _topicHeaderPadding = 60.0;
 const _topicHeaderImageHeight = 620.0;
@@ -321,15 +321,23 @@ class _SummaryCard extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: AppDimens.l),
-          //TODO: Get data from api, remove if statement
-          if (index % 2 == 0) ...[
-            Image.asset(AppRasterGraphics.mockedComputerMan),
-            const SizedBox(height: AppDimens.l),
-          ],
+          // TODO replace with real image when available in query as part of @TopicSummary model
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              width: _summaryMockedImageSize,
+              height: _summaryMockedImageSize,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.white,
+              ),
+            ),
+          ),
+          const SizedBox(height: AppDimens.xxxc),
           Expanded(
             child: InformedMarkdownBody(
-              markdown: topic.topicSummaryList[index].content,
-              baseTextStyle: AppTypography.b2MediumSerif,
+              markdown: '* ${topic.topicSummaryList[index].content}',
+              baseTextStyle: AppTypography.b2RegularLora,
             ),
           ),
         ],
