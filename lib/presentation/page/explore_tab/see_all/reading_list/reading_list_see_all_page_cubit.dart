@@ -18,8 +18,8 @@ class ReadingListSeeAllPageCubit extends Cubit<ReadingListSeeAllPageState> {
   bool _allLoaded = false;
 
   ReadingListSeeAllPageCubit(
-      this._getExplorePaginatedTopicsUseCase,
-      ) : super(ReadingListSeeAllPageState.loading());
+    this._getExplorePaginatedTopicsUseCase,
+  ) : super(ReadingListSeeAllPageState.loading());
 
   Future<void> initialize(String sectionId, List<Topic> topics) async {
     _topics = topics;
@@ -48,7 +48,7 @@ class ReadingListSeeAllPageCubit extends Cubit<ReadingListSeeAllPageState> {
   }
 
   bool _isInLoadingState() => state.maybeMap(
-    loadingMore: (_) => true,
-    orElse: () => false,
-  );
+        loadingMore: (_) => true,
+        orElse: () => false,
+      );
 }

@@ -21,7 +21,7 @@
   "main": {
     "todayTab": "Today",
     "exploreTab": "Explore",
-    "myReadsTab": "My Reads"
+    "profileTab": "Profile"
   },
   "dailyBrief": {
     "title": "Daily Brief",
@@ -45,7 +45,7 @@
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of service",
-    "giveFeedback": "Give feedback",
+
     "settingsOverview": "Settings Overview",
     "privacyPolicyContent": "This is a placerholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "termsContent": "This is a placerholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
@@ -115,18 +115,15 @@
     "updated": "Updated {}"
   },
   "continueReading": "Continue reading",
-  "myReads": {
-    "articlesRead": "/{} articles read",
-    "itemsCount": {
-      "zero": "No items",
-      "one": "{} item",
-      "two": "{} items",
-      "few": "{} items",
-      "many": "{} items",
-      "other": "{} items"
-    }
-  },
   "explore": {
     "title": "Explore"
+  },
+  "profile": {
+    "title": "Profile",
+    "stayTuned": "Stay Tuned",
+    "stayTunedText": "This page will be evolving during beta",
+    "feedbackButton": "Give feedback",
+    "feedbackSubject": "Feedback on Informed App",
+    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed"
   }
 }

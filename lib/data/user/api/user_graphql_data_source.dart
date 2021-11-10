@@ -36,17 +36,14 @@ class UserGraphqlDataSource implements UserDataSource {
     final result = await _client.mutate(
       MutationOptions(
         document: UserGQL.updateUser(),
-        variables: {
-          'firstName': userMetaDto.firstName,
-          'lastName': userMetaDto.lastName
-        },
+        variables: {'firstName': userMetaDto.firstName, 'lastName': userMetaDto.lastName},
         fetchPolicy: FetchPolicy.noCache,
       ),
     );
 
     final dto = _responseResolver.resolve(
       result,
-          (raw) => UserDTO.fromJson(raw),
+      (raw) => UserDTO.fromJson(raw),
       rootKey: 'updateUserMeta',
     );
 

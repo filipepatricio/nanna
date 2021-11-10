@@ -11,10 +11,7 @@ class UserRepositoryImpl implements UserRepository {
   final UserDataSource _dataSource;
   final UserDTOMapper _userDTOMapper;
 
-  UserRepositoryImpl(
-    this._dataSource,
-    this._userDTOMapper
-  );
+  UserRepositoryImpl(this._dataSource, this._userDTOMapper);
 
   @override
   Future<User> getUser() async {

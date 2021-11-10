@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dart';
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:better_informed_mobile/domain/user/user_repository.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';

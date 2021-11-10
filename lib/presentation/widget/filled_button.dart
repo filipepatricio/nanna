@@ -47,17 +47,17 @@ class FilledButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: isLoading ?
-              const SizedBox(
-                  height: AppDimens.m,
-                  width: AppDimens.m,
-                  child: CircularProgressIndicator(color: AppColors.textPrimary, strokeWidth: AppDimens.xxs)
-              ) : Text(
-                text,
-                style: AppTypography.buttonBold.copyWith(
-                  color: isEnabled ? textColor : textColor.withOpacity(0.44),
-                ),
-              ),
+              child: isLoading
+                  ? const SizedBox(
+                      height: AppDimens.m,
+                      width: AppDimens.m,
+                      child: CircularProgressIndicator(color: AppColors.textPrimary, strokeWidth: AppDimens.xxs))
+                  : Text(
+                      text,
+                      style: AppTypography.buttonBold.copyWith(
+                        color: isEnabled ? textColor : textColor.withOpacity(0.44),
+                      ),
+                    ),
             ),
             if (iconPath != null) ...[
               const SizedBox(width: AppDimens.s),

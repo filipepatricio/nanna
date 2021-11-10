@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-enum MainTabs { today, explore, my_reads }
+enum MainTabs { today, explore, profile }
 
 extension Attributes on MainTabs {
   Widget get icon => _icon();
@@ -21,8 +21,8 @@ extension Attributes on MainTabs {
         return _BottomNavigationIcon(AppVectorGraphics.today, _title(), isActive: false);
       case MainTabs.explore:
         return _BottomNavigationIcon(AppVectorGraphics.explore, _title(), isActive: false);
-      case MainTabs.my_reads:
-        return _BottomNavigationIcon(AppVectorGraphics.myReads, _title(), isActive: false);
+      case MainTabs.profile:
+        return _BottomNavigationIcon(AppVectorGraphics.profile, _title(), isActive: false);
     }
   }
 
@@ -32,8 +32,8 @@ extension Attributes on MainTabs {
         return _BottomNavigationIcon(AppVectorGraphics.todaySelected, _title());
       case MainTabs.explore:
         return _BottomNavigationIcon(AppVectorGraphics.exploreSelected, _title());
-      case MainTabs.my_reads:
-        return _BottomNavigationIcon(AppVectorGraphics.myReadsSelected, _title());
+      case MainTabs.profile:
+        return _BottomNavigationIcon(AppVectorGraphics.profileSelected, _title());
     }
   }
 
@@ -43,8 +43,8 @@ extension Attributes on MainTabs {
         return LocaleKeys.main_todayTab.tr();
       case MainTabs.explore:
         return LocaleKeys.main_exploreTab.tr();
-      case MainTabs.my_reads:
-        return LocaleKeys.main_myReadsTab.tr();
+      case MainTabs.profile:
+        return LocaleKeys.main_profileTab.tr();
     }
   }
 }
