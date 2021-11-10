@@ -88,7 +88,7 @@ class TopicPage extends HookWidget {
                   Expanded(
                     child: SafeArea(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: AppDimens.m, right: AppDimens.xl),
+                        padding: const EdgeInsets.only(top: AppDimens.m, right: AppDimens.l + AppDimens.xs),
                         child: Hero(
                           tag: HeroTag.dailyBriefRelaxPage,
                           child: RelaxView(

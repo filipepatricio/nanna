@@ -17,7 +17,7 @@ double calculateLastPageShownFactor(PageController controller, double viewportFr
   }
 }
 
-void hideKeyboard(){
+void hideKeyboard() {
   FocusManager.instance.primaryFocus?.unfocus();
 }
 

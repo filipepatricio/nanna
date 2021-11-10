@@ -16,7 +16,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SettingsAccountBody extends HookWidget {
-  final SettingsAccountCubit  cubit;
+  final SettingsAccountCubit cubit;
   final SettingsAccountState state;
   final SettingsAccountData data;
 
@@ -29,12 +29,12 @@ class SettingsAccountBody extends HookWidget {
 
   final isFormFocused = useState(false);
 
-  void _onDismissTextFormFocus(){
+  void _onDismissTextFormFocus() {
     hideKeyboard();
     isFormFocused.value = false;
   }
 
-  void _onSaveButtonTap(){
+  void _onSaveButtonTap() {
     _onDismissTextFormFocus();
     cubit.saveAccountData();
   }
@@ -48,12 +48,11 @@ class SettingsAccountBody extends HookWidget {
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
-              fontSize: 16.0
-          ));
+              fontSize: 16.0));
     });
 
     return SafeArea(
-      child:GestureDetector(
+      child: GestureDetector(
         onTap: _onDismissTextFormFocus,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -89,8 +88,7 @@ class SettingsAccountBody extends HookWidget {
                             onChanged: (String inputText) => cubit.updateFirstName(inputText),
                             validator: (String? value) => data.firstNameValidator,
                             onClear: () => cubit.clearNameInput(),
-                            onTap: () => isFormFocused.value = true
-                        ),
+                            onTap: () => isFormFocused.value = true),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
                             label: LocaleKeys.settings_lastName.tr(),
@@ -100,8 +98,7 @@ class SettingsAccountBody extends HookWidget {
                             onChanged: (String inputText) => cubit.updateLastName(inputText),
                             validator: (String? value) => data.lastNameValidator,
                             onClear: () => cubit.clearLastNameInput(),
-                            onTap: () => isFormFocused.value = true
-                        ),
+                            onTap: () => isFormFocused.value = true),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
                             label: LocaleKeys.settings_emailAddress.tr(),
@@ -111,8 +108,7 @@ class SettingsAccountBody extends HookWidget {
                             onChanged: (String inputText) => cubit.updateEmail(inputText),
                             validator: (String? value) => data.emailValidator,
                             onClear: () => cubit.clearEmailInput(),
-                            onTap: () => isFormFocused.value = true
-                        ),
+                            onTap: () => isFormFocused.value = true),
                         const SizedBox(height: AppDimens.l),
                       ],
                     ),
@@ -128,9 +124,7 @@ class SettingsAccountBody extends HookWidget {
                     onTap: _onSaveButtonTap,
                     fillColor: AppColors.limeGreen,
                     textColor: AppColors.textPrimary,
-                    isLoading: state.maybeWhen(updating: (data) => true, orElse: () => false)
-                )
-            ),
+                    isLoading: state.maybeWhen(updating: (data) => true, orElse: () => false))),
             const SizedBox(height: AppDimens.s),
           ],
         ),

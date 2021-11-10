@@ -170,7 +170,15 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle b2MediumSerif = TextStyle(
+  static const b2RegularLora = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyLora,
+    fontSize: 16,
+    height: 1.27,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle b2MediumLora = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyLora,
     fontSize: 16,
@@ -258,7 +266,7 @@ class AppTypography {
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 16,
-    height: 1.5,
+    height: 1,
     color: AppColors.textPrimary,
   );
 
