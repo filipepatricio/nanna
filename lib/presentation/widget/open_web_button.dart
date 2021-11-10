@@ -1,8 +1,10 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OpenWebButton extends StatelessWidget {
@@ -26,21 +28,33 @@ class OpenWebButton extends StatelessWidget {
             Fimber.e('Could not launch $url');
           }
         },
-        child: Flexible(
-          fit: FlexFit.tight,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: Container(
-            width: 200,
             padding: const EdgeInsets.symmetric(
-              vertical: AppDimens.s,
+              vertical: AppDimens.sl,
               horizontal: AppDimens.l,
             ),
             decoration: const BoxDecoration(
-              color: AppColors.grey,
+              color: AppColors.black,
               borderRadius: BorderRadius.all(
                 Radius.circular(AppDimens.buttonRadius),
               ),
             ),
-            child: Center(child: Text(buttonLabel, style: AppTypography.buttonBold)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  AppVectorGraphics.openWeb,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(width: AppDimens.sl),
+                Text(
+                  buttonLabel,
+                  style: AppTypography.buttonBold.copyWith(color: AppColors.white),
+                ),
+              ],
+            ),
           ),
         ),
       ),
