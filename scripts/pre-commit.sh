@@ -3,6 +3,10 @@
 # Log executed commands ...
 # set -x
 
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
 # Temporary commit of staged changes ...
 git commit --no-verify --message "changes to be verified by pre-commit hook"
 
@@ -16,7 +20,7 @@ fi
 make flutter_format
 GIT_STATUS_POST_FORMAT="$(git status -s)"
 if [ ! -z "$GIT_STATUS_POST_FORMAT" ]; then
-    echo "Flutter format has changed files. Review and stage them before continuing with the commit"
+    echo "\n\n${red}***ALERT*** Flutter format has changed files. Review and stage them before proceeding with the commit\n\n"
     # Discard all changes made by `make pre-commit` and drop temporary commit...
     git reset --soft HEAD^
     if [ ! -z "$GIT_STATUS" ]; then
