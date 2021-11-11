@@ -54,7 +54,7 @@ class ArticleItemView extends HookWidget {
             MediaItemPageRoute(
               pageData: MediaItemPageData.multipleItems(
                 index: index,
-                entryList: allEntries
+                articleList: allEntries
                     .map((e) => e.item)
                     .whereType<MediaItemArticle>()
                     .toList(), //TODO fix when media page will accept other types

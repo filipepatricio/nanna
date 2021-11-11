@@ -10,12 +10,21 @@ import 'package:flutter/widgets.dart';
 class DottedArticleInfo extends StatelessWidget {
   final MediaItemArticle article;
   final bool isLight;
+  final bool showPublisher;
+  final bool showDate;
+  final bool fullDate;
+  final bool showReadTime;
 
   const DottedArticleInfo({
     required this.article,
     required this.isLight,
+    this.showPublisher = true,
+    this.showDate = true,
+    this.fullDate = false,
+    this.showReadTime = true,
     Key? key,
-  }) : super(key: key);
+  })  : assert(showPublisher || showDate || showReadTime, 'Select at least one of the sections to show'),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,23 +32,28 @@ class DottedArticleInfo extends StatelessWidget {
     final publicationDate = article.publicationDate;
     return Row(
       children: [
-        if (isLight)
-          PublisherLogo.light(publisher: article.publisher)
-        else
-          PublisherLogo.dark(publisher: article.publisher),
-        Text(
-          '${article.publisher.name} · ',
-          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
-        ),
-        if (publicationDate != null)
+        if (showPublisher) ...[
+          if (isLight)
+            PublisherLogo.light(publisher: article.publisher)
+          else
+            PublisherLogo.dark(publisher: article.publisher),
           Text(
-            '${DateFormatUtil.formatShortMonthNameDay(publicationDate)} · ',
+            article.publisher.name,
             style: AppTypography.metadata1Regular.copyWith(color: mainColor),
           ),
-        Text(
-          LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
-          style: AppTypography.metadata1Regular.copyWith(color: mainColor),
-        ),
+        ],
+        if (showDate && publicationDate != null)
+          Text(
+            '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
+            style: AppTypography.metadata1Regular.copyWith(color: mainColor),
+          ),
+        if (showReadTime)
+          Text(
+            '${showPublisher || showDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
+              args: [article.timeToRead.toString()],
+            )}',
+            style: AppTypography.metadata1Regular.copyWith(color: mainColor),
+          ),
       ],
     );
   }

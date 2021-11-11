@@ -56,7 +56,7 @@ class ArticleSectionView extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             itemBuilder: (context, index) => ArticleListItem(
-              entry: section.articles[index],
+              article: section.articles[index],
               themeColor: AppColors.background,
               cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
             ),

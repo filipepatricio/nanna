@@ -40,7 +40,7 @@ class ReadingListStackedCards extends HookWidget {
               height: bottomCardHeight,
               width: bottomCardWidth,
               decoration: BoxDecoration(
-                color: const Color(0xffF4F1EE),
+                color: AppColors.darkLinen,
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadowColor,

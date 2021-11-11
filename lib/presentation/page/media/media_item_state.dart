@@ -29,5 +29,5 @@ class MediaItemState with _$MediaItemState {
   const factory MediaItemState.nextPageLoaded(int index) = _MediaItemStateNextPageLoaded;
 
   @Implements(BuildState)
-  const factory MediaItemState.error(MediaItemArticle entry) = _MediaItemStateError;
+  const factory MediaItemState.error(MediaItemArticle article) = _MediaItemStateError;
 }

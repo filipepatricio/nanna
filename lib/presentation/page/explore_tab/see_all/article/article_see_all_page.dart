@@ -208,7 +208,7 @@ class _GridItem extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return ArticleListItem(
-          entry: article,
+          article: article,
           themeColor: AppColors.background,
           height: _itemHeight,
           width: null,

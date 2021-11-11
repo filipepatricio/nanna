@@ -90,6 +90,9 @@ class AppDimens {
   /// 8
   static const buttonRadius = 8.0;
 
+  ///50
+  static const buttonHeight = 50.0;
+
   /// 10
   static const articleItemMargin = 10.0;
 

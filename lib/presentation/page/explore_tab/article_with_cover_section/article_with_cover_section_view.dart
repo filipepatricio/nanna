@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -9,8 +8,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
-import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
@@ -84,7 +81,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               itemBuilder: (context, index) => ArticleListItem(
-                entry: section.articles[index],
+                article: section.articles[index],
                 themeColor: themeColor,
               ),
               separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
@@ -117,7 +114,7 @@ class _MainArticle extends HookWidget {
       onTap: () => AutoRouter.of(context).push(
         MediaItemPageRoute(
           pageData: MediaItemPageData.singleItem(
-            entry: entry,
+            article: entry,
           ),
         ),
       ),

@@ -101,11 +101,11 @@
     "articleBy": "By {}",
     "readMore": "Read more",
     "readMinutes": "{} min",
-    "loadingNext": "Loading next article",
-    "allArticlesRead": "Nice! You’ve read all articles in the reading list.",
+    "loadingNext": "Loading next article in\nthe reading list.",
+    "allArticlesRead": "Great! You’ve read all\narticles in the reading list.",
     "goBackToTopic": "Back to topic overview",
     "openSourceUrl": "Open in Browser",
-    "loadError": "Something went wrong\n during loading the article"
+    "loadError": "Something went wrong\n while loading the article"
   },
   "readingList": {
     "title": "Reading list",
