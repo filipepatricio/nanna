@@ -360,7 +360,7 @@ class _ActionsBar extends HookWidget {
 
         final factor = (currentOffset / opacityThreshold - 1) * opacitySpeed;
         final opacity = 0.0 + min(factor, 1.0);
-        if (appBarOpacityState.value != opacity) appBarOpacityState.value = opacity;
+        if (appBarOpacityState.value != opacity) appBarOpacityState.value = opacity * 0.8;
       }
     }
 
