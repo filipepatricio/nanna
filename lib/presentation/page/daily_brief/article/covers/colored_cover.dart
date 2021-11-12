@@ -27,13 +27,6 @@ class ColoredCover extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: AppDimens.l),
-              child: article.type == ArticleType.premium
-                  ? const ExclusiveLabel()
-                  : ArticleLabel.opinion(backgroundColor: AppColors.background),
-            ),
-            const Spacer(),
             InformedMarkdownBody(
               markdown: article.title,
               baseTextStyle: AppTypography.h0SemiBold.copyWith(fontFamily: fontFamilyLora),

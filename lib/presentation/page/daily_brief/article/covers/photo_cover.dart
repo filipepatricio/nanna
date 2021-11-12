@@ -47,13 +47,6 @@ class PhotoCover extends HookWidget {
                         ),
                       ),
                     ],
-                    Positioned(
-                      top: AppDimens.l,
-                      left: AppDimens.l,
-                      child: article.type == ArticleType.premium
-                          ? const ExclusiveLabel()
-                          : ArticleLabel.opinion(backgroundColor: AppColors.background),
-                    ),
                   ],
                 );
               },
