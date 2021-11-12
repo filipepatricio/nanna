@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_st
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 @injectable
 class SignInPageCubit extends Cubit<SignInPageState> {

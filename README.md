@@ -13,6 +13,15 @@ Follow those steps to start:
 
 ...and you are ready to go.
 
+# To make the pre-commit hook work
+
+Just run these commands
+
+```
+chmod +x scripts/pre-commit.sh
+ln -s ../../scripts/pre-commit.sh .git/hooks/pre-commit
+```
+
 ## Running App
 
 Right now we have 3 app flavors: dev, stage and prod. This adds requirement for additional arguments when running flutter app:
@@ -41,6 +50,16 @@ If you want to set custom api host, that application connects to, just include a
 `—dart-define=host=http://<your machine ip on the network>:4000/graphql`
 
 - [https://fluttercorner.com/socketexception-os-error-connection-refused-errno-111-in-flutter/](https://fluttercorner.com/socketexception-os-error-connection-refused-errno-111-in-flutter/)
+
+or with:
+
+```—dart-define=host=http://localhost:4000/graphql```
+
+and run on terminal:
+
+```adb reverse tcp:4000 tcp:4000```
+
+* [https://stackoverflow.com/a/60655655/3100254]
 
 ## Mobile introduction.
 
@@ -71,7 +90,6 @@ If you want to set custom api host, that application connects to, just include a
   When you create Merge request, post URL to you MR on this channel and we will check it. To merge request we have to have at least one approve.
 
 * [ ] Project Architecture:
-
 Clean Architecture - TLDR. Split architecture into 3 layers for separation of UI, Business logic and Implementation.
 
     User --> UI --> Business Logic --> Data access ---> Data source

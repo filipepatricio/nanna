@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 const String pngExtension = '.png';
+const String jpgExtension = '.jpg';
 
 class CloudinaryImageProvider {
   final String _cloudName;
@@ -16,6 +17,9 @@ class CloudinaryImageProvider {
 
   CloudinaryImage withPublicIdAsPng(String publicId) =>
       CloudinaryImage.fromPublicId(_cloudName, publicId + pngExtension);
+
+  CloudinaryImage withPublicIdAsJpg(String publicId) =>
+      CloudinaryImage.fromPublicId(_cloudName, publicId + jpgExtension);
 }
 
 CloudinaryImageProvider useCloudinaryProvider() {
@@ -34,6 +38,10 @@ extension CloudinaryTransformationExtension on CloudinaryTransformation {
 
   CloudinaryTransformation autoGravity() {
     return crop('fill').gravity('auto');
+  }
+
+  CloudinaryTransformation autoQuality() {
+    return quality('auto');
   }
 
   String generateNotNull() {

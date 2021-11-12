@@ -38,7 +38,7 @@ class PhotoCover extends HookWidget {
                       Positioned.fill(
                         child: CloudinaryProgressiveImage(
                           cloudinaryTransformation: cloudinaryProvider
-                              .withPublicIdAsPng(imageId)
+                              .withPublicIdAsJpg(imageId)
                               .transform()
                               .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
                               .autoGravity(),
@@ -47,13 +47,6 @@ class PhotoCover extends HookWidget {
                         ),
                       ),
                     ],
-                    Positioned(
-                      top: AppDimens.l,
-                      left: AppDimens.l,
-                      child: article.type == ArticleType.premium
-                          ? const ExclusiveLabel()
-                          : ArticleLabel.opinion(backgroundColor: AppColors.background),
-                    ),
                   ],
                 );
               },

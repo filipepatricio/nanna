@@ -34,7 +34,7 @@ class PhotoStackedCover extends HookWidget {
                 builder: (context, constrains) {
                   return CloudinaryProgressiveImage(
                     cloudinaryTransformation: cloudinaryProvider
-                        .withPublicIdAsPng(imageId)
+                        .withPublicIdAsJpg(imageId)
                         .transform()
                         .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
                         .autoGravity(),
@@ -50,13 +50,6 @@ class PhotoStackedCover extends HookWidget {
               ),
             ),
           ],
-          Positioned(
-            top: AppDimens.l,
-            left: AppDimens.l,
-            child: article.type == ArticleType.premium
-                ? const ExclusiveLabel()
-                : ArticleLabel.opinion(backgroundColor: AppColors.background),
-          ),
           Align(
             alignment: Alignment.bottomLeft,
             child: Padding(

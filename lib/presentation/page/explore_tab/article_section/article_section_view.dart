@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/presentation/page/explore_tab/article_wit
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:flutter/material.dart';
@@ -30,21 +29,18 @@ class ArticleSectionView extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Hero(
-                  // TODO change to some ID or UUID if available
-                  tag: HeroTag.exploreArticleTitle(section.title.hashCode),
-                  child: InformedMarkdownBody(
-                    markdown: section.title,
-                    baseTextStyle: AppTypography.h1,
-                    highlightColor: AppColors.transparent,
-                    maxLines: 2,
-                  ),
+                child: InformedMarkdownBody(
+                  markdown: section.title,
+                  baseTextStyle: AppTypography.h1,
+                  highlightColor: AppColors.transparent,
+                  maxLines: 2,
                 ),
               ),
               const SizedBox(width: AppDimens.s),
               SeeAllButton(
                 onTap: () => AutoRouter.of(context).push(
                   ArticleSeeAllPageRoute(
+                    sectionId: section.id,
                     title: section.title,
                     entries: section.articles,
                   ),

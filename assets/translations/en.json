@@ -21,7 +21,7 @@
   "main": {
     "todayTab": "Today",
     "exploreTab": "Explore",
-    "myReadsTab": "My Reads"
+    "profileTab": "Profile"
   },
   "dailyBrief": {
     "title": "Daily Brief",
@@ -32,7 +32,8 @@
     "readingList": "Reading list",
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
-    "biggerPicture": "The bigger picture"
+    "biggerPicture": "The bigger picture",
+    "goToExplore": "Go to explore"
   },
   "settings": {
     "settings": "Settings",
@@ -44,7 +45,7 @@
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of service",
-    "giveFeedback": "Give feedback",
+
     "settingsOverview": "Settings Overview",
     "privacyPolicyContent": "This is a placerholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "termsContent": "This is a placerholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
@@ -54,9 +55,13 @@
     "productUpdates": "Product Updates",
     "newFeatures": "New features & improvements",
     "firstName": "First name",
-    "lastName": "LastName",
+    "lastName": "Last name",
     "emailAddress": "Email address",
-    "save": "Save"
+    "save": "Save",
+    "accountInfoSavedSuccessfully": "Your information was saved successfully",
+    "wrongFirstNameInput": "Wrong first name input",
+    "wrongLastNameInput": "Wrong last name input",
+    "wrongEmailInput": "Wrong email input"
   },
   "signIn": {
     "header": {
@@ -99,29 +104,26 @@
     "loadingNext": "Loading next article",
     "allArticlesRead": "Nice! You’ve read all articles in the reading list.",
     "goBackToTopic": "Back to topic overview",
-    "openSourceUrl": "Open source url"
+    "openSourceUrl": "Open in Browser",
+    "loadError": "Something went wrong\n during loading the article"
   },
   "readingList": {
     "title": "Reading list",
-    "articleCount": "{} articles",
-    "editorsNote": "Editors note: "
+    "articleCount": "{} articles"
   },
   "topic": {
     "updated": "Updated {}"
   },
   "continueReading": "Continue reading",
-  "myReads": {
-    "articlesRead": "/{} articles read",
-    "itemsCount": {
-      "zero": "No items",
-      "one": "{} item",
-      "two": "{} items",
-      "few": "{} items",
-      "many": "{} items",
-      "other": "{} items"
-    }
-  },
   "explore": {
     "title": "Explore"
+  },
+  "profile": {
+    "title": "Profile",
+    "stayTuned": "Stay Tuned",
+    "stayTunedText": "This page will be evolving during beta",
+    "feedbackButton": "Give feedback",
+    "feedbackSubject": "Feedback on Informed App",
+    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed"
   }
 }

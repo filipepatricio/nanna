@@ -4,12 +4,12 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article_see_all_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list_see_all_page.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list/reading_list_see_all_page.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
-import 'package:better_informed_mobile/presentation/page/my_reads_tab/my_reads_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
+import 'package:better_informed_mobile/presentation/page/profile_tab/profile_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
@@ -69,12 +69,11 @@ const dashboardTabRouter = CustomRoute(
       ],
     ),
     AutoRoute(
-      path: 'myReadsTab',
-      name: 'MyReadsTabGroupRouter',
+      path: 'profileTab',
+      name: 'ProfileTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: MyReadsPage),
-        AutoRoute(page: SingleTopicPage),
+        AutoRoute(path: '', page: ProfilePage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),

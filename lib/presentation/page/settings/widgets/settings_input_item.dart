@@ -9,16 +9,20 @@ class SettingsInputItem extends HookWidget {
   final String label;
   final String? initialInput;
   final bool isEditable;
+  final bool isFormFocused;
   final Function(String inputText) onChanged;
   final Function() onClear;
+  final Function() onTap;
   final FormFieldValidator<String> validator;
 
   const SettingsInputItem({
     required this.label,
     required this.onChanged,
     required this.isEditable,
+    required this.isFormFocused,
     required this.validator,
     required this.onClear,
+    required this.onTap,
     this.initialInput,
   });
 
@@ -33,6 +37,7 @@ class SettingsInputItem extends HookWidget {
           style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
         ),
         TextFormField(
+          onTap: () => onTap(),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
           controller: controller,
@@ -40,8 +45,8 @@ class SettingsInputItem extends HookWidget {
           style: AppTypography.input1Medium,
           onChanged: (value) => onChanged(value),
           decoration: InputDecoration(
-            border: isEditable ? null : InputBorder.none,
-            suffixIcon: isEditable
+            border: null,
+            suffixIcon: isEditable && isFormFocused
                 ? GestureDetector(
                     onTap: () {
                       controller.clear();

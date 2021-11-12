@@ -12,7 +12,7 @@ class OAuthSignInDataSource {
     final userMetaCredentials = await _credentialProviderDataSource.getUserMetaCredential();
     final provider = _credentialProviderDataSource.provider;
 
-    final userMeta = userMetaCredentials.userMeta;
+    final userMeta = userMetaCredentials.userMetaDto;
     final token = userMetaCredentials.credentials.idToken;
     if (token == null) throw Exception('OAuth token is null');
 

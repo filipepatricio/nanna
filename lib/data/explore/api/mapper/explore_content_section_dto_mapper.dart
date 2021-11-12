@@ -24,6 +24,7 @@ class ExploreContentSectionDTOMapper implements Mapper<ExploreContentSectionDTO,
   ExploreContentSection call(ExploreContentSectionDTO data) {
     return data.map(
       articles: (section) => ExploreContentSection.articles(
+        id: section.id,
         title: section.name,
         articles: section.articles.map<MediaItemArticle>(_articleDTOToMediaItemMapper).toList(),
       ),
@@ -32,6 +33,7 @@ class ExploreContentSectionDTOMapper implements Mapper<ExploreContentSectionDTO,
 
         if (items.isEmpty) {
           return ExploreContentSection.articles(
+            id: section.id,
             title: section.name,
             articles: [],
           );
@@ -41,6 +43,7 @@ class ExploreContentSectionDTOMapper implements Mapper<ExploreContentSectionDTO,
         final list = items.skip(1).toList();
 
         return ExploreContentSection.articleWithFeature(
+          id: section.id,
           title: section.name,
           backgroundColor: _colorDTOMapper(section.backgroundColor),
           featuredArticle: feature,
@@ -48,6 +51,7 @@ class ExploreContentSectionDTOMapper implements Mapper<ExploreContentSectionDTO,
         );
       },
       topics: (section) => ExploreContentSection.topics(
+        id: section.id,
         title: section.name,
         topics: section.topics.map<Topic>(_topicDTOMapper).toList(),
       ),

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
 const _lowestQuality = '1';
-const _highestQuality = '100';
 const _fadeDuration = Duration(milliseconds: 200);
 
 class CloudinaryProgressiveImage extends StatelessWidget {
@@ -32,7 +31,7 @@ class CloudinaryProgressiveImage extends StatelessWidget {
         cloudinaryTransformation.quality(_lowestQuality).generateNotNull(),
       ),
       image: NetworkImage(
-        cloudinaryTransformation.quality(_highestQuality).generateNotNull(),
+        cloudinaryTransformation.autoQuality().generateNotNull(),
       ),
       width: width,
       height: height,

@@ -11,7 +11,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/article_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_label/exclusive_label.dart';
-import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
@@ -48,23 +48,20 @@ class ArticleWithCoverSectionView extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Hero(
-                    // TODO change to some ID or UUID if available
-                    tag: HeroTag.exploreArticleTitle(section.title.hashCode),
-                    child: InformedMarkdownBody(
-                      markdown: section.title,
-                      baseTextStyle: AppTypography.h1,
-                      highlightColor: AppColors.transparent,
-                      maxLines: 2,
-                    ),
+                  child: InformedMarkdownBody(
+                    markdown: section.title,
+                    baseTextStyle: AppTypography.h1,
+                    highlightColor: AppColors.transparent,
+                    maxLines: 2,
                   ),
                 ),
                 const SizedBox(width: AppDimens.s),
                 SeeAllButton(
                   onTap: () => AutoRouter.of(context).push(
                     ArticleSeeAllPageRoute(
+                      sectionId: section.id,
                       title: section.title,
-                      entries: section.articles,
+                      entries: [section.featuredArticle] + section.articles,
                     ),
                   ),
                 ),
@@ -130,21 +127,20 @@ class _MainArticle extends HookWidget {
             Container(
               height: _mainArticleHeight,
               child: imageId != null
-                  ? Image.network(
-                      cloudinaryProvider
-                          .withPublicId(imageId)
+                  ? CloudinaryProgressiveImage(
+                      cloudinaryTransformation: cloudinaryProvider
+                          .withPublicIdAsJpg(imageId)
                           .transform()
                           .withLogicalSize(constraints.maxWidth, constraints.maxHeight, context)
-                          .autoGravity()
-                          .generateNotNull(),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.bottomLeft,
+                          .autoGravity(),
+                      height: constraints.maxHeight,
+                      width: constraints.maxWidth,
                     )
                   : Container(),
             ),
             Positioned.fill(
               child: Container(
-                color: AppColors.black.withOpacity(0.3),
+                color: AppColors.black.withOpacity(0.4),
               ),
             ),
             Positioned(
@@ -194,13 +190,6 @@ class _MainArticleCover extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: entry.type == ArticleType.premium
-                ? const ExclusiveLabel()
-                : ArticleLabel.opinion(backgroundColor: themeColor),
-          ),
-          const Spacer(),
           PublisherLogo.light(publisher: entry.publisher),
           InformedMarkdownBody(
             markdown: entry.title,

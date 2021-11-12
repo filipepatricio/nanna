@@ -1,4 +1,4 @@
-import 'package:gql/src/ast/ast.dart' show DocumentNode;
+import 'package:gql/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AuthGQL {
@@ -9,7 +9,7 @@ class AuthGQL {
         errorMessage
         tokens {
           accessToken
-          refreshToken 
+          refreshToken
         }
         account {
           id
@@ -28,7 +28,7 @@ class AuthGQL {
         errorMessage
         tokens {
           accessToken
-          refreshToken 
+          refreshToken
         }
       }
     }

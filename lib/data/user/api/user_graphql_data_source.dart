@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/user/api/dto/user_dto.dart';
+import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
 import 'package:better_informed_mobile/data/user/api/user_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
@@ -17,6 +18,7 @@ class UserGraphqlDataSource implements UserDataSource {
     final result = await _client.query(
       QueryOptions(
         document: UserGQL.queryUser(),
+        fetchPolicy: FetchPolicy.noCache,
       ),
     );
 
@@ -24,6 +26,25 @@ class UserGraphqlDataSource implements UserDataSource {
       result,
       (raw) => UserDTO.fromJson(raw),
       rootKey: 'me',
+    );
+
+    return dto ?? (throw Exception('User can not be null'));
+  }
+
+  @override
+  Future<UserDTO> updateUser(UserMetaDTO userMetaDto) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: UserGQL.updateUser(),
+        variables: {'firstName': userMetaDto.firstName, 'lastName': userMetaDto.lastName},
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => UserDTO.fromJson(raw),
+      rootKey: 'updateUserMeta',
     );
 
     return dto ?? (throw Exception('User can not be null'));

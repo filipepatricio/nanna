@@ -159,19 +159,19 @@ class _ErrorContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: AppDimens.l),
-        SvgPicture.asset(AppVectorGraphics.sadSun),
-        const SizedBox(height: AppDimens.l),
+        SvgPicture.asset(AppVectorGraphics.articleError),
+        const SizedBox(height: AppDimens.m),
         Text(
           LocaleKeys.dailyBrief_ups.tr(),
           style: AppTypography.h3bold,
           textAlign: TextAlign.center,
         ),
         Text(
-          LocaleKeys.dailyBrief_tryAgainLater.tr(),
+          LocaleKeys.article_loadError.tr(),
           style: AppTypography.h3Normal,
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: AppDimens.l),
+        const SizedBox(height: AppDimens.xl),
         //TODO: Change for proper label and design
         OpenWebButton(
           url: entry.sourceUrl,
@@ -386,16 +386,7 @@ class ArticleHeaderView extends HookWidget {
         ),
         Positioned.fill(
           child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  AppColors.gradientOverlayStartColor,
-                  AppColors.gradientOverlayEndColor,
-                ],
-              ),
-            ),
+            color: Colors.black.withOpacity(0.40),
           ),
         ),
         Positioned(
