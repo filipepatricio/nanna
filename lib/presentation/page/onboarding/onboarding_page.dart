@@ -73,7 +73,7 @@ class OnboardingPage extends HookWidget {
                       ),
                     ],
                     const Spacer(),
-                    if (isLastPage == true)
+                    if (isLastPage)
                       Container(
                         decoration: const BoxDecoration(
                           color: AppColors.limeGreen,
