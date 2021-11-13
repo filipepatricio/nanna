@@ -144,6 +144,15 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle subH2BoldSmall = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 10,
+    height: 1.366,
+    letterSpacing: 0.15,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle subH2RegularSmall = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,

@@ -134,7 +134,7 @@
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed"
   },
   "shareTopic": {
-    "title": "Select the articles you want to share",
+    "title": "Select the articles you want to share related to the topic",
     "amountInfo": "You can share up to {} articles",
     "selectedLabel": "{}/{} articles selected"
   }

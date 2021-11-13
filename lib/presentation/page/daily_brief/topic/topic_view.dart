@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/presentation/widget/cloudinary_progressiv
 import 'package:better_informed_mobile/presentation/widget/follow_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
+import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -170,7 +171,7 @@ class _TopicHeader extends HookWidget {
                     children: [
                       FollowButton(onTap: () {}),
                       const SizedBox(width: AppDimens.m),
-                      ShareButton(onTap: () {}),
+                      ShareButton(onTap: () => shareReadingList(context, topic)),
                       const Spacer(),
                       UpdatedLabel(
                         dateTime: topic.lastUpdatedAt,

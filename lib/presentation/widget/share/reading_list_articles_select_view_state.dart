@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,7 +12,7 @@ class ReadingListArticlesSelectViewState with _$ReadingListArticlesSelectViewSta
   @Implements(BuildState)
   factory ReadingListArticlesSelectViewState.idle(
     bool canSelectMore,
-    List<ArticleHeader> articles,
+    List<MediaItemArticle> articles,
     Set<int> selectedIndexes,
     int articlesSelectionLimit,
   ) = _ReadingListArticlesSelectViewStateIdle;

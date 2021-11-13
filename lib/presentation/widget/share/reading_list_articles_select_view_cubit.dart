@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
@@ -40,7 +41,12 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
   Future<void> generateShareImage() async {
     emit(ReadingListArticlesSelectViewState.generatingShareImage());
 
-    final generator = ShareViewImageGenerator(() => ShareTopicView(topic: _topic, articles: []));
+    final generator = ShareViewImageGenerator(
+      () => ShareTopicView(
+        topic: _topic,
+        articles: const [],
+      ),
+    );
     final imageBytes = await generator.generate();
 
     if (imageBytes != null) {
@@ -59,7 +65,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
     emit(
       ReadingListArticlesSelectViewState.idle(
         _canSelectMore(),
-        _topic.readingList.articles,
+        _topic.readingList.entries.map((entry) => entry.item).whereType<MediaItemArticle>().toList(),
         Set.from(_selectedIndexes),
         articlesSelectionLimit,
       ),

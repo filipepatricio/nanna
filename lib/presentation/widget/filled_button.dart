@@ -31,9 +31,8 @@ class FilledButton extends StatelessWidget {
     return GestureDetector(
       onTap: isEnabled ? onTap : () => {},
       child: Container(
-        height: AppDimens.buttonHeight,
         padding: const EdgeInsets.symmetric(
-          vertical: AppDimens.s,
+          vertical: AppDimens.m,
           horizontal: AppDimens.l,
         ),
         decoration: BoxDecoration(

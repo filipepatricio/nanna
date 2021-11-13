@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:better_informed_mobile/domain/article/data/article_header.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -15,7 +15,7 @@ import 'package:flutter_svg/svg.dart';
 
 class ShareTopicView extends HookWidget implements BaseShareCompletable {
   final Topic topic;
-  final List<ArticleHeader> articles;
+  final List<MediaItemArticle> articles;
   final Completer _baseViewCompleter;
 
   ShareTopicView({
@@ -30,8 +30,9 @@ class ShareTopicView extends HookWidget implements BaseShareCompletable {
 
   @override
   Widget build(BuildContext context) {
+    final cloudinary = useCloudinaryProvider();
     final imageUrl = useMemoized(
-      () => CloudinaryImageExtension.withPublicId(topic.image.publicId).transform().width(2160).fit().generate()!,
+      () => cloudinary.withPublicId(topic.coverImage.publicId).transform().width(2160).fit().generateNotNull(),
     );
     final image = useMemoized(
       () => Image.network(
@@ -73,6 +74,7 @@ class ShareTopicView extends HookWidget implements BaseShareCompletable {
                         text: topic.title,
                         style: AppTypography.h3Bold.copyWith(fontSize: 30),
                       ),
+                      highlightColor: AppColors.limeGreen,
                     ),
                   ),
                 ),
