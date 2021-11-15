@@ -47,7 +47,7 @@ class _ReadingBannerBody extends HookWidget {
         AutoRouter.of(context).push(
           MediaItemPageRoute(
             pageData: MediaItemPageData.singleItem(
-              entry: readingBanner.article,
+              article: readingBanner.article,
               readArticleProgress: readingBanner.scrollProgress,
             ),
           ),

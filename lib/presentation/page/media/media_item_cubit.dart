@@ -19,7 +19,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
   final GetArticleUseCase _getArticleUseCase;
 
-  late List<MediaItemArticle> _allEntries;
+  late List<MediaItemArticle> _allArticles;
   late int _index;
 
   Article? _currentFullArticle;
@@ -33,11 +33,11 @@ class MediaItemCubit extends Cubit<MediaItemState> {
 
   var readingComplete = false;
 
-  Future<void> initialize(List<MediaItemArticle> entries, int index) async {
-    _allEntries = entries;
+  Future<void> initialize(List<MediaItemArticle> articles, int index) async {
+    _allArticles = articles;
     _index = index;
 
-    final currentEntry = _allEntries[_index];
+    final currentEntry = _allArticles[_index];
 
     emit(const MediaItemState.loading());
     _resetBannerState();
@@ -70,8 +70,8 @@ class MediaItemCubit extends Cubit<MediaItemState> {
 
   Future<void> loadNextArticle(Completer completer) async {
     final nextIndex = _index + 1;
-    if (nextIndex < _allEntries.length) {
-      final nextArticleHeader = _allEntries[nextIndex];
+    if (nextIndex < _allArticles.length) {
+      final nextArticleHeader = _allArticles[nextIndex];
 
       try {
         final articleFuture = _getArticleUseCase(nextArticleHeader);
@@ -110,8 +110,8 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     if (article == null) {
       emit(MediaItemState.error(_getCurrentHeader()));
     } else {
-      if (_allEntries.length > 1) {
-        final hasNextArticle = _index < _allEntries.length - 1;
+      if (_allArticles.length > 1) {
+        final hasNextArticle = _index < _allArticles.length - 1;
         emit(MediaItemState.idleMultiItems(article.article, article.content, hasNextArticle));
       } else {
         emit(MediaItemState.idleSingleItem(article.article, article.content));
@@ -132,5 +132,5 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     }
   }
 
-  MediaItemArticle _getCurrentHeader() => _allEntries[_index];
+  MediaItemArticle _getCurrentHeader() => _allArticles[_index];
 }

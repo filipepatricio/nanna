@@ -7,14 +7,14 @@ part 'media_item_page_data.freezed.dart';
 @freezed
 class MediaItemPageData with _$MediaItemPageData {
   factory MediaItemPageData.singleItem({
-    required MediaItemArticle entry,
+    required MediaItemArticle article,
     double? readArticleProgress,
     MediaItemNavigationCallback? navigationCallback,
   }) = _MediaItemPageDataSingleItem;
 
   factory MediaItemPageData.multipleItems({
     required int index,
-    required List<MediaItemArticle> entryList,
+    required List<MediaItemArticle> articleList,
     double? readArticleProgress,
     MediaItemNavigationCallback? navigationCallback,
   }) = _MediaItemDataMultipleItems;

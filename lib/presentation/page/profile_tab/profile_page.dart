@@ -110,26 +110,23 @@ class _Idle extends StatelessWidget {
         const SizedBox(height: AppDimens.xl),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: SizedBox(
-            height: 50,
-            child: FilledButton(
-              text: LocaleKeys.profile_feedbackButton.tr(),
-              fillColor: AppColors.textPrimary,
-              textColor: AppColors.white,
-              onTap: () async {
-                final email = Email(
-                  body: LocaleKeys.profile_feedbackText.tr(),
-                  subject: LocaleKeys.profile_feedbackSubject.tr(),
-                  recipients: [_feedbackEmail],
-                );
+          child: FilledButton(
+            text: LocaleKeys.profile_feedbackButton.tr(),
+            fillColor: AppColors.textPrimary,
+            textColor: AppColors.white,
+            onTap: () async {
+              final email = Email(
+                body: LocaleKeys.profile_feedbackText.tr(),
+                subject: LocaleKeys.profile_feedbackSubject.tr(),
+                recipients: [_feedbackEmail],
+              );
 
-                try {
-                  await FlutterEmailSender.send(email);
-                } catch (e, s) {
-                  Fimber.e('Sending feedback email failed', ex: e, stacktrace: s);
-                }
-              },
-            ),
+              try {
+                await FlutterEmailSender.send(email);
+              } catch (e, s) {
+                Fimber.e('Sending feedback email failed', ex: e, stacktrace: s);
+              }
+            },
           ),
         ),
       ],

@@ -1,11 +1,12 @@
+import 'dart:developer' as dev;
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
-import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/content/article_content_html.dart';
-import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dart';
@@ -14,9 +15,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
@@ -30,19 +29,21 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 typedef MediaItemNavigationCallback = void Function(int index);
 
+const appBarHeight = kToolbarHeight + AppDimens.xl;
 const _loadNextArticleIndicatorHeight = 150.0;
+double articleViewFullHeight(BuildContext context) => MediaQuery.of(context).size.height * 0.95;
 
 class MediaItemPage extends HookWidget {
   final double? readArticleProgress;
   final int index;
-  final List<MediaItemArticle> entryList;
+  final List<MediaItemArticle> articleList;
   final MediaItemNavigationCallback? navigationCallback;
 
   MediaItemPage({
     required MediaItemPageData pageData,
     Key? key,
   })  : index = _getIndex(pageData),
-        entryList = _getEntries(pageData),
+        articleList = _getEntries(pageData),
         navigationCallback = pageData.navigationCallback,
         readArticleProgress = pageData.readArticleProgress,
         super(key: key);
@@ -53,8 +54,8 @@ class MediaItemPage extends HookWidget {
       );
 
   static List<MediaItemArticle> _getEntries(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => [data.entry],
-        multipleItems: (data) => data.entryList,
+        singleItem: (data) => [data.article],
+        multipleItems: (data) => data.articleList,
       );
 
   @override
@@ -72,43 +73,18 @@ class MediaItemPage extends HookWidget {
       () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
     );
 
-    final articleType = state.mapOrNull(
-      idleSingleItem: (state) => state.header.type,
-      idleMultiItems: (state) => state.header.type,
-    );
-
     useEffect(() {
-      cubit.initialize(entryList, index);
+      cubit.initialize(articleList, index);
     }, [cubit]);
 
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text(
-          articleType == ArticleType.premium
-              ? LocaleKeys.article_appBar_premium.tr()
-              : LocaleKeys.article_appBar_freemium.tr(),
-          style: AppTypography.h5BoldSmall,
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: AppDimens.l),
-            child: GestureDetector(
-              onTap: () {},
-              child: SvgPicture.asset(AppVectorGraphics.share, color: AppColors.textPrimary),
-            ),
-          ),
-        ],
-        centerTitle: true,
-        backgroundColor: articleType == ArticleType.premium ? AppColors.limeGreen : AppColors.white,
-      ),
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: AppColors.background,
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
           loading: (state) => const _LoadingContent(),
           idleMultiItems: (state) => _IdleContent(
-            entry: state.header,
+            article: state.header,
             content: state.content,
             hasNextArticle: state.hasNext,
             multipleArticles: true,
@@ -117,7 +93,7 @@ class MediaItemPage extends HookWidget {
             readArticleProgress: readArticleProgress,
           ),
           idleSingleItem: (state) => _IdleContent(
-            entry: state.header,
+            article: state.header,
             content: state.content,
             hasNextArticle: false,
             multipleArticles: false,
@@ -125,7 +101,7 @@ class MediaItemPage extends HookWidget {
             cubit: cubit,
             readArticleProgress: readArticleProgress,
           ),
-          error: (state) => _ErrorContent(entry: state.entry),
+          error: (state) => _ErrorContent(article: state.article),
           orElse: () => const SizedBox(),
         ),
       ),
@@ -145,10 +121,10 @@ class _LoadingContent extends StatelessWidget {
 }
 
 class _ErrorContent extends StatelessWidget {
-  final MediaItemArticle entry;
+  final MediaItemArticle article;
 
   const _ErrorContent({
-    required this.entry,
+    required this.article,
     Key? key,
   }) : super(key: key);
 
@@ -156,34 +132,50 @@ class _ErrorContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const SizedBox(height: AppDimens.l),
-        SvgPicture.asset(AppVectorGraphics.articleError),
-        const SizedBox(height: AppDimens.m),
-        Text(
-          LocaleKeys.dailyBrief_ups.tr(),
-          style: AppTypography.h3bold,
-          textAlign: TextAlign.center,
+        Padding(
+          padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.m),
+          child: IconButton(
+            icon: const Icon(Icons.close_rounded),
+            color: AppColors.black,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.zero,
+            onPressed: () => context.popRoute(),
+          ),
         ),
-        Text(
-          LocaleKeys.article_loadError.tr(),
-          style: AppTypography.h3Normal,
-          textAlign: TextAlign.center,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: AppDimens.l),
+            SvgPicture.asset(AppVectorGraphics.articleError),
+            const SizedBox(height: AppDimens.m),
+            Text(
+              LocaleKeys.dailyBrief_ups.tr(),
+              style: AppTypography.h3bold,
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              LocaleKeys.article_loadError.tr(),
+              style: AppTypography.h3Normal,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppDimens.xl),
+            OpenWebButton(
+              url: article.sourceUrl,
+              buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
+            ),
+          ],
         ),
-        const SizedBox(height: AppDimens.xl),
-        //TODO: Change for proper label and design
-        OpenWebButton(
-          url: entry.sourceUrl,
-          buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
-        ),
+        const SizedBox(height: AppDimens.xxxl + AppDimens.l),
       ],
     );
   }
 }
 
 class _IdleContent extends HookWidget {
-  final MediaItemArticle entry;
+  final MediaItemArticle article;
   final ArticleContent content;
   final MediaItemCubit cubit;
   final ScrollController controller;
@@ -194,7 +186,7 @@ class _IdleContent extends HookWidget {
   final double? readArticleProgress;
 
   _IdleContent({
-    required this.entry,
+    required this.article,
     required this.content,
     required this.hasNextArticle,
     required this.multipleArticles,
@@ -204,64 +196,113 @@ class _IdleContent extends HookWidget {
     Key? key,
   }) : super(key: key);
 
+  bool get articleWithImage => article.image != null;
+
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      calculateArticleContentOffset();
-    });
+    final fullHeight = articleViewFullHeight(context);
+    final halfHeight = fullHeight / 2;
+    final backgroundScrollController = useScrollController();
+
+    useEffect(() {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        dev.log('callback');
+        calculateArticleContentOffset();
+      });
+    }, []);
+
+    void _scrollBackground() {
+      final quarterHeight = halfHeight / 2;
+      final threeQuartersHeight = quarterHeight * 3;
+      if (controller.hasClients && controller.offset >= 0) {
+        backgroundScrollController.jumpTo(controller.offset > threeQuartersHeight
+            ? controller.offset - (threeQuartersHeight / 2)
+            : controller.offset / 2);
+      }
+    }
+
+    useEffect(() {
+      if (articleWithImage) controller.addListener(_scrollBackground);
+      return () => controller.removeListener(_scrollBackground);
+    }, [controller, backgroundScrollController]);
 
     return LayoutBuilder(
-      builder: (context, constrains) {
-        return NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollNotification) {
-            if (scrollNotification is ScrollEndNotification) {
-              var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
-              if (readScrollOffset < 0) {
-                readScrollOffset = constrains.maxHeight - (cubit.scrollData.contentOffset - controller.offset);
-              }
-
-              cubit.updateScrollData(
-                readScrollOffset,
-                controller.position.maxScrollExtent,
-              );
+      builder: (context, constrains) => NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollNotification) {
+          if (scrollNotification is ScrollEndNotification) {
+            var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
+            if (readScrollOffset < 0) {
+              readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
             }
-            return false;
-          },
-          child: CustomScrollView(
-            physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            key: _articlePageKey,
-            controller: controller,
-            slivers: [
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    ArticleHeaderView(entry: entry),
-                    ArticleContentView(
-                      entry: entry,
-                      content: content,
-                      cubit: cubit,
-                      controller: controller,
-                      articleContentKey: _articleContentKey,
-                      scrollToPosition: () => scrollToPosition(readArticleProgress),
-                    ),
-                  ],
-                ),
+
+            cubit.updateScrollData(
+              readScrollOffset,
+              controller.position.maxScrollExtent,
+            );
+          }
+          return false;
+        },
+        child: Stack(
+          children: [
+            //Article Header
+            if (articleWithImage)
+              CustomScrollView(
+                physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                controller: backgroundScrollController,
+                key: _articlePageKey,
+                slivers: [
+                  SliverAppBar(
+                    pinned: true,
+                    floating: true,
+                    expandedHeight: fullHeight,
+                    collapsedHeight: 0,
+                    toolbarHeight: 0,
+                    automaticallyImplyLeading: false,
+                    titleSpacing: 0,
+                    flexibleSpace: ArticleImageView(article: article, controller: controller),
+                  ),
+                  const SliverFillRemaining(),
+                ],
               ),
-              if (hasNextArticle)
-                SliverPullUpIndicatorAction(
-                  builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
-                  fullExtentHeight: _loadNextArticleIndicatorHeight,
-                  triggerExtent: _loadNextArticleIndicatorHeight,
-                  triggerFunction: (completer) => cubit.loadNextArticle(completer),
-                )
-              else if (multipleArticles)
-                const SliverToBoxAdapter(
-                  child: _AllArticlesRead(),
+            //Article Content
+            CustomScrollView(
+              physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+              controller: controller,
+              slivers: [
+                _ActionsBar(fullHeight: articleWithImage ? fullHeight : appBarHeight, controller: controller),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Padding(
+                        padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.l),
+                        child: ArticleContentView(
+                          article: article,
+                          content: content,
+                          cubit: cubit,
+                          controller: controller,
+                          articleContentKey: _articleContentKey,
+                          scrollToPosition: () => scrollToPosition(readArticleProgress),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-            ],
-          ),
-        );
-      },
+                if (hasNextArticle)
+                  SliverPullUpIndicatorAction(
+                    builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
+                    fullExtentHeight: _loadNextArticleIndicatorHeight,
+                    triggerExtent: _loadNextArticleIndicatorHeight,
+                    triggerFunction: (completer) => cubit.loadNextArticle(completer),
+                  )
+                else if (multipleArticles)
+                  const SliverToBoxAdapter(
+                    child: _AllArticlesRead(),
+                  ),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -290,6 +331,115 @@ class _IdleContent extends HookWidget {
   }
 }
 
+class _ActionsBar extends HookWidget {
+  const _ActionsBar({
+    required this.fullHeight,
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
+
+  final double fullHeight;
+  final ScrollController controller;
+
+  bool get useFixedOpacity => fullHeight <= appBarHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    final appBarOpacityState = useState(useFixedOpacity ? 1.0 : 0.0);
+
+    void setAppBarOpacity() {
+      if (controller.hasClients) {
+        final currentOffset = controller.offset;
+        final opacityThreshold = fullHeight - appBarHeight * 1.5;
+        final opacitySpeed = fullHeight / (appBarHeight * 1.5);
+
+        if (currentOffset <= 0 || currentOffset < opacityThreshold) {
+          if (appBarOpacityState.value != 0) appBarOpacityState.value = 0;
+          return;
+        }
+
+        final factor = (currentOffset / opacityThreshold - 1) * opacitySpeed;
+        final opacity = 0.0 + min(factor, 1.0);
+        if (appBarOpacityState.value != opacity) appBarOpacityState.value = opacity * 0.8;
+      }
+    }
+
+    useEffect(() {
+      if (!useFixedOpacity) controller.addListener(setAppBarOpacity);
+      return () => controller.removeListener(setAppBarOpacity);
+    }, [controller]);
+
+    return SliverAppBar(
+      pinned: true,
+      expandedHeight: fullHeight,
+      collapsedHeight: appBarHeight,
+      toolbarHeight: appBarHeight,
+      automaticallyImplyLeading: false,
+      titleSpacing: 0,
+      elevation: 0,
+      title: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            stops: const [0.5, 1],
+            begin: FractionalOffset.topCenter,
+            end: FractionalOffset.bottomCenter,
+            tileMode: TileMode.repeated,
+            colors: [
+              AppColors.background.withOpacity(appBarOpacityState.value),
+              AppColors.background.withOpacity(min(appBarOpacityState.value, 0)),
+            ],
+          ),
+        ),
+        height: appBarHeight,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded),
+                    color: AppColors.black.withOpacity(appBarOpacityState.value),
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    onPressed: () => context.popRoute(),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded),
+                    color: AppColors.background.withOpacity(1 - appBarOpacityState.value),
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    onPressed: () => context.popRoute(),
+                  ),
+                ],
+              ),
+              Container(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  color: AppColors.background,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: SvgPicture.asset(
+                    AppVectorGraphics.share,
+                    color: AppColors.textPrimary,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      flexibleSpace: const SizedBox(),
+    );
+  }
+}
+
 class _LoadingNextArticleIndicator extends StatelessWidget {
   final double factor;
 
@@ -308,14 +458,12 @@ class _LoadingNextArticleIndicator extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Center(
-              child: SvgPicture.asset(
-                AppVectorGraphics.loadNextArticle,
-              ),
+              child: SvgPicture.asset(AppVectorGraphics.loadNextArticle),
             ),
             const SizedBox(height: AppDimens.s),
             Text(
               LocaleKeys.article_loadingNext.tr(),
-              style: AppTypography.b3Regular.copyWith(height: 1.8),
+              style: AppTypography.b1Regular.copyWith(height: 1.2),
               textAlign: TextAlign.center,
             ),
           ],
@@ -343,7 +491,7 @@ class _AllArticlesRead extends StatelessWidget {
           const SizedBox(height: AppDimens.s),
           Text(
             LocaleKeys.article_allArticlesRead.tr(),
-            style: AppTypography.b3Regular.copyWith(height: 1.8),
+            style: AppTypography.b1Regular.copyWith(height: 1.2),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppDimens.xl),
@@ -351,198 +499,12 @@ class _AllArticlesRead extends StatelessWidget {
             text: LocaleKeys.article_goBackToTopic.tr(),
             fillColor: AppColors.textPrimary,
             textColor: AppColors.white,
+            leading: const Icon(Icons.arrow_back_ios_new_rounded, size: AppDimens.m, color: AppColors.white),
             onTap: () => AutoRouter.of(context).pop(),
           ),
           const SizedBox(height: AppDimens.l),
         ],
       ),
-    );
-  }
-}
-
-class ArticleHeaderView extends HookWidget {
-  final MediaItemArticle entry;
-
-  const ArticleHeaderView({required this.entry, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = entry.image?.publicId;
-
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        Container(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.55,
-          child: imageId != null
-              ? Image.network(
-                  cloudinaryProvider.withPublicIdAsPng(imageId).url,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topLeft,
-                )
-              : Container(color: Colors.white),
-        ),
-        Positioned.fill(
-          child: Container(
-            color: Colors.black.withOpacity(0.40),
-          ),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(AppVectorGraphics.info),
-                  ),
-                ),
-                const SizedBox(height: AppDimens.l),
-                Text(
-                  entry.title, // TODO missing data in object
-                  style: AppTypography.b1Medium.copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: AppDimens.l),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class ArticleContentView extends StatelessWidget {
-  final MediaItemArticle entry;
-  final ArticleContent content;
-  final MediaItemCubit cubit;
-  final ScrollController controller;
-  final Key articleContentKey;
-  final Function() scrollToPosition;
-
-  const ArticleContentView({
-    required this.entry,
-    required this.content,
-    required this.cubit,
-    required this.controller,
-    required this.articleContentKey,
-    required this.scrollToPosition,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final author = entry.author;
-    final publicationDate = entry.publicationDate;
-
-    return Column(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: AppDimens.l),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(entry.title, style: AppTypography.h1Bold),
-                  const SizedBox(height: AppDimens.l),
-                  Divider(
-                    height: AppDimens.one,
-                    color: AppColors.textPrimary.withOpacity(0.14),
-                  ),
-                  if (author != null) ...[
-                    const SizedBox(height: AppDimens.s),
-                    Text(
-                      LocaleKeys.article_articleBy.tr(args: [author]),
-                      style: AppTypography.metadata1Medium,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            const SizedBox(height: AppDimens.articleItemMargin),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    AppVectorGraphics.notifications,
-                    width: AppDimens.m,
-                    height: AppDimens.m,
-                  ),
-                  const SizedBox(width: AppDimens.xs),
-                  Text(
-                    entry.publisher.name,
-                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
-                  ),
-                  const VerticalDivider(),
-                  Text(
-                    LocaleKeys.article_readMinutes.tr(args: [entry.timeToRead.toString()]),
-                    style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
-                  ),
-                  if (publicationDate != null) ...[
-                    const VerticalDivider(),
-                    Text(
-                      DateFormatUtil.formatFullMonthNameDayYear(publicationDate),
-                      style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            const SizedBox(height: AppDimens.xl),
-          ],
-        ),
-        Container(
-          key: articleContentKey,
-          child: getArticleContentType(
-            content.type,
-          ),
-        ),
-        const SizedBox(height: AppDimens.l),
-      ],
-    );
-  }
-
-  Widget? getArticleContentType(ArticleContentType type) {
-    if (type == ArticleContentType.markdown) {
-      return ArticleContentMarkdown(
-        markdown: content.content,
-        scrollToPosition: scrollToPosition,
-      );
-    } else if (type == ArticleContentType.html) {
-      return ArticleContentHtml(
-        html: content.content,
-        cubit: cubit,
-        scrollToPosition: scrollToPosition,
-      );
-    }
-    return null;
-  }
-}
-
-class VerticalDivider extends StatelessWidget {
-  const VerticalDivider({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(width: AppDimens.articleItemMargin),
-        Text('|', style: AppTypography.metadata1Regular.copyWith(color: AppColors.greyFont)),
-        const SizedBox(width: AppDimens.articleItemMargin),
-      ],
     );
   }
 }
