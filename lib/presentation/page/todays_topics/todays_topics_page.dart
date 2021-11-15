@@ -17,10 +17,14 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbars/tutorial_snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+
+import 'daily_brief_page_state.dart';
 
 const _pageViewportFraction = 0.85;
 
@@ -60,6 +64,19 @@ class TodaysTopicsPage extends HookWidget {
       },
       [cubit],
     );
+
+    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+          showTutorialToast: (title, message) => showToastWidget(TutorialSnackBar(title: title, message: message),
+              context: context,
+              animation: StyledToastAnimation.slideFromTop,
+              reverseAnimation: StyledToastAnimation.slideToTop,
+              animDuration: const Duration(seconds: 1),
+              position: StyledToastPosition.top,
+              isIgnoring: false,
+              dismissOtherToast: true,
+              duration: Duration.zero));
+    });
 
     return Scaffold(
       appBar: AppBar(

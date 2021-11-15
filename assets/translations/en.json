@@ -26,6 +26,11 @@
       "descThree": "We are constantly improving our product. We will keep you posted on new improvements and features."
     }
   },
+  "tutorial": {
+    "dailyBriefTitle": "👋🏻 Welcome to your Daily Brief. ",
+    "dailyBriefMessage": "Here you will get updates on the most important topics of the day for you.",
+    "gotIt": "Got it"
+  },
   "main": {
     "todayTab": "Today",
     "exploreTab": "Explore",

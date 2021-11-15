@@ -73,6 +73,7 @@ dependencies:
   share_plus: 2.1.4
   visibility_detector: 0.2.2
   expand_tap_area: 1.1.0
+  flutter_styled_toast: ^2.0.0
 
 dev_dependencies:
   flutter_test:
