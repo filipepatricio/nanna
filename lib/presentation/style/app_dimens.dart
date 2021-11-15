@@ -116,4 +116,7 @@ class AppDimens {
 
   /// 80
   static const topicAppBarAnimationFactor = 80.0;
+
+  /// 52
+  static const onboardingIconSize = 52.0;
 }

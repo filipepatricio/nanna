@@ -3,7 +3,10 @@ class AppVectorGraphics {
 
   static const String onboardingSlideOne = 'assets/vector_graphics/onboarding_slide_one.svg';
   static const String onboardingSlideTwo = 'assets/vector_graphics/onboarding_slide_two.svg';
-  static const String onboardingSlideThree = 'assets/vector_graphics/onboarding_slide_three.svg';
+  static const String happyGreenSun = 'assets/vector_graphics/happy_green_sun_ic.svg';
+  static const String notes = 'assets/vector_graphics/notes_ic.svg';
+  static const String megaphone = 'assets/vector_graphics/megaphone_ic.svg';
+  static const String fullArrowRight = 'assets/vector_graphics/full_arrow_right_ic.svg';
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
   static const String exploreSelected = 'assets/vector_graphics/explore_selected_ic.svg';
