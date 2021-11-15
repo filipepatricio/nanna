@@ -23,6 +23,7 @@ class ColoredCover extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Spacer(),
             InformedMarkdownBody(
               markdown: article.title,
               baseTextStyle: AppTypography.h0SemiBold.copyWith(fontFamily: fontFamilyLora),
