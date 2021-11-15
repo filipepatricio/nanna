@@ -116,6 +116,7 @@ class ArticleItemView extends HookWidget {
 
 class _ArticleCover extends StatelessWidget {
   const _ArticleCover({required this.entry, required this.article});
+
   final Entry entry;
   final MediaItemArticle article;
 

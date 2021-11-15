@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_with_background.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/see_all_load_more_indicator.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -139,7 +140,7 @@ class _Body extends StatelessWidget {
 class _ArticleGrid extends StatelessWidget {
   final String title;
   final PageStorageKey pageStorageKey;
-  final List<MediaItemArticle> articles;
+  final List<ArticleWithBackground> articles;
   final ScrollController scrollController;
   final bool withLoader;
 
@@ -178,7 +179,10 @@ class _ArticleGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _GridItem(article: articles[index]),
+              (context, index) => _GridItem(
+                article: articles[index],
+                index: index,
+              ),
               childCount: articles.length,
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -196,10 +200,12 @@ class _ArticleGrid extends StatelessWidget {
 }
 
 class _GridItem extends StatelessWidget {
-  final MediaItemArticle article;
+  final ArticleWithBackground article;
+  final int index;
 
   const _GridItem({
     required this.article,
+    required this.index,
     Key? key,
   }) : super(key: key);
 
@@ -207,11 +213,20 @@ class _GridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return ArticleListItem(
-          article: article,
-          themeColor: AppColors.background,
-          height: _itemHeight,
-          width: null,
+        return article.map(
+          image: (data) => ArticleListItem(
+            article: article.article,
+            themeColor: AppColors.background,
+            height: _itemHeight,
+            width: null,
+          ),
+          color: (data) => ArticleListItem(
+            article: article.article,
+            themeColor: AppColors.background,
+            cardColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
+            height: _itemHeight,
+            width: null,
+          ),
         );
       },
     );

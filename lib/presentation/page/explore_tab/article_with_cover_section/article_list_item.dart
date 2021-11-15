@@ -9,7 +9,7 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
-import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -26,7 +26,7 @@ class ArticleListItem extends HookWidget {
   const ArticleListItem({
     required this.article,
     required this.themeColor,
-    this.cardColor = AppColors.background,
+    this.cardColor = AppColors.transparent,
     double? height,
     double? width,
     Key? key,
@@ -58,11 +58,16 @@ class ArticleListItem extends HookWidget {
                   .withLogicalSize(width, height, context),
               width: width,
               height: height,
+            )
+          else
+            Container(
+              color: cardColor,
+              width: width,
+              height: height,
             ),
           _ArticleImageOverlay(
             article: article,
             themeColor: themeColor,
-            cardColor: cardColor,
             height: height,
             width: width,
           ),
@@ -75,43 +80,52 @@ class ArticleListItem extends HookWidget {
 class _ArticleImageOverlay extends StatelessWidget {
   final MediaItemArticle article;
   final Color themeColor;
-  final Color cardColor;
   final double? height;
   final double? width;
 
-  const _ArticleImageOverlay(
-      {required this.article,
-      required this.themeColor,
-      required this.cardColor,
-      required this.height,
-      required this.width,
-      Key? key})
-      : super(key: key);
+  const _ArticleImageOverlay({
+    required this.article,
+    required this.themeColor,
+    required this.height,
+    required this.width,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final imageId = article.image?.publicId;
 
     return Container(
-      color: imageId == null ? cardColor : AppColors.black.withOpacity(0.6),
+      color: imageId != null ? AppColors.black.withOpacity(0.6) : null,
       padding: const EdgeInsets.all(AppDimens.m),
       height: height,
       width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PublisherLogo.light(publisher: article.publisher),
+          const Spacer(),
+          if (imageId == null)
+            PublisherLogo.dark(publisher: article.publisher)
+          else
+            PublisherLogo.light(publisher: article.publisher),
+          const SizedBox(height: AppDimens.xs),
           InformedMarkdownBody(
             markdown: article.title,
             baseTextStyle: AppTypography.h5BoldSmall.copyWith(
               height: 1.4,
-              color: imageId == null ? AppColors.textPrimary : AppColors.white,
+              color: imageId == null ? AppColors.textPrimary : AppColors.lightGrey,
             ),
             maxLines: 4,
           ),
           const Spacer(),
-          ReadMoreLabel(
-            foregroundColor: imageId == null ? AppColors.textPrimary : AppColors.white,
+          Text(
+            tr(
+              LocaleKeys.article_readMinutes,
+              args: [article.timeToRead.toString()],
+            ),
+            style: AppTypography.metadata1Regular.copyWith(
+              color: imageId == null ? AppColors.textPrimary : AppColors.lightGrey,
+            ),
           ),
         ],
       ),
