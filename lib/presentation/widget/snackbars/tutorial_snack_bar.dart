@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:easy_localization/src/public_ext.dart';
@@ -9,13 +10,14 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 class TutorialSnackBar extends StatelessWidget {
   final String title;
   final String message;
+  final VoidCallback? onDismiss;
 
-  const TutorialSnackBar({required this.title, required this.message, Key? key}) : super(key: key);
+  const TutorialSnackBar({required this.title, required this.message, this.onDismiss, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 40, bottom: 6),
+      padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.l, top: AppDimens.xxl, bottom: AppDimens.s),
       decoration: BoxDecoration(color: AppColors.white, boxShadow: [
         BoxShadow(
           color: AppColors.shadowColor,
@@ -39,7 +41,10 @@ class TutorialSnackBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                  onPressed: dismissAllToast,
+                  onPressed: () {
+                    dismissAllToast();
+                    onDismiss != null ? onDismiss!() : null;
+                  },
                   child: Text(
                     LocaleKeys.tutorial_gotIt.tr(),
                     style: AppTypography.h4Bold

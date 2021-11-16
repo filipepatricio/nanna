@@ -42,10 +42,12 @@ class TopicView extends HookWidget {
   final Topic topic;
   final double articleContentHeight;
   final double? appBarMargin;
+  final GlobalKey? keySummaryCard;
 
   const TopicView({
     required this.topic,
     required this.articleContentHeight,
+    this.keySummaryCard,
     this.appBarMargin,
     Key? key,
   }) : super(key: key);
@@ -91,7 +93,7 @@ class TopicView extends HookWidget {
                 onArticlesLabelTap: () =>
                     gestureManager.animateTo(_topicHeaderHeight + _summaryViewHeight + articleContentHeight),
               ),
-              _SummaryContent(topic: topic),
+              _SummaryContent(topic: topic, keySummaryCard: keySummaryCard),
               GeneralEventTracker(
                 controller: eventController,
                 child: _MediaItemContent(
@@ -212,9 +214,11 @@ class _TopicHeader extends HookWidget {
 
 class _SummaryContent extends HookWidget {
   final Topic topic;
+  final GlobalKey? keySummaryCard;
 
   const _SummaryContent({
     required this.topic,
+    this.keySummaryCard,
     Key? key,
   }) : super(key: key);
 
@@ -233,14 +237,12 @@ class _SummaryContent extends HookWidget {
             child: _SummaryCardPageView(
               topic: topic,
               controller: controller,
+              keySummaryCard: keySummaryCard,
             ),
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _SummaryCard(
-              index: 0,
-              topic: topic,
-            ),
+            child: _SummaryCard(index: 0, topic: topic),
           );
 
     return Container(
@@ -290,13 +292,15 @@ class _SummaryContent extends HookWidget {
   }
 }
 
-class _SummaryCardPageView extends StatelessWidget {
+class _SummaryCardPageView extends HookWidget {
   final Topic topic;
   final PageController controller;
+  final GlobalKey? keySummaryCard;
 
   const _SummaryCardPageView({
     required this.topic,
     required this.controller,
+    this.keySummaryCard,
     Key? key,
   }) : super(key: key);
 
@@ -310,11 +314,9 @@ class _SummaryCardPageView extends StatelessWidget {
         itemCount: topic.topicSummaryList.length,
         itemBuilder: (context, index) {
           return Padding(
+            key: index == 0 ? keySummaryCard : null,
             padding: const EdgeInsets.only(right: AppDimens.m),
-            child: _SummaryCard(
-              topic: topic,
-              index: index,
-            ),
+            child: _SummaryCard(topic: topic, index: index),
           );
         },
       ),

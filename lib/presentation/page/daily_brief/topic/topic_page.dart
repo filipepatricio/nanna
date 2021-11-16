@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 const _pageViewportFraction = 1.0;
 const _pageCloseRelaxFactor = 0.95;
@@ -29,6 +31,7 @@ class TopicPage extends HookWidget {
   final int index;
   final Function(int pageIndex) onPageChanged;
   final CurrentBrief currentBrief;
+  late TutorialCoachMark tutorialCoachMark;
 
   TopicPage({
     required this.index,
@@ -47,6 +50,8 @@ class TopicPage extends HookWidget {
     final pageIndexHook = useState(index);
     final appBarKey = useMemoized(() => GlobalKey());
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
+    final targets = useMemoized(() => <TargetFocus>[]);
+    final keySummaryCard = useMemoized(() => GlobalKey());
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -72,9 +77,81 @@ class TopicPage extends HookWidget {
       return () => controller.removeListener(listener);
     }, [controller]);
 
+    useEffect(() {
+      targets.clear();
+      targets.add(
+        TargetFocus(
+          identify: "keySummaryCard",
+          keyTarget: keySummaryCard,
+          color: AppColors.shadowColor,
+          enableOverlayTab: true,
+          pulseVariation: Tween(begin: 1.0, end: 0.99),
+          contents: [
+            TargetContent(
+              align: ContentAlign.bottom,
+              builder: (context, controller) {
+                return Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Text(
+                        "Titulo lorem ipsum",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar tortor eget maximus iaculis.",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.previous();
+                        },
+                        child: Icon(Icons.chevron_left),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            )
+          ],
+          shape: ShapeLightFocus.RRect,
+          radius: 5,
+        ),
+      );
+      tutorialCoachMark = TutorialCoachMark(
+        context,
+        targets: targets,
+        paddingFocus: 20,
+        opacityShadow: 0.5,
+        hideSkip: true,
+        onFinish: () {
+          print("finish");
+        },
+        onClickTarget: (target) {
+          print('onClickTarget: $target');
+        },
+        onSkip: () {
+          print("skip");
+        },
+        onClickOverlay: (target) {
+          print('onClickOverlay: $target');
+          tutorialCoachMark.finish();
+        },
+      );
+    }, [targets, keySummaryCard]);
+
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (title, message) => showToastWidget(TutorialSnackBar(title: title, message: message),
+          showTutorialToast: (title, message) => showToastWidget(
+              TutorialSnackBar(title: title, message: message, onDismiss: cubit.showTutorialCoachMark),
               context: context,
               animation: StyledToastAnimation.slideFromTop,
               reverseAnimation: StyledToastAnimation.slideToTop,
@@ -82,7 +159,8 @@ class TopicPage extends HookWidget {
               position: StyledToastPosition.top,
               isIgnoring: false,
               dismissOtherToast: true,
-              duration: Duration.zero));
+              duration: Duration.zero),
+          showTutorialCoachMark: () => tutorialCoachMark.show());
     });
 
     useEffect(
@@ -131,13 +209,13 @@ class TopicPage extends HookWidget {
               Positioned.fill(
                 child: LayoutBuilder(
                   builder: (context, pageViewConstraints) => _PageViewContent(
-                    controller: controller,
-                    onPageChanged: onPageChanged,
-                    currentBrief: currentBrief,
-                    articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
-                    pageIndexHook: pageIndexHook,
-                    appBarMargin: appBarHeightState.value,
-                  ),
+                      controller: controller,
+                      onPageChanged: onPageChanged,
+                      currentBrief: currentBrief,
+                      articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
+                      pageIndexHook: pageIndexHook,
+                      appBarMargin: appBarHeightState.value,
+                      keySummaryCard: keySummaryCard),
                 ),
               ),
               Positioned(
@@ -232,6 +310,7 @@ class _PageViewContent extends StatelessWidget {
   final double articleContentHeight;
   final ValueNotifier pageIndexHook;
   final double? appBarMargin;
+  final GlobalKey? keySummaryCard;
 
   const _PageViewContent({
     required this.controller,
@@ -239,6 +318,7 @@ class _PageViewContent extends StatelessWidget {
     required this.currentBrief,
     required this.articleContentHeight,
     required this.pageIndexHook,
+    this.keySummaryCard,
     this.appBarMargin,
     Key? key,
   }) : super(key: key);
@@ -258,10 +338,10 @@ class _PageViewContent extends StatelessWidget {
           return const SizedBox();
         } else {
           return TopicView(
-            topic: currentBrief.topics[index],
-            articleContentHeight: articleContentHeight,
-            appBarMargin: appBarMargin,
-          );
+              topic: currentBrief.topics[index],
+              articleContentHeight: articleContentHeight,
+              appBarMargin: appBarMargin,
+              keySummaryCard: index == 0 ? keySummaryCard : null);
         }
       },
     );

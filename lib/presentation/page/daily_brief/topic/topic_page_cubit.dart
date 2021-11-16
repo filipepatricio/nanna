@@ -19,4 +19,8 @@ class TopicPageCubit extends Cubit<TopicPageState> {
           TopicPageState.showTutorialToast(LocaleKeys.tutorial_topicTitle.tr(), LocaleKeys.tutorial_topicMessage.tr()));
     }
   }
+
+  void showTutorialCoachMark() {
+    emit(TopicPageState.showTutorialCoachMark());
+  }
 }

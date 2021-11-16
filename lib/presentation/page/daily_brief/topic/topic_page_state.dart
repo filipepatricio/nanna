@@ -12,4 +12,6 @@ class TopicPageState with _$TopicPageState {
   factory TopicPageState.loading() = _TopicPageStateLoading;
 
   factory TopicPageState.showTutorialToast(String title, String message) = _TopicPageStateShowTutorialToast;
+
+  factory TopicPageState.showTutorialCoachMark() = _TopicPageStateShowTutorialCoachMark;
 }
