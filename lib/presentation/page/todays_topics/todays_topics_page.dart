@@ -58,25 +58,25 @@ class TodaysTopicsPage extends HookWidget {
       [controller, state],
     );
 
-    useEffect(
-      () {
-        cubit.initialize();
-      },
-      [cubit],
-    );
-
     useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
           showTutorialToast: (title, message) => showToastWidget(TutorialSnackBar(title: title, message: message),
               context: context,
               animation: StyledToastAnimation.slideFromTop,
               reverseAnimation: StyledToastAnimation.slideToTop,
-              animDuration: const Duration(seconds: 1),
+              animDuration: const Duration(milliseconds: 500),
               position: StyledToastPosition.top,
               isIgnoring: false,
               dismissOtherToast: true,
               duration: Duration.zero));
     });
+
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
 
     return Scaffold(
       appBar: AppBar(

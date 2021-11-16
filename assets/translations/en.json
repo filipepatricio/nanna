@@ -27,8 +27,10 @@
     }
   },
   "tutorial": {
-    "dailyBriefTitle": "👋🏻 Welcome to your Daily Brief. ",
+    "dailyBriefTitle": "👋 Welcome to your Daily Brief. ",
     "dailyBriefMessage": "Here you will get updates on the most important topics of the day for you.",
+    "topicTitle": "👍 You’ve found a topic of interest. ",
+    "topicMessage": "Scroll down to get an overview or jump into the list of articles we curated for you.",
     "gotIt": "Got it"
   },
   "main": {
