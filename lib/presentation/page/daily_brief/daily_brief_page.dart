@@ -119,6 +119,7 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dailyBriefCubit = useCubit<DailyBriefPageCubit>();
     final lastPageAnimationProgressState = useMemoized(() => ValueNotifier(0.0));
 
     useEffect(() {
@@ -157,6 +158,7 @@ class _IdleContent extends HookWidget {
                             ..._buildTopicCards(
                               context,
                               controller,
+                              dailyBriefCubit,
                               currentBrief,
                               cardStackWidth,
                               constraints.maxHeight,
@@ -194,6 +196,7 @@ class _IdleContent extends HookWidget {
   Iterable<Widget> _buildTopicCards(
     BuildContext context,
     PageController controller,
+    DailyBriefPageCubit dailyBriefCubit,
     CurrentBrief currentBrief,
     double width,
     double heightPageView,
@@ -206,10 +209,22 @@ class _IdleContent extends HookWidget {
           child: ReadingListStackedCards(
             coverSize: Size(width, heightPageView),
             child: GestureDetector(
-              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(context, controller, key, currentBrief),
+              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(
+                context,
+                dailyBriefCubit,
+                controller,
+                key,
+                currentBrief,
+              ),
               child: ReadingListCover(
                 topic: currentBrief.topics[key],
-                onTap: () => _onTopicCardPressed(context, controller, key, currentBrief),
+                onTap: () => _onTopicCardPressed(
+                  context,
+                  dailyBriefCubit,
+                  controller,
+                  key,
+                  currentBrief,
+                ),
               ),
             ),
           ),
@@ -218,11 +233,20 @@ class _IdleContent extends HookWidget {
     }).values;
   }
 
-  void _onTopicCardPressed(BuildContext context, PageController controller, int index, CurrentBrief currentBrief) {
+  void _onTopicCardPressed(
+    BuildContext context,
+    DailyBriefPageCubit dailyBriefCubit,
+    PageController controller,
+    int index,
+    CurrentBrief currentBrief,
+  ) {
     AutoRouter.of(context).push(
       TopicPageRoute(
         index: index,
         onPageChanged: (index) {
+          if (index < currentBrief.topics.length) {
+            dailyBriefCubit.logTopicPageView(currentBrief.topics[index].id);
+          }
           controller.jumpToPage(index);
         },
         currentBrief: currentBrief,

@@ -6,12 +6,13 @@ part 'current_brief_dto.g.dart';
 
 @JsonSerializable()
 class CurrentBriefDTO {
+  final String id;
   final HeadlineDTO greeting;
   final HeadlineDTO goodbye;
   final List<TopicDTO> topics;
   final int numberOfTopics;
 
-  CurrentBriefDTO(this.greeting, this.goodbye, this.topics, this.numberOfTopics);
+  CurrentBriefDTO(this.id, this.greeting, this.goodbye, this.topics, this.numberOfTopics);
 
   factory CurrentBriefDTO.fromJson(Map<String, dynamic> json) => _$CurrentBriefDTOFromJson(json);
 

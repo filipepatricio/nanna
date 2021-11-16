@@ -52,6 +52,7 @@ class MainPage extends HookWidget {
             cubit,
             tabsRouter,
           ),
+          navigatorObservers: () => [TabsNavigationObserver(cubit)],
         ),
       ),
     );
@@ -63,5 +64,41 @@ class MainPage extends HookWidget {
         const SignInPageRoute(),
       ],
     );
+  }
+}
+
+class TabsNavigationObserver extends AutoRouterObserver {
+  final MainCubit mainCubit;
+
+  TabsNavigationObserver(this.mainCubit);
+
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    _logView(route, previousRoute);
+  }
+
+  Future<void> _logView(Route route, Route? previousRoute) async {
+    switch (route.settings.name) {
+      case TopicPageRoute.name:
+        final args = route.settings.arguments as TopicPageRouteArgs;
+        final topicId = args.currentBrief.topics[args.index].id;
+        return await mainCubit.logTopicView(topicId);
+      case MediaItemPageRoute.name:
+      // Handled in MediaItemCubit
+      default:
+        return;
+    }
+  }
+
+  @override
+  void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
+    mainCubit.logTabView(route.name);
+    return;
+  }
+
+  @override
+  void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
+    mainCubit.logTabView(route.name);
+    return;
   }
 }

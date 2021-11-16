@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.dart';
@@ -18,6 +19,7 @@ import 'media_item_state.dart';
 class MediaItemCubit extends Cubit<MediaItemState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
   final GetArticleUseCase _getArticleUseCase;
+  final TrackActivityUseCase _trackActivityUseCase;
 
   late List<MediaItemArticle> _allArticles;
   late int _index;
@@ -29,6 +31,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   MediaItemCubit(
     this._setStartedArticleStreamUseCase,
     this._getArticleUseCase,
+    this._trackActivityUseCase,
   ) : super(const MediaItemState.initializing());
 
   var readingComplete = false;
@@ -110,6 +113,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     if (article == null) {
       emit(MediaItemState.error(_getCurrentHeader()));
     } else {
+      _trackActivityUseCase.logArticlePage(article.article.id);
       if (_allArticles.length > 1) {
         final hasNextArticle = _index < _allArticles.length - 1;
         emit(MediaItemState.idleMultiItems(article.article, article.content, hasNextArticle));
