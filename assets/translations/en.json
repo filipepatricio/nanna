@@ -31,6 +31,8 @@
     "dailyBriefMessage": "Here you will get updates on the most important topics of the day for you.",
     "topicTitle": "👍 You’ve found a topic of interest. ",
     "topicMessage": "Scroll down to get an overview or jump into the list of articles we curated for you.",
+    "exploreTitle": "🔍 If you’d like to explore more ",
+    "exploreMessage": "or missed a brief then you can find even more topics as well as articles here.",
     "gotIt": "Got it"
   },
   "main": {
