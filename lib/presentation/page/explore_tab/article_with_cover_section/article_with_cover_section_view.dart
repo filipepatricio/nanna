@@ -83,6 +83,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
               itemBuilder: (context, index) => ArticleListItem(
                 article: section.articles[index],
                 themeColor: themeColor,
+                cardColor: AppColors.white,
               ),
               separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
               itemCount: section.articles.length,

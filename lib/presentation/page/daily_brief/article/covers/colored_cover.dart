@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 class ColoredCover extends StatelessWidget {
   final MediaItemArticle article;
   final Color backgroundColor;
+
   const ColoredCover({required this.backgroundColor, required this.article});
 
   @override

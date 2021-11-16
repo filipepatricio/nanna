@@ -31,6 +31,7 @@ typedef MediaItemNavigationCallback = void Function(int index);
 
 const appBarHeight = kToolbarHeight + AppDimens.xl;
 const _loadNextArticleIndicatorHeight = 150.0;
+
 double articleViewFullHeight(BuildContext context) => MediaQuery.of(context).size.height * 0.95;
 
 class MediaItemPage extends HookWidget {

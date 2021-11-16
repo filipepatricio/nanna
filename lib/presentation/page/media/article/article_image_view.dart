@@ -13,6 +13,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class ArticleImageView extends HookWidget {
   final MediaItemArticle article;
   final ScrollController controller;
+
   const ArticleImageView({
     required this.article,
     required this.controller,

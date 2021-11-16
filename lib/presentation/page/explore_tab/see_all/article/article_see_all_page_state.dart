@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_with_background.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,12 +10,12 @@ class ArticleSeeAllPageState with _$ArticleSeeAllPageState {
   factory ArticleSeeAllPageState.loading() = _ArticleSeeAllPageStateLoading;
 
   @Implements(BuildState)
-  factory ArticleSeeAllPageState.withPagination(List<MediaItemArticle> articles) =
+  factory ArticleSeeAllPageState.withPagination(List<ArticleWithBackground> articles) =
       _ArticleSeeAllPageStateWithPagination;
 
   @Implements(BuildState)
-  factory ArticleSeeAllPageState.loadingMore(List<MediaItemArticle> articles) = _ArticleSeeAllPageStateLoadingMore;
+  factory ArticleSeeAllPageState.loadingMore(List<ArticleWithBackground> articles) = _ArticleSeeAllPageStateLoadingMore;
 
   @Implements(BuildState)
-  factory ArticleSeeAllPageState.allLoaded(List<MediaItemArticle> articles) = _ArticleSeeAllPageStateAllLoaded;
+  factory ArticleSeeAllPageState.allLoaded(List<ArticleWithBackground> articles) = _ArticleSeeAllPageStateAllLoaded;
 }
