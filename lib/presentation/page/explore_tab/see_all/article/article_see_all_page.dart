@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_list_item.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_with_background.dart';
@@ -21,12 +21,12 @@ import 'package:flutter_svg/svg.dart';
 const _itemHeight = 250.0;
 
 class ArticleSeeAllPage extends HookWidget {
-  final String sectionId;
+  final String areaId;
   final String title;
   final List<MediaItemArticle> entries;
 
   const ArticleSeeAllPage({
-    required this.sectionId,
+    required this.areaId,
     required this.title,
     required this.entries,
     Key? key,
@@ -37,10 +37,10 @@ class ArticleSeeAllPage extends HookWidget {
     final scrollController = useScrollController();
     final cubit = useCubit<ArticleSeeAllPageCubit>();
     final state = useCubitBuilder<ArticleSeeAllPageCubit, ArticleSeeAllPageState>(cubit);
-    final pageStorageKey = useMemoized(() => PageStorageKey(sectionId));
+    final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
 
     useEffect(() {
-      cubit.initialize(sectionId, entries);
+      cubit.initialize(areaId, entries);
     }, [cubit]);
 
     final shouldListen = state.maybeMap(

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_list_item.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -9,11 +9,11 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:flutter/material.dart';
 
-class ArticleSectionView extends StatelessWidget {
-  final ExploreContentSectionArticles section;
+class ArticleAreaView extends StatelessWidget {
+  final ExploreContentAreaArticles area;
 
-  const ArticleSectionView({
-    required this.section,
+  const ArticleAreaView({
+    required this.area,
     Key? key,
   }) : super(key: key);
 
@@ -30,7 +30,7 @@ class ArticleSectionView extends StatelessWidget {
             children: [
               Expanded(
                 child: InformedMarkdownBody(
-                  markdown: section.title,
+                  markdown: area.title,
                   baseTextStyle: AppTypography.h1,
                   highlightColor: AppColors.transparent,
                   maxLines: 2,
@@ -40,9 +40,9 @@ class ArticleSectionView extends StatelessWidget {
               SeeAllButton(
                 onTap: () => AutoRouter.of(context).push(
                   ArticleSeeAllPageRoute(
-                    sectionId: section.id,
-                    title: section.title,
-                    entries: section.articles,
+                    areaId: area.id,
+                    title: area.title,
+                    entries: area.articles,
                   ),
                 ),
               ),
@@ -56,12 +56,12 @@ class ArticleSectionView extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             itemBuilder: (context, index) => ArticleListItem(
-              article: section.articles[index],
+              article: area.articles[index],
               themeColor: AppColors.background,
               cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
             ),
             separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-            itemCount: section.articles.length,
+            itemCount: area.articles.length,
           ),
         ),
         const SizedBox(height: AppDimens.xxl),

@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/domain/explore/explore_content_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,15 +11,15 @@ class GetExploreContentUseCase {
 
   Future<ExploreContent> call() async {
     final content = await _exploreContentRepository.getExploreContent();
-    final notEmptySections = content.sections.where(_isNotEmptySection).toList();
-    return ExploreContent(sections: notEmptySections);
+    final notEmptySections = content.areas.where(_isNotEmptySection).toList();
+    return ExploreContent(areas: notEmptySections);
   }
 
-  bool _isNotEmptySection(ExploreContentSection section) {
-    return section.map(
-      articles: (section) => section.articles.isNotEmpty,
-      articleWithFeature: (section) => section.articles.isNotEmpty,
-      topics: (section) => section.topics.isNotEmpty,
+  bool _isNotEmptySection(ExploreContentArea areas) {
+    return areas.map(
+      articles: (area) => area.articles.isNotEmpty,
+      articleWithFeature: (area) => area.articles.isNotEmpty,
+      topics: (area) => area.topics.isNotEmpty,
     );
   }
 }

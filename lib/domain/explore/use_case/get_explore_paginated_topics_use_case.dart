@@ -8,7 +8,7 @@ class GetExplorePaginatedTopicsUseCase {
 
   GetExplorePaginatedTopicsUseCase(this._exploreContentRepository);
 
-  Future<List<Topic>> call(String sectionId, int limit, int offset) {
-    return _exploreContentRepository.getPaginatedTopics(sectionId, limit, offset);
+  Future<List<Topic>> call(String areaId, int limit, int offset) {
+    return _exploreContentRepository.getPaginatedTopics(areaId, limit, offset);
   }
 }

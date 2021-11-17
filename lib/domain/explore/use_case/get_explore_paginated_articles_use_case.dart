@@ -8,7 +8,7 @@ class GetExplorePaginatedArticlesUseCase {
 
   GetExplorePaginatedArticlesUseCase(this._exploreContentRepository);
 
-  Future<List<MediaItemArticle>> call(String sectionId, int limit, int offset) {
-    return _exploreContentRepository.getPaginatedArticles(sectionId, limit, offset);
+  Future<List<MediaItemArticle>> call(String areaId, int limit, int offset) {
+    return _exploreContentRepository.getPaginatedArticles(areaId, limit, offset);
   }
 }

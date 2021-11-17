@@ -1,5 +1,5 @@
+import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dart';
-import 'package:better_informed_mobile/data/explore/api/dto/explore_content_section_dto.dart';
 import 'package:better_informed_mobile/data/explore/api/explore_content_api_data_source.dart';
 import 'package:better_informed_mobile/data/explore/api/explore_content_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
@@ -30,7 +30,7 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   }
 
   @override
-  Future<ExploreContentSectionDTO> getPaginatedExploreSection(String id, int limit, int offset) async {
+  Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset) async {
     final result = await _client.query(
       QueryOptions(
         document: ExploreContentGQL.paginated(id, limit, offset),
@@ -40,10 +40,10 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) => ExploreContentSectionDTO.fromJson(raw),
+      (raw) => ExploreContentAreaDTO.fromJson(raw),
       rootKey: 'getExploreArea',
     );
 
-    return dto ?? (throw Exception('Explore content section can not be null'));
+    return dto ?? (throw Exception('Explore content area can not be null'));
   }
 }

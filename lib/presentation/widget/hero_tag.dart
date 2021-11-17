@@ -10,5 +10,5 @@ class HeroTag {
 
   static String exploreArticleTitle(int id) => 'explore-article-title-$id';
 
-  static String exploreReadingListTitle(int id) => 'explore-reading-list-title-$id';
+  static String exploreTopicsTitle(int id) => 'explore-topics-title-$id';
 }

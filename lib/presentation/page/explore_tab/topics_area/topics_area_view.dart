@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -15,11 +15,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _pageViewHeight = 550.0;
 
-class ReadingListSectionView extends HookWidget {
-  final ExploreContentSectionTopics section;
+class TopicsAreaView extends HookWidget {
+  final ExploreContentAreaTopics area;
 
-  const ReadingListSectionView({
-    required this.section,
+  const TopicsAreaView({
+    required this.area,
     Key? key,
   }) : super(key: key);
 
@@ -39,9 +39,9 @@ class ReadingListSectionView extends HookWidget {
             children: [
               Expanded(
                 child: Hero(
-                  tag: HeroTag.exploreReadingListTitle(section.title.hashCode),
+                  tag: HeroTag.exploreTopicsTitle(area.title.hashCode),
                   child: InformedMarkdownBody(
-                    markdown: section.title,
+                    markdown: area.title,
                     highlightColor: AppColors.transparent,
                     baseTextStyle: AppTypography.h1Medium,
                   ),
@@ -50,10 +50,10 @@ class ReadingListSectionView extends HookWidget {
               const SizedBox(width: AppDimens.s),
               SeeAllButton(
                 onTap: () => AutoRouter.of(context).push(
-                  ReadingListSeeAllPageRoute(
-                    sectionId: section.id,
-                    title: section.title,
-                    topics: section.topics,
+                  TopicsSeeAllPageRoute(
+                    areaId: area.id,
+                    title: area.title,
+                    topics: area.topics,
                   ),
                 ),
               ),
@@ -71,19 +71,19 @@ class ReadingListSectionView extends HookWidget {
               child: ReadingListStackedCards(
                 coverSize: Size(width, _pageViewHeight),
                 child: ReadingListCover(
-                  topic: section.topics[index],
-                  onTap: () => _onReadingListTap(context, index),
+                  topic: area.topics[index],
+                  onTap: () => _onTopicTap(context, index),
                 ),
               ),
             ),
-            itemCount: section.topics.length,
+            itemCount: area.topics.length,
           ),
         ),
         const SizedBox(height: AppDimens.l),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: PageDotIndicator(
-            pageCount: section.topics.length,
+            pageCount: area.topics.length,
             controller: controller,
           ),
         ),
@@ -92,10 +92,10 @@ class ReadingListSectionView extends HookWidget {
     );
   }
 
-  void _onReadingListTap(BuildContext context, int index) {
+  void _onTopicTap(BuildContext context, int index) {
     AutoRouter.of(context).push(
       SingleTopicPageRoute(
-        topic: section.topics[index],
+        topic: area.topics[index],
       ),
     );
   }

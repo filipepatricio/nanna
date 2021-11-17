@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_list_item.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -21,17 +21,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 const _mainArticleHeight = 366.0;
 const _mainArticleCoverBottomMargin = 100.0;
 
-class ArticleWithCoverSectionView extends StatelessWidget {
-  final ExploreContentSectionArticleWithFeature section;
+class ArticleWithCoverAreaView extends StatelessWidget {
+  final ExploreContentAreaArticleWithFeature area;
 
-  const ArticleWithCoverSectionView({
-    required this.section,
+  const ArticleWithCoverAreaView({
+    required this.area,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final themeColor = Color(section.backgroundColor);
+    final themeColor = Color(area.backgroundColor);
 
     return Container(
       color: themeColor,
@@ -46,7 +46,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
               children: [
                 Expanded(
                   child: InformedMarkdownBody(
-                    markdown: section.title,
+                    markdown: area.title,
                     baseTextStyle: AppTypography.h1,
                     highlightColor: AppColors.transparent,
                     maxLines: 2,
@@ -56,9 +56,9 @@ class ArticleWithCoverSectionView extends StatelessWidget {
                 SeeAllButton(
                   onTap: () => AutoRouter.of(context).push(
                     ArticleSeeAllPageRoute(
-                      sectionId: section.id,
-                      title: section.title,
-                      entries: [section.featuredArticle] + section.articles,
+                      areaId: area.id,
+                      title: area.title,
+                      entries: [area.featuredArticle] + area.articles,
                     ),
                   ),
                 ),
@@ -70,7 +70,7 @@ class ArticleWithCoverSectionView extends StatelessWidget {
             padding: const EdgeInsets.only(left: AppDimens.l),
             height: _mainArticleHeight,
             child: _MainArticle(
-              entry: section.featuredArticle,
+              entry: area.featuredArticle,
               themeColor: themeColor,
             ),
           ),
@@ -81,12 +81,12 @@ class ArticleWithCoverSectionView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               itemBuilder: (context, index) => ArticleListItem(
-                article: section.articles[index],
+                article: area.articles[index],
                 themeColor: themeColor,
                 cardColor: AppColors.white,
               ),
               separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-              itemCount: section.articles.length,
+              itemCount: area.articles.length,
             ),
           ),
           const SizedBox(height: AppDimens.xxl),
