@@ -35,6 +35,10 @@ class MainCubit extends Cubit<MainState> {
 
   Future<void> initialize() async {
     _currentBriefId = await _getCurrentBriefUseCase.getId();
+
+    // Need to log the daily brief tab init here, because I depend on [_currentBriefId] to be set before logging
+    unawaited(logTabView(TodayTabGroupRouter.name));
+
     _tokenExpirationSubscription = _getTokenExpirationStreamUseCase().listen((event) {
       emit(const MainState.tokenExpired());
     });

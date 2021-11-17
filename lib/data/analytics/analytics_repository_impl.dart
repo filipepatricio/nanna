@@ -69,7 +69,7 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
   @override
   Future<void> articlePage(String articleId, [String? topicId]) {
-    log('articlePage $articleId, $topicId');
+    log('articlePage $articleId, topic $topicId');
     return _trackPage(
       'Article',
       {
