@@ -133,8 +133,7 @@ class TopicPage extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (title, message) => showToastWidget(
-              TutorialSnackBar(title: title, message: message, onDismiss: cubit.showTutorialCoachMark),
+          showTutorialToast: (title, message) => showToastWidget(TutorialSnackBar(title: title, message: message),
               context: context,
               animation: StyledToastAnimation.slideFromTop,
               reverseAnimation: StyledToastAnimation.slideToTop,
@@ -194,6 +193,7 @@ class TopicPage extends HookWidget {
                   Positioned.fill(
                     child: LayoutBuilder(
                       builder: (context, pageViewConstraints) => _PageViewContent(
+                          cubit: cubit,
                           controller: controller,
                           onPageChanged: onPageChanged,
                           currentBrief: currentBrief,
@@ -289,6 +289,7 @@ class _TopicAppBar extends HookWidget {
 }
 
 class _PageViewContent extends StatelessWidget {
+  final TopicPageCubit cubit;
   final PageController controller;
   final Function(int pageIndex) onPageChanged;
   final CurrentBrief currentBrief;
@@ -298,6 +299,7 @@ class _PageViewContent extends StatelessWidget {
   final GlobalKey? keySummaryCard;
 
   const _PageViewContent({
+    required this.cubit,
     required this.controller,
     required this.onPageChanged,
     required this.currentBrief,
@@ -324,6 +326,7 @@ class _PageViewContent extends StatelessWidget {
         } else {
           return TopicView(
               topic: currentBrief.topics[index],
+              cubit: cubit,
               articleContentHeight: articleContentHeight,
               appBarMargin: appBarMargin,
               keySummaryCard: index == pageIndexHook.value ? keySummaryCard : null);

@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/vertical_indicators.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -40,12 +41,14 @@ const _topicHeaderHeight = 350.0;
 
 class TopicView extends HookWidget {
   final Topic topic;
+  final TopicPageCubit cubit;
   final double articleContentHeight;
   final double? appBarMargin;
   final GlobalKey? keySummaryCard;
 
   const TopicView({
     required this.topic,
+    required this.cubit,
     required this.articleContentHeight,
     this.keySummaryCard,
     this.appBarMargin,
@@ -66,6 +69,17 @@ class TopicView extends HookWidget {
       ),
       [appBarMargin],
     );
+
+    useEffect(() {
+      final listener = () {
+        if (listScrollController.offset >= (_topicHeaderImageHeight - _topicHeaderImageHeight / 3) &&
+            !listScrollController.position.outOfRange) {
+          cubit.showTutorialCoachMark();
+        }
+      };
+      listScrollController.addListener(listener);
+      return () => listScrollController.removeListener(listener);
+    }, [listScrollController]);
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{

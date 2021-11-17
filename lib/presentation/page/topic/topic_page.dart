@@ -24,6 +24,7 @@ class TopicPage extends HookWidget {
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
     final appBarKey = useMemoized(() => GlobalKey());
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
+    final cubit = useCubit<TopicPageCubit>();
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -31,6 +32,13 @@ class TopicPage extends HookWidget {
         appBarHeightState.value = renderBoxRed?.size.height ?? AppDimens.topicAppBarDefaultHeight;
       });
     }, []);
+
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
 
     return LayoutBuilder(
       builder: (context, pageConstraints) => CupertinoScaffold(
@@ -46,6 +54,7 @@ class TopicPage extends HookWidget {
               children: [
                 TopicView(
                   topic: topic,
+                  cubit: cubit,
                   articleContentHeight: pageConstraints.maxHeight - appBarHeightState.value,
                   appBarMargin: appBarHeightState.value,
                 ),
