@@ -33,8 +33,9 @@ class AppVectorGraphics {
   static const String loadNextArticle = 'assets/vector_graphics/load_next_article.svg';
   static const String noNextArticle = 'assets/vector_graphics/no_next_article.svg';
 
-  static const String mail = 'assets/vector_graphics/mail.svg';
+  static const String mail = 'assets/vector_graphics/mail_ic.svg';
   static const String googleSignIn = 'assets/vector_graphics/google_sign_in.svg';
+  static const String appleSignIn = 'assets/vector_graphics/apple_logo_black.svg';
 
   static const String readsExploreError = 'assets/vector_graphics/my_reads_explore_error_ic.svg';
   static const String articleError = 'assets/vector_graphics/article_error_ic.svg';

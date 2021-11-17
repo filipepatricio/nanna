@@ -8,6 +8,7 @@ class FilledButton extends StatelessWidget {
   final bool isEnabled;
   final VoidCallback? onTap;
   final Color fillColor;
+  final Color disableColor;
   final Color textColor;
   final bool isLoading;
   final Widget? leading;
@@ -17,6 +18,7 @@ class FilledButton extends StatelessWidget {
     this.isEnabled = true,
     this.onTap,
     this.fillColor = AppColors.limeGreen,
+    this.disableColor = AppColors.lightGrey,
     this.textColor = AppColors.textPrimary,
     this.isLoading = false,
     this.leading,
@@ -35,7 +37,7 @@ class FilledButton extends StatelessWidget {
           horizontal: AppDimens.l,
         ),
         decoration: BoxDecoration(
-          color: isEnabled ? fillColor : AppColors.lightGrey,
+          color: isEnabled ? fillColor : disableColor,
           borderRadius: const BorderRadius.all(
             Radius.circular(AppDimens.buttonRadius),
           ),

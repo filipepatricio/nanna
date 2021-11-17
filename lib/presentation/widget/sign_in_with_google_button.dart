@@ -1,12 +1,11 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-const _fontSize = 14.0;
 
 class SignInWithGoogleButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -21,24 +20,26 @@ class SignInWithGoogleButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(AppDimens.s),
-        decoration: const BoxDecoration(
+        padding: const EdgeInsets.all(AppDimens.sl),
+        decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(AppDimens.xs),
+          border: Border.all(
+            width: AppDimens.one,
+            color: AppColors.black,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(AppDimens.s),
           ),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(AppVectorGraphics.googleSignIn),
-            const SizedBox(width: AppDimens.l),
+            const SizedBox(width: AppDimens.m),
             Text(
               LocaleKeys.signIn_providerButton_google.tr(),
-              style: const TextStyle(
-                fontSize: _fontSize,
-                color: AppColors.textPrimary,
-              ),
+              style: AppTypography.b1Regular,
             ),
           ],
         ),
