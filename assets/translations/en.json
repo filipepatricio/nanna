@@ -73,17 +73,16 @@
   "signIn": {
     "header": {
       "signIn": "Welcome to the smart & flexible news format",
-      "magicLink": "We’ve send you a magic link. Check your mail!"
-    },
-    "providerInfo": {
-      "apple": "Sign up with Apple or fill the form to continue",
-      "google": "Sign up with Google or fill the form to continue"
+      "magicLinkOne": "_Check your mail!_",
+      "magicLinkTwo": "We’ve send you a magic link."
     },
     "providerButton": {
       "apple": "Sign in with Apple",
       "google": "Sign in with Google"
     },
-    "emailHint": "E-mail address...",
+    "emailLabel": "Email address",
+    "orContinue": "Or continue with",
+    "receiveNews": "I’d like to receive news and updates from informed",
     "consentParts": {
       "info": "By signing up, you agree to our ",
       "terms": "Terms of Service",

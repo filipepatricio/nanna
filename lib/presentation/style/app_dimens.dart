@@ -119,4 +119,10 @@ class AppDimens {
 
   /// 52
   static const onboardingIconSize = 52.0;
+
+  /// 164
+  static const logoWidth = 164.0;
+
+  /// 35
+  static const logoHeight = 35.0;
 }

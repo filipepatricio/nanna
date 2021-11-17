@@ -1,12 +1,13 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-const _radius = 6.0;
-const _appleLogoFontSize = 23.0;
-const _textFontSize = 20.0;
-const _textLetterSpacing = 0.38;
+const _appleLogoSize = 50.0;
 
 class SignInWithAppleButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -21,35 +22,30 @@ class SignInWithAppleButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppDimens.s, horizontal: AppDimens.l),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.all(
-            Radius.circular(_radius),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          border: Border.all(
+            width: AppDimens.one,
+            color: AppColors.black,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(AppDimens.s),
           ),
         ),
-        child: Center(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                '',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: _appleLogoFontSize,
-                ),
-              ),
-              Text(
-                ' ' + LocaleKeys.signIn_providerButton_apple.tr(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: _textFontSize,
-                  letterSpacing: _textLetterSpacing,
-                ),
-              ),
-            ],
-          ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              AppVectorGraphics.appleSignIn,
+              height: _appleLogoSize,
+            ),
+            Text(
+              LocaleKeys.signIn_providerButton_apple.tr(),
+              style: AppTypography.b1Regular,
+            ),
+          ],
         ),
       ),
     );
