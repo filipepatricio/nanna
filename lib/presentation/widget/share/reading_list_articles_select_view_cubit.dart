@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
-import 'package:better_informed_mobile/presentation/widget/share/topic/share_topic_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/topic/share_reading_list_view.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
@@ -41,10 +41,13 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
   Future<void> generateShareImage() async {
     emit(ReadingListArticlesSelectViewState.generatingShareImage());
 
+    final articles =
+        _selectedIndexes.map((e) => _topic.readingList.entries[e]).map((e) => e.item as MediaItemArticle).toList();
+
     final generator = ShareViewImageGenerator(
-      () => ShareTopicView(
+      () => ShareReadingListView(
         topic: _topic,
-        articles: const [],
+        articles: articles,
       ),
     );
     final imageBytes = await generator.generate();
@@ -55,7 +58,10 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
       final file = File(shareImagePath);
       await file.writeAsBytes(imageBytes.buffer.asInt8List());
 
-      await Share.shareFiles([file.path]);
+      await Share.shareFiles(
+        [file.path],
+        text: 'Reading list: ${_topic.title}',
+      );
     }
 
     emit(ReadingListArticlesSelectViewState.shared());

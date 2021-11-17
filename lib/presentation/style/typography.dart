@@ -87,6 +87,15 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h3boldLoraItalic = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyLora,
+    fontStyle: FontStyle.italic,
+    fontSize: 18,
+    height: 1.25,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h4Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,

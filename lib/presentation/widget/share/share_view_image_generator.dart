@@ -8,8 +8,8 @@ import 'package:flutter/widgets.dart';
 
 typedef WidgetFactory = Widget Function();
 
-const _defaultViewHeight = 3840.0;
-const _defaultViewWidth = 2160.0;
+const _defaultViewHeight = 1280.0;
+const _defaultViewWidth = 720.0;
 
 class ShareViewImageGenerator {
   final WidgetFactory widgetFactory;
