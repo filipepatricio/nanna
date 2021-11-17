@@ -22,11 +22,7 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
 
 @AdaptiveAutoRouter(
   routes: [
-    CustomRoute(
-      page: EntryPage,
-      initial: true,
-      customRouteBuilder: fadePageRouteBuilder,
-    ),
+    CustomRoute(page: EntryPage, initial: true, customRouteBuilder: fadePageRouteBuilder),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
     AutoRoute(page: SettingsMainPage),

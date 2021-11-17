@@ -92,6 +92,7 @@ class DailyBriefPage extends HookWidget {
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
           idle: (state) => _IdleContent(
+            dailyBriefCubit: cubit,
             currentBrief: state.currentBrief,
             controller: controller,
             cardStackWidth: cardStackWidth,
@@ -106,11 +107,13 @@ class DailyBriefPage extends HookWidget {
 }
 
 class _IdleContent extends HookWidget {
+  final DailyBriefPageCubit dailyBriefCubit;
   final CurrentBrief currentBrief;
   final PageController controller;
   final double cardStackWidth;
 
   const _IdleContent({
+    required this.dailyBriefCubit,
     required this.currentBrief,
     required this.controller,
     required this.cardStackWidth,
@@ -119,7 +122,6 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dailyBriefCubit = useCubit<DailyBriefPageCubit>();
     final lastPageAnimationProgressState = useMemoized(() => ValueNotifier(0.0));
 
     useEffect(() {
