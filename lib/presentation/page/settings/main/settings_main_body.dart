@@ -74,23 +74,26 @@ class SettingsMainBody extends HookWidget {
                         onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: false)),
                       ),
                       const Spacer(),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton(
+                          onPressed: () async => {
+                            //TODO: Maybe show some are you sure dialog
+                            await cubit.signOut()
+                          },
+                          child: Text(
+                            LocaleKeys.common_signOut.tr(),
+                            style: AppTypography.h4Medium.copyWith(color: AppColors.red),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: AppDimens.ml),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          TextButton(
-            onPressed: () async => {
-              //TODO: Maybe show some are you sure dialog
-              await cubit.signOut()
-            },
-            child: Text(
-              LocaleKeys.common_signOut.tr(),
-              style: AppTypography.h4Medium.copyWith(color: AppColors.red),
-            ),
-          ),
-          const SizedBox(height: AppDimens.ml),
         ],
       ),
     );
