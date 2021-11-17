@@ -13,5 +13,7 @@ class TopicPageState with _$TopicPageState {
 
   factory TopicPageState.showTutorialToast(String title, String message) = _TopicPageStateShowTutorialToast;
 
-  factory TopicPageState.showTutorialCoachMark() = _TopicPageStateShowTutorialCoachMark;
+  factory TopicPageState.showSummaryCardTutorialCoachMark() = _TopicPageStateShowSummaryCardTutorialCoachMark;
+
+  factory TopicPageState.showMediaItemTutorialCoachMark() = _TopicPageStateShowMediaItemTutorialCoachMark;
 }

@@ -35,7 +35,8 @@
     "topicMessage": "Scroll down to get an overview or jump into the list of articles we curated for you.",
     "exploreTitle": "🔍 If you’d like to explore more ",
     "exploreMessage": "or missed a brief then you can find even more topics as well as articles here.",
-    "topicTooltipText": "😀 These cards are here to give you a quick overview of the topic. What happened so far & why does it matter?"
+    "topicTooltipText": "😀 These cards are here to give you a quick overview of the topic. What happened so far & why does it matter?",
+    "mediaItemTooltipText": "👉 Dive deeper? Our editorial carefully curates a selection of articles to give you a 360° perspective on the topic."
   },
   "main": {
     "todayTab": "Today",

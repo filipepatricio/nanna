@@ -25,12 +25,14 @@ class ArticleItemView extends HookWidget {
   final double statusBarHeight;
   final MediaItemNavigationCallback navigationCallback;
   final Topic topic;
+  final GlobalKey? mediaItemKey;
 
   ArticleItemView({
     required this.index,
     required this.statusBarHeight,
     required this.navigationCallback,
     required this.topic,
+    this.mediaItemKey,
     Key? key,
   })  : assert(topic.readingList.entries[index].item is MediaItemArticle,
             'Article at index $index in reading list must be a MediaItemArticle'),
@@ -63,6 +65,7 @@ class ArticleItemView extends HookWidget {
           );
         },
         child: Column(
+          key: mediaItemKey,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

@@ -1,16 +1,16 @@
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TutorialTooltip extends StatelessWidget {
   final String text;
+  final String dismissButtonText;
   final VoidCallback? onDismiss;
 
-  const TutorialTooltip({required this.text, this.onDismiss, Key? key}) : super(key: key);
+  const TutorialTooltip({required this.text, required this.dismissButtonText, this.onDismiss, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class TutorialTooltip extends StatelessWidget {
                   TextButton(
                       onPressed: onDismiss,
                       child: Text(
-                        LocaleKeys.common_continue.tr(),
+                        dismissButtonText,
                         style: AppTypography.h4Bold
                             .copyWith(color: AppColors.textPrimary, decoration: TextDecoration.underline),
                       ))

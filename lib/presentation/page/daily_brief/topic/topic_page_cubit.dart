@@ -3,11 +3,18 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:injectable/injectable.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 @injectable
 class TopicPageCubit extends Cubit<TopicPageState> {
   //TODO: add user first sign in logic
   final bool _isUserFirstSignIn = true;
+  late TutorialCoachMark tutorialCoachMark;
+  bool _isSummaryCardTutorialCoachMarkFinished = false;
+  bool _isMediaItemTutorialCoachMarkFinished = false;
+
+  bool get isSummaryCardTutorialCoachMarkFinished => _isSummaryCardTutorialCoachMarkFinished;
+  bool get isMediaItemTutorialCoachMarkFinished => _isMediaItemTutorialCoachMarkFinished;
 
   TopicPageCubit() : super(TopicPageState.loading());
 
@@ -20,7 +27,25 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     }
   }
 
-  void showTutorialCoachMark() {
-    emit(TopicPageState.showTutorialCoachMark());
+  void showSummaryCardTutorialCoachMark() {
+    if (!_isSummaryCardTutorialCoachMarkFinished) {
+      emit(TopicPageState.showSummaryCardTutorialCoachMark());
+      _isSummaryCardTutorialCoachMarkFinished = true;
+    }
+  }
+
+  void showMediaItemTutorialCoachMark() {
+    if (!_isMediaItemTutorialCoachMarkFinished) {
+      emit(TopicPageState.showMediaItemTutorialCoachMark());
+      _isMediaItemTutorialCoachMarkFinished = true;
+    }
+  }
+
+  Future<bool> onAndroidBackButtonPress() async {
+    if (tutorialCoachMark.isShowing) {
+      tutorialCoachMark.skip();
+      return Future<bool>.value(false);
+    }
+    return Future<bool>.value(true);
   }
 }

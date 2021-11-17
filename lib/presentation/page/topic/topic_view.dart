@@ -44,13 +44,15 @@ class TopicView extends HookWidget {
   final TopicPageCubit cubit;
   final double articleContentHeight;
   final double? appBarMargin;
-  final GlobalKey? keySummaryCard;
+  final GlobalKey? summaryCardKey;
+  final GlobalKey? mediaItemKey;
 
   const TopicView({
     required this.topic,
     required this.cubit,
     required this.articleContentHeight,
-    this.keySummaryCard,
+    this.summaryCardKey,
+    this.mediaItemKey,
     this.appBarMargin,
     Key? key,
   }) : super(key: key);
@@ -72,9 +74,21 @@ class TopicView extends HookWidget {
 
     useEffect(() {
       final listener = () {
-        if (listScrollController.offset >= (_topicHeaderImageHeight - _topicHeaderImageHeight / 3) &&
-            !listScrollController.position.outOfRange) {
-          cubit.showTutorialCoachMark();
+        const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderImageHeight / 3;
+        if (listScrollController.offset >= summaryCardTriggerPosition &&
+            !listScrollController.position.outOfRange &&
+            !cubit.isSummaryCardTutorialCoachMarkFinished) {
+          listScrollController.animateTo(summaryCardTriggerPosition,
+              duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
+          cubit.showSummaryCardTutorialCoachMark();
+        }
+        const articleTriggerPosition = _topicHeaderImageHeight + _summaryPageViewHeight;
+        if (listScrollController.offset >= articleTriggerPosition &&
+            !listScrollController.position.outOfRange &&
+            !cubit.isMediaItemTutorialCoachMarkFinished) {
+          listScrollController.animateTo(articleTriggerPosition,
+              duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
+          cubit.showMediaItemTutorialCoachMark();
         }
       };
       listScrollController.addListener(listener);
@@ -116,6 +130,7 @@ class TopicView extends HookWidget {
                   pageIndex: pageIndex,
                   topic: topic,
                   eventController: eventController,
+                    mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null),
                 ),
               ),
             ],
@@ -228,11 +243,11 @@ class _TopicHeader extends HookWidget {
 
 class _SummaryContent extends HookWidget {
   final Topic topic;
-  final GlobalKey? keySummaryCard;
+  final GlobalKey? summaryCardKey;
 
   const _SummaryContent({
     required this.topic,
-    this.keySummaryCard,
+    this.summaryCardKey,
     Key? key,
   }) : super(key: key);
 
@@ -256,7 +271,7 @@ class _SummaryContent extends HookWidget {
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _SummaryCard(index: 0, topic: topic),
+            child: _SummaryCard(index: 0, topic: topic, key: summaryCardKey),
           );
 
     return Container(
@@ -309,12 +324,12 @@ class _SummaryContent extends HookWidget {
 class _SummaryCardPageView extends HookWidget {
   final Topic topic;
   final PageController controller;
-  final GlobalKey? keySummaryCard;
+  final GlobalKey? summaryCardKey;
 
   const _SummaryCardPageView({
     required this.topic,
     required this.controller,
-    this.keySummaryCard,
+    this.summaryCardKey,
     Key? key,
   }) : super(key: key);
 
@@ -328,7 +343,7 @@ class _SummaryCardPageView extends HookWidget {
         itemCount: topic.topicSummaryList.length,
         itemBuilder: (context, index) {
           return Padding(
-            key: index == 0 ? keySummaryCard : null,
+            key: index == 0 ? summaryCardKey : null,
             padding: const EdgeInsets.only(right: AppDimens.m),
             child: _SummaryCard(topic: topic, index: index),
           );
@@ -392,6 +407,7 @@ class _MediaItemContent extends HookWidget {
   final ValueNotifier<int> pageIndex;
   final Topic topic;
   final GeneralEventTrackerController eventController;
+  final GlobalKey? mediaItemKey;
 
   const _MediaItemContent({
     required this.articleContentHeight,
@@ -399,6 +415,7 @@ class _MediaItemContent extends HookWidget {
     required this.pageIndex,
     required this.topic,
     required this.eventController,
+    this.mediaItemKey
   });
 
   @override
@@ -438,6 +455,7 @@ class _MediaItemContent extends HookWidget {
                       topic: topic,
                       statusBarHeight: statusBarHeight,
                       navigationCallback: (index) => controller.jumpToPage(index),
+                      mediaItemKey: index == 0 ? mediaItemKey : null,
                     );
                   } else {
                     return const SizedBox();

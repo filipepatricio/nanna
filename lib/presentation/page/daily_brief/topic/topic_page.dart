@@ -32,7 +32,6 @@ class TopicPage extends HookWidget {
   final int index;
   final Function(int pageIndex) onPageChanged;
   final CurrentBrief currentBrief;
-  late TutorialCoachMark tutorialCoachMark;
 
   TopicPage({
     required this.index,
@@ -43,14 +42,6 @@ class TopicPage extends HookWidget {
 
   final scrollPositionMapNotifier = ValueNotifier(<int, double>{});
 
-  Future<bool> _onWillPop() async {
-    if (tutorialCoachMark.isShowing) {
-      tutorialCoachMark.skip();
-      return Future<bool>.value(false);
-    }
-    return Future<bool>.value(true);
-  }
-
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<TopicPageCubit>();
@@ -60,7 +51,8 @@ class TopicPage extends HookWidget {
     final appBarKey = useMemoized(() => GlobalKey());
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
     final targets = useMemoized(() => <TargetFocus>[]);
-    final keySummaryCard = useMemoized(() => GlobalKey());
+    final summaryCardKey = useMemoized(() => GlobalKey());
+    final mediaItemKey = useMemoized(() => GlobalKey());
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -88,10 +80,31 @@ class TopicPage extends HookWidget {
 
     useEffect(() {
       targets.clear();
+      targets.add(TargetFocus(
+        identify: 'summaryCardKey',
+        keyTarget: summaryCardKey,
+        color: AppColors.shadowColor,
+        enableOverlayTab: true,
+        pulseVariation: Tween(begin: 1.0, end: 0.99),
+        contents: [
+          TargetContent(
+            align: ContentAlign.custom,
+            customPosition: CustomTargetContentPosition(top: AppDimens.m),
+            builder: (context, controller) {
+              return TutorialTooltip(
+                  text: LocaleKeys.tutorial_topicTooltipText.tr(),
+                  dismissButtonText: LocaleKeys.common_continue.tr(),
+                  onDismiss: cubit.tutorialCoachMark.skip);
+            },
+          )
+        ],
+        shape: ShapeLightFocus.RRect,
+        radius: 5,
+      ));
       targets.add(
         TargetFocus(
-          identify: 'keySummaryCard',
-          keyTarget: keySummaryCard,
+          identify: 'mediaItemKey',
+          keyTarget: mediaItemKey,
           color: AppColors.shadowColor,
           enableOverlayTab: true,
           pulseVariation: Tween(begin: 1.0, end: 0.99),
@@ -101,7 +114,9 @@ class TopicPage extends HookWidget {
               customPosition: CustomTargetContentPosition(top: AppDimens.m),
               builder: (context, controller) {
                 return TutorialTooltip(
-                    text: LocaleKeys.tutorial_topicTooltipText.tr(), onDismiss: tutorialCoachMark.skip);
+                    text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
+                    dismissButtonText: LocaleKeys.common_done.tr(),
+                    onDismiss: cubit.tutorialCoachMark.finish);
               },
             )
           ],
@@ -109,7 +124,7 @@ class TopicPage extends HookWidget {
           radius: 5,
         ),
       );
-      tutorialCoachMark = TutorialCoachMark(
+      cubit.tutorialCoachMark = TutorialCoachMark(
         context,
         targets: targets,
         paddingFocus: 20,
@@ -120,16 +135,18 @@ class TopicPage extends HookWidget {
         },
         onClickTarget: (target) {
           print('onClickTarget: $target');
+          cubit.tutorialCoachMark.skip();
         },
         onSkip: () {
           print("skip");
+          targets.removeAt(0);
         },
         onClickOverlay: (target) {
           print('onClickOverlay: $target');
-          tutorialCoachMark.finish();
+          cubit.tutorialCoachMark.skip();
         },
       );
-    }, [targets, keySummaryCard]);
+    }, [targets, summaryCardKey, mediaItemKey]);
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
@@ -142,7 +159,8 @@ class TopicPage extends HookWidget {
               isIgnoring: false,
               dismissOtherToast: true,
               duration: Duration.zero),
-          showTutorialCoachMark: () => tutorialCoachMark.show());
+          showSummaryCardTutorialCoachMark: () => cubit.tutorialCoachMark.show(),
+          showMediaItemTutorialCoachMark: () => cubit.tutorialCoachMark.show());
     });
 
     useEffect(
@@ -153,7 +171,7 @@ class TopicPage extends HookWidget {
     );
 
     return WillPopScope(
-        onWillPop: _onWillPop,
+        onWillPop: cubit.onAndroidBackButtonPress,
         child: LayoutBuilder(
           builder: (context, pageConstraints) => NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
@@ -200,7 +218,8 @@ class TopicPage extends HookWidget {
                           articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
                           pageIndexHook: pageIndexHook,
                           appBarMargin: appBarHeightState.value,
-                          keySummaryCard: keySummaryCard),
+                          summaryCardKey: summaryCardKey,
+                          mediaItemKey: mediaItemKey),
                     ),
                   ),
                   Positioned(
@@ -296,7 +315,8 @@ class _PageViewContent extends StatelessWidget {
   final double articleContentHeight;
   final ValueNotifier pageIndexHook;
   final double? appBarMargin;
-  final GlobalKey? keySummaryCard;
+  final GlobalKey? summaryCardKey;
+  final GlobalKey? mediaItemKey;
 
   const _PageViewContent({
     required this.cubit,
@@ -305,7 +325,8 @@ class _PageViewContent extends StatelessWidget {
     required this.currentBrief,
     required this.articleContentHeight,
     required this.pageIndexHook,
-    this.keySummaryCard,
+    this.summaryCardKey,
+    this.mediaItemKey,
     this.appBarMargin,
     Key? key,
   }) : super(key: key);
@@ -329,7 +350,8 @@ class _PageViewContent extends StatelessWidget {
               cubit: cubit,
               articleContentHeight: articleContentHeight,
               appBarMargin: appBarMargin,
-              keySummaryCard: index == pageIndexHook.value ? keySummaryCard : null);
+              summaryCardKey: index == pageIndexHook.value ? summaryCardKey : null,
+              mediaItemKey: index == pageIndexHook.value ? mediaItemKey : null);
         }
       },
     );
