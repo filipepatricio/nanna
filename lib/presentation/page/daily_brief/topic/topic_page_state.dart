@@ -16,4 +16,8 @@ class TopicPageState with _$TopicPageState {
   factory TopicPageState.showSummaryCardTutorialCoachMark() = _TopicPageStateShowSummaryCardTutorialCoachMark;
 
   factory TopicPageState.showMediaItemTutorialCoachMark() = _TopicPageStateShowMediaItemTutorialCoachMark;
+
+  factory TopicPageState.skipTutorialCoachMark() = _TopicPageStateSkipTutorialCoachMark;
+
+  factory TopicPageState.finishTutorialCoachMark() = _TopicPageStateFinishTutorialCoachMark;
 }

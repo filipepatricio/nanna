@@ -74,7 +74,7 @@ class TopicView extends HookWidget {
 
     useEffect(() {
       final listener = () {
-        const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderImageHeight / 3;
+        const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderImageHeight / 4;
         if (listScrollController.offset >= summaryCardTriggerPosition &&
             !listScrollController.position.outOfRange &&
             !cubit.isSummaryCardTutorialCoachMarkFinished) {

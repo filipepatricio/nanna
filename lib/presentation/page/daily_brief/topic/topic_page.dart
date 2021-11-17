@@ -7,12 +7,10 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_snack_bar.dart';
-import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,9 +48,17 @@ class TopicPage extends HookWidget {
     final pageIndexHook = useState(index);
     final appBarKey = useMemoized(() => GlobalKey());
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
-    final targets = useMemoized(() => <TargetFocus>[]);
-    final summaryCardKey = useMemoized(() => GlobalKey());
-    final mediaItemKey = useMemoized(() => GlobalKey());
+    final tutorialCoachMark = useState(TutorialCoachMark(
+      context,
+      targets: cubit.targets,
+      paddingFocus: 20,
+      opacityShadow: 0.5,
+      hideSkip: true,
+      onSkip: cubit.onSkipTutorialCoachMark,
+      onFinish: cubit.onFinishTutorialCoachMark,
+      onClickTarget: cubit.onClickTargetTutorialCoachMark,
+      onClickOverlay: cubit.onClickOverlayTutorialCoachMark,
+    ));
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -78,76 +84,6 @@ class TopicPage extends HookWidget {
       return () => controller.removeListener(listener);
     }, [controller]);
 
-    useEffect(() {
-      targets.clear();
-      targets.add(TargetFocus(
-        identify: 'summaryCardKey',
-        keyTarget: summaryCardKey,
-        color: AppColors.shadowColor,
-        enableOverlayTab: true,
-        pulseVariation: Tween(begin: 1.0, end: 0.99),
-        contents: [
-          TargetContent(
-            align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(top: AppDimens.m),
-            builder: (context, controller) {
-              return TutorialTooltip(
-                  text: LocaleKeys.tutorial_topicTooltipText.tr(),
-                  dismissButtonText: LocaleKeys.common_continue.tr(),
-                  onDismiss: cubit.tutorialCoachMark.skip);
-            },
-          )
-        ],
-        shape: ShapeLightFocus.RRect,
-        radius: 5,
-      ));
-      targets.add(
-        TargetFocus(
-          identify: 'mediaItemKey',
-          keyTarget: mediaItemKey,
-          color: AppColors.shadowColor,
-          enableOverlayTab: true,
-          pulseVariation: Tween(begin: 1.0, end: 0.99),
-          contents: [
-            TargetContent(
-              align: ContentAlign.custom,
-              customPosition: CustomTargetContentPosition(top: AppDimens.m),
-              builder: (context, controller) {
-                return TutorialTooltip(
-                    text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
-                    dismissButtonText: LocaleKeys.common_done.tr(),
-                    onDismiss: cubit.tutorialCoachMark.finish);
-              },
-            )
-          ],
-          shape: ShapeLightFocus.RRect,
-          radius: 5,
-        ),
-      );
-      cubit.tutorialCoachMark = TutorialCoachMark(
-        context,
-        targets: targets,
-        paddingFocus: 20,
-        opacityShadow: 0.5,
-        hideSkip: true,
-        onFinish: () {
-          print("finish");
-        },
-        onClickTarget: (target) {
-          print('onClickTarget: $target');
-          cubit.tutorialCoachMark.skip();
-        },
-        onSkip: () {
-          print("skip");
-          targets.removeAt(0);
-        },
-        onClickOverlay: (target) {
-          print('onClickOverlay: $target');
-          cubit.tutorialCoachMark.skip();
-        },
-      );
-    }, [targets, summaryCardKey, mediaItemKey]);
-
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
           showTutorialToast: (title, message) => showToastWidget(TutorialSnackBar(title: title, message: message),
@@ -159,8 +95,10 @@ class TopicPage extends HookWidget {
               isIgnoring: false,
               dismissOtherToast: true,
               duration: Duration.zero),
-          showSummaryCardTutorialCoachMark: () => cubit.tutorialCoachMark.show(),
-          showMediaItemTutorialCoachMark: () => cubit.tutorialCoachMark.show());
+          showSummaryCardTutorialCoachMark: tutorialCoachMark.value.show,
+          showMediaItemTutorialCoachMark: tutorialCoachMark.value.show,
+          skipTutorialCoachMark: tutorialCoachMark.value.skip,
+          finishTutorialCoachMark: tutorialCoachMark.value.finish);
     });
 
     useEffect(
@@ -171,7 +109,7 @@ class TopicPage extends HookWidget {
     );
 
     return WillPopScope(
-        onWillPop: cubit.onAndroidBackButtonPress,
+        onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.value.isShowing),
         child: LayoutBuilder(
           builder: (context, pageConstraints) => NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
@@ -218,8 +156,8 @@ class TopicPage extends HookWidget {
                           articleContentHeight: pageViewConstraints.maxHeight - appBarHeightState.value,
                           pageIndexHook: pageIndexHook,
                           appBarMargin: appBarHeightState.value,
-                          summaryCardKey: summaryCardKey,
-                          mediaItemKey: mediaItemKey),
+                          summaryCardKey: cubit.summaryCardKey,
+                          mediaItemKey: cubit.mediaItemKey),
                     ),
                   ),
                   Positioned(

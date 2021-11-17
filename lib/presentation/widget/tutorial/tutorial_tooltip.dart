@@ -1,8 +1,10 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class TutorialTooltip extends StatelessWidget {
   final String text;
@@ -14,42 +16,51 @@ class TutorialTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.pastelPurple,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(AppDimens.m),
-            topRight: Radius.circular(AppDimens.m),
-            bottomRight: Radius.circular(AppDimens.m)),
-      ),
-      child: Padding(
-          padding: const EdgeInsets.only(top: AppDimens.m, left: AppDimens.m, right: AppDimens.m, bottom: AppDimens.s),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppDimens.s),
-                child: Text(
-                  text,
-                  style: AppTypography.h4Normal.copyWith(color: AppColors.textPrimary),
-                ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                      onPressed: onDismiss,
-                      child: Text(
-                        dismissButtonText,
-                        style: AppTypography.h4Bold
-                            .copyWith(color: AppColors.textPrimary, decoration: TextDecoration.underline),
-                      ))
+    return Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            color: AppColors.pastelPurple,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(AppDimens.m),
+                topRight: Radius.circular(AppDimens.m),
+                bottomRight: Radius.circular(AppDimens.m)),
+          ),
+          child: Padding(
+              padding:
+                  const EdgeInsets.only(top: AppDimens.m, left: AppDimens.m, right: AppDimens.m, bottom: AppDimens.s),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: AppDimens.s),
+                    child: Text(
+                      text,
+                      style: AppTypography.h4Normal.copyWith(color: AppColors.textPrimary),
+                    ),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                          onPressed: onDismiss,
+                          child: Text(
+                            dismissButtonText,
+                            style: AppTypography.h4Bold
+                                .copyWith(color: AppColors.textPrimary, decoration: TextDecoration.underline),
+                          ))
+                    ],
+                  ),
                 ],
-              ),
-            ],
-          )),
+              )),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: AppDimens.xxl, top: 130),
+          child: SvgPicture.asset(AppVectorGraphics.tutorialArrowDown),
+        ),
+      ],
     );
   }
 }
