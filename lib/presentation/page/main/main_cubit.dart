@@ -67,6 +67,10 @@ class MainCubit extends Cubit<MainState> {
     return await _trackActivityUseCase.logTopicPage(topicId);
   }
 
+  Future<void> logExploreAreaView(String areaId) async {
+    return await _trackActivityUseCase.logExploreAreaPage(areaId);
+  }
+
   Future<void> logPageView(String? name) async {
     switch (name) {
       case SettingsMainPageRoute.name:

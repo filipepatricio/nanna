@@ -26,6 +26,12 @@ class MainNavigationObserver extends AutoRouterObserver {
       case MediaItemPageRoute.name:
         // Handled in MediaItemCubit
         return;
+      case ArticleSeeAllPageRoute.name:
+        final args = route.settings.arguments as ArticleSeeAllPageRouteArgs;
+        return await mainCubit.logExploreAreaView(args.areaId);
+      case TopicsSeeAllPageRoute.name:
+        final args = route.settings.arguments as TopicsSeeAllPageRouteArgs;
+        return await mainCubit.logExploreAreaView(args.areaId);
       default:
         return await mainCubit.logPageView(route.settings.name);
     }
