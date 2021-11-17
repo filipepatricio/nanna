@@ -46,7 +46,7 @@ class TutorialSnackBar extends StatelessWidget {
                     onDismiss != null ? onDismiss!() : null;
                   },
                   child: Text(
-                    LocaleKeys.tutorial_gotIt.tr(),
+                    LocaleKeys.common_gotIt.tr(),
                     style: AppTypography.h4Bold
                         .copyWith(color: AppColors.textPrimary, decoration: TextDecoration.underline),
                   ))
