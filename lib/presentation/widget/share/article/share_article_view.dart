@@ -123,7 +123,10 @@ class _Background extends StatelessWidget {
         child: Stack(
           children: [
             Image.asset(AppRasterGraphics.shareStickerBackgroundPeach),
-            child,
+            Align(
+              alignment: Alignment.center,
+              child: child,
+            ),
           ],
         ),
       ),
@@ -181,7 +184,7 @@ class _Sticker extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(width: AppDimens.l),
+                const SizedBox(height: AppDimens.l),
                 Text(
                   article.title,
                   style: AppTypography.h0Bold.copyWith(
@@ -190,7 +193,7 @@ class _Sticker extends StatelessWidget {
                   ),
                   maxLines: 6,
                 ),
-                const SizedBox(width: AppDimens.xxxl),
+                const SizedBox(height: AppDimens.xxxl),
                 DottedArticleInfo(
                   article: article,
                   isLight: mainImage != null,

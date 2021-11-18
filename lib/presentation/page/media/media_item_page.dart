@@ -276,7 +276,11 @@ class _IdleContent extends HookWidget {
               physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               controller: controller,
               slivers: [
-                _ActionsBar(fullHeight: articleWithImage ? fullHeight : appBarHeight, controller: controller),
+                _ActionsBar(
+                  cubit: cubit,
+                  fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                  controller: controller,
+                ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
@@ -340,11 +344,13 @@ class _IdleContent extends HookWidget {
 
 class _ActionsBar extends HookWidget {
   const _ActionsBar({
+    required this.cubit,
     required this.fullHeight,
     required this.controller,
     Key? key,
   }) : super(key: key);
 
+  final MediaItemCubit cubit;
   final double fullHeight;
   final ScrollController controller;
 
@@ -430,7 +436,7 @@ class _ActionsBar extends HookWidget {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () => cubit.shareArticle(),
                   child: SvgPicture.asset(
                     AppVectorGraphics.share,
                     color: AppColors.textPrimary,

@@ -9,6 +9,9 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:get_it/get_it.dart';
@@ -110,6 +113,18 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     }
 
     completer.complete();
+  }
+
+  Future<void> shareArticle() async {
+    final article = _currentFullArticle?.article;
+    if (article != null) {
+      final generator = ShareViewImageGenerator(
+        () => ShareArticleView(
+          article: article,
+        ),
+      );
+      await shareImage(generator, '${article.id}_share_article.png', article.title);
+    }
   }
 
   void _resetBannerState() {

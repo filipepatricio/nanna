@@ -1,15 +1,11 @@
-import 'dart:io';
-
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic/share_reading_list_view.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 const articlesSelectionLimit = 3;
 
@@ -50,19 +46,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
         articles: articles,
       ),
     );
-    final imageBytes = await generator.generate();
-
-    if (imageBytes != null) {
-      final tempDir = await getTemporaryDirectory();
-      final shareImagePath = join(tempDir.path, '${_topic.id}_share_topic.png');
-      final file = File(shareImagePath);
-      await file.writeAsBytes(imageBytes.buffer.asInt8List());
-
-      await Share.shareFiles(
-        [file.path],
-        text: 'Reading list: ${_topic.title}',
-      );
-    }
+    await shareImage(generator, '${_topic.id}_share_topic.png', _topic.title);
 
     emit(ReadingListArticlesSelectViewState.shared());
   }
