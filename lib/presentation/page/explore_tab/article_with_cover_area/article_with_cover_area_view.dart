@@ -13,7 +13,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
-import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -154,7 +154,9 @@ class _MainArticle extends HookWidget {
             Positioned(
               top: AppDimens.l,
               right: AppDimens.l,
-              child: ShareButton(onTap: () {}),
+              child: ShareArticleButton(
+                article: entry,
+              ),
             ),
             const Positioned(
               bottom: AppDimens.l,
