@@ -25,11 +25,11 @@ const _articlesInArRow = 3;
 const _articleItemHeight = 150.0;
 
 const _iosBackgroundColor = Color(0xffF5F5F5);
-const _iosLabelTextColor = Color(0xFF8D8D8D);
-const _iosLabelTextStyle = TextStyle(
+const _labelColor = Color(0xFF8D8D8D);
+const _labelTextStyle = TextStyle(
   fontWeight: FontWeight.w400,
   fontSize: 13,
-  color: _iosLabelTextColor,
+  color: _labelColor,
   height: 1.4,
 );
 
@@ -94,7 +94,17 @@ class ReadingListArticlesSelectView extends HookWidget {
     if (Platform.isIOS) {
       return _ContainerIOS(child: contentView);
     } else {
-      return _ContainerAndroid(child: contentView);
+      return _ContainerAndroid(
+        selectedArticles: state.maybeMap(
+          idle: (state) => state.selectedIndexes.length,
+          orElse: () => null,
+        ),
+        maxArticles: state.maybeMap(
+          idle: (state) => state.articlesSelectionLimit,
+          orElse: () => null,
+        ),
+        child: contentView,
+      );
     }
   }
 }
@@ -118,7 +128,7 @@ class _ContainerIOS extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.m),
-          const _Header(),
+          const _IOSHeader(),
           const SizedBox(height: AppDimens.m),
           const Divider(height: 0.5, color: AppColors.greyDividerColor),
           const SizedBox(height: AppDimens.s),
@@ -130,9 +140,13 @@ class _ContainerIOS extends StatelessWidget {
 }
 
 class _ContainerAndroid extends StatelessWidget {
+  final int? selectedArticles;
+  final int? maxArticles;
   final Widget child;
 
   const _ContainerAndroid({
+    required this.selectedArticles,
+    required this.maxArticles,
     required this.child,
     Key? key,
   }) : super(key: key);
@@ -145,7 +159,10 @@ class _ContainerAndroid extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.l),
-          const _Header(),
+          _AndroidHeader(
+            selectedArticles: selectedArticles,
+            maxArticles: maxArticles,
+          ),
           const SizedBox(height: AppDimens.l),
           Expanded(child: child),
         ],
@@ -195,17 +212,18 @@ class _IdleView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppDimens.s),
-          Center(
-            child: Text(
-              LocaleKeys.shareTopic_selectedLabel.tr(
-                args: [
-                  selectedIndexes.length.toString(),
-                  maxArticles.toString(),
-                ],
+          if (Platform.isIOS)
+            Center(
+              child: Text(
+                LocaleKeys.shareTopic_selectedLabel.tr(
+                  args: [
+                    selectedIndexes.length.toString(),
+                    maxArticles.toString(),
+                  ],
+                ),
+                style: _labelTextStyle,
               ),
-              style: _iosLabelTextStyle,
             ),
-          ),
           const SizedBox(height: AppDimens.m),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
@@ -222,8 +240,57 @@ class _IdleView extends StatelessWidget {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header({Key? key}) : super(key: key);
+class _AndroidHeader extends StatelessWidget {
+  final int? selectedArticles;
+  final int? maxArticles;
+
+  const _AndroidHeader({
+    required this.selectedArticles,
+    required this.maxArticles,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            LocaleKeys.shareTopic_title.tr(),
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+              color: AppColors.black,
+              height: 1.33,
+            ),
+          ),
+          const SizedBox(height: AppDimens.s),
+          Visibility(
+            visible: selectedArticles != null,
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            child: Text(
+              LocaleKeys.shareTopic_selectedLabel.tr(
+                args: [
+                  selectedArticles.toString(),
+                  maxArticles.toString(),
+                ],
+              ),
+              style: _labelTextStyle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _IOSHeader extends StatelessWidget {
+  const _IOSHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -250,7 +317,7 @@ class _Header extends StatelessWidget {
                   LocaleKeys.shareTopic_amountInfo.tr(
                     args: [articlesSelectionLimit.toString()],
                   ),
-                  style: _iosLabelTextStyle,
+                  style: _labelTextStyle,
                 ),
               ],
             ),
@@ -285,7 +352,7 @@ class _ArticlesGridView extends StatelessWidget {
 
     return GridView.builder(
       controller: scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.m),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: _articlesInArRow,
         mainAxisExtent: _articleItemHeight,

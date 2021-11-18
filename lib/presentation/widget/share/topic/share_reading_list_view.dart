@@ -40,6 +40,11 @@ const _topicHeaderImageWidth = 480.0;
 
 const _publisherLogoSize = 28.0;
 
+const _articleItemWidth = 140.0;
+const _articleItemHeight = 210.0;
+
+const _articleListPadding = 22.0;
+
 class ShareReadingListView extends HookWidget implements BaseShareCompletable {
   final Topic topic;
   final List<MediaItemArticle> articles;
@@ -153,7 +158,7 @@ class _Sticker extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.xl),
           Padding(
-            padding: const EdgeInsets.only(left: 22),
+            padding: const EdgeInsets.only(left: _articleListPadding),
             child: _ArticleRow(articles: articles),
           ),
           const SizedBox(height: AppDimens.xl),
@@ -284,8 +289,8 @@ class _ArticleItem extends HookWidget {
     final logoId = article.publisher.darkLogo?.publicId;
 
     return Container(
-      width: 140,
-      height: 210,
+      width: _articleItemWidth,
+      height: _articleItemHeight,
       padding: const EdgeInsets.all(AppDimens.m),
       color: backgroundColor,
       child: Column(
