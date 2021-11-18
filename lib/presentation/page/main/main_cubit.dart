@@ -37,7 +37,7 @@ class MainCubit extends Cubit<MainState> {
     _currentBriefId = await _getCurrentBriefUseCase.getId();
 
     // Need to log the daily brief tab init here, because I depend on [_currentBriefId] to be set before logging
-    unawaited(trackTabView(TodayTabGroupRouter.name));
+    trackTabView(TodayTabGroupRouter.name);
 
     _tokenExpirationSubscription = _getTokenExpirationStreamUseCase().listen((event) {
       emit(const MainState.tokenExpired());
@@ -50,35 +50,35 @@ class MainCubit extends Cubit<MainState> {
     }
   }
 
-  Future<void> trackTabView(String name) async {
+  void trackTabView(String name) {
     switch (name) {
       case TodayTabGroupRouter.name:
-        return await _trackActivityUseCase.trackDailyBriefPage(_currentBriefId);
+        return _trackActivityUseCase.trackDailyBriefPage(_currentBriefId);
       case ExploreTabGroupRouter.name:
-        return await _trackActivityUseCase.trackPage('Explore Section');
+        return _trackActivityUseCase.trackPage('Explore Section');
       case ProfileTabGroupRouter.name:
-        return await _trackActivityUseCase.trackPage('Profile');
+        return _trackActivityUseCase.trackPage('Profile');
       default:
         return;
     }
   }
 
-  Future<void> trackTopicView(String topicId) async {
-    return await _trackActivityUseCase.trackTopicPage(topicId);
+  void trackTopicView(String topicId) {
+    return _trackActivityUseCase.trackTopicPage(topicId);
   }
 
-  Future<void> trackExploreAreaView(String areaId) async {
-    return await _trackActivityUseCase.trackExploreAreaPage(areaId);
+  void trackExploreAreaView(String areaId) {
+    return _trackActivityUseCase.trackExploreAreaPage(areaId);
   }
 
-  Future<void> trackPageView(String? name) async {
+  void trackPageView(String? name) {
     switch (name) {
       case SettingsMainPageRoute.name:
-        return await _trackActivityUseCase.trackPage('Settings');
+        return _trackActivityUseCase.trackPage('Settings');
       case SettingsAccountPageRoute.name:
-        return await _trackActivityUseCase.trackPage('Account Settings');
+        return _trackActivityUseCase.trackPage('Account Settings');
       case SettingsNotificationsPageRoute.name:
-        return await _trackActivityUseCase.trackPage('Notification Settings');
+        return _trackActivityUseCase.trackPage('Notification Settings');
     }
   }
 }
