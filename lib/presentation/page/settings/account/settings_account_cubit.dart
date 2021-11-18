@@ -34,10 +34,14 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     }
   }
 
-  Future<void> saveAccountData() async {
-    if (_accountData.firstNameValidator == null &&
+  bool formsAreValid() {
+    return _accountData.firstNameValidator == null &&
         _accountData.lastNameValidator == null &&
-        _accountData.emailValidator == null) {
+        _accountData.emailValidator == null;
+  }
+
+  Future<void> saveAccountData() async {
+    if (formsAreValid()) {
       emit(SettingsAccountState.updating(_accountData));
       final user = await _updateUserUseCase(_accountData);
       await setAccountData(user);

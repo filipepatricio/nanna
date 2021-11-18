@@ -33,7 +33,7 @@ class SettingsNotificationsPage extends HookWidget {
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
         centerTitle: false,
         title: Text(
-          LocaleKeys.settings_settingsOverview.tr(),
+          LocaleKeys.settings_settings.tr(),
           style: AppTypography.subH1Medium,
         ),
       ),
