@@ -11,11 +11,11 @@ class GetExploreContentUseCase {
 
   Future<ExploreContent> call() async {
     final content = await _exploreContentRepository.getExploreContent();
-    final notEmptySections = content.areas.where(_isNotEmptySection).toList();
-    return ExploreContent(areas: notEmptySections);
+    final notEmptyAreas = content.areas.where(_isNotEmptyArea).toList();
+    return ExploreContent(areas: notEmptyAreas);
   }
 
-  bool _isNotEmptySection(ExploreContentArea areas) {
+  bool _isNotEmptyArea(ExploreContentArea areas) {
     return areas.map(
       articles: (area) => area.articles.isNotEmpty,
       articleWithFeature: (area) => area.articles.isNotEmpty,

@@ -40,7 +40,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   var readingComplete = false;
 
   Future<void> initialize(int index, MediaItemArticle? singleArticle, Topic? topic) async {
-    assert(singleArticle == null || topic == null, 'Cannot be initialized with a single Article AND a Topic');
+    assert(singleArticle == null || topic == null, 'Cannot be initialized with a single Article and a Topic');
     throwIf(
         singleArticle == null && topic == null, ArgumentError('Must be initialized either with an Article or a Topic'));
 
