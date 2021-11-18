@@ -28,7 +28,7 @@ class SettingsNotificationsBody extends HookWidget {
           const SizedBox(height: AppDimens.l),
           Text(
             LocaleKeys.settings_pushNotifications.tr(),
-            style: AppTypography.h3Bold,
+            style: AppTypography.h3Bold16,
           ),
           const SizedBox(height: AppDimens.l),
           ...groups

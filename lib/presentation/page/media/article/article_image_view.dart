@@ -107,7 +107,7 @@ class ArticleImageView extends HookWidget {
                       children: [
                         Text(
                           'Continue reading',
-                          style: AppTypography.h3Bold
+                          style: AppTypography.h3Bold16
                               .copyWith(color: AppColors.white, decoration: TextDecoration.underline),
                         ),
                         const Icon(Icons.keyboard_arrow_up_rounded, color: AppColors.white, size: AppDimens.m),

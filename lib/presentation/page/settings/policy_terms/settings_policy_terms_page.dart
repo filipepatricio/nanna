@@ -40,7 +40,7 @@ class SettingsPolicyTermsPage extends HookWidget {
                     //TODO: change for proper texts, or fetch from api
                     Text(
                       isPolicy ? LocaleKeys.settings_privacyPolicy.tr() : LocaleKeys.settings_termsOfService.tr(),
-                      style: AppTypography.h3Bold,
+                      style: AppTypography.h3Bold16,
                     ),
                     const SizedBox(height: AppDimens.l),
                     Text(

@@ -87,7 +87,7 @@ class _BulletPointRow extends StatelessWidget {
             children: [
               Text(
                 header,
-                style: AppTypography.h3Bold.copyWith(height: 1.5, letterSpacing: 0),
+                style: AppTypography.h3Bold16.copyWith(height: 1.5, letterSpacing: 0),
               ),
               Flexible(
                 child: Text(

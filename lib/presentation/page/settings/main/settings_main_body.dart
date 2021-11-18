@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -48,14 +49,6 @@ class SettingsMainBody extends HookWidget {
                         icon: AppVectorGraphics.notifications,
                         onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
                       ),
-                      const SizedBox(height: AppDimens.ml),
-                      SettingsMainItem(
-                        label: LocaleKeys.settings_subscription.tr(),
-                        icon: AppVectorGraphics.subscription,
-                        onTap: () => {
-                          //TODO: NAVIGATE TO SUB
-                        },
-                      ),
                       const SizedBox(height: AppDimens.xxxl),
                       Text(
                         LocaleKeys.settings_aboutHeader.tr(),
@@ -74,18 +67,11 @@ class SettingsMainBody extends HookWidget {
                         onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: false)),
                       ),
                       const Spacer(),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextButton(
-                          onPressed: () async => {
-                            //TODO: Maybe show some are you sure dialog
-                            await cubit.signOut()
-                          },
-                          child: Text(
-                            LocaleKeys.common_signOut.tr(),
-                            style: AppTypography.h4Medium.copyWith(color: AppColors.red),
-                          ),
-                        ),
+                      FilledButton(
+                        text: LocaleKeys.common_signOut.tr(),
+                        fillColor: AppColors.carrotRed,
+                        textColor: AppColors.white,
+                        onTap: () async => await cubit.signOut(),
                       ),
                       const SizedBox(height: AppDimens.ml),
                     ],
