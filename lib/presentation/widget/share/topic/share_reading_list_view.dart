@@ -54,6 +54,9 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
         super(key: key);
 
   @override
+  Size get size => const Size(_viewWidth, _viewHeight);
+
+  @override
   Completer get viewReadyCompleter => _baseViewCompleter;
 
   @override
