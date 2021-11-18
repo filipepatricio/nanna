@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dart';
@@ -41,29 +42,20 @@ class MainPage extends HookWidget {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
         child: AutoTabsScaffold(
-          key: mainPageKey,
-          animationDuration: const Duration(),
-          routes: const [
-            TodayTabGroupRouter(),
-            ExploreTabGroupRouter(),
-            ProfileTabGroupRouter(),
-          ],
-          bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(
-            state,
-            cubit,
-            tabsRouter,
-          ),
-          navigatorObservers: () => [TabsNavigationObserver(cubit)],
-        ),
+            key: mainPageKey,
+            animationDuration: const Duration(),
+            routes: const [
+              TodayTabGroupRouter(),
+              ExploreTabGroupRouter(),
+              ProfileTabGroupRouter(),
+            ],
+            bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(state, cubit, tabsRouter),
+            navigatorObservers: () => [getIt<TabsNavigationObserver>()]),
       ),
     );
   }
 
   void _onTokenExpiredEvent(BuildContext context) {
-    AutoRouter.of(context).replaceAll(
-      [
-        const SignInPageRoute(),
-      ],
-    );
+    AutoRouter.of(context).replaceAll([const SignInPageRoute()]);
   }
 }

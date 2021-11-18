@@ -1,8 +1,6 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
-import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,7 +13,6 @@ class BetterInformedApp extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mainCubit = useCubit<MainCubit>();
     return MaterialApp.router(
       title: 'InformedApp',
       localizationsDelegates: context.localizationDelegates,
@@ -23,7 +20,7 @@ class BetterInformedApp extends HookWidget {
       locale: context.locale,
       routeInformationParser: mainRouter.defaultRouteParser(),
       routerDelegate: mainRouter.delegate(
-        navigatorObservers: () => [SegmentObserver(), MainNavigationObserver(mainCubit)],
+        navigatorObservers: () => [SegmentObserver(), MainNavigationObserver()],
       ),
       theme: AppTheme.mainTheme,
     );

@@ -3,14 +3,6 @@ import 'package:gql/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class DailyBriefGql {
-  static DocumentNode currentBriefId() => gql('''
-    query currentBriefForStartupScreen {
-      currentBrief {
-        id
-      }
-    }
-  ''');
-
   static DocumentNode currentBrief() => gql('''
     query currentBriefForStartupScreen {
       currentBrief {
