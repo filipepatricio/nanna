@@ -101,7 +101,7 @@ class _Idle extends StatelessWidget {
         const SizedBox(height: AppDimens.m),
         Text(
           LocaleKeys.profile_stayTuned.tr(),
-          style: AppTypography.h3Bold,
+          style: AppTypography.h3Bold16,
         ),
         Text(
           LocaleKeys.profile_stayTunedText.tr(),

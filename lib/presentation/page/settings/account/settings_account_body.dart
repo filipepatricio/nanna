@@ -74,7 +74,7 @@ class SettingsAccountBody extends HookWidget {
                             children: [
                               Text(
                                 LocaleKeys.settings_account.tr(),
-                                style: AppTypography.h3Bold,
+                                style: AppTypography.h3Bold16,
                               ),
                             ],
                           ),

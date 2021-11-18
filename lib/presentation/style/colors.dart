@@ -24,6 +24,7 @@ class AppColors {
   static const Color beige = Color(0xffF2E8E7);
   static const Color dividerGrey = Color(0xffD1D5DB);
   static const Color darkGrey = Color(0xff6B7280);
+  static const Color carrotRed = Color(0xffFB6F43);
 
   static const Color gradientOverlayStartColor = Color(0x90282b35);
   static const Color gradientOverlayEndColor = Color(0x00282B35);

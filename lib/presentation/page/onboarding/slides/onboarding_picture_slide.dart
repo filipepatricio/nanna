@@ -25,29 +25,31 @@ class OnboardingPictureSlide extends StatelessWidget {
         const SizedBox(height: AppDimens.xxl),
         Expanded(
           flex: 3,
-          child: SvgPicture.asset(imageAsset, fit: BoxFit.contain),
+          child: SvgPicture.asset(imageAsset, fit: BoxFit.fitWidth),
         ),
         const SizedBox(height: AppDimens.c),
         Expanded(
           flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: AppDimens.xl,
-              right: AppDimens.xl,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  descriptionHeader,
-                  style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
-                ),
-                const SizedBox(height: AppDimens.m),
-                Text(
-                  description,
-                  style: AppTypography.b1Regular,
-                ),
-              ],
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: AppDimens.xl,
+                right: AppDimens.xl,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    descriptionHeader,
+                    style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
+                  ),
+                  const SizedBox(height: AppDimens.m),
+                  Text(
+                    description,
+                    style: AppTypography.b1Regular,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
