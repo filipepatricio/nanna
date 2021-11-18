@@ -30,5 +30,5 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  Future<void> logTopicPageView(String topicId) => _trackActivityUseCase.logTopicPage(topicId);
+  Future<void> trackTopicPageView(String topicId) => _trackActivityUseCase.trackTopicPage(topicId);
 }

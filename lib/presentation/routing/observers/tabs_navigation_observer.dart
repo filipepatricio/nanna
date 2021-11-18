@@ -11,13 +11,13 @@ class TabsNavigationObserver extends AutoRouterObserver {
   void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
     // The initialization of the Today tab is asynchronous,
     // so the currentBriefId is not yet available at this point and I cannot use this method to log it
-    if (route.name != TodayTabGroupRouter.name) mainCubit.logTabView(route.name);
+    if (route.name != TodayTabGroupRouter.name) mainCubit.trackTabView(route.name);
     return;
   }
 
   @override
   void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
-    mainCubit.logTabView(route.name);
+    mainCubit.trackTabView(route.name);
     return;
   }
 }

@@ -247,7 +247,7 @@ class _IdleContent extends HookWidget {
         index: index,
         onPageChanged: (index) {
           if (index < currentBrief.topics.length) {
-            dailyBriefCubit.logTopicPageView(currentBrief.topics[index].id);
+            dailyBriefCubit.trackTopicPageView(currentBrief.topics[index].id);
           }
           controller.jumpToPage(index);
         },
