@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dart';
 import 'package:better_informed_mobile/presentation/page/main/widgets/bottom_navigation.dart';
+import 'package:better_informed_mobile/presentation/routing/observers/tabs_navigation_observer.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,7 @@ class MainPage extends HookWidget {
             cubit,
             tabsRouter,
           ),
+          navigatorObservers: () => [TabsNavigationObserver(cubit)],
         ),
       ),
     );

@@ -92,6 +92,7 @@ class DailyBriefPage extends HookWidget {
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
           idle: (state) => _IdleContent(
+            dailyBriefCubit: cubit,
             currentBrief: state.currentBrief,
             controller: controller,
             cardStackWidth: cardStackWidth,
@@ -106,11 +107,13 @@ class DailyBriefPage extends HookWidget {
 }
 
 class _IdleContent extends HookWidget {
+  final DailyBriefPageCubit dailyBriefCubit;
   final CurrentBrief currentBrief;
   final PageController controller;
   final double cardStackWidth;
 
   const _IdleContent({
+    required this.dailyBriefCubit,
     required this.currentBrief,
     required this.controller,
     required this.cardStackWidth,
@@ -157,6 +160,7 @@ class _IdleContent extends HookWidget {
                             ..._buildTopicCards(
                               context,
                               controller,
+                              dailyBriefCubit,
                               currentBrief,
                               cardStackWidth,
                               constraints.maxHeight,
@@ -194,6 +198,7 @@ class _IdleContent extends HookWidget {
   Iterable<Widget> _buildTopicCards(
     BuildContext context,
     PageController controller,
+    DailyBriefPageCubit dailyBriefCubit,
     CurrentBrief currentBrief,
     double width,
     double heightPageView,
@@ -206,10 +211,22 @@ class _IdleContent extends HookWidget {
           child: ReadingListStackedCards(
             coverSize: Size(width, heightPageView),
             child: GestureDetector(
-              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(context, controller, key, currentBrief),
+              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(
+                context,
+                dailyBriefCubit,
+                controller,
+                key,
+                currentBrief,
+              ),
               child: ReadingListCover(
                 topic: currentBrief.topics[key],
-                onTap: () => _onTopicCardPressed(context, controller, key, currentBrief),
+                onTap: () => _onTopicCardPressed(
+                  context,
+                  dailyBriefCubit,
+                  controller,
+                  key,
+                  currentBrief,
+                ),
               ),
             ),
           ),
@@ -218,11 +235,20 @@ class _IdleContent extends HookWidget {
     }).values;
   }
 
-  void _onTopicCardPressed(BuildContext context, PageController controller, int index, CurrentBrief currentBrief) {
+  void _onTopicCardPressed(
+    BuildContext context,
+    DailyBriefPageCubit dailyBriefCubit,
+    PageController controller,
+    int index,
+    CurrentBrief currentBrief,
+  ) {
     AutoRouter.of(context).push(
       TopicPageRoute(
         index: index,
         onPageChanged: (index) {
+          if (index < currentBrief.topics.length) {
+            dailyBriefCubit.trackTopicPageView(currentBrief.topics[index].id);
+          }
           controller.jumpToPage(index);
         },
         currentBrief: currentBrief,

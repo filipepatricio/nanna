@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -14,7 +15,7 @@ class MediaItemPageData with _$MediaItemPageData {
 
   factory MediaItemPageData.multipleItems({
     required int index,
-    required List<MediaItemArticle> articleList,
+    required Topic topic,
     double? readArticleProgress,
     MediaItemNavigationCallback? navigationCallback,
   }) = _MediaItemDataMultipleItems;

@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dart';
@@ -8,10 +9,14 @@ import 'package:injectable/injectable.dart';
 @injectable
 class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
+  final TrackActivityUseCase _trackActivityUseCase;
 
   late CurrentBrief _currentBrief;
 
-  DailyBriefPageCubit(this._getCurrentBriefUseCase) : super(DailyBriefPageState.loading());
+  DailyBriefPageCubit(
+    this._getCurrentBriefUseCase,
+    this._trackActivityUseCase,
+  ) : super(DailyBriefPageState.loading());
 
   Future<void> initialize() async {
     emit(DailyBriefPageState.loading());
@@ -24,4 +29,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       emit(DailyBriefPageState.error());
     }
   }
+
+  Future<void> trackTopicPageView(String topicId) => _trackActivityUseCase.trackTopicPage(topicId);
 }

@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list/reading_list_see_all_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list/reading_list_see_all_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/see_all_load_more_indicator.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/topics/topics_see_all_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/topics/topics_see_all_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -20,13 +20,13 @@ import 'package:flutter_svg/svg.dart';
 
 const _itemHeight = 280.0;
 
-class ReadingListSeeAllPage extends HookWidget {
-  final String sectionId;
+class TopicsSeeAllPage extends HookWidget {
+  final String areaId;
   final String title;
   final List<Topic> topics;
 
-  const ReadingListSeeAllPage({
-    required this.sectionId,
+  const TopicsSeeAllPage({
+    required this.areaId,
     required this.title,
     required this.topics,
     Key? key,
@@ -35,12 +35,12 @@ class ReadingListSeeAllPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final cubit = useCubit<ReadingListSeeAllPageCubit>();
-    final state = useCubitBuilder<ReadingListSeeAllPageCubit, ReadingListSeeAllPageState>(cubit);
-    final pageStorageKey = useMemoized(() => PageStorageKey(sectionId));
+    final cubit = useCubit<TopicsSeeAllPageCubit>();
+    final state = useCubitBuilder<TopicsSeeAllPageCubit, TopicsSeeAllPageState>(cubit);
+    final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
 
     useEffect(() {
-      cubit.initialize(sectionId, topics);
+      cubit.initialize(areaId, topics);
     }, [cubit]);
 
     final shouldListen = state.maybeMap(
@@ -95,7 +95,7 @@ class ReadingListSeeAllPage extends HookWidget {
 
 class _Body extends StatelessWidget {
   final String title;
-  final ReadingListSeeAllPageState state;
+  final TopicsSeeAllPageState state;
   final ScrollController scrollController;
   final PageStorageKey pageStorageKey;
 
@@ -206,7 +206,7 @@ class _GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _onReadingListTap(context, topic),
+      onTap: () => _onTopicTap(context, topic),
       child: LayoutBuilder(
         builder: (context, constraints) {
           return ReadingListStackedCards(
@@ -218,7 +218,7 @@ class _GridItem extends StatelessWidget {
     );
   }
 
-  void _onReadingListTap(BuildContext context, Topic topic) {
+  void _onTopicTap(BuildContext context, Topic topic) {
     AutoRouter.of(context).push(
       SingleTopicPageRoute(
         topic: topic,

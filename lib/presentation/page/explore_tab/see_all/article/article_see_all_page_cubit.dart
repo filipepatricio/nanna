@@ -22,9 +22,9 @@ class ArticleSeeAllPageCubit extends Cubit<ArticleSeeAllPageState> {
     this._getExplorePaginatedArticlesUseCase,
   ) : super(ArticleSeeAllPageState.loading());
 
-  Future<void> initialize(String sectionId, List<MediaItemArticle> articles) async {
+  Future<void> initialize(String areaId, List<MediaItemArticle> articles) async {
     _articles = _processArticles(articles).toList();
-    _nextArticlePageLoader = NextArticlePageLoader(_getExplorePaginatedArticlesUseCase, sectionId);
+    _nextArticlePageLoader = NextArticlePageLoader(_getExplorePaginatedArticlesUseCase, areaId);
     _paginationEngine = PaginationEngine(_nextArticlePageLoader);
     _paginationEngine.initialize(articles);
 

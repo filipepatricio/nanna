@@ -13,9 +13,9 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> initialize() async {
     try {
       final exploreContent = await _getExploreContentUseCase();
-      emit(ExplorePageState.idle(exploreContent.sections));
+      emit(ExplorePageState.idle(exploreContent.areas));
     } catch (e, s) {
-      Fimber.e('Loading explore section failed', ex: e, stacktrace: s);
+      Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
     }
   }
 }

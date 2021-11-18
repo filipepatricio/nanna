@@ -4,15 +4,15 @@ import 'package:better_informed_mobile/presentation/util/pagination/pagination_e
 
 class NextTopicPageLoader implements NextPageLoader<Topic> {
   final GetExplorePaginatedTopicsUseCase _getExplorePaginatedTopicsUseCase;
-  final String sectionId;
+  final String areaId;
 
   NextTopicPageLoader(
     this._getExplorePaginatedTopicsUseCase,
-    this.sectionId,
+    this.areaId,
   );
 
   @override
   Future<List<Topic>> call(NextPageConfig config) {
-    return _getExplorePaginatedTopicsUseCase(sectionId, config.limit, config.offset);
+    return _getExplorePaginatedTopicsUseCase(areaId, config.limit, config.offset);
   }
 }

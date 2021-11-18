@@ -1,9 +1,7 @@
-import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 
 class ExploreContent {
-  final List<ExploreContentSection> sections;
+  final List<ExploreContentArea> areas;
 
-  ExploreContent({
-    required this.sections,
-  });
+  ExploreContent({required this.areas});
 }

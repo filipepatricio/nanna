@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/data/explore/api/explore_content_api_data_source.dart';
+import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_area_dto_mapper.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_dto_mapper.dart';
-import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_section_dto_mapper.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/explore_content_repository.dart';
@@ -11,12 +11,12 @@ import 'package:injectable/injectable.dart';
 class ExploreContentApiRepository implements ExploreContentRepository {
   final ExploreContentApiDataSource _dataSource;
   final ExploreContentDTOMapper _exploreContentDTOMapper;
-  final ExploreContentSectionDTOMapper _exploreContentSectionDTOMapper;
+  final ExploreContentAreaDTOMapper _exploreContentAreaDTOMapper;
 
   ExploreContentApiRepository(
     this._dataSource,
     this._exploreContentDTOMapper,
-    this._exploreContentSectionDTOMapper,
+    this._exploreContentAreaDTOMapper,
   );
 
   @override
@@ -26,11 +26,11 @@ class ExploreContentApiRepository implements ExploreContentRepository {
   }
 
   @override
-  Future<List<MediaItemArticle>> getPaginatedArticles(String sectionId, int limit, int offset) async {
-    final dto = await _dataSource.getPaginatedExploreSection(sectionId, limit, offset);
-    final section = _exploreContentSectionDTOMapper(dto);
+  Future<List<MediaItemArticle>> getPaginatedArticles(String areaId, int limit, int offset) async {
+    final dto = await _dataSource.getPaginatedExploreArea(areaId, limit, offset);
+    final area = _exploreContentAreaDTOMapper(dto);
 
-    return section.maybeMap(
+    return area.maybeMap(
       articles: (data) => data.articles,
       articleWithFeature: (data) => [data.featuredArticle] + data.articles,
       orElse: () => [],
@@ -38,11 +38,11 @@ class ExploreContentApiRepository implements ExploreContentRepository {
   }
 
   @override
-  Future<List<Topic>> getPaginatedTopics(String sectionId, int limit, int offset) async {
-    final dto = await _dataSource.getPaginatedExploreSection(sectionId, limit, offset);
-    final section = _exploreContentSectionDTOMapper(dto);
+  Future<List<Topic>> getPaginatedTopics(String areaId, int limit, int offset) async {
+    final dto = await _dataSource.getPaginatedExploreArea(areaId, limit, offset);
+    final area = _exploreContentAreaDTOMapper(dto);
 
-    return section.maybeMap(
+    return area.maybeMap(
       topics: (data) => data.topics,
       orElse: () => [],
     );

@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -87,7 +86,7 @@ class TopicView extends HookWidget {
                 articleContentHeight: articleContentHeight,
                 controller: articleController,
                 pageIndex: pageIndex,
-                entryList: topic.readingList.entries,
+                topic: topic,
               ),
             ],
           ),
@@ -350,18 +349,19 @@ class _MediaItemContent extends StatelessWidget {
   final double articleContentHeight;
   final PageController controller;
   final ValueNotifier<int> pageIndex;
-  final List<Entry> entryList;
+  final Topic topic;
 
   const _MediaItemContent({
     required this.articleContentHeight,
     required this.controller,
     required this.pageIndex,
-    required this.entryList,
+    required this.topic,
   });
 
   @override
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
+    final entryList = topic.readingList.entries;
     return Container(
       height: articleContentHeight,
       child: Stack(
@@ -380,9 +380,8 @@ class _MediaItemContent extends StatelessWidget {
                   //TODO: Handling different media types
                   if (currentMediaItem is MediaItemArticle) {
                     return ArticleItemView(
-                      article: currentMediaItem,
-                      allEntries: entryList,
                       index: index,
+                      topic: topic,
                       statusBarHeight: statusBarHeight,
                       navigationCallback: (index) => controller.jumpToPage(index),
                     );

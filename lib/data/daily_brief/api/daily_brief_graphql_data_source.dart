@@ -28,4 +28,21 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
 
     return dto ?? (throw Exception('Current brief is null'));
   }
+
+  @override
+  Future<String> currentBriefId() async {
+    final result = await _client.query(
+      QueryOptions(
+        document: DailyBriefGql.currentBriefId(),
+      ),
+    );
+
+    final currentBriefId = _responseResolver.resolve(
+      result,
+      (raw) => raw['id'] as String,
+      rootKey: 'currentBrief',
+    );
+
+    return currentBriefId ?? (throw Exception('Current brief id is null'));
+  }
 }

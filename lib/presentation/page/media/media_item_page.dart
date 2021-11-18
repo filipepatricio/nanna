@@ -1,9 +1,9 @@
-import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
@@ -37,26 +37,33 @@ double articleViewFullHeight(BuildContext context) => MediaQuery.of(context).siz
 class MediaItemPage extends HookWidget {
   final double? readArticleProgress;
   final int index;
-  final List<MediaItemArticle> articleList;
+  final MediaItemArticle? singleArticle;
   final MediaItemNavigationCallback? navigationCallback;
+  final Topic? topic;
 
   MediaItemPage({
     required MediaItemPageData pageData,
     Key? key,
   })  : index = _getIndex(pageData),
-        articleList = _getEntries(pageData),
+        singleArticle = _getSingleArticle(pageData),
         navigationCallback = pageData.navigationCallback,
         readArticleProgress = pageData.readArticleProgress,
+        topic = _getTopic(pageData),
         super(key: key);
+
+  static Topic? _getTopic(MediaItemPageData pageData) => pageData.map(
+        singleItem: (data) => null,
+        multipleItems: (data) => data.topic,
+      );
 
   static int _getIndex(MediaItemPageData pageData) => pageData.map(
         singleItem: (data) => 0,
         multipleItems: (data) => data.index,
       );
 
-  static List<MediaItemArticle> _getEntries(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => [data.article],
-        multipleItems: (data) => data.articleList,
+  static MediaItemArticle? _getSingleArticle(MediaItemPageData pageData) => pageData.map(
+        singleItem: (data) => data.article,
+        multipleItems: (data) => null,
       );
 
   @override
@@ -75,7 +82,7 @@ class MediaItemPage extends HookWidget {
     );
 
     useEffect(() {
-      cubit.initialize(articleList, index);
+      cubit.initialize(index, singleArticle, topic);
     }, [cubit]);
 
     return Scaffold(
@@ -207,7 +214,6 @@ class _IdleContent extends HookWidget {
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
-        dev.log('callback');
         calculateArticleContentOffset();
       });
     }, []);

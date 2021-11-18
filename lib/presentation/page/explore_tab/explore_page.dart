@@ -1,10 +1,10 @@
-import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_section/article_section_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_section/article_with_cover_section_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/article_area/article_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_with_cover_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_state.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/reading_list_section/reading_list_section_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/topics_area/topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -54,7 +54,7 @@ class ExplorePage extends HookWidget {
                     child: Loader(),
                   ),
                 ),
-                idle: (state) => _Idle(sections: state.sections),
+                idle: (state) => _Idle(areas: state.areas),
                 orElse: () => const SliverToBoxAdapter(
                   child: SizedBox(),
                 ),
@@ -69,8 +69,8 @@ class ExplorePage extends HookWidget {
   Color _getHeaderColor(ExplorePageState state) {
     return state.maybeMap(
       idle: (idle) {
-        final firstSection = idle.sections.first;
-        return firstSection.maybeMap(
+        final firstArea = idle.areas.first;
+        return firstArea.maybeMap(
           articleWithFeature: (state) => Color(state.backgroundColor),
           orElse: () => AppColors.background,
         );
@@ -81,10 +81,10 @@ class ExplorePage extends HookWidget {
 }
 
 class _Idle extends StatelessWidget {
-  final List<ExploreContentSection> sections;
+  final List<ExploreContentArea> areas;
 
   const _Idle({
-    required this.sections,
+    required this.areas,
     Key? key,
   }) : super(key: key);
 
@@ -92,7 +92,7 @@ class _Idle extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildListDelegate(
-        sections.map((section) => _Section(section: section)).toList(growable: false),
+        areas.map((area) => _Area(area: area)).toList(growable: false),
       ),
     );
   }
@@ -126,20 +126,20 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _Section extends StatelessWidget {
-  final ExploreContentSection section;
+class _Area extends StatelessWidget {
+  final ExploreContentArea area;
 
-  const _Section({
-    required this.section,
+  const _Area({
+    required this.area,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return section.map(
-      articles: (section) => ArticleSectionView(section: section),
-      articleWithFeature: (section) => ArticleWithCoverSectionView(section: section),
-      topics: (section) => ReadingListSectionView(section: section),
+    return area.map(
+      articles: (area) => ArticleAreaView(area: area),
+      articleWithFeature: (area) => ArticleWithCoverAreaView(area: area),
+      topics: (area) => TopicsAreaView(area: area),
     );
   }
 }

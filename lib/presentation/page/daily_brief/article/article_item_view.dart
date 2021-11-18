@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/colored_cover.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/photo_cover.dart';
@@ -20,25 +21,26 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ArticleItemView extends HookWidget {
-  final MediaItemArticle article;
-  final List<Entry> allEntries;
   final int index;
   final double statusBarHeight;
   final MediaItemNavigationCallback navigationCallback;
+  final Topic topic;
 
-  const ArticleItemView({
-    required this.article,
-    required this.allEntries,
+  ArticleItemView({
     required this.index,
     required this.statusBarHeight,
     required this.navigationCallback,
+    required this.topic,
     Key? key,
-  }) : super(key: key);
+  })  : assert(topic.readingList.entries[index].item is MediaItemArticle,
+            'Article at index $index in reading list must be a MediaItemArticle'),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final allEntries = topic.readingList.entries;
     final currentEntry = allEntries[index];
-
+    final article = currentEntry.item as MediaItemArticle;
     return Container(
       color: currentEntry.style.type == EntryStyleType.articleCoverWithoutImage
           ? AppColors.background
@@ -54,10 +56,7 @@ class ArticleItemView extends HookWidget {
             MediaItemPageRoute(
               pageData: MediaItemPageData.multipleItems(
                 index: index,
-                articleList: allEntries
-                    .map((e) => e.item)
-                    .whereType<MediaItemArticle>()
-                    .toList(), //TODO fix when media page will accept other types
+                topic: topic,
                 navigationCallback: navigationCallback,
               ),
             ),
@@ -71,14 +70,8 @@ class ArticleItemView extends HookWidget {
               padding: const EdgeInsets.only(top: AppDimens.l, right: AppDimens.xxl),
               child: Row(
                 children: [
-                  Text(
-                    '${index + 1}',
-                    style: AppTypography.subH1Bold,
-                  ),
-                  Text(
-                    '/${allEntries.length} articles',
-                    style: AppTypography.subH1Regular,
-                  ),
+                  Text('${index + 1}', style: AppTypography.subH1Bold),
+                  Text('/${allEntries.length} articles', style: AppTypography.subH1Regular),
                 ],
               ),
             ),

@@ -19,4 +19,9 @@ class DailyBriefApiRepository implements DailyBriefRepository {
     final dto = await _dailyBriefApiDataSource.currentBrief();
     return _currentBriefDTOMapper(dto);
   }
+
+  @override
+  Future<String> getCurrentBriefId() {
+    return _dailyBriefApiDataSource.currentBriefId();
+  }
 }
