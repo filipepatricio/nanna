@@ -1,4 +1,7 @@
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.dart';
+import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
+import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_state.dart';
 import 'package:bloc/bloc.dart';
@@ -9,20 +12,23 @@ import 'package:injectable/injectable.dart';
 @injectable
 class ExplorePageCubit extends Cubit<ExplorePageState> {
   final GetExploreContentUseCase _getExploreContentUseCase;
+  final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
+  final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  late bool _isExploreTutorialStepSeen;
 
-  //TODO: add user first sign in logic
-  final _isUserFirstSignIn = true;
-
-  ExplorePageCubit(this._getExploreContentUseCase) : super(ExplorePageState.initialLoading());
+  ExplorePageCubit(this._getExploreContentUseCase, this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase)
+      : super(ExplorePageState.initialLoading());
 
   Future<void> initialize() async {
     try {
       final exploreContent = await _getExploreContentUseCase();
       emit(ExplorePageState.idle(exploreContent.areas));
 
-      if (_isUserFirstSignIn) {
+      _isExploreTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.explore);
+      if (!_isExploreTutorialStepSeen) {
         emit(ExplorePageState.showTutorialToast(
             LocaleKeys.tutorial_exploreTitle.tr(), LocaleKeys.tutorial_exploreMessage.tr()));
+        await _setTutorialStepSeenUseCase(TutorialStep.explore);
       }
     } catch (e, s) {
       Fimber.e('Loading explore area failed', ex: e, stacktrace: s);

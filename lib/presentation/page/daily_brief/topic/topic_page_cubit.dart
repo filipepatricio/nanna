@@ -1,3 +1,6 @@
+import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
+import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -11,31 +14,42 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 @injectable
 class TopicPageCubit extends Cubit<TopicPageState> {
-  //TODO: add user first sign in logic
-  final bool _isUserFirstSignIn = true;
-  bool _isSummaryCardTutorialCoachMarkFinished = false;
-  bool _isMediaItemTutorialCoachMarkFinished = false;
+  final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
+  final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  late bool _isTopicTutorialStepSeen;
+  late bool _isTopicSummaryCardTutorialStepSeen;
+  late bool _isTopicMediaItemTutorialStepSeen;
 
-  bool get isSummaryCardTutorialCoachMarkFinished => _isSummaryCardTutorialCoachMarkFinished;
-  bool get isMediaItemTutorialCoachMarkFinished => _isMediaItemTutorialCoachMarkFinished;
+  bool get isTopicSummaryCardTutorialStepSeen => _isTopicSummaryCardTutorialStepSeen;
+  bool get isTopicMediaItemTutorialStepSeen => _isTopicMediaItemTutorialStepSeen;
 
   List<TargetFocus> targets = <TargetFocus>[];
   final summaryCardKey = GlobalKey();
   final mediaItemKey = GlobalKey();
 
-  TopicPageCubit() : super(TopicPageState.loading());
+  TopicPageCubit(this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase) : super(TopicPageState.loading());
 
   Future<void> initialize() async {
     emit(TopicPageState.idle());
-    initializeTutorialCoachMarkTargets();
-    if (_isUserFirstSignIn) {
+    initializeSummaryCardTutorialCoachMarkTarget();
+    _isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
+    _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicSummaryCard);
+    _isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicMediaItem);
+    if (!_isTopicTutorialStepSeen) {
       emit(
           TopicPageState.showTutorialToast(LocaleKeys.tutorial_topicTitle.tr(), LocaleKeys.tutorial_topicMessage.tr()));
+      await _setTutorialStepSeenUseCase.call(TutorialStep.topic);
+    }
+    targets.clear();
+    if (!_isTopicSummaryCardTutorialStepSeen) {
+      initializeSummaryCardTutorialCoachMarkTarget();
+    }
+    if (!_isTopicMediaItemTutorialStepSeen) {
+      initializeMediaTypeTutorialCoachMarkTarget();
     }
   }
 
-  void initializeTutorialCoachMarkTargets() {
-    targets.clear();
+  void initializeSummaryCardTutorialCoachMarkTarget() {
     targets.add(TargetFocus(
       identify: 'summaryCardKey',
       keyTarget: summaryCardKey,
@@ -57,6 +71,9 @@ class TopicPageCubit extends Cubit<TopicPageState> {
       shape: ShapeLightFocus.RRect,
       radius: 5,
     ));
+  }
+
+  void initializeMediaTypeTutorialCoachMarkTarget() {
     targets.add(
       TargetFocus(
         identify: 'mediaItemKey',
@@ -82,17 +99,21 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     );
   }
 
-  void showSummaryCardTutorialCoachMark() {
-    if (!_isSummaryCardTutorialCoachMarkFinished) {
+  Future<void> showSummaryCardTutorialCoachMark() async {
+    _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase.call(TutorialStep.topicSummaryCard);
+    if (!_isTopicSummaryCardTutorialStepSeen) {
       emit(TopicPageState.showSummaryCardTutorialCoachMark());
-      _isSummaryCardTutorialCoachMarkFinished = true;
+      await _setTutorialStepSeenUseCase.call(TutorialStep.topicSummaryCard);
+      _isTopicSummaryCardTutorialStepSeen = true;
     }
   }
 
-  void showMediaItemTutorialCoachMark() {
-    if (!_isMediaItemTutorialCoachMarkFinished) {
+  Future<void> showMediaItemTutorialCoachMark() async {
+    _isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase.call(TutorialStep.topicMediaItem);
+    if (!_isTopicMediaItemTutorialStepSeen) {
       emit(TopicPageState.showMediaItemTutorialCoachMark());
-      _isMediaItemTutorialCoachMarkFinished = true;
+      await _setTutorialStepSeenUseCase.call(TutorialStep.topicMediaItem);
+      _isTopicMediaItemTutorialStepSeen = true;
     }
   }
 

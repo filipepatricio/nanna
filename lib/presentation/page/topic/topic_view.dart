@@ -74,10 +74,10 @@ class TopicView extends HookWidget {
 
     useEffect(() {
       final listener = () {
-        const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderImageHeight / 4;
+        const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderImageHeight / 3;
         if (listScrollController.offset >= summaryCardTriggerPosition &&
             !listScrollController.position.outOfRange &&
-            !cubit.isSummaryCardTutorialCoachMarkFinished) {
+            !cubit.isTopicSummaryCardTutorialStepSeen) {
           listScrollController.animateTo(summaryCardTriggerPosition,
               duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
           cubit.showSummaryCardTutorialCoachMark();
@@ -85,7 +85,7 @@ class TopicView extends HookWidget {
         const articleTriggerPosition = _topicHeaderImageHeight + _summaryPageViewHeight;
         if (listScrollController.offset >= articleTriggerPosition &&
             !listScrollController.position.outOfRange &&
-            !cubit.isMediaItemTutorialCoachMarkFinished) {
+            !cubit.isTopicMediaItemTutorialStepSeen) {
           listScrollController.animateTo(articleTriggerPosition,
               duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
           cubit.showMediaItemTutorialCoachMark();
