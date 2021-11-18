@@ -1,19 +1,18 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
+import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 const _topicTitleStyle = TextStyle(
   color: AppColors.white,
@@ -62,9 +61,9 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
   @override
   Widget build(BuildContext context) {
     final cloudinary = useCloudinaryProvider();
-    final imageUrl = useMemoized(
+    final image = useMemoized(
       () {
-        return cloudinary
+        final imageUrl = cloudinary
             .withPublicId(topic.heroImage.publicId)
             .transform()
             .width(_topicHeaderImageWidth.toInt())
@@ -72,35 +71,25 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
             .autoGravity()
             .autoQuality()
             .generateNotNull();
-      },
-    );
-    final image = useMemoized(
-      () => Image.network(
-        imageUrl,
-        width: _topicHeaderImageWidth,
-        height: _topicHeaderImageHeight,
-        fit: BoxFit.fill,
-      ),
-    );
 
-    useEffect(
-      () {
-        final stream = image.image.resolve(ImageConfiguration.empty);
-        final imageStreamListener = ImageStreamListener(
-          (info, syncCall) => _baseViewCompleter.complete(),
-          onError: (info, syncCall) => _baseViewCompleter.completeError(info),
+        return Image.network(
+          imageUrl,
+          width: _topicHeaderImageWidth,
+          height: _topicHeaderImageHeight,
+          fit: BoxFit.fill,
         );
-        stream.addListener(imageStreamListener);
-        return () => stream.removeListener(imageStreamListener);
       },
-      [image],
     );
 
-    return _Background(
-      child: _Sticker(
-        topic: topic,
-        articles: articles,
-        image: image,
+    return ImageLoadResolver(
+      images: [image],
+      completer: _baseViewCompleter,
+      child: _Background(
+        child: _Sticker(
+          topic: topic,
+          articles: articles,
+          image: image,
+        ),
       ),
     );
   }
@@ -120,23 +109,9 @@ class _Background extends StatelessWidget {
       child: Container(
         width: _viewWidth,
         height: _viewHeight,
-        color: AppColors.pastelGreen,
         child: Stack(
           children: [
-            ..._topCards(),
-            ..._centerCards(),
-            ..._leftCards(),
-            ..._rightCards(),
-            ..._bottomCards(),
-            Positioned(
-              right: 54,
-              bottom: 50,
-              child: SvgPicture.asset(
-                AppVectorGraphics.informedLogoDark,
-                width: 194.0,
-                height: 40,
-              ),
-            ),
+            Image.asset(AppRasterGraphics.shareStickerBackgroundGreen),
             Align(
               alignment: Alignment.center,
               child: child,
@@ -146,102 +121,6 @@ class _Background extends StatelessWidget {
       ),
     );
   }
-
-  List<Widget> _topCards() => [
-        const Positioned(
-          top: -498,
-          left: -128,
-          child: _EmptyCard(
-            height: 562,
-            width: 512,
-            rotation: -4,
-          ),
-        ),
-      ];
-
-  List<Widget> _centerCards() => [
-        const Positioned(
-          top: 286.78,
-          left: 151.46,
-          child: _EmptyCard(
-            height: 596.56,
-            width: 412.23,
-            rotation: -8.83,
-          ),
-        ),
-        const Positioned(
-          top: 261.41,
-          left: 152.51,
-          child: _EmptyCard(
-            height: 706.45,
-            width: 464.04,
-            rotation: -4.76,
-          ),
-        ),
-      ];
-
-  List<Widget> _leftCards() => [
-        const Positioned(
-          top: 860.7,
-          left: -444.27,
-          child: _EmptyCard(
-            height: 342.06,
-            width: 498.84,
-            rotation: -4,
-          ),
-        ),
-        const Positioned(
-          top: 354.98,
-          left: -394.27,
-          child: _EmptyCard(
-            height: 774.7,
-            width: 503.13,
-            rotation: -9.85,
-          ),
-        ),
-      ];
-
-  List<Widget> _rightCards() => [
-        const Positioned(
-          top: 87.61,
-          left: 715.89,
-          child: _EmptyCard(
-            height: 470.69,
-            width: 346.72,
-            rotation: -13.1,
-          ),
-        ),
-        const Positioned(
-          top: 82.5,
-          left: 694.68,
-          child: _EmptyCard(
-            height: 638.4,
-            width: 321.3,
-            rotation: -4,
-          ),
-        ),
-      ];
-
-  List<Widget> _bottomCards() => [
-        const Positioned(
-          top: 1089.27,
-          left: 377,
-          child: _EmptyCard(
-            height: 562.37,
-            width: 450.22,
-            rotation: -8.26,
-          ),
-        ),
-        const Positioned(
-          top: 1059.41,
-          left: 391.99,
-          child: _EmptyCard(
-            height: 562.37,
-            width: 450.22,
-            rotation: -4,
-          ),
-        ),
-      ];
 }
 
 class _Sticker extends StatelessWidget {
@@ -446,37 +325,6 @@ class _ArticleItem extends HookWidget {
             style: AppTypography.systemText,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _EmptyCard extends StatelessWidget {
-  final double width;
-  final double height;
-  final double rotation;
-
-  const _EmptyCard({
-    required this.width,
-    required this.height,
-    required this.rotation,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final angle = rotation * pi / 180;
-
-    return Transform.rotate(
-      angle: angle,
-      origin: Offset(width / 2, height / 2),
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: AppColors.background,
-          boxShadow: [_cardShadow],
-        ),
       ),
     );
   }
