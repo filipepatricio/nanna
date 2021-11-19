@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -11,9 +10,8 @@ import 'package:flutter_svg/svg.dart';
 
 class StackedCardsErrorView extends HookWidget {
   final double cardStackWidth;
-  final DailyBriefPageCubit cubit;
 
-  const StackedCardsErrorView({required this.cardStackWidth, required this.cubit, Key? key}) : super(key: key);
+  const StackedCardsErrorView({required this.cardStackWidth, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

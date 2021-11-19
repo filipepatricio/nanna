@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/explore/data/explore_content_section.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,5 +10,5 @@ class ExplorePageState with _$ExplorePageState {
   factory ExplorePageState.initialLoading() = _ExplorePageStateInitialLoading;
 
   @Implements(BuildState)
-  factory ExplorePageState.idle(List<ExploreContentSection> sections) = _ExplorePageStateIdle;
+  factory ExplorePageState.idle(List<ExploreContentArea> areas) = _ExplorePageStateIdle;
 }

@@ -14,6 +14,7 @@ class AppColors {
   static const Color lightGrey = Color(0xffFCFAF8);
   static const Color background = Color(0xffFCFAF8);
   static const Color appBarBackground = Color(0xff282B35);
+  static const Color darkLinen = Color(0xffF4F1EE);
   static const Color transparent = Color(0x00282b35);
   static const Color red = Color(0xffFF6969);
   static const Color blue = Color(0xff4579FF);
@@ -21,6 +22,9 @@ class AppColors {
   static const Color rose = Color(0xffF3E5F4);
   static const Color pastelGreen = Color(0xffE4F1E2);
   static const Color beige = Color(0xffF2E8E7);
+  static const Color dividerGrey = Color(0xffD1D5DB);
+  static const Color darkGrey = Color(0xff6B7280);
+  static const Color carrotRed = Color(0xffFB6F43);
 
   static const Color gradientOverlayStartColor = Color(0x90282b35);
   static const Color gradientOverlayEndColor = Color(0x00282B35);
@@ -30,6 +34,8 @@ class AppColors {
 
   static const Color settingsHeader = Color(0x44282B35);
   static const Color settingsIcon = Color(0xff898A8D);
+
+  static const Color greyDividerColor = Color(0xffE5E5EA);
 
   static const mockedColors = [
     AppColors.pastelGreen,

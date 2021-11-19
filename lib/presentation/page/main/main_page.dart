@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dart';
 import 'package:better_informed_mobile/presentation/page/main/widgets/bottom_navigation.dart';
+import 'package:better_informed_mobile/presentation/routing/observers/tabs_navigation_observer.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:flutter/material.dart';
@@ -40,28 +42,20 @@ class MainPage extends HookWidget {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
         child: AutoTabsScaffold(
-          key: mainPageKey,
-          animationDuration: const Duration(),
-          routes: const [
-            TodayTabGroupRouter(),
-            ExploreTabGroupRouter(),
-            ProfileTabGroupRouter(),
-          ],
-          bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(
-            state,
-            cubit,
-            tabsRouter,
-          ),
-        ),
+            key: mainPageKey,
+            animationDuration: const Duration(),
+            routes: const [
+              TodayTabGroupRouter(),
+              ExploreTabGroupRouter(),
+              ProfileTabGroupRouter(),
+            ],
+            bottomNavigationBuilder: (context, tabsRouter) => BottomNavigation(state, cubit, tabsRouter),
+            navigatorObservers: () => [getIt<TabsNavigationObserver>()]),
       ),
     );
   }
 
   void _onTokenExpiredEvent(BuildContext context) {
-    AutoRouter.of(context).replaceAll(
-      [
-        const SignInPageRoute(),
-      ],
-    );
+    AutoRouter.of(context).replaceAll([const SignInPageRoute()]);
   }
 }

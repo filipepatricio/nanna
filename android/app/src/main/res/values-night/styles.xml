@@ -16,5 +16,5 @@
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
 
-    <color name="splashScreenBackgroundColor">#282B35</color>
+    <color name="splashScreenBackgroundColor">#FCFAF8</color>
 </resources>

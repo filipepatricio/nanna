@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "informed_logo_white.svg",
+      "filename" : "dark_logo_informed.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "informed_logo_white-1.svg",
+      "filename" : "dark_logo_informed2.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "informed_logo_white-2.svg",
+      "filename" : "dark_logo_informed3.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

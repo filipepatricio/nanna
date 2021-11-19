@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/reading_list/reading_list_see_all_page.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/topics/topics_see_all_page.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
@@ -22,11 +22,7 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
 
 @AdaptiveAutoRouter(
   routes: [
-    CustomRoute(
-      page: EntryPage,
-      initial: true,
-      customRouteBuilder: fadePageRouteBuilder,
-    ),
+    CustomRoute(page: EntryPage, initial: true, customRouteBuilder: fadePageRouteBuilder),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
     AutoRoute(page: SettingsMainPage),
@@ -63,7 +59,7 @@ const dashboardTabRouter = CustomRoute(
       children: [
         AutoRoute(path: '', page: ExplorePage),
         AutoRoute(page: ArticleSeeAllPage),
-        AutoRoute(page: ReadingListSeeAllPage),
+        AutoRoute(page: TopicsSeeAllPage),
         AutoRoute(page: SingleTopicPage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],

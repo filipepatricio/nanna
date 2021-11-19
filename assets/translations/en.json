@@ -2,6 +2,7 @@
   "common": {
     "skip": "Skip",
     "continue": "Continue",
+    "next": "Next",
     "signOut": "Sign out",
     "signUp": "Sign up",
     "cancel": "Cancel",
@@ -11,12 +12,19 @@
   },
   "onboarding": {
     "title": "How we use push notifications",
-    "headerSlideOne": "New daily brief",
-    "headerSlideTwo": "Incoming topic",
-    "headerSlideThree": "Product updates",
-    "descriptionSlideOne": "Our small and dedicated editorial screens extensively the most reliable sources every day - and creates a daily brief for you.",
-    "descriptionSlideTwo": "We need some text here...",
-    "descriptionSlideThree": "We will keep you posted about our constant improvements and new features of our app to give you the best experience."
+    "headerSlideOne": "Quality news. Handpicked. Just for you.",
+    "headerSlideTwo": "Non-partisan reporting, cutting through the noise",
+    "headerSlideThree": "Notifications",
+    "descriptionSlideOne": "Behind the tech, our editorial team selects the must know topics, sourcing the very best articles so they can carefully create your Daily Brief.",
+    "descriptionSlideTwo": "Providing an array of perspectives, as we strive to repair the divided media landscape, presenting you the context to understand this complex world.",
+    "notificationBulletPoints": {
+      "headerOne": "Daily News Brief",
+      "descOne": "Our skilled editorial team screens and selects the top articles of the day.",
+      "headerTwo": "Incoming Updates",
+      "descTwo": "Emerging updates and new topics will be provided for you on a rolling basis, every day.",
+      "headerThree": "Fresh App Updates",
+      "descThree": "We are constantly improving our product. We will keep you posted on new improvements and features."
+    }
   },
   "main": {
     "todayTab": "Today",
@@ -39,16 +47,15 @@
     "settings": "Settings",
     "profileHeader": "Profile",
     "account": "Account",
-    "pushNotifications": "Push Notifications",
+    "pushNotifications": "Notifications",
     "emailNotifications": "E-Mail Notifications",
     "subscription": "Subscription",
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of service",
 
-    "settingsOverview": "Settings Overview",
-    "privacyPolicyContent": "This is a placerholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
-    "termsContent": "This is a placerholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
+    "privacyPolicyContent": "This is a placeholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
+    "termsContent": "This is a placeholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "newsUpdates": "News Updates",
     "newDailyBrief": "NewDailyBrief",
     "incomingNewTopic": "Incoming new topic ",
@@ -66,17 +73,16 @@
   "signIn": {
     "header": {
       "signIn": "Welcome to the smart & flexible news format",
-      "magicLink": "We’ve send you a magic link. Check your mail!"
-    },
-    "providerInfo": {
-      "apple": "Sign up with Apple or fill the form to continue",
-      "google": "Sign up with Google or fill the form to continue"
+      "magicLinkOne": "_Check your mail!_",
+      "magicLinkTwo": "We’ve send you a magic link."
     },
     "providerButton": {
       "apple": "Sign in with Apple",
       "google": "Sign in with Google"
     },
-    "emailHint": "E-mail address...",
+    "emailLabel": "Email address",
+    "orContinue": "Or continue with",
+    "receiveNews": "I’d like to receive news and updates from informed",
     "consentParts": {
       "info": "By signing up, you agree to our ",
       "terms": "Terms of Service",
@@ -101,11 +107,11 @@
     "articleBy": "By {}",
     "readMore": "Read more",
     "readMinutes": "{} min",
-    "loadingNext": "Loading next article",
-    "allArticlesRead": "Nice! You’ve read all articles in the reading list.",
+    "loadingNext": "Loading next article in\nthe reading list.",
+    "allArticlesRead": "Great! You’ve read all\narticles in the reading list.",
     "goBackToTopic": "Back to topic overview",
     "openSourceUrl": "Open in Browser",
-    "loadError": "Something went wrong\n during loading the article"
+    "loadError": "Something went wrong\n while loading the article"
   },
   "readingList": {
     "title": "Reading list",
@@ -125,5 +131,10 @@
     "feedbackButton": "Give feedback",
     "feedbackSubject": "Feedback on Informed App",
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed"
+  },
+  "shareTopic": {
+    "title": "Select the articles you want to share related to the topic",
+    "amountInfo": "You can share up to {} articles",
+    "selectedLabel": "{}/{} articles selected"
   }
 }

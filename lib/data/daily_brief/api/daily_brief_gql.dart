@@ -6,6 +6,7 @@ class DailyBriefGql {
   static DocumentNode currentBrief() => gql('''
     query currentBriefForStartupScreen {
       currentBrief {
+        id
         $_greeting
         $_goodbye
         numberOfTopics

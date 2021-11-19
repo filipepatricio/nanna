@@ -16,6 +16,7 @@ class CurrentBriefDTOMapper implements Mapper<CurrentBriefDTO, CurrentBrief> {
   @override
   CurrentBrief call(CurrentBriefDTO data) {
     return CurrentBrief(
+      id: data.id,
       greeting: _headlineDTOMapper(data.greeting),
       goodbye: _headlineDTOMapper(data.goodbye),
       topics: data.topics.map<Topic>(_topicDTOMapper).toList(),

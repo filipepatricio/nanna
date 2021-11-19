@@ -20,12 +20,13 @@ class SettingsMainPage extends HookWidget {
     useCubitListener(cubit, _handleState);
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
         title: Text(
           LocaleKeys.settings_settings.tr(),
-          style: AppTypography.h3Bold,
+          style: AppTypography.h3bold,
         ),
         centerTitle: true,
       ),

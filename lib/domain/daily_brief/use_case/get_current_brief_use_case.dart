@@ -9,4 +9,6 @@ class GetCurrentBriefUseCase {
   GetCurrentBriefUseCase(this._dailyBriefRepository);
 
   Future<CurrentBrief> call() => _dailyBriefRepository.getCurrentBrief();
+
+  Stream<CurrentBrief> get stream => _dailyBriefRepository.currentBriefStream();
 }

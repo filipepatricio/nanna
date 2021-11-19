@@ -14,10 +14,8 @@ class MainCubit extends Cubit<MainState> {
 
   StreamSubscription? _tokenExpirationSubscription;
 
-  MainCubit(
-    this._getTokenExpirationStreamUseCase,
-    this._maybeRegisterPushNotificationTokenUseCase,
-  ) : super(const MainState.init());
+  MainCubit(this._getTokenExpirationStreamUseCase, this._maybeRegisterPushNotificationTokenUseCase)
+      : super(const MainState.init());
 
   @override
   Future<void> close() async {

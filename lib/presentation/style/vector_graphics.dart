@@ -3,7 +3,10 @@ class AppVectorGraphics {
 
   static const String onboardingSlideOne = 'assets/vector_graphics/onboarding_slide_one.svg';
   static const String onboardingSlideTwo = 'assets/vector_graphics/onboarding_slide_two.svg';
-  static const String onboardingSlideThree = 'assets/vector_graphics/onboarding_slide_three.svg';
+  static const String happyGreenSun = 'assets/vector_graphics/happy_green_sun_ic.svg';
+  static const String notes = 'assets/vector_graphics/notes_ic.svg';
+  static const String megaphone = 'assets/vector_graphics/megaphone_ic.svg';
+  static const String fullArrowRight = 'assets/vector_graphics/full_arrow_right_ic.svg';
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
   static const String exploreSelected = 'assets/vector_graphics/explore_selected_ic.svg';
@@ -30,8 +33,9 @@ class AppVectorGraphics {
   static const String loadNextArticle = 'assets/vector_graphics/load_next_article.svg';
   static const String noNextArticle = 'assets/vector_graphics/no_next_article.svg';
 
-  static const String mail = 'assets/vector_graphics/mail.svg';
+  static const String mail = 'assets/vector_graphics/mail_ic.svg';
   static const String googleSignIn = 'assets/vector_graphics/google_sign_in.svg';
+  static const String appleSignIn = 'assets/vector_graphics/apple_logo_black.svg';
 
   static const String readsExploreError = 'assets/vector_graphics/my_reads_explore_error_ic.svg';
   static const String articleError = 'assets/vector_graphics/article_error_ic.svg';
@@ -45,6 +49,9 @@ class AppVectorGraphics {
   static const String sadSun = 'assets/vector_graphics/sad_sun.svg';
 
   static const String stayTuned = 'assets/vector_graphics/stay_tuned.svg';
-
   static const String openWeb = 'assets/vector_graphics/open_web_ic.svg';
+
+  static const String shareNotSelected = 'assets/vector_graphics/share_not_selected.svg';
+  static const String shareSelected = 'assets/vector_graphics/share_selected.svg';
+  static const String closeIOS = 'assets/vector_graphics/close_ios.svg';
 }

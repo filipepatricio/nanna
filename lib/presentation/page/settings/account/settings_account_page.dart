@@ -27,7 +27,7 @@ class SettingsAccountPage extends HookWidget {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
         title: Text(
-          LocaleKeys.settings_settingsOverview.tr(),
+          LocaleKeys.settings_settings.tr(),
           style: AppTypography.subH1Medium,
           textAlign: TextAlign.center,
         ),

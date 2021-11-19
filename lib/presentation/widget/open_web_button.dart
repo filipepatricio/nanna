@@ -31,10 +31,7 @@ class OpenWebButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppDimens.sl,
-              horizontal: AppDimens.l,
-            ),
+            height: AppDimens.buttonHeight,
             decoration: const BoxDecoration(
               color: AppColors.black,
               borderRadius: BorderRadius.all(
@@ -47,6 +44,7 @@ class OpenWebButton extends StatelessWidget {
                 SvgPicture.asset(
                   AppVectorGraphics.openWeb,
                   fit: BoxFit.contain,
+                  height: AppDimens.m,
                 ),
                 const SizedBox(width: AppDimens.sl),
                 Text(

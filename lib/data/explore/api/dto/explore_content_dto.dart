@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/explore/api/dto/explore_content_section_dto.dart';
+import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'explore_content_dto.g.dart';
@@ -6,7 +6,7 @@ part 'explore_content_dto.g.dart';
 @JsonSerializable()
 class ExploreContentDTO {
   @JsonKey(name: 'getExploreSection')
-  final List<ExploreContentSectionDTO> data;
+  final List<ExploreContentAreaDTO> data;
 
   ExploreContentDTO(this.data);
 

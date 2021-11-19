@@ -3,5 +3,6 @@ import 'package:better_informed_mobile/presentation/page/settings/account/settin
 
 abstract class UserRepository {
   Future<User> getUser();
+
   Future<User> updateUser(SettingsAccountData settingsAccountData);
 }

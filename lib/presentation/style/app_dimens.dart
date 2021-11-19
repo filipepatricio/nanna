@@ -90,6 +90,9 @@ class AppDimens {
   /// 8
   static const buttonRadius = 8.0;
 
+  ///50
+  static const buttonHeight = 50.0;
+
   /// 10
   static const articleItemMargin = 10.0;
 
@@ -113,4 +116,16 @@ class AppDimens {
 
   /// 80
   static const topicAppBarAnimationFactor = 80.0;
+
+  /// 52
+  static const onboardingIconSize = 52.0;
+
+  /// 164
+  static const logoWidth = 164.0;
+
+  /// 35
+  static const logoHeight = 35.0;
+
+  /// 20
+  static const shareBottomSheetRadius = 20.0;
 }
