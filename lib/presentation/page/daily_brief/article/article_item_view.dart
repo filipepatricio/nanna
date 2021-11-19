@@ -13,7 +13,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
-import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_introduction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +91,7 @@ class ArticleItemView extends HookWidget {
                 width: AppDimens.articleItemWidth,
                 child: Row(
                   children: [
-                    ShareButton(onTap: () {}),
+                    ShareArticleButton(article: article),
                     const Spacer(),
                     const ReadMoreLabel(fontSize: AppDimens.m),
                   ],
