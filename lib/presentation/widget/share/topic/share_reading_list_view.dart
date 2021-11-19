@@ -86,17 +86,39 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
       },
     );
 
+    final logosMap = useMemoized(() => _prepareLogos(cloudinary));
+
     return ImageLoadResolver(
-      images: [image],
+      images: [image, ...logosMap.values],
       completer: _baseViewCompleter,
       child: _Background(
         child: _Sticker(
           topic: topic,
           articles: articles,
           image: image,
+          articleLogos: logosMap,
         ),
       ),
     );
+  }
+
+  Map<String, Image> _prepareLogos(CloudinaryImageProvider cloudinary) {
+    final entries = articles.where((element) => element.publisher.darkLogo != null).map((article) {
+      final image = Image.network(
+        cloudinary
+            .withPublicIdAsPng(article.publisher.darkLogo!.publicId)
+            .transform()
+            .width(_publisherLogoSize.toInt())
+            .height(_publisherLogoSize.toInt())
+            .fit()
+            .generateNotNull(),
+        width: _publisherLogoSize,
+        height: _publisherLogoSize,
+      );
+      return MapEntry(article.id, image);
+    }).toList();
+
+    return Map.fromEntries(entries);
   }
 }
 
@@ -132,11 +154,13 @@ class _Sticker extends StatelessWidget {
   final Topic topic;
   final List<MediaItemArticle> articles;
   final Image image;
+  final Map<String, Image> articleLogos;
 
   const _Sticker({
     required this.topic,
     required this.articles,
     required this.image,
+    required this.articleLogos,
     Key? key,
   }) : super(key: key);
 
@@ -159,7 +183,10 @@ class _Sticker extends StatelessWidget {
           const SizedBox(height: AppDimens.xl),
           Padding(
             padding: const EdgeInsets.only(left: _articleListPadding),
-            child: _ArticleRow(articles: articles),
+            child: _ArticleRow(
+              articles: articles,
+              articleLogos: articleLogos,
+            ),
           ),
           const SizedBox(height: AppDimens.xl),
         ],
@@ -246,9 +273,11 @@ class _Author extends StatelessWidget {
 
 class _ArticleRow extends StatelessWidget {
   final List<MediaItemArticle> articles;
+  final Map<String, Image> articleLogos;
 
   const _ArticleRow({
     required this.articles,
+    required this.articleLogos,
     Key? key,
   }) : super(key: key);
 
@@ -268,26 +297,29 @@ class _ArticleRow extends StatelessWidget {
       final article = articles[i];
       final color = AppColors.mockedColors[i % AppColors.mockedColors.length];
 
-      yield _ArticleItem(article: article, backgroundColor: color);
+      yield _ArticleItem(
+        article: article,
+        backgroundColor: color,
+        logo: articleLogos[article.id],
+      );
     }
   }
 }
 
-class _ArticleItem extends HookWidget {
+class _ArticleItem extends StatelessWidget {
   final MediaItemArticle article;
   final Color backgroundColor;
+  final Image? logo;
 
   const _ArticleItem({
     required this.article,
     required this.backgroundColor,
+    required this.logo,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cloudinary = useCloudinaryProvider();
-    final logoId = article.publisher.darkLogo?.publicId;
-
     return Container(
       width: _articleItemWidth,
       height: _articleItemHeight,
@@ -296,20 +328,10 @@ class _ArticleItem extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (logoId != null)
+          if (logo != null)
             Align(
               alignment: Alignment.centerLeft,
-              child: Image.network(
-                cloudinary
-                    .withPublicIdAsPng(logoId)
-                    .transform()
-                    .width(_publisherLogoSize.toInt())
-                    .height(_publisherLogoSize.toInt())
-                    .fit()
-                    .generateNotNull(),
-                width: _publisherLogoSize,
-                height: _publisherLogoSize,
-              ),
+              child: logo,
             )
           else
             const SizedBox(height: _publisherLogoSize),
