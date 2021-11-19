@@ -45,7 +45,7 @@ class SettingsInputItem extends HookWidget {
           style: AppTypography.input1Medium,
           onChanged: (value) => onChanged(value),
           decoration: InputDecoration(
-            border: null,
+            border: isEditable ? null : InputBorder.none,
             suffixIcon: isEditable && isFormFocused
                 ? GestureDetector(
                     onTap: () {
@@ -53,13 +53,17 @@ class SettingsInputItem extends HookWidget {
                       onClear();
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(AppDimens.s),
+                      padding: const EdgeInsets.all(AppDimens.sl),
                       child: Container(
                         decoration: const BoxDecoration(
                           color: AppColors.grey,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.clear, color: AppColors.settingsIcon),
+                        child: const Icon(
+                          Icons.clear,
+                          size: AppDimens.m,
+                          color: AppColors.settingsIcon,
+                        ),
                       ),
                     ),
                   )
