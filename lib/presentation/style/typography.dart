@@ -87,6 +87,15 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h3boldLoraItalic = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyLora,
+    fontStyle: FontStyle.italic,
+    fontSize: 18,
+    height: 1.25,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h4Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -141,6 +150,15 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 14,
     height: 2.21,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle subH2BoldSmall = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 10,
+    height: 1.366,
+    letterSpacing: 0.15,
     color: AppColors.textPrimary,
   );
 

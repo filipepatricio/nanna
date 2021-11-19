@@ -35,6 +35,8 @@ class AppColors {
   static const Color settingsHeader = Color(0x44282B35);
   static const Color settingsIcon = Color(0xff898A8D);
 
+  static const Color greyDividerColor = Color(0xffE5E5EA);
+
   static const mockedColors = [
     AppColors.pastelGreen,
     AppColors.rose,

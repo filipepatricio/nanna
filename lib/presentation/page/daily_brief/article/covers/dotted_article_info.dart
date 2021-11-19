@@ -14,6 +14,7 @@ class DottedArticleInfo extends StatelessWidget {
   final bool showDate;
   final bool fullDate;
   final bool showReadTime;
+  final TextStyle textStyle;
 
   const DottedArticleInfo({
     required this.article,
@@ -22,6 +23,7 @@ class DottedArticleInfo extends StatelessWidget {
     this.showDate = true,
     this.fullDate = false,
     this.showReadTime = true,
+    this.textStyle = AppTypography.metadata1Regular,
     Key? key,
   })  : assert(showPublisher || showDate || showReadTime, 'Select at least one of the sections to show'),
         super(key: key);
@@ -39,20 +41,20 @@ class DottedArticleInfo extends StatelessWidget {
             PublisherLogo.dark(publisher: article.publisher),
           Text(
             article.publisher.name,
-            style: AppTypography.metadata1Regular.copyWith(color: mainColor),
+            style: textStyle.copyWith(color: mainColor),
           ),
         ],
         if (showDate && publicationDate != null)
           Text(
             '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
-            style: AppTypography.metadata1Regular.copyWith(color: mainColor),
+            style: textStyle.copyWith(color: mainColor),
           ),
         if (showReadTime)
           Text(
             '${showPublisher || showDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
               args: [article.timeToRead.toString()],
             )}',
-            style: AppTypography.metadata1Regular.copyWith(color: mainColor),
+            style: textStyle.copyWith(color: mainColor),
           ),
       ],
     );

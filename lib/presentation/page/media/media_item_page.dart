@@ -20,6 +20,7 @@ import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -276,7 +277,11 @@ class _IdleContent extends HookWidget {
               physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               controller: controller,
               slivers: [
-                _ActionsBar(fullHeight: articleWithImage ? fullHeight : appBarHeight, controller: controller),
+                _ActionsBar(
+                  article: article,
+                  fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                  controller: controller,
+                ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
@@ -340,11 +345,13 @@ class _IdleContent extends HookWidget {
 
 class _ActionsBar extends HookWidget {
   const _ActionsBar({
+    required this.article,
     required this.fullHeight,
     required this.controller,
     Key? key,
   }) : super(key: key);
 
+  final MediaItemArticle article;
   final double fullHeight;
   final ScrollController controller;
 
@@ -422,20 +429,9 @@ class _ActionsBar extends HookWidget {
                 ],
               ),
               Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                  color: AppColors.background,
-                  shape: BoxShape.circle,
-                ),
                 padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: SvgPicture.asset(
-                    AppVectorGraphics.share,
-                    color: AppColors.textPrimary,
-                    fit: BoxFit.cover,
-                  ),
+                child: ShareArticleButton(
+                  article: article,
                 ),
               ),
             ],
