@@ -18,6 +18,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/track/topic_summary_tracker/topic_summary_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
@@ -207,9 +208,13 @@ class _SummaryContent extends HookWidget {
     }
 
     final content = topic.topicSummaryList.length > 1
-        ? _SummaryCardPageView(
+        ? TopicSummaryTracker(
             topic: topic,
-            controller: controller,
+            summaryPageController: controller,
+            child: _SummaryCardPageView(
+              topic: topic,
+              controller: controller,
+            ),
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
