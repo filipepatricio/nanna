@@ -200,7 +200,7 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyLora,
     fontSize: 16,
-    height: 1.27,
+    height: 1.5,
     color: AppColors.textPrimary,
   );
 

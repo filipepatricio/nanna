@@ -79,6 +79,8 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 background-color: #FCFAF8;
                 color: #282B35;
                 font-family: Lora;
+                line-height: 1.5;
+                font-weight: 500;
               }
               ol {
                 padding-left: 24px;

@@ -33,20 +33,27 @@ class ArticleContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.background,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _ArticleHeader(article: article),
-          const SizedBox(height: AppDimens.xl),
-          Container(
-            key: articleContentKey,
-            child: articleContent(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: _ArticleHeader(article: article),
+        ),
+        Container(
+          color: AppColors.background,
+          child: Column(
+            children: [
+              const SizedBox(height: AppDimens.xl),
+              Container(
+                key: articleContentKey,
+                child: articleContent(),
+              ),
+              const SizedBox(height: AppDimens.l),
+            ],
           ),
-          const SizedBox(height: AppDimens.l),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
