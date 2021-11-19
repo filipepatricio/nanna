@@ -285,16 +285,13 @@ class _IdleContent extends HookWidget {
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      Padding(
-                        padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.l),
-                        child: ArticleContentView(
-                          article: article,
-                          content: content,
-                          cubit: cubit,
-                          controller: controller,
-                          articleContentKey: _articleContentKey,
-                          scrollToPosition: () => scrollToPosition(readArticleProgress),
-                        ),
+                      ArticleContentView(
+                        article: article,
+                        content: content,
+                        cubit: cubit,
+                        controller: controller,
+                        articleContentKey: _articleContentKey,
+                        scrollToPosition: () => scrollToPosition(readArticleProgress),
                       ),
                     ],
                   ),
