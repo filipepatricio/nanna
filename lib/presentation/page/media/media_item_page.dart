@@ -72,15 +72,16 @@ class MediaItemPage extends HookWidget {
     final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
 
-    useCubitListener<MediaItemCubit, MediaItemState>(cubit, (cubit, state, context) {
-      state.mapOrNull(nextPageLoaded: (state) {
-        navigationCallback?.call(state.index);
-      });
-    });
-
     final scrollController = useMemoized(
       () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
     );
+
+    useCubitListener<MediaItemCubit, MediaItemState>(cubit, (cubit, state, context) {
+      state.mapOrNull(nextPageLoaded: (state) {
+        navigationCallback?.call(state.index);
+        scrollController.jumpTo(0.0);
+      });
+    });
 
     useEffect(() {
       cubit.initialize(index, singleArticle, topic);
