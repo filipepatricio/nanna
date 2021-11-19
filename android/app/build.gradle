@@ -133,7 +133,7 @@ android {
             applicationIdSuffix ".staging"
 
             resValue "string", "app_name", "informed test"
-            resValue "string", "app_link_host", "staging.informed.so"
+            resValue "string", "app_link_host", "app.staging.informed.so"
 
             if (propertyMap.containsKey('stage')) {
                 signingConfig signingConfigs.releaseStage
