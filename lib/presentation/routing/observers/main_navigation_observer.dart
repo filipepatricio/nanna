@@ -1,39 +1,44 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
 import 'package:flutter/material.dart';
 
 class MainNavigationObserver extends AutoRouterObserver {
-  final MainCubit mainCubit;
+  final TrackActivityUseCase _trackActivityUseCase;
 
-  MainNavigationObserver(this.mainCubit);
+  MainNavigationObserver() : _trackActivityUseCase = getIt<TrackActivityUseCase>();
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    _logView(route, previousRoute);
-  }
-
-  Future<void> _logView(Route route, Route? previousRoute) async {
     switch (route.settings.name) {
       case TopicPageRoute.name:
         final args = route.settings.arguments as TopicPageRouteArgs;
         final topicId = args.currentBrief.topics[args.index].id;
-        return await mainCubit.trackTopicView(topicId);
+        return _trackActivityUseCase.trackTopicPage(topicId);
       case SingleTopicPageRoute.name:
         final args = route.settings.arguments as SingleTopicPageRouteArgs;
         final topicId = args.topic.id;
-        return await mainCubit.trackTopicView(topicId);
+        return _trackActivityUseCase.trackTopicPage(topicId);
       case MediaItemPageRoute.name:
         // Handled in MediaItemCubit
         return;
       case ArticleSeeAllPageRoute.name:
         final args = route.settings.arguments as ArticleSeeAllPageRouteArgs;
-        return await mainCubit.trackExploreAreaView(args.areaId);
+        return _trackActivityUseCase.trackExploreAreaPage(args.areaId);
       case TopicsSeeAllPageRoute.name:
         final args = route.settings.arguments as TopicsSeeAllPageRouteArgs;
-        return await mainCubit.trackExploreAreaView(args.areaId);
+        return _trackActivityUseCase.trackExploreAreaPage(args.areaId);
       default:
-        return await mainCubit.trackPageView(route.settings.name);
+        switch (route.settings.name) {
+          case SettingsMainPageRoute.name:
+            return _trackActivityUseCase.trackPage('Settings');
+          case SettingsAccountPageRoute.name:
+            return _trackActivityUseCase.trackPage('Account Settings');
+          case SettingsNotificationsPageRoute.name:
+            return _trackActivityUseCase.trackPage('Notification Settings');
+        }
+        return;
     }
   }
 }

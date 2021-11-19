@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
@@ -46,9 +45,9 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   }
 
   @override
-  Future<void> dailyBriefPage(String briefId) {
-    log('dailyBriefPage $briefId');
-    return _trackPage(
+  void dailyBriefPage(String briefId) {
+    Fimber.d('dailyBriefPage $briefId');
+    _trackPage(
       'Daily Brief',
       {
         'brief_id': briefId,
@@ -57,9 +56,9 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   }
 
   @override
-  Future<void> topicPage(String topicId) {
-    log('topicPage $topicId');
-    return _trackPage(
+  void topicPage(String topicId) {
+    Fimber.d('topicPage $topicId');
+    _trackPage(
       'Topic',
       {
         'topic_id': topicId,
@@ -68,9 +67,9 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   }
 
   @override
-  Future<void> articlePage(String articleId, [String? topicId]) {
-    log('articlePage $articleId, topic $topicId');
-    return _trackPage(
+  void articlePage(String articleId, [String? topicId]) {
+    Fimber.d('articlePage $articleId, topic $topicId');
+    _trackPage(
       'Article',
       {
         'article_id': articleId,
@@ -80,9 +79,9 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   }
 
   @override
-  Future<void> exploreAreaPage(String exploreAreaId) {
-    log('exploreAreaPage $exploreAreaId');
-    return _trackPage(
+  void exploreAreaPage(String exploreAreaId) {
+    Fimber.d('exploreAreaPage $exploreAreaId');
+    _trackPage(
       'Explore Area',
       {
         'explore_area_id': exploreAreaId,
@@ -91,11 +90,12 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   }
 
   @override
-  Future<void> page(String name) {
-    log('page $name');
-    return _trackPage(name);
+  void page(String name) {
+    Fimber.d('page $name');
+    _trackPage(name);
   }
 
-  Future<void> _trackPage(String name, [Map<String, dynamic>? properties]) =>
-      Segment.screen(screenName: name, properties: properties);
+  void _trackPage(String name, [Map<String, dynamic>? properties]) {
+    Segment.screen(screenName: name, properties: properties);
+  }
 }

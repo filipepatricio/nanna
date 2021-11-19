@@ -5,13 +5,13 @@ abstract class AnalyticsRepository {
 
   Future<void> logout();
 
-  Future<void> page(String name);
+  void page(String name);
 
-  Future<void> dailyBriefPage(String briefId);
+  void dailyBriefPage(String briefId);
 
-  Future<void> topicPage(String topicId);
+  void topicPage(String topicId);
 
-  Future<void> articlePage(String articleId, [String? topicId]);
+  void articlePage(String articleId, [String? topicId]);
 
-  Future<void> exploreAreaPage(String exploreAreaId);
+  void exploreAreaPage(String exploreAreaId);
 }

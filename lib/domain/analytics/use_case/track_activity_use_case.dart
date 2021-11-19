@@ -7,14 +7,13 @@ class TrackActivityUseCase {
 
   TrackActivityUseCase(this._analyticsRepository);
 
-  Future<void> trackDailyBriefPage(String briefId) => _analyticsRepository.dailyBriefPage(briefId);
+  void trackDailyBriefPage(String briefId) => _analyticsRepository.dailyBriefPage(briefId);
 
-  Future<void> trackTopicPage(String topicId) => _analyticsRepository.topicPage(topicId);
+  void trackTopicPage(String topicId) => _analyticsRepository.topicPage(topicId);
 
-  Future<void> trackArticlePage(String articleId, [String? topicId]) =>
-      _analyticsRepository.articlePage(articleId, topicId);
+  void trackArticlePage(String articleId, [String? topicId]) => _analyticsRepository.articlePage(articleId, topicId);
 
-  Future<void> trackExploreAreaPage(String exploreAreaId) => _analyticsRepository.exploreAreaPage(exploreAreaId);
+  void trackExploreAreaPage(String exploreAreaId) => _analyticsRepository.exploreAreaPage(exploreAreaId);
 
-  Future<void> trackPage(String name) => _analyticsRepository.page(name);
+  void trackPage(String name) => _analyticsRepository.page(name);
 }
