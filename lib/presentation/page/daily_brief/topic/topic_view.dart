@@ -51,6 +51,7 @@ class TopicView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventController = useEventTrackController();
     final pageIndex = useState(0);
     final listScrollController = useScrollController();
     final articleController = usePageController();
@@ -86,11 +87,15 @@ class TopicView extends HookWidget {
             children: [
               _TopicHeader(topic: topic),
               _SummaryContent(topic: topic),
-              _MediaItemContent(
-                articleContentHeight: articleContentHeight,
-                controller: articleController,
-                pageIndex: pageIndex,
-                topic: topic,
+              GeneralEventTracker(
+                controller: eventController,
+                child: _MediaItemContent(
+                  articleContentHeight: articleContentHeight,
+                  controller: articleController,
+                  pageIndex: pageIndex,
+                  topic: topic,
+                  eventController: eventController,
+                ),
               ),
             ],
           ),
@@ -358,73 +363,82 @@ class _MediaItemContent extends HookWidget {
   final PageController controller;
   final ValueNotifier<int> pageIndex;
   final Topic topic;
+  final GeneralEventTrackerController eventController;
 
   const _MediaItemContent({
     required this.articleContentHeight,
     required this.controller,
     required this.pageIndex,
     required this.topic,
+    required this.eventController,
   });
 
   @override
   Widget build(BuildContext context) {
-    final eventController = useEventTrackController();
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final entryList = topic.readingList.entries;
 
-    return GeneralEventTracker(
-      controller: eventController,
-      child: Container(
-        height: articleContentHeight,
-        child: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              child: NoScrollGlow(
-                child: PageView.builder(
-                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                  controller: controller,
-                  scrollDirection: Axis.vertical,
-                  onPageChanged: (index) {
-                    final event = AnalyticsEvent.readingListBrowsed(
-                      topic.id,
-                      index,
+    useEffect(
+      () {
+        _trackReadingListBrowse(0);
+      },
+      [topic],
+    );
+
+    return Container(
+      height: articleContentHeight,
+      child: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            child: NoScrollGlow(
+              child: PageView.builder(
+                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                controller: controller,
+                scrollDirection: Axis.vertical,
+                onPageChanged: (index) {
+                  _trackReadingListBrowse(index);
+                  pageIndex.value = index;
+                },
+                itemCount: entryList.length,
+                itemBuilder: (context, index) {
+                  final currentMediaItem = entryList[index].item;
+                  //TODO: Handling different media types
+                  if (currentMediaItem is MediaItemArticle) {
+                    return ArticleItemView(
+                      index: index,
+                      topic: topic,
+                      statusBarHeight: statusBarHeight,
+                      navigationCallback: (index) => controller.jumpToPage(index),
                     );
-                    eventController.track(event);
-                    pageIndex.value = index;
-                  },
-                  itemCount: entryList.length,
-                  itemBuilder: (context, index) {
-                    final currentMediaItem = entryList[index].item;
-                    //TODO: Handling different media types
-                    if (currentMediaItem is MediaItemArticle) {
-                      return ArticleItemView(
-                        index: index,
-                        topic: topic,
-                        statusBarHeight: statusBarHeight,
-                        navigationCallback: (index) => controller.jumpToPage(index),
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
-                ),
+                  } else {
+                    return const SizedBox();
+                  }
+                },
               ),
             ),
-            Positioned.fill(
-              top: statusBarHeight,
-              right: null,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
-                child: VerticalIndicators(
-                  currentIndex: pageIndex.value,
-                  pageListLength: entryList.length,
-                ),
+          ),
+          Positioned.fill(
+            top: statusBarHeight,
+            right: null,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
+              child: VerticalIndicators(
+                currentIndex: pageIndex.value,
+                pageListLength: entryList.length,
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
+  }
+
+  void _trackReadingListBrowse(int index) {
+    final event = AnalyticsEvent.readingListBrowsed(
+      topic.id,
+      index,
+    );
+    eventController.track(event);
   }
 }
