@@ -9,17 +9,7 @@ class TrackActivityUseCase {
 
   TrackActivityUseCase(this._analyticsRepository);
 
-  void trackDailyBriefPage(String briefId) => _analyticsRepository.dailyBriefPage(briefId);
-
-  void trackTopicPage(String topicId) => _analyticsRepository.topicPage(topicId);
-
-  void trackArticlePage(String articleId, [String? topicId]) => _analyticsRepository.articlePage(articleId, topicId);
-
-  void trackExploreAreaPage(String exploreAreaId) => _analyticsRepository.exploreAreaPage(exploreAreaId);
-
-  void trackPage(String name) => _analyticsRepository.page(name);
-
-  void trackPageV2(AnalyticsPage page) => _analyticsRepository.pageV2(page);
+  void trackPage(AnalyticsPage page) => _analyticsRepository.page(page);
 
   void trackEvent(AnalyticsEvent event) => _analyticsRepository.event(event);
 }

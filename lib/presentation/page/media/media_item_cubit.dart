@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/analytics_page.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
@@ -123,7 +124,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     if (article == null) {
       emit(MediaItemState.error(_getCurrentHeader()));
     } else {
-      _trackActivityUseCase.trackArticlePage(article.article.id, _topic?.id);
+      _trackActivityUseCase.trackPage(AnalyticsPage.article(article.article.id, _topic?.id));
       if (_allArticles.length > 1) {
         final hasNextArticle = _index < _allArticles.length - 1;
         emit(MediaItemState.idleMultiItems(article.article, article.content, hasNextArticle));

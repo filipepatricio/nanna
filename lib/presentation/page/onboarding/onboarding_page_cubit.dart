@@ -21,7 +21,7 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
     if (hasGivenPermission) _trackPushNotificationConsentGiven();
   }
 
-  void trackOnboardingPage(int index) => _trackActivityUseCase.trackPageV2(AnalyticsPage.onboarding(index));
+  void trackOnboardingPage(int index) => _trackActivityUseCase.trackPage(AnalyticsPage.onboarding(index));
 
   void _trackPushNotificationConsentGiven() =>
       _trackActivityUseCase.trackEvent(AnalyticsEvent.pushNotificationConsentGiven());

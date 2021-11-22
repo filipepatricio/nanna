@@ -8,17 +8,7 @@ abstract class AnalyticsRepository {
 
   Future<void> logout();
 
-  void page(String name);
-
-  void pageV2(AnalyticsPage page);
-
-  void dailyBriefPage(String briefId);
-
-  void topicPage(String topicId);
-
-  void articlePage(String articleId, [String? topicId]);
-
-  void exploreAreaPage(String exploreAreaId);
+  void page(AnalyticsPage page);
 
   void event(AnalyticsEvent event);
 }
