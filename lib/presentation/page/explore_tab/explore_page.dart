@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_area/article_area_view.dart';
@@ -11,6 +12,8 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
+import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -92,7 +95,7 @@ class _Idle extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildListDelegate(
-        areas.map((area) => _Area(area: area)).toList(growable: false),
+        areas.map((area) => _Area(area: area, orderIndex: areas.indexOf(area))).toList(growable: false),
       ),
     );
   }
@@ -126,20 +129,39 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _Area extends StatelessWidget {
+class _Area extends HookWidget {
   final ExploreContentArea area;
+  final int orderIndex;
 
   const _Area({
     required this.area,
+    required this.orderIndex,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return area.map(
-      articles: (area) => ArticleAreaView(area: area),
-      articleWithFeature: (area) => ArticleWithCoverAreaView(area: area),
-      topics: (area) => TopicsAreaView(area: area),
+    final eventController = useEventTrackController();
+
+    return GeneralEventTracker(
+      controller: eventController,
+      child: ViewVisibilityNotifier(
+        detectorKey: Key(area.id),
+        onVisible: () {
+          eventController.track(
+            AnalyticsEvent.exploreAreaPreviewed(
+              area.id,
+              orderIndex,
+            ),
+          );
+        },
+        borderFraction: 0.6,
+        child: area.map(
+          articles: (area) => ArticleAreaView(area: area),
+          articleWithFeature: (area) => ArticleWithCoverAreaView(area: area),
+          topics: (area) => TopicsAreaView(area: area),
+        ),
+      ),
     );
   }
 }
