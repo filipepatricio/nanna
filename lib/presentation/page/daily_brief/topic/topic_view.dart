@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -18,6 +19,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/topic_summary_tracker/topic_summary_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -351,7 +353,7 @@ class _SummaryCard extends StatelessWidget {
   }
 }
 
-class _MediaItemContent extends StatelessWidget {
+class _MediaItemContent extends HookWidget {
   final double articleContentHeight;
   final PageController controller;
   final ValueNotifier<int> pageIndex;
@@ -366,50 +368,62 @@ class _MediaItemContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventController = useEventTrackController();
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final entryList = topic.readingList.entries;
-    return Container(
-      height: articleContentHeight,
-      child: Stack(
-        children: [
-          Container(
-            width: double.infinity,
-            child: NoScrollGlow(
-              child: PageView.builder(
-                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: controller,
-                scrollDirection: Axis.vertical,
-                onPageChanged: (index) => pageIndex.value = index,
-                itemCount: entryList.length,
-                itemBuilder: (context, index) {
-                  final currentMediaItem = entryList[index].item;
-                  //TODO: Handling different media types
-                  if (currentMediaItem is MediaItemArticle) {
-                    return ArticleItemView(
-                      index: index,
-                      topic: topic,
-                      statusBarHeight: statusBarHeight,
-                      navigationCallback: (index) => controller.jumpToPage(index),
+
+    return GeneralEventTracker(
+      controller: eventController,
+      child: Container(
+        height: articleContentHeight,
+        child: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              child: NoScrollGlow(
+                child: PageView.builder(
+                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                  controller: controller,
+                  scrollDirection: Axis.vertical,
+                  onPageChanged: (index) {
+                    final event = AnalyticsEvent.readingListBrowsed(
+                      topic.id,
+                      index,
                     );
-                  } else {
-                    return const SizedBox();
-                  }
-                },
+                    eventController.track(event);
+                    pageIndex.value = index;
+                  },
+                  itemCount: entryList.length,
+                  itemBuilder: (context, index) {
+                    final currentMediaItem = entryList[index].item;
+                    //TODO: Handling different media types
+                    if (currentMediaItem is MediaItemArticle) {
+                      return ArticleItemView(
+                        index: index,
+                        topic: topic,
+                        statusBarHeight: statusBarHeight,
+                        navigationCallback: (index) => controller.jumpToPage(index),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
               ),
             ),
-          ),
-          Positioned.fill(
-            top: statusBarHeight,
-            right: null,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
-              child: VerticalIndicators(
-                currentIndex: pageIndex.value,
-                pageListLength: entryList.length,
+            Positioned.fill(
+              top: statusBarHeight,
+              right: null,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
+                child: VerticalIndicators(
+                  currentIndex: pageIndex.value,
+                  pageListLength: entryList.length,
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
