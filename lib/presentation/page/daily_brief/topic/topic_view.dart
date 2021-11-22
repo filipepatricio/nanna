@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -18,6 +19,8 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
+import 'package:better_informed_mobile/presentation/widget/track/topic_summary_tracker/topic_summary_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
@@ -48,6 +51,7 @@ class TopicView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventController = useEventTrackController();
     final pageIndex = useState(0);
     final listScrollController = useScrollController();
     final articleController = usePageController();
@@ -83,11 +87,15 @@ class TopicView extends HookWidget {
             children: [
               _TopicHeader(topic: topic),
               _SummaryContent(topic: topic),
-              _MediaItemContent(
-                articleContentHeight: articleContentHeight,
-                controller: articleController,
-                pageIndex: pageIndex,
-                topic: topic,
+              GeneralEventTracker(
+                controller: eventController,
+                child: _MediaItemContent(
+                  articleContentHeight: articleContentHeight,
+                  controller: articleController,
+                  pageIndex: pageIndex,
+                  topic: topic,
+                  eventController: eventController,
+                ),
               ),
             ],
           ),
@@ -207,9 +215,13 @@ class _SummaryContent extends HookWidget {
     }
 
     final content = topic.topicSummaryList.length > 1
-        ? _SummaryCardPageView(
+        ? TopicSummaryTracker(
             topic: topic,
-            controller: controller,
+            summaryPageController: controller,
+            child: _SummaryCardPageView(
+              topic: topic,
+              controller: controller,
+            ),
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
@@ -346,23 +358,33 @@ class _SummaryCard extends StatelessWidget {
   }
 }
 
-class _MediaItemContent extends StatelessWidget {
+class _MediaItemContent extends HookWidget {
   final double articleContentHeight;
   final PageController controller;
   final ValueNotifier<int> pageIndex;
   final Topic topic;
+  final GeneralEventTrackerController eventController;
 
   const _MediaItemContent({
     required this.articleContentHeight,
     required this.controller,
     required this.pageIndex,
     required this.topic,
+    required this.eventController,
   });
 
   @override
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final entryList = topic.readingList.entries;
+
+    useEffect(
+      () {
+        _trackReadingListBrowse(0);
+      },
+      [topic],
+    );
+
     return Container(
       height: articleContentHeight,
       child: Stack(
@@ -374,7 +396,10 @@ class _MediaItemContent extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
                 controller: controller,
                 scrollDirection: Axis.vertical,
-                onPageChanged: (index) => pageIndex.value = index,
+                onPageChanged: (index) {
+                  _trackReadingListBrowse(index);
+                  pageIndex.value = index;
+                },
                 itemCount: entryList.length,
                 itemBuilder: (context, index) {
                   final currentMediaItem = entryList[index].item;
@@ -407,5 +432,13 @@ class _MediaItemContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _trackReadingListBrowse(int index) {
+    final event = AnalyticsEvent.readingListBrowsed(
+      topic.id,
+      index,
+    );
+    eventController.track(event);
   }
 }

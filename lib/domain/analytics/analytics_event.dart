@@ -14,6 +14,12 @@ class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent.dailyBriefRelaxMessageViewed(String briefId) =>
       AnalyticsEvent._('DailyBriefRelaxMessageViewed', {'brief_id': briefId});
 
+  factory AnalyticsEvent.topicSummaryRead(String topicId) =>
+      AnalyticsEvent._('TopicSummaryRead', {'topic_id': topicId});
+
+  factory AnalyticsEvent.readingListBrowsed(String topicId, int position) =>
+      AnalyticsEvent._('ReadingListBrowsed', {'topic_id': topicId, 'reading_list_position': position});
+
   @override
   String toString() => 'Event $name, ${properties != null ? jsonEncode(properties) : 'No properties'}';
 }
