@@ -348,7 +348,7 @@ class _SummaryCard extends StatelessWidget {
           const SizedBox(height: AppDimens.xxxc),
           Expanded(
             child: InformedMarkdownBody(
-              markdown: '* ${topic.topicSummaryList[index].content}',
+              markdown: topic.topicSummaryList[index].content,
               baseTextStyle: AppTypography.b2RegularLora,
             ),
           ),
