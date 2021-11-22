@@ -156,6 +156,13 @@ class _IdleContent extends HookWidget {
                         child: PageView(
                           controller: controller,
                           scrollDirection: Axis.horizontal,
+                          onPageChanged: (index) {
+                            if (index < currentBrief.topics.length) {
+                              dailyBriefCubit.trackTopicPageSwipe(currentBrief.topics[index].id, index + 1);
+                            } else {
+                              dailyBriefCubit.trackRelaxPage();
+                            }
+                          },
                           children: [
                             ..._buildTopicCards(
                               context,
@@ -245,12 +252,7 @@ class _IdleContent extends HookWidget {
     AutoRouter.of(context).push(
       TopicPageRoute(
         index: index,
-        onPageChanged: (index) {
-          if (index < currentBrief.topics.length) {
-            dailyBriefCubit.trackTopicPageView(currentBrief.topics[index].id);
-          }
-          controller.jumpToPage(index);
-        },
+        onPageChanged: controller.jumpToPage,
         currentBrief: currentBrief,
       ),
     );

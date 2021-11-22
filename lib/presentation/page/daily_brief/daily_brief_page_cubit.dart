@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.dart';
@@ -30,5 +31,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  void trackTopicPageView(String topicId) => _trackActivityUseCase.trackTopicPage(topicId);
+  void trackRelaxPage() =>
+      _trackActivityUseCase.trackEvent(AnalyticsEvent.dailyBriefRelaxMessageViewed(_currentBrief.id));
+
+  void trackTopicPageSwipe(String topicId, int position) =>
+      _trackActivityUseCase.trackEvent(AnalyticsEvent.dailyBriefTopicPreviewed(_currentBrief.id, topicId, position));
 }
