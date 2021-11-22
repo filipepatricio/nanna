@@ -97,61 +97,67 @@ class _IdleContent extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: AppDimens.xxc),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: SvgPicture.asset(
-                  AppVectorGraphics.informedLogoDark,
-                  width: AppDimens.logoWidth,
-                  height: AppDimens.logoHeight,
-                ),
-              ),
-              const SizedBox(height: AppDimens.l),
-              Text(
-                LocaleKeys.signIn_header_signIn.tr(),
-                style: AppTypography.h3Normal.copyWith(fontSize: 19, height: 1.47, letterSpacing: 0.15),
-              ),
-              if (!keyboardVisible) ...[
-                const SizedBox(height: AppDimens.xl),
-                SignInWithProviderView(onSignInTap: () => cubit.signInWithProvider()),
-                const SizedBox(height: AppDimens.xxl),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: AppColors.dividerGrey,
-                        margin: const EdgeInsets.only(right: AppDimens.s),
-                      ),
-                    ),
-                    Text(
-                      tr(LocaleKeys.signIn_orContinue),
-                      style: AppTypography.b3Regular.copyWith(color: AppColors.darkGrey, height: 1),
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: AppColors.dividerGrey,
-                        margin: const EdgeInsets.only(left: AppDimens.s),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-              const SizedBox(height: AppDimens.xl),
-              Text(
-                tr(LocaleKeys.signIn_emailLabel),
-                style: AppTypography.b3Regular,
-              ),
-              const SizedBox(height: AppDimens.s),
               Expanded(
-                child: _EmailInput(
-                  controller: emailController,
-                  cubit: cubit,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: AppDimens.xxc),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: SvgPicture.asset(
+                          AppVectorGraphics.informedLogoDark,
+                          width: AppDimens.logoWidth,
+                          height: AppDimens.logoHeight,
+                        ),
+                      ),
+                      const SizedBox(height: AppDimens.l),
+                      Text(
+                        LocaleKeys.signIn_header_signIn.tr(),
+                        style: AppTypography.h3Normal.copyWith(fontSize: 19, height: 1.47, letterSpacing: 0.15),
+                      ),
+                      if (!keyboardVisible) ...[
+                        const SizedBox(height: AppDimens.xl),
+                        SignInWithProviderView(onSignInTap: () => cubit.signInWithProvider()),
+                        const SizedBox(height: AppDimens.xxl),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 1,
+                                color: AppColors.dividerGrey,
+                                margin: const EdgeInsets.only(right: AppDimens.s),
+                              ),
+                            ),
+                            Text(
+                              tr(LocaleKeys.signIn_orContinue),
+                              style: AppTypography.b3Regular.copyWith(color: AppColors.darkGrey, height: 1),
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: 1,
+                                color: AppColors.dividerGrey,
+                                margin: const EdgeInsets.only(left: AppDimens.s),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: AppDimens.xl),
+                        Text(
+                          tr(LocaleKeys.signIn_emailLabel),
+                          style: AppTypography.b3Regular,
+                        ),
+                      ],
+                      const SizedBox(height: AppDimens.s),
+                      _EmailInput(
+                        controller: emailController,
+                        cubit: cubit,
+                      ),
+                      const SizedBox(height: AppDimens.m),
+                    ],
+                  ),
                 ),
               ),
-              const Spacer(),
               if (keyboardVisible) ...[
                 _SignInButton(cubit: cubit, isEmailValid: isEmailValid),
                 const SizedBox(height: AppDimens.m),
