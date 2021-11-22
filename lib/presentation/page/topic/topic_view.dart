@@ -121,17 +121,16 @@ class TopicView extends HookWidget {
                 onArticlesLabelTap: () =>
                     gestureManager.animateTo(_topicHeaderHeight + _summaryViewHeight + articleContentHeight),
               ),
-              _SummaryContent(topic: topic, keySummaryCard: keySummaryCard),
+              _SummaryContent(topic: topic, summaryCardKey: summaryCardKey),
               GeneralEventTracker(
                 controller: eventController,
                 child: _MediaItemContent(
-                  articleContentHeight: articleContentHeight,
-                  controller: articleController,
-                  pageIndex: pageIndex,
-                  topic: topic,
-                  eventController: eventController,
+                    articleContentHeight: articleContentHeight,
+                    controller: articleController,
+                    pageIndex: pageIndex,
+                    topic: topic,
+                    eventController: eventController,
                     mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null),
-                ),
               ),
             ],
           ),
@@ -266,7 +265,7 @@ class _SummaryContent extends HookWidget {
             child: _SummaryCardPageView(
               topic: topic,
               controller: controller,
-              keySummaryCard: keySummaryCard,
+              summaryCardKey: summaryCardKey,
             ),
           )
         : Padding(
@@ -409,14 +408,13 @@ class _MediaItemContent extends HookWidget {
   final GeneralEventTrackerController eventController;
   final GlobalKey? mediaItemKey;
 
-  const _MediaItemContent({
-    required this.articleContentHeight,
-    required this.controller,
-    required this.pageIndex,
-    required this.topic,
-    required this.eventController,
-    this.mediaItemKey
-  });
+  const _MediaItemContent(
+      {required this.articleContentHeight,
+      required this.controller,
+      required this.pageIndex,
+      required this.topic,
+      required this.eventController,
+      this.mediaItemKey});
 
   @override
   Widget build(BuildContext context) {
