@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:fimber/fimber.dart';
@@ -46,6 +47,7 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
   @override
   void dailyBriefPage(String briefId) {
+    //TODO: Refactor these into AnalyticsEvent constructors
     Fimber.d('dailyBriefPage $briefId');
     _trackPage(
       'Daily Brief',
@@ -93,6 +95,13 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   void page(String name) {
     Fimber.d('page $name');
     _trackPage(name);
+  }
+
+  @override
+  void event(AnalyticsEvent event) {
+    // Fimber calls will be removed in the last tracking issue PR
+    Fimber.d(event.toString());
+    Segment.track(eventName: event.name, properties: event.properties);
   }
 
   void _trackPage(String name, [Map<String, dynamic>? properties]) {
