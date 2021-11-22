@@ -32,9 +32,10 @@ class SettingsNotificationsPage extends HookWidget {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
         centerTitle: false,
+        titleSpacing: 0.0,
         title: Text(
           LocaleKeys.settings_settings.tr(),
-          style: AppTypography.subH1Medium,
+          style: AppTypography.subH1Medium.copyWith(height: 1),
         ),
       ),
       body: state.maybeWhen(
