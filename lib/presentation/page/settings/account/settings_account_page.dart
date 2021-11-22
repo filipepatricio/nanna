@@ -26,10 +26,11 @@ class SettingsAccountPage extends HookWidget {
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
+        centerTitle: false,
+        titleSpacing: 0.0,
         title: Text(
           LocaleKeys.settings_settings.tr(),
-          style: AppTypography.subH1Medium,
-          textAlign: TextAlign.center,
+          style: AppTypography.subH1Medium.copyWith(height: 1),
         ),
       ),
       body: state.maybeWhen(
