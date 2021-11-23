@@ -30,5 +30,8 @@ class AnalyticsEvent with _$AnalyticsEvent {
       AnalyticsEvent._('ExploreAreaPreviewed', {'explore_area_id': id, 'position': position});
 
   factory AnalyticsEvent.exploreAreaCarouselBrowsed(String id, int position) =>
-      AnalyticsEvent._('name', {'explore_area_id': id, 'position': position});
+      AnalyticsEvent._('ExploreAreaCarouselBrowsed', {'explore_area_id': id, 'position': position});
+
+  factory AnalyticsEvent.exploreAreaScrolled(String id, int offset) =>
+      AnalyticsEvent._('ExploreAreaScrolled', {'explore_area_id': id, 'offset': offset});
 }
