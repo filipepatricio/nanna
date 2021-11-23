@@ -28,4 +28,7 @@ class AnalyticsEvent with _$AnalyticsEvent {
 
   factory AnalyticsEvent.exploreAreaPreviewed(String id, int position) =>
       AnalyticsEvent._('ExploreAreaPreviewed', {'explore_area_id': id, 'position': position});
+
+  factory AnalyticsEvent.exploreAreaCarouselBrowsed(String id, int position) =>
+      AnalyticsEvent._('name', {'explore_area_id': id, 'position': position});
 }
