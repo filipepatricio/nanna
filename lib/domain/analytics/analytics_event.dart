@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'analytics_event.freezed.dart';
 
 @freezed
 class AnalyticsEvent with _$AnalyticsEvent {
-  factory AnalyticsEvent._(String name, Map<String, dynamic>? properties) = _AnalyticsEvent;
+  factory AnalyticsEvent._(String name, [Map<String, dynamic>? properties]) = _AnalyticsEvent;
 
   factory AnalyticsEvent.dailyBriefTopicPreviewed(String briefId, String topicId, int position) =>
       AnalyticsEvent._('DailyBriefTopicPreviewed', {'brief_id': briefId, 'topic_id': topicId, 'position': position});
@@ -20,6 +18,11 @@ class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent.readingListBrowsed(String topicId, int position) =>
       AnalyticsEvent._('ReadingListBrowsed', {'topic_id': topicId, 'reading_list_position': position});
 
-  @override
-  String toString() => 'Event $name, ${properties != null ? jsonEncode(properties) : 'No properties'}';
+  factory AnalyticsEvent.onboardingStarted() => AnalyticsEvent._('OnboardingStarted');
+
+  factory AnalyticsEvent.onboardingCompleted() => AnalyticsEvent._('OnboardingCompleted');
+
+  factory AnalyticsEvent.onboardingSkipped() => AnalyticsEvent._('OnboardingSkipped');
+
+  factory AnalyticsEvent.pushNotificationConsentGiven() => AnalyticsEvent._('PushNotificationConsentGiven');
 }
