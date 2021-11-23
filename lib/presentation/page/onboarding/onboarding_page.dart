@@ -39,6 +39,11 @@ class OnboardingPage extends HookWidget {
     final _controller = usePageController();
     final isLastPage = pageIndex.value == _pageList.length - 1;
 
+    useEffect(() {
+      cubit.trackOnboardingStarted();
+      cubit.trackOnboardingPage(0);
+    }, [cubit]);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
@@ -47,7 +52,10 @@ class OnboardingPage extends HookWidget {
           Expanded(
             child: PageView(
               controller: _controller,
-              onPageChanged: (index) => pageIndex.value = index,
+              onPageChanged: (index) {
+                cubit.trackOnboardingPage(index);
+                pageIndex.value = index;
+              },
               children: _pageList,
             ),
           ),
@@ -65,7 +73,7 @@ class OnboardingPage extends HookWidget {
                   children: [
                     if (!isLastPage) ...[
                       TextButton(
-                        onPressed: () => _navigateToMainPage(context, cubit),
+                        onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
                         child: Text(
                           LocaleKeys.common_skip.tr(),
                           style: AppTypography.buttonBold,
@@ -82,7 +90,7 @@ class OnboardingPage extends HookWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                           child: TextButton(
-                            onPressed: () => _navigateToMainPage(context, cubit),
+                            onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
                             child: Text(
                               LocaleKeys.common_continue.tr(),
                               style: AppTypography.buttonBold,
@@ -111,7 +119,12 @@ class OnboardingPage extends HookWidget {
     );
   }
 
-  void _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit) {
+  void _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit, bool isLastPage) {
+    if (isLastPage) {
+      cubit.trackOnboardingCompleted();
+    } else {
+      cubit.trackOnboardingSkipped();
+    }
     cubit.requestNotificationPermission();
     AutoRouter.of(context).replaceAll(
       [
