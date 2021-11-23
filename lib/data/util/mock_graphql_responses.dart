@@ -1,6 +1,63 @@
 class MockGraphqlResponses {
   //To create this Strings, just send the request in Insomnia and copy/paste exactly what it returns
 
+  static const topicsFromExpert = '''
+{
+		"getTopicsFromExpert": [
+			{
+				"category": null,
+				"coverImage": {
+					"publicId": "covers/Cover_5"
+				},
+				"heroImage": {
+					"publicId": "topics/pizza"
+				},
+				"highlightedPublishers": [
+					{
+						"darkLogo": {
+							"publicId": "publishers/nyt-black"
+						},
+						"id": "05837e85-a651-4340-8650-6296f7b16b59",
+						"lightLogo": {
+							"publicId": "publishers/nyt-white"
+						},
+						"name": "New York Times"
+					},
+					{
+						"darkLogo": {
+							"publicId": "publishers/bloomberg-black"
+						},
+						"id": "6ce71073-1cca-47df-bcda-5ced92a22aec",
+						"lightLogo": {
+							"publicId": "publishers/bloomberg-white"
+						},
+						"name": "Bloomberg"
+					},
+					{
+						"darkLogo": {
+							"publicId": "publishers/ft-black"
+						},
+						"id": "a833867d-daeb-4bab-a8a1-c66614d0c61c",
+						"lightLogo": {
+							"publicId": "publishers/ft-white"
+						},
+						"name": "Financial Times"
+					}
+				],
+				"id": "154dfdf6-ae72-4ea9-b4a5-d61e1782099e",
+				"introduction": "Perspiciatis iusto et voluptatem ad.",
+				"lastUpdatedAt": "2021-12-15T14:24:22Z",
+				"summaryCards": [
+					{
+						"text": "At qui veniam molestiae nostrum itaque sequi fugiat. Libero quia quia aspernatur. In similique omnis consequatur! Fuga corrupti impedit est beatae quia error officiis repellat."
+					}
+				],
+				"title": "Nestle is unhealthy?"
+			}
+		]
+	}
+''';
+
   static const currentBrief = '''
 {
     "currentBrief": {

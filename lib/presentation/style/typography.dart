@@ -310,6 +310,24 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle metadata2BoldLoraItalic = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyLora,
+    fontStyle: FontStyle.italic,
+    fontSize: 14,
+    height: 1.28,
+    letterSpacing: 0.7,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle bodyText = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyLora,
+    fontSize: 18,
+    height: 1.75,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle labelText = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,

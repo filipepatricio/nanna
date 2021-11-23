@@ -13,8 +13,15 @@ import 'package:shimmer/shimmer.dart';
 
 class StackedCardsLoadingView extends HookWidget {
   final double cardStackWidth;
+  final EdgeInsets? padding;
+  final String? subtitle;
 
-  const StackedCardsLoadingView({required this.cardStackWidth, Key? key}) : super(key: key);
+  const StackedCardsLoadingView({
+    required this.cardStackWidth,
+    Key? key,
+    this.padding,
+    this.subtitle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +29,11 @@ class StackedCardsLoadingView extends HookWidget {
     if (!kIsTest) controller.repeat();
 
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: AppDimens.c,
-        top: AppDimens.xl,
-      ),
+      padding: padding ??
+          const EdgeInsets.only(
+            bottom: AppDimens.c,
+            top: AppDimens.xl,
+          ),
       child: LayoutBuilder(builder: (context, constraints) {
         return ReadingListStackedCards(
           coverSize: Size(cardStackWidth, constraints.maxHeight),
@@ -63,7 +71,7 @@ class StackedCardsLoadingView extends HookWidget {
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    LocaleKeys.todaysTopics_loading.tr(),
+                    subtitle ?? LocaleKeys.todaysTopics_loading.tr(),
                     style: AppTypography.h3Normal,
                     textAlign: TextAlign.center,
                   ),

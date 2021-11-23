@@ -5,6 +5,16 @@ class CommonGQLModels {
     id
     title
     lastUpdatedAt
+    ownersNote
+    owner {
+      __typename
+      ... on Expert {
+        $expert
+      }
+      ... on Editor {
+        $editor
+      }
+    }
     summaryCards{
       text
     }
@@ -36,6 +46,22 @@ class CommonGQLModels {
         }
       }
     }
+  ''';
+
+  static const String expert = '''
+      id
+      bio
+      name
+      avatar {
+        publicId
+      }
+  ''';
+
+  static const String editor = '''
+      name
+      avatar {
+        publicId
+      }
   ''';
 
   static const String highlightedPublishers = '''
