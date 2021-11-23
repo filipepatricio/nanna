@@ -129,12 +129,7 @@ class _PublisherLogoRow extends HookWidget {
       children: [
         ...providers.map(
           (publisher) {
-            return Row(
-              children: [
-                PublisherLogo.dark(publisher: publisher),
-                if (publisher.darkLogo != null) const SizedBox(width: AppDimens.s),
-              ],
-            );
+            return PublisherLogo.dark(publisher: publisher);
           },
         ),
       ],
