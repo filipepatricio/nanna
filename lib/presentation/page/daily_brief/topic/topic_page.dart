@@ -51,7 +51,7 @@ class TopicPage extends HookWidget {
     final tutorialCoachMark = useState(TutorialCoachMark(
       context,
       targets: cubit.targets,
-      paddingFocus: 15,
+      paddingFocus: 10,
       opacityShadow: 0.5,
       hideSkip: true,
       onSkip: cubit.onSkipTutorialCoachMark,

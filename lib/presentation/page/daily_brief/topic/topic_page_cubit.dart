@@ -85,12 +85,12 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         contents: [
           TargetContent(
             align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(top: AppDimens.m),
+            customPosition: CustomTargetContentPosition(bottom: AppDimens.s),
             builder: (context, controller) {
               return TutorialTooltip(
                   text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
                   dismissButtonText: LocaleKeys.common_done.tr(),
-                  tutorialTooltipPosition: TutorialTooltipPosition.top,
+                  tutorialTooltipPosition: TutorialTooltipPosition.bottom,
                   onDismiss: () => emit(TopicPageState.finishTutorialCoachMark()));
             },
           )

@@ -82,7 +82,11 @@ class TopicView extends HookWidget {
               duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
           cubit.showSummaryCardTutorialCoachMark();
         }
-        const articleTriggerPosition = _topicHeaderImageHeight + _summaryPageViewHeight;
+        const articleTriggerPosition = _topicHeaderImageHeight +
+            _topicHeaderPadding +
+            _summaryPageViewHeight +
+            _summaryMockedImageSize +
+            AppDimens.l;
         if (listScrollController.offset >= articleTriggerPosition &&
             !listScrollController.position.outOfRange &&
             !cubit.isTopicMediaItemTutorialStepSeen) {
