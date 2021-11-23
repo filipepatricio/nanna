@@ -6,26 +6,51 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+enum TutorialTooltipPosition { top, bottom }
+
 class TutorialTooltip extends StatelessWidget {
   final String text;
   final String dismissButtonText;
+  final TutorialTooltipPosition tutorialTooltipPosition;
   final VoidCallback? onDismiss;
 
-  const TutorialTooltip({required this.text, required this.dismissButtonText, this.onDismiss, Key? key})
+  const TutorialTooltip(
+      {required this.text,
+      required this.dismissButtonText,
+      required this.tutorialTooltipPosition,
+      this.onDismiss,
+      Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (tutorialTooltipPosition == TutorialTooltipPosition.bottom)
+          Padding(
+            padding: const EdgeInsets.only(left: 250, bottom: AppDimens.s),
+            child: SvgPicture.asset(AppVectorGraphics.tutorialArrowUp),
+          )
+        else
+          const SizedBox(),
         Container(
-          decoration: const BoxDecoration(
-            color: AppColors.pastelPurple,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(AppDimens.m),
-                topRight: Radius.circular(AppDimens.m),
-                bottomRight: Radius.circular(AppDimens.m)),
-          ),
+          decoration: tutorialTooltipPosition == TutorialTooltipPosition.top
+              ? const BoxDecoration(
+                  color: AppColors.pastelPurple,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(AppDimens.m),
+                      topRight: Radius.circular(AppDimens.m),
+                      bottomRight: Radius.circular(AppDimens.m)),
+                )
+              : const BoxDecoration(
+                  color: AppColors.pastelPurple,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(AppDimens.m),
+                      topRight: Radius.circular(AppDimens.m),
+                      bottomRight: Radius.circular(AppDimens.m)),
+                ),
           child: Padding(
               padding:
                   const EdgeInsets.only(top: AppDimens.m, left: AppDimens.m, right: AppDimens.m, bottom: AppDimens.s),
@@ -56,10 +81,13 @@ class TutorialTooltip extends StatelessWidget {
                 ],
               )),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: AppDimens.xxl, top: 130),
-          child: SvgPicture.asset(AppVectorGraphics.tutorialArrowDown),
-        ),
+        if (tutorialTooltipPosition == TutorialTooltipPosition.top)
+          Padding(
+            padding: const EdgeInsets.only(left: AppDimens.m, top: AppDimens.s),
+            child: SvgPicture.asset(AppVectorGraphics.tutorialArrowDown),
+          )
+        else
+          const SizedBox(),
       ],
     );
   }

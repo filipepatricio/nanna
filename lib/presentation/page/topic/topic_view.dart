@@ -32,7 +32,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 const _summaryPageViewHeight = 365.0;
-const _summaryViewHeight = 630.0;
+const _summaryViewHeight = 580.0;
 const _summaryMockedImageSize = 50.0;
 
 const _topicHeaderPadding = 60.0;
@@ -74,7 +74,7 @@ class TopicView extends HookWidget {
 
     useEffect(() {
       final listener = () {
-        const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderImageHeight / 3;
+        const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderPadding;
         if (listScrollController.offset >= summaryCardTriggerPosition &&
             !listScrollController.position.outOfRange &&
             !cubit.isTopicSummaryCardTutorialStepSeen) {
@@ -278,7 +278,7 @@ class _SummaryContent extends HookWidget {
       height: _summaryViewHeight,
 
       ///This color should be the same as first article page view
-      color: AppColors.mockedColors[0],
+      color: AppColors.mockedColors[1],
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
