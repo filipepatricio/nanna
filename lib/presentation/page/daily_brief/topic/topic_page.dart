@@ -94,7 +94,7 @@ class TopicPage extends HookWidget {
               position: StyledToastPosition.top,
               isIgnoring: false,
               dismissOtherToast: true,
-              duration: Duration.zero),
+              duration: const Duration(seconds: 10)),
           showSummaryCardTutorialCoachMark: tutorialCoachMark.value.show,
           showMediaItemTutorialCoachMark: tutorialCoachMark.value.show,
           skipTutorialCoachMark: tutorialCoachMark.value.skip,

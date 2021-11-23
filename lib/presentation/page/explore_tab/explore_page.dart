@@ -40,7 +40,7 @@ class ExplorePage extends HookWidget {
               position: StyledToastPosition.top,
               isIgnoring: false,
               dismissOtherToast: true,
-              duration: Duration.zero));
+              duration: const Duration(seconds: 10)));
     });
 
     useEffect(
