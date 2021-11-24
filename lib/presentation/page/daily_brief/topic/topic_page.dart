@@ -51,7 +51,7 @@ class TopicPage extends HookWidget {
     final tutorialCoachMark = useState(TutorialCoachMark(
       context,
       targets: cubit.targets,
-      paddingFocus: 10,
+      paddingFocus: 15,
       opacityShadow: 0.5,
       hideSkip: true,
       onSkip: cubit.onSkipTutorialCoachMark,
@@ -91,7 +91,7 @@ class TopicPage extends HookWidget {
               animation: StyledToastAnimation.slideFromTop,
               reverseAnimation: StyledToastAnimation.slideToTop,
               animDuration: const Duration(milliseconds: 500),
-              position: StyledToastPosition.top,
+              position: const StyledToastPosition(align: Alignment(0.0, -1.1), offset: 0),
               isIgnoring: false,
               dismissOtherToast: true,
               duration: const Duration(seconds: 10)),

@@ -66,7 +66,7 @@ class TodaysTopicsPage extends HookWidget {
                     animation: StyledToastAnimation.slideFromTop,
                     reverseAnimation: StyledToastAnimation.slideToTop,
                     animDuration: const Duration(milliseconds: 500),
-                    position: StyledToastPosition.top,
+                    position: const StyledToastPosition(align: Alignment(0.0, -1.1), offset: 0),
                     isIgnoring: false,
                     dismissOtherToast: true,
                     duration: const Duration(seconds: 10));
