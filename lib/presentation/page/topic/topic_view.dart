@@ -274,7 +274,7 @@ class _SummaryContent extends HookWidget {
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _SummaryCard(index: 0, topic: topic, key: summaryCardKey),
+            child: _SummaryCard(index: 0, topic: topic, summaryCardKey: summaryCardKey),
           );
 
     return Container(
@@ -346,9 +346,12 @@ class _SummaryCardPageView extends HookWidget {
         itemCount: topic.topicSummaryList.length,
         itemBuilder: (context, index) {
           return Padding(
-            key: index == 0 ? summaryCardKey : null,
             padding: const EdgeInsets.only(right: AppDimens.m),
-            child: _SummaryCard(topic: topic, index: index),
+            child: _SummaryCard(
+              topic: topic,
+              index: index,
+              summaryCardKey: index == 0 ? summaryCardKey : null,
+            ),
           );
         },
       ),
@@ -359,21 +362,24 @@ class _SummaryCardPageView extends HookWidget {
 class _SummaryCard extends StatelessWidget {
   final int index;
   final Topic topic;
+  final GlobalKey? summaryCardKey;
 
   const _SummaryCard({
     required this.index,
     required this.topic,
+    required this.summaryCardKey,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: summaryCardKey,
       height: _summaryPageViewHeight,
       padding: const EdgeInsets.only(
         left: AppDimens.l,
         right: AppDimens.l,
-        bottom: AppDimens.l,
+        bottom: AppDimens.xl,
       ),
       color: AppColors.mockedColors[index % AppColors.mockedColors.length],
       child: Column(

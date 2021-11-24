@@ -48,7 +48,7 @@ class ArticleItemView extends HookWidget {
           ? AppColors.background
           : currentEntry.style.color,
       padding: EdgeInsets.only(
-        top: statusBarHeight,
+        top: statusBarHeight + AppDimens.l,
         bottom: AppDimens.m,
         left: _calculateIndicatorWidth(),
       ),
@@ -70,7 +70,7 @@ class ArticleItemView extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: AppDimens.l, right: AppDimens.xxl),
+              padding: const EdgeInsets.only(right: AppDimens.xxl),
               child: Row(
                 children: [
                   Text('${index + 1}', style: AppTypography.subH1Bold),
