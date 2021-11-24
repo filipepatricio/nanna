@@ -25,7 +25,7 @@ class ArticleImageView extends HookWidget {
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
-    final titleOpacityState = useState(1.0);
+    final titleOpacityState = ValueNotifier(1.0);
     final fullHeight = articleViewFullHeight(context);
     final halfHeight = fullHeight / 2;
 
@@ -83,8 +83,14 @@ class ArticleImageView extends HookWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.l, bottom: AppDimens.l),
-          child: Opacity(
-            opacity: titleOpacityState.value,
+          child: ValueListenableBuilder(
+            valueListenable: titleOpacityState,
+            builder: (BuildContext context, double value, Widget? child) {
+              return Opacity(
+                opacity: value,
+                child: child,
+              );
+            },
             child: SizedBox(
               width: double.infinity,
               // height: halfHeight,
@@ -103,7 +109,7 @@ class ArticleImageView extends HookWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: AppDimens.l),
                     child: Text(
-                      article.title, // TODO missing data in object
+                      article.title,
                       style: AppTypography.h0Bold.copyWith(color: AppColors.white),
                     ),
                   ),
