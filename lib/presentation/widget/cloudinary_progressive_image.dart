@@ -11,18 +11,21 @@ class CloudinaryProgressiveImage extends StatelessWidget {
   final double height;
   final CloudinaryTransformation cloudinaryTransformation;
   final BoxFit fit;
+  final Alignment alignment;
 
   const CloudinaryProgressiveImage({
     required this.width,
     required this.height,
     required this.cloudinaryTransformation,
     this.fit = BoxFit.fill,
+    this.alignment = Alignment.center,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProgressiveImage.custom(
+      alignment: alignment,
       placeholderBuilder: (context) => SizedBox(
         width: width,
         height: height,
