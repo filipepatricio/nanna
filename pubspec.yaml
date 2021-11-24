@@ -71,6 +71,7 @@ dependencies:
   fluttertoast: 8.0.8
   flutter_email_sender: 5.0.2
   share_plus: 2.1.4
+  visibility_detector: 0.2.2
 
 dev_dependencies:
   flutter_test:

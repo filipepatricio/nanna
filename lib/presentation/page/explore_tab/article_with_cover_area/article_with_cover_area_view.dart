@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -14,6 +15,8 @@ import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
+import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
+import 'package:better_informed_mobile/presentation/widget/track/horizontal_list_interaction_listener.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,7 +24,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 const _mainArticleHeight = 366.0;
 const _mainArticleCoverBottomMargin = 100.0;
 
-class ArticleWithCoverAreaView extends StatelessWidget {
+class ArticleWithCoverAreaView extends HookWidget {
   final ExploreContentAreaArticleWithFeature area;
 
   const ArticleWithCoverAreaView({
@@ -31,6 +34,7 @@ class ArticleWithCoverAreaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventController = useEventTrackController();
     final themeColor = Color(area.backgroundColor);
 
     return Container(
@@ -75,18 +79,32 @@ class ArticleWithCoverAreaView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppDimens.l),
-          SizedBox(
-            height: listItemHeight,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              itemBuilder: (context, index) => ArticleListItem(
-                article: area.articles[index],
-                themeColor: themeColor,
-                cardColor: AppColors.white,
+          GeneralEventTracker(
+            controller: eventController,
+            child: HorizontalListInteractionListener(
+              itemsCount: area.articles.length,
+              callback: (int lastVisibleItemIndex) {
+                eventController.track(
+                  AnalyticsEvent.exploreAreaCarouselBrowsed(
+                    area.id,
+                    lastVisibleItemIndex,
+                  ),
+                );
+              },
+              child: SizedBox(
+                height: listItemHeight,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  itemBuilder: (context, index) => ArticleListItem(
+                    article: area.articles[index],
+                    themeColor: themeColor,
+                    cardColor: AppColors.white,
+                  ),
+                  separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
+                  itemCount: area.articles.length,
+                ),
               ),
-              separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-              itemCount: area.articles.length,
             ),
           ),
           const SizedBox(height: AppDimens.xxl),

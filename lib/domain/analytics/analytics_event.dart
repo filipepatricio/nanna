@@ -25,4 +25,13 @@ class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent.onboardingSkipped() => AnalyticsEvent._('OnboardingSkipped');
 
   factory AnalyticsEvent.pushNotificationConsentGiven() => AnalyticsEvent._('PushNotificationConsentGiven');
+
+  factory AnalyticsEvent.exploreAreaPreviewed(String id, int position) =>
+      AnalyticsEvent._('ExploreAreaPreviewed', {'explore_area_id': id, 'position': position});
+
+  factory AnalyticsEvent.exploreAreaCarouselBrowsed(String id, int position) =>
+      AnalyticsEvent._('ExploreAreaCarouselBrowsed', {'explore_area_id': id, 'position': position});
+
+  factory AnalyticsEvent.exploreAreaScrolled(String id, int offset) =>
+      AnalyticsEvent._('ExploreAreaScrolled', {'explore_area_id': id, 'offset': offset});
 }
