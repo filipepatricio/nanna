@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/reset_tutorial_f
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
@@ -12,6 +11,8 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
+enum TutorialCoachMarkSteps { summaryCard, mediaItem }
 
 @injectable
 class TopicPageCubit extends Cubit<TopicPageState> {
@@ -57,7 +58,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
 
   void initializeSummaryCardTutorialCoachMarkTarget() {
     targets.add(TargetFocus(
-      identify: 'summaryCardKey',
+      identify: TutorialCoachMarkSteps.summaryCard.toString(),
       keyTarget: summaryCardKey,
       color: AppColors.shadowColor,
       enableOverlayTab: true,
@@ -65,10 +66,12 @@ class TopicPageCubit extends Cubit<TopicPageState> {
       contents: [
         TargetContent(
           align: ContentAlign.custom,
-          customPosition: CustomTargetContentPosition(bottom: 0),
+          customPosition: CustomTargetContentPosition(bottom: 50),
           builder: (context, controller) {
             return TutorialTooltip(
                 text: LocaleKeys.tutorial_topicTooltipText.tr(),
+                tutorialIndex: TutorialCoachMarkSteps.values.indexOf(TutorialCoachMarkSteps.summaryCard),
+                tutorialLength: TutorialCoachMarkSteps.values.length,
                 dismissButtonText: LocaleKeys.common_continue.tr(),
                 tutorialTooltipPosition: TutorialTooltipPosition.bottom,
                 onDismiss: () => emit(TopicPageState.skipTutorialCoachMark()));
@@ -83,7 +86,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   void initializeMediaTypeTutorialCoachMarkTarget() {
     targets.add(
       TargetFocus(
-        identify: 'mediaItemKey',
+        identify: TutorialCoachMarkSteps.mediaItem.toString(),
         keyTarget: mediaItemKey,
         color: AppColors.shadowColor,
         enableOverlayTab: true,
@@ -91,10 +94,12 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         contents: [
           TargetContent(
             align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(top: AppDimens.s),
+            customPosition: CustomTargetContentPosition(top: 140),
             builder: (context, controller) {
               return TutorialTooltip(
                   text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
+                  tutorialIndex: TutorialCoachMarkSteps.values.indexOf(TutorialCoachMarkSteps.mediaItem),
+                  tutorialLength: TutorialCoachMarkSteps.values.length,
                   dismissButtonText: LocaleKeys.common_done.tr(),
                   tutorialTooltipPosition: TutorialTooltipPosition.top,
                   onDismiss: () => emit(TopicPageState.finishTutorialCoachMark()));

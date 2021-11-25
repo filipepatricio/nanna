@@ -11,12 +11,16 @@ enum TutorialTooltipPosition { top, bottom }
 
 class TutorialTooltip extends StatelessWidget {
   final String text;
+  final int tutorialIndex;
+  final int tutorialLength;
   final String dismissButtonText;
   final TutorialTooltipPosition tutorialTooltipPosition;
   final VoidCallback? onDismiss;
 
   const TutorialTooltip(
       {required this.text,
+      required this.tutorialIndex,
+      required this.tutorialLength,
       required this.dismissButtonText,
       required this.tutorialTooltipPosition,
       this.onDismiss,
@@ -68,8 +72,14 @@ class TutorialTooltip extends StatelessWidget {
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Expanded(
+                          child: InformedMarkdownBody(
+                        markdown: '**${tutorialIndex + 1}**/$tutorialLength',
+                        baseTextStyle: AppTypography.h4Normal
+                            .copyWith(color: AppColors.textPrimary, decoration: TextDecoration.underline),
+                      )),
                       TextButton(
                           onPressed: onDismiss,
                           child: Text(
