@@ -12,7 +12,7 @@ class AuthGQL {
           refreshToken
         }
         account {
-          id
+          uuid
           firstName
           lastName
           email
