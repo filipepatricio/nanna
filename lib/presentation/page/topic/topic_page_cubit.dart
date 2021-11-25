@@ -49,14 +49,28 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     }
     targets.clear();
     if (!_isTopicSummaryCardTutorialStepSeen) {
-      initializeSummaryCardTutorialCoachMarkTarget();
+      _initializeSummaryCardTutorialCoachMarkTarget();
     }
     if (!_isTopicMediaItemTutorialStepSeen) {
-      initializeMediaTypeTutorialCoachMarkTarget();
+      _initializeMediaTypeTutorialCoachMarkTarget();
     }
   }
 
-  void initializeSummaryCardTutorialCoachMarkTarget() {
+  TutorialCoachMark tutorialCoachMark(BuildContext context) {
+    return TutorialCoachMark(
+      context,
+      targets: targets,
+      paddingFocus: 0,
+      opacityShadow: 0.5,
+      hideSkip: true,
+      onSkip: onSkipTutorialCoachMark,
+      onFinish: onFinishTutorialCoachMark,
+      onClickTarget: onClickTargetTutorialCoachMark,
+      onClickOverlay: onClickOverlayTutorialCoachMark,
+    );
+  }
+
+  void _initializeSummaryCardTutorialCoachMarkTarget() {
     targets.add(TargetFocus(
       identify: TutorialCoachMarkSteps.summaryCard.toString(),
       keyTarget: summaryCardKey,
@@ -83,7 +97,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     ));
   }
 
-  void initializeMediaTypeTutorialCoachMarkTarget() {
+  void _initializeMediaTypeTutorialCoachMarkTarget() {
     targets.add(
       TargetFocus(
         identify: TutorialCoachMarkSteps.mediaItem.toString(),

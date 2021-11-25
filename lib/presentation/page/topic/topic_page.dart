@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 /// Make sure that changes to the view won't change depth of the main scroll
 /// If they do, adjust depth accordingly
@@ -31,17 +30,7 @@ class TopicPage extends HookWidget {
     final appBarKey = useMemoized(() => GlobalKey());
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
     final cubit = useCubit<TopicPageCubit>();
-    final tutorialCoachMark = useState(TutorialCoachMark(
-      context,
-      targets: cubit.targets,
-      paddingFocus: 20,
-      opacityShadow: 0.5,
-      hideSkip: true,
-      onSkip: cubit.onSkipTutorialCoachMark,
-      onFinish: cubit.onFinishTutorialCoachMark,
-      onClickTarget: cubit.onClickTargetTutorialCoachMark,
-      onClickOverlay: cubit.onClickOverlayTutorialCoachMark,
-    ));
+    final tutorialCoachMark = cubit.tutorialCoachMark(context);
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -61,10 +50,10 @@ class TopicPage extends HookWidget {
               isIgnoring: false,
               dismissOtherToast: true,
               duration: Duration.zero),
-          showSummaryCardTutorialCoachMark: tutorialCoachMark.value.show,
-          showMediaItemTutorialCoachMark: tutorialCoachMark.value.show,
-          skipTutorialCoachMark: tutorialCoachMark.value.skip,
-          finishTutorialCoachMark: tutorialCoachMark.value.finish);
+          showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
+          showMediaItemTutorialCoachMark: tutorialCoachMark.show,
+          skipTutorialCoachMark: tutorialCoachMark.skip,
+          finishTutorialCoachMark: tutorialCoachMark.finish);
     });
 
     useEffect(
@@ -75,7 +64,7 @@ class TopicPage extends HookWidget {
     );
 
     return WillPopScope(
-        onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.value.isShowing),
+        onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
         child: LayoutBuilder(
           builder: (context, pageConstraints) => CupertinoScaffold(
             body: NotificationListener<ScrollNotification>(
