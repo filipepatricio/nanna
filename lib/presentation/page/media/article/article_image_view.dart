@@ -86,8 +86,8 @@ class ArticleImageView extends HookWidget {
           child: ValueListenableBuilder(
             valueListenable: titleOpacityState,
             builder: (BuildContext context, double value, Widget? child) {
-              return Opacity(
-                opacity: value,
+              return FadeTransition(
+                opacity: AlwaysStoppedAnimation(titleOpacityState.value),
                 child: child,
               );
             },
