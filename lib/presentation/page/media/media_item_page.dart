@@ -220,20 +220,20 @@ class _IdleContent extends HookWidget {
       });
     }, []);
 
-    void _scrollBackground() {
-      final quarterHeight = halfHeight / 2;
-      final threeQuartersHeight = quarterHeight * 3;
-      if (controller.hasClients && controller.offset >= 0) {
-        backgroundScrollController.jumpTo(controller.offset > threeQuartersHeight
-            ? controller.offset - (threeQuartersHeight / 2)
-            : controller.offset / 2);
-      }
-    }
-
     useEffect(() {
-      if (articleWithImage) controller.addListener(_scrollBackground);
-      return () => controller.removeListener(_scrollBackground);
-    }, [controller, backgroundScrollController]);
+      final scrollBackground = () {
+        final quarterHeight = halfHeight / 2;
+        final threeQuartersHeight = quarterHeight * 3;
+        if (controller.hasClients && controller.offset >= 0) {
+          backgroundScrollController.jumpTo(controller.offset > threeQuartersHeight
+              ? controller.offset - (threeQuartersHeight / 2)
+              : controller.offset / 2);
+        }
+      };
+
+      if (articleWithImage) controller.addListener(scrollBackground);
+      return () => controller.removeListener(scrollBackground);
+    }, [controller, backgroundScrollController, article]);
 
     return LayoutBuilder(
       builder: (context, constrains) => NotificationListener<ScrollNotification>(
@@ -268,7 +268,10 @@ class _IdleContent extends HookWidget {
                     toolbarHeight: 0,
                     automaticallyImplyLeading: false,
                     titleSpacing: 0,
-                    flexibleSpace: ArticleImageView(article: article, controller: controller),
+                    flexibleSpace: ArticleImageView(
+                      article: article,
+                      controller: controller,
+                    ),
                   ),
                   const SliverFillRemaining(),
                 ],
@@ -357,29 +360,31 @@ class _ActionsBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBarOpacityState = useState(useFixedOpacity ? 1.0 : 0.0);
-
-    void setAppBarOpacity() {
-      if (controller.hasClients) {
-        final currentOffset = controller.offset;
-        final opacityThreshold = fullHeight - appBarHeight * 1.5;
-        final opacitySpeed = fullHeight / (appBarHeight * 1.5);
-
-        if (currentOffset <= 0 || currentOffset < opacityThreshold) {
-          if (appBarOpacityState.value != 0) appBarOpacityState.value = 0;
-          return;
-        }
-
-        final factor = (currentOffset / opacityThreshold - 1) * opacitySpeed;
-        final opacity = 0.0 + min(factor, 1.0);
-        if (appBarOpacityState.value != opacity) appBarOpacityState.value = opacity * 0.8;
-      }
-    }
+    final appBarOpacityState = useState(_setupOpacity());
 
     useEffect(() {
+      appBarOpacityState.value = _setupOpacity();
+
+      void setAppBarOpacity() {
+        if (controller.hasClients) {
+          final currentOffset = controller.offset;
+          final opacityThreshold = fullHeight - appBarHeight * 1.5;
+          final opacitySpeed = fullHeight / (appBarHeight * 1.5);
+
+          if (currentOffset <= 0 || currentOffset < opacityThreshold) {
+            if (appBarOpacityState.value != 0) appBarOpacityState.value = 0;
+            return;
+          }
+
+          final factor = (currentOffset / opacityThreshold - 1) * opacitySpeed;
+          final opacity = 0.0 + min(factor, 1.0);
+          if (appBarOpacityState.value != opacity) appBarOpacityState.value = opacity * 0.8;
+        }
+      }
+
       if (!useFixedOpacity) controller.addListener(setAppBarOpacity);
       return () => controller.removeListener(setAppBarOpacity);
-    }, [controller]);
+    }, [controller, article]);
 
     return SliverAppBar(
       pinned: true,
@@ -439,6 +444,8 @@ class _ActionsBar extends HookWidget {
       flexibleSpace: const SizedBox(),
     );
   }
+
+  double _setupOpacity() => useFixedOpacity ? 1.0 : 0.0;
 }
 
 class _LoadingNextArticleIndicator extends StatelessWidget {

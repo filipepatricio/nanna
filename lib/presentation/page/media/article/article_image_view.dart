@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,33 +25,36 @@ class ArticleImageView extends HookWidget {
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
-    final titleOpacityState = useState(1.0);
+    final titleOpacityState = ValueNotifier(1.0);
     final fullHeight = articleViewFullHeight(context);
     final halfHeight = fullHeight / 2;
 
-    void setTitleOpacity() {
-      if (controller.hasClients) {
-        final currentOffset = controller.offset;
-        final opacityThreshold = halfHeight * 1.5;
+    useEffect(
+      () {
+        final setTitleOpacity = () {
+          if (controller.hasClients) {
+            final currentOffset = controller.offset;
+            final opacityThreshold = halfHeight * 1.5;
 
-        if (currentOffset <= 0) {
-          if (titleOpacityState.value != 1) titleOpacityState.value = 1;
-          return;
-        }
+            if (currentOffset <= 0) {
+              if (titleOpacityState.value != 1) titleOpacityState.value = 1;
+              return;
+            }
 
-        if (currentOffset > opacityThreshold) {
-          if (titleOpacityState.value != 0) titleOpacityState.value = 0;
-          return;
-        }
+            if (currentOffset > opacityThreshold) {
+              if (titleOpacityState.value != 0) titleOpacityState.value = 0;
+              return;
+            }
 
-        titleOpacityState.value = 1 - (currentOffset / opacityThreshold);
-      }
-    }
+            titleOpacityState.value = 1 - (currentOffset / opacityThreshold);
+          }
+        };
 
-    useEffect(() {
-      controller.addListener(setTitleOpacity);
-      return () => controller.removeListener(setTitleOpacity);
-    }, [controller]);
+        controller.addListener(setTitleOpacity);
+        return () => controller.removeListener(setTitleOpacity);
+      },
+      [controller, imageId],
+    );
 
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -59,10 +63,15 @@ class ArticleImageView extends HookWidget {
           SizedBox(
             width: double.infinity,
             height: fullHeight,
-            child: Image.network(
-              cloudinaryProvider.withPublicIdAsPng(imageId).url,
+            child: CloudinaryProgressiveImage(
+              cloudinaryTransformation: cloudinaryProvider
+                  .withPublicIdAsJpg(imageId)
+                  .transform()
+                  .withLogicalSize(MediaQuery.of(context).size.width, fullHeight, context)
+                  .autoGravity(),
               fit: BoxFit.cover,
-              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: fullHeight,
             ),
           ),
         ] else
@@ -74,8 +83,14 @@ class ArticleImageView extends HookWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.l, bottom: AppDimens.l),
-          child: Opacity(
-            opacity: titleOpacityState.value,
+          child: ValueListenableBuilder(
+            valueListenable: titleOpacityState,
+            builder: (BuildContext context, double value, Widget? child) {
+              return FadeTransition(
+                opacity: AlwaysStoppedAnimation(titleOpacityState.value),
+                child: child,
+              );
+            },
             child: SizedBox(
               width: double.infinity,
               // height: halfHeight,
@@ -94,7 +109,7 @@ class ArticleImageView extends HookWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: AppDimens.l),
                     child: Text(
-                      article.title, // TODO missing data in object
+                      article.title,
                       style: AppTypography.h0Bold.copyWith(color: AppColors.white),
                     ),
                   ),
