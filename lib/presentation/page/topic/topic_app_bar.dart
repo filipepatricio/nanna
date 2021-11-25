@@ -1,16 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TopicAppBar extends StatelessWidget {
-  final String title;
   final double backgroundAnimationFactor;
   final double foregroundAnimationFactor;
   final double lastPageTransition;
@@ -19,7 +16,6 @@ class TopicAppBar extends StatelessWidget {
   final Animation<double>? fadeAnimation;
 
   const TopicAppBar({
-    required this.title,
     required this.backgroundAnimationFactor,
     required this.foregroundAnimationFactor,
     this.lastPageTransition = 0.0,
@@ -56,13 +52,6 @@ class TopicAppBar extends StatelessWidget {
                 height: AppDimens.backArrowSize,
                 color: whiteToBlack.transform(foregroundAnimationFactor),
               ),
-            ),
-          ),
-          Hero(
-            tag: HeroTag.dailyBriefTitle,
-            child: Text(
-              title,
-              style: AppTypography.h1Bold.copyWith(color: whiteToBlack.transform(foregroundAnimationFactor)),
             ),
           ),
           const SizedBox(width: AppDimens.m),
