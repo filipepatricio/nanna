@@ -111,7 +111,8 @@
     "allArticlesRead": "Great! You’ve read all\narticles in the reading list.",
     "goBackToTopic": "Back to topic overview",
     "openSourceUrl": "Open in Browser",
-    "loadError": "Something went wrong\n while loading the article"
+    "loadError": "Something went wrong\n while loading the article",
+    "continueToArticle": "Continue reading"
   },
   "readingList": {
     "title": "Reading list",

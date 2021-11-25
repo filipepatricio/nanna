@@ -441,7 +441,6 @@ class _ActionsBar extends HookWidget {
           ),
         ),
       ),
-      flexibleSpace: const SizedBox(),
     );
   }
 
