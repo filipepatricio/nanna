@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-const double _kPreviousPageVisibleOffset = 10;
+const double kPreviousPageVisibleOffset = 10;
 const Radius _kDefaultTopRadius = Radius.circular(12);
 const BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
 const Duration _bottomSheetDuration = Duration(milliseconds: 400);
@@ -30,7 +30,7 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topSafeAreaPadding = MediaQuery.of(context).padding.top;
-    final topPadding = _kPreviousPageVisibleOffset + topSafeAreaPadding;
+    final topPadding = kPreviousPageVisibleOffset + topSafeAreaPadding;
 
     final _shadow = shadow ?? _kDefaultBoxShadow;
     const BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
@@ -106,7 +106,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     Widget child,
   ) {
     final paddingTop = MediaQuery.of(context).padding.top;
-    final distanceWithScale = (paddingTop + _kPreviousPageVisibleOffset) * 0.9;
+    final distanceWithScale = (paddingTop + kPreviousPageVisibleOffset) * 0.9;
     final offsetY = secondaryAnimation.value * (paddingTop - distanceWithScale);
     final scale = 1 - secondaryAnimation.value / 10;
     return AnimatedBuilder(
