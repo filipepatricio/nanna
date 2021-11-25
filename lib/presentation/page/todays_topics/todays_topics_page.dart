@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/relax/rel
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_title_hero.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -24,7 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
-import 'daily_brief_page_state.dart';
+import 'todays_topics_page_state.dart';
 
 const _pageViewportFraction = 0.85;
 
@@ -58,10 +59,10 @@ class TodaysTopicsPage extends HookWidget {
       [controller, state],
     );
 
-    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
+    useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (title, message) => Future.delayed(const Duration(milliseconds: 100), () {
-                showToastWidget(TutorialSnackBar(title: title, message: message),
+          showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
+                showToastWidget(TutorialSnackBar(text: text),
                     context: context,
                     animation: StyledToastAnimation.slideFromTop,
                     reverseAnimation: StyledToastAnimation.slideToTop,

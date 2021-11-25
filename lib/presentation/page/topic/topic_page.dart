@@ -54,7 +54,7 @@ class TopicPage extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (title, message) => showToastWidget(TutorialSnackBar(title: title, message: message),
+          showTutorialToast: (text) => showToastWidget(TutorialSnackBar(text: text),
               context: context,
               animation: StyledToastAnimation.slideFromTop,
               reverseAnimation: StyledToastAnimation.slideToTop,

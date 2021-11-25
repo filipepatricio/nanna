@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/vertical_indicators.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';

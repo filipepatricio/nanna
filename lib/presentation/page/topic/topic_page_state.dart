@@ -11,7 +11,7 @@ class TopicPageState with _$TopicPageState {
   @Implements(BuildState)
   factory TopicPageState.loading() = _TopicPageStateLoading;
 
-  factory TopicPageState.showTutorialToast(String title, String message) = _TopicPageStateShowTutorialToast;
+  factory TopicPageState.showTutorialToast(String text) = _TopicPageStateShowTutorialToast;
 
   factory TopicPageState.showSummaryCardTutorialCoachMark() = _TopicPageStateShowSummaryCardTutorialCoachMark;
 

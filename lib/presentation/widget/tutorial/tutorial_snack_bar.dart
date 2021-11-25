@@ -7,12 +7,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
+import '../informed_markdown_body.dart';
+
 class TutorialSnackBar extends StatelessWidget {
-  final String title;
-  final String message;
+  final String text;
   final VoidCallback? onDismiss;
 
-  const TutorialSnackBar({required this.title, required this.message, this.onDismiss, Key? key}) : super(key: key);
+  const TutorialSnackBar({required this.text, this.onDismiss, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +30,9 @@ class TutorialSnackBar extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          RichText(
-            textAlign: TextAlign.left,
-            text: TextSpan(children: <TextSpan>[
-              TextSpan(text: title, style: AppTypography.h4Bold.copyWith(color: AppColors.textPrimary)),
-              TextSpan(text: message, style: AppTypography.h4Normal.copyWith(color: AppColors.textPrimary)),
-            ]),
+          InformedMarkdownBody(
+            markdown: text,
+            baseTextStyle: AppTypography.h4Normal.copyWith(color: AppColors.textPrimary),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,

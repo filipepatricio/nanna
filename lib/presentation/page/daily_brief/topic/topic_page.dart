@@ -3,15 +3,14 @@ import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dar
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/daily_brief_relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_app_bar.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_view.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_snack_bar.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -51,7 +50,7 @@ class TopicPage extends HookWidget {
     final tutorialCoachMark = useState(TutorialCoachMark(
       context,
       targets: cubit.targets,
-      paddingFocus: 15,
+      paddingFocus: 0,
       opacityShadow: 0.5,
       hideSkip: true,
       onSkip: cubit.onSkipTutorialCoachMark,
@@ -86,7 +85,7 @@ class TopicPage extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (title, message) => showToastWidget(TutorialSnackBar(title: title, message: message),
+          showTutorialToast: (text) => showToastWidget(TutorialSnackBar(text: text),
               context: context,
               animation: StyledToastAnimation.slideFromTop,
               reverseAnimation: StyledToastAnimation.slideToTop,

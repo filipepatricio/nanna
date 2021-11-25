@@ -26,8 +26,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
       _isExploreTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.explore);
       if (!_isExploreTutorialStepSeen) {
-        emit(ExplorePageState.showTutorialToast(
-            LocaleKeys.tutorial_exploreTitle.tr(), LocaleKeys.tutorial_exploreMessage.tr()));
+        emit(ExplorePageState.showTutorialToast(LocaleKeys.tutorial_exploreSnackBarText.tr()));
         await _setTutorialStepSeenUseCase(TutorialStep.explore);
       }
     } catch (e, s) {

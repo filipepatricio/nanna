@@ -15,5 +15,5 @@ class DailyBriefPageState with _$DailyBriefPageState {
   @Implements(BuildState)
   factory DailyBriefPageState.error() = _DailyBriefPageStateError;
 
-  factory DailyBriefPageState.showTutorialToast(String title, String message) = _DailyBriefPageStateShowTutorialToast;
+  factory DailyBriefPageState.showTutorialToast(String text) = _DailyBriefPageStateShowTutorialToast;
 }

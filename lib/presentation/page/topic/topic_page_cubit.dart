@@ -1,8 +1,9 @@
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
+import 'package:better_informed_mobile/domain/tutorial/use_case/reset_tutorial_flow_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
@@ -16,6 +17,8 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 class TopicPageCubit extends Cubit<TopicPageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  final ResetTutorialFlowUseCase _resetTutorialFlowUseCase;
+
   late bool _isTopicTutorialStepSeen;
   late bool _isTopicSummaryCardTutorialStepSeen;
   late bool _isTopicMediaItemTutorialStepSeen;
@@ -27,17 +30,20 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   final summaryCardKey = GlobalKey();
   final mediaItemKey = GlobalKey();
 
-  TopicPageCubit(this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase) : super(TopicPageState.loading());
+  TopicPageCubit(this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase, this._resetTutorialFlowUseCase)
+      : super(TopicPageState.loading());
 
   Future<void> initialize() async {
     emit(TopicPageState.idle());
-    initializeSummaryCardTutorialCoachMarkTarget();
+
+    await _resetTutorialFlowUseCase();
+
     _isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
     _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicSummaryCard);
     _isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicMediaItem);
+
     if (!_isTopicTutorialStepSeen) {
-      emit(
-          TopicPageState.showTutorialToast(LocaleKeys.tutorial_topicTitle.tr(), LocaleKeys.tutorial_topicMessage.tr()));
+      emit(TopicPageState.showTutorialToast(LocaleKeys.tutorial_topicSnackBarText.tr()));
       await _setTutorialStepSeenUseCase.call(TutorialStep.topic);
     }
     targets.clear();
@@ -70,7 +76,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         )
       ],
       shape: ShapeLightFocus.RRect,
-      radius: 5,
+      radius: 0,
     ));
   }
 
@@ -85,18 +91,18 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         contents: [
           TargetContent(
             align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(bottom: AppDimens.s),
+            customPosition: CustomTargetContentPosition(top: AppDimens.s),
             builder: (context, controller) {
               return TutorialTooltip(
                   text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
                   dismissButtonText: LocaleKeys.common_done.tr(),
-                  tutorialTooltipPosition: TutorialTooltipPosition.bottom,
+                  tutorialTooltipPosition: TutorialTooltipPosition.top,
                   onDismiss: () => emit(TopicPageState.finishTutorialCoachMark()));
             },
           )
         ],
         shape: ShapeLightFocus.RRect,
-        radius: 5,
+        radius: 0,
       ),
     );
   }
