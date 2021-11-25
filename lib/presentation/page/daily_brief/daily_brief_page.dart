@@ -218,22 +218,10 @@ class _IdleContent extends HookWidget {
           child: ReadingListStackedCards(
             coverSize: Size(width, heightPageView),
             child: GestureDetector(
-              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(
-                context,
-                dailyBriefCubit,
-                controller,
-                key,
-                currentBrief,
-              ),
+              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(context, key, currentBrief),
               child: ReadingListCover(
                 topic: currentBrief.topics[key],
-                onTap: () => _onTopicCardPressed(
-                  context,
-                  dailyBriefCubit,
-                  controller,
-                  key,
-                  currentBrief,
-                ),
+                onTap: () => _onTopicCardPressed(context, key, currentBrief),
               ),
             ),
           ),
@@ -242,19 +230,9 @@ class _IdleContent extends HookWidget {
     }).values;
   }
 
-  void _onTopicCardPressed(
-    BuildContext context,
-    DailyBriefPageCubit dailyBriefCubit,
-    PageController controller,
-    int index,
-    CurrentBrief currentBrief,
-  ) {
+  void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
-      TopicPageRoute(
-        index: index,
-        onPageChanged: controller.jumpToPage,
-        currentBrief: currentBrief,
-      ),
+      TopicPageRoute(topic: currentBrief.topics[index]),
     );
   }
 }
