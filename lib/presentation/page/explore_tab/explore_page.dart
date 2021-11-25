@@ -12,9 +12,9 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/toasts/info_toast.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
-import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +32,7 @@ class ExplorePage extends HookWidget {
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (text) => showToastWidget(TutorialSnackBar(text: text),
+          showTutorialToast: (text) => showToastWidget(InfoToast(text: text),
               context: context,
               animation: StyledToastAnimation.slideFromTop,
               reverseAnimation: StyledToastAnimation.slideToTop,

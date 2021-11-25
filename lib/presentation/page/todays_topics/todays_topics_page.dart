@@ -18,7 +18,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_snack_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/toasts/info_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,7 +62,7 @@ class TodaysTopicsPage extends HookWidget {
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
           showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
-                showToastWidget(TutorialSnackBar(text: text),
+                showToastWidget(InfoToast(text: text),
                     context: context,
                     animation: StyledToastAnimation.slideFromTop,
                     reverseAnimation: StyledToastAnimation.slideToTop,

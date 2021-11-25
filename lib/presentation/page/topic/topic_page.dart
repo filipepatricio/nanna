@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_snack_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/toasts/info_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -54,7 +54,7 @@ class TopicPage extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (text) => showToastWidget(TutorialSnackBar(text: text),
+          showTutorialToast: (text) => showToastWidget(InfoToast(text: text),
               context: context,
               animation: StyledToastAnimation.slideFromTop,
               reverseAnimation: StyledToastAnimation.slideToTop,
