@@ -1,24 +1,25 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/article/covers/dotted_article_info.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ArticleImageView extends HookWidget {
   final MediaItemArticle article;
   final ScrollController controller;
+  final double fullHeight;
+  final double additionalBottomMargin;
 
   const ArticleImageView({
     required this.article,
     required this.controller,
+    required this.fullHeight,
+    required this.additionalBottomMargin,
     Key? key,
   }) : super(key: key);
 
@@ -27,7 +28,6 @@ class ArticleImageView extends HookWidget {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
     final titleOpacityState = ValueNotifier(1.0);
-    final fullHeight = articleViewFullHeight(context);
     final halfHeight = fullHeight / 2;
 
     useEffect(
@@ -38,12 +38,12 @@ class ArticleImageView extends HookWidget {
             final opacityThreshold = halfHeight * 1.5;
 
             if (currentOffset <= 0) {
-              if (titleOpacityState.value != 1) titleOpacityState.value = 1;
+              titleOpacityState.value = 1;
               return;
             }
 
             if (currentOffset > opacityThreshold) {
-              if (titleOpacityState.value != 0) titleOpacityState.value = 0;
+              titleOpacityState.value = 0;
               return;
             }
 
@@ -115,29 +115,7 @@ class ArticleImageView extends HookWidget {
                       style: AppTypography.h0Bold.copyWith(color: AppColors.white),
                     ),
                   ),
-                  const SizedBox(height: AppDimens.xxxl),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      controller.animateTo(
-                        halfHeight,
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeIn,
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          tr(LocaleKeys.article_continueToArticle),
-                          style: AppTypography.h3Bold16
-                              .copyWith(color: AppColors.white, decoration: TextDecoration.underline),
-                        ),
-                        const Icon(Icons.keyboard_arrow_up_rounded, color: AppColors.white, size: AppDimens.m),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppDimens.l),
+                  SizedBox(height: AppDimens.l + additionalBottomMargin),
                 ],
               ),
             ),
