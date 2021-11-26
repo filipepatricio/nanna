@@ -74,7 +74,7 @@ class ReadingListCover extends HookWidget {
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: TopicIntroduction(introduction: topic.introduction),
               ),
-              const SizedBox(height: AppDimens.s),
+              const SizedBox(height: AppDimens.l),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: _PublisherLogoRow(topic: topic),
