@@ -7,7 +7,7 @@ class UserGQL {
   static DocumentNode queryUser() => gql('''
     query {
       me {
-        id
+        uuid
         email
         firstName
         lastName
@@ -18,7 +18,7 @@ class UserGQL {
   static DocumentNode updateUser() => gql(''' 
     mutation updateUserMeta(\$firstName: String, \$lastName: String) {
       updateUserMeta(information: {firstName: \$firstName, lastName: \$lastName}) {
-        id
+        uuid
         email
         firstName
         lastName

@@ -20,7 +20,7 @@ class SignInWithDefaultProviderUseCase {
     await _authStore.save(authResult.authToken);
 
     await _analyticsRepository.login(
-      authResult.userId.toString(),
+      authResult.userUuid,
       authResult.method,
     );
   }
