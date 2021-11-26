@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_title_hero.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/relax/daily_brief_relax_view.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/stacked_cards_error_view.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/stacked_cards_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_title_hero.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -24,12 +24,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _pageViewportFraction = 0.85;
 
-class DailyBriefPage extends HookWidget {
-  const DailyBriefPage({Key? key}) : super(key: key);
+class TodaysTopicsPage extends HookWidget {
+  const TodaysTopicsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<DailyBriefPageCubit>();
+    final cubit = useCubit<TodaysTopicsPageCubit>();
     final state = useCubitBuilder(cubit);
     final controller = usePageController(viewportFraction: _pageViewportFraction);
     final relaxState = useState(false);
@@ -68,8 +68,8 @@ class DailyBriefPage extends HookWidget {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         title: Row(
           children: [
-            DailyBriefTitleHero(
-              title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
+            TodaysTopicsTitleHero(
+              title: relaxState.value ? LocaleKeys.todaysTopics_relax.tr() : LocaleKeys.todaysTopics_title.tr(),
             ),
             const Spacer(),
             Visibility(
@@ -107,7 +107,7 @@ class DailyBriefPage extends HookWidget {
 }
 
 class _IdleContent extends HookWidget {
-  final DailyBriefPageCubit dailyBriefCubit;
+  final TodaysTopicsPageCubit dailyBriefCubit;
   final CurrentBrief currentBrief;
   final PageController controller;
   final double cardStackWidth;
@@ -205,7 +205,7 @@ class _IdleContent extends HookWidget {
   Iterable<Widget> _buildTopicCards(
     BuildContext context,
     PageController controller,
-    DailyBriefPageCubit dailyBriefCubit,
+    TodaysTopicsPageCubit dailyBriefCubit,
     CurrentBrief currentBrief,
     double width,
     double heightPageView,
@@ -232,7 +232,7 @@ class _IdleContent extends HookWidget {
 
   void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
-      TopicPageRoute(topic: currentBrief.topics[index]),
+      TodaysTopicsTopicPage(topic: currentBrief.topics[index]),
     );
   }
 }

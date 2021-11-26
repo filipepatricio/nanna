@@ -3,10 +3,10 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:flutter/material.dart';
 
-class DailyBriefTitleHero extends StatelessWidget {
+class TodaysTopicsTitleHero extends StatelessWidget {
   final String title;
 
-  const DailyBriefTitleHero({
+  const TodaysTopicsTitleHero({
     required this.title,
     Key? key,
   }) : super(key: key);

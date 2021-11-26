@@ -2,8 +2,8 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/article/article_item_view.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/article/vertical_indicators.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/article/vertical_indicators.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -166,7 +166,7 @@ class _TopicHeader extends HookWidget {
                       SvgPicture.asset(AppVectorGraphics.articles),
                       const SizedBox(width: AppDimens.s),
                       Text(
-                        LocaleKeys.dailyBrief_selectedArticles.tr(
+                        LocaleKeys.todaysTopics_selectedArticles.tr(
                           args: [topic.readingList.entries.length.toString()],
                         ),
                         style: AppTypography.b3Regular.copyWith(height: 1),
@@ -251,7 +251,7 @@ class _SummaryContent extends HookWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: AppDimens.l),
                   child: Text(
-                    LocaleKeys.dailyBrief_biggerPicture.tr(),
+                    LocaleKeys.todaysTopics_biggerPicture.tr(),
                     style: AppTypography.h1Medium,
                   ),
                 ),
