@@ -23,6 +23,7 @@ import 'package:better_informed_mobile/presentation/widget/track/general_event_t
 import 'package:better_informed_mobile/presentation/widget/track/topic_summary_tracker/topic_summary_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -85,7 +86,11 @@ class TopicView extends HookWidget {
             controller: listScrollController,
             physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
             children: [
-              _TopicHeader(topic: topic),
+              _TopicHeader(
+                topic: topic,
+                onArticlesLabelTap: () =>
+                    gestureManager.animateTo(_topicHeaderHeight + _summaryViewHeight + articleContentHeight),
+              ),
               _SummaryContent(topic: topic),
               GeneralEventTracker(
                 controller: eventController,
@@ -107,9 +112,11 @@ class TopicView extends HookWidget {
 
 class _TopicHeader extends HookWidget {
   final Topic topic;
+  final void Function() onArticlesLabelTap;
 
   const _TopicHeader({
     required this.topic,
+    required this.onArticlesLabelTap,
     Key? key,
   }) : super(key: key);
 
@@ -160,19 +167,24 @@ class _TopicHeader extends HookWidget {
                     maxLines: 3,
                   ),
                   const SizedBox(height: AppDimens.ml),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(AppVectorGraphics.articles),
-                      const SizedBox(width: AppDimens.s),
-                      Text(
-                        LocaleKeys.todaysTopics_selectedArticles.tr(
-                          args: [topic.readingList.entries.length.toString()],
+                  ExpandTapWidget(
+                    onTap: onArticlesLabelTap,
+                    tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(AppVectorGraphics.articles),
+                        const SizedBox(width: AppDimens.s),
+                        Text(
+                          LocaleKeys.todaysTopics_selectedArticles.tr(
+                            args: [topic.readingList.entries.length.toString()],
+                          ),
+                          style: AppTypography.b3Regular.copyWith(height: 1),
+                          textAlign: TextAlign.center,
                         ),
-                        style: AppTypography.b3Regular.copyWith(height: 1),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   const SizedBox(height: AppDimens.topicControlsMargin),
                   Row(
