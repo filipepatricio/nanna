@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
-import 'package:better_informed_mobile/domain/tutorial/use_case/reset_tutorial_flow_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
@@ -18,7 +17,6 @@ enum TutorialCoachMarkSteps { summaryCard, mediaItem }
 class TopicPageCubit extends Cubit<TopicPageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
-  final ResetTutorialFlowUseCase _resetTutorialFlowUseCase;
 
   late bool _isTopicTutorialStepSeen;
   late bool _isTopicSummaryCardTutorialStepSeen;
@@ -31,13 +29,10 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   final summaryCardKey = GlobalKey();
   final mediaItemKey = GlobalKey();
 
-  TopicPageCubit(this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase, this._resetTutorialFlowUseCase)
-      : super(TopicPageState.loading());
+  TopicPageCubit(this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase) : super(TopicPageState.loading());
 
   Future<void> initialize() async {
     emit(TopicPageState.idle());
-
-    await _resetTutorialFlowUseCase();
 
     _isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
     _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicSummaryCard);

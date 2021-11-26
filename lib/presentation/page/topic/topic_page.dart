@@ -5,10 +5,9 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/toasts/info_toast.dart';
+import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 /// Make sure that changes to the view won't change depth of the main scroll
@@ -41,15 +40,7 @@ class TopicPage extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (text) => showToastWidget(InfoToast(text: text),
-              context: context,
-              animation: StyledToastAnimation.slideFromTop,
-              reverseAnimation: StyledToastAnimation.slideToTop,
-              animDuration: const Duration(milliseconds: 500),
-              position: const StyledToastPosition(align: Alignment(0.0, -1.1), offset: 0),
-              isIgnoring: false,
-              dismissOtherToast: true,
-              duration: Duration.zero),
+          showTutorialToast: (text) => showToast(context, text),
           showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
           showMediaItemTutorialCoachMark: tutorialCoachMark.show,
           skipTutorialCoachMark: tutorialCoachMark.skip,

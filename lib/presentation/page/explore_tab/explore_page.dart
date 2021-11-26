@@ -12,7 +12,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:better_informed_mobile/presentation/widget/toasts/info_toast.dart';
+import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 const _topMargin = 80.0;
 
@@ -31,16 +30,7 @@ class ExplorePage extends HookWidget {
     final state = useCubitBuilder(cubit);
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(
-          showTutorialToast: (text) => showToastWidget(InfoToast(text: text),
-              context: context,
-              animation: StyledToastAnimation.slideFromTop,
-              reverseAnimation: StyledToastAnimation.slideToTop,
-              animDuration: const Duration(milliseconds: 500),
-              position: const StyledToastPosition(align: Alignment(0.0, -1.1), offset: 0),
-              isIgnoring: false,
-              dismissOtherToast: true,
-              duration: const Duration(seconds: 10)));
+      state.whenOrNull(showTutorialToast: (text) => showToast(context, text));
     });
 
     useEffect(

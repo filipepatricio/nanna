@@ -18,12 +18,11 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/toasts/info_toast.dart';
+import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 import 'todays_topics_page_state.dart';
 
@@ -62,15 +61,7 @@ class TodaysTopicsPage extends HookWidget {
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
           showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
-                showToastWidget(InfoToast(text: text),
-                    context: context,
-                    animation: StyledToastAnimation.slideFromTop,
-                    reverseAnimation: StyledToastAnimation.slideToTop,
-                    animDuration: const Duration(milliseconds: 500),
-                    position: const StyledToastPosition(align: Alignment(0.0, -1.1), offset: 0),
-                    isIgnoring: false,
-                    dismissOtherToast: true,
-                    duration: const Duration(seconds: 10));
+                showToast(context, text);
               }));
     });
 
