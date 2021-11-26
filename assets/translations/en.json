@@ -31,11 +31,11 @@
     "exploreTab": "Explore",
     "profileTab": "Profile"
   },
-  "dailyBrief": {
-    "title": "Daily Brief",
+  "todaysTopics": {
+    "title": "Today's topics",
     "justSec": "Just a sec...",
     "loading": "We’re loading your brief",
-    "ups": "Uuups!",
+    "oops": "Oops!",
     "tryAgainLater": "Something went wrong\n try again later",
     "readingList": "Reading list",
     "relax": "Relax",
@@ -53,7 +53,6 @@
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of service",
-
     "privacyPolicyContent": "This is a placeholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "termsContent": "This is a placeholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "newsUpdates": "News Updates",
@@ -74,7 +73,7 @@
     "header": {
       "signIn": "Welcome to the smart & flexible news format",
       "magicLinkOne": "_Check your mail!_",
-      "magicLinkTwo": "We’ve send you a magic link."
+      "magicLinkTwo": "We’ve sent you a magic link."
     },
     "providerButton": {
       "apple": "Sign in with Apple",
@@ -111,7 +110,8 @@
     "allArticlesRead": "Great! You’ve read all\narticles in the reading list.",
     "goBackToTopic": "Back to topic overview",
     "openSourceUrl": "Open in Browser",
-    "loadError": "Something went wrong\n while loading the article"
+    "loadError": "Something went wrong\n while loading the article",
+    "continueToArticle": "Continue reading"
   },
   "readingList": {
     "title": "Reading list",

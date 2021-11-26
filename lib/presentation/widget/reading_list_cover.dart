@@ -74,7 +74,7 @@ class ReadingListCover extends HookWidget {
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: TopicIntroduction(introduction: topic.introduction),
               ),
-              const SizedBox(height: AppDimens.s),
+              const SizedBox(height: AppDimens.l),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: _PublisherLogoRow(topic: topic),
@@ -129,12 +129,7 @@ class _PublisherLogoRow extends HookWidget {
       children: [
         ...providers.map(
           (publisher) {
-            return Row(
-              children: [
-                PublisherLogo.dark(publisher: publisher),
-                if (publisher.darkLogo != null) const SizedBox(width: AppDimens.s),
-              ],
-            );
+            return PublisherLogo.dark(publisher: publisher);
           },
         ),
       ],

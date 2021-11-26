@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_paginated_topics_use_case.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/topics/next_topics_page_loader.dart';
@@ -11,21 +13,27 @@ const _paginationLimit = 10;
 @injectable
 class TopicsSeeAllPageCubit extends Cubit<TopicsSeeAllPageState> {
   final GetExplorePaginatedTopicsUseCase _getExplorePaginatedTopicsUseCase;
+  final TrackActivityUseCase _trackActivityUseCase;
   late NextTopicPageLoader _nextArticlePageLoader;
   late PaginationEngine<Topic> _paginationEngine;
+  late String _areaId;
 
   List<Topic> _topics = [];
   bool _allLoaded = false;
 
   TopicsSeeAllPageCubit(
     this._getExplorePaginatedTopicsUseCase,
+    this._trackActivityUseCase,
   ) : super(TopicsSeeAllPageState.loading());
 
-  Future<void> initialize(String sectionId, List<Topic> topics) async {
+  Future<void> initialize(String areaId, List<Topic> topics) async {
+    _areaId = areaId;
     _topics = topics;
-    _nextArticlePageLoader = NextTopicPageLoader(_getExplorePaginatedTopicsUseCase, sectionId);
+    _nextArticlePageLoader = NextTopicPageLoader(_getExplorePaginatedTopicsUseCase, areaId);
     _paginationEngine = PaginationEngine(_nextArticlePageLoader);
     _paginationEngine.initialize(topics);
+
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.exploreAreaScrolled(_areaId, 0));
 
     emit(TopicsSeeAllPageState.withPagination(topics));
   }
@@ -34,6 +42,9 @@ class TopicsSeeAllPageCubit extends Cubit<TopicsSeeAllPageState> {
     if (_isInLoadingState() || _allLoaded) return;
 
     emit(TopicsSeeAllPageState.loadingMore(_topics));
+
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.exploreAreaScrolled(_areaId, _topics.length));
+
     final limit = _topics.length.isEven ? _paginationLimit : _paginationLimit - 1;
     final result = await _paginationEngine.loadMore(limitOverride: limit);
 

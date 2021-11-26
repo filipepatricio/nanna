@@ -56,12 +56,12 @@ class StackedCardsLoadingView extends HookWidget {
                   ),
                   const SizedBox(height: AppDimens.l),
                   Text(
-                    LocaleKeys.dailyBrief_justSec.tr(),
+                    LocaleKeys.todaysTopics_justSec.tr(),
                     style: AppTypography.h3bold,
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    LocaleKeys.dailyBrief_loading.tr(),
+                    LocaleKeys.todaysTopics_loading.tr(),
                     style: AppTypography.h3Normal,
                     textAlign: TextAlign.center,
                   ),

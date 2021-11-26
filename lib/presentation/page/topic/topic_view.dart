@@ -1,8 +1,9 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/article/article_item_view.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/article/vertical_indicators.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/article/vertical_indicators.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -18,8 +19,11 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
+import 'package:better_informed_mobile/presentation/widget/track/topic_summary_tracker/topic_summary_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -48,6 +52,7 @@ class TopicView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventController = useEventTrackController();
     final pageIndex = useState(0);
     final listScrollController = useScrollController();
     final articleController = usePageController();
@@ -81,13 +86,21 @@ class TopicView extends HookWidget {
             controller: listScrollController,
             physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
             children: [
-              _TopicHeader(topic: topic),
-              _SummaryContent(topic: topic),
-              _MediaItemContent(
-                articleContentHeight: articleContentHeight,
-                controller: articleController,
-                pageIndex: pageIndex,
+              _TopicHeader(
                 topic: topic,
+                onArticlesLabelTap: () =>
+                    gestureManager.animateTo(_topicHeaderHeight + _summaryViewHeight + articleContentHeight),
+              ),
+              _SummaryContent(topic: topic),
+              GeneralEventTracker(
+                controller: eventController,
+                child: _MediaItemContent(
+                  articleContentHeight: articleContentHeight,
+                  controller: articleController,
+                  pageIndex: pageIndex,
+                  topic: topic,
+                  eventController: eventController,
+                ),
               ),
             ],
           ),
@@ -99,9 +112,11 @@ class TopicView extends HookWidget {
 
 class _TopicHeader extends HookWidget {
   final Topic topic;
+  final void Function() onArticlesLabelTap;
 
   const _TopicHeader({
     required this.topic,
+    required this.onArticlesLabelTap,
     Key? key,
   }) : super(key: key);
 
@@ -152,19 +167,24 @@ class _TopicHeader extends HookWidget {
                     maxLines: 3,
                   ),
                   const SizedBox(height: AppDimens.ml),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(AppVectorGraphics.articles),
-                      const SizedBox(width: AppDimens.s),
-                      Text(
-                        LocaleKeys.dailyBrief_selectedArticles.tr(
-                          args: [topic.readingList.entries.length.toString()],
+                  ExpandTapWidget(
+                    onTap: onArticlesLabelTap,
+                    tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(AppVectorGraphics.articles),
+                        const SizedBox(width: AppDimens.s),
+                        Text(
+                          LocaleKeys.todaysTopics_selectedArticles.tr(
+                            args: [topic.readingList.entries.length.toString()],
+                          ),
+                          style: AppTypography.b3Regular.copyWith(height: 1),
+                          textAlign: TextAlign.center,
                         ),
-                        style: AppTypography.b3Regular.copyWith(height: 1),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   const SizedBox(height: AppDimens.topicControlsMargin),
                   Row(
@@ -207,9 +227,13 @@ class _SummaryContent extends HookWidget {
     }
 
     final content = topic.topicSummaryList.length > 1
-        ? _SummaryCardPageView(
+        ? TopicSummaryTracker(
             topic: topic,
-            controller: controller,
+            summaryPageController: controller,
+            child: _SummaryCardPageView(
+              topic: topic,
+              controller: controller,
+            ),
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
@@ -239,7 +263,7 @@ class _SummaryContent extends HookWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: AppDimens.l),
                   child: Text(
-                    LocaleKeys.dailyBrief_biggerPicture.tr(),
+                    LocaleKeys.todaysTopics_biggerPicture.tr(),
                     style: AppTypography.h1Medium,
                   ),
                 ),
@@ -336,7 +360,7 @@ class _SummaryCard extends StatelessWidget {
           const SizedBox(height: AppDimens.xxxc),
           Expanded(
             child: InformedMarkdownBody(
-              markdown: '* ${topic.topicSummaryList[index].content}',
+              markdown: topic.topicSummaryList[index].content,
               baseTextStyle: AppTypography.b2RegularLora,
             ),
           ),
@@ -346,23 +370,33 @@ class _SummaryCard extends StatelessWidget {
   }
 }
 
-class _MediaItemContent extends StatelessWidget {
+class _MediaItemContent extends HookWidget {
   final double articleContentHeight;
   final PageController controller;
   final ValueNotifier<int> pageIndex;
   final Topic topic;
+  final GeneralEventTrackerController eventController;
 
   const _MediaItemContent({
     required this.articleContentHeight,
     required this.controller,
     required this.pageIndex,
     required this.topic,
+    required this.eventController,
   });
 
   @override
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final entryList = topic.readingList.entries;
+
+    useEffect(
+      () {
+        _trackReadingListBrowse(0);
+      },
+      [topic],
+    );
+
     return Container(
       height: articleContentHeight,
       child: Stack(
@@ -374,7 +408,10 @@ class _MediaItemContent extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
                 controller: controller,
                 scrollDirection: Axis.vertical,
-                onPageChanged: (index) => pageIndex.value = index,
+                onPageChanged: (index) {
+                  _trackReadingListBrowse(index);
+                  pageIndex.value = index;
+                },
                 itemCount: entryList.length,
                 itemBuilder: (context, index) {
                   final currentMediaItem = entryList[index].item;
@@ -407,5 +444,13 @@ class _MediaItemContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _trackReadingListBrowse(int index) {
+    final event = AnalyticsEvent.readingListBrowsed(
+      topic.id,
+      index,
+    );
+    eventController.track(event);
   }
 }

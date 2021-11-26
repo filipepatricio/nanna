@@ -32,8 +32,7 @@ typedef MediaItemNavigationCallback = void Function(int index);
 
 const appBarHeight = kToolbarHeight + AppDimens.xl;
 const _loadNextArticleIndicatorHeight = 150.0;
-
-double articleViewFullHeight(BuildContext context) => MediaQuery.of(context).size.height * 0.95;
+const _visibleContentSpacing = 100.0;
 
 class MediaItemPage extends HookWidget {
   final double? readArticleProgress;
@@ -87,32 +86,36 @@ class MediaItemPage extends HookWidget {
       cubit.initialize(index, singleArticle, topic);
     }, [cubit]);
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        child: state.maybeMap(
-          loading: (state) => const _LoadingContent(),
-          idleMultiItems: (state) => _IdleContent(
-            article: state.header,
-            content: state.content,
-            hasNextArticle: state.hasNext,
-            multipleArticles: true,
-            controller: scrollController,
-            cubit: cubit,
-            readArticleProgress: readArticleProgress,
+    return LayoutBuilder(
+      builder: (context, constraints) => Scaffold(
+        backgroundColor: AppColors.background,
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          child: state.maybeMap(
+            loading: (state) => const _LoadingContent(),
+            idleMultiItems: (state) => _IdleContent(
+              article: state.header,
+              content: state.content,
+              hasNextArticle: state.hasNext,
+              multipleArticles: true,
+              controller: scrollController,
+              cubit: cubit,
+              fullHeight: constraints.maxHeight,
+              readArticleProgress: readArticleProgress,
+            ),
+            idleSingleItem: (state) => _IdleContent(
+              article: state.header,
+              content: state.content,
+              hasNextArticle: false,
+              multipleArticles: false,
+              controller: scrollController,
+              cubit: cubit,
+              fullHeight: constraints.maxHeight,
+              readArticleProgress: readArticleProgress,
+            ),
+            error: (state) => _ErrorContent(article: state.article),
+            orElse: () => const SizedBox(),
           ),
-          idleSingleItem: (state) => _IdleContent(
-            article: state.header,
-            content: state.content,
-            hasNextArticle: false,
-            multipleArticles: false,
-            controller: scrollController,
-            cubit: cubit,
-            readArticleProgress: readArticleProgress,
-          ),
-          error: (state) => _ErrorContent(article: state.article),
-          orElse: () => const SizedBox(),
         ),
       ),
     );
@@ -162,7 +165,7 @@ class _ErrorContent extends StatelessWidget {
             SvgPicture.asset(AppVectorGraphics.articleError),
             const SizedBox(height: AppDimens.m),
             Text(
-              LocaleKeys.dailyBrief_ups.tr(),
+              LocaleKeys.todaysTopics_oops.tr(),
               style: AppTypography.h3bold,
               textAlign: TextAlign.center,
             ),
@@ -193,6 +196,7 @@ class _IdleContent extends HookWidget {
   final bool multipleArticles;
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
+  final double fullHeight;
   final double? readArticleProgress;
 
   _IdleContent({
@@ -202,6 +206,7 @@ class _IdleContent extends HookWidget {
     required this.multipleArticles,
     required this.controller,
     required this.cubit,
+    required this.fullHeight,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -210,7 +215,6 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullHeight = articleViewFullHeight(context);
     final halfHeight = fullHeight / 2;
     final backgroundScrollController = useScrollController();
 
@@ -220,98 +224,106 @@ class _IdleContent extends HookWidget {
       });
     }, []);
 
-    void _scrollBackground() {
-      final quarterHeight = halfHeight / 2;
-      final threeQuartersHeight = quarterHeight * 3;
-      if (controller.hasClients && controller.offset >= 0) {
-        backgroundScrollController.jumpTo(controller.offset > threeQuartersHeight
-            ? controller.offset - (threeQuartersHeight / 2)
-            : controller.offset / 2);
-      }
-    }
-
     useEffect(() {
-      if (articleWithImage) controller.addListener(_scrollBackground);
-      return () => controller.removeListener(_scrollBackground);
-    }, [controller, backgroundScrollController]);
+      final scrollBackground = () {
+        final quarterHeight = halfHeight / 2;
+        final threeQuartersHeight = quarterHeight * 3;
+        if (controller.hasClients && controller.offset >= 0) {
+          backgroundScrollController.jumpTo(controller.offset > threeQuartersHeight
+              ? controller.offset - (threeQuartersHeight / 2)
+              : controller.offset / 2);
+        }
+      };
 
-    return LayoutBuilder(
-      builder: (context, constrains) => NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollNotification) {
-          if (scrollNotification is ScrollEndNotification) {
-            var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
-            if (readScrollOffset < 0) {
-              readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
-            }
+      if (articleWithImage) controller.addListener(scrollBackground);
+      return () => controller.removeListener(scrollBackground);
+    }, [controller, backgroundScrollController, article]);
 
-            cubit.updateScrollData(
-              readScrollOffset,
-              controller.position.maxScrollExtent,
-            );
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification scrollNotification) {
+        if (scrollNotification is ScrollEndNotification) {
+          var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
+          if (readScrollOffset < 0) {
+            readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
           }
-          return false;
-        },
-        child: Stack(
-          children: [
-            //Article Header
-            if (articleWithImage)
-              CustomScrollView(
-                physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                controller: backgroundScrollController,
-                key: _articlePageKey,
-                slivers: [
-                  SliverAppBar(
-                    pinned: true,
-                    floating: true,
-                    expandedHeight: fullHeight,
-                    collapsedHeight: 0,
-                    toolbarHeight: 0,
-                    automaticallyImplyLeading: false,
-                    titleSpacing: 0,
-                    flexibleSpace: ArticleImageView(article: article, controller: controller),
-                  ),
-                  const SliverFillRemaining(),
-                ],
-              ),
-            //Article Content
+
+          cubit.updateScrollData(
+            readScrollOffset,
+            controller.position.maxScrollExtent,
+          );
+        }
+        return false;
+      },
+      child: Stack(
+        children: [
+          //Article Header
+          if (articleWithImage)
             CustomScrollView(
               physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              controller: controller,
+              controller: backgroundScrollController,
+              key: _articlePageKey,
               slivers: [
-                _ActionsBar(
-                  article: article,
-                  fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                SliverAppBar(
+                  pinned: true,
+                  floating: true,
+                  expandedHeight: fullHeight,
+                  collapsedHeight: 0,
+                  toolbarHeight: 0,
+                  automaticallyImplyLeading: false,
+                  titleSpacing: 0,
+                  flexibleSpace: ArticleImageView(
+                    article: article,
+                    controller: controller,
+                    fullHeight: fullHeight,
+                    additionalBottomMargin: _visibleContentSpacing,
+                  ),
+                ),
+                const SliverFillRemaining(),
+              ],
+            ),
+          //Article Content
+          CustomScrollView(
+            physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            controller: controller,
+            slivers: [
+              _ActionsBar(
+                article: article,
+                fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                controller: controller,
+              ),
+              if (articleWithImage)
+                _ContinueSliverButton(
+                  fullHeight: fullHeight,
                   controller: controller,
                 ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      ArticleContentView(
-                        article: article,
-                        content: content,
-                        cubit: cubit,
-                        controller: controller,
-                        articleContentKey: _articleContentKey,
-                        scrollToPosition: () => scrollToPosition(readArticleProgress),
-                      ),
-                    ],
-                  ),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    ArticleContentView(
+                      article: article,
+                      content: content,
+                      cubit: cubit,
+                      controller: controller,
+                      articleContentKey: _articleContentKey,
+                      scrollToPosition: () => scrollToPosition(readArticleProgress),
+                    ),
+                  ],
                 ),
-                if (hasNextArticle)
-                  SliverPullUpIndicatorAction(
-                    builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
-                    fullExtentHeight: _loadNextArticleIndicatorHeight,
-                    triggerExtent: _loadNextArticleIndicatorHeight,
-                    triggerFunction: (completer) => cubit.loadNextArticle(completer),
-                  )
-                else if (multipleArticles)
-                  const SliverToBoxAdapter(
-                    child: _AllArticlesRead(),
-                  ),
-              ],
-            )
-          ],
-        ),
+              ),
+              if (hasNextArticle)
+                SliverPullUpIndicatorAction(
+                  builder: (context, factor) => _LoadingNextArticleIndicator(factor: factor),
+                  fullExtentHeight: _loadNextArticleIndicatorHeight,
+                  triggerExtent: _loadNextArticleIndicatorHeight,
+                  triggerFunction: (completer) => cubit.loadNextArticle(completer),
+                )
+              else if (multipleArticles)
+                const SliverToBoxAdapter(
+                  child: _AllArticlesRead(),
+                ),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -341,6 +353,72 @@ class _IdleContent extends HookWidget {
   }
 }
 
+class _ContinueSliverButton extends HookWidget {
+  final ScrollController controller;
+  final double fullHeight;
+
+  const _ContinueSliverButton({
+    required this.controller,
+    required this.fullHeight,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final visibilityFactor = ValueNotifier(1.0);
+
+    useEffect(
+      () {
+        final listener = () {
+          visibilityFactor.value = 1 - controller.offset / _visibleContentSpacing;
+        };
+        controller.addListener(listener);
+        return () => controller.removeListener(listener);
+      },
+    );
+
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          ValueListenableBuilder(
+            valueListenable: visibilityFactor,
+            builder: (context, double factor, child) {
+              return FadeTransition(
+                opacity: AlwaysStoppedAnimation(factor),
+                child: child,
+              );
+            },
+            child: GestureDetector(
+              onTap: () {
+                controller.animateTo(
+                  min(fullHeight - _visibleContentSpacing, controller.position.maxScrollExtent),
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: AppDimens.l),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      tr(LocaleKeys.article_continueToArticle),
+                      style:
+                          AppTypography.h3Bold16.copyWith(color: AppColors.white, decoration: TextDecoration.underline),
+                    ),
+                    const Icon(Icons.keyboard_arrow_up_rounded, color: AppColors.white, size: AppDimens.m),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: AppDimens.xxxc),
+        ],
+      ),
+    );
+  }
+}
+
 class _ActionsBar extends HookWidget {
   const _ActionsBar({
     required this.article,
@@ -357,33 +435,35 @@ class _ActionsBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBarOpacityState = useState(useFixedOpacity ? 1.0 : 0.0);
-
-    void setAppBarOpacity() {
-      if (controller.hasClients) {
-        final currentOffset = controller.offset;
-        final opacityThreshold = fullHeight - appBarHeight * 1.5;
-        final opacitySpeed = fullHeight / (appBarHeight * 1.5);
-
-        if (currentOffset <= 0 || currentOffset < opacityThreshold) {
-          if (appBarOpacityState.value != 0) appBarOpacityState.value = 0;
-          return;
-        }
-
-        final factor = (currentOffset / opacityThreshold - 1) * opacitySpeed;
-        final opacity = 0.0 + min(factor, 1.0);
-        if (appBarOpacityState.value != opacity) appBarOpacityState.value = opacity * 0.8;
-      }
-    }
+    final appBarOpacityState = useState(_setupOpacity());
 
     useEffect(() {
+      appBarOpacityState.value = _setupOpacity();
+
+      void setAppBarOpacity() {
+        if (controller.hasClients) {
+          final currentOffset = controller.offset;
+          final opacityThreshold = fullHeight - appBarHeight * 1.5;
+          final opacitySpeed = fullHeight / (appBarHeight * 1.5);
+
+          if (currentOffset <= 0 || currentOffset < opacityThreshold) {
+            if (appBarOpacityState.value != 0) appBarOpacityState.value = 0;
+            return;
+          }
+
+          final factor = (currentOffset / opacityThreshold - 1) * opacitySpeed;
+          final opacity = 0.0 + min(factor, 1.0);
+          if (appBarOpacityState.value != opacity) appBarOpacityState.value = opacity * 0.8;
+        }
+      }
+
       if (!useFixedOpacity) controller.addListener(setAppBarOpacity);
       return () => controller.removeListener(setAppBarOpacity);
-    }, [controller]);
+    }, [controller, article]);
 
     return SliverAppBar(
       pinned: true,
-      expandedHeight: fullHeight,
+      expandedHeight: fullHeight - _visibleContentSpacing,
       collapsedHeight: appBarHeight,
       toolbarHeight: appBarHeight,
       automaticallyImplyLeading: false,
@@ -436,9 +516,10 @@ class _ActionsBar extends HookWidget {
           ),
         ),
       ),
-      flexibleSpace: const SizedBox(),
     );
   }
+
+  double _setupOpacity() => useFixedOpacity ? 1.0 : 0.0;
 }
 
 class _LoadingNextArticleIndicator extends StatelessWidget {

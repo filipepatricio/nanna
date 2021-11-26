@@ -8,7 +8,7 @@ class UserDTOMapper implements BidirectionalMapper<UserDTO, User> {
   @override
   UserDTO from(User data) {
     return UserDTO(
-      data.id,
+      data.uuid,
       data.firstName,
       data.lastName,
       data.email,
@@ -18,7 +18,7 @@ class UserDTOMapper implements BidirectionalMapper<UserDTO, User> {
   @override
   User to(UserDTO data) {
     return User(
-      id: data.id,
+      uuid: data.uuid,
       firstName: data.firstName ?? '',
       lastName: data.lastName ?? '',
       email: data.email,
