@@ -69,7 +69,7 @@ class DailyBriefPage extends HookWidget {
         title: Row(
           children: [
             DailyBriefTitleHero(
-              title: relaxState.value ? LocaleKeys.dailyBrief_relax.tr() : LocaleKeys.dailyBrief_title.tr(),
+              title: relaxState.value ? LocaleKeys.todaysTopics_relax.tr() : LocaleKeys.todaysTopics_title.tr(),
             ),
             const Spacer(),
             Visibility(

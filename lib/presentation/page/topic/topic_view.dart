@@ -166,7 +166,7 @@ class _TopicHeader extends HookWidget {
                       SvgPicture.asset(AppVectorGraphics.articles),
                       const SizedBox(width: AppDimens.s),
                       Text(
-                        LocaleKeys.dailyBrief_selectedArticles.tr(
+                        LocaleKeys.todaysTopics_selectedArticles.tr(
                           args: [topic.readingList.entries.length.toString()],
                         ),
                         style: AppTypography.b3Regular.copyWith(height: 1),
@@ -251,7 +251,7 @@ class _SummaryContent extends HookWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: AppDimens.l),
                   child: Text(
-                    LocaleKeys.dailyBrief_biggerPicture.tr(),
+                    LocaleKeys.todaysTopics_biggerPicture.tr(),
                     style: AppTypography.h1Medium,
                   ),
                 ),

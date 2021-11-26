@@ -76,7 +76,7 @@ class RelaxView extends HookWidget {
                       style: AppTypography.b1Regular,
                     ),
                     TextSpan(
-                      text: '\n${LocaleKeys.dailyBrief_goToExplore.tr()}',
+                      text: '\n${LocaleKeys.todaysTopics_goToExplore.tr()}',
                       style: AppTypography.b1Regular.copyWith(decoration: TextDecoration.underline),
                       recognizer: TapGestureRecognizer()..onTap = () => _goToExplore(context),
                     ),

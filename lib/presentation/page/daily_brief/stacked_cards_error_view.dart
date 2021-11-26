@@ -32,12 +32,12 @@ class StackedCardsErrorView extends HookWidget {
                 SvgPicture.asset(AppVectorGraphics.sadSun),
                 const SizedBox(height: AppDimens.l),
                 Text(
-                  LocaleKeys.dailyBrief_oops.tr(),
+                  LocaleKeys.todaysTopics_oops.tr(),
                   style: AppTypography.h3bold,
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  LocaleKeys.dailyBrief_tryAgainLater.tr(),
+                  LocaleKeys.todaysTopics_tryAgainLater.tr(),
                   style: AppTypography.h3Normal,
                   textAlign: TextAlign.center,
                 ),
