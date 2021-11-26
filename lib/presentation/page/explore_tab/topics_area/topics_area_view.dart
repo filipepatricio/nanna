@@ -108,9 +108,7 @@ class TopicsAreaView extends HookWidget {
 
   void _onTopicTap(BuildContext context, int index) {
     AutoRouter.of(context).push(
-      SingleTopicPageRoute(
-        topic: area.topics[index],
-      ),
+      TopicPageRoute(topic: area.topics[index]),
     );
   }
 }

@@ -220,9 +220,7 @@ class _GridItem extends StatelessWidget {
 
   void _onTopicTap(BuildContext context, Topic topic) {
     AutoRouter.of(context).push(
-      SingleTopicPageRoute(
-        topic: topic,
-      ),
+      TopicPageRoute(topic: topic),
     );
   }
 }

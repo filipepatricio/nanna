@@ -15,10 +15,6 @@ class MainNavigationObserver extends AutoRouterObserver {
     switch (route.settings.name) {
       case TopicPageRoute.name:
         final args = route.settings.arguments as TopicPageRouteArgs;
-        final topicId = args.currentBrief.topics[args.index].id;
-        return _trackActivityUseCase.trackPage(AnalyticsPage.topic(topicId));
-      case SingleTopicPageRoute.name:
-        final args = route.settings.arguments as SingleTopicPageRouteArgs;
         final topicId = args.topic.id;
         return _trackActivityUseCase.trackPage(AnalyticsPage.topic(topicId));
       case MediaItemPageRoute.name:

@@ -1,7 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page.dart';
@@ -15,7 +14,7 @@ import 'package:better_informed_mobile/presentation/page/settings/main/settings_
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/policy_terms/settings_policy_terms_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
-import 'package:better_informed_mobile/presentation/page/topic/single_topic_page.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/cupertino_bottom_sheet_route_builder.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
@@ -45,10 +44,7 @@ const dashboardTabRouter = CustomRoute(
       page: HeroEmptyRouterPage,
       children: [
         AutoRoute(path: '', page: DailyBriefPage),
-        CustomRoute(
-          page: TopicPage,
-          customRouteBuilder: fadePageRouteBuilder,
-        ),
+        CustomRoute(page: TopicPage, customRouteBuilder: fadePageRouteBuilder),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
@@ -60,7 +56,7 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(path: '', page: ExplorePage),
         AutoRoute(page: ArticleSeeAllPage),
         AutoRoute(page: TopicsSeeAllPage),
-        AutoRoute(page: SingleTopicPage),
+        AutoRoute(page: TopicPage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
