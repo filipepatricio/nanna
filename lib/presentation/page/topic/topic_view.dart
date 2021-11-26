@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
@@ -24,6 +23,7 @@ import 'package:better_informed_mobile/presentation/widget/track/general_event_t
 import 'package:better_informed_mobile/presentation/widget/track/topic_summary_tracker/topic_summary_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
