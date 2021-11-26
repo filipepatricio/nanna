@@ -62,4 +62,9 @@ class TopicCustomVerticalDragManager {
   void disposeDrag() {
     _drag = null;
   }
+
+  Future<void> animateTo(double offset) async {
+    await generalViewController.animateTo(offset, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+    _activeController = pageViewController;
+  }
 }

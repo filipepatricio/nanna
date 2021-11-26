@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
@@ -85,7 +86,11 @@ class TopicView extends HookWidget {
             controller: listScrollController,
             physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
             children: [
-              _TopicHeader(topic: topic),
+              _TopicHeader(
+                topic: topic,
+                onArticlesLabelTap: () =>
+                    gestureManager.animateTo(_topicHeaderHeight + _summaryViewHeight + articleContentHeight),
+              ),
               _SummaryContent(topic: topic),
               GeneralEventTracker(
                 controller: eventController,
@@ -107,9 +112,11 @@ class TopicView extends HookWidget {
 
 class _TopicHeader extends HookWidget {
   final Topic topic;
+  final void Function() onArticlesLabelTap;
 
   const _TopicHeader({
     required this.topic,
+    required this.onArticlesLabelTap,
     Key? key,
   }) : super(key: key);
 
@@ -160,19 +167,24 @@ class _TopicHeader extends HookWidget {
                     maxLines: 3,
                   ),
                   const SizedBox(height: AppDimens.ml),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(AppVectorGraphics.articles),
-                      const SizedBox(width: AppDimens.s),
-                      Text(
-                        LocaleKeys.todaysTopics_selectedArticles.tr(
-                          args: [topic.readingList.entries.length.toString()],
+                  ExpandTapWidget(
+                    onTap: onArticlesLabelTap,
+                    tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(AppVectorGraphics.articles),
+                        const SizedBox(width: AppDimens.s),
+                        Text(
+                          LocaleKeys.todaysTopics_selectedArticles.tr(
+                            args: [topic.readingList.entries.length.toString()],
+                          ),
+                          style: AppTypography.b3Regular.copyWith(height: 1),
+                          textAlign: TextAlign.center,
                         ),
-                        style: AppTypography.b3Regular.copyWith(height: 1),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   const SizedBox(height: AppDimens.topicControlsMargin),
                   Row(
