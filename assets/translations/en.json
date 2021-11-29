@@ -29,7 +29,7 @@
     }
   },
   "tutorial": {
-    "todayTopicsSnackBarText": "👋 **Welcome to today’s main topics!** Each topic contains current articles curated by our editorial team to keep you informed.",
+    "todaysTopicsSnackBarText": "👋 **Welcome to today’s main topics!** Each topic contains current articles curated by our editorial team to keep you informed.",
     "topicSnackBarText": "👍 **You’ve found a topic of interest.** Scroll down to get an overview or jump into the list of articles we curated for you.",
     "exploreSnackBarText": "🔍 **If you’d like to explore more** or missed a brief then you can find even more topics as well as articles here.",
     "topicTooltipText": "😀 These cards are here to give you a quick overview of the topic. What happened so far & why does it matter?",
