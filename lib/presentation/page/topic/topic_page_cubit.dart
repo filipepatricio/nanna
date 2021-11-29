@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -10,8 +11,6 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-
-enum TutorialCoachMarkSteps { summaryCard, mediaItem }
 
 @injectable
 class TopicPageCubit extends Cubit<TopicPageState> {
@@ -59,7 +58,6 @@ class TopicPageCubit extends Cubit<TopicPageState> {
       opacityShadow: 0.5,
       hideSkip: true,
       onSkip: onSkipTutorialCoachMark,
-      onFinish: onFinishTutorialCoachMark,
       onClickTarget: onClickTargetTutorialCoachMark,
       onClickOverlay: onClickOverlayTutorialCoachMark,
     );
@@ -139,12 +137,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     }
   }
 
-  void onFinishTutorialCoachMark() {
-    print('onFinishTutorialCoachMark');
-  }
-
   void onSkipTutorialCoachMark() {
-    print('onSkipTutorialCoachMark');
     targets.removeAt(0);
   }
 

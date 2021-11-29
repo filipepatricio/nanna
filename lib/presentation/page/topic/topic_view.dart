@@ -57,6 +57,19 @@ class TopicView extends HookWidget {
     Key? key,
   }) : super(key: key);
 
+  bool shouldShowMediaItemTutorialCoachMark(ScrollController listScrollController, double articleTriggerPosition) {
+    return listScrollController.offset >= articleTriggerPosition &&
+        !listScrollController.position.outOfRange &&
+        !cubit.isTopicMediaItemTutorialStepSeen;
+  }
+
+  bool shouldShowSummaryCardTutorialCoachMark(
+      ScrollController listScrollController, double summaryCardTriggerPosition) {
+    return listScrollController.offset >= summaryCardTriggerPosition &&
+        !listScrollController.position.outOfRange &&
+        !cubit.isTopicSummaryCardTutorialStepSeen;
+  }
+
   @override
   Widget build(BuildContext context) {
     final eventController = useEventTrackController();
@@ -72,32 +85,39 @@ class TopicView extends HookWidget {
       [appBarMargin],
     );
 
-    useEffect(() {
-      final listener = () {
-        const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderPadding;
-        if (listScrollController.offset >= summaryCardTriggerPosition &&
-            !listScrollController.position.outOfRange &&
-            !cubit.isTopicSummaryCardTutorialStepSeen) {
-          listScrollController.animateTo(summaryCardTriggerPosition,
-              duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
-          cubit.showSummaryCardTutorialCoachMark();
-        }
-        const articleTriggerPosition = _topicHeaderImageHeight +
-            _topicHeaderPadding +
-            _summaryPageViewHeight +
-            _summaryMockedImageSize +
-            AppDimens.l;
-        if (listScrollController.offset >= articleTriggerPosition &&
-            !listScrollController.position.outOfRange &&
-            !cubit.isTopicMediaItemTutorialStepSeen) {
-          listScrollController.animateTo(articleTriggerPosition,
-              duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
-          cubit.showMediaItemTutorialCoachMark();
-        }
-      };
-      listScrollController.addListener(listener);
-      return () => listScrollController.removeListener(listener);
-    }, [listScrollController]);
+    if (!cubit.isTopicSummaryCardTutorialStepSeen) {
+      useEffect(() {
+        final summaryCardTutorialListener = () {
+          const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderPadding;
+          if (shouldShowSummaryCardTutorialCoachMark(listScrollController, summaryCardTriggerPosition)) {
+            listScrollController.animateTo(summaryCardTriggerPosition,
+                duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
+            cubit.showSummaryCardTutorialCoachMark();
+          }
+        };
+        listScrollController.addListener(summaryCardTutorialListener);
+        return () => listScrollController.removeListener(summaryCardTutorialListener);
+      }, [listScrollController]);
+    }
+
+    if (!cubit.isTopicMediaItemTutorialStepSeen) {
+      useEffect(() {
+        final mediaItemTutorialListener = () {
+          const articleTriggerPosition = _topicHeaderImageHeight +
+              _topicHeaderPadding +
+              _summaryPageViewHeight +
+              _summaryMockedImageSize +
+              AppDimens.l;
+          if (shouldShowMediaItemTutorialCoachMark(listScrollController, articleTriggerPosition)) {
+            listScrollController.animateTo(articleTriggerPosition,
+                duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
+            cubit.showMediaItemTutorialCoachMark();
+          }
+        };
+        listScrollController.addListener(mediaItemTutorialListener);
+        return () => listScrollController.removeListener(mediaItemTutorialListener);
+      }, [listScrollController]);
+    }
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{

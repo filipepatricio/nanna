@@ -20,7 +20,9 @@ class InfoToast extends StatelessWidget {
     return Dismissible(
         key: const Key('tutorialSnackBar'),
         direction: DismissDirection.up,
-        onDismissed: (direction) => onDismiss,
+        onDismissed: (direction) {
+          onDismiss != null ? onDismiss!() : null;
+        },
         child: Container(
             padding:
                 const EdgeInsets.only(left: AppDimens.l, right: AppDimens.l, top: AppDimens.xxxl, bottom: AppDimens.s),
