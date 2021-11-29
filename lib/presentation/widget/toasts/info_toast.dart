@@ -2,7 +2,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
@@ -21,7 +21,9 @@ class InfoToast extends StatelessWidget {
         key: const Key('tutorialSnackBar'),
         direction: DismissDirection.up,
         onDismissed: (direction) {
-          onDismiss != null ? onDismiss!() : null;
+          if (onDismiss != null) {
+            onDismiss!();
+          }
         },
         child: Container(
             padding:
@@ -48,7 +50,9 @@ class InfoToast extends StatelessWidget {
                     TextButton(
                         onPressed: () {
                           dismissAllToast();
-                          onDismiss != null ? onDismiss!() : null;
+                          if (onDismiss != null) {
+                            onDismiss!();
+                          }
                         },
                         child: Text(
                           LocaleKeys.common_gotIt.tr(),

@@ -34,10 +34,10 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
       _currentBrief = await _getCurrentBriefUseCase();
       emit(TodaysTopicsPageState.idle(_currentBrief));
 
-      _isTodaysTopicsTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
+      _isTodaysTopicsTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.todaysTopics);
       if (!_isTodaysTopicsTutorialStepSeen) {
         emit(TodaysTopicsPageState.showTutorialToast(LocaleKeys.tutorial_todaysTopicsSnackBarText.tr()));
-        await _setTutorialStepSeenUseCase.call(TutorialStep.dailyBrief);
+        await _setTutorialStepSeenUseCase.call(TutorialStep.todaysTopics);
       }
     } catch (e, s) {
       Fimber.e('Loading current brief failed', ex: e, stacktrace: s);

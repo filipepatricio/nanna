@@ -1,1 +1,0 @@
-enum TutorialCoachMarkSteps { summaryCard, mediaItem }

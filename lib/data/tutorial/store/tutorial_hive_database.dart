@@ -10,14 +10,14 @@ class TutorialHiveDatabase implements TutorialDatabase {
   @override
   Future<bool> isTutorialStepSeen(TutorialStep tutorialStep) async {
     final box = await Hive.openBox(_hiveBoxName);
-    final tutorialStepValue = box.get(tutorialStep.toString()) as bool?;
+    final tutorialStepValue = box.get(tutorialStep.key) as bool?;
     return tutorialStepValue ?? false;
   }
 
   @override
   Future<void> setTutorialStepSeen(TutorialStep tutorialStep) async {
     final box = await Hive.openBox(_hiveBoxName);
-    await box.put(tutorialStep.toString(), true);
+    await box.put(tutorialStep.key, true);
   }
 
   @override
