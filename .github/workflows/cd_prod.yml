@@ -1,0 +1,133 @@
+name: CD
+
+# There is no merged event, so we have to listen for pull request closed
+# and than add to our job condition "if: github.event.pull_request.merged == true"
+
+on:
+  pull_request:
+    types: [ closed ]
+    branches: [ master ]
+    paths-ignore:
+      - '**/README.md'
+env:
+  JAVA_VERSION: "12.x"
+  RUBY_VERSION: "2.7"
+
+jobs:
+  # CD
+  deploy_android:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby ${{ env.RUBY_VERSION }} for fastlane
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Decrypt Android keys
+        run: sh ./.github/scripts/decrypt_android_secrets.sh
+        env:
+          ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets Flutter environment
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Run easy_localization:generate and generate files
+        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      - name: Run build_runner and generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build Prod release AppBundle for internal testing
+        run: flutter build appbundle --release --dart-define=env=prod --flavor prod
+
+      - name: Setup Google Play credentials
+        run: |
+          echo "$GOOGLE_PLAY_CREDENTIALS" > google_play_credentials.json.b64
+          base64 -d -i google_play_credentials.json.b64 > google_play_credentials.json
+        env:
+          GOOGLE_PLAY_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_CREDENTIALS }}
+
+      - name: Upload appbundle to internal testing
+        uses: maierj/fastlane-action@v2.1.0
+        with:
+          lane: 'internal_play_store'
+          subdirectory: android
+
+  # CD - ios testflight
+  deploy_ios:
+    if: github.event.pull_request.merged == true
+    runs-on: macos-11
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby for fastlane
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets up a Flutter environment for use in actions
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+      - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Run easy_localization:generate and generate files
+        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      - name: Run build_runner and generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build app
+        run: flutter build ios --release --no-codesign --dart-define=env=prod --flavor prod
+
+      - name: Deploy app to Testflight
+        uses: maierj/fastlane-action@v2.1.0
+        with:
+          lane: 'closed_beta'
+          subdirectory: ios
+        env:
+          ITC_TEAM_ID: '${{ secrets.ITC_TEAM_ID }}'
+          DEVELOPER_PORTAL_TEAM_ID: '${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}'
+          FASTLANE_APPLE_ID: '${{ secrets.FASTLANE_APPLE_EMAIL_ID }}'
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: '${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}'
+          MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+          GIT_AUTHORIZATION: '${{ secrets.GIT_AUTHORIZATION }}'
+          TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
+          TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
+          APP_SCHEME: 'prod'
+          BUNDLE_ID: 'so.informed'
+          BUNDLE_ID_NOTIFICATION: 'so.informed.ImageNotification'
+          PROVISIONING_PROFILE_SPECIFIER: 'match AppStore so.informed'
+          PROVISIONING_PROFILE_SPECIFIER_NOTIFICATION: 'match AppStore so.informed.ImageNotification'
+          APPLICATION_ID: '1577915307'
