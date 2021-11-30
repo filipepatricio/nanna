@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
+import 'package:better_informed_mobile/domain/tutorial/use_case/reset_tutorial_flow_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
@@ -17,22 +18,23 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 class TopicPageCubit extends Cubit<TopicPageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  final ResetTutorialFlowUseCase _resetTutorialFlowUseCase;
 
   late bool _isTopicTutorialStepSeen;
   late bool _isTopicSummaryCardTutorialStepSeen;
   late bool _isTopicMediaItemTutorialStepSeen;
 
-  bool get isTopicSummaryCardTutorialStepSeen => _isTopicSummaryCardTutorialStepSeen;
-  bool get isTopicMediaItemTutorialStepSeen => _isTopicMediaItemTutorialStepSeen;
-
   List<TargetFocus> targets = <TargetFocus>[];
   final summaryCardKey = GlobalKey();
   final mediaItemKey = GlobalKey();
 
-  TopicPageCubit(this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase) : super(TopicPageState.loading());
+  TopicPageCubit(this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase, this._resetTutorialFlowUseCase)
+      : super(TopicPageState.loading());
 
   Future<void> initialize() async {
     emit(TopicPageState.idle());
+
+    await _resetTutorialFlowUseCase.call();
 
     _isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
     _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicSummaryCard);
@@ -44,9 +46,11 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     }
     targets.clear();
     if (!_isTopicSummaryCardTutorialStepSeen) {
+      emit(TopicPageState.shouldShowSummaryCardTutorialCoachMark());
       _initializeSummaryCardTutorialCoachMarkTarget();
     }
     if (!_isTopicMediaItemTutorialStepSeen) {
+      emit(TopicPageState.shouldShowMediaItemTutorialCoachMark());
       _initializeMediaTypeTutorialCoachMarkTarget();
     }
   }

@@ -5,11 +5,13 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/vertical_indicators.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
@@ -57,19 +59,6 @@ class TopicView extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  bool shouldShowMediaItemTutorialCoachMark(ScrollController listScrollController, double articleTriggerPosition) {
-    return listScrollController.offset >= articleTriggerPosition &&
-        !listScrollController.position.outOfRange &&
-        !cubit.isTopicMediaItemTutorialStepSeen;
-  }
-
-  bool shouldShowSummaryCardTutorialCoachMark(
-      ScrollController listScrollController, double summaryCardTriggerPosition) {
-    return listScrollController.offset >= summaryCardTriggerPosition &&
-        !listScrollController.position.outOfRange &&
-        !cubit.isTopicSummaryCardTutorialStepSeen;
-  }
-
   @override
   Widget build(BuildContext context) {
     final eventController = useEventTrackController();
@@ -85,39 +74,15 @@ class TopicView extends HookWidget {
       [appBarMargin],
     );
 
-    if (!cubit.isTopicSummaryCardTutorialStepSeen) {
-      useEffect(() {
-        final summaryCardTutorialListener = () {
-          const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderPadding;
-          if (shouldShowSummaryCardTutorialCoachMark(listScrollController, summaryCardTriggerPosition)) {
-            listScrollController.animateTo(summaryCardTriggerPosition,
-                duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
-            cubit.showSummaryCardTutorialCoachMark();
-          }
-        };
-        listScrollController.addListener(summaryCardTutorialListener);
-        return () => listScrollController.removeListener(summaryCardTutorialListener);
-      }, [listScrollController]);
-    }
-
-    if (!cubit.isTopicMediaItemTutorialStepSeen) {
-      useEffect(() {
-        final mediaItemTutorialListener = () {
-          const articleTriggerPosition = _topicHeaderImageHeight +
-              _topicHeaderPadding +
-              _summaryPageViewHeight +
-              _summaryMockedImageSize +
-              AppDimens.l;
-          if (shouldShowMediaItemTutorialCoachMark(listScrollController, articleTriggerPosition)) {
-            listScrollController.animateTo(articleTriggerPosition,
-                duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
-            cubit.showMediaItemTutorialCoachMark();
-          }
-        };
-        listScrollController.addListener(mediaItemTutorialListener);
-        return () => listScrollController.removeListener(mediaItemTutorialListener);
-      }, [listScrollController]);
-    }
+    useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(shouldShowSummaryCardTutorialCoachMark: () {
+        final listener = summaryCardTutorialListener(listScrollController);
+        listScrollController.addListener(listener);
+      }, shouldShowMediaItemTutorialCoachMark: () {
+        final listener = mediaItemTutorialListener(listScrollController);
+        listScrollController.addListener(listener);
+      });
+    });
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{
@@ -161,6 +126,48 @@ class TopicView extends HookWidget {
         ),
       ),
     );
+  }
+
+  bool didListScrollReachMediaItem(ScrollController listScrollController, double articleTriggerPosition) {
+    return listScrollController.offset >= articleTriggerPosition && !listScrollController.position.outOfRange;
+  }
+
+  bool didListScrollReachSummaryCard(ScrollController listScrollController, double summaryCardTriggerPosition) {
+    return listScrollController.offset >= summaryCardTriggerPosition && !listScrollController.position.outOfRange;
+  }
+
+  VoidCallback mediaItemTutorialListener(ScrollController listScrollController) {
+    var isToShowMediaItemTutorialCoachMark = true;
+    final mediaItemTutorialListener = () {
+      const mediaItemTriggerPosition = _topicHeaderImageHeight +
+          _topicHeaderPadding +
+          _summaryPageViewHeight +
+          _summaryMockedImageSize +
+          AppDimens.l;
+      if (didListScrollReachMediaItem(listScrollController, mediaItemTriggerPosition) &&
+          isToShowMediaItemTutorialCoachMark) {
+        listScrollController.animateTo(mediaItemTriggerPosition,
+            duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
+        cubit.showMediaItemTutorialCoachMark();
+        isToShowMediaItemTutorialCoachMark = false;
+      }
+    };
+    return mediaItemTutorialListener;
+  }
+
+  VoidCallback summaryCardTutorialListener(ScrollController listScrollController) {
+    var isToShowSummaryCardTutorialCoachMark = true;
+    final summaryCardTutorialListener = () {
+      const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderPadding;
+      if (didListScrollReachSummaryCard(listScrollController, summaryCardTriggerPosition) &&
+          isToShowSummaryCardTutorialCoachMark) {
+        listScrollController.animateTo(summaryCardTriggerPosition,
+            duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
+        cubit.showSummaryCardTutorialCoachMark();
+        isToShowSummaryCardTutorialCoachMark = false;
+      }
+    };
+    return summaryCardTutorialListener;
   }
 }
 
