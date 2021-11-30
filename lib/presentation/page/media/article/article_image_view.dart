@@ -13,7 +13,7 @@ const _bottomMargin = 145.0;
 
 class ArticleImageView extends HookWidget {
   final MediaItemArticle article;
-  final ScrollController controller;
+  final PageController controller;
   final double fullHeight;
 
   const ArticleImageView({

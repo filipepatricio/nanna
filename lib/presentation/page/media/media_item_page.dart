@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dart';
@@ -80,6 +81,7 @@ class MediaItemPage extends HookWidget {
       state.mapOrNull(nextPageLoaded: (state) {
         navigationCallback?.call(state.index);
         scrollController.jumpTo(0.0);
+        pageController.jumpToPage(0);
       });
     });
 
@@ -132,7 +134,26 @@ class _LoadingContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Loader());
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.s),
+          child: IconButton(
+            icon: const Icon(Icons.close_rounded),
+            color: AppColors.textPrimary,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.zero,
+            onPressed: () => context.popRoute(),
+          ),
+        ),
+        const Expanded(
+          child: Center(
+            child: Loader(),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -221,6 +242,13 @@ class _IdleContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final nextArticleLoaderFactor = useMemoized(() => ValueNotifier(0.0), [article]);
+    final gestureManager = useMemoized(
+      () => ArticleCustomVerticalDragManager(
+        generalViewController: controller,
+        pageViewController: pageController,
+        articleHasImage: articleWithImage,
+      ),
+    );
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -228,99 +256,120 @@ class _IdleContent extends HookWidget {
       });
     }, []);
 
-    return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollNotification) {
-        if (scrollNotification is ScrollEndNotification) {
-          var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
-          if (readScrollOffset < 0) {
-            readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
-          }
-
-          cubit.updateScrollData(
-            readScrollOffset,
-            controller.position.maxScrollExtent,
-          );
-        }
-        return false;
+    return RawGestureDetector(
+      gestures: <Type, GestureRecognizerFactory>{
+        VerticalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
+            () => VerticalDragGestureRecognizer(), (VerticalDragGestureRecognizer instance) {
+          instance
+            ..onStart = gestureManager.handleDragStart
+            ..onUpdate = gestureManager.handleDragUpdate
+            ..onEnd = gestureManager.handleDragEnd
+            ..onCancel = gestureManager.handleDragCancel;
+        })
       },
-      child: Stack(
-        children: [
-          PageView(
-            scrollDirection: Axis.vertical,
-            children: [
-              if (articleWithImage)
-                ArticleImageView(
-                  article: article,
-                  controller: controller,
-                  fullHeight: fullHeight,
-                ),
-              CustomScrollView(
-                physics: const BottomBouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                controller: controller,
-                slivers: [
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        ArticleContentView(
-                          article: article,
-                          content: content,
-                          cubit: cubit,
-                          controller: controller,
-                          articleContentKey: _articleContentKey,
-                          scrollToPosition: () => scrollToPosition(readArticleProgress),
-                        ),
-                      ],
+      behavior: HitTestBehavior.opaque,
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollNotification) {
+          if (scrollNotification is ScrollEndNotification) {
+            if (controller.hasClients) {
+              var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
+              if (readScrollOffset < 0) {
+                readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
+              }
+
+              cubit.updateScrollData(
+                readScrollOffset,
+                controller.position.maxScrollExtent,
+              );
+            }
+          }
+          return false;
+        },
+        child: Stack(
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+              controller: pageController,
+              scrollDirection: Axis.vertical,
+              children: [
+                if (articleWithImage)
+                  ArticleImageView(
+                    article: article,
+                    controller: pageController,
+                    fullHeight: fullHeight,
+                  ),
+                CustomScrollView(
+                  physics: const NeverScrollableScrollPhysics(
+                    parent: BottomBouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
                     ),
                   ),
-                  if (hasNextArticle) ...[
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(vertical: AppDimens.xxl),
-                      sliver: SliverToBoxAdapter(
-                        child: ValueListenableBuilder(
-                          valueListenable: nextArticleLoaderFactor,
-                          builder: (BuildContext context, double value, Widget? child) {
-                            final opacity = max(0.0, 1 - value * 2);
-                            return FadeTransition(
-                              opacity: AlwaysStoppedAnimation(opacity),
-                              child: child,
-                            );
-                          },
-                          child: const AnimatedPointerDown(
-                            arrowColor: AppColors.textPrimary,
+                  controller: controller,
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          ArticleContentView(
+                            article: article,
+                            content: content,
+                            cubit: cubit,
+                            controller: controller,
+                            articleContentKey: _articleContentKey,
+                            scrollToPosition: () => scrollToPosition(readArticleProgress),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (hasNextArticle) ...[
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(vertical: AppDimens.xxl),
+                        sliver: SliverToBoxAdapter(
+                          child: ValueListenableBuilder(
+                            valueListenable: nextArticleLoaderFactor,
+                            builder: (BuildContext context, double value, Widget? child) {
+                              final opacity = max(0.0, 1 - value * 2);
+                              return FadeTransition(
+                                opacity: AlwaysStoppedAnimation(opacity),
+                                child: child,
+                              );
+                            },
+                            child: const AnimatedPointerDown(
+                              arrowColor: AppColors.textPrimary,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SliverPullUpIndicatorAction(
-                      builder: (context, factor) {
-                        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                          nextArticleLoaderFactor.value = factor;
-                        });
-                        return _LoadingNextArticleIndicator(factor: factor);
-                      },
-                      fullExtentHeight: _loadNextArticleIndicatorHeight,
-                      triggerExtent: _loadNextArticleIndicatorHeight,
-                      triggerFunction: (completer) => cubit.loadNextArticle(completer),
-                    ),
-                  ] else if (multipleArticles)
-                    const SliverToBoxAdapter(
-                      child: _AllArticlesRead(),
-                    ),
-                ],
-              ),
-            ],
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: _ActionsBar(
-              article: article,
-              fullHeight: articleWithImage ? fullHeight : appBarHeight,
-              controller: pageController,
+                      SliverPullUpIndicatorAction(
+                        builder: (context, factor) {
+                          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                            nextArticleLoaderFactor.value = factor;
+                          });
+                          return _LoadingNextArticleIndicator(factor: factor);
+                        },
+                        fullExtentHeight: _loadNextArticleIndicatorHeight,
+                        triggerExtent: _loadNextArticleIndicatorHeight,
+                        triggerFunction: (completer) => cubit.loadNextArticle(completer),
+                      ),
+                    ] else if (multipleArticles)
+                      const SliverToBoxAdapter(
+                        child: _AllArticlesRead(),
+                      ),
+                  ],
+                ),
+              ],
             ),
-          ),
-        ],
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: _ActionsBar(
+                article: article,
+                fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                controller: pageController,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -362,42 +411,79 @@ class _ActionsBar extends HookWidget {
   final double fullHeight;
   final PageController controller;
 
-  bool get useFixedOpacity => fullHeight <= appBarHeight;
-
   @override
   Widget build(BuildContext context) {
-    final appBarOpacityState = useState(_setupOpacity());
+    final hasImage = useMemoized(() => article.image != null, [article]);
 
-    return Container(
-      color: AppColors.background.withOpacity(appBarOpacityState.value),
+    final backgroundColor = useMemoized(
+      () => ValueNotifier(hasImage ? AppColors.transparent : AppColors.background),
+      [hasImage],
+    );
+
+    final buttonColor = useMemoized(
+      () => ValueNotifier(hasImage ? AppColors.white : AppColors.textPrimary),
+      [hasImage],
+    );
+
+    useEffect(
+      () {
+        if (!hasImage) return () {};
+
+        final buttonTween = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
+
+        final listener = () {
+          final page = controller.page ?? 0.0;
+
+          backgroundColor.value = page == 1.0 ? AppColors.background : AppColors.transparent;
+
+          final buttonAnimValue = AlwaysStoppedAnimation(min(1.0, page));
+          buttonColor.value = buttonTween.evaluate(buttonAnimValue) ?? AppColors.white;
+        };
+
+        controller.addListener(listener);
+        return () => controller.removeListener(listener);
+      },
+      [controller, article],
+    );
+
+    return ValueListenableBuilder(
+      valueListenable: backgroundColor,
+      builder: (BuildContext context, Color value, Widget? child) {
+        return Container(
+          color: value,
+          child: child,
+        );
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.l) + const EdgeInsets.only(top: AppDimens.s),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Stack(
-              children: [
-                IconButton(
+            ValueListenableBuilder(
+              valueListenable: buttonColor,
+              builder: (BuildContext context, Color value, Widget? child) {
+                return IconButton(
                   icon: const Icon(Icons.close_rounded),
-                  color: AppColors.black.withOpacity(appBarOpacityState.value),
+                  color: value,
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.zero,
                   onPressed: () => context.popRoute(),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close_rounded),
-                  color: AppColors.background.withOpacity(1 - appBarOpacityState.value),
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.zero,
-                  onPressed: () => context.popRoute(),
-                ),
-              ],
+                );
+              },
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
               child: ShareArticleButton(
                 article: article,
-                buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
+                buttonBuilder: (context) => ValueListenableBuilder(
+                  valueListenable: buttonColor,
+                  builder: (BuildContext context, Color value, Widget? child) {
+                    return SvgPicture.asset(
+                      AppVectorGraphics.share,
+                      color: value,
+                    );
+                  },
+                ),
               ),
             ),
           ],
@@ -405,8 +491,6 @@ class _ActionsBar extends HookWidget {
       ),
     );
   }
-
-  double _setupOpacity() => useFixedOpacity ? 1.0 : 0.0;
 }
 
 class _LoadingNextArticleIndicator extends StatelessWidget {
