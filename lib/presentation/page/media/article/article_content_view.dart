@@ -13,6 +13,8 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+const _articleTopMargin = 100.0;
+
 class ArticleContentView extends StatelessWidget {
   final MediaItemArticle article;
   final ArticleContent content;
@@ -82,44 +84,31 @@ class _ArticleHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final author = article.author;
-    return Container(
-      color: article.type == ArticleType.freemium ? AppColors.darkLinen : AppColors.pastelGreen,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: AppDimens.l),
-            if (author != null) ...[
-              Text(
-                LocaleKeys.article_articleBy.tr(args: [author]),
-                style: AppTypography.systemText,
-              ),
-              const SizedBox(height: AppDimens.xxl),
-            ],
-            DottedArticleInfo(
-              article: article,
-              isLight: false,
-              showDate: false,
-              showReadTime: false,
-            ),
-            const SizedBox(height: AppDimens.l),
-            Text(
-              article.title,
-              style: AppTypography.h1Bold,
-            ),
-            const SizedBox(height: AppDimens.m),
-            DottedArticleInfo(
-              article: article,
-              isLight: false,
-              showPublisher: false,
-              fullDate: true,
-            ),
-            const SizedBox(height: AppDimens.xl),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: _articleTopMargin),
+        if (author != null) ...[
+          Text(
+            LocaleKeys.article_articleBy.tr(args: [author]),
+            style: AppTypography.systemText,
+          ),
+          const SizedBox(height: AppDimens.xxl),
+        ],
+        Text(
+          article.title,
+          style: AppTypography.h1Bold,
         ),
-      ),
+        const SizedBox(height: AppDimens.m),
+        DottedArticleInfo(
+          article: article,
+          isLight: false,
+          showPublisher: false,
+          fullDate: true,
+        ),
+        const SizedBox(height: AppDimens.xl),
+      ],
     );
   }
 }
