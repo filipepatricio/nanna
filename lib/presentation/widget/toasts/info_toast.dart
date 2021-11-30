@@ -21,9 +21,7 @@ class InfoToast extends StatelessWidget {
         key: const Key('tutorialSnackBar'),
         direction: DismissDirection.up,
         onDismissed: (direction) {
-          if (onDismiss != null) {
-            onDismiss!();
-          }
+          onDismiss?.call();
         },
         child: Container(
             padding:
@@ -50,9 +48,7 @@ class InfoToast extends StatelessWidget {
                     TextButton(
                         onPressed: () {
                           dismissAllToast();
-                          if (onDismiss != null) {
-                            onDismiss!();
-                          }
+                          onDismiss?.call();
                         },
                         child: Text(
                           LocaleKeys.common_gotIt.tr(),

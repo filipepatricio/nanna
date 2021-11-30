@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/tutorial/store/tutorial_database.dart';
-import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps_extension.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 

@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/tutorial/store/tutorial_database.dart';
-import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_store.dart';
 import 'package:injectable/injectable.dart';
 

@@ -2,7 +2,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.dart';
-import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';

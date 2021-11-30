@@ -1,5 +1,6 @@
-import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps.dart';
-import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';

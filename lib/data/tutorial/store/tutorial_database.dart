@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/tutorial/data/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 
 abstract class TutorialDatabase {
   Future<bool> isTutorialStepSeen(TutorialStep tutorialStep);
