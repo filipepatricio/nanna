@@ -246,9 +246,7 @@ class _SummaryContent extends HookWidget {
     return Container(
       width: double.infinity,
       height: _summaryViewHeight,
-
-      ///This color should be the same as first article page view
-      color: AppColors.mockedColors[0],
+      color: topic.readingList.entries[0].style.color,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
