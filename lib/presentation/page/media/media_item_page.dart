@@ -248,6 +248,7 @@ class _IdleContent extends HookWidget {
         pageViewController: pageController,
         articleHasImage: articleWithImage,
       ),
+      [articleWithImage],
     );
 
     useEffect(() {
