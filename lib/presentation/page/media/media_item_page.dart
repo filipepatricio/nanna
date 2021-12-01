@@ -72,8 +72,11 @@ class MediaItemPage extends HookWidget {
     final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
 
-    final scrollController = useMemoized(
+    final modalController = useMemoized(
       () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
+    );
+    final scrollController = useMemoized(
+      () => ScrollController(keepScrollOffset: true),
     );
     final pageController = usePageController();
 
@@ -92,35 +95,57 @@ class MediaItemPage extends HookWidget {
     return LayoutBuilder(
       builder: (context, constraints) => Scaffold(
         backgroundColor: AppColors.background,
-        body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 250),
-          child: state.maybeMap(
-            loading: (state) => const _LoadingContent(),
-            idleMultiItems: (state) => _IdleContent(
-              article: state.header,
-              content: state.content,
-              hasNextArticle: state.hasNext,
-              multipleArticles: true,
-              controller: scrollController,
-              pageController: pageController,
-              cubit: cubit,
-              fullHeight: constraints.maxHeight,
-              readArticleProgress: readArticleProgress,
+        body: Column(
+          children: [
+            /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
+            ///
+            /// As cupertino bottom sheet works on ScrollNotification instead of ScrollController itself it's the only way
+            /// to make sure it will work - at least only way I found
+            SizedBox(
+              height: 0,
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                controller: modalController,
+                child: const SizedBox(
+                  height: 0,
+                ),
+              ),
             ),
-            idleSingleItem: (state) => _IdleContent(
-              article: state.header,
-              content: state.content,
-              hasNextArticle: false,
-              multipleArticles: false,
-              controller: scrollController,
-              pageController: pageController,
-              cubit: cubit,
-              fullHeight: constraints.maxHeight,
-              readArticleProgress: readArticleProgress,
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: state.maybeMap(
+                  loading: (state) => const _LoadingContent(),
+                  idleMultiItems: (state) => _IdleContent(
+                    article: state.header,
+                    content: state.content,
+                    hasNextArticle: state.hasNext,
+                    multipleArticles: true,
+                    modalController: modalController,
+                    controller: scrollController,
+                    pageController: pageController,
+                    cubit: cubit,
+                    fullHeight: constraints.maxHeight,
+                    readArticleProgress: readArticleProgress,
+                  ),
+                  idleSingleItem: (state) => _IdleContent(
+                    article: state.header,
+                    content: state.content,
+                    hasNextArticle: false,
+                    multipleArticles: false,
+                    modalController: modalController,
+                    controller: scrollController,
+                    pageController: pageController,
+                    cubit: cubit,
+                    fullHeight: constraints.maxHeight,
+                    readArticleProgress: readArticleProgress,
+                  ),
+                  error: (state) => _ErrorContent(article: state.article),
+                  orElse: () => const SizedBox(),
+                ),
+              ),
             ),
-            error: (state) => _ErrorContent(article: state.article),
-            orElse: () => const SizedBox(),
-          ),
+          ],
         ),
       ),
     );
@@ -215,6 +240,7 @@ class _IdleContent extends HookWidget {
   final MediaItemArticle article;
   final ArticleContent content;
   final MediaItemCubit cubit;
+  final ScrollController modalController;
   final ScrollController controller;
   final PageController pageController;
   final bool hasNextArticle;
@@ -229,6 +255,7 @@ class _IdleContent extends HookWidget {
     required this.content,
     required this.hasNextArticle,
     required this.multipleArticles,
+    required this.modalController,
     required this.controller,
     required this.pageController,
     required this.cubit,
@@ -244,6 +271,7 @@ class _IdleContent extends HookWidget {
     final nextArticleLoaderFactor = useMemoized(() => ValueNotifier(0.0), [article]);
     final gestureManager = useMemoized(
       () => ArticleCustomVerticalDragManager(
+        modalController: modalController,
         generalViewController: controller,
         pageViewController: pageController,
         articleHasImage: articleWithImage,

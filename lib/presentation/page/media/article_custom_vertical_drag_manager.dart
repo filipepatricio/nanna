@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
 class ArticleCustomVerticalDragManager {
+  final ScrollController modalController;
   final ScrollController generalViewController;
   final PageController pageViewController;
   final bool articleHasImage;
@@ -10,6 +11,7 @@ class ArticleCustomVerticalDragManager {
   ScrollController? _activeController;
 
   ArticleCustomVerticalDragManager({
+    required this.modalController,
     required this.generalViewController,
     required this.pageViewController,
     required this.articleHasImage,
@@ -29,15 +31,13 @@ class ArticleCustomVerticalDragManager {
   void handleDragUpdate(DragUpdateDetails details) {
     final primaryDelta = details.primaryDelta ?? 0;
 
-    if (_activeController == pageViewController &&
-        primaryDelta > 0 &&
-        _activeController?.position.pixels == _activeController?.position.minScrollExtent) {
-      // _activeController = modalScrollController;
-      // _drag?.cancel();
-      // _drag = modalScrollController.position.drag(
-      //   DragStartDetails(globalPosition: details.globalPosition, localPosition: details.localPosition),
-      //   disposeDrag,
-      // );
+    if (_isPullingDownBottomSheet(primaryDelta)) {
+      _activeController = modalController;
+      _drag?.cancel();
+      _drag = modalController.position.drag(
+        DragStartDetails(globalPosition: details.globalPosition, localPosition: details.localPosition),
+        disposeDrag,
+      );
     } else if (_isTopOverscrollingGeneralView(primaryDelta)) {
       _activeController = pageViewController;
       _drag?.cancel();
@@ -67,6 +67,12 @@ class ArticleCustomVerticalDragManager {
 
   void disposeDrag() {
     _drag = null;
+  }
+
+  bool _isPullingDownBottomSheet(double primaryDelta) {
+    return _activeController == pageViewController &&
+        primaryDelta > 0 &&
+        _activeController?.position.pixels == _activeController?.position.minScrollExtent;
   }
 
   bool _isOnImagePage() => articleHasImage && pageViewController.hasClients && (pageViewController.page ?? 0.0) < 1.0;
