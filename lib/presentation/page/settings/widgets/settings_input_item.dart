@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsInputItem extends HookWidget {
+  final TextEditingController controller;
   final String label;
   final String? initialInput;
   final bool isEditable;
@@ -17,6 +18,7 @@ class SettingsInputItem extends HookWidget {
   final TextCapitalization? textCapitalization;
 
   const SettingsInputItem({
+    required this.controller,
     required this.label,
     required this.onChanged,
     required this.isEditable,
@@ -30,7 +32,6 @@ class SettingsInputItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController(text: initialInput);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,6 +40,7 @@ class SettingsInputItem extends HookWidget {
           style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
         ),
         TextFormField(
+          key: ValueKey(initialInput),
           onTap: () => onTap(),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
