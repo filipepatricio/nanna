@@ -20,46 +20,44 @@ import 'package:fluttertoast/fluttertoast.dart';
 class SettingsAccountBody extends HookWidget {
   final SettingsAccountCubit cubit;
   final SettingsAccountState state;
-  final SettingsAccountData data;
+  final SettingsAccountData originalData;
+  final SettingsAccountData modifiedData;
 
-  SettingsAccountBody({
+  const SettingsAccountBody({
     required this.cubit,
     required this.state,
-    required this.data,
+    required this.originalData,
+    required this.modifiedData,
     Key? key,
   }) : super(key: key);
-
-  final isFormFocused = useState(false);
-
-  void _onDismissTextFormFocus() {
-    hideKeyboard();
-    isFormFocused.value = false;
-  }
-
-  void _onSaveButtonTap() {
-    _onDismissTextFormFocus();
-    cubit.saveAccountData();
-  }
 
   @override
   Widget build(BuildContext context) {
     final isEditable = useState(false);
+    final isFormFocused = useState(false);
 
     useCubitListener<SettingsAccountCubit, SettingsAccountState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        showMessage: (message) => Fluttertoast.showToast(
-          msg: message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          fontSize: 16.0,
-        ),
+        showMessage: (message) {
+          isEditable.value = false;
+          Fluttertoast.showToast(
+            msg: message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0,
+          );
+        },
       );
     });
 
+    final nameController = useTextEditingController(text: originalData.firstName);
+    final lastNameController = useTextEditingController(text: originalData.lastName);
+    final emailController = useTextEditingController(text: originalData.email);
+
     return SafeArea(
       child: GestureDetector(
-        onTap: _onDismissTextFormFocus,
+        onTap: () => _onDismissTextFormFocus(isFormFocused),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -82,67 +80,57 @@ class SettingsAccountBody extends HookWidget {
                                 style: AppTypography.h3Bold16,
                               ),
                               const Spacer(),
-                              GestureDetector(
-                                onTap: () => isEditable.value = !isEditable.value,
-                                child: AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 250),
-                                  child: isEditable.value
-                                      ? Container(
-                                          width: AppDimens.settingsCancelButtonWidth,
-                                          height: AppDimens.settingsCancelButtonHeight,
-                                          decoration: const BoxDecoration(
-                                            color: AppColors.grey,
-                                            borderRadius: BorderRadius.all(Radius.circular(AppDimens.m)),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              LocaleKeys.common_cancel.tr(),
-                                              textAlign: TextAlign.center,
-                                              style: AppTypography.metadata1Medium.copyWith(height: AppDimens.one),
-                                            ),
-                                          ),
-                                        )
-                                      : SizedBox(
-                                          width: AppDimens.settingsCancelButtonWidth,
-                                          child: SvgPicture.asset(AppVectorGraphics.edit, fit: BoxFit.contain),
-                                        ),
-                                ),
+                              _EditButton(
+                                isEditable: isEditable.value,
+                                onEditModeChange: (editable) {
+                                  isEditable.value = editable;
+                                  if (!editable) {
+                                    nameController.text = originalData.firstName;
+                                    lastNameController.text = originalData.lastName;
+                                    emailController.text = originalData.email;
+
+                                    cubit.cancelEdit();
+                                  }
+                                },
                               ),
                             ],
                           ),
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
+                          controller: nameController,
                           label: LocaleKeys.settings_firstName.tr(),
-                          initialInput: data.firstName,
+                          initialInput: originalData.firstName,
                           isEditable: isEditable.value,
                           isFormFocused: isFormFocused.value,
                           onChanged: (String inputText) => cubit.updateFirstName(inputText),
-                          validator: (String? value) => data.firstNameValidator,
+                          validator: (String? value) => modifiedData.firstNameValidator,
                           onClear: () => cubit.clearNameInput(),
                           onTap: () => isFormFocused.value = true,
                           textCapitalization: TextCapitalization.words,
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
+                          controller: lastNameController,
                           label: LocaleKeys.settings_lastName.tr(),
-                          initialInput: data.lastName,
+                          initialInput: originalData.lastName,
                           isEditable: isEditable.value,
                           isFormFocused: isFormFocused.value,
                           onChanged: (String inputText) => cubit.updateLastName(inputText),
-                          validator: (String? value) => data.lastNameValidator,
+                          validator: (String? value) => modifiedData.lastNameValidator,
                           onClear: () => cubit.clearLastNameInput(),
                           onTap: () => isFormFocused.value = true,
                           textCapitalization: TextCapitalization.words,
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
+                          controller: emailController,
                           label: LocaleKeys.settings_emailAddress.tr(),
-                          initialInput: data.email,
+                          initialInput: originalData.email,
                           isEditable: isEditable.value,
                           isFormFocused: isFormFocused.value,
                           onChanged: (String inputText) => cubit.updateEmail(inputText),
-                          validator: (String? value) => data.emailValidator,
+                          validator: (String? value) => modifiedData.emailValidator,
                           onClear: () => cubit.clearEmailInput(),
                           onTap: () => isFormFocused.value = true,
                         ),
@@ -156,23 +144,74 @@ class SettingsAccountBody extends HookWidget {
             const SizedBox(height: AppDimens.l),
             AnimatedOpacity(
               opacity: isEditable.value ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 250),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: FilledButton(
                   text: LocaleKeys.settings_save.tr(),
-                  onTap: _onSaveButtonTap,
+                  onTap: () => _onSaveButtonTap(isFormFocused),
                   isEnabled: cubit.formsAreValid(),
                   disableColor: AppColors.dividerGrey,
                   fillColor: AppColors.limeGreen,
                   textColor: AppColors.textPrimary,
-                  isLoading: state.maybeWhen(updating: (data) => true, orElse: () => false),
+                  isLoading: state.maybeMap(updating: (_) => true, orElse: () => false),
                 ),
               ),
             ),
             const SizedBox(height: AppDimens.s),
           ],
         ),
+      ),
+    );
+  }
+
+  void _onDismissTextFormFocus(ValueNotifier<bool> isFormFocused) {
+    hideKeyboard();
+    isFormFocused.value = false;
+  }
+
+  void _onSaveButtonTap(ValueNotifier<bool> isFormFocused) {
+    _onDismissTextFormFocus(isFormFocused);
+    cubit.saveAccountData();
+  }
+}
+
+class _EditButton extends StatelessWidget {
+  final bool isEditable;
+  final Function(bool isEditable) onEditModeChange;
+
+  const _EditButton({
+    required this.isEditable,
+    required this.onEditModeChange,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onEditModeChange(!isEditable),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: isEditable
+            ? Container(
+                width: AppDimens.settingsCancelButtonWidth,
+                height: AppDimens.settingsCancelButtonHeight,
+                decoration: const BoxDecoration(
+                  color: AppColors.grey,
+                  borderRadius: BorderRadius.all(Radius.circular(AppDimens.m)),
+                ),
+                child: Center(
+                  child: Text(
+                    LocaleKeys.common_cancel.tr(),
+                    textAlign: TextAlign.center,
+                    style: AppTypography.metadata1Medium.copyWith(height: AppDimens.one),
+                  ),
+                ),
+              )
+            : SizedBox(
+                width: AppDimens.settingsCancelButtonWidth,
+                child: SvgPicture.asset(AppVectorGraphics.edit, fit: BoxFit.contain),
+              ),
       ),
     );
   }

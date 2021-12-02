@@ -14,13 +14,11 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
   final GetUserUseCase _getUserUseCase;
   final UpdateUserUseCase _updateUserUseCase;
 
-  SettingsAccountData _accountData = SettingsAccountData(
+  late SettingsAccountData _originalData;
+  SettingsAccountData _modifiedData = SettingsAccountData(
     firstName: '',
     lastName: '',
     email: '',
-    lastNameValidator: null,
-    firstNameValidator: null,
-    emailValidator: null,
   );
 
   SettingsAccountCubit(this._getUserUseCase, this._updateUserUseCase) : super(const SettingsAccountState.loading());
@@ -28,49 +26,67 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
   Future<void> initialize() async {
     try {
       final user = await _getUserUseCase();
-      await setAccountData(user);
+      await _setAccountData(user);
     } catch (e, s) {
       Fimber.e('Querying user failed', ex: e, stacktrace: s);
     }
   }
 
   bool formsAreValid() {
-    return _accountData.firstNameValidator == null &&
-        _accountData.lastNameValidator == null &&
-        _accountData.emailValidator == null;
+    return _modifiedData.firstNameValidator == null &&
+        _modifiedData.lastNameValidator == null &&
+        _modifiedData.emailValidator == null &&
+        _originalData != _modifiedData;
   }
 
   Future<void> saveAccountData() async {
     if (formsAreValid()) {
-      emit(SettingsAccountState.updating(_accountData));
-      final user = await _updateUserUseCase(_accountData);
-      await setAccountData(user);
+      emit(SettingsAccountState.updating(_originalData, _modifiedData));
+      final user = await _updateUserUseCase(_modifiedData);
+      await _setAccountData(user);
       emit(SettingsAccountState.showMessage(LocaleKeys.settings_accountInfoSavedSuccessfully.tr()));
     }
   }
 
-  Future<void> setAccountData(User user) async {
-    _accountData = _accountData.copyWith(
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    );
-    emit(SettingsAccountState.idle(_accountData));
-  }
-
   void updateFirstName(String inputText) {
-    _accountData = _accountData.copyWith(firstName: inputText, firstNameValidator: _validateFirstName(inputText));
-    emit(SettingsAccountState.idle(_accountData));
+    _modifiedData = _modifiedData.copyWith(firstName: inputText, firstNameValidator: _validateFirstName(inputText));
+    emit(SettingsAccountState.idle(_originalData, _modifiedData));
   }
 
   void updateLastName(String inputText) {
-    _accountData = _accountData.copyWith(lastName: inputText, lastNameValidator: _validateLastName(inputText));
-    emit(SettingsAccountState.idle(_accountData));
+    _modifiedData = _modifiedData.copyWith(lastName: inputText, lastNameValidator: _validateLastName(inputText));
+    emit(SettingsAccountState.idle(_originalData, _modifiedData));
   }
 
   void updateEmail(String inputText) {
-    _accountData = _accountData.copyWith(email: inputText, emailValidator: _validateEmail(inputText));
-    emit(SettingsAccountState.idle(_accountData));
+    _modifiedData = _modifiedData.copyWith(email: inputText, emailValidator: _validateEmail(inputText));
+    emit(SettingsAccountState.idle(_originalData, _modifiedData));
+  }
+
+  Future<void> _setAccountData(User user) async {
+    _originalData = SettingsAccountData.fromUser(user);
+    _modifiedData = _modifiedData.copyWithUser(user);
+    emit(SettingsAccountState.idle(_originalData, _modifiedData));
+  }
+
+  void clearNameInput() {
+    _modifiedData = _modifiedData.copyWith(firstName: '', firstNameValidator: _validateFirstName(''));
+    emit(SettingsAccountState.idle(_originalData, _modifiedData));
+  }
+
+  void clearLastNameInput() {
+    _modifiedData = _modifiedData.copyWith(lastName: '', lastNameValidator: _validateLastName(''));
+    emit(SettingsAccountState.idle(_originalData, _modifiedData));
+  }
+
+  void clearEmailInput() {
+    _modifiedData = _modifiedData.copyWith(email: '', emailValidator: _validateEmail(''));
+    emit(SettingsAccountState.idle(_originalData, _modifiedData));
+  }
+
+  void cancelEdit() {
+    _modifiedData = _originalData.copyWith();
+    emit(SettingsAccountState.idle(_originalData, _modifiedData));
   }
 
   String? _validateFirstName(String? value) {
@@ -93,20 +109,5 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
       return null;
     }
     return LocaleKeys.settings_wrongEmailInput.tr();
-  }
-
-  void clearNameInput() {
-    _accountData = _accountData.copyWith(firstName: '', firstNameValidator: _validateFirstName(''));
-    emit(SettingsAccountState.idle(_accountData));
-  }
-
-  void clearLastNameInput() {
-    _accountData = _accountData.copyWith(lastName: '', lastNameValidator: _validateLastName(''));
-    emit(SettingsAccountState.idle(_accountData));
-  }
-
-  void clearEmailInput() {
-    _accountData = _accountData.copyWith(email: '', emailValidator: _validateEmail(''));
-    emit(SettingsAccountState.idle(_accountData));
   }
 }

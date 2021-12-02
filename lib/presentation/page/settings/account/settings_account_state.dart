@@ -10,10 +10,12 @@ class SettingsAccountState with _$SettingsAccountState {
   const factory SettingsAccountState.loading() = SettingsAccountStateLoading;
 
   @Implements(BuildState)
-  const factory SettingsAccountState.idle(SettingsAccountData data) = SettingsAccountStateLoaded;
+  const factory SettingsAccountState.idle(SettingsAccountData original, SettingsAccountData data) =
+      SettingsAccountStateLoaded;
 
   @Implements(BuildState)
-  const factory SettingsAccountState.updating(SettingsAccountData data) = SettingsAccountStateUpdating;
+  const factory SettingsAccountState.updating(SettingsAccountData original, SettingsAccountData data) =
+      SettingsAccountStateUpdating;
 
   const factory SettingsAccountState.showMessage(String message) = SettingsAccountStateShowMessage;
 }

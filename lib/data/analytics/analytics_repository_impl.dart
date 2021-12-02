@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
@@ -48,14 +47,11 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
   @override
   void page(AnalyticsPage page) {
-    Fimber.d('$page');
     Segment.screen(screenName: page.name, properties: page.properties);
   }
 
   @override
   void event(AnalyticsEvent event) {
-    // Fimber calls will be removed in the last tracking issue PR
-    Fimber.d('$event');
     Segment.track(eventName: event.name, properties: event.properties);
   }
 }
