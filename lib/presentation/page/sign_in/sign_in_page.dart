@@ -152,6 +152,7 @@ class _IdleContent extends HookWidget {
                       _EmailInput(
                         controller: emailController,
                         cubit: cubit,
+                        validEmail: isEmailValid,
                       ),
                       const SizedBox(height: AppDimens.m),
                     ],
@@ -176,10 +177,12 @@ class _IdleContent extends HookWidget {
 class _EmailInput extends StatelessWidget {
   final TextEditingController controller;
   final SignInPageCubit cubit;
+  final bool validEmail;
 
   const _EmailInput({
     required this.controller,
     required this.cubit,
+    required this.validEmail,
     Key? key,
   }) : super(key: key);
 
@@ -205,6 +208,9 @@ class _EmailInput extends StatelessWidget {
       ),
       maxLines: 1,
       textAlignVertical: TextAlignVertical.center,
+      textInputAction: TextInputAction.done,
+      textCapitalization: TextCapitalization.none,
+      onSubmitted: validEmail ? (value) => cubit.sendMagicLink() : null,
     );
   }
 }
