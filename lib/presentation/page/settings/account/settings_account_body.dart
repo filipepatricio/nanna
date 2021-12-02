@@ -121,6 +121,7 @@ class SettingsAccountBody extends HookWidget {
                           validator: (String? value) => data.firstNameValidator,
                           onClear: () => cubit.clearNameInput(),
                           onTap: () => isFormFocused.value = true,
+                          textCapitalization: TextCapitalization.words,
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
@@ -132,6 +133,7 @@ class SettingsAccountBody extends HookWidget {
                           validator: (String? value) => data.lastNameValidator,
                           onClear: () => cubit.clearLastNameInput(),
                           onTap: () => isFormFocused.value = true,
+                          textCapitalization: TextCapitalization.words,
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
