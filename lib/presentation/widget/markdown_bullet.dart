@@ -1,8 +1,7 @@
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
 
-const _size = 12.0;
-const _radius = 2.0;
+const _size = 6.0;
 
 class MarkdownBullet extends StatelessWidget {
   const MarkdownBullet({Key? key}) : super(key: key);
@@ -14,10 +13,8 @@ class MarkdownBullet extends StatelessWidget {
         height: _size,
         width: _size,
         decoration: const BoxDecoration(
-          color: AppColors.limeGreen,
-          borderRadius: BorderRadius.all(
-            Radius.circular(_radius),
-          ),
+          color: AppColors.black,
+          shape: BoxShape.circle,
         ),
       ),
     );
