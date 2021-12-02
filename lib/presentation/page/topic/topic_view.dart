@@ -17,7 +17,6 @@ import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_d
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
-import 'package:better_informed_mobile/presentation/widget/follow_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
@@ -250,8 +249,9 @@ class _TopicHeader extends HookWidget {
                   const SizedBox(height: AppDimens.topicControlsMargin),
                   Row(
                     children: [
-                      FollowButton(onTap: () {}),
-                      const SizedBox(width: AppDimens.m),
+                      //TODO: show "like" button when it's implemented
+                      // FollowButton(onTap: () {}),
+                      // const SizedBox(width: AppDimens.m),
                       ShareButton(onTap: () => shareReadingList(context, topic)),
                       const Spacer(),
                       UpdatedLabel(
