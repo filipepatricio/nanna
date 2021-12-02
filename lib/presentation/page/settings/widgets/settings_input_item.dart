@@ -14,6 +14,7 @@ class SettingsInputItem extends HookWidget {
   final Function() onClear;
   final Function() onTap;
   final FormFieldValidator<String> validator;
+  final TextCapitalization? textCapitalization;
 
   const SettingsInputItem({
     required this.label,
@@ -24,6 +25,7 @@ class SettingsInputItem extends HookWidget {
     required this.onClear,
     required this.onTap,
     this.initialInput,
+    this.textCapitalization,
   });
 
   @override
@@ -43,6 +45,7 @@ class SettingsInputItem extends HookWidget {
           controller: controller,
           enabled: isEditable,
           style: AppTypography.input1Medium,
+          textCapitalization: textCapitalization ?? TextCapitalization.none,
           onChanged: (value) => onChanged(value),
           decoration: InputDecoration(
             border: isEditable ? null : InputBorder.none,
