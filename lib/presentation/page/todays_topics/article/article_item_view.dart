@@ -25,12 +25,14 @@ class ArticleItemView extends HookWidget {
   final double statusBarHeight;
   final MediaItemNavigationCallback navigationCallback;
   final Topic topic;
+  final GlobalKey? mediaItemKey;
 
   ArticleItemView({
     required this.index,
     required this.statusBarHeight,
     required this.navigationCallback,
     required this.topic,
+    this.mediaItemKey,
     Key? key,
   })  : assert(topic.readingList.entries[index].item is MediaItemArticle,
             'Article at index $index in reading list must be a MediaItemArticle'),
@@ -46,7 +48,7 @@ class ArticleItemView extends HookWidget {
           ? AppColors.background
           : currentEntry.style.color,
       padding: EdgeInsets.only(
-        top: statusBarHeight,
+        top: statusBarHeight + AppDimens.l,
         bottom: AppDimens.m,
         left: _calculateIndicatorWidth(),
       ),
@@ -67,7 +69,7 @@ class ArticleItemView extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: AppDimens.l, right: AppDimens.xxl),
+              padding: const EdgeInsets.only(right: AppDimens.xxl),
               child: Row(
                 children: [
                   Text('${index + 1}', style: AppTypography.subH1Bold),
@@ -83,7 +85,11 @@ class ArticleItemView extends HookWidget {
               ),
             ],
             const SizedBox(height: AppDimens.l),
-            _ArticleCover(entry: currentEntry, article: article),
+            _ArticleCover(
+              entry: currentEntry,
+              article: article,
+              mediaItemKey: mediaItemKey,
+            ),
             const SizedBox(height: AppDimens.xl),
             Padding(
               padding: const EdgeInsets.only(right: AppDimens.l),
@@ -108,10 +114,11 @@ class ArticleItemView extends HookWidget {
 }
 
 class _ArticleCover extends StatelessWidget {
-  const _ArticleCover({required this.entry, required this.article});
-
   final Entry entry;
   final MediaItemArticle article;
+  final GlobalKey? mediaItemKey;
+
+  const _ArticleCover({required this.entry, required this.article, required this.mediaItemKey});
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +126,7 @@ class _ArticleCover extends StatelessWidget {
       case EntryStyleType.articleCoverWithBigImage:
         return Expanded(
           child: Padding(
+            key: mediaItemKey,
             padding: const EdgeInsets.only(right: AppDimens.l),
             child: PhotoStackedCover(article: article),
           ),
@@ -126,6 +134,7 @@ class _ArticleCover extends StatelessWidget {
       case EntryStyleType.articleCoverWithSmallImage:
         return Expanded(
           child: Padding(
+            key: mediaItemKey,
             padding: const EdgeInsets.only(left: AppDimens.m),
             child: PhotoCover(article: article),
           ),
@@ -133,6 +142,7 @@ class _ArticleCover extends StatelessWidget {
       case EntryStyleType.articleCoverWithoutImage:
         return Expanded(
           child: Padding(
+            key: mediaItemKey,
             padding: const EdgeInsets.only(right: AppDimens.l),
             child: ColoredCover(backgroundColor: entry.style.color, article: article),
           ),
