@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/article/c
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -95,9 +96,9 @@ class _ArticleHeader extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.xxl),
         ],
-        Text(
-          article.title,
-          style: AppTypography.h1Bold,
+        InformedMarkdownBody(
+          markdown: article.title,
+          baseTextStyle: AppTypography.h1Bold,
         ),
         const SizedBox(height: AppDimens.m),
         DottedArticleInfo(
