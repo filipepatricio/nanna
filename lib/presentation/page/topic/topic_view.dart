@@ -249,9 +249,6 @@ class _TopicHeader extends HookWidget {
                   const SizedBox(height: AppDimens.topicControlsMargin),
                   Row(
                     children: [
-                      //TODO: show "like" button when it's implemented
-                      // FollowButton(onTap: () {}),
-                      // const SizedBox(width: AppDimens.m),
                       ShareButton(onTap: () => shareReadingList(context, topic)),
                       const Spacer(),
                       UpdatedLabel(
