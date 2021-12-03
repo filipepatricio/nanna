@@ -350,20 +350,24 @@ class _IdleContent extends HookWidget {
                       ),
                     ),
                     if (hasNextArticle) ...[
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(vertical: AppDimens.xxl),
-                        sliver: SliverToBoxAdapter(
-                          child: ValueListenableBuilder(
-                            valueListenable: nextArticleLoaderFactor,
-                            builder: (BuildContext context, double value, Widget? child) {
-                              final opacity = max(0.0, 1 - value * 2);
-                              return FadeTransition(
-                                opacity: AlwaysStoppedAnimation(opacity),
-                                child: child,
-                              );
-                            },
-                            child: const AnimatedPointerDown(
-                              arrowColor: AppColors.textPrimary,
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: AppDimens.xxl),
+                            child: ValueListenableBuilder(
+                              valueListenable: nextArticleLoaderFactor,
+                              builder: (BuildContext context, double value, Widget? child) {
+                                final opacity = max(0.0, 1 - value * 2);
+                                return FadeTransition(
+                                  opacity: AlwaysStoppedAnimation(opacity),
+                                  child: child,
+                                );
+                              },
+                              child: const AnimatedPointerDown(
+                                arrowColor: AppColors.textPrimary,
+                              ),
                             ),
                           ),
                         ),
