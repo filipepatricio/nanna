@@ -304,10 +304,14 @@ class _SummaryContent extends HookWidget {
             child: _SummaryCard(index: 0, topic: topic, summaryCardKey: summaryCardKey),
           );
 
+    final firstEntry = topic.readingList.entries.first;
+    final firstEntryImage = firstEntry.item.image;
+    final firstEntryColor = firstEntry.style.color;
+
     return Container(
       width: double.infinity,
       height: _summaryViewHeight,
-      color: topic.readingList.entries[0].style.color,
+      color: firstEntryImage != null ? firstEntryColor : AppColors.lightGrey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
