@@ -57,7 +57,13 @@ Future<void> main() async {
   );
 }
 
-void _setupFimber() => Fimber.plantTree(getIt());
+void _setupFimber() {
+  if (kDebugMode) {
+    Fimber.plantTree(DebugTree(useColors: true));
+  } else {
+    Fimber.plantTree(getIt());
+  }
+}
 
 Future<void> _setupAnalytics() => getIt<InitializeAnalyticsUseCase>()();
 

@@ -55,4 +55,7 @@ class AppVectorGraphics {
   static const String shareNotSelected = 'assets/vector_graphics/share_not_selected.svg';
   static const String shareSelected = 'assets/vector_graphics/share_selected.svg';
   static const String closeIOS = 'assets/vector_graphics/close_ios.svg';
+
+  static const String tutorialArrowDown = 'assets/vector_graphics/tutorial_arrow_down.svg';
+  static const String tutorialArrowUp = 'assets/vector_graphics/tutorial_arrow_up.svg';
 }

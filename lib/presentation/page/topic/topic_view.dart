@@ -4,17 +4,19 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/vertical_indicators.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/util/topic_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
-import 'package:better_informed_mobile/presentation/widget/follow_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
@@ -31,7 +33,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 const _summaryPageViewHeight = 365.0;
-const _summaryViewHeight = 630.0;
+const _summaryViewHeight = 580.0;
 const _summaryMockedImageSize = 50.0;
 
 const _topicHeaderPadding = 60.0;
@@ -40,12 +42,18 @@ const _topicHeaderHeight = 350.0;
 
 class TopicView extends HookWidget {
   final Topic topic;
+  final TopicPageCubit cubit;
   final double articleContentHeight;
   final double? appBarMargin;
+  final GlobalKey? summaryCardKey;
+  final GlobalKey? mediaItemKey;
 
   const TopicView({
     required this.topic,
+    required this.cubit,
     required this.articleContentHeight,
+    this.summaryCardKey,
+    this.mediaItemKey,
     this.appBarMargin,
     Key? key,
   }) : super(key: key);
@@ -64,6 +72,16 @@ class TopicView extends HookWidget {
       ),
       [appBarMargin],
     );
+
+    useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(shouldShowSummaryCardTutorialCoachMark: () {
+        final listener = summaryCardTutorialListener(listScrollController);
+        listScrollController.addListener(listener);
+      }, shouldShowMediaItemTutorialCoachMark: () {
+        final listener = mediaItemTutorialListener(listScrollController);
+        listScrollController.addListener(listener);
+      });
+    });
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{
@@ -91,22 +109,64 @@ class TopicView extends HookWidget {
                 onArticlesLabelTap: () =>
                     gestureManager.animateTo(_topicHeaderHeight + _summaryViewHeight + articleContentHeight),
               ),
-              _SummaryContent(topic: topic),
+              _SummaryContent(topic: topic, summaryCardKey: summaryCardKey),
               GeneralEventTracker(
                 controller: eventController,
                 child: _MediaItemContent(
-                  articleContentHeight: articleContentHeight,
-                  controller: articleController,
-                  pageIndex: pageIndex,
-                  topic: topic,
-                  eventController: eventController,
-                ),
+                    articleContentHeight: articleContentHeight,
+                    controller: articleController,
+                    pageIndex: pageIndex,
+                    topic: topic,
+                    eventController: eventController,
+                    mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  bool didListScrollReachMediaItem(ScrollController listScrollController, double articleTriggerPosition) {
+    return listScrollController.offset >= articleTriggerPosition && !listScrollController.position.outOfRange;
+  }
+
+  bool didListScrollReachSummaryCard(ScrollController listScrollController, double summaryCardTriggerPosition) {
+    return listScrollController.offset >= summaryCardTriggerPosition && !listScrollController.position.outOfRange;
+  }
+
+  VoidCallback mediaItemTutorialListener(ScrollController listScrollController) {
+    var isToShowMediaItemTutorialCoachMark = true;
+    final mediaItemTutorialListener = () {
+      const mediaItemTriggerPosition = _topicHeaderImageHeight +
+          _topicHeaderPadding +
+          _summaryPageViewHeight +
+          _summaryMockedImageSize +
+          AppDimens.l;
+      if (didListScrollReachMediaItem(listScrollController, mediaItemTriggerPosition) &&
+          isToShowMediaItemTutorialCoachMark) {
+        listScrollController.animateTo(mediaItemTriggerPosition,
+            duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
+        cubit.showMediaItemTutorialCoachMark();
+        isToShowMediaItemTutorialCoachMark = false;
+      }
+    };
+    return mediaItemTutorialListener;
+  }
+
+  VoidCallback summaryCardTutorialListener(ScrollController listScrollController) {
+    var isToShowSummaryCardTutorialCoachMark = true;
+    final summaryCardTutorialListener = () {
+      const summaryCardTriggerPosition = _topicHeaderImageHeight - _topicHeaderPadding;
+      if (didListScrollReachSummaryCard(listScrollController, summaryCardTriggerPosition) &&
+          isToShowSummaryCardTutorialCoachMark) {
+        listScrollController.animateTo(summaryCardTriggerPosition,
+            duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
+        cubit.showSummaryCardTutorialCoachMark();
+        isToShowSummaryCardTutorialCoachMark = false;
+      }
+    };
+    return summaryCardTutorialListener;
   }
 }
 
@@ -189,8 +249,6 @@ class _TopicHeader extends HookWidget {
                   const SizedBox(height: AppDimens.topicControlsMargin),
                   Row(
                     children: [
-                      FollowButton(onTap: () {}),
-                      const SizedBox(width: AppDimens.m),
                       ShareButton(onTap: () => shareReadingList(context, topic)),
                       const Spacer(),
                       UpdatedLabel(
@@ -212,9 +270,11 @@ class _TopicHeader extends HookWidget {
 
 class _SummaryContent extends HookWidget {
   final Topic topic;
+  final GlobalKey? summaryCardKey;
 
   const _SummaryContent({
     required this.topic,
+    this.summaryCardKey,
     Key? key,
   }) : super(key: key);
 
@@ -233,22 +293,18 @@ class _SummaryContent extends HookWidget {
             child: _SummaryCardPageView(
               topic: topic,
               controller: controller,
+              summaryCardKey: summaryCardKey,
             ),
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _SummaryCard(
-              index: 0,
-              topic: topic,
-            ),
+            child: _SummaryCard(index: 0, topic: topic, summaryCardKey: summaryCardKey),
           );
 
     return Container(
       width: double.infinity,
       height: _summaryViewHeight,
-
-      ///This color should be the same as first article page view
-      color: AppColors.mockedColors[0],
+      color: topic.readingList.entries[0].style.color,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -290,13 +346,15 @@ class _SummaryContent extends HookWidget {
   }
 }
 
-class _SummaryCardPageView extends StatelessWidget {
+class _SummaryCardPageView extends HookWidget {
   final Topic topic;
   final PageController controller;
+  final GlobalKey? summaryCardKey;
 
   const _SummaryCardPageView({
     required this.topic,
     required this.controller,
+    this.summaryCardKey,
     Key? key,
   }) : super(key: key);
 
@@ -314,6 +372,7 @@ class _SummaryCardPageView extends StatelessWidget {
             child: _SummaryCard(
               topic: topic,
               index: index,
+              summaryCardKey: index == 0 ? summaryCardKey : null,
             ),
           );
         },
@@ -325,21 +384,24 @@ class _SummaryCardPageView extends StatelessWidget {
 class _SummaryCard extends StatelessWidget {
   final int index;
   final Topic topic;
+  final GlobalKey? summaryCardKey;
 
   const _SummaryCard({
     required this.index,
     required this.topic,
+    required this.summaryCardKey,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: summaryCardKey,
       height: _summaryPageViewHeight,
       padding: const EdgeInsets.only(
         left: AppDimens.l,
         right: AppDimens.l,
-        bottom: AppDimens.l,
+        bottom: AppDimens.xl,
       ),
       color: AppColors.mockedColors[index % AppColors.mockedColors.length],
       child: Column(
@@ -376,14 +438,15 @@ class _MediaItemContent extends HookWidget {
   final ValueNotifier<int> pageIndex;
   final Topic topic;
   final GeneralEventTrackerController eventController;
+  final GlobalKey? mediaItemKey;
 
-  const _MediaItemContent({
-    required this.articleContentHeight,
-    required this.controller,
-    required this.pageIndex,
-    required this.topic,
-    required this.eventController,
-  });
+  const _MediaItemContent(
+      {required this.articleContentHeight,
+      required this.controller,
+      required this.pageIndex,
+      required this.topic,
+      required this.eventController,
+      this.mediaItemKey});
 
   @override
   Widget build(BuildContext context) {
@@ -422,6 +485,7 @@ class _MediaItemContent extends HookWidget {
                       topic: topic,
                       statusBarHeight: statusBarHeight,
                       navigationCallback: (index) => controller.jumpToPage(index),
+                      mediaItemKey: index == 0 ? mediaItemKey : null,
                     );
                   } else {
                     return const SizedBox();

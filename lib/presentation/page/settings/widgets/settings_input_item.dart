@@ -6,16 +6,20 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsInputItem extends HookWidget {
+  final TextEditingController controller;
   final String label;
   final String? initialInput;
   final bool isEditable;
   final bool isFormFocused;
   final Function(String inputText) onChanged;
-  final Function() onClear;
-  final Function() onTap;
+  final VoidCallback onClear;
+  final VoidCallback onTap;
+  final VoidCallback? onSubmitted;
   final FormFieldValidator<String> validator;
+  final TextCapitalization? textCapitalization;
 
   const SettingsInputItem({
+    required this.controller,
     required this.label,
     required this.onChanged,
     required this.isEditable,
@@ -23,12 +27,13 @@ class SettingsInputItem extends HookWidget {
     required this.validator,
     required this.onClear,
     required this.onTap,
+    this.onSubmitted,
     this.initialInput,
+    this.textCapitalization,
   });
 
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController(text: initialInput);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -37,13 +42,18 @@ class SettingsInputItem extends HookWidget {
           style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
         ),
         TextFormField(
+          key: ValueKey(initialInput),
           onTap: () => onTap(),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
           controller: controller,
           enabled: isEditable,
           style: AppTypography.input1Medium,
+          textCapitalization: textCapitalization ?? TextCapitalization.none,
           onChanged: (value) => onChanged(value),
+          onFieldSubmitted: (value) {
+            onSubmitted?.call();
+          },
           decoration: InputDecoration(
             border: isEditable ? null : InputBorder.none,
             suffixIcon: isEditable && isFormFocused
