@@ -1,9 +1,11 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -57,12 +59,12 @@ class PhotoCover extends HookWidget {
               children: [
                 DottedArticleInfo(article: article, isLight: false),
                 const SizedBox(height: AppDimens.s),
-                Text(
-                  article.title,
-                  style: AppTypography.h3bold,
+                InformedMarkdownBody(
+                  markdown: article.title,
+                  baseTextStyle: AppTypography.h3bold.copyWith(overflow: TextOverflow.ellipsis),
+                  highlightColor: AppColors.transparent,
+                  textAlignment: TextAlign.start,
                   maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
                 ),
                 const SizedBox(height: AppDimens.l),
               ],

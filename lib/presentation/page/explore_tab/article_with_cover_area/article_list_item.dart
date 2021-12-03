@@ -111,6 +111,7 @@ class _ArticleImageOverlay extends StatelessWidget {
           const SizedBox(height: AppDimens.xs),
           InformedMarkdownBody(
             markdown: article.title,
+            highlightColor: imageId == null ? AppColors.limeGreen : AppColors.transparent,
             baseTextStyle: AppTypography.h5BoldSmall.copyWith(
               height: 1.4,
               color: imageId == null ? AppColors.textPrimary : AppColors.lightGrey,
