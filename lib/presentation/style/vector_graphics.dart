@@ -43,6 +43,7 @@ class AppVectorGraphics {
   static const String briefLoading = 'assets/vector_graphics/daily_brief_loading.svg';
 
   static const String arrowRight = 'assets/vector_graphics/arrow_right_ic.svg';
+  static const String arrowDown = 'assets/vector_graphics/arrow_down.svg';
   static const String articles = 'assets/vector_graphics/articles_ic.svg';
   static const String happySun = 'assets/vector_graphics/happy_sun_face.svg';
   static const String sunRays = 'assets/vector_graphics/sun_rays.svg';
@@ -54,4 +55,7 @@ class AppVectorGraphics {
   static const String shareNotSelected = 'assets/vector_graphics/share_not_selected.svg';
   static const String shareSelected = 'assets/vector_graphics/share_selected.svg';
   static const String closeIOS = 'assets/vector_graphics/close_ios.svg';
+
+  static const String tutorialArrowDown = 'assets/vector_graphics/tutorial_arrow_down.svg';
+  static const String tutorialArrowUp = 'assets/vector_graphics/tutorial_arrow_up.svg';
 }

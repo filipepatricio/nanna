@@ -8,9 +8,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ShareArticleButton extends HookWidget {
   final MediaItemArticle article;
+  final WidgetBuilder? buttonBuilder;
 
   const ShareArticleButton({
     required this.article,
+    this.buttonBuilder,
     Key? key,
   }) : super(key: key);
 
@@ -19,13 +21,20 @@ class ShareArticleButton extends HookWidget {
     final cubit = useCubit<ShareArticleButtonCubit>();
     final state = useCubitBuilder(cubit, buildWhen: (state) => true);
 
+    final builder = buttonBuilder;
+
     switch (state) {
       case ShareArticleButtonState.idle:
-        return ShareButton(
-          onTap: () => cubit.share(
-            article,
-          ),
-        );
+        if (builder == null) {
+          return ShareButton(
+            onTap: () => cubit.share(article),
+          );
+        } else {
+          return GestureDetector(
+            onTap: () => cubit.share(article),
+            child: builder(context),
+          );
+        }
       case ShareArticleButtonState.processing:
         return const Loader();
     }

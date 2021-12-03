@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -55,11 +56,14 @@ class PhotoStackedCover extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    article.title,
-                    style: AppTypography.h3bold.copyWith(color: AppColors.white),
+                  InformedMarkdownBody(
+                    markdown: article.title,
+                    baseTextStyle: AppTypography.h3bold.copyWith(
+                      color: AppColors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    highlightColor: AppColors.transparent,
                     maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: AppDimens.l),
                   DottedArticleInfo(article: article, isLight: true),

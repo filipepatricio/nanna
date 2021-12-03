@@ -14,4 +14,6 @@ class TodaysTopicsPageState with _$TodaysTopicsPageState {
 
   @Implements(BuildState)
   factory TodaysTopicsPageState.error() = _TodaysTopicsPageStateError;
+
+  factory TodaysTopicsPageState.showTutorialToast(String text) = _TodaysTopicsPageStateShowTutorialToast;
 }

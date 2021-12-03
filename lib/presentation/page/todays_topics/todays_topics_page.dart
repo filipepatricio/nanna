@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/relax/rel
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_title_hero.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -17,10 +18,13 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+import 'todays_topics_page_state.dart';
 
 const _pageViewportFraction = 0.85;
 
@@ -53,6 +57,13 @@ class TodaysTopicsPage extends HookWidget {
       },
       [controller, state],
     );
+
+    useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+          showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
+                showToast(context, text);
+              }));
+    });
 
     useEffect(
       () {

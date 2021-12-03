@@ -18,7 +18,11 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
     final result = await _client.mutate(
       MutationOptions(
         document: AuthGQL.login(),
-        variables: {'token': token, 'provider': provider, 'meta': userMeta},
+        variables: {
+          'token': token,
+          'provider': provider,
+          'meta': userMeta ?? <String, dynamic>{},
+        },
         fetchPolicy: FetchPolicy.noCache,
       ),
     );

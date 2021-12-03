@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/widgets.dart';
 
-const bottomSquareCardHeight = 80.0;
-const upperDiagonalCardHeight = 40.0;
+const bottomSquareCardHeight = 40.0;
+const upperDiagonalCardHeight = 20.0;
 const upperDiagonalCardFillerHeight = 20.0;
 
 class BottomStackedCards extends StatelessWidget {

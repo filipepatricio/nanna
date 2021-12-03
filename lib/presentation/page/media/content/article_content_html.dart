@@ -127,10 +127,10 @@ String _makeHtmlContentResponsive(String htmlContent) {
               }
 
               .raw ul>li::before {
-                content: "■";
+                content: "●";
                 font-size: 1rem;
                 line-height: 1rem;
-                color: #bbf383;
+                color: #000000;
                 margin-right: 0.4rem;
               }
           </style>

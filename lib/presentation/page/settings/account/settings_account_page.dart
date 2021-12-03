@@ -33,10 +33,20 @@ class SettingsAccountPage extends HookWidget {
           style: AppTypography.subH1Medium.copyWith(height: 1),
         ),
       ),
-      body: state.maybeWhen(
-        loading: () => const Loader(),
-        idle: (data) => SettingsAccountBody(cubit: cubit, state: state, data: data),
-        updating: (data) => SettingsAccountBody(cubit: cubit, state: state, data: data),
+      body: state.maybeMap(
+        loading: (_) => const Loader(),
+        idle: (data) => SettingsAccountBody(
+          cubit: cubit,
+          state: state,
+          modifiedData: data.data,
+          originalData: data.original,
+        ),
+        updating: (data) => SettingsAccountBody(
+          cubit: cubit,
+          state: state,
+          modifiedData: data.data,
+          originalData: data.original,
+        ),
         orElse: () => const SizedBox(),
       ),
     );
