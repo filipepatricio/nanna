@@ -39,7 +39,6 @@ class SettingsAccountBody extends HookWidget {
     useCubitListener<SettingsAccountCubit, SettingsAccountState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showMessage: (message) {
-          isEditable.value = false;
           Fluttertoast.showToast(
             msg: message,
             toastLength: Toast.LENGTH_SHORT,
@@ -108,6 +107,7 @@ class SettingsAccountBody extends HookWidget {
                           onClear: () => cubit.clearNameInput(),
                           onTap: () => isFormFocused.value = true,
                           textCapitalization: TextCapitalization.words,
+                          onSubmitted: () => cubit.saveAccountData(),
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
@@ -121,6 +121,7 @@ class SettingsAccountBody extends HookWidget {
                           onClear: () => cubit.clearLastNameInput(),
                           onTap: () => isFormFocused.value = true,
                           textCapitalization: TextCapitalization.words,
+                          onSubmitted: () => cubit.saveAccountData(),
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
@@ -133,6 +134,7 @@ class SettingsAccountBody extends HookWidget {
                           validator: (String? value) => modifiedData.emailValidator,
                           onClear: () => cubit.clearEmailInput(),
                           onTap: () => isFormFocused.value = true,
+                          onSubmitted: () => cubit.saveAccountData(),
                         ),
                         const SizedBox(height: AppDimens.l),
                       ],
@@ -149,7 +151,7 @@ class SettingsAccountBody extends HookWidget {
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: FilledButton(
                   text: LocaleKeys.settings_save.tr(),
-                  onTap: () => _onSaveButtonTap(isFormFocused),
+                  onTap: () => _onSaveButtonTap(isEditable, isFormFocused),
                   isEnabled: cubit.formsAreValid(),
                   disableColor: AppColors.dividerGrey,
                   fillColor: AppColors.limeGreen,
@@ -170,9 +172,10 @@ class SettingsAccountBody extends HookWidget {
     isFormFocused.value = false;
   }
 
-  void _onSaveButtonTap(ValueNotifier<bool> isFormFocused) {
+  void _onSaveButtonTap(ValueNotifier<bool> isEditable, ValueNotifier<bool> isFormFocused) {
     _onDismissTextFormFocus(isFormFocused);
     cubit.saveAccountData();
+    isEditable.value = false;
   }
 }
 
