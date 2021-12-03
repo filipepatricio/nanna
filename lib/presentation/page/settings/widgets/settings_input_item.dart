@@ -12,8 +12,9 @@ class SettingsInputItem extends HookWidget {
   final bool isEditable;
   final bool isFormFocused;
   final Function(String inputText) onChanged;
-  final Function() onClear;
-  final Function() onTap;
+  final VoidCallback onClear;
+  final VoidCallback onTap;
+  final VoidCallback? onSubmitted;
   final FormFieldValidator<String> validator;
   final TextCapitalization? textCapitalization;
 
@@ -26,6 +27,7 @@ class SettingsInputItem extends HookWidget {
     required this.validator,
     required this.onClear,
     required this.onTap,
+    this.onSubmitted,
     this.initialInput,
     this.textCapitalization,
   });
@@ -49,6 +51,9 @@ class SettingsInputItem extends HookWidget {
           style: AppTypography.input1Medium,
           textCapitalization: textCapitalization ?? TextCapitalization.none,
           onChanged: (value) => onChanged(value),
+          onFieldSubmitted: (value) {
+            onSubmitted?.call();
+          },
           decoration: InputDecoration(
             border: isEditable ? null : InputBorder.none,
             suffixIcon: isEditable && isFormFocused
