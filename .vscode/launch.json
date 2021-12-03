@@ -23,7 +23,7 @@
             "args": [
                 "--flavor", "dev",
                 "--dart-define=env=dev",
-                "--dart-define=host=http://192.168.80.248:4000/graphql"
+                "--dart-define=host=http://192.168.0.40:4000/graphql"
             ]
         },
         {
@@ -34,7 +34,7 @@
             "args": [
                 "--flavor", "dev",
                 "--dart-define=env=dev",
-                "--dart-define=host=http://192.168.8.102:4000/graphql"
+                "--dart-define=host=http://192.168.0.40:4000/graphql"
             ]
         },
         {
@@ -67,5 +67,14 @@
                 "--dart-define=env=prod"
             ]
         },
+        {
+            "name": "Golden",
+            "request": "launch",
+            "type": "dart",
+            "codeLens": {
+              "for": ["run-test", "run-test-file"]
+            },
+            "args": ["--update-goldens"]
+          }
     ]
 }

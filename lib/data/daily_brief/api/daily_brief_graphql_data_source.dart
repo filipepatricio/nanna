@@ -2,10 +2,11 @@ import 'package:better_informed_mobile/data/daily_brief/api/daily_brief_api_data
 import 'package:better_informed_mobile/data/daily_brief/api/daily_brief_gql.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: DailyBriefApiDataSource)
+@LazySingleton(as: DailyBriefApiDataSource, env: liveEnvs)
 class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;

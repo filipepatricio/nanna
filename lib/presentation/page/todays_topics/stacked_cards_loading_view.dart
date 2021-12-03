@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -18,7 +19,7 @@ class StackedCardsLoadingView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = useAnimationController(duration: const Duration(seconds: 8));
-    controller.repeat();
+    if (!kIsTest) controller.repeat();
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -33,6 +34,7 @@ class StackedCardsLoadingView extends HookWidget {
             children: [
               Positioned.fill(
                 child: Shimmer.fromColors(
+                  enabled: !kIsTest,
                   direction: ShimmerDirection.ltr,
                   baseColor: AppColors.background,
                   highlightColor: AppColors.pastelGreen.withOpacity(0.8),
