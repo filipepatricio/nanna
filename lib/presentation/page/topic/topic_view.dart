@@ -32,13 +32,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-const _summaryPageViewHeight = 365.0;
+const _summaryPageViewHeight = 290.0;
 const _summaryViewHeight = 580.0;
-const _summaryMockedImageSize = 50.0;
 
-const _topicHeaderPadding = 60.0;
-const _topicHeaderImageHeight = 620.0;
-const _topicHeaderHeight = 350.0;
+const _topicHeaderPadding = 45.0;
+const _topicHeaderImageHeight = 540.0;
+const _topicHeaderHeight = 330.0;
 
 class TopicView extends HookWidget {
   final Topic topic;
@@ -109,7 +108,10 @@ class TopicView extends HookWidget {
                 onArticlesLabelTap: () =>
                     gestureManager.animateTo(_topicHeaderHeight + _summaryViewHeight + articleContentHeight),
               ),
-              _SummaryContent(topic: topic, summaryCardKey: summaryCardKey),
+              _SummaryContent(
+                topic: topic,
+                summaryCardKey: summaryCardKey,
+              ),
               GeneralEventTracker(
                 controller: eventController,
                 child: _MediaItemContent(
@@ -138,11 +140,8 @@ class TopicView extends HookWidget {
   VoidCallback mediaItemTutorialListener(ScrollController listScrollController) {
     var isToShowMediaItemTutorialCoachMark = true;
     final mediaItemTutorialListener = () {
-      const mediaItemTriggerPosition = _topicHeaderImageHeight +
-          _topicHeaderPadding +
-          _summaryPageViewHeight +
-          _summaryMockedImageSize +
-          AppDimens.l;
+      const mediaItemTriggerPosition =
+          _topicHeaderImageHeight + _topicHeaderPadding + _summaryPageViewHeight + AppDimens.l;
       if (didListScrollReachMediaItem(listScrollController, mediaItemTriggerPosition) &&
           isToShowMediaItemTutorialCoachMark) {
         listScrollController.animateTo(mediaItemTriggerPosition,
@@ -323,8 +322,8 @@ class _SummaryContent extends HookWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: AppDimens.l),
                   child: Text(
-                    LocaleKeys.todaysTopics_biggerPicture.tr(),
-                    style: AppTypography.h1Medium,
+                    LocaleKeys.todaysTopics_summaryHeadline.tr(),
+                    style: AppTypography.h2Jakarta,
                   ),
                 ),
                 const SizedBox(height: AppDimens.l),
@@ -410,26 +409,14 @@ class _SummaryCard extends StatelessWidget {
       color: AppColors.mockedColors[index % AppColors.mockedColors.length],
       child: Column(
         children: [
-          const SizedBox(height: AppDimens.l),
-          // TODO replace with real image when available in query as part of @TopicSummary model
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              width: _summaryMockedImageSize,
-              height: _summaryMockedImageSize,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.white,
-              ),
-            ),
-          ),
-          const SizedBox(height: AppDimens.xxxc),
+          const SizedBox(height: AppDimens.xc),
           Expanded(
             child: InformedMarkdownBody(
               markdown: topic.topicSummaryList[index].content,
               baseTextStyle: AppTypography.b2RegularLora,
             ),
           ),
+          const SizedBox(height: AppDimens.l),
         ],
       ),
     );

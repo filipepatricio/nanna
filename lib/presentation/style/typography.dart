@@ -53,6 +53,13 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h2Jakarta = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 24,
+    height: 1.33,
+  );
+
   static const TextStyle h2Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
