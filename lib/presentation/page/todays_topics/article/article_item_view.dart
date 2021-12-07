@@ -118,7 +118,11 @@ class _ArticleCover extends StatelessWidget {
   final MediaItemArticle article;
   final GlobalKey? mediaItemKey;
 
-  const _ArticleCover({required this.entry, required this.article, required this.mediaItemKey});
+  const _ArticleCover({
+    required this.entry,
+    required this.article,
+    required this.mediaItemKey,
+  });
 
   @override
   Widget build(BuildContext context) {
