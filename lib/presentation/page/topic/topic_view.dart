@@ -32,13 +32,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-const _summaryPageViewHeight = 365.0;
+const _summaryPageViewHeight = 290.0;
 const _summaryViewHeight = 580.0;
-const _summaryMockedImageSize = 50.0;
 
-const _topicHeaderPadding = 60.0;
-const _topicHeaderImageHeight = 620.0;
-const _topicHeaderHeight = 350.0;
+const _topicHeaderPadding = 45.0;
+const _topicHeaderImageHeight = 540.0;
+const _topicHeaderHeight = 330.0;
 
 class TopicView extends HookWidget {
   final Topic topic;
@@ -78,7 +77,7 @@ class TopicView extends HookWidget {
         final listener = summaryCardTutorialListener(listScrollController);
         listScrollController.addListener(listener);
       }, shouldShowMediaItemTutorialCoachMark: () {
-        final listener = mediaItemTutorialListener(listScrollController);
+        final listener = mediaItemTutorialListener(listScrollController, articleContentHeight);
         listScrollController.addListener(listener);
       });
     });
@@ -106,19 +105,26 @@ class TopicView extends HookWidget {
             children: [
               _TopicHeader(
                 topic: topic,
-                onArticlesLabelTap: () =>
-                    gestureManager.animateTo(_topicHeaderHeight + _summaryViewHeight + articleContentHeight),
+                onArticlesLabelTap: () {
+                  gestureManager.animateTo(
+                    _topicHeaderHeight + _summaryViewHeight + articleContentHeight,
+                  );
+                },
               ),
-              _SummaryContent(topic: topic, summaryCardKey: summaryCardKey),
+              _SummaryContent(
+                topic: topic,
+                summaryCardKey: summaryCardKey,
+              ),
               GeneralEventTracker(
                 controller: eventController,
                 child: _MediaItemContent(
-                    articleContentHeight: articleContentHeight,
-                    controller: articleController,
-                    pageIndex: pageIndex,
-                    topic: topic,
-                    eventController: eventController,
-                    mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null),
+                  articleContentHeight: articleContentHeight,
+                  controller: articleController,
+                  pageIndex: pageIndex,
+                  topic: topic,
+                  eventController: eventController,
+                  mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
+                ),
               ),
             ],
           ),
@@ -135,25 +141,6 @@ class TopicView extends HookWidget {
     return listScrollController.offset >= summaryCardTriggerPosition && !listScrollController.position.outOfRange;
   }
 
-  VoidCallback mediaItemTutorialListener(ScrollController listScrollController) {
-    var isToShowMediaItemTutorialCoachMark = true;
-    final mediaItemTutorialListener = () {
-      const mediaItemTriggerPosition = _topicHeaderImageHeight +
-          _topicHeaderPadding +
-          _summaryPageViewHeight +
-          _summaryMockedImageSize +
-          AppDimens.l;
-      if (didListScrollReachMediaItem(listScrollController, mediaItemTriggerPosition) &&
-          isToShowMediaItemTutorialCoachMark) {
-        listScrollController.animateTo(mediaItemTriggerPosition,
-            duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
-        cubit.showMediaItemTutorialCoachMark();
-        isToShowMediaItemTutorialCoachMark = false;
-      }
-    };
-    return mediaItemTutorialListener;
-  }
-
   VoidCallback summaryCardTutorialListener(ScrollController listScrollController) {
     var isToShowSummaryCardTutorialCoachMark = true;
     final summaryCardTutorialListener = () {
@@ -167,6 +154,23 @@ class TopicView extends HookWidget {
       }
     };
     return summaryCardTutorialListener;
+  }
+
+  VoidCallback mediaItemTutorialListener(ScrollController listScrollController, double articleContentHeight) {
+    var isToShowMediaItemTutorialCoachMark = true;
+    final mediaItemTutorialListener = () {
+      if (isToShowMediaItemTutorialCoachMark &&
+          didListScrollReachMediaItem(listScrollController, listScrollController.position.maxScrollExtent)) {
+        listScrollController.animateTo(
+          listScrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.decelerate,
+        );
+        cubit.showMediaItemTutorialCoachMark();
+        isToShowMediaItemTutorialCoachMark = false;
+      }
+    };
+    return mediaItemTutorialListener;
   }
 }
 
@@ -323,8 +327,8 @@ class _SummaryContent extends HookWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: AppDimens.l),
                   child: Text(
-                    LocaleKeys.todaysTopics_biggerPicture.tr(),
-                    style: AppTypography.h1Medium,
+                    LocaleKeys.todaysTopics_summaryHeadline.tr(),
+                    style: AppTypography.h2Jakarta,
                   ),
                 ),
                 const SizedBox(height: AppDimens.l),
@@ -410,26 +414,14 @@ class _SummaryCard extends StatelessWidget {
       color: AppColors.mockedColors[index % AppColors.mockedColors.length],
       child: Column(
         children: [
-          const SizedBox(height: AppDimens.l),
-          // TODO replace with real image when available in query as part of @TopicSummary model
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              width: _summaryMockedImageSize,
-              height: _summaryMockedImageSize,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.white,
-              ),
-            ),
-          ),
-          const SizedBox(height: AppDimens.xxxc),
+          const SizedBox(height: AppDimens.xc),
           Expanded(
             child: InformedMarkdownBody(
               markdown: topic.topicSummaryList[index].content,
               baseTextStyle: AppTypography.b2RegularLora,
             ),
           ),
+          const SizedBox(height: AppDimens.l),
         ],
       ),
     );
@@ -444,13 +436,14 @@ class _MediaItemContent extends HookWidget {
   final GeneralEventTrackerController eventController;
   final GlobalKey? mediaItemKey;
 
-  const _MediaItemContent(
-      {required this.articleContentHeight,
-      required this.controller,
-      required this.pageIndex,
-      required this.topic,
-      required this.eventController,
-      this.mediaItemKey});
+  const _MediaItemContent({
+    required this.articleContentHeight,
+    required this.controller,
+    required this.pageIndex,
+    required this.topic,
+    required this.eventController,
+    this.mediaItemKey,
+  });
 
   @override
   Widget build(BuildContext context) {
