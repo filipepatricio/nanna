@@ -37,6 +37,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h1SemiBold = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: fontFamilyLora,
+    fontSize: 24,
+    height: 1.33,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -215,7 +223,7 @@ class AppTypography {
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyLora,
     fontSize: 16,
-    height: 1.27,
+    height: 1.33,
     color: AppColors.textPrimary,
   );
 

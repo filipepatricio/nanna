@@ -12,10 +12,8 @@ class TopicIntroduction extends StatelessWidget {
     return Text(
       introduction,
       textScaleFactor: 1,
-      style: AppTypography.h5MediumSmall.copyWith(
-        height: 1.12,
-        fontFamily: fontFamilyLora,
-      ),
+      style: AppTypography.b2RegularLora.copyWith(),
+      maxLines: 6,
     );
   }
 }

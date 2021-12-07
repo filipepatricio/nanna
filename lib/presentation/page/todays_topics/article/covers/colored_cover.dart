@@ -11,28 +11,28 @@ class ColoredCover extends StatelessWidget {
   final MediaItemArticle article;
   final Color backgroundColor;
 
-  const ColoredCover({required this.backgroundColor, required this.article});
+  const ColoredCover({
+    required this.backgroundColor,
+    required this.article,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
-      width: AppDimens.articleItemWidth,
-      height: AppDimens.articleItemHeight(context),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        padding: const EdgeInsets.all(AppDimens.l),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Spacer(),
             InformedMarkdownBody(
               markdown: article.title,
-              baseTextStyle: AppTypography.h0SemiBold.copyWith(fontFamily: fontFamilyLora),
-              maxLines: 4,
+              baseTextStyle: AppTypography.h1SemiBold.copyWith(fontFamily: fontFamilyLora),
+              maxLines: 5,
             ),
             const Spacer(),
             DottedArticleInfo(article: article, isLight: false),
-            const SizedBox(height: AppDimens.l),
           ],
         ),
       ),
