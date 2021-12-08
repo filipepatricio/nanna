@@ -7,11 +7,9 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/colored_cover.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/photo_cover.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/photo_stacked_cover.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_introduction.dart';
@@ -43,12 +41,13 @@ class ArticleItemView extends HookWidget {
     final allEntries = topic.readingList.entries;
     final currentEntry = allEntries[index];
     final article = currentEntry.item as MediaItemArticle;
+
     return Container(
       color: currentEntry.style.type == EntryStyleType.articleCoverWithoutImage
           ? AppColors.background
           : currentEntry.style.color,
       padding: EdgeInsets.only(
-        top: statusBarHeight + AppDimens.l,
+        top: statusBarHeight + AppDimens.s,
         bottom: AppDimens.m,
         left: _calculateIndicatorWidth(),
       ),
@@ -68,14 +67,10 @@ class ArticleItemView extends HookWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(right: AppDimens.xxl),
-              child: Row(
-                children: [
-                  Text('${index + 1}', style: AppTypography.subH1Bold),
-                  Text('/${allEntries.length} articles', style: AppTypography.subH1Regular),
-                ],
-              ),
+            _ArticleCover(
+              entry: currentEntry,
+              article: article,
+              mediaItemKey: mediaItemKey,
             ),
             if (currentEntry.note != null) ...[
               const SizedBox(height: AppDimens.m),
@@ -84,17 +79,10 @@ class ArticleItemView extends HookWidget {
                 child: TopicIntroduction(introduction: currentEntry.note!),
               ),
             ],
-            const SizedBox(height: AppDimens.l),
-            _ArticleCover(
-              entry: currentEntry,
-              article: article,
-              mediaItemKey: mediaItemKey,
-            ),
             const SizedBox(height: AppDimens.xl),
             Padding(
               padding: const EdgeInsets.only(right: AppDimens.l),
               child: Container(
-                width: AppDimens.articleItemWidth,
                 child: Row(
                   children: [
                     ShareArticleButton(article: article),
@@ -130,25 +118,32 @@ class _ArticleCover extends StatelessWidget {
       case EntryStyleType.articleCoverWithBigImage:
         return Expanded(
           child: Padding(
-            key: mediaItemKey,
             padding: const EdgeInsets.only(right: AppDimens.l),
-            child: PhotoStackedCover(article: article),
+            child: PhotoStackedCover(
+              article: article,
+              key: mediaItemKey,
+            ),
           ),
         );
       case EntryStyleType.articleCoverWithSmallImage:
         return Expanded(
           child: Padding(
-            key: mediaItemKey,
-            padding: const EdgeInsets.only(left: AppDimens.m),
-            child: PhotoCover(article: article),
+            padding: const EdgeInsets.only(right: AppDimens.l),
+            child: PhotoStackedCover(
+              article: article,
+              key: mediaItemKey,
+            ),
           ),
         );
       case EntryStyleType.articleCoverWithoutImage:
         return Expanded(
           child: Padding(
-            key: mediaItemKey,
             padding: const EdgeInsets.only(right: AppDimens.l),
-            child: ColoredCover(backgroundColor: entry.style.color, article: article),
+            child: ColoredCover(
+              backgroundColor: entry.style.color,
+              article: article,
+              key: mediaItemKey,
+            ),
           ),
         );
     }

@@ -38,6 +38,7 @@ const _summaryViewHeight = 580.0;
 const _topicHeaderPadding = 45.0;
 const _topicHeaderImageHeight = 540.0;
 const _topicHeaderHeight = 330.0;
+const _articleCountLabelHeight = 72.0;
 
 class TopicView extends HookWidget {
   final Topic topic;
@@ -480,7 +481,7 @@ class _MediaItemContent extends HookWidget {
                     return ArticleItemView(
                       index: index,
                       topic: topic,
-                      statusBarHeight: statusBarHeight,
+                      statusBarHeight: statusBarHeight + _articleCountLabelHeight,
                       navigationCallback: (index) => controller.jumpToPage(index),
                       mediaItemKey: index == 0 ? mediaItemKey : null,
                     );
@@ -491,11 +492,24 @@ class _MediaItemContent extends HookWidget {
               ),
             ),
           ),
+          Positioned(
+            left: AppDimens.zero,
+            right: AppDimens.zero,
+            top: AppDimens.zero,
+            child: Padding(
+              padding: const EdgeInsets.all(AppDimens.l),
+              child: Text(
+                LocaleKeys.todaysTopics_articlesCount.tr(args: [topic.readingList.entries.length.toString()]),
+                style: AppTypography.h2Jakarta,
+                maxLines: 1,
+              ),
+            ),
+          ),
           Positioned.fill(
-            top: statusBarHeight,
+            top: statusBarHeight + _articleCountLabelHeight,
             right: null,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.l),
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l) + const EdgeInsets.only(bottom: AppDimens.m),
               child: VerticalIndicators(
                 currentIndex: pageIndex.value,
                 pageListLength: entryList.length,

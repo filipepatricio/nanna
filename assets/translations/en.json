@@ -50,7 +50,8 @@
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
     "summaryHeadline": "Topic summary",
-    "goToExplore": "Go to explore"
+    "goToExplore": "Go to explore",
+    "articlesCount": "{} articles on this topic"
   },
   "settings": {
     "settings": "Settings",

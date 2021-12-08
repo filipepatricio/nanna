@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class AppDimens {
   const AppDimens._();
 
@@ -101,12 +99,6 @@ class AppDimens {
 
   /// 40
   static const articlePublisherLogoSize = 40;
-
-  /// 298
-  static const articleItemWidth = 298.0;
-
-  /// 52%
-  static double articleItemHeight(BuildContext context) => MediaQuery.of(context).size.height * 0.52;
 
   /// 4
   static const verticalIndicatorWidth = 4.0;
