@@ -25,7 +25,7 @@ class InfoToast extends StatelessWidget {
         },
         child: Container(
             padding:
-                const EdgeInsets.only(left: AppDimens.l, right: AppDimens.l, top: AppDimens.xxxl, bottom: AppDimens.s),
+                const EdgeInsets.only(left: AppDimens.l, right: AppDimens.l, top: AppDimens.xxc, bottom: AppDimens.s),
             decoration: BoxDecoration(color: AppColors.white, boxShadow: [
               BoxShadow(
                 color: AppColors.shadowColor,
