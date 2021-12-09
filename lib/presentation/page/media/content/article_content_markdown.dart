@@ -27,7 +27,8 @@ class ArticleContentMarkdown extends HookWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       child: InformedMarkdownBody(
         markdown: markdown,
-        baseTextStyle: AppTypography.b2MediumLora,
+        baseTextStyle: AppTypography.b0RegularLora,
+        subtitleTextStyle: AppTypography.b0Bold,
         selectable: true,
       ),
     );

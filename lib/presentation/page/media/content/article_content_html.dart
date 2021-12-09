@@ -79,7 +79,7 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 color: #282B35;
                 font-family: Lora;
                 font-size: 18px;
-                line-height: 1.75rem;
+                line-height: 29px;
                 font-weight: 400;
                 margin: 0;
               }
@@ -98,10 +98,13 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 padding-bottom: 24px;
               }
               h1, h2, h3, h4, h5, h6 {
+                line-height: 24px;
+                font-family: "Plus Jakarta Sans";
                 padding-left: 24px;
                 padding-right: 24px;
               }
               strong{
+                line-height: 24px;
                 font-family: "Plus Jakarta Sans";
               }
               img {
