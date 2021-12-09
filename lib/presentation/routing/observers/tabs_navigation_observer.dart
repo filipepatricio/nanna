@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';

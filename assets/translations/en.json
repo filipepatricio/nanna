@@ -49,8 +49,9 @@
     "readingList": "Reading list",
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
-    "biggerPicture": "The bigger picture",
-    "goToExplore": "Go to explore"
+    "summaryHeadline": "Topic summary",
+    "goToExplore": "Go to explore",
+    "articlesCount": "{} articles on this topic"
   },
   "settings": {
     "settings": "Settings",
