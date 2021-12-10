@@ -29,7 +29,7 @@ class ArticleContentMarkdown extends HookWidget {
       child: InformedMarkdownBody(
         markdown: markdown,
         baseTextStyle: AppTypography.b0RegularLora,
-        subtitleTextStyle: AppTypography.b0Bold,
+        strongTextStyle: AppTypography.b0Bold,
         selectable: true,
         paddingBuilders: <String, MarkdownPaddingBuilder>{
           'p': PPaddingBuilder(),
