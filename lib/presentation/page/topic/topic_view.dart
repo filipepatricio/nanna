@@ -412,7 +412,7 @@ class _SummaryCard extends StatelessWidget {
         right: AppDimens.l,
         bottom: AppDimens.xl,
       ),
-      color: AppColors.mockedColors[index % AppColors.mockedColors.length],
+      color: AppColors.pastelGreen,
       child: Column(
         children: [
           const SizedBox(height: AppDimens.xc),
