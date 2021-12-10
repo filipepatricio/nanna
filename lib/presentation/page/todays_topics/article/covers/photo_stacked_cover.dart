@@ -14,65 +14,61 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class PhotoStackedCover extends HookWidget {
   final MediaItemArticle article;
 
-  const PhotoStackedCover({required this.article});
+  const PhotoStackedCover({required this.article, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
 
-    return Container(
-      width: AppDimens.articleItemWidth,
-      height: AppDimens.articleItemHeight(context),
-      child: Stack(
-        children: [
-          if (imageId != null) ...[
-            Positioned.fill(
-              child: LayoutBuilder(
-                builder: (context, constrains) {
-                  return CloudinaryProgressiveImage(
-                    cloudinaryTransformation: cloudinaryProvider
-                        .withPublicIdAsJpg(imageId)
-                        .transform()
-                        .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
-                        .autoGravity(),
-                    height: constrains.maxHeight,
-                    width: constrains.maxWidth,
-                  );
-                },
-              ),
+    return Stack(
+      children: [
+        if (imageId != null) ...[
+          Positioned.fill(
+            child: LayoutBuilder(
+              builder: (context, constrains) {
+                return CloudinaryProgressiveImage(
+                  cloudinaryTransformation: cloudinaryProvider
+                      .withPublicIdAsJpg(imageId)
+                      .transform()
+                      .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
+                      .autoGravity(),
+                  height: constrains.maxHeight,
+                  width: constrains.maxWidth,
+                );
+              },
             ),
-            Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(0.40),
-              ),
-            ),
-          ],
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.m, bottom: AppDimens.l),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InformedMarkdownBody(
-                    markdown: article.title,
-                    baseTextStyle: AppTypography.h3bold.copyWith(
-                      color: AppColors.white,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    highlightColor: AppColors.transparent,
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: AppDimens.l),
-                  DottedArticleInfo(article: article, isLight: true),
-                ],
-              ),
+          ),
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.40),
             ),
           ),
         ],
-      ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.all(AppDimens.l),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InformedMarkdownBody(
+                  markdown: article.title,
+                  baseTextStyle: AppTypography.headline4Bold.copyWith(
+                    color: AppColors.white,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  highlightColor: AppColors.transparent,
+                  maxLines: 5,
+                ),
+                const Spacer(),
+                DottedArticleInfo(article: article, isLight: true),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

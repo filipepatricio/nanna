@@ -76,11 +76,12 @@ String _makeHtmlContentResponsive(String htmlContent) {
           <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
           <style>
               body {
-                background-color: #FCFAF8;
                 color: #282B35;
                 font-family: Lora;
-                line-height: 1.5;
-                font-weight: 500;
+                font-size: 18px;
+                line-height: 29px;
+                font-weight: 400;
+                margin: 0;
               }
               ol {
                 padding-left: 24px;
@@ -91,12 +92,20 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 padding-right: 24px;
               }
               p {
+                margin: 0;
+                padding-left: 24px;
+                padding-right: 24px;
+                padding-bottom: 24px;
+              }
+              h1, h2, h3, h4, h5, h6 {
+                line-height: 24px;
+                font-family: "Plus Jakarta Sans";
                 padding-left: 24px;
                 padding-right: 24px;
               }
-              h1, h2, h3, h4, h5, h6 {
-                padding-left: 24px;
-                padding-right: 24px;
+              strong{
+                line-height: 24px;
+                font-family: "Plus Jakarta Sans";
               }
               img {
                 object-fit: cover;

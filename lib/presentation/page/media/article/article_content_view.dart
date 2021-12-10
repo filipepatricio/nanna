@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/media/content/article_c
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -35,18 +34,18 @@ class ArticleContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Container(
+        child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
+        Container(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: _ArticleHeader(article: article),
         ),
         Container(
-          color: AppColors.background,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: AppDimens.xl),
               Container(
                 key: articleContentKey,
                 child: articleContent(),
@@ -56,7 +55,7 @@ class ArticleContentView extends StatelessWidget {
           ),
         ),
       ],
-    );
+    ));
   }
 
   Widget? articleContent() {
@@ -107,7 +106,7 @@ class _ArticleHeader extends StatelessWidget {
           showPublisher: false,
           fullDate: true,
         ),
-        const SizedBox(height: AppDimens.xl),
+        const SizedBox(height: AppDimens.c),
       ],
     );
   }
