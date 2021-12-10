@@ -14,6 +14,7 @@ class InformedMarkdownBody extends StatelessWidget {
   final Color highlightColor;
   final int? maxLines;
   final TextAlign textAlignment;
+  final Map<String, MarkdownPaddingBuilder>? paddingBuilders;
 
   const InformedMarkdownBody({
     required this.markdown,
@@ -23,6 +24,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.selectable = false,
     this.highlightColor = AppColors.limeGreen,
     this.textAlignment = TextAlign.start,
+    this.paddingBuilders,
     Key? key,
   }) : super(key: key);
 
@@ -41,6 +43,7 @@ class InformedMarkdownBody extends StatelessWidget {
         listBullet: baseTextStyle,
         listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s),
       ),
+      paddingBuilders: paddingBuilders ?? <String, MarkdownPaddingBuilder>{},
       bulletBuilder: (index, style) => const MarkdownBullet(),
       richTextBuilder: (span, selectable, {textAlign, key}) {
         return CustomRichText(

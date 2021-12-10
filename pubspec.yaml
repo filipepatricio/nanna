@@ -54,7 +54,7 @@ dependencies:
   flutter_markdown:
     git:
       url: https://github.com/dawidkiteo/packages.git
-      ref: feature/custom-rich-text-builder
+      ref: version/0-6-8
       path: packages/flutter_markdown
   cloudinary_sdk: 3.0.1+7
   rxdart: 0.26.0
