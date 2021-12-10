@@ -9,18 +9,22 @@ import 'package:markdown/markdown.dart' as md;
 class InformedMarkdownBody extends StatelessWidget {
   final String markdown;
   final TextStyle baseTextStyle;
+  final TextStyle? strongTextStyle;
   final bool selectable;
   final Color highlightColor;
   final int? maxLines;
   final TextAlign textAlignment;
+  final Map<String, MarkdownPaddingBuilder>? paddingBuilders;
 
   const InformedMarkdownBody({
     required this.markdown,
     required this.baseTextStyle,
+    this.strongTextStyle,
     this.maxLines,
     this.selectable = false,
     this.highlightColor = AppColors.limeGreen,
     this.textAlignment = TextAlign.start,
+    this.paddingBuilders,
     Key? key,
   }) : super(key: key);
 
@@ -35,10 +39,11 @@ class InformedMarkdownBody extends StatelessWidget {
       ),
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
         p: baseTextStyle,
-        strong: baseTextStyle.copyWith(fontWeight: FontWeight.bold),
+        strong: strongTextStyle ?? baseTextStyle.copyWith(fontWeight: FontWeight.bold),
         listBullet: baseTextStyle,
         listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s),
       ),
+      paddingBuilders: paddingBuilders ?? <String, MarkdownPaddingBuilder>{},
       bulletBuilder: (index, style) => const MarkdownBullet(),
       richTextBuilder: (span, selectable, {textAlign, key}) {
         return CustomRichText(

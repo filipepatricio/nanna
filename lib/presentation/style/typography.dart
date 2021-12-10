@@ -202,6 +202,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle b0Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 18,
+    height: 1.75,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle b1Regular = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -216,6 +224,14 @@ class AppTypography {
     fontSize: 16,
     height: 1.61,
     letterSpacing: 0.15,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle b0RegularLora = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyLora,
+    fontSize: 18,
+    height: 1.75,
     color: AppColors.textPrimary,
   );
 
