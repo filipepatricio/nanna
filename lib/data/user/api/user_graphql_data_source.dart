@@ -3,10 +3,11 @@ import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
 import 'package:better_informed_mobile/data/user/api/user_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: UserDataSource)
+@LazySingleton(as: UserDataSource, env: liveEnvs)
 class UserGraphqlDataSource implements UserDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;

@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -91,7 +90,7 @@ class ReadingListArticlesSelectView extends HookWidget {
       orElse: () => const SizedBox(),
     );
 
-    if (Platform.isIOS) {
+    if (kIsAppleDevice) {
       return _ContainerIOS(child: contentView);
     } else {
       return _ContainerAndroid(
@@ -212,7 +211,7 @@ class _IdleView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppDimens.s),
-          if (Platform.isIOS)
+          if (kIsAppleDevice)
             Center(
               child: Text(
                 LocaleKeys.shareTopic_selectedLabel.tr(

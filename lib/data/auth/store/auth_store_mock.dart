@@ -6,37 +6,30 @@ import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AuthStore, env: liveEnvs)
-class AuthStoreImpl implements AuthStore {
-  final FreshLink<OAuth2Token> _freshLink;
+@LazySingleton(as: AuthStore, env: mockEnvs)
+class AuthStoreMock implements AuthStore {
   final AuthTokenEntityMapper _authTokenEntityMapper;
   final AuthTokenEntityToOAuthMapper _authTokenEntityToOAuthMapper;
 
-  AuthStoreImpl(
-    this._freshLink,
+  AuthStoreMock(
     this._authTokenEntityMapper,
     this._authTokenEntityToOAuthMapper,
   );
 
   @override
   Future<void> delete() async {
-    await _freshLink.clearToken();
+    return;
   }
 
   @override
   Future<AuthToken?> read() async {
-    final oauthToken = await _freshLink.token;
-
-    if (oauthToken == null) return null;
-
+    const oauthToken = OAuth2Token(accessToken: 'accessToken', refreshToken: 'refreshToken');
     final entity = _authTokenEntityToOAuthMapper.from(oauthToken);
     return _authTokenEntityMapper.from(entity);
   }
 
   @override
   Future<void> save(AuthToken token) async {
-    final entity = _authTokenEntityMapper.to(token);
-    final oauthToken = _authTokenEntityToOAuthMapper.to(entity);
-    await _freshLink.setToken(oauthToken);
+    return;
   }
 }

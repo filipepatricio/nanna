@@ -2,12 +2,12 @@ name: CI
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths-ignore:
       - '**/README.md'
 
 env:
-  JAVA_VERSION: "12.x"
+  JAVA_VERSION: '12.x'
 
 jobs:
   commit_lint:
@@ -89,7 +89,7 @@ jobs:
         run: flutter analyze .
 
       - name: Run tests
-        run: flutter test
+        run: flutter test -x visual
 
       - name: Build Android app release for prod
         run: flutter build apk --release --dart-define=env=prod --flavor prod

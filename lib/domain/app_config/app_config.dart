@@ -1,6 +1,18 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 
 const _environmentArgHost = 'host';
+
+const mock = 'mock';
+
+const liveEnvs = [Environment.dev, Environment.test, Environment.prod];
+
+const mockEnvs = [mock];
+
+bool kIsAppleDevice = Platform.isIOS;
+
+final kIsTest = Platform.environment.containsKey('FLUTTER_TEST');
 
 class AppConfig {
   final String name;
@@ -20,6 +32,15 @@ class AppConfig {
   factory AppConfig.dev() {
     return AppConfig._(
       name: Environment.dev,
+      apiUrl: const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
+      cloudinaryCloudName: 'informed-development',
+      sentryEventDns: '',
+    );
+  }
+
+  factory AppConfig.mock() {
+    return AppConfig._(
+      name: mock,
       apiUrl: const String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
       cloudinaryCloudName: 'informed-development',
       sentryEventDns: '',

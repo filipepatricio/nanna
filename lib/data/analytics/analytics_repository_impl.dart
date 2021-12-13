@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AnalyticsRepository)
+@LazySingleton(as: AnalyticsRepository, env: liveEnvs)
 class AnalyticsRepositoryImpl implements AnalyticsRepository {
   final AppConfig _config;
 

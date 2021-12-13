@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/sign_in_with_apple_button.dart';
 import 'package:better_informed_mobile/presentation/widget/sign_in_with_google_button.dart';
@@ -21,8 +20,7 @@ class SignInWithProviderView extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: AppDimens.s),
-        if (Platform.isIOS) SignInWithAppleButton(onTap: onSignInTap),
-        if (Platform.isAndroid) SignInWithGoogleButton(onTap: onSignInTap),
+        if (kIsAppleDevice) SignInWithAppleButton(onTap: onSignInTap) else SignInWithGoogleButton(onTap: onSignInTap),
       ],
     );
   }
