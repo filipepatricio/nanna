@@ -77,6 +77,7 @@ class TodaysTopicsPage extends HookWidget {
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        titleSpacing: AppDimens.l,
         title: Row(
           children: [
             TodaysTopicsTitleHero(

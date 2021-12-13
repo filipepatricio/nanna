@@ -21,7 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _topMargin = 80.0;
+const _topMargin = 36.0;
 
 class ExplorePage extends HookWidget {
   @override
@@ -128,7 +128,7 @@ class _Header extends StatelessWidget {
           const SizedBox(height: _topMargin),
           Text(
             LocaleKeys.main_exploreTab.tr(),
-            style: AppTypography.hBold,
+            style: AppTypography.h1Bold,
           ),
           const SizedBox(height: AppDimens.l),
         ],
