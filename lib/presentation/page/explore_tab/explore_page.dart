@@ -77,6 +77,9 @@ class ExplorePage extends HookWidget {
   Color _getHeaderColor(ExplorePageState state) {
     return state.maybeMap(
       idle: (idle) {
+        if (idle.areas.isEmpty) {
+          return AppColors.background;
+        }
         final firstArea = idle.areas.first;
         return firstArea.maybeMap(
           articleWithFeature: (state) => Color(state.backgroundColor),
