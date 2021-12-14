@@ -105,7 +105,6 @@ class _ArticleHeader extends StatelessWidget {
         DottedArticleInfo(
           article: article,
           isLight: false,
-          showPublisher: false,
           fullDate: true,
         ),
         const SizedBox(height: AppDimens.c),
