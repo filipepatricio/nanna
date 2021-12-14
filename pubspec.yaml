@@ -66,7 +66,7 @@ dependencies:
   shimmer: 2.0.0
   progressive_image: 2.0.0
   jiffy: 4.1.0
-  flutter_html: 2.1.5
+  flutter_html: 2.2.1
   flutter_segment: 3.3.0
   fluttertoast: 8.0.8
   flutter_email_sender: 5.0.2
