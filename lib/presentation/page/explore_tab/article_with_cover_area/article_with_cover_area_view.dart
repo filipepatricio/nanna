@@ -145,7 +145,7 @@ class _MainArticle extends HookWidget {
               child: imageId != null
                   ? CloudinaryProgressiveImage(
                       cloudinaryTransformation: cloudinaryProvider
-                          .withPublicIdAsJpg(imageId)
+                          .withPublicIdAsPlatform(imageId)
                           .transform()
                           .withLogicalSize(constraints.maxWidth, constraints.maxHeight, context)
                           .autoGravity(),
