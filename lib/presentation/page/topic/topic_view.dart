@@ -414,6 +414,7 @@ class _SummaryCard extends StatelessWidget {
       ),
       color: AppColors.pastelGreen,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: AppDimens.xc),
           Expanded(
