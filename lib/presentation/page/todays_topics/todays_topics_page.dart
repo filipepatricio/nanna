@@ -60,9 +60,10 @@ class TodaysTopicsPage extends HookWidget {
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
-                showToast(context, text);
-              }));
+        showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
+          showToast(context, text);
+        }),
+      );
     });
 
     useEffect(
@@ -204,7 +205,6 @@ class _IdleContent extends HookWidget {
           Center(
             child: _DotIndicator(
               currentBrief: currentBrief,
-              lastPageAnimationProgressState: lastPageAnimationProgressState,
               controller: controller,
             ),
           ),
@@ -281,31 +281,19 @@ class _Greeting extends StatelessWidget {
 
 class _DotIndicator extends StatelessWidget {
   final CurrentBrief currentBrief;
-  final ValueNotifier<double> lastPageAnimationProgressState;
   final PageController controller;
 
   const _DotIndicator({
     required this.currentBrief,
-    required this.lastPageAnimationProgressState,
     required this.controller,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: lastPageAnimationProgressState,
-      builder: (BuildContext context, double value, Widget? child) {
-        return AnimatedOpacity(
-          opacity: value < 0.5 ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          child: child,
-        );
-      },
-      child: PageDotIndicator(
-        pageCount: currentBrief.topics.length,
-        controller: controller,
-      ),
+    return PageDotIndicator(
+      pageCount: currentBrief.topics.length + 1,
+      controller: controller,
     );
   }
 }
