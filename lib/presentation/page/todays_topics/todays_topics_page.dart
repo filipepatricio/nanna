@@ -78,6 +78,7 @@ class TodaysTopicsPage extends HookWidget {
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        titleSpacing: AppDimens.l,
         title: Row(
           children: [
             TodaysTopicsTitleHero(
@@ -228,12 +229,9 @@ class _IdleContent extends HookWidget {
           padding: const EdgeInsets.only(left: AppDimens.xl),
           child: ReadingListStackedCards(
             coverSize: Size(width, heightPageView),
-            child: GestureDetector(
-              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(context, key, currentBrief),
-              child: ReadingListCover(
-                topic: currentBrief.topics[key],
-                onTap: () => _onTopicCardPressed(context, key, currentBrief),
-              ),
+            child: ReadingListCover(
+              topic: currentBrief.topics[key],
+              onTap: () => _onTopicCardPressed(context, key, currentBrief),
             ),
           ),
         ),
