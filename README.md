@@ -61,6 +61,12 @@ and run on terminal:
 
 * [https://stackoverflow.com/a/60655655/3100254]
 
+### How do I build release app on iOS?
+If you are not deploying the application, you probably don't need to build it in release mode. For performance testing use profile mode which is as much efficient as release mode.
+If you want to deploy the app, check out Fastlane instructions below.
+
+If you really want to run app locally with `release` mode, change in xcode `Automatically manage signing` to true for Runner and ImageNotification targets (in Signing&Capabilities tab).
+
 ## Mobile introduction.
 
 - Backend doker : https://github.com/informedtechnologies/odin
@@ -69,7 +75,7 @@ and run on terminal:
 
 * [ ] Mobile app stack:
 
-- Flutter : 2.5.2 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
+- Flutter : 2.5.3 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
 - Navigation : auto_route
 - Immutable data class : freezed
 - Logs: fimber
@@ -145,3 +151,11 @@ example:
 
 - Hint, you can spend some time and read cubit_hooks.dart file in our project. Because in there we have our own custom hooks for cubits.
   When we create public widgets we use named parameters.
+
+## Fastlane
+
+In case you need to deploy application using your local machine, you will need few things:
+- fastlane-ios-pass file containing passphrase you will need to decode certs that are stored in GitHub
+- password for `engineering-cd@betterinformed.io` Apple ID
+
+Next step is to go to `ios` folder and run `fastlane match appstore --readonly` command and follow instructions. You will end up with all certs and provisioning profiles stored on your machine. Only thing left is archive the app and deploy it.

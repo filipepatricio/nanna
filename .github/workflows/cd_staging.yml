@@ -4,8 +4,7 @@ name: CD
 # and than add to our job condition "if: github.event.pull_request.merged == true"
 
 on:
-  pull_request:
-    types: [ closed ]
+  push:
     branches: [ develop ]
     paths-ignore:
       - '**/README.md'
@@ -16,7 +15,6 @@ env:
 jobs:
   # CD - android firebase
   deploy_android:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -88,7 +86,6 @@ jobs:
 
   # CD - ios testflight
   deploy_ios:
-    if: github.event.pull_request.merged == true
     runs-on: macos-11
     timeout-minutes: 30
     steps:
