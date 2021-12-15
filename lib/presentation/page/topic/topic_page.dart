@@ -81,6 +81,7 @@ class TopicPage extends HookWidget {
                       left: 0,
                       right: 0,
                       child: _AppBar(
+                        topic: topic,
                         key: appBarKey,
                         scrollPositionNotifier: scrollPositionNotifier,
                       ),
@@ -95,9 +96,11 @@ class TopicPage extends HookWidget {
 }
 
 class _AppBar extends StatelessWidget {
+  final Topic topic;
   final ValueNotifier<double> scrollPositionNotifier;
 
   const _AppBar({
+    required this.topic,
     required this.scrollPositionNotifier,
     Key? key,
   }) : super(key: key);
@@ -108,6 +111,7 @@ class _AppBar extends StatelessWidget {
       valueListenable: scrollPositionNotifier,
       builder: (_, value, ___) {
         return TopicAppBar(
+          topic: topic,
           backgroundAnimationFactor: value / AppDimens.topicAppBarAnimationFactor,
           foregroundAnimationFactor: value / AppDimens.topicAppBarAnimationFactor,
           elevation: value / AppDimens.topicAppBarAnimationFactor > 0.95 ? 3.0 : 0.0,
