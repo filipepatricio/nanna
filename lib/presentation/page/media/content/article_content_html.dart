@@ -46,7 +46,7 @@ class ArticleContentHtml extends HookWidget {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const MarkdownBullet(),
+              Container(padding: const EdgeInsets.only(top: AppDimens.l), child: const MarkdownBullet()),
               const SizedBox(width: AppDimens.m),
               Expanded(child: widget),
             ],
@@ -90,6 +90,10 @@ String _makeHtmlContentResponsive(String htmlContent) {
               ul {
                 padding-left: 24px;
                 padding-right: 24px;
+              }
+              li {
+                padding-top: 6px;
+                padding-bottom: 6px;
               }
               p {
                 margin: 0;
