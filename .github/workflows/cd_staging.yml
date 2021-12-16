@@ -1,0 +1,151 @@
+name: CD
+
+# There is no merged event, so we have to listen for pull request closed
+# and than add to our job condition "if: github.event.pull_request.merged == true"
+
+on:
+  push:
+    branches: [ develop ]
+    paths-ignore:
+      - '**/README.md'
+env:
+  JAVA_VERSION: "12.x"
+  RUBY_VERSION: "2.7"
+
+jobs:
+  # CD - android firebase
+  deploy_android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # GitHub run number is being increased by last Bitrise build number so final build number for the app is correct
+      - name: Setup build number
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          ORIGINAL: ${{ github.run_number }}
+        run: |
+          echo ::set-env name=BUILD_NUMBER::$((ORIGINAL+570))  
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby ${{ env.RUBY_VERSION }} for fastlane
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Decrypt Android keys
+        run: sh ./.github/scripts/decrypt_android_secrets.sh
+        env:
+          ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets Flutter environment
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Run easy_localization:generate and generate files
+        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      - name: Run build_runner and generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+
+      - name: Build app
+        env:
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+        run: flutter build apk --release --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"
+
+      - name: Setup Firebase credentials
+        run: |
+          echo "$FIREBASE_CREDENTIALS" > firebase_credentials.json.b64
+          base64 -d -i firebase_credentials.json.b64 > firebase_credentials.json
+        env:
+          FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+
+      - name: Distribute app to Firebase
+        uses: maierj/fastlane-action@v2.1.0
+        with:
+          lane: 'firebase_deploy'
+          subdirectory: android
+        env:
+          FIREBASE_APP_ID_ANDROID: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
+
+  # CD - ios testflight
+  deploy_ios:
+    runs-on: macos-11
+    timeout-minutes: 30
+    steps:
+      - name: Setup build number
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          ORIGINAL: ${{ github.run_number }}
+        run: |
+          echo ::set-env name=BUILD_NUMBER::$((ORIGINAL+570))    
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby for fastlane
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets up a Flutter environment for use in actions
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+      - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Run easy_localization:generate and generate files
+        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      - name: Run build_runner and generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build app
+        env:
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+        run: flutter build ios --release --no-codesign --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"
+
+      - name: Deploy app to Testflight
+        uses: maierj/fastlane-action@v2.1.0
+        with:
+          lane: 'closed_beta'
+          subdirectory: ios
+        env:
+          ITC_TEAM_ID: '${{ secrets.ITC_TEAM_ID }}'
+          DEVELOPER_PORTAL_TEAM_ID: '${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}'
+          FASTLANE_APPLE_ID: '${{ secrets.FASTLANE_APPLE_EMAIL_ID }}'
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: '${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}'
+          MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+          GIT_AUTHORIZATION: '${{ secrets.GIT_AUTHORIZATION }}'
+          TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
+          TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
+          APP_SCHEME: 'stage'
+          BUNDLE_ID: 'so.informed.staging'
+          BUNDLE_ID_NOTIFICATION: 'so.informed.staging.ImageNotification'
+          PROVISIONING_PROFILE_SPECIFIER: 'match AppStore so.informed.staging'
+          PROVISIONING_PROFILE_SPECIFIER_NOTIFICATION: 'match AppStore so.informed.staging.ImageNotification'
+          APPLICATION_ID: '1587844260'
