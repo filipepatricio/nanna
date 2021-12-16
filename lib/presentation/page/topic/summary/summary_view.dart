@@ -68,7 +68,7 @@ class SummaryContent extends HookWidget {
               children: [
                 const SizedBox(height: AppDimens.xl),
                 Padding(
-                  padding: const EdgeInsets.only(left: AppDimens.xl),
+                  padding: const EdgeInsets.only(left: AppDimens.l),
                   child: Text(
                     LocaleKeys.todaysTopics_summaryHeadline.tr(),
                     style: AppTypography.h2Jakarta,
