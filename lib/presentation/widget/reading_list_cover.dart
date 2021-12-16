@@ -57,7 +57,7 @@ class ReadingListCover extends HookWidget {
               Expanded(
                 child: ClipRect(
                   child: Align(
-                    alignment: const Alignment(0.0, -0.25),
+                    alignment: const Alignment(-1.0, -0.25),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                       child: InformedMarkdownBody(
