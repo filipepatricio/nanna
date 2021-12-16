@@ -106,6 +106,7 @@ class _ArticleHeader extends StatelessWidget {
           article: article,
           isLight: false,
           fullDate: true,
+          showLogo: false,
         ),
         const SizedBox(height: AppDimens.c),
       ],
