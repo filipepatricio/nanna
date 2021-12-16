@@ -12,8 +12,6 @@ class EntryStyle {
 }
 
 enum EntryStyleType {
-  @JsonValue('ARTICLE_COVER_WITH_SMALL_IMAGE')
-  articleCoverWithSmallImage,
   @JsonValue('ARTICLE_COVER_WITH_BIG_IMAGE')
   articleCoverWithBigImage,
   @JsonValue('ARTICLE_COVER_WITHOUT_IMAGE')
