@@ -37,6 +37,7 @@ class ProfilePage extends HookWidget {
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        centerTitle: false,
         titleSpacing: AppDimens.l,
         title: Text(
           LocaleKeys.profile_title.tr(),
