@@ -53,6 +53,7 @@ jobs:
     name: App CI and Android build test
     needs: [commit_lint, code_lint]
     runs-on: ubuntu-20.04
+    timeout-minutes: 20
     steps:
       - name: Cancel previous jobs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -98,6 +99,7 @@ jobs:
     name: Test building iOS app
     needs: [app_ci_and_android_build]
     runs-on: macos-latest
+    timeout-minutes: 25
     steps:
       - name: Cancel previous jobs
         uses: styfle/cancel-workflow-action@0.9.1
