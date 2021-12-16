@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_introduction.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -72,7 +71,7 @@ class ReadingListCover extends HookWidget {
               const SizedBox(height: AppDimens.s),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: TopicIntroduction(introduction: topic.introduction),
+                child: _TopicIntroduction(introduction: topic.introduction),
               ),
               const SizedBox(height: AppDimens.l),
               Padding(
@@ -133,6 +132,21 @@ class _PublisherLogoRow extends HookWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+class _TopicIntroduction extends StatelessWidget {
+  final String introduction;
+
+  const _TopicIntroduction({required this.introduction, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InformedMarkdownBody(
+      markdown: introduction,
+      baseTextStyle: AppTypography.b2RegularLora,
+      maxLines: 5,
     );
   }
 }

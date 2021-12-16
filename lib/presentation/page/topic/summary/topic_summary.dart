@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/track/topic_summary_tracker/topic_summary_tracker.dart';
@@ -13,13 +12,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _summaryPageViewHeight = 275.0;
-const _summaryViewHeight = 490.0;
 
-class SummaryContent extends HookWidget {
+class TopicSummary extends HookWidget {
   final Topic topic;
   final GlobalKey? summaryCardKey;
 
-  const SummaryContent({
+  const TopicSummary({
     required this.topic,
     this.summaryCardKey,
     Key? key,
@@ -48,49 +46,34 @@ class SummaryContent extends HookWidget {
             child: _SummaryCard(index: 0, topic: topic, summaryCardKey: summaryCardKey),
           );
 
-    final firstEntry = topic.readingList.entries.first;
-    final firstEntryImage = firstEntry.item.image;
-    final firstEntryColor = firstEntry.style.color;
-
     return Container(
       width: double.infinity,
-      height: _summaryViewHeight,
-      color: firstEntryImage != null ? firstEntryColor : AppColors.lightGrey,
+      color: AppColors.background,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            color: AppColors.lightGrey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: AppDimens.xl),
-                Padding(
-                  padding: const EdgeInsets.only(left: AppDimens.l),
-                  child: Text(
-                    LocaleKeys.todaysTopics_summaryHeadline.tr(),
-                    style: AppTypography.h2Jakarta,
-                  ),
-                ),
-                const SizedBox(height: AppDimens.l),
-                content,
-                const SizedBox(height: AppDimens.xl),
-                if (topic.topicSummaryList.length > 1) ...[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
-                    child: PageDotIndicator(
-                      pageCount: topic.topicSummaryList.length,
-                      controller: controller,
-                    ),
-                  ),
-                  const SizedBox(height: AppDimens.xl),
-                ],
-              ],
+          const SizedBox(height: AppDimens.xl),
+          Padding(
+            padding: const EdgeInsets.only(left: AppDimens.l),
+            child: Text(
+              LocaleKeys.todaysTopics_summaryHeadline.tr(),
+              style: AppTypography.h2Jakarta,
             ),
           ),
-          const BottomStackedCards(),
+          const SizedBox(height: AppDimens.l),
+          content,
+          const SizedBox(height: AppDimens.xl),
+          if (topic.topicSummaryList.length > 1) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+              child: PageDotIndicator(
+                pageCount: topic.topicSummaryList.length,
+                controller: controller,
+              ),
+            ),
+            const SizedBox(height: AppDimens.xl),
+          ],
         ],
       ),
     );

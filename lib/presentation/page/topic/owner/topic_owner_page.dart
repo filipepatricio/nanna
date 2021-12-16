@@ -21,8 +21,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const appBarHeight = kToolbarHeight + AppDimens.m;
-const _cardsSectionHeight = 550.0;
-const _cardViewportFraction = 0.85;
 
 class TopicOwnerPage extends HookWidget {
   final TopicOwner owner;
@@ -38,7 +36,9 @@ class TopicOwnerPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<TopicOwnerPageCubit>();
     final state = useCubitBuilder(cubit);
-    final cardStackWidth = MediaQuery.of(context).size.width * _cardViewportFraction;
+    final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
+    final cardStackHeight =
+        MediaQuery.of(context).size.width * 0.5 > 450 ? MediaQuery.of(context).size.width * 0.5 : 450.0;
 
     useEffect(() {
       if (owner is! Expert) {
@@ -110,9 +110,10 @@ class TopicOwnerPage extends HookWidget {
                     ),
                     const SizedBox(height: AppDimens.l),
                     state.maybeMap(
-                      idleExpert: (state) => _LastUpdatedTopics(topics: state.topicsFromExpert),
+                      idleExpert: (state) =>
+                          _LastUpdatedTopics(topics: state.topicsFromExpert, cardStackHeight: cardStackHeight),
                       loading: (_) => SizedBox(
-                        height: _cardsSectionHeight,
+                        height: cardStackHeight,
                         child: StackedCardsLoadingView(
                           padding: EdgeInsets.zero,
                           cardStackWidth: cardStackWidth,
@@ -120,7 +121,7 @@ class TopicOwnerPage extends HookWidget {
                         ),
                       ),
                       error: (_) => SizedBox(
-                        height: _cardsSectionHeight,
+                        height: cardStackHeight,
                         child: StackedCardsErrorView(
                           padding: EdgeInsets.zero,
                           cardStackWidth: cardStackWidth,
@@ -228,8 +229,9 @@ class _ActionsBar extends HookWidget {
 
 class _LastUpdatedTopics extends HookWidget {
   final List<Topic> topics;
+  final double cardStackHeight;
 
-  const _LastUpdatedTopics({required this.topics, Key? key}) : super(key: key);
+  const _LastUpdatedTopics({required this.topics, required this.cardStackHeight, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -239,14 +241,15 @@ class _LastUpdatedTopics extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: _cardsSectionHeight,
+          height: cardStackHeight,
           child: PageView.builder(
             padEnds: false,
             controller: topicsController,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.only(left: AppDimens.xxl),
               child: ReadingListStackedCards(
-                coverSize: Size(MediaQuery.of(context).size.width * _cardViewportFraction, _cardsSectionHeight),
+                coverSize:
+                    Size(MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction, cardStackHeight),
                 child: ReadingListCover(
                   topic: topics[index],
                   onTap: () => _onTopicTap(context, topics[index]),

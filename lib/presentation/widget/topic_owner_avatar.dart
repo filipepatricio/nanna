@@ -16,9 +16,10 @@ class TopicOwnerAvatar extends HookWidget {
     Key? key,
     this.profileMode = false,
     this.lightMode = false,
-    this.imageHeight = 42.0,
-    this.imageWidth = 42.0,
+    this.imageHeight = AppDimens.avatarSize,
+    this.imageWidth = AppDimens.avatarSize,
     this.fontSize,
+    this.onTap,
   }) : super(key: key);
 
   final TopicOwner owner;
@@ -27,6 +28,7 @@ class TopicOwnerAvatar extends HookWidget {
   final double imageHeight;
   final double imageWidth;
   final double? fontSize;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -38,45 +40,48 @@ class TopicOwnerAvatar extends HookWidget {
     final avatarResolutionWidth = (imageWidth * 4).toInt();
     final avatarResolutionHeight = (imageHeight * 4).toInt();
 
-    return Row(
-      children: [
-        Container(
-          width: imageWidth,
-          height: imageHeight,
-          clipBehavior: Clip.antiAlias,
-          decoration: const BoxDecoration(shape: BoxShape.circle),
-          child: imageId != null
-              ? CloudinaryProgressiveImage(
-                  cloudinaryTransformation: cloudinaryProvider
-                      .withPublicIdAsPlatform(imageId)
-                      .transform()
-                      .width(avatarResolutionWidth)
-                      .height(avatarResolutionHeight)
-                      .autoQuality()
-                      .autoGravity(),
-                  height: imageHeight,
-                  width: imageWidth,
-                )
-              : Image.asset(
-                  owner is Editor ? AppRasterGraphics.editorialTeamAvatar : AppRasterGraphics.expertAvatar,
-                  width: imageWidth,
-                  height: imageHeight,
-                ),
-        ),
-        const SizedBox(width: AppDimens.s),
-        Text(
-          profileMode ? owner.name : LocaleKeys.article_articleBy.tr(args: [owner.name]),
-          style: profileMode
-              ? AppTypography.h3bold.copyWith(
-                  fontSize: fontSize,
-                  color: lightMode ? AppColors.white : AppColors.textPrimary,
-                )
-              : AppTypography.metadata2BoldLoraItalic.copyWith(
-                  fontSize: fontSize,
-                  color: lightMode ? AppColors.white : AppColors.textPrimary,
-                ),
-        ),
-      ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            width: imageWidth,
+            height: imageHeight,
+            clipBehavior: Clip.antiAlias,
+            decoration: const BoxDecoration(shape: BoxShape.circle),
+            child: imageId != null
+                ? CloudinaryProgressiveImage(
+                    cloudinaryTransformation: cloudinaryProvider
+                        .withPublicIdAsPlatform(imageId)
+                        .transform()
+                        .width(avatarResolutionWidth)
+                        .height(avatarResolutionHeight)
+                        .autoQuality()
+                        .autoGravity(),
+                    height: imageHeight,
+                    width: imageWidth,
+                  )
+                : Image.asset(
+                    owner is Editor ? AppRasterGraphics.editorialTeamAvatar : AppRasterGraphics.expertAvatar,
+                    width: imageWidth,
+                    height: imageHeight,
+                  ),
+          ),
+          const SizedBox(width: AppDimens.s),
+          Text(
+            profileMode ? owner.name : LocaleKeys.article_articleBy.tr(args: [owner.name]),
+            style: profileMode
+                ? AppTypography.h3bold.copyWith(
+                    fontSize: fontSize,
+                    color: lightMode ? AppColors.white : AppColors.textPrimary,
+                  )
+                : AppTypography.metadata2BoldLoraItalic.copyWith(
+                    fontSize: fontSize,
+                    color: lightMode ? AppColors.white : AppColors.textPrimary,
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
