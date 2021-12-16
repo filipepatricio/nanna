@@ -193,7 +193,7 @@ class _TopicHeader extends HookWidget {
             width: screenWidth,
             height: _topicHeaderImageHeight,
             cloudinaryTransformation: cloudinaryProvider
-                .withPublicIdAsJpg(topic.heroImage.publicId)
+                .withPublicIdAsPlatform(topic.heroImage.publicId)
                 .transform()
                 .withLogicalSize(screenWidth, _topicHeaderImageHeight, context)
                 .autoGravity(),

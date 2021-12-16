@@ -38,7 +38,7 @@ class ArticleImageView extends HookWidget {
             height: fullHeight,
             child: CloudinaryProgressiveImage(
               cloudinaryTransformation: cloudinaryProvider
-                  .withPublicIdAsJpg(imageId)
+                  .withPublicIdAsPlatform(imageId)
                   .transform()
                   .withLogicalSize(MediaQuery.of(context).size.width, fullHeight, context)
                   .autoGravity(),
