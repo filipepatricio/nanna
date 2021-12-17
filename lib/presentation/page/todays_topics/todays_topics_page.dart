@@ -78,6 +78,7 @@ class TodaysTopicsPage extends HookWidget {
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        centerTitle: false,
         titleSpacing: AppDimens.l,
         title: Row(
           children: [
@@ -99,7 +100,6 @@ class TodaysTopicsPage extends HookWidget {
             const SizedBox(width: AppDimens.s),
           ],
         ),
-        centerTitle: false,
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),

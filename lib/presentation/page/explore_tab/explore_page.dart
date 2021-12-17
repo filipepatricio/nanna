@@ -21,8 +21,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _topMargin = 36.0;
-
 class ExplorePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -47,12 +45,17 @@ class ExplorePage extends HookWidget {
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: CustomScrollView(
+            physics: const ClampingScrollPhysics(),
             slivers: [
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    _Header(color: headerColor),
-                  ],
+              SliverAppBar(
+                backgroundColor: headerColor,
+                automaticallyImplyLeading: false,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
+                centerTitle: false,
+                titleSpacing: AppDimens.l,
+                title: Text(
+                  LocaleKeys.main_exploreTab.tr(),
+                  style: AppTypography.h1Bold,
                 ),
               ),
               state.maybeMap(
@@ -104,34 +107,6 @@ class _Idle extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate(
         areas.map((area) => _Area(area: area, orderIndex: areas.indexOf(area))).toList(growable: false),
-      ),
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  final Color color;
-
-  const _Header({
-    required this.color,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: color,
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: _topMargin),
-          Text(
-            LocaleKeys.main_exploreTab.tr(),
-            style: AppTypography.h1Bold,
-          ),
-          const SizedBox(height: AppDimens.l),
-        ],
       ),
     );
   }
