@@ -26,7 +26,6 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
         final publicationDate = articleDTO.publicationDate;
 
         return MediaItem.article(
-          wordCount: articleDTO.wordCount,
           note: articleDTO.note,
           id: articleDTO.id,
           slug: articleDTO.slug,

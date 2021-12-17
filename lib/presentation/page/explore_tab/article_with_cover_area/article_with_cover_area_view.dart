@@ -202,6 +202,8 @@ class _MainArticleCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timeToRead = entry.timeToRead;
+
     return Container(
       padding: const EdgeInsets.all(AppDimens.m),
       color: AppColors.background,
@@ -215,12 +217,13 @@ class _MainArticleCover extends StatelessWidget {
             maxLines: 4,
           ),
           const Spacer(),
-          Text(
-            LocaleKeys.article_readMinutes.tr(
-              args: [entry.timeToRead.toString()],
+          if (timeToRead != null)
+            Text(
+              LocaleKeys.article_readMinutes.tr(
+                args: [timeToRead.toString()],
+              ),
+              style: AppTypography.metadata1Regular,
             ),
-            style: AppTypography.metadata1Regular,
-          ),
         ],
       ),
     );

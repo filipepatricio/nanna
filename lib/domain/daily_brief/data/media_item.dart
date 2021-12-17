@@ -13,7 +13,7 @@ class MediaItem with _$MediaItem {
     required String slug,
     required String title,
     required ArticleType type,
-    required int timeToRead,
+    required int? timeToRead,
     required Publisher publisher,
     required String sourceUrl,
     int? wordCount,
