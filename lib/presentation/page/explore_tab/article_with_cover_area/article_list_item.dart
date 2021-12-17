@@ -52,7 +52,7 @@ class ArticleListItem extends HookWidget {
           if (imageId != null)
             CloudinaryProgressiveImage(
               cloudinaryTransformation: cloudinaryProvider
-                  .withPublicIdAsJpg(imageId)
+                  .withPublicIdAsPlatform(imageId)
                   .transform()
                   .autoGravity()
                   .withLogicalSize(width, height, context),
@@ -94,6 +94,7 @@ class _ArticleImageOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageId = article.image?.publicId;
+    final timeToRead = article.timeToRead;
 
     return Container(
       color: imageId != null ? AppColors.black.withOpacity(0.6) : null,
@@ -119,15 +120,16 @@ class _ArticleImageOverlay extends StatelessWidget {
             maxLines: 4,
           ),
           const Spacer(),
-          Text(
-            tr(
-              LocaleKeys.article_readMinutes,
-              args: [article.timeToRead.toString()],
+          if (timeToRead != null)
+            Text(
+              tr(
+                LocaleKeys.article_readMinutes,
+                args: [timeToRead.toString()],
+              ),
+              style: AppTypography.metadata1Regular.copyWith(
+                color: imageId == null ? AppColors.textPrimary : AppColors.lightGrey,
+              ),
             ),
-            style: AppTypography.metadata1Regular.copyWith(
-              color: imageId == null ? AppColors.textPrimary : AppColors.lightGrey,
-            ),
-          ),
         ],
       ),
     );

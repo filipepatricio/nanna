@@ -18,12 +18,10 @@ class UpdatedLabel extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(AppDimens.xs),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppDimens.s),
-        child: Text(
-          _updatedAtLabel().toUpperCase(),
-          style: AppTypography.labelText,
-        ),
+      padding: const EdgeInsets.all(AppDimens.s),
+      child: Text(
+        _updatedAtLabel().toUpperCase(),
+        style: AppTypography.labelText,
       ),
     );
   }

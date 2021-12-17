@@ -1,13 +1,16 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TopicAppBar extends StatelessWidget {
+  final Topic topic;
   final double backgroundAnimationFactor;
   final double foregroundAnimationFactor;
   final double lastPageTransition;
@@ -16,6 +19,7 @@ class TopicAppBar extends StatelessWidget {
   final Animation<double>? fadeAnimation;
 
   const TopicAppBar({
+    required this.topic,
     required this.backgroundAnimationFactor,
     required this.foregroundAnimationFactor,
     this.lastPageTransition = 0.0,
@@ -74,7 +78,15 @@ class TopicAppBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: AppDimens.l),
+          const Spacer(),
+          GestureDetector(
+            onTap: () => shareReadingList(context, topic),
+            child: SvgPicture.asset(
+              AppVectorGraphics.share,
+              color: whiteToBlack.transform(foregroundAnimationFactor),
+            ),
+          ),
+          const SizedBox(width: AppDimens.xl),
         ],
       ),
     );

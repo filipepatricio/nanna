@@ -19,7 +19,12 @@ class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
         article: article,
       ),
     );
-    await shareImage(generator, '${article.id}_share_article.png', article.title);
+
+    await shareImage(
+      generator,
+      '${article.id}_share_article.png',
+      article.strippedTitle,
+    );
 
     emit(ShareArticleButtonState.idle);
   }

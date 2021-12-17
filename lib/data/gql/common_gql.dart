@@ -59,6 +59,7 @@ class CommonGQLModels {
       id
       author
       title
+      strippedTitle
       type
       publicationDate
       timeToRead

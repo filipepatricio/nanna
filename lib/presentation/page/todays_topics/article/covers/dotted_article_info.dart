@@ -11,6 +11,7 @@ class DottedArticleInfo extends StatelessWidget {
   final MediaItemArticle article;
   final bool isLight;
   final bool showPublisher;
+  final bool showLogo;
   final bool showDate;
   final bool fullDate;
   final bool showReadTime;
@@ -20,6 +21,7 @@ class DottedArticleInfo extends StatelessWidget {
     required this.article,
     required this.isLight,
     this.showPublisher = true,
+    this.showLogo = true,
     this.showDate = true,
     this.fullDate = false,
     this.showReadTime = true,
@@ -32,13 +34,17 @@ class DottedArticleInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainColor = isLight ? AppColors.white : AppColors.black;
     final publicationDate = article.publicationDate;
+    final timeToRead = article.timeToRead;
+
     return Row(
       children: [
         if (showPublisher) ...[
-          if (isLight)
-            PublisherLogo.light(publisher: article.publisher)
-          else
-            PublisherLogo.dark(publisher: article.publisher),
+          if (showLogo) ...[
+            if (isLight)
+              PublisherLogo.light(publisher: article.publisher)
+            else
+              PublisherLogo.dark(publisher: article.publisher),
+          ],
           Text(
             article.publisher.name,
             style: textStyle.copyWith(color: mainColor),
@@ -49,10 +55,10 @@ class DottedArticleInfo extends StatelessWidget {
             '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
             style: textStyle.copyWith(color: mainColor),
           ),
-        if (showReadTime)
+        if (showReadTime && timeToRead != null)
           Text(
             '${showPublisher || showDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
-              args: [article.timeToRead.toString()],
+              args: [timeToRead.toString()],
             )}',
             style: textStyle.copyWith(color: mainColor),
           ),

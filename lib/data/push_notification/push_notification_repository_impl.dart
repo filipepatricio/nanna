@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/data/push_notification/api/mapper/push_no
 import 'package:better_informed_mobile/data/push_notification/api/mapper/registered_push_token_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/push_notification_api_data_source.dart';
 import 'package:better_informed_mobile/data/push_notification/push_notification_messenger.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/push_notification_message.dart';
@@ -12,7 +13,7 @@ import 'package:better_informed_mobile/domain/push_notification/push_notificatio
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: PushNotificationRepository)
+@LazySingleton(as: PushNotificationRepository, env: liveEnvs)
 class PushNotificationRepositoryImpl implements PushNotificationRepository {
   final FirebaseMessaging _firebaseMessaging;
   final PushNotificationApiDataSource _pushNotificationApiDataSource;

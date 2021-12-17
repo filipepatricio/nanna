@@ -60,9 +60,10 @@ class TodaysTopicsPage extends HookWidget {
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
-                showToast(context, text);
-              }));
+        showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
+          showToast(context, text);
+        }),
+      );
     });
 
     useEffect(
@@ -77,6 +78,8 @@ class TodaysTopicsPage extends HookWidget {
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        centerTitle: false,
+        titleSpacing: AppDimens.l,
         title: Row(
           children: [
             TodaysTopicsTitleHero(
@@ -97,7 +100,6 @@ class TodaysTopicsPage extends HookWidget {
             const SizedBox(width: AppDimens.s),
           ],
         ),
-        centerTitle: false,
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
@@ -203,7 +205,6 @@ class _IdleContent extends HookWidget {
           Center(
             child: _DotIndicator(
               currentBrief: currentBrief,
-              lastPageAnimationProgressState: lastPageAnimationProgressState,
               controller: controller,
             ),
           ),
@@ -228,12 +229,9 @@ class _IdleContent extends HookWidget {
           padding: const EdgeInsets.only(left: AppDimens.xl),
           child: ReadingListStackedCards(
             coverSize: Size(width, heightPageView),
-            child: GestureDetector(
-              onVerticalDragEnd: (dragEnd) => _onTopicCardPressed(context, key, currentBrief),
-              child: ReadingListCover(
-                topic: currentBrief.topics[key],
-                onTap: () => _onTopicCardPressed(context, key, currentBrief),
-              ),
+            child: ReadingListCover(
+              topic: currentBrief.topics[key],
+              onTap: () => _onTopicCardPressed(context, key, currentBrief),
             ),
           ),
         ),
@@ -280,31 +278,19 @@ class _Greeting extends StatelessWidget {
 
 class _DotIndicator extends StatelessWidget {
   final CurrentBrief currentBrief;
-  final ValueNotifier<double> lastPageAnimationProgressState;
   final PageController controller;
 
   const _DotIndicator({
     required this.currentBrief,
-    required this.lastPageAnimationProgressState,
     required this.controller,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: lastPageAnimationProgressState,
-      builder: (BuildContext context, double value, Widget? child) {
-        return AnimatedOpacity(
-          opacity: value < 0.5 ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          child: child,
-        );
-      },
-      child: PageDotIndicator(
-        pageCount: currentBrief.topics.length,
-        controller: controller,
-      ),
+    return PageDotIndicator(
+      pageCount: currentBrief.topics.length + 1,
+      controller: controller,
     );
   }
 }

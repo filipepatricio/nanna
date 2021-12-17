@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/style/app_raster_graphics.da
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -229,9 +230,9 @@ class _TopicHeader extends StatelessWidget {
           bottom: AppDimens.xl,
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              topic.title,
-              style: _topicTitleStyle,
+            child: InformedMarkdownBody(
+              markdown: topic.title,
+              baseTextStyle: _topicTitleStyle,
             ),
           ),
         ),
@@ -320,6 +321,8 @@ class _ArticleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timeToRead = article.timeToRead;
+
     return Container(
       width: _articleItemWidth,
       height: _articleItemHeight,
@@ -343,14 +346,16 @@ class _ArticleItem extends StatelessWidget {
               maxLines: 5,
             ),
           ),
-          const SizedBox(height: AppDimens.s),
-          Text(
-            tr(
-              LocaleKeys.article_readMinutes,
-              args: [article.timeToRead.toString()],
+          if (timeToRead != null) ...[
+            const SizedBox(height: AppDimens.s),
+            Text(
+              tr(
+                LocaleKeys.article_readMinutes,
+                args: [article.timeToRead.toString()],
+              ),
+              style: AppTypography.systemText,
             ),
-            style: AppTypography.systemText,
-          ),
+          ],
         ],
       ),
     );

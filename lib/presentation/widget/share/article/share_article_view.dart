@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/app_raster_graphics.da
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:flutter/material.dart';
@@ -185,9 +186,9 @@ class _Sticker extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: AppDimens.l),
-                Text(
-                  article.title,
-                  style: AppTypography.h0Bold.copyWith(
+                InformedMarkdownBody(
+                  markdown: article.title,
+                  baseTextStyle: AppTypography.h0Bold.copyWith(
                     color: mainImage == null ? AppColors.textPrimary : AppColors.white,
                     height: 1.25,
                   ),

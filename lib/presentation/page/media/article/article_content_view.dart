@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/page/media/content/article_c
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -98,13 +99,14 @@ class _ArticleHeader extends StatelessWidget {
         InformedMarkdownBody(
           markdown: article.title,
           baseTextStyle: AppTypography.h1Bold,
+          highlightColor: AppColors.transparent,
         ),
         const SizedBox(height: AppDimens.m),
         DottedArticleInfo(
           article: article,
           isLight: false,
-          showPublisher: false,
           fullDate: true,
+          showLogo: false,
         ),
         const SizedBox(height: AppDimens.c),
       ],

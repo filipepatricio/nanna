@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
@@ -14,6 +15,7 @@ class BetterInformedApp extends HookWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'InformedApp',
+      debugShowCheckedModeBanner: !kIsTest,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

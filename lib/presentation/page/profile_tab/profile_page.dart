@@ -18,7 +18,6 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-const _topMargin = 80.0;
 const _feedbackEmail = 'feedback@informed.so';
 
 class ProfilePage extends HookWidget {
@@ -33,15 +32,36 @@ class ProfilePage extends HookWidget {
       [cubit],
     );
 
-    return Material(
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
-        child: ReadingBannerWrapper(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        centerTitle: false,
+        titleSpacing: AppDimens.l,
+        title: Text(
+          LocaleKeys.profile_title.tr(),
+          style: AppTypography.h1Bold.copyWith(color: AppColors.textPrimary),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+            child: IconButton(
+              onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
+              icon: SvgPicture.asset(
+                AppVectorGraphics.settings,
+                fit: BoxFit.contain,
+              ),
+            ),
+          )
+        ],
+      ),
+      body: ReadingBannerWrapper(
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: _topMargin),
-              const _ProfileHeader(),
               const SizedBox(height: AppDimens.m),
               Expanded(
                 child: state.maybeMap(
@@ -54,32 +74,6 @@ class ProfilePage extends HookWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ProfileHeader extends StatelessWidget {
-  const _ProfileHeader({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(width: AppDimens.l),
-        Text(
-          LocaleKeys.profile_title.tr(),
-          style: AppTypography.h0Bold,
-        ),
-        const Spacer(),
-        IconButton(
-          onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
-          icon: SvgPicture.asset(
-            AppVectorGraphics.settings,
-            fit: BoxFit.contain,
-          ),
-        ),
-        const SizedBox(width: AppDimens.l),
-      ],
     );
   }
 }

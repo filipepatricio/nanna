@@ -1,11 +1,12 @@
 import 'package:better_informed_mobile/data/auth/store/auth_token_entity_mapper.dart';
 import 'package:better_informed_mobile/data/networking/store/auth_token_entity_to_oauth_mapper.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AuthStore)
+@LazySingleton(as: AuthStore, env: liveEnvs)
 class AuthStoreImpl implements AuthStore {
   final FreshLink<OAuth2Token> _freshLink;
   final AuthTokenEntityMapper _authTokenEntityMapper;

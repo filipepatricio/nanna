@@ -43,7 +43,7 @@ class ArticleWithCoverAreaView extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.xc),
+          const SizedBox(height: AppDimens.xxl),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Row(
@@ -145,7 +145,7 @@ class _MainArticle extends HookWidget {
               child: imageId != null
                   ? CloudinaryProgressiveImage(
                       cloudinaryTransformation: cloudinaryProvider
-                          .withPublicIdAsJpg(imageId)
+                          .withPublicIdAsPlatform(imageId)
                           .transform()
                           .withLogicalSize(constraints.maxWidth, constraints.maxHeight, context)
                           .autoGravity(),
@@ -202,6 +202,8 @@ class _MainArticleCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timeToRead = entry.timeToRead;
+
     return Container(
       padding: const EdgeInsets.all(AppDimens.m),
       color: AppColors.background,
@@ -215,12 +217,13 @@ class _MainArticleCover extends StatelessWidget {
             maxLines: 4,
           ),
           const Spacer(),
-          Text(
-            LocaleKeys.article_readMinutes.tr(
-              args: [entry.timeToRead.toString()],
+          if (timeToRead != null)
+            Text(
+              LocaleKeys.article_readMinutes.tr(
+                args: [timeToRead.toString()],
+              ),
+              style: AppTypography.metadata1Regular,
             ),
-            style: AppTypography.metadata1Regular,
-          ),
         ],
       ),
     );

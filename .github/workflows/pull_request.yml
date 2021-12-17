@@ -2,12 +2,12 @@ name: CI
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths-ignore:
       - '**/README.md'
 
 env:
-  JAVA_VERSION: "12.x"
+  JAVA_VERSION: '12.x'
 
 jobs:
   commit_lint:
@@ -53,6 +53,7 @@ jobs:
     name: App CI and Android build test
     needs: [commit_lint, code_lint]
     runs-on: ubuntu-20.04
+    timeout-minutes: 20
     steps:
       - name: Cancel previous jobs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -89,7 +90,7 @@ jobs:
         run: flutter analyze .
 
       - name: Run tests
-        run: flutter test
+        run: flutter test -x visual
 
       - name: Build Android app release for prod
         run: flutter build apk --release --dart-define=env=prod --flavor prod
@@ -98,6 +99,7 @@ jobs:
     name: Test building iOS app
     needs: [app_ci_and_android_build]
     runs-on: macos-latest
+    timeout-minutes: 25
     steps:
       - name: Cancel previous jobs
         uses: styfle/cancel-workflow-action@0.9.1
