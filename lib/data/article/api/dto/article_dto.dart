@@ -12,6 +12,7 @@ class ArticleDTO {
   final String id;
   final String slug;
   final String title;
+  final String strippedTitle;
   final String type;
   final String? publicationDate;
   final int timeToRead;
@@ -28,6 +29,7 @@ class ArticleDTO {
     this.slug,
     this.text,
     this.title,
+    this.strippedTitle,
     this.type,
     this.publicationDate,
     this.timeToRead,
