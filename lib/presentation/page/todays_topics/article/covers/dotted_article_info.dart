@@ -11,6 +11,7 @@ class DottedArticleInfo extends StatelessWidget {
   final MediaItemArticle article;
   final bool isLight;
   final bool showPublisher;
+  final bool showLogo;
   final bool showDate;
   final bool fullDate;
   final bool showReadTime;
@@ -20,6 +21,7 @@ class DottedArticleInfo extends StatelessWidget {
     required this.article,
     required this.isLight,
     this.showPublisher = true,
+    this.showLogo = true,
     this.showDate = true,
     this.fullDate = false,
     this.showReadTime = true,
@@ -35,10 +37,12 @@ class DottedArticleInfo extends StatelessWidget {
     return Row(
       children: [
         if (showPublisher) ...[
-          if (isLight)
-            PublisherLogo.light(publisher: article.publisher)
-          else
-            PublisherLogo.dark(publisher: article.publisher),
+          if (showLogo) ...[
+            if (isLight)
+              PublisherLogo.light(publisher: article.publisher)
+            else
+              PublisherLogo.dark(publisher: article.publisher),
+          ],
           Text(
             article.publisher.name,
             style: textStyle.copyWith(color: mainColor),

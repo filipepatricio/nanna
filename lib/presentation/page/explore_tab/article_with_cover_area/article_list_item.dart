@@ -52,7 +52,7 @@ class ArticleListItem extends HookWidget {
           if (imageId != null)
             CloudinaryProgressiveImage(
               cloudinaryTransformation: cloudinaryProvider
-                  .withPublicIdAsJpg(imageId)
+                  .withPublicIdAsPlatform(imageId)
                   .transform()
                   .autoGravity()
                   .withLogicalSize(width, height, context),
