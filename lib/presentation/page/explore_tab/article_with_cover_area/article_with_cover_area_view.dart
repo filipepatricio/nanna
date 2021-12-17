@@ -43,7 +43,7 @@ class ArticleWithCoverAreaView extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.xc),
+          const SizedBox(height: AppDimens.xxl),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Row(
