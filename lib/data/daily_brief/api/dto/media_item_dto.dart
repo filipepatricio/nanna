@@ -13,6 +13,7 @@ class MediaItemDTO with _$MediaItemDTO {
     String id,
     String slug,
     String title,
+    String strippedTitle,
     String type,
     String? publicationDate,
     int? timeToRead,
