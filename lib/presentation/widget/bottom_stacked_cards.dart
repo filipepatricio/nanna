@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/widgets.dart';
 
-const bottomSquareCardHeight = 40.0;
-const upperDiagonalCardHeight = 20.0;
+const bottomSquareCardHeight = 45.0;
+const upperDiagonalCardHeight = 15.0;
 const upperDiagonalCardFillerHeight = 20.0;
 
 class BottomStackedCards extends StatelessWidget {
@@ -22,9 +22,9 @@ class BottomStackedCards extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: AppColors.shadowColor,
-                offset: const Offset(0.0, 4.0),
-                blurRadius: 2.0,
-                spreadRadius: -1.0,
+                offset: const Offset(10.0, 10.0),
+                blurRadius: 10.0,
+                spreadRadius: -13.0,
               ),
             ],
           ),
@@ -45,9 +45,9 @@ class BottomStackedCards extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadowColor,
-                    offset: const Offset(0.0, 4.0),
-                    blurRadius: 2.0,
-                    spreadRadius: -1.0,
+                    offset: const Offset(0.0, 10.0),
+                    blurRadius: 10.0,
+                    spreadRadius: -2.0,
                   ),
                 ],
               ),

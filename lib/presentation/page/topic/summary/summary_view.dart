@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _summaryPageViewHeight = 290.0;
+const _summaryPageViewHeight = 275.0;
 const _summaryViewHeight = 490.0;
 
 class SummaryContent extends HookWidget {
