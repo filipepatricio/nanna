@@ -125,16 +125,6 @@ class _ArticleCover extends StatelessWidget {
             ),
           ),
         );
-      case EntryStyleType.articleCoverWithSmallImage:
-        return Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(right: AppDimens.l),
-            child: PhotoStackedCover(
-              article: article,
-              key: mediaItemKey,
-            ),
-          ),
-        );
       case EntryStyleType.articleCoverWithoutImage:
         return Expanded(
           child: Padding(
