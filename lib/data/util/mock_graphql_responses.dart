@@ -5,7 +5,6 @@ class MockGraphqlResponses {
 {
 		"getTopicsFromExpert": [
 			{
-				"category": null,
 				"coverImage": {
 					"publicId": "covers/Cover_5"
 				},
@@ -17,7 +16,6 @@ class MockGraphqlResponses {
 						"darkLogo": {
 							"publicId": "publishers/nyt-black"
 						},
-						"id": "05837e85-a651-4340-8650-6296f7b16b59",
 						"lightLogo": {
 							"publicId": "publishers/nyt-white"
 						},
@@ -75,7 +73,6 @@ class MockGraphqlResponses {
       "numberOfTopics": 6,
       "topics": [
         {
-          "category": null,
           "coverImage": {
             "publicId": "covers/Cover_1"
           },
@@ -87,7 +84,6 @@ class MockGraphqlResponses {
               "darkLogo": {
                 "publicId": "publishers/the-guardian-black"
               },
-              "id": "46b95722-61b3-4cd4-b4c2-e9f974b3dffa",
               "lightLogo": {
                 "publicId": "publishers/the-guardian-white"
               },
@@ -118,8 +114,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.euronews.com/2021/05/31/did-denmark-help-the-u-s-spy-on-european-leaders",
                   "timeToRead": 6,
                   "title": "Did Denmark help the US spy on European leaders?",
-                  "type": "FREE",
-                  "wordCount": 1470
+                  "type": "FREE"
                 },
                 "note": "Et deserunt labore distinctio sunt sed non.",
                 "style": {
@@ -146,8 +141,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.dw.com/en/denmarks-role-in-the-nsa-spying-scandal-dws-emmanuelle-chaze/av-57723050",
                   "timeToRead": 5,
                   "title": "Denmark's role in the NSA spying scandal",
-                  "type": "PREMIUM",
-                  "wordCount": 1308
+                  "type": "PREMIUM"
                 },
                 "note": null,
                 "style": {
@@ -178,8 +172,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.theguardian.com/world/interactive/2013/nov/01/snowden-nsa-files-surveillance-revelations-decoded#section/1",
                   "timeToRead": 7,
                   "title": "NSA files: *Decoded*",
-                  "type": "FREE",
-                  "wordCount": 1648
+                  "type": "FREE"
                 },
                 "note": "Illum vel est illum odio repellendus.",
                 "style": {
@@ -223,7 +216,6 @@ class MockGraphqlResponses {
           "title": "NSA scandal"
         },
         {
-          "category": null,
           "coverImage": {
             "publicId": "covers/Cover_2"
           },
@@ -235,7 +227,6 @@ class MockGraphqlResponses {
               "darkLogo": {
                 "publicId": "publishers/nyt-black"
               },
-              "id": "18c6f3cb-d910-45f1-a765-8804892e424b",
               "lightLogo": {
                 "publicId": "publishers/nyt-white"
               },
@@ -245,7 +236,6 @@ class MockGraphqlResponses {
               "darkLogo": {
                 "publicId": "publishers/the-economist-black"
               },
-              "id": "cae4ea81-6e02-4ad2-936b-222cf4ca097d",
               "lightLogo": {
                 "publicId": "publishers/the-economist-white"
               },
@@ -276,8 +266,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.reuters.com/world/middle-east/netanyahus-disparate-rivals-try-nail-down-pact-unseat-him-2021-05-31/",
                   "timeToRead": 2,
                   "title": "Netanyahu's disparate rivals try to nail down pact to unseat him",
-                  "type": "FREE",
-                  "wordCount": 559
+                  "type": "FREE"
                 },
                 "note": "Earum voluptas eum inventore fuga.",
                 "style": {
@@ -298,7 +287,6 @@ class MockGraphqlResponses {
                     "darkLogo": {
                       "publicId": "publishers/the-economist-black"
                     },
-                    "id": "cae4ea81-6e02-4ad2-936b-222cf4ca097d",
                     "lightLogo": {
                       "publicId": "publishers/the-economist-white"
                     },
@@ -308,8 +296,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.economist.com/middle-east-and-africa/2021/05/30/israels-opposition-has-finally-mustered-a-majority-to-dislodge-binyamin-netanyahu",
                   "timeToRead": 4,
                   "title": "Israel’s opposition has finally mustered a majority to dislodge Binyamin Netanyahu",
-                  "type": "PREMIUM",
-                  "wordCount": 1113
+                  "type": "PREMIUM"
                 },
                 "note": null,
                 "style": {
@@ -330,7 +317,6 @@ class MockGraphqlResponses {
                     "darkLogo": {
                       "publicId": "publishers/nyt-black"
                     },
-                    "id": "18c6f3cb-d910-45f1-a765-8804892e424b",
                     "lightLogo": {
                       "publicId": "publishers/nyt-white"
                     },
@@ -340,8 +326,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.nytimes.com/2021/05/31/world/middleeast/israeli-media-netanyahu-bennett.html",
                   "timeToRead": 7,
                   "title": "Glum to Gleeful, Israeli Media React to Possible End of Netanyahu Era",
-                  "type": "FREE",
-                  "wordCount": 1736
+                  "type": "FREE"
                 },
                 "note": "Est quia perspiciatis incidunt fugiat!",
                 "style": {
@@ -361,7 +346,6 @@ class MockGraphqlResponses {
           "title": "End of Netanyahu era?"
         },
         {
-          "category": null,
           "coverImage": {
             "publicId": "covers/Cover_3"
           },
@@ -373,7 +357,6 @@ class MockGraphqlResponses {
               "darkLogo": {
                 "publicId": "publishers/nyt-black"
               },
-              "id": "18c6f3cb-d910-45f1-a765-8804892e424b",
               "lightLogo": {
                 "publicId": "publishers/nyt-white"
               },
@@ -383,7 +366,6 @@ class MockGraphqlResponses {
               "darkLogo": {
                 "publicId": "publishers/the-economist-black"
               },
-              "id": "cae4ea81-6e02-4ad2-936b-222cf4ca097d",
               "lightLogo": {
                 "publicId": "publishers/the-economist-white"
               },
@@ -414,8 +396,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.bbc.com/news/world-asia-china-57303592",
                   "timeToRead": 6,
                   "title": "China allows three children in major policy shift",
-                  "type": "FREE",
-                  "wordCount": 1443
+                  "type": "FREE"
                 },
                 "note": "Incidunt debitis dignissimos quo voluptate praesentium exercitationem?",
                 "style": {
@@ -436,7 +417,6 @@ class MockGraphqlResponses {
                     "darkLogo": {
                       "publicId": "publishers/nyt-black"
                     },
-                    "id": "18c6f3cb-d910-45f1-a765-8804892e424b",
                     "lightLogo": {
                       "publicId": "publishers/nyt-white"
                     },
@@ -446,8 +426,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.nytimes.com/2021/05/31/world/asia/china-child-policy.html?action=click&module=Top%20Stories&pgtype=Homepage",
                   "timeToRead": 7,
                   "title": "From One Child to Three: How China’s Family Planning Policies Have Evolved",
-                  "type": "PREMIUM",
-                  "wordCount": 1826
+                  "type": "PREMIUM"
                 },
                 "note": null,
                 "style": {
@@ -468,7 +447,6 @@ class MockGraphqlResponses {
                     "darkLogo": {
                       "publicId": "publishers/the-economist-black"
                     },
-                    "id": "cae4ea81-6e02-4ad2-936b-222cf4ca097d",
                     "lightLogo": {
                       "publicId": "publishers/the-economist-white"
                     },
@@ -478,8 +456,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.economist.com/china/2021/04/29/is-chinas-population-shrinking",
                   "timeToRead": 2,
                   "title": "Is China’s population shrinking?",
-                  "type": "FREE",
-                  "wordCount": 540
+                  "type": "FREE"
                 },
                 "note": "Quia doloribus saepe qui et hic!",
                 "style": {
@@ -517,7 +494,6 @@ class MockGraphqlResponses {
           "title": "China demography problem"
         },
         {
-          "category": null,
           "coverImage": {
             "publicId": "covers/Cover_4"
           },
@@ -564,8 +540,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.ft.com/content/a4e3791b-9d9e-4bf9-ae74-fe1cf1980625",
                   "timeToRead": 2,
                   "title": "Who will pay? Europe’s bold plan on emissions risks political blowback",
-                  "type": "FREE",
-                  "wordCount": 607
+                  "type": "FREE"
                 },
                 "note": "Qui et nam quis minima totam eum tenetur odit consequatur.",
                 "style": {
@@ -592,8 +567,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.vox.com/energy-and-environment/2018/7/20/17584376/carbon-tax-congress-republicans-cost-economy",
                   "timeToRead": 4,
                   "title": "The 5 most important questions about *carbon taxes*, answered",
-                  "type": "PREMIUM",
-                  "wordCount": 1113
+                  "type": "PREMIUM"
                 },
                 "note": null,
                 "style": {
@@ -620,8 +594,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.reuters.com/business/energy/carbon-pricing-markets-taxes-or-regulation-kemp-2021-05-07/",
                   "timeToRead": 4,
                   "title": "Carbon pricing - markets, taxes or *regulation*?",
-                  "type": "FREE",
-                  "wordCount": 1009
+                  "type": "FREE"
                 },
                 "note": "Accusantium et deleniti voluptas et voluptatibus sit cupiditate.",
                 "style": {
@@ -668,7 +641,6 @@ class MockGraphqlResponses {
           "title": "EU's plans on CO2 pricing"
         },
         {
-          "category": null,
           "coverImage": {
             "publicId": "covers/Cover_5"
           },
@@ -700,7 +672,6 @@ class MockGraphqlResponses {
               "darkLogo": {
                 "publicId": "publishers/nyt-black"
               },
-              "id": "18c6f3cb-d910-45f1-a765-8804892e424b",
               "lightLogo": {
                 "publicId": "publishers/nyt-white"
               },
@@ -735,8 +706,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.ft.com/content/4c98d410-38b1-4be8-95b2-d029e054f492",
                   "timeToRead": 4,
                   "title": "Nestlé document says majority of its food portfolio is unhealthy",
-                  "type": "FREE",
-                  "wordCount": 950
+                  "type": "FREE"
                 },
                 "note": "Est est nemo qui consequatur repudiandae quia vel.",
                 "style": {
@@ -767,8 +737,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.bloomberg.com/news/articles/2021-06-01/nestle-eyes-strategy-update-amid-criticism-of-unhealthy-products?srnd=markets-vp",
                   "timeToRead": 8,
                   "title": "Nestle Eyes Strategy Update Amid Criticism of Unhealthy Products",
-                  "type": "PREMIUM",
-                  "wordCount": 1944
+                  "type": "PREMIUM"
                 },
                 "note": null,
                 "style": {
@@ -789,7 +758,6 @@ class MockGraphqlResponses {
                     "darkLogo": {
                       "publicId": "publishers/nyt-black"
                     },
-                    "id": "18c6f3cb-d910-45f1-a765-8804892e424b",
                     "lightLogo": {
                       "publicId": "publishers/nyt-white"
                     },
@@ -799,8 +767,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.nytimes.com/2021/05/18/business/oatly-ipo-milk-substitutes.html",
                   "timeToRead": 8,
                   "title": "The Big Money Is Going Vegan",
-                  "type": "FREE",
-                  "wordCount": 2044
+                  "type": "FREE"
                 },
                 "note": "Ipsam dolor id sed dolores natus quaerat omnis sequi.",
                 "style": {
@@ -826,7 +793,6 @@ class MockGraphqlResponses {
           "title": "Nestle is unhealthy?"
         },
         {
-          "category": null,
           "coverImage": {
             "publicId": "covers/Cover_6"
           },
@@ -838,7 +804,6 @@ class MockGraphqlResponses {
               "darkLogo": {
                 "publicId": "publishers/nyt-black"
               },
-              "id": "18c6f3cb-d910-45f1-a765-8804892e424b",
               "lightLogo": {
                 "publicId": "publishers/nyt-white"
               },
@@ -869,8 +834,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.euronews.com/2021/06/01/who-renames-covid-variants-to-non-stigmatising-letters-of-greek-alphabet",
                   "timeToRead": 8,
                   "title": "WHO renames COVID variants to 'non-stigmatising' letters of Greek alphabet",
-                  "type": "FREE",
-                  "wordCount": 2091
+                  "type": "FREE"
                 },
                 "note": "Dicta earum ab molestias et.",
                 "style": {
@@ -891,7 +855,6 @@ class MockGraphqlResponses {
                     "darkLogo": {
                       "publicId": "publishers/nyt-black"
                     },
-                    "id": "18c6f3cb-d910-45f1-a765-8804892e424b",
                     "lightLogo": {
                       "publicId": "publishers/nyt-white"
                     },
@@ -901,8 +864,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://www.nytimes.com/interactive/2021/health/coronavirus-variant-tracker.html",
                   "timeToRead": 9,
                   "title": "Coronavirus Variants and Mutations",
-                  "type": "PREMIUM",
-                  "wordCount": 2316
+                  "type": "PREMIUM"
                 },
                 "note": null,
                 "style": {
@@ -929,8 +891,7 @@ class MockGraphqlResponses {
                   "sourceUrl": "https://apnews.com/article/no-greek-alphabet-hurricane-names-b504a7326955bb171530777c140103e2",
                   "timeToRead": 4,
                   "title": "Bye Alpha, Eta: Greek alphabet ditched for hurricane names",
-                  "type": "FREE",
-                  "wordCount": 952
+                  "type": "FREE"
                 },
                 "note": "Illo qui enim ipsa unde.",
                 "style": {

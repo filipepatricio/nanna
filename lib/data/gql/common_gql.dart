@@ -5,7 +5,6 @@ class CommonGQLModels {
     id
     title
     lastUpdatedAt
-    ownersNote
     owner {
       __typename
       ... on Expert {
@@ -19,9 +18,8 @@ class CommonGQLModels {
       text
     }
     introduction
-    $highlightedPublishers
-    category {
-      name
+    highlightedPublishers {
+      $publisher
     }
     coverImage {
       publicId
@@ -64,21 +62,17 @@ class CommonGQLModels {
       }
   ''';
 
-  static const String highlightedPublishers = '''
-      highlightedPublishers {
-        id
-        name
-        darkLogo{
-          publicId
-        }
-        lightLogo {
-          publicId
-        }
+  static const String publisher = '''
+      name
+      darkLogo{
+        publicId
       }
-    ''';
+      lightLogo {
+        publicId
+      }
+  ''';
 
   static const String article = '''
-      wordCount
       sourceUrl
       slug
       note
@@ -93,14 +87,7 @@ class CommonGQLModels {
         publicId
       }
       publisher {
-        name
-        id
-        darkLogo{
-          publicId
-        }
-         lightLogo {
-          publicId
-        }
+        $publisher
       }
-    ''';
+  ''';
 }
