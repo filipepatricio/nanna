@@ -34,6 +34,8 @@ class DottedArticleInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainColor = isLight ? AppColors.white : AppColors.black;
     final publicationDate = article.publicationDate;
+    final timeToRead = article.timeToRead;
+
     return Row(
       children: [
         if (showPublisher) ...[
@@ -53,10 +55,10 @@ class DottedArticleInfo extends StatelessWidget {
             '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
             style: textStyle.copyWith(color: mainColor),
           ),
-        if (showReadTime)
+        if (showReadTime && timeToRead != null)
           Text(
             '${showPublisher || showDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
-              args: [article.timeToRead.toString()],
+              args: [timeToRead.toString()],
             )}',
             style: textStyle.copyWith(color: mainColor),
           ),

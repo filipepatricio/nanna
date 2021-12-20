@@ -435,6 +435,7 @@ class _ArticleItemBody extends HookWidget {
   Widget build(BuildContext context) {
     final cloudinary = useCloudinaryProvider();
     final logoUrl = header.publisher.darkLogo;
+    final timeToRead = header.timeToRead;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
@@ -464,16 +465,18 @@ class _ArticleItemBody extends HookWidget {
             maxLines: 4,
           ),
           const Spacer(),
-          Text(
-            tr(
-              LocaleKeys.article_readMinutes,
-              args: [
-                header.timeToRead.toString(),
-              ],
+          if (timeToRead != null) ...[
+            Text(
+              tr(
+                LocaleKeys.article_readMinutes,
+                args: [
+                  header.timeToRead.toString(),
+                ],
+              ),
+              style: AppTypography.labelText.copyWith(fontWeight: FontWeight.w400),
             ),
-            style: AppTypography.labelText.copyWith(fontWeight: FontWeight.w400),
-          ),
-          const SizedBox(height: AppDimens.s),
+            const SizedBox(height: AppDimens.s),
+          ],
         ],
       ),
     );

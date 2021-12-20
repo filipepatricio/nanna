@@ -289,6 +289,8 @@ class _ArticleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timeToRead = article.timeToRead;
+
     return Container(
       width: _articleItemWidth,
       height: _articleItemHeight,
@@ -312,14 +314,16 @@ class _ArticleItem extends StatelessWidget {
               maxLines: 5,
             ),
           ),
-          const SizedBox(height: AppDimens.s),
-          Text(
-            tr(
-              LocaleKeys.article_readMinutes,
-              args: [article.timeToRead.toString()],
+          if (timeToRead != null) ...[
+            const SizedBox(height: AppDimens.s),
+            Text(
+              tr(
+                LocaleKeys.article_readMinutes,
+                args: [article.timeToRead.toString()],
+              ),
+              style: AppTypography.systemText,
             ),
-            style: AppTypography.systemText,
-          ),
+          ],
         ],
       ),
     );
