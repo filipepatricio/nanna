@@ -33,6 +33,7 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: SettingsPolicyTermsPage),
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
+    AutoRoute(page: TopicPage, name: 'TopicOwnerTopicPage'),
     CustomRoute(page: MediaItemPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),

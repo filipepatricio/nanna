@@ -249,7 +249,7 @@ class _LastUpdatedTopics extends HookWidget {
                 coverSize: Size(MediaQuery.of(context).size.width * _cardViewportFraction, _cardsSectionHeight),
                 child: ReadingListCover(
                   topic: topics[index],
-                  onTap: () {},
+                  onTap: () => _onTopicTap(context, topics[index]),
                 ),
               ),
             ),
@@ -267,4 +267,8 @@ class _LastUpdatedTopics extends HookWidget {
       ],
     );
   }
+}
+
+void _onTopicTap(BuildContext context, Topic topic) {
+  AutoRouter.of(context).push(TopicOwnerTopicPage(topic: topic));
 }
