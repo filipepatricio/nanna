@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -219,9 +220,7 @@ class _TopicHeader extends StatelessWidget {
         Positioned(
           left: AppDimens.xl,
           top: AppDimens.xl,
-          child: _Author(
-            topic: topic,
-          ),
+          child: TopicOwnerAvatar(owner: topic.owner, lightMode: true),
         ),
         Positioned(
           top: AppDimens.xxc,
@@ -235,37 +234,6 @@ class _TopicHeader extends StatelessWidget {
               baseTextStyle: _topicTitleStyle,
             ),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class _Author extends StatelessWidget {
-  final Topic topic;
-
-  const _Author({
-    required this.topic,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: use data that will be coming from API
-    return Row(
-      children: [
-        Container(
-          width: 30,
-          height: 30,
-          decoration: const BoxDecoration(
-            color: AppColors.rose,
-            shape: BoxShape.circle,
-          ),
-        ),
-        const SizedBox(width: AppDimens.s),
-        Text(
-          'By Editorial Team',
-          style: AppTypography.h3boldLoraItalic.copyWith(color: AppColors.white),
         ),
       ],
     );
