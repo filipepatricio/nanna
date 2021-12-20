@@ -29,7 +29,6 @@ class TopicCustomVerticalDragManager {
         }
       }
     }
-
     _activeController = generalViewController;
     _drag = generalViewController.position.drag(details, disposeDrag);
   }

@@ -1,0 +1,19 @@
+import 'dart:convert';
+
+import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dart';
+import 'package:better_informed_mobile/data/topic/api/topics_api_data_source.dart';
+import 'package:better_informed_mobile/data/util/mock_graphql_responses.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:injectable/injectable.dart';
+
+@LazySingleton(as: TopicsApiDataSource, env: mockEnvs)
+class TopicsMockDataSource implements TopicsApiDataSource {
+  @override
+  Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId) async {
+    const result = MockGraphqlResponses.topicsFromExpert;
+    final data = jsonDecode(result) as Map<String, dynamic>;
+    final dto = TopicsFromExpertDTO.fromJson(data['getTopicsFromExpert'] as Map<String, dynamic>);
+
+    return dto;
+  }
+}

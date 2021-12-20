@@ -1,0 +1,13 @@
+import 'package:better_informed_mobile/data/gql/common_gql.dart';
+import 'package:gql/ast.dart' show DocumentNode;
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+class TopicsGql {
+  static DocumentNode getTopicsFromExpert(String expertId) => gql('''
+    query {
+      getTopicsFromExpert(expertId: "$expertId") {
+        ${CommonGQLModels.topic}
+      }
+    }
+  ''');
+}
