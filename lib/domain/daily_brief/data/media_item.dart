@@ -14,7 +14,7 @@ class MediaItem with _$MediaItem {
     required String title,
     required String strippedTitle,
     required ArticleType type,
-    required int timeToRead,
+    required int? timeToRead,
     required Publisher publisher,
     required String sourceUrl,
     int? wordCount,

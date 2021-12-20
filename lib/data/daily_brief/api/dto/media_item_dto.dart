@@ -9,7 +9,6 @@ part 'media_item_dto.g.dart';
 class MediaItemDTO with _$MediaItemDTO {
   @FreezedUnionValue('Article')
   const factory MediaItemDTO.article(
-    int? wordCount,
     String? note,
     String id,
     String slug,
@@ -17,7 +16,7 @@ class MediaItemDTO with _$MediaItemDTO {
     String strippedTitle,
     String type,
     String? publicationDate,
-    int timeToRead,
+    int? timeToRead,
     PublisherDTO publisher,
     ImageDTO? image,
     String sourceUrl,
