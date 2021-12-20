@@ -10,17 +10,20 @@ import 'package:flutter_svg/svg.dart';
 
 class StackedCardsErrorView extends HookWidget {
   final double cardStackWidth;
-  final EdgeInsets? padding;
-  const StackedCardsErrorView({required this.cardStackWidth, Key? key, this.padding}) : super(key: key);
+  final EdgeInsets padding;
+  const StackedCardsErrorView({
+    required this.cardStackWidth,
+    Key? key,
+    this.padding = const EdgeInsets.only(
+      bottom: AppDimens.c,
+      top: AppDimens.xl,
+    ),
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding ??
-          const EdgeInsets.only(
-            bottom: AppDimens.c,
-            top: AppDimens.xl,
-          ),
+      padding: padding,
       child: LayoutBuilder(
         builder: (context, constraints) {
           return ReadingListStackedCards(
