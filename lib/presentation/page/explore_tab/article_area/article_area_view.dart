@@ -6,12 +6,13 @@ import 'package:better_informed_mobile/presentation/page/explore_tab/article_wit
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/horizontal_list_interaction_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ArticleAreaView extends HookWidget {
   final ExploreContentAreaArticles area;
@@ -30,26 +31,30 @@ class ArticleAreaView extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: AppDimens.xc),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        Container(
+          padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.sl),
           child: Row(
             children: [
               Expanded(
                 child: InformedMarkdownBody(
                   markdown: area.title,
-                  baseTextStyle: AppTypography.h1,
+                  baseTextStyle: AppTypography.h2Jakarta,
                   highlightColor: AppColors.transparent,
                   maxLines: 2,
                 ),
               ),
-              const SizedBox(width: AppDimens.s),
-              SeeAllButton(
-                onTap: () => AutoRouter.of(context).push(
+              IconButton(
+                padding: const EdgeInsets.all(0),
+                onPressed: () => AutoRouter.of(context).push(
                   ArticleSeeAllPageRoute(
                     areaId: area.id,
                     title: area.title,
                     entries: area.articles,
                   ),
+                ),
+                icon: SvgPicture.asset(
+                  AppVectorGraphics.fullArrowRight,
+                  fit: BoxFit.contain,
                 ),
               ),
             ],
