@@ -33,24 +33,36 @@ class TopicOwnerAvatar extends HookWidget {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = owner.avatar?.publicId;
 
+    // Using non-dynamic resolution to force the use of the same cached image everywhere
+    // Using 4 because the max. device pixel ratio currently is 3, 3.5. 4 covers all devices with good quality
+    final avatarResolutionWidth = (imageWidth * 4).toInt();
+    final avatarResolutionHeight = (imageHeight * 4).toInt();
+
     return Row(
       children: [
-        if (imageId != null)
-          CloudinaryProgressiveImage(
-            cloudinaryTransformation: cloudinaryProvider
-                .withPublicIdAsPlatform(imageId)
-                .transform()
-                .withLogicalSize(imageWidth, imageHeight, context)
-                .autoGravity(),
-            height: imageHeight,
-            width: imageWidth,
-          )
-        else
-          Image.asset(
-            owner is Editor ? AppRasterGraphics.editorialTeamAvatar : AppRasterGraphics.expertAvatar,
-            width: imageWidth,
-            height: imageHeight,
-          ),
+        Container(
+          width: imageWidth,
+          height: imageHeight,
+          clipBehavior: Clip.antiAlias,
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          child: imageId != null
+              ? CloudinaryProgressiveImage(
+                  cloudinaryTransformation: cloudinaryProvider
+                      .withPublicIdAsPlatform(imageId)
+                      .transform()
+                      .width(avatarResolutionWidth)
+                      .height(avatarResolutionHeight)
+                      .autoQuality()
+                      .autoGravity(),
+                  height: imageHeight,
+                  width: imageWidth,
+                )
+              : Image.asset(
+                  owner is Editor ? AppRasterGraphics.editorialTeamAvatar : AppRasterGraphics.expertAvatar,
+                  width: imageWidth,
+                  height: imageHeight,
+                ),
+        ),
         const SizedBox(width: AppDimens.s),
         Text(
           profileMode ? owner.name : LocaleKeys.article_articleBy.tr(args: [owner.name]),
