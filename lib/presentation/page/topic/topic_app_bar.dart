@@ -64,7 +64,7 @@ class TopicAppBar extends StatelessWidget {
           const Spacer(),
           IconButton(
             onPressed: () => shareReadingList(context, topic),
-            padding: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.only(right: AppDimens.s),
             icon: SvgPicture.asset(
               AppVectorGraphics.share,
               color: whiteToBlack.transform(foregroundAnimationFactor),
