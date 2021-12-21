@@ -37,23 +37,23 @@ class ExploreContentGQL {
     query {
       getExploreArea(id: "$id") {
         __typename
-        
+
         id
         name
-        
+
         ... on ArticlesExploreArea {
           articles(pagination: {limit: $limit, offset: $offset}) {
             ${CommonGQLModels.article}
           }
         }
-        
+
         ... on ArticlesWithFeatureExploreArea {
           backgroundColor
           articles(pagination: {limit: $limit, offset: $offset}) {
             ${CommonGQLModels.article}
           }
         }
-        
+
         ... on TopicsExploreArea {
           topics(pagination: {limit: $limit, offset: $offset}) {
             ${CommonGQLModels.topic}

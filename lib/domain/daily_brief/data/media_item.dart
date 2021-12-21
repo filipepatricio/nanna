@@ -17,7 +17,6 @@ class MediaItem with _$MediaItem {
     required int? timeToRead,
     required Publisher publisher,
     required String sourceUrl,
-    int? wordCount,
     DateTime? publicationDate,
     String? note,
     Image? image,
