@@ -57,7 +57,7 @@ class ReadingListCover extends HookWidget {
                 child: TopicOwnerAvatar(owner: topic.owner, imageHeight: 32, imageWidth: 32, fontSize: 14),
               ),
               Expanded(
-                flex: 10,
+                flex: 5,
                 child: InformedMarkdownBody(
                   markdown: topic.title,
                   baseTextStyle: AppTypography.h1Bold,
@@ -66,7 +66,7 @@ class ReadingListCover extends HookWidget {
               ),
               const SizedBox(height: AppDimens.s),
               Expanded(
-                flex: 12,
+                flex: 6,
                 child: TopicIntroduction(introduction: topic.introduction),
               ),
               const SizedBox(height: AppDimens.l),

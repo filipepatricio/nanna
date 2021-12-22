@@ -11,6 +11,7 @@ class TopicIntroduction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       introduction,
+      textScaleFactor: 1,
       style: AppTypography.b2RegularLora.copyWith(),
       maxLines: 6,
     );
