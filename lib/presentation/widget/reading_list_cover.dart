@@ -33,6 +33,7 @@ class ReadingListCover extends HookWidget {
       behavior: HitTestBehavior.opaque,
       child: LayoutBuilder(
         builder: (context, constraints) => Container(
+          padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.m, AppDimens.m, AppDimens.l),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
@@ -48,63 +49,42 @@ class ReadingListCover extends HookWidget {
             ),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.all(AppDimens.l),
+                padding: const EdgeInsets.only(bottom: AppDimens.l),
                 child: TopicOwnerAvatar(owner: topic.owner),
               ),
               Expanded(
-                child: ClipRect(
-                  child: Align(
-                    alignment: const Alignment(-1.0, -0.25),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                      child: InformedMarkdownBody(
-                        markdown: topic.title,
-                        baseTextStyle: AppTypography.h0Bold,
-                        maxLines: 3,
-                      ),
-                    ),
-                  ),
+                child: InformedMarkdownBody(
+                  markdown: topic.title,
+                  baseTextStyle: AppTypography.h1Bold,
+                  maxLines: 3,
                 ),
               ),
               const SizedBox(height: AppDimens.s),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              Expanded(
                 child: TopicIntroduction(introduction: topic.introduction),
               ),
               const SizedBox(height: AppDimens.l),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: _PublisherLogoRow(topic: topic),
-              ),
+              _PublisherLogoRow(topic: topic),
               const SizedBox(height: AppDimens.l),
-              Container(
-                height: 1.0,
-                color: AppColors.textPrimary,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppDimens.l,
-                  vertical: AppDimens.m,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      LocaleKeys.readingList_articleCount.tr(
-                        args: [topic.readingList.entries.length.toString()],
-                      ),
-                      style: AppTypography.b3Medium,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    LocaleKeys.readingList_articleCount.tr(
+                      args: [topic.readingList.entries.length.toString()],
                     ),
-                    const Spacer(),
-                    UpdatedLabel(
-                      dateTime: topic.lastUpdatedAt,
-                      backgroundColor: AppColors.white,
-                    ),
-                  ],
-                ),
+                    style: AppTypography.b3Regular.copyWith(decoration: TextDecoration.underline, height: 1),
+                  ),
+                  const Spacer(),
+                  UpdatedLabel(
+                    dateTime: topic.lastUpdatedAt,
+                    backgroundColor: AppColors.white,
+                  ),
+                ],
               ),
             ],
           ),
