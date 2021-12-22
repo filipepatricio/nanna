@@ -82,7 +82,7 @@ class TopicMediaItemsList extends HookWidget {
           ),
           Positioned(
             left: AppDimens.l,
-            bottom: AppDimens.l,
+            bottom: AppDimens.xl,
             child: PageDotIndicator(
               pageCount: entryList.length,
               controller: controller,
@@ -90,7 +90,7 @@ class TopicMediaItemsList extends HookWidget {
           ),
           Positioned(
             left: AppDimens.l,
-            bottom: AppDimens.xl * 2,
+            bottom: AppDimens.xxxc,
             child: ReadMoreLabel(
               fontSize: AppDimens.m,
               onTap: () => _navigateToArticle(context, controller),
