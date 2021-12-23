@@ -336,6 +336,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle smallerLabelText = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 8,
+    letterSpacing: 1,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle systemText = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
