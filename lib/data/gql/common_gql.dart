@@ -50,6 +50,7 @@ class CommonGQLModels {
       id
       bio
       name
+      areaOfExpertise
       avatar {
         publicId
       }
