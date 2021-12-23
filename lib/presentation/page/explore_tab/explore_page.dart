@@ -75,10 +75,9 @@ class ExplorePage extends HookWidget {
                   ),
                 ),
                 idle: (state) => _Idle(areas: state.areas),
-                orElse: () => const SliverToBoxAdapter(
-                  child: SizedBox(),
-                ),
+                orElse: () => const SliverToBoxAdapter(child: SizedBox()),
               ),
+              const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
             ],
           ),
         ),

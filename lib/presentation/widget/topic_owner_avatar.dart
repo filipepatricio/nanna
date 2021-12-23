@@ -68,17 +68,21 @@ class TopicOwnerAvatar extends HookWidget {
                   ),
           ),
           const SizedBox(width: AppDimens.s),
-          Text(
-            profileMode ? owner.name : LocaleKeys.article_articleBy.tr(args: [owner.name]),
-            style: profileMode
-                ? AppTypography.h3bold.copyWith(
-                    fontSize: fontSize,
-                    color: lightMode ? AppColors.white : AppColors.textPrimary,
-                  )
-                : AppTypography.metadata2BoldLoraItalic.copyWith(
-                    fontSize: fontSize,
-                    color: lightMode ? AppColors.white : AppColors.textPrimary,
-                  ),
+          Expanded(
+            child: Text(
+              profileMode ? owner.name : LocaleKeys.article_articleBy.tr(args: [owner.name]),
+              softWrap: true,
+              maxLines: 2,
+              style: profileMode
+                  ? AppTypography.h3bold.copyWith(
+                      fontSize: fontSize,
+                      color: lightMode ? AppColors.white : AppColors.textPrimary,
+                    )
+                  : AppTypography.metadata2BoldLoraItalic.copyWith(
+                      fontSize: fontSize,
+                      color: lightMode ? AppColors.white : AppColors.textPrimary,
+                    ),
+            ),
           ),
         ],
       ),

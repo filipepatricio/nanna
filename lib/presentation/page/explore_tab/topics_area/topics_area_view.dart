@@ -5,18 +5,15 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
-
-const _pageViewHeight = 550.0;
 
 class TopicsAreaView extends HookWidget {
   final ExploreContentAreaTopics area;
@@ -31,6 +28,8 @@ class TopicsAreaView extends HookWidget {
     final eventController = useEventTrackController();
     final controller = usePageController(viewportFraction: 0.9);
     final width = MediaQuery.of(context).size.width * 0.9;
+    final cardStackHeight =
+        MediaQuery.of(context).size.width * 0.5 > 450 ? MediaQuery.of(context).size.width * 0.5 : 450.0;
 
     return GeneralEventTracker(
       controller: eventController,
@@ -38,9 +37,9 @@ class TopicsAreaView extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.xc),
+          const SizedBox(height: AppDimens.xxxl),
           Container(
-            padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.sl),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Row(
               children: [
                 Expanded(
@@ -53,18 +52,9 @@ class TopicsAreaView extends HookWidget {
                     ),
                   ),
                 ),
-                IconButton(
-                  padding: const EdgeInsets.all(0),
-                  onPressed: () => AutoRouter.of(context).push(
-                    TopicsSeeAllPageRoute(
-                      areaId: area.id,
-                      title: area.title,
-                      topics: area.topics,
-                    ),
-                  ),
-                  icon: SvgPicture.asset(
-                    AppVectorGraphics.fullArrowRight,
-                    fit: BoxFit.contain,
+                SeeAllArrow(
+                  onTap: () => AutoRouter.of(context).push(
+                    TopicsSeeAllPageRoute(areaId: area.id, title: area.title, topics: area.topics),
                   ),
                 ),
               ],
@@ -72,28 +62,21 @@ class TopicsAreaView extends HookWidget {
           ),
           const SizedBox(height: AppDimens.l),
           Container(
-            height: _pageViewHeight,
+            height: cardStackHeight,
             child: PageView.builder(
               padEnds: false,
               controller: controller,
               itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(left: AppDimens.l),
+                padding: const EdgeInsets.only(left: AppDimens.xxl),
                 child: ReadingListStackedCards(
-                  coverSize: Size(width, _pageViewHeight),
+                  coverSize: Size(width, cardStackHeight),
                   child: ReadingListCover(
                     topic: area.topics[index],
                     onTap: () => _onTopicTap(context, index),
                   ),
                 ),
               ),
-              onPageChanged: (page) {
-                eventController.track(
-                  AnalyticsEvent.exploreAreaCarouselBrowsed(
-                    area.id,
-                    page,
-                  ),
-                );
-              },
+              onPageChanged: (page) => eventController.track(AnalyticsEvent.exploreAreaCarouselBrowsed(area.id, page)),
               itemCount: area.topics.length,
             ),
           ),
@@ -105,7 +88,6 @@ class TopicsAreaView extends HookWidget {
               controller: controller,
             ),
           ),
-          const SizedBox(height: AppDimens.l),
         ],
       ),
     );

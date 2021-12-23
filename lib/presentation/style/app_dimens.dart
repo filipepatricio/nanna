@@ -56,7 +56,10 @@ class AppDimens {
   static const naviBarFontSize = 14.0;
 
   /// 14
-  static const backArrowSize = 14.0;
+  static const backArrowSize = 18.0;
+
+  /// 14
+  static const readMoreArrowSize = 14.0;
 
   /// 16
   static const indicatorSelectedSize = 16.0;
@@ -144,4 +147,13 @@ class AppDimens {
 
   /// 72
   static const topicViewArticleSectionArticleCountLabelHeight = 72.0;
+
+  /// 366
+  static const exploreAreaFeaturedArticleHeight = 366.0;
+
+  /// 260
+  static const exploreAreaArticleSeeAllCoverHeight = 260.0;
+
+  /// 260
+  static const exploreAreaTopicSeeAllCoverHeight = 250.0;
 }

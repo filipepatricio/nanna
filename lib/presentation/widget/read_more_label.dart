@@ -36,8 +36,8 @@ class ReadMoreLabel extends StatelessWidget {
             ),
             textAlign: TextAlign.start,
           ),
-          const SizedBox(width: AppDimens.s),
-          const Icon(Icons.arrow_forward_ios_rounded, size: 12),
+          const SizedBox(width: AppDimens.xs),
+          Icon(Icons.arrow_forward_ios_rounded, size: AppDimens.readMoreArrowSize, color: foregroundColor),
         ],
       ),
     );

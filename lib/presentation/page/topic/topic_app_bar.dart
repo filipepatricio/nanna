@@ -41,15 +41,10 @@ class TopicAppBar extends StatelessWidget {
         children: [
           IconButton(
             padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            iconSize: AppDimens.backArrowSize,
+            color: whiteToBlack.transform(foregroundAnimationFactor),
             onPressed: () => AutoRouter.of(context).pop(),
-            icon: RotatedBox(
-              quarterTurns: 2,
-              child: SvgPicture.asset(
-                AppVectorGraphics.arrowRight,
-                height: AppDimens.backArrowSize,
-                color: whiteToBlack.transform(foregroundAnimationFactor),
-              ),
-            ),
           ),
           const Spacer(),
           InformedMarkdownBody(
