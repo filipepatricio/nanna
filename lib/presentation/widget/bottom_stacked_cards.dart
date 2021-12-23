@@ -24,7 +24,7 @@ class BottomStackedCards extends StatelessWidget {
                 color: AppColors.shadowColor,
                 offset: const Offset(10.0, 10.0),
                 blurRadius: 10.0,
-                spreadRadius: -13.0,
+                spreadRadius: -2.0,
               ),
             ],
           ),

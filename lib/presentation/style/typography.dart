@@ -8,10 +8,11 @@ const fontFamilyLora = 'Lora';
 const fontFamilyPlusJakartaSans = 'PlusJakartaSans';
 
 class AppTypography {
-  static const TextStyle hBold = TextStyle(
+  static const TextStyle h1Headline = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 44,
+    fontSize: 32,
+    height: 1.25,
     color: AppColors.textPrimary,
   );
 
