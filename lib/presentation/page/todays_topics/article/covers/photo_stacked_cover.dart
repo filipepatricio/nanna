@@ -21,54 +21,58 @@ class PhotoStackedCover extends HookWidget {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = article.image?.publicId;
 
-    return Stack(
-      children: [
-        if (imageId != null) ...[
-          Positioned.fill(
-            child: LayoutBuilder(
-              builder: (context, constrains) {
-                return CloudinaryProgressiveImage(
-                  cloudinaryTransformation: cloudinaryProvider
-                      .withPublicIdAsPlatform(imageId)
-                      .transform()
-                      .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
-                      .autoGravity(),
-                  height: constrains.maxHeight,
-                  width: constrains.maxWidth,
-                );
-              },
+    return Container(
+      height: AppDimens.topicViewArticleSectionImageHeight,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          if (imageId != null) ...[
+            Positioned.fill(
+              child: LayoutBuilder(
+                builder: (context, constrains) {
+                  return CloudinaryProgressiveImage(
+                    cloudinaryTransformation: cloudinaryProvider
+                        .withPublicIdAsPlatform(imageId)
+                        .transform()
+                        .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
+                        .autoGravity(),
+                    height: constrains.maxHeight,
+                    width: constrains.maxWidth,
+                  );
+                },
+              ),
             ),
-          ),
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.40),
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.40),
+              ),
+            ),
+          ],
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(AppDimens.l),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InformedMarkdownBody(
+                    markdown: article.title,
+                    baseTextStyle: AppTypography.headline4Bold.copyWith(
+                      color: AppColors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    highlightColor: AppColors.transparent,
+                    maxLines: 5,
+                  ),
+                  const Spacer(),
+                  DottedArticleInfo(article: article, isLight: true),
+                ],
+              ),
             ),
           ),
         ],
-        Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.all(AppDimens.l),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                InformedMarkdownBody(
-                  markdown: article.title,
-                  baseTextStyle: AppTypography.headline4Bold.copyWith(
-                    color: AppColors.white,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  highlightColor: AppColors.transparent,
-                  maxLines: 5,
-                ),
-                const Spacer(),
-                DottedArticleInfo(article: article, isLight: true),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

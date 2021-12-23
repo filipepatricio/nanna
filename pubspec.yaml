@@ -61,7 +61,6 @@ dependencies:
   hive: 2.0.4
   hive_flutter: 1.1.0
   package_info_plus: 1.0.6
-  percent_indicator: 3.0.1
   sentry_flutter: 6.0.1
   shimmer: 2.0.0
   progressive_image: 2.0.0

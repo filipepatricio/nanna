@@ -71,7 +71,6 @@ class TopicPage extends HookWidget {
                     TopicView(
                       topic: topic,
                       cubit: cubit,
-                      articleContentHeight: pageConstraints.maxHeight - appBarHeightState.value,
                       appBarMargin: appBarHeightState.value,
                       summaryCardKey: cubit.summaryCardKey,
                       mediaItemKey: cubit.mediaItemKey,

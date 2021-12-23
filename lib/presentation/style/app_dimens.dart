@@ -120,4 +120,28 @@ class AppDimens {
 
   /// 20
   static const shareBottomSheetRadius = 20.0;
+
+  /// 0.85
+  static const topicCardWidthViewportFraction = 0.85;
+
+  /// 42
+  static const avatarSize = 42.0;
+
+  /// 45
+  static const topicViewTopicHeaderPadding = 45.0;
+
+  ///330
+  static const topicViewTopicHeaderHeight = 330.0;
+
+  /// 327
+  static const topicViewArticleSectionImageHeight = 270.0;
+
+  /// 327
+  static const topicViewArticleSectionNoteHeight = 120.0;
+
+  /// topicViewArticleSectionImageHeight + topicViewArticleSectionNoteHeight
+  static const topicViewArticleSectionFullHeight = 630.0;
+
+  /// 72
+  static const topicViewArticleSectionArticleCountLabelHeight = 72.0;
 }
