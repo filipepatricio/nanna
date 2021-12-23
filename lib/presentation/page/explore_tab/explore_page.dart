@@ -48,21 +48,30 @@ class ExplorePage extends HookWidget {
             physics: const ClampingScrollPhysics(),
             slivers: [
               SliverAppBar(
-                backgroundColor: headerColor,
-                automaticallyImplyLeading: false,
+                backgroundColor: AppColors.background,
+                elevation: 3,
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
                 centerTitle: false,
+                pinned: true,
+                shadowColor: AppColors.shadowDarkColor,
                 titleSpacing: AppDimens.l,
-                title: Text(
-                  LocaleKeys.main_exploreTab.tr(),
-                  style: AppTypography.h1Bold,
+                collapsedHeight: kToolbarHeight,
+                expandedHeight: kToolbarHeight + AppDimens.l,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(color: headerColor),
+                  titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
+                  centerTitle: false,
+                  title: Text(
+                    LocaleKeys.main_exploreTab.tr(),
+                    style: AppTypography.b0Bold,
+                  ),
                 ),
               ),
               state.maybeMap(
                 initialLoading: (_) => const SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.all(AppDimens.l),
-                    child: Loader(),
+                    child: Loader(color: AppColors.darkGrey),
                   ),
                 ),
                 idle: (state) => _Idle(areas: state.areas),
