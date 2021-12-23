@@ -206,7 +206,9 @@ class _ActionsBar extends HookWidget {
                     color: owner is Editor ? AppColors.limeGreen : AppColors.peach10,
                   ),
                   child: Text(
-                    (owner is Editor ? LocaleKeys.topic_owner_editorialTeam.tr() : LocaleKeys.topic_owner_expert.tr())
+                    (owner is Expert
+                            ? LocaleKeys.topic_owner_expertIn.tr(args: [(owner as Expert).areaOfExpertise])
+                            : LocaleKeys.topic_owner_editorialTeam.tr())
                         .toUpperCase(),
                     style: AppTypography.labelText,
                   ),

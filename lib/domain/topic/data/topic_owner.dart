@@ -16,9 +16,11 @@ class Expert extends TopicOwner {
     required this.id,
     required String name,
     required this.bio,
+    required this.areaOfExpertise,
     Image? avatar,
   }) : super(avatar: avatar, name: name);
 
   final String id;
   final String bio;
+  final String areaOfExpertise;
 }
