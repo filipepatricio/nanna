@@ -47,6 +47,11 @@
         <screen android:screenSize="small" android:screenDensity="xhdpi" />
         <screen android:screenSize="small" android:screenDensity="xxhdpi" />
         <screen android:screenSize="small" android:screenDensity="xxxhdpi" />
+        <screen android:screenSize="small" android:screenDensity="280" />
+        <screen android:screenSize="small" android:screenDensity="360" />
+        <screen android:screenSize="small" android:screenDensity="420" />
+        <screen android:screenSize="small" android:screenDensity="480" />
+        <screen android:screenSize="small" android:screenDensity="560" />
         <!-- all normal size screens -->
         <screen android:screenSize="normal" android:screenDensity="ldpi" />
         <screen android:screenSize="normal" android:screenDensity="mdpi" />
@@ -54,5 +59,10 @@
         <screen android:screenSize="normal" android:screenDensity="xhdpi" />
         <screen android:screenSize="normal" android:screenDensity="xxhdpi" />
         <screen android:screenSize="normal" android:screenDensity="xxxhdpi" />
+        <screen android:screenSize="normal" android:screenDensity="280" />
+        <screen android:screenSize="normal" android:screenDensity="360" />
+        <screen android:screenSize="normal" android:screenDensity="420" />
+        <screen android:screenSize="normal" android:screenDensity="480" />
+        <screen android:screenSize="normal" android:screenDensity="560" />
     </compatible-screens>
 </manifest>
