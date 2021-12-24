@@ -26,8 +26,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'todays_topics_page_state.dart';
 
-const _pageViewportFraction = 0.85;
-
 class TodaysTopicsPage extends HookWidget {
   const TodaysTopicsPage({Key? key}) : super(key: key);
 
@@ -35,9 +33,9 @@ class TodaysTopicsPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<TodaysTopicsPageCubit>();
     final state = useCubitBuilder(cubit);
-    final controller = usePageController(viewportFraction: _pageViewportFraction);
+    final controller = usePageController(viewportFraction: AppDimens.topicCardWidthViewportFraction);
     final relaxState = useState(false);
-    final cardStackWidth = MediaQuery.of(context).size.width * _pageViewportFraction;
+    final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
 
     useEffect(
       () {
@@ -139,7 +137,8 @@ class _IdleContent extends HookWidget {
 
     useEffect(() {
       final listener = () {
-        lastPageAnimationProgressState.value = calculateLastPageShownFactor(controller, _pageViewportFraction);
+        lastPageAnimationProgressState.value =
+            calculateLastPageShownFactor(controller, AppDimens.topicCardWidthViewportFraction);
       };
       controller.addListener(listener);
       return () => controller.removeListener(listener);

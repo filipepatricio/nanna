@@ -5,10 +5,9 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
-import 'package:better_informed_mobile/presentation/widget/author_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_introduction.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +32,7 @@ class ReadingListCover extends HookWidget {
       behavior: HitTestBehavior.opaque,
       child: LayoutBuilder(
         builder: (context, constraints) => Container(
+          padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.m, AppDimens.m, AppDimens.l),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
@@ -48,63 +48,44 @@ class ReadingListCover extends HookWidget {
             ),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.all(AppDimens.l),
-                child: AuthorRow(topic: topic),
+                padding: const EdgeInsets.only(bottom: AppDimens.l),
+                child: TopicOwnerAvatar(owner: topic.owner, imageHeight: 32, imageWidth: 32, fontSize: 14),
               ),
               Expanded(
-                child: ClipRect(
-                  child: Align(
-                    alignment: const Alignment(-1.0, -0.25),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                      child: InformedMarkdownBody(
-                        markdown: topic.title,
-                        baseTextStyle: AppTypography.h0Bold,
-                        maxLines: 3,
-                      ),
-                    ),
-                  ),
+                flex: 5,
+                child: InformedMarkdownBody(
+                  markdown: topic.title,
+                  baseTextStyle: AppTypography.h1Bold,
+                  maxLines: 3,
                 ),
               ),
               const SizedBox(height: AppDimens.s),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: TopicIntroduction(introduction: topic.introduction),
+              Expanded(
+                flex: 6,
+                child: _TopicIntroduction(introduction: topic.introduction),
               ),
               const SizedBox(height: AppDimens.l),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: _PublisherLogoRow(topic: topic),
-              ),
+              _PublisherLogoRow(topic: topic),
               const SizedBox(height: AppDimens.l),
-              Container(
-                height: 1.0,
-                color: AppColors.textPrimary,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppDimens.l,
-                  vertical: AppDimens.m,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      LocaleKeys.readingList_articleCount.tr(
-                        args: [topic.readingList.entries.length.toString()],
-                      ),
-                      style: AppTypography.b3Medium,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    LocaleKeys.readingList_articleCount.tr(
+                      args: [topic.readingList.entries.length.toString()],
                     ),
-                    const Spacer(),
-                    UpdatedLabel(
-                      dateTime: topic.lastUpdatedAt,
-                      backgroundColor: AppColors.white,
-                    ),
-                  ],
-                ),
+                    style: AppTypography.b3Regular.copyWith(decoration: TextDecoration.underline, height: 1),
+                  ),
+                  const Spacer(),
+                  UpdatedLabel(
+                    dateTime: topic.lastUpdatedAt,
+                    backgroundColor: AppColors.white,
+                  ),
+                ],
               ),
             ],
           ),
@@ -133,6 +114,21 @@ class _PublisherLogoRow extends HookWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+class _TopicIntroduction extends StatelessWidget {
+  final String introduction;
+
+  const _TopicIntroduction({required this.introduction, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InformedMarkdownBody(
+      markdown: introduction,
+      baseTextStyle: AppTypography.b2RegularLora,
+      maxLines: 5,
     );
   }
 }

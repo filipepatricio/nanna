@@ -2,30 +2,25 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TopicAppBar extends StatelessWidget {
   final Topic topic;
   final double backgroundAnimationFactor;
   final double foregroundAnimationFactor;
-  final double lastPageTransition;
   final double elevation;
-  final double? progress;
-  final Animation<double>? fadeAnimation;
 
   const TopicAppBar({
     required this.topic,
     required this.backgroundAnimationFactor,
     required this.foregroundAnimationFactor,
-    this.lastPageTransition = 0.0,
     this.elevation = 3.0,
-    this.progress,
-    this.fadeAnimation,
     Key? key,
   }) : super(key: key);
 
@@ -33,9 +28,7 @@ class TopicAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final whiteToBlack = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
     final transparentToWhite = ColorTween(begin: AppColors.transparent, end: AppColors.background);
-
-    final progress = this.progress;
-    final fadeAnimation = this.fadeAnimation;
+    final transparentToBlack = ColorTween(begin: AppColors.transparent, end: AppColors.black);
 
     return AppBar(
       backgroundColor: transparentToWhite.transform(backgroundAnimationFactor),
@@ -44,78 +37,35 @@ class TopicAppBar extends StatelessWidget {
       titleSpacing: 0,
       automaticallyImplyLeading: false,
       systemOverlayStyle: backgroundAnimationFactor >= 0.5 ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
-      centerTitle: false,
       title: Row(
         children: [
           IconButton(
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            iconSize: AppDimens.backArrowSize,
+            color: whiteToBlack.transform(foregroundAnimationFactor),
             onPressed: () => AutoRouter.of(context).pop(),
-            icon: RotatedBox(
-              quarterTurns: 2,
-              child: SvgPicture.asset(
-                AppVectorGraphics.arrowRight,
-                height: AppDimens.backArrowSize,
-                color: whiteToBlack.transform(foregroundAnimationFactor),
-              ),
-            ),
           ),
-          const SizedBox(width: AppDimens.m),
-          if (progress != null && fadeAnimation != null) ...[
-            Expanded(
-              child: _Progress(
-                progress: progress,
-                fadeAnimation: fadeAnimation,
-              ),
-            ),
-          ],
-          FadeTransition(
-            opacity: AlwaysStoppedAnimation<double>(lastPageTransition),
-            child: Container(
-              height: AppDimens.s,
-              width: AppDimens.s,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppDimens.xxs),
-                color: AppColors.limeGreen,
-              ),
+          const Spacer(),
+          InformedMarkdownBody(
+            markdown: topic.title.length > 20 ? '${topic.title.substring(0, 20)}...' : topic.title,
+            textAlignment: TextAlign.center,
+            highlightColor: AppColors.transparent,
+            baseTextStyle: AppTypography.h4Bold.copyWith(
+              height: 1,
+              color: transparentToBlack.transform(foregroundAnimationFactor),
             ),
           ),
           const Spacer(),
-          GestureDetector(
-            onTap: () => shareReadingList(context, topic),
-            child: SvgPicture.asset(
+          IconButton(
+            onPressed: () => shareReadingList(context, topic),
+            padding: const EdgeInsets.only(right: AppDimens.s),
+            icon: SvgPicture.asset(
               AppVectorGraphics.share,
               color: whiteToBlack.transform(foregroundAnimationFactor),
             ),
           ),
-          const SizedBox(width: AppDimens.xl),
         ],
-      ),
-    );
-  }
-}
-
-class _Progress extends StatelessWidget {
-  final double progress;
-  final Animation<double> fadeAnimation;
-
-  const _Progress({
-    required this.progress,
-    required this.fadeAnimation,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: fadeAnimation,
-      child: LinearPercentIndicator(
-        lineHeight: AppDimens.xs,
-        percent: progress,
-        animateFromLastPercent: true,
-        animation: true,
-        animationDuration: 300,
-        linearStrokeCap: LinearStrokeCap.roundAll,
-        backgroundColor: AppColors.grey.withOpacity(0.44),
-        progressColor: AppColors.limeGreen,
       ),
     );
   }

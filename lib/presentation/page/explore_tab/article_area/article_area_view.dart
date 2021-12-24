@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
+import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/horizontal_list_interaction_listener.dart';
 import 'package:flutter/material.dart';
@@ -29,21 +29,20 @@ class ArticleAreaView extends HookWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: AppDimens.xc),
-        Padding(
+        const SizedBox(height: AppDimens.xxxl),
+        Container(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: Row(
             children: [
               Expanded(
                 child: InformedMarkdownBody(
                   markdown: area.title,
-                  baseTextStyle: AppTypography.h1,
+                  baseTextStyle: AppTypography.h2Jakarta,
                   highlightColor: AppColors.transparent,
                   maxLines: 2,
                 ),
               ),
-              const SizedBox(width: AppDimens.s),
-              SeeAllButton(
+              SeeAllArrow(
                 onTap: () => AutoRouter.of(context).push(
                   ArticleSeeAllPageRoute(
                     areaId: area.id,
@@ -62,10 +61,7 @@ class ArticleAreaView extends HookWidget {
             itemsCount: area.articles.length,
             callback: (int lastVisibleItemIndex) {
               eventController.track(
-                AnalyticsEvent.exploreAreaCarouselBrowsed(
-                  area.id,
-                  lastVisibleItemIndex,
-                ),
+                AnalyticsEvent.exploreAreaCarouselBrowsed(area.id, lastVisibleItemIndex),
               );
             },
             child: SizedBox(
@@ -84,7 +80,6 @@ class ArticleAreaView extends HookWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppDimens.xxl),
       ],
     );
   }

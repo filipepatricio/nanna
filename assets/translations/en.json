@@ -128,7 +128,19 @@
     "articleCount": "{} articles"
   },
   "topic": {
-    "updated": "Updated {}"
+    "updated": "Updated {}",
+    "owner": {
+      "editorialTeam": "Informed Editorial Team",
+      "expertIn": "Expert in {}",
+      "lastUpdated": "Last updated",
+      "editorBio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world.",
+      "loadingExpertTopics": "We're loading\n{}'s topics"
+    },
+    "howDoWeCurateContent": {
+      "label": "How do we curate content?",
+      "title": "How do we curate content?",
+      "text": "We don't believe algorithms alone can provide you with the news and information you need. That's why, in addition to using algorithms for what they're good at, we have human beings curate our readlists, experienced journalists who can provide you with the context you need to understand a complex world.\n\nWe select our articles from sources with a proven track record of following ethical practices and standards in journalism, and we clearly delineate between news, opinion, and analysis.\n\nWhen the publications or authors we curate have a particularly strong political leanings, we mention that political perspective in the editor's note so the reader understands the biases they are encountering.\n\nOn occasion, we may use sources outside the standard realm of journalism, including blogs and academic articles. When we do so, we will clearly inform readers in the editor's note and highlight any political affiliations associated with the sources.\n\nOne of our central goals is to repair a splintered media landscape in which people remain in information bubbles, getting news from sources that only reinforce their existing beliefs.\n\nWe therefore believe firmly in providing a common platform where a variety of perspectives can be heard and hope, by doing so, we can help renew civil discourse and counteract ever-greater polarization.\n\nWe do not shy away from engaging with the most hotly discussed topics of the day. However, we seek to stay above the fray, presenting multiple points of view. While we strive to be non-partisan, this does not mean we don't have our own voice or believe there are some limits to acceptable discourse. We will not lend a platform to those who intentionally spread misinformation or question established science. We will exclude sources that peddle propaganda or seek to foment hatred."
+    }
   },
   "continueReading": "Continue reading",
   "explore": {

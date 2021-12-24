@@ -8,10 +8,11 @@ const fontFamilyLora = 'Lora';
 const fontFamilyPlusJakartaSans = 'PlusJakartaSans';
 
 class AppTypography {
-  static const TextStyle hBold = TextStyle(
+  static const TextStyle h1Headline = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 44,
+    fontSize: 32,
+    height: 1.25,
     color: AppColors.textPrimary,
   );
 
@@ -310,10 +311,36 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle metadata2BoldLoraItalic = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyLora,
+    fontStyle: FontStyle.italic,
+    fontSize: 14,
+    height: 1.28,
+    letterSpacing: 0.7,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle bodyText = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyLora,
+    fontSize: 18,
+    height: 1.75,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle labelText = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 9,
+    letterSpacing: 1,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle smallerLabelText = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 8,
     letterSpacing: 1,
     color: AppColors.textPrimary,
   );

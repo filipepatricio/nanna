@@ -26,10 +26,13 @@ class AppColors {
   static const Color dividerGrey = Color(0xffD1D5DB);
   static const Color darkGrey = Color(0xff6B7280);
   static const Color carrotRed = Color(0xffFB6F43);
+  static const Color peach10 = Color(0xffF2E8E7);
+  static const Color peach100 = Color(0xffFB9E8A);
 
   static const Color gradientOverlayStartColor = Color(0x90282b35);
   static const Color gradientOverlayEndColor = Color(0x00282B35);
 
+  static Color shadowDarkColor = Colors.black.withOpacity(0.4);
   static Color shadowColor = Colors.black.withOpacity(0.12);
   static Color greyFont = textPrimary.withOpacity(0.44);
 

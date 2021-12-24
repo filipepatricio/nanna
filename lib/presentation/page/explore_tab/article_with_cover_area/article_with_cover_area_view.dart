@@ -13,16 +13,12 @@ import 'package:better_informed_mobile/presentation/widget/cloudinary_progressiv
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
-import 'package:better_informed_mobile/presentation/widget/see_all_button.dart';
-import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
+import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/horizontal_list_interaction_listener.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-const _mainArticleHeight = 366.0;
-const _mainArticleCoverBottomMargin = 100.0;
 
 class ArticleWithCoverAreaView extends HookWidget {
   final ExploreContentAreaArticleWithFeature area;
@@ -43,21 +39,20 @@ class ArticleWithCoverAreaView extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.xxl),
-          Padding(
+          const SizedBox(height: AppDimens.xxxl),
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Row(
               children: [
                 Expanded(
                   child: InformedMarkdownBody(
                     markdown: area.title,
-                    baseTextStyle: AppTypography.h1,
+                    baseTextStyle: AppTypography.h2Jakarta,
                     highlightColor: AppColors.transparent,
                     maxLines: 2,
                   ),
                 ),
-                const SizedBox(width: AppDimens.s),
-                SeeAllButton(
+                SeeAllArrow(
                   onTap: () => AutoRouter.of(context).push(
                     ArticleSeeAllPageRoute(
                       areaId: area.id,
@@ -72,7 +67,7 @@ class ArticleWithCoverAreaView extends HookWidget {
           const SizedBox(height: AppDimens.l),
           Container(
             padding: const EdgeInsets.only(left: AppDimens.l),
-            height: _mainArticleHeight,
+            height: AppDimens.exploreAreaFeaturedArticleHeight,
             child: _MainArticle(
               entry: area.featuredArticle,
               themeColor: themeColor,
@@ -107,7 +102,7 @@ class ArticleWithCoverAreaView extends HookWidget {
               ),
             ),
           ),
-          const SizedBox(height: AppDimens.xxl),
+          const SizedBox(height: AppDimens.xl),
         ],
       ),
     );
@@ -131,17 +126,13 @@ class _MainArticle extends HookWidget {
 
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
-        MediaItemPageRoute(
-          pageData: MediaItemPageData.singleItem(
-            article: entry,
-          ),
-        ),
+        MediaItemPageRoute(pageData: MediaItemPageData.singleItem(article: entry)),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) => Stack(
           children: [
             Container(
-              height: _mainArticleHeight,
+              height: AppDimens.exploreAreaFeaturedArticleHeight,
               child: imageId != null
                   ? CloudinaryProgressiveImage(
                       cloudinaryTransformation: cloudinaryProvider
@@ -156,31 +147,14 @@ class _MainArticle extends HookWidget {
             ),
             Positioned.fill(
               child: Container(
-                color: AppColors.black.withOpacity(0.4),
+                color: imageId != null ? AppColors.black.withOpacity(0.4) : AppColors.background,
               ),
             ),
-            Positioned(
-              top: AppDimens.zero,
-              left: AppDimens.zero,
-              bottom: _mainArticleCoverBottomMargin,
-              right: constraints.maxWidth * 0.45,
+            Positioned.fill(
               child: _MainArticleCover(
                 entry: entry,
                 themeColor: themeColor,
-              ),
-            ),
-            Positioned(
-              top: AppDimens.l,
-              right: AppDimens.l,
-              child: ShareArticleButton(
-                article: entry,
-              ),
-            ),
-            const Positioned(
-              bottom: AppDimens.l,
-              right: AppDimens.l,
-              child: ReadMoreLabel(
-                foregroundColor: AppColors.white,
+                hasImage: imageId != null,
               ),
             ),
           ],
@@ -193,36 +167,42 @@ class _MainArticle extends HookWidget {
 class _MainArticleCover extends StatelessWidget {
   final MediaItemArticle entry;
   final Color themeColor;
+  final bool hasImage;
 
   const _MainArticleCover({
     required this.entry,
     required this.themeColor,
+    required this.hasImage,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final timeToRead = entry.timeToRead;
+    final foregroundColor = hasImage ? AppColors.white : AppColors.textPrimary;
 
     return Container(
-      padding: const EdgeInsets.all(AppDimens.m),
-      color: AppColors.background,
+      padding: const EdgeInsets.fromLTRB(AppDimens.l, AppDimens.xl, AppDimens.l, AppDimens.l),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PublisherLogo.light(publisher: entry.publisher),
+          if (hasImage)
+            PublisherLogo.light(publisher: entry.publisher)
+          else
+            PublisherLogo.dark(publisher: entry.publisher),
+          const SizedBox(height: AppDimens.m),
           InformedMarkdownBody(
             markdown: entry.title,
-            baseTextStyle: AppTypography.h3bold,
-            maxLines: 4,
+            baseTextStyle: AppTypography.h1Bold.copyWith(color: foregroundColor),
           ),
+          const SizedBox(height: AppDimens.m),
+          ReadMoreLabel(foregroundColor: foregroundColor),
           const Spacer(),
           if (timeToRead != null)
             Text(
-              LocaleKeys.article_readMinutes.tr(
-                args: [timeToRead.toString()],
-              ),
-              style: AppTypography.metadata1Regular,
+              LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
+              style: AppTypography.metadata1Regular.copyWith(color: foregroundColor),
             ),
         ],
       ),

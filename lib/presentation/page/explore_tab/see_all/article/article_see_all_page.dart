@@ -9,16 +9,12 @@ import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/see
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
-
-const _itemHeight = 250.0;
 
 class ArticleSeeAllPage extends HookWidget {
   final String areaId;
@@ -66,21 +62,15 @@ class ArticleSeeAllPage extends HookWidget {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         centerTitle: false,
-        elevation: 0,
-        title: Text(
-          tr(LocaleKeys.explore_title),
-          style: AppTypography.h3bold,
-        ),
+        elevation: 3,
+        shadowColor: AppColors.shadowDarkColor,
+        titleSpacing: 0,
+        title: Text(LocaleKeys.explore_title.tr(), style: AppTypography.h3bold.copyWith(height: 1.0)),
         leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          iconSize: AppDimens.backArrowSize,
+          color: AppColors.textPrimary,
           onPressed: () => AutoRouter.of(context).pop(),
-          icon: RotatedBox(
-            quarterTurns: 2,
-            child: SvgPicture.asset(
-              AppVectorGraphics.arrowRight,
-              height: AppDimens.backArrowSize,
-              color: AppColors.textPrimary,
-            ),
-          ),
         ),
       ),
       body: _Body(
@@ -162,7 +152,7 @@ class _ArticleGrid extends StatelessWidget {
         SliverList(
           delegate: SliverChildListDelegate.fixed(
             [
-              const SizedBox(height: AppDimens.xc),
+              const SizedBox(height: AppDimens.l),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: InformedMarkdownBody(
@@ -171,7 +161,7 @@ class _ArticleGrid extends StatelessWidget {
                   baseTextStyle: AppTypography.h1,
                 ),
               ),
-              const SizedBox(height: AppDimens.m),
+              const SizedBox(height: AppDimens.l),
             ],
           ),
         ),
@@ -187,9 +177,9 @@ class _ArticleGrid extends StatelessWidget {
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisExtent: _itemHeight,
+              mainAxisExtent: AppDimens.exploreAreaArticleSeeAllCoverHeight,
               crossAxisSpacing: AppDimens.m,
-              mainAxisSpacing: AppDimens.xl,
+              mainAxisSpacing: AppDimens.l,
             ),
           ),
         ),
@@ -217,14 +207,14 @@ class _GridItem extends StatelessWidget {
           image: (data) => ArticleListItem(
             article: article.article,
             themeColor: AppColors.background,
-            height: _itemHeight,
+            height: AppDimens.exploreAreaArticleSeeAllCoverHeight,
             width: null,
           ),
           color: (data) => ArticleListItem(
             article: article.article,
             themeColor: AppColors.background,
             cardColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
-            height: _itemHeight,
+            height: AppDimens.exploreAreaArticleSeeAllCoverHeight,
             width: null,
           ),
         );

@@ -41,11 +41,7 @@ class ArticleListItem extends HookWidget {
 
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
-        MediaItemPageRoute(
-          pageData: MediaItemPageData.singleItem(
-            article: article,
-          ),
-        ),
+        MediaItemPageRoute(pageData: MediaItemPageData.singleItem(article: article)),
       ),
       child: Stack(
         children: [
@@ -60,11 +56,7 @@ class ArticleListItem extends HookWidget {
               height: height,
             )
           else
-            Container(
-              color: cardColor,
-              width: width,
-              height: height,
-            ),
+            Container(color: cardColor, width: width, height: height),
           _ArticleImageOverlay(
             article: article,
             themeColor: themeColor,
@@ -93,41 +85,38 @@ class _ArticleImageOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageId = article.image?.publicId;
     final timeToRead = article.timeToRead;
+    final hasImage = article.image?.publicId != null;
 
     return Container(
-      color: imageId != null ? AppColors.black.withOpacity(0.6) : null,
-      padding: const EdgeInsets.all(AppDimens.m),
+      color: hasImage ? AppColors.black.withOpacity(0.4) : null,
+      padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.xl, AppDimens.m, AppDimens.m),
       height: height,
       width: width,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Spacer(),
-          if (imageId == null)
-            PublisherLogo.dark(publisher: article.publisher)
+          if (hasImage)
+            PublisherLogo.light(publisher: article.publisher)
           else
-            PublisherLogo.light(publisher: article.publisher),
-          const SizedBox(height: AppDimens.xs),
+            PublisherLogo.dark(publisher: article.publisher),
+          const SizedBox(height: AppDimens.m),
           InformedMarkdownBody(
+            maxLines: hasImage ? 4 : 5,
             markdown: article.title,
-            highlightColor: imageId == null ? AppColors.limeGreen : AppColors.transparent,
+            highlightColor: hasImage ? AppColors.transparent : AppColors.limeGreen,
             baseTextStyle: AppTypography.h5BoldSmall.copyWith(
-              height: 1.4,
-              color: imageId == null ? AppColors.textPrimary : AppColors.lightGrey,
+              height: hasImage ? 1.71 : 1.5,
+              color: hasImage ? AppColors.white : AppColors.textPrimary,
             ),
-            maxLines: 4,
           ),
           const Spacer(),
           if (timeToRead != null)
             Text(
-              tr(
-                LocaleKeys.article_readMinutes,
-                args: [timeToRead.toString()],
-              ),
-              style: AppTypography.metadata1Regular.copyWith(
-                color: imageId == null ? AppColors.textPrimary : AppColors.lightGrey,
+              LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
+              style: AppTypography.systemText.copyWith(
+                color: hasImage ? AppColors.white : AppColors.textPrimary,
               ),
             ),
         ],
