@@ -1,6 +1,8 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
@@ -31,14 +33,16 @@ class ReadingListCoverSmall extends HookWidget {
         builder: (context, constraints) => Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(
-                cloudinaryProvider
-                    .withPublicId(topic.coverImage.publicId)
-                    .transform()
-                    .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
-                    .fit()
-                    .generateNotNull(),
-              ),
+              image: kIsTest
+                  ? const AssetImage(AppRasterGraphics.testReadingListCoverImage) as ImageProvider
+                  : NetworkImage(
+                      cloudinaryProvider
+                          .withPublicId(topic.coverImage.publicId)
+                          .transform()
+                          .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
+                          .fit()
+                          .generateNotNull(),
+                    ),
               fit: BoxFit.cover,
               alignment: Alignment.center,
             ),
