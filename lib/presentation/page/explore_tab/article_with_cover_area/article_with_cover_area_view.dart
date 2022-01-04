@@ -197,7 +197,11 @@ class _MainArticleCover extends StatelessWidget {
             baseTextStyle: AppTypography.h1Bold.copyWith(color: foregroundColor),
           ),
           const SizedBox(height: AppDimens.m),
-          ReadMoreLabel(foregroundColor: foregroundColor),
+          ReadMoreLabel(
+              foregroundColor: foregroundColor,
+              onTap: () => AutoRouter.of(context).push(
+                    MediaItemPageRoute(pageData: MediaItemPageData.singleItem(article: entry)),
+                  )),
           const Spacer(),
           if (timeToRead != null)
             Text(
