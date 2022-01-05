@@ -6,10 +6,10 @@ part 'settings_notifications_state.freezed.dart';
 
 @freezed
 class SettingsNotificationsState with _$SettingsNotificationsState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory SettingsNotificationsState.loading() = SettingsNotificationsStateLoading;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory SettingsNotificationsState.notificationSettingsLoaded(List<NotificationPreferencesGroup> groups) =
       SettingsNotificationsStateLoaded;
 }

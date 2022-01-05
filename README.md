@@ -76,7 +76,7 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
 
 * [ ] Mobile app stack:
 
-- Flutter : 2.5.3 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
+- Flutter : 2.8.1 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
 - Navigation : auto_route
 - Immutable data class : freezed
 - Logs: fimber
@@ -129,10 +129,10 @@ Example:
     MyReadsPageState - initialLoading, idle
     @freezed
     class MyReadsPageState with _$MyReadsPageState {
-    @Implements(BuildState)
+    @Implements<BuildState>()
     factory MyReadsPageState.initialLoading() = _MyReadsPageStateInitialLoading;
 
-    @Implements(BuildState)
+    @Implements<BuildState>()
     factory MyReadsPageState.idle(MyReadsContent content) = _MyReadsPageStateIdle;
     }
 ```
@@ -179,3 +179,4 @@ So, until this is automated, the steps to achieve this are:
 5. If there are any differences, the folder `test/golden/failure` will be created, with the before/after files, and the isolated and combine differences
 
 More functionality to come for this feature!
+

@@ -2,8 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/cupertino.dart' show CupertinoTheme;
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' show Colors, DefaultMaterialLocalizations, MaterialLocalizations, Theme;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
