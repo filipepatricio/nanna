@@ -25,7 +25,7 @@ class NoScrollGlow extends NotificationListener<OverscrollIndicatorNotification>
   NoScrollGlow({required Widget child})
       : super(
           onNotification: (overscroll) {
-            overscroll.disallowGlow();
+            overscroll.disallowIndicator();
             return false;
           },
           child: child,

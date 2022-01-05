@@ -5,10 +5,10 @@ part 'topic_page_state.freezed.dart';
 
 @freezed
 class TopicPageState with _$TopicPageState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TopicPageState.idle() = _TopicPageStateStateIdle;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TopicPageState.loading() = _TopicPageStateLoading;
 
   factory TopicPageState.showTutorialToast(String text) = _TopicPageStateShowTutorialToast;

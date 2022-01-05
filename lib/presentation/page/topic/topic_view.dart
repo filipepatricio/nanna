@@ -19,7 +19,6 @@ import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicView extends HookWidget {

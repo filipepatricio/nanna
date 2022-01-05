@@ -6,10 +6,10 @@ part 'explore_page_state.freezed.dart';
 
 @freezed
 class ExplorePageState with _$ExplorePageState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ExplorePageState.initialLoading() = _ExplorePageStateInitialLoading;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ExplorePageState.idle(List<ExploreContentArea> areas) = _ExplorePageStateIdle;
 
   factory ExplorePageState.showTutorialToast(String text) = _ExplorePageStateShowTutorialToast;

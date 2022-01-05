@@ -6,10 +6,10 @@ part 'reading_list_articles_select_view_state.freezed.dart';
 
 @freezed
 class ReadingListArticlesSelectViewState with _$ReadingListArticlesSelectViewState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ReadingListArticlesSelectViewState.initializing() = _ReadingListArticlesSelectViewStateInitializing;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ReadingListArticlesSelectViewState.idle(
     bool canSelectMore,
     List<MediaItemArticle> articles,
@@ -17,7 +17,7 @@ class ReadingListArticlesSelectViewState with _$ReadingListArticlesSelectViewSta
     int articlesSelectionLimit,
   ) = _ReadingListArticlesSelectViewStateIdle;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ReadingListArticlesSelectViewState.generatingShareImage() =
       _ReadingListArticlesSelectViewStateGeneratingShareImage;
 
