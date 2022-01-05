@@ -5,9 +5,9 @@ part 'settings_main_state.freezed.dart';
 
 @freezed
 class SettingsMainState with _$SettingsMainState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory SettingsMainState.init() = SettingsMainStateInit;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory SettingsMainState.loading() = SettingsMainStateLoading;
 }

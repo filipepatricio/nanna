@@ -5,7 +5,7 @@ part 'main_state.freezed.dart';
 
 @freezed
 class MainState with _$MainState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory MainState.init() = MainStateInit;
 
   const factory MainState.tokenExpired() = _MainStateTokenExpired;

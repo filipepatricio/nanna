@@ -5,9 +5,9 @@ part 'profile_page_state.freezed.dart';
 
 @freezed
 class ProfilePageState with _$ProfilePageState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ProfilePageState.initialLoading() = _ProfilePageStateInitialLoading;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ProfilePageState.idle() = _ProfilePageStateIdle;
 }

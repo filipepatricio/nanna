@@ -6,13 +6,13 @@ part 'todays_topics_page_state.freezed.dart';
 
 @freezed
 class TodaysTopicsPageState with _$TodaysTopicsPageState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TodaysTopicsPageState.idle(CurrentBrief currentBrief) = _TodaysTopicsPageStateIdle;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TodaysTopicsPageState.loading() = _TodaysTopicsPageStateLoading;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TodaysTopicsPageState.error() = _TodaysTopicsPageStateError;
 
   factory TodaysTopicsPageState.showTutorialToast(String text) = _TodaysTopicsPageStateShowTutorialToast;

@@ -6,16 +6,16 @@ part 'article_see_all_page_state.freezed.dart';
 
 @freezed
 class ArticleSeeAllPageState with _$ArticleSeeAllPageState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ArticleSeeAllPageState.loading() = _ArticleSeeAllPageStateLoading;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ArticleSeeAllPageState.withPagination(List<ArticleWithBackground> articles) =
       _ArticleSeeAllPageStateWithPagination;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ArticleSeeAllPageState.loadingMore(List<ArticleWithBackground> articles) = _ArticleSeeAllPageStateLoadingMore;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ArticleSeeAllPageState.allLoaded(List<ArticleWithBackground> articles) = _ArticleSeeAllPageStateAllLoaded;
 }

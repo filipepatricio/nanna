@@ -5,13 +5,13 @@ part 'notification_setting_switch_state.freezed.dart';
 
 @freezed
 class NotificationSettingSwitchState with _$NotificationSettingSwitchState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory NotificationSettingSwitchState.notInitialized() = _NotificationSettingSwitchStateNotInitialized;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory NotificationSettingSwitchState.processing(String name, bool value) =
       _NotificationSettingSwitchStateProcessing;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory NotificationSettingSwitchState.idle(String name, bool value) = _NotificationSettingSwitchStateIdle;
 }

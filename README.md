@@ -53,15 +53,16 @@ If you want to set custom api host, that application connects to, just include a
 
 or with:
 
-```—dart-define=host=http://localhost:4000/graphql```
+`—dart-define=host=http://localhost:4000/graphql`
 
 and run on terminal:
 
-```adb reverse tcp:4000 tcp:4000```
+`adb reverse tcp:4000 tcp:4000`
 
-* [https://stackoverflow.com/a/60655655/3100254]
+- [https://stackoverflow.com/a/60655655/3100254]
 
 ### How do I build release app on iOS?
+
 If you are not deploying the application, you probably don't need to build it in release mode. For performance testing use profile mode which is as much efficient as release mode.
 If you want to deploy the app, check out Fastlane instructions below.
 
@@ -75,7 +76,7 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
 
 * [ ] Mobile app stack:
 
-- Flutter : 2.5.3 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
+- Flutter : 2.8.1 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
 - Navigation : auto_route
 - Immutable data class : freezed
 - Logs: fimber
@@ -96,9 +97,9 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
   When you create Merge request, post URL to you MR on this channel and we will check it. To merge request we have to have at least one approve.
 
 * [ ] Project Architecture:
-Clean Architecture - TLDR. Split architecture into 3 layers for separation of UI, Business logic and Implementation.
+      Clean Architecture - TLDR. Split architecture into 3 layers for separation of UI, Business logic and Implementation.
 
-    User --> UI --> Business Logic --> Data access ---> Data source
+      User --> UI --> Business Logic --> Data access ---> Data source
 
 - [ ] Basically we split app in the 3 layers (4 folders).
 
@@ -128,10 +129,10 @@ Example:
     MyReadsPageState - initialLoading, idle
     @freezed
     class MyReadsPageState with _$MyReadsPageState {
-    @Implements(BuildState)
+    @Implements<BuildState>()
     factory MyReadsPageState.initialLoading() = _MyReadsPageStateInitialLoading;
 
-    @Implements(BuildState)
+    @Implements<BuildState>()
     factory MyReadsPageState.idle(MyReadsContent content) = _MyReadsPageStateIdle;
     }
 ```
@@ -155,6 +156,7 @@ example:
 ## Fastlane
 
 In case you need to deploy application using your local machine, you will need few things:
+
 - fastlane-ios-pass file containing passphrase you will need to decode certs that are stored in GitHub
 - password for `engineering-cd@betterinformed.io` Apple ID
 

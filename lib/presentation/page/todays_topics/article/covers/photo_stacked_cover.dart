@@ -6,9 +6,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class PhotoStackedCover extends HookWidget {
