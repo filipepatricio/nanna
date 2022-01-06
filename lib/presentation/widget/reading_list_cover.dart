@@ -1,6 +1,8 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
@@ -35,14 +37,16 @@ class ReadingListCover extends HookWidget {
           padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.m, AppDimens.m, AppDimens.l),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(
-                cloudinaryProvider
-                    .withPublicId(topic.coverImage.publicId)
-                    .transform()
-                    .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
-                    .fit()
-                    .generateNotNull(),
-              ),
+              image: kIsTest
+                  ? const AssetImage(AppRasterGraphics.testReadingListCoverImage) as ImageProvider
+                  : NetworkImage(
+                      cloudinaryProvider
+                          .withPublicId(topic.coverImage.publicId)
+                          .transform()
+                          .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
+                          .fit()
+                          .generateNotNull(),
+                    ),
               fit: BoxFit.cover,
               alignment: Alignment.center,
             ),

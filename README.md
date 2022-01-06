@@ -161,3 +161,22 @@ In case you need to deploy application using your local machine, you will need f
 - password for `engineering-cd@betterinformed.io` Apple ID
 
 Next step is to go to `ios` folder and run `fastlane match appstore --readonly` command and follow instructions. You will end up with all certs and provisioning profiles stored on your machine. Only thing left is archive the app and deploy it.
+
+## Visual Testing
+
+Visual testing is comparing a specific app state with a golden state, created at some point in the past
+
+Our aim is to have a visual test for every screen we have in the app, and in the case of complex ones, several golden images covering their most important states.
+
+The aim to figure out what has changed in our branch, is to compare the app's state in the develop branch, with the app's state in our branch.
+
+So, until this is automated, the steps to achieve this are:
+
+1. Checkout develop branch
+2. Create the golden images -- run `fvm flutter test --update-goldens --reporter expanded test/visual`. You can see the output in `test/visual/goldens`
+3. Checkout the work in progress branch
+4. Compare with the created golden images -- run `fvm flutter test --reporter expanded test/visual`
+5. If there are any differences, the folder `test/golden/failure` will be created, with the before/after files, and the isolated and combine differences
+
+More functionality to come for this feature!
+

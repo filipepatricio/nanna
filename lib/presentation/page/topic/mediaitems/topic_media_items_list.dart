@@ -8,8 +8,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
-import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +90,8 @@ class TopicMediaItemsList extends HookWidget {
           Positioned(
             left: AppDimens.l,
             bottom: AppDimens.xxxc,
-            child: ReadMoreLabel(
+            child: LinkLabel(
+              labelText: LocaleKeys.article_readMore.tr(),
               fontSize: AppDimens.m,
               onTap: () => _navigateToArticle(context, controller),
             ),
