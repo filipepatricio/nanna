@@ -43,13 +43,7 @@ class ArticleAreaView extends HookWidget {
                 ),
               ),
               SeeAllArrow(
-                onTap: () => AutoRouter.of(context).push(
-                  ArticleSeeAllPageRoute(
-                    areaId: area.id,
-                    title: area.title,
-                    entries: area.articles,
-                  ),
-                ),
+                onTap: () => _navigateToSeeAll(context),
               ),
             ],
           ),
@@ -65,17 +59,21 @@ class ArticleAreaView extends HookWidget {
               );
             },
             child: SizedBox(
-              height: listItemHeight,
+              height: AppDimens.exploreAreaArticleListItemHeight,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                itemBuilder: (context, index) => ArticleListItem(
-                  article: area.articles[index],
-                  themeColor: AppColors.background,
-                  cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
-                ),
+                itemBuilder: (context, index) => index == area.articles.length
+                    ? SeeAllArticlesListItem(
+                        onTap: () => _navigateToSeeAll(context),
+                      )
+                    : ArticleListItem(
+                        article: area.articles[index],
+                        themeColor: AppColors.background,
+                        cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+                      ),
                 separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-                itemCount: area.articles.length,
+                itemCount: area.articles.length + 1,
               ),
             ),
           ),
@@ -83,4 +81,12 @@ class ArticleAreaView extends HookWidget {
       ],
     );
   }
+
+  void _navigateToSeeAll(BuildContext context) => AutoRouter.of(context).push(
+        ArticleSeeAllPageRoute(
+          areaId: area.id,
+          title: area.title,
+          entries: area.articles,
+        ),
+      );
 }
