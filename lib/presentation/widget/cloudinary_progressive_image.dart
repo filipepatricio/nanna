@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ class CloudinaryProgressiveImage extends StatelessWidget {
   final CloudinaryTransformation cloudinaryTransformation;
   final BoxFit fit;
   final Alignment alignment;
+  final String testImage;
 
   const CloudinaryProgressiveImage({
     required this.width,
@@ -19,11 +22,22 @@ class CloudinaryProgressiveImage extends StatelessWidget {
     required this.cloudinaryTransformation,
     this.fit = BoxFit.fill,
     this.alignment = Alignment.center,
+    this.testImage = AppRasterGraphics.testArticleHeaderImage,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (kIsTest) {
+      // TODO: Image is not loading in golden images... check out
+      return Image.asset(
+        testImage,
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+      );
+    }
+
     return ProgressiveImage.custom(
       alignment: alignment,
       placeholderBuilder: (context) => SizedBox(
