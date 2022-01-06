@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -19,8 +20,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
-import '../topic_page_data.dart';
 
 const appBarHeight = kToolbarHeight + AppDimens.m;
 
