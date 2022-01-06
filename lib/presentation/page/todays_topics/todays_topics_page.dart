@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_c
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_title_hero.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -240,7 +241,7 @@ class _IdleContent extends HookWidget {
 
   void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
-      TodaysTopicsTopicPage(topic: currentBrief.topics[index], briefId: currentBrief.id),
+      TodaysTopicsTopicPage(pageData: TopicPageData.item(topic: currentBrief.topics[index], briefId: currentBrief.id)),
     );
   }
 }

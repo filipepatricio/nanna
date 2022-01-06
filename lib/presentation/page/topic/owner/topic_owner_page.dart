@@ -20,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../topic_page_data.dart';
+
 const appBarHeight = kToolbarHeight + AppDimens.m;
 
 class TopicOwnerPage extends HookWidget {
@@ -275,5 +277,5 @@ class _LastUpdatedTopics extends HookWidget {
 }
 
 void _onTopicTap(BuildContext context, Topic topic) {
-  AutoRouter.of(context).push(TopicOwnerTopicPage(topic: topic));
+  AutoRouter.of(context).push(TopicOwnerTopicPage(pageData: TopicPageData.item(topic: topic)));
 }

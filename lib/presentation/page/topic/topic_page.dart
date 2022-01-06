@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -17,13 +18,14 @@ const _mainScrollDepth = 0;
 
 class TopicPage extends HookWidget {
   final Topic topic;
-  final String? briefId;
 
-  const TopicPage({
-    required this.topic,
-    this.briefId,
+  TopicPage({
+    required TopicPageData pageData,
     Key? key,
-  }) : super(key: key);
+  })  : topic = _getTopic(pageData),
+        super(key: key);
+
+  static Topic _getTopic(TopicPageData pageData) => pageData.map(item: (data) => data.topic);
 
   @override
   Widget build(BuildContext context) {
