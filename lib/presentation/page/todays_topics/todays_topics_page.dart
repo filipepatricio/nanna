@@ -104,12 +104,12 @@ class TodaysTopicsPage extends HookWidget {
         duration: const Duration(milliseconds: 250),
         child: state.maybeMap(
           idle: (state) => _IdleContent(
-            dailyBriefCubit: cubit,
+            todaysTopicsCubit: cubit,
             currentBrief: state.currentBrief,
             controller: controller,
             cardStackWidth: cardStackWidth,
           ),
-          error: (_) => StackedCardsErrorView(cardStackWidth: cardStackWidth),
+          error: (_) => StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth),
           loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
           orElse: () => const SizedBox(),
         ),
@@ -119,13 +119,13 @@ class TodaysTopicsPage extends HookWidget {
 }
 
 class _IdleContent extends HookWidget {
-  final TodaysTopicsPageCubit dailyBriefCubit;
+  final TodaysTopicsPageCubit todaysTopicsCubit;
   final CurrentBrief currentBrief;
   final PageController controller;
   final double cardStackWidth;
 
   const _IdleContent({
-    required this.dailyBriefCubit,
+    required this.todaysTopicsCubit,
     required this.currentBrief,
     required this.controller,
     required this.cardStackWidth,
@@ -171,16 +171,16 @@ class _IdleContent extends HookWidget {
                           scrollDirection: Axis.horizontal,
                           onPageChanged: (index) {
                             if (index < currentBrief.topics.length) {
-                              dailyBriefCubit.trackTopicPageSwipe(currentBrief.topics[index].id, index + 1);
+                              todaysTopicsCubit.trackTopicPageSwipe(currentBrief.topics[index].id, index + 1);
                             } else {
-                              dailyBriefCubit.trackRelaxPage();
+                              todaysTopicsCubit.trackRelaxPage();
                             }
                           },
                           children: [
                             ..._buildTopicCards(
                               context,
                               controller,
-                              dailyBriefCubit,
+                              todaysTopicsCubit,
                               currentBrief,
                               cardStackWidth,
                               constraints.maxHeight,
