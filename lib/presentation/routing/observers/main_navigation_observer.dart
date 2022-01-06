@@ -13,9 +13,14 @@ class MainNavigationObserver extends AutoRouterObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
     switch (route.settings.name) {
+      case TodaysTopicsTopicPage.name:
+        final args = route.settings.arguments as TodaysTopicsTopicPageArgs;
+        final topicId = args.pageData.topic.id;
+        final briefId = args.pageData.briefId;
+        return _trackActivityUseCase.trackPage(AnalyticsPage.topic(topicId, briefId));
       case TopicPageRoute.name:
         final args = route.settings.arguments as TopicPageRouteArgs;
-        final topicId = args.topic.id;
+        final topicId = args.pageData.topic.id;
         return _trackActivityUseCase.trackPage(AnalyticsPage.topic(topicId));
       case MediaItemPageRoute.name:
         // Handled in MediaItemCubit
@@ -26,15 +31,13 @@ class MainNavigationObserver extends AutoRouterObserver {
       case TopicsSeeAllPageRoute.name:
         final args = route.settings.arguments as TopicsSeeAllPageRouteArgs;
         return _trackActivityUseCase.trackPage(AnalyticsPage.exploreArea(args.areaId));
+      case SettingsMainPageRoute.name:
+        return _trackActivityUseCase.trackPage(AnalyticsPage.settings());
+      case SettingsAccountPageRoute.name:
+        return _trackActivityUseCase.trackPage(AnalyticsPage.accountSettings());
+      case SettingsNotificationsPageRoute.name:
+        return _trackActivityUseCase.trackPage(AnalyticsPage.notificationSettings());
       default:
-        switch (route.settings.name) {
-          case SettingsMainPageRoute.name:
-            return _trackActivityUseCase.trackPage(AnalyticsPage.settings());
-          case SettingsAccountPageRoute.name:
-            return _trackActivityUseCase.trackPage(AnalyticsPage.accountSettings());
-          case SettingsNotificationsPageRoute.name:
-            return _trackActivityUseCase.trackPage(AnalyticsPage.notificationSettings());
-        }
         return;
     }
   }
