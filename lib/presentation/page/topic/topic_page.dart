@@ -17,9 +17,11 @@ const _mainScrollDepth = 0;
 
 class TopicPage extends HookWidget {
   final Topic topic;
+  final String? briefId;
 
   const TopicPage({
     required this.topic,
+    this.briefId,
     Key? key,
   }) : super(key: key);
 

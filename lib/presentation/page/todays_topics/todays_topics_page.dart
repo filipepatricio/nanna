@@ -240,7 +240,7 @@ class _IdleContent extends HookWidget {
 
   void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
-      TodaysTopicsTopicPage(topic: currentBrief.topics[index]),
+      TodaysTopicsTopicPage(topic: currentBrief.topics[index], briefId: currentBrief.id),
     );
   }
 }

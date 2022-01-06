@@ -16,7 +16,8 @@ class MainNavigationObserver extends AutoRouterObserver {
       case TodaysTopicsTopicPage.name:
         final args = route.settings.arguments as TodaysTopicsTopicPageArgs;
         final topicId = args.topic.id;
-        return _trackActivityUseCase.trackPage(AnalyticsPage.topic(topicId));
+        final briefId = args.briefId;
+        return _trackActivityUseCase.trackPage(AnalyticsPage.topic(topicId, briefId));
       case TopicPageRoute.name:
         final args = route.settings.arguments as TopicPageRouteArgs;
         final topicId = args.topic.id;
