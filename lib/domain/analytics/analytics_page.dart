@@ -14,7 +14,8 @@ class AnalyticsPage with _$AnalyticsPage {
   factory AnalyticsPage.article(String articleId, [String? topicId]) =>
       AnalyticsPage._('Article', {'article_id': articleId, 'topic_id': topicId});
 
-  factory AnalyticsPage.topic(String topicId) => AnalyticsPage._('Topic', {'topic_id': topicId});
+  factory AnalyticsPage.topic(String topicId, [String? briefId]) =>
+      AnalyticsPage._('Topic', {'topic_id': topicId, 'brief_id': briefId});
 
   factory AnalyticsPage.dailyBrief(String briefId) => AnalyticsPage._('Daily Brief', {'brief_id': briefId});
 

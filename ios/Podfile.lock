@@ -1,5 +1,5 @@
 PODS:
-  - Amplitude (8.7.1)
+  - Amplitude (7.0.1)
   - Analytics (4.1.6)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
@@ -74,7 +74,7 @@ PODS:
   - flutter_segment (0.0.1):
     - Analytics (= 4.1.6)
     - Flutter
-    - Segment-Amplitude (= 3.3.2)
+    - Segment-Amplitude (= 3.2.4)
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -121,8 +121,8 @@ PODS:
     - Flutter
   - PromisesObjC (2.0.0)
   - Reachability (3.2)
-  - Segment-Amplitude (3.3.2):
-    - Amplitude (~> 8.3)
+  - Segment-Amplitude (3.2.4):
+    - Amplitude (~> 7.0.1)
     - Analytics
   - Sentry (7.5.4):
     - Sentry/Core (= 7.5.4)
@@ -253,7 +253,7 @@ CHECKOUT OPTIONS:
     :tag: 8.6.0
 
 SPEC CHECKSUMS:
-  Amplitude: 834c7332dfb9640a751e21c13efb22a07c0c12d4
+  Amplitude: 31a9038dca905b78294418ed277da9c2e07658ad
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   connectivity_plus: 5f0eb61093bec56935f21a1699dd2758bc895587
@@ -271,7 +271,7 @@ SPEC CHECKSUMS:
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
-  flutter_segment: 9cdace39639298eb31ad1555e5916edf8f9fc6b8
+  flutter_segment: f077982617b5956efb165e51157b8138248b3b93
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   google_sign_in: c5cecea71f3be43282263550556e311c4cc03582
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
@@ -284,7 +284,7 @@ SPEC CHECKSUMS:
   path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Segment-Amplitude: 6c1e59c8c278a21029ba7a6a788fcb31b9233a2c
+  Segment-Amplitude: f75f5fd7ba25f95914a4e93139c0a1737d17e44f
   Sentry: 5c5dd4005f3b7b9765d5a8871232cddbd0d888b7
   sentry_flutter: 4cd99764f9fe01c9415790d1f3fb1c7fd3a5cbe9
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
