@@ -14,6 +14,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glow_scroll_behaviour.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
@@ -73,48 +74,60 @@ class TodaysTopicsPage extends HookWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        centerTitle: false,
-        titleSpacing: AppDimens.l,
-        title: Row(
-          children: [
-            TodaysTopicsTitleHero(
-              title: relaxState.value ? LocaleKeys.todaysTopics_relax.tr() : LocaleKeys.todaysTopics_title.tr(),
-            ),
-            const Spacer(),
-            Visibility(
-              visible: relaxState.value,
-              child: Container(
-                height: AppDimens.s,
-                width: AppDimens.s,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppDimens.xxs),
-                  color: AppColors.limeGreen,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          centerTitle: false,
+          titleSpacing: AppDimens.l,
+          title: Row(
+            children: [
+              TodaysTopicsTitleHero(
+                title: relaxState.value ? LocaleKeys.todaysTopics_relax.tr() : LocaleKeys.todaysTopics_title.tr(),
+              ),
+              const Spacer(),
+              Visibility(
+                visible: relaxState.value,
+                child: Container(
+                  height: AppDimens.s,
+                  width: AppDimens.s,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppDimens.xxs),
+                    color: AppColors.limeGreen,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: AppDimens.s),
-          ],
-        ),
-      ),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        child: state.maybeMap(
-          idle: (state) => _IdleContent(
-            todaysTopicsCubit: cubit,
-            currentBrief: state.currentBrief,
-            controller: controller,
-            cardStackWidth: cardStackWidth,
+              const SizedBox(width: AppDimens.s),
+            ],
           ),
-          error: (_) => StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth),
-          loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
-          orElse: () => const SizedBox(),
         ),
-      ),
-    );
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: state.maybeMap(
+                idle: (state) => _IdleContent(
+                  todaysTopicsCubit: cubit,
+                  currentBrief: state.currentBrief,
+                  controller: controller,
+                  cardStackWidth: cardStackWidth,
+                ),
+                error: (_) => RefreshIndicator(
+                    onRefresh: cubit.initialize,
+                    color: AppColors.darkGrey,
+                    child: CustomScrollView(scrollBehavior: NoGlowScrollBehavior(), slivers: [
+                      SliverToBoxAdapter(
+                          child: SizedBox(
+                              height: constraints.maxHeight,
+                              child:
+                                  StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth)))
+                    ])),
+                loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
+                orElse: () => const SizedBox(),
+              ),
+            );
+          },
+        ));
   }
 }
 
@@ -165,36 +178,45 @@ class _IdleContent extends HookWidget {
                 Positioned.fill(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      return NoScrollGlow(
-                        child: PageView(
-                          controller: controller,
-                          scrollDirection: Axis.horizontal,
-                          onPageChanged: (index) {
-                            if (index < currentBrief.topics.length) {
-                              todaysTopicsCubit.trackTopicPageSwipe(currentBrief.topics[index].id, index + 1);
-                            } else {
-                              todaysTopicsCubit.trackRelaxPage();
-                            }
-                          },
-                          children: [
-                            ..._buildTopicCards(
-                              context,
-                              controller,
-                              todaysTopicsCubit,
-                              currentBrief,
-                              cardStackWidth,
-                              constraints.maxHeight,
-                            ),
-                            Hero(
-                              tag: HeroTag.dailyBriefRelaxPage,
-                              child: RelaxView(
-                                lastPageAnimationProgressState: lastPageAnimationProgressState,
-                                goodbyeHeadline: currentBrief.goodbye,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      return RefreshIndicator(
+                          onRefresh: todaysTopicsCubit.initialize,
+                          color: AppColors.darkGrey,
+                          child: CustomScrollView(scrollBehavior: NoGlowScrollBehavior(), slivers: [
+                            SliverToBoxAdapter(
+                                child: SizedBox(
+                                    height: constraints.maxHeight,
+                                    child: NoScrollGlow(
+                                      child: PageView(
+                                        controller: controller,
+                                        scrollDirection: Axis.horizontal,
+                                        onPageChanged: (index) {
+                                          if (index < currentBrief.topics.length) {
+                                            todaysTopicsCubit.trackTopicPageSwipe(
+                                                currentBrief.topics[index].id, index + 1);
+                                          } else {
+                                            todaysTopicsCubit.trackRelaxPage();
+                                          }
+                                        },
+                                        children: [
+                                          ..._buildTopicCards(
+                                            context,
+                                            controller,
+                                            todaysTopicsCubit,
+                                            currentBrief,
+                                            cardStackWidth,
+                                            constraints.maxHeight,
+                                          ),
+                                          Hero(
+                                            tag: HeroTag.dailyBriefRelaxPage,
+                                            child: RelaxView(
+                                              lastPageAnimationProgressState: lastPageAnimationProgressState,
+                                              goodbyeHeadline: currentBrief.goodbye,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )))
+                          ]));
                     },
                   ),
                 ),
