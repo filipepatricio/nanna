@@ -18,6 +18,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
     final result = await _client.query(
       QueryOptions(
         document: DailyBriefGql.currentBrief(),
+        fetchPolicy: FetchPolicy.noCache,
       ),
     );
 
