@@ -10,7 +10,8 @@
     "seeAll": "See All",
     "search": "Search",
     "gotIt": "Got it",
-    "done": "Done"
+    "done": "Done",
+    "tryAgain": "Try again"
   },
   "onboarding": {
     "title": "How we use push notifications",

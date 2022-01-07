@@ -28,8 +28,8 @@ class ArticleContentMarkdown extends HookWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       child: InformedMarkdownBody(
         markdown: markdown,
-        baseTextStyle: AppTypography.b0RegularLora,
-        strongTextStyle: AppTypography.b0Bold,
+        baseTextStyle: AppTypography.articleText,
+        strongTextStyle: AppTypography.articleTextBold,
         selectable: true,
         paddingBuilders: <String, MarkdownPaddingBuilder>{
           'p': PPaddingBuilder(),
@@ -47,10 +47,10 @@ class ArticleContentMarkdown extends HookWidget {
 
 class PPaddingBuilder extends MarkdownPaddingBuilder {
   @override
-  EdgeInsets getPadding() => const EdgeInsets.only(top: AppDimens.l);
+  EdgeInsets getPadding() => const EdgeInsets.only(bottom: AppDimens.m + AppDimens.xxs);
 }
 
 class HeadingsPaddingBuilder extends MarkdownPaddingBuilder {
   @override
-  EdgeInsets getPadding() => const EdgeInsets.only(top: AppDimens.xc);
+  EdgeInsets getPadding() => const EdgeInsets.only(top: AppDimens.sl, bottom: AppDimens.m);
 }

@@ -8,6 +8,7 @@ class AppColors {
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreenBleached = Color(0x64BBF383);
   static const Color textPrimary = Color(0xff282B35);
+  static const Color textGrey = Color(0xff989898);
   static const Color darkGreyBackground = Color(0xff282B35);
   static const Color lightGrey = Color(0xffFCFAF8);
   static const Color background = Color(0xffFCFAF8);
@@ -32,7 +33,6 @@ class AppColors {
 
   static Color shadowDarkColor = Colors.black.withOpacity(0.4);
   static Color shadowColor = Colors.black.withOpacity(0.12);
-  static Color greyFont = textPrimary.withOpacity(0.44);
 
   static const Color settingsHeader = Color(0x44282B35);
   static const Color settingsIcon = Color(0xff898A8D);

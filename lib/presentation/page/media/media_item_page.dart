@@ -365,9 +365,7 @@ class _IdleContent extends HookWidget {
                                   child: child,
                                 );
                               },
-                              child: const AnimatedPointerDown(
-                                arrowColor: AppColors.textPrimary,
-                              ),
+                              child: const AnimatedPointerDown(arrowColor: AppColors.textPrimary),
                             ),
                           ),
                         ),

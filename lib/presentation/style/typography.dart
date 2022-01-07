@@ -21,10 +21,26 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h0ExtraBold = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 36,
+    height: 1.23,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h0Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 36,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h1ExtraBold = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 24,
+    height: 1.34,
     color: AppColors.textPrimary,
   );
 
@@ -205,7 +221,7 @@ class AppTypography {
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 18,
-    height: 1.75,
+    height: 1.44,
     color: AppColors.textPrimary,
   );
 
@@ -223,14 +239,6 @@ class AppTypography {
     fontSize: 16,
     height: 1.61,
     letterSpacing: 0.15,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle b0RegularLora = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontFamily: fontFamilyLora,
-    fontSize: 18,
-    height: 1.75,
     color: AppColors.textPrimary,
   );
 
@@ -316,6 +324,22 @@ class AppTypography {
     fontSize: 14,
     height: 1.28,
     letterSpacing: 0.7,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle articleText = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyLora,
+    fontSize: 18,
+    height: 1.61,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle articleTextBold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 18,
+    height: 1.44,
     color: AppColors.textPrimary,
   );
 

@@ -98,7 +98,7 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 margin: 0;
                 padding-left: 24px;
                 padding-right: 24px;
-                padding-bottom: 24px;
+                padding-bottom: 18px;
               }
               h1, h2, h3, h4, h5, h6 {
                 line-height: 24px;
@@ -107,7 +107,7 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 padding-right: 24px;
               }
               strong{
-                line-height: 24px;
+                line-height: 26px;
                 font-family: "Plus Jakarta Sans";
               }
               img {
