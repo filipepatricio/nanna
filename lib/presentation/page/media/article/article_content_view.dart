@@ -13,8 +13,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-const _articleTopMargin = 100.0;
-
 class ArticleContentView extends StatelessWidget {
   final MediaItemArticle article;
   final ArticleContent content;
@@ -49,7 +47,7 @@ class ArticleContentView extends StatelessWidget {
             children: [
               Container(
                 key: articleContentKey,
-                child: articleContent(),
+                child: _articleContent(),
               ),
               const SizedBox(height: AppDimens.l),
             ],
@@ -59,7 +57,7 @@ class ArticleContentView extends StatelessWidget {
     ));
   }
 
-  Widget? articleContent() {
+  Widget? _articleContent() {
     if (content.type == ArticleContentType.markdown) {
       return ArticleContentMarkdown(
         markdown: content.content,
@@ -84,21 +82,22 @@ class _ArticleHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final author = article.author;
+    final metadataStyle = AppTypography.systemText.copyWith(color: AppColors.textGrey, height: 1.12);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: _articleTopMargin),
+        const SizedBox(height: AppDimens.xxc),
         if (author != null) ...[
           Text(
             LocaleKeys.article_articleBy.tr(args: [author]),
-            style: AppTypography.systemText,
+            style: metadataStyle,
           ),
-          const SizedBox(height: AppDimens.xxl),
+          const SizedBox(height: AppDimens.m),
         ],
         InformedMarkdownBody(
           markdown: article.title,
-          baseTextStyle: AppTypography.h1Bold,
+          baseTextStyle: AppTypography.h1ExtraBold,
           highlightColor: AppColors.transparent,
         ),
         const SizedBox(height: AppDimens.m),
@@ -107,8 +106,17 @@ class _ArticleHeader extends StatelessWidget {
           isLight: false,
           fullDate: true,
           showLogo: false,
+          textStyle: metadataStyle,
+          color: metadataStyle.color,
         ),
-        const SizedBox(height: AppDimens.c),
+        const SizedBox(height: AppDimens.xl),
+        const Divider(
+          height: 0.5,
+          color: AppColors.greyDividerColor,
+          indent: AppDimens.xxl,
+          endIndent: AppDimens.xxl,
+        ),
+        const SizedBox(height: AppDimens.xl),
       ],
     );
   }
