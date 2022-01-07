@@ -50,6 +50,7 @@ class OnboardingPage extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
+            flex: 20,
             child: PageView(
               controller: _controller,
               onPageChanged: (index) {
@@ -59,61 +60,74 @@ class OnboardingPage extends HookWidget {
               children: _pageList,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(AppDimens.xxl),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PageDotIndicator(
-                  pageCount: _pageList.length,
-                  controller: _controller,
-                ),
-                const SizedBox(height: AppDimens.c),
-                Row(
-                  children: [
-                    if (!isLastPage) ...[
-                      TextButton(
-                        onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
-                        child: Text(
-                          LocaleKeys.common_skip.tr(),
-                          style: AppTypography.buttonBold,
-                        ),
-                      ),
-                    ],
-                    const Spacer(),
-                    if (isLastPage)
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: AppColors.limeGreen,
-                          borderRadius: BorderRadius.all(Radius.circular(AppDimens.s)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                          child: TextButton(
+          const Spacer(flex: 1),
+          Expanded(
+            flex: 4,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                      child: PageDotIndicator(
+                    pageCount: _pageList.length,
+                    controller: _controller,
+                  )),
+                  const Spacer(),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        if (!isLastPage) ...[
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
                             onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
                             child: Text(
-                              LocaleKeys.common_continue.tr(),
+                              LocaleKeys.common_skip.tr(),
                               style: AppTypography.buttonBold,
                             ),
                           ),
-                        ),
-                      )
-                    else
-                      IconButton(
-                        onPressed: () => _controller.nextPage(
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeIn,
-                        ),
-                        icon: SvgPicture.asset(
-                          AppVectorGraphics.fullArrowRight,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                  ],
-                ),
-              ],
+                        ],
+                        const Spacer(),
+                        if (isLastPage)
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: AppColors.limeGreen,
+                              borderRadius: BorderRadius.all(Radius.circular(AppDimens.s)),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.zero,
+                              child: TextButton(
+                                onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
+                                child: Text(
+                                  LocaleKeys.common_continue.tr(),
+                                  style: AppTypography.buttonBold,
+                                ),
+                              ),
+                            ),
+                          )
+                        else
+                          IconButton(
+                            onPressed: () => _controller.nextPage(
+                              duration: const Duration(milliseconds: 400),
+                              curve: Curves.easeIn,
+                            ),
+                            icon: SvgPicture.asset(
+                              AppVectorGraphics.fullArrowRight,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
+          const SizedBox(height: AppDimens.m),
         ],
       ),
     );

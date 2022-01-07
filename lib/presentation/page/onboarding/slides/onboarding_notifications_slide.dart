@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -13,41 +14,43 @@ class OnboardingNotificationsSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: AppDimens.xl,
-        right: AppDimens.xl,
-        top: AppDimens.xxxl,
-        bottom: AppDimens.l,
-      ),
-      child: SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+      child: Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(height: AppDimens.c),
-            Text(
-              tr(LocaleKeys.onboarding_headerSlideThree),
-              style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
-            ),
-            const SizedBox(height: AppDimens.xxxl),
-            _BulletPointRow(
-              header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerOne),
-              description: tr(LocaleKeys.onboarding_notificationBulletPoints_descOne),
-              icon: AppVectorGraphics.happyGreenSun,
-            ),
-            const SizedBox(height: AppDimens.xxxl),
-            _BulletPointRow(
-              header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerTwo),
-              description: tr(LocaleKeys.onboarding_notificationBulletPoints_descTwo),
-              icon: AppVectorGraphics.notes,
-            ),
-            const SizedBox(height: AppDimens.xxxl),
-            _BulletPointRow(
-              header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerThree),
-              description: tr(LocaleKeys.onboarding_notificationBulletPoints_descThree),
-              icon: AppVectorGraphics.megaphone,
-            ),
-            const SizedBox(height: AppDimens.xxxl),
+            const Spacer(flex: 3),
+            Expanded(
+                flex: 2,
+                child: Text(
+                  tr(LocaleKeys.onboarding_headerSlideThree),
+                  style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
+                )),
+            const Spacer(),
+            Expanded(
+                flex: 4,
+                child: _BulletPointRow(
+                  header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerOne),
+                  description: tr(LocaleKeys.onboarding_notificationBulletPoints_descOne),
+                  icon: AppVectorGraphics.happyGreenSun,
+                )),
+            const Spacer(),
+            Expanded(
+                flex: 4,
+                child: _BulletPointRow(
+                  header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerTwo),
+                  description: tr(LocaleKeys.onboarding_notificationBulletPoints_descTwo),
+                  icon: AppVectorGraphics.notes,
+                )),
+            const Spacer(),
+            Expanded(
+                flex: 4,
+                child: _BulletPointRow(
+                  header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerThree),
+                  description: tr(LocaleKeys.onboarding_notificationBulletPoints_descThree),
+                  icon: AppVectorGraphics.megaphone,
+                )),
           ],
         ),
       ),
@@ -89,7 +92,7 @@ class _BulletPointRow extends StatelessWidget {
                 style: AppTypography.h3Bold16.copyWith(height: 1.5, letterSpacing: 0),
               ),
               Flexible(
-                child: Text(
+                child: AutoSizeText(
                   description,
                   style: AppTypography.b1Regular,
                 ),
