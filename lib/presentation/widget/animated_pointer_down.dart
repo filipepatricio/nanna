@@ -7,9 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class AnimatedPointerDown extends HookWidget {
   final Color arrowColor;
-  final Function() onTap;
+  final Function()? onTap;
 
-  const AnimatedPointerDown({required this.arrowColor, required this.onTap, Key? key}) : super(key: key);
+  const AnimatedPointerDown({required this.arrowColor, this.onTap, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class AnimatedPointerDown extends HookWidget {
 
     return ExpandTapWidget(
       tapPadding: const EdgeInsets.all(AppDimens.m),
-      onTap: onTap,
+      onTap: onTap ?? () {},
       child: SlideTransition(
         position: animation,
         child: SvgPicture.asset(
