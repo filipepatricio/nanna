@@ -5,13 +5,13 @@ part 'sign_in_page_state.freezed.dart';
 
 @freezed
 class SignInPageState with _$SignInPageState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory SignInPageState.idle(bool emailCorrect) = _SignInPageStateIdle;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory SignInPageState.magicLink() = _SignInPageStateMagicLink;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory SignInPageState.processing() = _SignInPageStateProcessing;
 
   factory SignInPageState.success() = _SignInPageStateSuccess;

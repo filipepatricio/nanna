@@ -53,15 +53,16 @@ If you want to set custom api host, that application connects to, just include a
 
 or with:
 
-```—dart-define=host=http://localhost:4000/graphql```
+`—dart-define=host=http://localhost:4000/graphql`
 
 and run on terminal:
 
-```adb reverse tcp:4000 tcp:4000```
+`adb reverse tcp:4000 tcp:4000`
 
-* [https://stackoverflow.com/a/60655655/3100254]
+- [https://stackoverflow.com/a/60655655/3100254]
 
 ### How do I build release app on iOS?
+
 If you are not deploying the application, you probably don't need to build it in release mode. For performance testing use profile mode which is as much efficient as release mode.
 If you want to deploy the app, check out Fastlane instructions below.
 
@@ -75,7 +76,7 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
 
 * [ ] Mobile app stack:
 
-- Flutter : 2.5.3 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
+- Flutter : 2.8.1 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
 - Navigation : auto_route
 - Immutable data class : freezed
 - Logs: fimber
@@ -96,9 +97,9 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
   When you create Merge request, post URL to you MR on this channel and we will check it. To merge request we have to have at least one approve.
 
 * [ ] Project Architecture:
-Clean Architecture - TLDR. Split architecture into 3 layers for separation of UI, Business logic and Implementation.
+      Clean Architecture - TLDR. Split architecture into 3 layers for separation of UI, Business logic and Implementation.
 
-    User --> UI --> Business Logic --> Data access ---> Data source
+      User --> UI --> Business Logic --> Data access ---> Data source
 
 - [ ] Basically we split app in the 3 layers (4 folders).
 
@@ -128,10 +129,10 @@ Example:
     MyReadsPageState - initialLoading, idle
     @freezed
     class MyReadsPageState with _$MyReadsPageState {
-    @Implements(BuildState)
+    @Implements<BuildState>()
     factory MyReadsPageState.initialLoading() = _MyReadsPageStateInitialLoading;
 
-    @Implements(BuildState)
+    @Implements<BuildState>()
     factory MyReadsPageState.idle(MyReadsContent content) = _MyReadsPageStateIdle;
     }
 ```
@@ -155,7 +156,27 @@ example:
 ## Fastlane
 
 In case you need to deploy application using your local machine, you will need few things:
+
 - fastlane-ios-pass file containing passphrase you will need to decode certs that are stored in GitHub
 - password for `engineering-cd@betterinformed.io` Apple ID
 
 Next step is to go to `ios` folder and run `fastlane match appstore --readonly` command and follow instructions. You will end up with all certs and provisioning profiles stored on your machine. Only thing left is archive the app and deploy it.
+
+## Visual Testing
+
+Visual testing is comparing a specific app state with a golden state, created at some point in the past
+
+Our aim is to have a visual test for every screen we have in the app, and in the case of complex ones, several golden images covering their most important states.
+
+The aim to figure out what has changed in our branch, is to compare the app's state in the develop branch, with the app's state in our branch.
+
+So, until this is automated, the steps to achieve this are:
+
+1. Checkout develop branch
+2. Create the golden images -- run `fvm flutter test --update-goldens --reporter expanded test/visual`. You can see the output in `test/visual/goldens`
+3. Checkout the work in progress branch
+4. Compare with the created golden images -- run `fvm flutter test --reporter expanded test/visual`
+5. If there are any differences, the folder `test/golden/failure` will be created, with the before/after files, and the isolated and combine differences
+
+More functionality to come for this feature!
+

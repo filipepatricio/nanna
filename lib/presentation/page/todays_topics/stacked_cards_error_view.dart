@@ -1,7 +1,9 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +13,10 @@ import 'package:flutter_svg/svg.dart';
 class StackedCardsErrorView extends HookWidget {
   final double cardStackWidth;
   final EdgeInsets padding;
+  final Function? retryAction;
   const StackedCardsErrorView({
     required this.cardStackWidth,
+    this.retryAction,
     Key? key,
     this.padding = const EdgeInsets.only(
       bottom: AppDimens.c,
@@ -30,7 +34,7 @@ class StackedCardsErrorView extends HookWidget {
             coverSize: Size(cardStackWidth, constraints.maxHeight),
             center: true,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(AppVectorGraphics.sadSun),
@@ -45,6 +49,19 @@ class StackedCardsErrorView extends HookWidget {
                   style: AppTypography.h3Normal,
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: AppDimens.l),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
+                    child: retryAction != null
+                        ? FilledButton(
+                            text: LocaleKeys.common_tryAgain.tr(),
+                            fillColor: AppColors.textPrimary,
+                            textColor: AppColors.white,
+                            onTap: () async {
+                              await retryAction!();
+                            },
+                          )
+                        : null),
               ],
             ),
           );

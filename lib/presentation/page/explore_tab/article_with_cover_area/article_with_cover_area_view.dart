@@ -11,8 +11,8 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
-import 'package:better_informed_mobile/presentation/widget/read_more_label.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/horizontal_list_interaction_listener.dart';
@@ -52,15 +52,7 @@ class ArticleWithCoverAreaView extends HookWidget {
                     maxLines: 2,
                   ),
                 ),
-                SeeAllArrow(
-                  onTap: () => AutoRouter.of(context).push(
-                    ArticleSeeAllPageRoute(
-                      areaId: area.id,
-                      title: area.title,
-                      entries: [area.featuredArticle] + area.articles,
-                    ),
-                  ),
-                ),
+                SeeAllArrow(onTap: () => _navigateToSeeAll(context)),
               ],
             ),
           ),
@@ -87,17 +79,21 @@ class ArticleWithCoverAreaView extends HookWidget {
                 );
               },
               child: SizedBox(
-                height: listItemHeight,
+                height: AppDimens.exploreAreaArticleListItemHeight,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  itemBuilder: (context, index) => ArticleListItem(
-                    article: area.articles[index],
-                    themeColor: themeColor,
-                    cardColor: AppColors.white,
-                  ),
+                  itemBuilder: (context, index) => index == area.articles.length
+                      ? SeeAllArticlesListItem(
+                          onTap: () => _navigateToSeeAll(context),
+                        )
+                      : ArticleListItem(
+                          article: area.articles[index],
+                          themeColor: themeColor,
+                          cardColor: AppColors.white,
+                        ),
                   separatorBuilder: (context, index) => const SizedBox(width: AppDimens.s),
-                  itemCount: area.articles.length,
+                  itemCount: area.articles.length + 1,
                 ),
               ),
             ),
@@ -107,6 +103,14 @@ class ArticleWithCoverAreaView extends HookWidget {
       ),
     );
   }
+
+  void _navigateToSeeAll(BuildContext context) => AutoRouter.of(context).push(
+        ArticleSeeAllPageRoute(
+          areaId: area.id,
+          title: area.title,
+          entries: [area.featuredArticle] + area.articles,
+        ),
+      );
 }
 
 class _MainArticle extends HookWidget {
@@ -197,7 +201,13 @@ class _MainArticleCover extends StatelessWidget {
             baseTextStyle: AppTypography.h1Bold.copyWith(color: foregroundColor),
           ),
           const SizedBox(height: AppDimens.m),
-          ReadMoreLabel(foregroundColor: foregroundColor),
+          LinkLabel(
+            labelText: LocaleKeys.article_readMore.tr(),
+            foregroundColor: foregroundColor,
+            onTap: () => AutoRouter.of(context).push(
+              MediaItemPageRoute(pageData: MediaItemPageData.singleItem(article: entry)),
+            ),
+          ),
           const Spacer(),
           if (timeToRead != null)
             Text(

@@ -151,6 +151,12 @@ class AppDimens {
   /// 366
   static const exploreAreaFeaturedArticleHeight = 366.0;
 
+  /// 155
+  static const exploreAreaArticleListItemWidth = 155.0;
+
+  /// 260
+  static const exploreAreaArticleListItemHeight = 260.0;
+
   /// 260
   static const exploreAreaArticleSeeAllCoverHeight = 260.0;
 

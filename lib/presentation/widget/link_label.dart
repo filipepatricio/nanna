@@ -1,20 +1,22 @@
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 
-class ReadMoreLabel extends StatelessWidget {
+class LinkLabel extends StatelessWidget {
+  final String labelText;
   final Color foregroundColor;
   final double fontSize;
-  final Function()? onTap;
+  final MainAxisAlignment horizontalAlignment;
+  final void Function() onTap;
 
-  const ReadMoreLabel({
-    this.onTap,
+  const LinkLabel({
+    required this.labelText,
+    required this.onTap,
     this.foregroundColor = AppColors.textPrimary,
     this.fontSize = 14,
+    this.horizontalAlignment = MainAxisAlignment.start,
     Key? key,
   }) : super(key: key);
 
@@ -22,12 +24,13 @@ class ReadMoreLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpandTapWidget(
       tapPadding: const EdgeInsets.all(AppDimens.ml),
-      onTap: onTap ?? () {},
+      onTap: onTap,
       child: Row(
+        mainAxisAlignment: horizontalAlignment,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            LocaleKeys.article_readMore.tr(),
+            labelText,
             style: AppTypography.h5BoldSmall.copyWith(
               decoration: TextDecoration.underline,
               fontSize: fontSize,

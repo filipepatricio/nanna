@@ -7,20 +7,20 @@ part 'media_item_state.freezed.dart';
 
 @freezed
 class MediaItemState with _$MediaItemState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory MediaItemState.initializing() = _MediaItemStateInitializing;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory MediaItemState.loading() = _MediaItemStateLoading;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory MediaItemState.idleMultiItems(
     MediaItemArticle header,
     ArticleContent content,
     bool hasNext,
   ) = MultiMediaItemStateIdle;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory MediaItemState.idleSingleItem(
     MediaItemArticle header,
     ArticleContent content,
@@ -28,6 +28,6 @@ class MediaItemState with _$MediaItemState {
 
   const factory MediaItemState.nextPageLoaded(int index) = _MediaItemStateNextPageLoaded;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory MediaItemState.error(MediaItemArticle article) = _MediaItemStateError;
 }

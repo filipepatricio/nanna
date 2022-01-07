@@ -6,9 +6,9 @@ part 'reading_banner_state.freezed.dart';
 
 @freezed
 class ReadingBannerState with _$ReadingBannerState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ReadingBannerState.notVisible() = _ReadingBannerStateNotVisible;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory ReadingBannerState.visible(ReadingBanner readingBanner) = _ReadingBannerStateVisible;
 }

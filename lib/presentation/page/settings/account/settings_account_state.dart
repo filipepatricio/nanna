@@ -6,14 +6,14 @@ part 'settings_account_state.freezed.dart';
 
 @freezed
 class SettingsAccountState with _$SettingsAccountState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory SettingsAccountState.loading() = SettingsAccountStateLoading;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory SettingsAccountState.idle(SettingsAccountData original, SettingsAccountData data) =
       SettingsAccountStateLoaded;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   const factory SettingsAccountState.updating(SettingsAccountData original, SettingsAccountData data) =
       SettingsAccountStateUpdating;
 

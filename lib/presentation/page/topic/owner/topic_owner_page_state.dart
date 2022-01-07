@@ -6,15 +6,15 @@ part 'topic_owner_page_state.freezed.dart';
 
 @freezed
 class TopicOwnerPageState with _$TopicOwnerPageState {
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TopicOwnerPageState.idleExpert(List<Topic> topicsFromExpert) = _TopicOwnerPageStateIdleExpert;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TopicOwnerPageState.idleEditor() = _TopicOwnerPageStateIdleEditor;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TopicOwnerPageState.loading() = _TopicOwnerPageStateLoading;
 
-  @Implements(BuildState)
+  @Implements<BuildState>()
   factory TopicOwnerPageState.error() = _TopicOwnerPageStateError;
 }

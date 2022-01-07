@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
@@ -145,6 +144,33 @@ extension StartAppExtension on WidgetTester {
       }
     }
 
+    await pumpAndSettle();
+
+    await loadImages();
+  }
+
+  Future<void> loadImages() async {
+    // See https://github.com/flutter/flutter/issues/38997#issuecomment-524992589
+    // and https://github.com/eBay/flutter_glove_box/blob/master/packages/golden_toolkit/lib/src/testing_tools.dart ...
+    final imageElements = find.byType(Image, skipOffstage: false).evaluate();
+    final containerElements = find.byType(DecoratedBox, skipOffstage: false).evaluate();
+    await runAsync(() async {
+      for (final imageElement in imageElements) {
+        final widget = imageElement.widget;
+        if (widget is Image) {
+          await precacheImage(widget.image, imageElement);
+        }
+      }
+      for (final container in containerElements) {
+        final widget = container.widget as DecoratedBox;
+        final decoration = widget.decoration;
+        if (decoration is BoxDecoration) {
+          if (decoration.image != null) {
+            await precacheImage(decoration.image!.image, container);
+          }
+        }
+      }
+    });
     await pumpAndSettle();
   }
 }

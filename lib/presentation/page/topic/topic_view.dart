@@ -19,7 +19,6 @@ import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicView extends HookWidget {
@@ -197,6 +196,8 @@ class _TopicHeader extends HookWidget {
                 children: [
                   TopicOwnerAvatar(
                     owner: topic.owner,
+                    imageHeight: 32,
+                    imageWidth: 32,
                     onTap: () => AutoRouter.of(context).push(
                       TopicOwnerPageRoute(
                         owner: topic.owner,
@@ -204,15 +205,15 @@ class _TopicHeader extends HookWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppDimens.s),
+                  const SizedBox(height: AppDimens.xl),
                   InformedMarkdownBody(
                     markdown: topic.title,
                     baseTextStyle: AppTypography.h1Headline,
                     maxLines: 3,
                   ),
-                  const SizedBox(height: AppDimens.l),
+                  const SizedBox(height: AppDimens.xxl),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _SelectedArticlesLabel(onArticlesLabelTap: onArticlesLabelTap, topic: topic),
@@ -252,7 +253,7 @@ class _SelectedArticlesLabel extends StatelessWidget {
           args: [topic.readingList.entries.length.toString()],
         ),
         textAlign: TextAlign.start,
-        style: AppTypography.b1Regular.copyWith(decoration: TextDecoration.underline),
+        style: AppTypography.b1Regular.copyWith(decoration: TextDecoration.underline, height: 1),
       ),
     );
   }

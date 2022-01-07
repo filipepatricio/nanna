@@ -1,6 +1,8 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as publisher_logo;
+import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as informed;
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:flutter/widgets.dart';
@@ -10,19 +12,19 @@ const _publisherLogoSize = 24.0;
 
 class PublisherLogo extends HookWidget {
   final Publisher publisher;
-  final publisher_logo.Image? image;
+  final informed.Image? image;
 
   const PublisherLogo._({required this.publisher, required this.image, Key? key}) : super(key: key);
 
   factory PublisherLogo.dark({required Publisher publisher, Key? key}) => PublisherLogo._(
         publisher: publisher,
-        image: publisher.darkLogo,
+        image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoDark) : publisher.darkLogo,
         key: key,
       );
 
   factory PublisherLogo.light({required Publisher publisher, Key? key}) => PublisherLogo._(
         publisher: publisher,
-        image: publisher.lightLogo,
+        image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoLight) : publisher.lightLogo,
         key: key,
       );
 
@@ -37,17 +39,24 @@ class PublisherLogo extends HookWidget {
             padding: const EdgeInsets.only(right: AppDimens.s),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Image.network(
-                cloudinaryProvider
-                    .withPublicIdAsPng(publisherLogoId)
-                    .transform()
-                    .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
-                    .fit()
-                    .generateNotNull(),
-                width: _publisherLogoSize,
-                height: _publisherLogoSize,
-                fit: BoxFit.contain,
-              ),
+              child: kIsTest
+                  ? Image.asset(
+                      publisherLogoId,
+                      width: _publisherLogoSize,
+                      height: _publisherLogoSize,
+                      fit: BoxFit.contain,
+                    )
+                  : Image.network(
+                      cloudinaryProvider
+                          .withPublicIdAsPng(publisherLogoId)
+                          .transform()
+                          .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
+                          .fit()
+                          .generateNotNull(),
+                      width: _publisherLogoSize,
+                      height: _publisherLogoSize,
+                      fit: BoxFit.contain,
+                    ),
             ),
           );
   }

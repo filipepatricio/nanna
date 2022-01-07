@@ -208,14 +208,12 @@ class _GridItem extends StatelessWidget {
             article: article.article,
             themeColor: AppColors.background,
             height: AppDimens.exploreAreaArticleSeeAllCoverHeight,
-            width: null,
           ),
           color: (data) => ArticleListItem(
             article: article.article,
             themeColor: AppColors.background,
             cardColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
             height: AppDimens.exploreAreaArticleSeeAllCoverHeight,
-            width: null,
           ),
         );
       },

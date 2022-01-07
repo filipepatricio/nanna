@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -99,7 +98,7 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 margin: 0;
                 padding-left: 24px;
                 padding-right: 24px;
-                padding-bottom: 24px;
+                padding-bottom: 18px;
               }
               h1, h2, h3, h4, h5, h6 {
                 line-height: 24px;
@@ -108,7 +107,7 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 padding-right: 24px;
               }
               strong{
-                line-height: 24px;
+                line-height: 26px;
                 font-family: "Plus Jakarta Sans";
               }
               img {
