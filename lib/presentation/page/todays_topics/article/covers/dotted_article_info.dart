@@ -16,6 +16,7 @@ class DottedArticleInfo extends StatelessWidget {
   final bool fullDate;
   final bool showReadTime;
   final TextStyle textStyle;
+  final Color? color;
 
   const DottedArticleInfo({
     required this.article,
@@ -26,13 +27,14 @@ class DottedArticleInfo extends StatelessWidget {
     this.fullDate = false,
     this.showReadTime = true,
     this.textStyle = AppTypography.metadata1Regular,
+    this.color,
     Key? key,
   })  : assert(showPublisher || showDate || showReadTime, 'Select at least one of the sections to show'),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final mainColor = isLight ? AppColors.white : AppColors.black;
+    final mainColor = color ?? (isLight ? AppColors.white : AppColors.black);
     final publicationDate = article.publicationDate;
     final timeToRead = article.timeToRead;
 

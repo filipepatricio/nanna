@@ -10,8 +10,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _bottomMargin = 145.0;
-
 class ArticleImageView extends HookWidget {
   final MediaItemArticle article;
   final PageController controller;
@@ -69,6 +67,7 @@ class ArticleImageView extends HookWidget {
                   isLight: true,
                   showDate: false,
                   showReadTime: false,
+                  textStyle: AppTypography.b1Regular.copyWith(height: 1),
                 ),
                 const SizedBox(height: AppDimens.m),
                 Padding(
@@ -76,11 +75,18 @@ class ArticleImageView extends HookWidget {
                   child: InformedMarkdownBody(
                     markdown: article.title,
                     highlightColor: AppColors.transparent,
-                    baseTextStyle: AppTypography.h0Bold.copyWith(color: AppColors.white),
+                    baseTextStyle: AppTypography.h0ExtraBold.copyWith(color: AppColors.white),
                   ),
                 ),
-                const SizedBox(height: _bottomMargin),
-                const AnimatedPointerDown(arrowColor: AppColors.white),
+                const SizedBox(height: AppDimens.xc),
+                AnimatedPointerDown(
+                  arrowColor: AppColors.white,
+                  onTap: () => controller.animateToPage(
+                    (controller.page?.ceil() ?? 0) + 1,
+                    duration: const Duration(milliseconds: 350),
+                    curve: Curves.easeIn,
+                  ),
+                ),
                 const SizedBox(height: AppDimens.xxl),
               ],
             ),
