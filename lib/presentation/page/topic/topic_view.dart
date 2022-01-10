@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -42,7 +44,8 @@ class TopicView extends HookWidget {
     final eventController = useEventTrackController();
     final pageIndex = useState(0);
     final listScrollController = useScrollController();
-    final topicHeaderImageHeight = MediaQuery.of(context).size.height * .75;
+    final topicHeaderImageHeight =
+        min(MediaQuery.of(context).size.height * .75, AppDimens.topicViewArticleSectionFullHeight);
     final summaryViewHeight = MediaQuery.of(context).size.height * .5;
     const articleSectionHeight = AppDimens.topicViewArticleSectionFullHeight;
 

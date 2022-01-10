@@ -14,16 +14,16 @@ import 'package:flutter_keyboard_visibility/src/keyboard_visibility_handler.dart
 import 'package:flutter_test/flutter_test.dart';
 
 const defaultDevices = [
-  Device('iPhone_11Pro', Size(375, 812), devicePixelRatio: 3, safeArea: EdgeInsets.only(top: 20)),
+  // Device('iPhone_11Pro', Size(375, 812), devicePixelRatio: 3, safeArea: EdgeInsets.only(top: 20)),
   // TODO: Cleanup this list and leave a smaller screen and Android device when multiple devices testing works
   // Device('Samsung_S20', Size(360, 800), devicePixelRatio: 4, safeArea: EdgeInsets.only(top: 24)),
-  // Device('iPhone_SE', Size(320, 568), devicePixelRatio: 2, safeArea: EdgeInsets.only(top: 20)),
+  Device('iPhone_SE', Size(320, 568), devicePixelRatio: 2, safeArea: EdgeInsets.only(top: 20)),
   // Device('Samsung_S7', Size(360, 640), devicePixelRatio: 3, safeArea: EdgeInsets.only(top: 24)),
 ];
 
 /// Can be used to take screenshots of very long lists without hiding overflowing widgets.
 const veryHighDevice =
-    Device('very_high_device_2000px', Size(360, 2000), devicePixelRatio: 1, safeArea: EdgeInsets.zero);
+    Device('very_high_device_1700px', Size(360, 1700), devicePixelRatio: 1, safeArea: EdgeInsets.zero);
 
 /// Test matrix to define which flavors and which devices should be used for a visual test.
 class TestConfig {

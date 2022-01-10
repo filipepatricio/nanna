@@ -136,13 +136,16 @@ class AppDimens {
   ///330
   static const topicViewTopicHeaderHeight = 330.0;
 
+  /// 290
+  static const topicViewSummaryCardHeight = 290.0;
+
   /// 327
   static const topicViewArticleSectionImageHeight = 270.0;
 
   /// 327
   static const topicViewArticleSectionNoteHeight = 120.0;
 
-  /// topicViewArticleSectionImageHeight + topicViewArticleSectionNoteHeight
+  /// 630
   static const topicViewArticleSectionFullHeight = 630.0;
 
   /// 72
