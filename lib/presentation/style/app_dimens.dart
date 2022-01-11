@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
+
 class AppDimens {
   const AppDimens._();
 
@@ -136,17 +138,20 @@ class AppDimens {
   ///330
   static const topicViewTopicHeaderHeight = 330.0;
 
-  /// 290
-  static const topicViewSummaryCardHeight = 290.0;
+  /// 45
+  static final topicViewStackedCardsDividerHeight = kIsSmallDevice ? 0.0 : 45.0;
 
   /// 327
-  static const topicViewArticleSectionImageHeight = 270.0;
+  static final topicViewArticleSectionImageHeight = kIsSmallDevice ? 283.0 : 270.0;
 
   /// 327
-  static const topicViewArticleSectionNoteHeight = 120.0;
+  static final topicViewArticleSectionNoteHeight = kIsSmallDevice ? 0.0 : 120.0;
 
-  /// 630
-  static const topicViewArticleSectionFullHeight = 630.0;
+  /// 145 or 195 + topicViewArticleSectionImageHeight + topicViewArticleSectionNoteHeight + topicViewStackedCardsDividerHeight
+  static final topicViewArticleSectionFullHeight = (kIsSmallDevice ? 145.0 : 195.0) +
+      topicViewArticleSectionImageHeight +
+      topicViewArticleSectionNoteHeight +
+      topicViewStackedCardsDividerHeight;
 
   /// 72
   static const topicViewArticleSectionArticleCountLabelHeight = 72.0;

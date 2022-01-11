@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
@@ -59,7 +60,8 @@ class TopicMediaItemsList extends HookWidget {
                   return ArticleItemView(
                     index: index,
                     topic: topic,
-                    topPadding: AppDimens.topicViewArticleSectionArticleCountLabelHeight + bottomSquareCardHeight,
+                    topPadding: AppDimens.topicViewArticleSectionArticleCountLabelHeight +
+                        AppDimens.topicViewStackedCardsDividerHeight,
                     onTap: () => _navigateToArticleByIndex(context, index, controller),
                     mediaItemKey: index == 0 ? mediaItemKey : null,
                   );
@@ -69,7 +71,7 @@ class TopicMediaItemsList extends HookWidget {
           ),
           Positioned(
             left: AppDimens.l,
-            top: AppDimens.l + bottomSquareCardHeight,
+            top: AppDimens.l + AppDimens.topicViewStackedCardsDividerHeight,
             child: SizedBox(
               height: AppDimens.topicViewArticleSectionArticleCountLabelHeight,
               child: Text(
@@ -87,16 +89,18 @@ class TopicMediaItemsList extends HookWidget {
               controller: controller,
             ),
           ),
-          Positioned(
-            left: AppDimens.l,
-            bottom: AppDimens.xxxc,
-            child: LinkLabel(
-              labelText: LocaleKeys.article_readMore.tr(),
-              fontSize: AppDimens.m,
-              onTap: () => _navigateToArticle(context, controller),
+          if (!kIsSmallDevice) ...[
+            Positioned(
+              left: AppDimens.l,
+              bottom: AppDimens.xxxc,
+              child: LinkLabel(
+                labelText: LocaleKeys.article_readMore.tr(),
+                fontSize: AppDimens.m,
+                onTap: () => _navigateToArticle(context, controller),
+              ),
             ),
-          ),
-          const Positioned.fill(top: 0, child: BottomStackedCards()),
+            const Positioned.fill(top: 0, child: BottomStackedCards()),
+          ]
         ],
       ),
     );
