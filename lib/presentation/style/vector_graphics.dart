@@ -48,6 +48,7 @@ class AppVectorGraphics {
   static const String happySun = 'assets/vector_graphics/happy_sun_face.svg';
   static const String sunRays = 'assets/vector_graphics/sun_rays.svg';
   static const String sadSun = 'assets/vector_graphics/sad_sun.svg';
+  static const String magError = 'assets/vector_graphics/mag_error_ic.svg';
 
   static const String stayTuned = 'assets/vector_graphics/stay_tuned.svg';
   static const String openWeb = 'assets/vector_graphics/open_web_ic.svg';
