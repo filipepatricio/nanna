@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'visual_test_utils.dart';
 
 void main() {
-  visualTest(OnboardingPage, TestConfig.unitTesting, (tester, device) async {
+  visualTest(OnboardingPage, (tester, device) async {
     await tester.startApp(initialRoute: const OnboardingPageRoute());
     await matchGoldenFile('onboarding_page_1');
     await tester.tap(find.byType(IconButton));

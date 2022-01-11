@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/presentation/page/settings/main/settings_
 import 'visual_test_utils.dart';
 
 void main() {
-  visualTest(SettingsMainPage, TestConfig.unitTesting, (tester, device) async {
+  visualTest(SettingsMainPage, (tester, device) async {
     await tester.startApp(initialRoute: const SettingsMainPageRoute());
     await matchGoldenFile();
   });

@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'visual_test_utils.dart';
 
 void main() {
-  visualTest(MediaItemPage, TestConfig.unitTesting, (tester, device) async {
+  visualTest(MediaItemPage, (tester, device) async {
     await tester.startApp();
     await tester.tap(find.byType(ReadingListCover).first);
     await tester.pumpAndSettle();

@@ -7,15 +7,20 @@ import 'visual_test_utils.dart';
 
 void main() {
   group(TopicPage, () {
-    visualTest(TopicPage, TestConfig.unitTesting.withDevices([veryHighDevice]), (tester, device) async {
-      await tester.startApp();
-      await tester.tap(find.byType(ReadingListCover).first);
-      await tester.pumpAndSettle();
-      await matchGoldenFile('topic_page_(high_device)');
-      // TODO: Fix running with multiple devices at once to remove this skip
-    }, skip: true);
+    visualTest(
+      '$TopicPage full screen',
+      (tester, device) async {
+        await tester.startApp();
+        await tester.tap(find.byType(ReadingListCover).first);
+        await tester.pumpAndSettle();
+        await matchGoldenFile('topic_page_(high_device)');
+        // TODO: Fix running with multiple devices at once to remove this skip
+      },
+      testConfig: TestConfig.unitTesting.withDevices([veryHighDevice]),
+      skip: true,
+    );
 
-    visualTest('$TopicPage in normal screens', TestConfig.unitTesting, (tester, device) async {
+    visualTest(TopicPage, (tester, device) async {
       await tester.startApp();
       await tester.tap(find.byType(ReadingListCover).first);
       await tester.pumpAndSettle();
