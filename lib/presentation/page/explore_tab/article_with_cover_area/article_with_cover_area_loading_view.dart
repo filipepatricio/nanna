@@ -39,22 +39,18 @@ class ArticleWithCoverAreaLoadingView extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Container(
-                  height: AppDimens.xl,
-                  child: LoadingShimmer(
-                    mainColor: color,
-                    enabled: enabled,
-                  ),
-                ),
-              ),
-              const SizedBox(width: AppDimens.xxxc),
-              Container(
-                height: AppDimens.xl,
-                width: AppDimens.xl,
                 child: LoadingShimmer(
                   mainColor: color,
                   enabled: enabled,
+                  height: AppDimens.xl,
                 ),
+              ),
+              const SizedBox(width: AppDimens.xxxc),
+              LoadingShimmer(
+                mainColor: color,
+                enabled: enabled,
+                height: AppDimens.xl,
+                width: AppDimens.xl,
               ),
             ],
           ),
@@ -62,12 +58,10 @@ class ArticleWithCoverAreaLoadingView extends StatelessWidget {
         const SizedBox(height: AppDimens.l),
         Padding(
           padding: const EdgeInsets.only(left: AppDimens.l),
-          child: Container(
+          child: LoadingShimmer(
+            mainColor: color,
+            enabled: enabled,
             height: AppDimens.exploreAreaFeaturedArticleHeight,
-            child: LoadingShimmer(
-              mainColor: color,
-              enabled: enabled,
-            ),
           ),
         ),
         const SizedBox(height: AppDimens.l),
@@ -119,16 +113,12 @@ class _ArticleItemShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return LoadingShimmer(
+      mainColor: color,
+      enabled: enabled,
       padding: const EdgeInsets.only(left: AppDimens.l),
-      child: Container(
-        height: AppDimens.exploreAreaArticleListItemHeight,
-        width: AppDimens.exploreAreaArticleListItemWidth,
-        child: LoadingShimmer(
-          mainColor: color,
-          enabled: enabled,
-        ),
-      ),
+      height: AppDimens.exploreAreaArticleListItemHeight,
+      width: AppDimens.exploreAreaArticleListItemWidth,
     );
   }
 }
