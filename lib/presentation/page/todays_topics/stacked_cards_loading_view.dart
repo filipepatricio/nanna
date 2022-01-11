@@ -39,7 +39,7 @@ class StackedCardsLoadingView extends HookWidget {
           child: Stack(
             children: [
               const Positioned.fill(
-                child: LoadingShimmer(),
+                child: LoadingShimmer.defaultColor(),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -11,7 +11,9 @@ import 'package:better_informed_mobile/presentation/page/reading_banner/reading_
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -19,6 +21,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+const _tryAgainButtonWidth = 150.0;
 
 class ExplorePage extends HookWidget {
   @override
@@ -43,37 +48,56 @@ class ExplorePage extends HookWidget {
       body: ReadingBannerWrapper(
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
-          child: CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                backgroundColor: AppColors.background,
-                elevation: 3,
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
-                centerTitle: false,
-                pinned: true,
-                shadowColor: AppColors.shadowDarkColor,
-                titleSpacing: AppDimens.l,
-                collapsedHeight: kToolbarHeight,
-                expandedHeight: kToolbarHeight + AppDimens.l,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(color: headerColor),
-                  titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
-                  centerTitle: false,
-                  title: Text(
-                    LocaleKeys.main_exploreTab.tr(),
-                    style: AppTypography.b0Bold,
+          child: Stack(
+            children: [
+              CustomScrollView(
+                physics: state.maybeMap(
+                  error: (_) => const NeverScrollableScrollPhysics(),
+                  orElse: () => const ClampingScrollPhysics(),
+                ),
+                slivers: [
+                  SliverAppBar(
+                    backgroundColor: AppColors.background,
+                    elevation: 3,
+                    systemOverlayStyle: SystemUiOverlayStyle.dark,
+                    centerTitle: false,
+                    pinned: true,
+                    shadowColor: AppColors.shadowDarkColor,
+                    titleSpacing: AppDimens.l,
+                    collapsedHeight: kToolbarHeight,
+                    expandedHeight: kToolbarHeight + AppDimens.l,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Container(color: headerColor),
+                      titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
+                      centerTitle: false,
+                      title: Text(
+                        LocaleKeys.main_exploreTab.tr(),
+                        style: AppTypography.b0Bold,
+                      ),
+                    ),
                   ),
+                  state.maybeMap(
+                    initialLoading: (_) => const SliverToBoxAdapter(
+                      child: ArticleWithCoverAreaLoadingView.loading(),
+                    ),
+                    idle: (state) => _Idle(areas: state.areas),
+                    error: (_) => const SliverToBoxAdapter(
+                      child: ArticleWithCoverAreaLoadingView.static(),
+                    ),
+                    orElse: () => const SliverToBoxAdapter(
+                      child: SizedBox(),
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
+                ],
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: state.maybeMap(
+                  error: (_) => _ErrorView(refreshCallback: () => cubit.initialize()),
+                  orElse: () => const SizedBox(),
                 ),
               ),
-              state.maybeMap(
-                initialLoading: (_) => const SliverToBoxAdapter(
-                  child: ArticleWithCoverAreaLoadingView(),
-                ),
-                idle: (state) => _Idle(areas: state.areas),
-                orElse: () => const SliverToBoxAdapter(child: SizedBox()),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
             ],
           ),
         ),
@@ -94,6 +118,47 @@ class ExplorePage extends HookWidget {
         );
       },
       orElse: () => AppColors.background,
+    );
+  }
+}
+
+class _ErrorView extends StatelessWidget {
+  final VoidCallback refreshCallback;
+
+  const _ErrorView({
+    required this.refreshCallback,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: AppDimens.c),
+        SvgPicture.asset(AppVectorGraphics.magError),
+        const SizedBox(height: AppDimens.l),
+        Text(
+          LocaleKeys.todaysTopics_oops.tr(),
+          style: AppTypography.h3bold,
+          textAlign: TextAlign.center,
+        ),
+        Text(
+          LocaleKeys.common_somethingWentWrong.tr(),
+          style: AppTypography.h3Normal,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: AppDimens.l),
+        Container(
+          width: _tryAgainButtonWidth,
+          child: FilledButton(
+            text: LocaleKeys.common_tryAgain.tr(),
+            fillColor: AppColors.textPrimary,
+            textColor: AppColors.white,
+            onTap: refreshCallback,
+          ),
+        ),
+      ],
     );
   }
 }
