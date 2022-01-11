@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_area/article_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_with_cover_area_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_with_cover_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_state.dart';
@@ -11,7 +12,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -68,10 +68,7 @@ class ExplorePage extends HookWidget {
               ),
               state.maybeMap(
                 initialLoading: (_) => const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(AppDimens.l),
-                    child: Loader(color: AppColors.darkGrey),
-                  ),
+                  child: ArticleWithCoverAreaLoadingView(),
                 ),
                 idle: (state) => _Idle(areas: state.areas),
                 orElse: () => const SliverToBoxAdapter(child: SizedBox()),

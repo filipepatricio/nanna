@@ -1,15 +1,14 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shimmer/shimmer.dart';
 
 class StackedCardsLoadingView extends HookWidget {
   final double cardStackWidth;
@@ -39,14 +38,8 @@ class StackedCardsLoadingView extends HookWidget {
           center: true,
           child: Stack(
             children: [
-              Positioned.fill(
-                child: Shimmer.fromColors(
-                  enabled: !kIsTest,
-                  direction: ShimmerDirection.ltr,
-                  baseColor: AppColors.background,
-                  highlightColor: AppColors.pastelGreen.withOpacity(0.8),
-                  child: Container(color: AppColors.background),
-                ),
+              const Positioned.fill(
+                child: LoadingShimmer(),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
