@@ -14,6 +14,7 @@ class StackedCardsErrorView extends HookWidget {
   final double cardStackWidth;
   final EdgeInsets padding;
   final Function? retryAction;
+
   const StackedCardsErrorView({
     required this.cardStackWidth,
     this.retryAction,
@@ -51,17 +52,18 @@ class StackedCardsErrorView extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.l),
                 Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
-                    child: retryAction != null
-                        ? FilledButton(
-                            text: LocaleKeys.common_tryAgain.tr(),
-                            fillColor: AppColors.textPrimary,
-                            textColor: AppColors.white,
-                            onTap: () async {
-                              await retryAction!();
-                            },
-                          )
-                        : null),
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
+                  child: retryAction != null
+                      ? FilledButton(
+                          text: LocaleKeys.common_tryAgain.tr(),
+                          fillColor: AppColors.textPrimary,
+                          textColor: AppColors.white,
+                          onTap: () async {
+                            await retryAction!();
+                          },
+                        )
+                      : null,
+                ),
               ],
             ),
           );
