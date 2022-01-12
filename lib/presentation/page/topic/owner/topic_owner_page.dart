@@ -67,7 +67,7 @@ class TopicOwnerPage extends HookWidget {
                   const SizedBox(height: AppDimens.l),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                    child: TopicOwnerAvatar(owner: owner, profileMode: true),
+                    child: TopicOwnerAvatar(owner: owner, profileMode: true, imageHeight: 42, imageWidth: 42),
                   ),
                   const SizedBox(height: AppDimens.m),
                   Padding(

@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
@@ -57,7 +58,7 @@ class ReadingListCover extends HookWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: AppDimens.l),
-                child: TopicOwnerAvatar(owner: topic.owner, imageHeight: 32, imageWidth: 32, fontSize: 14),
+                child: TopicOwnerAvatar(owner: topic.owner),
               ),
               Expanded(
                 flex: 5,
@@ -72,9 +73,9 @@ class ReadingListCover extends HookWidget {
                 flex: 6,
                 child: _TopicIntroduction(introduction: topic.introduction),
               ),
-              const SizedBox(height: AppDimens.l),
+              SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
               _PublisherLogoRow(topic: topic),
-              const SizedBox(height: AppDimens.l),
+              SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -85,10 +86,7 @@ class ReadingListCover extends HookWidget {
                     style: AppTypography.b3Regular.copyWith(decoration: TextDecoration.underline, height: 1),
                   ),
                   const Spacer(),
-                  UpdatedLabel(
-                    dateTime: topic.lastUpdatedAt,
-                    backgroundColor: AppColors.white,
-                  ),
+                  UpdatedLabel(dateTime: topic.lastUpdatedAt, backgroundColor: AppColors.white),
                 ],
               ),
             ],

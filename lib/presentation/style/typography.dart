@@ -45,10 +45,10 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h1Bold = TextStyle(
+  static final TextStyle h1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 24,
+    fontSize: kIsSmallDevice ? 20 : 24,
     height: 1.29,
     color: AppColors.textPrimary,
   );
@@ -243,10 +243,10 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const b2RegularLora = TextStyle(
+  static final b2RegularLora = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyLora,
-    fontSize: 16,
+    fontSize: kIsSmallDevice ? 14 : 16,
     height: 1.5,
     color: AppColors.textPrimary,
   );
