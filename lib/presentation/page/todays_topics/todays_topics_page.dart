@@ -179,44 +179,49 @@ class _IdleContent extends HookWidget {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return RefreshIndicator(
-                          onRefresh: todaysTopicsCubit.initialize,
-                          color: AppColors.darkGrey,
-                          child: CustomScrollView(scrollBehavior: NoGlowScrollBehavior(), slivers: [
+                        onRefresh: todaysTopicsCubit.initialize,
+                        color: AppColors.darkGrey,
+                        child: CustomScrollView(
+                          scrollBehavior: NoGlowScrollBehavior(),
+                          slivers: [
                             SliverToBoxAdapter(
-                                child: SizedBox(
-                                    height: constraints.maxHeight,
-                                    child: NoScrollGlow(
-                                      child: PageView(
-                                        controller: controller,
-                                        scrollDirection: Axis.horizontal,
-                                        onPageChanged: (index) {
-                                          if (index < currentBrief.topics.length) {
-                                            todaysTopicsCubit.trackTopicPageSwipe(
-                                                currentBrief.topics[index].id, index + 1);
-                                          } else {
-                                            todaysTopicsCubit.trackRelaxPage();
-                                          }
-                                        },
-                                        children: [
-                                          ..._buildTopicCards(
-                                            context,
-                                            controller,
-                                            todaysTopicsCubit,
-                                            currentBrief,
-                                            cardStackWidth,
-                                            constraints.maxHeight,
-                                          ),
-                                          Hero(
-                                            tag: HeroTag.dailyBriefRelaxPage,
-                                            child: RelaxView(
-                                              lastPageAnimationProgressState: lastPageAnimationProgressState,
-                                              goodbyeHeadline: currentBrief.goodbye,
-                                            ),
-                                          ),
-                                        ],
+                              child: SizedBox(
+                                height: constraints.maxHeight,
+                                child: NoScrollGlow(
+                                  child: PageView(
+                                    controller: controller,
+                                    scrollDirection: Axis.horizontal,
+                                    onPageChanged: (index) {
+                                      if (index < currentBrief.topics.length) {
+                                        todaysTopicsCubit.trackTopicPageSwipe(currentBrief.topics[index].id, index + 1);
+                                      } else {
+                                        todaysTopicsCubit.trackRelaxPage();
+                                      }
+                                    },
+                                    children: [
+                                      ..._buildTopicCards(
+                                        context,
+                                        controller,
+                                        todaysTopicsCubit,
+                                        currentBrief,
+                                        cardStackWidth,
+                                        constraints.maxHeight,
                                       ),
-                                    )))
-                          ]));
+                                      Hero(
+                                        tag: HeroTag.dailyBriefRelaxPage,
+                                        child: RelaxView(
+                                          lastPageAnimationProgressState: lastPageAnimationProgressState,
+                                          goodbyeHeadline: currentBrief.goodbye,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
                     },
                   ),
                 ),

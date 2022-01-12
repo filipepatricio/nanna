@@ -13,7 +13,7 @@ void main() {
     await tester.startApp();
     await tester.tap(find.byType(ReadingListCover).first);
     await tester.pumpAndSettle();
-    await tester.drag(find.byType(TopicPage), const Offset(0, -AppDimens.topicViewArticleSectionFullHeight * 2));
+    await tester.drag(find.byType(TopicPage), Offset(0, -AppDimens.topicViewArticleSectionFullHeight * 2));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(ArticleItemView));
     await tester.pumpAndSettle();
