@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:expand_tap_area/expand_tap_area.dart';
@@ -19,7 +20,7 @@ class AnimatedPointerDown extends HookWidget {
         .animate(animationController);
 
     useEffect(() {
-      animationController.repeat(reverse: true);
+      if (!kIsTest) animationController.repeat(reverse: true);
     }, []);
 
     return ExpandTapWidget(

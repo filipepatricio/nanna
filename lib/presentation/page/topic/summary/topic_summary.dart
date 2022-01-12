@@ -10,8 +10,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _summaryPageViewHeight = 275.0;
-
 class TopicSummary extends HookWidget {
   final Topic topic;
   final GlobalKey? summaryCardKey;
@@ -94,7 +92,7 @@ class _SummaryCardPageView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _summaryPageViewHeight,
+      height: AppDimens.topicViewSummaryCardHeight,
       child: PageView.builder(
         controller: controller,
         scrollDirection: Axis.horizontal,
@@ -130,7 +128,7 @@ class _SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: summaryCardKey,
-      height: _summaryPageViewHeight,
+      height: AppDimens.topicViewSummaryCardHeight,
       padding: const EdgeInsets.only(
         left: AppDimens.l,
         right: AppDimens.l,
@@ -147,7 +145,6 @@ class _SummaryCard extends StatelessWidget {
               baseTextStyle: AppTypography.b2RegularLora,
             ),
           ),
-          const SizedBox(height: AppDimens.l),
         ],
       ),
     );

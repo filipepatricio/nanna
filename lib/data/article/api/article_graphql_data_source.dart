@@ -2,12 +2,13 @@ import 'package:better_informed_mobile/data/article/api/article_api_data_source.
 import 'package:better_informed_mobile/data/article/api/article_gql.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
 const _contentKey = 'text';
 
-@LazySingleton(as: ArticleApiDataSource)
+@LazySingleton(as: ArticleApiDataSource, env: liveEnvs)
 class ArticleGraphqlDataSource implements ArticleApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
