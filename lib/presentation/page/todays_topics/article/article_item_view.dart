@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/article/c
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/photo_stacked_cover.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +54,7 @@ class ArticleItemView extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _ArticleCover(entry: currentEntry, article: article, mediaItemKey: mediaItemKey),
-            if (note != null) ...[
+            if (kIsNotSmallDevice && note != null) ...[
               const SizedBox(height: AppDimens.m),
               Container(
                 padding: const EdgeInsets.only(right: AppDimens.l),
