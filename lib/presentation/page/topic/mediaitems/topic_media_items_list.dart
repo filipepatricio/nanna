@@ -89,7 +89,7 @@ class TopicMediaItemsList extends HookWidget {
               controller: controller,
             ),
           ),
-          if (!kIsSmallDevice) ...[
+          if (kIsNotSmallDevice) ...[
             Positioned(
               left: AppDimens.l,
               bottom: AppDimens.xxxc,

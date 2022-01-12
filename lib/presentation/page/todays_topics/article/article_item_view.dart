@@ -54,7 +54,7 @@ class ArticleItemView extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _ArticleCover(entry: currentEntry, article: article, mediaItemKey: mediaItemKey),
-            if (!kIsSmallDevice && note != null) ...[
+            if (kIsNotSmallDevice && note != null) ...[
               const SizedBox(height: AppDimens.m),
               Container(
                 padding: const EdgeInsets.only(right: AppDimens.l),

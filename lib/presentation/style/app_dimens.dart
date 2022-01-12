@@ -138,6 +138,9 @@ class AppDimens {
   ///330
   static const topicViewTopicHeaderHeight = 330.0;
 
+  /// 290
+  static const topicViewSummaryCardHeight = 290.0;
+
   /// 45
   static final topicViewStackedCardsDividerHeight = kIsSmallDevice ? 0.0 : 45.0;
 

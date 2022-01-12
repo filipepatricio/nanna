@@ -25,10 +25,10 @@ void main() {
       await tester.tap(find.byType(ReadingListCover).first);
       await tester.pumpAndSettle();
       await matchGoldenFile('topic_page_(header)');
-      await tester.drag(find.byType(TopicPage), const Offset(0, -AppDimens.topicViewArticleSectionFullHeight));
+      await tester.drag(find.byType(TopicPage), Offset(0, -AppDimens.topicViewArticleSectionFullHeight));
       await tester.pumpAndSettle();
       await matchGoldenFile('topic_page_(summary)');
-      await tester.drag(find.byType(TopicPage), const Offset(0, -AppDimens.topicViewArticleSectionFullHeight));
+      await tester.drag(find.byType(TopicPage), Offset(0, -AppDimens.topicViewArticleSectionFullHeight));
       await tester.pumpAndSettle();
       await matchGoldenFile('topic_page_(articles)');
     });

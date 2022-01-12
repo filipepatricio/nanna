@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-bool kIsSmallDevice = kDeviceType == DeviceType.small;
+bool get kIsSmallDevice => kDeviceType == DeviceType.small;
+
+bool get kIsNotSmallDevice => kDeviceType != DeviceType.small;
 
 DeviceType kDeviceType = DeviceType.regular;
 
