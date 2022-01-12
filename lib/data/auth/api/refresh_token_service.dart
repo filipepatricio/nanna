@@ -14,6 +14,8 @@ class RefreshTokenService {
 
   Completer<OAuth2Token>? _lockCompleter;
 
+  OAuth2Token? _lastToken;
+
   RefreshTokenService(
     @Named('unauthorized') this._unauthorizedClient,
     this._responseResolver,
@@ -23,6 +25,11 @@ class RefreshTokenService {
     final lock = _lockCompleter;
     if (lock != null && !lock.isCompleted) {
       return lock.future;
+    }
+
+    final lastToken = _lastToken;
+    if (lastToken != null && lastToken.refreshToken != refreshToken) {
+      return lastToken;
     }
 
     final newLock = Completer<OAuth2Token>();
@@ -49,6 +56,7 @@ class RefreshTokenService {
         refreshToken: tokensDto.refreshToken,
       );
 
+      _lastToken = oAuthToken;
       newLock.complete(oAuthToken);
       return oAuthToken;
     } catch (e, s) {
