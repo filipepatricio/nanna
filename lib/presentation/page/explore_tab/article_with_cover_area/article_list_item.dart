@@ -123,6 +123,7 @@ class _ArticleImageOverlay extends StatelessWidget {
 
 class SeeAllArticlesListItem extends StatelessWidget {
   final void Function() onTap;
+
   const SeeAllArticlesListItem({
     required this.onTap,
     Key? key,

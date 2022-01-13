@@ -21,7 +21,7 @@ class StackedCardsVariantB extends StatelessWidget {
     final bottomCardHeight = coverSize.height - coverSize.height / 20 - AppDimens.l;
     final bottomCardWidth = coverSize.width - coverSize.width / 7;
 
-    final topCardHeight = coverSize.height - coverSize.height / 12  - AppDimens.l;
+    final topCardHeight = coverSize.height - coverSize.height / 12 - AppDimens.l;
     final topCardWidth = coverSize.width - coverSize.width / 8;
 
     final middleCardTopMargin = coverSize.height - topCardHeight;
@@ -36,7 +36,7 @@ class StackedCardsVariantB extends StatelessWidget {
         Container(color: AppColors.background),
         Positioned(
           top: AppDimens.xl,
-          left:0,
+          left: 0,
           right: 0,
           child: StackedCardItem(
             height: bottomCardHeight,
