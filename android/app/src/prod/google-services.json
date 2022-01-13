@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "689848489360-mailbencp726olopmu1uvt5au2qu4sm1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "so.informed",
+            "certificate_hash": "494d0655351b3d02ddd5a88cec8df547bea704b8"
+          }
+        },
+        {
           "client_id": "689848489360-3d5lmq00o1b8mb1q7q0dnl3ncp4ft2pe.apps.googleusercontent.com",
           "client_type": 3
         }
