@@ -130,7 +130,7 @@ class AppDimens {
   static const topicCardWidthViewportFraction = 0.85;
 
   /// 42
-  static const avatarSize = 42.0;
+  static const avatarSize = 32.0;
 
   /// 45
   static const topicViewTopicHeaderPadding = 45.0;

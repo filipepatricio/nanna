@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
@@ -11,6 +12,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/todays_to
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
@@ -75,7 +77,7 @@ class TodaysTopicsPage extends HookWidget {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: AppColors.transparent,
           automaticallyImplyLeading: false,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           centerTitle: false,
@@ -163,15 +165,17 @@ class _IdleContent extends HookWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.l),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _Greeting(
-              currentBrief: currentBrief,
-              lastPageAnimationProgressState: lastPageAnimationProgressState,
+          if (kIsNotSmallDevice) ...[
+            const SizedBox(height: AppDimens.l),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: _Greeting(
+                greeting: currentBrief.greeting,
+                lastPageAnimationProgressState: lastPageAnimationProgressState,
+              ),
             ),
-          ),
-          const SizedBox(height: AppDimens.l),
+          ],
+          const SizedBox(height: AppDimens.sl),
           Expanded(
             child: Stack(
               children: [
@@ -228,14 +232,11 @@ class _IdleContent extends HookWidget {
               ],
             ),
           ),
-          const SizedBox(height: AppDimens.l),
+          SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
           Center(
-            child: _DotIndicator(
-              currentBrief: currentBrief,
-              controller: controller,
-            ),
+            child: _DotIndicator(currentBrief: currentBrief, controller: controller),
           ),
-          const SizedBox(height: AppDimens.l),
+          SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
         ],
       ),
     );
@@ -253,7 +254,7 @@ class _IdleContent extends HookWidget {
       return MapEntry(
         key,
         Padding(
-          padding: const EdgeInsets.only(left: AppDimens.xl),
+          padding: EdgeInsets.only(left: kIsSmallDevice ? AppDimens.m : AppDimens.l),
           child: ReadingListStackedCards(
             coverSize: Size(width, heightPageView),
             child: ReadingListCover(
@@ -274,11 +275,11 @@ class _IdleContent extends HookWidget {
 }
 
 class _Greeting extends StatelessWidget {
-  final CurrentBrief currentBrief;
+  final Headline greeting;
   final ValueNotifier<double> lastPageAnimationProgressState;
 
   const _Greeting({
-    required this.currentBrief,
+    required this.greeting,
     required this.lastPageAnimationProgressState,
     Key? key,
   }) : super(key: key);
@@ -295,7 +296,7 @@ class _Greeting extends StatelessWidget {
         );
       },
       child: InformedMarkdownBody(
-        markdown: currentBrief.greeting.headline,
+        markdown: greeting.headline,
         baseTextStyle: AppTypography.b1Regular,
         textAlignment: TextAlign.left,
       ),

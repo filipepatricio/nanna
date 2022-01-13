@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ class TodaysTopicsTitleHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fontSize = kIsSmallDevice ? 16.0 : null;
+
     return Hero(
       tag: HeroTag.dailyBriefTitle,
       flightShuttleBuilder: (context, anim, direction, from, to) {
@@ -36,7 +39,7 @@ class TodaysTopicsTitleHero extends StatelessWidget {
             builder: (context, child) {
               return Text(
                 title,
-                style: AppTypography.h1Bold.copyWith(color: colorTween.value),
+                style: AppTypography.h1Bold.copyWith(color: colorTween.value, fontSize: fontSize),
               );
             },
           ),
@@ -44,7 +47,7 @@ class TodaysTopicsTitleHero extends StatelessWidget {
       },
       child: Text(
         title,
-        style: AppTypography.h1Bold.copyWith(color: AppColors.textPrimary),
+        style: AppTypography.h1Bold.copyWith(color: AppColors.textPrimary, fontSize: fontSize),
       ),
     );
   }

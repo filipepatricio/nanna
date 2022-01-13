@@ -201,8 +201,6 @@ class _TopicHeader extends HookWidget {
                 children: [
                   TopicOwnerAvatar(
                     owner: topic.owner,
-                    imageHeight: 32,
-                    imageWidth: 32,
                     onTap: () => AutoRouter.of(context).push(
                       TopicOwnerPageRoute(
                         owner: topic.owner,
