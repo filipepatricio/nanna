@@ -11,7 +11,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -200,7 +200,7 @@ class _GridItem extends StatelessWidget {
       onTap: () => _onTopicTap(context, topic),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return ReadingListStackedCards(
+          return PageViewStackedCards.random(
             coverSize: Size(constraints.maxWidth, AppDimens.exploreAreaTopicSeeAllCoverHeight),
             child: ReadingListCoverSmall(topic: topic),
           );

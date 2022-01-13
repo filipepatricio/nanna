@@ -9,7 +9,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
-import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
@@ -69,7 +69,7 @@ class TopicsAreaView extends HookWidget {
               controller: controller,
               itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.only(left: AppDimens.xxl),
-                child: ReadingListStackedCards(
+                child: PageViewStackedCards.random(
                   coverSize: Size(width, cardStackHeight),
                   child: ReadingListCover(
                     topic: area.topics[index],

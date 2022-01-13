@@ -20,8 +20,8 @@ import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glo
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
-import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -115,15 +115,20 @@ class TodaysTopicsPage extends HookWidget {
                   cardStackWidth: cardStackWidth,
                 ),
                 error: (_) => RefreshIndicator(
-                    onRefresh: cubit.initialize,
-                    color: AppColors.darkGrey,
-                    child: CustomScrollView(scrollBehavior: NoGlowScrollBehavior(), slivers: [
+                  onRefresh: cubit.initialize,
+                  color: AppColors.darkGrey,
+                  child: CustomScrollView(
+                    scrollBehavior: NoGlowScrollBehavior(),
+                    slivers: [
                       SliverToBoxAdapter(
-                          child: SizedBox(
-                              height: constraints.maxHeight,
-                              child:
-                                  StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth)))
-                    ])),
+                        child: SizedBox(
+                          height: constraints.maxHeight,
+                          child: StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
                 orElse: () => const SizedBox(),
               ),
@@ -193,6 +198,7 @@ class _IdleContent extends HookWidget {
                                 height: constraints.maxHeight,
                                 child: NoScrollGlow(
                                   child: PageView(
+                                    allowImplicitScrolling: true,
                                     controller: controller,
                                     scrollDirection: Axis.horizontal,
                                     onPageChanged: (index) {
@@ -222,7 +228,7 @@ class _IdleContent extends HookWidget {
                                   ),
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       );
@@ -255,7 +261,7 @@ class _IdleContent extends HookWidget {
         key,
         Padding(
           padding: EdgeInsets.only(left: kIsSmallDevice ? AppDimens.m : AppDimens.l),
-          child: ReadingListStackedCards(
+          child: PageViewStackedCards.random(
             coverSize: Size(width, heightPageView),
             child: ReadingListCover(
               topic: currentBrief.topics[key],
