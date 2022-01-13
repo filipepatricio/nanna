@@ -1,12 +1,13 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_image/progressive_image.dart';
 
 const _lowestQuality = '1';
-const _fadeDuration = Duration(milliseconds: 200);
+const _fadeDuration = Duration(milliseconds: 100);
 
 class CloudinaryProgressiveImage extends StatelessWidget {
   final double width;
@@ -22,7 +23,7 @@ class CloudinaryProgressiveImage extends StatelessWidget {
     required this.cloudinaryTransformation,
     this.fit = BoxFit.fill,
     this.alignment = Alignment.center,
-    this.testImage = AppRasterGraphics.testArticleHeaderImage,
+    this.testImage = AppRasterGraphics.testReadingListCoverImage,
     Key? key,
   }) : super(key: key);
 
@@ -40,9 +41,10 @@ class CloudinaryProgressiveImage extends StatelessWidget {
 
     return ProgressiveImage.custom(
       alignment: alignment,
-      placeholderBuilder: (context) => SizedBox(
+      placeholderBuilder: (context) => Container(
         width: width,
         height: height,
+        color: AppColors.background,
       ),
       thumbnail: NetworkImage(
         cloudinaryTransformation.quality(_lowestQuality).generateNotNull(),

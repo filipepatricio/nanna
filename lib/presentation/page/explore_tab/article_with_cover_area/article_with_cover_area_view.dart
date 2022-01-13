@@ -137,6 +137,9 @@ class _MainArticle extends HookWidget {
           children: [
             Container(
               height: AppDimens.exploreAreaFeaturedArticleHeight,
+              foregroundDecoration: BoxDecoration(
+                color: imageId != null ? AppColors.black.withOpacity(0.4) : AppColors.background,
+              ),
               child: imageId != null
                   ? CloudinaryProgressiveImage(
                       cloudinaryTransformation: cloudinaryProvider
@@ -148,11 +151,6 @@ class _MainArticle extends HookWidget {
                       width: constraints.maxWidth,
                     )
                   : Container(),
-            ),
-            Positioned.fill(
-              child: Container(
-                color: imageId != null ? AppColors.black.withOpacity(0.4) : AppColors.background,
-              ),
             ),
             Positioned.fill(
               child: _MainArticleCover(

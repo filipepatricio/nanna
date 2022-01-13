@@ -51,6 +51,7 @@ class TopicOwnerAvatar extends HookWidget {
             decoration: const BoxDecoration(shape: BoxShape.circle),
             child: imageId != null
                 ? CloudinaryProgressiveImage(
+                    testImage: AppRasterGraphics.editorialTeamAvatar,
                     cloudinaryTransformation: cloudinaryProvider
                         .withPublicIdAsPlatform(imageId)
                         .transform()
