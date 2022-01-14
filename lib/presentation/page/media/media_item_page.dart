@@ -595,6 +595,7 @@ class _AllArticlesRead extends StatelessWidget {
 
 class _AnimatedSwitcher extends StatelessWidget {
   final Widget child;
+
   const _AnimatedSwitcher({required this.child, Key? key}) : super(key: key);
 
   @override

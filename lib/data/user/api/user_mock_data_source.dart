@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: UserDataSource, env: mockEnvs)
 class UserMockDataSource implements UserDataSource {
   User? _user;
+
   UserMockDataSource() {
     _user = User(uuid: '1', firstName: 'User', lastName: 'Test', email: 'test@betterinformed.io');
   }
