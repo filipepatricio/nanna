@@ -30,4 +30,9 @@ class AnalyticsRepositoryMock implements AnalyticsRepository {
   void event(AnalyticsEvent event) {
     return;
   }
+
+  @override
+  void track(String name, Map<String, dynamic> properties) {
+    return;
+  }
 }

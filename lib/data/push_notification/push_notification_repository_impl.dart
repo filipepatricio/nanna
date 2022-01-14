@@ -1,23 +1,25 @@
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.dart';
-import 'package:better_informed_mobile/data/push_notification/api/mapper/push_notiication_message_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/registered_push_token_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/push_notification_api_data_source.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/dto/incoming_push_dto.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/push_notification_messenger.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences.dart';
-import 'package:better_informed_mobile/domain/push_notification/data/push_notification_message.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
+import 'package:better_informed_mobile/domain/push_notification/incoming_push/data/incoming_push.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: PushNotificationRepository, env: liveEnvs)
 class PushNotificationRepositoryImpl implements PushNotificationRepository {
   final FirebaseMessaging _firebaseMessaging;
   final PushNotificationApiDataSource _pushNotificationApiDataSource;
-  final PushNotificationMessageDTOMapper _pushNotificationMessageDTOMapper;
+  final IncomingPushDTOMapper _incomingPushDTOMapper;
   final PushNotificationMessenger _pushNotificationMessenger;
   final RegisteredPushTokenDTOMapper _registeredPushTokenDTOMapper;
   final NotificationPreferencesDTOMapper _notificationPreferencesDTOMapper;
@@ -26,7 +28,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   PushNotificationRepositoryImpl(
     this._firebaseMessaging,
     this._pushNotificationApiDataSource,
-    this._pushNotificationMessageDTOMapper,
+    this._incomingPushDTOMapper,
     this._pushNotificationMessenger,
     this._registeredPushTokenDTOMapper,
     this._notificationPreferencesDTOMapper,
@@ -61,8 +63,13 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   }
 
   @override
-  Stream<PushNotificationMessage> pushNotificationOpenStream() {
-    return _pushNotificationMessenger.onMessageOpenedApp().map(_pushNotificationMessageDTOMapper);
+  Stream<IncomingPush> pushNotificationOpenStream() {
+    return Rx.concat(
+      [
+        _pushNotificationMessenger.initialMessage().asStream().whereType<IncomingPushDTO>(),
+        _pushNotificationMessenger.onMessageOpenedApp(),
+      ],
+    ).map(_incomingPushDTOMapper);
   }
 
   bool _isAuthorized(NotificationSettings result) => result.authorizationStatus == AuthorizationStatus.authorized;
