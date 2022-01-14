@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
@@ -7,10 +6,10 @@ const fontFamilyLora = 'Lora';
 const fontFamilyPlusJakartaSans = 'PlusJakartaSans';
 
 class AppTypography {
-  static final TextStyle h1Headline = TextStyle(
+  static const TextStyle h1Headline = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: kIsSmallDevice ? 24 : 32,
+    fontSize: 32,
     height: 1.25,
     color: AppColors.textPrimary,
   );
@@ -45,10 +44,10 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static final TextStyle h1Bold = TextStyle(
+  static const TextStyle h1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: kIsSmallDevice ? 20 : 24,
+    fontSize: 24,
     height: 1.29,
     color: AppColors.textPrimary,
   );
@@ -243,10 +242,10 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static final b2RegularLora = TextStyle(
+  static const b2RegularLora = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyLora,
-    fontSize: kIsSmallDevice ? 14 : 16,
+    fontSize: 16,
     height: 1.5,
     color: AppColors.textPrimary,
   );
