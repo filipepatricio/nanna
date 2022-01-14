@@ -78,7 +78,7 @@ class TopicOwnerAvatar extends HookWidget {
                       fontSize: fontSize,
                       color: lightMode ? AppColors.white : AppColors.textPrimary,
                     )
-                  : AppTypography.metadata2BoldLoraItalic.copyWith(
+                  : AppTypography.h3boldLoraItalic.copyWith(
                       fontSize: fontSize,
                       color: lightMode ? AppColors.white : AppColors.textPrimary,
                     ),

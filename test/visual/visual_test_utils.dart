@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/better_informed_app.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
-import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -23,12 +22,12 @@ const defaultDevices = [
 
 /// Can be used to take screenshots of very long lists without hiding overflowing widgets.
 const veryHighDevice =
-    Device('very_high_device_2000px', Size(360, 2000), devicePixelRatio: 1, safeArea: EdgeInsets.zero);
+    Device('very_high_device_1700px', Size(360, 1700), devicePixelRatio: 1, safeArea: EdgeInsets.zero);
 
 /// Test matrix to define which flavors and which devices should be used for a visual test.
 class TestConfig {
   TestConfig._({required this.flavor, Iterable<Device> devices = defaultDevices})
-      : assert(flavor.name == AppConfig.mock().name),
+      : assert(mockEnvs.contains(flavor.name)),
         devices = devices.toSet();
 
   static final TestConfig unitTesting = TestConfig._(flavor: AppConfig.mock());
@@ -45,7 +44,9 @@ late String _nameOfCurrentVisualTest;
 late String _defaultGoldenFileName;
 bool _defaultGoldenFileNameUsed = false;
 
-void visualTest(Object widgetTypeOrDescription, TestConfig testConfig, VisualTestCallback callback, {bool? skip}) {
+void visualTest(Object widgetTypeOrDescription, VisualTestCallback callback, {TestConfig? testConfig, bool? skip}) {
+  testConfig ??= TestConfig.unitTesting;
+
   for (final device in testConfig.devices) {
     testWidgets('$widgetTypeOrDescription (${testConfig.flavor.name}, $device)', (tester) async {
       _device = device;
@@ -115,14 +116,12 @@ extension StartAppExtension on WidgetTester {
   Future<void> startApp({
     PageRouteInfo initialRoute = _defaultInitialRoute,
     Object currentUser = _currentUserNotSpecified,
-    List<Cubit> providerOverrides = const [],
   }) async {
     // by default the keyboard should not be visible
     KeyboardVisibilityHandler.setVisibilityForTesting(false);
 
     final isTab = isTabRoute(initialRoute);
-    final mainRouter = MainRouter(mainRouterKey);
-    final informedApp = BetterInformedApp(mainRouter: mainRouter);
+    final mainRouter = MainRouter();
 
     await pumpWidget(
       EasyLocalization(
@@ -132,9 +131,11 @@ extension StartAppExtension on WidgetTester {
         fallbackLocale: availableLocales[fallbackLanguageCode],
         useOnlyLangCode: true,
         saveLocale: true,
-        child: informedApp,
+        child: BetterInformedApp(mainRouter: mainRouter),
       ),
     );
+
+    await pumpAndSettle();
 
     if (initialRoute != _defaultInitialRoute) {
       if (isTab) {

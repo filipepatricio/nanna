@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
@@ -11,6 +12,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/todays_to
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
@@ -18,8 +20,8 @@ import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glo
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
-import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +77,7 @@ class TodaysTopicsPage extends HookWidget {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: AppColors.transparent,
           automaticallyImplyLeading: false,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           centerTitle: false,
@@ -113,15 +115,20 @@ class TodaysTopicsPage extends HookWidget {
                   cardStackWidth: cardStackWidth,
                 ),
                 error: (_) => RefreshIndicator(
-                    onRefresh: cubit.initialize,
-                    color: AppColors.darkGrey,
-                    child: CustomScrollView(scrollBehavior: NoGlowScrollBehavior(), slivers: [
+                  onRefresh: cubit.initialize,
+                  color: AppColors.darkGrey,
+                  child: CustomScrollView(
+                    scrollBehavior: NoGlowScrollBehavior(),
+                    slivers: [
                       SliverToBoxAdapter(
-                          child: SizedBox(
-                              height: constraints.maxHeight,
-                              child:
-                                  StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth)))
-                    ])),
+                        child: SizedBox(
+                          height: constraints.maxHeight,
+                          child: StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
                 orElse: () => const SizedBox(),
               ),
@@ -163,15 +170,17 @@ class _IdleContent extends HookWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.l),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _Greeting(
-              currentBrief: currentBrief,
-              lastPageAnimationProgressState: lastPageAnimationProgressState,
+          if (kIsNotSmallDevice) ...[
+            const SizedBox(height: AppDimens.l),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: _Greeting(
+                greeting: currentBrief.greeting,
+                lastPageAnimationProgressState: lastPageAnimationProgressState,
+              ),
             ),
-          ),
-          const SizedBox(height: AppDimens.l),
+          ],
+          const SizedBox(height: AppDimens.sl),
           Expanded(
             child: Stack(
               children: [
@@ -179,58 +188,61 @@ class _IdleContent extends HookWidget {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return RefreshIndicator(
-                          onRefresh: todaysTopicsCubit.initialize,
-                          color: AppColors.darkGrey,
-                          child: CustomScrollView(scrollBehavior: NoGlowScrollBehavior(), slivers: [
+                        onRefresh: todaysTopicsCubit.initialize,
+                        color: AppColors.darkGrey,
+                        child: CustomScrollView(
+                          scrollBehavior: NoGlowScrollBehavior(),
+                          slivers: [
                             SliverToBoxAdapter(
-                                child: SizedBox(
-                                    height: constraints.maxHeight,
-                                    child: NoScrollGlow(
-                                      child: PageView(
-                                        controller: controller,
-                                        scrollDirection: Axis.horizontal,
-                                        onPageChanged: (index) {
-                                          if (index < currentBrief.topics.length) {
-                                            todaysTopicsCubit.trackTopicPageSwipe(
-                                                currentBrief.topics[index].id, index + 1);
-                                          } else {
-                                            todaysTopicsCubit.trackRelaxPage();
-                                          }
-                                        },
-                                        children: [
-                                          ..._buildTopicCards(
-                                            context,
-                                            controller,
-                                            todaysTopicsCubit,
-                                            currentBrief,
-                                            cardStackWidth,
-                                            constraints.maxHeight,
-                                          ),
-                                          Hero(
-                                            tag: HeroTag.dailyBriefRelaxPage,
-                                            child: RelaxView(
-                                              lastPageAnimationProgressState: lastPageAnimationProgressState,
-                                              goodbyeHeadline: currentBrief.goodbye,
-                                            ),
-                                          ),
-                                        ],
+                              child: SizedBox(
+                                height: constraints.maxHeight,
+                                child: NoScrollGlow(
+                                  child: PageView(
+                                    allowImplicitScrolling: true,
+                                    controller: controller,
+                                    scrollDirection: Axis.horizontal,
+                                    onPageChanged: (index) {
+                                      if (index < currentBrief.topics.length) {
+                                        todaysTopicsCubit.trackTopicPageSwipe(currentBrief.topics[index].id, index + 1);
+                                      } else {
+                                        todaysTopicsCubit.trackRelaxPage();
+                                      }
+                                    },
+                                    children: [
+                                      ..._buildTopicCards(
+                                        context,
+                                        controller,
+                                        todaysTopicsCubit,
+                                        currentBrief,
+                                        cardStackWidth,
+                                        constraints.maxHeight,
                                       ),
-                                    )))
-                          ]));
+                                      Hero(
+                                        tag: HeroTag.dailyBriefRelaxPage,
+                                        child: RelaxView(
+                                          lastPageAnimationProgressState: lastPageAnimationProgressState,
+                                          goodbyeHeadline: currentBrief.goodbye,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: AppDimens.l),
+          SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
           Center(
-            child: _DotIndicator(
-              currentBrief: currentBrief,
-              controller: controller,
-            ),
+            child: _DotIndicator(currentBrief: currentBrief, controller: controller),
           ),
-          const SizedBox(height: AppDimens.l),
+          SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
         ],
       ),
     );
@@ -248,8 +260,8 @@ class _IdleContent extends HookWidget {
       return MapEntry(
         key,
         Padding(
-          padding: const EdgeInsets.only(left: AppDimens.xl),
-          child: ReadingListStackedCards(
+          padding: EdgeInsets.only(left: kIsSmallDevice ? AppDimens.m : AppDimens.l),
+          child: PageViewStackedCards.random(
             coverSize: Size(width, heightPageView),
             child: ReadingListCover(
               topic: currentBrief.topics[key],
@@ -269,11 +281,11 @@ class _IdleContent extends HookWidget {
 }
 
 class _Greeting extends StatelessWidget {
-  final CurrentBrief currentBrief;
+  final Headline greeting;
   final ValueNotifier<double> lastPageAnimationProgressState;
 
   const _Greeting({
-    required this.currentBrief,
+    required this.greeting,
     required this.lastPageAnimationProgressState,
     Key? key,
   }) : super(key: key);
@@ -290,7 +302,7 @@ class _Greeting extends StatelessWidget {
         );
       },
       child: InformedMarkdownBody(
-        markdown: currentBrief.greeting.headline,
+        markdown: greeting.headline,
         baseTextStyle: AppTypography.b1Regular,
         textAlignment: TextAlign.left,
       ),

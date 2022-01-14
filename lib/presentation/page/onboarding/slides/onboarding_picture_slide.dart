@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,34 +22,37 @@ class OnboardingPictureSlide extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const SizedBox(height: AppDimens.xxl),
+        const Spacer(),
         Expanded(
-          flex: 3,
+          flex: 11,
           child: SvgPicture.asset(imageAsset, fit: BoxFit.fitWidth),
         ),
-        const SizedBox(height: AppDimens.c),
+        const SizedBox(height: AppDimens.xl),
         Expanded(
-          flex: 2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: AppDimens.xl,
-                right: AppDimens.xl,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    descriptionHeader,
-                    style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
-                  ),
-                  const SizedBox(height: AppDimens.m),
-                  Text(
-                    description,
-                    style: AppTypography.b1Regular,
-                  ),
-                ],
-              ),
+          flex: 8,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                    flex: 8,
+                    child: AutoSizeText(
+                      descriptionHeader,
+                      style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
+                      maxLines: 3,
+                      stepGranularity: 0.1,
+                    )),
+                const Spacer(),
+                Expanded(
+                    flex: 10,
+                    child: AutoSizeText(
+                      description,
+                      style: AppTypography.b1Regular,
+                      maxLines: 4,
+                      stepGranularity: 0.1,
+                    )),
+              ],
             ),
           ),
         ),

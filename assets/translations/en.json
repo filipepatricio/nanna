@@ -7,6 +7,7 @@
     "signUp": "Sign up",
     "cancel": "Cancel",
     "generalError": "Something went wrong.\nTry again later.",
+    "somethingWentWrong": "Something went wrong",
     "seeAll": "See All",
     "search": "Search",
     "gotIt": "Got it",
@@ -50,6 +51,7 @@
     "readingList": "Reading list",
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
+    "articles": "{} articles",
     "summaryHeadline": "Topic summary",
     "goToExplore": "Go to explore",
     "articlesCount": "{} articles on this topic"

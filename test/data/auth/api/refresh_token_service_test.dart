@@ -16,18 +16,21 @@ import 'refresh_token_service_test.mocks.dart';
   [
     GraphQLClient,
     GraphQLResponseResolver,
+    RefreshTokenServiceCache,
     AuthTokenResponseDTO,
   ],
 )
 void main() {
   late MockGraphQLClient graphQLClient;
   late MockGraphQLResponseResolver resolver;
+  late MockRefreshTokenServiceCache cache;
   late RefreshTokenService service;
 
   setUp(() {
     graphQLClient = MockGraphQLClient();
     resolver = MockGraphQLResponseResolver();
-    service = RefreshTokenService(graphQLClient, resolver);
+    cache = MockRefreshTokenServiceCache();
+    service = RefreshTokenService(graphQLClient, resolver, cache);
   });
 
   group('refreshToken', () {
@@ -57,6 +60,7 @@ void main() {
 
       when(resolver.resolve(any, any, rootKey: anyNamed('rootKey'))).thenAnswer((realInvocation) => dto);
       when(graphQLClient.mutate(any)).thenAnswer((realInvocation) async => result);
+      when(cache.get()).thenAnswer((realInvocation) => null);
 
       final actual = await service.refreshToken('someToken');
 
@@ -82,6 +86,7 @@ void main() {
 
       when(resolver.resolve(any, any, rootKey: anyNamed('rootKey'))).thenAnswer((realInvocation) => dto);
       when(graphQLClient.mutate(any)).thenAnswer((realInvocation) async => result);
+      when(cache.get()).thenAnswer((realInvocation) => null);
 
       expect(
         service.refreshToken('someToken'),
@@ -106,6 +111,7 @@ void main() {
 
       when(resolver.resolve(any, any, rootKey: anyNamed('rootKey'))).thenAnswer((realInvocation) => throw exception);
       when(graphQLClient.mutate(any)).thenAnswer((realInvocation) async => result);
+      when(cache.get()).thenAnswer((realInvocation) => null);
 
       expect(
         service.refreshToken('someToken'),
@@ -142,6 +148,7 @@ void main() {
 
       when(resolver.resolve(any, any, rootKey: anyNamed('rootKey'))).thenAnswer((realInvocation) => dto);
       when(graphQLClient.mutate(any)).thenAnswer((realInvocation) => resultCompleter.future);
+      when(cache.get()).thenAnswer((realInvocation) => null);
 
       final simultaneousCalls = [
         service.refreshToken('someToken'),
@@ -150,26 +157,63 @@ void main() {
         service.refreshToken('someToken'),
       ];
 
-      resultCompleter.complete(result);
+      final testStream = Stream.fromFutures(simultaneousCalls);
 
-      await expectLater(
-        Stream.fromFutures(simultaneousCalls),
-        emitsThrough(
-          isA<OAuth2Token>()
-              .having(
-                (token) => token.refreshToken,
-                'refreshToken',
-                refreshToken,
-              )
-              .having(
-                (token) => token.accessToken,
-                'accessToken',
-                accessToken,
-              ),
+      testStream.listen(
+        expectAsync1(
+          (value) {
+            expect(
+              value,
+              isA<OAuth2Token>()
+                  .having(
+                    (token) => token.refreshToken,
+                    'refreshToken',
+                    refreshToken,
+                  )
+                  .having(
+                    (token) => token.accessToken,
+                    'accessToken',
+                    accessToken,
+                  ),
+            );
+          },
+          count: 4,
         ),
       );
 
+      await Future.delayed(const Duration(seconds: 1));
+      resultCompleter.complete(result);
+
       verify(graphQLClient.mutate(any)).called(1);
+    });
+
+    test('call with old refresh token will return last cached token if exists', () async {
+      const accessToken = 'abcd1234';
+      const refreshToken = 'bcda4321';
+      const oldRefreshToken = 'ababab999';
+      final dto = AuthTokenResponseDTO(
+        true,
+        null,
+        null,
+      );
+      final result = QueryResult(
+        source: QueryResultSource.network,
+        data: {
+          'refresh': {
+            'successful': true,
+            'tokens': null,
+          },
+        },
+      );
+      const cachedTokens = OAuth2Token(accessToken: accessToken, refreshToken: refreshToken);
+
+      when(resolver.resolve(any, any, rootKey: anyNamed('rootKey'))).thenAnswer((realInvocation) => dto);
+      when(graphQLClient.mutate(any)).thenAnswer((realInvocation) async => result);
+      when(cache.get()).thenAnswer((realInvocation) => cachedTokens);
+
+      final actual = await service.refreshToken(oldRefreshToken);
+
+      expect(actual, cachedTokens);
     });
   });
 }

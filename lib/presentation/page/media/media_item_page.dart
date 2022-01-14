@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
@@ -112,8 +113,7 @@ class MediaItemPage extends HookWidget {
               ),
             ),
             Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
+              child: _AnimatedSwitcher(
                 child: state.maybeMap(
                   loading: (state) => const _LoadingContent(),
                   idleMultiItems: (state) => _IdleContent(
@@ -174,7 +174,7 @@ class _LoadingContent extends StatelessWidget {
         ),
         const Expanded(
           child: Center(
-            child: Loader(),
+            child: Loader(color: AppColors.darkGrey),
           ),
         ),
       ],
@@ -590,5 +590,21 @@ class _AllArticlesRead extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _AnimatedSwitcher extends StatelessWidget {
+  final Widget child;
+
+  const _AnimatedSwitcher({required this.child, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return kIsTest
+        ? child
+        : AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: child,
+          );
   }
 }

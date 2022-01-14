@@ -11,18 +11,25 @@ import 'package:injectable/injectable.dart';
 class RefreshTokenService {
   final GraphQLClient _unauthorizedClient;
   final GraphQLResponseResolver _responseResolver;
+  final RefreshTokenServiceCache _refreshTokenServiceCache;
 
   Completer<OAuth2Token>? _lockCompleter;
 
   RefreshTokenService(
     @Named('unauthorized') this._unauthorizedClient,
     this._responseResolver,
+    this._refreshTokenServiceCache,
   );
 
   Future<OAuth2Token> refreshToken(String refreshToken) async {
     final lock = _lockCompleter;
     if (lock != null && !lock.isCompleted) {
       return lock.future;
+    }
+
+    final lastToken = _refreshTokenServiceCache.get();
+    if (lastToken != null && lastToken.refreshToken != refreshToken) {
+      return lastToken;
     }
 
     final newLock = Completer<OAuth2Token>();
@@ -49,6 +56,7 @@ class RefreshTokenService {
         refreshToken: tokensDto.refreshToken,
       );
 
+      _refreshTokenServiceCache.set(oAuthToken);
       newLock.complete(oAuthToken);
       return oAuthToken;
     } catch (e, s) {
@@ -62,4 +70,15 @@ class RefreshTokenService {
       rethrow;
     }
   }
+}
+
+@lazySingleton
+class RefreshTokenServiceCache {
+  OAuth2Token? _cachedToken;
+
+  OAuth2Token? get() => _cachedToken;
+
+  void set(OAuth2Token token) => _cachedToken = token;
+
+  void clear() => _cachedToken = null;
 }

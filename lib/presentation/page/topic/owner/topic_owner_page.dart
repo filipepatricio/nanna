@@ -13,8 +13,8 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
-import 'package:better_informed_mobile/presentation/widget/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +67,12 @@ class TopicOwnerPage extends HookWidget {
                   const SizedBox(height: AppDimens.l),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                    child: TopicOwnerAvatar(owner: owner, profileMode: true),
+                    child: TopicOwnerAvatar(
+                      owner: owner,
+                      profileMode: true,
+                      imageHeight: AppDimens.avatarSize * 1.3,
+                      imageWidth: AppDimens.avatarSize * 1.3,
+                    ),
                   ),
                   const SizedBox(height: AppDimens.m),
                   Padding(
@@ -250,9 +255,11 @@ class _LastUpdatedTopics extends HookWidget {
             controller: topicsController,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.only(left: AppDimens.xxl),
-              child: ReadingListStackedCards(
-                coverSize:
-                    Size(MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction, cardStackHeight),
+              child: PageViewStackedCards.random(
+                coverSize: Size(
+                  MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction,
+                  cardStackHeight,
+                ),
                 child: ReadingListCover(
                   topic: topics[index],
                   onTap: () => _onTopicTap(context, topics[index]),

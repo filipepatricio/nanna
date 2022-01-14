@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -7,6 +9,7 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -42,16 +45,16 @@ class TopicView extends HookWidget {
     final eventController = useEventTrackController();
     final pageIndex = useState(0);
     final listScrollController = useScrollController();
-    final topicHeaderImageHeight = MediaQuery.of(context).size.height * .75;
+    final topicHeaderImageHeight =
+        min(MediaQuery.of(context).size.height * .75, AppDimens.topicViewArticleSectionFullHeight);
     final summaryViewHeight = MediaQuery.of(context).size.height * .5;
-    const articleSectionHeight = AppDimens.topicViewArticleSectionFullHeight;
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(shouldShowSummaryCardTutorialCoachMark: () {
         final listener = summaryCardTutorialListener(listScrollController, topicHeaderImageHeight);
         listScrollController.addListener(listener);
       }, shouldShowMediaItemTutorialCoachMark: () {
-        final listener = mediaItemTutorialListener(listScrollController, articleSectionHeight);
+        final listener = mediaItemTutorialListener(listScrollController, AppDimens.topicViewArticleSectionFullHeight);
         listScrollController.addListener(listener);
       });
     });
@@ -69,7 +72,9 @@ class TopicView extends HookWidget {
               topic: topic,
               onArticlesLabelTap: () {
                 listScrollController.animateTo(
-                  AppDimens.topicViewTopicHeaderHeight + summaryViewHeight + articleSectionHeight,
+                  AppDimens.topicViewTopicHeaderHeight +
+                      summaryViewHeight +
+                      AppDimens.topicViewArticleSectionFullHeight,
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.decelerate,
                 );
@@ -196,8 +201,6 @@ class _TopicHeader extends HookWidget {
                 children: [
                   TopicOwnerAvatar(
                     owner: topic.owner,
-                    imageHeight: 32,
-                    imageWidth: 32,
                     onTap: () => AutoRouter.of(context).push(
                       TopicOwnerPageRoute(
                         owner: topic.owner,
@@ -249,7 +252,7 @@ class _SelectedArticlesLabel extends StatelessWidget {
       onTap: onArticlesLabelTap,
       tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
       child: Text(
-        LocaleKeys.todaysTopics_selectedArticles.tr(
+        (kIsSmallDevice ? LocaleKeys.todaysTopics_articles : LocaleKeys.todaysTopics_selectedArticles).tr(
           args: [topic.readingList.entries.length.toString()],
         ),
         textAlign: TextAlign.start,

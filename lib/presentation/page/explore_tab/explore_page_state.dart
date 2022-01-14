@@ -12,5 +12,8 @@ class ExplorePageState with _$ExplorePageState {
   @Implements<BuildState>()
   factory ExplorePageState.idle(List<ExploreContentArea> areas) = _ExplorePageStateIdle;
 
+  @Implements<BuildState>()
+  factory ExplorePageState.error() = _ExplorePageStateError;
+
   factory ExplorePageState.showTutorialToast(String text) = _ExplorePageStateShowTutorialToast;
 }

@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
@@ -9,8 +10,6 @@ import 'package:better_informed_mobile/presentation/widget/track/topic_summary_t
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-const _summaryPageViewHeight = 275.0;
 
 class TopicSummary extends HookWidget {
   final Topic topic;
@@ -94,7 +93,7 @@ class _SummaryCardPageView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _summaryPageViewHeight,
+      height: AppDimens.topicViewSummaryCardHeight,
       child: PageView.builder(
         controller: controller,
         scrollDirection: Axis.horizontal,
@@ -130,7 +129,7 @@ class _SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: summaryCardKey,
-      height: _summaryPageViewHeight,
+      height: AppDimens.topicViewSummaryCardHeight,
       padding: const EdgeInsets.only(
         left: AppDimens.l,
         right: AppDimens.l,
@@ -140,14 +139,13 @@ class _SummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: AppDimens.xc),
+          SizedBox(height: kIsSmallDevice ? AppDimens.xxl : AppDimens.xc),
           Expanded(
             child: InformedMarkdownBody(
               markdown: topic.topicSummaryList[index].content,
               baseTextStyle: AppTypography.b2RegularLora,
             ),
           ),
-          const SizedBox(height: AppDimens.l),
         ],
       ),
     );

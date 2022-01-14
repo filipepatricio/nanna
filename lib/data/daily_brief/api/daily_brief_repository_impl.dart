@@ -6,13 +6,13 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/subjects.dart';
 
 @LazySingleton(as: DailyBriefRepository)
-class DailyBriefApiRepository implements DailyBriefRepository {
+class DailyBriefRepositoryImpl implements DailyBriefRepository {
   final DailyBriefApiDataSource _dailyBriefApiDataSource;
   final CurrentBriefDTOMapper _currentBriefDTOMapper;
 
   final BehaviorSubject<CurrentBrief> _currentBriefStream = BehaviorSubject();
 
-  DailyBriefApiRepository(
+  DailyBriefRepositoryImpl(
     this._dailyBriefApiDataSource,
     this._currentBriefDTOMapper,
   );

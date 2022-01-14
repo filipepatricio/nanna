@@ -1,11 +1,11 @@
 import 'dart:math';
 
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/widgets.dart';
 
-const bottomSquareCardHeight = 45.0;
-const upperDiagonalCardHeight = 15.0;
-const upperDiagonalCardFillerHeight = 20.0;
+const _upperDiagonalCardHeight = 15.0;
+const _upperDiagonalCardFillerHeight = 20.0;
 
 class BottomStackedCards extends StatelessWidget {
   const BottomStackedCards({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class BottomStackedCards extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: bottomSquareCardHeight,
+          height: AppDimens.topicViewStackedCardsDividerHeight,
           width: MediaQuery.of(context).size.width * 0.9,
           decoration: BoxDecoration(
             color: AppColors.lightGrey,
@@ -30,7 +30,7 @@ class BottomStackedCards extends StatelessWidget {
           ),
         ),
         Container(
-          height: upperDiagonalCardFillerHeight,
+          height: _upperDiagonalCardFillerHeight,
           color: AppColors.lightGrey,
           width: double.infinity,
         ),
@@ -38,7 +38,7 @@ class BottomStackedCards extends StatelessWidget {
           child: Transform.rotate(
             angle: 3 * pi / 120,
             child: Container(
-              height: upperDiagonalCardHeight,
+              height: _upperDiagonalCardHeight,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: AppColors.lightGrey,
