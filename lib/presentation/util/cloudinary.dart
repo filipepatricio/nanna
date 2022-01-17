@@ -14,14 +14,17 @@ class CloudinaryImageProvider {
 
   CloudinaryImageProvider._(this._cloudName);
 
-  CloudinaryImage withPublicId(String publicId) => CloudinaryImage.fromPublicId(_cloudName, publicId);
+  CloudinaryImage withPublicId(String publicId) => _fromPublicId(publicId);
 
-  CloudinaryImage withPublicIdAsPng(String publicId) =>
-      CloudinaryImage.fromPublicId(_cloudName, publicId + pngExtension);
+  CloudinaryImage withPublicIdAsPng(String publicId) => _fromPublicId(publicId + pngExtension);
 
   CloudinaryImage withPublicIdAsPlatform(String publicId) =>
-      //https://support.cloudinary.com/hc/en-us/articles/202521522-How-can-I-make-my-images-load-faster-
-      CloudinaryImage.fromPublicId(_cloudName, publicId + (kIsAppleDevice ? jpgExtension : webpExtension));
+      _fromPublicId(publicId + (kIsAppleDevice ? jpgExtension : webpExtension));
+
+  CloudinaryImage _fromPublicId(String publicId) {
+    final encodedPublicId = Uri.encodeComponent(publicId);
+    return CloudinaryImage.fromPublicId(_cloudName, encodedPublicId);
+  }
 }
 
 CloudinaryImageProvider useCloudinaryProvider() {
