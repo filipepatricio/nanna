@@ -34,7 +34,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 typedef MediaItemNavigationCallback = void Function(int index);
 
 const appBarHeight = kToolbarHeight + AppDimens.xl;
-const _loadNextArticleIndicatorHeight = 150.0;
+const _loadNextArticleIndicatorHeight = 100.0;
 
 class MediaItemPage extends HookWidget {
   final double? readArticleProgress;
@@ -346,30 +346,37 @@ class _IdleContent extends HookWidget {
                             articleContentKey: _articleContentKey,
                             scrollToPosition: () => scrollToPosition(readArticleProgress),
                           ),
+                          if (hasNextArticle)
+                            // It does not render well for less-than-one-page-height articles, but this is will not be a real case scenario
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: AppDimens.xxl),
+                                child: ValueListenableBuilder(
+                                  valueListenable: nextArticleLoaderFactor,
+                                  builder: (BuildContext context, double value, Widget? child) {
+                                    final opacity = max(0.0, 1 - value * 2);
+                                    return FadeTransition(
+                                      opacity: AlwaysStoppedAnimation(opacity),
+                                      child: child,
+                                    );
+                                  },
+                                  child: AnimatedPointerDown(
+                                    arrowColor: AppColors.textPrimary,
+                                    onTap: () {
+                                      controller.animateTo(
+                                          controller.offset.ceilToDouble() + (_loadNextArticleIndicatorHeight * 2),
+                                          duration: const Duration(milliseconds: 200),
+                                          curve: Curves.easeIn);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
                     if (hasNextArticle) ...[
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: AppDimens.xxl),
-                            child: ValueListenableBuilder(
-                              valueListenable: nextArticleLoaderFactor,
-                              builder: (BuildContext context, double value, Widget? child) {
-                                final opacity = max(0.0, 1 - value * 2);
-                                return FadeTransition(
-                                  opacity: AlwaysStoppedAnimation(opacity),
-                                  child: child,
-                                );
-                              },
-                              child: const AnimatedPointerDown(arrowColor: AppColors.textPrimary),
-                            ),
-                          ),
-                        ),
-                      ),
                       SliverPullUpIndicatorAction(
                         builder: (context, factor) {
                           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -524,7 +531,7 @@ class _ActionsBar extends HookWidget {
   }
 }
 
-class _LoadingNextArticleIndicator extends StatelessWidget {
+class _LoadingNextArticleIndicator extends HookWidget {
   final double factor;
 
   const _LoadingNextArticleIndicator({
@@ -534,23 +541,19 @@ class _LoadingNextArticleIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: AlwaysStoppedAnimation(factor),
-      child: ScaleTransition(
-        scale: AlwaysStoppedAnimation(factor),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: SvgPicture.asset(AppVectorGraphics.loadNextArticle),
-            ),
-            const SizedBox(height: AppDimens.s),
-            Text(
-              LocaleKeys.article_loadingNext.tr(),
-              style: AppTypography.b1Regular.copyWith(height: 1.2),
-              textAlign: TextAlign.center,
-            ),
-          ],
+    final animationController = useAnimationController(duration: const Duration(seconds: 1));
+    final animation = Tween(begin: 1.0, end: 0.0).animate(animationController);
+
+    useEffect(() {
+      if (!kIsTest) animationController.repeat();
+    }, []);
+
+    return Center(
+      child: FadeTransition(
+        opacity: AlwaysStoppedAnimation(factor),
+        child: ScaleTransition(
+          scale: AlwaysStoppedAnimation(factor),
+          child: RotationTransition(turns: animation, child: SvgPicture.asset(AppVectorGraphics.arrowLoading)),
         ),
       ),
     );
