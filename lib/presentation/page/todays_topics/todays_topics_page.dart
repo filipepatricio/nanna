@@ -171,7 +171,7 @@ class _IdleContent extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (kIsNotSmallDevice) ...[
-            const SizedBox(height: AppDimens.l),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               child: _Greeting(
@@ -179,9 +179,10 @@ class _IdleContent extends HookWidget {
                 lastPageAnimationProgressState: lastPageAnimationProgressState,
               ),
             ),
+            const Spacer()
           ],
-          const SizedBox(height: AppDimens.sl),
-          Expanded(
+          Flexible(
+            flex: 20,
             child: Stack(
               children: [
                 Positioned.fill(
@@ -238,11 +239,11 @@ class _IdleContent extends HookWidget {
               ],
             ),
           ),
-          SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
+          const Spacer(),
           Center(
             child: _DotIndicator(currentBrief: currentBrief, controller: controller),
           ),
-          SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
+          const Spacer()
         ],
       ),
     );
@@ -258,18 +259,22 @@ class _IdleContent extends HookWidget {
   ) {
     return currentBrief.topics.asMap().map<int, Widget>((key, value) {
       return MapEntry(
-        key,
-        Padding(
-          padding: EdgeInsets.only(left: kIsSmallDevice ? AppDimens.m : AppDimens.l),
-          child: PageViewStackedCards.random(
-            coverSize: Size(width, heightPageView),
-            child: ReadingListCover(
-              topic: currentBrief.topics[key],
-              onTap: () => _onTopicCardPressed(context, key, currentBrief),
-            ),
-          ),
-        ),
-      );
+          key,
+          Row(
+            children: [
+              const Spacer(),
+              Expanded(
+                flex: 15,
+                child: PageViewStackedCards.random(
+                  coverSize: Size(width, heightPageView),
+                  child: ReadingListCover(
+                    topic: currentBrief.topics[key],
+                    onTap: () => _onTopicCardPressed(context, key, currentBrief),
+                  ),
+                ),
+              )
+            ],
+          ));
     }).values;
   }
 
