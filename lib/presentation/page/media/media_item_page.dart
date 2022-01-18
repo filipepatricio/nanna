@@ -346,37 +346,41 @@ class _IdleContent extends HookWidget {
                             articleContentKey: _articleContentKey,
                             scrollToPosition: () => scrollToPosition(readArticleProgress),
                           ),
-                          if (hasNextArticle)
-                            // It does not render well for less-than-one-page-height articles, but this is will not be a real case scenario
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: AppDimens.xxl),
-                                child: ValueListenableBuilder(
-                                  valueListenable: nextArticleLoaderFactor,
-                                  builder: (BuildContext context, double value, Widget? child) {
-                                    final opacity = max(0.0, 1 - value * 2);
-                                    return FadeTransition(
-                                      opacity: AlwaysStoppedAnimation(opacity),
-                                      child: child,
-                                    );
-                                  },
-                                  child: AnimatedPointerDown(
-                                    arrowColor: AppColors.textPrimary,
-                                    onTap: () {
-                                      controller.animateTo(
-                                          controller.offset.ceilToDouble() + (_loadNextArticleIndicatorHeight * 2),
-                                          duration: const Duration(milliseconds: 200),
-                                          curve: Curves.easeIn);
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
                         ],
                       ),
                     ),
                     if (hasNextArticle) ...[
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: AppDimens.xxxc, bottom: AppDimens.xl),
+                            child: ValueListenableBuilder(
+                              valueListenable: nextArticleLoaderFactor,
+                              builder: (BuildContext context, double value, Widget? child) {
+                                final opacity = max(0.0, 1 - value * 2);
+                                return ConstrainedBox(
+                                  constraints: const BoxConstraints.expand(width: AppDimens.l, height: AppDimens.l),
+                                  child: FadeTransition(
+                                    opacity: AlwaysStoppedAnimation(opacity),
+                                    child: child,
+                                  ),
+                                );
+                              },
+                              child: AnimatedPointerDown(
+                                arrowColor: AppColors.textPrimary,
+                                onTap: () {
+                                  controller.animateTo(
+                                      controller.offset.ceilToDouble() + (_loadNextArticleIndicatorHeight * 2),
+                                      duration: const Duration(milliseconds: 200),
+                                      curve: Curves.easeIn);
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       SliverPullUpIndicatorAction(
                         builder: (context, factor) {
                           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
