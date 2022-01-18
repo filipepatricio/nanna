@@ -17,4 +17,6 @@ abstract class PushNotificationRepository {
   Future<NotificationPreferences> getNotificationPreferences();
 
   Future<NotificationChannel> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled);
+
+  void dispose();
 }

@@ -50,4 +50,7 @@ class PushNotificationRepositoryMock implements PushNotificationRepository {
       emailEnabled: emailEnabled ?? true,
     );
   }
+
+  @override
+  void dispose() {}
 }

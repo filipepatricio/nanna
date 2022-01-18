@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/registered_push_token_dto_mapper.dart';
@@ -10,7 +12,9 @@ import 'package:better_informed_mobile/domain/push_notification/data/notificatio
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
 import 'package:better_informed_mobile/domain/push_notification/incoming_push/data/incoming_push.dart';
+import 'package:better_informed_mobile/domain/push_notification/incoming_push/data/incoming_push_action.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
+import 'package:fimber/fimber.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,6 +28,8 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   final RegisteredPushTokenDTOMapper _registeredPushTokenDTOMapper;
   final NotificationPreferencesDTOMapper _notificationPreferencesDTOMapper;
   final NotificationChannelDTOMapper _notificationChannelDTOMapper;
+
+  StreamController<IncomingPush>? _incomingPushNotificationStream;
 
   PushNotificationRepositoryImpl(
     this._firebaseMessaging,
@@ -64,12 +70,22 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
 
   @override
   Stream<IncomingPush> pushNotificationOpenStream() {
-    return Rx.concat(
+    final controller = _incomingPushNotificationStream;
+    if (controller != null) return controller.stream;
+
+    final newController = StreamController<IncomingPush>.broadcast();
+
+    final incomingPushStream = Rx.concat(
       [
         _pushNotificationMessenger.initialMessage().asStream().whereType<IncomingPushDTO>(),
         _pushNotificationMessenger.onMessageOpenedApp(),
       ],
-    ).map(_incomingPushDTOMapper);
+    ).map<IncomingPush>(_incomingPushDTOMapper).map<IncomingPush>(_logUnknownActions);
+
+    newController.sink.addStream(incomingPushStream);
+    _incomingPushNotificationStream = newController;
+
+    return newController.stream;
   }
 
   bool _isAuthorized(NotificationSettings result) => result.authorizationStatus == AuthorizationStatus.authorized;
@@ -84,5 +100,19 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   Future<NotificationChannel> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled) async {
     final dto = await _pushNotificationApiDataSource.setNotificationChannel(id, pushEnabled, emailEnabled);
     return _notificationChannelDTOMapper.to(dto);
+  }
+
+  @override
+  void dispose() {
+    _incomingPushNotificationStream?.close();
+    _incomingPushNotificationStream = null;
+  }
+
+  IncomingPush _logUnknownActions(IncomingPush push) {
+    final unknownActions = push.actions.whereType<IncomingPushActionUnknown>();
+    if (unknownActions.isNotEmpty) {
+      Fimber.w('Unknown action types detected in push notification: $unknownActions');
+    }
+    return push;
   }
 }

@@ -4,9 +4,9 @@ part 'incoming_push_action.freezed.dart';
 
 @freezed
 class IncomingPushAction with _$IncomingPushAction {
-  factory IncomingPushAction.refreshDailyBrief() = _IncomingPushActionRefreshDailyBrief;
+  factory IncomingPushAction.refreshDailyBrief() = IncomingPushActionRefreshDailyBrief;
 
-  factory IncomingPushAction.navigateTo(String path) = _IncomingPushActionNavigateTo;
+  factory IncomingPushAction.navigateTo(String path) = IncomingPushActionNavigateTo;
 
-  factory IncomingPushAction.unknown(String type) = _IncomingPushActionUnknown;
+  factory IncomingPushAction.unknown(String type) = IncomingPushActionUnknown;
 }

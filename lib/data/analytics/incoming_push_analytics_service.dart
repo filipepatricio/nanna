@@ -9,6 +9,6 @@ class IncomingPushAnalyticsService {
   IncomingPushAnalyticsService(this._analyticsRepository);
 
   void trackPressedPushNotification(IncomingPushDTO push) {
-    _analyticsRepository.track('push_notification', push.meta);
+    _analyticsRepository.track('PushNotificationTapped', push.meta);
   }
 }

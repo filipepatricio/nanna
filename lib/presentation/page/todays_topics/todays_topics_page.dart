@@ -115,7 +115,7 @@ class TodaysTopicsPage extends HookWidget {
                   cardStackWidth: cardStackWidth,
                 ),
                 error: (_) => RefreshIndicator(
-                  onRefresh: cubit.initialize,
+                  onRefresh: cubit.loadTodaysTopics,
                   color: AppColors.darkGrey,
                   child: CustomScrollView(
                     scrollBehavior: NoGlowScrollBehavior(),
@@ -123,7 +123,10 @@ class TodaysTopicsPage extends HookWidget {
                       SliverToBoxAdapter(
                         child: SizedBox(
                           height: constraints.maxHeight,
-                          child: StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth),
+                          child: StackedCardsErrorView(
+                            retryAction: cubit.loadTodaysTopics,
+                            cardStackWidth: cardStackWidth,
+                          ),
                         ),
                       ),
                     ],
@@ -189,7 +192,7 @@ class _IdleContent extends HookWidget {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return RefreshIndicator(
-                        onRefresh: todaysTopicsCubit.initialize,
+                        onRefresh: todaysTopicsCubit.loadTodaysTopics,
                         color: AppColors.darkGrey,
                         child: CustomScrollView(
                           scrollBehavior: NoGlowScrollBehavior(),
