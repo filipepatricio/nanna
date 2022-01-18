@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -8,8 +6,8 @@ import 'package:better_informed_mobile/presentation/page/topic/summary/topic_sum
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -45,8 +43,7 @@ class TopicView extends HookWidget {
     final eventController = useEventTrackController();
     final pageIndex = useState(0);
     final listScrollController = useScrollController();
-    final topicHeaderImageHeight =
-        min(MediaQuery.of(context).size.height * .75, AppDimens.topicViewArticleSectionFullHeight);
+    final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
     final summaryViewHeight = MediaQuery.of(context).size.height * .5;
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
@@ -72,11 +69,11 @@ class TopicView extends HookWidget {
               topic: topic,
               onArticlesLabelTap: () {
                 listScrollController.animateTo(
-                  AppDimens.topicViewTopicHeaderHeight +
+                  AppDimens.topicViewHeaderImageHeight(context) +
                       summaryViewHeight +
                       AppDimens.topicViewArticleSectionFullHeight,
-                  duration: const Duration(milliseconds: 100),
-                  curve: Curves.decelerate,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
                 );
               },
               topicHeaderImageHeight: topicHeaderImageHeight,
@@ -165,68 +162,95 @@ class _TopicHeader extends HookWidget {
     final cloudinaryProvider = useCloudinaryProvider();
     final screenWidth = MediaQuery.of(context).size.width;
 
+    const coverImageCropHeight = 200.0;
+    const coverImageCropWidth = coverImageCropHeight;
+
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        Container(
-          width: double.infinity,
-          height: topicHeaderImageHeight,
-          child: CloudinaryProgressiveImage(
+        Hero(
+          tag: topic.heroImage.publicId,
+          child: Container(
             width: screenWidth,
             height: topicHeaderImageHeight,
-            cloudinaryTransformation: cloudinaryProvider
-                .withPublicIdAsPlatform(topic.heroImage.publicId)
-                .transform()
-                .withLogicalSize(screenWidth, topicHeaderImageHeight, context)
-                .autoGravity(),
-          ),
-        ),
-        Positioned.fill(
-          child: Container(
-            color: AppColors.black.withOpacity(0.4),
+            foregroundDecoration: BoxDecoration(color: AppColors.black.withOpacity(0.4)),
+            child: CloudinaryProgressiveImage(
+              width: screenWidth,
+              height: topicHeaderImageHeight,
+              testImage: AppRasterGraphics.testArticleHeroImage,
+              cloudinaryTransformation: cloudinaryProvider
+                  .withPublicIdAsPlatform(topic.heroImage.publicId)
+                  .transform()
+                  .withLogicalSize(screenWidth, topicHeaderImageHeight, context)
+                  .autoGravity(),
+            ),
           ),
         ),
         Positioned(
           left: 0,
           bottom: AppDimens.topicViewTopicHeaderPadding,
-          right: AppDimens.topicViewTopicHeaderPadding,
-          child: Container(
-            width: AppDimens.topicViewTopicHeaderHeight,
-            color: AppColors.background,
-            child: Padding(
-              padding: const EdgeInsets.all(AppDimens.l),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TopicOwnerAvatar(
-                    owner: topic.owner,
-                    onTap: () => AutoRouter.of(context).push(
-                      TopicOwnerPageRoute(
-                        owner: topic.owner,
-                        topics: List.generate(3, (index) => topic),
+          right: AppDimens.topicViewTopicHeaderPadding * 2.5,
+          child: Hero(
+            tag: topic.id,
+            child: LayoutBuilder(
+              builder: (context, constraints) => Container(
+                color: AppColors.background,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: CloudinaryProgressiveImage(
+                        width: constraints.maxWidth,
+                        height: constraints.maxHeight,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.center,
+                        testImage: AppRasterGraphics.testReadingListCoverImageCropped,
+                        cloudinaryTransformation: cloudinaryProvider
+                            .withPublicId(topic.coverImage.publicId)
+                            .transform()
+                            .withLogicalSize(coverImageCropWidth, coverImageCropHeight, context)
+                            .crop('crop')
+                            .autoGravity(),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: AppDimens.xl),
-                  InformedMarkdownBody(
-                    markdown: topic.title,
-                    baseTextStyle: AppTypography.h1Headline,
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: AppDimens.xxl),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _SelectedArticlesLabel(onArticlesLabelTap: onArticlesLabelTap, topic: topic),
-                      UpdatedLabel(
-                        dateTime: topic.lastUpdatedAt,
-                        backgroundColor: AppColors.transparent,
+                    Padding(
+                      padding: const EdgeInsets.all(AppDimens.l),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TopicOwnerAvatar(
+                            owner: topic.owner,
+                            onTap: () => AutoRouter.of(context).push(
+                              TopicOwnerPageRoute(
+                                owner: topic.owner,
+                                //TODO: Replace with owner's topics fetched from API
+                                topics: List.generate(3, (index) => topic),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: AppDimens.xl),
+                          InformedMarkdownBody(
+                            markdown: topic.title,
+                            baseTextStyle: AppTypography.h1Headline,
+                            maxLines: 5,
+                          ),
+                          const SizedBox(height: AppDimens.xxl),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _SelectedArticlesLabel(onArticlesLabelTap: onArticlesLabelTap, topic: topic),
+                              UpdatedLabel(
+                                dateTime: topic.lastUpdatedAt,
+                                backgroundColor: AppColors.transparent,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -252,7 +276,7 @@ class _SelectedArticlesLabel extends StatelessWidget {
       onTap: onArticlesLabelTap,
       tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
       child: Text(
-        (kIsSmallDevice ? LocaleKeys.todaysTopics_articles : LocaleKeys.todaysTopics_selectedArticles).tr(
+        LocaleKeys.todaysTopics_articles.tr(
           args: [topic.readingList.entries.length.toString()],
         ),
         textAlign: TextAlign.start,

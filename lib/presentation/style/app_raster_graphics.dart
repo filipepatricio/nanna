@@ -8,8 +8,10 @@ class AppRasterGraphics {
   static const String expertAvatar = 'assets/raster_graphics/expert_avatar.png';
 
   // Assets for visual testing
-  static const String testPublisherLogoDark = 'assets/raster_graphics/test/publisher_logo_dark.png';
-  static const String testPublisherLogoLight = 'assets/raster_graphics/test/publisher_logo_light.png';
-  static const String testReadingListCoverImage = 'assets/raster_graphics/test/reading_list_cover_image.png';
-  static const String testArticleHeaderImage = 'assets/raster_graphics/test/article_header_image.jpg';
+  static const String testPublisherLogoDark = 'assets/raster_graphics/test_publisher_logo_dark.png';
+  static const String testPublisherLogoLight = 'assets/raster_graphics/test_publisher_logo_light.png';
+  static const String testReadingListCoverImage = 'assets/raster_graphics/test_reading_list_cover_image.png';
+  static const String testReadingListCoverImageCropped =
+      'assets/raster_graphics/test_reading_list_cover_image_cropped.png';
+  static const String testArticleHeroImage = 'assets/raster_graphics/test_article_header_image.jpg';
 }
