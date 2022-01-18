@@ -169,7 +169,7 @@ class _TopicHeader extends HookWidget {
       alignment: Alignment.topCenter,
       children: [
         Hero(
-          tag: '${topic.id}-${topic.heroImage.publicId}',
+          tag: topic.heroImage.publicId,
           child: Container(
             width: screenWidth,
             height: topicHeaderImageHeight,

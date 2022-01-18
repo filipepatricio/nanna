@@ -35,13 +35,12 @@ class ReadingListCover extends HookWidget {
       behavior: HitTestBehavior.opaque,
       child: LayoutBuilder(
         builder: (context, constraints) => Container(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
           child: Stack(
             alignment: Alignment.center,
             children: [
               Positioned.fill(
                 child: Hero(
-                  tag: '${topic.id}-${topic.heroImage.publicId}',
+                  tag: topic.heroImage.publicId,
                   child: CloudinaryProgressiveImage(
                     width: constraints.maxWidth * .9,
                     height: constraints.maxHeight * .9,
@@ -78,7 +77,6 @@ class ReadingListCover extends HookWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const Spacer(),
                           TopicOwnerAvatar(owner: topic.owner),
                           const Spacer(),
                           _TopicTitleIntroduction(topic: topic),
@@ -105,7 +103,6 @@ class ReadingListCover extends HookWidget {
                   ],
                 ),
               ),
-              const Spacer(),
             ],
           ),
         ),
