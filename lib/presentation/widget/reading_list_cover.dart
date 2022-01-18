@@ -35,7 +35,7 @@ class ReadingListCover extends HookWidget {
       behavior: HitTestBehavior.opaque,
       child: LayoutBuilder(
         builder: (context, constraints) => Container(
-          padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.m, AppDimens.m, AppDimens.l),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: kIsTest
@@ -53,29 +53,16 @@ class ReadingListCover extends HookWidget {
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppDimens.l),
-                child: TopicOwnerAvatar(owner: topic.owner),
-              ),
-              Expanded(
-                flex: 5,
-                child: InformedMarkdownBody(
-                  markdown: topic.title,
-                  baseTextStyle: AppTypography.h1Bold,
-                  maxLines: 3,
-                ),
-              ),
-              const SizedBox(height: AppDimens.s),
-              Expanded(
-                flex: 6,
-                child: _TopicIntroduction(introduction: topic.introduction),
-              ),
-              SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
+              const Spacer(),
+              TopicOwnerAvatar(owner: topic.owner),
+              const Spacer(),
+              _TopicTitleIntroduction(topic: topic),
+              const Spacer(),
               _PublisherLogoRow(topic: topic),
-              SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
+              const Spacer(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -89,6 +76,7 @@ class ReadingListCover extends HookWidget {
                   UpdatedLabel(dateTime: topic.lastUpdatedAt, backgroundColor: AppColors.white),
                 ],
               ),
+              const Spacer(),
             ],
           ),
         ),
@@ -120,17 +108,36 @@ class _PublisherLogoRow extends HookWidget {
   }
 }
 
-class _TopicIntroduction extends StatelessWidget {
-  final String introduction;
+class _TopicTitleIntroduction extends StatelessWidget {
+  final Topic topic;
 
-  const _TopicIntroduction({required this.introduction, Key? key}) : super(key: key);
+  const _TopicTitleIntroduction({required this.topic, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InformedMarkdownBody(
-      markdown: introduction,
-      baseTextStyle: AppTypography.b2RegularLora,
-      maxLines: 5,
-    );
+    return Expanded(
+        flex: 10,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 95,
+              child: InformedMarkdownBody(
+                markdown: topic.title,
+                baseTextStyle: kIsSmallDevice ? AppTypography.h2Bold : AppTypography.h1Bold,
+                maxLines: 3,
+              ),
+            ),
+            const Spacer(flex: 12),
+            Expanded(
+                flex: 120,
+                child: InformedMarkdownBody(
+                  markdown: topic.introduction,
+                  baseTextStyle: kIsSmallDevice ? AppTypography.b3RegularLora : AppTypography.b2RegularLora,
+                  maxLines: 5,
+                ))
+          ],
+        ));
   }
 }

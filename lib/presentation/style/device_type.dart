@@ -10,7 +10,7 @@ enum DeviceType { small, regular, large }
 
 DeviceType getDeviceType(Size screenSize) {
   // See: https://www.ios-resolution.com
-  if (screenSize.width < 360) {
+  if (screenSize.width <= 360) {
     return DeviceType.small;
   } else if (screenSize.width >= 768) {
     return DeviceType.large;
