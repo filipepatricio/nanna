@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
@@ -58,7 +59,7 @@ class ReadingListCover extends HookWidget {
               const Spacer(),
               TopicOwnerAvatar(owner: topic.owner),
               const Spacer(),
-              _TopicTitleSummary(topic: topic),
+              _TopicTitleIntroduction(topic: topic),
               const Spacer(),
               _PublisherLogoRow(topic: topic),
               const Spacer(),
@@ -107,33 +108,33 @@ class _PublisherLogoRow extends HookWidget {
   }
 }
 
-class _TopicTitleSummary extends StatelessWidget {
+class _TopicTitleIntroduction extends StatelessWidget {
   final Topic topic;
 
-  const _TopicTitleSummary({required this.topic, Key? key}) : super(key: key);
+  const _TopicTitleIntroduction({required this.topic, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: 15,
+        flex: 10,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: 12,
+              flex: 95,
               child: InformedMarkdownBody(
                 markdown: topic.title,
-                baseTextStyle: AppTypography.h1Bold,
+                baseTextStyle: kIsSmallDevice ? AppTypography.h2Bold : AppTypography.h1Bold,
                 maxLines: 3,
               ),
             ),
-            const Spacer(),
+            const Spacer(flex: 12),
             Expanded(
-                flex: 15,
+                flex: 120,
                 child: InformedMarkdownBody(
                   markdown: topic.introduction,
-                  baseTextStyle: AppTypography.b2RegularLora,
+                  baseTextStyle: kIsSmallDevice ? AppTypography.b3RegularLora : AppTypography.b2RegularLora,
                   maxLines: 5,
                 ))
           ],

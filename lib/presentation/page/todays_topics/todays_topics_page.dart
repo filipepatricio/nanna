@@ -181,8 +181,8 @@ class _IdleContent extends HookWidget {
             ),
             const Spacer()
           ],
-          Expanded(
-            flex: 40,
+          Flexible(
+            flex: 20,
             child: Stack(
               children: [
                 Positioned.fill(
@@ -243,7 +243,7 @@ class _IdleContent extends HookWidget {
           Center(
             child: _DotIndicator(currentBrief: currentBrief, controller: controller),
           ),
-          const Spacer(flex: 2)
+          const Spacer()
         ],
       ),
     );
