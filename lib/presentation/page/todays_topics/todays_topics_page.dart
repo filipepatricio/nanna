@@ -182,7 +182,7 @@ class _IdleContent extends HookWidget {
             const Spacer()
           ],
           Flexible(
-            flex: 20,
+            flex: 40,
             child: Stack(
               children: [
                 Positioned.fill(
