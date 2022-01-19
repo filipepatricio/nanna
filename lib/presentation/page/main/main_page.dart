@@ -25,9 +25,8 @@ class MainPage extends HookWidget {
       state.maybeMap(
         tokenExpired: (_) => _onTokenExpiredEvent(context),
         navigate: (navigate) async {
-          final router = AutoRouter.of(context);
-          await router.navigateNamed(
-            navigate.path,
+          await context.navigateNamedTo(
+            const MainPageRoute().path + navigate.path,
             onFailure: (failure) {
               Fimber.e('Incoming push - navigation failed', ex: failure);
             },

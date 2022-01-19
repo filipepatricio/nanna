@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -9,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -17,6 +20,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 class TopicPageCubit extends Cubit<TopicPageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  final GetTopicBySlugUseCase _getTopicBySlugUseCase;
 
   late bool _isTopicTutorialStepSeen;
   late bool _isTopicSummaryCardTutorialStepSeen;
@@ -26,10 +30,23 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   final summaryCardKey = GlobalKey();
   final mediaItemKey = GlobalKey();
 
-  TopicPageCubit(this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase) : super(TopicPageState.loading());
+  TopicPageCubit(
+    this._isTutorialStepSeenUseCase,
+    this._setTutorialStepSeenUseCase,
+    this._getTopicBySlugUseCase,
+  ) : super(TopicPageState.loading());
 
-  Future<void> initialize() async {
-    emit(TopicPageState.idle());
+  Future<void> initializeWithSlug(String slug) async {
+    try {
+      final topic = await _getTopicBySlugUseCase(slug);
+      await initialize(topic);
+    } catch (e, s) {
+      Fimber.e('Topic loading failed', ex: e, stacktrace: s);
+    }
+  }
+
+  Future<void> initialize(Topic topic) async {
+    emit(TopicPageState.idle(topic));
 
     _isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
     _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicSummaryCard);

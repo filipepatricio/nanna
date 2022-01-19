@@ -283,5 +283,10 @@ class _LastUpdatedTopics extends HookWidget {
 }
 
 void _onTopicTap(BuildContext context, Topic topic) {
-  AutoRouter.of(context).push(TopicOwnerTopicPage(pageData: TopicPageData.item(topic: topic)));
+  AutoRouter.of(context).push(
+    TopicOwnerTopicPage(
+      topicSlug: topic.id,
+      topic: topic,
+    ),
+  );
 }

@@ -37,6 +37,7 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     CustomRoute(page: MediaItemPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
+
     dashboardTabRouter,
   ],
 )
@@ -47,17 +48,22 @@ const dashboardTabRouter = CustomRoute(
   durationInMilliseconds: 0,
   children: [
     AutoRoute(
-      path: 'todayTab',
+      path: 'topics',
       name: 'TodayTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
         AutoRoute(path: '', page: TodaysTopicsPage),
-        CustomRoute(page: TopicPage, customRouteBuilder: fadePageRouteBuilder, name: 'TodaysTopicsTopicPage'),
-        RedirectRoute(path: '*', redirectTo: ''),
+        CustomRoute(
+          page: TopicPage,
+          path: ':topicSlug',
+          customRouteBuilder: fadePageRouteBuilder,
+          name: 'TodaysTopicsTopicPage',
+        ),
+        RedirectRoute(path: '', redirectTo: '')
       ],
     ),
     AutoRoute(
-      path: 'exploreTab',
+      path: 'explore',
       name: 'ExploreTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
@@ -65,16 +71,14 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(page: ArticleSeeAllPage),
         AutoRoute(page: TopicsSeeAllPage),
         AutoRoute(page: TopicPage),
-        RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
     AutoRoute(
-      path: 'profileTab',
+      path: 'profile',
       name: 'ProfileTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
         AutoRoute(path: '', page: ProfilePage),
-        RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
   ],

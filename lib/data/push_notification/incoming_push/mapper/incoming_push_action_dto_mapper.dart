@@ -9,7 +9,10 @@ class IncomingPushActionDTOMapper implements Mapper<IncomingPushActionDTO, Incom
   IncomingPushAction call(IncomingPushActionDTO data) {
     return data.map(
       refreshDailyBrief: (data) => IncomingPushAction.refreshDailyBrief(),
-      navigateTo: (data) => IncomingPushAction.navigateTo(data.args.path),
+      navigateTo: (data) {
+        final path = data.args.path == '/' ? '/topics' : data.args.path;
+        return IncomingPushAction.navigateTo(path);
+      },
       unknown: (data) => IncomingPushAction.unknown(data.type),
     );
   }

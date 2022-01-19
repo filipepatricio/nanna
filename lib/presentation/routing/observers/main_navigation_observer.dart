@@ -14,13 +14,13 @@ class MainNavigationObserver extends AutoRouterObserver {
   void didPush(Route route, Route? previousRoute) {
     switch (route.settings.name) {
       case TodaysTopicsTopicPage.name:
-        final args = route.settings.arguments as TodaysTopicsTopicPageArgs;
-        final topicId = args.pageData.topic.id;
-        final briefId = args.pageData.briefId;
-        return _trackActivityUseCase.trackPage(AnalyticsPage.topic(topicId, briefId));
+        // final args = route.settings.arguments as TodaysTopicsTopicPageArgs;
+        // final topicId = args.topicId;
+        // final briefId = 'args.pageData.briefId';  //TODO fix
+        return _trackActivityUseCase.trackPage(AnalyticsPage.topic('topicId', 'briefId'));
       case TopicPageRoute.name:
         final args = route.settings.arguments as TopicPageRouteArgs;
-        final topicId = args.pageData.topic.id;
+        final topicId = args.topicSlug;
         return _trackActivityUseCase.trackPage(AnalyticsPage.topic(topicId));
       case MediaItemPageRoute.name:
         // Handled in MediaItemCubit

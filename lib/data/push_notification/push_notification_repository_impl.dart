@@ -30,6 +30,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   final NotificationChannelDTOMapper _notificationChannelDTOMapper;
 
   StreamController<IncomingPush>? _incomingPushNotificationStream;
+  StreamSubscription? _incomingPushSubscription;
 
   PushNotificationRepositoryImpl(
     this._firebaseMessaging,
@@ -82,7 +83,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
       ],
     ).map<IncomingPush>(_incomingPushDTOMapper).map<IncomingPush>(_logUnknownActions);
 
-    newController.sink.addStream(incomingPushStream);
+    _incomingPushSubscription = incomingPushStream.listen(newController.sink.add);
     _incomingPushNotificationStream = newController;
 
     return newController.stream;
@@ -104,6 +105,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
 
   @override
   void dispose() {
+    _incomingPushSubscription?.cancel();
     _incomingPushNotificationStream?.close();
     _incomingPushNotificationStream = null;
   }

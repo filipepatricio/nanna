@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -96,7 +95,10 @@ class TopicsAreaView extends HookWidget {
 
   void _onTopicTap(BuildContext context, int index) {
     AutoRouter.of(context).push(
-      TopicPageRoute(pageData: TopicPageData.item(topic: area.topics[index])),
+      TopicPageRoute(
+        topicSlug: area.topics[index].id,
+        topic: area.topics[index],
+      ),
     );
   }
 }
