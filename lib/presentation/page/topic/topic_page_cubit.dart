@@ -41,11 +41,14 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   ) : super(TopicPageState.loading());
 
   Future<void> initializeWithSlug(String slug, String? briefId) async {
+    emit(TopicPageState.loading());
+
     try {
       final topic = await _getTopicBySlugUseCase(slug);
       await initialize(topic, briefId);
     } catch (e, s) {
       Fimber.e('Topic loading failed', ex: e, stacktrace: s);
+      emit(TopicPageState.error());
     }
   }
 
