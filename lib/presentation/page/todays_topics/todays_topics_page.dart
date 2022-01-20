@@ -181,7 +181,7 @@ class _IdleContent extends HookWidget {
                 lastPageAnimationProgressState: lastPageAnimationProgressState,
               ),
             ),
-            const Spacer()
+            const Spacer(),
           ],
           Flexible(
             flex: 40,

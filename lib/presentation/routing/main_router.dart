@@ -80,5 +80,6 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(path: '', page: ProfilePage),
       ],
     ),
+    RedirectRoute(path: '', redirectTo: 'topics'),
   ],
 );
