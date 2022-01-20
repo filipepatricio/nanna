@@ -100,7 +100,8 @@ class MediaItemPage extends HookWidget {
           children: [
             /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
             ///
-            /// As cupertino bottom sheet works on ScrollNotification instead of ScrollController itself it's the only way
+            /// As cupertino bottom sheet works on ScrollNotification
+            /// instead of ScrollController itself it's the only way
             /// to make sure it will work - at least only way I found
             SizedBox(
               height: 0,
@@ -269,6 +270,7 @@ class _IdleContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final nextArticleLoaderFactor = useMemoized(() => ValueNotifier(0.0), [article]);
+    final readProgress = useMemoized(() => ValueNotifier(0.0));
     final gestureManager = useMemoized(
       () => ArticleCustomVerticalDragManager(
         modalController: modalController,
@@ -299,6 +301,9 @@ class _IdleContent extends HookWidget {
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollNotification) {
+          if (scrollNotification is ScrollUpdateNotification) {
+            readProgress.value = controller.offset / controller.position.maxScrollExtent;
+          }
           if (scrollNotification is ScrollEndNotification) {
             if (controller.hasClients) {
               var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
@@ -327,75 +332,81 @@ class _IdleContent extends HookWidget {
                     controller: pageController,
                     fullHeight: fullHeight,
                   ),
-                CustomScrollView(
-                  physics: const NeverScrollableScrollPhysics(
-                    parent: BottomBouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics(),
-                    ),
-                  ),
-                  controller: controller,
-                  slivers: [
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          ArticleContentView(
-                            article: article,
-                            content: content,
-                            cubit: cubit,
-                            controller: controller,
-                            articleContentKey: _articleContentKey,
-                            scrollToPosition: () => scrollToPosition(readArticleProgress),
-                          ),
-                        ],
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomScrollView(
+                      physics: const NeverScrollableScrollPhysics(
+                        parent: BottomBouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics(),
+                        ),
                       ),
-                    ),
-                    if (hasNextArticle) ...[
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: AppDimens.xxxc, bottom: AppDimens.xl),
-                            child: ValueListenableBuilder(
-                              valueListenable: nextArticleLoaderFactor,
-                              builder: (BuildContext context, double value, Widget? child) {
-                                final opacity = max(0.0, 1 - value * 2);
-                                return ConstrainedBox(
-                                  constraints: const BoxConstraints.expand(width: AppDimens.l, height: AppDimens.l),
-                                  child: FadeTransition(
-                                    opacity: AlwaysStoppedAnimation(opacity),
-                                    child: child,
+                      controller: controller,
+                      slivers: [
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              ArticleContentView(
+                                article: article,
+                                content: content,
+                                cubit: cubit,
+                                controller: controller,
+                                articleContentKey: _articleContentKey,
+                                scrollToPosition: () => scrollToPosition(readArticleProgress),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (hasNextArticle) ...[
+                          SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: AppDimens.xxxc, bottom: AppDimens.xl),
+                                child: ValueListenableBuilder(
+                                  valueListenable: nextArticleLoaderFactor,
+                                  builder: (BuildContext context, double value, Widget? child) {
+                                    final opacity = max(0.0, 1 - value * 2);
+                                    return ConstrainedBox(
+                                      constraints: const BoxConstraints.expand(width: AppDimens.l, height: AppDimens.l),
+                                      child: FadeTransition(
+                                        opacity: AlwaysStoppedAnimation(opacity),
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                                  child: AnimatedPointerDown(
+                                    arrowColor: AppColors.textPrimary,
+                                    onTap: () {
+                                      controller.animateTo(
+                                          controller.offset.ceilToDouble() + (_loadNextArticleIndicatorHeight * 2),
+                                          duration: const Duration(milliseconds: 200),
+                                          curve: Curves.easeIn);
+                                    },
                                   ),
-                                );
-                              },
-                              child: AnimatedPointerDown(
-                                arrowColor: AppColors.textPrimary,
-                                onTap: () {
-                                  controller.animateTo(
-                                      controller.offset.ceilToDouble() + (_loadNextArticleIndicatorHeight * 2),
-                                      duration: const Duration(milliseconds: 200),
-                                      curve: Curves.easeIn);
-                                },
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      SliverPullUpIndicatorAction(
-                        builder: (context, factor) {
-                          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                            nextArticleLoaderFactor.value = factor;
-                          });
-                          return _LoadingNextArticleIndicator(factor: factor);
-                        },
-                        fullExtentHeight: _loadNextArticleIndicatorHeight,
-                        triggerExtent: _loadNextArticleIndicatorHeight,
-                        triggerFunction: (completer) => cubit.loadNextArticle(completer),
-                      ),
-                    ] else if (multipleArticles)
-                      const SliverToBoxAdapter(
-                        child: _AllArticlesRead(),
-                      ),
+                          SliverPullUpIndicatorAction(
+                            builder: (context, factor) {
+                              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                                nextArticleLoaderFactor.value = factor;
+                              });
+                              return _LoadingNextArticleIndicator(factor: factor);
+                            },
+                            fullExtentHeight: _loadNextArticleIndicatorHeight,
+                            triggerExtent: _loadNextArticleIndicatorHeight,
+                            triggerFunction: (completer) => cubit.loadNextArticle(completer),
+                          ),
+                        ] else if (multipleArticles)
+                          const SliverToBoxAdapter(
+                            child: _AllArticlesRead(),
+                          ),
+                      ],
+                    )),
+                    _ArticleProgressBar(readProgress: readProgress),
                   ],
                 ),
               ],
@@ -438,6 +449,29 @@ class _IdleContent extends HookWidget {
     final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     final position = renderBox?.localToGlobal(Offset.zero);
     return position?.dy;
+  }
+}
+
+class _ArticleProgressBar extends HookWidget {
+  final ValueNotifier<double> readProgress;
+  const _ArticleProgressBar({
+    required this.readProgress,
+    Key? key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(top: kToolbarHeight),
+        child: RotatedBox(
+            quarterTurns: 1,
+            child: ValueListenableBuilder(
+                valueListenable: readProgress,
+                builder: (BuildContext context, double value, Widget? child) {
+                  return LinearProgressIndicator(
+                      value: readProgress.value,
+                      backgroundColor: AppColors.transparent,
+                      valueColor: const AlwaysStoppedAnimation(AppColors.limeGreen));
+                })));
   }
 }
 
