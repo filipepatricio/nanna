@@ -6,14 +6,12 @@ import 'package:better_informed_mobile/presentation/page/settings/widgets/settin
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SettingsAccountBody extends HookWidget {
@@ -32,7 +30,6 @@ class SettingsAccountBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEditable = useState(false);
     final isFormFocused = useState(false);
 
     useCubitListener<SettingsAccountCubit, SettingsAccountState>(cubit, (cubit, state, context) {
@@ -77,20 +74,6 @@ class SettingsAccountBody extends HookWidget {
                                 LocaleKeys.settings_account.tr(),
                                 style: AppTypography.h3Bold16,
                               ),
-                              const Spacer(),
-                              _EditButton(
-                                isEditable: isEditable.value,
-                                onEditModeChange: (editable) {
-                                  isEditable.value = editable;
-                                  if (!editable) {
-                                    nameController.text = originalData.firstName;
-                                    lastNameController.text = originalData.lastName;
-                                    emailController.text = originalData.email;
-
-                                    cubit.cancelEdit();
-                                  }
-                                },
-                              ),
                             ],
                           ),
                         ),
@@ -99,7 +82,7 @@ class SettingsAccountBody extends HookWidget {
                           controller: nameController,
                           label: LocaleKeys.settings_firstName.tr(),
                           initialInput: originalData.firstName,
-                          isEditable: isEditable.value,
+                          isEditable: true,
                           isFormFocused: isFormFocused.value,
                           onChanged: (String inputText) => cubit.updateFirstName(inputText),
                           validator: (String? value) => modifiedData.firstNameValidator,
@@ -113,7 +96,7 @@ class SettingsAccountBody extends HookWidget {
                           controller: lastNameController,
                           label: LocaleKeys.settings_lastName.tr(),
                           initialInput: originalData.lastName,
-                          isEditable: isEditable.value,
+                          isEditable: true,
                           isFormFocused: isFormFocused.value,
                           onChanged: (String inputText) => cubit.updateLastName(inputText),
                           validator: (String? value) => modifiedData.lastNameValidator,
@@ -127,7 +110,7 @@ class SettingsAccountBody extends HookWidget {
                           controller: emailController,
                           label: LocaleKeys.settings_emailAddress.tr(),
                           initialInput: originalData.email,
-                          isEditable: isEditable.value,
+                          isEditable: false,
                           isFormFocused: isFormFocused.value,
                           onChanged: (String inputText) => cubit.updateEmail(inputText),
                           validator: (String? value) => modifiedData.emailValidator,
@@ -144,13 +127,13 @@ class SettingsAccountBody extends HookWidget {
             ),
             const SizedBox(height: AppDimens.l),
             AnimatedOpacity(
-              opacity: isEditable.value ? 1.0 : 0.0,
+              opacity: 1.0,
               duration: const Duration(milliseconds: 250),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: FilledButton(
                   text: LocaleKeys.settings_save.tr(),
-                  onTap: () => _onSaveButtonTap(isEditable, isFormFocused),
+                  onTap: () => _onSaveButtonTap(isFormFocused),
                   isEnabled: cubit.formsAreValid(),
                   disableColor: AppColors.dividerGrey,
                   fillColor: AppColors.limeGreen,
@@ -159,7 +142,7 @@ class SettingsAccountBody extends HookWidget {
                 ),
               ),
             ),
-            const SizedBox(height: AppDimens.s),
+            const SizedBox(height: AppDimens.xxl),
           ],
         ),
       ),
@@ -171,50 +154,8 @@ class SettingsAccountBody extends HookWidget {
     isFormFocused.value = false;
   }
 
-  void _onSaveButtonTap(ValueNotifier<bool> isEditable, ValueNotifier<bool> isFormFocused) {
+  void _onSaveButtonTap(ValueNotifier<bool> isFormFocused) {
     _onDismissTextFormFocus(isFormFocused);
     cubit.saveAccountData();
-    isEditable.value = false;
-  }
-}
-
-class _EditButton extends StatelessWidget {
-  final bool isEditable;
-  final Function(bool isEditable) onEditModeChange;
-
-  const _EditButton({
-    required this.isEditable,
-    required this.onEditModeChange,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onEditModeChange(!isEditable),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        child: isEditable
-            ? Container(
-                width: AppDimens.settingsCancelButtonWidth,
-                height: AppDimens.settingsCancelButtonHeight,
-                decoration: const BoxDecoration(
-                  color: AppColors.grey,
-                  borderRadius: BorderRadius.all(Radius.circular(AppDimens.m)),
-                ),
-                child: Center(
-                  child: Text(
-                    LocaleKeys.common_cancel.tr(),
-                    textAlign: TextAlign.center,
-                    style: AppTypography.metadata1Medium.copyWith(height: AppDimens.one),
-                  ),
-                ),
-              )
-            : SizedBox(
-                width: AppDimens.settingsCancelButtonWidth,
-                child: SvgPicture.asset(AppVectorGraphics.edit, fit: BoxFit.contain),
-              ),
-      ),
-    );
   }
 }
