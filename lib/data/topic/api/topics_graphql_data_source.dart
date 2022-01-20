@@ -27,7 +27,7 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
       (raw) => TopicsFromExpertDTO.fromJson(raw),
     );
 
-    return dto ?? (throw Exception('Current brief is null'));
+    return dto ?? (throw Exception('Topics from experts are null'));
   }
 
   @override
@@ -44,6 +44,6 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
       rootKey: 'topic',
     );
 
-    return dto ?? (throw Exception('Current brief is null'));
+    return dto ?? (throw Exception('Topic is null'));
   }
 }

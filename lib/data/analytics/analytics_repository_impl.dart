@@ -54,9 +54,4 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   void event(AnalyticsEvent event) {
     Segment.track(eventName: event.name, properties: event.properties);
   }
-
-  @override
-  void track(String name, Map<String, dynamic> properties) {
-    Segment.track(eventName: name, properties: properties);
-  }
 }

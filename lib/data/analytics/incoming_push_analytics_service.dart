@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/push_notification/incoming_push/dto/incoming_push_dto.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -9,6 +10,6 @@ class IncomingPushAnalyticsService {
   IncomingPushAnalyticsService(this._analyticsRepository);
 
   void trackPressedPushNotification(IncomingPushDTO push) {
-    _analyticsRepository.track('PushNotificationTapped', push.meta);
+    _analyticsRepository.event(AnalyticsEvent.pushNotificationTapped(push.meta));
   }
 }

@@ -11,6 +11,4 @@ abstract class AnalyticsRepository {
   void page(AnalyticsPage page);
 
   void event(AnalyticsEvent event);
-
-  void track(String name, Map<String, dynamic> properties);
 }
