@@ -270,6 +270,7 @@ class _IdleContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final nextArticleLoaderFactor = useMemoized(() => ValueNotifier(0.0), [article]);
+    final readProgress = useMemoized(() => ValueNotifier(0.0));
     final gestureManager = useMemoized(
       () => ArticleCustomVerticalDragManager(
         modalController: modalController,
@@ -279,7 +280,6 @@ class _IdleContent extends HookWidget {
       ),
       [articleWithImage],
     );
-    final readProgress = useState(0.0);
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -406,15 +406,7 @@ class _IdleContent extends HookWidget {
                           ),
                       ],
                     )),
-                    Padding(
-                        padding: const EdgeInsets.only(top: kToolbarHeight),
-                        child: RotatedBox(
-                          quarterTurns: 1,
-                          child: LinearProgressIndicator(
-                              value: readProgress.value,
-                              backgroundColor: AppColors.transparent,
-                              valueColor: const AlwaysStoppedAnimation(AppColors.limeGreen)),
-                        ))
+                    _ArticleProgressBar(readProgress: readProgress),
                   ],
                 ),
               ],
@@ -457,6 +449,29 @@ class _IdleContent extends HookWidget {
     final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     final position = renderBox?.localToGlobal(Offset.zero);
     return position?.dy;
+  }
+}
+
+class _ArticleProgressBar extends HookWidget {
+  final ValueNotifier<double> readProgress;
+  const _ArticleProgressBar({
+    required this.readProgress,
+    Key? key,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(top: kToolbarHeight),
+        child: RotatedBox(
+            quarterTurns: 1,
+            child: ValueListenableBuilder(
+                valueListenable: readProgress,
+                builder: (BuildContext context, double value, Widget? child) {
+                  return LinearProgressIndicator(
+                      value: readProgress.value,
+                      backgroundColor: AppColors.transparent,
+                      valueColor: const AlwaysStoppedAnimation(AppColors.limeGreen));
+                })));
   }
 }
 
