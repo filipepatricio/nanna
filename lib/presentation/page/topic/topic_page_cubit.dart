@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_page.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
@@ -21,6 +23,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final GetTopicBySlugUseCase _getTopicBySlugUseCase;
+  final TrackActivityUseCase _trackActivityUseCase;
 
   late bool _isTopicTutorialStepSeen;
   late bool _isTopicSummaryCardTutorialStepSeen;
@@ -34,18 +37,21 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._getTopicBySlugUseCase,
+    this._trackActivityUseCase,
   ) : super(TopicPageState.loading());
 
-  Future<void> initializeWithSlug(String slug) async {
+  Future<void> initializeWithSlug(String slug, String? briefId) async {
     try {
       final topic = await _getTopicBySlugUseCase(slug);
-      await initialize(topic);
+      await initialize(topic, briefId);
     } catch (e, s) {
       Fimber.e('Topic loading failed', ex: e, stacktrace: s);
     }
   }
 
-  Future<void> initialize(Topic topic) async {
+  Future<void> initialize(Topic topic, String? briefId) async {
+    _trackActivityUseCase.trackPage(AnalyticsPage.topic(topic.id, briefId));
+
     emit(TopicPageState.idle(topic));
 
     _isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);

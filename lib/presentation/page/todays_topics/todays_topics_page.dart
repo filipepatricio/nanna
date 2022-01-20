@@ -285,6 +285,7 @@ class _IdleContent extends HookWidget {
       TodaysTopicsTopicPage(
         topicSlug: currentBrief.topics[index].id,
         topic: currentBrief.topics[index],
+        briefId: currentBrief.id,
       ),
     );
   }
