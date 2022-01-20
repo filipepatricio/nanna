@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jiffy/jiffy.dart';
 
 class UpdatedLabel extends StatelessWidget {
   final DateTime dateTime;
@@ -22,7 +22,7 @@ class UpdatedLabel extends StatelessWidget {
 
   String _updatedAtLabel() {
     return LocaleKeys.topic_updated.tr(
-      args: ['${Jiffy(dateTime).fromNow()}'],
+      args: [DateFormatUtil.dateTimeFromNow(dateTime)],
     );
   }
 }
