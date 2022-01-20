@@ -20,68 +20,60 @@ class SettingsMainBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(AppDimens.l),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        LocaleKeys.settings_profileHeader.tr(),
-                        style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
-                      ),
-                      const SizedBox(height: AppDimens.ml),
-                      SettingsMainItem(
-                        label: LocaleKeys.settings_account.tr(),
-                        icon: AppVectorGraphics.account,
-                        onTap: () => AutoRouter.of(context).push(const SettingsAccountPageRoute()),
-                      ),
-                      const SizedBox(height: AppDimens.ml),
-                      SettingsMainItem(
-                        label: LocaleKeys.settings_pushNotifications.tr(),
-                        icon: AppVectorGraphics.notifications,
-                        onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
-                      ),
-                      const SizedBox(height: AppDimens.xxxl),
-                      Text(
-                        LocaleKeys.settings_aboutHeader.tr(),
-                        style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
-                      ),
-                      const SizedBox(height: AppDimens.ml),
-                      SettingsMainItem(
-                        label: LocaleKeys.settings_privacyPolicy.tr(),
-                        icon: AppVectorGraphics.privacy,
-                        onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: true)),
-                      ),
-                      const SizedBox(height: AppDimens.ml),
-                      SettingsMainItem(
-                        label: LocaleKeys.settings_termsOfService.tr(),
-                        icon: AppVectorGraphics.terms,
-                        onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: false)),
-                      ),
-                      const Spacer(),
-                      FilledButton(
-                        text: LocaleKeys.common_signOut.tr(),
-                        fillColor: AppColors.carrotRed,
-                        textColor: AppColors.white,
-                        onTap: () async => await cubit.signOut(),
-                      ),
-                      const SizedBox(height: AppDimens.ml),
-                    ],
+        padding: const EdgeInsets.all(AppDimens.l),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    LocaleKeys.settings_profileHeader.tr(),
+                    style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
                   ),
-                ),
-              ],
+                  const SizedBox(height: AppDimens.ml),
+                  SettingsMainItem(
+                    label: LocaleKeys.settings_account.tr(),
+                    icon: AppVectorGraphics.account,
+                    onTap: () => AutoRouter.of(context).push(const SettingsAccountPageRoute()),
+                  ),
+                  const SizedBox(height: AppDimens.ml),
+                  SettingsMainItem(
+                    label: LocaleKeys.settings_pushNotifications.tr(),
+                    icon: AppVectorGraphics.notifications,
+                    onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
+                  ),
+                  const SizedBox(height: AppDimens.xxxl),
+                  Text(
+                    LocaleKeys.settings_aboutHeader.tr(),
+                    style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+                  ),
+                  const SizedBox(height: AppDimens.ml),
+                  SettingsMainItem(
+                    label: LocaleKeys.settings_privacyPolicy.tr(),
+                    icon: AppVectorGraphics.privacy,
+                    onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: true)),
+                  ),
+                  const SizedBox(height: AppDimens.ml),
+                  SettingsMainItem(
+                    label: LocaleKeys.settings_termsOfService.tr(),
+                    icon: AppVectorGraphics.terms,
+                    onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: false)),
+                  ),
+                  const Spacer(),
+                  FilledButton(
+                    text: LocaleKeys.common_signOut.tr(),
+                    fillColor: AppColors.carrotRed,
+                    textColor: AppColors.white,
+                    onTap: () async => await cubit.signOut(),
+                  ),
+                  const SizedBox(height: AppDimens.ml),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ));
   }
 }

@@ -195,6 +195,7 @@ class _IdleContent extends HookWidget {
                         color: AppColors.darkGrey,
                         child: CustomScrollView(
                           scrollBehavior: NoGlowScrollBehavior(),
+                          physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
                           slivers: [
                             SliverToBoxAdapter(
                               child: SizedBox(
