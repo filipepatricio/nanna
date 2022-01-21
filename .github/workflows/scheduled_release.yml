@@ -19,6 +19,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: 'develop'
           destination_branch: 'main'
-          pr_title: 'Automated release'
-          labels: 'hold,automated_pr'
-          # Remove "hold" label after testing, so the auto-merge works
+          pr_title: 'Scheduled release'

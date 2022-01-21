@@ -38,5 +38,5 @@ blockingLabels:
   - wip
   - dependencies
 
-# Automatic merges will be blocked if there is a match between the regular expression and title
+# Automatic merges will be performed only if there is a match between the regular expression and title
 requiredTitleRegex: '\release\b'
