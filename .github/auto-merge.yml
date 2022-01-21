@@ -11,7 +11,7 @@ updateBranch: true
 # This is the equivalent of clicking the 'Delete branch' button shown on merged pull requests.
 # Note: this only works when the branch of the pull request resides in the same repository as
 #       the pull request itself.
-deleteBranchAfterMerge: true
+deleteBranchAfterMerge: false
 
 # Whenever required base branches are configured,
 # pull requests will only be automatically merged whenever their base branch (into which the PR would be merged)
@@ -39,4 +39,4 @@ blockingLabels:
   - dependencies
 
 # Automatic merges will be performed only if there is a match between the regular expression and title
-requiredTitleRegex: '\release\b'
+requiredTitleRegex: '\brelease\b'
