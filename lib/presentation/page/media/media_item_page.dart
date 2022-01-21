@@ -302,7 +302,9 @@ class _IdleContent extends HookWidget {
       child: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollNotification) {
           if (scrollNotification is ScrollUpdateNotification) {
-            readProgress.value = controller.offset / controller.position.maxScrollExtent;
+            if (controller.hasClients) {
+              readProgress.value = controller.offset / controller.position.maxScrollExtent;
+            }
           }
           if (scrollNotification is ScrollEndNotification) {
             if (controller.hasClients) {
