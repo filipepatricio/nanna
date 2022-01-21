@@ -84,37 +84,59 @@ class TopicPage extends HookWidget {
                 return false;
               },
               child: Material(
-                child: state.maybeMap(
-                  idle: (state) => Stack(
-                    children: [
-                      TopicView(
-                        topic: state.topic,
-                        cubit: cubit,
-                        appBarMargin: appBarHeightState.value,
-                        summaryCardKey: cubit.summaryCardKey,
-                        mediaItemKey: cubit.mediaItemKey,
-                      ),
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        child: _AppBar(
-                          topic: state.topic,
-                          key: appBarKey,
-                          scrollPositionNotifier: scrollPositionNotifier,
+                child: topic != null
+                    ? Stack(
+                        children: [
+                          TopicView(
+                            topic: topic!,
+                            cubit: cubit,
+                            appBarMargin: appBarHeightState.value,
+                            summaryCardKey: cubit.summaryCardKey,
+                            mediaItemKey: cubit.mediaItemKey,
+                          ),
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            child: _AppBar(
+                              topic: topic!,
+                              key: appBarKey,
+                              scrollPositionNotifier: scrollPositionNotifier,
+                            ),
+                          ),
+                        ],
+                      )
+                    : state.maybeMap(
+                        idle: (state) => Stack(
+                          children: [
+                            TopicView(
+                              topic: state.topic,
+                              cubit: cubit,
+                              appBarMargin: appBarHeightState.value,
+                              summaryCardKey: cubit.summaryCardKey,
+                              mediaItemKey: cubit.mediaItemKey,
+                            ),
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              child: _AppBar(
+                                topic: state.topic,
+                                key: appBarKey,
+                                scrollPositionNotifier: scrollPositionNotifier,
+                              ),
+                            ),
+                          ],
                         ),
+                        loading: (_) => const Loader(),
+                        error: (_) => GeneralErrorView(
+                          title: LocaleKeys.todaysTopics_oops.tr(),
+                          content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+                          svgPath: AppVectorGraphics.sadSun,
+                          retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+                        ),
+                        orElse: () => const SizedBox(),
                       ),
-                    ],
-                  ),
-                  loading: (_) => const Loader(),
-                  error: (_) => GeneralErrorView(
-                    title: LocaleKeys.todaysTopics_oops.tr(),
-                    content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
-                    svgPath: AppVectorGraphics.sadSun,
-                    retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
-                  ),
-                  orElse: () => const SizedBox(),
-                ),
               ),
             ),
           ),
