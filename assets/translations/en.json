@@ -161,6 +161,10 @@
   "shareTopic": {
     "title": "Select the articles you want to share related to the topic",
     "amountInfo": "You can share up to {} articles",
-    "selectedLabel": "{}/{} articles selected"
+    "selectedLabel": "{}/{} articles selected",
+    "message": "Hey, I am currently reading this topic via informed – a new platform for quality journalism. You can still sign up to their waitlist.\n\nhttps://www.informed.so"
+  },
+  "shareArticle": {
+    "message": "Hey, I am currently reading this article via informed – a new platform for quality journalism. You can still sign up to their waitlist.\n\nhttps://www.informed.so"
   }
 }

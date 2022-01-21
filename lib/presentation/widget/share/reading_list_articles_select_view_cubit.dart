@@ -1,10 +1,12 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic/share_reading_list_view.dart';
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
 
 const articlesSelectionLimit = 3;
@@ -46,7 +48,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
         articles: articles,
       ),
     );
-    await shareImage(generator, '${_topic.id}_share_topic.png', _topic.title);
+    await shareImage(generator, '${_topic.id}_share_topic.png', tr(LocaleKeys.shareTopic_message));
 
     emit(ReadingListArticlesSelectViewState.shared());
   }
