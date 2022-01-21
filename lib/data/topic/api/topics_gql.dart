@@ -10,4 +10,12 @@ class TopicsGql {
       }
     }
   ''');
+
+  static DocumentNode getTopicBySlug(String slug) => gql('''
+    query {
+      topic(slug: "$slug") {
+        ${CommonGQLModels.topic}
+      }
+    }
+  ''');
 }

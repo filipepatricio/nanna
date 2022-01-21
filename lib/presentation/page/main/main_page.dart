@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/page/main/widgets/bottom_nav
 import 'package:better_informed_mobile/presentation/routing/observers/tabs_navigation_observer.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,6 +24,14 @@ class MainPage extends HookWidget {
     useCubitListener<MainCubit, MainState>(cubit, (cubit, state, context) {
       state.maybeMap(
         tokenExpired: (_) => _onTokenExpiredEvent(context),
+        navigate: (navigate) async {
+          await context.navigateNamedTo(
+            const MainPageRoute().path + navigate.path,
+            onFailure: (failure) {
+              Fimber.e('Incoming push - navigation failed', ex: failure);
+            },
+          );
+        },
         orElse: () {},
       );
     });

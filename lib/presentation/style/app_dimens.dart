@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
+import 'package:flutter/material.dart';
 
 class AppDimens {
   const AppDimens._();
@@ -135,11 +138,11 @@ class AppDimens {
   /// 45
   static const topicViewTopicHeaderPadding = 45.0;
 
-  ///330
-  static const topicViewTopicHeaderHeight = 330.0;
-
   /// 290
   static const topicViewSummaryCardHeight = 290.0;
+
+  static double topicViewHeaderImageHeight(BuildContext context) =>
+      min(MediaQuery.of(context).size.height * .75, topicViewArticleSectionFullHeight);
 
   /// 45
   static final topicViewStackedCardsDividerHeight = kIsSmallDevice ? 0.0 : 45.0;

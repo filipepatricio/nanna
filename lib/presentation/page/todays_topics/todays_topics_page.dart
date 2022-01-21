@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_c
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_title_hero.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
@@ -115,7 +114,7 @@ class TodaysTopicsPage extends HookWidget {
                   cardStackWidth: cardStackWidth,
                 ),
                 error: (_) => RefreshIndicator(
-                  onRefresh: cubit.initialize,
+                  onRefresh: cubit.loadTodaysTopics,
                   color: AppColors.darkGrey,
                   child: CustomScrollView(
                     scrollBehavior: NoGlowScrollBehavior(),
@@ -123,7 +122,10 @@ class TodaysTopicsPage extends HookWidget {
                       SliverToBoxAdapter(
                         child: SizedBox(
                           height: constraints.maxHeight,
-                          child: StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth),
+                          child: StackedCardsErrorView(
+                            retryAction: cubit.loadTodaysTopics,
+                            cardStackWidth: cardStackWidth,
+                          ),
                         ),
                       ),
                     ],
@@ -171,7 +173,7 @@ class _IdleContent extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (kIsNotSmallDevice) ...[
-            const SizedBox(height: AppDimens.l),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               child: _Greeting(
@@ -179,19 +181,21 @@ class _IdleContent extends HookWidget {
                 lastPageAnimationProgressState: lastPageAnimationProgressState,
               ),
             ),
+            const Spacer(),
           ],
-          const SizedBox(height: AppDimens.sl),
-          Expanded(
+          Flexible(
+            flex: 40,
             child: Stack(
               children: [
                 Positioned.fill(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return RefreshIndicator(
-                        onRefresh: todaysTopicsCubit.initialize,
+                        onRefresh: todaysTopicsCubit.loadTodaysTopics,
                         color: AppColors.darkGrey,
                         child: CustomScrollView(
                           scrollBehavior: NoGlowScrollBehavior(),
+                          physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
                           slivers: [
                             SliverToBoxAdapter(
                               child: SizedBox(
@@ -238,11 +242,11 @@ class _IdleContent extends HookWidget {
               ],
             ),
           ),
-          SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
+          const Spacer(),
           Center(
             child: _DotIndicator(currentBrief: currentBrief, controller: controller),
           ),
-          SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
+          const Spacer()
         ],
       ),
     );
@@ -258,24 +262,32 @@ class _IdleContent extends HookWidget {
   ) {
     return currentBrief.topics.asMap().map<int, Widget>((key, value) {
       return MapEntry(
-        key,
-        Padding(
-          padding: EdgeInsets.only(left: kIsSmallDevice ? AppDimens.m : AppDimens.l),
-          child: PageViewStackedCards.random(
-            coverSize: Size(width, heightPageView),
-            child: ReadingListCover(
-              topic: currentBrief.topics[key],
-              onTap: () => _onTopicCardPressed(context, key, currentBrief),
-            ),
-          ),
-        ),
-      );
+          key,
+          Row(
+            children: [
+              const Spacer(),
+              Expanded(
+                flex: 15,
+                child: PageViewStackedCards.random(
+                  coverSize: Size(width, heightPageView),
+                  child: ReadingListCover(
+                    topic: currentBrief.topics[key],
+                    onTap: () => _onTopicCardPressed(context, key, currentBrief),
+                  ),
+                ),
+              )
+            ],
+          ));
     }).values;
   }
 
   void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
-      TodaysTopicsTopicPage(pageData: TopicPageData.item(topic: currentBrief.topics[index], briefId: currentBrief.id)),
+      TodaysTopicsTopicPage(
+        topicSlug: currentBrief.topics[index].id,
+        topic: currentBrief.topics[index],
+        briefId: currentBrief.id,
+      ),
     );
   }
 }

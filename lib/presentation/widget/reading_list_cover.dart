@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -8,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
@@ -35,59 +35,73 @@ class ReadingListCover extends HookWidget {
       behavior: HitTestBehavior.opaque,
       child: LayoutBuilder(
         builder: (context, constraints) => Container(
-          padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.m, AppDimens.m, AppDimens.l),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: kIsTest
-                  ? const AssetImage(AppRasterGraphics.testReadingListCoverImage) as ImageProvider
-                  : NetworkImage(
-                      cloudinaryProvider
-                          .withPublicId(topic.coverImage.publicId)
-                          .transform()
-                          .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
-                          .fit()
-                          .generateNotNull(),
-                    ),
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppDimens.l),
-                child: TopicOwnerAvatar(owner: topic.owner),
-              ),
-              Expanded(
-                flex: 5,
-                child: InformedMarkdownBody(
-                  markdown: topic.title,
-                  baseTextStyle: AppTypography.h1Bold,
-                  maxLines: 3,
+              Positioned.fill(
+                child: Hero(
+                  tag: topic.heroImage.publicId,
+                  child: CloudinaryProgressiveImage(
+                    width: constraints.maxWidth * .9,
+                    height: constraints.maxHeight * .9,
+                    cloudinaryTransformation: cloudinaryProvider
+                        .withPublicIdAsPlatform(topic.heroImage.publicId)
+                        .transform()
+                        .withLogicalSize(
+                            MediaQuery.of(context).size.width, AppDimens.topicViewHeaderImageHeight(context), context)
+                        .autoGravity(),
+                  ),
                 ),
               ),
-              const SizedBox(height: AppDimens.s),
-              Expanded(
-                flex: 6,
-                child: _TopicIntroduction(introduction: topic.introduction),
-              ),
-              SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
-              _PublisherLogoRow(topic: topic),
-              SizedBox(height: kIsSmallDevice ? AppDimens.m : AppDimens.l),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    LocaleKeys.readingList_articleCount.tr(
-                      args: [topic.readingList.entries.length.toString()],
+              Hero(
+                tag: topic.id,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: CloudinaryProgressiveImage(
+                        width: constraints.maxWidth,
+                        height: constraints.maxHeight,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.center,
+                        testImage: AppRasterGraphics.testReadingListCoverImage,
+                        cloudinaryTransformation: cloudinaryProvider
+                            .withPublicId(topic.coverImage.publicId)
+                            .transform()
+                            .height(DimensionUtil.getPhysicalPixelsAsInt(constraints.maxHeight, context))
+                            .fit(),
+                      ),
                     ),
-                    style: AppTypography.b3Regular.copyWith(decoration: TextDecoration.underline, height: 1),
-                  ),
-                  const Spacer(),
-                  UpdatedLabel(dateTime: topic.lastUpdatedAt, backgroundColor: AppColors.white),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.m, AppDimens.m, AppDimens.l),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TopicOwnerAvatar(owner: topic.owner),
+                          const Spacer(),
+                          _TopicTitleIntroduction(topic: topic),
+                          const Spacer(),
+                          _PublisherLogoRow(topic: topic),
+                          const Spacer(),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                LocaleKeys.readingList_articleCount.tr(
+                                  args: [topic.readingList.entries.length.toString()],
+                                ),
+                                style:
+                                    AppTypography.b3Regular.copyWith(decoration: TextDecoration.underline, height: 1),
+                              ),
+                              const Spacer(),
+                              UpdatedLabel(dateTime: topic.lastUpdatedAt, backgroundColor: AppColors.white),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -120,17 +134,36 @@ class _PublisherLogoRow extends HookWidget {
   }
 }
 
-class _TopicIntroduction extends StatelessWidget {
-  final String introduction;
+class _TopicTitleIntroduction extends StatelessWidget {
+  final Topic topic;
 
-  const _TopicIntroduction({required this.introduction, Key? key}) : super(key: key);
+  const _TopicTitleIntroduction({required this.topic, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InformedMarkdownBody(
-      markdown: introduction,
-      baseTextStyle: AppTypography.b2RegularLora,
-      maxLines: 5,
-    );
+    return Expanded(
+        flex: 16,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 9,
+              child: InformedMarkdownBody(
+                markdown: topic.title,
+                baseTextStyle: kIsSmallDevice ? AppTypography.h2Bold : AppTypography.h1Bold,
+                maxLines: 3,
+              ),
+            ),
+            const Spacer(),
+            Expanded(
+                flex: 12,
+                child: InformedMarkdownBody(
+                  markdown: topic.introduction,
+                  baseTextStyle: kIsSmallDevice ? AppTypography.b3RegularLora : AppTypography.b2RegularLora,
+                  maxLines: 5,
+                ))
+          ],
+        ));
   }
 }

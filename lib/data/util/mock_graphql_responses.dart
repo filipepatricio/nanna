@@ -4,18 +4,22 @@ class MockGraphqlResponses {
   static const topicsFromExpert = '''
   {
     "getTopicsFromExpert": [
-      {
-        $_coverImage,
-        $_heroImage,
-        $_highlightedPublishers,
-        "id": "154dfdf6-ae72-4ea9-b4a5-d61e1782099e",
-        "introduction": "Perspiciatis iusto et voluptatem ad.",
-        "lastUpdatedAt": "2021-12-15T14:24:22Z",
-        $_summaryCards,
-        "title": "Nestle is unhealthy?"
-      }
+      $topic
     ]
   }
+  ''';
+
+  static const topic = '''
+    {
+      $_coverImage,
+      $_heroImage,
+      $_highlightedPublishers,
+      "id": "154dfdf6-ae72-4ea9-b4a5-d61e1782099e",
+      "introduction": "Perspiciatis iusto et voluptatem ad.",
+      "lastUpdatedAt": "2021-12-15T14:24:22Z",
+      $_summaryCards,
+      "title": "Nestle is unhealthy?"
+    }
   ''';
 
   static const currentBrief = '''
@@ -40,7 +44,7 @@ class MockGraphqlResponses {
             $_heroImage,
             $_highlightedPublishers,
             "id": "1e55abe0-d711-44b4-a37c-7e1a279b439a",
-            "introduction": "Molestiae quisquam unde similique molestiae doloremque est.",
+            "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             "lastUpdatedAt": "2021-12-23T11:38:26Z",
             $_ownerEditor,
             "readingList": {
@@ -49,10 +53,10 @@ class MockGraphqlResponses {
                 $_readingLisEntryFreeWithoutImage
               ],
               "id": "88afff48-ff28-47ba-9793-a307d98df5f8",
-              "name": "NSA scandal"
+              "name": "Lorem ipsum sit amet incididunt elit eiusmod sit"
             },
             $_summaryCards,
-            "title": "NSA scandal"
+            "title": "Lorem ipsum sit amet incididunt elit eiusmod sit"
           },
           {
             "category": null,
@@ -60,7 +64,7 @@ class MockGraphqlResponses {
             $_heroImage,
             $_highlightedPublishers,
             "id": "aa326e1f-ec14-4829-b8a3-cb21dbd25259",
-            "introduction": "Nulla culpa similique aliquid dolores repellendus quia?",
+            "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             "lastUpdatedAt": "2021-12-23T11:38:26Z",
             $_ownerExpert,
             "readingList": {
@@ -69,10 +73,10 @@ class MockGraphqlResponses {
                 $_readingLisEntryFreeWithoutImage
               ],
               "id": "dd403ae7-eb0c-4710-a40f-1566ce478e7e",
-              "name": "COVID-variant names"
+              "name": "Lorem ipsum sit amet incididunt elit eiusmod sit"
             },
             $_summaryCards,
-            "title": "COVID-variant names"
+            "title": "Lorem ipsum sit amet incididunt elit eiusmod sit"
           }
         ]
       }
@@ -139,7 +143,9 @@ class MockGraphqlResponses {
   "owner": {
     "__typename": "Expert",
     "areaOfExpertise": "Global Warming",
-    "avatar": null,
+    "avatar": {
+      "publicId": "owner_1"
+    },
     "bio": "Hi, it's Bill Gates!If you don't know me... look outside... Windows!",
     "chunkedBio": [
       "Hi, it's Bill Gates!",
@@ -169,7 +175,7 @@ class MockGraphqlResponses {
       "type": "PREMIUM",
       "wordCount": 2426
     },
-    "note": null,
+    "note": "Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.",
     "style": {
       "color": "#F2E8E7",
       "type": "ARTICLE_COVER_WITH_BIG_IMAGE"
@@ -196,7 +202,7 @@ class MockGraphqlResponses {
         "type": "FREE",
         "wordCount": 1166
       },
-      "note": "Ut non consequuntur cumque.",
+      "note": "Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.",
       "style": {
         "color": "#E4F1E2",
         "type": "ARTICLE_COVER_WITHOUT_IMAGE"

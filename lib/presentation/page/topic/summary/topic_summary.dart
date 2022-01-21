@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
@@ -137,10 +136,11 @@ class _SummaryCard extends StatelessWidget {
       ),
       color: AppColors.pastelGreen,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: kIsSmallDevice ? AppDimens.xxl : AppDimens.xc),
+          const Spacer(),
           Expanded(
+            flex: 3,
             child: InformedMarkdownBody(
               markdown: topic.topicSummaryList[index].content,
               baseTextStyle: AppTypography.b2RegularLora,

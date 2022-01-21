@@ -1,12 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -17,15 +22,16 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 const _mainScrollDepth = 0;
 
 class TopicPage extends HookWidget {
-  final Topic topic;
+  final String topicSlug;
+  final Topic? topic;
+  final String? briefId;
 
-  TopicPage({
-    required TopicPageData pageData,
+  const TopicPage({
+    @pathParam required this.topicSlug,
+    this.topic,
+    this.briefId,
     Key? key,
-  })  : topic = _getTopic(pageData),
-        super(key: key);
-
-  static Topic _getTopic(TopicPageData pageData) => pageData.map(item: (data) => data.topic);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +40,7 @@ class TopicPage extends HookWidget {
     final appBarHeightState = useState(AppDimens.topicAppBarDefaultHeight);
     final cubit = useCubit<TopicPageCubit>();
     final tutorialCoachMark = cubit.tutorialCoachMark(context);
+    final state = useCubitBuilder(cubit);
 
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -44,18 +51,25 @@ class TopicPage extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-          showTutorialToast: (text) => showToast(context, text),
-          showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
-          showMediaItemTutorialCoachMark: tutorialCoachMark.show,
-          skipTutorialCoachMark: tutorialCoachMark.skip,
-          finishTutorialCoachMark: tutorialCoachMark.finish);
+        showTutorialToast: (text) => showToast(context, text),
+        showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
+        showMediaItemTutorialCoachMark: tutorialCoachMark.show,
+        skipTutorialCoachMark: tutorialCoachMark.skip,
+        finishTutorialCoachMark: tutorialCoachMark.finish,
+      );
     });
 
     useEffect(
       () {
-        cubit.initialize();
+        final nullableTopic = topic;
+
+        if (nullableTopic == null) {
+          cubit.initializeWithSlug(topicSlug, briefId);
+        } else {
+          cubit.initialize(nullableTopic, briefId);
+        }
       },
-      [cubit],
+      [topicSlug, cubit],
     );
 
     return WillPopScope(
@@ -70,27 +84,59 @@ class TopicPage extends HookWidget {
                 return false;
               },
               child: Material(
-                child: Stack(
-                  children: [
-                    TopicView(
-                      topic: topic,
-                      cubit: cubit,
-                      appBarMargin: appBarHeightState.value,
-                      summaryCardKey: cubit.summaryCardKey,
-                      mediaItemKey: cubit.mediaItemKey,
-                    ),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: _AppBar(
-                        topic: topic,
-                        key: appBarKey,
-                        scrollPositionNotifier: scrollPositionNotifier,
+                child: topic != null
+                    ? Stack(
+                        children: [
+                          TopicView(
+                            topic: topic!,
+                            cubit: cubit,
+                            appBarMargin: appBarHeightState.value,
+                            summaryCardKey: cubit.summaryCardKey,
+                            mediaItemKey: cubit.mediaItemKey,
+                          ),
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            child: _AppBar(
+                              topic: topic!,
+                              key: appBarKey,
+                              scrollPositionNotifier: scrollPositionNotifier,
+                            ),
+                          ),
+                        ],
+                      )
+                    : state.maybeMap(
+                        idle: (state) => Stack(
+                          children: [
+                            TopicView(
+                              topic: state.topic,
+                              cubit: cubit,
+                              appBarMargin: appBarHeightState.value,
+                              summaryCardKey: cubit.summaryCardKey,
+                              mediaItemKey: cubit.mediaItemKey,
+                            ),
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              child: _AppBar(
+                                topic: state.topic,
+                                key: appBarKey,
+                                scrollPositionNotifier: scrollPositionNotifier,
+                              ),
+                            ),
+                          ],
+                        ),
+                        loading: (_) => const Loader(),
+                        error: (_) => GeneralErrorView(
+                          title: LocaleKeys.todaysTopics_oops.tr(),
+                          content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+                          svgPath: AppVectorGraphics.sadSun,
+                          retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+                        ),
+                        orElse: () => const SizedBox(),
                       ),
-                    ),
-                  ],
-                ),
               ),
             ),
           ),
