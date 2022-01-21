@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -283,5 +282,10 @@ class _LastUpdatedTopics extends HookWidget {
 }
 
 void _onTopicTap(BuildContext context, Topic topic) {
-  AutoRouter.of(context).push(TopicOwnerTopicPage(pageData: TopicPageData.item(topic: topic)));
+  AutoRouter.of(context).push(
+    TopicOwnerTopicPage(
+      topicSlug: topic.id,
+      topic: topic,
+    ),
+  );
 }

@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_c
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_title_hero.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
@@ -115,7 +114,7 @@ class TodaysTopicsPage extends HookWidget {
                   cardStackWidth: cardStackWidth,
                 ),
                 error: (_) => RefreshIndicator(
-                  onRefresh: cubit.initialize,
+                  onRefresh: cubit.loadTodaysTopics,
                   color: AppColors.darkGrey,
                   child: CustomScrollView(
                     scrollBehavior: NoGlowScrollBehavior(),
@@ -123,7 +122,10 @@ class TodaysTopicsPage extends HookWidget {
                       SliverToBoxAdapter(
                         child: SizedBox(
                           height: constraints.maxHeight,
-                          child: StackedCardsErrorView(retryAction: cubit.initialize, cardStackWidth: cardStackWidth),
+                          child: StackedCardsErrorView(
+                            retryAction: cubit.loadTodaysTopics,
+                            cardStackWidth: cardStackWidth,
+                          ),
                         ),
                       ),
                     ],
@@ -179,7 +181,7 @@ class _IdleContent extends HookWidget {
                 lastPageAnimationProgressState: lastPageAnimationProgressState,
               ),
             ),
-            const Spacer()
+            const Spacer(),
           ],
           Flexible(
             flex: 40,
@@ -189,7 +191,7 @@ class _IdleContent extends HookWidget {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return RefreshIndicator(
-                        onRefresh: todaysTopicsCubit.initialize,
+                        onRefresh: todaysTopicsCubit.loadTodaysTopics,
                         color: AppColors.darkGrey,
                         child: CustomScrollView(
                           scrollBehavior: NoGlowScrollBehavior(),
@@ -281,7 +283,11 @@ class _IdleContent extends HookWidget {
 
   void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
-      TodaysTopicsTopicPage(pageData: TopicPageData.item(topic: currentBrief.topics[index], briefId: currentBrief.id)),
+      TodaysTopicsTopicPage(
+        topicSlug: currentBrief.topics[index].id,
+        topic: currentBrief.topics[index],
+        briefId: currentBrief.id,
+      ),
     );
   }
 }

@@ -4,18 +4,22 @@ class MockGraphqlResponses {
   static const topicsFromExpert = '''
   {
     "getTopicsFromExpert": [
-      {
-        $_coverImage,
-        $_heroImage,
-        $_highlightedPublishers,
-        "id": "154dfdf6-ae72-4ea9-b4a5-d61e1782099e",
-        "introduction": "Perspiciatis iusto et voluptatem ad.",
-        "lastUpdatedAt": "2021-12-15T14:24:22Z",
-        $_summaryCards,
-        "title": "Nestle is unhealthy?"
-      }
+      $topic
     ]
   }
+  ''';
+
+  static const topic = '''
+    {
+      $_coverImage,
+      $_heroImage,
+      $_highlightedPublishers,
+      "id": "154dfdf6-ae72-4ea9-b4a5-d61e1782099e",
+      "introduction": "Perspiciatis iusto et voluptatem ad.",
+      "lastUpdatedAt": "2021-12-15T14:24:22Z",
+      $_summaryCards,
+      "title": "Nestle is unhealthy?"
+    }
   ''';
 
   static const currentBrief = '''
