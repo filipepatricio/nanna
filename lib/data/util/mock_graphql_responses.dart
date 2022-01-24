@@ -53,10 +53,11 @@ class MockGraphqlResponses {
                 $_readingLisEntryFreeWithoutImage
               ],
               "id": "88afff48-ff28-47ba-9793-a307d98df5f8",
-              "name": "Lorem ipsum sit amet incididunt elit eiusmod sit"
+              "name": "Lorem **ipsum sit amet** incididunt elit eiusmod sit"
             },
             $_summaryCards,
-            "title": "Lorem ipsum sit amet incididunt elit eiusmod sit"
+            "title": "Lorem **ipsum sit amet** incididunt elit eiusmod sit",
+            "strippedTitle": "Lorem ipsum sit amet incididunt elit eiusmod sit"
           },
           {
             "category": null,
@@ -76,7 +77,8 @@ class MockGraphqlResponses {
               "name": "Lorem ipsum sit amet incididunt elit eiusmod sit"
             },
             $_summaryCards,
-            "title": "Lorem ipsum sit amet incididunt elit eiusmod sit"
+            "title": "Lorem **ipsum sit amet** incididunt elit eiusmod sit",
+            "strippedTitle": "Lorem ipsum sit amet incididunt elit eiusmod sit"
           }
         ]
       }
