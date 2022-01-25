@@ -65,55 +65,52 @@ class MediaItemPage extends HookWidget {
     }, [cubit]);
 
     return LayoutBuilder(
-      builder: (context, constraints) {
-        Fimber.d('Constr: $constraints');
-        return Scaffold(
-          backgroundColor: AppColors.background,
-          body: Column(
-            children: [
-              /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
-              ///
-              /// As cupertino bottom sheet works on ScrollNotification
-              /// instead of ScrollController itself it's the only way
-              /// to make sure it will work - at least only way I found
-              SizedBox(
-                height: 0,
-                child: ScrollConfiguration(
-                  behavior: NoGlowScrollBehavior(),
-                  child: SingleChildScrollView(
-                    physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                    controller: modalController,
-                    child: const SizedBox(
-                      height: 0,
-                    ),
+      builder: (context, constraints) => Scaffold(
+        backgroundColor: AppColors.background,
+        body: Column(
+          children: [
+            /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
+            ///
+            /// As cupertino bottom sheet works on ScrollNotification
+            /// instead of ScrollController itself it's the only way
+            /// to make sure it will work - at least only way I found
+            SizedBox(
+              height: 0,
+              child: ScrollConfiguration(
+                behavior: NoGlowScrollBehavior(),
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                  controller: modalController,
+                  child: const SizedBox(
+                    height: 0,
                   ),
                 ),
               ),
-              Expanded(
-                child: _AnimatedSwitcher(
-                  child: state.maybeMap(
-                    loading: (state) => const _LoadingContent(),
-                    idleFree: (state) => _FreeArticleView(article: state.header),
+            ),
+            Expanded(
+              child: _AnimatedSwitcher(
+                child: state.maybeMap(
+                  loading: (state) => const _LoadingContent(),
+                  idleFree: (state) => _FreeArticleView(article: state.header),
                   idlePremium: (state) => _PremiumArticleView(
-                      article: state.header,
-                      content: state.content,
+                    article: state.header,
+                    content: state.content,
 
-                      modalController: modalController,
-                      controller: scrollController,
-                      pageController: pageController,
-                      cubit: cubit,
-                      fullHeight: constraints.maxHeight,
-                      readArticleProgress: readArticleProgress,
-                    ),
-                    error: (state) => _ErrorContent(article: state.article),
-                    orElse: () => const SizedBox(),
+                    modalController: modalController,
+                    controller: scrollController,
+                    pageController: pageController,
+                    cubit: cubit,
+                    fullHeight: constraints.maxHeight,
+                    readArticleProgress: readArticleProgress,
                   ),
+                  error: (state) => _ErrorContent(article: state.article),
+                  orElse: () => const SizedBox(),
                 ),
               ),
-            ],
-          ),
-        );
-      },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

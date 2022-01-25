@@ -18,14 +18,28 @@ class MainPage extends HookWidget {
     useCubitListener<MainCubit, MainState>(cubit, (cubit, state, context) {
       state.maybeMap(
         tokenExpired: (_) => _onTokenExpiredEvent(context),
-        navigate: (navigate) async {
-          await closeWebView();
+        navigate: (navigate) {
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+            await closeWebView();
           await context.navigateNamedTo(
-            const MainPageRoute().path + navigate.path,
-            onFailure: (failure) {
-              Fimber.e('Incoming push - navigation failed', ex: failure);
-            },
-          );
+              navigate.path,
+              onFailure: (failure) {
+                Fimber.e('Incoming push - navigation failed', ex: failure);
+              },
+            );
+          });
+        },
+        multiNavigate: (navigate) {
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+            for (final path in navigate.path) {
+              await context.navigateNamedTo(
+                path,
+                onFailure: (failure) {
+                  Fimber.e('Incoming push - navigation failed', ex: failure);
+                },
+              );
+            }
+          });
         },
         orElse: () {},
       );
