@@ -1,7 +1,6 @@
+import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_store.dart';
 import 'package:injectable/injectable.dart';
-
-import '../tutorial_steps.dart';
 
 @injectable
 class IsTutorialStepSeenUseCase {
