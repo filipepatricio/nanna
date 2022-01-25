@@ -30,7 +30,6 @@ class CloudinaryProgressiveImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (kIsTest) {
-      // TODO: Image is not loading in golden images... check out
       return Image.asset(
         testImage,
         width: width,
