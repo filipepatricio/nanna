@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_full_article_use_case.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dart';
@@ -17,6 +18,8 @@ import 'media_item_state.dart';
 class MediaItemCubit extends Cubit<MediaItemState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
   final GetArticleUseCase _getArticleUseCase;
+  final TrackActivityUseCase _trackActivityUseCase;
+  final GetFullArticleUseCase _getFullArticleUseCase;
 
   late MediaItemArticle _currentArticle;
   Article? _currentFullArticle;
@@ -26,6 +29,8 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   MediaItemCubit(
     this._setStartedArticleStreamUseCase,
     this._getArticleUseCase,
+    this._trackActivityUseCase,
+    this._getFullArticleUseCase,
   ) : super(const MediaItemState.initializing());
 
   var readingComplete = false;
@@ -34,6 +39,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     _currentArticle = article;
 
     emit(const MediaItemState.loading());
+
     _resetBannerState();
 
     if (article.type == ArticleType.free) {

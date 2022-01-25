@@ -14,12 +14,14 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glow_scroll_behaviour.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -59,52 +61,59 @@ class MediaItemPage extends HookWidget {
     final pageController = usePageController();
 
     useEffect(() {
-      cubit.initialize(article);
+      cubit.initialize(index, singleArticle, topic, slug);
     }, [cubit]);
 
     return LayoutBuilder(
-      builder: (context, constraints) => Scaffold(
-        backgroundColor: AppColors.background,
-        body: Column(
-          children: [
-            /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
-            ///
-            /// As cupertino bottom sheet works on ScrollNotification
-            /// instead of ScrollController itself it's the only way
-            /// to make sure it will work - at least only way I found
-            SizedBox(
-              height: 0,
-              child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: modalController,
-                child: const SizedBox(
-                  height: 0,
-                ),
-              ),
-            ),
-            Expanded(
-              child: _AnimatedSwitcher(
-                child: state.maybeMap(
-                  loading: (state) => const _LoadingContent(),
-                  idleFree: (state) => _FreeArticleView(article: state.header),
-                  idlePremium: (state) => _PremiumArticleView(
-                    article: state.header,
-                    content: state.content,
-                    modalController: modalController,
-                    controller: scrollController,
-                    pageController: pageController,
-                    cubit: cubit,
-                    fullHeight: constraints.maxHeight,
-                    readArticleProgress: readArticleProgress,
+      builder: (context, constraints) {
+        Fimber.d('Constr: $constraints');
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          body: Column(
+            children: [
+              /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
+              ///
+              /// As cupertino bottom sheet works on ScrollNotification
+              /// instead of ScrollController itself it's the only way
+              /// to make sure it will work - at least only way I found
+              SizedBox(
+                height: 0,
+                child: ScrollConfiguration(
+                  behavior: NoGlowScrollBehavior(),
+                  child: SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                    controller: modalController,
+                    child: const SizedBox(
+                      height: 0,
+                    ),
                   ),
-                  error: (state) => _ErrorContent(article: state.article),
-                  orElse: () => const SizedBox(),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+              Expanded(
+                child: _AnimatedSwitcher(
+                  child: state.maybeMap(
+                    loading: (state) => const _LoadingContent(),
+                    idleFree: (state) => _FreeArticleView(article: state.header),
+                  idlePremium: (state) => _PremiumArticleView(
+                      article: state.header,
+                      content: state.content,
+
+                      modalController: modalController,
+                      controller: scrollController,
+                      pageController: pageController,
+                      cubit: cubit,
+                      fullHeight: constraints.maxHeight,
+                      readArticleProgress: readArticleProgress,
+                    ),
+                    error: (state) => _ErrorContent(article: state.article),
+                    orElse: () => const SizedBox(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
