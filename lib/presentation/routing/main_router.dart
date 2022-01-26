@@ -29,11 +29,7 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     CustomRoute(page: EntryPage, initial: true, customRouteBuilder: fadePageRouteBuilder),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
-    AutoRoute(page: SettingsMainPage),
-    AutoRoute(page: SettingsNotificationsPage),
-    AutoRoute(page: SettingsAccountPage),
     AutoRoute(page: TopicPage, name: 'TopicOwnerTopicPage'),
-    CustomRoute(page: MediaItemPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     mainPageRoute,
@@ -46,12 +42,10 @@ const mainPageRoute = CustomRoute(
   durationInMilliseconds: 0,
   children: [
     dashboardTabRouter,
-    CustomRoute(
-      path: 'article/:slug',
-      page: MediaItemPage,
-      name: 'MediaItemPageSlug',
-      customRouteBuilder: cupertinoBottomSheetPageRouteBuilder,
-    ),
+    articleRoute,
+    AutoRoute(page: SettingsMainPage, path: 'settings'),
+    AutoRoute(page: SettingsNotificationsPage, path: 'settings/notification'),
+    AutoRoute(page: SettingsAccountPage, path: 'settings/account'),
   ],
 );
 
@@ -95,4 +89,10 @@ const dashboardTabRouter = CustomRoute(
     ),
     RedirectRoute(path: '', redirectTo: 'topics'),
   ],
+);
+
+const articleRoute = CustomRoute(
+  path: 'article/:slug',
+  page: MediaItemPage,
+  customRouteBuilder: cupertinoBottomSheetPageRouteBuilder,
 );
