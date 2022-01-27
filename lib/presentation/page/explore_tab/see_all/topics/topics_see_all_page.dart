@@ -196,6 +196,7 @@ class _TopicGrid extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisExtent: AppDimens.exploreAreaTopicSeeAllCoverHeight,
               mainAxisSpacing: AppDimens.m,
+              crossAxisSpacing: AppDimens.m,
             ),
           ),
         ),
