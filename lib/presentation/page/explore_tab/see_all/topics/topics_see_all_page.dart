@@ -102,7 +102,6 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StackedCardsRandomVariantBuilder(
-        canNeighboursRepeat: true,
         count: state.maybeMap(
           loadingMore: (state) => state.topics.length,
           withPagination: (state) => state.topics.length,
