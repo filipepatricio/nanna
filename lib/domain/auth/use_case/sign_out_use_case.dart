@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_repository.dar
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
+import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -12,6 +13,7 @@ class SignOutUseCase {
   final PushNotificationStore _pushNotificationStore;
   final PushNotificationRepository _pushNotificationRepository;
   final RefreshTokenServiceCache _refreshTokenServiceCache;
+  final UserStore _userStore;
 
   SignOutUseCase(
     this._authStore,
@@ -19,6 +21,7 @@ class SignOutUseCase {
     this._pushNotificationStore,
     this._pushNotificationRepository,
     this._refreshTokenServiceCache,
+    this._userStore,
   );
 
   Future<void> call() async {
@@ -27,6 +30,7 @@ class SignOutUseCase {
 
     await _pushNotificationStore.clear();
     await _authStore.delete();
+    await _userStore.clear();
     await _analyticsRepository.logout();
   }
 }
