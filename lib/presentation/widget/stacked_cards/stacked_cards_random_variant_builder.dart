@@ -20,7 +20,7 @@ class StackedCardsRandomVariantBuilder extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final seed = useMemoized(() => Random().nextInt(2 ^ 32));
+    final seed = useMemoized(() => Random().nextInt(2 ^ 32), []);
     final cardVariants = useMemoized(() => _randomizeVariants(seed), [count, seed]);
 
     return builder(cardVariants);
@@ -33,8 +33,8 @@ class StackedCardsRandomVariantBuilder extends HookWidget {
 
   List<StackedCardsVariant> _randomizeVariantsWithRepeat(Random random) {
     return List.generate(count, (index) {
-      final index = random.nextInt(StackedCardsVariant.values.length);
-      return StackedCardsVariant.values[index];
+      final randomIndex = random.nextInt(StackedCardsVariant.values.length);
+      return StackedCardsVariant.values[randomIndex];
     });
   }
 

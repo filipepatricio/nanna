@@ -12,6 +12,8 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -99,31 +101,44 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return state.maybeMap(
-      loading: (_) => const Loader(),
-      withPagination: (state) => _TopicGrid(
-        title: title,
-        pageStorageKey: pageStorageKey,
-        topics: state.topics,
-        scrollController: scrollController,
-        withLoader: false,
-      ),
-      loadingMore: (state) => _TopicGrid(
-        title: title,
-        pageStorageKey: pageStorageKey,
-        topics: state.topics,
-        scrollController: scrollController,
-        withLoader: true,
-      ),
-      allLoaded: (state) => _TopicGrid(
-        title: title,
-        pageStorageKey: pageStorageKey,
-        topics: state.topics,
-        scrollController: scrollController,
-        withLoader: false,
-      ),
-      orElse: () => const SizedBox(),
-    );
+    return StackedCardsRandomVariantBuilder(
+        canNeighboursRepeat: true,
+        count: state.maybeMap(
+          loadingMore: (state) => state.topics.length,
+          withPagination: (state) => state.topics.length,
+          allLoaded: (state) => state.topics.length,
+          orElse: () => 0,
+        ),
+        builder: (cardVariants) {
+          return state.maybeMap(
+            loading: (_) => const Loader(),
+            withPagination: (state) => _TopicGrid(
+              title: title,
+              pageStorageKey: pageStorageKey,
+              topics: state.topics,
+              scrollController: scrollController,
+              withLoader: false,
+              cardVariants: cardVariants,
+            ),
+            loadingMore: (state) => _TopicGrid(
+              title: title,
+              pageStorageKey: pageStorageKey,
+              topics: state.topics,
+              scrollController: scrollController,
+              withLoader: true,
+              cardVariants: cardVariants,
+            ),
+            allLoaded: (state) => _TopicGrid(
+              title: title,
+              pageStorageKey: pageStorageKey,
+              topics: state.topics,
+              scrollController: scrollController,
+              withLoader: false,
+              cardVariants: cardVariants,
+            ),
+            orElse: () => const SizedBox(),
+          );
+        });
   }
 }
 
@@ -133,6 +148,7 @@ class _TopicGrid extends StatelessWidget {
   final List<Topic> topics;
   final ScrollController scrollController;
   final bool withLoader;
+  final List<StackedCardsVariant> cardVariants;
 
   const _TopicGrid({
     required this.title,
@@ -140,6 +156,7 @@ class _TopicGrid extends StatelessWidget {
     required this.topics,
     required this.scrollController,
     required this.withLoader,
+    required this.cardVariants,
     Key? key,
   }) : super(key: key);
 
@@ -169,7 +186,10 @@ class _TopicGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _GridItem(topic: topics[index]),
+              (context, index) => _GridItem(
+                topic: topics[index],
+                cardVariant: cardVariants[index],
+              ),
               childCount: topics.length,
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -187,9 +207,11 @@ class _TopicGrid extends StatelessWidget {
 
 class _GridItem extends StatelessWidget {
   final Topic topic;
+  final StackedCardsVariant cardVariant;
 
   const _GridItem({
     required this.topic,
+    required this.cardVariant,
     Key? key,
   }) : super(key: key);
 
@@ -199,7 +221,8 @@ class _GridItem extends StatelessWidget {
       onTap: () => _onTopicTap(context, topic),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return PageViewStackedCards.random(
+          return PageViewStackedCards.variant(
+            variant: cardVariant,
             coverSize: Size(constraints.maxWidth, AppDimens.exploreAreaTopicSeeAllCoverHeight),
             child: ReadingListCoverSmall(topic: topic),
           );
