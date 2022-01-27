@@ -21,6 +21,8 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -200,37 +202,45 @@ class _IdleContent extends HookWidget {
                             SliverToBoxAdapter(
                               child: SizedBox(
                                 height: constraints.maxHeight,
-                                child: NoScrollGlow(
-                                  child: PageView(
-                                    allowImplicitScrolling: true,
-                                    controller: controller,
-                                    scrollDirection: Axis.horizontal,
-                                    onPageChanged: (index) {
-                                      if (index < currentBrief.topics.length) {
-                                        todaysTopicsCubit.trackTopicPageSwipe(currentBrief.topics[index].id, index + 1);
-                                      } else {
-                                        todaysTopicsCubit.trackRelaxPage();
-                                      }
-                                    },
-                                    children: [
-                                      ..._buildTopicCards(
-                                        context,
-                                        controller,
-                                        todaysTopicsCubit,
-                                        currentBrief,
-                                        cardStackWidth,
-                                        constraints.maxHeight,
-                                      ),
-                                      Hero(
-                                        tag: HeroTag.dailyBriefRelaxPage,
-                                        child: RelaxView(
-                                          lastPageAnimationProgressState: lastPageAnimationProgressState,
-                                          goodbyeHeadline: currentBrief.goodbye,
+                                child: StackedCardsRandomVariantBuilder(
+                                    count: currentBrief.topics.length,
+                                    builder: (variants) {
+                                      return NoScrollGlow(
+                                        child: PageView(
+                                          allowImplicitScrolling: true,
+                                          controller: controller,
+                                          scrollDirection: Axis.horizontal,
+                                          onPageChanged: (index) {
+                                            if (index < currentBrief.topics.length) {
+                                              todaysTopicsCubit.trackTopicPageSwipe(
+                                                currentBrief.topics[index].id,
+                                                index + 1,
+                                              );
+                                            } else {
+                                              todaysTopicsCubit.trackRelaxPage();
+                                            }
+                                          },
+                                          children: [
+                                            ..._buildTopicCards(
+                                              context,
+                                              controller,
+                                              todaysTopicsCubit,
+                                              currentBrief,
+                                              cardStackWidth,
+                                              constraints.maxHeight,
+                                              variants,
+                                            ),
+                                            Hero(
+                                              tag: HeroTag.dailyBriefRelaxPage,
+                                              child: RelaxView(
+                                                lastPageAnimationProgressState: lastPageAnimationProgressState,
+                                                goodbyeHeadline: currentBrief.goodbye,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                      );
+                                    }),
                               ),
                             ),
                           ],
@@ -259,6 +269,7 @@ class _IdleContent extends HookWidget {
     CurrentBrief currentBrief,
     double width,
     double heightPageView,
+    List<StackedCardsVariant> cardsVariants,
   ) {
     return currentBrief.topics.asMap().map<int, Widget>((key, value) {
       return MapEntry(
@@ -268,7 +279,8 @@ class _IdleContent extends HookWidget {
               const Spacer(),
               Expanded(
                 flex: 15,
-                child: PageViewStackedCards.random(
+                child: PageViewStackedCards.variant(
+                  variant: cardsVariants[key],
                   coverSize: Size(width, heightPageView),
                   child: ReadingListCover(
                     topic: currentBrief.topics[key],
