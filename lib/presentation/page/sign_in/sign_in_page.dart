@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/magic_link_view.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_cubit.dart';
@@ -9,9 +10,11 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -252,26 +255,25 @@ class _TermsPolicy extends StatelessWidget {
           TextSpan(
             text: LocaleKeys.signIn_consentParts_terms.tr(),
             style: AppTypography.b3Regular.copyWith(color: AppColors.blue),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                AutoRouter.of(context).push(
-                  SettingsPolicyTermsPageRoute(isPolicy: false),
-                );
-              },
+            recognizer: TapGestureRecognizer()..onTap = () => _openInBrowser(termsOfServiceUri),
           ),
           TextSpan(text: LocaleKeys.signIn_consentParts_and.tr()),
           TextSpan(
             text: LocaleKeys.signIn_consentParts_privacy.tr(),
             style: AppTypography.b3Regular.copyWith(color: AppColors.blue),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                AutoRouter.of(context).push(
-                  SettingsPolicyTermsPageRoute(isPolicy: true),
-                );
-              },
+            recognizer: TapGestureRecognizer()..onTap = () => _openInBrowser(policyPrivacyUri),
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _openInBrowser(String uri) async {
+    await openInAppBrowser(
+      uri,
+      (error, stacktrace) {
+        Fimber.e('Failed to open $uri', ex: error, stacktrace: stacktrace);
+      },
     );
   }
 }

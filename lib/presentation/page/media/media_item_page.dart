@@ -456,10 +456,12 @@ class _IdleContent extends HookWidget {
 
 class _ArticleProgressBar extends HookWidget {
   final ValueNotifier<double> readProgress;
+
   const _ArticleProgressBar({
     required this.readProgress,
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
