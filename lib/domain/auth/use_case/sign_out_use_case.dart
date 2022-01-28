@@ -30,7 +30,7 @@ class SignOutUseCase {
 
     await _pushNotificationStore.clear();
     await _authStore.delete();
-    await _userStore.clear();
+    await _userStore.clearCurrentUserUuid();
     await _analyticsRepository.logout();
   }
 }

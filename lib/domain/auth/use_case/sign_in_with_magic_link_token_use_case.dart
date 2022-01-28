@@ -21,7 +21,7 @@ class SignInWithMagicLinkTokenUseCase {
   Future<void> call(String token) async {
     final authResult = await _authRepository.signInWithMagicLinkToken(token);
     await _authStore.save(authResult.authToken);
-    await _userStore.setLoggedInUserUuid(authResult.userUuid);
+    await _userStore.setCurrentUserUuid(authResult.userUuid);
 
     await _analyticsRepository.login(
       authResult.userUuid,

@@ -14,8 +14,10 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   final SetOnboardingSeenUseCase _setOnboardingSeenUseCase;
 
   OnboardingPageCubit(
-      this._requestNotificationPermissionUseCase, this._trackActivityUseCase, this._setOnboardingSeenUseCase)
-      : super(OnboardingPageState.idle());
+    this._requestNotificationPermissionUseCase,
+    this._trackActivityUseCase,
+    this._setOnboardingSeenUseCase,
+  ) : super(OnboardingPageState.idle());
 
   Future<void> requestNotificationPermission() async {
     final hasGivenPermission = await _requestNotificationPermissionUseCase.call();

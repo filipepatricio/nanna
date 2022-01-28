@@ -1,7 +1,7 @@
 abstract class UserDatabase {
-  Future<String> getUserLoggedIn();
+  Future<String> getCurrentUserUuid();
 
-  Future<void> setUserLoggedIn(String userUuid);
+  Future<void> setCurrentUserUuid(String userUuid);
 
-  Future<void> clearUserLoggedIn();
+  Future<void> clearCurrentUserUuid();
 }

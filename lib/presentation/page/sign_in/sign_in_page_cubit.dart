@@ -24,9 +24,14 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   StreamSubscription? _magicLinkSubscription;
   late String _email;
 
-  SignInPageCubit(this._isEmailValidUseCase, this._sendMagicLinkUseCase, this._signInWithDefaultProviderUseCase,
-      this._subscribeForMagicLinkTokenUseCase, this._signInWithMagicLinkTokenUseCase, this._isOnboardingSeenUseCase)
-      : super(SignInPageState.idle(false));
+  SignInPageCubit(
+    this._isEmailValidUseCase,
+    this._sendMagicLinkUseCase,
+    this._signInWithDefaultProviderUseCase,
+    this._subscribeForMagicLinkTokenUseCase,
+    this._signInWithMagicLinkTokenUseCase,
+    this._isOnboardingSeenUseCase,
+  ) : super(SignInPageState.idle(false));
 
   @override
   Future<void> close() async {

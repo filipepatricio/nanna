@@ -1,9 +1,7 @@
-import 'package:hive/hive.dart';
-
 abstract class UserStore {
-  Future<Box<E>> openBox<E>(String boxName);
+  Future<String> getCurrentUserUuid();
 
-  Future<void> setLoggedInUserUuid(String userUuid);
+  Future<void> setCurrentUserUuid(String userUuid);
 
-  Future<void> clear();
+  Future<void> clearCurrentUserUuid();
 }

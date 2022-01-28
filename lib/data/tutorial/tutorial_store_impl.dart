@@ -10,15 +10,15 @@ class TutorialStoreImpl extends TutorialStore {
   TutorialStoreImpl(this._database);
 
   @override
-  Future<bool> isTutorialStepSeen(TutorialStep tutorialStep) async {
-    return await _database.isTutorialStepSeen(tutorialStep);
+  Future<bool> isUserTutorialStepSeen(String userUuid, TutorialStep tutorialStep) async {
+    return await _database.isTutorialStepSeen(userUuid, tutorialStep);
   }
 
   @override
-  Future<void> setTutorialStepSeen(TutorialStep tutorialStep) async {
-    await _database.setTutorialStepSeen(tutorialStep);
+  Future<void> setUserTutorialStepSeen(String userUuid, TutorialStep tutorialStep) async {
+    await _database.setTutorialStepSeen(userUuid, tutorialStep);
   }
 
   @override
-  Future<void> resetTutorial() => _database.resetTutorial();
+  Future<void> resetUserTutorial(String userUuid) => _database.resetTutorial(userUuid);
 }

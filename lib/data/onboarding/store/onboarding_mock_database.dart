@@ -5,13 +5,13 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: OnboardingDatabase, env: mockEnvs)
 class OnboardingMockDatabase implements OnboardingDatabase {
   @override
-  Future<bool> isOnboardingSeen() async {
+  Future<bool> isOnboardingSeen(String userUuid) async {
     return true;
   }
 
   @override
-  Future<void> setOnboardingSeen() async {}
+  Future<void> setOnboardingSeen(String userUuid) async {}
 
   @override
-  Future<void> resetOnboarding() async {}
+  Future<void> resetOnboarding(String userUuid) async {}
 }

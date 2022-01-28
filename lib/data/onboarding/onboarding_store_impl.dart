@@ -9,15 +9,15 @@ class OnboardingStoreImpl extends OnboardingStore {
   OnboardingStoreImpl(this._database);
 
   @override
-  Future<bool> isOnboardingSeen() async {
-    return await _database.isOnboardingSeen();
+  Future<bool> isUserOnboardingSeen(String userUuid) async {
+    return await _database.isOnboardingSeen(userUuid);
   }
 
   @override
-  Future<void> setOnboardingSeen() async {
-    await _database.setOnboardingSeen();
+  Future<void> setUserOnboardingSeen(String userUuid) async {
+    await _database.setOnboardingSeen(userUuid);
   }
 
   @override
-  Future<void> resetOnboarding() => _database.resetOnboarding();
+  Future<void> resetUserOnboarding(String userUuid) => _database.resetOnboarding(userUuid);
 }

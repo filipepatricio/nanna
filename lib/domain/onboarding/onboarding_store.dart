@@ -1,7 +1,7 @@
 abstract class OnboardingStore {
-  Future<bool> isOnboardingSeen();
+  Future<bool> isUserOnboardingSeen(String userUuid);
 
-  Future<void> setOnboardingSeen();
+  Future<void> setUserOnboardingSeen(String userUuid);
 
-  Future<void> resetOnboarding();
+  Future<void> resetUserOnboarding(String userUuid);
 }

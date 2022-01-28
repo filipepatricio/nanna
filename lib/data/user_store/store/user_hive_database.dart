@@ -9,20 +9,20 @@ const _userKey = 'userKey';
 @LazySingleton(as: UserDatabase, env: liveEnvs)
 class UserHiveDatabase implements UserDatabase {
   @override
-  Future<void> clearUserLoggedIn() async {
+  Future<void> clearCurrentUserUuid() async {
     final box = await Hive.openBox(_hiveBoxName);
     await box.clear();
   }
 
   @override
-  Future<String> getUserLoggedIn() async {
+  Future<String> getCurrentUserUuid() async {
     final box = await Hive.openBox(_hiveBoxName);
     final userUuid = box.get(_userKey) as String?;
     return userUuid ?? '';
   }
 
   @override
-  Future<void> setUserLoggedIn(String userUuid) async {
+  Future<void> setCurrentUserUuid(String userUuid) async {
     final box = await Hive.openBox(_hiveBoxName);
     await box.put(_userKey, userUuid);
   }

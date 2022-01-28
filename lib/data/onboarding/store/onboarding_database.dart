@@ -1,7 +1,7 @@
 abstract class OnboardingDatabase {
-  Future<bool> isOnboardingSeen();
+  Future<bool> isOnboardingSeen(String userUuid);
 
-  Future<void> setOnboardingSeen();
+  Future<void> setOnboardingSeen(String userUuid);
 
-  Future<void> resetOnboarding();
+  Future<void> resetOnboarding(String userUuid);
 }
