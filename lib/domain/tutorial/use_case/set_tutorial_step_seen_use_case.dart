@@ -1,13 +1,20 @@
+import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_store.dart';
+import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:injectable/injectable.dart';
-
-import '../tutorial_steps.dart';
 
 @injectable
 class SetTutorialStepSeenUseCase {
   final TutorialStore _tutorialStore;
+  final UserStore _userStore;
 
-  SetTutorialStepSeenUseCase(this._tutorialStore);
+  SetTutorialStepSeenUseCase(
+    this._tutorialStore,
+    this._userStore,
+  );
 
-  Future<void> call(TutorialStep tutorialStep) => _tutorialStore.setTutorialStepSeen(tutorialStep);
+  Future<void> call(TutorialStep tutorialStep) async {
+    final currentUserUuid = await _userStore.getCurrentUserUuid();
+    return _tutorialStore.setUserTutorialStepSeen(currentUserUuid, tutorialStep);
+  }
 }

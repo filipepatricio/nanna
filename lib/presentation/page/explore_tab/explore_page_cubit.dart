@@ -16,8 +16,11 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   late bool _isExploreTutorialStepSeen;
 
-  ExplorePageCubit(this._getExploreContentUseCase, this._isTutorialStepSeenUseCase, this._setTutorialStepSeenUseCase)
-      : super(ExplorePageState.initialLoading());
+  ExplorePageCubit(
+    this._getExploreContentUseCase,
+    this._isTutorialStepSeenUseCase,
+    this._setTutorialStepSeenUseCase,
+  ) : super(ExplorePageState.initialLoading());
 
   Future<void> initialize() async {
     emit(ExplorePageState.initialLoading());
@@ -25,7 +28,6 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     try {
       final exploreContent = await _getExploreContentUseCase();
       emit(ExplorePageState.idle(exploreContent.areas));
-
       _isExploreTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.explore);
       if (!_isExploreTutorialStepSeen) {
         emit(ExplorePageState.showTutorialToast(LocaleKeys.tutorial_exploreSnackBarText.tr()));

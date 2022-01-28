@@ -3,6 +3,8 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:flutter/material.dart';
 
+const _topPadding = 110.0;
+
 class ArticleWithCoverAreaLoadingView extends StatelessWidget {
   final Color color;
   final bool enabled;
@@ -33,29 +35,7 @@ class ArticleWithCoverAreaLoadingView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: AppDimens.xxxl),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: Row(
-            children: [
-              Expanded(
-                child: LoadingShimmer(
-                  mainColor: color,
-                  enabled: enabled,
-                  height: AppDimens.xl,
-                ),
-              ),
-              const SizedBox(width: AppDimens.xxxc),
-              LoadingShimmer(
-                mainColor: color,
-                enabled: enabled,
-                height: AppDimens.xl,
-                width: AppDimens.xl,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: AppDimens.l),
+        const SizedBox(height: _topPadding),
         Padding(
           padding: const EdgeInsets.only(left: AppDimens.l),
           child: LoadingShimmer(

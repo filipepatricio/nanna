@@ -120,7 +120,7 @@
     "readMore": "Read more",
     "readMinutes": "{} min",
     "loadingNext": "Loading next article in\nthe reading list.",
-    "allArticlesRead": "Great! You’ve read all\narticles in the reading list.",
+    "allArticlesRead": "Great! You’ve read all\narticles on this topic.",
     "goBackToTopic": "Back to topic overview",
     "openSourceUrl": "Open in Browser",
     "loadError": "Something went wrong\n while loading the article",
@@ -148,7 +148,8 @@
   "continueReading": "Continue reading",
   "explore": {
     "title": "Explore",
-    "seeAllArticles": "See all articles"
+    "seeAllArticles": "See all articles",
+    "seeAllTopics": "See all topics"
   },
   "profile": {
     "title": "Profile",

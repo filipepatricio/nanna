@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_default
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_magic_link_token_use_case.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_link_token_use_case.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.dart';
+import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -18,6 +19,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final SignInWithDefaultProviderUseCase _signInWithDefaultProviderUseCase;
   final SubscribeForMagicLinkTokenUseCase _subscribeForMagicLinkTokenUseCase;
   final SignInWithMagicLinkTokenUseCase _signInWithMagicLinkTokenUseCase;
+  final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
@@ -28,6 +30,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._signInWithDefaultProviderUseCase,
     this._subscribeForMagicLinkTokenUseCase,
     this._signInWithMagicLinkTokenUseCase,
+    this._isOnboardingSeenUseCase,
   ) : super(SignInPageState.idle(false));
 
   @override
@@ -56,7 +59,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     emit(SignInPageState.processing());
     try {
       await _signInWithDefaultProviderUseCase();
-      emit(SignInPageState.success());
+      await _finishSignIn();
     } on SignInAbortedException {
       // Do nothing
     } catch (e, s) {
@@ -77,11 +80,16 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
     try {
       await _signInWithMagicLinkTokenUseCase(event);
-      emit(SignInPageState.success());
+      await _finishSignIn();
     } catch (e, s) {
       Fimber.e('Signing in with magic link failed', ex: e, stacktrace: s);
     } finally {
       emit(SignInPageState.idle(false));
     }
+  }
+
+  Future<void> _finishSignIn() async {
+    final isOnboardingSeen = await _isOnboardingSeenUseCase.call();
+    emit(SignInPageState.success(isOnboardingSeen));
   }
 }

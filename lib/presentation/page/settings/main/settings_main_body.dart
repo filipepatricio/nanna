@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/settings/widgets/settings_main_item.dart';
@@ -6,8 +7,10 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,60 +23,70 @@ class SettingsMainBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(AppDimens.l),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    LocaleKeys.settings_profileHeader.tr(),
-                    style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
-                  ),
-                  const SizedBox(height: AppDimens.ml),
-                  SettingsMainItem(
-                    label: LocaleKeys.settings_account.tr(),
-                    icon: AppVectorGraphics.account,
-                    onTap: () => AutoRouter.of(context).push(const SettingsAccountPageRoute()),
-                  ),
-                  const SizedBox(height: AppDimens.ml),
-                  SettingsMainItem(
-                    label: LocaleKeys.settings_pushNotifications.tr(),
-                    icon: AppVectorGraphics.notifications,
-                    onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
-                  ),
-                  const SizedBox(height: AppDimens.xxxl),
-                  Text(
-                    LocaleKeys.settings_aboutHeader.tr(),
-                    style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
-                  ),
-                  const SizedBox(height: AppDimens.ml),
-                  SettingsMainItem(
-                    label: LocaleKeys.settings_privacyPolicy.tr(),
-                    icon: AppVectorGraphics.privacy,
-                    onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: true)),
-                  ),
-                  const SizedBox(height: AppDimens.ml),
-                  SettingsMainItem(
-                    label: LocaleKeys.settings_termsOfService.tr(),
-                    icon: AppVectorGraphics.terms,
-                    onTap: () => AutoRouter.of(context).push(SettingsPolicyTermsPageRoute(isPolicy: false)),
-                  ),
-                  const Spacer(),
-                  FilledButton(
-                    text: LocaleKeys.common_signOut.tr(),
-                    fillColor: AppColors.carrotRed,
-                    textColor: AppColors.white,
-                    onTap: () async => await cubit.signOut(),
-                  ),
-                  const SizedBox(height: AppDimens.ml),
-                ],
-              ),
+      padding: const EdgeInsets.all(AppDimens.l),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  LocaleKeys.settings_profileHeader.tr(),
+                  style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+                ),
+                const SizedBox(height: AppDimens.ml),
+                SettingsMainItem(
+                  label: LocaleKeys.settings_account.tr(),
+                  icon: AppVectorGraphics.account,
+                  onTap: () => AutoRouter.of(context).push(const SettingsAccountPageRoute()),
+                ),
+                const SizedBox(height: AppDimens.ml),
+                SettingsMainItem(
+                  label: LocaleKeys.settings_pushNotifications.tr(),
+                  icon: AppVectorGraphics.notifications,
+                  onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
+                ),
+                const SizedBox(height: AppDimens.xxxl),
+                Text(
+                  LocaleKeys.settings_aboutHeader.tr(),
+                  style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+                ),
+                const SizedBox(height: AppDimens.ml),
+                SettingsMainItem(
+                  label: LocaleKeys.settings_privacyPolicy.tr(),
+                  icon: AppVectorGraphics.privacy,
+                  onTap: () => _openInBrowser(policyPrivacyUri),
+                ),
+                const SizedBox(height: AppDimens.ml),
+                SettingsMainItem(
+                  label: LocaleKeys.settings_termsOfService.tr(),
+                  icon: AppVectorGraphics.terms,
+                  onTap: () => _openInBrowser(termsOfServiceUri),
+                ),
+                const Spacer(),
+                FilledButton(
+                  text: LocaleKeys.common_signOut.tr(),
+                  fillColor: AppColors.carrotRed,
+                  textColor: AppColors.white,
+                  onTap: () async => await cubit.signOut(),
+                ),
+                const SizedBox(height: AppDimens.ml),
+              ],
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _openInBrowser(String uri) async {
+    await openInAppBrowser(
+      uri,
+      (error, stacktrace) {
+        Fimber.e('Failed to open $uri', ex: error, stacktrace: stacktrace);
+      },
+    );
   }
 }

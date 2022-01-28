@@ -41,15 +41,18 @@ class ReadingListCover extends HookWidget {
               Positioned.fill(
                 child: Hero(
                   tag: topic.heroImage.publicId,
-                  child: CloudinaryProgressiveImage(
-                    width: constraints.maxWidth * .9,
-                    height: constraints.maxHeight * .9,
-                    cloudinaryTransformation: cloudinaryProvider
-                        .withPublicIdAsPlatform(topic.heroImage.publicId)
-                        .transform()
-                        .withLogicalSize(
-                            MediaQuery.of(context).size.width, AppDimens.topicViewHeaderImageHeight(context), context)
-                        .autoGravity(),
+                  child: Opacity(
+                    opacity: .5,
+                    child: CloudinaryProgressiveImage(
+                      width: constraints.maxWidth * .9,
+                      height: constraints.maxHeight * .9,
+                      cloudinaryTransformation: cloudinaryProvider
+                          .withPublicIdAsPlatform(topic.heroImage.publicId)
+                          .transform()
+                          .withLogicalSize(
+                              MediaQuery.of(context).size.width, AppDimens.topicViewHeaderImageHeight(context), context)
+                          .autoGravity(),
+                    ),
                   ),
                 ),
               ),

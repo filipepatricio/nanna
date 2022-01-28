@@ -14,5 +14,5 @@ class SignInPageState with _$SignInPageState {
   @Implements<BuildState>()
   factory SignInPageState.processing() = _SignInPageStateProcessing;
 
-  factory SignInPageState.success() = _SignInPageStateSuccess;
+  factory SignInPageState.success(bool isOnboardingSeen) = _SignInPageStateSuccess;
 }
