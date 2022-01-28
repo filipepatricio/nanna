@@ -11,6 +11,7 @@ part 'topic_dto.g.dart';
 class TopicDTO {
   final String id;
   final String title;
+  final String strippedTitle;
   final String introduction;
   final TopicOwnerDTO owner;
   final String lastUpdatedAt;
@@ -23,6 +24,7 @@ class TopicDTO {
   TopicDTO(
     this.id,
     this.title,
+    this.strippedTitle,
     this.introduction,
     this.owner,
     this.lastUpdatedAt,
