@@ -148,7 +148,8 @@
   "continueReading": "Continue reading",
   "explore": {
     "title": "Explore",
-    "seeAllArticles": "See all articles"
+    "seeAllArticles": "See all articles",
+    "seeAllTopics": "See all topics"
   },
   "profile": {
     "title": "Profile",

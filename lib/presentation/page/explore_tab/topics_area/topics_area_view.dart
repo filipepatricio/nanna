@@ -5,13 +5,17 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -26,8 +30,8 @@ class TopicsAreaView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final eventController = useEventTrackController();
-    final controller = usePageController(viewportFraction: 0.9);
-    final width = MediaQuery.of(context).size.width * 0.9;
+    final controller = usePageController(viewportFraction: 0.81);
+    final width = MediaQuery.of(context).size.width * 0.81;
     final cardStackHeight =
         MediaQuery.of(context).size.width * 0.5 > 450 ? MediaQuery.of(context).size.width * 0.5 : 450.0;
 
@@ -54,7 +58,11 @@ class TopicsAreaView extends HookWidget {
                 ),
                 SeeAllArrow(
                   onTap: () => AutoRouter.of(context).push(
-                    TopicsSeeAllPageRoute(areaId: area.id, title: area.title, topics: area.topics),
+                    TopicsSeeAllPageRoute(
+                      areaId: area.id,
+                      title: area.title,
+                      topics: area.topics,
+                    ),
                   ),
                 ),
               ],
@@ -63,22 +71,50 @@ class TopicsAreaView extends HookWidget {
           const SizedBox(height: AppDimens.l),
           Container(
             height: cardStackHeight,
-            child: PageView.builder(
-              padEnds: false,
-              controller: controller,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(left: AppDimens.xxl),
-                child: PageViewStackedCards.random(
-                  coverSize: Size(width, cardStackHeight),
-                  child: ReadingListCover(
-                    topic: area.topics[index],
-                    onTap: () => _onTopicTap(context, index),
-                  ),
-                ),
-              ),
-              onPageChanged: (page) => eventController.track(AnalyticsEvent.exploreAreaCarouselBrowsed(area.id, page)),
-              itemCount: area.topics.length,
-            ),
+            child: StackedCardsRandomVariantBuilder(
+                count: area.topics.length,
+                builder: (variants) {
+                  return NoScrollGlow(
+                    child: PageView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      controller: controller,
+                      padEnds: false,
+                      onPageChanged: (page) => eventController.track(
+                        AnalyticsEvent.exploreAreaCarouselBrowsed(
+                          area.id,
+                          page,
+                        ),
+                      ),
+                      itemCount: area.topics.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == area.topics.length) {
+                          return _SeeAllTopicsLabel(
+                            onTap: () => AutoRouter.of(context).push(
+                              TopicsSeeAllPageRoute(
+                                areaId: area.id,
+                                title: area.title,
+                                topics: area.topics,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Padding(
+                          padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 16),
+                          child: PageViewStackedCards.variant(
+                            variant: variants[index],
+                            centered: true,
+                            coverSize: Size(width, cardStackHeight),
+                            child: ReadingListCover(
+                              topic: area.topics[index],
+                              onTap: () => _onTopicTap(context, index),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }),
           ),
           const SizedBox(height: AppDimens.l),
           Padding(
@@ -98,6 +134,27 @@ class TopicsAreaView extends HookWidget {
       TopicPageRoute(
         topicSlug: area.topics[index].id,
         topic: area.topics[index],
+      ),
+    );
+  }
+}
+
+class _SeeAllTopicsLabel extends StatelessWidget {
+  const _SeeAllTopicsLabel({
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: AppDimens.xl),
+      child: LinkLabel(
+        labelText: LocaleKeys.explore_seeAllTopics.tr(),
+        horizontalAlignment: MainAxisAlignment.end,
+        onTap: onTap,
       ),
     );
   }
