@@ -11,7 +11,6 @@ import 'package:better_informed_mobile/presentation/page/profile_tab/profile_pag
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
-import 'package:better_informed_mobile/presentation/page/settings/policy_terms/settings_policy_terms_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/how_do_we_curate_content_page.dart';
@@ -30,7 +29,6 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
     AutoRoute(page: SettingsMainPage),
-    AutoRoute(page: SettingsPolicyTermsPage),
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
     AutoRoute(page: TopicPage, name: 'TopicOwnerTopicPage'),
