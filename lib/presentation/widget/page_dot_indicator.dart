@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +30,7 @@ class PageDotIndicator extends HookWidget {
     useEffect(
       () {
         final onPageChanged = () {
-          currentPageState.value = controller.page ?? 0.0;
+          currentPageState.value = min(controller.page ?? 0.0, pageCount.toDouble() - 1);
         };
         controller.addListener(onPageChanged);
         return () => controller.removeListener(onPageChanged);

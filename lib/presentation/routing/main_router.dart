@@ -13,7 +13,7 @@ import 'package:better_informed_mobile/presentation/page/settings/main/settings_
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page.dart';
-import 'package:better_informed_mobile/presentation/page/topic/how_do_we_curate_content_page.dart';
+import 'package:better_informed_mobile/presentation/page/topic/owner/how_do_we_curate_content_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/cupertino_bottom_sheet_route_builder.dart';
