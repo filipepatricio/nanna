@@ -34,9 +34,9 @@ class SignInPage extends HookWidget {
 
     useCubitListener<SignInPageCubit, SignInPageState>(cubit, (cubit, state, context) {
       state.maybeMap(
-        success: (_) => AutoRouter.of(context).replaceAll(
+        success: (state) => AutoRouter.of(context).replaceAll(
           [
-            const OnboardingPageRoute(),
+            if (!state.isOnboardingSeen) const OnboardingPageRoute() else const MainPageRoute(),
           ],
         ),
         orElse: () {},

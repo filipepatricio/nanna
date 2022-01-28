@@ -133,14 +133,11 @@ class OnboardingPage extends HookWidget {
     );
   }
 
-  void _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit, bool isLastPage) {
-    if (isLastPage) {
-      cubit.trackOnboardingCompleted();
-    } else {
-      cubit.trackOnboardingSkipped();
-    }
-    cubit.requestNotificationPermission();
-    AutoRouter.of(context).replaceAll(
+  Future<void> _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit, bool isLastPage) async {
+    final isSkipped = !isLastPage;
+    await cubit.setOnboardingCompleted(isSkipped);
+    await cubit.requestNotificationPermission();
+    await AutoRouter.of(context).replaceAll(
       [
         const MainPageRoute(),
       ],

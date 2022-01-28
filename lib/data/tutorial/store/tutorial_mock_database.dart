@@ -6,13 +6,13 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: TutorialDatabase, env: mockEnvs)
 class TutorialMockDatabase implements TutorialDatabase {
   @override
-  Future<bool> isTutorialStepSeen(TutorialStep tutorialStep) async {
+  Future<bool> isTutorialStepSeen(String userUuid, TutorialStep tutorialStep) async {
     return true;
   }
 
   @override
-  Future<void> setTutorialStepSeen(TutorialStep tutorialStep) async {}
+  Future<void> setTutorialStepSeen(String userUuid, TutorialStep tutorialStep) async {}
 
   @override
-  Future<void> resetTutorial() async {}
+  Future<void> resetTutorial(String userUuid) async {}
 }

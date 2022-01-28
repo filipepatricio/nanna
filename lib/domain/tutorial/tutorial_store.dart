@@ -1,9 +1,9 @@
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 
 abstract class TutorialStore {
-  Future<bool> isTutorialStepSeen(TutorialStep tutorialStep);
+  Future<bool> isUserTutorialStepSeen(String userUuid, TutorialStep tutorialStep);
 
-  Future<void> setTutorialStepSeen(TutorialStep tutorialStep);
+  Future<void> setUserTutorialStepSeen(String userUuid, TutorialStep tutorialStep);
 
-  Future<void> resetTutorial();
+  Future<void> resetUserTutorial(String userUuid);
 }

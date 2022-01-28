@@ -9,22 +9,27 @@ const _hiveBoxName = 'tutorialBox';
 
 @LazySingleton(as: TutorialDatabase, env: liveEnvs)
 class TutorialHiveDatabase implements TutorialDatabase {
+  Future<Box<dynamic>> _openUserBox(String userUuid, String hiveBoxName) async {
+    final box = await Hive.openBox('${userUuid}_$hiveBoxName');
+    return box;
+  }
+
   @override
-  Future<bool> isTutorialStepSeen(TutorialStep tutorialStep) async {
-    final box = await Hive.openBox(_hiveBoxName);
+  Future<bool> isTutorialStepSeen(String userUuid, TutorialStep tutorialStep) async {
+    final box = await _openUserBox(userUuid, _hiveBoxName);
     final tutorialStepValue = box.get(tutorialStep.key) as bool?;
     return tutorialStepValue ?? false;
   }
 
   @override
-  Future<void> setTutorialStepSeen(TutorialStep tutorialStep) async {
-    final box = await Hive.openBox(_hiveBoxName);
+  Future<void> setTutorialStepSeen(String userUuid, TutorialStep tutorialStep) async {
+    final box = await _openUserBox(userUuid, _hiveBoxName);
     await box.put(tutorialStep.key, true);
   }
 
   @override
-  Future<void> resetTutorial() async {
-    final box = await Hive.openBox(_hiveBoxName);
+  Future<void> resetTutorial(String userUuid) async {
+    final box = await _openUserBox(userUuid, _hiveBoxName);
     await box.clear();
   }
 }
