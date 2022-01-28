@@ -65,7 +65,7 @@ class ProfilePage extends HookWidget {
               Expanded(
                 child: state.maybeMap(
                   initialLoading: (_) => const Loader(),
-                  idle: (state) => const _Idle(),
+                  idle: (state) => _Idle(cubit: cubit),
                   orElse: () => const SizedBox(),
                 ),
               ),
@@ -79,8 +79,11 @@ class ProfilePage extends HookWidget {
 
 class _Idle extends StatelessWidget {
   const _Idle({
+    required this.cubit,
     Key? key,
   }) : super(key: key);
+
+  final ProfilePageCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -107,18 +110,12 @@ class _Idle extends StatelessWidget {
             text: LocaleKeys.profile_feedbackButton.tr(),
             fillColor: AppColors.textPrimary,
             textColor: AppColors.white,
-            onTap: () async {
-              final email = Email(
-                body: LocaleKeys.profile_feedbackText.tr(),
-                subject: LocaleKeys.profile_feedbackSubject.tr(),
-                recipients: [_feedbackEmail],
+            onTap: () {
+              cubit.sendFeedbackEmail(
+                _feedbackEmail,
+                LocaleKeys.profile_feedbackSubject.tr(),
+                LocaleKeys.profile_feedbackText.tr(),
               );
-
-              try {
-                await FlutterEmailSender.send(email);
-              } catch (e, s) {
-                Fimber.e('Sending feedback email failed', ex: e, stacktrace: s);
-              }
             },
           ),
         ),
