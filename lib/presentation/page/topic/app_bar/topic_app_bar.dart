@@ -1,0 +1,102 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/presentation/page/topic/header/topic_header.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/marquee.dart';
+import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
+
+class TopicAppBar extends HookWidget {
+  final Topic topic;
+  final ValueNotifier<double> scrollPositionNotifier;
+  final void Function() onArticlesLabelTap;
+
+  const TopicAppBar({
+    required this.topic,
+    required this.scrollPositionNotifier,
+    required this.onArticlesLabelTap,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isExpanded = useState(true);
+    final hasScrolled = useState(false);
+
+    final title = Text(
+      topic.strippedTitle,
+      textAlign: TextAlign.center,
+      textScaleFactor: 1.0,
+      style: AppTypography.h4Bold.copyWith(
+        height: 1,
+        color: isExpanded.value ? AppColors.transparent : AppColors.black,
+      ),
+    );
+
+    final scrollThreshold = AppDimens.topicViewHeaderImageHeight(context) * .9;
+
+    void _updateAppBar() {
+      if (isExpanded.value != scrollPositionNotifier.value < scrollThreshold) {
+        isExpanded.value = scrollPositionNotifier.value < scrollThreshold;
+      }
+    }
+
+    useEffect(() {
+      scrollPositionNotifier.addListener(_updateAppBar);
+      return () => scrollPositionNotifier.removeListener(_updateAppBar);
+    }, [scrollPositionNotifier]);
+
+    return SliverAppBar(
+      pinned: true,
+      elevation: 3.0,
+      shadowColor: AppColors.shadowDarkColor,
+      backgroundColor: AppColors.background,
+      titleSpacing: 0,
+      automaticallyImplyLeading: false,
+      centerTitle: true,
+      systemOverlayStyle: isExpanded.value ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      expandedHeight: AppDimens.topicViewHeaderImageHeight(context),
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
+        background: TopicHeader(
+          topic: topic,
+          onArticlesLabelTap: onArticlesLabelTap,
+          topicHeaderImageHeight: AppDimens.topicViewHeaderImageHeight(context),
+        ),
+      ),
+      leading: IconButton(
+        padding: EdgeInsets.zero,
+        icon: const Icon(Icons.arrow_back_ios_new_rounded),
+        iconSize: AppDimens.backArrowSize,
+        color: isExpanded.value ? AppColors.white : AppColors.black,
+        onPressed: () => AutoRouter.of(context).pop(),
+      ),
+      title: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        child: hasScrolled.value || isExpanded.value
+            ? title
+            : Marquee(
+                animationDuration: const Duration(seconds: 3),
+                onDone: () => hasScrolled.value = true,
+                child: title,
+              ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () => shareReadingList(context, topic),
+          padding: const EdgeInsets.only(right: AppDimens.s),
+          icon: SvgPicture.asset(
+            AppVectorGraphics.share,
+            color: isExpanded.value ? AppColors.white : AppColors.black,
+          ),
+        ),
+      ],
+    );
+  }
+}
