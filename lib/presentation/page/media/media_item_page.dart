@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
@@ -25,9 +26,11 @@ import 'package:better_informed_mobile/presentation/widget/open_web_button.dart'
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -271,6 +274,7 @@ class _IdleContent extends HookWidget {
   Widget build(BuildContext context) {
     final nextArticleLoaderFactor = useMemoized(() => ValueNotifier(0.0), [article]);
     final readProgress = useMemoized(() => ValueNotifier(0.0));
+
     final gestureManager = useMemoized(
       () => ArticleCustomVerticalDragManager(
         modalController: modalController,
@@ -282,21 +286,25 @@ class _IdleContent extends HookWidget {
     );
 
     useEffect(() {
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        calculateArticleContentOffset();
-      });
+      WidgetsBinding.instance?.addPostFrameCallback((_) => calculateArticleContentOffset());
     }, []);
+
+    if (article.type == ArticleType.freemium) {
+      return _FreeArticleView(article: article);
+    }
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{
         VerticalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
-            () => VerticalDragGestureRecognizer(), (VerticalDragGestureRecognizer instance) {
-          instance
-            ..onStart = gestureManager.handleDragStart
-            ..onUpdate = gestureManager.handleDragUpdate
-            ..onEnd = gestureManager.handleDragEnd
-            ..onCancel = gestureManager.handleDragCancel;
-        })
+          () => VerticalDragGestureRecognizer(),
+          (VerticalDragGestureRecognizer instance) {
+            instance
+              ..onStart = gestureManager.handleDragStart
+              ..onUpdate = gestureManager.handleDragUpdate
+              ..onEnd = gestureManager.handleDragEnd
+              ..onCancel = gestureManager.handleDragCancel;
+          },
+        )
       },
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
@@ -451,6 +459,93 @@ class _IdleContent extends HookWidget {
     final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     final position = renderBox?.localToGlobal(Offset.zero);
     return position?.dy;
+  }
+}
+
+class _FreeArticleView extends HookWidget {
+  const _FreeArticleView({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+
+  @override
+  Widget build(BuildContext context) {
+    final showBackToTopicButtonThreshold = MediaQuery.of(context).size.height * MediaQuery.of(context).devicePixelRatio;
+    final freeArticleScrollPosition = useMemoized(() => ValueNotifier(0.0));
+    final showBackToTopicButton = useState(false);
+
+    return Scaffold(
+      appBar: AppBar(
+        foregroundColor: AppColors.black,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: AppDimens.m),
+          child: IconButton(
+            icon: const Icon(Icons.close_rounded),
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.zero,
+            onPressed: () => context.popRoute(),
+          ),
+        ),
+        actions: [
+          ShareArticleButton(
+            article: article,
+            buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
+          ),
+        ],
+      ),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          InAppWebView(
+            initialOptions: InAppWebViewGroupOptions(
+              crossPlatform: InAppWebViewOptions(
+                useShouldOverrideUrlLoading: true,
+                mediaPlaybackRequiresUserGesture: false,
+              ),
+              android: AndroidInAppWebViewOptions(useHybridComposition: true),
+              ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true),
+            ),
+            initialUrlRequest: URLRequest(url: Uri.parse(article.sourceUrl)),
+            onScrollChanged: (webViewController, _, y) {
+              if (y > freeArticleScrollPosition.value) {
+                freeArticleScrollPosition.value = y.toDouble();
+                showBackToTopicButton.value = false;
+              }
+
+              if (freeArticleScrollPosition.value > showBackToTopicButtonThreshold &&
+                  y < freeArticleScrollPosition.value) {
+                freeArticleScrollPosition.value = y.toDouble();
+                showBackToTopicButton.value = true;
+              }
+            },
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+              Factory(() => EagerGestureRecognizer()),
+            },
+          ),
+          AnimatedPositioned(
+            bottom: showBackToTopicButton.value ? AppDimens.l : -AppDimens.c,
+            curve: Curves.elasticInOut,
+            duration: const Duration(milliseconds: 750),
+            child: FloatingActionButton.extended(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimens.s)),
+              onPressed: () => context.popRoute(),
+              backgroundColor: AppColors.black,
+              foregroundColor: AppColors.white,
+              label: Text(
+                LocaleKeys.article_goBackToTopic.tr(),
+                style: AppTypography.h3Bold16.copyWith(height: 1.0, color: AppColors.white),
+              ),
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: AppDimens.backArrowSize,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
