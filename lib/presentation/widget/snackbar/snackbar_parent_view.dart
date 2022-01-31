@@ -10,6 +10,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 typedef SnackbarMessageListener = Function(SnackbarMessage);
 
+const _hiddenMessageBottomMaring = -120.0;
+const _messageAnimationDuration = Duration(milliseconds: 1200);
 const _dragMinDistance = 6.0;
 
 class SnackbarParentView extends HookWidget {
@@ -42,8 +44,8 @@ class SnackbarParentView extends HookWidget {
         AnimatedPositioned(
           left: state.isMessageVisible() ? AppDimens.l : AppDimens.s,
           right: state.isMessageVisible() ? AppDimens.l : AppDimens.s,
-          bottom: state.isMessageVisible() ? AppDimens.l : -120,
-          duration: const Duration(milliseconds: 1200),
+          bottom: state.isMessageVisible() ? AppDimens.l : _hiddenMessageBottomMaring,
+          duration: _messageAnimationDuration,
           curve: Curves.elasticOut,
           child: GestureDetector(
             onVerticalDragUpdate: (details) {

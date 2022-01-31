@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _minHeight = 48.0;
+const _maxHeight = 88.0;
 
 class SnackbarView extends HookWidget {
   const SnackbarView({
@@ -36,6 +37,7 @@ class SnackbarView extends HookWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(
           minHeight: _minHeight,
+          maxHeight: _maxHeight,
         ),
         child: messageState.value?.content,
       ),
