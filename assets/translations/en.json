@@ -157,7 +157,9 @@
     "stayTunedText": "This page will be evolving during beta",
     "feedbackButton": "Give feedback",
     "feedbackSubject": "Feedback on Informed App",
-    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed"
+    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
+    "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
+    "emailCopied": "Successfully copied email to your clipboard!"
   },
   "shareTopic": {
     "title": "Select the articles you want to share related to the topic",
