@@ -10,7 +10,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 typedef SnackbarMessageListener = Function(SnackbarMessage);
 
-const _hiddenMessageBottomMaring = -120.0;
+const _hiddenMessageBottomMaring = -128.0;
 const _messageAnimationDuration = Duration(milliseconds: 1200);
 const _dragMinDistance = 6.0;
 

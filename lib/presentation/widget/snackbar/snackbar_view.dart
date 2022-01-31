@@ -5,8 +5,7 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_mes
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _minHeight = 48.0;
-const _maxHeight = 88.0;
+const _maxHeight = 96.0;
 
 class SnackbarView extends HookWidget {
   const SnackbarView({
@@ -18,6 +17,7 @@ class SnackbarView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textWidth = useMemoized(() => MediaQuery.of(context).size.width - 2 * AppDimens.xl - 2 * AppDimens.m);
     final messageState = useState(message);
 
     useEffect(() {
@@ -34,12 +34,15 @@ class SnackbarView extends HookWidget {
           Radius.circular(AppDimens.s),
         ),
       ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          minHeight: _minHeight,
-          maxHeight: _maxHeight,
+      child: Align(
+        alignment: Alignment.center,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: _maxHeight,
+            maxWidth: textWidth,
+          ),
+          child: messageState.value?.content,
         ),
-        child: messageState.value?.content,
       ),
     );
   }
