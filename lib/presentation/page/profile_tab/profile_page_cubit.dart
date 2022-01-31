@@ -33,6 +33,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       await FlutterEmailSender.send(emailData);
     } catch (_) {
       emit(ProfilePageState.sendingEmailError());
+      emit(ProfilePageState.idle());
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile_tab/profile_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/profile_tab/profile_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -9,11 +10,12 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fimber/fimber.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -24,6 +26,16 @@ class ProfilePage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<ProfilePageCubit>();
     final state = useCubitBuilder(cubit);
+    final snackbarController = useMemoized(() => SnackbarController());
+
+    useCubitListener<ProfilePageCubit, ProfilePageState>(cubit, (cubit, state, context) {
+      state.mapOrNull(
+        sendingEmailError: (error) {
+          _showEmailErrorMessage(snackbarController);
+        },
+      );
+    });
+
     useEffect(
       () {
         cubit.initialize();
@@ -56,22 +68,64 @@ class ProfilePage extends HookWidget {
         ],
       ),
       body: ReadingBannerWrapper(
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: AppDimens.m),
-              Expanded(
-                child: state.maybeMap(
-                  initialLoading: (_) => const Loader(),
-                  idle: (state) => _Idle(cubit: cubit),
-                  orElse: () => const SizedBox(),
+        child: SnackbarParentView(
+          controller: snackbarController,
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.dark,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: AppDimens.m),
+                Expanded(
+                  child: state.maybeMap(
+                    initialLoading: (_) => const Loader(),
+                    idle: (state) => _Idle(cubit: cubit),
+                    orElse: () => const SizedBox(),
+                  ),
                 ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showEmailErrorMessage(SnackbarController controller) {
+    controller.showMessage(
+      SnackbarMessage.custom(
+        message: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: LocaleKeys.profile_feedbackMailError.tr(),
+                style: AppTypography.h4Normal.copyWith(color: AppColors.white),
+              ),
+              TextSpan(
+                text: _feedbackEmail,
+                style: AppTypography.h4Normal.copyWith(
+                  color: AppColors.white,
+                  decoration: TextDecoration.underline,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    _copyEmailToClipboard(controller);
+                  },
               ),
             ],
           ),
         ),
+        type: SnackbarMessageType.negative,
+      ),
+    );
+  }
+
+  void _copyEmailToClipboard(SnackbarController controller) {
+    Clipboard.setData(const ClipboardData(text: _feedbackEmail));
+    controller.showMessage(
+      SnackbarMessage.simple(
+        message: LocaleKeys.profile_emailCopied.tr(),
+        type: SnackbarMessageType.positive,
       ),
     );
   }
