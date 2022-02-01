@@ -15,6 +15,7 @@ class TopicView extends HookWidget {
   final GlobalKey? summaryCardKey;
   final GlobalKey? mediaItemKey;
   final ScrollController scrollController;
+
   const TopicView({
     required this.topic,
     required this.cubit,
