@@ -5,11 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'visual_test_utils.dart';
 
 void main() {
-  visualTest(TodaysTopicsPage, (tester, device) async {
+  visualTest(TodaysTopicsPage, (tester) async {
     await tester.startApp();
-    await matchGoldenFile('todays_topics_page_(topic_card)');
+    await tester.matchGoldenFile('todays_topics_page_(topic_card)');
     await tester.fling(find.byType(ReadingListCover).first, const Offset(-5000, 0), 100);
     await tester.pumpAndSettle();
-    await matchGoldenFile('todays_topics_page_(relax)');
+    await tester.matchGoldenFile('todays_topics_page_(relax)');
   });
 }

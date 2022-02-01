@@ -6,14 +6,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'visual_test_utils.dart';
 
 void main() {
-  visualTest(OnboardingPage, (tester, device) async {
+  visualTest(OnboardingPage, (tester) async {
     await tester.startApp(initialRoute: const OnboardingPageRoute());
-    await matchGoldenFile('onboarding_page_1');
-    await tester.tap(find.byType(IconButton));
+    await tester.matchGoldenFile('onboarding_page_(step_1)');
+    await tester.fling(find.byType(PageView).first, const Offset(-1000, 0), 100);
     await tester.pumpAndSettle();
-    await matchGoldenFile('onboarding_page_2');
-    await tester.tap(find.byType(IconButton));
+    await tester.matchGoldenFile('onboarding_page_(step_2)');
+    await tester.fling(find.byType(PageView).first, const Offset(-1000, 0), 100);
     await tester.pumpAndSettle();
-    await matchGoldenFile('onboarding_page_3');
+    await tester.matchGoldenFile('onboarding_page_(step_3)');
   });
 }

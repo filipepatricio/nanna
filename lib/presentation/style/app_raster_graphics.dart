@@ -13,5 +13,5 @@ class AppRasterGraphics {
   static const String testReadingListCoverImage = 'assets/raster_graphics/test_reading_list_cover_image.png';
   static const String testReadingListCoverImageCropped =
       'assets/raster_graphics/test_reading_list_cover_image_cropped.png';
-  static const String testArticleHeroImage = 'assets/raster_graphics/test_article_header_image.jpg';
+  static const String testArticleHeroImage = 'assets/raster_graphics/test_article_hero_image.jpg';
 }

@@ -4,8 +4,8 @@ import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.da
 import 'visual_test_utils.dart';
 
 void main() {
-  visualTest(SignInPage, (tester, device) async {
+  visualTest(SignInPage, (tester) async {
     await tester.startApp(initialRoute: const SignInPageRoute());
-    await matchGoldenFile();
+    await tester.matchGoldenFile();
   });
 }

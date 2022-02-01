@@ -7,19 +7,19 @@ import 'package:injectable/injectable.dart';
 abstract class ConfigModule {
   @dev
   @singleton
-  AppConfig get devEnv => AppConfig.dev();
+  AppConfig get devEnv => AppConfig.dev;
 
   @test
   @singleton
-  AppConfig get stageEnv => AppConfig.stage();
+  AppConfig get stageEnv => AppConfig.stage;
 
   @prod
   @singleton
-  AppConfig get prodEnv => AppConfig.prod();
+  AppConfig get prodEnv => AppConfig.prod;
 
-  @Environment(mock)
+  @Environment(mockName)
   @singleton
-  AppConfig get mockEnv => AppConfig.mock();
+  AppConfig get mockEnv => AppConfig.mock;
 
   @dev
   @singleton
@@ -33,7 +33,7 @@ abstract class ConfigModule {
   @singleton
   LogTree get stagingLogTree => SentryReportingTree();
 
-  @Environment(mock)
+  @Environment(mockName)
   @singleton
   LogTree get mockLogTree => DebugTree(useColors: true);
 }

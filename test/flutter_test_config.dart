@@ -15,7 +15,7 @@ final debugPrintBuffer = <String>[];
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   WidgetController.hitTestWarningShouldBeFatal = true;
 
-  await configureDependencies(AppConfig.mock().name);
+  await configureDependencies(AppConfig.mock.name);
   // Prevent printing to stdout (unless a test fails) ...
   binding = BetterInformedTestWidgetsFlutterBinding();
   setUp(() async {
