@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -10,67 +11,67 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+const _topicSummaryTextStyle = AppTypography.b2MediumLora;
+
 class TopicSummary extends HookWidget {
   final Topic topic;
+  final TopicPageCubit cubit;
   final GlobalKey? summaryCardKey;
 
   const TopicSummary({
     required this.topic,
+    required this.cubit,
     this.summaryCardKey,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = usePageController(viewportFraction: 0.85);
+    final controller = usePageController();
+    final topicSummaryTextMaxHeight = AppDimens.topicViewSummaryTextMaxHeight(context);
+    final topicSummaryCards = useState(cubit.getTopicSummaryCards(
+        topic, _topicSummaryTextStyle, MediaQuery.of(context).size.width, topicSummaryTextMaxHeight));
 
     if (topic.topicSummaryList.isEmpty) {
       return const SizedBox();
     }
 
-    final content = topic.topicSummaryList.length > 1
-        ? TopicSummaryTracker(
-            topic: topic,
-            summaryPageController: controller,
-            child: _SummaryCardPageView(
-              topic: topic,
-              controller: controller,
-              summaryCardKey: summaryCardKey,
-            ),
-          )
-        : Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _SummaryCard(index: 0, topic: topic, summaryCardKey: summaryCardKey),
-          );
+    final content = TopicSummaryTracker(
+        topic: topic,
+        summaryPageController: controller,
+        child: _SummaryCardPageView(
+          topic: topic,
+          cubit: cubit,
+          controller: controller,
+          topicSummaryCards: topicSummaryCards.value,
+          topicSummaryTextMaxHeight: topicSummaryTextMaxHeight,
+          summaryCardKey: summaryCardKey,
+        ));
 
     return Container(
       width: double.infinity,
       color: AppColors.background,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.xl),
-          Padding(
-            padding: const EdgeInsets.only(left: AppDimens.l),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Text(
               LocaleKeys.todaysTopics_summaryHeadline.tr(),
               style: AppTypography.h2Jakarta,
             ),
           ),
-          const SizedBox(height: AppDimens.l),
+          const SizedBox(height: AppDimens.sl),
           content,
-          const SizedBox(height: AppDimens.xl),
-          if (topic.topicSummaryList.length > 1) ...[
+          if (topicSummaryCards.value.length > 1)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+              padding: const EdgeInsets.all(AppDimens.l),
               child: PageDotIndicator(
-                pageCount: topic.topicSummaryList.length,
+                pageCount: topicSummaryCards.value.length,
                 controller: controller,
               ),
             ),
-            const SizedBox(height: AppDimens.xl),
-          ],
         ],
       ),
     );
@@ -79,12 +80,18 @@ class TopicSummary extends HookWidget {
 
 class _SummaryCardPageView extends HookWidget {
   final Topic topic;
+  final TopicPageCubit cubit;
   final PageController controller;
   final GlobalKey? summaryCardKey;
+  final List<String> topicSummaryCards;
+  final double topicSummaryTextMaxHeight;
 
   const _SummaryCardPageView({
     required this.topic,
+    required this.cubit,
     required this.controller,
+    required this.topicSummaryCards,
+    required this.topicSummaryTextMaxHeight,
     this.summaryCardKey,
     Key? key,
   }) : super(key: key);
@@ -92,34 +99,30 @@ class _SummaryCardPageView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppDimens.topicViewSummaryCardHeight,
-      child: PageView.builder(
-        controller: controller,
-        scrollDirection: Axis.horizontal,
-        itemCount: topic.topicSummaryList.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(right: AppDimens.l),
-            child: _SummaryCard(
-              topic: topic,
-              index: index,
-              summaryCardKey: index == 0 ? summaryCardKey : null,
-            ),
-          );
-        },
-      ),
-    );
+        height: topicSummaryTextMaxHeight,
+        child: PageView.builder(
+          controller: controller,
+          scrollDirection: Axis.horizontal,
+          itemCount: topicSummaryCards.length,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: _SummaryCard(
+                markdownText: topicSummaryCards[index],
+                summaryCardKey: index == 0 ? summaryCardKey : null,
+              ),
+            );
+          },
+        ));
   }
 }
 
 class _SummaryCard extends StatelessWidget {
-  final int index;
-  final Topic topic;
+  final String markdownText;
   final GlobalKey? summaryCardKey;
 
   const _SummaryCard({
-    required this.index,
-    required this.topic,
+    required this.markdownText,
     required this.summaryCardKey,
     Key? key,
   }) : super(key: key);
@@ -128,22 +131,13 @@ class _SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: summaryCardKey,
-      height: AppDimens.topicViewSummaryCardHeight,
-      padding: const EdgeInsets.only(
-        left: AppDimens.l,
-        right: AppDimens.l,
-        bottom: AppDimens.xl,
-      ),
-      color: AppColors.pastelGreen,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Spacer(),
           Expanded(
-            flex: 3,
             child: InformedMarkdownBody(
-              markdown: topic.topicSummaryList[index].content,
-              baseTextStyle: AppTypography.b2RegularLora,
+              markdown: markdownText,
+              baseTextStyle: _topicSummaryTextStyle,
             ),
           ),
         ],

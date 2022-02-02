@@ -93,6 +93,9 @@ class AppDimens {
   /// 290
   static const topicViewSummaryCardHeight = 290.0;
 
+  static double topicViewSummaryTextMaxHeight(BuildContext context) =>
+      min(MediaQuery.of(context).size.height * .45, 300);
+
   /// 75% of screen size or [topicViewArticleSectionFullHeight], whichever is smaller
   static double topicViewHeaderImageHeight(BuildContext context) =>
       min(MediaQuery.of(context).size.height * .75, topicViewArticleSectionFullHeight);

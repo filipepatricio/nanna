@@ -45,6 +45,7 @@ class TopicView extends HookWidget {
       children: [
         TopicSummary(
           topic: topic,
+          cubit: cubit,
           summaryCardKey: summaryCardKey,
         ),
         Stack(
