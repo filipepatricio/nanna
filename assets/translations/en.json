@@ -12,7 +12,11 @@
     "search": "Search",
     "gotIt": "Got it",
     "done": "Done",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "linkCopied": "Successfuly copied link to your clipboard!"
+  },
+  "commonError": {
+    "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "
   },
   "onboarding": {
     "title": "How we use push notifications",
