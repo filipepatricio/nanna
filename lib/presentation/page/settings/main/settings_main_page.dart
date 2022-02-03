@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ class SettingsMainPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsMainCubit>();
     final state = useCubitBuilder(cubit);
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useCubitListener(cubit, _handleState);
 
@@ -30,10 +32,16 @@ class SettingsMainPage extends HookWidget {
         ),
         centerTitle: true,
       ),
-      body: state.maybeWhen(
-        init: () => SettingsMainBody(cubit),
-        loading: () => const Loader(),
-        orElse: () => const SizedBox(),
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: state.maybeWhen(
+          init: () => SettingsMainBody(
+            cubit: cubit,
+            snackbarController: snackbarController,
+          ),
+          loading: () => const Loader(),
+          orElse: () => const SizedBox(),
+        ),
       ),
     );
   }

@@ -2,15 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/app_bar/topic_app_bar.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
-import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,6 @@ class TopicPage extends HookWidget {
     final tutorialCoachMark = cubit.tutorialCoachMark(context);
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
-    final summaryViewHeight = MediaQuery.of(context).size.height * .5;
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
@@ -66,12 +66,6 @@ class TopicPage extends HookWidget {
       [topicSlug, cubit],
     );
 
-    void _navigateToArticles() => scrollController.animateTo(
-          AppDimens.topicViewHeaderImageHeight(context) + summaryViewHeight,
-          duration: const Duration(milliseconds: 750),
-          curve: Curves.easeOutCubic,
-        );
-
     return WillPopScope(
         onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
         child: LayoutBuilder(
@@ -85,57 +79,27 @@ class TopicPage extends HookWidget {
               },
               child: Material(
                 child: topic != null
-                    ? NoScrollGlow(
-                        child: CustomScrollView(
-                          controller: scrollController,
-                          slivers: [
-                            TopicAppBar(
-                              topic: topic!,
-                              scrollPositionNotifier: scrollPositionNotifier,
-                              onArticlesLabelTap: _navigateToArticles,
-                            ),
-                            SliverList(
-                                delegate: SliverChildListDelegate([
-                              TopicView(
-                                topic: topic!,
-                                cubit: cubit,
-                                summaryCardKey: cubit.summaryCardKey,
-                                mediaItemKey: cubit.mediaItemKey,
-                                scrollController: scrollController,
-                              ),
-                            ]))
-                          ],
-                        ),
+                    ? _TopicIdleView(
+                        topic: topic!,
+                        scrollController: scrollController,
+                        scrollPositionNotifier: scrollPositionNotifier,
+                        cubit: cubit,
                       )
                     : state.maybeMap(
-                        idle: (state) => NoScrollGlow(
-                          child: CustomScrollView(
-                            controller: scrollController,
-                            slivers: [
-                              TopicAppBar(
-                                topic: state.topic,
-                                scrollPositionNotifier: scrollPositionNotifier,
-                                onArticlesLabelTap: _navigateToArticles,
-                              ),
-                              SliverList(
-                                  delegate: SliverChildListDelegate([
-                                TopicView(
-                                  topic: state.topic,
-                                  cubit: cubit,
-                                  summaryCardKey: cubit.summaryCardKey,
-                                  mediaItemKey: cubit.mediaItemKey,
-                                  scrollController: scrollController,
-                                ),
-                              ]))
-                            ],
-                          ),
+                        idle: (state) => _TopicIdleView(
+                          topic: state.topic,
+                          scrollController: scrollController,
+                          scrollPositionNotifier: scrollPositionNotifier,
+                          cubit: cubit,
                         ),
-                        loading: (_) => const Loader(),
-                        error: (_) => GeneralErrorView(
-                          title: LocaleKeys.todaysTopics_oops.tr(),
-                          content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
-                          svgPath: AppVectorGraphics.sadSun,
-                          retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+                        loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
+                        error: (_) => _DefaultAppBarWrapper(
+                          child: GeneralErrorView(
+                            title: LocaleKeys.todaysTopics_oops.tr(),
+                            content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+                            svgPath: AppVectorGraphics.magError,
+                            retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+                          ),
                         ),
                         orElse: () => const SizedBox(),
                       ),
@@ -143,5 +107,83 @@ class TopicPage extends HookWidget {
             ),
           ),
         ));
+  }
+}
+
+class _DefaultAppBarWrapper extends StatelessWidget {
+  const _DefaultAppBarWrapper({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        child,
+        Align(
+          alignment: Alignment.topCenter,
+          child: AppBar(
+            foregroundColor: AppColors.textPrimary,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TopicIdleView extends HookWidget {
+  const _TopicIdleView({
+    required this.topic,
+    required this.scrollController,
+    required this.scrollPositionNotifier,
+    required this.cubit,
+    Key? key,
+  }) : super(key: key);
+
+  final Topic topic;
+  final ScrollController scrollController;
+  final ValueNotifier<double> scrollPositionNotifier;
+  final TopicPageCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    final summaryViewHeight = MediaQuery.of(context).size.height * .5;
+
+    return NoScrollGlow(
+      child: CustomScrollView(
+        controller: scrollController,
+        slivers: [
+          TopicAppBar(
+            topic: topic,
+            scrollPositionNotifier: scrollPositionNotifier,
+            onArticlesLabelTap: () => _navigateToArticles(context, summaryViewHeight),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                TopicView(
+                  topic: topic,
+                  cubit: cubit,
+                  summaryCardKey: cubit.summaryCardKey,
+                  mediaItemKey: cubit.mediaItemKey,
+                  scrollController: scrollController,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _navigateToArticles(BuildContext context, double summaryViewHeight) {
+    scrollController.animateTo(
+      AppDimens.topicViewHeaderImageHeight(context) + summaryViewHeight,
+      duration: const Duration(milliseconds: 750),
+      curve: Curves.easeOutCubic,
+    );
   }
 }

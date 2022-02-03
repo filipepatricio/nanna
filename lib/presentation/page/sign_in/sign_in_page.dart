@@ -13,8 +13,8 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -31,6 +31,7 @@ class SignInPage extends HookWidget {
     final cubit = useCubit<SignInPageCubit>();
     final state = useCubitBuilder(cubit);
     final emailController = useTextEditingController();
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useCubitListener<SignInPageCubit, SignInPageState>(cubit, (cubit, state, context) {
       state.maybeMap(
@@ -56,16 +57,20 @@ class SignInPage extends HookWidget {
         child: KeyboardVisibilityBuilder(
           builder: (context, visible) => AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
-            child: state.maybeMap(
-              processing: (_) => const Loader(),
-              magicLink: (state) => const MagicLinkContent(),
-              idle: (state) => _IdleContent(
-                cubit: cubit,
-                isEmailValid: state.emailCorrect,
-                keyboardVisible: visible,
-                emailController: emailController,
+            child: SnackbarParentView(
+              controller: snackbarController,
+              child: state.maybeMap(
+                processing: (_) => const Loader(),
+                magicLink: (state) => const MagicLinkContent(),
+                idle: (state) => _IdleContent(
+                  cubit: cubit,
+                  isEmailValid: state.emailCorrect,
+                  keyboardVisible: visible,
+                  emailController: emailController,
+                  snackbarController: snackbarController,
+                ),
+                orElse: () => const SizedBox(),
               ),
-              orElse: () => const SizedBox(),
             ),
           ),
         ),
@@ -79,12 +84,14 @@ class _IdleContent extends HookWidget {
   final bool keyboardVisible;
   final TextEditingController emailController;
   final SignInPageCubit cubit;
+  final SnackbarController snackbarController;
 
   const _IdleContent({
     required this.isEmailValid,
     required this.keyboardVisible,
     required this.emailController,
     required this.cubit,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
@@ -165,7 +172,7 @@ class _IdleContent extends HookWidget {
                 _SignInButton(cubit: cubit, isEmailValid: isEmailValid),
                 const SizedBox(height: AppDimens.m),
               ] else ...[
-                const _TermsPolicy(),
+                _TermsPolicy(snackbarController: snackbarController),
                 const SizedBox(height: AppDimens.xxl),
               ],
             ],
@@ -242,8 +249,11 @@ class _SignInButton extends StatelessWidget {
 
 class _TermsPolicy extends StatelessWidget {
   const _TermsPolicy({
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
+
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +282,7 @@ class _TermsPolicy extends StatelessWidget {
     await openInAppBrowser(
       uri,
       (error, stacktrace) {
-        Fimber.e('Failed to open $uri', ex: error, stacktrace: stacktrace);
+        showBrowserError(uri, snackbarController);
       },
     );
   }

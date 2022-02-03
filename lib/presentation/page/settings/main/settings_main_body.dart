@@ -9,16 +9,21 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsMainBody extends HookWidget {
   final SettingsMainCubit cubit;
+  final SnackbarController snackbarController;
 
-  const SettingsMainBody(this.cubit);
+  const SettingsMainBody({
+    required this.cubit,
+    required this.snackbarController,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +90,7 @@ class SettingsMainBody extends HookWidget {
     await openInAppBrowser(
       uri,
       (error, stacktrace) {
-        Fimber.e('Failed to open $uri', ex: error, stacktrace: stacktrace);
+        showBrowserError(uri, snackbarController);
       },
     );
   }
