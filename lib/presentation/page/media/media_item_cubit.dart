@@ -125,12 +125,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       emit(MediaItemState.error(_getCurrentHeader()));
     } else {
       _trackActivityUseCase.trackPage(AnalyticsPage.article(article.article.id, _topic?.id));
-      if (_allArticles.length > 1) {
-        final hasNextArticle = _index < _allArticles.length - 1;
-        emit(MediaItemState.idleMultiItems(article.article, article.content, hasNextArticle));
-      } else {
-        emit(MediaItemState.idleSingleItem(article.article, article.content));
-      }
+      emit(MediaItemState.idle(article.article, article.content));
     }
   }
 

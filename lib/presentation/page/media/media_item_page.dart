@@ -13,14 +13,12 @@ import 'package:better_informed_mobile/presentation/page/media/article_custom_ve
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dart';
-import 'package:better_informed_mobile/presentation/page/media/pull_up_indicator_action/pull_up_indicator_action.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
@@ -37,7 +35,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 typedef MediaItemNavigationCallback = void Function(int index);
 
 const appBarHeight = kToolbarHeight + AppDimens.xl;
-const _loadNextArticleIndicatorHeight = 100.0;
 
 class MediaItemPage extends HookWidget {
   final double? readArticleProgress;
@@ -120,23 +117,9 @@ class MediaItemPage extends HookWidget {
               child: _AnimatedSwitcher(
                 child: state.maybeMap(
                   loading: (state) => const _LoadingContent(),
-                  idleMultiItems: (state) => _IdleContent(
+                  idle: (state) => _IdleContent(
                     article: state.header,
                     content: state.content,
-                    hasNextArticle: state.hasNext,
-                    multipleArticles: true,
-                    modalController: modalController,
-                    controller: scrollController,
-                    pageController: pageController,
-                    cubit: cubit,
-                    fullHeight: constraints.maxHeight,
-                    readArticleProgress: readArticleProgress,
-                  ),
-                  idleSingleItem: (state) => _IdleContent(
-                    article: state.header,
-                    content: state.content,
-                    hasNextArticle: false,
-                    multipleArticles: false,
                     modalController: modalController,
                     controller: scrollController,
                     pageController: pageController,
@@ -247,18 +230,12 @@ class _IdleContent extends HookWidget {
   final ScrollController modalController;
   final ScrollController controller;
   final PageController pageController;
-  final bool hasNextArticle;
-  final bool multipleArticles;
-  final GlobalKey _articleContentKey = GlobalKey();
-  final GlobalKey _articlePageKey = GlobalKey();
   final double fullHeight;
   final double? readArticleProgress;
 
-  _IdleContent({
+  const _IdleContent({
     required this.article,
     required this.content,
-    required this.hasNextArticle,
-    required this.multipleArticles,
     required this.modalController,
     required this.controller,
     required this.pageController,
@@ -268,13 +245,58 @@ class _IdleContent extends HookWidget {
     Key? key,
   }) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    if (article.type == ArticleType.freemium) {
+      return _FreeArticleView(
+        article: article,
+      );
+    }
+
+    return _PremiumArticleView(
+      article: article,
+      content: content,
+      modalController: modalController,
+      controller: controller,
+      pageController: pageController,
+      cubit: cubit,
+      fullHeight: fullHeight,
+      readArticleProgress: readArticleProgress,
+    );
+  }
+}
+
+class _PremiumArticleView extends HookWidget {
+  _PremiumArticleView({
+    required this.article,
+    required this.content,
+    required this.modalController,
+    required this.controller,
+    required this.pageController,
+    required this.cubit,
+    required this.fullHeight,
+    this.readArticleProgress,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+  final ArticleContent content;
+  final ScrollController modalController;
+  final ScrollController controller;
+  final PageController pageController;
+  final MediaItemCubit cubit;
+  final double fullHeight;
+  final GlobalKey _articleContentKey = GlobalKey();
+  final GlobalKey _articlePageKey = GlobalKey();
+  final double? readArticleProgress;
+
   bool get articleWithImage => article.image != null;
 
   @override
   Widget build(BuildContext context) {
-    final nextArticleLoaderFactor = useMemoized(() => ValueNotifier(0.0), [article]);
+    final showBackToTopicButton = useState(false);
+    final footerHeight = MediaQuery.of(context).size.height / 3;
     final readProgress = useMemoized(() => ValueNotifier(0.0));
-
     final gestureManager = useMemoized(
       () => ArticleCustomVerticalDragManager(
         modalController: modalController,
@@ -288,10 +310,6 @@ class _IdleContent extends HookWidget {
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((_) => calculateArticleContentOffset());
     }, []);
-
-    if (article.type == ArticleType.freemium) {
-      return _FreeArticleView(article: article);
-    }
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{
@@ -308,14 +326,14 @@ class _IdleContent extends HookWidget {
       },
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollNotification) {
-          if (scrollNotification is ScrollUpdateNotification) {
-            if (controller.hasClients) {
-              readProgress.value = controller.offset / controller.position.maxScrollExtent;
+        onNotification: (notification) {
+          if (controller.hasClients) {
+            if (notification is ScrollUpdateNotification) {
+              final newProgress = controller.offset / controller.position.maxScrollExtent;
+              showBackToTopicButton.value = newProgress < readProgress.value;
+              readProgress.value = newProgress;
             }
-          }
-          if (scrollNotification is ScrollEndNotification) {
-            if (controller.hasClients) {
+            if (notification is ScrollEndNotification) {
               var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
               if (readScrollOffset < 0) {
                 readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
@@ -330,11 +348,15 @@ class _IdleContent extends HookWidget {
           return false;
         },
         child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
             PageView(
               physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
               controller: pageController,
               scrollDirection: Axis.vertical,
+              onPageChanged: (page) {
+                showBackToTopicButton.value = false;
+              },
               children: [
                 if (articleWithImage)
                   ArticleImageView(
@@ -345,77 +367,38 @@ class _IdleContent extends HookWidget {
                 Row(
                   children: [
                     Expanded(
+                      child: NoScrollGlow(
                         child: CustomScrollView(
-                      physics: const NeverScrollableScrollPhysics(
-                        parent: BottomBouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics(),
-                        ),
-                      ),
-                      controller: controller,
-                      slivers: [
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            [
-                              ArticleContentView(
-                                article: article,
-                                content: content,
-                                cubit: cubit,
-                                controller: controller,
-                                articleContentKey: _articleContentKey,
-                                scrollToPosition: () => scrollToPosition(readArticleProgress),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (hasNextArticle) ...[
-                          SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: AppDimens.xxxc, bottom: AppDimens.xl),
-                                child: ValueListenableBuilder(
-                                  valueListenable: nextArticleLoaderFactor,
-                                  builder: (BuildContext context, double value, Widget? child) {
-                                    final opacity = max(0.0, 1 - value * 2);
-                                    return ConstrainedBox(
-                                      constraints: const BoxConstraints.expand(width: AppDimens.l, height: AppDimens.l),
-                                      child: FadeTransition(
-                                        opacity: AlwaysStoppedAnimation(opacity),
-                                        child: child,
-                                      ),
-                                    );
-                                  },
-                                  child: AnimatedPointerDown(
-                                    arrowColor: AppColors.textPrimary,
-                                    onTap: () {
-                                      controller.animateTo(
-                                          controller.offset.ceilToDouble() + (_loadNextArticleIndicatorHeight * 2),
-                                          duration: const Duration(milliseconds: 200),
-                                          curve: Curves.easeIn);
-                                    },
-                                  ),
-                                ),
-                              ),
+                          physics: const NeverScrollableScrollPhysics(
+                            parent: BottomBouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics(),
                             ),
                           ),
-                          SliverPullUpIndicatorAction(
-                            builder: (context, factor) {
-                              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                                nextArticleLoaderFactor.value = factor;
-                              });
-                              return _LoadingNextArticleIndicator(factor: factor);
-                            },
-                            fullExtentHeight: _loadNextArticleIndicatorHeight,
-                            triggerExtent: _loadNextArticleIndicatorHeight,
-                            triggerFunction: (completer) => cubit.loadNextArticle(completer),
-                          ),
-                        ] else if (multipleArticles)
-                          const SliverToBoxAdapter(
-                            child: _AllArticlesRead(),
-                          ),
-                      ],
-                    )),
+                          controller: controller,
+                          slivers: [
+                            SliverList(
+                              delegate: SliverChildListDelegate(
+                                [
+                                  ArticleContentView(
+                                    article: article,
+                                    content: content,
+                                    cubit: cubit,
+                                    controller: controller,
+                                    articleContentKey: _articleContentKey,
+                                    scrollToPosition: () => scrollToPosition(readArticleProgress),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: footerHeight,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     _ArticleProgressBar(readProgress: readProgress),
                   ],
                 ),
@@ -431,6 +414,7 @@ class _IdleContent extends HookWidget {
                 controller: pageController,
               ),
             ),
+            _BackToTopicButton(showButton: showBackToTopicButton)
           ],
         ),
       ),
@@ -472,15 +456,23 @@ class _FreeArticleView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showBackToTopicButtonThreshold = MediaQuery.of(context).size.height * MediaQuery.of(context).devicePixelRatio;
-    final freeArticleScrollPosition = useMemoized(() => ValueNotifier(0.0));
     final showBackToTopicButton = useState(false);
+    final scrollPosition = useMemoized(() => ValueNotifier(0.0));
+
+    final webViewOptions = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(useHybridComposition: true),
+      ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true),
+    );
 
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: AppColors.black,
+        foregroundColor: AppColors.textPrimary,
         leading: Padding(
-          padding: const EdgeInsets.only(left: AppDimens.m),
+          padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.s),
           child: IconButton(
             icon: const Icon(Icons.close_rounded),
             alignment: Alignment.centerLeft,
@@ -489,9 +481,12 @@ class _FreeArticleView extends HookWidget {
           ),
         ),
         actions: [
-          ShareArticleButton(
-            article: article,
-            buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
+          Padding(
+            padding: const EdgeInsets.only(right: AppDimens.l, top: AppDimens.s),
+            child: ShareArticleButton(
+              article: article,
+              buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
+            ),
           ),
         ],
       ),
@@ -499,51 +494,63 @@ class _FreeArticleView extends HookWidget {
         alignment: Alignment.bottomCenter,
         children: [
           InAppWebView(
-            initialOptions: InAppWebViewGroupOptions(
-              crossPlatform: InAppWebViewOptions(
-                useShouldOverrideUrlLoading: true,
-                mediaPlaybackRequiresUserGesture: false,
-              ),
-              android: AndroidInAppWebViewOptions(useHybridComposition: true),
-              ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true),
-            ),
+            initialOptions: webViewOptions,
             initialUrlRequest: URLRequest(url: Uri.parse(article.sourceUrl)),
-            onScrollChanged: (webViewController, _, y) {
-              if (y > freeArticleScrollPosition.value) {
-                freeArticleScrollPosition.value = y.toDouble();
-                showBackToTopicButton.value = false;
-              }
-
-              if (freeArticleScrollPosition.value > showBackToTopicButtonThreshold &&
-                  y < freeArticleScrollPosition.value) {
-                freeArticleScrollPosition.value = y.toDouble();
-                showBackToTopicButton.value = true;
-              }
-            },
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
               Factory(() => EagerGestureRecognizer()),
             },
+            onScrollChanged: (controller, _, y) {
+              if (y > scrollPosition.value) {
+                scrollPosition.value = y.toDouble();
+                showBackToTopicButton.value = false;
+                return;
+              }
+
+              if (y < scrollPosition.value) {
+                scrollPosition.value = y.toDouble();
+                showBackToTopicButton.value = true;
+              }
+            },
+            onOverScrolled: (controller, x, y, clampedX, clampedY) {
+              if (clampedY && y > 0) {
+                showBackToTopicButton.value = true;
+              }
+            },
           ),
-          AnimatedPositioned(
-            bottom: showBackToTopicButton.value ? AppDimens.l : -AppDimens.c,
-            curve: Curves.elasticInOut,
-            duration: const Duration(milliseconds: 750),
-            child: FloatingActionButton.extended(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimens.s)),
-              onPressed: () => context.popRoute(),
-              backgroundColor: AppColors.black,
-              foregroundColor: AppColors.white,
-              label: Text(
-                LocaleKeys.article_goBackToTopic.tr(),
-                style: AppTypography.h3Bold16.copyWith(height: 1.0, color: AppColors.white),
-              ),
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: AppDimens.backArrowSize,
-              ),
-            ),
-          ),
+          _BackToTopicButton(showButton: showBackToTopicButton),
         ],
+      ),
+    );
+  }
+}
+
+class _BackToTopicButton extends StatelessWidget {
+  const _BackToTopicButton({
+    required this.showButton,
+    Key? key,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> showButton;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      bottom: showButton.value ? AppDimens.l : -AppDimens.c,
+      curve: Curves.elasticInOut,
+      duration: const Duration(milliseconds: 500),
+      child: FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimens.s)),
+        onPressed: () => context.popRoute(),
+        backgroundColor: AppColors.black,
+        foregroundColor: AppColors.white,
+        label: Text(
+          LocaleKeys.article_goBackToTopic.tr(),
+          style: AppTypography.h3Bold16.copyWith(height: 1.0, color: AppColors.white),
+        ),
+        icon: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size: AppDimens.backArrowSize,
+        ),
       ),
     );
   }
@@ -665,71 +672,6 @@ class _ActionsBar extends HookWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _LoadingNextArticleIndicator extends HookWidget {
-  final double factor;
-
-  const _LoadingNextArticleIndicator({
-    required this.factor,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final animationController = useAnimationController(duration: const Duration(seconds: 1));
-    final animation = Tween(begin: 1.0, end: 0.0).animate(animationController);
-
-    useEffect(() {
-      if (!kIsTest) animationController.repeat();
-    }, []);
-
-    return Center(
-      child: FadeTransition(
-        opacity: AlwaysStoppedAnimation(factor),
-        child: ScaleTransition(
-          scale: AlwaysStoppedAnimation(factor),
-          child: RotationTransition(turns: animation, child: SvgPicture.asset(AppVectorGraphics.arrowLoading)),
-        ),
-      ),
-    );
-  }
-}
-
-class _AllArticlesRead extends StatelessWidget {
-  const _AllArticlesRead({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: AppDimens.l),
-          Center(
-            child: SvgPicture.asset(AppVectorGraphics.noNextArticle),
-          ),
-          const SizedBox(height: AppDimens.s),
-          Text(
-            LocaleKeys.article_allArticlesRead.tr(),
-            style: AppTypography.b1Regular.copyWith(height: 1.2),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppDimens.xl),
-          FilledButton(
-            text: LocaleKeys.article_goBackToTopic.tr(),
-            fillColor: AppColors.textPrimary,
-            textColor: AppColors.white,
-            leading: const Icon(Icons.arrow_back_ios_new_rounded, size: AppDimens.m, color: AppColors.white),
-            onTap: () => AutoRouter.of(context).pop(),
-          ),
-          const SizedBox(height: AppDimens.l),
-        ],
       ),
     );
   }
