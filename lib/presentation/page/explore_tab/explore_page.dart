@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
@@ -50,46 +51,49 @@ class ExplorePage extends HookWidget {
           value: SystemUiOverlayStyle.dark,
           child: Stack(
             children: [
-              CustomScrollView(
-                physics: state.maybeMap(
-                  error: (_) => const NeverScrollableScrollPhysics(),
-                  orElse: () => const ClampingScrollPhysics(),
-                ),
-                slivers: [
-                  SliverAppBar(
-                    backgroundColor: AppColors.background,
-                    elevation: 3,
-                    systemOverlayStyle: SystemUiOverlayStyle.dark,
-                    centerTitle: false,
-                    pinned: true,
-                    shadowColor: AppColors.shadowDarkColor,
-                    titleSpacing: AppDimens.l,
-                    collapsedHeight: kToolbarHeight,
-                    expandedHeight: kToolbarHeight + AppDimens.l,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Container(color: headerColor),
-                      titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
+              NoScrollGlow(
+                child: CustomScrollView(
+                  physics: state.maybeMap(
+                    error: (_) => const NeverScrollableScrollPhysics(),
+                    orElse: () => const ClampingScrollPhysics(),
+                  ),
+                  slivers: [
+                    SliverAppBar(
+                      backgroundColor: AppColors.background,
+                      elevation: 3,
+                      systemOverlayStyle: SystemUiOverlayStyle.dark,
                       centerTitle: false,
-                      title: Text(
-                        LocaleKeys.main_exploreTab.tr(),
-                        style: AppTypography.b0Bold,
+                      pinned: true,
+                      shadowColor: AppColors.shadowDarkColor,
+                      titleSpacing: AppDimens.l,
+                      collapsedHeight: kToolbarHeight,
+                      expandedHeight: kToolbarHeight + AppDimens.s,
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Container(color: headerColor),
+                        titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
+                        centerTitle: false,
+                        title: Text(
+                          LocaleKeys.main_exploreTab.tr(),
+                          // To allow for the transition's first state align with the other tab titles
+                          style: AppTypography.h4Bold.copyWith(height: 2.25),
+                        ),
                       ),
                     ),
-                  ),
-                  state.maybeMap(
-                    initialLoading: (_) => const SliverToBoxAdapter(
-                      child: ArticleWithCoverAreaLoadingView.loading(),
+                    state.maybeMap(
+                      initialLoading: (_) => const SliverToBoxAdapter(
+                        child: ArticleWithCoverAreaLoadingView.loading(),
+                      ),
+                      idle: (state) => _Idle(areas: state.areas),
+                      error: (_) => const SliverToBoxAdapter(
+                        child: ArticleWithCoverAreaLoadingView.static(),
+                      ),
+                      orElse: () => const SliverToBoxAdapter(
+                        child: SizedBox(),
+                      ),
                     ),
-                    idle: (state) => _Idle(areas: state.areas),
-                    error: (_) => const SliverToBoxAdapter(
-                      child: ArticleWithCoverAreaLoadingView.static(),
-                    ),
-                    orElse: () => const SliverToBoxAdapter(
-                      child: SizedBox(),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
-                ],
+                    const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
+                  ],
+                ),
               ),
               Align(
                 alignment: Alignment.center,
