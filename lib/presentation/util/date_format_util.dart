@@ -13,7 +13,7 @@ class DateFormatUtil {
   }
 
   static String formatShortMonthNameDay(DateTime dateTime) {
-    final format = DateFormat('MMM d', _locale);
+    final format = DateFormat('MMM d, yyyy', _locale);
     return format.format(dateTime);
   }
 
