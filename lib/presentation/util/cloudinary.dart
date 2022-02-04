@@ -37,7 +37,6 @@ CloudinaryImageProvider useCloudinaryProvider() {
 extension CloudinaryTransformationExtension on CloudinaryTransformation {
   CloudinaryTransformation withLogicalSize(double width, double height, BuildContext context) {
     // Maintain expected aspect ratio, but fetching next 100th measure of width (this would decrease number of different image sizes fetched)
-    // TODO: Analyze frequently requested sizes and eaderly generate them when uploading the images from CMS
     final aspectRatio = width / height;
     final roundedUpWidth = (width / 100).ceil() * 100.0;
     final roundedUpHeight = (roundedUpWidth / aspectRatio).ceilToDouble();
