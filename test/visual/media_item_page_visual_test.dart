@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'visual_test_utils.dart';
 
 void main() {
-  visualTest(MediaItemPage, (tester, device) async {
+  visualTest(MediaItemPage, (tester) async {
     await tester.startApp();
     await tester.tap(find.byType(ReadingListCover).first);
     await tester.pumpAndSettle();
@@ -17,9 +17,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byType(ArticleItemView));
     await tester.pumpAndSettle();
-    await matchGoldenFile('media_item_page_(image)');
+    await tester.matchGoldenFile('media_item_page_(image)');
     await tester.tap(find.byType(AnimatedPointerDown));
     await tester.pumpAndSettle();
-    await matchGoldenFile('media_item_page_(content)');
+    await tester.matchGoldenFile('media_item_page_(content)');
   });
 }

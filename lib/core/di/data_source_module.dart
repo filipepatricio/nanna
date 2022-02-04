@@ -14,7 +14,7 @@ abstract class DataSourceModule {
   //Have to manage the AppLinkDataSource setup like this because of its static async factory method
   Future<AppLinkDataSource> getAppLinkDataSource(AppConfig appConfig) => AppLinkDataSourceImpl.create();
 
-  @Environment(mock)
+  @Environment(mockName)
   @preResolve
   Future<AppLinkDataSource> getAppLinkDataSourceMock(AppConfig appConfig) => AppLinkDataSourceMock.create();
 

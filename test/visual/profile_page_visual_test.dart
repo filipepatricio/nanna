@@ -4,8 +4,8 @@ import 'package:better_informed_mobile/presentation/page/profile_tab/profile_pag
 import 'visual_test_utils.dart';
 
 void main() {
-  visualTest(ProfilePage, (tester, device) async {
+  visualTest(ProfilePage, (tester) async {
     await tester.startApp(initialRoute: const ProfileTabGroupRouter(children: [ProfilePageRoute()]));
-    await matchGoldenFile();
+    await tester.matchGoldenFile();
   });
 }

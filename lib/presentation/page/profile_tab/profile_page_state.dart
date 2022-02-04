@@ -10,4 +10,6 @@ class ProfilePageState with _$ProfilePageState {
 
   @Implements<BuildState>()
   factory ProfilePageState.idle() = _ProfilePageStateIdle;
+
+  factory ProfilePageState.sendingEmailError() = _ProfilePageStateSendingEmailError;
 }

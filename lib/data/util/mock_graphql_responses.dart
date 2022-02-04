@@ -62,7 +62,7 @@ class MockGraphqlResponses {
           {
             "category": null,
             $_coverImage,
-            $_heroImage,
+            $_heroImage2,
             $_highlightedPublishers,
             "id": "aa326e1f-ec14-4829-b8a3-cb21dbd25259",
             "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -110,6 +110,12 @@ class MockGraphqlResponses {
   static const _heroImage = '''
   "heroImage": {
     "publicId": "topics/pizza"
+  }
+  ''';
+
+  static const _heroImage2 = '''
+  "heroImage": {
+    "publicId": "topics/pizza2"
   }
   ''';
 

@@ -12,7 +12,11 @@
     "search": "Search",
     "gotIt": "Got it",
     "done": "Done",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "linkCopied": "Successfuly copied link to your clipboard!"
+  },
+  "commonError": {
+    "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "
   },
   "onboarding": {
     "title": "How we use push notifications",
@@ -35,7 +39,7 @@
     "topicSnackBarText": "👍 **You’ve found a topic of interest.** Scroll down to get an overview or jump into the list of articles we curated for you.",
     "exploreSnackBarText": "🔍 **If you’d like to explore more** or missed a brief then you can find even more topics as well as articles here.",
     "topicTooltipText": "😀 These cards are here to give you a quick overview of the topic. What happened so far & why does it matter?",
-    "mediaItemTooltipText": "👉 Dive deeper? Our editorial carefully curates a selection of articles to give you a 360° perspective on the topic."
+    "mediaItemTooltipText": "👉 Dive deeper? Our editorial team carefully curates a selection of articles to give you a 360° perspective on the topic."
   },
   "main": {
     "todayTab": "Today",
@@ -157,7 +161,9 @@
     "stayTunedText": "This page will be evolving during beta",
     "feedbackButton": "Give feedback",
     "feedbackSubject": "Feedback on Informed App",
-    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed"
+    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
+    "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
+    "emailCopied": "Successfully copied email to your clipboard!"
   },
   "shareTopic": {
     "title": "Select the articles you want to share related to the topic",

@@ -14,17 +14,10 @@ class MediaItemState with _$MediaItemState {
   const factory MediaItemState.loading() = _MediaItemStateLoading;
 
   @Implements<BuildState>()
-  const factory MediaItemState.idleMultiItems(
+  const factory MediaItemState.idle(
     MediaItemArticle header,
     ArticleContent content,
-    bool hasNext,
-  ) = MultiMediaItemStateIdle;
-
-  @Implements<BuildState>()
-  const factory MediaItemState.idleSingleItem(
-    MediaItemArticle header,
-    ArticleContent content,
-  ) = SingleMediaItemStateIdle;
+  ) = _MediaItemStateIdle;
 
   const factory MediaItemState.nextPageLoaded(int index) = _MediaItemStateNextPageLoaded;
 
