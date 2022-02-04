@@ -23,12 +23,6 @@ class AuthRepositoryImpl implements AuthRepository {
   );
 
   @override
-  Future<void> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> requestMagicLink(String email) async {
     await _apiDataSource.sendMagicLink(email);
   }
