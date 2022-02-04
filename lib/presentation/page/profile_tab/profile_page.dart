@@ -52,7 +52,7 @@ class ProfilePage extends HookWidget {
         titleSpacing: AppDimens.l,
         title: Text(
           LocaleKeys.profile_title.tr(),
-          style: AppTypography.h1Bold.copyWith(color: AppColors.textPrimary),
+          style: AppTypography.h1Bold,
         ),
         actions: [
           Padding(
