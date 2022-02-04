@@ -577,7 +577,7 @@ class _ArticleProgressBar extends HookWidget {
                     value: readProgress.value,
                     backgroundColor: AppColors.transparent,
                     valueColor: const AlwaysStoppedAnimation(AppColors.limeGreenVivid),
-                    minHeight: 7,
+                    minHeight: 6,
                   );
                 })));
   }
