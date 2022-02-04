@@ -10,6 +10,7 @@ class Topic {
   final String title;
   final String strippedTitle;
   final String introduction;
+  final String url;
   final TopicOwner owner;
   final List<TopicSummary> topicSummaryList;
   final DateTime lastUpdatedAt;
@@ -24,6 +25,7 @@ class Topic {
     required this.title,
     required this.strippedTitle,
     required this.introduction,
+    required this.url,
     required this.owner,
     required this.lastUpdatedAt,
     required this.topicSummaryList,

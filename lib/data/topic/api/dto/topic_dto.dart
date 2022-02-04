@@ -13,6 +13,7 @@ class TopicDTO {
   final String title;
   final String strippedTitle;
   final String introduction;
+  final String url;
   final TopicOwnerDTO owner;
   final String lastUpdatedAt;
   final List<PublisherDTO> highlightedPublishers;
@@ -26,6 +27,7 @@ class TopicDTO {
     this.title,
     this.strippedTitle,
     this.introduction,
+    this.url,
     this.owner,
     this.lastUpdatedAt,
     this.highlightedPublishers,
