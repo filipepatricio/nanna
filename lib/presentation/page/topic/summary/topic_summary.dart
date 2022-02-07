@@ -28,9 +28,8 @@ class TopicSummary extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final controller = usePageController();
-    final topicSummaryTextMaxHeight = AppDimens.topicViewSummaryTextMaxHeight(context);
     final topicSummaryCards = useState(cubit.getTopicSummaryCards(
-        topic, _topicSummaryTextStyle, MediaQuery.of(context).size.width, topicSummaryTextMaxHeight));
+        topic, _topicSummaryTextStyle, MediaQuery.of(context).size.width, AppDimens.topicViewSummaryTextHeight));
 
     if (topic.topicSummaryList.isEmpty) {
       return const SizedBox();
@@ -44,7 +43,7 @@ class TopicSummary extends HookWidget {
           cubit: cubit,
           controller: controller,
           topicSummaryCards: topicSummaryCards.value,
-          topicSummaryTextMaxHeight: topicSummaryTextMaxHeight,
+          topicSummaryTextMaxHeight: AppDimens.topicViewSummaryTextHeight,
           summaryCardKey: summaryCardKey,
         ));
 

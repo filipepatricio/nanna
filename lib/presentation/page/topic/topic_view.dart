@@ -36,30 +36,29 @@ class TopicView extends HookWidget {
         final listener = summaryCardTutorialListener(scrollController, topicHeaderImageHeight);
         scrollController.addListener(listener);
       }, shouldShowMediaItemTutorialCoachMark: () {
-        final listener = mediaItemTutorialListener(scrollController, AppDimens.topicViewArticleSectionFullHeight);
+        final listener = mediaItemTutorialListener(scrollController,
+            topicHeaderImageHeight + AppDimens.topicViewTopicHeaderPadding + AppDimens.topicViewSummaryCardHeight);
         scrollController.addListener(listener);
       });
     });
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TopicSummary(
           topic: topic,
           cubit: cubit,
           summaryCardKey: summaryCardKey,
         ),
-        Stack(
-          children: [
-            GeneralEventTracker(
-              controller: eventController,
-              child: TopicMediaItemsList(
-                pageIndex: pageIndex,
-                topic: topic,
-                eventController: eventController,
-                mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
-              ),
-            ),
-          ],
+        GeneralEventTracker(
+          controller: eventController,
+          child: TopicMediaItemsList(
+            pageIndex: pageIndex,
+            topic: topic,
+            eventController: eventController,
+            mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
+          ),
         ),
       ],
     );
@@ -91,13 +90,13 @@ class TopicView extends HookWidget {
     return summaryCardTutorialListener;
   }
 
-  VoidCallback mediaItemTutorialListener(ScrollController listScrollController, double articleContentHeight) {
+  VoidCallback mediaItemTutorialListener(ScrollController listScrollController, double articleTriggerPosition) {
     var isToShowMediaItemTutorialCoachMark = true;
     final mediaItemTutorialListener = () {
       if (isToShowMediaItemTutorialCoachMark &&
-          didListScrollReachMediaItem(listScrollController, listScrollController.position.maxScrollExtent)) {
+          didListScrollReachMediaItem(listScrollController, articleTriggerPosition)) {
         listScrollController.animateTo(
-          listScrollController.position.maxScrollExtent,
+          articleTriggerPosition,
           duration: const Duration(milliseconds: 100),
           curve: Curves.decelerate,
         );

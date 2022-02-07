@@ -91,14 +91,15 @@ class AppDimens {
   static const topicViewTopicHeaderPadding = 45.0;
 
   /// 290
-  static const topicViewSummaryCardHeight = 290.0;
+  static const topicViewSummaryCardHeight = 350.0;
 
-  static double topicViewSummaryTextMaxHeight(BuildContext context) =>
-      min(MediaQuery.of(context).size.height * .45, 300);
+  static const topicViewSummaryTextHeight = 300.0;
 
   /// 75% of screen size or [topicViewArticleSectionFullHeight], whichever is smaller
   static double topicViewHeaderImageHeight(BuildContext context) =>
       min(MediaQuery.of(context).size.height * .75, topicViewArticleSectionFullHeight);
+
+  static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .70, 500);
 
   /// 45
   static final topicViewStackedCardsDividerHeight = kIsSmallDevice ? 0.0 : 45.0;

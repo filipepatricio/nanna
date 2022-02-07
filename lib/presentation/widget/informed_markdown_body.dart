@@ -39,7 +39,7 @@ class InformedMarkdownBody extends StatelessWidget {
       ),
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
         p: baseTextStyle,
-        pPadding: const EdgeInsets.only(bottom: AppDimens.s),
+        pPadding: const EdgeInsets.only(bottom: AppDimens.xs),
         strong: strongTextStyle ?? baseTextStyle.copyWith(fontWeight: FontWeight.bold),
         listBullet: baseTextStyle,
         listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s),
