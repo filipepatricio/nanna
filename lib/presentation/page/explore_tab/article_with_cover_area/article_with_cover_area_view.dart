@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_list_item.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -130,7 +129,7 @@ class _MainArticle extends HookWidget {
 
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
-        MediaItemPageRoute(pageData: MediaItemPageData.singleItem(article: entry)),
+        MediaItemPageRoute(article: entry),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) => Stack(
@@ -203,7 +202,7 @@ class _MainArticleCover extends StatelessWidget {
             labelText: LocaleKeys.article_readMore.tr(),
             foregroundColor: foregroundColor,
             onTap: () => AutoRouter.of(context).push(
-              MediaItemPageRoute(pageData: MediaItemPageData.singleItem(article: entry)),
+              MediaItemPageRoute(article: entry),
             ),
           ),
           const Spacer(),

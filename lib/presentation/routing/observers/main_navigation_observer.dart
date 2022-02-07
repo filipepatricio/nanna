@@ -20,8 +20,8 @@ class MainNavigationObserver extends AutoRouterObserver {
         // Handled in TopicPageCubit
         return;
       case MediaItemPageRoute.name:
-        // Handled in MediaItemCubit
-        return;
+        final args = route.settings.arguments as MediaItemPageRouteArgs;
+        return _trackActivityUseCase.trackPage(AnalyticsPage.article(args.article.id, args.topicId));
       case ArticleSeeAllPageRoute.name:
         final args = route.settings.arguments as ArticleSeeAllPageRouteArgs;
         return _trackActivityUseCase.trackPage(AnalyticsPage.exploreArea(args.areaId));

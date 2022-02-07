@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -46,10 +45,8 @@ class _ReadingBannerBody extends HookWidget {
       onTap: () {
         AutoRouter.of(context).push(
           MediaItemPageRoute(
-            pageData: MediaItemPageData.singleItem(
-              article: readingBanner.article,
-              readArticleProgress: readingBanner.scrollProgress,
-            ),
+            article: readingBanner.article,
+            readArticleProgress: readingBanner.scrollProgress,
           ),
         );
       },
