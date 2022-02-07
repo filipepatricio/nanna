@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final mainPageKey = GlobalKey();
 
@@ -25,6 +26,7 @@ class MainPage extends HookWidget {
       state.maybeMap(
         tokenExpired: (_) => _onTokenExpiredEvent(context),
         navigate: (navigate) async {
+          await closeWebView();
           await context.navigateNamedTo(
             const MainPageRoute().path + navigate.path,
             onFailure: (failure) {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -27,7 +29,11 @@ void showBrowserError(String uri, SnackbarController controller) {
 }
 
 Future<void> _openWithCustomTabs(String uri, OpenInAppBrowserErrorCallback? onError) async {
-  await custom_tabs.launch(uri);
+  if (Platform.isIOS) {
+    await _openWithAnyApp(uri, onError);
+  } else {
+    await custom_tabs.launch(uri);
+  }
 }
 
 Future<void> _openWithAnyApp(String uri, OpenInAppBrowserErrorCallback? onError) async {
