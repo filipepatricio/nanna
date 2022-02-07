@@ -31,7 +31,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" android:host="@string/app_link_host" android:pathPrefix="/magic"/>
+                <data android:scheme="http" android:host="@string/app_link_host" android:pathPrefix="/topics"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/magic"/>
+                <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/topics"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

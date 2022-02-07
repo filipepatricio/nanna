@@ -4,6 +4,7 @@ class CommonGQLModels {
   static const String topic = '''
     id
     title
+    url
     strippedTitle
     lastUpdatedAt
     owner {

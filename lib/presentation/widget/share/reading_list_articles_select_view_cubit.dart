@@ -48,7 +48,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
         articles: articles,
       ),
     );
-    await shareImage(generator, '${_topic.id}_share_topic.png', tr(LocaleKeys.shareTopic_message));
+    await shareImage(generator, '${_topic.id}_share_topic.png', LocaleKeys.shareTopic_message.tr(args: [_topic.url]));
 
     emit(ReadingListArticlesSelectViewState.shared());
   }
