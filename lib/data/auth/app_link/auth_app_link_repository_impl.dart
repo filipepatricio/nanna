@@ -19,17 +19,13 @@ class AuthAppLinkRepositoryImpl implements AuthAppLinkRepository {
   Stream<String> subscribeForMagicLinkToken() async* {
     final initialLink = _initialLinkHandled ? null : await _appLinkDataSource.getInitialAction();
 
-    if (initialLink == null) {
-      yield* _magicLinkStream();
-    } else {
-      try {
+    try {
+      if (initialLink != null) {
         yield _magicLinkParser.parseMagicLink(initialLink);
         _initialLinkHandled = true;
-
-        yield* _magicLinkStream();
-      } catch (e) {
-        yield* _magicLinkStream();
       }
+    } finally {
+      yield* _magicLinkStream();
     }
   }
 
