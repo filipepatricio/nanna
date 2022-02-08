@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_category.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
@@ -35,4 +36,6 @@ class Topic {
     required this.readingList,
     this.category,
   });
+
+  MediaItemArticle articleAt(int index) => readingList.entries[index].item as MediaItemArticle;
 }

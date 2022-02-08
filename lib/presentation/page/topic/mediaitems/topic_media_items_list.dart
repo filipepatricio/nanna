@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
@@ -62,7 +61,7 @@ class TopicMediaItemsList extends HookWidget {
                     topic: topic,
                     topPadding: AppDimens.topicViewArticleSectionArticleCountLabelHeight +
                         AppDimens.topicViewStackedCardsDividerHeight,
-                    onTap: () => _navigateToArticleByIndex(context, index, controller),
+                    onTap: () => _navigateToArticle(context, index, controller),
                     mediaItemKey: index == 0 ? mediaItemKey : null,
                   );
                 },
@@ -96,7 +95,7 @@ class TopicMediaItemsList extends HookWidget {
               child: LinkLabel(
                 labelText: LocaleKeys.article_readMore.tr(),
                 fontSize: AppDimens.m,
-                onTap: () => _navigateToArticle(context, controller),
+                onTap: () => _navigateToArticle(context, controller.page?.floor() ?? 0, controller),
               ),
             ),
             const Positioned.fill(top: 0, child: BottomStackedCards()),
@@ -114,27 +113,11 @@ class TopicMediaItemsList extends HookWidget {
     eventController.track(event);
   }
 
-  void _navigateToArticle(BuildContext context, PageController controller) {
+  void _navigateToArticle(BuildContext context, int index, PageController controller) {
     AutoRouter.of(context).push(
       MediaItemPageRoute(
-        pageData: MediaItemPageData.multipleItems(
-          index: controller.page?.toInt() ?? 0,
-          topic: topic,
-          navigationCallback: (index) => controller.jumpToPage(index),
-        ),
-      ),
-    );
-    return;
-  }
-
-  void _navigateToArticleByIndex(BuildContext context, int index, PageController controller) {
-    AutoRouter.of(context).push(
-      MediaItemPageRoute(
-        pageData: MediaItemPageData.multipleItems(
-          index: index,
-          topic: topic,
-          navigationCallback: (index) => controller.jumpToPage(index),
-        ),
+        article: topic.articleAt(index),
+        topicId: topic.id,
       ),
     );
     return;

@@ -2,17 +2,13 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -37,36 +33,17 @@ typedef MediaItemNavigationCallback = void Function(int index);
 const appBarHeight = kToolbarHeight + AppDimens.xl;
 
 class MediaItemPage extends HookWidget {
+  final String? topicId;
+  final MediaItemArticle article;
+
   final double? readArticleProgress;
-  final int index;
-  final MediaItemArticle? singleArticle;
-  final MediaItemNavigationCallback? navigationCallback;
-  final Topic? topic;
 
-  MediaItemPage({
-    required MediaItemPageData pageData,
+  const MediaItemPage({
+    required this.article,
+    this.readArticleProgress,
+    this.topicId,
     Key? key,
-  })  : index = _getIndex(pageData),
-        singleArticle = _getSingleArticle(pageData),
-        navigationCallback = pageData.navigationCallback,
-        readArticleProgress = pageData.readArticleProgress,
-        topic = _getTopic(pageData),
-        super(key: key);
-
-  static Topic? _getTopic(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => null,
-        multipleItems: (data) => data.topic,
-      );
-
-  static int _getIndex(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => 0,
-        multipleItems: (data) => data.index,
-      );
-
-  static MediaItemArticle? _getSingleArticle(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => data.article,
-        multipleItems: (data) => null,
-      );
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,16 +58,8 @@ class MediaItemPage extends HookWidget {
     );
     final pageController = usePageController();
 
-    useCubitListener<MediaItemCubit, MediaItemState>(cubit, (cubit, state, context) {
-      state.mapOrNull(nextPageLoaded: (state) {
-        navigationCallback?.call(state.index);
-        scrollController.jumpTo(0.0);
-        pageController.jumpToPage(0);
-      });
-    });
-
     useEffect(() {
-      cubit.initialize(index, singleArticle, topic);
+      cubit.initialize(article);
     }, [cubit]);
 
     return LayoutBuilder(
@@ -117,7 +86,8 @@ class MediaItemPage extends HookWidget {
               child: _AnimatedSwitcher(
                 child: state.maybeMap(
                   loading: (state) => const _LoadingContent(),
-                  idle: (state) => _IdleContent(
+                  idleFree: (state) => _FreeArticleView(article: state.header),
+                  idlePremium: (state) => _PremiumArticleView(
                     article: state.header,
                     content: state.content,
                     modalController: modalController,
@@ -219,49 +189,6 @@ class _ErrorContent extends StatelessWidget {
         ),
         const SizedBox(height: AppDimens.xxxl + AppDimens.l),
       ],
-    );
-  }
-}
-
-class _IdleContent extends HookWidget {
-  final MediaItemArticle article;
-  final ArticleContent content;
-  final MediaItemCubit cubit;
-  final ScrollController modalController;
-  final ScrollController controller;
-  final PageController pageController;
-  final double fullHeight;
-  final double? readArticleProgress;
-
-  const _IdleContent({
-    required this.article,
-    required this.content,
-    required this.modalController,
-    required this.controller,
-    required this.pageController,
-    required this.cubit,
-    required this.fullHeight,
-    this.readArticleProgress,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (article.type == ArticleType.freemium) {
-      return _FreeArticleView(
-        article: article,
-      );
-    }
-
-    return _PremiumArticleView(
-      article: article,
-      content: content,
-      modalController: modalController,
-      controller: controller,
-      pageController: pageController,
-      cubit: cubit,
-      fullHeight: fullHeight,
-      readArticleProgress: readArticleProgress,
     );
   }
 }
