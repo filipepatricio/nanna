@@ -12,7 +12,6 @@ import 'package:better_informed_mobile/presentation/page/media/article_scroll_da
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import 'media_item_state.dart';
@@ -39,10 +38,11 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   var readingComplete = false;
 
   Future<void> initialize(MediaItemArticle? article, String? slug, String? topicId) async {
-    throwIf(
-      article == null && slug == null,
-      Exception('Article page needs either article or slug to show any data.'),
-    );
+    if (article == null && slug == null) {
+      emit(const MediaItemState.emptyError());
+      Fimber.e('Article and slug were null on article page.');
+      return;
+    }
 
     if (article != null) {
       await _initializeWithArticle(article, topicId);

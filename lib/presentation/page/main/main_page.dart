@@ -21,7 +21,7 @@ class MainPage extends HookWidget {
         navigate: (navigate) {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
             await closeWebView();
-          await context.navigateNamedTo(
+            await context.navigateNamedTo(
               navigate.path,
               onFailure: (failure) {
                 Fimber.e('Incoming push - navigation failed', ex: failure);
@@ -31,6 +31,7 @@ class MainPage extends HookWidget {
         },
         multiNavigate: (navigate) {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+            await closeWebView();
             for (final path in navigate.path) {
               await context.navigateNamedTo(
                 path,

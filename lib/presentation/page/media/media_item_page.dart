@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glow_scroll_behaviour.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
@@ -77,8 +78,7 @@ class MediaItemPage extends HookWidget {
             /// to make sure it will work - at least only way I found
             SizedBox(
               height: 0,
-              child: ScrollConfiguration(
-                behavior: NoGlowScrollBehavior(),
+              child: NoScrollGlow(
                 child: SingleChildScrollView(
                   physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
                   controller: modalController,
@@ -104,6 +104,11 @@ class MediaItemPage extends HookWidget {
                     readArticleProgress: readArticleProgress,
                   ),
                   error: (state) => _ErrorContent(article: state.article),
+                  emptyError: (_) => _ErrorContent(
+                    onTryAgain: () {
+                      cubit.initialize(article, slug, topicId);
+                    },
+                  ),
                   orElse: () => const SizedBox(),
                 ),
               ),
@@ -146,15 +151,19 @@ class _LoadingContent extends StatelessWidget {
 }
 
 class _ErrorContent extends StatelessWidget {
-  final MediaItemArticle article;
+  final MediaItemArticle? article;
+  final VoidCallback? onTryAgain;
 
   const _ErrorContent({
-    required this.article,
+    this.article,
+    this.onTryAgain,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final article = this.article;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,10 +196,20 @@ class _ErrorContent extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimens.xl),
-            OpenWebButton(
-              url: article.sourceUrl,
-              buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
-            ),
+            if (article != null)
+              OpenWebButton(
+                url: article.sourceUrl,
+                buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
+              )
+            else
+              FilledButton(
+                text: LocaleKeys.common_tryAgain.tr(),
+                fillColor: AppColors.textPrimary,
+                textColor: AppColors.white,
+                onTap: () {
+                  onTryAgain?.call();
+                },
+              )
           ],
         ),
         const SizedBox(height: AppDimens.xxxl + AppDimens.l),

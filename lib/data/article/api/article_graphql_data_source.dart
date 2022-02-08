@@ -24,7 +24,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
         cacheRereadPolicy: CacheRereadPolicy.ignoreOptimisitic,
       ),
     );
- 
+
     final dto = _responseResolver.resolve(
       result,
       (raw) {
