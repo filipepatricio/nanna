@@ -11,6 +11,14 @@ class ArticleGQL {
     }
   ''');
 
+  static DocumentNode articleHeader(String slug) => gql('''
+    query {
+      article(slug: "$slug") {
+        ${CommonGQLModels.article}
+      }
+    }
+  ''');
+
   static DocumentNode articleContent(String slug) => gql('''
     query {
       article(slug: "$slug") {

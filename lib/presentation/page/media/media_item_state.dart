@@ -22,4 +22,7 @@ class MediaItemState with _$MediaItemState {
 
   @Implements<BuildState>()
   const factory MediaItemState.error(MediaItemArticle article) = _MediaItemStateError;
+
+  @Implements<BuildState>()
+  const factory MediaItemState.emptyError() = _MediaItemStateEmptyError;
 }

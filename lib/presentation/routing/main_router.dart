@@ -29,6 +29,9 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     CustomRoute(page: EntryPage, initial: true, customRouteBuilder: fadePageRouteBuilder),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
+    AutoRoute(page: SettingsMainPage),
+    AutoRoute(page: SettingsNotificationsPage),
+    AutoRoute(page: SettingsAccountPage),
     AutoRoute(page: TopicPage, name: 'TopicOwnerTopicPage'),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
@@ -43,9 +46,6 @@ const mainPageRoute = CustomRoute(
   children: [
     dashboardTabRouter,
     articleRoute,
-    AutoRoute(page: SettingsMainPage, path: 'settings'),
-    AutoRoute(page: SettingsNotificationsPage, path: 'settings/notification'),
-    AutoRoute(page: SettingsAccountPage, path: 'settings/account'),
   ],
 );
 
@@ -92,7 +92,7 @@ const dashboardTabRouter = CustomRoute(
 );
 
 const articleRoute = CustomRoute(
-  path: 'article/:slug',
+  path: 'article/:articleSlug',
   page: MediaItemPage,
   customRouteBuilder: cupertinoBottomSheetPageRouteBuilder,
 );

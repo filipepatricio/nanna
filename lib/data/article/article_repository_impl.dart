@@ -1,16 +1,19 @@
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_mapper.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: ArticleRepository)
 class ArticleRepositoryImpl implements ArticleRepository {
   final ArticleApiDataSource _articleDataSource;
+  final ArticleDTOToMediaItemMapper _articleDTOToMediaItemMapper;
   final ArticleContentDTOMapper _articleContentDTOMapper;
   final ArticleDTOMapper _articleDTOMapper;
 
@@ -18,6 +21,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
 
   ArticleRepositoryImpl(
     this._articleDataSource,
+    this._articleDTOToMediaItemMapper,
     this._articleContentDTOMapper,
     this._articleDTOMapper,
   );
@@ -38,5 +42,11 @@ class ArticleRepositoryImpl implements ArticleRepository {
   Future<Article> getFullArticle(String slug) async {
     final dto = await _articleDataSource.getFullArticle(slug);
     return _articleDTOMapper(dto);
+  }
+
+  @override
+  Future<MediaItemArticle> getArticleHeader(String slug) async {
+    final dto = await _articleDataSource.getArticleHeader(slug);
+    return _articleDTOToMediaItemMapper(dto);
   }
 }

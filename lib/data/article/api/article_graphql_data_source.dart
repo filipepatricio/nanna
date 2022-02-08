@@ -21,9 +21,10 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     final result = await _client.query(
       QueryOptions(
         document: ArticleGQL.articleContent(slug),
+        cacheRereadPolicy: CacheRereadPolicy.ignoreOptimisitic,
       ),
     );
-
+ 
     final dto = _responseResolver.resolve(
       result,
       (raw) {
@@ -34,7 +35,6 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     );
 
     if (dto == null) throw Exception('ArticleContent is null');
-
     return dto;
   }
 
@@ -55,7 +55,26 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     );
 
     if (dto == null) throw Exception('Article is null');
+    return dto;
+  }
 
+  @override
+  Future<ArticleDTO> getArticleHeader(String slug) async {
+    final result = await _client.query(
+      QueryOptions(
+        document: ArticleGQL.articleHeader(slug),
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        return ArticleDTO.fromJson(raw);
+      },
+      rootKey: 'article',
+    );
+
+    if (dto == null) throw Exception('Article is null');
     return dto;
   }
 }

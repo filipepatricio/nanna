@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:better_informed_mobile/domain/auth/use_case/get_token_expiration_stream_use_case.dart';
 import 'package:better_informed_mobile/domain/deep_link/use_case/subscribe_for_deep_link_use_case.dart';
@@ -58,34 +59,30 @@ class MainCubit extends Cubit<MainState> {
 
   void _subscribeToPushNavigationStream() {
     _incomingPushNavigationSubscription = _incomingPushNavigationStreamUseCase().listen((event) {
-      emit(_handleNavigationAction(event));
+      emit(_handleNavigationAction(event.path));
       emit(const MainState.init());
     });
   }
 
   void _subscribeToDeepLinkStream() {
     _deepLinkSubscription = _subscribeForDeepLinkUseCase().listen((path) async {
-      try {
-        emit(MainState.navigate(path));
-        emit(const MainState.init());
-      } catch (e, s) {
-        Fimber.e('Navigating to route from deep link failed', ex: e, stacktrace: s);
-      }
+      emit(_handleNavigationAction(path));
+      emit(const MainState.init());
     });
   }
 
-  MainState _handleNavigationAction(IncomingPushActionNavigateTo action) {
-    final uri = Uri.parse(action.path);
+  MainState _handleNavigationAction(String path) {
+    final uri = Uri.parse(path);
     final articleSegment = uri.pathSegments.firstWhere((element) => element == 'article', orElse: () => '');
     final articleIndex = uri.pathSegments.indexOf(articleSegment);
 
-    if (articleIndex > 0) {
-      final firstPart = const MainPageRoute().path + '/' + uri.pathSegments.take(articleIndex).join('/');
-      final secondPart = const MainPageRoute().path + '/' + uri.pathSegments.skip(articleIndex).join('/');
+    if (articleIndex != -1) {
+      final firstPart = const MainPageRoute().path + '/' + uri.pathSegments.take(max(0, articleIndex)).join('/');
+      final secondPart = const MainPageRoute().path + '/' + uri.pathSegments.skip(max(0, articleIndex)).join('/');
 
       return MainState.multiNavigate([firstPart, secondPart]);
     }
 
-    return MainState.navigate(const MainPageRoute().path + action.path);
+    return MainState.navigate(const MainPageRoute().path + path);
   }
 }

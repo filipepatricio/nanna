@@ -21,4 +21,9 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   Future<ArticleDTO> getFullArticle(String slug) async {
     return ArticleDTO.fromJson(jsonDecode(MockGraphqlResponses.article) as Map<String, dynamic>);
   }
+
+  @override
+  Future<ArticleDTO> getArticleHeader(String slug) async {
+    return ArticleDTO.fromJson(jsonDecode(MockGraphqlResponses.article) as Map<String, dynamic>);
+  }
 }

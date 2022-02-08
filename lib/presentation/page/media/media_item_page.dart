@@ -14,14 +14,13 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glow_scroll_behaviour.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glow_scroll_behaviour.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -35,17 +34,19 @@ typedef MediaItemNavigationCallback = void Function(int index);
 const appBarHeight = kToolbarHeight + AppDimens.xl;
 
 class MediaItemPage extends HookWidget {
-  final String? topicId;
-  final MediaItemArticle article;
-
-  final double? readArticleProgress;
-
   const MediaItemPage({
-    required this.article,
-    this.readArticleProgress,
+    this.article,
+    @PathParam('articleSlug') this.slug,
     this.topicId,
+    this.readArticleProgress,
     Key? key,
   }) : super(key: key);
+
+  final String? topicId;
+  final MediaItemArticle? article;
+  final String? slug;
+
+  final double? readArticleProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class MediaItemPage extends HookWidget {
     final pageController = usePageController();
 
     useEffect(() {
-      cubit.initialize(index, singleArticle, topic, slug);
+      cubit.initialize(article, slug, topicId);
     }, [cubit]);
 
     return LayoutBuilder(
@@ -95,7 +96,6 @@ class MediaItemPage extends HookWidget {
                   idlePremium: (state) => _PremiumArticleView(
                     article: state.header,
                     content: state.content,
-
                     modalController: modalController,
                     controller: scrollController,
                     pageController: pageController,
