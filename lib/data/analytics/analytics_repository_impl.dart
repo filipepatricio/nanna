@@ -15,7 +15,8 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   @override
   Future<void> initialize() async {
     final writeKey = _config.segmentWriteKey;
-    if (writeKey == null) {
+
+    if (writeKey == null || !kReleaseMode) {
       return Segment.disable();
     }
 
@@ -24,7 +25,6 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
         writeKey: writeKey,
         trackApplicationLifecycleEvents: true,
         amplitudeIntegrationEnabled: false,
-        debug: kDebugMode,
       ),
     );
   }
