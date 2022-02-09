@@ -24,11 +24,9 @@ const appBarHeight = kToolbarHeight + AppDimens.m;
 
 class TopicOwnerPage extends HookWidget {
   final TopicOwner owner;
-  final List<Topic> topics;
 
   const TopicOwnerPage({
     required this.owner,
-    required this.topics,
     Key? key,
   }) : super(key: key);
 
@@ -115,8 +113,10 @@ class TopicOwnerPage extends HookWidget {
                     ),
                     const SizedBox(height: AppDimens.l),
                     state.maybeMap(
-                      idleExpert: (state) =>
-                          _LastUpdatedTopics(topics: state.topicsFromExpert, cardStackHeight: cardStackHeight),
+                      idleExpert: (state) => _LastUpdatedTopics(
+                        topics: state.topicsFromExpert,
+                        cardStackHeight: cardStackHeight,
+                      ),
                       loading: (_) => SizedBox(
                         height: cardStackHeight,
                         child: StackedCardsLoadingView(
