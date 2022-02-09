@@ -31,7 +31,6 @@ class CommonGQLModels {
     }
     readingList {
       id
-      name
       entries {
         note
         style {
@@ -67,7 +66,7 @@ class CommonGQLModels {
 
   static const String publisher = '''
       name
-      darkLogo{
+      darkLogo {
         publicId
       }
       lightLogo {
@@ -86,7 +85,6 @@ class CommonGQLModels {
   static const String article = '''
       sourceUrl
       slug
-      note
       id
       author
       title
