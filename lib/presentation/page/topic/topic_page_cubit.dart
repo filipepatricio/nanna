@@ -9,9 +9,7 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/util/text_util.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -183,24 +181,5 @@ class TopicPageCubit extends Cubit<TopicPageState> {
       return Future<bool>.value(false);
     }
     return Future<bool>.value(true);
-  }
-
-  List<String> getTopicSummaryCards(Topic topic, TextStyle style, double maxWidth, double maxHeight) {
-    const informedMarkdownTextBottomMargin = AppDimens.m;
-    final topicSummaryCards = <String>[];
-    var topicSummaryCardText = topic.topicSummaryList[0].content;
-    for (var i = 1; i < topic.topicSummaryList.length; i++) {
-      final topicSummary = topic.topicSummaryList[i].content;
-      final nextTopicSummary = '$topicSummaryCardText\n\n$topicSummary';
-      if (TextUtil.textFits(nextTopicSummary, style, maxHeight - informedMarkdownTextBottomMargin,
-          maxWidth: maxWidth)) {
-        topicSummaryCardText = nextTopicSummary;
-      } else {
-        topicSummaryCards.add(topicSummaryCardText);
-        topicSummaryCardText = topicSummary;
-      }
-    }
-    topicSummaryCards.add(topicSummaryCardText);
-    return topicSummaryCards;
   }
 }

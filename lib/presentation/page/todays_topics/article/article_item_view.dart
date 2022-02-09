@@ -45,11 +45,24 @@ class ArticleItemView extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-                flex: 11, child: _ArticleCover(entryStyle: entryStyle, article: article, mediaItemKey: mediaItemKey)),
+              flex: 11,
+              child: _ArticleCover(
+                entryStyle: entryStyle,
+                article: article,
+                mediaItemKey: mediaItemKey,
+              ),
+            ),
             const Spacer(),
-            Expanded(flex: 10, child: _EditorsNote(note: entryNote)),
+            Expanded(
+              flex: 10,
+              child: _EditorsNote(note: entryNote),
+            ),
             const Spacer(),
-            LinkLabel(labelText: LocaleKeys.article_readMore.tr(), fontSize: AppDimens.m, onTap: onTap),
+            LinkLabel(
+              labelText: LocaleKeys.article_readMore.tr(),
+              fontSize: AppDimens.m,
+              onTap: onTap,
+            ),
           ],
         ),
       ),

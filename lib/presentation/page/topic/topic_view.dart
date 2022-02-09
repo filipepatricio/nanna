@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/page/topic/mediaitems/topic_media_items_list.dart';
-import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary.dart';
+import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary_section.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -46,9 +46,8 @@ class TopicView extends HookWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TopicSummary(
+        TopicSummarySection(
           topic: topic,
-          cubit: cubit,
           summaryCardKey: summaryCardKey,
         ),
         GeneralEventTracker(

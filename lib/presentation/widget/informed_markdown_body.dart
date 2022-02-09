@@ -10,6 +10,7 @@ class InformedMarkdownBody extends StatelessWidget {
   final String markdown;
   final TextStyle baseTextStyle;
   final TextStyle? strongTextStyle;
+  final EdgeInsets? pPadding;
   final bool selectable;
   final Color highlightColor;
   final int? maxLines;
@@ -20,6 +21,7 @@ class InformedMarkdownBody extends StatelessWidget {
     required this.markdown,
     required this.baseTextStyle,
     this.strongTextStyle,
+    this.pPadding,
     this.maxLines,
     this.selectable = false,
     this.highlightColor = AppColors.limeGreen,
@@ -39,7 +41,7 @@ class InformedMarkdownBody extends StatelessWidget {
       ),
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
         p: baseTextStyle,
-        pPadding: const EdgeInsets.only(bottom: AppDimens.xs),
+        pPadding: pPadding,
         strong: strongTextStyle ?? baseTextStyle.copyWith(fontWeight: FontWeight.bold),
         listBullet: baseTextStyle,
         listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s),
