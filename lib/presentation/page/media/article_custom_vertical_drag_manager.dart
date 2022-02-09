@@ -69,6 +69,10 @@ class ArticleCustomVerticalDragManager {
     _drag = null;
   }
 
+  void resetScrollVelocity() {
+    _activeController?.position.jumpTo(_activeController?.position.pixels ?? 0);
+  }
+
   bool _isPullingDownBottomSheet(double primaryDelta) {
     return _activeController == pageViewController &&
         primaryDelta > 0 &&

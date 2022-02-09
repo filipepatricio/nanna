@@ -249,7 +249,15 @@ class _PremiumArticleView extends HookWidget {
               ..onEnd = gestureManager.handleDragEnd
               ..onCancel = gestureManager.handleDragCancel;
           },
-        )
+        ),
+        TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+          () => TapGestureRecognizer(),
+          (TapGestureRecognizer instance) {
+            instance.onTapDown = (_) {
+              gestureManager.resetScrollVelocity();
+            };
+          },
+        ),
       },
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
@@ -258,7 +266,7 @@ class _PremiumArticleView extends HookWidget {
             if (notification is ScrollUpdateNotification) {
               final newProgress = controller.offset / controller.position.maxScrollExtent;
               showBackToTopicButton.value = newProgress < readProgress.value;
-              readProgress.value = newProgress;
+              readProgress.value = newProgress.isFinite ? newProgress : 0;
             }
             if (notification is ScrollEndNotification) {
               var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
@@ -494,19 +502,22 @@ class _ArticleProgressBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: kToolbarHeight),
-        child: RotatedBox(
-            quarterTurns: 1,
-            child: ValueListenableBuilder(
-                valueListenable: readProgress,
-                builder: (BuildContext context, double value, Widget? child) {
-                  return LinearProgressIndicator(
-                    value: readProgress.value,
-                    backgroundColor: AppColors.transparent,
-                    valueColor: const AlwaysStoppedAnimation(AppColors.limeGreenVivid),
-                    minHeight: 6,
-                  );
-                })));
+      padding: const EdgeInsets.only(top: kToolbarHeight),
+      child: RotatedBox(
+        quarterTurns: 1,
+        child: ValueListenableBuilder(
+          valueListenable: readProgress,
+          builder: (BuildContext context, double value, Widget? child) {
+            return LinearProgressIndicator(
+              value: readProgress.value,
+              backgroundColor: AppColors.transparent,
+              valueColor: const AlwaysStoppedAnimation(AppColors.limeGreenVivid),
+              minHeight: 6,
+            );
+          },
+        ),
+      ),
+    );
   }
 }
 
