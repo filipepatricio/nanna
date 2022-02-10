@@ -4,6 +4,7 @@ class MockGraphqlResponses {
   static const currentBrief = '''
   {
       "currentBrief": {
+        "id": "49b8669a-ebd2-4cfb-b473-f1d5a563e479",
         "goodbye": {
           "headline": "You’re all _informed_",
           "icon": null,
@@ -14,7 +15,6 @@ class MockGraphqlResponses {
           "icon": null,
           "message": null
         },
-        "id": "49b8669a-ebd2-4cfb-b473-f1d5a563e479",
         "numberOfTopics": 6,
         "topics": [
           $topic,
@@ -52,30 +52,10 @@ class MockGraphqlResponses {
   }
   ''';
 
-  static const topic = '''
-    {
-      "topic": {
-        "id": "1e55abe0-d711-44b4-a37c-7e1a279b439a",
-        "title": "Lorem **ipsum sit amet** incididunt elit eiusmod sit",
-        "strippedTitle": "Lorem ipsum sit amet incididunt elit eiusmod sit",
-        "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "url": "https://app.staging.informed.so/topics/world-water-crisis",
-        $_ownerEditor,
-        $_summaryCards,
-        "lastUpdatedAt": "2021-12-23T11:38:26Z",
-        $_highlightedPublishers,
-        "category": null,
-        $_heroImage,
-        $_coverImage,
-        "readingList": {
-          "id": "88afff48-ff28-47ba-9793-a307d98df5f8",
-          "entries": [
-            $_readingLisEntryPremiumWithBigImage,
-            $_readingLisEntryFreeWithoutImage
-          ]
-        }
-      }
-    }
+  static const getTopic = '''
+  {
+    "topic": $topic,
+  }
   ''';
 
   static const arzticleContentMarkdown = '''
@@ -101,6 +81,30 @@ class MockGraphqlResponses {
   ''';
 
   // Internal parts
+
+  static const topic = '''
+  {
+    "id": "1e55abe0-d711-44b4-a37c-7e1a279b439a",
+    "title": "Lorem **ipsum sit amet** incididunt elit eiusmod sit",
+    "strippedTitle": "Lorem ipsum sit amet incididunt elit eiusmod sit",
+    "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "url": "https://app.staging.informed.so/topics/world-water-crisis",
+    $_ownerEditor,
+    $_summaryCards,
+    "lastUpdatedAt": "2021-12-23T11:38:26Z",
+    $_highlightedPublishers,
+    "category": null,
+    $_heroImage,
+    $_coverImage,
+    "readingList": {
+      "id": "88afff48-ff28-47ba-9793-a307d98df5f8",
+      "entries": [
+        $_readingLisEntryPremiumWithBigImage,
+        $_readingLisEntryFreeWithoutImage
+      ]
+    }
+  }
+  ''';
 
   static const _coverImage = '''
   "coverImage": {

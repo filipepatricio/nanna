@@ -27,7 +27,7 @@ l10n:
 	fvm flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
 
 update_goldens:
-	-fvm flutter test test/visual --update-goldens
+	-flutter test test/visual --update-goldens
 
 screens_report:
 	dart scripts/screens_report.dart

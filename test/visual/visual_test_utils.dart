@@ -80,7 +80,7 @@ void visualTest(Object widgetTypeOrDescription, VisualTestCallback callback,
   }, tags: 'visual', skip: skip);
 }
 
-const _defaultInitialRoute = MainPageRoute();
+const _defaultInitialRoute = DashboardPageRoute();
 
 extension StartAppExtension on WidgetTester {
   Future<void> startApp({PageRouteInfo initialRoute = _defaultInitialRoute}) async {
@@ -104,7 +104,7 @@ extension StartAppExtension on WidgetTester {
 
     if (initialRoute != _defaultInitialRoute) {
       if (isTab) {
-        await mainRouter.navigate(MainPageRoute(children: [initialRoute]));
+        await mainRouter.navigate(DashboardPageRoute(children: [initialRoute]));
       } else {
         await mainRouter.navigate(initialRoute);
       }
