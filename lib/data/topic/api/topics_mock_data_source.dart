@@ -20,12 +20,13 @@ class TopicsMockDataSource implements TopicsApiDataSource {
 
   @override
   Future<TopicDTO> getTopicBySlug(String slug) async {
-    return TopicDTO.fromJson(jsonDecode(MockGraphqlResponses.topic) as Map<String, dynamic>);
+    final jsonDto = jsonDecode(MockGraphqlResponses.topic) as Map<String, dynamic>;
+    return TopicDTO.fromJson(jsonDto['topic'] as Map<String, dynamic>);
   }
 
   @override
   Future<String> getTopicId(String slug) async {
     final topicDto = jsonDecode(MockGraphqlResponses.topicId) as Map<String, dynamic>;
-    return topicDto['id'] as String;
+    return topicDto['topic']['id'] as String;
   }
 }

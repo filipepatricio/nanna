@@ -23,7 +23,7 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/hero_em
 import 'package:flutter/material.dart';
 
 const topicsPathSegment = 'topics';
-const articlePathSegment = 'article';
+const articlePathSegment = 'articles';
 
 final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRouterKey');
 
