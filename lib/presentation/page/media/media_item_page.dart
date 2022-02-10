@@ -15,7 +15,6 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
-import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glow_scroll_behaviour.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
@@ -33,11 +32,13 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 typedef MediaItemNavigationCallback = void Function(int index);
 
 const appBarHeight = kToolbarHeight + AppDimens.xl;
+const _tryAgainButtonWidth = 150.0;
 
 class MediaItemPage extends HookWidget {
   const MediaItemPage({
-    this.article,
     @PathParam('articleSlug') this.slug,
+    @QueryParam('topicSlug') this.topicSlug,
+    this.article,
     this.topicId,
     this.readArticleProgress,
     Key? key,
@@ -46,6 +47,7 @@ class MediaItemPage extends HookWidget {
   final String? topicId;
   final MediaItemArticle? article;
   final String? slug;
+  final String? topicSlug;
 
   final double? readArticleProgress;
 
@@ -63,7 +65,7 @@ class MediaItemPage extends HookWidget {
     final pageController = usePageController();
 
     useEffect(() {
-      cubit.initialize(article, slug, topicId);
+      cubit.initialize(article, slug, topicId, topicSlug);
     }, [cubit]);
 
     return LayoutBuilder(
@@ -106,7 +108,7 @@ class MediaItemPage extends HookWidget {
                   error: (state) => _ErrorContent(article: state.article),
                   emptyError: (_) => _ErrorContent(
                     onTryAgain: () {
-                      cubit.initialize(article, slug, topicId);
+                      cubit.initialize(article, slug, topicId, topicSlug);
                     },
                   ),
                   orElse: () => const SizedBox(),
@@ -202,13 +204,18 @@ class _ErrorContent extends StatelessWidget {
                 buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
               )
             else
-              FilledButton(
-                text: LocaleKeys.common_tryAgain.tr(),
-                fillColor: AppColors.textPrimary,
-                textColor: AppColors.white,
-                onTap: () {
-                  onTryAgain?.call();
-                },
+              Center(
+                child: SizedBox(
+                  width: _tryAgainButtonWidth,
+                  child: FilledButton(
+                    text: LocaleKeys.common_tryAgain.tr(),
+                    fillColor: AppColors.textPrimary,
+                    textColor: AppColors.white,
+                    onTap: () {
+                      onTryAgain?.call();
+                    },
+                  ),
+                ),
               )
           ],
         ),

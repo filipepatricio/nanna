@@ -5,4 +5,6 @@ abstract class TopicsApiDataSource {
   Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId);
 
   Future<TopicDTO> getTopicBySlug(String slug);
+
+  Future<String> getTopicId(String slug);
 }

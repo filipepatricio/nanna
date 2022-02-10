@@ -99,6 +99,12 @@ class MockGraphqlResponses {
 	}
   ''';
 
+  static const topicId = '''
+    {
+      "id": "154dfdf6-ae72-4ea9-b4a5-d61e1782099e"
+    }
+  ''';
+
   // Internal parts
 
   static const _coverImage = '''

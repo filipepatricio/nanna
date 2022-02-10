@@ -22,6 +22,9 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/fade_pa
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
 import 'package:flutter/material.dart';
 
+const topicsPathSegment = 'topics';
+const articlePathSegment = 'article';
+
 final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRouterKey');
 
 @AdaptiveAutoRouter(
@@ -55,7 +58,7 @@ const dashboardTabRouter = CustomRoute(
   durationInMilliseconds: 0,
   children: [
     AutoRoute(
-      path: 'topics',
+      path: topicsPathSegment,
       name: 'TodayTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
@@ -87,12 +90,12 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(path: '', page: ProfilePage, initial: true),
       ],
     ),
-    RedirectRoute(path: '', redirectTo: 'topics'),
+    RedirectRoute(path: '', redirectTo: topicsPathSegment),
   ],
 );
 
 const articleRoute = CustomRoute(
-  path: 'article/:articleSlug',
+  path: '$articlePathSegment/:articleSlug',
   page: MediaItemPage,
   customRouteBuilder: cupertinoBottomSheetPageRouteBuilder,
 );
