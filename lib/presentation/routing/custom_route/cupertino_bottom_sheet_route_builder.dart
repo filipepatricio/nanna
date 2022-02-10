@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
+import 'package:better_informed_mobile/presentation/page/main/dashboard_page.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/cupertino.dart' show CupertinoTheme;
 import 'package:flutter/material.dart' show Colors, DefaultMaterialLocalizations, MaterialLocalizations, Theme;
@@ -66,11 +66,8 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
 
 class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
   final Radius topRadius;
-
   final Curve? previousRouteAnimationCurve;
-
   final BoxShadow? boxShadow;
-
   final Color? transitionBackgroundColor;
 
   CupertinoModalBottomSheetRoute({
@@ -423,12 +420,13 @@ class ModalBottomSheetRoute<T> extends PopupRoute<T> {
 }
 
 Route<T> cupertinoBottomSheetPageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
-  final topRadius = CupertinoScaffold.of(mainPageKey.currentContext!)?.topRadius;
+  final scaffold = CupertinoScaffold.of(context) ?? CupertinoScaffold.of(dashboardPageKey.currentContext!);
+  final topRadius = scaffold?.topRadius;
 
   return CupertinoModalBottomSheetRoute<T>(
     closeProgressThreshold: null,
     builder: (context) => child,
-    secondAnimationController: CupertinoScaffold.of(mainPageKey.currentContext!)?.animation,
+    secondAnimationController: scaffold?.animation,
     containerBuilder: (context, _, child) => _CupertinoBottomSheetContainer(
       backgroundColor: null,
       topRadius: topRadius ?? _kDefaultTopRadius,

@@ -15,6 +15,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
@@ -31,19 +32,24 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 typedef MediaItemNavigationCallback = void Function(int index);
 
 const appBarHeight = kToolbarHeight + AppDimens.xl;
+const _tryAgainButtonWidth = 150.0;
 
 class MediaItemPage extends HookWidget {
-  final String? topicId;
-  final MediaItemArticle article;
-
-  final double? readArticleProgress;
-
   const MediaItemPage({
-    required this.article,
-    this.readArticleProgress,
+    @PathParam('articleSlug') this.slug,
+    @QueryParam('topicSlug') this.topicSlug,
+    this.article,
     this.topicId,
+    this.readArticleProgress,
     Key? key,
   }) : super(key: key);
+
+  final String? topicId;
+  final MediaItemArticle? article;
+  final String? slug;
+  final String? topicSlug;
+
+  final double? readArticleProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +65,7 @@ class MediaItemPage extends HookWidget {
     final pageController = usePageController();
 
     useEffect(() {
-      cubit.initialize(article);
+      cubit.initialize(article, slug, topicId, topicSlug);
     }, [cubit]);
 
     return LayoutBuilder(
@@ -74,11 +80,13 @@ class MediaItemPage extends HookWidget {
             /// to make sure it will work - at least only way I found
             SizedBox(
               height: 0,
-              child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: modalController,
-                child: const SizedBox(
-                  height: 0,
+              child: NoScrollGlow(
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                  controller: modalController,
+                  child: const SizedBox(
+                    height: 0,
+                  ),
                 ),
               ),
             ),
@@ -98,6 +106,11 @@ class MediaItemPage extends HookWidget {
                     readArticleProgress: readArticleProgress,
                   ),
                   error: (state) => _ErrorContent(article: state.article),
+                  emptyError: (_) => _ErrorContent(
+                    onTryAgain: () {
+                      cubit.initialize(article, slug, topicId, topicSlug);
+                    },
+                  ),
                   orElse: () => const SizedBox(),
                 ),
               ),
@@ -140,15 +153,19 @@ class _LoadingContent extends StatelessWidget {
 }
 
 class _ErrorContent extends StatelessWidget {
-  final MediaItemArticle article;
+  final MediaItemArticle? article;
+  final VoidCallback? onTryAgain;
 
   const _ErrorContent({
-    required this.article,
+    this.article,
+    this.onTryAgain,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final article = this.article;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,10 +198,25 @@ class _ErrorContent extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimens.xl),
-            OpenWebButton(
-              url: article.sourceUrl,
-              buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
-            ),
+            if (article != null)
+              OpenWebButton(
+                url: article.sourceUrl,
+                buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
+              )
+            else
+              Center(
+                child: SizedBox(
+                  width: _tryAgainButtonWidth,
+                  child: FilledButton(
+                    text: LocaleKeys.common_tryAgain.tr(),
+                    fillColor: AppColors.textPrimary,
+                    textColor: AppColors.white,
+                    onTap: () {
+                      onTryAgain?.call();
+                    },
+                  ),
+                ),
+              )
           ],
         ),
         const SizedBox(height: AppDimens.xxxl + AppDimens.l),

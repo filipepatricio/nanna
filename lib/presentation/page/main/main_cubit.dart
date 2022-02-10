@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:better_informed_mobile/domain/auth/use_case/get_token_expiration_stream_use_case.dart';
 import 'package:better_informed_mobile/domain/deep_link/use_case/subscribe_for_deep_link_use_case.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_navigation_stream_use_case.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/maybe_register_push_notification_token_use_case.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dart';
+import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -56,19 +59,49 @@ class MainCubit extends Cubit<MainState> {
 
   void _subscribeToPushNavigationStream() {
     _incomingPushNavigationSubscription = _incomingPushNavigationStreamUseCase().listen((event) {
-      emit(MainState.navigate(event.path));
+      emit(_handleNavigationAction(event.path));
       emit(const MainState.init());
     });
   }
 
   void _subscribeToDeepLinkStream() {
     _deepLinkSubscription = _subscribeForDeepLinkUseCase().listen((path) async {
-      try {
-        emit(MainState.navigate(path));
-        emit(const MainState.init());
-      } catch (e, s) {
-        Fimber.e('Navigating to route from deep link failed', ex: e, stacktrace: s);
-      }
+      emit(_handleNavigationAction(path));
+      emit(const MainState.init());
     });
+  }
+
+  MainState _handleNavigationAction(String path) {
+    final uri = Uri.parse(path);
+    final articleSegment = uri.pathSegments.firstWhere((element) => element == articlePathSegment, orElse: () => '');
+    final articleIndex = uri.pathSegments.indexOf(articleSegment);
+
+    if (articleIndex != -1) {
+      final topicSlug = _findTopicSlug(path);
+
+      final firstPart = const MainPageRoute().path + '/' + uri.pathSegments.take(max(0, articleIndex)).join('/');
+      final secondPart = const MainPageRoute().path + '/' + uri.pathSegments.skip(max(0, articleIndex)).join('/');
+
+      if (topicSlug == null) {
+        return MainState.multiNavigate([firstPart, secondPart]);
+      } else {
+        final articleUri = Uri(path: secondPart, queryParameters: {'topicSlug': topicSlug});
+        return MainState.multiNavigate([firstPart, articleUri.toString()]);
+      }
+    }
+
+    return MainState.navigate(const MainPageRoute().path + path);
+  }
+
+  String? _findTopicSlug(String path) {
+    final uri = Uri.parse(path);
+    final topicsSegment = uri.pathSegments.firstWhere((element) => element == topicsPathSegment, orElse: () => '');
+    final topicSegmentIndex = uri.pathSegments.indexOf(topicsSegment);
+
+    if (topicSegmentIndex != -1 && uri.pathSegments.length > topicSegmentIndex + 1) {
+      return uri.pathSegments[topicSegmentIndex + 1];
+    }
+
+    return null;
   }
 }
