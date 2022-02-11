@@ -39,6 +39,7 @@ class DottedArticleInfo extends StatelessWidget {
     final timeToRead = article.timeToRead;
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (showPublisher) ...[
           if (showLogo) ...[
@@ -49,20 +50,20 @@ class DottedArticleInfo extends StatelessWidget {
           ],
           Text(
             article.publisher.name,
-            style: textStyle.copyWith(color: mainColor),
+            style: textStyle.copyWith(color: mainColor, height: 1),
           ),
         ],
         if (showDate && publicationDate != null)
           Text(
             '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
-            style: textStyle.copyWith(color: mainColor),
+            style: textStyle.copyWith(color: mainColor, height: 1),
           ),
         if (showReadTime && timeToRead != null)
           Text(
             '${showPublisher || showDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
               args: [timeToRead.toString()],
             )}',
-            style: textStyle.copyWith(color: mainColor),
+            style: textStyle.copyWith(color: mainColor, height: 1),
           ),
       ],
     );
