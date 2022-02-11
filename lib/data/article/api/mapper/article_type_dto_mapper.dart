@@ -8,7 +8,7 @@ class ArticleTypeDTOMapper implements Mapper<String, ArticleType> {
   ArticleType call(String data) {
     switch (data) {
       case 'FREE':
-        return ArticleType.freemium;
+        return ArticleType.free;
       case 'PREMIUM':
         return ArticleType.premium;
       default:

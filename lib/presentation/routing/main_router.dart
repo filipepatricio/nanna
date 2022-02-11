@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/topics/topics_see_all_page.dart';
+import 'package:better_informed_mobile/presentation/page/main/dashboard_page.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
@@ -21,6 +22,9 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/fade_pa
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
 import 'package:flutter/material.dart';
 
+const topicsPathSegment = 'topics';
+const articlePathSegment = 'articles';
+
 final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRouterKey');
 
 @AdaptiveAutoRouter(
@@ -32,31 +36,39 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
     AutoRoute(page: TopicPage, name: 'TopicOwnerTopicPage'),
-    CustomRoute(page: MediaItemPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
-    dashboardTabRouter,
+    mainPageRoute,
   ],
 )
 class $MainRouter {}
 
-const dashboardTabRouter = CustomRoute(
+const mainPageRoute = CustomRoute(
   page: MainPage,
   durationInMilliseconds: 0,
   children: [
+    dashboardTabRouter,
+    articleRoute,
+  ],
+);
+
+const dashboardTabRouter = CustomRoute(
+  initial: true,
+  page: DashboardPage,
+  durationInMilliseconds: 0,
+  children: [
     AutoRoute(
-      path: 'topics',
+      path: topicsPathSegment,
       name: 'TodayTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: TodaysTopicsPage),
+        AutoRoute(path: '', page: TodaysTopicsPage, initial: true),
         CustomRoute(
           page: TopicPage,
           path: ':topicSlug',
           customRouteBuilder: fadePageRouteBuilder,
           name: 'TodaysTopicsTopicPage',
         ),
-        RedirectRoute(path: '', redirectTo: '')
       ],
     ),
     AutoRoute(
@@ -64,7 +76,7 @@ const dashboardTabRouter = CustomRoute(
       name: 'ExploreTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: ExplorePage),
+        AutoRoute(path: '', page: ExplorePage, initial: true),
         AutoRoute(page: ArticleSeeAllPage),
         AutoRoute(page: TopicsSeeAllPage),
         AutoRoute(page: TopicPage),
@@ -75,9 +87,15 @@ const dashboardTabRouter = CustomRoute(
       name: 'ProfileTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: ProfilePage),
+        AutoRoute(path: '', page: ProfilePage, initial: true),
       ],
     ),
-    RedirectRoute(path: '', redirectTo: 'topics'),
+    RedirectRoute(path: '', redirectTo: topicsPathSegment),
   ],
+);
+
+const articleRoute = CustomRoute(
+  path: '$articlePathSegment/:articleSlug',
+  page: MediaItemPage,
+  customRouteBuilder: cupertinoBottomSheetPageRouteBuilder,
 );

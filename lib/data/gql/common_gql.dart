@@ -4,6 +4,7 @@ class CommonGQLModels {
   static const String topic = '''
     id
     title
+    url
     strippedTitle
     lastUpdatedAt
     owner {
@@ -72,6 +73,14 @@ class CommonGQLModels {
       lightLogo {
         publicId
       }
+  ''';
+
+  static const String fullArticle = '''
+    $article
+    text {
+      content
+      markupLanguage
+    }
   ''';
 
   static const String article = '''

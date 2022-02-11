@@ -18,4 +18,12 @@ class TopicsGql {
       }
     }
   ''');
+
+  static DocumentNode getTopicIdBySlug(String slug) => gql('''
+    query {
+      topic(slug: "$slug") {
+        id
+      }
+    }
+  ''');
 }

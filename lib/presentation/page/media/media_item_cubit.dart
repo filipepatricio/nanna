@@ -4,17 +4,16 @@ import 'package:better_informed_mobile/domain/analytics/analytics_page.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_article_header_use_case.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/trade_topid_id_for_slug_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'media_item_state.dart';
 
@@ -23,11 +22,10 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
   final GetArticleUseCase _getArticleUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
+  final GetArticleHeaderUseCase _getArticleHeaderUseCase;
+  final TradeTopicIdForSlugUseCase _tradeTopicIdForSlugUseCase;
 
-  late Topic? _topic;
-  late List<MediaItemArticle> _allArticles;
-  late int _index;
-
+  late MediaItemArticle _currentArticle;
   Article? _currentFullArticle;
 
   MediaItemScrollData scrollData = MediaItemScrollData.initial();
@@ -36,32 +34,84 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     this._setStartedArticleStreamUseCase,
     this._getArticleUseCase,
     this._trackActivityUseCase,
+    this._getArticleHeaderUseCase,
+    this._tradeTopicIdForSlugUseCase,
   ) : super(const MediaItemState.initializing());
 
   var readingComplete = false;
 
-  Future<void> initialize(int index, MediaItemArticle? singleArticle, Topic? topic) async {
-    assert(singleArticle == null || topic == null, 'Cannot be initialized with a single Article and a Topic');
-    throwIf(
-        singleArticle == null && topic == null, ArgumentError('Must be initialized either with an Article or a Topic'));
+  Future<void> initialize(
+    MediaItemArticle? article,
+    String? slug,
+    String? topicId,
+    String? topicSlug,
+  ) async {
+    if (article == null && slug == null) {
+      emit(const MediaItemState.emptyError());
+      Fimber.e('Article and slug were null on article page.');
+      return;
+    }
 
-    _index = index;
-    _topic = topic;
-    _allArticles = topic != null
-        ? topic.readingList.entries.map((e) => e.item).whereType<MediaItemArticle>().toList()
-        : [singleArticle!];
+    if (article != null) {
+      await _initializeWithArticle(article, topicId);
+    } else if (slug != null) {
+      await _initializeWithSlug(slug, topicSlug);
+    }
+  }
 
-    final currentEntry = _allArticles[_index];
+  Future<void> _initializeWithArticle(MediaItemArticle article, String? topicId) async {
+    _currentArticle = article;
+    _trackActivityUseCase.trackPage(AnalyticsPage.article(article.id, topicId));
 
     emit(const MediaItemState.loading());
+
     _resetBannerState();
 
+    if (article.type == ArticleType.free) {
+      emit(MediaItemState.idleFree(article));
+      return;
+    }
+
+    await _loadPremiumArticle(article);
+  }
+
+  Future<void> _initializeWithSlug(String slug, String? topicSlug) async {
+    emit(const MediaItemState.loading());
+
     try {
-      _currentFullArticle = await _getArticleUseCase(currentEntry);
-      _showIdleOrErrorState();
+      final article = await _getArticleHeaderUseCase(slug);
+      _currentArticle = article;
+
+      await _trackWithTopicSlug(article.id, topicSlug);
+
+      if (article.type == ArticleType.free) {
+        emit(MediaItemState.idleFree(article));
+        return;
+      }
+
+      await _loadPremiumArticle(article);
+    } catch (e, s) {
+      Fimber.e('Fetching article header failed', ex: e, stacktrace: s);
+      emit(const MediaItemState.emptyError());
+    }
+  }
+
+  Future<void> _trackWithTopicSlug(String articleId, String? topicSlug) async {
+    if (topicSlug != null) {
+      final topicId = await _tradeTopicIdForSlugUseCase(topicSlug);
+      _trackActivityUseCase.trackPage(AnalyticsPage.article(articleId, topicId));
+    } else {
+      _trackActivityUseCase.trackPage(AnalyticsPage.article(articleId));
+    }
+  }
+
+  Future<void> _loadPremiumArticle(MediaItemArticle article) async {
+    try {
+      _currentFullArticle = await _getArticleUseCase(article);
+      _showIdlePremiumOrErrorState();
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
-      emit(MediaItemState.error(_getCurrentHeader()));
+      emit(MediaItemState.error(_currentArticle));
     }
   }
 
@@ -82,50 +132,18 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     _updateReadingBannerState(progress);
   }
 
-  Future<void> loadNextArticle(Completer completer) async {
-    final nextIndex = _index + 1;
-    if (nextIndex < _allArticles.length) {
-      final nextArticleHeader = _allArticles[nextIndex];
-
-      try {
-        final articleFuture = _getArticleUseCase(nextArticleHeader);
-        final delay = Future.delayed(const Duration(seconds: 2));
-        final nextArticle = await Rx.zip2<Article, dynamic, Article>(
-          articleFuture.asStream(),
-          delay.asStream(),
-          (a, b) => a,
-        ).last;
-
-        _currentFullArticle = nextArticle;
-        _index = nextIndex;
-
-        scrollData = MediaItemScrollData.initial();
-        _resetBannerState();
-
-        _showIdleOrErrorState();
-        emit(MediaItemState.nextPageLoaded(_index));
-      } catch (e, s) {
-        Fimber.e('Fetching next full article failed', ex: e, stacktrace: s);
-        emit(MediaItemState.error(_getCurrentHeader()));
-      }
-    }
-
-    completer.complete();
-  }
-
   void _resetBannerState() {
     readingComplete = false;
     final readingBanner = ReadingBanner(article: _getCurrentHeader(), scrollProgress: 0.0);
     _setStartedArticleStreamUseCase(readingBanner);
   }
 
-  void _showIdleOrErrorState() {
+  void _showIdlePremiumOrErrorState() {
     final article = _currentFullArticle;
     if (article == null) {
       emit(MediaItemState.error(_getCurrentHeader()));
     } else {
-      _trackActivityUseCase.trackPage(AnalyticsPage.article(article.article.id, _topic?.id));
-      emit(MediaItemState.idle(article.article, article.content));
+      emit(MediaItemState.idlePremium(article.article, article.content));
     }
   }
 
@@ -142,5 +160,5 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     }
   }
 
-  MediaItemArticle _getCurrentHeader() => _allArticles[_index];
+  MediaItemArticle _getCurrentHeader() => _currentArticle;
 }

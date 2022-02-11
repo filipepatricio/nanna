@@ -20,7 +20,7 @@ class MainNavigationObserver extends AutoRouterObserver {
         // Handled in TopicPageCubit
         return;
       case MediaItemPageRoute.name:
-        // Handled in MediaItemCubit
+        // Handled in MediaItemPageCubit
         return;
       case ArticleSeeAllPageRoute.name:
         final args = route.settings.arguments as ArticleSeeAllPageRouteArgs;

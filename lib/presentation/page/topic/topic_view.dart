@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/page/topic/mediaitems/topic_media_items_list.dart';
-import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary.dart';
+import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary_section.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -36,29 +36,28 @@ class TopicView extends HookWidget {
         final listener = summaryCardTutorialListener(scrollController, topicHeaderImageHeight);
         scrollController.addListener(listener);
       }, shouldShowMediaItemTutorialCoachMark: () {
-        final listener = mediaItemTutorialListener(scrollController, AppDimens.topicViewArticleSectionFullHeight);
+        final listener = mediaItemTutorialListener(scrollController,
+            topicHeaderImageHeight + AppDimens.topicViewTopicHeaderPadding + AppDimens.topicViewSummaryCardHeight);
         scrollController.addListener(listener);
       });
     });
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TopicSummary(
+        TopicSummarySection(
           topic: topic,
           summaryCardKey: summaryCardKey,
         ),
-        Stack(
-          children: [
-            GeneralEventTracker(
-              controller: eventController,
-              child: TopicMediaItemsList(
-                pageIndex: pageIndex,
-                topic: topic,
-                eventController: eventController,
-                mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
-              ),
-            ),
-          ],
+        GeneralEventTracker(
+          controller: eventController,
+          child: TopicMediaItemsList(
+            pageIndex: pageIndex,
+            topic: topic,
+            eventController: eventController,
+            mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
+          ),
         ),
       ],
     );
@@ -90,13 +89,13 @@ class TopicView extends HookWidget {
     return summaryCardTutorialListener;
   }
 
-  VoidCallback mediaItemTutorialListener(ScrollController listScrollController, double articleContentHeight) {
+  VoidCallback mediaItemTutorialListener(ScrollController listScrollController, double articleTriggerPosition) {
     var isToShowMediaItemTutorialCoachMark = true;
     final mediaItemTutorialListener = () {
       if (isToShowMediaItemTutorialCoachMark &&
-          didListScrollReachMediaItem(listScrollController, listScrollController.position.maxScrollExtent)) {
+          didListScrollReachMediaItem(listScrollController, articleTriggerPosition)) {
         listScrollController.animateTo(
-          listScrollController.position.maxScrollExtent,
+          articleTriggerPosition,
           duration: const Duration(milliseconds: 100),
           curve: Curves.decelerate,
         );

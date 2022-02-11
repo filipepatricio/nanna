@@ -30,4 +30,9 @@ class TopicsApiRepository implements TopicsRepository {
     final dto = await _topicsApiDataSource.getTopicBySlug(slug);
     return _topicDTOMapper(dto);
   }
+
+  @override
+  Future<String> tradeTopicIdForSlug(String slug) async {
+    return _topicsApiDataSource.getTopicId(slug);
+  }
 }

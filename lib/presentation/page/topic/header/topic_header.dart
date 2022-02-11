@@ -92,11 +92,7 @@ class TopicHeader extends HookWidget {
                           TopicOwnerAvatar(
                             owner: topic.owner,
                             onTap: () => AutoRouter.of(context).push(
-                              TopicOwnerPageRoute(
-                                owner: topic.owner,
-                                //TODO: Replace with owner's topics fetched from API
-                                topics: List.generate(3, (index) => topic),
-                              ),
+                              TopicOwnerPageRoute(owner: topic.owner),
                             ),
                           ),
                           const SizedBox(height: AppDimens.xl),

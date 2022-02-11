@@ -181,6 +181,7 @@ class _Sticker extends StatelessWidget {
           _TopicHeader(
             topic: topic,
             image: image,
+            articlesLength: articles.length,
           ),
           const SizedBox(height: AppDimens.xl),
           Padding(
@@ -200,42 +201,51 @@ class _Sticker extends StatelessWidget {
 class _TopicHeader extends StatelessWidget {
   final Topic topic;
   final Image image;
+  final int articlesLength;
 
   const _TopicHeader({
     required this.topic,
     required this.image,
+    required this.articlesLength,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        image,
-        Positioned.fill(
-          child: Container(
+    return SizedBox(
+      width: _topicHeaderImageWidth,
+      height: _topicHeaderImageHeight,
+      child: Stack(
+        children: [
+          image,
+          Container(
             color: AppColors.black.withOpacity(0.4),
-          ),
-        ),
-        Positioned(
-          left: AppDimens.xl,
-          top: AppDimens.xl,
-          child: TopicOwnerAvatar(owner: topic.owner, lightMode: true),
-        ),
-        Positioned(
-          top: AppDimens.xxc,
-          left: AppDimens.xl,
-          right: AppDimens.xl,
-          bottom: AppDimens.xl,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: InformedMarkdownBody(
-              markdown: topic.title,
-              baseTextStyle: _topicTitleStyle,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl, vertical: AppDimens.xl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TopicOwnerAvatar(owner: topic.owner, lightMode: true),
+                  const Spacer(),
+                  Expanded(
+                    child: InformedMarkdownBody(
+                      markdown: topic.title,
+                      baseTextStyle: _topicTitleStyle,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: AppDimens.xl),
+                    child: Text(
+                      LocaleKeys.todaysTopics_selectedArticles.tr(args: ['$articlesLength']),
+                      style: AppTypography.b1Regular.copyWith(color: AppColors.white, height: 1),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,17 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/link_label.dart';
-import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
+import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -32,7 +30,6 @@ class TopicMediaItemsList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final entryList = topic.readingList.entries;
-    final controller = usePageController();
 
     useEffect(
       () {
@@ -42,38 +39,14 @@ class TopicMediaItemsList extends HookWidget {
     );
 
     return Container(
-      height: AppDimens.topicViewArticleSectionFullHeight,
-      child: Stack(
-        alignment: Alignment.center,
+      color: AppColors.darkLinen,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Positioned.fill(
-            child: NoScrollGlow(
-              child: PageView.builder(
-                controller: controller,
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (index) {
-                  _trackReadingListBrowse(index);
-                  pageIndex.value = index;
-                },
-                itemCount: entryList.length,
-                itemBuilder: (context, index) {
-                  return ArticleItemView(
-                    index: index,
-                    topic: topic,
-                    topPadding: AppDimens.topicViewArticleSectionArticleCountLabelHeight +
-                        AppDimens.topicViewStackedCardsDividerHeight,
-                    onTap: () => _navigateToArticleByIndex(context, index, controller),
-                    mediaItemKey: index == 0 ? mediaItemKey : null,
-                  );
-                },
-              ),
-            ),
-          ),
-          Positioned(
-            left: AppDimens.l,
-            top: AppDimens.l + AppDimens.topicViewStackedCardsDividerHeight,
+          const BottomStackedCards(),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xl),
             child: SizedBox(
-              height: AppDimens.topicViewArticleSectionArticleCountLabelHeight,
               child: Text(
                 LocaleKeys.todaysTopics_articlesCount.tr(args: [topic.readingList.entries.length.toString()]),
                 style: AppTypography.h2Jakarta,
@@ -81,26 +54,35 @@ class TopicMediaItemsList extends HookWidget {
               ),
             ),
           ),
-          Positioned(
-            left: AppDimens.l,
-            bottom: AppDimens.xl,
-            child: PageDotIndicator(
-              pageCount: entryList.length,
-              controller: controller,
-            ),
+          ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            separatorBuilder: (context, index) => const SizedBox(height: AppDimens.l),
+            itemCount: entryList.length,
+            itemBuilder: (context, index) {
+              final entry = topic.readingList.entries[index];
+              if (entry.item is MediaItemArticle) {
+                final article = entry.item as MediaItemArticle;
+                return ViewVisibilityNotifier(
+                    detectorKey: Key(article.slug),
+                    onVisible: () {
+                      _trackReadingListBrowse(index);
+                    },
+                    borderFraction: 0.6,
+                    child: ArticleItemView(
+                      article: article,
+                      entryNote: entry.note,
+                      entryStyle: entry.style,
+                      onTap: () => _navigateToArticle(context, index),
+                      mediaItemKey: index == 0 ? mediaItemKey : null,
+                    ));
+              }
+              return const SizedBox();
+            },
           ),
-          if (kIsNotSmallDevice) ...[
-            Positioned(
-              left: AppDimens.l,
-              bottom: AppDimens.xxxc,
-              child: LinkLabel(
-                labelText: LocaleKeys.article_readMore.tr(),
-                fontSize: AppDimens.m,
-                onTap: () => _navigateToArticle(context, controller),
-              ),
-            ),
-            const Positioned.fill(top: 0, child: BottomStackedCards()),
-          ]
+          const SizedBox(height: AppDimens.xl)
         ],
       ),
     );
@@ -114,27 +96,11 @@ class TopicMediaItemsList extends HookWidget {
     eventController.track(event);
   }
 
-  void _navigateToArticle(BuildContext context, PageController controller) {
+  void _navigateToArticle(BuildContext context, int index) {
     AutoRouter.of(context).push(
       MediaItemPageRoute(
-        pageData: MediaItemPageData.multipleItems(
-          index: controller.page?.toInt() ?? 0,
-          topic: topic,
-          navigationCallback: (index) => controller.jumpToPage(index),
-        ),
-      ),
-    );
-    return;
-  }
-
-  void _navigateToArticleByIndex(BuildContext context, int index, PageController controller) {
-    AutoRouter.of(context).push(
-      MediaItemPageRoute(
-        pageData: MediaItemPageData.multipleItems(
-          index: index,
-          topic: topic,
-          navigationCallback: (index) => controller.jumpToPage(index),
-        ),
+        article: topic.articleAt(index),
+        topicId: topic.id,
       ),
     );
     return;

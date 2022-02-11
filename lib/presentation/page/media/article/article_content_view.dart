@@ -104,7 +104,6 @@ class _ArticleHeader extends StatelessWidget {
         DottedArticleInfo(
           article: article,
           isLight: false,
-          fullDate: true,
           showLogo: false,
           textStyle: metadataStyle,
           color: metadataStyle.color,

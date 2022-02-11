@@ -223,9 +223,8 @@ class _IdleView extends StatelessWidget {
                 style: _labelTextStyle,
               ),
             ),
-          const SizedBox(height: AppDimens.m),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
             child: FilledButton(
               onTap: () => cubit.generateShareImage(),
               text: LocaleKeys.common_next.tr(),

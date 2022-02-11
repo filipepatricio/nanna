@@ -44,7 +44,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     emit(TopicPageState.loading());
 
     try {
-      final topic = await _getTopicBySlugUseCase(slug);
+      final topic = await _getTopicBySlugUseCase(slug, true);
       await initialize(topic, briefId);
     } catch (e, s) {
       Fimber.e('Topic loading failed', ex: e, stacktrace: s);
@@ -127,14 +127,14 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         contents: [
           TargetContent(
             align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(top: 140),
+            customPosition: CustomTargetContentPosition(bottom: 50),
             builder: (context, controller) {
               return TutorialTooltip(
                   text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
                   tutorialIndex: TutorialCoachMarkStep.values.indexOf(TutorialCoachMarkStep.mediaItem),
                   tutorialLength: TutorialCoachMarkStep.values.length,
                   dismissButtonText: LocaleKeys.common_done.tr(),
-                  tutorialTooltipPosition: TutorialTooltipPosition.top,
+                  tutorialTooltipPosition: TutorialTooltipPosition.bottom,
                   onDismiss: () => emit(TopicPageState.finishTutorialCoachMark()));
             },
           )

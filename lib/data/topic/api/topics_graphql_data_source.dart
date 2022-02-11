@@ -46,4 +46,23 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
 
     return dto ?? (throw Exception('Topic is null'));
   }
+
+  @override
+  Future<String> getTopicId(String slug) async {
+    final result = await _client.query(
+      QueryOptions(
+        document: TopicsGql.getTopicIdBySlug(slug),
+      ),
+    );
+
+    final id = _responseResolver.resolve(
+      result,
+      (raw) {
+        return raw['id'] as String;
+      },
+      rootKey: 'topic',
+    );
+
+    return id ?? (throw Exception('Topic id is null'));
+  }
 }

@@ -14,13 +14,15 @@ class MediaItemState with _$MediaItemState {
   const factory MediaItemState.loading() = _MediaItemStateLoading;
 
   @Implements<BuildState>()
-  const factory MediaItemState.idle(
-    MediaItemArticle header,
-    ArticleContent content,
-  ) = _MediaItemStateIdle;
+  const factory MediaItemState.idlePremium(MediaItemArticle header, ArticleContent content) =
+      _MediaItemStateIdlePremium;
 
-  const factory MediaItemState.nextPageLoaded(int index) = _MediaItemStateNextPageLoaded;
+  @Implements<BuildState>()
+  const factory MediaItemState.idleFree(MediaItemArticle header) = _MediaItemStateIdleFree;
 
   @Implements<BuildState>()
   const factory MediaItemState.error(MediaItemArticle article) = _MediaItemStateError;
+
+  @Implements<BuildState>()
+  const factory MediaItemState.emptyError() = _MediaItemStateEmptyError;
 }

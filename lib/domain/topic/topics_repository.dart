@@ -4,4 +4,6 @@ abstract class TopicsRepository {
   Future<List<Topic>> getTopicsFromExpert(String expertId);
 
   Future<Topic> getTopicBySlug(String slug);
+
+  Future<String> tradeTopicIdForSlug(String slug);
 }

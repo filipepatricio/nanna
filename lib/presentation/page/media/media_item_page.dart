@@ -2,23 +2,20 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page_data.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
@@ -35,38 +32,24 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 typedef MediaItemNavigationCallback = void Function(int index);
 
 const appBarHeight = kToolbarHeight + AppDimens.xl;
+const _tryAgainButtonWidth = 150.0;
 
 class MediaItemPage extends HookWidget {
-  final double? readArticleProgress;
-  final int index;
-  final MediaItemArticle? singleArticle;
-  final MediaItemNavigationCallback? navigationCallback;
-  final Topic? topic;
-
-  MediaItemPage({
-    required MediaItemPageData pageData,
+  const MediaItemPage({
+    @PathParam('articleSlug') this.slug,
+    @QueryParam('topicSlug') this.topicSlug,
+    this.article,
+    this.topicId,
+    this.readArticleProgress,
     Key? key,
-  })  : index = _getIndex(pageData),
-        singleArticle = _getSingleArticle(pageData),
-        navigationCallback = pageData.navigationCallback,
-        readArticleProgress = pageData.readArticleProgress,
-        topic = _getTopic(pageData),
-        super(key: key);
+  }) : super(key: key);
 
-  static Topic? _getTopic(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => null,
-        multipleItems: (data) => data.topic,
-      );
+  final String? topicId;
+  final MediaItemArticle? article;
+  final String? slug;
+  final String? topicSlug;
 
-  static int _getIndex(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => 0,
-        multipleItems: (data) => data.index,
-      );
-
-  static MediaItemArticle? _getSingleArticle(MediaItemPageData pageData) => pageData.map(
-        singleItem: (data) => data.article,
-        multipleItems: (data) => null,
-      );
+  final double? readArticleProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -81,16 +64,8 @@ class MediaItemPage extends HookWidget {
     );
     final pageController = usePageController();
 
-    useCubitListener<MediaItemCubit, MediaItemState>(cubit, (cubit, state, context) {
-      state.mapOrNull(nextPageLoaded: (state) {
-        navigationCallback?.call(state.index);
-        scrollController.jumpTo(0.0);
-        pageController.jumpToPage(0);
-      });
-    });
-
     useEffect(() {
-      cubit.initialize(index, singleArticle, topic);
+      cubit.initialize(article, slug, topicId, topicSlug);
     }, [cubit]);
 
     return LayoutBuilder(
@@ -105,11 +80,13 @@ class MediaItemPage extends HookWidget {
             /// to make sure it will work - at least only way I found
             SizedBox(
               height: 0,
-              child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: modalController,
-                child: const SizedBox(
-                  height: 0,
+              child: NoScrollGlow(
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                  controller: modalController,
+                  child: const SizedBox(
+                    height: 0,
+                  ),
                 ),
               ),
             ),
@@ -117,7 +94,8 @@ class MediaItemPage extends HookWidget {
               child: _AnimatedSwitcher(
                 child: state.maybeMap(
                   loading: (state) => const _LoadingContent(),
-                  idle: (state) => _IdleContent(
+                  idleFree: (state) => _FreeArticleView(article: state.header),
+                  idlePremium: (state) => _PremiumArticleView(
                     article: state.header,
                     content: state.content,
                     modalController: modalController,
@@ -128,6 +106,11 @@ class MediaItemPage extends HookWidget {
                     readArticleProgress: readArticleProgress,
                   ),
                   error: (state) => _ErrorContent(article: state.article),
+                  emptyError: (_) => _ErrorContent(
+                    onTryAgain: () {
+                      cubit.initialize(article, slug, topicId, topicSlug);
+                    },
+                  ),
                   orElse: () => const SizedBox(),
                 ),
               ),
@@ -170,15 +153,19 @@ class _LoadingContent extends StatelessWidget {
 }
 
 class _ErrorContent extends StatelessWidget {
-  final MediaItemArticle article;
+  final MediaItemArticle? article;
+  final VoidCallback? onTryAgain;
 
   const _ErrorContent({
-    required this.article,
+    this.article,
+    this.onTryAgain,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final article = this.article;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -211,57 +198,29 @@ class _ErrorContent extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimens.xl),
-            OpenWebButton(
-              url: article.sourceUrl,
-              buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
-            ),
+            if (article != null)
+              OpenWebButton(
+                url: article.sourceUrl,
+                buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
+              )
+            else
+              Center(
+                child: SizedBox(
+                  width: _tryAgainButtonWidth,
+                  child: FilledButton(
+                    text: LocaleKeys.common_tryAgain.tr(),
+                    fillColor: AppColors.textPrimary,
+                    textColor: AppColors.white,
+                    onTap: () {
+                      onTryAgain?.call();
+                    },
+                  ),
+                ),
+              )
           ],
         ),
         const SizedBox(height: AppDimens.xxxl + AppDimens.l),
       ],
-    );
-  }
-}
-
-class _IdleContent extends HookWidget {
-  final MediaItemArticle article;
-  final ArticleContent content;
-  final MediaItemCubit cubit;
-  final ScrollController modalController;
-  final ScrollController controller;
-  final PageController pageController;
-  final double fullHeight;
-  final double? readArticleProgress;
-
-  const _IdleContent({
-    required this.article,
-    required this.content,
-    required this.modalController,
-    required this.controller,
-    required this.pageController,
-    required this.cubit,
-    required this.fullHeight,
-    this.readArticleProgress,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (article.type == ArticleType.freemium) {
-      return _FreeArticleView(
-        article: article,
-      );
-    }
-
-    return _PremiumArticleView(
-      article: article,
-      content: content,
-      modalController: modalController,
-      controller: controller,
-      pageController: pageController,
-      cubit: cubit,
-      fullHeight: fullHeight,
-      readArticleProgress: readArticleProgress,
     );
   }
 }
@@ -322,7 +281,15 @@ class _PremiumArticleView extends HookWidget {
               ..onEnd = gestureManager.handleDragEnd
               ..onCancel = gestureManager.handleDragCancel;
           },
-        )
+        ),
+        TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+          () => TapGestureRecognizer(),
+          (TapGestureRecognizer instance) {
+            instance.onTapDown = (_) {
+              gestureManager.resetScrollVelocity();
+            };
+          },
+        ),
       },
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
@@ -331,7 +298,7 @@ class _PremiumArticleView extends HookWidget {
             if (notification is ScrollUpdateNotification) {
               final newProgress = controller.offset / controller.position.maxScrollExtent;
               showBackToTopicButton.value = newProgress < readProgress.value;
-              readProgress.value = newProgress;
+              readProgress.value = newProgress.isFinite ? newProgress : 0;
             }
             if (notification is ScrollEndNotification) {
               var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
@@ -567,19 +534,22 @@ class _ArticleProgressBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: kToolbarHeight),
-        child: RotatedBox(
-            quarterTurns: 1,
-            child: ValueListenableBuilder(
-                valueListenable: readProgress,
-                builder: (BuildContext context, double value, Widget? child) {
-                  return LinearProgressIndicator(
-                    value: readProgress.value,
-                    backgroundColor: AppColors.transparent,
-                    valueColor: const AlwaysStoppedAnimation(AppColors.limeGreenVivid),
-                    minHeight: 7,
-                  );
-                })));
+      padding: const EdgeInsets.only(top: kToolbarHeight),
+      child: RotatedBox(
+        quarterTurns: 1,
+        child: ValueListenableBuilder(
+          valueListenable: readProgress,
+          builder: (BuildContext context, double value, Widget? child) {
+            return LinearProgressIndicator(
+              value: readProgress.value,
+              backgroundColor: AppColors.transparent,
+              valueColor: const AlwaysStoppedAnimation(AppColors.limeGreenVivid),
+              minHeight: 6,
+            );
+          },
+        ),
+      ),
+    );
   }
 }
 
