@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
@@ -40,6 +41,17 @@ class SignInPage extends HookWidget {
             if (!state.isOnboardingSeen) const OnboardingPageRoute() else const MainPageRoute(),
           ],
         ),
+        noBetaAccess: (state) {
+          AutoRouter.of(context).push(const NoBetaAccessPageRoute());
+        },
+        generalError: (_) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: tr(LocaleKeys.common_generalError),
+              type: SnackbarMessageType.negative,
+            ),
+          );
+        },
         orElse: () {},
       );
     });
@@ -109,6 +121,7 @@ class _IdleContent extends HookWidget {
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: AppDimens.xxc),
                       Align(
