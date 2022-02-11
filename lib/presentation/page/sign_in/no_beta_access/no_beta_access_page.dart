@@ -62,42 +62,53 @@ class NoBetaAccessPage extends HookWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: SvgPicture.asset(
-                          AppVectorGraphics.betaAccess,
+                      Flexible(
+                        flex: 3,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: SvgPicture.asset(
+                            AppVectorGraphics.betaAccess,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: AppDimens.xl),
-                      Text(
-                        tr(LocaleKeys.noBetaAccessPage_headline),
-                        style: AppTypography.h0Beta,
-                      ),
-                      const SizedBox(height: AppDimens.m),
-                      RichText(
-                        text: TextSpan(
+                      Flexible(
+                        flex: 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            TextSpan(
-                              text: tr(LocaleKeys.noBetaAccessPage_infoParts_0),
-                              style: AppTypography.h4Normal,
+                            const SizedBox(height: AppDimens.l),
+                            Text(
+                              tr(LocaleKeys.noBetaAccessPage_headline),
+                              style: AppTypography.h0Beta,
                             ),
-                            TextSpan(
-                              text: tr(LocaleKeys.noBetaAccessPage_infoParts_1),
-                              style: AppTypography.h4Normal.copyWith(
-                                color: AppColors.blue,
-                                decoration: TextDecoration.underline,
+                            const SizedBox(height: AppDimens.m),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: tr(LocaleKeys.noBetaAccessPage_infoParts_0),
+                                    style: AppTypography.h4Normal,
+                                  ),
+                                  TextSpan(
+                                    text: tr(LocaleKeys.noBetaAccessPage_infoParts_1),
+                                    style: AppTypography.h4Normal.copyWith(
+                                      color: AppColors.blue,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        cubit.sendAccessEmail(
+                                          tr(LocaleKeys.noBetaAccessPage_email_subject),
+                                          tr(LocaleKeys.noBetaAccessPage_email_body),
+                                        );
+                                      },
+                                  ),
+                                  TextSpan(
+                                    text: tr(LocaleKeys.noBetaAccessPage_infoParts_2),
+                                    style: AppTypography.h4Normal,
+                                  ),
+                                ],
                               ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  cubit.sendAccessEmail(
-                                    tr(LocaleKeys.noBetaAccessPage_email_subject),
-                                    tr(LocaleKeys.noBetaAccessPage_email_body),
-                                  );
-                                },
-                            ),
-                            TextSpan(
-                              text: tr(LocaleKeys.noBetaAccessPage_infoParts_2),
-                              style: AppTypography.h4Normal,
                             ),
                           ],
                         ),
