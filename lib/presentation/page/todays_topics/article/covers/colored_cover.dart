@@ -20,17 +20,16 @@ class ColoredCover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppDimens.topicViewArticleSectionImageHeight,
       width: double.infinity,
       color: backgroundColor,
       child: Padding(
-        padding: const EdgeInsets.all(AppDimens.l),
+        padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.xl, AppDimens.m, AppDimens.l),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InformedMarkdownBody(
               markdown: article.title,
-              baseTextStyle: AppTypography.h1SemiBold.copyWith(fontFamily: fontFamilyLora),
+              baseTextStyle: AppTypography.h4SemiBold.copyWith(fontFamily: fontFamilyLora),
               maxLines: 5,
             ),
             const Spacer(),

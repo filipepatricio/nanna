@@ -21,7 +21,6 @@ class PhotoStackedCover extends HookWidget {
     final imageId = article.image?.publicId;
 
     return Container(
-      height: AppDimens.topicViewArticleSectionImageHeight,
       width: double.infinity,
       child: Stack(
         children: [
@@ -51,14 +50,14 @@ class PhotoStackedCover extends HookWidget {
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.all(AppDimens.l),
+              padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.xl, AppDimens.m, AppDimens.l),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   InformedMarkdownBody(
                     markdown: article.title,
-                    baseTextStyle: AppTypography.headline4Bold.copyWith(
+                    baseTextStyle: AppTypography.h4Bold.copyWith(
                       color: AppColors.white,
                       overflow: TextOverflow.ellipsis,
                     ),

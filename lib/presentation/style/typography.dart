@@ -143,6 +143,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h4SemiBold = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 16,
+    height: 1.5,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h4Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
