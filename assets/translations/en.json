@@ -126,6 +126,7 @@
     "loadingNext": "Loading next article in\nthe reading list.",
     "allArticlesRead": "Great! You’ve read all\narticles on this topic.",
     "goBackToTopic": "Back to topic overview",
+    "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
     "loadError": "Something went wrong\n while loading the article",
     "continueToArticle": "Continue reading"
