@@ -6,12 +6,10 @@ part 'reading_list_dto.g.dart';
 @JsonSerializable()
 class ReadingListDTO {
   final String id;
-  final String name;
   final List<EntryDTO> entries;
 
   ReadingListDTO(
     this.id,
-    this.name,
     this.entries,
   );
 

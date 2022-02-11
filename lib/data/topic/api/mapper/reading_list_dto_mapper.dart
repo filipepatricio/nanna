@@ -17,7 +17,6 @@ class ReadingListDTOMapper implements Mapper<ReadingListDTO, ReadingList> {
   ReadingList call(ReadingListDTO data) {
     return ReadingList(
       id: data.id,
-      name: data.name,
       entries: data.entries.map<Entry>(_readingListEntriesDTOMapper).toList(),
     );
   }

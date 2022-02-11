@@ -9,7 +9,6 @@ part 'media_item_dto.g.dart';
 class MediaItemDTO with _$MediaItemDTO {
   @FreezedUnionValue('Article')
   const factory MediaItemDTO.article(
-    String? note,
     String id,
     String slug,
     String title,

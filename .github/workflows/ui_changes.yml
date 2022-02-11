@@ -1,0 +1,76 @@
+name: UI changes
+
+# There is no merged event, so we have to listen for pull request closed
+# and than add to our job condition "if: github.event.pull_request.merged == true"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [develop]
+    paths-ignore:
+      - '**/README.md'
+
+jobs:
+  ui-changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # ... because we want to be able to reset to the merge-base
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets Flutter environment
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+
+      - name: Get glutter dependencies for base branch
+        run: flutter pub get
+
+      # - name: Generate l10n files for base branch
+      #   run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      # - name: Run build_runner for base branch
+      #   run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      # - name: Create golden files for base branch
+      #   run: flutter test test/visual --update-goldens
+
+      # - name: Checkout code to new branch
+      #   uses: actions/checkout@v2
+
+      # - name: Get flutter dependencies
+      #   run: flutter pub get
+
+      # - name: Generate l10n files
+      #   run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      # - name: Run build_runner
+      #   run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      # - name: Remove failures folder
+      #   uses: JesseTG/rm@v1.0.2
+      #   with:
+      #     path: /test/visual/failures
+
+      # - name: Run golden image tests
+      #   run: flutter test test/visual
+
+      - name: Generate ui changes report
+        # if: failure()
+        run: make ui_changes_report
+
+      - name: Upload ui changes report
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: ui_changes_report
+          path: app/test/visual/ui_changes_report/
+          if-no-files-found: ignore
+          retention-days: 3
