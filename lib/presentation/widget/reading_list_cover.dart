@@ -145,28 +145,29 @@ class _TopicTitleIntroduction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: 16,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 9,
-              child: InformedMarkdownBody(
-                markdown: topic.title,
-                baseTextStyle: kIsSmallDevice ? AppTypography.h2Bold : AppTypography.h1Bold,
-                maxLines: 3,
-              ),
+      flex: 16,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            flex: 9,
+            child: InformedMarkdownBody(
+              markdown: topic.title,
+              baseTextStyle: context.isSmallDevice ? AppTypography.h2Bold : AppTypography.h1Bold,
+              maxLines: 3,
             ),
-            const Spacer(),
-            Expanded(
-                flex: 12,
-                child: InformedMarkdownBody(
-                  markdown: topic.introduction,
-                  baseTextStyle: kIsSmallDevice ? AppTypography.b3RegularLora : AppTypography.b2RegularLora,
-                  maxLines: 5,
-                ))
-          ],
-        ));
+          ),
+          const Spacer(),
+          Expanded(
+              flex: 12,
+              child: InformedMarkdownBody(
+                markdown: topic.introduction,
+                baseTextStyle: context.isSmallDevice ? AppTypography.b3RegularLora : AppTypography.b2RegularLora,
+                maxLines: 5,
+              ))
+        ],
+      ),
+    );
   }
 }
