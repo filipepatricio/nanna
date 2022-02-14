@@ -17,7 +17,7 @@ class SnackbarView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textWidth = useMemoized(() => MediaQuery.of(context).size.width - 2 * AppDimens.xl - 2 * AppDimens.m);
+    final textWidth = useMemoized(() => MediaQuery.of(context).size.width - 2 * AppDimens.l - 2 * AppDimens.m);
     final messageState = useState(message);
 
     useEffect(() {
@@ -34,15 +34,12 @@ class SnackbarView extends HookWidget {
           Radius.circular(AppDimens.s),
         ),
       ),
-      child: Align(
-        alignment: Alignment.center,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: _maxHeight,
-            maxWidth: textWidth,
-          ),
-          child: messageState.value?.content,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: _maxHeight,
+          maxWidth: textWidth,
         ),
+        child: messageState.value?.content,
       ),
     );
   }

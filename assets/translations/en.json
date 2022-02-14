@@ -173,5 +173,19 @@
   },
   "shareArticle": {
     "message": "Hey, I am currently reading this article via informed – a new platform for quality journalism. You can still sign up to their waitlist.\n\nhttps://www.informed.so"
+  },
+  "noBetaAccessPage": {
+    "headline": "Ooops, looks like you are not part of the close beta!",
+    "infoParts": {
+      "0": "If you think you are, ",
+      "1": "reach out to feedback@informed.so",
+      "2": ", if not, go sign up on our waitlist"
+    },
+    "waitlistAction": "Sign up to the waitlist",
+    "email": {
+      "subject": "I'm part of the close beta",
+      "body": "Hey there,\nwe will check if you are already part of the Close Beta and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
+    },
+    "emailCopied": "Successfuly copied email to your clipboard!"
   }
 }
