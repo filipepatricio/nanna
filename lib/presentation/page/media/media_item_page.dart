@@ -94,10 +94,14 @@ class MediaItemPage extends HookWidget {
               child: _AnimatedSwitcher(
                 child: state.maybeMap(
                   loading: (state) => const _LoadingContent(),
-                  idleFree: (state) => _FreeArticleView(article: state.header),
+                  idleFree: (state) => _FreeArticleView(
+                    article: state.header,
+                    fromTopic: topicId != null || topicSlug != null,
+                  ),
                   idlePremium: (state) => _PremiumArticleView(
                     article: state.header,
                     content: state.content,
+                    fromTopic: topicId != null || topicSlug != null,
                     modalController: modalController,
                     controller: scrollController,
                     pageController: pageController,
@@ -229,6 +233,7 @@ class _PremiumArticleView extends HookWidget {
   _PremiumArticleView({
     required this.article,
     required this.content,
+    required this.fromTopic,
     required this.modalController,
     required this.controller,
     required this.pageController,
@@ -240,6 +245,7 @@ class _PremiumArticleView extends HookWidget {
 
   final MediaItemArticle article;
   final ArticleContent content;
+  final bool fromTopic;
   final ScrollController modalController;
   final ScrollController controller;
   final PageController pageController;
@@ -381,7 +387,10 @@ class _PremiumArticleView extends HookWidget {
                 controller: pageController,
               ),
             ),
-            _BackToTopicButton(showButton: showBackToTopicButton)
+            _BackToTopicButton(
+              showButton: showBackToTopicButton,
+              fromTopic: fromTopic,
+            ),
           ],
         ),
       ),
@@ -416,10 +425,12 @@ class _PremiumArticleView extends HookWidget {
 class _FreeArticleView extends HookWidget {
   const _FreeArticleView({
     required this.article,
+    required this.fromTopic,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
+  final bool fromTopic;
 
   @override
   Widget build(BuildContext context) {
@@ -484,7 +495,10 @@ class _FreeArticleView extends HookWidget {
               }
             },
           ),
-          _BackToTopicButton(showButton: showBackToTopicButton),
+          _BackToTopicButton(
+            showButton: showBackToTopicButton,
+            fromTopic: fromTopic,
+          ),
         ],
       ),
     );
@@ -493,10 +507,12 @@ class _FreeArticleView extends HookWidget {
 
 class _BackToTopicButton extends StatelessWidget {
   const _BackToTopicButton({
+    required this.fromTopic,
     required this.showButton,
     Key? key,
   }) : super(key: key);
 
+  final bool fromTopic;
   final ValueNotifier<bool> showButton;
 
   @override
@@ -511,7 +527,7 @@ class _BackToTopicButton extends StatelessWidget {
         backgroundColor: AppColors.black,
         foregroundColor: AppColors.white,
         label: Text(
-          LocaleKeys.article_goBackToTopic.tr(),
+          fromTopic ? LocaleKeys.article_goBackToTopic.tr() : LocaleKeys.article_goBackToExplore.tr(),
           style: AppTypography.h3Bold16.copyWith(height: 1.0, color: AppColors.white),
         ),
         icon: const Icon(
