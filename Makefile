@@ -10,20 +10,26 @@ pre-commit: flutter_format flutter_analyze $(PROD_SRC_FILES) $(TEST_SRC_FILES) |
 	@touch $(MAKE_CACHE_DIR)/$@
 
 flutter_format: $(PROD_SRC_FILES) $(TEST_SRC_FILES) | $(MAKE_CACHE_DIR)
-	flutter format --line-length 120 lib/ test/ > /dev/null
+	fvm flutter format --line-length 120 lib/ test/ > /dev/null
 	@touch $(MAKE_CACHE_DIR)/$@
 
 flutter_analyze: br l10n $(PROD_SRC_FILES) $(TEST_SRC_FILES) | $(MAKE_CACHE_DIR)
-	flutter analyze --no-pub --fatal-warnings
+	fvm flutter analyze --no-pub --fatal-warnings
 	@touch $(MAKE_CACHE_DIR)/$@
 
 get:
 	flutter pub get
 
 br:
-	flutter pub run build_runner build --delete-conflicting-outputs
+	fvm flutter pub run build_runner build --delete-conflicting-outputs
 
 l10n:
+	fvm flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+build_runner:
+	flutter pub run build_runner build --delete-conflicting-outputs
+
+easy_localization:
 	flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
 
 update_goldens:
