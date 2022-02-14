@@ -48,6 +48,6 @@ jobs:
         if: failure()
         with:
           name: screens_report
-          path: app/test/visual/screens_report/
+          path: test/visual/screens_report/
           if-no-files-found: ignore
           retention-days: 7
