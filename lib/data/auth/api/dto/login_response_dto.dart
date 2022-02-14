@@ -7,12 +7,14 @@ part 'login_response_dto.g.dart';
 @JsonSerializable()
 class LoginResponseDTO {
   final bool successful;
+  final String? errorCode;
   final String? errorMessage;
   final AuthTokenDTO? tokens;
-  final UserDTO account;
+  final UserDTO? account;
 
   LoginResponseDTO(
     this.successful,
+    this.errorCode,
     this.errorMessage,
     this.tokens,
     this.account,

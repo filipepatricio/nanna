@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/auth/auth_exception.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/send_magic_link_use_case.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_default_provider_use_case.dart';
@@ -51,8 +52,13 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   Future<void> sendMagicLink() async {
     emit(SignInPageState.processing());
-    await _sendMagicLinkUseCase(_email);
-    emit(SignInPageState.magicLink());
+    try {
+      await _sendMagicLinkUseCase(_email);
+      emit(SignInPageState.magicLink());
+    } catch (_) {
+      emit(SignInPageState.generalError());
+      emit(SignInPageState.idle(false));
+    }
   }
 
   Future<void> signInWithProvider() async {
@@ -62,8 +68,11 @@ class SignInPageCubit extends Cubit<SignInPageState> {
       await _finishSignIn();
     } on SignInAbortedException {
       // Do nothing
+    } on AuthException catch (authException) {
+      _resolveAuthException(authException);
     } catch (e, s) {
       Fimber.e('Signing in with provider failed', ex: e, stacktrace: s);
+      emit(SignInPageState.generalError());
     } finally {
       emit(SignInPageState.idle(false));
     }
@@ -81,8 +90,11 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     try {
       await _signInWithMagicLinkTokenUseCase(event);
       await _finishSignIn();
+    } on AuthException catch (authException) {
+      _resolveAuthException(authException);
     } catch (e, s) {
       Fimber.e('Signing in with magic link failed', ex: e, stacktrace: s);
+      emit(SignInPageState.generalError());
     } finally {
       emit(SignInPageState.idle(false));
     }
@@ -91,5 +103,12 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   Future<void> _finishSignIn() async {
     final isOnboardingSeen = await _isOnboardingSeenUseCase.call();
     emit(SignInPageState.success(isOnboardingSeen));
+  }
+
+  void _resolveAuthException(AuthException authException) {
+    authException.map(
+      noBetaAccess: (_) => emit(SignInPageState.noBetaAccess()),
+      unknown: (_) => emit(SignInPageState.generalError()),
+    );
   }
 }

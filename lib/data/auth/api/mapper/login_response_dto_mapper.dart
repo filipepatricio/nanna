@@ -16,7 +16,7 @@ class LoginResponseDTOMapper implements Mapper<LoginResponseDTO, LoginResponse> 
   LoginResponse call(LoginResponseDTO data) {
     return LoginResponse(
       _authTokenDTOMapper.from(data.tokens!),
-      _userDTOMapper.to(data.account),
+      _userDTOMapper.to(data.account!),
     );
   }
 }

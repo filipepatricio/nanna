@@ -37,6 +37,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static final TextStyle h0Beta = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: kIsSmallDevice ? 24 : 34,
+    height: 1.25,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h1ExtraBold = TextStyle(
     fontWeight: FontWeight.w800,
     fontFamily: fontFamilyPlusJakartaSans,
