@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/no_beta_access/no_beta_access_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/no_beta_access/no_beta_access_page_state.dart';
@@ -45,8 +46,12 @@ class NoBetaAccessPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: AppColors.textPrimary,
+        leading: IconButton(
+          padding: EdgeInsets.zero,
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          iconSize: AppDimens.backArrowSize,
+          color: AppColors.darkGreyBackground,
+          onPressed: () => AutoRouter.of(context).pop(),
         ),
       ),
       backgroundColor: AppColors.rose,
