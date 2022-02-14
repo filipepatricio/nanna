@@ -32,13 +32,12 @@ class TutorialTooltip extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (tutorialTooltipPosition == TutorialTooltipPosition.bottom)
+        if (tutorialTooltipPosition == TutorialTooltipPosition.bottom) ...[
           Padding(
             padding: const EdgeInsets.only(left: 250, bottom: AppDimens.s),
             child: SvgPicture.asset(AppVectorGraphics.tutorialArrowUp),
           )
-        else
-          const SizedBox(),
+        ],
         Container(
           decoration: tutorialTooltipPosition == TutorialTooltipPosition.top
               ? const BoxDecoration(
@@ -91,13 +90,12 @@ class TutorialTooltip extends StatelessWidget {
                 ],
               )),
         ),
-        if (tutorialTooltipPosition == TutorialTooltipPosition.top)
+        if (tutorialTooltipPosition == TutorialTooltipPosition.top) ...[
           Padding(
             padding: const EdgeInsets.only(left: AppDimens.m, top: AppDimens.s),
             child: SvgPicture.asset(AppVectorGraphics.tutorialArrowDown),
           )
-        else
-          const SizedBox(),
+        ]
       ],
     );
   }
