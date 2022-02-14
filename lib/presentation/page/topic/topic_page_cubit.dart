@@ -84,8 +84,6 @@ class TopicPageCubit extends Cubit<TopicPageState> {
       opacityShadow: 0.5,
       hideSkip: true,
       onSkip: onSkipTutorialCoachMark,
-      onClickTarget: onClickTargetTutorialCoachMark,
-      onClickOverlay: onClickOverlayTutorialCoachMark,
     );
   }
 
@@ -94,7 +92,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
       identify: TutorialCoachMarkStep.summaryCard.key,
       keyTarget: summaryCardKey,
       color: AppColors.shadowColor,
-      enableOverlayTab: true,
+      enableTargetTab: false,
       pulseVariation: Tween(begin: 1.0, end: 1.0),
       contents: [
         TargetContent(
@@ -122,7 +120,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         identify: TutorialCoachMarkStep.mediaItem.key,
         keyTarget: mediaItemKey,
         color: AppColors.shadowColor,
-        enableOverlayTab: true,
+        enableTargetTab: false,
         pulseVariation: Tween(begin: 1.0, end: 1.0),
         contents: [
           TargetContent(
@@ -165,14 +163,6 @@ class TopicPageCubit extends Cubit<TopicPageState> {
 
   void onSkipTutorialCoachMark() {
     targets.removeAt(0);
-  }
-
-  void onClickTargetTutorialCoachMark(TargetFocus targetFocus) {
-    emit(TopicPageState.skipTutorialCoachMark());
-  }
-
-  void onClickOverlayTutorialCoachMark(TargetFocus targetFocus) {
-    emit(TopicPageState.skipTutorialCoachMark());
   }
 
   Future<bool> onAndroidBackButtonPress(bool isShowingTutorialCoachMark) async {
