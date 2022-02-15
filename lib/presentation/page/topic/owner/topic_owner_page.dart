@@ -54,6 +54,7 @@ class TopicOwnerPage extends HookWidget {
     return Material(
       child: NoScrollGlow(
         child: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
           shrinkWrap: true,
           controller: scrollController,
           slivers: [
