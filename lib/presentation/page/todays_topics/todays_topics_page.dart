@@ -174,7 +174,7 @@ class _IdleContent extends HookWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (kIsNotSmallDevice) ...[
+          if (context.isNotSmallDevice) ...[
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
