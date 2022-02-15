@@ -46,6 +46,9 @@ void main() {
         ),
       );
       final result = QueryResult(
+        parserFn: (data) {
+          return data;
+        },
         source: QueryResultSource.network,
         data: {
           'refresh': {
@@ -75,6 +78,9 @@ void main() {
         null,
       );
       final result = QueryResult(
+        parserFn: (data) {
+          return data;
+        },
         source: QueryResultSource.network,
         data: {
           'refresh': {
@@ -99,6 +105,9 @@ void main() {
     test('throws [OperationException] when result has [OperationException]', () async {
       final exception = OperationException();
       final result = QueryResult(
+        parserFn: (data) {
+          return data;
+        },
         exception: exception,
         source: QueryResultSource.network,
         data: {
@@ -133,6 +142,9 @@ void main() {
         ),
       );
       final result = QueryResult(
+        parserFn: (data) {
+          return data;
+        },
         source: QueryResultSource.network,
         data: {
           'refresh': {
@@ -197,6 +209,9 @@ void main() {
         null,
       );
       final result = QueryResult(
+        parserFn: (data) {
+          return data;
+        },
         source: QueryResultSource.network,
         data: {
           'refresh': {
