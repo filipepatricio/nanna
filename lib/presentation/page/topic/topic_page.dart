@@ -35,6 +35,14 @@ class TopicPage extends HookWidget {
     Key? key,
   }) : super(key: key);
 
+  void _navigateToArticles(BuildContext context, ScrollController scrollController) {
+    scrollController.animateTo(
+      AppDimens.topicArticleSectionTriggerPoint(context),
+      duration: const Duration(milliseconds: 1000),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
@@ -48,7 +56,10 @@ class TopicPage extends HookWidget {
         showTutorialToast: (text) => showToast(context, text),
         showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
         showMediaItemTutorialCoachMark: tutorialCoachMark.show,
-        skipTutorialCoachMark: tutorialCoachMark.skip,
+        skipTutorialCoachMark: () {
+          tutorialCoachMark.skip();
+          _navigateToArticles(context, scrollController);
+        },
         finishTutorialCoachMark: tutorialCoachMark.finish,
       );
     });
@@ -84,6 +95,7 @@ class TopicPage extends HookWidget {
                         scrollController: scrollController,
                         scrollPositionNotifier: scrollPositionNotifier,
                         cubit: cubit,
+                        onArticlesLabelTap: () => _navigateToArticles(context, scrollController),
                       )
                     : state.maybeMap(
                         idle: (state) => _TopicIdleView(
@@ -91,6 +103,7 @@ class TopicPage extends HookWidget {
                           scrollController: scrollController,
                           scrollPositionNotifier: scrollPositionNotifier,
                           cubit: cubit,
+                          onArticlesLabelTap: () => _navigateToArticles(context, scrollController),
                         ),
                         loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
                         error: (_) => _DefaultAppBarWrapper(
@@ -140,6 +153,7 @@ class _TopicIdleView extends HookWidget {
     required this.scrollController,
     required this.scrollPositionNotifier,
     required this.cubit,
+    required this.onArticlesLabelTap,
     Key? key,
   }) : super(key: key);
 
@@ -147,11 +161,10 @@ class _TopicIdleView extends HookWidget {
   final ScrollController scrollController;
   final ValueNotifier<double> scrollPositionNotifier;
   final TopicPageCubit cubit;
+  final VoidCallback onArticlesLabelTap;
 
   @override
   Widget build(BuildContext context) {
-    final summaryViewHeight = MediaQuery.of(context).size.height * .5;
-
     return NoScrollGlow(
       child: CustomScrollView(
         controller: scrollController,
@@ -159,7 +172,7 @@ class _TopicIdleView extends HookWidget {
           TopicAppBar(
             topic: topic,
             scrollPositionNotifier: scrollPositionNotifier,
-            onArticlesLabelTap: () => _navigateToArticles(context, summaryViewHeight),
+            onArticlesLabelTap: onArticlesLabelTap,
           ),
           SliverList(
             delegate: SliverChildListDelegate(
@@ -176,14 +189,6 @@ class _TopicIdleView extends HookWidget {
           )
         ],
       ),
-    );
-  }
-
-  void _navigateToArticles(BuildContext context, double summaryViewHeight) {
-    scrollController.animateTo(
-      AppDimens.topicViewHeaderImageHeight(context) + summaryViewHeight,
-      duration: const Duration(milliseconds: 750),
-      curve: Curves.easeOutCubic,
     );
   }
 }

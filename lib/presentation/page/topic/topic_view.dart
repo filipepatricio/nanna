@@ -29,15 +29,15 @@ class TopicView extends HookWidget {
   Widget build(BuildContext context) {
     final eventController = useEventTrackController();
     final pageIndex = useState(0);
-    final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(shouldShowSummaryCardTutorialCoachMark: () {
-        final listener = summaryCardTutorialListener(scrollController, topicHeaderImageHeight);
+        final summaryCardTutorialTriggerPoint = AppDimens.topicViewHeaderImageHeight(context);
+        final listener = summaryCardTutorialListener(scrollController, summaryCardTutorialTriggerPoint);
         scrollController.addListener(listener);
       }, shouldShowMediaItemTutorialCoachMark: () {
-        final listener = mediaItemTutorialListener(scrollController,
-            topicHeaderImageHeight + AppDimens.topicViewTopicHeaderPadding + AppDimens.topicViewSummaryCardHeight);
+        final topicArticleSectionTriggerPoint = AppDimens.topicArticleSectionTriggerPoint(context);
+        final listener = mediaItemTutorialListener(scrollController, topicArticleSectionTriggerPoint);
         scrollController.addListener(listener);
       });
     });
