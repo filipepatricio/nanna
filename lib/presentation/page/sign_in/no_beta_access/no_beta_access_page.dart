@@ -84,7 +84,7 @@ class NoBetaAccessPage extends HookWidget {
                             const SizedBox(height: AppDimens.l),
                             Text(
                               tr(LocaleKeys.noBetaAccessPage_headline),
-                              style: AppTypography.h0Beta,
+                              style: AppTypography.h0Beta(context),
                             ),
                             const SizedBox(height: AppDimens.m),
                             RichText(

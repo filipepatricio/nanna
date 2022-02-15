@@ -101,25 +101,28 @@ class AppDimens {
       AppDimens.topicViewSummaryCardHeight;
 
   /// 75% of screen size or [topicViewArticleSectionFullHeight], whichever is smaller
-  static double topicViewHeaderImageHeight(BuildContext context) =>
-      min(MediaQuery.of(context).size.height * .75, topicViewArticleSectionFullHeight);
+  static double topicViewHeaderImageHeight(BuildContext context) => min(
+        MediaQuery.of(context).size.height * .75,
+        topicViewArticleSectionFullHeight(context),
+      );
 
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .70, 500);
 
-  /// 45
-  static final topicViewStackedCardsDividerHeight = kIsSmallDevice ? 0.0 : 45.0;
+  /// 0 / 45
+  static double topicViewStackedCardsDividerHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 45.0;
 
-  /// 327
-  static final topicViewArticleSectionImageHeight = kIsSmallDevice ? 283.0 : 270.0;
+  /// 283 / 270
+  static double topicViewArticleSectionImageHeight(BuildContext context) => context.isSmallDevice ? 283.0 : 270.0;
 
-  /// 327
-  static final topicViewArticleSectionNoteHeight = kIsSmallDevice ? 0.0 : 120.0;
+  /// 0 : 120
+  static double topicViewArticleSectionNoteHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 120.0;
 
   /// 145 or 195 + topicViewArticleSectionImageHeight + topicViewArticleSectionNoteHeight + topicViewStackedCardsDividerHeight
-  static final topicViewArticleSectionFullHeight = (kIsSmallDevice ? 145.0 : 195.0) +
-      topicViewArticleSectionImageHeight +
-      topicViewArticleSectionNoteHeight +
-      topicViewStackedCardsDividerHeight;
+  static double topicViewArticleSectionFullHeight(BuildContext context) =>
+      (context.isSmallDevice ? 145.0 : 195.0) +
+      topicViewArticleSectionImageHeight(context) +
+      topicViewArticleSectionNoteHeight(context) +
+      topicViewStackedCardsDividerHeight(context);
 
   /// 72
   static const topicViewArticleSectionArticleCountLabelHeight = 72.0;

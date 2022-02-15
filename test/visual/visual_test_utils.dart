@@ -19,8 +19,8 @@ const defaultDevices = [
 
 /// Can be used to take screenshots of very long lists without hiding overflowing widgets.
 const veryHighDevices = [
-  Device(name: 'small_device_full_screen', size: Size(359, 2000)),
-  Device(name: 'regular_device_full_screen', size: Size(360, 2000)),
+  Device(name: 'small_device_full_screen', size: Size(359, 2500)),
+  Device(name: 'regular_device_full_screen', size: Size(360, 2500)),
 ];
 
 /// Test matrix to define which flavors and which devices should be used for a visual test.

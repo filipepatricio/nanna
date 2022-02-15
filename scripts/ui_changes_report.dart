@@ -238,8 +238,8 @@ Future<void> getGoldens(String sha1) async {
           body: () async {
             print('> Rebuild ...');
             await printAndExec('make', ['get']);
-            await printAndExec('make', ['l10n']);
-            await printAndExec('make', ['br']);
+            await printAndExec('make', ['easy_localization']);
+            await printAndExec('make', ['build_runner']);
             print('> Update goldens ...');
             await printAndExec('make', ['update_goldens']);
             print('> Cache goldens ...');
@@ -247,8 +247,8 @@ Future<void> getGoldens(String sha1) async {
             await exec('cp', ['-a', '${goldensDir.path}/.', cacheDir.path]);
             print('> Rebuild ...');
             await printAndExec('make', ['get']);
-            await printAndExec('make', ['l10n']);
-            await printAndExec('make', ['br']);
+            await printAndExec('make', ['easy_localization']);
+            await printAndExec('make', ['build_runner']);
           },
         );
       },
