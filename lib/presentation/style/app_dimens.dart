@@ -91,9 +91,14 @@ class AppDimens {
   static const topicViewTopicHeaderPadding = 45.0;
 
   /// 290
-  static const topicViewSummaryCardHeight = 350.0;
+  static const topicViewSummaryCardHeight = 330.0;
 
   static const topicViewSummaryTextHeight = 300.0;
+
+  static double topicArticleSectionTriggerPoint(BuildContext context) =>
+      AppDimens.topicViewHeaderImageHeight(context) +
+      AppDimens.topicViewTopicHeaderPadding +
+      AppDimens.topicViewSummaryCardHeight;
 
   /// 75% of screen size or [topicViewArticleSectionFullHeight], whichever is smaller
   static double topicViewHeaderImageHeight(BuildContext context) => min(

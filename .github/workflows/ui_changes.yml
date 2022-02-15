@@ -71,6 +71,6 @@ jobs:
         if: failure()
         with:
           name: ui_changes_report
-          path: test/visual/ui_changes_report/
+          path: test/visual/ui_changes/
           if-no-files-found: ignore
           retention-days: 3
