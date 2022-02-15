@@ -38,7 +38,7 @@ class TopicPage extends HookWidget {
   void _navigateToArticles(BuildContext context, ScrollController scrollController) {
     scrollController.animateTo(
       AppDimens.topicArticleSectionTriggerPoint(context),
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOutCubic,
     );
   }
@@ -78,48 +78,49 @@ class TopicPage extends HookWidget {
     );
 
     return WillPopScope(
-        onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
-        child: LayoutBuilder(
-          builder: (context, pageConstraints) => CupertinoScaffold(
-            body: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == _mainScrollDepth) {
-                  scrollPositionNotifier.value = scrollInfo.metrics.pixels;
-                }
-                return false;
-              },
-              child: Material(
-                child: topic != null
-                    ? _TopicIdleView(
-                        topic: topic!,
+      onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
+      child: LayoutBuilder(
+        builder: (context, pageConstraints) => CupertinoScaffold(
+          body: NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollInfo) {
+              if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == _mainScrollDepth) {
+                scrollPositionNotifier.value = scrollInfo.metrics.pixels;
+              }
+              return false;
+            },
+            child: Material(
+              child: topic != null
+                  ? _TopicIdleView(
+                      topic: topic!,
+                      scrollController: scrollController,
+                      scrollPositionNotifier: scrollPositionNotifier,
+                      cubit: cubit,
+                      onArticlesLabelTap: () => _navigateToArticles(context, scrollController),
+                    )
+                  : state.maybeMap(
+                      idle: (state) => _TopicIdleView(
+                        topic: state.topic,
                         scrollController: scrollController,
                         scrollPositionNotifier: scrollPositionNotifier,
                         cubit: cubit,
                         onArticlesLabelTap: () => _navigateToArticles(context, scrollController),
-                      )
-                    : state.maybeMap(
-                        idle: (state) => _TopicIdleView(
-                          topic: state.topic,
-                          scrollController: scrollController,
-                          scrollPositionNotifier: scrollPositionNotifier,
-                          cubit: cubit,
-                          onArticlesLabelTap: () => _navigateToArticles(context, scrollController),
-                        ),
-                        loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
-                        error: (_) => _DefaultAppBarWrapper(
-                          child: GeneralErrorView(
-                            title: LocaleKeys.todaysTopics_oops.tr(),
-                            content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
-                            svgPath: AppVectorGraphics.magError,
-                            retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
-                          ),
-                        ),
-                        orElse: () => const SizedBox(),
                       ),
-              ),
+                      loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
+                      error: (_) => _DefaultAppBarWrapper(
+                        child: GeneralErrorView(
+                          title: LocaleKeys.todaysTopics_oops.tr(),
+                          content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+                          svgPath: AppVectorGraphics.magError,
+                          retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+                        ),
+                      ),
+                      orElse: () => const SizedBox(),
+                    ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -167,6 +168,7 @@ class _TopicIdleView extends HookWidget {
   Widget build(BuildContext context) {
     return NoScrollGlow(
       child: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
         controller: scrollController,
         slivers: [
           TopicAppBar(
