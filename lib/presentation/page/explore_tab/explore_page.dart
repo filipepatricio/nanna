@@ -31,6 +31,9 @@ class ExplorePage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<ExplorePageCubit>();
     final state = useCubitBuilder(cubit);
+    final scrollController = useScrollController();
+    final headerColor = _getHeaderColor(state);
+    final _titlePaddingNotifier = useMemoized(() => ValueNotifier<double>(AppDimens.l));
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(showTutorialToast: (text) => showToast(context, text));
@@ -43,7 +46,13 @@ class ExplorePage extends HookWidget {
       [cubit],
     );
 
-    final headerColor = _getHeaderColor(state);
+    useEffect(() {
+      final listener = () {
+        _titlePaddingNotifier.value = AppDimens.l < scrollController.offset ? scrollController.offset : AppDimens.l;
+      };
+      scrollController.addListener(listener);
+      return () => scrollController.removeListener(listener);
+    }, [scrollController]);
 
     return Scaffold(
       body: ReadingBannerWrapper(
@@ -55,33 +64,36 @@ class ExplorePage extends HookWidget {
                 child: RefreshIndicator(
                   onRefresh: () => cubit.loadExplorePageData(),
                   child: CustomScrollView(
-                    physics: state.maybeMap(
-                      initialLoading: (_) => const NeverScrollableScrollPhysics(),
+                    controller: scrollController,
+                  physics: state.maybeMap(
+                    initialLoading: (_) => const NeverScrollableScrollPhysics(),
                       error: (_) => const NeverScrollableScrollPhysics(),
                       orElse: () => const ClampingScrollPhysics(),
                     ),
                     slivers: [
-                      SliverAppBar(
-                        backgroundColor: AppColors.background,
-                        elevation: 3,
-                        systemOverlayStyle: SystemUiOverlayStyle.dark,
-                        centerTitle: false,
-                        pinned: true,
-                        shadowColor: AppColors.shadowDarkColor,
-                        titleSpacing: AppDimens.l,
-                        collapsedHeight: kToolbarHeight,
-                        expandedHeight: kToolbarHeight + AppDimens.s,
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: Container(color: headerColor),
-                          titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
-                          centerTitle: false,
-                          title: Text(
-                            LocaleKeys.main_exploreTab.tr(),
-                            // To allow for the transition's first state align with the other tab titles
-                            style: AppTypography.h4Bold.copyWith(height: 2.25),
-                          ),
-                        ),
-                      ),
+                      ValueListenableBuilder<double>(
+                        valueListenable: _titlePaddingNotifier,
+                        builder: (context, value, child) {
+                          return SliverAppBar(
+                              backgroundColor: AppColors.background,
+                              elevation: 3,
+                              systemOverlayStyle: SystemUiOverlayStyle.dark,
+                              pinned: true,
+                              shadowColor: AppColors.shadowDarkColor,
+                              collapsedHeight: kToolbarHeight,
+                              expandedHeight: kToolbarHeight + AppDimens.s,
+                              flexibleSpace: FlexibleSpaceBar(
+                                  background: Container(color: headerColor),
+                                  titlePadding: EdgeInsetsDirectional.only(
+                                      start: value < MediaQuery.of(context).size.width / 2.5 ? value : 0,
+                                      bottom: AppDimens.m),
+                                  centerTitle: value >= MediaQuery.of(context).size.width / 2.5,
+                                  title: Text(
+                                    LocaleKeys.main_exploreTab.tr(),
+                                    // To allow for the transition's first state align with the other tab titles
+                                    style: AppTypography.h4Bold.copyWith(height: 2.25),
+                                  )));
+                        }),
                       state.maybeMap(
                         initialLoading: (_) => const SliverToBoxAdapter(
                           child: ArticleWithCoverAreaLoadingView.loading(),
