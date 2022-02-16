@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class OnboardingPage extends HookWidget {
     final cubit = useCubit<OnboardingPageCubit>();
 
     final pageIndex = useState(0);
-    final _controller = usePageController();
+    final controller = usePageController();
     final isLastPage = pageIndex.value == _pageList.length - 1;
 
     useEffect(() {
@@ -46,101 +47,123 @@ class OnboardingPage extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            flex: 20,
-            child: PageView(
-              controller: _controller,
-              onPageChanged: (index) {
-                cubit.trackOnboardingPage(index);
-                pageIndex.value = index;
-              },
-              children: _pageList,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 20,
+              child: PageView(
+                controller: controller,
+                onPageChanged: (index) {
+                  cubit.trackOnboardingPage(index);
+                  pageIndex.value = index;
+                },
+                children: _pageList,
+              ),
             ),
-          ),
-          const Spacer(flex: 1),
-          Expanded(
-            flex: 4,
-            child: Padding(
+            const Spacer(flex: 1),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                      child: PageDotIndicator(
+                  PageDotIndicator(
                     pageCount: _pageList.length,
-                    controller: _controller,
-                  )),
-                  const Spacer(),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        if (!isLastPage) ...[
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              minimumSize: Size.zero,
-                              padding: EdgeInsets.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
-                            child: Text(
-                              LocaleKeys.common_skip.tr(),
-                              style: AppTypography.buttonBold,
-                            ),
-                          ),
-                        ],
-                        const Spacer(),
-                        if (isLastPage)
-                          Container(
-                            decoration: const BoxDecoration(
-                              color: AppColors.limeGreen,
-                              borderRadius: BorderRadius.all(Radius.circular(AppDimens.s)),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.zero,
-                              child: TextButton(
-                                onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
-                                child: Text(
-                                  LocaleKeys.common_continue.tr(),
-                                  style: AppTypography.buttonBold,
-                                ),
-                              ),
-                            ),
-                          )
-                        else
-                          IconButton(
-                            onPressed: () => _controller.nextPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeIn,
-                            ),
-                            icon: SvgPicture.asset(
-                              AppVectorGraphics.fullArrowRight,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                      ],
-                    ),
-                  )
+                    controller: controller,
+                  ),
+                  const SizedBox(height: AppDimens.m),
+                  Row(
+                    children: [
+                      if (!isLastPage)
+                        _SkipButton(
+                          cubit: cubit,
+                          isLastPage: isLastPage,
+                        ),
+                      const Spacer(),
+                      if (isLastPage)
+                        FilledButton(
+                          text: LocaleKeys.common_continue.tr(),
+                          fillColor: AppColors.limeGreen,
+                          textColor: AppColors.textPrimary,
+                          onTap: () => _navigateToMainPage(context, cubit, isLastPage),
+                        )
+                      else
+                        _NextPageButton(controller: controller),
+                    ],
+                  ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: AppDimens.m),
-        ],
+            const SizedBox(height: AppDimens.m),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Future<void> _navigateToMainPage(BuildContext context, OnboardingPageCubit cubit, bool isLastPage) async {
-    final isSkipped = !isLastPage;
-    await cubit.setOnboardingCompleted(isSkipped);
-    await cubit.requestNotificationPermission();
-    await AutoRouter.of(context).replaceAll(
-      [
-        const MainPageRoute(),
-      ],
+class _SkipButton extends StatelessWidget {
+  const _SkipButton({
+    required this.cubit,
+    required this.isLastPage,
+    Key? key,
+  }) : super(key: key);
+
+  final OnboardingPageCubit cubit;
+  final bool isLastPage;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        minimumSize: Size.zero,
+        padding: EdgeInsets.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
+      child: Text(
+        LocaleKeys.common_skip.tr(),
+        style: AppTypography.buttonBold,
+      ),
     );
   }
+}
+
+class _NextPageButton extends StatelessWidget {
+  const _NextPageButton({
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
+
+  final PageController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => controller.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeIn,
+      ),
+      icon: SvgPicture.asset(
+        AppVectorGraphics.fullArrowRight,
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+}
+
+Future<void> _navigateToMainPage(
+  BuildContext context,
+  OnboardingPageCubit cubit,
+  bool isLastPage,
+) async {
+  final isSkipped = !isLastPage;
+  await cubit.setOnboardingCompleted(isSkipped);
+  await cubit.requestNotificationPermission();
+  await AutoRouter.of(context).replaceAll(
+    [
+      const MainPageRoute(),
+    ],
+  );
 }
