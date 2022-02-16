@@ -14,7 +14,6 @@ import 'package:better_informed_mobile/presentation/widget/reading_list_cover_sm
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -36,6 +35,7 @@ class TopicsSeeAllPage extends HookWidget {
     final cubit = useCubit<TopicsSeeAllPageCubit>();
     final state = useCubitBuilder<TopicsSeeAllPageCubit, TopicsSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
+    final shouldShowTitle = useMemoized(() => ValueNotifier(false));
 
     useEffect(() {
       cubit.initialize(areaId, topics);
@@ -54,27 +54,49 @@ class TopicsSeeAllPage extends HookWidget {
               if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
                 cubit.loadNextPage();
               }
+
+              shouldShowTitle.value = scrollController.offset > kToolbarHeight;
             }
           : () {};
+      final titleScrollListener = () {
+        shouldShowTitle.value = scrollController.offset > kToolbarHeight;
+      };
       scrollController.addListener(listener);
-      return () => scrollController.removeListener(listener);
+      scrollController.addListener(titleScrollListener);
+      return () {
+        scrollController.removeListener(listener);
+        scrollController.removeListener(titleScrollListener);
+      };
     }, [scrollController, shouldListen]);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        centerTitle: false,
-        elevation: 3,
-        titleSpacing: 0,
-        shadowColor: AppColors.shadowDarkColor,
-        title: Text(LocaleKeys.explore_title.tr(), style: AppTypography.h3bold.copyWith(height: 1.0)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          iconSize: AppDimens.backArrowSize,
-          color: AppColors.textPrimary,
-          onPressed: () => AutoRouter.of(context).pop(),
-        ),
-      ),
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: ValueListenableBuilder<bool>(
+              valueListenable: shouldShowTitle,
+              builder: (context, value, child) => AppBar(
+                    backgroundColor: AppColors.background,
+                    centerTitle: true,
+                    elevation: value ? 3 : 0,
+                    shadowColor: AppColors.shadowDarkColor,
+                    titleSpacing: 0,
+                    title: value
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: AppDimens.xs),
+                            child: Text(
+                              title,
+                              // To allow for the transition's first state align with the other tab titles
+                              style: AppTypography.h4Bold.copyWith(height: 2.25),
+                            ))
+                        : const SizedBox(),
+                    leading: IconButton(
+                      padding: const EdgeInsets.only(top: AppDimens.s + AppDimens.xxs),
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                      iconSize: AppDimens.backArrowSize,
+                      color: AppColors.textPrimary,
+                      onPressed: () => AutoRouter.of(context).pop(),
+                    ),
+                  ))),
       body: _Body(
         title: title,
         pageStorageKey: pageStorageKey,
