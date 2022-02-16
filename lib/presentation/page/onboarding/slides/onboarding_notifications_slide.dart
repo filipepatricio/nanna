@@ -19,37 +19,41 @@ class OnboardingNotificationsSlide extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const Spacer(flex: 3),
+          const Spacer(flex: 2),
           Expanded(
-              flex: 2,
-              child: Text(
-                tr(LocaleKeys.onboarding_headerSlideThree),
-                style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
-              )),
+            flex: 2,
+            child: Text(
+              tr(LocaleKeys.onboarding_headerSlideThree),
+              style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
+            ),
+          ),
           const Spacer(),
           Expanded(
-              flex: 4,
-              child: _BulletPointRow(
-                header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerOne),
-                description: tr(LocaleKeys.onboarding_notificationBulletPoints_descOne),
-                icon: AppVectorGraphics.happyGreenSun,
-              )),
+            flex: 4,
+            child: _BulletPointRow(
+              header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerOne),
+              description: tr(LocaleKeys.onboarding_notificationBulletPoints_descOne),
+              icon: AppVectorGraphics.happyGreenSun,
+            ),
+          ),
           const Spacer(),
           Expanded(
-              flex: 4,
-              child: _BulletPointRow(
-                header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerTwo),
-                description: tr(LocaleKeys.onboarding_notificationBulletPoints_descTwo),
-                icon: AppVectorGraphics.notes,
-              )),
+            flex: 4,
+            child: _BulletPointRow(
+              header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerTwo),
+              description: tr(LocaleKeys.onboarding_notificationBulletPoints_descTwo),
+              icon: AppVectorGraphics.notes,
+            ),
+          ),
           const Spacer(),
           Expanded(
-              flex: 4,
-              child: _BulletPointRow(
-                header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerThree),
-                description: tr(LocaleKeys.onboarding_notificationBulletPoints_descThree),
-                icon: AppVectorGraphics.megaphone,
-              )),
+            flex: 4,
+            child: _BulletPointRow(
+              header: tr(LocaleKeys.onboarding_notificationBulletPoints_headerThree),
+              description: tr(LocaleKeys.onboarding_notificationBulletPoints_descThree),
+              icon: AppVectorGraphics.megaphone,
+            ),
+          ),
         ],
       ),
     );
