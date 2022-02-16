@@ -26,16 +26,33 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     emit(ExplorePageState.initialLoading());
 
     try {
-      final exploreContent = await _getExploreContentUseCase();
-      emit(ExplorePageState.idle(exploreContent.areas));
-      _isExploreTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.explore);
-      if (!_isExploreTutorialStepSeen) {
-        emit(ExplorePageState.showTutorialToast(LocaleKeys.tutorial_exploreSnackBarText.tr()));
-        await _setTutorialStepSeenUseCase(TutorialStep.explore);
-      }
+      await _loadExplorePageData();
+      await _showTutorialSnackBar();
     } catch (e, s) {
       Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
       emit(ExplorePageState.error());
+    }
+  }
+
+  Future<void> loadExplorePageData() async {
+    try {
+      await _loadExplorePageData();
+    } catch (e, s) {
+      Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
+      emit(ExplorePageState.error());
+    }
+  }
+
+  Future<void> _loadExplorePageData() async {
+    final exploreContent = await _getExploreContentUseCase();
+    emit(ExplorePageState.idle(exploreContent.areas));
+  }
+
+  Future<void> _showTutorialSnackBar() async {
+    _isExploreTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.explore);
+    if (!_isExploreTutorialStepSeen) {
+      emit(ExplorePageState.showTutorialToast(LocaleKeys.tutorial_exploreSnackBarText.tr()));
+      await _setTutorialStepSeenUseCase(TutorialStep.explore);
     }
   }
 }
