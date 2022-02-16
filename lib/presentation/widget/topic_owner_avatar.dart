@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicOwnerAvatar extends HookWidget {
@@ -15,16 +15,18 @@ class TopicOwnerAvatar extends HookWidget {
     required this.owner,
     Key? key,
     this.profileMode = false,
-    this.lightMode = false,
+    this.mode = Brightness.dark,
     this.imageHeight = AppDimens.avatarSize,
     this.imageWidth = AppDimens.avatarSize,
+    this.underlined = false,
     this.fontSize,
     this.onTap,
   }) : super(key: key);
 
   final TopicOwner owner;
   final bool profileMode;
-  final bool lightMode;
+  final Brightness mode;
+  final bool underlined;
   final double imageHeight;
   final double imageWidth;
   final double? fontSize;
@@ -70,19 +72,33 @@ class TopicOwnerAvatar extends HookWidget {
           ),
           const SizedBox(width: AppDimens.s),
           Expanded(
-            child: Text(
-              profileMode ? owner.name : LocaleKeys.article_articleBy.tr(args: [owner.name]),
+            child: RichText(
+              text: TextSpan(children: [
+                if (!profileMode)
+                  TextSpan(
+                    text: '${LocaleKeys.article_by.tr()} ',
+                    style: AppTypography.h3boldLoraItalic.copyWith(
+                      fontSize: fontSize,
+                      color: mode == Brightness.light ? AppColors.white : null,
+                    ),
+                  ),
+                TextSpan(
+                  text: owner.name,
+                  style: profileMode
+                      ? AppTypography.h3bold.copyWith(
+                          fontSize: fontSize,
+                          color: mode == Brightness.light ? AppColors.white : null,
+                          decoration: underlined ? TextDecoration.underline : null,
+                        )
+                      : AppTypography.h3boldLoraItalic.copyWith(
+                          fontSize: fontSize,
+                          color: mode == Brightness.light ? AppColors.white : null,
+                          decoration: underlined ? TextDecoration.underline : null,
+                        ),
+                ),
+              ]),
               softWrap: true,
               maxLines: 2,
-              style: profileMode
-                  ? AppTypography.h3bold.copyWith(
-                      fontSize: fontSize,
-                      color: lightMode ? AppColors.white : AppColors.textPrimary,
-                    )
-                  : AppTypography.h3boldLoraItalic.copyWith(
-                      fontSize: fontSize,
-                      color: lightMode ? AppColors.white : AppColors.textPrimary,
-                    ),
             ),
           ),
         ],

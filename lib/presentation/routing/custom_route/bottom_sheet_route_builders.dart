@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/main/dashboard_page.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/cupertino.dart' show CupertinoTheme;
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const double kPreviousPageVisibleOffset = 10;
@@ -49,7 +49,7 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
             width: double.infinity,
             child: MediaQuery.removePadding(
               context: context,
-              removeTop: true, //Remove top Safe Area
+              removeTop: true,
               child: child,
             ),
           ),
@@ -81,14 +81,14 @@ Route<T> cupertinoBottomSheetPageRouteBuilder<T>(BuildContext context, Widget ch
   );
 }
 
-Route<T> cupertinoFullScreenBottomSheetPageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
-  return CupertinoModalBottomSheetRoute<T>(
-    settings: page,
+Route<T> modalFullScreenBottomSheetPageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
+  return ModalBottomSheetRoute<T>(
+    builder: (context) => child,
     expanded: true,
     barrierLabel: '',
+    modalBarrierColor: AppColors.shadowDarkColor,
     animationCurve: Curves.easeInOutCubic,
     duration: const Duration(milliseconds: 500),
-    modalBarrierColor: AppColors.shadowDarkColor,
-    builder: (context) => child,
+    settings: page,
   );
 }

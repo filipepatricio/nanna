@@ -15,12 +15,14 @@ import 'package:flutter_svg/svg.dart';
 class TopicAppBar extends HookWidget {
   final Topic topic;
   final ValueNotifier<double> scrollPositionNotifier;
-  final void Function() onArticlesLabelTap;
+  final VoidCallback onArticlesLabelTap;
+  final VoidCallback onArrowTap;
 
   const TopicAppBar({
     required this.topic,
     required this.scrollPositionNotifier,
     required this.onArticlesLabelTap,
+    required this.onArrowTap,
     Key? key,
   }) : super(key: key);
 
@@ -39,7 +41,7 @@ class TopicAppBar extends HookWidget {
       ),
     );
 
-    final scrollThreshold = AppDimens.topicViewHeaderImageHeight(context) * .9;
+    final scrollThreshold = AppDimens.topicViewHeaderImageHeight(context) * .85;
 
     void _updateAppBar() {
       if (isExpanded.value != scrollPositionNotifier.value < scrollThreshold) {
@@ -61,19 +63,19 @@ class TopicAppBar extends HookWidget {
       automaticallyImplyLeading: false,
       centerTitle: true,
       systemOverlayStyle: isExpanded.value ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-      expandedHeight: AppDimens.topicViewHeaderImageHeight(context),
+      // Because expandedHeight automatically includes the status bar height, I have to remove it from this value
+      expandedHeight: AppDimens.topicViewHeaderImageHeight(context) - MediaQuery.of(context).viewPadding.top,
       flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
+        collapseMode: CollapseMode.parallax,
         background: TopicHeader(
           topic: topic,
           onArticlesLabelTap: onArticlesLabelTap,
-          topicHeaderImageHeight: AppDimens.topicViewHeaderImageHeight(context),
+          onArrowTap: onArrowTap,
         ),
       ),
       leading: IconButton(
         padding: EdgeInsets.zero,
-        icon: const Icon(Icons.arrow_back_ios_new_rounded),
-        iconSize: AppDimens.backArrowSize,
+        icon: const Icon(Icons.close_rounded),
         color: isExpanded.value ? AppColors.white : AppColors.black,
         onPressed: () => AutoRouter.of(context).pop(),
       ),

@@ -90,7 +90,7 @@ class _ArticleHeader extends StatelessWidget {
         const SizedBox(height: AppDimens.xxc),
         if (author != null) ...[
           Text(
-            LocaleKeys.article_articleBy.tr(args: [author]),
+            LocaleKeys.article_byName.tr(args: [author]),
             style: metadataStyle,
           ),
           const SizedBox(height: AppDimens.m),

@@ -20,8 +20,8 @@ class MockGraphqlResponses {
           $topic,
           {
             "id": "aa326e1f-ec14-4829-b8a3-cb21dbd25259",
-            "title": "Lorem **ipsum sit amet** incididunt elit eiusmod sit",
-            "strippedTitle": "Lorem ipsum sit amet incididunt elit eiusmod sit",
+            "title": "Lorem **ipsum dolor** sit amet, consectetur adipiscing elit lorem dolor",
+            "strippedTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem dolor",
             "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             "url": "https://app.staging.informed.so/topics/world-water-crisis",
             $_ownerExpert,
@@ -85,8 +85,8 @@ class MockGraphqlResponses {
   static const topic = '''
   {
     "id": "1e55abe0-d711-44b4-a37c-7e1a279b439a",
-    "title": "Lorem **ipsum sit amet** incididunt elit eiusmod sit",
-    "strippedTitle": "Lorem ipsum sit amet incididunt elit eiusmod sit",
+    "title": "Lorem **ipsum dolor** sit amet, consectetur adipiscing elit lorem dolor",
+    "strippedTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem dolor",
     "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     "url": "https://app.staging.informed.so/topics/world-water-crisis",
     $_ownerEditor,

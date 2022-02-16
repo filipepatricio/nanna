@@ -119,7 +119,8 @@
       "freemium": "Free Article",
       "premium": "Premium Article"
     },
-    "articleBy": "By {}",
+    "byName": "By {}",
+    "by": "By",
     "readMore": "Read more",
     "readMinutes": "{} min",
     "loadingNext": "Loading next article in\nthe reading list.",

@@ -18,7 +18,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/todays_to
 import 'package:better_informed_mobile/presentation/page/topic/owner/how_do_we_curate_content_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
-import 'package:better_informed_mobile/presentation/routing/custom_route/cupertino_bottom_sheet_route_builder.dart';
+import 'package:better_informed_mobile/presentation/routing/custom_route/bottom_sheet_route_builders.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ const mainPageRoute = CustomRoute(
       page: TopicPage,
       path: '$topicsPathSegment/:topicSlug',
       name: 'TopicPage',
-      customRouteBuilder: cupertinoFullScreenBottomSheetPageRouteBuilder,
+      customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder,
     ),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
