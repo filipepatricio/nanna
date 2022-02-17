@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
@@ -49,6 +50,7 @@ class ArticleListItem extends HookWidget {
                   .withLogicalSize(width, height, context),
               width: width,
               height: height,
+              testImage: AppRasterGraphics.testArticleHeroImage,
             )
           else
             Container(color: cardColor, width: width, height: height),

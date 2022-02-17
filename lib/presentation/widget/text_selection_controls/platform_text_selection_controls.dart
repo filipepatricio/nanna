@@ -7,13 +7,11 @@ import 'package:flutter/widgets.dart';
 import 'package:share_plus/share_plus.dart';
 
 TextSelectionControls createPlatformSpecific(List<DelegateTextSelectionControlData> controls) {
-  if (Platform.isAndroid) {
-    return MaterialTextSelectionControls(controls);
-  } else if (Platform.isIOS) {
+  if (Platform.isIOS) {
     return CupertinoTextSelectionControls(controls);
   }
 
-  throw Exception('Unhandled platform');
+  return MaterialTextSelectionControls(controls);
 }
 
 DelegateTextSelectionControlData shareControlData(
