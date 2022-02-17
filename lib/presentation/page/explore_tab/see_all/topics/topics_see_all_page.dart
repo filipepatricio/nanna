@@ -8,6 +8,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
@@ -35,7 +37,6 @@ class TopicsSeeAllPage extends HookWidget {
     final cubit = useCubit<TopicsSeeAllPageCubit>();
     final state = useCubitBuilder<TopicsSeeAllPageCubit, TopicsSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
-    final shouldShowTitle = useMemoized(() => ValueNotifier(false));
 
     useEffect(() {
       cubit.initialize(areaId, topics);
@@ -54,49 +55,17 @@ class TopicsSeeAllPage extends HookWidget {
               if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
                 cubit.loadNextPage();
               }
-
-              shouldShowTitle.value = scrollController.offset > kToolbarHeight;
             }
           : () {};
-      final titleScrollListener = () {
-        shouldShowTitle.value = scrollController.offset > kToolbarHeight;
-      };
       scrollController.addListener(listener);
-      scrollController.addListener(titleScrollListener);
-      return () {
-        scrollController.removeListener(listener);
-        scrollController.removeListener(titleScrollListener);
-      };
+      return () => scrollController.removeListener(listener);
     }, [scrollController, shouldListen]);
 
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: ValueListenableBuilder<bool>(
-              valueListenable: shouldShowTitle,
-              builder: (context, value, child) => AppBar(
-                    backgroundColor: AppColors.background,
-                    centerTitle: true,
-                    elevation: value ? 3 : 0,
-                    shadowColor: AppColors.shadowDarkColor,
-                    titleSpacing: 0,
-                    title: value
-                        ? Padding(
-                            padding: const EdgeInsets.only(bottom: AppDimens.xs),
-                            child: Text(
-                              title,
-                              // To allow for the transition's first state align with the other tab titles
-                              style: AppTypography.h4Bold.copyWith(height: 2.25),
-                            ))
-                        : const SizedBox(),
-                    leading: IconButton(
-                      padding: const EdgeInsets.only(top: AppDimens.s + AppDimens.xxs),
-                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                      iconSize: AppDimens.backArrowSize,
-                      color: AppColors.textPrimary,
-                      onPressed: () => AutoRouter.of(context).pop(),
-                    ),
-                  ))),
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: FixedAppBar(scrollController: scrollController, title: title),
+      ),
       body: _Body(
         title: title,
         pageStorageKey: pageStorageKey,
@@ -183,7 +152,8 @@ class _TopicGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+    return NoScrollGlow(
+        child: CustomScrollView(
       controller: scrollController,
       key: pageStorageKey,
       slivers: [
@@ -223,7 +193,7 @@ class _TopicGrid extends StatelessWidget {
         ),
         SeeAllLoadMoreIndicator(show: withLoader),
       ],
-    );
+    ));
   }
 }
 
