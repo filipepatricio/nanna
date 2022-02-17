@@ -38,7 +38,7 @@ class ArticleWithCoverAreaView extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.xxxl),
+          const SizedBox(height: AppDimens.l),
           GestureDetector(
               onTap: () => _navigateToSeeAll(context),
               child: Container(

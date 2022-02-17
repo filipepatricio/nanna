@@ -35,7 +35,7 @@ class ExplorePage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final headerColor = _getHeaderColor(state);
-    final _titlePaddingNotifier = useMemoized(() => ValueNotifier<double>(0.0));
+    final scrollOffsetNotifier = useMemoized(() => ValueNotifier<double>(0.0));
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(showTutorialToast: (text) => showToast(context, text));
@@ -50,7 +50,7 @@ class ExplorePage extends HookWidget {
 
     useEffect(() {
       final listener = () {
-        _titlePaddingNotifier.value = scrollController.offset;
+        scrollOffsetNotifier.value = scrollController.offset;
       };
       scrollController.addListener(listener);
       return () => scrollController.removeListener(listener);
@@ -74,39 +74,35 @@ class ExplorePage extends HookWidget {
                     ),
                     slivers: [
                       ValueListenableBuilder<double>(
-                          valueListenable: _titlePaddingNotifier,
+                          valueListenable: scrollOffsetNotifier,
                           builder: (context, value, child) {
-                            const kAppearMultiplier = 0.04;
-                            const kDisappearMultiplier = 0.06;
-                            const kMaxOpacity = 1.0;
-                            final isCenterTitle = value >= kToolbarHeight / 2;
-                            final centerValue = max(value - kToolbarHeight / 2, 0);
-                            final opacity = isCenterTitle
-                                ? min(centerValue * kDisappearMultiplier, kMaxOpacity)
-                                : kMaxOpacity - min(value * kAppearMultiplier, kMaxOpacity);
+                            final showCenterTitle = value >= AppDimens.s;
                             return SliverAppBar(
                                 backgroundColor: AppColors.background,
-                                elevation: 3,
                                 systemOverlayStyle: SystemUiOverlayStyle.dark,
-                                pinned: true,
                                 shadowColor: AppColors.shadowDarkColor,
-                                collapsedHeight: kToolbarHeight,
+                                pinned: true,
+                                centerTitle: true,
+                                elevation: 3.0,
                                 expandedHeight: kToolbarHeight + AppDimens.s,
+                                title: showCenterTitle
+                                    ? Text(
+                                        LocaleKeys.main_exploreTab.tr(),
+                                        style: AppTypography.h4Bold.copyWith(
+                                            height: 2.25, color: AppColors.textPrimary.withOpacity(min(1, value / 15))),
+                                      )
+                                    : const SizedBox(),
                                 flexibleSpace: FlexibleSpaceBar(
-                                    background: Container(color: headerColor),
-                                    titlePadding: EdgeInsetsDirectional.only(
-                                      start: isCenterTitle ? 0 : AppDimens.l,
-                                      bottom: AppDimens.m,
-                                    ),
-                                    centerTitle: isCenterTitle,
-                                    title: Text(
-                                      LocaleKeys.main_exploreTab.tr(),
-                                      // To allow for the transition's first state align with the other tab titles
-                                      style: AppTypography.h4Bold.copyWith(
-                                        height: 2.25,
-                                        color: AppColors.textPrimary.withOpacity(opacity),
-                                      ),
-                                    )));
+                                  collapseMode: CollapseMode.pin,
+                                  background: Container(
+                                      color: headerColor,
+                                      padding:
+                                          const EdgeInsets.only(top: AppDimens.xl + AppDimens.xs, left: AppDimens.l),
+                                      child: Text(
+                                        LocaleKeys.main_exploreTab.tr(),
+                                        style: AppTypography.h1Bold,
+                                      )),
+                                ));
                           }),
                       state.maybeMap(
                         initialLoading: (_) => const SliverToBoxAdapter(
