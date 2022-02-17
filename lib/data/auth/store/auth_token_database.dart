@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:better_informed_mobile/data/auth/store/auth_token_entity.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
@@ -18,12 +19,17 @@ class AuthTokenDatabase {
   }
 
   Future<AuthTokenEntity?> load() async {
-    final json = await _storage.read(key: _key);
+    try {
+      final json = await _storage.read(key: _key);
 
-    if (json == null) return null;
+      if (json == null) return null;
 
-    final jsonMap = jsonDecode(json) as Map<String, dynamic>;
-    return AuthTokenEntity.fromJson(jsonMap);
+      final jsonMap = jsonDecode(json) as Map<String, dynamic>;
+      return AuthTokenEntity.fromJson(jsonMap);
+    } on PlatformException catch (_) {
+      await _storage.deleteAll();
+      return null;
+    }
   }
 
   Future<void> delete() async {
