@@ -11,10 +11,9 @@ import 'package:better_informed_mobile/presentation/widget/animated_pointer_down
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
+import 'package:better_informed_mobile/presentation/widget/selected_articles_label.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -98,7 +97,7 @@ class TopicHeader extends HookWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _SelectedArticlesLabel(onArticlesLabelTap: onArticlesLabelTap, topic: topic),
+                  SelectedArticlesLabel(onArticlesLabelTap: onArticlesLabelTap, topic: topic),
                   UpdatedLabel(
                     dateTime: topic.lastUpdatedAt,
                     mode: Brightness.light,
@@ -113,36 +112,6 @@ class TopicHeader extends HookWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SelectedArticlesLabel extends StatelessWidget {
-  const _SelectedArticlesLabel({
-    required this.onArticlesLabelTap,
-    required this.topic,
-    Key? key,
-  }) : super(key: key);
-
-  final void Function() onArticlesLabelTap;
-  final Topic topic;
-
-  @override
-  Widget build(BuildContext context) {
-    return ExpandTapWidget(
-      onTap: onArticlesLabelTap,
-      tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
-      child: Text(
-        LocaleKeys.todaysTopics_selectedArticles.tr(
-          args: [topic.readingList.entries.length.toString()],
-        ),
-        textAlign: TextAlign.start,
-        style: AppTypography.b1Regular.copyWith(
-          decoration: TextDecoration.underline,
-          height: 1,
-          color: AppColors.white,
-        ),
-      ),
     );
   }
 }
