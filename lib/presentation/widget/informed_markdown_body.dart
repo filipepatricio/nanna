@@ -16,6 +16,7 @@ class InformedMarkdownBody extends StatelessWidget {
   final int? maxLines;
   final TextAlign textAlignment;
   final Map<String, MarkdownPaddingBuilder>? paddingBuilders;
+  final ShareTextCallback? shareTextCallback;
 
   const InformedMarkdownBody({
     required this.markdown,
@@ -27,6 +28,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.highlightColor = AppColors.limeGreen,
     this.textAlignment = TextAlign.start,
     this.paddingBuilders,
+    this.shareTextCallback,
     Key? key,
   }) : super(key: key);
 
@@ -55,6 +57,7 @@ class InformedMarkdownBody extends StatelessWidget {
           selectable: selectable,
           maxLines: maxLines,
           textAlign: textAlignment,
+          shareCallback: shareTextCallback,
         );
       },
     );
