@@ -1,6 +1,4 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_see_all_page_state.dart';
@@ -10,9 +8,10 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -59,20 +58,7 @@ class ArticleSeeAllPage extends HookWidget {
     }, [scrollController, shouldListen]);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        centerTitle: false,
-        elevation: 3,
-        shadowColor: AppColors.shadowDarkColor,
-        titleSpacing: 0,
-        title: Text(LocaleKeys.explore_title.tr(), style: AppTypography.h3bold.copyWith(height: 1.0)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          iconSize: AppDimens.backArrowSize,
-          color: AppColors.textPrimary,
-          onPressed: () => AutoRouter.of(context).pop(),
-        ),
-      ),
+      appBar: FixedAppBar(scrollController: scrollController, title: title),
       body: _Body(
         title: title,
         state: state,
@@ -145,7 +131,8 @@ class _ArticleGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+    return NoScrollGlow(
+        child: CustomScrollView(
       controller: scrollController,
       key: pageStorageKey,
       slivers: [
@@ -185,7 +172,7 @@ class _ArticleGrid extends StatelessWidget {
         ),
         SeeAllLoadMoreIndicator(show: withLoader),
       ],
-    );
+    ));
   }
 }
 

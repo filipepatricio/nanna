@@ -44,6 +44,41 @@ class MockGraphqlResponses {
     }
   ''';
 
+  static const exploreContent = '''{
+	"data": {
+		"__typename": "RootQueryType",
+		"getExploreSection": [
+			{
+				"__typename": "ArticlesWithFeatureExploreArea",
+				"articles": [
+					$article,
+					$article,
+					$article,
+					$article,
+					$article
+				],
+				"backgroundColor": "#E4F1E2",
+				"id": "premium-articles",
+				"name": "Premium Articles"
+			},
+			{
+				"__typename": "TopicsExploreArea",
+				"id": "hot-topics",
+				"name": "Hot topics",
+				"topics": []
+			},
+			{
+				"__typename": "TopicsExploreArea",
+				"id": "expert-topics",
+				"name": "By our experts",
+				"topics": [
+					$topic
+				]
+			}
+		]
+	}
+}''';
+
   static const topicsFromExpert = '''
   {
     "getTopicsFromExpert": [
