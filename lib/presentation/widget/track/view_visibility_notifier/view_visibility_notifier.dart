@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -32,7 +33,9 @@ class ViewVisibilityNotifier extends HookWidget {
     return VisibilityDetector(
       key: detectorKey,
       onVisibilityChanged: (visibility) {
-        visible.value = visibility.visibleFraction >= borderFraction;
+        if (!kIsTest) {
+          visible.value = visibility.visibleFraction >= borderFraction;
+        }
       },
       child: child,
     );

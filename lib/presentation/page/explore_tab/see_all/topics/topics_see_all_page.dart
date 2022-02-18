@@ -233,7 +233,7 @@ class _GridItem extends StatelessWidget {
 
   void _onTopicTap(BuildContext context, Topic topic) {
     AutoRouter.of(context).push(
-      TopicPageRoute(
+      TopicPage(
         topicSlug: topic.id,
         topic: topic,
       ),

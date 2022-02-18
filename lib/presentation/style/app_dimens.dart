@@ -100,11 +100,8 @@ class AppDimens {
       AppDimens.topicViewTopicHeaderPadding +
       AppDimens.topicViewSummaryCardHeight;
 
-  /// 75% of screen size or [topicViewArticleSectionFullHeight], whichever is smaller
-  static double topicViewHeaderImageHeight(BuildContext context) => min(
-        MediaQuery.of(context).size.height * .75,
-        topicViewArticleSectionFullHeight(context),
-      );
+  /// Full screen
+  static double topicViewHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
 
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .70, 500);
 

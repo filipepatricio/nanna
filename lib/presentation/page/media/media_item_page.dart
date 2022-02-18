@@ -59,9 +59,11 @@ class MediaItemPage extends HookWidget {
     final modalController = useMemoized(
       () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
     );
+
     final scrollController = useMemoized(
       () => ScrollController(keepScrollOffset: true),
     );
+
     final pageController = usePageController();
 
     useEffect(() {
@@ -78,16 +80,11 @@ class MediaItemPage extends HookWidget {
             /// As cupertino bottom sheet works on ScrollNotification
             /// instead of ScrollController itself it's the only way
             /// to make sure it will work - at least only way I found
-            SizedBox(
-              height: 0,
-              child: NoScrollGlow(
-                child: SingleChildScrollView(
-                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                  controller: modalController,
-                  child: const SizedBox(
-                    height: 0,
-                  ),
-                ),
+            NoScrollGlow(
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                controller: modalController,
+                child: const SizedBox.shrink(),
               ),
             ),
             Expanded(

@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/article/a
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -39,19 +38,16 @@ class TopicMediaItemsList extends HookWidget {
     );
 
     return Container(
-      color: AppColors.darkLinen,
+      color: AppColors.transparent,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const BottomStackedCards(),
-          Container(
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xl),
-            child: SizedBox(
-              child: Text(
-                LocaleKeys.todaysTopics_articlesCount.tr(args: [topic.readingList.entries.length.toString()]),
-                style: AppTypography.h2Jakarta,
-                maxLines: 1,
-              ),
+            child: Text(
+              LocaleKeys.todaysTopics_articlesCount.tr(args: [topic.readingList.entries.length.toString()]),
+              style: AppTypography.h2Jakarta,
+              maxLines: 1,
             ),
           ),
           ListView.separated(
@@ -66,18 +62,19 @@ class TopicMediaItemsList extends HookWidget {
               if (entry.item is MediaItemArticle) {
                 final article = entry.item as MediaItemArticle;
                 return ViewVisibilityNotifier(
-                    detectorKey: Key(article.slug),
-                    onVisible: () {
-                      _trackReadingListBrowse(index);
-                    },
-                    borderFraction: 0.6,
-                    child: ArticleItemView(
-                      article: article,
-                      entryNote: entry.note,
-                      entryStyle: entry.style,
-                      onTap: () => _navigateToArticle(context, index),
-                      mediaItemKey: index == 0 ? mediaItemKey : null,
-                    ));
+                  detectorKey: Key(article.slug),
+                  onVisible: () {
+                    _trackReadingListBrowse(index);
+                  },
+                  borderFraction: 0.6,
+                  child: ArticleItemView(
+                    mediaItemKey: index == 0 ? mediaItemKey : null,
+                    entryStyle: entry.style,
+                    article: article,
+                    editorsNote: entry.note,
+                    onTap: () => _navigateToArticle(context, index),
+                  ),
+                );
               }
               return const SizedBox();
             },
