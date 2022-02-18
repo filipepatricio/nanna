@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class FixedAppBar extends HookWidget {
+class FixedAppBar extends HookWidget implements PreferredSizeWidget {
   const FixedAppBar({
     required this.scrollController,
     required this.title,
@@ -18,42 +18,42 @@ class FixedAppBar extends HookWidget {
   final String title;
 
   @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
   Widget build(BuildContext context) {
-    final scrollOffsetNotifier = useMemoized(() => ValueNotifier(0.0));
+    final scrollOffset = useState(0.0);
     useEffect(() {
       final listener = () {
-        scrollOffsetNotifier.value = scrollController.offset;
+        scrollOffset.value = scrollController.offset;
       };
       scrollController.addListener(listener);
       return () => scrollController.removeListener(listener);
     }, [scrollController]);
 
-    return ValueListenableBuilder<double>(
-        valueListenable: scrollOffsetNotifier,
-        builder: (context, value, child) {
-          final showCenterTitle = value >= kToolbarHeight / 1.2;
-          return AppBar(
-            backgroundColor: AppColors.background,
-            centerTitle: true,
-            elevation: showCenterTitle ? 3 : 0,
-            shadowColor: AppColors.shadowDarkColor,
-            titleSpacing: 0,
-            title: showCenterTitle
-                ? Text(title,
-                    style: AppTypography.h4Bold.copyWith(
-                        height: 2.25,
-                        color: AppColors.textPrimary.withOpacity(
-                          min(1, value / 70),
-                        )))
-                : const SizedBox(),
-            leading: IconButton(
-              padding: const EdgeInsets.only(top: AppDimens.sl),
-              icon: const Icon(Icons.arrow_back_ios_new_rounded),
-              iconSize: AppDimens.backArrowSize,
-              color: AppColors.textPrimary,
-              onPressed: () => AutoRouter.of(context).pop(),
-            ),
-          );
-        });
+    final showCenterTitle = scrollOffset.value >= kToolbarHeight / 1.2;
+
+    return AppBar(
+      backgroundColor: AppColors.background,
+      centerTitle: true,
+      elevation: showCenterTitle ? 3 : 0,
+      shadowColor: AppColors.shadowDarkColor,
+      titleSpacing: 0,
+      title: showCenterTitle
+          ? Text(title,
+              style: AppTypography.h4Bold.copyWith(
+                  height: 2.25,
+                  color: AppColors.textPrimary.withOpacity(
+                    min(1, scrollOffset.value / 70),
+                  )))
+          : const SizedBox(),
+      leading: IconButton(
+        padding: const EdgeInsets.only(top: AppDimens.sl),
+        icon: const Icon(Icons.arrow_back_ios_new_rounded),
+        iconSize: AppDimens.backArrowSize,
+        color: AppColors.textPrimary,
+        onPressed: () => AutoRouter.of(context).pop(),
+      ),
+    );
   }
 }

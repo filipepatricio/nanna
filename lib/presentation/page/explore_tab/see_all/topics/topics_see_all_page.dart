@@ -62,10 +62,7 @@ class TopicsSeeAllPage extends HookWidget {
     }, [scrollController, shouldListen]);
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: FixedAppBar(scrollController: scrollController, title: title),
-      ),
+      appBar: FixedAppBar(scrollController: scrollController, title: title),
       body: _Body(
         title: title,
         pageStorageKey: pageStorageKey,
