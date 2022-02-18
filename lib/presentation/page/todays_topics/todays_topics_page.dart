@@ -174,7 +174,7 @@ class _IdleContent extends HookWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (kIsNotSmallDevice) ...[
+          if (context.isNotSmallDevice) ...[
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
@@ -295,7 +295,7 @@ class _IdleContent extends HookWidget {
 
   void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
     AutoRouter.of(context).push(
-      TodaysTopicsTopicPage(
+      TopicPage(
         topicSlug: currentBrief.topics[index].id,
         topic: currentBrief.topics[index],
         briefId: currentBrief.id,

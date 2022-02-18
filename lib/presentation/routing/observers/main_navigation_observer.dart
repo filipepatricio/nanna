@@ -13,12 +13,6 @@ class MainNavigationObserver extends AutoRouterObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
     switch (route.settings.name) {
-      case TodaysTopicsTopicPage.name:
-        // Handled in TopicPageCubit
-        return;
-      case TopicPageRoute.name:
-        // Handled in TopicPageCubit
-        return;
       case MediaItemPageRoute.name:
         // Handled in MediaItemPageCubit
         return;

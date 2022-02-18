@@ -3,6 +3,7 @@ include: package:pedantic/analysis_options.1.11.0.yaml
 analyzer:
   errors:
     missing_required_param: error
+    body_might_complete_normally_nullable: ignore
   exclude:
     - 'build/**'
     - 'bin/cache/**'

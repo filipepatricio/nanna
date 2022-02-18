@@ -7,21 +7,20 @@ import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_keyboard_visibility/src/keyboard_visibility_handler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
 const defaultDevices = [
-  Device(name: 'iPhone_12_Pro_Max', size: Size(428, 926)),
-  Device(name: 'iPhone_X', size: Size(375, 812)),
-  Device(name: 'iPhone_7', size: Size(375, 667)),
-  Device(name: 'iPhone_SE', size: Size(320, 568)),
+  Device(name: 'iPhone_08,4', size: Size(320, 568)), // iPhone SE
+  Device(name: 'iPhone_09,3', size: Size(375, 667)), // iPhone 7
+  Device(name: 'iPhone_10,6', size: Size(375, 812)), // iPhone X
+  Device(name: 'iPhone_13,4', size: Size(428, 926)), // iPhone 12 Pro Max
 ];
 
 /// Can be used to take screenshots of very long lists without hiding overflowing widgets.
 const veryHighDevices = [
-  Device(name: 'small_device_full_screen', size: Size(359, 2000)),
-  Device(name: 'normal_device_full_screen', size: Size(360, 2000)),
+  Device(name: 'small_device_full_screen', size: Size(359, 2500)),
+  Device(name: 'regular_device_full_screen', size: Size(360, 2500)),
 ];
 
 /// Test matrix to define which flavors and which devices should be used for a visual test.
@@ -81,18 +80,10 @@ void visualTest(Object widgetTypeOrDescription, VisualTestCallback callback,
   }, tags: 'visual', skip: skip);
 }
 
-const _currentUserNotSpecified = Object();
-
-const _defaultInitialRoute = MainPageRoute();
+const _defaultInitialRoute = DashboardPageRoute();
 
 extension StartAppExtension on WidgetTester {
-  Future<void> startApp({
-    PageRouteInfo initialRoute = _defaultInitialRoute,
-    Object currentUser = _currentUserNotSpecified,
-  }) async {
-    // by default the keyboard should not be visible
-    KeyboardVisibilityHandler.setVisibilityForTesting(false);
-
+  Future<void> startApp({PageRouteInfo initialRoute = _defaultInitialRoute}) async {
     final isTab = isTabRoute(initialRoute);
 
     final mainRouter = MainRouter(mainRouterKey);
@@ -113,7 +104,7 @@ extension StartAppExtension on WidgetTester {
 
     if (initialRoute != _defaultInitialRoute) {
       if (isTab) {
-        await mainRouter.navigate(MainPageRoute(children: [initialRoute]));
+        await mainRouter.navigate(DashboardPageRoute(children: [initialRoute]));
       } else {
         await mainRouter.navigate(initialRoute);
       }

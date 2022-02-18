@@ -42,32 +42,28 @@ class TopicsAreaView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.xxxl),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Hero(
-                    tag: HeroTag.exploreTopicsTitle(area.title.hashCode),
-                    child: InformedMarkdownBody(
-                      markdown: area.title,
-                      highlightColor: AppColors.transparent,
-                      baseTextStyle: AppTypography.h2Jakarta,
+          GestureDetector(
+              onTap: () => _navigateToSeeAll(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Hero(
+                        tag: HeroTag.exploreTopicsTitle(area.title.hashCode),
+                        child: InformedMarkdownBody(
+                          markdown: area.title,
+                          highlightColor: AppColors.transparent,
+                          baseTextStyle: AppTypography.h2Jakarta,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SeeAllArrow(
-                  onTap: () => AutoRouter.of(context).push(
-                    TopicsSeeAllPageRoute(
-                      areaId: area.id,
-                      title: area.title,
-                      topics: area.topics,
+                    SeeAllArrow(
+                      onTap: () => _navigateToSeeAll(context),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              )),
           const SizedBox(height: AppDimens.l),
           Container(
             height: cardStackHeight,
@@ -89,13 +85,7 @@ class TopicsAreaView extends HookWidget {
                       itemBuilder: (context, index) {
                         if (index == area.topics.length) {
                           return _SeeAllTopicsLabel(
-                            onTap: () => AutoRouter.of(context).push(
-                              TopicsSeeAllPageRoute(
-                                areaId: area.id,
-                                title: area.title,
-                                topics: area.topics,
-                              ),
-                            ),
+                            onTap: () => _navigateToSeeAll(context),
                           );
                         }
 
@@ -129,9 +119,17 @@ class TopicsAreaView extends HookWidget {
     );
   }
 
+  void _navigateToSeeAll(BuildContext context) => AutoRouter.of(context).push(
+        TopicsSeeAllPageRoute(
+          areaId: area.id,
+          title: area.title,
+          topics: area.topics,
+        ),
+      );
+
   void _onTopicTap(BuildContext context, int index) {
     AutoRouter.of(context).push(
-      TopicPageRoute(
+      TopicPage(
         topicSlug: area.topics[index].id,
         topic: area.topics[index],
       ),

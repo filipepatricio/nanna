@@ -39,22 +39,24 @@ class ArticleWithCoverAreaView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.xxxl),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: Row(
-              children: [
-                Expanded(
-                  child: InformedMarkdownBody(
-                    markdown: area.title,
-                    baseTextStyle: AppTypography.h2Jakarta,
-                    highlightColor: AppColors.transparent,
-                    maxLines: 2,
-                  ),
+          GestureDetector(
+              onTap: () => _navigateToSeeAll(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: InformedMarkdownBody(
+                        markdown: area.title,
+                        baseTextStyle: AppTypography.h2Jakarta,
+                        highlightColor: AppColors.transparent,
+                        maxLines: 2,
+                      ),
+                    ),
+                    SeeAllArrow(onTap: () => _navigateToSeeAll(context)),
+                  ],
                 ),
-                SeeAllArrow(onTap: () => _navigateToSeeAll(context)),
-              ],
-            ),
-          ),
+              )),
           const SizedBox(height: AppDimens.l),
           Container(
             padding: const EdgeInsets.only(left: AppDimens.l),

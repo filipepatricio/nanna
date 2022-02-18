@@ -3,8 +3,11 @@ import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/login_response_dto.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
+import 'package:better_informed_mobile/domain/auth/auth_exception.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
+
+const _noBetaAccessErrorCode = 'no_beta_access';
 
 @LazySingleton(as: AuthApiDataSource)
 class AuthGraphqlDataSource implements AuthApiDataSource {
@@ -49,11 +52,19 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
     );
 
     if (response == null) throw Exception('Sign in failed.');
-    if (response.successful != true) throw Exception('Sign in failed.');
+    if (response.successful != true) throw _resolveSignInError(response.errorCode);
 
     final tokens = response.tokens;
     if (tokens == null) throw Exception('Sign in did not return auth tokens.');
 
     return response;
+  }
+
+  Object _resolveSignInError(String? errorCode) {
+    if (errorCode == _noBetaAccessErrorCode) {
+      return AuthException.noBetaAccess();
+    }
+
+    return AuthException.unknown();
   }
 }

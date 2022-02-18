@@ -225,7 +225,7 @@ class _TopicHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TopicOwnerAvatar(owner: topic.owner, lightMode: true),
+                  TopicOwnerAvatar(owner: topic.owner, mode: Brightness.light),
                   const Spacer(),
                   Expanded(
                     child: InformedMarkdownBody(

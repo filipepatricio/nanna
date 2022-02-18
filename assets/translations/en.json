@@ -13,7 +13,8 @@
     "gotIt": "Got it",
     "done": "Done",
     "tryAgain": "Try again",
-    "linkCopied": "Successfuly copied link to your clipboard!"
+    "linkCopied": "Successfuly copied link to your clipboard!",
+    "share": "Share"
   },
   "commonError": {
     "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "
@@ -66,7 +67,6 @@
     "account": "Account",
     "pushNotifications": "Notifications",
     "emailNotifications": "E-Mail Notifications",
-    "subscription": "Subscription",
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of service",
@@ -120,12 +120,14 @@
       "freemium": "Free Article",
       "premium": "Premium Article"
     },
-    "articleBy": "By {}",
+    "byName": "By {}",
+    "by": "By",
     "readMore": "Read more",
     "readMinutes": "{} min",
     "loadingNext": "Loading next article in\nthe reading list.",
     "allArticlesRead": "Great! You’ve read all\narticles on this topic.",
     "goBackToTopic": "Back to topic overview",
+    "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
     "loadError": "Something went wrong\n while loading the article",
     "continueToArticle": "Continue reading"
@@ -173,5 +175,19 @@
   },
   "shareArticle": {
     "message": "Hey, I am currently reading this article via informed – a new platform for quality journalism. You can still sign up to their waitlist.\n\nhttps://www.informed.so"
+  },
+  "noBetaAccessPage": {
+    "headline": "Ooops, looks like you are not part of the closed beta!",
+    "infoParts": {
+      "0": "If you think you are, ",
+      "1": "reach out to feedback@informed.so.",
+      "2": " Otherwise, you can request an invite below."
+    },
+    "waitlistAction": "Request an invite",
+    "email": {
+      "subject": "I'm part of the closed beta",
+      "body": "Hey there,\nwe will check if you are already part of the Closed Beta and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
+    },
+    "emailCopied": "Successfuly copied email to your clipboard!"
   }
 }

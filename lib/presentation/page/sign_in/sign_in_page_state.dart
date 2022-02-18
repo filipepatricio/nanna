@@ -15,4 +15,8 @@ class SignInPageState with _$SignInPageState {
   factory SignInPageState.processing() = _SignInPageStateProcessing;
 
   factory SignInPageState.success(bool isOnboardingSeen) = _SignInPageStateSuccess;
+
+  factory SignInPageState.generalError() = _SignInPageStateGeneralError;
+
+  factory SignInPageState.noBetaAccess() = _SignInPageStateNoBetaAccess;
 }

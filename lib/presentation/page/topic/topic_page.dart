@@ -5,18 +5,24 @@ import 'package:better_informed_mobile/presentation/page/topic/app_bar/topic_app
 import 'package:better_informed_mobile/presentation/page/topic/topic_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_vertical_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 /// Make sure that changes to the view won't change depth of the main scroll
 /// If they do, adjust depth accordingly
@@ -37,21 +43,9 @@ class TopicPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
     final cubit = useCubit<TopicPageCubit>();
     final tutorialCoachMark = cubit.tutorialCoachMark(context);
     final state = useCubitBuilder(cubit);
-    final scrollController = useScrollController();
-
-    useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(
-        showTutorialToast: (text) => showToast(context, text),
-        showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
-        showMediaItemTutorialCoachMark: tutorialCoachMark.show,
-        skipTutorialCoachMark: tutorialCoachMark.skip,
-        finishTutorialCoachMark: tutorialCoachMark.finish,
-      );
-    });
 
     useEffect(
       () {
@@ -67,46 +61,27 @@ class TopicPage extends HookWidget {
     );
 
     return WillPopScope(
-        onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
-        child: LayoutBuilder(
-          builder: (context, pageConstraints) => CupertinoScaffold(
-            body: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo.metrics.axis == Axis.vertical && scrollInfo.depth == _mainScrollDepth) {
-                  scrollPositionNotifier.value = scrollInfo.metrics.pixels;
-                }
-                return false;
-              },
-              child: Material(
-                child: topic != null
-                    ? _TopicIdleView(
-                        topic: topic!,
-                        scrollController: scrollController,
-                        scrollPositionNotifier: scrollPositionNotifier,
-                        cubit: cubit,
-                      )
-                    : state.maybeMap(
-                        idle: (state) => _TopicIdleView(
-                          topic: state.topic,
-                          scrollController: scrollController,
-                          scrollPositionNotifier: scrollPositionNotifier,
-                          cubit: cubit,
-                        ),
-                        loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
-                        error: (_) => _DefaultAppBarWrapper(
-                          child: GeneralErrorView(
-                            title: LocaleKeys.todaysTopics_oops.tr(),
-                            content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
-                            svgPath: AppVectorGraphics.magError,
-                            retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
-                          ),
-                        ),
-                        orElse: () => const SizedBox(),
-                      ),
-              ),
+      onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
+      child: Material(
+        child: state.maybeMap(
+          idle: (state) => _TopicIdleView(
+            topic: state.topic,
+            cubit: cubit,
+            tutorialCoachMark: tutorialCoachMark,
+          ),
+          loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
+          error: (_) => _DefaultAppBarWrapper(
+            child: GeneralErrorView(
+              title: LocaleKeys.todaysTopics_oops.tr(),
+              content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+              svgPath: AppVectorGraphics.magError,
+              retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
             ),
           ),
-        ));
+          orElse: () => const SizedBox(),
+        ),
+      ),
+    );
   }
 }
 
@@ -137,53 +112,142 @@ class _DefaultAppBarWrapper extends StatelessWidget {
 class _TopicIdleView extends HookWidget {
   const _TopicIdleView({
     required this.topic,
-    required this.scrollController,
-    required this.scrollPositionNotifier,
     required this.cubit,
+    required this.tutorialCoachMark,
     Key? key,
   }) : super(key: key);
 
   final Topic topic;
-  final ScrollController scrollController;
-  final ValueNotifier<double> scrollPositionNotifier;
   final TopicPageCubit cubit;
+  final TutorialCoachMark tutorialCoachMark;
 
-  @override
-  Widget build(BuildContext context) {
-    final summaryViewHeight = MediaQuery.of(context).size.height * .5;
-
-    return NoScrollGlow(
-      child: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          TopicAppBar(
-            topic: topic,
-            scrollPositionNotifier: scrollPositionNotifier,
-            onArticlesLabelTap: () => _navigateToArticles(context, summaryViewHeight),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                TopicView(
-                  topic: topic,
-                  cubit: cubit,
-                  summaryCardKey: cubit.summaryCardKey,
-                  mediaItemKey: cubit.mediaItemKey,
-                  scrollController: scrollController,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+  void _scrollToSummary(BuildContext context, ScrollController scrollController) {
+    scrollController.animateTo(
+      AppDimens.topicViewHeaderImageHeight(context) - kToolbarHeight,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOutCubic,
     );
   }
 
-  void _navigateToArticles(BuildContext context, double summaryViewHeight) {
+  void _scrollToArticles(BuildContext context, ScrollController scrollController) {
     scrollController.animateTo(
-      AppDimens.topicViewHeaderImageHeight(context) + summaryViewHeight,
-      duration: const Duration(milliseconds: 750),
-      curve: Curves.easeOutCubic,
+      AppDimens.topicArticleSectionTriggerPoint(context),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
+    final backgroundImageWidth = MediaQuery.of(context).size.width;
+    final backgroundImageHeight = AppDimens.topicViewHeaderImageHeight(context);
+    final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
+
+    final modalScrollController = useMemoized(() => ModalScrollController.of(context));
+    final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
+    final topicGestureManager = useMemoized(
+      () => TopicVerticalDragManager(
+        modalController: modalScrollController!,
+        generalViewController: scrollController,
+      ),
+    );
+
+    useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+        showTutorialToast: (text) => showToast(context, text),
+        showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
+        showMediaItemTutorialCoachMark: tutorialCoachMark.show,
+        skipTutorialCoachMark: () {
+          tutorialCoachMark.skip();
+          _scrollToArticles(context, scrollController);
+        },
+        finishTutorialCoachMark: tutorialCoachMark.finish,
+      );
+    });
+
+    return RawGestureDetector(
+      gestures: <Type, GestureRecognizerFactory>{
+        VerticalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
+          () => VerticalDragGestureRecognizer(),
+          (VerticalDragGestureRecognizer instance) {
+            instance
+              ..onStart = topicGestureManager.handleDragStart
+              ..onUpdate = topicGestureManager.handleDragUpdate
+              ..onEnd = topicGestureManager.handleDragEnd
+              ..onCancel = topicGestureManager.handleDragCancel;
+          },
+        ),
+        TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+          () => TapGestureRecognizer(),
+          (TapGestureRecognizer instance) {
+            instance.onTapDown = (_) {
+              topicGestureManager.resetScrollVelocity();
+            };
+          },
+        ),
+      },
+      behavior: HitTestBehavior.opaque,
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo.metrics.axis == Axis.vertical &&
+              scrollInfo.depth == _mainScrollDepth &&
+              scrollPositionNotifier.value != scrollInfo.metrics.pixels) {
+            scrollPositionNotifier.value = scrollInfo.metrics.pixels;
+          }
+          return false;
+        },
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Opacity(
+                opacity: .6,
+                child: CloudinaryProgressiveImage(
+                  width: backgroundImageWidth,
+                  height: backgroundImageHeight,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  testImage: AppRasterGraphics.testReadingListCoverImage,
+                  cloudinaryTransformation: cloudinaryProvider
+                      .withPublicId(topic.coverImage.publicId)
+                      .transform()
+                      .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
+                      .fit(),
+                ),
+              ),
+            ),
+            NoScrollGlow(
+              child: CustomScrollView(
+                physics: const NeverScrollableScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                controller: scrollController,
+                slivers: [
+                  TopicAppBar(
+                    topic: topic,
+                    scrollPositionNotifier: scrollPositionNotifier,
+                    onArticlesLabelTap: () => _scrollToArticles(context, scrollController),
+                    onArrowTap: () => _scrollToSummary(context, scrollController),
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        TopicView(
+                          topic: topic,
+                          cubit: cubit,
+                          summaryCardKey: cubit.summaryCardKey,
+                          mediaItemKey: cubit.mediaItemKey,
+                          scrollController: scrollController,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,0 +1,53 @@
+name: Screens report
+
+# There is no merged event, so we have to listen for pull request closed
+# and than add to our job condition "if: github.event.pull_request.merged == true"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, develop]
+    paths-ignore:
+      - '**/README.md'
+
+jobs:
+  screens-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets Flutter environment
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Run easy_localization:generate and generate files
+        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      - name: Run build_runner and generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Create golden files
+        run: flutter test test/visual --update-goldens
+
+      - name: Generate screens report
+        run: make screens_report
+
+      - name: Upload screens report
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: screens_report
+          path: test/visual/screens_report/
+          if-no-files-found: ignore
+          retention-days: 7

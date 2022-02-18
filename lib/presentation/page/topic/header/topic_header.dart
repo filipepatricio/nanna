@@ -4,151 +4,114 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
+import 'package:better_informed_mobile/presentation/widget/selected_articles_label.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicHeader extends HookWidget {
   const TopicHeader({
-    required this.topic,
     required this.onArticlesLabelTap,
-    required this.topicHeaderImageHeight,
+    required this.onArrowTap,
+    required this.topic,
     Key? key,
   }) : super(key: key);
 
+  final VoidCallback onArticlesLabelTap;
+  final VoidCallback onArrowTap;
   final Topic topic;
-  final double topicHeaderImageHeight;
-  final void Function() onArticlesLabelTap;
 
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    const coverImageCropHeight = 200.0;
-    const coverImageCropWidth = coverImageCropHeight;
+    final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
+    final topicHeaderImageWidth = MediaQuery.of(context).size.width;
 
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        Hero(
-          tag: topic.heroImage.publicId,
+        Positioned(
+          top: 0,
           child: Container(
-            width: screenWidth,
+            width: topicHeaderImageWidth,
             height: topicHeaderImageHeight,
             foregroundDecoration: BoxDecoration(color: AppColors.black.withOpacity(0.4)),
             child: CloudinaryProgressiveImage(
-              width: screenWidth,
+              width: topicHeaderImageWidth,
               height: topicHeaderImageHeight,
               fit: BoxFit.fitWidth,
               testImage: AppRasterGraphics.testArticleHeroImage,
               cloudinaryTransformation: cloudinaryProvider
                   .withPublicIdAsPlatform(topic.heroImage.publicId)
                   .transform()
-                  .withLogicalSize(screenWidth, topicHeaderImageHeight, context)
+                  .withLogicalSize(topicHeaderImageWidth, topicHeaderImageHeight, context)
                   .autoGravity(),
             ),
           ),
         ),
-        Positioned(
-          left: 0,
-          bottom: AppDimens.topicViewTopicHeaderPadding,
-          right: AppDimens.topicViewTopicHeaderPadding * 2.5,
-          child: Hero(
-            tag: topic.id,
-            child: LayoutBuilder(
-              builder: (context, constraints) => Container(
-                color: AppColors.background,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: CloudinaryProgressiveImage(
-                        width: constraints.maxWidth,
-                        height: constraints.maxHeight,
-                        fit: BoxFit.cover,
-                        alignment: Alignment.center,
-                        testImage: AppRasterGraphics.testReadingListCoverImageCropped,
-                        cloudinaryTransformation: cloudinaryProvider
-                            .withPublicId(topic.coverImage.publicId)
-                            .transform()
-                            .withLogicalSize(coverImageCropWidth, coverImageCropHeight, context)
-                            .crop('crop')
-                            .autoGravity(),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(AppDimens.l),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          TopicOwnerAvatar(
-                            owner: topic.owner,
-                            onTap: () => AutoRouter.of(context).push(
-                              TopicOwnerPageRoute(owner: topic.owner),
-                            ),
-                          ),
-                          const SizedBox(height: AppDimens.xl),
-                          InformedMarkdownBody(
-                            markdown: topic.title,
-                            baseTextStyle: AppTypography.h1Headline,
-                            maxLines: 5,
-                          ),
-                          const SizedBox(height: AppDimens.xxl),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _SelectedArticlesLabel(onArticlesLabelTap: onArticlesLabelTap, topic: topic),
-                              UpdatedLabel(
-                                dateTime: topic.lastUpdatedAt,
-                                backgroundColor: AppColors.transparent,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+        Container(
+          padding: const EdgeInsets.fromLTRB(AppDimens.l, kToolbarHeight, AppDimens.l, 0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Spacer(flex: 42),
+              TopicOwnerAvatar(
+                owner: topic.owner,
+                mode: Brightness.light,
+                underlined: true,
+                onTap: () => AutoRouter.of(context).push(
+                  TopicOwnerPageRoute(owner: topic.owner),
                 ),
               ),
-            ),
+              const Spacer(flex: 16),
+              InformedMarkdownBody(
+                markdown: topic.title,
+                baseTextStyle: AppTypography.h1Headline(context).copyWith(color: AppColors.white),
+                maxLines: 5,
+              ),
+              const Spacer(flex: 291),
+              InformedMarkdownBody(
+                markdown: topic.introduction,
+                baseTextStyle:
+                    (context.isSmallDevice ? AppTypography.b3RegularLora : AppTypography.b2RegularLora).copyWith(
+                  color: AppColors.white,
+                ),
+                maxLines: 5,
+              ),
+              const Spacer(flex: 24),
+              PublisherLogoRow(
+                topic: topic,
+                mode: Brightness.light,
+              ),
+              const Spacer(flex: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SelectedArticlesLabel(onArticlesLabelTap: onArticlesLabelTap, topic: topic),
+                  UpdatedLabel(
+                    dateTime: topic.lastUpdatedAt,
+                    mode: Brightness.light,
+                    backgroundColor: AppColors.transparent,
+                  ),
+                ],
+              ),
+              const Spacer(flex: 32),
+              AnimatedPointerDown(arrowColor: AppColors.white, onTap: onArrowTap),
+              const Spacer(flex: 40),
+            ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SelectedArticlesLabel extends StatelessWidget {
-  const _SelectedArticlesLabel({
-    required this.onArticlesLabelTap,
-    required this.topic,
-    Key? key,
-  }) : super(key: key);
-
-  final void Function() onArticlesLabelTap;
-  final Topic topic;
-
-  @override
-  Widget build(BuildContext context) {
-    return ExpandTapWidget(
-      onTap: onArticlesLabelTap,
-      tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
-      child: Text(
-        LocaleKeys.todaysTopics_articles.tr(
-          args: [topic.readingList.entries.length.toString()],
-        ),
-        textAlign: TextAlign.start,
-        style: AppTypography.b1Regular.copyWith(decoration: TextDecoration.underline, height: 1),
-      ),
     );
   }
 }

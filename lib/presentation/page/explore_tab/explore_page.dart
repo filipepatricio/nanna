@@ -52,47 +52,51 @@ class ExplorePage extends HookWidget {
           child: Stack(
             children: [
               NoScrollGlow(
-                child: CustomScrollView(
-                  physics: state.maybeMap(
-                    error: (_) => const NeverScrollableScrollPhysics(),
-                    orElse: () => const ClampingScrollPhysics(),
-                  ),
-                  slivers: [
-                    SliverAppBar(
-                      backgroundColor: AppColors.background,
-                      elevation: 3,
-                      systemOverlayStyle: SystemUiOverlayStyle.dark,
-                      centerTitle: false,
-                      pinned: true,
-                      shadowColor: AppColors.shadowDarkColor,
-                      titleSpacing: AppDimens.l,
-                      collapsedHeight: kToolbarHeight,
-                      expandedHeight: kToolbarHeight + AppDimens.s,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Container(color: headerColor),
-                        titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
+                child: RefreshIndicator(
+                  onRefresh: () => cubit.loadExplorePageData(),
+                  child: CustomScrollView(
+                    physics: state.maybeMap(
+                      initialLoading: (_) => const NeverScrollableScrollPhysics(),
+                      error: (_) => const NeverScrollableScrollPhysics(),
+                      orElse: () => const ClampingScrollPhysics(),
+                    ),
+                    slivers: [
+                      SliverAppBar(
+                        backgroundColor: AppColors.background,
+                        elevation: 3,
+                        systemOverlayStyle: SystemUiOverlayStyle.dark,
                         centerTitle: false,
-                        title: Text(
-                          LocaleKeys.main_exploreTab.tr(),
-                          // To allow for the transition's first state align with the other tab titles
-                          style: AppTypography.h4Bold.copyWith(height: 2.25),
+                        pinned: true,
+                        shadowColor: AppColors.shadowDarkColor,
+                        titleSpacing: AppDimens.l,
+                        collapsedHeight: kToolbarHeight,
+                        expandedHeight: kToolbarHeight + AppDimens.s,
+                        flexibleSpace: FlexibleSpaceBar(
+                          background: Container(color: headerColor),
+                          titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
+                          centerTitle: false,
+                          title: Text(
+                            LocaleKeys.main_exploreTab.tr(),
+                            // To allow for the transition's first state align with the other tab titles
+                            style: AppTypography.h4Bold.copyWith(height: 2.25),
+                          ),
                         ),
                       ),
-                    ),
-                    state.maybeMap(
-                      initialLoading: (_) => const SliverToBoxAdapter(
-                        child: ArticleWithCoverAreaLoadingView.loading(),
+                      state.maybeMap(
+                        initialLoading: (_) => const SliverToBoxAdapter(
+                          child: ArticleWithCoverAreaLoadingView.loading(),
+                        ),
+                        idle: (state) => _Idle(areas: state.areas),
+                        error: (_) => const SliverToBoxAdapter(
+                          child: ArticleWithCoverAreaLoadingView.static(),
+                        ),
+                        orElse: () => const SliverToBoxAdapter(
+                          child: SizedBox(),
+                        ),
                       ),
-                      idle: (state) => _Idle(areas: state.areas),
-                      error: (_) => const SliverToBoxAdapter(
-                        child: ArticleWithCoverAreaLoadingView.static(),
-                      ),
-                      orElse: () => const SliverToBoxAdapter(
-                        child: SizedBox(),
-                      ),
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
-                  ],
+                      const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
+                    ],
+                  ),
                 ),
               ),
               Align(

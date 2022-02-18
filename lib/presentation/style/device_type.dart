@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 
-bool get kIsSmallDevice => kDeviceType == DeviceType.small;
-
-bool get kIsNotSmallDevice => kDeviceType != DeviceType.small;
-
-DeviceType kDeviceType = DeviceType.regular;
-
 enum DeviceType { small, regular, large }
 
-DeviceType getDeviceType(Size screenSize) {
-  // See: https://www.ios-resolution.com
-  // 360 up to 768 are regular-sized devices
+/// See: https://www.ios-resolution.com
+/// 360 up to 768 are regular-sized devices
+DeviceType getDeviceType(BuildContext context) {
+  final screenSize = MediaQuery.of(context).size;
+
   if (screenSize.width < 360) {
     return DeviceType.small;
   } else if (screenSize.width >= 768) {
@@ -19,3 +15,21 @@ DeviceType getDeviceType(Size screenSize) {
     return DeviceType.regular;
   }
 }
+
+extension DeviceTypeExtension on DeviceType {
+  bool get isSmallDevice => _isSmallDevice(this);
+
+  bool get isNotSmallDevice => _isNotSmallDevice(this);
+}
+
+extension BuildContextDeviceTypExtension on BuildContext {
+  DeviceType get deviceType => getDeviceType(this);
+
+  bool get isSmallDevice => _isSmallDevice(deviceType);
+
+  bool get isNotSmallDevice => _isNotSmallDevice(deviceType);
+}
+
+bool _isSmallDevice(DeviceType deviceType) => deviceType == DeviceType.small;
+
+bool _isNotSmallDevice(DeviceType deviceType) => deviceType != DeviceType.small;

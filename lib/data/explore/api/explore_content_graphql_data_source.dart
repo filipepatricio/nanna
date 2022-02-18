@@ -17,6 +17,7 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   Future<ExploreContentDTO> getExploreContent() async {
     final result = await _client.query(
       QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
         document: ExploreContentGQL.content(),
       ),
     );

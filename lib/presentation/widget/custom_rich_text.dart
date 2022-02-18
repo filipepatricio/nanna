@@ -1,6 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/widget/text_selection_controls/platform_text_selection_controls.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -102,6 +105,11 @@ class _CustomTextPainter extends HookWidget {
               TextSpan(children: spansWithoutDecoration),
               maxLines: maxLines,
               textAlign: textAlign,
+              selectionControls: createPlatformSpecific(
+                [
+                  shareControlData(tr(LocaleKeys.common_share)),
+                ],
+              ),
             )
           : RichText(
               maxLines: maxLines,

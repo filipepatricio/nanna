@@ -6,6 +6,7 @@ class AuthGQL {
     mutation signIn(\$token: String!, \$provider: String!, \$meta: UserMeta!) {
       signIn(idToken: \$token, provider: \$provider, information: \$meta) {
         successful
+        errorCode
         errorMessage
         tokens {
           accessToken

@@ -18,6 +18,7 @@ class HowDoWeCurateContentPage extends HookWidget {
     return Scaffold(
       body: NoScrollGlow(
         child: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
           shrinkWrap: true,
           slivers: [
             const _ActionsBar(),
@@ -44,7 +45,7 @@ class HowDoWeCurateContentPage extends HookWidget {
                         const SizedBox(height: AppDimens.xxl),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

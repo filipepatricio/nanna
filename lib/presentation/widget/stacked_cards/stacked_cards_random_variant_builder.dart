@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,10 +21,15 @@ class StackedCardsRandomVariantBuilder extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final seed = useMemoized(() => Random().nextInt(2 ^ 32), []);
+    final seed = useMemoized(() => _getSeed(), []);
     final cardVariants = useMemoized(() => _randomizeVariants(seed), [count, seed]);
 
     return builder(cardVariants);
+  }
+
+  int _getSeed() {
+    if (kIsTest) return 0;
+    return Random().nextInt(2 ^ 32);
   }
 
   List<StackedCardsVariant> _randomizeVariants(int seed) {

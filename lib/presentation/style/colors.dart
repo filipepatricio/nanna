@@ -32,6 +32,7 @@ class AppColors {
   static const Color gradientOverlayStartColor = Color(0x90282b35);
   static const Color gradientOverlayEndColor = Color(0x00282B35);
 
+  static Color shadowLinenColor = const Color(0x6b634633).withOpacity(0.2);
   static Color shadowDarkColor = Colors.black.withOpacity(0.4);
   static Color shadowColor = Colors.black.withOpacity(0.12);
 

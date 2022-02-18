@@ -15,7 +15,7 @@ class BottomStackedCards extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: AppDimens.topicViewStackedCardsDividerHeight,
+          height: AppDimens.topicViewStackedCardsDividerHeight(context),
           width: MediaQuery.of(context).size.width * 0.9,
           decoration: BoxDecoration(
             color: AppColors.lightGrey,

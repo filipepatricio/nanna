@@ -7,7 +7,6 @@ part 'article_dto.g.dart';
 
 @JsonSerializable()
 class ArticleDTO {
-  final String? note;
   final String id;
   final String slug;
   final String title;
@@ -22,7 +21,6 @@ class ArticleDTO {
   final String? author;
 
   ArticleDTO(
-    this.note,
     this.id,
     this.slug,
     this.text,
