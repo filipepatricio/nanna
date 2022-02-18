@@ -1,0 +1,248 @@
+name: CI Build
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+env:
+  JAVA_VERSION: '12.x'
+
+jobs:
+  changes:
+    name: Detect changed files
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
+      tests: ${{ steps.filter.outputs.tests }}
+    steps:
+      # For pull requests it's not necessary to checkout the code
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          list-files: 'json'
+          filters: |
+            app:
+              - 'android/**'
+              - 'assets/**'
+              - 'build/**'
+              - 'fonts/**'
+              - 'ios/**'
+              - 'lib/**'
+              - '**.yaml'
+            tests:
+              - 'test/**'
+
+  commit_lint:
+    needs: changes
+    name: Commit linting
+    runs-on: ubuntu-latest
+    outputs:
+      succeeded: ${{ steps.result.outputs.result }}
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.token }}
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: wagoid/commitlint-github-action@v4
+
+      - name: Result
+        id: result
+        if: success()
+        run: echo "::set-output name=result::true"
+
+  code_lint:
+    needs: changes
+    name: Code linting
+    runs-on: ubuntu-latest
+    outputs:
+      succeeded: ${{ steps.result.outputs.result }}
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.token }}
+
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from Pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+      - run: flutter format -l 120 --set-exit-if-changed .
+
+      - name: Result
+        id: result
+        if: success()
+        run: echo "::set-output name=result::true"
+
+  ci_tests:
+    needs: [changes, commit_lint, code_lint]
+    # Tests also run in build_android which triggers if app has changed. So if that job is set to run, this one is skipped
+    if: ${{ needs.changes.outputs.tests == 'true' && needs.changes.outputs.app == 'false' }}
+    name: CI Tests
+    runs-on: ubuntu-latest
+    outputs:
+      succeeded: ${{ steps.result.outputs.result }}
+    timeout-minutes: 20
+    steps:
+      - name: Cancel previous jobs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from Pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets up a flutter environment for use in actions
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+      - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
+
+      - name: Run flutter clean
+        run: flutter clean
+
+      - name: Get flutter dependencies
+        run: flutter pub get
+
+      - name: Run easy_localization:generate and generate files
+        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      - name: Run build_runner and generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Run tests
+        run: flutter test -x visual
+
+      - name: Result
+        id: result
+        if: success()
+        run: echo "::set-output name=result::true"
+
+  build_android:
+    needs: [changes, commit_lint, code_lint]
+    if: ${{ needs.changes.outputs.app == 'true' }}
+    name: Android build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Cancel previous jobs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from Pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets up a flutter environment for use in actions
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+      - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
+
+      - name: Run flutter clean
+        run: flutter clean
+
+      - name: Get flutter dependencies
+        run: flutter pub get
+
+      - name: Run easy_localization:generate and generate files
+        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      - name: Run build_runner and generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Statically analyze the Dart code for any errors
+        run: flutter analyze .
+
+      - name: Run tests
+        run: flutter test -x visual
+
+      - name: Build Android app
+        run: flutter build apk --release --dart-define=env=prod --flavor prod
+
+  build_ios:
+    needs: [changes, commit_lint, code_lint]
+    if: ${{ needs.changes.outputs.app == 'true' }}
+    name: iOS build
+    runs-on: macos-latest
+    outputs:
+      succeeded: ${{ steps.result.outputs.result }}
+    timeout-minutes: 25
+    steps:
+      - name: Cancel previous jobs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version from Pubspec.yaml
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+
+      - name: Sets up a flutter environment for use in actions
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+      - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
+
+      - name: Get flutter dependencies
+        run: flutter pub get
+
+      - name: Run easy_localization:generate and generate files
+        run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+
+      - name: Run build_runner and generate files
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build iOS app
+        run: flutter build ios --release --no-codesign --dart-define=env=prod --flavor prod
+
+      - name: Result
+        id: result
+        if: success()
+        run: echo "::set-output name=result::true"
+
+  all_jobs_succeeded:
+    needs: [changes, commit_lint, code_lint, ci_tests, build_android, build_ios]
+    name: All jobs succeeded
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: App building failed
+        if: ${{ needs.changes.outputs.app == 'true' && needs.build_ios.outputs.succeeded != 'true' }}
+        run: exit 1
+
+      - name: Tests failed
+        if: ${{ needs.changes.outputs.app == 'false' && needs.changes.outputs.tests == 'true' && needs.ci_tests.outputs.succeeded != 'true' }}
+        run: exit 1
+
+      - name: Linting failed
+        if: ${{ needs.commit_lint.outputs.succeeded != 'true' || needs.code_lint.outputs.succeeded != 'true' }}
+        run: exit 1

@@ -8,9 +8,15 @@ on:
 
 jobs:
   screens-report:
+    name: Screens report
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: Cancel previous jobs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -23,6 +29,9 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+
+      - name: Run flutter clean
+        run: flutter clean
 
       - name: Install Flutter dependencies
         run: flutter pub get
