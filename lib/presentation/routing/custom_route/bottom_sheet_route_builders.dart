@@ -87,8 +87,8 @@ Route<T> modalFullScreenBottomSheetPageRouteBuilder<T>(BuildContext context, Wid
     expanded: true,
     barrierLabel: '',
     modalBarrierColor: AppColors.shadowDarkColor,
-    animationCurve: Curves.easeInOutCubic,
-    duration: const Duration(milliseconds: 500),
+    animationCurve: Curves.easeInOut,
+    duration: const Duration(milliseconds: 350),
     settings: page,
   );
 }
