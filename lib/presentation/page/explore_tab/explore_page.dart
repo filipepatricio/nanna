@@ -89,7 +89,9 @@ class ExplorePage extends HookWidget {
                                     ? Text(
                                         LocaleKeys.main_exploreTab.tr(),
                                         style: AppTypography.h4Bold.copyWith(
-                                            height: 2.25, color: AppColors.textPrimary.withOpacity(min(1, value / 15))),
+                                          height: 2.25,
+                                          color: AppColors.textPrimary.withOpacity(min(1, value / 15)),
+                                        ),
                                       )
                                     : const SizedBox(),
                                 flexibleSpace: FlexibleSpaceBar(

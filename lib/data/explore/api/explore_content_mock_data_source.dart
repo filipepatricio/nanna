@@ -20,7 +20,6 @@ class ExploreMockDataSource implements ExploreContentApiDataSource {
 
   @override
   Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset) {
-    // TODO: implement getPaginatedExploreArea
     throw UnimplementedError();
   }
 }
