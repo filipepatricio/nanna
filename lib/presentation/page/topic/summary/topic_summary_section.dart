@@ -40,11 +40,11 @@ class TopicSummarySection extends HookWidget {
 
     return Container(
       width: double.infinity,
-      color: AppColors.background,
+      color: AppColors.transparent,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.xl),
+          const SizedBox(height: AppDimens.xxxl),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Text(
@@ -52,7 +52,7 @@ class TopicSummarySection extends HookWidget {
               style: AppTypography.h2Jakarta,
             ),
           ),
-          const SizedBox(height: AppDimens.sl),
+          const SizedBox(height: AppDimens.l),
           content,
           if (topic.topicSummaryList.length > 1)
             Padding(
