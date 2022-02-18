@@ -8,13 +8,14 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -61,20 +62,7 @@ class TopicsSeeAllPage extends HookWidget {
     }, [scrollController, shouldListen]);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        centerTitle: false,
-        elevation: 3,
-        titleSpacing: 0,
-        shadowColor: AppColors.shadowDarkColor,
-        title: Text(LocaleKeys.explore_title.tr(), style: AppTypography.h3bold.copyWith(height: 1.0)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          iconSize: AppDimens.backArrowSize,
-          color: AppColors.textPrimary,
-          onPressed: () => AutoRouter.of(context).pop(),
-        ),
-      ),
+      appBar: FixedAppBar(scrollController: scrollController, title: title),
       body: _Body(
         title: title,
         pageStorageKey: pageStorageKey,
@@ -161,7 +149,8 @@ class _TopicGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+    return NoScrollGlow(
+        child: CustomScrollView(
       controller: scrollController,
       key: pageStorageKey,
       slivers: [
@@ -201,7 +190,7 @@ class _TopicGrid extends StatelessWidget {
         ),
         SeeAllLoadMoreIndicator(show: withLoader),
       ],
-    );
+    ));
   }
 }
 
