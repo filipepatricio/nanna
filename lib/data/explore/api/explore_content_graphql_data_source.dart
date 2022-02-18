@@ -3,10 +3,11 @@ import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.
 import 'package:better_informed_mobile/data/explore/api/explore_content_api_data_source.dart';
 import 'package:better_informed_mobile/data/explore/api/explore_content_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: ExploreContentApiDataSource)
+@LazySingleton(as: ExploreContentApiDataSource, env: liveEnvs)
 class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;

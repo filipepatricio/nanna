@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/explore/data/explore_content_area.
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
@@ -38,7 +39,7 @@ class ArticleWithCoverAreaView extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.xxxl),
+          const SizedBox(height: AppDimens.l),
           GestureDetector(
               onTap: () => _navigateToSeeAll(context),
               child: Container(
@@ -150,6 +151,7 @@ class _MainArticle extends HookWidget {
                           .autoGravity(),
                       height: constraints.maxHeight,
                       width: constraints.maxWidth,
+                      testImage: AppRasterGraphics.testArticleHeroImage,
                     )
                   : Container(),
             ),

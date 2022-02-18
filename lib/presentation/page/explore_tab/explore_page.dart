@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -31,6 +33,9 @@ class ExplorePage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<ExplorePageCubit>();
     final state = useCubitBuilder(cubit);
+    final scrollController = useScrollController();
+    final headerColor = _getHeaderColor(state);
+    final scrollOffsetNotifier = useMemoized(() => ValueNotifier<double>(0.0));
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(showTutorialToast: (text) => showToast(context, text));
@@ -43,7 +48,13 @@ class ExplorePage extends HookWidget {
       [cubit],
     );
 
-    final headerColor = _getHeaderColor(state);
+    useEffect(() {
+      final listener = () {
+        scrollOffsetNotifier.value = scrollController.offset;
+      };
+      scrollController.addListener(listener);
+      return () => scrollController.removeListener(listener);
+    }, [scrollController]);
 
     return Scaffold(
       body: ReadingBannerWrapper(
@@ -55,33 +66,46 @@ class ExplorePage extends HookWidget {
                 child: RefreshIndicator(
                   onRefresh: () => cubit.loadExplorePageData(),
                   child: CustomScrollView(
+                    controller: scrollController,
                     physics: state.maybeMap(
                       initialLoading: (_) => const NeverScrollableScrollPhysics(),
                       error: (_) => const NeverScrollableScrollPhysics(),
                       orElse: () => const ClampingScrollPhysics(),
                     ),
                     slivers: [
-                      SliverAppBar(
-                        backgroundColor: AppColors.background,
-                        elevation: 3,
-                        systemOverlayStyle: SystemUiOverlayStyle.dark,
-                        centerTitle: false,
-                        pinned: true,
-                        shadowColor: AppColors.shadowDarkColor,
-                        titleSpacing: AppDimens.l,
-                        collapsedHeight: kToolbarHeight,
-                        expandedHeight: kToolbarHeight + AppDimens.s,
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: Container(color: headerColor),
-                          titlePadding: const EdgeInsetsDirectional.only(start: AppDimens.l, bottom: AppDimens.m),
-                          centerTitle: false,
-                          title: Text(
-                            LocaleKeys.main_exploreTab.tr(),
-                            // To allow for the transition's first state align with the other tab titles
-                            style: AppTypography.h4Bold.copyWith(height: 2.25),
-                          ),
-                        ),
-                      ),
+                      ValueListenableBuilder<double>(
+                          valueListenable: scrollOffsetNotifier,
+                          builder: (context, value, child) {
+                            final showCenterTitle = value >= AppDimens.s;
+                            return SliverAppBar(
+                                backgroundColor: AppColors.background,
+                                systemOverlayStyle: SystemUiOverlayStyle.dark,
+                                shadowColor: AppColors.shadowDarkColor,
+                                pinned: true,
+                                centerTitle: true,
+                                elevation: 3.0,
+                                expandedHeight: kToolbarHeight + AppDimens.s,
+                                title: showCenterTitle
+                                    ? Text(
+                                        LocaleKeys.main_exploreTab.tr(),
+                                        style: AppTypography.h4Bold.copyWith(
+                                          height: 2.25,
+                                          color: AppColors.textPrimary.withOpacity(min(1, value / 15)),
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                flexibleSpace: FlexibleSpaceBar(
+                                  collapseMode: CollapseMode.pin,
+                                  background: Container(
+                                      color: headerColor,
+                                      padding:
+                                          const EdgeInsets.only(top: AppDimens.xl + AppDimens.xs, left: AppDimens.l),
+                                      child: Text(
+                                        LocaleKeys.main_exploreTab.tr(),
+                                        style: AppTypography.h1Bold,
+                                      )),
+                                ));
+                          }),
                       state.maybeMap(
                         initialLoading: (_) => const SliverToBoxAdapter(
                           child: ArticleWithCoverAreaLoadingView.loading(),
