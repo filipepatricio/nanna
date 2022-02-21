@@ -1,20 +1,29 @@
-name: CD
-
-# There is no merged event, so we have to listen for pull request closed
-# and than add to our job condition "if: github.event.pull_request.merged == true"
+name: CD Prod
 
 on:
   push:
     branches: [main]
     paths-ignore:
       - '**/README.md'
+      - 'test/**'
+      - 'scripts/**'
+      - '.vscode/**'
+      - '.github/**'
+      - '.idea/**'
+      - '.fvm/**'
+      - '.dart_tool/**'
+      - '.tool-versions'
+      - 'analysis_options.yaml'
+      - 'commitlint.config.js'
+      - 'dart-test.yaml'
+
 env:
   JAVA_VERSION: '12.x'
   RUBY_VERSION: '2.7'
 
 jobs:
-  # CD
   deploy_android:
+    name: Deploy to Google Console
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -23,7 +32,6 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         run: |
           echo ::set-env name=BUILD_NUMBER::${{ github.run_number }}
-          echo "Running build with build number ${{ env.BUILD_NUMBER }}"
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -80,8 +88,8 @@ jobs:
           lane: 'internal_play_store'
           subdirectory: android
 
-  # CD - ios testflight
   deploy_ios:
+    name: Deploy to TestFlight
     runs-on: macos-11
     timeout-minutes: 30
     steps:
@@ -90,7 +98,6 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         run: |
           echo ::set-env name=BUILD_NUMBER::${{ github.run_number }}
-          echo "Running build with build number ${{ env.BUILD_NUMBER }}"
 
       - name: Checkout code
         uses: actions/checkout@v2
