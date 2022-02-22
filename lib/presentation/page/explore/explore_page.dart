@@ -3,13 +3,16 @@ import 'dart:math';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_area/article_area_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_with_cover_area_loading_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/article_with_cover_area/article_with_cover_area_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page_state.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/topics_area/topics_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_with_cover_area_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_with_cover_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_state.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -31,11 +34,23 @@ const _tryAgainButtonWidth = 150.0;
 class ExplorePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final tabBarCubit = useCubit<TabBarCubit>();
     final cubit = useCubit<ExplorePageCubit>();
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final headerColor = _getHeaderColor(state);
     final scrollOffsetNotifier = useMemoized(() => ValueNotifier<double>(0.0));
+
+    useCubitListener<TabBarCubit, TabBarState>(tabBarCubit, (cubit, state, context) {
+      state.maybeWhen(
+        tabPressed: (tab) {
+          if (tab == MainTab.explore && scrollController.hasClients) {
+            scrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOutCubic);
+          }
+        },
+        orElse: () {},
+      );
+    });
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(showTutorialToast: (text) => showToast(context, text));

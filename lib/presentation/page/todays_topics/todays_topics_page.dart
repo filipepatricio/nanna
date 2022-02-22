@@ -3,6 +3,9 @@ import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dar
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_state.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
@@ -15,7 +18,6 @@ import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
-import 'package:better_informed_mobile/presentation/util/scroll_behaviour/no_glow_scroll_behaviour.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
@@ -118,19 +120,20 @@ class TodaysTopicsPage extends HookWidget {
                 error: (_) => RefreshIndicator(
                   onRefresh: cubit.loadTodaysTopics,
                   color: AppColors.darkGrey,
-                  child: CustomScrollView(
-                    scrollBehavior: NoGlowScrollBehavior(),
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: constraints.maxHeight,
-                          child: StackedCardsErrorView(
-                            retryAction: cubit.loadTodaysTopics,
-                            cardStackWidth: cardStackWidth,
+                  child: NoScrollGlow(
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: constraints.maxHeight,
+                            child: StackedCardsErrorView(
+                              retryAction: cubit.loadTodaysTopics,
+                              cardStackWidth: cardStackWidth,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
@@ -158,6 +161,7 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tabBarCubit = useCubit<TabBarCubit>();
     final lastPageAnimationProgressState = useMemoized(() => ValueNotifier(0.0));
 
     useEffect(() {
@@ -168,6 +172,17 @@ class _IdleContent extends HookWidget {
       controller.addListener(listener);
       return () => controller.removeListener(listener);
     }, [controller]);
+
+    useCubitListener<TabBarCubit, TabBarState>(tabBarCubit, (cubit, state, context) {
+      state.maybeWhen(
+        tabPressed: (tab) {
+          if (tab == MainTab.today) {
+            controller.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOutCubic);
+          }
+        },
+        orElse: () {},
+      );
+    });
 
     return ReadingBannerWrapper(
       child: Column(
@@ -195,55 +210,56 @@ class _IdleContent extends HookWidget {
                       return RefreshIndicator(
                         onRefresh: todaysTopicsCubit.loadTodaysTopics,
                         color: AppColors.darkGrey,
-                        child: CustomScrollView(
-                          scrollBehavior: NoGlowScrollBehavior(),
-                          physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                          slivers: [
-                            SliverToBoxAdapter(
-                              child: SizedBox(
-                                height: constraints.maxHeight,
-                                child: StackedCardsRandomVariantBuilder(
-                                    count: currentBrief.topics.length,
-                                    builder: (variants) {
-                                      return NoScrollGlow(
-                                        child: PageView(
-                                          allowImplicitScrolling: true,
-                                          controller: controller,
-                                          scrollDirection: Axis.horizontal,
-                                          onPageChanged: (index) {
-                                            if (index < currentBrief.topics.length) {
-                                              todaysTopicsCubit.trackTopicPageSwipe(
-                                                currentBrief.topics[index].id,
-                                                index + 1,
-                                              );
-                                            } else {
-                                              todaysTopicsCubit.trackRelaxPage();
-                                            }
-                                          },
-                                          children: [
-                                            ..._buildTopicCards(
-                                              context,
-                                              controller,
-                                              todaysTopicsCubit,
-                                              currentBrief,
-                                              cardStackWidth,
-                                              constraints.maxHeight,
-                                              variants,
-                                            ),
-                                            Hero(
-                                              tag: HeroTag.dailyBriefRelaxPage,
-                                              child: RelaxView(
-                                                lastPageAnimationProgressState: lastPageAnimationProgressState,
-                                                goodbyeHeadline: currentBrief.goodbye,
+                        child: NoScrollGlow(
+                          child: CustomScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                            slivers: [
+                              SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: constraints.maxHeight,
+                                  child: StackedCardsRandomVariantBuilder(
+                                      count: currentBrief.topics.length,
+                                      builder: (variants) {
+                                        return NoScrollGlow(
+                                          child: PageView(
+                                            allowImplicitScrolling: true,
+                                            controller: controller,
+                                            scrollDirection: Axis.horizontal,
+                                            onPageChanged: (index) {
+                                              if (index < currentBrief.topics.length) {
+                                                todaysTopicsCubit.trackTopicPageSwipe(
+                                                  currentBrief.topics[index].id,
+                                                  index + 1,
+                                                );
+                                              } else {
+                                                todaysTopicsCubit.trackRelaxPage();
+                                              }
+                                            },
+                                            children: [
+                                              ..._buildTopicCards(
+                                                context,
+                                                controller,
+                                                todaysTopicsCubit,
+                                                currentBrief,
+                                                cardStackWidth,
+                                                constraints.maxHeight,
+                                                variants,
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }),
+                                              Hero(
+                                                tag: HeroTag.dailyBriefRelaxPage,
+                                                child: RelaxView(
+                                                  lastPageAnimationProgressState: lastPageAnimationProgressState,
+                                                  goodbyeHeadline: currentBrief.goodbye,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },
