@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,7 @@ class ArticleContentView extends StatelessWidget {
             children: [
               Container(
                 key: articleContentKey,
-                child: _articleContent(),
+                child: _articleContent(context),
               ),
               const SizedBox(height: AppDimens.l),
             ],
@@ -57,10 +58,17 @@ class ArticleContentView extends StatelessWidget {
     ));
   }
 
-  Widget? _articleContent() {
+  Widget? _articleContent(BuildContext context) {
     if (content.type == ArticleContentType.markdown) {
       return ArticleContentMarkdown(
         markdown: content.content,
+        shareTextCallback: (quote) {
+          showQuoteEditor(
+            context,
+            article,
+            quote,
+          );
+        },
         scrollToPosition: scrollToPosition,
       );
     } else if (content.type == ArticleContentType.html) {
@@ -99,6 +107,13 @@ class _ArticleHeader extends StatelessWidget {
           markdown: article.title,
           baseTextStyle: AppTypography.h1ExtraBold,
           highlightColor: AppColors.transparent,
+          shareTextCallback: (quote) {
+            showQuoteEditor(
+              context,
+              article,
+              quote,
+            );
+          },
         ),
         const SizedBox(height: AppDimens.m),
         DottedArticleInfo(

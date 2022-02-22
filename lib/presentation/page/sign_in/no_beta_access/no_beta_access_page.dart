@@ -128,7 +128,7 @@ class NoBetaAccessPage extends HookWidget {
                   textColor: AppColors.white,
                   onTap: () => cubit.openWaitlist(),
                 ),
-                const SizedBox(height: AppDimens.c),
+                const SizedBox(height: AppDimens.xxl),
               ],
             ),
           ),
