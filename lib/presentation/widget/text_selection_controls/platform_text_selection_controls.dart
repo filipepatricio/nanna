@@ -26,7 +26,6 @@ DelegateTextSelectionControlData shareControlData(
       final fullText = delegate.textEditingValue.text;
       final text = delegate.textEditingValue.selection.textInside(fullText);
 
-      delegate.userUpdateTextEditingValue(TextEditingValue.empty, SelectionChangedCause.toolbar);
       delegate.hideToolbar();
       status?.update();
 

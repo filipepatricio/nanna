@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
+typedef ShareTextCallback = Function(String text);
+
 class CustomRichText extends HookWidget implements RichTextBase {
   @override
   final TextSpan textSpan;
@@ -16,6 +18,7 @@ class CustomRichText extends HookWidget implements RichTextBase {
   final Color highlightColor;
   final TextAlign textAlign;
   final int? maxLines;
+  final ShareTextCallback? shareCallback;
 
   const CustomRichText({
     required this.textSpan,
@@ -23,6 +26,7 @@ class CustomRichText extends HookWidget implements RichTextBase {
     this.selectable = false,
     this.textAlign = TextAlign.start,
     this.maxLines,
+    this.shareCallback,
     Key? key,
   }) : super(key: key);
 
@@ -38,6 +42,7 @@ class CustomRichText extends HookWidget implements RichTextBase {
         highlightColor: highlightColor,
         maxLines: maxLines,
         textAlign: textAlign,
+        shareCallback: shareCallback,
       ),
     );
   }
@@ -50,6 +55,7 @@ class _CustomTextPainter extends HookWidget {
   final Color highlightColor;
   final TextAlign textAlign;
   final int? maxLines;
+  final ShareTextCallback? shareCallback;
 
   const _CustomTextPainter({
     required this.size,
@@ -58,6 +64,7 @@ class _CustomTextPainter extends HookWidget {
     required this.highlightColor,
     required this.textAlign,
     this.maxLines,
+    this.shareCallback,
     Key? key,
   }) : super(key: key);
 
@@ -107,7 +114,10 @@ class _CustomTextPainter extends HookWidget {
               textAlign: textAlign,
               selectionControls: createPlatformSpecific(
                 [
-                  shareControlData(tr(LocaleKeys.common_share)),
+                  shareControlData(
+                    tr(LocaleKeys.common_share),
+                    shareCallback,
+                  ),
                 ],
               ),
             )

@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/custom_rich_text.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,10 +8,12 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ArticleContentMarkdown extends HookWidget {
   final String markdown;
+  final ShareTextCallback shareTextCallback;
   final Function() scrollToPosition;
 
   const ArticleContentMarkdown({
     required this.markdown,
+    required this.shareTextCallback,
     required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
@@ -31,6 +34,7 @@ class ArticleContentMarkdown extends HookWidget {
         baseTextStyle: AppTypography.articleText,
         strongTextStyle: AppTypography.articleTextBold,
         selectable: true,
+        shareTextCallback: shareTextCallback,
         paddingBuilders: <String, MarkdownPaddingBuilder>{
           'p': PPaddingBuilder(),
           'h1': HeadingsPaddingBuilder(),
