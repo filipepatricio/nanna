@@ -2,33 +2,27 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_state.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_title_hero.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
-import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'todays_topics_page_state.dart';
@@ -42,7 +36,10 @@ class TodaysTopicsPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final controller = usePageController(viewportFraction: AppDimens.topicCardWidthViewportFraction);
     final relaxState = useState(false);
+    final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
+    final cardSectionMaxHeight = MediaQuery.of(context).size.height * 0.8;
+    final cardStackHeight = MediaQuery.of(context).size.height * 0.65;
 
     useEffect(
       () {
@@ -79,69 +76,51 @@ class TodaysTopicsPage extends HookWidget {
     );
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.transparent,
-          automaticallyImplyLeading: false,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          centerTitle: false,
-          titleSpacing: AppDimens.l,
-          title: Row(
-            children: [
-              TodaysTopicsTitleHero(
-                title: relaxState.value ? LocaleKeys.todaysTopics_relax.tr() : LocaleKeys.todaysTopics_title.tr(),
-              ),
-              const Spacer(),
-              Visibility(
-                visible: relaxState.value,
-                child: Container(
-                  height: AppDimens.s,
-                  width: AppDimens.s,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppDimens.xxs),
-                    color: AppColors.limeGreen,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: RefreshIndicator(
+          onRefresh: cubit.loadTodaysTopics,
+          color: AppColors.darkGrey,
+          child: NoScrollGlow(
+            child: CustomScrollView(
+              controller: scrollController,
+              physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+              slivers: [
+                ScrollableSliverAppBar(
+                  scrollController: scrollController,
+                  title: LocaleKeys.todaysTopics_title.tr(),
+                ),
+                state.maybeMap(
+                  idle: (state) => _IdleContent(
+                    todaysTopicsCubit: cubit,
+                    currentBrief: state.currentBrief,
+                    controller: controller,
+                    cardStackWidth: cardStackWidth,
+                    cardStackHeight: cardStackHeight,
                   ),
-                ),
-              ),
-              const SizedBox(width: AppDimens.s),
-            ],
-          ),
-        ),
-        body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            return AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              child: state.maybeMap(
-                idle: (state) => _IdleContent(
-                  todaysTopicsCubit: cubit,
-                  currentBrief: state.currentBrief,
-                  controller: controller,
-                  cardStackWidth: cardStackWidth,
-                ),
-                error: (_) => RefreshIndicator(
-                  onRefresh: cubit.loadTodaysTopics,
-                  color: AppColors.darkGrey,
-                  child: NoScrollGlow(
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: constraints.maxHeight,
-                            child: StackedCardsErrorView(
-                              retryAction: cubit.loadTodaysTopics,
-                              cardStackWidth: cardStackWidth,
-                            ),
-                          ),
-                        ),
-                      ],
+                  error: (_) => SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: cardSectionMaxHeight,
+                      child: StackedCardsErrorView(
+                        retryAction: cubit.loadTodaysTopics,
+                        cardStackWidth: cardStackWidth,
+                      ),
                     ),
                   ),
+                  loading: (_) => SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: cardSectionMaxHeight,
+                      child: StackedCardsLoadingView(cardStackWidth: cardStackWidth),
+                    ),
+                  ),
+                  orElse: () => const SizedBox(),
                 ),
-                loading: (_) => StackedCardsLoadingView(cardStackWidth: cardStackWidth),
-                orElse: () => const SizedBox(),
-              ),
-            );
-          },
-        ));
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -150,12 +129,14 @@ class _IdleContent extends HookWidget {
   final CurrentBrief currentBrief;
   final PageController controller;
   final double cardStackWidth;
+  final double cardStackHeight;
 
   const _IdleContent({
     required this.todaysTopicsCubit,
     required this.currentBrief,
     required this.controller,
     required this.cardStackWidth,
+    required this.cardStackHeight,
     Key? key,
   }) : super(key: key);
 
@@ -184,129 +165,100 @@ class _IdleContent extends HookWidget {
       );
     });
 
-    return ReadingBannerWrapper(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (context.isNotSmallDevice) ...[
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: _Greeting(
-                greeting: currentBrief.greeting,
-                lastPageAnimationProgressState: lastPageAnimationProgressState,
-              ),
-            ),
-            const Spacer(),
-          ],
-          Flexible(
-            flex: 40,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      return RefreshIndicator(
-                        onRefresh: todaysTopicsCubit.loadTodaysTopics,
-                        color: AppColors.darkGrey,
-                        child: NoScrollGlow(
-                          child: CustomScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                            slivers: [
-                              SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: constraints.maxHeight,
-                                  child: StackedCardsRandomVariantBuilder(
-                                      count: currentBrief.topics.length,
-                                      builder: (variants) {
-                                        return NoScrollGlow(
-                                          child: PageView(
-                                            allowImplicitScrolling: true,
-                                            controller: controller,
-                                            scrollDirection: Axis.horizontal,
-                                            onPageChanged: (index) {
-                                              if (index < currentBrief.topics.length) {
-                                                todaysTopicsCubit.trackTopicPageSwipe(
-                                                  currentBrief.topics[index].id,
-                                                  index + 1,
-                                                );
-                                              } else {
-                                                todaysTopicsCubit.trackRelaxPage();
-                                              }
-                                            },
-                                            children: [
-                                              ..._buildTopicCards(
-                                                context,
-                                                controller,
-                                                todaysTopicsCubit,
-                                                currentBrief,
-                                                cardStackWidth,
-                                                constraints.maxHeight,
-                                                variants,
-                                              ),
-                                              Hero(
-                                                tag: HeroTag.dailyBriefRelaxPage,
-                                                child: RelaxView(
-                                                  lastPageAnimationProgressState: lastPageAnimationProgressState,
-                                                  goodbyeHeadline: currentBrief.goodbye,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Spacer(),
-          Center(
-            child: _DotIndicator(currentBrief: currentBrief, controller: controller),
-          ),
-          const Spacer()
-        ],
-      ),
-    );
-  }
-
-  Iterable<Widget> _buildTopicCards(
-    BuildContext context,
-    PageController controller,
-    TodaysTopicsPageCubit dailyBriefCubit,
-    CurrentBrief currentBrief,
-    double width,
-    double heightPageView,
-    List<StackedCardsVariant> cardsVariants,
-  ) {
-    return currentBrief.topics.asMap().map<int, Widget>((key, value) {
-      return MapEntry(
-          key,
-          Row(
+    return SliverList(
+        delegate: SliverChildBuilderDelegate(
+      (BuildContext context, int index) {
+        if (index == 0) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Spacer(),
-              Expanded(
-                flex: 15,
-                child: PageViewStackedCards.variant(
-                  variant: cardsVariants[key],
-                  coverSize: Size(width, heightPageView),
-                  child: ReadingListCover(
-                    topic: currentBrief.topics[key],
-                    onTap: () => _onTopicCardPressed(context, key, currentBrief),
+              if (context.isNotSmallDevice) ...[
+                const SizedBox(height: AppDimens.s),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: _Greeting(
+                    greeting: currentBrief.greeting,
+                    lastPageAnimationProgressState: lastPageAnimationProgressState,
                   ),
                 ),
-              )
+                const SizedBox(height: AppDimens.m),
+              ],
             ],
-          ));
-    }).values;
+          );
+        }
+        return Container(
+            width: MediaQuery.of(context).size.width,
+            height: cardStackHeight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                StackedCardsRandomVariantBuilder(
+                  count: currentBrief.topics.length,
+                  builder: (variants) => PageViewStackedCards.variant(
+                    variant: variants[index],
+                    coverSize: Size(cardStackWidth, cardStackHeight),
+                    child: ReadingListCover(
+                      topic: currentBrief.topics[index],
+                      onTap: () => _onTopicCardPressed(context, index, currentBrief),
+                    ),
+                  ),
+                )
+              ],
+            ));
+      },
+      childCount: currentBrief.topics.length,
+    )
+        // CustomScrollView(
+        //   scrollBehavior: NoGlowScrollBehavior(),
+        //   physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+        //   slivers: [
+        //     SliverToBoxAdapter(
+        //       child: SizedBox(
+        //         height: constraints.maxHeight,
+        //         child: StackedCardsRandomVariantBuilder(
+        //             count: currentBrief.topics.length,
+        //             builder: (variants) {
+        //               return NoScrollGlow(
+        //                 child: PageView(
+        //                   allowImplicitScrolling: true,
+        //                   controller: controller,
+        //                   scrollDirection: Axis.horizontal,
+        //                   onPageChanged: (index) {
+        //                     if (index < currentBrief.topics.length) {
+        //                       todaysTopicsCubit.trackTopicPageSwipe(
+        //                         currentBrief.topics[index].id,
+        //                         index + 1,
+        //                       );
+        //                     } else {
+        //                       todaysTopicsCubit.trackRelaxPage();
+        //                     }
+        //                   },
+        //                   children: [
+        //                     ..._buildTopicCards(
+        //                       context,
+        //                       controller,
+        //                       todaysTopicsCubit,
+        //                       currentBrief,
+        //                       cardStackWidth,
+        //                       constraints.maxHeight,
+        //                       variants,
+        //                     ),
+        //                     Hero(
+        //                       tag: HeroTag.dailyBriefRelaxPage,
+        //                       child: RelaxView(
+        //                         lastPageAnimationProgressState: lastPageAnimationProgressState,
+        //                         goodbyeHeadline: currentBrief.goodbye,
+        //                       ),
+        //                     ),
+        //                   ],
+        //                 ),
+        //               );
+        //             }),
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        );
   }
 
   void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
@@ -346,25 +298,6 @@ class _Greeting extends StatelessWidget {
         baseTextStyle: AppTypography.b1Regular,
         textAlignment: TextAlign.left,
       ),
-    );
-  }
-}
-
-class _DotIndicator extends StatelessWidget {
-  final CurrentBrief currentBrief;
-  final PageController controller;
-
-  const _DotIndicator({
-    required this.currentBrief,
-    required this.controller,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PageDotIndicator(
-      pageCount: currentBrief.topics.length + 1,
-      controller: controller,
     );
   }
 }
