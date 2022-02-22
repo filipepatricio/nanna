@@ -33,8 +33,8 @@ Future<void> showQuoteEditor(
     ),
     backgroundColor: AppColors.white,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(
           _bottomSheetRadius,
         ),
       ),
@@ -63,7 +63,7 @@ class QuoteEditorView extends HookWidget {
     final cubit = useCubit<QuoteEditorViewCubit>();
     final state = useCubitBuilder(cubit);
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(AppDimens.l),
       child: Column(
         mainAxisSize: MainAxisSize.min,
