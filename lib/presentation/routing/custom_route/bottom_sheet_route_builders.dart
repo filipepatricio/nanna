@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/presentation/page/main/dashboard_page.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/cupertino.dart' show CupertinoTheme;
 import 'package:flutter/material.dart';

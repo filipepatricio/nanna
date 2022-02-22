@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/explore_page.dart';
+import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 
 import 'visual_test_utils.dart';
 

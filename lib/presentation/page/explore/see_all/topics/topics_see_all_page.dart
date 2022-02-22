@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/see_all_load_more_indicator.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/topics/topics_see_all_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/topics/topics_see_all_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
+import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';

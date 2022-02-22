@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-enum MainTabs { today, explore, profile }
+enum MainTab { today, explore, profile }
 
-extension Attributes on MainTabs {
+extension MainTabExtension on MainTab {
   Widget get icon => _icon();
 
   Widget get activeIcon => _activeIcon();
@@ -17,44 +17,46 @@ extension Attributes on MainTabs {
 
   Widget _icon() {
     switch (this) {
-      case MainTabs.today:
-        return _BottomNavigationIcon(AppVectorGraphics.today, _title(), isActive: false);
-      case MainTabs.explore:
-        return _BottomNavigationIcon(AppVectorGraphics.explore, _title(), isActive: false);
-      case MainTabs.profile:
-        return _BottomNavigationIcon(AppVectorGraphics.profile, _title(), isActive: false);
+      case MainTab.today:
+        return _TabBarIcon(AppVectorGraphics.today, _title(), isActive: false);
+      case MainTab.explore:
+        return _TabBarIcon(AppVectorGraphics.explore, _title(), isActive: false);
+      case MainTab.profile:
+        return _TabBarIcon(AppVectorGraphics.profile, _title(), isActive: false);
     }
   }
 
   Widget _activeIcon() {
     switch (this) {
-      case MainTabs.today:
-        return _BottomNavigationIcon(AppVectorGraphics.todaySelected, _title());
-      case MainTabs.explore:
-        return _BottomNavigationIcon(AppVectorGraphics.exploreSelected, _title());
-      case MainTabs.profile:
-        return _BottomNavigationIcon(AppVectorGraphics.profileSelected, _title());
+      case MainTab.today:
+        return _TabBarIcon(AppVectorGraphics.todaySelected, _title());
+      case MainTab.explore:
+        return _TabBarIcon(AppVectorGraphics.exploreSelected, _title());
+      case MainTab.profile:
+        return _TabBarIcon(AppVectorGraphics.profileSelected, _title());
     }
   }
 
   String _title() {
     switch (this) {
-      case MainTabs.today:
+      case MainTab.today:
         return LocaleKeys.main_todayTab.tr();
-      case MainTabs.explore:
+      case MainTab.explore:
         return LocaleKeys.main_exploreTab.tr();
-      case MainTabs.profile:
+      case MainTab.profile:
         return LocaleKeys.main_profileTab.tr();
     }
   }
+
+  static MainTab fromIndex(int index) => MainTab.values[index];
 }
 
-class _BottomNavigationIcon extends HookWidget {
+class _TabBarIcon extends HookWidget {
   final String iconName;
   final String title;
   final bool isActive;
 
-  const _BottomNavigationIcon(
+  const _TabBarIcon(
     this.iconName,
     this.title, {
     this.isActive = true,

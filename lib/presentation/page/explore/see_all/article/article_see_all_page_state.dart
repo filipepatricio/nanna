@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/presentation/page/explore_tab/see_all/article/article_with_background.dart';
+import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_with_background.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
