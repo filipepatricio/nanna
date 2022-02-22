@@ -14,7 +14,9 @@
     "done": "Done",
     "tryAgain": "Try again",
     "linkCopied": "Successfuly copied link to your clipboard!",
-    "share": "Share"
+    "share": "Share",
+    "shareImage": "Share image",
+    "shareText": "Share text"
   },
   "commonError": {
     "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "

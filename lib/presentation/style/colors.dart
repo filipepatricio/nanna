@@ -28,6 +28,7 @@ class AppColors {
   static const Color carrotRed = Color(0xffFB6F43);
   static const Color peach10 = Color(0xffF2E8E7);
   static const Color peach100 = Color(0xffFB9E8A);
+  static const Color blueSelected = Color(0xff0099FF);
 
   static const Color gradientOverlayStartColor = Color(0x90282b35);
   static const Color gradientOverlayEndColor = Color(0x00282B35);
