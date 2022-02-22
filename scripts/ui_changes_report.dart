@@ -184,7 +184,7 @@ Iterable<FailedTest> parseFlutterTestOutput(String flutterTestOutput) sync* {
       }
     }
   } catch (_) {
-    File('${reportDir.path}/run_visual_tests_output.json').writeAsStringSync(flutterTestOutput);
+    File('${reportDir.path}/ui_changes_report_output.json').writeAsStringSync(flutterTestOutput);
     rethrow;
   }
 }
@@ -216,23 +216,12 @@ Future<void> getGoldens(String sha1) async {
           head = await exec('git', ['rev-parse', 'HEAD']);
         }
       },
-      after: () async {
-        if (gitStatus.isNotEmpty) {
-          await printAndExec('git', ['reset', 'HEAD~1']);
-        }
-      },
       body: () async {
         await runGuarded(
           before: () async {
             if (head != sha1) {
               print('> Reset work directory to baseline ...');
               await printAndExec('git', ['reset', '--hard', sha1]);
-            }
-          },
-          after: () async {
-            if (head != sha1) {
-              print('> Restore work directory ...');
-              await printAndExec('git', ['reset', '--hard', head]);
             }
           },
           body: () async {
@@ -250,7 +239,18 @@ Future<void> getGoldens(String sha1) async {
             await printAndExec('make', ['easy_localization']);
             await printAndExec('make', ['build_runner']);
           },
+          after: () async {
+            if (head != sha1) {
+              print('> Restore work directory ...');
+              await printAndExec('git', ['reset', '--hard', head]);
+            }
+          },
         );
+      },
+      after: () async {
+        if (gitStatus.isNotEmpty) {
+          await printAndExec('git', ['reset', 'HEAD~1']);
+        }
       },
     );
   }
