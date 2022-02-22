@@ -20,6 +20,7 @@ class ViewVisibilityNotifier extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final visible = useState(false);
+    final isMounted = useIsMounted();
 
     useEffect(
       () {
@@ -32,11 +33,13 @@ class ViewVisibilityNotifier extends HookWidget {
 
     return VisibilityDetector(
       key: detectorKey,
-      onVisibilityChanged: (visibility) {
-        if (!kIsTest) {
-          visible.value = visibility.visibleFraction >= borderFraction;
-        }
-      },
+      onVisibilityChanged: !kIsTest
+          ? (visibility) {
+              if (isMounted()) {
+                visible.value = visibility.visibleFraction >= borderFraction;
+              }
+            }
+          : null,
       child: child,
     );
   }
