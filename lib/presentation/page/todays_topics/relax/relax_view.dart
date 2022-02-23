@@ -45,7 +45,7 @@ class RelaxView extends HookWidget {
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (goodbyeHeadline.icon != null)
               Image.network(
@@ -68,16 +68,17 @@ class RelaxView extends HookWidget {
             if (goodbyeHeadline.message != null) ...[
               const SizedBox(height: AppDimens.ml),
               RichText(
-                textAlign: TextAlign.end,
+                textAlign: TextAlign.center,
                 text: TextSpan(
                   children: [
                     TextSpan(
                       text: goodbyeHeadline.message,
                       style: AppTypography.b1Regular,
                     ),
+                    const TextSpan(text: ' '),
                     TextSpan(
-                      text: '\n${LocaleKeys.todaysTopics_goToExplore.tr()}',
-                      style: AppTypography.b1Regular.copyWith(decoration: TextDecoration.underline),
+                      text: '${LocaleKeys.todaysTopics_goToExplore.tr()}',
+                      style: AppTypography.b1Bold.copyWith(decoration: TextDecoration.underline),
                       recognizer: TapGestureRecognizer()..onTap = () => _goToExplore(context),
                     ),
                   ],
