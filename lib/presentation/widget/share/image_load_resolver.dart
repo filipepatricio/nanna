@@ -42,8 +42,12 @@ class ImageLoadResolver extends HookWidget {
 
         final subscription = mergedStream.listen(
           (event) {},
-          onDone: () => completer.complete(),
-          onError: (e) => completer.completeError(''),
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete();
+            }
+          },
+          onError: (e) => completer.completeError(e.toString()),
         );
         return () => subscription.cancel();
       },

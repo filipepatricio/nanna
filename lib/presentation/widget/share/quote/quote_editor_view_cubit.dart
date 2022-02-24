@@ -23,7 +23,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     }
 
     final generator = ShareViewImageGenerator(
-      () => QuoteView(
+      () => QuoteViewSticker(
         quote: fixedQuote,
         article: article,
         quoteVariantData: state.variants[state.selectedIndex],

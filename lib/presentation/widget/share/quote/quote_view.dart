@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -20,8 +22,8 @@ const _cardWidth = 480.0;
 const _cardRadius = 24.0;
 const _logoHeight = 24.0;
 
-class QuoteView extends HookWidget implements BaseShareCompletable {
-  QuoteView({
+class QuoteViewSticker extends HookWidget implements BaseShareCompletable {
+  QuoteViewSticker({
     required this.quote,
     required this.article,
     required this.quoteVariantData,
@@ -49,6 +51,15 @@ class QuoteView extends HookWidget implements BaseShareCompletable {
       () {
         if (articleImageId == null) return null;
 
+        if (kIsTest) {
+          return Image.asset(
+            AppRasterGraphics.testArticleHeroImage,
+            width: 110,
+            height: 110,
+            fit: BoxFit.cover,
+          );
+        }
+
         final imageUrl = cloudinary
             .withPublicId(articleImageId)
             .transform()
@@ -67,34 +78,36 @@ class QuoteView extends HookWidget implements BaseShareCompletable {
       },
     );
 
-    return ImageLoadResolver(
-      images: [articleImage],
-      completer: viewReadyCompleter,
-      child: Material(
-        color: AppColors.background,
-        child: Container(
-          width: size.width,
-          height: size.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: _Quote(
-                  quote: quote,
-                  quoteVariantData: quoteVariantData,
-                  article: article,
+    return MaterialApp(
+      home: ImageLoadResolver(
+        images: [articleImage],
+        completer: viewReadyCompleter,
+        child: Material(
+          color: AppColors.background,
+          child: Container(
+            width: size.width,
+            height: size.height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: _Quote(
+                    quote: quote,
+                    quoteVariantData: quoteVariantData,
+                    article: article,
+                  ),
                 ),
-              ),
-              const SizedBox(height: AppDimens.xl),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.xxxl),
-                child: _ArticleBanner(
-                  article: article,
-                  image: articleImage,
+                const SizedBox(height: AppDimens.xl),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.xxxl),
+                  child: _ArticleBanner(
+                    article: article,
+                    image: articleImage,
+                  ),
                 ),
-              ),
-              const SizedBox(height: AppDimens.xxxl),
-            ],
+                const SizedBox(height: AppDimens.xxxl),
+              ],
+            ),
           ),
         ),
       ),
@@ -117,60 +130,62 @@ class _Quote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        width: _cardWidth,
-        padding: const EdgeInsets.fromLTRB(
-          AppDimens.l,
-          AppDimens.l,
-          AppDimens.l,
-          AppDimens.xl,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(AppDimens.l),
+      child: SingleChildScrollView(
+        child: Container(
+          width: _cardWidth,
+          padding: const EdgeInsets.fromLTRB(
+            AppDimens.l,
+            AppDimens.l,
+            AppDimens.l,
+            AppDimens.xl,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.black.withOpacity(0.2),
-              offset: const Offset(0.0, 6.0),
-              blurRadius: 15,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(AppDimens.l),
             ),
-          ],
-          color: quoteVariantData.backgroundColor,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (quoteVariantData.iconPath != null) ...[
-              Align(
-                alignment: Alignment.topLeft,
-                child: SvgPicture.asset(AppVectorGraphics.newspaper),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.black.withOpacity(0.2),
+                offset: const Offset(0.0, 6.0),
+                blurRadius: 15,
               ),
-              const SizedBox(height: AppDimens.l),
             ],
-            _QuoteText(
-              quote: quote,
-              quoteVariantData: quoteVariantData,
-            ),
-            const SizedBox(height: AppDimens.xxl),
-            _Author(
-              article: article,
-              style: AppTypography.h2Jakarta.copyWith(
-                fontSize: 21,
-                color: quoteVariantData.foregroundColor,
+            color: quoteVariantData.backgroundColor,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (quoteVariantData.iconPath != null) ...[
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: SvgPicture.asset(AppVectorGraphics.newspaper),
+                ),
+                const SizedBox(height: AppDimens.l),
+              ],
+              _QuoteText(
+                quote: quote,
+                quoteVariantData: quoteVariantData,
               ),
-            ),
-            const SizedBox(height: AppDimens.s),
-            Text(
-              tr(LocaleKeys.shareQuote_title, args: [article.strippedTitle]),
-              style: AppTypography.h2Jakarta.copyWith(
-                fontSize: 21,
-                color: quoteVariantData.foregroundColor,
+              const SizedBox(height: AppDimens.xxl),
+              _Author(
+                article: article,
+                style: AppTypography.h2Jakarta.copyWith(
+                  fontSize: 21,
+                  color: quoteVariantData.foregroundColor,
+                ),
               ),
-              maxLines: 2,
-            ),
-          ],
+              const SizedBox(height: AppDimens.s),
+              Text(
+                tr(LocaleKeys.shareQuote_title, args: [article.strippedTitle]),
+                style: AppTypography.h2Jakarta.copyWith(
+                  fontSize: 21,
+                  color: quoteVariantData.foregroundColor,
+                ),
+                maxLines: 2,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -255,7 +270,7 @@ class _ArticleBanner extends StatelessWidget {
                 children: [
                   Text(
                     article.strippedTitle,
-                    style: AppTypography.h1HeadlineBig,
+                    style: AppTypography.h1Headline(context).copyWith(fontSize: 32),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
