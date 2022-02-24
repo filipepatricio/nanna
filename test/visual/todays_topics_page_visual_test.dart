@@ -8,7 +8,7 @@ void main() {
   visualTest(TodaysTopicsPage, (tester) async {
     await tester.startApp();
     await tester.matchGoldenFile('todays_topics_page_(topic_card)');
-    await tester.fling(find.byType(ReadingListCover).first, const Offset(-5000, 0), 100);
+    await tester.fling(find.byType(ReadingListCover).first, const Offset(0, -10000), 100);
     await tester.pumpAndSettle();
     await tester.matchGoldenFile('todays_topics_page_(relax)');
   });

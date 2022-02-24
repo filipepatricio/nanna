@@ -98,6 +98,11 @@ class AppDimens {
 
   static const topicViewSummaryTextHeight = 300.0;
 
+  static double todaysTopicCardSectionHeight(BuildContext context) =>
+      min(MediaQuery.of(context).size.height * 0.85, 575);
+
+  static double todaysTopicCardStackHeight(BuildContext context) => min(MediaQuery.of(context).size.height * 0.7, 500);
+
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
       AppDimens.topicViewHeaderImageHeight(context) +
       AppDimens.topicViewTopicHeaderPadding +

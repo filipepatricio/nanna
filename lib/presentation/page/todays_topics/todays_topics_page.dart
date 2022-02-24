@@ -38,8 +38,8 @@ class TodaysTopicsPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
-    final cardSectionMaxHeight = MediaQuery.of(context).size.height * 0.8;
-    final cardStackHeight = MediaQuery.of(context).size.height * 0.65;
+    final cardSectionMaxHeight = AppDimens.todaysTopicCardSectionHeight(context);
+    final cardStackHeight = AppDimens.todaysTopicCardStackHeight(context);
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
@@ -58,8 +58,9 @@ class TodaysTopicsPage extends HookWidget {
 
     return Scaffold(
       body: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 250),
-          child: Stack(children: <Widget>[
+        duration: const Duration(milliseconds: 250),
+        child: Stack(
+          children: <Widget>[
             RefreshIndicator(
               onRefresh: cubit.loadTodaysTopics,
               color: AppColors.darkGrey,
@@ -102,7 +103,9 @@ class TodaysTopicsPage extends HookWidget {
                 ),
               ),
             ),
-          ])),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -151,57 +154,58 @@ class _IdleContent extends HookWidget {
     }, [scrollController]);
 
     return SliverList(
-        delegate: SliverChildBuilderDelegate(
-      (BuildContext context, int index) {
-        if (index == 0) {
-          return _Greeting(
-            greeting: currentBrief.greeting,
-          );
-        } else if (index == currentBrief.topics.length + 1) {
-          return _RelaxedSection(
-            onVisible: todaysTopicsCubit.trackRelaxPage,
-            goodbyeHeadline: currentBrief.goodbye,
-            lastPageAnimationProgressState: lastPageAnimationProgressState,
-          );
-        } else {
-          final currentTopicIndex = index - 1;
-          final currentTopic = currentBrief.topics[currentTopicIndex];
-          return ViewVisibilityNotifier(
-              detectorKey: Key(currentTopic.id),
-              onVisible: () {
-                todaysTopicsCubit.trackTopicPreviewed(
-                  currentTopic.id,
-                  currentTopicIndex + 1,
-                );
-              },
-              borderFraction: 0.6,
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: cardStackHeight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      StackedCardsRandomVariantBuilder(
-                        count: currentBrief.topics.length,
-                        builder: (variants) => PageViewStackedCards.variant(
-                          variant: variants[currentTopicIndex],
-                          coverSize: Size(cardStackWidth, cardStackHeight),
-                          child: ReadingListCover(
-                            topic: currentTopic,
-                            onTap: () => _onTopicCardPressed(
-                              context,
-                              currentTopicIndex,
-                              currentBrief,
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          if (index == 0) {
+            return _Greeting(
+              greeting: currentBrief.greeting,
+            );
+          } else if (index == currentBrief.topics.length + 1) {
+            return _RelaxedSection(
+              onVisible: todaysTopicsCubit.trackRelaxPage,
+              goodbyeHeadline: currentBrief.goodbye,
+              lastPageAnimationProgressState: lastPageAnimationProgressState,
+            );
+          } else {
+            final currentTopicIndex = index - 1;
+            final currentTopic = currentBrief.topics[currentTopicIndex];
+            return ViewVisibilityNotifier(
+                detectorKey: Key(currentTopic.id),
+                onVisible: () {
+                  todaysTopicsCubit.trackTopicPreviewed(
+                    currentTopic.id,
+                    currentTopicIndex + 1,
+                  );
+                },
+                borderFraction: 0.6,
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: cardStackHeight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        StackedCardsRandomVariantBuilder(
+                          count: currentBrief.topics.length,
+                          builder: (variants) => PageViewStackedCards.variant(
+                            variant: variants[currentTopicIndex],
+                            coverSize: Size(cardStackWidth, cardStackHeight),
+                            child: ReadingListCover(
+                              topic: currentTopic,
+                              onTap: () => _onTopicCardPressed(
+                                context,
+                                currentTopicIndex,
+                                currentBrief,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
-                  )));
-        }
-      },
-      childCount: currentBrief.topics.length + 2,
-    ));
+                        )
+                      ],
+                    )));
+          }
+        },
+        childCount: currentBrief.topics.length + 2,
+      ),
+    );
   }
 
   void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
@@ -231,15 +235,17 @@ class _RelaxedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewVisibilityNotifier(
-        detectorKey: const Key(relaxedSectionKey),
-        onVisible: onVisible,
-        borderFraction: 0.6,
-        child: Container(
-            height: MediaQuery.of(context).size.height * AppDimens.relaxSectionViewportFraction,
-            child: RelaxView(
-              lastPageAnimationProgressState: lastPageAnimationProgressState,
-              goodbyeHeadline: goodbyeHeadline,
-            )));
+      detectorKey: const Key(relaxedSectionKey),
+      onVisible: onVisible,
+      borderFraction: 0.6,
+      child: Container(
+        height: MediaQuery.of(context).size.height * AppDimens.relaxSectionViewportFraction,
+        child: RelaxView(
+          lastPageAnimationProgressState: lastPageAnimationProgressState,
+          goodbyeHeadline: goodbyeHeadline,
+        ),
+      ),
+    );
   }
 }
 
