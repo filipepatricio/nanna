@@ -40,6 +40,7 @@ class ExplorePage extends HookWidget {
     final scrollController = useScrollController();
     final headerColor = _getHeaderColor(state);
     final scrollOffsetNotifier = useMemoized(() => ValueNotifier<double>(0.0));
+    final topPadding = MediaQuery.of(context).padding.top;
 
     useCubitListener<TabBarCubit, TabBarState>(tabBarCubit, (cubit, state, context) {
       state.maybeWhen(
@@ -113,8 +114,7 @@ class ExplorePage extends HookWidget {
                                   collapseMode: CollapseMode.pin,
                                   background: Container(
                                       color: headerColor,
-                                      padding:
-                                          const EdgeInsets.only(top: AppDimens.xl + AppDimens.xs, left: AppDimens.l),
+                                      padding: EdgeInsets.only(top: topPadding + AppDimens.sl, left: AppDimens.l),
                                       child: Text(
                                         LocaleKeys.main_exploreTab.tr(),
                                         style: AppTypography.h1Bold,
