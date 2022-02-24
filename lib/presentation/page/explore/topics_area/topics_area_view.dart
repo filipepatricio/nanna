@@ -30,8 +30,8 @@ class TopicsAreaView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final eventController = useEventTrackController();
-    final controller = usePageController(viewportFraction: 0.81);
-    final width = MediaQuery.of(context).size.width * 0.81;
+    final controller = usePageController(viewportFraction: AppDimens.topicCardWidthViewportFraction);
+    final width = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
     final cardStackHeight =
         MediaQuery.of(context).size.width * 0.5 > 450 ? MediaQuery.of(context).size.width * 0.5 : 450.0;
 

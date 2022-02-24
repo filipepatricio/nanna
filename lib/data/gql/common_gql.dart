@@ -52,6 +52,8 @@ class CommonGQLModels {
       bio
       name
       areaOfExpertise
+      instagram
+      linkedin
       avatar {
         publicId
       }

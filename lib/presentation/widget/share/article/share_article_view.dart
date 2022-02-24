@@ -13,9 +13,9 @@ import 'package:better_informed_mobile/presentation/widget/share/image_load_reso
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-final _cardShadow = BoxShadow(
+const _cardShadow = BoxShadow(
   color: AppColors.shadowColor,
-  offset: const Offset(0.0, 4.0),
+  offset: Offset(0.0, 4.0),
   blurRadius: 2.0,
   spreadRadius: -1.0,
 );
@@ -154,7 +154,7 @@ class _Sticker extends StatelessWidget {
     return Container(
       width: _headerWidth,
       height: _headerHeight,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         boxShadow: [_cardShadow],
         color: AppColors.pastelGreen,
       ),

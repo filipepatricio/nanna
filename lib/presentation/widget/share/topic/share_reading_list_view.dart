@@ -24,9 +24,9 @@ const _topicTitleStyle = TextStyle(
   fontFamily: fontFamilyPlusJakartaSans,
 );
 
-final _cardShadow = BoxShadow(
+const _cardShadow = BoxShadow(
   color: AppColors.shadowColor,
-  offset: const Offset(0.0, 4.0),
+  offset: Offset(0.0, 4.0),
   blurRadius: 2.0,
   spreadRadius: -1.0,
 );
@@ -171,7 +171,7 @@ class _Sticker extends StatelessWidget {
     return Container(
       width: _topicHeaderWidth,
       height: _topicHeaderHeight,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.background,
         boxShadow: [_cardShadow],
       ),

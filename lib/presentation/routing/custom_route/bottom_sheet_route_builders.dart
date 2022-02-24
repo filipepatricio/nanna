@@ -8,7 +8,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const double kPreviousPageVisibleOffset = 10;
 const Radius _kDefaultTopRadius = Radius.circular(12);
-BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: AppColors.shadowDarkColor, spreadRadius: 5);
+const BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: AppColors.shadowDarkColor, spreadRadius: 5);
 const SystemUiOverlayStyle lightNavBarStyle = SystemUiOverlayStyle(
   // The first three were extracted from SystemOverlay.light
   statusBarIconBrightness: Brightness.light,

@@ -23,9 +23,9 @@ class StackedCardContent extends StatelessWidget {
       child: Container(
         height: height,
         width: width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.background,
-          boxShadow: getStackedCardShadow(),
+          boxShadow: stackedCardsShadow,
         ),
         child: child,
       ),

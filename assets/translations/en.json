@@ -145,7 +145,8 @@
       "expertIn": "Expert in {}",
       "lastUpdated": "Last updated",
       "editorBio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world.",
-      "loadingExpertTopics": "We're loading\n{}'s topics"
+      "loadingExpertTopics": "We're loading\n{}'s topics",
+      "followExpertOn": "Follow {} on"
     },
     "howDoWeCurateContent": {
       "label": "How do we curate content?",

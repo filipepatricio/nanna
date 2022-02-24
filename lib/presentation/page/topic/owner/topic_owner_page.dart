@@ -5,19 +5,24 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const appBarHeight = kToolbarHeight + AppDimens.m;
@@ -30,6 +35,9 @@ class TopicOwnerPage extends HookWidget {
     Key? key,
   }) : super(key: key);
 
+  bool get hasSocialMediaLinks =>
+      owner is Expert && ((owner as Expert).instagram != null || (owner as Expert).linkedin != null);
+
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<TopicOwnerPageCubit>();
@@ -37,6 +45,18 @@ class TopicOwnerPage extends HookWidget {
     final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
     final cardStackHeight =
         MediaQuery.of(context).size.width * 0.5 > 450 ? MediaQuery.of(context).size.width * 0.5 : 450.0;
+    final snackbarController = useMemoized(() => SnackbarController());
+
+    useCubitListener<TopicOwnerPageCubit, TopicOwnerPageState>(
+      cubit,
+      (cubit, state, context) {
+        state.mapOrNull(
+          browserError: (state) {
+            showBrowserError(state.link, snackbarController);
+          },
+        );
+      },
+    );
 
     useEffect(() {
       if (owner is! Expert) {
@@ -135,7 +155,14 @@ class TopicOwnerPage extends HookWidget {
                       ),
                       orElse: () => const SizedBox(),
                     ),
-                    const SizedBox(height: AppDimens.l),
+                    const SizedBox(height: AppDimens.xxl),
+                    if (hasSocialMediaLinks) ...[
+                      _SocialMediaLinks(
+                        cubit: cubit,
+                        owner: owner as Expert,
+                      ),
+                      const SizedBox(height: AppDimens.c),
+                    ],
                   ]
                 ],
               ),
@@ -243,7 +270,8 @@ class _LastUpdatedTopics extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topicsController = usePageController();
+    final topicsController = usePageController(viewportFraction: AppDimens.topicCardWidthViewportFraction);
+    final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,23 +279,21 @@ class _LastUpdatedTopics extends HookWidget {
         Container(
           height: cardStackHeight,
           child: PageView.builder(
-            padEnds: false,
-            controller: topicsController,
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.only(left: AppDimens.xxl),
-              child: PageViewStackedCards.random(
-                coverSize: Size(
-                  MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction,
-                  cardStackHeight,
-                ),
-                child: ReadingListCover(
-                  topic: topics[index],
-                  onTap: () => _onTopicTap(context, topics[index]),
-                ),
-              ),
-            ),
-            itemCount: topics.length,
-          ),
+              padEnds: false,
+              itemCount: topics.length,
+              controller: topicsController,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 16),
+                  child: PageViewStackedCards.random(
+                    coverSize: Size(cardStackWidth, cardStackHeight),
+                    child: ReadingListCover(
+                      topic: topics[index],
+                      onTap: () => _onTopicTap(context, topics[index]),
+                    ),
+                  ),
+                );
+              }),
         ),
         const SizedBox(height: AppDimens.l),
         Padding(
@@ -289,4 +315,77 @@ void _onTopicTap(BuildContext context, Topic topic) {
       topic: topic,
     ),
   );
+}
+
+class _SocialMediaLinks extends StatelessWidget {
+  final TopicOwnerPageCubit cubit;
+  final Expert owner;
+
+  const _SocialMediaLinks({
+    required this.cubit,
+    required this.owner,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final instagram = owner.instagram;
+    final linkedin = owner.linkedin;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            LocaleKeys.topic_owner_followExpertOn.tr(args: [owner.name]),
+            style: AppTypography.b3Regular.copyWith(height: 2.0),
+          ),
+          const SizedBox(height: AppDimens.m),
+          Row(
+            children: [
+              if (instagram != null)
+                _SocialMediaIcon(
+                  icon: AppVectorGraphics.instagram,
+                  onTap: () {
+                    cubit.openSocialMediaLink(instagram);
+                  },
+                ),
+              if (linkedin != null)
+                _SocialMediaIcon(
+                  icon: AppVectorGraphics.linkedin,
+                  onTap: () {
+                    cubit.openSocialMediaLink(linkedin);
+                  },
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SocialMediaIcon extends StatelessWidget {
+  const _SocialMediaIcon({
+    required this.icon,
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final String icon;
+  final void Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.only(right: AppDimens.l),
+        child: SvgPicture.asset(
+          icon,
+          color: AppColors.socialNetworksIcon,
+        ),
+      ),
+    );
+  }
 }
