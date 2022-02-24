@@ -21,6 +21,7 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/bottom_sheet_route_builders.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
+import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
 import 'package:flutter/material.dart';
 
 const topicsPathSegment = 'topics';
@@ -38,6 +39,7 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
     mainPageRoute,
+    CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
   ],
 )
 class $MainRouter {}

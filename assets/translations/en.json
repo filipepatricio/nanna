@@ -178,6 +178,10 @@
   "shareArticle": {
     "message": "Hey, I am currently reading this article via informed – a new platform for quality journalism. You can still sign up to their waitlist.\n\nhttps://www.informed.so"
   },
+  "shareQuote": {
+    "readOn": "Read on ",
+    "title": "Article - {}"
+  },
   "noMemberAccessPage": {
     "headline": "Ooops, looks like you are not a member yet!",
     "infoParts": {
