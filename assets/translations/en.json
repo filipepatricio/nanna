@@ -162,7 +162,7 @@
   "profile": {
     "title": "Profile",
     "stayTuned": "Stay Tuned",
-    "stayTunedText": "This page will be evolving during beta",
+    "stayTunedText": "This page will be evolving soon",
     "feedbackButton": "Give feedback",
     "feedbackSubject": "Feedback on Informed App",
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
@@ -178,17 +178,17 @@
   "shareArticle": {
     "message": "Hey, I am currently reading this article via informed – a new platform for quality journalism. You can still sign up to their waitlist.\n\nhttps://www.informed.so"
   },
-  "noBetaAccessPage": {
-    "headline": "Ooops, looks like you are not part of the closed beta!",
+  "noMemberAccessPage": {
+    "headline": "Ooops, looks like you are not a member yet!",
     "infoParts": {
       "0": "If you think you are, ",
       "1": "reach out to feedback@informed.so.",
-      "2": " Otherwise, you can request an invite below."
+      "2": "Otherwise, you can request an invite below."
     },
     "waitlistAction": "Request an invite",
     "email": {
-      "subject": "I'm part of the closed beta",
-      "body": "Hey there,\nwe will check if you are already part of the Closed Beta and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
+      "subject": "I'm already a member",
+      "body": "Hey there,\nwe will check if you are already a member and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
     },
     "emailCopied": "Successfuly copied email to your clipboard!"
   }

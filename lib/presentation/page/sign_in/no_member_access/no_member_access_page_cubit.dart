@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/presentation/page/sign_in/no_beta_access/no_beta_access_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/sign_in/no_member_access/no_member_access_page_state.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
@@ -9,8 +9,8 @@ const _email = 'feedback@informed.so';
 const _waitlistLink = 'https://get.informed.so/';
 
 @injectable
-class NoBetaAccessPageCubit extends Cubit<NoBetaAccessPageState> {
-  NoBetaAccessPageCubit() : super(NoBetaAccessPageState.idle());
+class NoMemberAccessPageCubit extends Cubit<NoMemberAccessPageState> {
+  NoMemberAccessPageCubit() : super(NoMemberAccessPageState.idle());
 
   Future<void> sendAccessEmail(String subject, String body) async {
     final mailToLink = Uri.parse('mailto:$_email?subject=$subject&body=$body').toString();
@@ -19,8 +19,8 @@ class NoBetaAccessPageCubit extends Cubit<NoBetaAccessPageState> {
       await launch(mailToLink);
     } catch (_) {
       await Clipboard.setData(const ClipboardData(text: _email));
-      emit(NoBetaAccessPageState.emailCopied());
-      emit(NoBetaAccessPageState.idle());
+      emit(NoMemberAccessPageState.emailCopied());
+      emit(NoMemberAccessPageState.idle());
     }
   }
 
@@ -28,8 +28,8 @@ class NoBetaAccessPageCubit extends Cubit<NoBetaAccessPageState> {
     await openInAppBrowser(
       _waitlistLink,
       (_, __) {
-        emit(NoBetaAccessPageState.browserError(_waitlistLink));
-        emit(NoBetaAccessPageState.idle());
+        emit(NoMemberAccessPageState.browserError(_waitlistLink));
+        emit(NoMemberAccessPageState.idle());
       },
     );
   }

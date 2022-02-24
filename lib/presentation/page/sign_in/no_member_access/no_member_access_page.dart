@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/sign_in/no_beta_access/no_beta_access_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/sign_in/no_beta_access/no_beta_access_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/sign_in/no_member_access/no_member_access_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/sign_in/no_member_access/no_member_access_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -17,22 +17,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-class NoBetaAccessPage extends HookWidget {
-  const NoBetaAccessPage({Key? key}) : super(key: key);
+class NoMemberAccessPage extends HookWidget {
+  const NoMemberAccessPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<NoBetaAccessPageCubit>();
+    final cubit = useCubit<NoMemberAccessPageCubit>();
     final snackbarController = useMemoized(() => SnackbarController());
 
-    useCubitListener<NoBetaAccessPageCubit, NoBetaAccessPageState>(
+    useCubitListener<NoMemberAccessPageCubit, NoMemberAccessPageState>(
       cubit,
       (cubit, state, context) {
         state.mapOrNull(
           emailCopied: (_) {
             snackbarController.showMessage(
               SnackbarMessage.simple(
-                message: tr(LocaleKeys.noBetaAccessPage_emailCopied),
+                message: tr(LocaleKeys.noMemberAccessPage_emailCopied),
                 type: SnackbarMessageType.positive,
               ),
             );
@@ -72,7 +72,7 @@ class NoBetaAccessPage extends HookWidget {
                         child: Align(
                           alignment: Alignment.bottomLeft,
                           child: SvgPicture.asset(
-                            AppVectorGraphics.betaAccess,
+                            AppVectorGraphics.memberAccess,
                           ),
                         ),
                       ),
@@ -83,7 +83,7 @@ class NoBetaAccessPage extends HookWidget {
                           children: [
                             const SizedBox(height: AppDimens.l),
                             Text(
-                              tr(LocaleKeys.noBetaAccessPage_headline),
+                              tr(LocaleKeys.noMemberAccessPage_headline),
                               style: AppTypography.h0Beta(context),
                             ),
                             const SizedBox(height: AppDimens.m),
@@ -91,11 +91,11 @@ class NoBetaAccessPage extends HookWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: tr(LocaleKeys.noBetaAccessPage_infoParts_0),
+                                    text: tr(LocaleKeys.noMemberAccessPage_infoParts_0),
                                     style: AppTypography.h4Normal,
                                   ),
                                   TextSpan(
-                                    text: tr(LocaleKeys.noBetaAccessPage_infoParts_1),
+                                    text: tr(LocaleKeys.noMemberAccessPage_infoParts_1),
                                     style: AppTypography.h4Normal.copyWith(
                                       color: AppColors.blue,
                                       decoration: TextDecoration.underline,
@@ -103,13 +103,13 @@ class NoBetaAccessPage extends HookWidget {
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         cubit.sendAccessEmail(
-                                          tr(LocaleKeys.noBetaAccessPage_email_subject),
-                                          tr(LocaleKeys.noBetaAccessPage_email_body),
+                                          tr(LocaleKeys.noMemberAccessPage_email_subject),
+                                          tr(LocaleKeys.noMemberAccessPage_email_body),
                                         );
                                       },
                                   ),
                                   TextSpan(
-                                    text: tr(LocaleKeys.noBetaAccessPage_infoParts_2),
+                                    text: tr(LocaleKeys.noMemberAccessPage_infoParts_2),
                                     style: AppTypography.h4Normal,
                                   ),
                                 ],
@@ -123,7 +123,7 @@ class NoBetaAccessPage extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.m),
                 FilledButton(
-                  text: tr(LocaleKeys.noBetaAccessPage_waitlistAction),
+                  text: tr(LocaleKeys.noMemberAccessPage_waitlistAction),
                   fillColor: AppColors.darkGreyBackground,
                   textColor: AppColors.white,
                   onTap: () => cubit.openWaitlist(),

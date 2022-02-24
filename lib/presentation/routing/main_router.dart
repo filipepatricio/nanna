@@ -11,7 +11,7 @@ import 'package:better_informed_mobile/presentation/page/profile_tab/profile_pag
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
-import 'package:better_informed_mobile/presentation/page/sign_in/no_beta_access/no_beta_access_page.dart';
+import 'package:better_informed_mobile/presentation/page/sign_in/no_member_access/no_member_access_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page.dart';
@@ -31,7 +31,7 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
 @AdaptiveAutoRouter(
   routes: [
     CustomRoute(page: EntryPage, initial: true, customRouteBuilder: fadePageRouteBuilder),
-    AutoRoute(page: NoBetaAccessPage),
+    AutoRoute(page: NoMemberAccessPage),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
     AutoRoute(page: SettingsMainPage),

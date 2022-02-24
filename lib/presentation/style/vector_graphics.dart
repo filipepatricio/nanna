@@ -7,7 +7,7 @@ class AppVectorGraphics {
   static const String notes = 'assets/vector_graphics/notes_ic.svg';
   static const String megaphone = 'assets/vector_graphics/megaphone_ic.svg';
   static const String fullArrowRight = 'assets/vector_graphics/full_arrow_right_ic.svg';
-  static const String betaAccess = 'assets/vector_graphics/beta_access.svg';
+  static const String memberAccess = 'assets/vector_graphics/member_access.svg';
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
   static const String exploreSelected = 'assets/vector_graphics/explore_selected_ic.svg';
