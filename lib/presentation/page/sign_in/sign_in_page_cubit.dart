@@ -107,7 +107,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   void _resolveAuthException(AuthException authException) {
     authException.map(
-      noBetaAccess: (_) => emit(SignInPageState.noBetaAccess()),
+      noMemberAccess: (_) => emit(SignInPageState.noMemberAccess()),
       unknown: (_) => emit(SignInPageState.generalError()),
     );
   }

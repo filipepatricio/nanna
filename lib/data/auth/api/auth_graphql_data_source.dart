@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/domain/auth/auth_exception.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-const _noBetaAccessErrorCode = 'no_beta_access';
+const _noMemberAccessErrorCode = 'no_beta_access';
 
 @LazySingleton(as: AuthApiDataSource)
 class AuthGraphqlDataSource implements AuthApiDataSource {
@@ -61,8 +61,8 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
   }
 
   Object _resolveSignInError(String? errorCode) {
-    if (errorCode == _noBetaAccessErrorCode) {
-      return AuthException.noBetaAccess();
+    if (errorCode == _noMemberAccessErrorCode) {
+      return AuthException.noMemberAccess();
     }
 
     return AuthException.unknown();
