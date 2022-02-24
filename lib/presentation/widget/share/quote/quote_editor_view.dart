@@ -87,7 +87,7 @@ class QuoteEditorView extends HookWidget {
             text: tr(LocaleKeys.common_shareImage),
             onTap: () {
               AutoRouter.of(context).pop();
-              cubit.shareImage(article, quote);
+              cubit.share(article, quote);
             },
           ),
           const SizedBox(height: AppDimens.m),
