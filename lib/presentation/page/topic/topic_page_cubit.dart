@@ -88,30 +88,33 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   }
 
   void _initializeSummaryCardTutorialCoachMarkTarget() {
-    targets.add(TargetFocus(
-      identify: TutorialCoachMarkStep.summaryCard.key,
-      keyTarget: summaryCardKey,
-      color: AppColors.shadowColor,
-      enableTargetTab: false,
-      pulseVariation: Tween(begin: 1.0, end: 1.0),
-      contents: [
-        TargetContent(
-          align: ContentAlign.custom,
-          customPosition: CustomTargetContentPosition(bottom: 50),
-          builder: (context, controller) {
-            return TutorialTooltip(
+    targets.add(
+      TargetFocus(
+        identify: TutorialCoachMarkStep.summaryCard.key,
+        keyTarget: summaryCardKey,
+        color: AppColors.shadowColor,
+        enableTargetTab: false,
+        pulseVariation: Tween(begin: 1.0, end: 1.0),
+        contents: [
+          TargetContent(
+            align: ContentAlign.custom,
+            customPosition: CustomTargetContentPosition(bottom: 50),
+            builder: (context, controller) {
+              return TutorialTooltip(
                 text: LocaleKeys.tutorial_topicTooltipText.tr(),
                 tutorialIndex: TutorialCoachMarkStep.values.indexOf(TutorialCoachMarkStep.summaryCard),
                 tutorialLength: TutorialCoachMarkStep.values.length,
                 dismissButtonText: LocaleKeys.common_continue.tr(),
                 tutorialTooltipPosition: TutorialTooltipPosition.bottom,
-                onDismiss: () => emit(TopicPageState.skipTutorialCoachMark()));
-          },
-        )
-      ],
-      shape: ShapeLightFocus.RRect,
-      radius: 0,
-    ));
+                onDismiss: () => emit(TopicPageState.skipTutorialCoachMark()),
+              );
+            },
+          )
+        ],
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+      ),
+    );
   }
 
   void _initializeMediaTypeTutorialCoachMarkTarget() {
@@ -128,12 +131,13 @@ class TopicPageCubit extends Cubit<TopicPageState> {
             customPosition: CustomTargetContentPosition(bottom: 50),
             builder: (context, controller) {
               return TutorialTooltip(
-                  text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
-                  tutorialIndex: TutorialCoachMarkStep.values.indexOf(TutorialCoachMarkStep.mediaItem),
-                  tutorialLength: TutorialCoachMarkStep.values.length,
-                  dismissButtonText: LocaleKeys.common_done.tr(),
-                  tutorialTooltipPosition: TutorialTooltipPosition.bottom,
-                  onDismiss: () => emit(TopicPageState.finishTutorialCoachMark()));
+                text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
+                tutorialIndex: TutorialCoachMarkStep.values.indexOf(TutorialCoachMarkStep.mediaItem),
+                tutorialLength: TutorialCoachMarkStep.values.length,
+                dismissButtonText: LocaleKeys.common_done.tr(),
+                tutorialTooltipPosition: TutorialTooltipPosition.bottom,
+                onDismiss: () => emit(TopicPageState.finishTutorialCoachMark()),
+              );
             },
           )
         ],

@@ -4,7 +4,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class UserGQL {
   const UserGQL._();
 
-  static DocumentNode queryUser() => gql('''
+  static DocumentNode queryUser() => gql(
+        '''
     query {
       me {
         uuid
@@ -13,9 +14,11 @@ class UserGQL {
         lastName
       }
     }
-  ''');
+  ''',
+      );
 
-  static DocumentNode updateUser() => gql(''' 
+  static DocumentNode updateUser() => gql(
+        '''
     mutation updateUserMeta(\$firstName: String, \$lastName: String) {
       updateUserMeta(information: {firstName: \$firstName, lastName: \$lastName}) {
         uuid
@@ -24,5 +27,6 @@ class UserGQL {
         lastName
       }
     }
-  ''');
+  ''',
+      );
 }

@@ -20,11 +20,14 @@ class SnackbarView extends HookWidget {
     final textWidth = useMemoized(() => MediaQuery.of(context).size.width - 2 * AppDimens.l - 2 * AppDimens.m);
     final messageState = useState(message);
 
-    useEffect(() {
-      if (message != null) {
-        messageState.value = message;
-      }
-    }, [message]);
+    useEffect(
+      () {
+        if (message != null) {
+          messageState.value = message;
+        }
+      },
+      [message],
+    );
 
     return Container(
       padding: const EdgeInsets.all(AppDimens.m),

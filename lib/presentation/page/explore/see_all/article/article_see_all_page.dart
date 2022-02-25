@@ -34,28 +34,34 @@ class ArticleSeeAllPage extends HookWidget {
     final state = useCubitBuilder<ArticleSeeAllPageCubit, ArticleSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
 
-    useEffect(() {
-      cubit.initialize(areaId, entries);
-    }, [cubit]);
+    useEffect(
+      () {
+        cubit.initialize(areaId, entries);
+      },
+      [cubit],
+    );
 
     final shouldListen = state.maybeMap(
       withPagination: (_) => true,
       orElse: () => false,
     );
     final screenHeight = MediaQuery.of(context).size.height;
-    useEffect(() {
-      final listener = shouldListen
-          ? () {
-              final position = scrollController.position;
+    useEffect(
+      () {
+        final listener = shouldListen
+            ? () {
+                final position = scrollController.position;
 
-              if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
-                cubit.loadNextPage();
+                if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
+                  cubit.loadNextPage();
+                }
               }
-            }
-          : () {};
-      scrollController.addListener(listener);
-      return () => scrollController.removeListener(listener);
-    }, [scrollController, shouldListen]);
+            : () {};
+        scrollController.addListener(listener);
+        return () => scrollController.removeListener(listener);
+      },
+      [scrollController, shouldListen],
+    );
 
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: title),
@@ -132,47 +138,48 @@ class _ArticleGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NoScrollGlow(
-        child: CustomScrollView(
-      controller: scrollController,
-      key: pageStorageKey,
-      slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate.fixed(
-            [
-              const SizedBox(height: AppDimens.l),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: InformedMarkdownBody(
-                  markdown: title,
-                  highlightColor: AppColors.transparent,
-                  baseTextStyle: AppTypography.h1,
+      child: CustomScrollView(
+        controller: scrollController,
+        key: pageStorageKey,
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
+                const SizedBox(height: AppDimens.l),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: InformedMarkdownBody(
+                    markdown: title,
+                    highlightColor: AppColors.transparent,
+                    baseTextStyle: AppTypography.h1,
+                  ),
                 ),
-              ),
-              const SizedBox(height: AppDimens.l),
-            ],
-          ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          sliver: SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => _GridItem(
-                article: articles[index],
-                index: index,
-              ),
-              childCount: articles.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisExtent: AppDimens.exploreAreaArticleSeeAllCoverHeight,
-              crossAxisSpacing: AppDimens.m,
-              mainAxisSpacing: AppDimens.l,
+                const SizedBox(height: AppDimens.l),
+              ],
             ),
           ),
-        ),
-        SeeAllLoadMoreIndicator(show: withLoader),
-      ],
-    ));
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            sliver: SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => _GridItem(
+                  article: articles[index],
+                  index: index,
+                ),
+                childCount: articles.length,
+              ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: AppDimens.exploreAreaArticleSeeAllCoverHeight,
+                crossAxisSpacing: AppDimens.m,
+                mainAxisSpacing: AppDimens.l,
+              ),
+            ),
+          ),
+          SeeAllLoadMoreIndicator(show: withLoader),
+        ],
+      ),
+    );
   }
 }
 

@@ -49,10 +49,13 @@ class TopicAppBar extends HookWidget {
       }
     }
 
-    useEffect(() {
-      scrollPositionNotifier.addListener(_updateAppBar);
-      return () => scrollPositionNotifier.removeListener(_updateAppBar);
-    }, [scrollPositionNotifier]);
+    useEffect(
+      () {
+        scrollPositionNotifier.addListener(_updateAppBar);
+        return () => scrollPositionNotifier.removeListener(_updateAppBar);
+      },
+      [scrollPositionNotifier],
+    );
 
     return SliverAppBar(
       pinned: true,

@@ -42,68 +42,80 @@ void main() {
       ' and typesetting industry. Lorem Ipsum has been'
       " the industry's standard dummy text ever.";
 
-  visualTest(QuoteViewSticker, (tester) async {
-    await tester.startApp(
-      initialRoute: PlaceholderPageRoute(
-        child: QuoteViewSticker(
-          quote: quote,
-          quoteVariantData: quoteVariantDataList[0],
-          article: articleMock,
+  visualTest(
+    QuoteViewSticker,
+    (tester) async {
+      await tester.startApp(
+        initialRoute: PlaceholderPageRoute(
+          child: QuoteViewSticker(
+            quote: quote,
+            quoteVariantData: quoteVariantDataList[0],
+            article: articleMock,
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile('quote_view_sticker_linen');
+      );
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile('quote_view_sticker_linen');
 
-    final context = tester.element(find.byType(Container).first);
-    final router = AutoRouter.of(context);
+      final context = tester.element(find.byType(Container).first);
+      final router = AutoRouter.of(context);
 
-    unawaited(router.replace(
-      PlaceholderPageRoute(
-        child: QuoteViewSticker(
-          quote: quote,
-          quoteVariantData: quoteVariantDataList[1],
-          article: articleMock,
+      unawaited(
+        router.replace(
+          PlaceholderPageRoute(
+            child: QuoteViewSticker(
+              quote: quote,
+              quoteVariantData: quoteVariantDataList[1],
+              article: articleMock,
+            ),
+          ),
         ),
-      ),
-    ));
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile('quote_view_sticker_rose');
+      );
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile('quote_view_sticker_rose');
 
-    unawaited(router.replace(
-      PlaceholderPageRoute(
-        child: QuoteViewSticker(
-          quote: quote,
-          quoteVariantData: quoteVariantDataList[2],
-          article: articleMock,
+      unawaited(
+        router.replace(
+          PlaceholderPageRoute(
+            child: QuoteViewSticker(
+              quote: quote,
+              quoteVariantData: quoteVariantDataList[2],
+              article: articleMock,
+            ),
+          ),
         ),
-      ),
-    ));
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile('quote_view_sticker_green');
+      );
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile('quote_view_sticker_green');
 
-    unawaited(router.replace(
-      PlaceholderPageRoute(
-        child: QuoteViewSticker(
-          quote: quote,
-          quoteVariantData: quoteVariantDataList[3],
-          article: articleMock,
+      unawaited(
+        router.replace(
+          PlaceholderPageRoute(
+            child: QuoteViewSticker(
+              quote: quote,
+              quoteVariantData: quoteVariantDataList[3],
+              article: articleMock,
+            ),
+          ),
         ),
-      ),
-    ));
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile('quote_view_sticker_peach');
+      );
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile('quote_view_sticker_peach');
 
-    unawaited(router.replace(
-      PlaceholderPageRoute(
-        child: QuoteViewSticker(
-          quote: quote,
-          quoteVariantData: quoteVariantDataList[4],
-          article: articleMock,
+      unawaited(
+        router.replace(
+          PlaceholderPageRoute(
+            child: QuoteViewSticker(
+              quote: quote,
+              quoteVariantData: quoteVariantDataList[4],
+              article: articleMock,
+            ),
+          ),
         ),
-      ),
-    ));
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile('quote_view_sticker_charcoal');
-  }, testConfig: _stickerDevice);
+      );
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile('quote_view_sticker_charcoal');
+    },
+    testConfig: _stickerDevice,
+  );
 }

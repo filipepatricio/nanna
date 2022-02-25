@@ -73,30 +73,32 @@ class TopicOwnerAvatar extends HookWidget {
           const SizedBox(width: AppDimens.s),
           Expanded(
             child: RichText(
-              text: TextSpan(children: [
-                if (!profileMode)
-                  TextSpan(
-                    text: '${LocaleKeys.article_by.tr()} ',
-                    style: AppTypography.h3boldLoraItalic.copyWith(
-                      fontSize: fontSize,
-                      color: mode == Brightness.light ? AppColors.white : null,
+              text: TextSpan(
+                children: [
+                  if (!profileMode)
+                    TextSpan(
+                      text: '${LocaleKeys.article_by.tr()} ',
+                      style: AppTypography.h3boldLoraItalic.copyWith(
+                        fontSize: fontSize,
+                        color: mode == Brightness.light ? AppColors.white : null,
+                      ),
                     ),
+                  TextSpan(
+                    text: owner.name,
+                    style: profileMode
+                        ? AppTypography.h3bold.copyWith(
+                            fontSize: fontSize,
+                            color: mode == Brightness.light ? AppColors.white : null,
+                            decoration: underlined ? TextDecoration.underline : null,
+                          )
+                        : AppTypography.h3boldLoraItalic.copyWith(
+                            fontSize: fontSize,
+                            color: mode == Brightness.light ? AppColors.white : null,
+                            decoration: underlined ? TextDecoration.underline : null,
+                          ),
                   ),
-                TextSpan(
-                  text: owner.name,
-                  style: profileMode
-                      ? AppTypography.h3bold.copyWith(
-                          fontSize: fontSize,
-                          color: mode == Brightness.light ? AppColors.white : null,
-                          decoration: underlined ? TextDecoration.underline : null,
-                        )
-                      : AppTypography.h3boldLoraItalic.copyWith(
-                          fontSize: fontSize,
-                          color: mode == Brightness.light ? AppColors.white : null,
-                          decoration: underlined ? TextDecoration.underline : null,
-                        ),
-                ),
-              ]),
+                ],
+              ),
               softWrap: true,
               maxLines: 2,
             ),
