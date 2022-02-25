@@ -63,7 +63,7 @@ Future<void> main(List<String> args) async {
               final fileName = (goldenFile as File).name;
               if (!knownGoldens.contains(fileName)) {
                 ++numNewGoldens;
-                await exec('mv', ['test/visual/goldens/$fileName', 'test/visual/changes/__NEW__$fileName']);
+                await exec('mv', ['test/visual/goldens/$fileName', 'test/visual/ui_changes/__NEW__$fileName']);
               }
             }
           },
