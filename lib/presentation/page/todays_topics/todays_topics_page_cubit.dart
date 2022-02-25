@@ -72,6 +72,6 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   void trackRelaxPage() =>
       _trackActivityUseCase.trackEvent(AnalyticsEvent.dailyBriefRelaxMessageViewed(_currentBrief.id));
 
-  void trackTopicPageSwipe(String topicId, int position) =>
+  void trackTopicPreviewed(String topicId, int position) =>
       _trackActivityUseCase.trackEvent(AnalyticsEvent.dailyBriefTopicPreviewed(_currentBrief.id, topicId, position));
 }
