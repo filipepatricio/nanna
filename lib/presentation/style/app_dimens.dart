@@ -88,7 +88,7 @@ class AppDimens {
   static const relaxViewportFraction = 0.8;
 
   // 400
-  static const relaxSectionHeight = 350.0;
+  static const relaxSectionHeight = 400.0;
 
   /// 42
   static const avatarSize = 32.0;
