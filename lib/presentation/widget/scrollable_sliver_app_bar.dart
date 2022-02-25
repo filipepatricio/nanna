@@ -25,13 +25,16 @@ class ScrollableSliverAppBar extends HookWidget {
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
     final scrollOffset = useState(0.0);
-    useEffect(() {
-      final listener = () {
-        scrollOffset.value = scrollController.offset;
-      };
-      scrollController.addListener(listener);
-      return () => scrollController.removeListener(listener);
-    }, [scrollController]);
+    useEffect(
+      () {
+        final listener = () {
+          scrollOffset.value = scrollController.offset;
+        };
+        scrollController.addListener(listener);
+        return () => scrollController.removeListener(listener);
+      },
+      [scrollController],
+    );
     final showCenterTitle = scrollOffset.value >= AppDimens.s;
 
     return SliverAppBar(
@@ -47,22 +50,24 @@ class ScrollableSliverAppBar extends HookWidget {
           ? Text(
               title,
               style: AppTypography.h4Bold.copyWith(
-                  height: 2.25,
-                  color: AppColors.textPrimary.withOpacity(
-                    min(1, scrollOffset.value / 20),
-                  )),
+                height: 2.25,
+                color: AppColors.textPrimary.withOpacity(
+                  min(1, scrollOffset.value / 20),
+                ),
+              ),
             )
           : const SizedBox(),
       flexibleSpace: FlexibleSpaceBar(
-          collapseMode: CollapseMode.pin,
-          background: Container(
-            color: headerColor,
-            padding: EdgeInsets.only(top: topPadding + AppDimens.sl, left: AppDimens.l),
-            child: Text(
-              title,
-              style: AppTypography.h1Bold,
-            ),
-          )),
+        collapseMode: CollapseMode.pin,
+        background: Container(
+          color: headerColor,
+          padding: EdgeInsets.only(top: topPadding + AppDimens.sl, left: AppDimens.l),
+          child: Text(
+            title,
+            style: AppTypography.h1Bold,
+          ),
+        ),
+      ),
     );
   }
 }
