@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-double calculateLastPageShownFactor(PageController controller, double viewportFraction) {
+double calculateLastPageShownFactor(ScrollController controller, double viewportFraction) {
   final realViewportSize = controller.position.viewportDimension * viewportFraction;
   final viewportCount = (controller.position.maxScrollExtent / realViewportSize).round();
   final position = controller.position.pixels;

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -20,6 +18,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -39,8 +38,6 @@ class ExplorePage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final headerColor = _getHeaderColor(state);
-    final scrollOffsetNotifier = useMemoized(() => ValueNotifier<double>(0.0));
-    final topPadding = MediaQuery.of(context).padding.top;
 
     useCubitListener<TabBarCubit, TabBarState>(tabBarCubit, (cubit, state, context) {
       state.maybeWhen(
@@ -64,14 +61,6 @@ class ExplorePage extends HookWidget {
       [cubit],
     );
 
-    useEffect(() {
-      final listener = () {
-        scrollOffsetNotifier.value = scrollController.offset;
-      };
-      scrollController.addListener(listener);
-      return () => scrollController.removeListener(listener);
-    }, [scrollController]);
-
     return Scaffold(
       body: ReadingBannerWrapper(
         child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -80,7 +69,8 @@ class ExplorePage extends HookWidget {
             children: [
               NoScrollGlow(
                 child: RefreshIndicator(
-                  onRefresh: () => cubit.loadExplorePageData(),
+                  color: AppColors.darkGrey,
+                  onRefresh: cubit.loadExplorePageData,
                   child: CustomScrollView(
                     controller: scrollController,
                     physics: state.maybeMap(
@@ -89,38 +79,10 @@ class ExplorePage extends HookWidget {
                       orElse: () => const ClampingScrollPhysics(),
                     ),
                     slivers: [
-                      ValueListenableBuilder<double>(
-                          valueListenable: scrollOffsetNotifier,
-                          builder: (context, value, child) {
-                            final showCenterTitle = value >= AppDimens.s;
-                            return SliverAppBar(
-                                backgroundColor: AppColors.background,
-                                systemOverlayStyle: SystemUiOverlayStyle.dark,
-                                shadowColor: AppColors.shadowDarkColor,
-                                pinned: true,
-                                centerTitle: true,
-                                elevation: 3.0,
-                                expandedHeight: kToolbarHeight + AppDimens.s,
-                                title: showCenterTitle
-                                    ? Text(
-                                        LocaleKeys.main_exploreTab.tr(),
-                                        style: AppTypography.h4Bold.copyWith(
-                                          height: 2.25,
-                                          color: AppColors.textPrimary.withOpacity(min(1, value / 15)),
-                                        ),
-                                      )
-                                    : const SizedBox(),
-                                flexibleSpace: FlexibleSpaceBar(
-                                  collapseMode: CollapseMode.pin,
-                                  background: Container(
-                                      color: headerColor,
-                                      padding: EdgeInsets.only(top: topPadding + AppDimens.sl, left: AppDimens.l),
-                                      child: Text(
-                                        LocaleKeys.main_exploreTab.tr(),
-                                        style: AppTypography.h1Bold,
-                                      )),
-                                ));
-                          }),
+                      ScrollableSliverAppBar(
+                          scrollController: scrollController,
+                          title: LocaleKeys.explore_title.tr(),
+                          headerColor: headerColor),
                       state.maybeMap(
                         initialLoading: (_) => const SliverToBoxAdapter(
                           child: ArticleWithCoverAreaLoadingView.loading(),
