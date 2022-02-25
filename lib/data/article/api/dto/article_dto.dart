@@ -9,6 +9,7 @@ part 'article_dto.g.dart';
 class ArticleDTO {
   final String id;
   final String slug;
+  final String url;
   final String title;
   final String strippedTitle;
   final String type;
@@ -23,6 +24,7 @@ class ArticleDTO {
   ArticleDTO(
     this.id,
     this.slug,
+    this.url,
     this.text,
     this.title,
     this.strippedTitle,

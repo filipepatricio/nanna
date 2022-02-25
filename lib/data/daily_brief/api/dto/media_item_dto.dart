@@ -11,6 +11,7 @@ class MediaItemDTO with _$MediaItemDTO {
   const factory MediaItemDTO.article(
     String id,
     String slug,
+    String url,
     String title,
     String strippedTitle,
     String type,

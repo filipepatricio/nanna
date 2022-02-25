@@ -181,7 +181,9 @@
   },
   "shareQuote": {
     "readOn": "Read on ",
-    "title": "Article - {}"
+    "title": "Article - {}",
+    "messageWithQuote": "Hey, I am currently reading this article via informed and this quote really struck me. Check it out.\n\n{}\n\n{}",
+    "message": "Hey, I am currently reading this article via informed and this quote really struck me. Check it out.\n\n{}"
   },
   "noMemberAccessPage": {
     "headline": "Ooops, looks like you are not a member yet!",

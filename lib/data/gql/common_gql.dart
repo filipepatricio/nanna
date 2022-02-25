@@ -88,6 +88,7 @@ class CommonGQLModels {
       sourceUrl
       slug
       id
+      url
       author
       title
       strippedTitle

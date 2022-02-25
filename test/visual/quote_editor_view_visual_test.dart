@@ -14,6 +14,7 @@ void main() {
   final articleMock = MediaItem.article(
     id: 'id',
     slug: 'slug',
+    url: '',
     title: 'title',
     strippedTitle: 'strippedTitle',
     type: ArticleType.premium,
