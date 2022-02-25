@@ -50,7 +50,8 @@ class FilledButton extends StatelessWidget {
                   ? const SizedBox(
                       height: AppDimens.m,
                       width: AppDimens.m,
-                      child: CircularProgressIndicator(color: AppColors.textPrimary, strokeWidth: AppDimens.xxs))
+                      child: CircularProgressIndicator(color: AppColors.textPrimary, strokeWidth: AppDimens.xxs),
+                    )
                   : Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

@@ -25,11 +25,12 @@ class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
       final userMetaDto = UserMetaDTO(userNameParts?.first, userNameParts?.sublist(1).join(' '), account.photoUrl);
       final auth = await account.authentication;
       return OAuthUserMetaCredentialsDTO(
-          userMetaDto,
-          GoogleAuthProvider.credential(
-            accessToken: auth.accessToken,
-            idToken: auth.idToken,
-          ));
+        userMetaDto,
+        GoogleAuthProvider.credential(
+          accessToken: auth.accessToken,
+          idToken: auth.idToken,
+        ),
+      );
     }
 
     throw SignInAbortedException();

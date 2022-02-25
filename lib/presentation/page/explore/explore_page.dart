@@ -80,9 +80,10 @@ class ExplorePage extends HookWidget {
                     ),
                     slivers: [
                       ScrollableSliverAppBar(
-                          scrollController: scrollController,
-                          title: LocaleKeys.explore_title.tr(),
-                          headerColor: headerColor),
+                        scrollController: scrollController,
+                        title: LocaleKeys.explore_title.tr(),
+                        headerColor: headerColor,
+                      ),
                       state.maybeMap(
                         initialLoading: (_) => const SliverToBoxAdapter(
                           child: ArticleWithCoverAreaLoadingView.loading(),

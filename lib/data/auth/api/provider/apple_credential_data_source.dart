@@ -25,11 +25,12 @@ class AppleCredentialDataSource implements OAuthCredentialProviderDataSource {
       final userMetaDto = UserMetaDTO(credentials.givenName, credentials.familyName);
 
       return OAuthUserMetaCredentialsDTO(
-          userMetaDto,
-          oAuthProvider.credential(
-            idToken: credentials.identityToken,
-            accessToken: credentials.authorizationCode,
-          ));
+        userMetaDto,
+        oAuthProvider.credential(
+          idToken: credentials.identityToken,
+          accessToken: credentials.authorizationCode,
+        ),
+      );
     } on SignInWithAppleAuthorizationException catch (e) {
       if (e.code == AuthorizationErrorCode.canceled) throw SignInAbortedException();
       rethrow;

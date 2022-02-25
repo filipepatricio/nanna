@@ -75,30 +75,36 @@ class _CustomTextPainter extends HookWidget {
       [size, spans],
     );
 
-    final textPainter = useMemoized(() {
-      final textPainter = TextPainter(
-        textDirection: TextDirection.ltr,
-        text: TextSpan(children: spans),
-        textAlign: textAlign,
-        maxLines: maxLines,
-      );
+    final textPainter = useMemoized(
+      () {
+        final textPainter = TextPainter(
+          textDirection: TextDirection.ltr,
+          text: TextSpan(children: spans),
+          textAlign: textAlign,
+          maxLines: maxLines,
+        );
 
-      textPainter.layout(maxWidth: size.maxWidth);
+        textPainter.layout(maxWidth: size.maxWidth);
 
-      return textPainter;
-    }, [underlined]);
+        return textPainter;
+      },
+      [underlined],
+    );
 
-    final spansWithoutDecoration = useMemoized(() {
-      return spans.map(
-        (span) {
-          if (span is TextSpan && _isHighlighted(span)) {
-            return _modifyHighlightedText(span);
-          }
+    final spansWithoutDecoration = useMemoized(
+      () {
+        return spans.map(
+          (span) {
+            if (span is TextSpan && _isHighlighted(span)) {
+              return _modifyHighlightedText(span);
+            }
 
-          return span;
-        },
-      ).toList();
-    }, [spans]);
+            return span;
+          },
+        ).toList();
+      },
+      [spans],
+    );
 
     return CustomPaint(
       size: textPainter.size,

@@ -36,22 +36,24 @@ class OnboardingPictureSlide extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                    flex: 8,
-                    child: AutoSizeText(
-                      descriptionHeader,
-                      style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
-                      maxLines: 3,
-                      stepGranularity: 0.1,
-                    )),
+                  flex: 8,
+                  child: AutoSizeText(
+                    descriptionHeader,
+                    style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
+                    maxLines: 3,
+                    stepGranularity: 0.1,
+                  ),
+                ),
                 const Spacer(),
                 Expanded(
-                    flex: 10,
-                    child: AutoSizeText(
-                      description,
-                      style: AppTypography.b1Regular,
-                      maxLines: 4,
-                      stepGranularity: 0.1,
-                    )),
+                  flex: 10,
+                  child: AutoSizeText(
+                    description,
+                    style: AppTypography.b1Regular,
+                    maxLines: 4,
+                    stepGranularity: 0.1,
+                  ),
+                ),
               ],
             ),
           ),

@@ -55,14 +55,17 @@ class TopicOwnerPage extends HookWidget {
       },
     );
 
-    useEffect(() {
-      if (owner is! Expert) {
-        cubit.initialize();
-        return;
-      }
+    useEffect(
+      () {
+        if (owner is! Expert) {
+          cubit.initialize();
+          return;
+        }
 
-      cubit.initialize((owner as Expert).id);
-    }, [owner]);
+        cubit.initialize((owner as Expert).id);
+      },
+      [owner],
+    );
 
     final scrollController = useMemoized(
       () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
@@ -195,10 +198,13 @@ class _ActionsBar extends HookWidget {
       }
     }
 
-    useEffect(() {
-      controller.addListener(setShowOwnerTitle);
-      return () => controller.removeListener(setShowOwnerTitle);
-    }, [controller]);
+    useEffect(
+      () {
+        controller.addListener(setShowOwnerTitle);
+        return () => controller.removeListener(setShowOwnerTitle);
+      },
+      [controller],
+    );
 
     return SliverAppBar(
       pinned: true,
@@ -276,21 +282,22 @@ class _LastUpdatedTopics extends HookWidget {
         Container(
           height: cardStackHeight,
           child: PageView.builder(
-              padEnds: false,
-              itemCount: topics.length,
-              controller: topicsController,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 16),
-                  child: PageViewStackedCards.random(
-                    coverSize: Size(cardStackWidth, cardStackHeight),
-                    child: ReadingListCover(
-                      topic: topics[index],
-                      onTap: () => _onTopicTap(context, topics[index]),
-                    ),
+            padEnds: false,
+            itemCount: topics.length,
+            controller: topicsController,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 16),
+                child: PageViewStackedCards.random(
+                  coverSize: Size(cardStackWidth, cardStackHeight),
+                  child: ReadingListCover(
+                    topic: topics[index],
+                    onTap: () => _onTopicTap(context, topics[index]),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
         ),
         const SizedBox(height: AppDimens.l),
         Padding(

@@ -30,11 +30,14 @@ class ArticleContentHtml extends HookWidget {
       [html],
     );
 
-    useEffect(() {
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        scrollToPosition();
-      });
-    }, []);
+    useEffect(
+      () {
+        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+          scrollToPosition();
+        });
+      },
+      [],
+    );
 
     return Html.fromDom(
       document: document,

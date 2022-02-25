@@ -66,9 +66,12 @@ class MediaItemPage extends HookWidget {
 
     final pageController = usePageController();
 
-    useEffect(() {
-      cubit.initialize(article, slug, topicId, topicSlug);
-    }, [cubit]);
+    useEffect(
+      () {
+        cubit.initialize(article, slug, topicId, topicSlug);
+      },
+      [cubit],
+    );
 
     return LayoutBuilder(
       builder: (context, constraints) => Scaffold(
@@ -269,9 +272,12 @@ class _PremiumArticleView extends HookWidget {
       [articleWithImage],
     );
 
-    useEffect(() {
-      WidgetsBinding.instance?.addPostFrameCallback((_) => calculateArticleContentOffset());
-    }, []);
+    useEffect(
+      () {
+        WidgetsBinding.instance?.addPostFrameCallback((_) => calculateArticleContentOffset());
+      },
+      [],
+    );
 
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{

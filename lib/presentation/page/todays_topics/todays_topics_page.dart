@@ -144,14 +144,17 @@ class _IdleContent extends HookWidget {
       );
     });
 
-    useEffect(() {
-      final listener = () {
-        lastPageAnimationProgressState.value =
-            calculateLastPageShownFactor(scrollController, AppDimens.relaxViewportFraction);
-      };
-      scrollController.addListener(listener);
-      return () => scrollController.removeListener(listener);
-    }, [scrollController]);
+    useEffect(
+      () {
+        final listener = () {
+          lastPageAnimationProgressState.value =
+              calculateLastPageShownFactor(scrollController, AppDimens.relaxViewportFraction);
+        };
+        scrollController.addListener(listener);
+        return () => scrollController.removeListener(listener);
+      },
+      [scrollController],
+    );
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(

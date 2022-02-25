@@ -74,7 +74,8 @@ Future<void> main(List<String> args) async {
         exit(0);
       }
       print(
-          'Done: Found $numVisualChanges visual change(s) and $numNewGoldens new golden(s), saved in: ${reportDir.absolute.path}');
+        'Done: Found $numVisualChanges visual change(s) and $numNewGoldens new golden(s), saved in: ${reportDir.absolute.path}',
+      );
       exit(1);
     }
   } catch (error, stack) {
@@ -299,13 +300,15 @@ Future<String> printAndExec(String executable, List<String> arguments, {String? 
 Future<String> exec(String executable, List<String> arguments, {String? workingDirectory}) async {
   final processResult = await Process.run(executable, arguments, workingDirectory: workingDirectory);
   if (processResult.exitCode != 0) {
-    throw Exception('''
+    throw Exception(
+      '''
 ${commandLine(executable, arguments)}
 failed with exit code ${processResult.exitCode}
 stdout:
 ${indent(processResult.stdout as String)}
 stderr:
-${indent(processResult.stderr as String)}''');
+${indent(processResult.stderr as String)}''',
+    );
   }
   return (processResult.stdout as String).trim();
 }

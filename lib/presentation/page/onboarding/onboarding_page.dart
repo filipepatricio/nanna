@@ -40,10 +40,13 @@ class OnboardingPage extends HookWidget {
     final controller = usePageController();
     final isLastPage = pageIndex.value == _pageList.length - 1;
 
-    useEffect(() {
-      cubit.trackOnboardingStarted();
-      cubit.trackOnboardingPage(0);
-    }, [cubit]);
+    useEffect(
+      () {
+        cubit.trackOnboardingStarted();
+        cubit.trackOnboardingPage(0);
+      },
+      [cubit],
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,

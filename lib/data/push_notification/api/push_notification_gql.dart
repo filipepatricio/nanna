@@ -4,16 +4,19 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class PushNotificationGQL {
   const PushNotificationGQL._();
 
-  static DocumentNode register(String token) => gql('''
+  static DocumentNode register(String token) => gql(
+        '''
     mutation {
       savePushDeviceToken(token: "$token") {
         token
         updatedAt
       }
     }
-  ''');
+  ''',
+      );
 
-  static DocumentNode getNotificationPreferences() => gql('''
+  static DocumentNode getNotificationPreferences() => gql(
+        '''
     query {
       getNotificationPreferences {
         name
@@ -25,9 +28,11 @@ class PushNotificationGQL {
         }
       }
     }
-  ''');
+  ''',
+      );
 
-  static DocumentNode setNotificationPreferences(String id, bool? pushEnabled, bool? emailEnabled) => gql('''
+  static DocumentNode setNotificationPreferences(String id, bool? pushEnabled, bool? emailEnabled) => gql(
+        '''
     mutation {
       setNotificationChannelPreferences(id: "$id", pushEnabled: $pushEnabled, emailEnabled: $emailEnabled) {
         id
@@ -36,5 +41,6 @@ class PushNotificationGQL {
         emailEnabled
       }
     }
-  ''');
+  ''',
+      );
 }

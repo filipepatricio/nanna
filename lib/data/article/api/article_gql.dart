@@ -3,23 +3,28 @@ import 'package:gql/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ArticleGQL {
-  static DocumentNode fullArticle(String slug) => gql('''
+  static DocumentNode fullArticle(String slug) => gql(
+        '''
     query {
       article(slug: "$slug") {
         ${CommonGQLModels.fullArticle}
       }
     }
-  ''');
+  ''',
+      );
 
-  static DocumentNode articleHeader(String slug) => gql('''
+  static DocumentNode articleHeader(String slug) => gql(
+        '''
     query {
       article(slug: "$slug") {
         ${CommonGQLModels.article}
       }
     }
-  ''');
+  ''',
+      );
 
-  static DocumentNode articleContent(String slug) => gql('''
+  static DocumentNode articleContent(String slug) => gql(
+        '''
     query {
       article(slug: "$slug") {
         text {
@@ -28,5 +33,6 @@ class ArticleGQL {
         }
       }
     }
-  ''');
+  ''',
+      );
 }

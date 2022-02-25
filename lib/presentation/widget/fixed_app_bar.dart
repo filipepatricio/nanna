@@ -23,13 +23,16 @@ class FixedAppBar extends HookWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final scrollOffset = useState(0.0);
-    useEffect(() {
-      final listener = () {
-        scrollOffset.value = scrollController.offset;
-      };
-      scrollController.addListener(listener);
-      return () => scrollController.removeListener(listener);
-    }, [scrollController]);
+    useEffect(
+      () {
+        final listener = () {
+          scrollOffset.value = scrollController.offset;
+        };
+        scrollController.addListener(listener);
+        return () => scrollController.removeListener(listener);
+      },
+      [scrollController],
+    );
 
     final showCenterTitle = scrollOffset.value >= kToolbarHeight / 1.2;
 
@@ -40,12 +43,15 @@ class FixedAppBar extends HookWidget implements PreferredSizeWidget {
       shadowColor: AppColors.shadowDarkColor,
       titleSpacing: 0,
       title: showCenterTitle
-          ? Text(title,
+          ? Text(
+              title,
               style: AppTypography.h4Bold.copyWith(
-                  height: 2.25,
-                  color: AppColors.textPrimary.withOpacity(
-                    min(1, scrollOffset.value / 70),
-                  )))
+                height: 2.25,
+                color: AppColors.textPrimary.withOpacity(
+                  min(1, scrollOffset.value / 70),
+                ),
+              ),
+            )
           : const SizedBox(),
       leading: IconButton(
         padding: const EdgeInsets.only(top: AppDimens.sl),

@@ -38,28 +38,34 @@ class TopicsSeeAllPage extends HookWidget {
     final state = useCubitBuilder<TopicsSeeAllPageCubit, TopicsSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
 
-    useEffect(() {
-      cubit.initialize(areaId, topics);
-    }, [cubit]);
+    useEffect(
+      () {
+        cubit.initialize(areaId, topics);
+      },
+      [cubit],
+    );
 
     final shouldListen = state.maybeMap(
       withPagination: (_) => true,
       orElse: () => false,
     );
     final screenHeight = MediaQuery.of(context).size.height;
-    useEffect(() {
-      final listener = shouldListen
-          ? () {
-              final position = scrollController.position;
+    useEffect(
+      () {
+        final listener = shouldListen
+            ? () {
+                final position = scrollController.position;
 
-              if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
-                cubit.loadNextPage();
+                if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
+                  cubit.loadNextPage();
+                }
               }
-            }
-          : () {};
-      scrollController.addListener(listener);
-      return () => scrollController.removeListener(listener);
-    }, [scrollController, shouldListen]);
+            : () {};
+        scrollController.addListener(listener);
+        return () => scrollController.removeListener(listener);
+      },
+      [scrollController, shouldListen],
+    );
 
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: title),
@@ -90,42 +96,43 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StackedCardsRandomVariantBuilder(
-        count: state.maybeMap(
-          loadingMore: (state) => state.topics.length,
-          withPagination: (state) => state.topics.length,
-          allLoaded: (state) => state.topics.length,
-          orElse: () => 0,
-        ),
-        builder: (cardVariants) {
-          return state.maybeMap(
-            loading: (_) => const Loader(),
-            withPagination: (state) => _TopicGrid(
-              title: title,
-              pageStorageKey: pageStorageKey,
-              topics: state.topics,
-              scrollController: scrollController,
-              withLoader: false,
-              cardVariants: cardVariants,
-            ),
-            loadingMore: (state) => _TopicGrid(
-              title: title,
-              pageStorageKey: pageStorageKey,
-              topics: state.topics,
-              scrollController: scrollController,
-              withLoader: true,
-              cardVariants: cardVariants,
-            ),
-            allLoaded: (state) => _TopicGrid(
-              title: title,
-              pageStorageKey: pageStorageKey,
-              topics: state.topics,
-              scrollController: scrollController,
-              withLoader: false,
-              cardVariants: cardVariants,
-            ),
-            orElse: () => const SizedBox(),
-          );
-        });
+      count: state.maybeMap(
+        loadingMore: (state) => state.topics.length,
+        withPagination: (state) => state.topics.length,
+        allLoaded: (state) => state.topics.length,
+        orElse: () => 0,
+      ),
+      builder: (cardVariants) {
+        return state.maybeMap(
+          loading: (_) => const Loader(),
+          withPagination: (state) => _TopicGrid(
+            title: title,
+            pageStorageKey: pageStorageKey,
+            topics: state.topics,
+            scrollController: scrollController,
+            withLoader: false,
+            cardVariants: cardVariants,
+          ),
+          loadingMore: (state) => _TopicGrid(
+            title: title,
+            pageStorageKey: pageStorageKey,
+            topics: state.topics,
+            scrollController: scrollController,
+            withLoader: true,
+            cardVariants: cardVariants,
+          ),
+          allLoaded: (state) => _TopicGrid(
+            title: title,
+            pageStorageKey: pageStorageKey,
+            topics: state.topics,
+            scrollController: scrollController,
+            withLoader: false,
+            cardVariants: cardVariants,
+          ),
+          orElse: () => const SizedBox(),
+        );
+      },
+    );
   }
 }
 
@@ -150,47 +157,48 @@ class _TopicGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NoScrollGlow(
-        child: CustomScrollView(
-      controller: scrollController,
-      key: pageStorageKey,
-      slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate.fixed(
-            [
-              const SizedBox(height: AppDimens.l),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: InformedMarkdownBody(
-                  markdown: title,
-                  highlightColor: AppColors.transparent,
-                  baseTextStyle: AppTypography.h1,
+      child: CustomScrollView(
+        controller: scrollController,
+        key: pageStorageKey,
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
+                const SizedBox(height: AppDimens.l),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: InformedMarkdownBody(
+                    markdown: title,
+                    highlightColor: AppColors.transparent,
+                    baseTextStyle: AppTypography.h1,
+                  ),
                 ),
-              ),
-              const SizedBox(height: AppDimens.l),
-            ],
-          ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          sliver: SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => _GridItem(
-                topic: topics[index],
-                cardVariant: cardVariants[index],
-              ),
-              childCount: topics.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisExtent: AppDimens.exploreAreaTopicSeeAllCoverHeight,
-              mainAxisSpacing: AppDimens.m,
-              crossAxisSpacing: AppDimens.m,
+                const SizedBox(height: AppDimens.l),
+              ],
             ),
           ),
-        ),
-        SeeAllLoadMoreIndicator(show: withLoader),
-      ],
-    ));
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            sliver: SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => _GridItem(
+                  topic: topics[index],
+                  cardVariant: cardVariants[index],
+                ),
+                childCount: topics.length,
+              ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: AppDimens.exploreAreaTopicSeeAllCoverHeight,
+                mainAxisSpacing: AppDimens.m,
+                crossAxisSpacing: AppDimens.m,
+              ),
+            ),
+          ),
+          SeeAllLoadMoreIndicator(show: withLoader),
+        ],
+      ),
+    );
   }
 }
 

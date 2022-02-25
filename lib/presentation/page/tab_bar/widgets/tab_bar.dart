@@ -34,11 +34,13 @@ class TabBar extends HookWidget {
       elevation: _bottomBarElevation,
       type: BottomNavigationBarType.fixed,
       onTap: (index) {
-        if (index == tabsRouter.activeIndex && tabsRouter.canPopSelfOrChildren) {
-          tabsRouter.popTop();
+        if (index == tabsRouter.activeIndex) {
+          cubit.tabPressed(MainTabExtension.fromIndex(index));
+          if (tabsRouter.canPopSelfOrChildren) {
+            tabsRouter.popTop();
+          }
         }
         tabsRouter.setActiveIndex(index);
-        cubit.tabPressed(MainTabExtension.fromIndex(index));
       },
       currentIndex: tabsRouter.activeIndex,
     );

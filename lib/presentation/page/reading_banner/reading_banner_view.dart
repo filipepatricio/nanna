@@ -19,9 +19,12 @@ class ReadingBannerView extends HookWidget {
     final cubit = useCubit<ReadingBannerCubit>();
     final state = useCubitBuilder(cubit);
 
-    useEffect(() {
-      cubit.initialize();
-    }, [cubit]);
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
 
     return state.maybeMap(
       notVisible: (state) => const SizedBox(),
