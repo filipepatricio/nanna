@@ -17,4 +17,6 @@ class TopicOwnerPageState with _$TopicOwnerPageState {
 
   @Implements<BuildState>()
   factory TopicOwnerPageState.error() = _TopicOwnerPageStateError;
+
+  factory TopicOwnerPageState.browserError(String link) = _TopicOwnerPageStateBrowserError;
 }

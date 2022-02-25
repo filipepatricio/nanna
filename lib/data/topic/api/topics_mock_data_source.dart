@@ -11,11 +11,8 @@ import 'package:injectable/injectable.dart';
 class TopicsMockDataSource implements TopicsApiDataSource {
   @override
   Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId) async {
-    const result = MockGraphqlResponses.topicsFromExpert;
-    final data = jsonDecode(result) as Map<String, dynamic>;
-    final dto = TopicsFromExpertDTO.fromJson(data['getTopicsFromExpert'] as Map<String, dynamic>);
-
-    return dto;
+    final data = jsonDecode(MockGraphqlResponses.topicsFromExpert) as Map<String, dynamic>;
+    return TopicsFromExpertDTO.fromJson(data);
   }
 
   @override

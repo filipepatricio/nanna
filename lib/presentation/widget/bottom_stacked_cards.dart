@@ -17,12 +17,12 @@ class BottomStackedCards extends StatelessWidget {
         Container(
           height: AppDimens.topicViewStackedCardsDividerHeight(context),
           width: MediaQuery.of(context).size.width * 0.9,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.lightGrey,
             boxShadow: [
               BoxShadow(
                 color: AppColors.shadowColor,
-                offset: const Offset(10.0, 10.0),
+                offset: Offset(10.0, 10.0),
                 blurRadius: 10.0,
                 spreadRadius: -2.0,
               ),
@@ -40,12 +40,12 @@ class BottomStackedCards extends StatelessWidget {
             child: Container(
               height: _upperDiagonalCardHeight,
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.lightGrey,
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadowColor,
-                    offset: const Offset(0.0, 10.0),
+                    offset: Offset(0.0, 10.0),
                     blurRadius: 10.0,
                     spreadRadius: -2.0,
                   ),

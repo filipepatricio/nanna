@@ -82,6 +82,7 @@ class MockGraphqlResponses {
   static const topicsFromExpert = '''
   {
     "getTopicsFromExpert": [
+      $topic,
       $topic
     ]
   }
@@ -124,7 +125,7 @@ class MockGraphqlResponses {
     "strippedTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem dolor",
     "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     "url": "https://app.staging.informed.so/topics/world-water-crisis",
-    $_ownerEditor,
+    $_ownerExpert,
     $_summaryCards,
     "lastUpdatedAt": "2021-12-23T11:38:26Z",
     $_highlightedPublishers,
@@ -179,6 +180,7 @@ class MockGraphqlResponses {
   ]
   ''';
 
+  // ignore: unused_field
   static const _ownerEditor = '''
   "owner": {
     "__typename": "Editor",
@@ -196,7 +198,9 @@ class MockGraphqlResponses {
       "publicId": "owner_1"
     },
     "areaOfExpertise": "Global Warming",
-    "bio": "Hi, it's Bill Gates!If you don't know me... look outside... Windows!",
+    "instagram": "instagram.com",
+    "linkedin": "linkedin.com",
+    "bio": "Hi, it's Bill Gates!If you don't know me... look outside... Windows!\\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mu.",
     "chunkedBio": [
       "Hi, it's Bill Gates!",
       "If you don't know me... look outside... Windows!"

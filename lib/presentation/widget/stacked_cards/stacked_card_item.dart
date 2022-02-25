@@ -30,7 +30,7 @@ class StackedCardItem extends StatelessWidget {
           width: width,
           decoration: BoxDecoration(
             color: color,
-            boxShadow: getStackedCardShadow(),
+            boxShadow: stackedCardsShadow,
           ),
         ),
       ),
