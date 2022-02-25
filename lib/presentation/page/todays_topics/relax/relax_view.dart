@@ -44,10 +44,9 @@ class RelaxView extends HookWidget {
       child: SizedBox(
         width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: AppDimens.xc),
             if (goodbyeHeadline.icon != null)
               Image.network(
                 cloudinaryProvider
@@ -86,6 +85,7 @@ class RelaxView extends HookWidget {
                 ),
               ),
             ],
+            const SizedBox(height: AppDimens.xc),
           ],
         ),
       ),
