@@ -1,20 +1,29 @@
-name: CD
-
-# There is no merged event, so we have to listen for pull request closed
-# and than add to our job condition "if: github.event.pull_request.merged == true"
+name: CD Staging
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
     paths-ignore:
       - '**/README.md'
+      - 'test/**'
+      - 'scripts/**'
+      - '.vscode/**'
+      - '.github/**'
+      - '.idea/**'
+      - '.fvm/**'
+      - '.dart_tool/**'
+      - '.tool-versions'
+      - 'analysis_options.yaml'
+      - 'commitlint.config.js'
+      - 'dart-test.yaml'
+
 env:
-  JAVA_VERSION: "12.x"
-  RUBY_VERSION: "2.7"
+  JAVA_VERSION: '12.x'
+  RUBY_VERSION: '2.7'
 
 jobs:
-  # CD - android firebase
   deploy_android:
+    name: Deploy Android to Firebase
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -24,7 +33,7 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
           ORIGINAL: ${{ github.run_number }}
         run: |
-          echo ::set-env name=BUILD_NUMBER::$((ORIGINAL+570))  
+          echo ::set-env name=BUILD_NUMBER::$((ORIGINAL+570))
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -63,7 +72,6 @@ jobs:
       - name: Run build_runner and generate files
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
-
       - name: Build app
         env:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
@@ -84,8 +92,8 @@ jobs:
         env:
           FIREBASE_APP_ID_ANDROID: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
 
-  # CD - ios testflight
   deploy_ios:
+    name: Deploy iOS to TestFlight
     runs-on: macos-11
     timeout-minutes: 30
     steps:
@@ -94,7 +102,7 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
           ORIGINAL: ${{ github.run_number }}
         run: |
-          echo ::set-env name=BUILD_NUMBER::$((ORIGINAL+570))    
+          echo ::set-env name=BUILD_NUMBER::$((ORIGINAL+570))
 
       - name: Checkout code
         uses: actions/checkout@v2

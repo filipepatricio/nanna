@@ -8,13 +8,30 @@ on:
   pull_request:
     branches: [develop]
     paths-ignore:
+      - '**.yaml'
+      - 'analysis_options.yaml'
+      - 'commitlint.config.js'
       - '**/README.md'
+      - 'test/data/**'
+      - 'test/domain/**'
+      - 'scripts/**'
+      - '.vscode/**'
+      - '.github/**'
+      - '.idea/**'
+      - '.fvm/**'
+      - '.dart_tool/**'
 
 jobs:
   ui-changes:
+    name: UI changes
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: Cancel previous jobs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
       - name: checkout
         uses: actions/checkout@v2
         with:
@@ -30,40 +47,13 @@ jobs:
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
 
+      - name: Run flutter clean
+        run: flutter clean
+
       - name: Get glutter dependencies for base branch
         run: flutter pub get
 
-      # - name: Generate l10n files for base branch
-      #   run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
-
-      # - name: Run build_runner for base branch
-      #   run: flutter pub run build_runner build --delete-conflicting-outputs
-
-      # - name: Create golden files for base branch
-      #   run: flutter test test/visual --update-goldens
-
-      # - name: Checkout code to new branch
-      #   uses: actions/checkout@v2
-
-      # - name: Get flutter dependencies
-      #   run: flutter pub get
-
-      # - name: Generate l10n files
-      #   run: flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
-
-      # - name: Run build_runner
-      #   run: flutter pub run build_runner build --delete-conflicting-outputs
-
-      # - name: Remove failures folder
-      #   uses: JesseTG/rm@v1.0.2
-      #   with:
-      #     path: /test/visual/failures
-
-      # - name: Run golden image tests
-      #   run: flutter test test/visual
-
       - name: Generate ui changes report
-        # if: failure()
         run: make ui_changes_report
 
       - name: Upload ui changes report

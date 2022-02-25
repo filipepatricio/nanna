@@ -8,7 +8,13 @@ abstract class TopicOwner {
 }
 
 class Editor extends TopicOwner {
-  const Editor({required String name, Image? avatar}) : super(avatar: avatar, name: name);
+  const Editor({
+    required String name,
+    Image? avatar,
+  }) : super(
+          avatar: avatar,
+          name: name,
+        );
 }
 
 class Expert extends TopicOwner {
@@ -17,10 +23,19 @@ class Expert extends TopicOwner {
     required String name,
     required this.bio,
     required this.areaOfExpertise,
+    this.instagram,
+    this.linkedin,
     Image? avatar,
-  }) : super(avatar: avatar, name: name);
+  }) : super(
+          avatar: avatar,
+          name: name,
+        );
 
   final String id;
   final String bio;
   final String areaOfExpertise;
+  final String? instagram;
+  final String? linkedin;
+
+  bool get hasSocialMediaLinks => instagram != null || linkedin != null;
 }

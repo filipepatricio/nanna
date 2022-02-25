@@ -18,11 +18,13 @@ analyzer:
     - 'lib/res/**'
     - '**.g.dart'
     - '**/*.mocks.dart'
+    - '**.config.dart'
   strong-mode:
     implicit-casts: false
 
 linter:
   rules:
+    - require_trailing_commas
     - always_declare_return_types
     - always_put_required_named_parameters_first
     - always_require_non_null_named_parameters

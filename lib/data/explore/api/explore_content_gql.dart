@@ -3,7 +3,8 @@ import 'package:gql/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ExploreContentGQL {
-  static DocumentNode content() => gql('''
+  static DocumentNode content() => gql(
+        '''
     query {
       getExploreSection {
         __typename
@@ -31,9 +32,11 @@ class ExploreContentGQL {
         }
       }
     }
-  ''');
+  ''',
+      );
 
-  static DocumentNode paginated(String id, int limit, int offset) => gql('''
+  static DocumentNode paginated(String id, int limit, int offset) => gql(
+        '''
     query {
       getExploreArea(id: "$id") {
         __typename
@@ -61,5 +64,6 @@ class ExploreContentGQL {
         }
       }
     }
-  ''');
+  ''',
+      );
 }

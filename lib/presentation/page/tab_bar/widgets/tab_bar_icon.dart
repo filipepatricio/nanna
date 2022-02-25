@@ -1,0 +1,72 @@
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
+
+enum MainTab { today, explore, profile }
+
+extension MainTabExtension on MainTab {
+  Widget get icon => _icon();
+
+  Widget get activeIcon => _activeIcon();
+
+  String get title => _title();
+
+  Widget _icon() {
+    switch (this) {
+      case MainTab.today:
+        return _TabBarIcon(AppVectorGraphics.today, _title(), isActive: false);
+      case MainTab.explore:
+        return _TabBarIcon(AppVectorGraphics.explore, _title(), isActive: false);
+      case MainTab.profile:
+        return _TabBarIcon(AppVectorGraphics.profile, _title(), isActive: false);
+    }
+  }
+
+  Widget _activeIcon() {
+    switch (this) {
+      case MainTab.today:
+        return _TabBarIcon(AppVectorGraphics.todaySelected, _title());
+      case MainTab.explore:
+        return _TabBarIcon(AppVectorGraphics.exploreSelected, _title());
+      case MainTab.profile:
+        return _TabBarIcon(AppVectorGraphics.profileSelected, _title());
+    }
+  }
+
+  String _title() {
+    switch (this) {
+      case MainTab.today:
+        return LocaleKeys.main_todayTab.tr();
+      case MainTab.explore:
+        return LocaleKeys.main_exploreTab.tr();
+      case MainTab.profile:
+        return LocaleKeys.main_profileTab.tr();
+    }
+  }
+
+  static MainTab fromIndex(int index) => MainTab.values[index];
+}
+
+class _TabBarIcon extends HookWidget {
+  final String iconName;
+  final String title;
+  final bool isActive;
+
+  const _TabBarIcon(
+    this.iconName,
+    this.title, {
+    this.isActive = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+      child: SvgPicture.asset(iconName),
+    );
+  }
+}

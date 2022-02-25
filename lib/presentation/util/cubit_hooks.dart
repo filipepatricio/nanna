@@ -45,10 +45,13 @@ void useCubitListener<BLOC extends Cubit<S>, S>(
 }) {
   final context = useContext();
   final listenWhenConditioner = listenWhen;
-  useMemoized(() {
-    final stream = cubit.stream
-        .where(listenWhenConditioner ?? _CubitDefaults.defaultBlocListenCondition)
-        .listen((state) => listener(cubit, state, context));
-    return stream.cancel;
-  }, [cubit]);
+  useMemoized(
+    () {
+      final stream = cubit.stream
+          .where(listenWhenConditioner ?? _CubitDefaults.defaultBlocListenCondition)
+          .listen((state) => listener(cubit, state, context));
+      return stream.cancel;
+    },
+    [cubit],
+  );
 }

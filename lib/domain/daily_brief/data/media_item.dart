@@ -10,6 +10,7 @@ class MediaItem with _$MediaItem {
   const factory MediaItem.article({
     required String id,
     required String slug,
+    required String url,
     required String title,
     required String strippedTitle,
     required ArticleType type,

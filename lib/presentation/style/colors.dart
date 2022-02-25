@@ -15,7 +15,7 @@ class AppColors {
   static const Color background = Color(0xffFCFAF8);
   static const Color appBarBackground = Color(0xff282B35);
   static const Color darkLinen = Color(0xffF4F1EE);
-  static const Color transparent = Color(0x00282b35);
+  static const Color transparent = Color(0x00000000);
   static const Color red = Color(0xffFF6969);
   static const Color blue = Color(0xff4579FF);
   static const Color grey = Color(0xffe7e7e7);
@@ -28,16 +28,19 @@ class AppColors {
   static const Color carrotRed = Color(0xffFB6F43);
   static const Color peach10 = Color(0xffF2E8E7);
   static const Color peach100 = Color(0xffFB9E8A);
+  static const Color blueSelected = Color(0xff0099FF);
 
   static const Color gradientOverlayStartColor = Color(0x90282b35);
   static const Color gradientOverlayEndColor = Color(0x00282B35);
 
-  static Color shadowLinenColor = const Color(0x6b634633).withOpacity(0.2);
-  static Color shadowDarkColor = Colors.black.withOpacity(0.4);
-  static Color shadowColor = Colors.black.withOpacity(0.12);
+  static const Color shadowLinenColor = Color(0x33634633);
+  static const Color shadowDarkColor = Color(0x66000000);
+  static const Color shadowColor = Color(0x1f000000);
 
   static const Color settingsHeader = Color(0x44282B35);
   static const Color settingsIcon = Color(0xff898A8D);
+
+  static const Color socialNetworksIcon = Color(0x80282B35);
 
   static const Color greyDividerColor = Color(0xffE5E5EA);
 

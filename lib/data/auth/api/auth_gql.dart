@@ -2,7 +2,8 @@ import 'package:gql/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AuthGQL {
-  static DocumentNode login() => gql('''
+  static DocumentNode login() => gql(
+        '''
     mutation signIn(\$token: String!, \$provider: String!, \$meta: UserMeta!) {
       signIn(idToken: \$token, provider: \$provider, information: \$meta) {
         successful
@@ -20,9 +21,11 @@ class AuthGQL {
         }
       }
     }
-  ''');
+  ''',
+      );
 
-  static DocumentNode refresh(String token) => gql('''
+  static DocumentNode refresh(String token) => gql(
+        '''
     mutation {
       refresh(refreshToken: "$token") {
         successful
@@ -33,11 +36,14 @@ class AuthGQL {
         }
       }
     }
-  ''');
+  ''',
+      );
 
-  static DocumentNode sendLink(String email) => gql('''
+  static DocumentNode sendLink(String email) => gql(
+        '''
     mutation {
       sendMagicLink(email: "$email")
     }
-  ''');
+  ''',
+      );
 }

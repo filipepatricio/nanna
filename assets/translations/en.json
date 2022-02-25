@@ -14,7 +14,9 @@
     "done": "Done",
     "tryAgain": "Try again",
     "linkCopied": "Successfuly copied link to your clipboard!",
-    "share": "Share"
+    "share": "Share",
+    "shareImage": "Share image",
+    "shareText": "Share text"
   },
   "commonError": {
     "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "
@@ -143,7 +145,8 @@
       "expertIn": "Expert in {}",
       "lastUpdated": "Last updated",
       "editorBio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world.",
-      "loadingExpertTopics": "We're loading\n{}'s topics"
+      "loadingExpertTopics": "We're loading\n{}'s topics",
+      "followExpertOn": "Follow {} on"
     },
     "howDoWeCurateContent": {
       "label": "How do we curate content?",
@@ -160,7 +163,7 @@
   "profile": {
     "title": "Profile",
     "stayTuned": "Stay Tuned",
-    "stayTunedText": "This page will be evolving during beta",
+    "stayTunedText": "This page will be evolving soon",
     "feedbackButton": "Give feedback",
     "feedbackSubject": "Feedback on Informed App",
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
@@ -176,17 +179,23 @@
   "shareArticle": {
     "message": "Hey, I am currently reading this article via informed – a new platform for quality journalism. You can still sign up to their waitlist.\n\nhttps://www.informed.so"
   },
-  "noBetaAccessPage": {
-    "headline": "Ooops, looks like you are not part of the closed beta!",
+  "shareQuote": {
+    "readOn": "Read on ",
+    "title": "Article - {}",
+    "messageWithQuote": "Hey, I am currently reading this article via informed and this quote really struck me. Check it out.\n\n{}\n\n{}",
+    "message": "Hey, I am currently reading this article via informed and this quote really struck me. Check it out.\n\n{}"
+  },
+  "noMemberAccessPage": {
+    "headline": "Ooops, looks like you are not a member yet!",
     "infoParts": {
       "0": "If you think you are, ",
       "1": "reach out to feedback@informed.so.",
-      "2": " Otherwise, you can request an invite below."
+      "2": "Otherwise, you can request an invite below."
     },
     "waitlistAction": "Request an invite",
     "email": {
-      "subject": "I'm part of the closed beta",
-      "body": "Hey there,\nwe will check if you are already part of the Closed Beta and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
+      "subject": "I'm already a member",
+      "body": "Hey there,\nwe will check if you are already a member and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
     },
     "emailCopied": "Successfuly copied email to your clipboard!"
   }

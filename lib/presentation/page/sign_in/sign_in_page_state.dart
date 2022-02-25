@@ -18,5 +18,5 @@ class SignInPageState with _$SignInPageState {
 
   factory SignInPageState.generalError() = _SignInPageStateGeneralError;
 
-  factory SignInPageState.noBetaAccess() = _SignInPageStateNoBetaAccess;
+  factory SignInPageState.noMemberAccess() = _SignInPageStateNoMemberAccess;
 }

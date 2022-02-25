@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/presentation/page/main/dashboard_page.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/cupertino.dart' show CupertinoTheme;
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const double kPreviousPageVisibleOffset = 10;
 const Radius _kDefaultTopRadius = Radius.circular(12);
-BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: AppColors.shadowDarkColor, spreadRadius: 5);
+const BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: AppColors.shadowDarkColor, spreadRadius: 5);
 const SystemUiOverlayStyle lightNavBarStyle = SystemUiOverlayStyle(
   // The first three were extracted from SystemOverlay.light
   statusBarIconBrightness: Brightness.light,

@@ -7,7 +7,7 @@ class AppVectorGraphics {
   static const String notes = 'assets/vector_graphics/notes_ic.svg';
   static const String megaphone = 'assets/vector_graphics/megaphone_ic.svg';
   static const String fullArrowRight = 'assets/vector_graphics/full_arrow_right_ic.svg';
-  static const String betaAccess = 'assets/vector_graphics/beta_access.svg';
+  static const String memberAccess = 'assets/vector_graphics/member_access.svg';
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
   static const String exploreSelected = 'assets/vector_graphics/explore_selected_ic.svg';
@@ -22,6 +22,8 @@ class AppVectorGraphics {
   static const String share = 'assets/vector_graphics/share.svg';
   static const String follow = 'assets/vector_graphics/follow.svg';
   static const String lock = 'assets/vector_graphics/lock_ic.svg';
+  static const String instagram = 'assets/vector_graphics/instagram.svg';
+  static const String linkedin = 'assets/vector_graphics/linkedin.svg';
 
   static const String settings = 'assets/vector_graphics/settings_ic.svg';
   static const String account = 'assets/vector_graphics/account_ic.svg';
@@ -57,6 +59,9 @@ class AppVectorGraphics {
   static const String shareNotSelected = 'assets/vector_graphics/share_not_selected.svg';
   static const String shareSelected = 'assets/vector_graphics/share_selected.svg';
   static const String closeIOS = 'assets/vector_graphics/close_ios.svg';
+  static const String shareImage = 'assets/vector_graphics/share_image.svg';
+  static const String shareText = 'assets/vector_graphics/share_text.svg';
+  static const String newspaper = 'assets/vector_graphics/newspaper.svg';
 
   static const String tutorialArrowDown = 'assets/vector_graphics/tutorial_arrow_down.svg';
   static const String tutorialArrowUp = 'assets/vector_graphics/tutorial_arrow_up.svg';

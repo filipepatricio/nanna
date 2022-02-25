@@ -74,7 +74,8 @@ Future<void> main(List<String> args) async {
         exit(0);
       }
       print(
-          'Done: Found $numVisualChanges visual change(s) and $numNewGoldens new golden(s), saved in: ${reportDir.absolute.path}');
+        'Done: Found $numVisualChanges visual change(s) and $numNewGoldens new golden(s), saved in: ${reportDir.absolute.path}',
+      );
       exit(1);
     }
   } catch (error, stack) {
@@ -184,7 +185,7 @@ Iterable<FailedTest> parseFlutterTestOutput(String flutterTestOutput) sync* {
       }
     }
   } catch (_) {
-    File('${reportDir.path}/run_visual_tests_output.json').writeAsStringSync(flutterTestOutput);
+    File('${reportDir.path}/ui_changes_report_output.json').writeAsStringSync(flutterTestOutput);
     rethrow;
   }
 }
@@ -216,23 +217,12 @@ Future<void> getGoldens(String sha1) async {
           head = await exec('git', ['rev-parse', 'HEAD']);
         }
       },
-      after: () async {
-        if (gitStatus.isNotEmpty) {
-          await printAndExec('git', ['reset', 'HEAD~1']);
-        }
-      },
       body: () async {
         await runGuarded(
           before: () async {
             if (head != sha1) {
               print('> Reset work directory to baseline ...');
               await printAndExec('git', ['reset', '--hard', sha1]);
-            }
-          },
-          after: () async {
-            if (head != sha1) {
-              print('> Restore work directory ...');
-              await printAndExec('git', ['reset', '--hard', head]);
             }
           },
           body: () async {
@@ -250,7 +240,18 @@ Future<void> getGoldens(String sha1) async {
             await printAndExec('make', ['easy_localization']);
             await printAndExec('make', ['build_runner']);
           },
+          after: () async {
+            if (head != sha1) {
+              print('> Restore work directory ...');
+              await printAndExec('git', ['reset', '--hard', head]);
+            }
+          },
         );
+      },
+      after: () async {
+        if (gitStatus.isNotEmpty) {
+          await printAndExec('git', ['reset', 'HEAD~1']);
+        }
       },
     );
   }
@@ -299,13 +300,15 @@ Future<String> printAndExec(String executable, List<String> arguments, {String? 
 Future<String> exec(String executable, List<String> arguments, {String? workingDirectory}) async {
   final processResult = await Process.run(executable, arguments, workingDirectory: workingDirectory);
   if (processResult.exitCode != 0) {
-    throw Exception('''
+    throw Exception(
+      '''
 ${commandLine(executable, arguments)}
 failed with exit code ${processResult.exitCode}
 stdout:
 ${indent(processResult.stdout as String)}
 stderr:
-${indent(processResult.stderr as String)}''');
+${indent(processResult.stderr as String)}''',
+    );
   }
   return (processResult.stdout as String).trim();
 }

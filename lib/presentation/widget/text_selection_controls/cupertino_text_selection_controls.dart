@@ -230,8 +230,14 @@ class CupertinoTextSelectionControls extends TextSelectionControls {
 
   /// Builder for iOS text selection edges.
   @override
-  Widget buildHandle(BuildContext context, TextSelectionHandleType type, double textLineHeight,
-      [VoidCallback? onTap, double? startGlyphHeight, double? endGlyphHeight]) {
+  Widget buildHandle(
+    BuildContext context,
+    TextSelectionHandleType type,
+    double textLineHeight, [
+    VoidCallback? onTap,
+    double? startGlyphHeight,
+    double? endGlyphHeight,
+  ]) {
     // iOS selection handles do not respond to taps.
 
     // We want a size that's a vertical line the height of the text plus a 18.0
@@ -280,8 +286,12 @@ class CupertinoTextSelectionControls extends TextSelectionControls {
   ///
   /// See [TextSelectionControls.getHandleAnchor].
   @override
-  Offset getHandleAnchor(TextSelectionHandleType type, double textLineHeight,
-      [double? startGlyphHeight, double? endGlyphHeight]) {
+  Offset getHandleAnchor(
+    TextSelectionHandleType type,
+    double textLineHeight, [
+    double? startGlyphHeight,
+    double? endGlyphHeight,
+  ]) {
     final finalStartGlyphHeight = startGlyphHeight ?? textLineHeight;
     final finalEndGlyphHeight = endGlyphHeight ?? textLineHeight;
 

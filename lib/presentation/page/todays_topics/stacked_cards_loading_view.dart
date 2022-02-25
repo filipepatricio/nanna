@@ -32,47 +32,49 @@ class StackedCardsLoadingView extends HookWidget {
 
     return Padding(
       padding: padding,
-      child: LayoutBuilder(builder: (context, constraints) {
-        return PageViewStackedCards.random(
-          coverSize: Size(cardStackWidth, constraints.maxHeight),
-          centered: true,
-          child: Stack(
-            children: [
-              const Positioned.fill(
-                child: LoadingShimmer.defaultColor(),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Stack(
-                      children: [
-                        RotationTransition(
-                          turns: Tween(begin: 0.0, end: 1.0).animate(controller),
-                          child: SvgPicture.asset(AppVectorGraphics.sunRays),
-                        ),
-                        SvgPicture.asset(AppVectorGraphics.happySun),
-                      ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return PageViewStackedCards.random(
+            coverSize: Size(cardStackWidth, constraints.maxHeight),
+            centered: true,
+            child: Stack(
+              children: [
+                const Positioned.fill(
+                  child: LoadingShimmer.defaultColor(),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Stack(
+                        children: [
+                          RotationTransition(
+                            turns: Tween(begin: 0.0, end: 1.0).animate(controller),
+                            child: SvgPicture.asset(AppVectorGraphics.sunRays),
+                          ),
+                          SvgPicture.asset(AppVectorGraphics.happySun),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: AppDimens.l),
-                  Text(
-                    LocaleKeys.todaysTopics_justSec.tr(),
-                    style: AppTypography.h3bold,
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    subtitle ?? LocaleKeys.todaysTopics_loading.tr(),
-                    style: AppTypography.h3Normal,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      }),
+                    const SizedBox(height: AppDimens.l),
+                    Text(
+                      LocaleKeys.todaysTopics_justSec.tr(),
+                      style: AppTypography.h3bold,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      subtitle ?? LocaleKeys.todaysTopics_loading.tr(),
+                      style: AppTypography.h3Normal,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

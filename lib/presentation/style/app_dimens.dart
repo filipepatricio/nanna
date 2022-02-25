@@ -84,6 +84,12 @@ class AppDimens {
   /// 0.85
   static const topicCardWidthViewportFraction = 0.85;
 
+  // 0.9
+  static const relaxViewportFraction = 0.8;
+
+  // 400
+  static const relaxSectionHeight = 350.0;
+
   /// 42
   static const avatarSize = 32.0;
 
@@ -94,6 +100,11 @@ class AppDimens {
   static const topicViewSummaryCardHeight = 330.0;
 
   static const topicViewSummaryTextHeight = 300.0;
+
+  static double todaysTopicCardSectionHeight(BuildContext context) =>
+      min(MediaQuery.of(context).size.height * 0.85, 575);
+
+  static double todaysTopicCardStackHeight(BuildContext context) => min(MediaQuery.of(context).size.height * 0.7, 500);
 
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
       AppDimens.topicViewHeaderImageHeight(context) +

@@ -41,46 +41,55 @@ late String _nameOfCurrentVisualTest;
 late String _defaultGoldenFileName;
 bool _defaultGoldenFileNameUsed = false;
 
-void visualTest(Object widgetTypeOrDescription, VisualTestCallback callback,
-    {TestConfig testConfig = TestConfig.unitTesting, bool? skip}) {
-  testGoldens('$widgetTypeOrDescription (${testConfig.flavor.name})', (tester) async {
-    _selectedDevices = testConfig.devices.toList();
-    _nameOfCurrentVisualTest = widgetTypeOrDescription.toString();
-    kIsAppleDevice = true;
-    _defaultGoldenFileName = _nameOfCurrentVisualTest
-        .replaceAllMapped(RegExp('(?<=[a-z])[A-Z]'), (match) => '_${match.group(0)}')
-        .replaceAll(' ', '_')
-        .toLowerCase();
-    _matchGoldenFileCalled = false;
-    _defaultGoldenFileNameUsed = false;
-    final onError = FlutterError.onError;
-    FlutterError? overflowError;
-    FlutterError.onError = (details) {
-      final exception = details.exception;
-      if (exception is FlutterError && exception.toString().startsWith('A RenderFlex overflowed')) {
-        // We ignore the overflow error here (so that screenshots are recorded) and throw it later ...
-        overflowError = exception;
-      } else {
-        onError?.call(details);
+void visualTest(
+  Object widgetTypeOrDescription,
+  VisualTestCallback callback, {
+  TestConfig testConfig = TestConfig.unitTesting,
+  bool? skip,
+}) {
+  testGoldens(
+    '$widgetTypeOrDescription (${testConfig.flavor.name})',
+    (tester) async {
+      _selectedDevices = testConfig.devices.toList();
+      _nameOfCurrentVisualTest = widgetTypeOrDescription.toString();
+      kIsAppleDevice = true;
+      _defaultGoldenFileName = _nameOfCurrentVisualTest
+          .replaceAllMapped(RegExp('(?<=[a-z])[A-Z]'), (match) => '_${match.group(0)}')
+          .replaceAll(' ', '_')
+          .toLowerCase();
+      _matchGoldenFileCalled = false;
+      _defaultGoldenFileNameUsed = false;
+      final onError = FlutterError.onError;
+      FlutterError? overflowError;
+      FlutterError.onError = (details) {
+        final exception = details.exception;
+        if (exception is FlutterError && exception.toString().startsWith('A RenderFlex overflowed')) {
+          // We ignore the overflow error here (so that screenshots are recorded) and throw it later ...
+          overflowError = exception;
+        } else {
+          onError?.call(details);
+        }
+      };
+      try {
+        await callback(tester);
+        if (!_matchGoldenFileCalled) {
+          throw AssertionError('matchGoldenFile(...) was not called by the visual test');
+        }
+      } finally {
+        FlutterError.onError = onError;
+        await tester.binding.setSurfaceSize(null);
+        tester.binding.window.clearAllTestValues();
       }
-    };
-    try {
-      await callback(tester);
-      if (!_matchGoldenFileCalled) {
-        throw AssertionError('matchGoldenFile(...) was not called by the visual test');
+      if (overflowError != null) {
+        throw overflowError!;
       }
-    } finally {
-      FlutterError.onError = onError;
-      await tester.binding.setSurfaceSize(null);
-      tester.binding.window.clearAllTestValues();
-    }
-    if (overflowError != null) {
-      throw overflowError!;
-    }
-  }, tags: 'visual', skip: skip);
+    },
+    tags: 'visual',
+    skip: skip,
+  );
 }
 
-const _defaultInitialRoute = DashboardPageRoute();
+const _defaultInitialRoute = TabBarPageRoute();
 
 extension StartAppExtension on WidgetTester {
   Future<void> startApp({PageRouteInfo initialRoute = _defaultInitialRoute}) async {
@@ -104,7 +113,7 @@ extension StartAppExtension on WidgetTester {
 
     if (initialRoute != _defaultInitialRoute) {
       if (isTab) {
-        await mainRouter.navigate(DashboardPageRoute(children: [initialRoute]));
+        await mainRouter.navigate(TabBarPageRoute(children: [initialRoute]));
       } else {
         await mainRouter.navigate(initialRoute);
       }

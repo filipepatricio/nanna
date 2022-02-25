@@ -22,11 +22,14 @@ class Marquee extends HookWidget {
   Widget build(BuildContext context) {
     final scrollController = useScrollController(initialScrollOffset: -50.0);
 
-    useEffect(() {
-      if (!kIsTest) {
-        WidgetsBinding.instance?.addPostFrameCallback((_) => scroll(scrollController));
-      }
-    }, [scrollController]);
+    useEffect(
+      () {
+        if (!kIsTest) {
+          WidgetsBinding.instance?.addPostFrameCallback((_) => scroll(scrollController));
+        }
+      },
+      [scrollController],
+    );
 
     return SingleChildScrollView(
       scrollDirection: direction,

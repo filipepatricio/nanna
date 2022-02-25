@@ -30,13 +30,14 @@ class TopicSummarySection extends HookWidget {
     }
 
     final content = TopicSummaryTracker(
-        topic: topic,
-        summaryPageController: controller,
-        child: _SummaryCardPageView(
-          topicSummaryList: topic.topicSummaryList,
-          controller: controller,
-          summaryCardKey: summaryCardKey,
-        ));
+      topic: topic,
+      summaryPageController: controller,
+      child: _SummaryCardPageView(
+        topicSummaryList: topic.topicSummaryList,
+        controller: controller,
+        summaryCardKey: summaryCardKey,
+      ),
+    );
 
     return Container(
       width: double.infinity,
@@ -83,21 +84,22 @@ class _SummaryCardPageView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: AppDimens.topicViewSummaryTextHeight,
-        child: PageView.builder(
-          controller: controller,
-          scrollDirection: Axis.horizontal,
-          itemCount: topicSummaryList.length,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-              child: _SummaryCard(
-                markdownText: topicSummaryList[index].content,
-                summaryCardKey: index == 0 ? summaryCardKey : null,
-              ),
-            );
-          },
-        ));
+      height: AppDimens.topicViewSummaryTextHeight,
+      child: PageView.builder(
+        controller: controller,
+        scrollDirection: Axis.horizontal,
+        itemCount: topicSummaryList.length,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: _SummaryCard(
+              markdownText: topicSummaryList[index].content,
+              summaryCardKey: index == 0 ? summaryCardKey : null,
+            ),
+          );
+        },
+      ),
+    );
   }
 }
 

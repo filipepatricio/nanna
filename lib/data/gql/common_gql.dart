@@ -52,6 +52,8 @@ class CommonGQLModels {
       bio
       name
       areaOfExpertise
+      instagram
+      linkedin
       avatar {
         publicId
       }
@@ -86,6 +88,7 @@ class CommonGQLModels {
       sourceUrl
       slug
       id
+      url
       author
       title
       strippedTitle

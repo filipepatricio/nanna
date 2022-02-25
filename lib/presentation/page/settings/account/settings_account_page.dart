@@ -17,9 +17,12 @@ class SettingsAccountPage extends HookWidget {
     final cubit = useCubit<SettingsAccountCubit>();
     final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
 
-    useEffect(() {
-      cubit.initialize();
-    }, [cubit]);
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
 
     return Scaffold(
       appBar: AppBar(

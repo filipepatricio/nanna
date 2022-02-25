@@ -19,9 +19,12 @@ class AnimatedPointerDown extends HookWidget {
         .chain(CurveTween(curve: Curves.easeIn))
         .animate(animationController);
 
-    useEffect(() {
-      if (!kIsTest) animationController.repeat(reverse: true);
-    }, []);
+    useEffect(
+      () {
+        if (!kIsTest) animationController.repeat(reverse: true);
+      },
+      [],
+    );
 
     return ExpandTapWidget(
       tapPadding: const EdgeInsets.all(AppDimens.m),

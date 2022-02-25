@@ -28,6 +28,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
         return MediaItem.article(
           id: articleDTO.id,
           slug: articleDTO.slug,
+          url: articleDTO.url,
           title: articleDTO.title,
           strippedTitle: articleDTO.strippedTitle,
           timeToRead: articleDTO.timeToRead,
