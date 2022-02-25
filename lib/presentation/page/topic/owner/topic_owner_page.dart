@@ -35,9 +35,6 @@ class TopicOwnerPage extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  bool get hasSocialMediaLinks =>
-      owner is Expert && ((owner as Expert).instagram != null || (owner as Expert).linkedin != null);
-
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<TopicOwnerPageCubit>();
@@ -156,7 +153,7 @@ class TopicOwnerPage extends HookWidget {
                       orElse: () => const SizedBox(),
                     ),
                     const SizedBox(height: AppDimens.xxl),
-                    if (hasSocialMediaLinks) ...[
+                    if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
                       _SocialMediaLinks(
                         cubit: cubit,
                         owner: owner as Expert,

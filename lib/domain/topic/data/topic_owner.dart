@@ -36,4 +36,6 @@ class Expert extends TopicOwner {
   final String areaOfExpertise;
   final String? instagram;
   final String? linkedin;
+
+  bool get hasSocialMediaLinks => instagram != null || linkedin != null;
 }
