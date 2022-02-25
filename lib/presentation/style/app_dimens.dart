@@ -84,8 +84,11 @@ class AppDimens {
   /// 0.85
   static const topicCardWidthViewportFraction = 0.85;
 
-  // 0.3
-  static const relaxSectionViewportFraction = 0.5;
+  // 0.9
+  static const relaxViewportFraction = 0.8;
+
+  // 400
+  static const relaxSectionHeight = 350.0;
 
   /// 42
   static const avatarSize = 32.0;

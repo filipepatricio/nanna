@@ -147,7 +147,7 @@ class _IdleContent extends HookWidget {
     useEffect(() {
       final listener = () {
         lastPageAnimationProgressState.value =
-            calculateLastPageShownFactor(scrollController, AppDimens.topicCardWidthViewportFraction);
+            calculateLastPageShownFactor(scrollController, AppDimens.relaxViewportFraction);
       };
       scrollController.addListener(listener);
       return () => scrollController.removeListener(listener);
@@ -170,15 +170,17 @@ class _IdleContent extends HookWidget {
             final currentTopicIndex = index - 1;
             final currentTopic = currentBrief.topics[currentTopicIndex];
             return ViewVisibilityNotifier(
-                detectorKey: Key(currentTopic.id),
-                onVisible: () {
-                  todaysTopicsCubit.trackTopicPreviewed(
-                    currentTopic.id,
-                    currentTopicIndex + 1,
-                  );
-                },
-                borderFraction: 0.6,
-                child: Container(
+              detectorKey: Key(currentTopic.id),
+              onVisible: () {
+                todaysTopicsCubit.trackTopicPreviewed(
+                  currentTopic.id,
+                  currentTopicIndex + 1,
+                );
+              },
+              borderFraction: 0.6,
+              child: Column(
+                children: [
+                  Container(
                     width: MediaQuery.of(context).size.width,
                     height: cardStackHeight,
                     child: Row(
@@ -200,7 +202,12 @@ class _IdleContent extends HookWidget {
                           ),
                         )
                       ],
-                    )));
+                    ),
+                  ),
+                  const SizedBox(height: AppDimens.m),
+                ],
+              ),
+            );
           }
         },
         childCount: currentBrief.topics.length + 2,
@@ -239,7 +246,7 @@ class _RelaxedSection extends StatelessWidget {
       onVisible: onVisible,
       borderFraction: 0.6,
       child: Container(
-        height: MediaQuery.of(context).size.height * AppDimens.relaxSectionViewportFraction,
+        height: AppDimens.relaxSectionHeight,
         child: RelaxView(
           lastPageAnimationProgressState: lastPageAnimationProgressState,
           goodbyeHeadline: goodbyeHeadline,
