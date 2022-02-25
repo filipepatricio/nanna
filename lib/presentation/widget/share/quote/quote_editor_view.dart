@@ -12,7 +12,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:share_plus/share_plus.dart';
 
 const _bottomSheetRadius = 10.0;
 const _selectedBorderWidth = 2.0;
@@ -87,7 +86,10 @@ class QuoteEditorView extends HookWidget {
             text: tr(LocaleKeys.common_shareImage),
             onTap: () {
               AutoRouter.of(context).pop();
-              cubit.share(article, quote);
+              cubit.shareSticker(
+                article,
+                quote,
+              );
             },
           ),
           const SizedBox(height: AppDimens.m),
@@ -96,7 +98,7 @@ class QuoteEditorView extends HookWidget {
             text: tr(LocaleKeys.common_shareText),
             onTap: () {
               AutoRouter.of(context).pop();
-              Share.share(quote);
+              cubit.shareText(article, quote);
             },
           ),
         ],

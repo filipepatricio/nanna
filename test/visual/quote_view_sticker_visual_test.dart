@@ -27,6 +27,7 @@ void main() {
   final articleMock = MediaItem.article(
     id: 'id',
     slug: 'slug',
+    url: '',
     title: 'How golden tests changed my life',
     strippedTitle: 'How golden tests changed my life',
     type: ArticleType.premium,
