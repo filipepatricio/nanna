@@ -37,4 +37,22 @@ class AnalyticsEvent with _$AnalyticsEvent {
 
   factory AnalyticsEvent.pushNotificationTapped(Map<String, dynamic> meta) =>
       AnalyticsEvent._('PushNotificationTapped', meta);
+
+  factory AnalyticsEvent.imageArticleQuoteShared(String articleId, String quote) => AnalyticsEvent._(
+        'ArticleQuoteShared',
+        {
+          'article_id': articleId,
+          'quote': quote,
+          'type': 'image',
+        },
+      );
+
+  factory AnalyticsEvent.textArticleQuoteShared(String articleId, String quote) => AnalyticsEvent._(
+        'ArticleQuoteShared',
+        {
+          'article_id': articleId,
+          'quote': quote,
+          'type': 'text',
+        },
+      );
 }

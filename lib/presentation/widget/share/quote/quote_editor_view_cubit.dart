@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/generated/local_keys.g.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view_state.dart';
@@ -11,7 +13,11 @@ import 'package:share_plus/share_plus.dart';
 
 @injectable
 class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
-  QuoteEditorViewCubit() : super(QuoteEditorViewState.initial());
+  QuoteEditorViewCubit(
+    this._trackActivityUseCase,
+  ) : super(QuoteEditorViewState.initial());
+
+  final TrackActivityUseCase _trackActivityUseCase;
 
   void select(int index) {
     final updatedState = state.copyWith(selectedIndex: index);
@@ -40,16 +46,32 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
       'quote_${DateTime.now().millisecondsSinceEpoch}.png',
       shareText,
     );
+
+    _trackActivityUseCase.trackEvent(
+      AnalyticsEvent.imageArticleQuoteShared(
+        article.id,
+        fixedQuote,
+      ),
+    );
   }
 
   Future<void> shareText(MediaItemArticle article, String quote) async {
+    final fixedQuote = _getFixedQuote(quote);
+
     await Share.share(
       tr(
         LocaleKeys.shareQuote_messageWithQuote,
         args: [
-          '‘‘${_getFixedQuote(quote)}’’',
+          '‘‘$fixedQuote’’',
           article.url,
         ],
+      ),
+    );
+
+    _trackActivityUseCase.trackEvent(
+      AnalyticsEvent.textArticleQuoteShared(
+        article.id,
+        fixedQuote,
       ),
     );
   }
