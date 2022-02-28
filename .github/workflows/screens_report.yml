@@ -50,9 +50,8 @@ jobs:
 
       - name: Upload screens report
         uses: actions/upload-artifact@v2
-        if: failure()
         with:
           name: screens_report
           path: test/visual/screens_report/
           if-no-files-found: ignore
-          retention-days: 7
+          retention-days: 1
