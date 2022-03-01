@@ -17,6 +17,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
@@ -67,7 +68,7 @@ class TodaysTopicsPage extends HookWidget {
               child: NoScrollGlow(
                 child: CustomScrollView(
                   controller: scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                  physics: AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
                   slivers: [
                     ScrollableSliverAppBar(
                       scrollController: scrollController,

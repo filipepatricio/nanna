@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
@@ -218,8 +219,10 @@ class _TopicIdleView extends HookWidget {
             ),
             NoScrollGlow(
               child: CustomScrollView(
-                physics: const NeverScrollableScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(
+                  parent: getPlatformScrollPhysics(
+                    const AlwaysScrollableScrollPhysics(),
+                  ),
                 ),
                 controller: scrollController,
                 slivers: [
