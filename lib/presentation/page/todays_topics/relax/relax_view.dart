@@ -42,6 +42,7 @@ class RelaxView extends HookWidget {
         );
       },
       child: SizedBox(
+        height: AppDimens.todaysTopicCardStackHeight(context),
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
