@@ -81,7 +81,6 @@ class TodaysTopicsPage extends HookWidget {
                         scrollController: scrollController,
                         cardStackWidth: cardStackWidth,
                         cardStackHeight: cardStackHeight,
-                        cardSectionMaxHeight: cardSectionMaxHeight,
                       ),
                       error: (_) => SliverToBoxAdapter(
                         child: SizedBox(
@@ -117,7 +116,6 @@ class _IdleContent extends HookWidget {
   final ScrollController scrollController;
   final double cardStackWidth;
   final double cardStackHeight;
-  final double cardSectionMaxHeight;
 
   const _IdleContent({
     required this.todaysTopicsCubit,
@@ -125,7 +123,6 @@ class _IdleContent extends HookWidget {
     required this.scrollController,
     required this.cardStackWidth,
     required this.cardStackHeight,
-    required this.cardSectionMaxHeight,
     Key? key,
   }) : super(key: key);
 
@@ -148,8 +145,10 @@ class _IdleContent extends HookWidget {
     useEffect(
       () {
         final listener = () {
-          lastPageAnimationProgressState.value =
-              calculateLastPageShownFactor(scrollController, AppDimens.relaxViewportFraction);
+          lastPageAnimationProgressState.value = calculateLastPageShownFactor(
+            scrollController,
+            AppDimens.todaysTopicCardStackHeight(context),
+          );
         };
         scrollController.addListener(listener);
         return () => scrollController.removeListener(listener);
@@ -165,7 +164,7 @@ class _IdleContent extends HookWidget {
               greeting: currentBrief.greeting,
             );
           } else if (index == currentBrief.topics.length + 1) {
-            return _RelaxedSection(
+            return _RelaxSection(
               onVisible: todaysTopicsCubit.trackRelaxPage,
               goodbyeHeadline: currentBrief.goodbye,
               lastPageAnimationProgressState: lastPageAnimationProgressState,
@@ -175,12 +174,7 @@ class _IdleContent extends HookWidget {
             final currentTopic = currentBrief.topics[currentTopicIndex];
             return ViewVisibilityNotifier(
               detectorKey: Key(currentTopic.id),
-              onVisible: () {
-                todaysTopicsCubit.trackTopicPreviewed(
-                  currentTopic.id,
-                  currentTopicIndex + 1,
-                );
-              },
+              onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, currentTopicIndex + 1),
               borderFraction: 0.6,
               child: Column(
                 children: [
@@ -230,15 +224,15 @@ class _IdleContent extends HookWidget {
   }
 }
 
-class _RelaxedSection extends StatelessWidget {
-  const _RelaxedSection({
+class _RelaxSection extends StatelessWidget {
+  const _RelaxSection({
     required this.onVisible,
     required this.lastPageAnimationProgressState,
     required this.goodbyeHeadline,
     Key? key,
   }) : super(key: key);
 
-  static const String relaxedSectionKey = 'kRelaxedSectionKey';
+  static const String relaxSectionKey = 'kRelaxSectionKey';
   final VoidCallback onVisible;
   final Headline goodbyeHeadline;
   final ValueNotifier<double> lastPageAnimationProgressState;
@@ -246,15 +240,12 @@ class _RelaxedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewVisibilityNotifier(
-      detectorKey: const Key(relaxedSectionKey),
+      detectorKey: const Key(relaxSectionKey),
       onVisible: onVisible,
       borderFraction: 0.6,
-      child: Container(
-        height: AppDimens.relaxSectionHeight,
-        child: RelaxView(
-          lastPageAnimationProgressState: lastPageAnimationProgressState,
-          goodbyeHeadline: goodbyeHeadline,
-        ),
+      child: RelaxView(
+        lastPageAnimationProgressState: lastPageAnimationProgressState,
+        goodbyeHeadline: goodbyeHeadline,
       ),
     );
   }
