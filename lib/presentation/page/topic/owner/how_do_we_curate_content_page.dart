@@ -8,8 +8,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const appBarHeight = kToolbarHeight + AppDimens.s;
-
 class HowDoWeCurateContentPage extends HookWidget {
   const HowDoWeCurateContentPage({Key? key}) : super(key: key);
 
@@ -64,7 +62,7 @@ class _ActionsBar extends HookWidget {
     return SliverAppBar(
       pinned: true,
       automaticallyImplyLeading: false,
-      toolbarHeight: appBarHeight,
+      toolbarHeight: AppDimens.appBarHeight,
       elevation: 0,
       backgroundColor: AppColors.background,
       leading: Padding(
