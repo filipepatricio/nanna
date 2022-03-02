@@ -44,7 +44,7 @@ class ScrollableSliverAppBar extends HookWidget {
       pinned: true,
       centerTitle: true,
       elevation: 3.0,
-      expandedHeight: kToolbarHeight + AppDimens.s,
+      expandedHeight: AppDimens.appBarHeight,
       actions: actions,
       title: showCenterTitle
           ? Text(

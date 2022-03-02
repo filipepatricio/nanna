@@ -1,16 +1,16 @@
 import 'dart:math';
 
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:flutter/material.dart';
 
-double calculateLastPageShownFactor(ScrollController controller, double viewportFraction) {
-  final realViewportSize = controller.position.viewportDimension * viewportFraction;
-  final viewportCount = (controller.position.maxScrollExtent / realViewportSize).round();
-  final position = controller.position.pixels;
+double calculateLastPageShownFactor(ScrollController controller, double listItemsHeight) {
+  final listItemsCount = (controller.position.maxScrollExtent / listItemsHeight).round();
+  final position = controller.position.pixels + AppDimens.appBarHeight;
+  final topicCardsListHeight = (listItemsCount - 1) * listItemsHeight;
 
-  final size = (viewportCount - 1) * realViewportSize;
-  if (position > size) {
-    final actual = (size - position).abs();
-    final factor = actual / realViewportSize;
+  if (position > topicCardsListHeight) {
+    final actual = (topicCardsListHeight - position).abs();
+    final factor = actual / listItemsHeight;
     return min(factor, 1.0);
   } else {
     return 0.0;
