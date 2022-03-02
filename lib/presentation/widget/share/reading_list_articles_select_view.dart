@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_cubit.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dart';
@@ -457,11 +458,11 @@ class _ArticleItemBody extends HookWidget {
               height: AppDimens.m,
             ),
           const SizedBox(height: AppDimens.s),
-          Text(
-            header.title,
-            style: AppTypography.subH2BoldSmall,
-            overflow: TextOverflow.ellipsis,
+          InformedMarkdownBody(
+            markdown: header.title,
+            baseTextStyle: AppTypography.subH2BoldSmall,
             maxLines: 4,
+            highlightColor: AppColors.transparent,
           ),
           const Spacer(),
           if (timeToRead != null) ...[
