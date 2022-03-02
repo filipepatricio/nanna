@@ -68,6 +68,17 @@
             ]
         },
         {
+            "name": "prod-profile-sksl-warmup",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor", "prod",
+                "--dart-define=env=prod",
+                "--cache-sksl"
+            ]
+        },
+        {
             "name": "Golden",
             "request": "launch",
             "type": "dart",
