@@ -88,7 +88,7 @@ class BottomBouncingScrollPhysics extends ScrollPhysics {
   // ClampingScrollPhysics so we require a more deliberate input gesture
   // to trigger a fling.
   @override
-  double get minFlingVelocity => kMinFlingVelocity * 2.0;
+  double get minFlingVelocity => kMinFlingVelocity * 1.25;
 
   // Methodology:
   // 1- Use https://github.com/flutter/platform_tests/tree/master/scroll_overlay to test with
@@ -111,5 +111,5 @@ class BottomBouncingScrollPhysics extends ScrollPhysics {
   // Eyeballed from observation to counter the effect of an unintended scroll
   // from the natural motion of lifting the finger after a scroll.
   @override
-  double get dragStartDistanceMotionThreshold => 3.5;
+  double get dragStartDistanceMotionThreshold => 2.75;
 }
