@@ -35,9 +35,10 @@ class TabBar extends HookWidget {
       type: BottomNavigationBarType.fixed,
       onTap: (index) {
         if (index == tabsRouter.activeIndex) {
-          cubit.tabPressed(MainTabExtension.fromIndex(index));
           if (tabsRouter.canPopSelfOrChildren) {
             tabsRouter.popTop();
+          } else {
+            cubit.tabPressed(MainTabExtension.fromIndex(index));
           }
         }
         tabsRouter.setActiveIndex(index);

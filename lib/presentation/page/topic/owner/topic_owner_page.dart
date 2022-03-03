@@ -15,6 +15,7 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
@@ -74,7 +75,7 @@ class TopicOwnerPage extends HookWidget {
     return Material(
       child: NoScrollGlow(
         child: CustomScrollView(
-          physics: const ClampingScrollPhysics(),
+          physics: getPlatformScrollPhysics(),
           shrinkWrap: true,
           controller: scrollController,
           slivers: [

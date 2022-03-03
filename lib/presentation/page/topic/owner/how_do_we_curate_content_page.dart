@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,7 +17,7 @@ class HowDoWeCurateContentPage extends HookWidget {
     return Scaffold(
       body: NoScrollGlow(
         child: CustomScrollView(
-          physics: const ClampingScrollPhysics(),
+          physics: getPlatformScrollPhysics(),
           shrinkWrap: true,
           slivers: [
             const _ActionsBar(),
