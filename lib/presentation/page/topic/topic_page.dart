@@ -19,8 +19,8 @@ import 'package:better_informed_mobile/presentation/widget/general_error_view.da
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -124,7 +124,7 @@ class _TopicIdleView extends HookWidget {
 
   void _scrollToSummary(BuildContext context, ScrollController scrollController) {
     scrollController.animateTo(
-      AppDimens.topicViewHeaderImageHeight(context) - kToolbarHeight,
+      AppDimens.topicViewHeaderImageHeight(context) - kToolbarHeight - MediaQuery.of(context).viewPadding.bottom,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOutCubic,
     );
@@ -136,6 +136,38 @@ class _TopicIdleView extends HookWidget {
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOutCubic,
     );
+  }
+
+  bool _updateScrollPosition(ScrollNotification scrollInfo, ValueNotifier<double> scrollPositionNotifier) {
+    if (scrollInfo.metrics.axis == Axis.vertical &&
+        scrollInfo.depth == _mainScrollDepth &&
+        scrollPositionNotifier.value != scrollInfo.metrics.pixels) {
+      scrollPositionNotifier.value = scrollInfo.metrics.pixels;
+    }
+    return false;
+  }
+
+  void _snapPage(BuildContext context, ScrollController scrollController) {
+    final maxHeight = AppDimens.topicViewHeaderImageHeight(context) - MediaQuery.of(context).viewPadding.bottom;
+    final minHeight = kToolbarHeight + MediaQuery.of(context).viewInsets.top;
+
+    final position = scrollController.position.pixels;
+    final scrollDistance = maxHeight - minHeight;
+
+    /// ScrollDirection.forward = scrolling from the bottom / ScrollDirection.reverse = scrolling from the top
+    final thresholdFactor = scrollController.position.userScrollDirection == ScrollDirection.forward ? 0.9 : 0.1;
+
+    if (position > 0 && position < scrollDistance) {
+      final snapOffset = position / scrollDistance > thresholdFactor ? scrollDistance : 0.0;
+
+      Future.microtask(
+        () => scrollController.animateTo(
+          snapOffset,
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeIn,
+        ),
+      );
+    }
   }
 
   @override
@@ -168,87 +200,66 @@ class _TopicIdleView extends HookWidget {
     });
 
     return RawGestureDetector(
-      gestures: <Type, GestureRecognizerFactory>{
-        VerticalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
-          () => VerticalDragGestureRecognizer(),
-          (VerticalDragGestureRecognizer instance) {
-            instance
-              ..onStart = topicGestureManager.handleDragStart
-              ..onUpdate = topicGestureManager.handleDragUpdate
-              ..onEnd = topicGestureManager.handleDragEnd
-              ..onCancel = topicGestureManager.handleDragCancel;
-          },
-        ),
-        TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-          () => TapGestureRecognizer(),
-          (TapGestureRecognizer instance) {
-            instance.onTapDown = (_) {
-              topicGestureManager.resetScrollVelocity();
-            };
-          },
-        ),
-      },
+      gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
+        [topicGestureManager.dragGestureRecognizer, topicGestureManager.tapGestureRecognizer],
+      ),
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo.metrics.axis == Axis.vertical &&
-              scrollInfo.depth == _mainScrollDepth &&
-              scrollPositionNotifier.value != scrollInfo.metrics.pixels) {
-            scrollPositionNotifier.value = scrollInfo.metrics.pixels;
-          }
-          return false;
-        },
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Opacity(
-                opacity: .6,
-                child: CloudinaryProgressiveImage(
-                  width: backgroundImageWidth,
-                  height: backgroundImageHeight,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                  testImage: AppRasterGraphics.testReadingListCoverImage,
-                  cloudinaryTransformation: cloudinaryProvider
-                      .withPublicId(topic.coverImage.publicId)
-                      .transform()
-                      .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
-                      .fit(),
+        onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
+        child: Listener(
+          onPointerUp: (_) => _snapPage(context, scrollController),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Opacity(
+                  opacity: .6,
+                  child: CloudinaryProgressiveImage(
+                    width: backgroundImageWidth,
+                    height: backgroundImageHeight,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    testImage: AppRasterGraphics.testReadingListCoverImage,
+                    cloudinaryTransformation: cloudinaryProvider
+                        .withPublicId(topic.coverImage.publicId)
+                        .transform()
+                        .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
+                        .fit(),
+                  ),
                 ),
               ),
-            ),
-            NoScrollGlow(
-              child: CustomScrollView(
-                physics: NeverScrollableScrollPhysics(
-                  parent: getPlatformScrollPhysics(
-                    const AlwaysScrollableScrollPhysics(),
-                  ),
-                ),
-                controller: scrollController,
-                slivers: [
-                  TopicAppBar(
-                    topic: topic,
-                    scrollPositionNotifier: scrollPositionNotifier,
-                    onArticlesLabelTap: () => _scrollToArticles(context, scrollController),
-                    onArrowTap: () => _scrollToSummary(context, scrollController),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        TopicView(
-                          topic: topic,
-                          cubit: cubit,
-                          summaryCardKey: cubit.summaryCardKey,
-                          mediaItemKey: cubit.mediaItemKey,
-                          scrollController: scrollController,
-                        ),
-                      ],
+              NoScrollGlow(
+                child: CustomScrollView(
+                  physics: NeverScrollableScrollPhysics(
+                    parent: getPlatformScrollPhysics(
+                      const AlwaysScrollableScrollPhysics(),
                     ),
-                  )
-                ],
+                  ),
+                  controller: scrollController,
+                  slivers: [
+                    TopicAppBar(
+                      topic: topic,
+                      scrollPositionNotifier: scrollPositionNotifier,
+                      onArticlesLabelTap: () => _scrollToArticles(context, scrollController),
+                      onArrowTap: () => _scrollToSummary(context, scrollController),
+                    ),
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          TopicView(
+                            topic: topic,
+                            cubit: cubit,
+                            summaryCardKey: cubit.summaryCardKey,
+                            mediaItemKey: cubit.mediaItemKey,
+                            scrollController: scrollController,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

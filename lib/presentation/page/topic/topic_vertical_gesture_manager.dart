@@ -13,6 +13,30 @@ class TopicVerticalDragManager {
     required this.generalViewController,
   });
 
+  MapEntry<Type, GestureRecognizerFactory<GestureRecognizer>> get tapGestureRecognizer => MapEntry(
+        TapGestureRecognizer,
+        GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+          () => TapGestureRecognizer(),
+          (TapGestureRecognizer instance) {
+            instance.onTapDown = (_) => resetScrollVelocity();
+          },
+        ),
+      );
+
+  MapEntry<Type, GestureRecognizerFactory<GestureRecognizer>> get dragGestureRecognizer => MapEntry(
+        VerticalDragGestureRecognizer,
+        GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
+          () => VerticalDragGestureRecognizer(),
+          (VerticalDragGestureRecognizer instance) {
+            instance
+              ..onStart = handleDragStart
+              ..onUpdate = handleDragUpdate
+              ..onEnd = handleDragEnd
+              ..onCancel = handleDragCancel;
+          },
+        ),
+      );
+
   void handleDragStart(DragStartDetails details) {
     _activeController = generalViewController;
     _drag = generalViewController.position.drag(details, disposeDrag);
