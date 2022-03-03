@@ -18,6 +18,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
@@ -76,7 +77,7 @@ class ExplorePage extends HookWidget {
                     physics: state.maybeMap(
                       initialLoading: (_) => const NeverScrollableScrollPhysics(),
                       error: (_) => const NeverScrollableScrollPhysics(),
-                      orElse: () => const ClampingScrollPhysics(),
+                      orElse: () => getPlatformScrollPhysics(),
                     ),
                     slivers: [
                       ScrollableSliverAppBar(
