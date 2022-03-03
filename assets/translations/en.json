@@ -171,7 +171,19 @@
     "feedbackSubject": "Feedback on Informed App",
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
     "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
-    "emailCopied": "Successfully copied email to your clipboard!"
+    "emailCopied": "Successfully copied email to your clipboard!",
+    "filter": {
+      "all": "All",
+      "topics": "Topics",
+      "articles": "Articles"
+    },
+    "emptyPage": {
+      "title": "Nothing here, yet!\n",
+      "noTopics": "Looks like there aren’t any topics in this section of your Profile",
+      "noArticles": "Looks like there aren’t any articles in this section of your Profile",
+      "topicAction": "Go to Today’s Topics",
+      "articleAction": "Go to Explore"
+    }
   },
   "shareTopic": {
     "title": "Select the articles you want to share related to the topic",
@@ -209,5 +221,9 @@
     "usage": "{} of {} invites have been used",
     "shareText": "Hey, here is my special code {} to skip the line and use informed right away! {}",
     "codeCopied": "Successfuly copied code to your clipboard!"
+  },
+  "bookmark": {
+    "bookmarkSuccess": "👍  Saved to your Profile",
+    "unbookmarkSuccess": "✋ Removed from your Profile"
   }
 }

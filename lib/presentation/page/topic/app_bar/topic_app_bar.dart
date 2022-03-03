@@ -5,8 +5,10 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/marquee.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -18,6 +20,7 @@ class TopicAppBar extends HookWidget {
   final VoidCallback onArticlesLabelTap;
   final VoidCallback onArrowTap;
   final ValueNotifier<bool> isShowingTutorialToast;
+  final SnackbarController snackbarController;
 
   const TopicAppBar({
     required this.topic,
@@ -25,6 +28,7 @@ class TopicAppBar extends HookWidget {
     required this.scrollPositionNotifier,
     required this.onArticlesLabelTap,
     required this.onArrowTap,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
@@ -100,6 +104,11 @@ class TopicAppBar extends HookWidget {
               ),
       ),
       actions: [
+        BookmarkButton.topic(
+          topic: topic,
+          mode: isExpanded.value ? BookmarkButtonMode.image : BookmarkButtonMode.color,
+          snackbarController: snackbarController,
+        ),
         IconButton(
           onPressed: () => shareReadingList(context, topic),
           padding: const EdgeInsets.only(right: AppDimens.s),

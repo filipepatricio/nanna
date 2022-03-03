@@ -121,6 +121,7 @@ class MockGraphqlResponses {
   static const topic = '''
   {
     "id": "1e55abe0-d711-44b4-a37c-7e1a279b439a",
+    "slug": "lorem-ipsum-slug",
     "title": "Lorem **ipsum dolor** sit amet, consectetur adipiscing elit lorem dolor",
     "strippedTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem dolor",
     "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",

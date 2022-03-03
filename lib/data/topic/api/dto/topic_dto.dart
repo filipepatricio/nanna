@@ -10,6 +10,7 @@ part 'topic_dto.g.dart';
 @JsonSerializable()
 class TopicDTO {
   final String id;
+  final String slug;
   final String title;
   final String strippedTitle;
   final String introduction;
@@ -24,6 +25,7 @@ class TopicDTO {
 
   TopicDTO(
     this.id,
+    this.slug,
     this.title,
     this.strippedTitle,
     this.introduction,

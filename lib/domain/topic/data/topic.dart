@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
 
 class Topic {
   final String id;
+  final String slug;
   final String title;
   final String strippedTitle;
   final String introduction;
@@ -23,6 +24,7 @@ class Topic {
 
   Topic({
     required this.id,
+    required this.slug,
     required this.title,
     required this.strippedTitle,
     required this.introduction,
