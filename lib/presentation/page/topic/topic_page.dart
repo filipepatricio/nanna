@@ -163,8 +163,8 @@ class _TopicIdleView extends HookWidget {
       Future.microtask(
         () => scrollController.animateTo(
           snapOffset,
-          duration: const Duration(milliseconds: 150),
-          curve: Curves.easeIn,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.linearToEaseOut,
         ),
       );
     }
