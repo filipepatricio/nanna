@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/push_notification/incoming_push/dto/
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'incoming_push_action_dto.freezed.dart';
+
 part 'incoming_push_action_dto.g.dart';
 
 @Freezed(

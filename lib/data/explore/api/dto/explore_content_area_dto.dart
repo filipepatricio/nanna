@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'explore_content_area_dto.freezed.dart';
+
 part 'explore_content_area_dto.g.dart';
 
 const _unknownKey = 'unknown';

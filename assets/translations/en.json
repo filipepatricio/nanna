@@ -182,8 +182,6 @@
   "shareQuote": {
     "readOn": "Read on ",
     "title": "Article - {}",
-    "messageWithQuote": "Hey, I am currently reading this article via informed and this quote really struck me. Check it out.\n\n{}\n\n{}",
-    "message": "Hey, I am currently reading this article via informed and this quote really struck me. Check it out.\n\n{}",
     "asImage": "Share quote as image",
     "asText": "Share quote as text",
     "asStory": "Share quotes as story"
