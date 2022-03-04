@@ -1,6 +1,11 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/share/data/share_app.dart';
+import 'package:better_informed_mobile/domain/share/use_case/get_shareable_app_list_use_case.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_image_use_case.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_text_use_case.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_using_instagram_use_case.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_background_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view_state.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_foreground_view.dart';
@@ -8,16 +13,22 @@ import 'package:better_informed_mobile/presentation/widget/share/share_util.dart
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:social_share/social_share.dart';
 
 @injectable
 class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   QuoteEditorViewCubit(
     this._trackActivityUseCase,
+    this._getShareableAppListUseCase,
+    this._shareTextUseCase,
+    this._shareImageUseCase,
+    this._shareUsingInstagramUseCase,
   ) : super(QuoteEditorViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
+  final GetShareableAppListUseCase _getShareableAppListUseCase;
+  final ShareTextUseCase _shareTextUseCase;
+  final ShareImageUseCase _shareImageUseCase;
+  final ShareUsingInstagramUseCase _shareUsingInstagramUseCase;
 
   Future<void> initialize() async {
     final isInstagramAvailable = await _isInstagramAvailable();
@@ -46,12 +57,12 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
         quoteVariantData: state.variants[state.selectedIndex],
       ),
     );
-
-    await shareImage(
+    final image = await generateShareImage(
       generator,
       'quote_${DateTime.now().millisecondsSinceEpoch}.png',
-      shareText,
     );
+
+    await _shareImageUseCase(image, shareText);
 
     _trackActivityUseCase.trackEvent(
       AnalyticsEvent.imageArticleQuoteShared(
@@ -64,7 +75,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   Future<void> shareText(MediaItemArticle article, String quote) async {
     final fixedQuote = _getFixedQuote(quote);
 
-    await Share.share('‘‘$fixedQuote’’\n\n${article.url}');
+    await _shareTextUseCase('‘‘$fixedQuote’’\n\n${article.url}');
 
     _trackActivityUseCase.trackEvent(
       AnalyticsEvent.textArticleQuoteShared(
@@ -99,12 +110,10 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
       'quote_${DateTime.now().millisecondsSinceEpoch}_foreground.png',
     );
 
-    await SocialShare.shareInstagramStory(
-      foregroundImage.path,
-      backgroundImagePath: backgroundImage.path,
-      attributionURL: article.url,
-      backgroundBottomColor: '',
-      backgroundTopColor: '',
+    await _shareUsingInstagramUseCase(
+      foregroundImage,
+      backgroundImage,
+      article.url,
     );
   }
 
@@ -119,7 +128,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   }
 
   Future<bool> _isInstagramAvailable() async {
-    final apps = await SocialShare.checkInstalledAppsForShare();
-    return apps != null && apps['instagram'] == true;
+    final apps = await _getShareableAppListUseCase();
+    return apps.contains(ShareApp.instagram);
   }
 }
