@@ -8,21 +8,11 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_foreground_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_variant_data.dart';
-import 'package:better_informed_mobile/presentation/widget/share/quote/quote_background_view.dart';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
 
+import '../flutter_test_config.dart';
 import 'visual_test_utils.dart';
-
-final _stickerDevice = TestConfig.unitTesting.withDevices(
-  const [
-    Device(
-      size: Size(720, 1280),
-      name: 'sticker_720x1280',
-    ),
-  ],
-);
 
 void main() {
   final articleMock = MediaItem.article(
@@ -56,7 +46,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_view_sticker_linen');
+      await tester.matchGoldenFile('quote_foreground_view_linen');
 
       final context = tester.element(find.byType(Container).first);
       final router = AutoRouter.of(context);
@@ -73,7 +63,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_view_sticker_rose');
+      await tester.matchGoldenFile('quote_foreground_view_rose');
 
       unawaited(
         router.replace(
@@ -87,7 +77,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_view_sticker_green');
+      await tester.matchGoldenFile('quote_foreground_view_green');
 
       unawaited(
         router.replace(
@@ -101,7 +91,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_view_sticker_peach');
+      await tester.matchGoldenFile('quote_foreground_view_peach');
 
       unawaited(
         router.replace(
@@ -115,8 +105,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_view_sticker_charcoal');
+      await tester.matchGoldenFile('quote_foreground_view_charcoal');
     },
-    testConfig: _stickerDevice,
+    testConfig: stickerDevice,
   );
 }

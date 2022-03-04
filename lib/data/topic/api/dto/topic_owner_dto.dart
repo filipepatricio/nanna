@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'topic_owner_dto.freezed.dart';
-
 part 'topic_owner_dto.g.dart';
 
 @Freezed(unionKey: '__typename')

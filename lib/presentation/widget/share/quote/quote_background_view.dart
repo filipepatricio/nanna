@@ -73,6 +73,7 @@ class QuoteBackgroundView extends HookWidget implements BaseShareCompletable {
     );
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: ImageLoadResolver(
         completer: viewReadyCompleter,
         images: [articleImage],
