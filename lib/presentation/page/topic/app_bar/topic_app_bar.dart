@@ -30,6 +30,7 @@ class TopicAppBar extends HookWidget {
   Widget build(BuildContext context) {
     final isExpanded = useState(true);
     final hasScrolled = useState(false);
+    final isMounted = useIsMounted();
 
     final title = Text(
       topic.strippedTitle,
@@ -88,7 +89,9 @@ class TopicAppBar extends HookWidget {
             ? title
             : Marquee(
                 animationDuration: const Duration(seconds: 3),
-                onDone: () => hasScrolled.value = true,
+                onDone: () {
+                  if (isMounted()) hasScrolled.value = true;
+                },
                 child: title,
               ),
       ),

@@ -224,6 +224,7 @@ class MockGraphqlResponses {
       "type": "PREMIUM",
       "timeToRead": 10,
       "publisher": $_publisher,
+      "url": "informed.so/article",
       "sourceUrl": "https://www.dw.com/en/denmarks-role-in-the-nsa-spying-scandal-dws-emmanuelle-chaze/av-57723050",
       "publicationDate": "2021-12-03",
       "image": {
@@ -250,6 +251,7 @@ class MockGraphqlResponses {
         "type": "FREE",
         "timeToRead": 5,
         "publisher": $_publisher,
+        "url": "informed.so/article",
         "sourceUrl": "https://www.theguardian.com/world/interactive/2013/nov/01/snowden-nsa-files-surveillance-revelations-decoded#section/1",
         "publicationDate": "2021-12-13",
         "image": {
@@ -281,6 +283,7 @@ class MockGraphqlResponses {
         "publicationDate": "2021-12-13",
         "publisher": $_publisher,
         "slug": "2021-12-13-nsa-files-decoded",
+        "url": "informed.so/article",
         "sourceUrl": "https://www.theguardian.com/world/interactive/2013/nov/01/snowden-nsa-files-surveillance-revelations-decoded#section/1",
         "strippedTitle": "NSA files: Decoded",
         "timeToRead": 5,

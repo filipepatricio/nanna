@@ -17,7 +17,7 @@ class TopicLoadingView extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.xl),
           const LoadingShimmer.defaultColor(
-            height: AppDimens.topicViewSummaryCardHeight + AppDimens.xc,
+            height: AppDimens.topicViewSummaryTextHeight + AppDimens.xc,
             padding: EdgeInsets.only(left: AppDimens.l, top: AppDimens.l),
           ),
         ],

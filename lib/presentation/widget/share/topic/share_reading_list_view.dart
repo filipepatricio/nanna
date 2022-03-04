@@ -318,10 +318,11 @@ class _ArticleItem extends StatelessWidget {
             const SizedBox(height: _publisherLogoSize),
           const SizedBox(height: AppDimens.m),
           Expanded(
-            child: Text(
-              article.title,
-              style: AppTypography.h5BoldSmall.copyWith(height: 1.15),
+            child: InformedMarkdownBody(
+              markdown: article.title,
+              baseTextStyle: AppTypography.h5BoldSmall.copyWith(height: 1.15),
               maxLines: 5,
+              highlightColor: AppColors.transparent,
             ),
           ),
           if (timeToRead != null) ...[
