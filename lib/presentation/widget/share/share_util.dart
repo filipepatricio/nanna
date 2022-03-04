@@ -6,6 +6,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 Future<void> shareImage(ShareViewImageGenerator generator, String fileName, String shareText) async {
+  final file = await generateShareImage(generator, fileName);
+  await Share.shareFiles(
+    [file.path],
+    text: shareText,
+  );
+}
+
+Future<File> generateShareImage(ShareViewImageGenerator generator, String fileName) async {
   final imageBytes = await generator.generate();
 
   if (imageBytes != null) {
@@ -14,9 +22,8 @@ Future<void> shareImage(ShareViewImageGenerator generator, String fileName, Stri
     final file = File(shareImagePath);
     await file.writeAsBytes(imageBytes.buffer.asInt8List());
 
-    await Share.shareFiles(
-      [file.path],
-      text: shareText,
-    );
+    return file;
   }
+
+  throw Exception('Share image file generation failed.');
 }

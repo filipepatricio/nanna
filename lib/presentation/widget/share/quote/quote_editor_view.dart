@@ -62,6 +62,13 @@ class QuoteEditorView extends HookWidget {
     final cubit = useCubit<QuoteEditorViewCubit>();
     final state = useCubitBuilder(cubit);
 
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppDimens.l),
       child: Column(
@@ -83,7 +90,7 @@ class QuoteEditorView extends HookWidget {
           const SizedBox(height: AppDimens.l),
           _Button(
             svg: AppVectorGraphics.shareImage,
-            text: tr(LocaleKeys.common_shareImage),
+            text: tr(LocaleKeys.shareQuote_asImage),
             onTap: () {
               AutoRouter.of(context).pop();
               cubit.shareSticker(
@@ -95,12 +102,23 @@ class QuoteEditorView extends HookWidget {
           const SizedBox(height: AppDimens.m),
           _Button(
             svg: AppVectorGraphics.shareText,
-            text: tr(LocaleKeys.common_shareText),
+            text: tr(LocaleKeys.shareQuote_asText),
             onTap: () {
               AutoRouter.of(context).pop();
               cubit.shareText(article, quote);
             },
           ),
+          if (state.isInstagramAvailable) ...[
+            const SizedBox(height: AppDimens.m),
+            _Button(
+              svg: AppVectorGraphics.shareStory,
+              text: tr(LocaleKeys.shareQuote_asStory),
+              onTap: () {
+                AutoRouter.of(context).pop();
+                cubit.shareStory(article, quote);
+              },
+            ),
+          ],
         ],
       ),
     );

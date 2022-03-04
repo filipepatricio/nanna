@@ -6,8 +6,9 @@ import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/widget/share/quote/quote_foreground_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_variant_data.dart';
-import 'package:better_informed_mobile/presentation/widget/share/quote/quote_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/quote/quote_background_view.dart';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -43,11 +44,11 @@ void main() {
       " the industry's standard dummy text ever.";
 
   visualTest(
-    QuoteViewSticker,
+    QuoteForegroundView,
     (tester) async {
       await tester.startApp(
         initialRoute: PlaceholderPageRoute(
-          child: QuoteViewSticker(
+          child: QuoteForegroundView(
             quote: quote,
             quoteVariantData: quoteVariantDataList[0],
             article: articleMock,
@@ -63,7 +64,7 @@ void main() {
       unawaited(
         router.replace(
           PlaceholderPageRoute(
-            child: QuoteViewSticker(
+            child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[1],
               article: articleMock,
@@ -77,7 +78,7 @@ void main() {
       unawaited(
         router.replace(
           PlaceholderPageRoute(
-            child: QuoteViewSticker(
+            child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[2],
               article: articleMock,
@@ -91,7 +92,7 @@ void main() {
       unawaited(
         router.replace(
           PlaceholderPageRoute(
-            child: QuoteViewSticker(
+            child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[3],
               article: articleMock,
@@ -105,7 +106,7 @@ void main() {
       unawaited(
         router.replace(
           PlaceholderPageRoute(
-            child: QuoteViewSticker(
+            child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[4],
               article: articleMock,
