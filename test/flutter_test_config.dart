@@ -11,8 +11,6 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import 'visual/visual_test_utils.dart';
-
 late BetterInformedTestWidgetsFlutterBinding binding;
 final debugPrintBuffer = <String>[];
 
@@ -111,12 +109,3 @@ void onlyPrintOnError(String? message, {int? wrapWidth}) {
     debugPrintBuffer.add(message ?? '');
   }
 }
-
-final stickerDevice = TestConfig.unitTesting.withDevices(
-  const [
-    Device(
-      size: Size(720, 1280),
-      name: 'sticker_720x1280',
-    ),
-  ],
-);
