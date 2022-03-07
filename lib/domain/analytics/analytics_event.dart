@@ -55,4 +55,13 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'type': 'text',
         },
       );
+
+  factory AnalyticsEvent.storyArticleQuoteShared(String articleId, String quote) => AnalyticsEvent._(
+        'ArticleQuoteShared',
+        {
+          'article_id': articleId,
+          'quote': quote,
+          'type': 'story',
+        },
+      );
 }

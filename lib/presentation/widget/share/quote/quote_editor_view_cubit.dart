@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/domain/share/use_case/share_using_instagr
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_background_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view_state.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_foreground_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -113,6 +114,13 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
       foregroundImage,
       backgroundImage,
       article.url,
+    );
+
+    _trackActivityUseCase.trackEvent(
+      AnalyticsEvent.storyArticleQuoteShared(
+        article.id,
+        fixedQuote,
+      ),
     );
   }
 
