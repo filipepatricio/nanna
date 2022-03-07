@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -8,15 +9,12 @@ import 'package:better_informed_mobile/presentation/page/explore/explore_page_cu
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_state.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
@@ -34,22 +32,10 @@ const _tryAgainButtonWidth = 150.0;
 class ExplorePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final tabBarCubit = useCubit<TabBarCubit>();
     final cubit = useCubit<ExplorePageCubit>();
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final headerColor = _getHeaderColor(state);
-
-    useCubitListener<TabBarCubit, TabBarState>(tabBarCubit, (cubit, state, context) {
-      state.maybeWhen(
-        tabPressed: (tab) {
-          if (tab == MainTab.explore && scrollController.hasClients) {
-            scrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOutCubic);
-          }
-        },
-        orElse: () {},
-      );
-    });
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(showTutorialToast: (text) => showToast(context, text));
@@ -63,53 +49,57 @@ class ExplorePage extends HookWidget {
     );
 
     return Scaffold(
-      body: ReadingBannerWrapper(
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: Stack(
-            children: [
-              NoScrollGlow(
-                child: RefreshIndicator(
-                  color: AppColors.darkGrey,
-                  onRefresh: cubit.loadExplorePageData,
-                  child: CustomScrollView(
-                    controller: scrollController,
-                    physics: state.maybeMap(
-                      initialLoading: (_) => const NeverScrollableScrollPhysics(),
-                      error: (_) => const NeverScrollableScrollPhysics(),
-                      orElse: () => getPlatformScrollPhysics(),
+      body: TabBarListener(
+        controller: scrollController,
+        currentPage: context.routeData,
+        child: ReadingBannerWrapper(
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.dark,
+            child: Stack(
+              children: [
+                NoScrollGlow(
+                  child: RefreshIndicator(
+                    color: AppColors.darkGrey,
+                    onRefresh: cubit.loadExplorePageData,
+                    child: CustomScrollView(
+                      controller: scrollController,
+                      physics: state.maybeMap(
+                        initialLoading: (_) => const NeverScrollableScrollPhysics(),
+                        error: (_) => const NeverScrollableScrollPhysics(),
+                        orElse: () => getPlatformScrollPhysics(),
+                      ),
+                      slivers: [
+                        ScrollableSliverAppBar(
+                          scrollController: scrollController,
+                          title: LocaleKeys.explore_title.tr(),
+                          headerColor: headerColor,
+                        ),
+                        state.maybeMap(
+                          initialLoading: (_) => const SliverToBoxAdapter(
+                            child: ArticleWithCoverAreaLoadingView.loading(),
+                          ),
+                          idle: (state) => _Idle(areas: state.areas),
+                          error: (_) => const SliverToBoxAdapter(
+                            child: ArticleWithCoverAreaLoadingView.static(),
+                          ),
+                          orElse: () => const SliverToBoxAdapter(
+                            child: SizedBox(),
+                          ),
+                        ),
+                        const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
+                      ],
                     ),
-                    slivers: [
-                      ScrollableSliverAppBar(
-                        scrollController: scrollController,
-                        title: LocaleKeys.explore_title.tr(),
-                        headerColor: headerColor,
-                      ),
-                      state.maybeMap(
-                        initialLoading: (_) => const SliverToBoxAdapter(
-                          child: ArticleWithCoverAreaLoadingView.loading(),
-                        ),
-                        idle: (state) => _Idle(areas: state.areas),
-                        error: (_) => const SliverToBoxAdapter(
-                          child: ArticleWithCoverAreaLoadingView.static(),
-                        ),
-                        orElse: () => const SliverToBoxAdapter(
-                          child: SizedBox(),
-                        ),
-                      ),
-                      const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
-                    ],
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: state.maybeMap(
-                  error: (_) => _ErrorView(refreshCallback: () => cubit.initialize()),
-                  orElse: () => const SizedBox(),
+                Align(
+                  alignment: Alignment.center,
+                  child: state.maybeMap(
+                    error: (_) => _ErrorView(refreshCallback: () => cubit.initialize()),
+                    orElse: () => const SizedBox(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

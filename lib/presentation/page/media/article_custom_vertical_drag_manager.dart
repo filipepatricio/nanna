@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
@@ -16,6 +17,30 @@ class ArticleCustomVerticalDragManager {
     required this.pageViewController,
     required this.articleHasImage,
   });
+
+  MapEntry<Type, GestureRecognizerFactory<GestureRecognizer>> get tapGestureRecognizer => MapEntry(
+        TapGestureRecognizer,
+        GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+          () => TapGestureRecognizer(),
+          (TapGestureRecognizer instance) {
+            instance.onTapDown = (_) => resetScrollVelocity();
+          },
+        ),
+      );
+
+  MapEntry<Type, GestureRecognizerFactory<GestureRecognizer>> get dragGestureRecognizer => MapEntry(
+        VerticalDragGestureRecognizer,
+        GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
+          () => VerticalDragGestureRecognizer(),
+          (VerticalDragGestureRecognizer instance) {
+            instance
+              ..onStart = handleDragStart
+              ..onUpdate = handleDragUpdate
+              ..onEnd = handleDragEnd
+              ..onCancel = handleDragCancel;
+          },
+        ),
+      );
 
   void handleDragStart(DragStartDetails details) {
     if (_isOnImagePage()) {
@@ -91,5 +116,10 @@ class ArticleCustomVerticalDragManager {
     return _activeController == pageViewController &&
         primaryDelta < 0 &&
         (_activeController?.position.pixels ?? 0.0) >= (_activeController?.position.maxScrollExtent ?? 0.0);
+  }
+
+  Future<void> animateToStart() async {
+    await generalViewController.animateToStart();
+    await pageViewController.animateToStart();
   }
 }

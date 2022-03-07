@@ -14,9 +14,9 @@ class _CubitDefaults {
   static bool defaultBlocListenCondition<S>(S state) => true;
 }
 
-T useCubit<T extends Cubit>([List<dynamic> keys = const <dynamic>[]]) {
+T useCubit<T extends Cubit>({bool closeOnDispose = true, List<dynamic> keys = const <dynamic>[]}) {
   final cubit = useMemoized(() => getIt<T>(), keys);
-  useEffect(() => cubit.close, [cubit]);
+  if (closeOnDispose) useEffect(() => cubit.close, [cubit]);
   return cubit;
 }
 

@@ -8,7 +8,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -37,6 +37,7 @@ class TopicsSeeAllPage extends HookWidget {
     final cubit = useCubit<TopicsSeeAllPageCubit>();
     final state = useCubitBuilder<TopicsSeeAllPageCubit, TopicsSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
+    final screenHeight = MediaQuery.of(context).size.height;
 
     useEffect(
       () {
@@ -49,7 +50,7 @@ class TopicsSeeAllPage extends HookWidget {
       withPagination: (_) => true,
       orElse: () => false,
     );
-    final screenHeight = MediaQuery.of(context).size.height;
+
     useEffect(
       () {
         final listener = shouldListen
@@ -69,11 +70,15 @@ class TopicsSeeAllPage extends HookWidget {
 
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: title),
-      body: _Body(
-        title: title,
-        pageStorageKey: pageStorageKey,
-        scrollController: scrollController,
-        state: state,
+      body: TabBarListener(
+        currentPage: context.routeData,
+        controller: scrollController,
+        child: _Body(
+          title: title,
+          pageStorageKey: pageStorageKey,
+          scrollController: scrollController,
+          state: state,
+        ),
       ),
     );
   }

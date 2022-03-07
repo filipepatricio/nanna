@@ -94,6 +94,6 @@ class RelaxView extends HookWidget {
   }
 
   void _goToExplore(BuildContext context) {
-    AutoRouter.of(context).navigate(const ExploreTabGroupRouter(children: [ExplorePageRoute()]));
+    context.navigateTo(const ExploreTabGroupRouter(children: [ExplorePageRoute()]));
   }
 }
