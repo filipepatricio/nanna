@@ -27,6 +27,17 @@ const veryHighDevices = [
 class TestConfig {
   const TestConfig._({required this.flavor, this.devices = defaultDevices});
 
+  const TestConfig.stickerDevice()
+      : this._(
+          flavor: AppConfig.mock,
+          devices: const [
+            Device(
+              size: Size(720, 1280),
+              name: 'sticker_720x1280',
+            ),
+          ],
+        );
+
   static const TestConfig unitTesting = TestConfig._(flavor: AppConfig.mock);
 
   TestConfig withDevices(List<Device> devices) => TestConfig._(flavor: flavor, devices: devices);

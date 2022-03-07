@@ -68,5 +68,9 @@
     <true/>
     <key>com.claimsforce.segment.ENABLE_AMPLITUDE_INTEGRATION</key>
     <false/>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>instagram-stories</string>
+    </array>
 </dict>
 </plist>
