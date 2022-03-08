@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
@@ -121,7 +121,7 @@ class TopicsAreaView extends HookWidget {
     );
   }
 
-  void _navigateToSeeAll(BuildContext context) => AutoRouter.of(context).push(
+  void _navigateToSeeAll(BuildContext context) => context.pushRoute(
         TopicsSeeAllPageRoute(
           areaId: area.id,
           title: area.title,
@@ -129,14 +129,12 @@ class TopicsAreaView extends HookWidget {
         ),
       );
 
-  void _onTopicTap(BuildContext context, int index) {
-    AutoRouter.of(context).push(
-      TopicPage(
-        topicSlug: area.topics[index].id,
-        topic: area.topics[index],
-      ),
-    );
-  }
+  void _onTopicTap(BuildContext context, int index) => context.pushRoute(
+        TopicPage(
+          topicSlug: area.topics[index].id,
+          topic: area.topics[index],
+        ),
+      );
 }
 
 class _SeeAllTopicsLabel extends StatelessWidget {

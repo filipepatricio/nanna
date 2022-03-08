@@ -5,10 +5,15 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class TabBarCubit extends Cubit<TabBarState> {
-  TabBarCubit() : super(const TabBarState.init());
+  TabBarCubit() : super(const TabBarState.idle());
 
   void tabPressed(MainTab tab) {
-    emit(const TabBarState.init());
     emit(TabBarState.tabPressed(tab));
+    emit(const TabBarState.idle());
+  }
+
+  void scrollToTop() {
+    emit(const TabBarState.scrollToTop());
+    emit(const TabBarState.idle());
   }
 }

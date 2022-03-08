@@ -7,7 +7,9 @@ part 'tab_bar_state.freezed.dart';
 @freezed
 class TabBarState with _$TabBarState {
   @Implements<BuildState>()
-  const factory TabBarState.init() = _TabBarStateInit;
+  const factory TabBarState.idle() = _TabBarStateIdle;
 
   const factory TabBarState.tabPressed(MainTab tab) = _TabBarStateTabPressed;
+
+  const factory TabBarState.scrollToTop() = _TabBarStateScrollToTop;
 }
