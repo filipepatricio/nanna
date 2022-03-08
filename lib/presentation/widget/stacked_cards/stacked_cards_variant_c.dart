@@ -36,7 +36,10 @@ class StackedCardsVariantC extends StatelessWidget {
 
     return Stack(
       children: [
-        Container(color: AppColors.background),
+        Container(
+          color: AppColors.background,
+          width: coverSize.width,
+        ),
         Positioned(
           top: 0,
           bottom: 0,

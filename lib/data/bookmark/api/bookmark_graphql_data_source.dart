@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/data/bookmark/api/bookmark_data_source.dart';
 import 'package:better_informed_mobile/data/bookmark/api/bookmark_graphql.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_filter_dto.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_id_dto.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dart';

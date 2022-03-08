@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
@@ -60,11 +61,17 @@ class ReadingListCoverSmall extends HookWidget {
                     Expanded(
                       child: InformedMarkdownBody(
                         markdown: topic.title,
-                        baseTextStyle: AppTypography.h5BoldSmall.copyWith(height: 1.5),
-                        maxLines: 4,
+                        baseTextStyle: AppTypography.h5BoldSmall.copyWith(
+                          height: 1.5,
+                          fontSize: context.isSmallDevice ? 12 : null,
+                        ),
+                        maxLines: context.isSmallDevice ? 3 : 4,
                       ),
                     ),
-                    const SizedBox(height: AppDimens.m),
+                    if (context.isSmallDevice)
+                      const SizedBox(height: AppDimens.s)
+                    else
+                      const SizedBox(height: AppDimens.m),
                     Text(
                       LocaleKeys.readingList_articleCount.tr(args: [topic.readingList.entries.length.toString()]),
                       style: AppTypography.metadata1Regular.copyWith(fontSize: 14),

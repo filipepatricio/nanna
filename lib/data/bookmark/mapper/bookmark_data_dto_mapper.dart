@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/data/article/api/mapper/article_dto_mapper.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dart';
 import 'package:better_informed_mobile/data/mapper.dart';

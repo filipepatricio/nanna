@@ -16,7 +16,7 @@ class BookmarkGraphql {
   static DocumentNode articleId(String slug) => gql(
         '''
           query {
-            getTopicBookmark(slug: "$slug") {
+            getArticleBookmark(slug: "$slug") {
               id
             }
           }

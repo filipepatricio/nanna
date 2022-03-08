@@ -274,7 +274,7 @@ class _TopicIdleView extends HookWidget {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

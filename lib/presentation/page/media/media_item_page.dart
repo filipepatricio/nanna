@@ -16,11 +16,13 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -57,6 +59,7 @@ class MediaItemPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
+    final snackbarController = useMemoized(() => SnackbarController());
 
     final modalController = useMemoized(
       () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
@@ -99,6 +102,7 @@ class MediaItemPage extends HookWidget {
                   idleFree: (state) => _FreeArticleView(
                     article: state.header,
                     fromTopic: topicId != null || topicSlug != null,
+                    snackbarController: snackbarController,
                   ),
                   idlePremium: (state) => _PremiumArticleView(
                     article: state.header,
@@ -107,6 +111,7 @@ class MediaItemPage extends HookWidget {
                     modalController: modalController,
                     controller: scrollController,
                     pageController: pageController,
+                    snackbarController: snackbarController,
                     cubit: cubit,
                     fullHeight: constraints.maxHeight,
                     readArticleProgress: readArticleProgress,
@@ -241,6 +246,7 @@ class _PremiumArticleView extends HookWidget {
     required this.pageController,
     required this.cubit,
     required this.fullHeight,
+    required this.snackbarController,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -256,6 +262,7 @@ class _PremiumArticleView extends HookWidget {
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
   final double? readArticleProgress;
+  final SnackbarController snackbarController;
 
   bool get articleWithImage => article.image != null;
 
@@ -308,99 +315,115 @@ class _PremiumArticleView extends HookWidget {
       [],
     );
 
-    return RawGestureDetector(
-      gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
-        [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
-      ),
-      behavior: HitTestBehavior.opaque,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, showBackToTopicButton, readProgress),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            PageView(
-              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-              controller: pageController,
-              scrollDirection: Axis.vertical,
-              onPageChanged: (page) {
-                showBackToTopicButton.value = false;
-              },
+    return Scaffold(
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: RawGestureDetector(
+          gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
+            [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
+          ),
+          behavior: HitTestBehavior.opaque,
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, showBackToTopicButton, readProgress),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                if (articleWithImage)
-                  ArticleImageView(
-                    article: article,
-                    controller: pageController,
-                    fullHeight: fullHeight,
-                  ),
-                Row(
+                PageView(
+                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                  controller: pageController,
+                  scrollDirection: Axis.vertical,
+                  onPageChanged: (page) {
+                    showBackToTopicButton.value = false;
+                  },
                   children: [
-                    Expanded(
-                      child: NoScrollGlow(
-                        child: CustomScrollView(
-                          physics: const NeverScrollableScrollPhysics(
-                            parent: BottomBouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics(),
-                            ),
+                    PageView(
+                      physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                      controller: pageController,
+                      scrollDirection: Axis.vertical,
+                      onPageChanged: (page) {
+                        showBackToTopicButton.value = false;
+                      },
+                      children: [
+                        if (articleWithImage)
+                          ArticleImageView(
+                            article: article,
+                            controller: pageController,
+                            fullHeight: fullHeight,
                           ),
-                          controller: controller,
-                          slivers: [
-                            SliverList(
-                              delegate: SliverChildListDelegate(
-                                [
-                                  ArticleContentView(
-                                    article: article,
-                                    content: content,
-                                    cubit: cubit,
-                                    controller: controller,
-                                    articleContentKey: _articleContentKey,
-                                    scrollToPosition: () => scrollToPosition(readArticleProgress),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: NoScrollGlow(
+                                child: CustomScrollView(
+                                  physics: const NeverScrollableScrollPhysics(
+                                    parent: BottomBouncingScrollPhysics(
+                                      parent: AlwaysScrollableScrollPhysics(),
+                                    ),
                                   ),
-                                ],
+                                  controller: controller,
+                                  slivers: [
+                                    SliverList(
+                                      delegate: SliverChildListDelegate(
+                                        [
+                                          ArticleContentView(
+                                            article: article,
+                                            content: content,
+                                            cubit: cubit,
+                                            controller: controller,
+                                            articleContentKey: _articleContentKey,
+                                            scrollToPosition: () => scrollToPosition(readArticleProgress),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (article.credits.isNotEmpty) ...[
+                                      SliverPadding(
+                                        padding: const EdgeInsets.only(
+                                          top: AppDimens.xl,
+                                          left: AppDimens.l,
+                                          right: AppDimens.l,
+                                        ),
+                                        sliver: SliverToBoxAdapter(
+                                          child: _Credits(
+                                            article: article,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                    SliverToBoxAdapter(
+                                      child: SizedBox(
+                                        height: footerHeight,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            if (article.credits.isNotEmpty) ...[
-                              SliverPadding(
-                                padding: const EdgeInsets.only(
-                                  top: AppDimens.xl,
-                                  left: AppDimens.l,
-                                  right: AppDimens.l,
-                                ),
-                                sliver: SliverToBoxAdapter(
-                                  child: _Credits(
-                                    article: article,
-                                  ),
-                                ),
-                              ),
-                            ],
-                            SliverToBoxAdapter(
-                              child: SizedBox(
-                                height: footerHeight,
-                              ),
-                            ),
+                            _ArticleProgressBar(readProgress: readProgress),
                           ],
                         ),
+                      ],
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: _ActionsBar(
+                        article: article,
+                        fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                        controller: pageController,
+                        snackbarController: snackbarController,
                       ),
                     ),
-                    _ArticleProgressBar(readProgress: readProgress),
+                    _BackToTopicButton(
+                      showButton: showBackToTopicButton,
+                      fromTopic: fromTopic,
+                    ),
                   ],
                 ),
               ],
             ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: _ActionsBar(
-                article: article,
-                fullHeight: articleWithImage ? fullHeight : appBarHeight,
-                controller: pageController,
-              ),
-            ),
-            _BackToTopicButton(
-              showButton: showBackToTopicButton,
-              fromTopic: fromTopic,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -462,11 +485,13 @@ class _FreeArticleView extends HookWidget {
   const _FreeArticleView({
     required this.article,
     required this.fromTopic,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final bool fromTopic;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -496,6 +521,14 @@ class _FreeArticleView extends HookWidget {
         ),
         actions: [
           Padding(
+            padding: const EdgeInsets.only(top: AppDimens.s),
+            child: BookmarkButton.article(
+              article: article,
+              mode: BookmarkButtonMode.color,
+              snackbarController: snackbarController,
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.only(right: AppDimens.l, top: AppDimens.s),
             child: ShareArticleButton(
               article: article,
@@ -504,38 +537,41 @@ class _FreeArticleView extends HookWidget {
           ),
         ],
       ),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          InAppWebView(
-            initialOptions: webViewOptions,
-            initialUrlRequest: URLRequest(url: Uri.parse(article.sourceUrl)),
-            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-              Factory(() => EagerGestureRecognizer()),
-            },
-            onScrollChanged: (controller, _, y) {
-              if (y > scrollPosition.value) {
-                scrollPosition.value = y.toDouble();
-                showBackToTopicButton.value = false;
-                return;
-              }
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            InAppWebView(
+              initialOptions: webViewOptions,
+              initialUrlRequest: URLRequest(url: Uri.parse(article.sourceUrl)),
+              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                Factory(() => EagerGestureRecognizer()),
+              },
+              onScrollChanged: (controller, _, y) {
+                if (y > scrollPosition.value) {
+                  scrollPosition.value = y.toDouble();
+                  showBackToTopicButton.value = false;
+                  return;
+                }
 
-              if (y < scrollPosition.value) {
-                scrollPosition.value = y.toDouble();
-                showBackToTopicButton.value = true;
-              }
-            },
-            onOverScrolled: (controller, x, y, clampedX, clampedY) {
-              if (clampedY && y > 0) {
-                showBackToTopicButton.value = true;
-              }
-            },
-          ),
-          _BackToTopicButton(
-            showButton: showBackToTopicButton,
-            fromTopic: fromTopic,
-          ),
-        ],
+                if (y < scrollPosition.value) {
+                  scrollPosition.value = y.toDouble();
+                  showBackToTopicButton.value = true;
+                }
+              },
+              onOverScrolled: (controller, x, y, clampedX, clampedY) {
+                if (clampedY && y > 0) {
+                  showBackToTopicButton.value = true;
+                }
+              },
+            ),
+            _BackToTopicButton(
+              showButton: showBackToTopicButton,
+              fromTopic: fromTopic,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -610,12 +646,14 @@ class _ActionsBar extends HookWidget {
     required this.article,
     required this.fullHeight,
     required this.controller,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final double fullHeight;
   final PageController controller;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -631,6 +669,11 @@ class _ActionsBar extends HookWidget {
       [hasImage],
     );
 
+    final bookmarkMode = useMemoized(
+      () => ValueNotifier(hasImage ? BookmarkButtonMode.image : BookmarkButtonMode.color),
+      [hasImage],
+    );
+
     useEffect(
       () {
         if (!hasImage) return () {};
@@ -641,6 +684,7 @@ class _ActionsBar extends HookWidget {
           final page = controller.page ?? 0.0;
 
           backgroundColor.value = page == 1.0 ? AppColors.background : AppColors.transparent;
+          bookmarkMode.value = page == 1.0 ? BookmarkButtonMode.color : BookmarkButtonMode.image;
 
           final buttonAnimValue = AlwaysStoppedAnimation(min(1.0, page));
           buttonColor.value = buttonTween.evaluate(buttonAnimValue) ?? AppColors.white;
@@ -677,21 +721,36 @@ class _ActionsBar extends HookWidget {
                 );
               },
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
-              child: ShareArticleButton(
-                article: article,
-                buttonBuilder: (context) => ValueListenableBuilder(
-                  valueListenable: buttonColor,
-                  builder: (BuildContext context, Color value, Widget? child) {
-                    return SvgPicture.asset(
-                      AppVectorGraphics.share,
-                      color: value,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ValueListenableBuilder(
+                  valueListenable: bookmarkMode,
+                  builder: (BuildContext context, BookmarkButtonMode value, Widget? child) {
+                    return BookmarkButton.article(
+                      article: article,
+                      mode: bookmarkMode.value,
+                      snackbarController: snackbarController,
                     );
                   },
                 ),
-              ),
-            ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+                  child: ShareArticleButton(
+                    article: article,
+                    buttonBuilder: (context) => ValueListenableBuilder(
+                      valueListenable: buttonColor,
+                      builder: (BuildContext context, Color value, Widget? child) {
+                        return SvgPicture.asset(
+                          AppVectorGraphics.share,
+                          color: value,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

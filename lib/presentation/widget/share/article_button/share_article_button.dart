@@ -9,10 +9,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class ShareArticleButton extends HookWidget {
   final MediaItemArticle article;
   final WidgetBuilder? buttonBuilder;
+  final Color? backgroundColor;
 
   const ShareArticleButton({
     required this.article,
     this.buttonBuilder,
+    this.backgroundColor,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +29,7 @@ class ShareArticleButton extends HookWidget {
       case ShareArticleButtonState.idle:
         if (builder == null) {
           return ShareButton(
+            backgroundColor: backgroundColor,
             onTap: () => cubit.share(article),
           );
         } else {
