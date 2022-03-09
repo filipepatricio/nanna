@@ -1,7 +1,8 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/custom_rich_text.dart';
+import 'package:better_informed_mobile/presentation/util/selection_controller_bundle.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -29,11 +30,11 @@ class ArticleContentMarkdown extends HookWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-      child: InformedMarkdownBody(
+      child: InformedMarkdownBody.selectable(
         markdown: markdown,
+        selectionControllers: SelectionControllerBundle(),
         baseTextStyle: AppTypography.articleText,
         strongTextStyle: AppTypography.articleTextBold,
-        selectable: true,
         shareTextCallback: shareTextCallback,
         paddingBuilders: <String, MarkdownPaddingBuilder>{
           'p': PPaddingBuilder(),
