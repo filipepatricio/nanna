@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/page/topic/header/topic_header.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_svg/svg.dart';
 
 class TopicAppBar extends HookWidget {
   final Topic topic;
+  final TopicPageCubit cubit;
   final ValueNotifier<double> scrollPositionNotifier;
   final VoidCallback onArticlesLabelTap;
   final VoidCallback onArrowTap;
@@ -25,6 +27,7 @@ class TopicAppBar extends HookWidget {
   const TopicAppBar({
     required this.topic,
     required this.isShowingTutorialToast,
+    required this.cubit,
     required this.scrollPositionNotifier,
     required this.onArticlesLabelTap,
     required this.onArrowTap,
@@ -106,6 +109,7 @@ class TopicAppBar extends HookWidget {
       actions: [
         BookmarkButton.topic(
           topic: topic,
+          briefId: cubit.briefId,
           mode: isExpanded.value ? BookmarkButtonMode.image : BookmarkButtonMode.color,
           snackbarController: snackbarController,
         ),

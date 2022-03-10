@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dart';
@@ -6,27 +7,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'get_bookmark_state_use_case_test.mocks.dart';
+import 'switch_bookmark_state_use_case_test.mocks.dart';
 
 @GenerateMocks(
   [
     BookmarkRepository,
+    AnalyticsRepository,
   ],
 )
 void main() {
   late MockBookmarkRepository repository;
+  late MockAnalyticsRepository analyticsRepository;
   late SwitchBookmarkStateUseCase useCase;
 
   setUp(() {
     repository = MockBookmarkRepository();
-    useCase = SwitchBookmarkStateUseCase(repository);
+    analyticsRepository = MockAnalyticsRepository();
+    useCase = SwitchBookmarkStateUseCase(repository, analyticsRepository);
   });
 
   group('for article type', () {
     test('it bookmarks when not bookmarked', () async {
       const slug = 'article-slug';
       const id = '0000-0000';
-      const type = BookmarkTypeData.article(slug);
+      const articleId = '1111-1111';
+      const type = BookmarkTypeData.article(slug, articleId);
       final state = BookmarkState.notBookmarked();
       final expected = BookmarkState.bookmarked(id);
 
@@ -43,7 +48,8 @@ void main() {
     test('it unbookmarks when bookmarked', () async {
       const slug = 'article-slug';
       const id = '0000-0000';
-      const type = BookmarkTypeData.article(slug);
+      const articleId = '1111-1111';
+      const type = BookmarkTypeData.article(slug, articleId);
       final state = BookmarkState.bookmarked(id);
       final expected = BookmarkState.notBookmarked();
 
@@ -62,7 +68,8 @@ void main() {
     test('it bookmarks when not bookmarked', () async {
       const slug = 'topic-slug';
       const id = '0000-0000';
-      const type = BookmarkTypeData.topic(slug);
+      const topicId = '1111-1111';
+      const type = BookmarkTypeData.topic(slug, topicId);
       final state = BookmarkState.notBookmarked();
       final expected = BookmarkState.bookmarked(id);
 
@@ -79,7 +86,8 @@ void main() {
     test('it unbookmarks when bookmarked', () async {
       const slug = 'topic-slug';
       const id = '0000-0000';
-      const type = BookmarkTypeData.topic(slug);
+      const topicId = '1111-1111';
+      const type = BookmarkTypeData.topic(slug, topicId);
       final state = BookmarkState.bookmarked(id);
       final expected = BookmarkState.notBookmarked();
 

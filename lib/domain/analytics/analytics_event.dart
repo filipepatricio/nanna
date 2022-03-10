@@ -64,4 +64,39 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'type': 'story',
         },
       );
+
+  factory AnalyticsEvent.topicBookmarkAdded(String topicId, [String? briefId]) => AnalyticsEvent._(
+        'TopicFollowed',
+        {
+          'topic_id': topicId,
+          'brief_id': briefId,
+        },
+      );
+
+  factory AnalyticsEvent.topicBookmarkRemoved(String topicId, [String? briefId]) => AnalyticsEvent._(
+        'TopicUnfollowed',
+        {
+          'topic_id': topicId,
+          'brief_id': briefId,
+        },
+      );
+
+  factory AnalyticsEvent.articleBookmarkAdded(String articleId, [String? topicId, String? briefId]) => AnalyticsEvent._(
+        'ArticleSaved',
+        {
+          'article_id': articleId,
+          'topic_id': topicId,
+          'brief_id': briefId,
+        },
+      );
+
+  factory AnalyticsEvent.articleBookmarkRemoved(String articleId, [String? topicId, String? briefId]) =>
+      AnalyticsEvent._(
+        'ArticleUnsaved',
+        {
+          'article_id': articleId,
+          'topic_id': topicId,
+          'brief_id': briefId,
+        },
+      );
 }

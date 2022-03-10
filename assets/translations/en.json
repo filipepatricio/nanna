@@ -224,6 +224,13 @@
   },
   "bookmark": {
     "bookmarkSuccess": "👍  Saved to your Profile",
-    "unbookmarkSuccess": "✋ Removed from your Profile"
+    "unbookmarkSuccess": "✋ Removed from your Profile",
+    "sortBy": "Sort by",
+    "bookmarkSortConfig": {
+      "lastAdded": "Last Added",
+      "lastUpdated": "Last Updated",
+      "alphabeticalAsc": "Alphabetical (a-z)",
+      "alphabeticalDesc": "Alphabetical (z-a)"
+    }
   }
 }

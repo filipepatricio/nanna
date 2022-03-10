@@ -27,10 +27,12 @@ class BookmarkButton extends HookWidget {
   BookmarkButton.article({
     required MediaItemArticle article,
     required BookmarkButtonMode mode,
+    String? topicId,
+    String? briefId,
     SnackbarController? snackbarController,
     Key? key,
   }) : this._(
-          BookmarkTypeData.article(article.slug),
+          BookmarkTypeData.article(article.slug, article.id, topicId, briefId),
           mode: mode,
           snackbarController: snackbarController,
           key: key,
@@ -39,10 +41,11 @@ class BookmarkButton extends HookWidget {
   BookmarkButton.topic({
     required Topic topic,
     required BookmarkButtonMode mode,
+    String? briefId,
     SnackbarController? snackbarController,
     Key? key,
   }) : this._(
-          BookmarkTypeData.topic(topic.slug),
+          BookmarkTypeData.topic(topic.slug, topic.id, briefId),
           mode: mode,
           snackbarController: snackbarController,
           key: key,

@@ -24,7 +24,8 @@ void main() {
 
   test('returns article bookmark state for article type data', () async {
     const slug = 'article-slug';
-    const typeData = BookmarkTypeData.article(slug);
+    const articleId = '1111-1111';
+    const typeData = BookmarkTypeData.article(slug, articleId);
     final expected = BookmarkState.bookmarked('0000-0000');
 
     when(repository.getArticleBookmarkState(slug)).thenAnswer((_) async => expected);
@@ -37,7 +38,8 @@ void main() {
 
   test('returns topic bookmark state for topic type data', () async {
     const slug = 'topic-slug';
-    const typeData = BookmarkTypeData.topic(slug);
+    const topicId = '1111-1111';
+    const typeData = BookmarkTypeData.topic(slug, topicId);
     final expected = BookmarkState.bookmarked('0000-0000');
 
     when(repository.getTopicBookmarkState(slug)).thenAnswer((_) async => expected);

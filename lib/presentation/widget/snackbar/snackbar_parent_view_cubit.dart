@@ -41,4 +41,10 @@ class SnackbarParentViewCubit extends Cubit<SnackbarParentViewState> {
       emit(SnackbarParentViewState.idle());
     });
   }
+
+  @override
+  Future<void> close() async {
+    await _timer?.cancel();
+    await super.close();
+  }
 }

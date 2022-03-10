@@ -1,0 +1,238 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
+class BookmarkSortConfig {
+  const BookmarkSortConfig(this.sort, this.order);
+
+  final BookmarkSort sort;
+  final BookmarkOrder order;
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is BookmarkSortConfig && sort == other.sort && order == other.order);
+  }
+
+  @override
+  int get hashCode => Object.hash(sort.hashCode, order.hashCode);
+}
+
+enum BookmarkSortConfigName { lastUpdated, lastAdded, alphabeticalAsc, alphabeticalDesc }
+
+const _configMap = {
+  BookmarkSortConfigName.lastAdded: BookmarkSortConfig(
+    BookmarkSort.added,
+    BookmarkOrder.descending,
+  ),
+  BookmarkSortConfigName.lastUpdated: BookmarkSortConfig(
+    BookmarkSort.updated,
+    BookmarkOrder.descending,
+  ),
+  BookmarkSortConfigName.alphabeticalAsc: BookmarkSortConfig(
+    BookmarkSort.alphabetical,
+    BookmarkOrder.ascending,
+  ),
+  BookmarkSortConfigName.alphabeticalDesc: BookmarkSortConfig(
+    BookmarkSort.alphabetical,
+    BookmarkOrder.descending,
+  ),
+};
+
+Future<BookmarkSortConfig?> showBookmarkSortOptionBottomSheet(
+  BuildContext context,
+  BookmarkSortConfig config,
+) async {
+  return showModalBottomSheet<BookmarkSortConfig>(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(10),
+      ),
+    ),
+    useRootNavigator: true,
+    context: context,
+    builder: (context) {
+      return _BookmarkSortOptionBottomSheet(config: config);
+    },
+  );
+}
+
+typedef OnSortConfigChange = Function(BookmarkSortConfig config);
+
+class BookmarkSortView extends StatelessWidget {
+  const BookmarkSortView({
+    required this.config,
+    required this.onSortConfigChange,
+    Key? key,
+  }) : super(key: key);
+
+  final BookmarkSortConfig? config;
+  final OnSortConfigChange onSortConfigChange;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = config != null;
+
+    if (enabled) {
+      return GestureDetector(
+        onTap: () async {
+          final newConfig = await showBookmarkSortOptionBottomSheet(
+            context,
+            config!,
+          );
+          if (newConfig != null) onSortConfigChange(newConfig);
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(AppVectorGraphics.sort),
+            const SizedBox(width: AppDimens.s),
+            Text(
+              config!.type.title,
+              style: AppTypography.subH1Regular.copyWith(height: 1.0),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            AppVectorGraphics.sort,
+            color: AppColors.textGrey,
+          ),
+          const SizedBox(width: AppDimens.s),
+          Text(
+            tr(LocaleKeys.bookmark_sortBy),
+            style: AppTypography.subH1Regular.copyWith(
+              color: AppColors.textGrey,
+              height: 1.0,
+            ),
+          ),
+        ],
+      );
+    }
+  }
+}
+
+class _BookmarkSortOptionBottomSheet extends StatelessWidget {
+  const _BookmarkSortOptionBottomSheet({
+    required this.config,
+    Key? key,
+  }) : super(key: key);
+
+  final BookmarkSortConfig config;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(10),
+      ),
+      color: AppColors.background,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: AppDimens.m),
+              Row(
+                children: [
+                  const SizedBox(width: AppDimens.l),
+                  Expanded(
+                    child: Text(
+                      tr(LocaleKeys.bookmark_sortBy),
+                      style: AppTypography.b1Bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset(AppVectorGraphics.close),
+                    onPressed: () => AutoRouter.of(context).root.pop(),
+                  ),
+                  const SizedBox(width: AppDimens.l),
+                ],
+              ),
+              const SizedBox(height: AppDimens.m),
+              Container(
+                height: 1,
+                color: AppColors.greyDividerColor,
+              ),
+              const SizedBox(height: AppDimens.l),
+              ..._configMap.entries
+                  .map(
+                    (entry) => GestureDetector(
+                      onTap: () => AutoRouter.of(context).root.pop(entry.value),
+                      child: Row(
+                        children: [
+                          const SizedBox.square(dimension: AppDimens.l),
+                          if (config == entry.value)
+                            SvgPicture.asset(
+                              AppVectorGraphics.checkmark,
+                              height: AppDimens.l,
+                              width: AppDimens.l,
+                            )
+                          else
+                            const SizedBox.square(dimension: AppDimens.l),
+                          const SizedBox(width: AppDimens.s),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppDimens.l,
+                              ),
+                              child: Text(
+                                entry.key.title,
+                                style: config == entry.value ? AppTypography.b1Bold : AppTypography.b1Regular,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                  .expand(
+                    (element) => [
+                      element,
+                      const SizedBox(height: AppDimens.l),
+                    ],
+                  )
+                  .toList(growable: false),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+extension on BookmarkSortConfigName {
+  String get title {
+    switch (this) {
+      case BookmarkSortConfigName.lastUpdated:
+        return tr(LocaleKeys.bookmark_bookmarkSortConfig_lastUpdated);
+      case BookmarkSortConfigName.lastAdded:
+        return tr(LocaleKeys.bookmark_bookmarkSortConfig_lastAdded);
+      case BookmarkSortConfigName.alphabeticalAsc:
+        return tr(LocaleKeys.bookmark_bookmarkSortConfig_alphabeticalAsc);
+      case BookmarkSortConfigName.alphabeticalDesc:
+        return tr(LocaleKeys.bookmark_bookmarkSortConfig_alphabeticalDesc);
+    }
+  }
+}
+
+extension on BookmarkSortConfig {
+  BookmarkSortConfigName get type {
+    return _configMap.entries
+        .firstWhere(
+          (element) => element.value == this,
+        )
+        .key;
+  }
+}

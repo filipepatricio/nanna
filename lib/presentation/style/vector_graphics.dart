@@ -68,6 +68,8 @@ class AppVectorGraphics {
   static const String shareText = 'assets/vector_graphics/share_text.svg';
   static const String shareStory = 'assets/vector_graphics/share_story.svg';
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
+  static const String checkmark = 'assets/vector_graphics/checkmark.svg';
+  static const String close = 'assets/vector_graphics/close.svg';
 
   static const String tutorialArrowDown = 'assets/vector_graphics/tutorial_arrow_down.svg';
   static const String tutorialArrowUp = 'assets/vector_graphics/tutorial_arrow_up.svg';

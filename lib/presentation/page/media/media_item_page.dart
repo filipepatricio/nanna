@@ -44,11 +44,13 @@ class MediaItemPage extends HookWidget {
     @QueryParam('topicSlug') this.topicSlug,
     this.article,
     this.topicId,
+    this.briefId,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
 
   final String? topicId;
+  final String? briefId;
   final MediaItemArticle? article;
   final String? slug;
   final String? topicSlug;
@@ -73,7 +75,7 @@ class MediaItemPage extends HookWidget {
 
     useEffect(
       () {
-        cubit.initialize(article, slug, topicId, topicSlug);
+        cubit.initialize(article, slug, topicId, topicSlug, briefId);
       },
       [cubit],
     );
@@ -101,6 +103,7 @@ class MediaItemPage extends HookWidget {
                   loading: (state) => const _LoadingContent(),
                   idleFree: (state) => _FreeArticleView(
                     article: state.header,
+                    cubit: cubit,
                     fromTopic: topicId != null || topicSlug != null,
                     snackbarController: snackbarController,
                   ),
@@ -119,7 +122,7 @@ class MediaItemPage extends HookWidget {
                   error: (state) => _ErrorContent(article: state.article),
                   emptyError: (_) => _ErrorContent(
                     onTryAgain: () {
-                      cubit.initialize(article, slug, topicId, topicSlug);
+                      cubit.initialize(article, slug, topicId, topicSlug, briefId);
                     },
                   ),
                   orElse: () => const SizedBox(),
@@ -336,90 +339,81 @@ class _PremiumArticleView extends HookWidget {
                     showBackToTopicButton.value = false;
                   },
                   children: [
-                    PageView(
-                      physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                      controller: pageController,
-                      scrollDirection: Axis.vertical,
-                      onPageChanged: (page) {
-                        showBackToTopicButton.value = false;
-                      },
+                    if (articleWithImage)
+                      ArticleImageView(
+                        article: article,
+                        controller: pageController,
+                        fullHeight: fullHeight,
+                      ),
+                    Row(
                       children: [
-                        if (articleWithImage)
-                          ArticleImageView(
-                            article: article,
-                            controller: pageController,
-                            fullHeight: fullHeight,
-                          ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: NoScrollGlow(
-                                child: CustomScrollView(
-                                  physics: const NeverScrollableScrollPhysics(
-                                    parent: BottomBouncingScrollPhysics(
-                                      parent: AlwaysScrollableScrollPhysics(),
-                                    ),
-                                  ),
-                                  controller: controller,
-                                  slivers: [
-                                    SliverList(
-                                      delegate: SliverChildListDelegate(
-                                        [
-                                          ArticleContentView(
-                                            article: article,
-                                            content: content,
-                                            cubit: cubit,
-                                            controller: controller,
-                                            articleContentKey: _articleContentKey,
-                                            scrollToPosition: () => scrollToPosition(readArticleProgress),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    if (article.credits.isNotEmpty) ...[
-                                      SliverPadding(
-                                        padding: const EdgeInsets.only(
-                                          top: AppDimens.xl,
-                                          left: AppDimens.l,
-                                          right: AppDimens.l,
-                                        ),
-                                        sliver: SliverToBoxAdapter(
-                                          child: _Credits(
-                                            article: article,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                    SliverToBoxAdapter(
-                                      child: SizedBox(
-                                        height: footerHeight,
-                                      ),
-                                    ),
-                                  ],
+                        Expanded(
+                          child: NoScrollGlow(
+                            child: CustomScrollView(
+                              physics: const NeverScrollableScrollPhysics(
+                                parent: BottomBouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
                                 ),
                               ),
+                              controller: controller,
+                              slivers: [
+                                SliverList(
+                                  delegate: SliverChildListDelegate(
+                                    [
+                                      ArticleContentView(
+                                        article: article,
+                                        content: content,
+                                        cubit: cubit,
+                                        controller: controller,
+                                        articleContentKey: _articleContentKey,
+                                        scrollToPosition: () => scrollToPosition(readArticleProgress),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                if (article.credits.isNotEmpty) ...[
+                                  SliverPadding(
+                                    padding: const EdgeInsets.only(
+                                      top: AppDimens.xl,
+                                      left: AppDimens.l,
+                                      right: AppDimens.l,
+                                    ),
+                                    sliver: SliverToBoxAdapter(
+                                      child: _Credits(
+                                        article: article,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height: footerHeight,
+                                  ),
+                                ),
+                              ],
                             ),
-                            _ArticleProgressBar(readProgress: readProgress),
-                          ],
+                          ),
                         ),
+                        _ArticleProgressBar(readProgress: readProgress),
                       ],
                     ),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: _ActionsBar(
-                        article: article,
-                        fullHeight: articleWithImage ? fullHeight : appBarHeight,
-                        controller: pageController,
-                        snackbarController: snackbarController,
-                      ),
-                    ),
-                    _BackToTopicButton(
-                      showButton: showBackToTopicButton,
-                      fromTopic: fromTopic,
-                    ),
                   ],
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: _ActionsBar(
+                    article: article,
+                    fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                    controller: pageController,
+                    snackbarController: snackbarController,
+                    cubit: cubit,
+                  ),
+                ),
+                _BackToTopicButton(
+                  showButton: showBackToTopicButton,
+                  fromTopic: fromTopic,
                 ),
               ],
             ),
@@ -486,12 +480,14 @@ class _FreeArticleView extends HookWidget {
     required this.article,
     required this.fromTopic,
     required this.snackbarController,
+    required this.cubit,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final bool fromTopic;
   final SnackbarController snackbarController;
+  final MediaItemCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -524,6 +520,8 @@ class _FreeArticleView extends HookWidget {
             padding: const EdgeInsets.only(top: AppDimens.s),
             child: BookmarkButton.article(
               article: article,
+              topicId: cubit.topicId,
+              briefId: cubit.briefId,
               mode: BookmarkButtonMode.color,
               snackbarController: snackbarController,
             ),
@@ -647,6 +645,7 @@ class _ActionsBar extends HookWidget {
     required this.fullHeight,
     required this.controller,
     required this.snackbarController,
+    required this.cubit,
     Key? key,
   }) : super(key: key);
 
@@ -654,6 +653,7 @@ class _ActionsBar extends HookWidget {
   final double fullHeight;
   final PageController controller;
   final SnackbarController snackbarController;
+  final MediaItemCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -729,6 +729,8 @@ class _ActionsBar extends HookWidget {
                   builder: (BuildContext context, BookmarkButtonMode value, Widget? child) {
                     return BookmarkButton.article(
                       article: article,
+                      topicId: cubit.topicId,
+                      briefId: cubit.briefId,
                       mode: bookmarkMode.value,
                       snackbarController: snackbarController,
                     );

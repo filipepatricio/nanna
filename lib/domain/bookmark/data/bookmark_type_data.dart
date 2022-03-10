@@ -4,7 +4,8 @@ part 'bookmark_type_data.freezed.dart';
 
 @freezed
 class BookmarkTypeData with _$BookmarkTypeData {
-  const factory BookmarkTypeData.article(String slug) = _BookmarkTypeDataArticle;
+  const factory BookmarkTypeData.article(String slug, String articleId, [String? topicId, String? briefId]) =
+      _BookmarkTypeDataArticle;
 
-  const factory BookmarkTypeData.topic(String slug) = _BookmarkTypeDataTopic;
+  const factory BookmarkTypeData.topic(String slug, String topicId, [String? briefId]) = _BookmarkTypeDataTopic;
 }

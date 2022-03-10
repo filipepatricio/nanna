@@ -174,7 +174,6 @@ class _TopicIdleView extends HookWidget {
     final backgroundImageWidth = MediaQuery.of(context).size.width;
     final backgroundImageHeight = AppDimens.topicViewHeaderImageHeight(context);
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
-
     final modalScrollController = useMemoized(() => ModalScrollController.of(context));
     final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
     final gestureManager = useMemoized(
@@ -257,6 +256,7 @@ class _TopicIdleView extends HookWidget {
                       TopicAppBar(
                         topic: topic,
                         isShowingTutorialToast: isShowingTutorialToast,
+                        cubit: cubit,
                         scrollPositionNotifier: scrollPositionNotifier,
                         onArticlesLabelTap: () => _scrollToArticles(context, gestureManager),
                         onArrowTap: () => _scrollToSummary(context, gestureManager),
