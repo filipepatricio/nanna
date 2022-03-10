@@ -38,7 +38,7 @@ class ExplorePage extends HookWidget {
     final headerColor = _getHeaderColor(state);
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(showTutorialToast: (text) => showToast(context, text));
+      state.whenOrNull(showTutorialToast: (text) => showInfoToast(context, text));
     });
 
     useEffect(

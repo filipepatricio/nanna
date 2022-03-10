@@ -57,15 +57,20 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     _trackActivityUseCase.trackPage(AnalyticsPage.topic(topic.id, briefId));
 
     emit(TopicPageState.idle(topic));
+  }
 
+  Future<void> initializeTutorialStep() async {
     _isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
-    _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicSummaryCard);
-    _isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicMediaItem);
-
     if (!_isTopicTutorialStepSeen) {
       emit(TopicPageState.showTutorialToast(LocaleKeys.tutorial_topicSnackBarText.tr()));
       await _setTutorialStepSeenUseCase.call(TutorialStep.topic);
     }
+  }
+
+  Future<void> initializeTutorialCoachMark() async {
+    _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicSummaryCard);
+    _isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicMediaItem);
+
     targets.clear();
     if (!_isTopicSummaryCardTutorialStepSeen) {
       emit(TopicPageState.shouldShowSummaryCardTutorialCoachMark());

@@ -187,9 +187,16 @@ class _TopicIdleView extends HookWidget {
       ),
     );
 
+    useEffect(
+      () {
+        cubit.initializeTutorialStep();
+      },
+      [cubit],
+    );
+
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        showTutorialToast: (text) => showToast(context, text),
+        showTutorialToast: (text) => showInfoToast(context, text),
         showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
         showMediaItemTutorialCoachMark: tutorialCoachMark.show,
         skipTutorialCoachMark: () {

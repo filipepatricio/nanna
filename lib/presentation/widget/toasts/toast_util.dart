@@ -1,9 +1,8 @@
+import 'package:better_informed_mobile/presentation/widget/toasts/info_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
-import 'info_toast.dart';
-
-void showToast(BuildContext context, String text) {
+void showInfoToast(BuildContext context, String text) {
   showToastWidget(
     InfoToast(text: text),
     context: context,

@@ -30,6 +30,13 @@ class TopicView extends HookWidget {
     final eventController = useEventTrackController();
     final pageIndex = useState(0);
 
+    useEffect(
+      () {
+        cubit.initializeTutorialCoachMark();
+      },
+      [cubit],
+    );
+
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         shouldShowSummaryCardTutorialCoachMark: () {
