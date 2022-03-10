@@ -17,9 +17,11 @@ class TopicAppBar extends HookWidget {
   final ValueNotifier<double> scrollPositionNotifier;
   final VoidCallback onArticlesLabelTap;
   final VoidCallback onArrowTap;
+  final ValueNotifier<bool> isShowingTutorialToast;
 
   const TopicAppBar({
     required this.topic,
+    required this.isShowingTutorialToast,
     required this.scrollPositionNotifier,
     required this.onArticlesLabelTap,
     required this.onArrowTap,
@@ -66,7 +68,8 @@ class TopicAppBar extends HookWidget {
       titleSpacing: 0,
       automaticallyImplyLeading: false,
       centerTitle: true,
-      systemOverlayStyle: isExpanded.value ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      systemOverlayStyle:
+          isExpanded.value && !isShowingTutorialToast.value ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       // Because expandedHeight automatically includes the status bar height, I have to remove it from this value
       expandedHeight: AppDimens.topicViewHeaderImageHeight(context) - MediaQuery.of(context).viewPadding.top,
       flexibleSpace: FlexibleSpaceBar(

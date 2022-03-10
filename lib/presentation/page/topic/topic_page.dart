@@ -186,6 +186,7 @@ class _TopicIdleView extends HookWidget {
         generalViewController: scrollController,
       ),
     );
+    final isShowingTutorialToast = useState(false);
 
     useEffect(
       () {
@@ -196,7 +197,16 @@ class _TopicIdleView extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        showTutorialToast: (text) => showInfoToast(context, text),
+        showTutorialToast: (text) {
+          isShowingTutorialToast.value = true;
+          showInfoToast(
+            context: context,
+            text: text,
+            onDismiss: () {
+              isShowingTutorialToast.value = false;
+            },
+          );
+        },
         showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
         showMediaItemTutorialCoachMark: tutorialCoachMark.show,
         skipTutorialCoachMark: () {
@@ -249,6 +259,7 @@ class _TopicIdleView extends HookWidget {
                       slivers: [
                         TopicAppBar(
                           topic: topic,
+                          isShowingTutorialToast: isShowingTutorialToast,
                           scrollPositionNotifier: scrollPositionNotifier,
                           onArticlesLabelTap: () => _scrollToArticles(context, scrollController),
                           onArrowTap: () => _scrollToSummary(context, scrollController),

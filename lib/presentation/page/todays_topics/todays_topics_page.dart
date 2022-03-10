@@ -42,7 +42,10 @@ class TodaysTopicsPage extends HookWidget {
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
-          showInfoToast(context, text);
+          showInfoToast(
+            context: context,
+            text: text,
+          );
         }),
       );
     });

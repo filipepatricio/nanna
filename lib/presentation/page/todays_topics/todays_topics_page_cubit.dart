@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_b
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.dart';
-import 'package:better_informed_mobile/domain/tutorial/use_case/reset_tutorial_flow_use_case.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
@@ -23,7 +22,6 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final IncomingPushDataRefreshStreamUseCase _incomingPushDataRefreshStreamUseCase;
-  final ResetTutorialFlowUseCase _resetTutorialFlowUseCase;
 
   late bool _isTodaysTopicsTutorialStepSeen;
   late CurrentBrief _currentBrief;
@@ -36,7 +34,6 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
     this._setTutorialStepSeenUseCase,
     this._trackActivityUseCase,
     this._incomingPushDataRefreshStreamUseCase,
-    this._resetTutorialFlowUseCase,
   ) : super(TodaysTopicsPageState.loading());
 
   @override
@@ -47,7 +44,6 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
 
   Future<void> initialize() async {
     await loadTodaysTopics();
-    await _resetTutorialFlowUseCase.call();
 
     _dataRefreshSubscription = _incomingPushDataRefreshStreamUseCase().listen((event) {
       Fimber.d('Incoming push - refreshing todays topics');
