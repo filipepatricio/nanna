@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
@@ -98,7 +99,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         contents: [
           TargetContent(
             align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(bottom: 50),
+            customPosition: CustomTargetContentPosition(bottom: 100),
             builder: (context, controller) {
               return TutorialTooltip(
                 text: LocaleKeys.tutorial_topicTooltipText.tr(),
@@ -112,7 +113,8 @@ class TopicPageCubit extends Cubit<TopicPageState> {
           )
         ],
         shape: ShapeLightFocus.RRect,
-        radius: 0,
+        radius: AppDimens.m,
+        paddingFocus: AppDimens.m,
       ),
     );
   }
@@ -142,7 +144,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
           )
         ],
         shape: ShapeLightFocus.RRect,
-        radius: 0,
+        radius: AppDimens.m,
       ),
     );
   }
