@@ -29,10 +29,10 @@ class BetterInformedApp extends HookWidget {
         // Take the textScaleFactor from system and make
         // sure that it's no less than 1.0, but no more
         // than 1.5.
-        final num constrainedTextScaleFactor = mediaQueryData.textScaleFactor.clamp(1.0, 1.5);
+        final constrainedTextScaleFactor = mediaQueryData.textScaleFactor.clamp(1.0, 1.5);
 
         return MediaQuery(
-          data: mediaQueryData.copyWith(textScaleFactor: constrainedTextScaleFactor as double?),
+          data: mediaQueryData.copyWith(textScaleFactor: constrainedTextScaleFactor),
           child: child!,
         );
       },

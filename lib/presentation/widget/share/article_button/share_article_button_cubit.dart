@@ -1,17 +1,18 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_image_use_case.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
 
 enum ShareArticleButtonState { idle, processing }
 
 @injectable
 class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
-  ShareArticleButtonCubit() : super(ShareArticleButtonState.idle);
+  ShareArticleButtonCubit(this._shareImageUseCase) : super(ShareArticleButtonState.idle);
+
+  final ShareImageUseCase _shareImageUseCase;
 
   Future<void> share(MediaItemArticle article) async {
     emit(ShareArticleButtonState.processing);
@@ -21,17 +22,11 @@ class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
         article: article,
       ),
     );
-
-    await shareImage(
+    final image = await generateShareImage(
       generator,
       '${article.id}_share_article.png',
-      tr(
-        LocaleKeys.shareArticle_message,
-        args: [
-          article.url,
-        ],
-      ),
     );
+    await _shareImageUseCase(image, article.url);
 
     emit(ShareArticleButtonState.idle);
   }

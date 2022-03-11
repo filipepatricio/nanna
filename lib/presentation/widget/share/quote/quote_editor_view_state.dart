@@ -10,7 +10,8 @@ class QuoteEditorViewState with _$QuoteEditorViewState {
   factory QuoteEditorViewState(
     List<QuoteVariantData> variants,
     int selectedIndex,
+    bool isInstagramAvailable,
   ) = _QuoteEditorViewState;
 
-  factory QuoteEditorViewState.initial() => QuoteEditorViewState(quoteVariantDataList, 0);
+  factory QuoteEditorViewState.initial() => QuoteEditorViewState(quoteVariantDataList, 0, false);
 }

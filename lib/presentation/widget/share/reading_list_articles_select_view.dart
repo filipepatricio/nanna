@@ -227,7 +227,7 @@ class _IdleView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
             child: FilledButton(
-              onTap: () => cubit.generateShareImage(),
+              onTap: () => cubit.shareImage(),
               text: LocaleKeys.common_next.tr(),
               fillColor: AppColors.darkGreyBackground,
               textColor: AppColors.white,

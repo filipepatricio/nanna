@@ -2,15 +2,18 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/util/custom_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/selection_controller_bundle.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_selectable_text.dart';
 import 'package:better_informed_mobile/presentation/widget/text_selection_controls/platform_text_selection_controls.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SelectableText;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 typedef ShareTextCallback = Function(String text);
 
-class CustomRichText extends HookWidget implements RichTextBase {
+class InformedRichText extends HookWidget implements RichTextBase {
   @override
   final TextSpan textSpan;
 
@@ -19,16 +22,29 @@ class CustomRichText extends HookWidget implements RichTextBase {
   final TextAlign textAlign;
   final int? maxLines;
   final ShareTextCallback? shareCallback;
+  final SelectionControllerBundle? selectionControllers;
 
-  const CustomRichText({
+  const InformedRichText({
     required this.textSpan,
     required this.highlightColor,
-    this.selectable = false,
     this.textAlign = TextAlign.start,
     this.maxLines,
     this.shareCallback,
     Key? key,
-  }) : super(key: key);
+  })  : selectable = false,
+        selectionControllers = null,
+        super(key: key);
+
+  const InformedRichText.selectable({
+    required this.textSpan,
+    required this.highlightColor,
+    required this.selectionControllers,
+    this.textAlign = TextAlign.start,
+    this.maxLines,
+    this.shareCallback,
+    Key? key,
+  })  : selectable = true,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +59,7 @@ class CustomRichText extends HookWidget implements RichTextBase {
         maxLines: maxLines,
         textAlign: textAlign,
         shareCallback: shareCallback,
+        selectionControllers: selectionControllers,
       ),
     );
   }
@@ -56,6 +73,7 @@ class _CustomTextPainter extends HookWidget {
   final TextAlign textAlign;
   final int? maxLines;
   final ShareTextCallback? shareCallback;
+  final SelectionControllerBundle? selectionControllers;
 
   const _CustomTextPainter({
     required this.size,
@@ -65,8 +83,10 @@ class _CustomTextPainter extends HookWidget {
     required this.textAlign,
     this.maxLines,
     this.shareCallback,
+    this.selectionControllers,
     Key? key,
-  }) : super(key: key);
+  })  : assert(selectable && selectionControllers != null || !selectable),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +126,12 @@ class _CustomTextPainter extends HookWidget {
       [spans],
     );
 
+    final controller = useTextSpanEditingController(
+      key: Key('${spansWithoutDecoration.hashCode}'),
+      textSpan: TextSpan(children: spansWithoutDecoration),
+    );
+    selectionControllers?.add(controller);
+
     return CustomPaint(
       size: textPainter.size,
       painter: _CustomHighlightTextPainter(
@@ -114,8 +140,9 @@ class _CustomTextPainter extends HookWidget {
         highlightColor,
       ),
       child: selectable
-          ? SelectableText.rich(
+          ? InformedSelectableText.rich(
               TextSpan(children: spansWithoutDecoration),
+              controller: controller,
               maxLines: maxLines,
               textAlign: textAlign,
               selectionControls: createPlatformSpecific(
@@ -126,6 +153,7 @@ class _CustomTextPainter extends HookWidget {
                   ),
                 ],
               ),
+              onSelectionChanged: (_, __) => selectionControllers?.unselectAllBut(controller.key),
             )
           : RichText(
               maxLines: maxLines,

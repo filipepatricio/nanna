@@ -13,7 +13,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 /// Make sure that changes to the view won't change depth of the main scroll
@@ -45,8 +46,8 @@ class TopicPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<TopicPageCubit>();
-    final tutorialCoachMark = cubit.tutorialCoachMark(context);
     final state = useCubitBuilder(cubit);
+    final tutorialCoachMark = cubit.tutorialCoachMark(context);
 
     useEffect(
       () {
@@ -179,16 +180,33 @@ class _TopicIdleView extends HookWidget {
 
     final modalScrollController = useMemoized(() => ModalScrollController.of(context));
     final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
-    final topicGestureManager = useMemoized(
+    final gestureManager = useMemoized(
       () => TopicVerticalDragManager(
         modalController: modalScrollController!,
         generalViewController: scrollController,
       ),
     );
+    final isShowingTutorialToast = useState(false);
+
+    useEffect(
+      () {
+        cubit.initializeTutorialStep();
+      },
+      [cubit],
+    );
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        showTutorialToast: (text) => showToast(context, text),
+        showTutorialToast: (text) {
+          isShowingTutorialToast.value = true;
+          showInfoToast(
+            context: context,
+            text: text,
+            onDismiss: () {
+              isShowingTutorialToast.value = false;
+            },
+          );
+        },
         showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
         showMediaItemTutorialCoachMark: tutorialCoachMark.show,
         skipTutorialCoachMark: () {
@@ -201,64 +219,67 @@ class _TopicIdleView extends HookWidget {
 
     return RawGestureDetector(
       gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
-        [topicGestureManager.dragGestureRecognizer, topicGestureManager.tapGestureRecognizer],
+        [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
       ),
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
         onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
         child: Listener(
           onPointerUp: (_) => _snapPage(context, scrollController),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Opacity(
-                  opacity: .6,
-                  child: CloudinaryProgressiveImage(
-                    width: backgroundImageWidth,
-                    height: backgroundImageHeight,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                    testImage: AppRasterGraphics.testReadingListCoverImage,
-                    cloudinaryTransformation: cloudinaryProvider
-                        .withPublicId(topic.coverImage.publicId)
-                        .transform()
-                        .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
-                        .fit(),
-                  ),
-                ),
-              ),
-              NoScrollGlow(
-                child: CustomScrollView(
-                  physics: NeverScrollableScrollPhysics(
-                    parent: getPlatformScrollPhysics(
-                      const AlwaysScrollableScrollPhysics(),
+          child: ScrollsToTop(
+            onScrollsToTop: (_) => gestureManager.animateToStart(),
+            child: Scaffold(
+              body: Stack(
+                children: [
+                  Positioned.fill(
+                    child: CloudinaryProgressiveImage(
+                      width: backgroundImageWidth,
+                      height: backgroundImageHeight,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      testImage: AppRasterGraphics.testReadingListCoverImage,
+                      cloudinaryTransformation: cloudinaryProvider
+                          .withPublicId(topic.coverImage.publicId)
+                          .transform()
+                          .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
+                          .fit(),
                     ),
                   ),
-                  controller: scrollController,
-                  slivers: [
-                    TopicAppBar(
-                      topic: topic,
-                      scrollPositionNotifier: scrollPositionNotifier,
-                      onArticlesLabelTap: () => _scrollToArticles(context, scrollController),
-                      onArrowTap: () => _scrollToSummary(context, scrollController),
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          TopicView(
-                            topic: topic,
-                            cubit: cubit,
-                            summaryCardKey: cubit.summaryCardKey,
-                            mediaItemKey: cubit.mediaItemKey,
-                            scrollController: scrollController,
-                          ),
-                        ],
+                  NoScrollGlow(
+                    child: CustomScrollView(
+                      physics: NeverScrollableScrollPhysics(
+                        parent: getPlatformScrollPhysics(
+                          const AlwaysScrollableScrollPhysics(),
+                        ),
                       ),
-                    )
-                  ],
-                ),
+                      controller: scrollController,
+                      slivers: [
+                        TopicAppBar(
+                          topic: topic,
+                          isShowingTutorialToast: isShowingTutorialToast,
+                          scrollPositionNotifier: scrollPositionNotifier,
+                          onArticlesLabelTap: () => _scrollToArticles(context, scrollController),
+                          onArrowTap: () => _scrollToSummary(context, scrollController),
+                        ),
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              TopicView(
+                                topic: topic,
+                                cubit: cubit,
+                                summaryCardKey: cubit.summaryCardKey,
+                                mediaItemKey: cubit.mediaItemKey,
+                                scrollController: scrollController,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

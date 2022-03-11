@@ -2,9 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_state.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
@@ -15,7 +12,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
@@ -45,7 +42,10 @@ class TodaysTopicsPage extends HookWidget {
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
-          showToast(context, text);
+          showInfoToast(
+            context: context,
+            text: text,
+          );
         }),
       );
     });
@@ -58,52 +58,56 @@ class TodaysTopicsPage extends HookWidget {
     );
 
     return Scaffold(
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        child: Stack(
-          children: <Widget>[
-            RefreshIndicator(
-              onRefresh: cubit.loadTodaysTopics,
-              color: AppColors.darkGrey,
-              child: NoScrollGlow(
-                child: CustomScrollView(
-                  controller: scrollController,
-                  physics: AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
-                  slivers: [
-                    ScrollableSliverAppBar(
-                      scrollController: scrollController,
-                      title: LocaleKeys.todaysTopics_title.tr(),
-                    ),
-                    state.maybeMap(
-                      idle: (state) => _IdleContent(
-                        todaysTopicsCubit: cubit,
-                        currentBrief: state.currentBrief,
+      body: TabBarListener(
+        currentPage: context.routeData,
+        controller: scrollController,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          child: Stack(
+            children: <Widget>[
+              RefreshIndicator(
+                onRefresh: cubit.loadTodaysTopics,
+                color: AppColors.darkGrey,
+                child: NoScrollGlow(
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    physics: AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
+                    slivers: [
+                      ScrollableSliverAppBar(
                         scrollController: scrollController,
-                        cardStackWidth: cardStackWidth,
-                        cardStackHeight: cardStackHeight,
+                        title: LocaleKeys.todaysTopics_title.tr(),
                       ),
-                      error: (_) => SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: cardSectionMaxHeight,
-                          child: StackedCardsErrorView(
-                            retryAction: cubit.loadTodaysTopics,
-                            cardStackWidth: cardStackWidth,
+                      state.maybeMap(
+                        idle: (state) => _IdleContent(
+                          todaysTopicsCubit: cubit,
+                          currentBrief: state.currentBrief,
+                          scrollController: scrollController,
+                          cardStackWidth: cardStackWidth,
+                          cardStackHeight: cardStackHeight,
+                        ),
+                        error: (_) => SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: cardSectionMaxHeight,
+                            child: StackedCardsErrorView(
+                              retryAction: cubit.loadTodaysTopics,
+                              cardStackWidth: cardStackWidth,
+                            ),
                           ),
                         ),
-                      ),
-                      loading: (_) => SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: cardSectionMaxHeight,
-                          child: StackedCardsLoadingView(cardStackWidth: cardStackWidth),
+                        loading: (_) => SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: cardSectionMaxHeight,
+                            child: StackedCardsLoadingView(cardStackWidth: cardStackWidth),
+                          ),
                         ),
+                        orElse: () => const SizedBox(),
                       ),
-                      orElse: () => const SizedBox(),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -128,19 +132,7 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabBarCubit = useCubit<TabBarCubit>();
     final lastPageAnimationProgressState = useMemoized(() => ValueNotifier(0.0));
-
-    useCubitListener<TabBarCubit, TabBarState>(tabBarCubit, (cubit, state, context) {
-      state.maybeWhen(
-        tabPressed: (tab) {
-          if (tab == MainTab.today) {
-            scrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOutCubic);
-          }
-        },
-        orElse: () {},
-      );
-    });
 
     useEffect(
       () {

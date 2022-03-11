@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
@@ -91,4 +92,6 @@ class TopicVerticalDragManager {
         primaryDelta < 0 &&
         (_activeController?.position.pixels ?? 0.0) >= (_activeController?.position.maxScrollExtent ?? 0.0);
   }
+
+  Future<void> animateToStart() => generalViewController.animateToStart();
 }

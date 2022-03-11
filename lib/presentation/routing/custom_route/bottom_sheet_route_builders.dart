@@ -60,7 +60,7 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
 }
 
 Route<T> cupertinoBottomSheetPageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
-  final scaffold = CupertinoScaffold.of(context) ?? CupertinoScaffold.of(dashboardPageKey.currentContext!);
+  final scaffold = CupertinoScaffold.of(context) ?? CupertinoScaffold.of(tabBarPageKey.currentContext!);
   final topRadius = scaffold?.topRadius;
 
   return CupertinoModalBottomSheetRoute<T>(

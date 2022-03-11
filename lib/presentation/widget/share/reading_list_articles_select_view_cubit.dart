@@ -1,22 +1,24 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_image_use_case.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic/share_reading_list_view.dart';
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
 
 const articlesSelectionLimit = 3;
 
 @injectable
 class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelectViewState> {
+  ReadingListArticlesSelectViewCubit(this._shareImageUseCase)
+      : super(ReadingListArticlesSelectViewState.initializing());
+
+  final ShareImageUseCase _shareImageUseCase;
+
   late Topic _topic;
   final Set<int> _selectedIndexes = {};
-
-  ReadingListArticlesSelectViewCubit() : super(ReadingListArticlesSelectViewState.initializing());
 
   void initialize(Topic topic) {
     _topic = topic;
@@ -36,7 +38,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
     _emitIdleState();
   }
 
-  Future<void> generateShareImage() async {
+  Future<void> shareImage() async {
     emit(ReadingListArticlesSelectViewState.generatingShareImage());
 
     final articles =
@@ -48,7 +50,8 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
         articles: articles,
       ),
     );
-    await shareImage(generator, '${_topic.id}_share_topic.png', LocaleKeys.shareTopic_message.tr(args: [_topic.url]));
+    final image = await generateShareImage(generator, '${_topic.id}_share_topic.png');
+    await _shareImageUseCase(image, _topic.url);
 
     emit(ReadingListArticlesSelectViewState.shared());
   }

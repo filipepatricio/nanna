@@ -14,7 +14,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/page_view_util.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
@@ -28,6 +28,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 
 typedef MediaItemNavigationCallback = void Function(int index);
 
@@ -257,6 +258,32 @@ class _PremiumArticleView extends HookWidget {
 
   bool get articleWithImage => article.image != null;
 
+  bool _updateScrollPosition(
+    ScrollNotification scrollInfo,
+    ValueNotifier<bool> showBackToTopicButton,
+    ValueNotifier<double> readProgress,
+  ) {
+    if (controller.hasClients) {
+      if (scrollInfo is ScrollUpdateNotification) {
+        final newProgress = controller.offset / controller.position.maxScrollExtent;
+        showBackToTopicButton.value = newProgress < readProgress.value;
+        readProgress.value = newProgress.isFinite ? newProgress : 0;
+      }
+      if (scrollInfo is ScrollEndNotification) {
+        var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
+        if (readScrollOffset < 0) {
+          readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
+        }
+
+        cubit.updateScrollData(
+          readScrollOffset,
+          controller.position.maxScrollExtent,
+        );
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final showBackToTopicButton = useState(false);
@@ -280,121 +307,89 @@ class _PremiumArticleView extends HookWidget {
     );
 
     return RawGestureDetector(
-      gestures: <Type, GestureRecognizerFactory>{
-        VerticalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
-          () => VerticalDragGestureRecognizer(),
-          (VerticalDragGestureRecognizer instance) {
-            instance
-              ..onStart = gestureManager.handleDragStart
-              ..onUpdate = gestureManager.handleDragUpdate
-              ..onEnd = gestureManager.handleDragEnd
-              ..onCancel = gestureManager.handleDragCancel;
-          },
-        ),
-        TapGestureRecognizer: GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-          () => TapGestureRecognizer(),
-          (TapGestureRecognizer instance) {
-            instance.onTapDown = (_) {
-              gestureManager.resetScrollVelocity();
-            };
-          },
-        ),
-      },
+      gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
+        [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
+      ),
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
-        onNotification: (notification) {
-          if (controller.hasClients) {
-            if (notification is ScrollUpdateNotification) {
-              final newProgress = controller.offset / controller.position.maxScrollExtent;
-              showBackToTopicButton.value = newProgress < readProgress.value;
-              readProgress.value = newProgress.isFinite ? newProgress : 0;
-            }
-            if (notification is ScrollEndNotification) {
-              var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
-              if (readScrollOffset < 0) {
-                readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
-              }
-
-              cubit.updateScrollData(
-                readScrollOffset,
-                controller.position.maxScrollExtent,
-              );
-            }
-          }
-          return false;
-        },
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            PageView(
-              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-              controller: pageController,
-              scrollDirection: Axis.vertical,
-              onPageChanged: (page) {
-                showBackToTopicButton.value = false;
-              },
+        onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, showBackToTopicButton, readProgress),
+        child: ScrollsToTop(
+          onScrollsToTop: (_) => gestureManager.animateToStart(),
+          child: Scaffold(
+            body: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                if (articleWithImage)
-                  ArticleImageView(
-                    article: article,
-                    controller: pageController,
-                    fullHeight: fullHeight,
-                  ),
-                Row(
+                PageView(
+                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                  controller: pageController,
+                  scrollDirection: Axis.vertical,
+                  onPageChanged: (page) {
+                    showBackToTopicButton.value = false;
+                  },
                   children: [
-                    Expanded(
-                      child: NoScrollGlow(
-                        child: CustomScrollView(
-                          physics: const NeverScrollableScrollPhysics(
-                            parent: BottomBouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics(),
+                    if (articleWithImage)
+                      ArticleImageView(
+                        article: article,
+                        controller: pageController,
+                        fullHeight: fullHeight,
+                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: NoScrollGlow(
+                            child: CustomScrollView(
+                              physics: const NeverScrollableScrollPhysics(
+                                parent: BottomBouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
+                                ),
+                              ),
+                              controller: controller,
+                              slivers: [
+                                SliverList(
+                                  delegate: SliverChildListDelegate(
+                                    [
+                                      ArticleContentView(
+                                        article: article,
+                                        content: content,
+                                        cubit: cubit,
+                                        controller: controller,
+                                        articleContentKey: _articleContentKey,
+                                        scrollToPosition: () => scrollToPosition(readArticleProgress),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height: footerHeight,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          controller: controller,
-                          slivers: [
-                            SliverList(
-                              delegate: SliverChildListDelegate(
-                                [
-                                  ArticleContentView(
-                                    article: article,
-                                    content: content,
-                                    cubit: cubit,
-                                    controller: controller,
-                                    articleContentKey: _articleContentKey,
-                                    scrollToPosition: () => scrollToPosition(readArticleProgress),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SliverToBoxAdapter(
-                              child: SizedBox(
-                                height: footerHeight,
-                              ),
-                            ),
-                          ],
                         ),
-                      ),
+                        _ArticleProgressBar(readProgress: readProgress),
+                      ],
                     ),
-                    _ArticleProgressBar(readProgress: readProgress),
                   ],
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: _ActionsBar(
+                    article: article,
+                    fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                    controller: pageController,
+                  ),
+                ),
+                _BackToTopicButton(
+                  showButton: showBackToTopicButton,
+                  fromTopic: fromTopic,
                 ),
               ],
             ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: _ActionsBar(
-                article: article,
-                fullHeight: articleWithImage ? fullHeight : appBarHeight,
-                controller: pageController,
-              ),
-            ),
-            _BackToTopicButton(
-              showButton: showBackToTopicButton,
-              fromTopic: fromTopic,
-            ),
-          ],
+          ),
         ),
       ),
     );

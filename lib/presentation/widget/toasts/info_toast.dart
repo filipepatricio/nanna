@@ -22,11 +22,11 @@ class InfoToast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQueryData.fromWindow(window).padding.top;
+    final topPaddingFromSafeArea = MediaQuery.of(context).padding.top;
 
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        const SizedBox(),
         Positioned(
           top: -topPadding,
           left: 0,
@@ -41,7 +41,7 @@ class InfoToast extends StatelessWidget {
               padding: EdgeInsets.only(
                 left: AppDimens.l,
                 right: AppDimens.l,
-                top: AppDimens.l + topPadding,
+                top: AppDimens.l + topPaddingFromSafeArea,
                 bottom: AppDimens.s,
               ),
               decoration: const BoxDecoration(
