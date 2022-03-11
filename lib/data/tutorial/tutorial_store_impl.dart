@@ -20,5 +20,5 @@ class TutorialStoreImpl extends TutorialStore {
   }
 
   @override
-  Future<void> resetUserTutorial(String userUuid) => _database.resetTutorial(userUuid);
+  Future<void> resetUserTutorial(String userUuid) async => await _database.resetTutorial(userUuid);
 }

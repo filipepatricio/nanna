@@ -1,9 +1,12 @@
+import 'package:better_informed_mobile/presentation/widget/toasts/info_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
-import 'info_toast.dart';
-
-void showToast(BuildContext context, String text) {
+void showInfoToast({
+  required BuildContext context,
+  required String text,
+  VoidCallback? onDismiss,
+}) {
   showToastWidget(
     InfoToast(text: text),
     context: context,
@@ -16,5 +19,6 @@ void showToast(BuildContext context, String text) {
     duration: const Duration(seconds: 10),
     curve: Curves.easeOutCubic,
     reverseCurve: Curves.easeOutCubic,
+    onDismiss: onDismiss,
   );
 }
