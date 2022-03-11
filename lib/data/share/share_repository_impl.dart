@@ -15,10 +15,11 @@ const _socialShareApps = {
 class ShareRepositoryImpl implements ShareRepository {
   @override
   Future<List<ShareApp>> getShareableApps() async {
-    final apps = await SocialShare.checkInstalledAppsForShare() as Map<String, bool>?;
-    if (apps == null) return [];
+    final apps = await SocialShare.checkInstalledAppsForShare();
+    final entries = apps?.entries.map((e) => MapEntry(e.key as String, e.value as bool)).toList();
+    if (entries == null) return [];
 
-    return apps.entries
+    return entries
         .where((entry) => _socialShareApps.containsKey(entry.key))
         .where((entry) => entry.value)
         .map((entry) => _socialShareApps[entry.key])
