@@ -232,20 +232,17 @@ class _TopicIdleView extends HookWidget {
               body: Stack(
                 children: [
                   Positioned.fill(
-                    child: Opacity(
-                      opacity: .6,
-                      child: CloudinaryProgressiveImage(
-                        width: backgroundImageWidth,
-                        height: backgroundImageHeight,
-                        fit: BoxFit.cover,
-                        alignment: Alignment.center,
-                        testImage: AppRasterGraphics.testReadingListCoverImage,
-                        cloudinaryTransformation: cloudinaryProvider
-                            .withPublicId(topic.coverImage.publicId)
-                            .transform()
-                            .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
-                            .fit(),
-                      ),
+                    child: CloudinaryProgressiveImage(
+                      width: backgroundImageWidth,
+                      height: backgroundImageHeight,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      testImage: AppRasterGraphics.testReadingListCoverImage,
+                      cloudinaryTransformation: cloudinaryProvider
+                          .withPublicId(topic.coverImage.publicId)
+                          .transform()
+                          .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
+                          .fit(),
                     ),
                   ),
                   NoScrollGlow(
