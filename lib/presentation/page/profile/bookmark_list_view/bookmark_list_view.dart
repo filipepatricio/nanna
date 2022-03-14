@@ -1,17 +1,21 @@
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_sort_view.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_list_tile.dart';
+import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_empty_page.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -38,7 +42,22 @@ class BookmarkListView extends HookWidget {
       ],
     );
     final state = useCubitBuilder(cubit);
+
     final scrollController = useScrollController();
+    final snackbarController = useMemoized(() => SnackbarController());
+
+    useCubitListener<BookmarkListViewCubit, BookmarkListViewState>(cubit, (cubit, state, context) {
+      state.mapOrNull(
+        bookmarkRemoved: (state) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: tr(LocaleKeys.bookmark_unbookmarkSuccess),
+              type: SnackbarMessageType.positive,
+            ),
+          );
+        },
+      );
+    });
 
     useEffect(
       () {
@@ -51,51 +70,60 @@ class BookmarkListView extends HookWidget {
       [cubit],
     );
 
-    return NextPageLoadExecutor(
-      enabled: state.shouldListen,
-      onNextPageLoad: cubit.loadNextPage,
-      scrollController: scrollController,
-      child: state.map(
-        initial: (_) => const SizedBox.shrink(),
-        loading: (_) => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _SelectedSortConfig(
-              configState: sortConfigState,
-              enabled: true,
-            ),
-            const Expanded(
-              child: Loader(),
-            ),
-          ],
-        ),
-        empty: (_) => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _SelectedSortConfig(
-              configState: sortConfigState,
-              enabled: false,
-            ),
-            Expanded(
-              child: ProfileEmptyPage(filter: filter),
-            ),
-          ],
-        ),
-        idle: (state) => _Idle(
-          bookmarks: state.bookmarks,
-          scrollController: scrollController,
-          sortConfigState: sortConfigState,
-        ),
-        loadMore: (state) => _Idle(
-          bookmarks: state.bookmarks,
-          scrollController: scrollController,
-          sortConfigState: sortConfigState,
-          withLoader: true,
-        ),
-        allLoaded: (state) => _Idle(
-          bookmarks: state.bookmarks,
-          scrollController: scrollController,
-          sortConfigState: sortConfigState,
+    return SnackbarParentView(
+      controller: snackbarController,
+      child: NextPageLoadExecutor(
+        enabled: state.shouldListen,
+        onNextPageLoad: cubit.loadNextPage,
+        scrollController: scrollController,
+        child: state.maybeMap(
+          initial: (_) => const SizedBox.shrink(),
+          loading: (_) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _SelectedSortConfig(
+                configState: sortConfigState,
+                enabled: true,
+              ),
+              const Expanded(
+                child: Loader(
+                  color: AppColors.limeGreen,
+                ),
+              ),
+            ],
+          ),
+          empty: (_) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _SelectedSortConfig(
+                configState: sortConfigState,
+                enabled: false,
+              ),
+              Expanded(
+                child: ProfileEmptyPage(filter: filter),
+              ),
+            ],
+          ),
+          idle: (state) => _Idle(
+            cubit: cubit,
+            bookmarks: state.bookmarks,
+            scrollController: scrollController,
+            sortConfigState: sortConfigState,
+          ),
+          loadMore: (state) => _Idle(
+            cubit: cubit,
+            bookmarks: state.bookmarks,
+            scrollController: scrollController,
+            sortConfigState: sortConfigState,
+            withLoader: true,
+          ),
+          allLoaded: (state) => _Idle(
+            cubit: cubit,
+            bookmarks: state.bookmarks,
+            scrollController: scrollController,
+            sortConfigState: sortConfigState,
+          ),
+          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );
@@ -104,6 +132,7 @@ class BookmarkListView extends HookWidget {
 
 class _Idle extends StatelessWidget {
   const _Idle({
+    required this.cubit,
     required this.bookmarks,
     required this.scrollController,
     required this.sortConfigState,
@@ -111,7 +140,8 @@ class _Idle extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final List<Bookmark> bookmarks;
+  final BookmarkListViewCubit cubit;
+  final List<BookmarkTileCover> bookmarks;
   final ScrollController scrollController;
   final bool withLoader;
   final ValueNotifier<BookmarkSortConfig> sortConfigState;
@@ -122,7 +152,7 @@ class _Idle extends StatelessWidget {
       controller: scrollController,
       slivers: [
         SliverAppBar(
-          expandedHeight: 60,
+          expandedHeight: sortViewHeight,
           collapsedHeight: 0,
           toolbarHeight: 0,
           flexibleSpace: _SelectedSortConfig(
@@ -138,7 +168,10 @@ class _Idle extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               return BookmarkListTile(
-                bookmark: bookmarks[index],
+                bookmarkCover: bookmarks[index],
+                onRemoveBookmarkPressed: (bookmark) {
+                  cubit.removeBookmark(bookmark);
+                },
               );
             },
             childCount: bookmarks.length,
@@ -167,21 +200,14 @@ class _SelectedSortConfig extends StatelessWidget {
 
   final ValueNotifier<BookmarkSortConfig> configState;
   final bool enabled;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      alignment: Alignment.centerLeft,
-      color: AppColors.background,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppDimens.l,
-      ),
-      child: BookmarkSortView(
-        config: enabled ? configState.value : null,
-        onSortConfigChange: (newConfig) {
-          return configState.value = newConfig;
-        },
-      ),
+    return BookmarkSortView(
+      config: enabled ? configState.value : null,
+      onSortConfigChange: (newConfig) {
+        return configState.value = newConfig;
+      },
     );
   }
 }

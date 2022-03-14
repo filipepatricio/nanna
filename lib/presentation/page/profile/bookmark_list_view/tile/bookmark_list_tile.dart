@@ -2,28 +2,36 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
+import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
+import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 const _aspectRatio = 0.64;
 const _contentWidthFactor = 0.4;
 
+typedef OnRemoveBookmarkPressed = void Function(Bookmark bookmark);
+
 class BookmarkListTile extends StatelessWidget {
   const BookmarkListTile({
-    required this.bookmark,
+    required this.bookmarkCover,
+    required this.onRemoveBookmarkPressed,
     Key? key,
   }) : super(key: key);
 
-  final Bookmark bookmark;
+  final BookmarkTileCover bookmarkCover;
+  final OnRemoveBookmarkPressed onRemoveBookmarkPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +58,7 @@ class BookmarkListTile extends StatelessWidget {
                         aspectRatio: _aspectRatio,
                         child: LayoutBuilder(
                           builder: (context, constraints) {
-                            return bookmark.getContent(
+                            return bookmarkCover.getContent(
                               context,
                               Size(
                                 constraints.maxWidth,
@@ -71,19 +79,23 @@ class BookmarkListTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        bookmark.title,
+                        bookmarkCover.bookmark.title,
                         style: AppTypography.b1Bold,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      ...bookmark.updatedLabel,
+                      ...bookmarkCover.bookmark.updatedLabel,
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          bookmark.shareButton,
+                          bookmarkCover.bookmark.getShareButton(context),
                           const SizedBox(width: AppDimens.m),
-                          bookmark.bookmarkButton,
+                          _BookmarkRemoveButton(
+                            onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
+                              bookmarkCover.bookmark,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -92,11 +104,36 @@ class BookmarkListTile extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            height: 1,
-            color: AppColors.greyDividerColor,
-          ),
+          const InformedDivider(),
         ],
+      ),
+    );
+  }
+}
+
+class _BookmarkRemoveButton extends StatelessWidget {
+  const _BookmarkRemoveButton({
+    required this.onRemoveBookmarkPressed,
+    Key? key,
+  }) : super(key: key);
+
+  final VoidCallback onRemoveBookmarkPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onRemoveBookmarkPressed,
+      child: SizedBox.square(
+        dimension: AppDimens.bookmarkIconSize,
+        child: Padding(
+          padding: const EdgeInsets.all(AppDimens.xs),
+          child: Center(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              child: SvgPicture.asset(AppVectorGraphics.heartSelected),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -105,8 +142,8 @@ class BookmarkListTile extends StatelessWidget {
 extension on Bookmark {
   String get title {
     return data.map(
-      article: (data) => data.article.title,
-      topic: (data) => data.topic.title,
+      article: (data) => data.article.strippedTitle,
+      topic: (data) => data.topic.strippedTitle,
       unknown: (_) => '',
     );
   }
@@ -118,67 +155,87 @@ extension on Bookmark {
             UpdatedLabel(
               dateTime: data.topic.lastUpdatedAt,
               backgroundColor: AppColors.transparent,
+              textStyle: AppTypography.subH2BoldSmall.copyWith(
+                color: AppColors.textGrey,
+                letterSpacing: 1,
+              ),
             ),
           ],
         ) ??
         const [];
   }
 
-  Widget get shareButton {
+  Widget getShareButton(BuildContext context) {
     return data.map(
       article: (data) => ShareArticleButton(
         backgroundColor: AppColors.transparent,
         article: data.article,
       ),
       topic: (data) => ShareButton(
-        onTap: () {},
+        onTap: () => shareReadingList(context, data.topic),
         backgroundColor: AppColors.transparent,
       ),
       unknown: (_) => const SizedBox(),
     );
   }
+}
 
-  Widget get bookmarkButton {
-    return data.map(
-      article: (data) => BookmarkButton.article(
-        article: data.article,
-        mode: BookmarkButtonMode.color,
-      ),
-      topic: (data) => BookmarkButton.topic(
-        topic: data.topic,
-        mode: BookmarkButtonMode.color,
-      ),
-      unknown: (_) => const SizedBox(),
+extension on BookmarkTileCover {
+  Widget getContent(BuildContext context, Size size) {
+    return map(
+      standart: (_) {
+        return bookmark.data.mapOrNull(
+              article: (data) => ArticleListItem(
+                article: data.article,
+                themeColor: AppColors.background,
+                height: size.height,
+                width: size.width,
+              ),
+              topic: (_) => throw Exception('There should not be topic with static cover'),
+            ) ??
+            const SizedBox();
+      },
+      dynamic: (cover) {
+        return _createDynamicCover(
+              context,
+              size,
+              cover.indexOfType,
+              bookmark,
+            ) ??
+            const SizedBox();
+      },
     );
   }
 
-  Widget getContent(BuildContext context, Size size) {
-    return data.mapOrNull(
-          article: (data) => ArticleListItem(
-            article: data.article,
-            themeColor: AppColors.background,
-            height: size.height,
-            width: size.width,
-          ),
-          topic: (data) => PageViewStackedCards.variant(
-            variant: StackedCardsVariant.a,
-            coverSize: size,
-            child: ReadingListCoverSmall(
-              topic: data.topic,
-              onTap: () {
-                AutoRouter.of(context).push(
-                  TopicPage(
-                    topicSlug: data.topic.slug,
-                    topic: data.topic,
-                  ),
-                );
-              },
-            ),
-          ),
-        ) ??
-        SizedBox(
-          height: size.height,
-          width: size.width,
-        );
+  Widget? _createDynamicCover(
+    BuildContext context,
+    Size size,
+    int index,
+    Bookmark bookmark,
+  ) {
+    return bookmark.data.mapOrNull(
+      article: (data) => ArticleListItem(
+        article: data.article,
+        themeColor: AppColors.background,
+        cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+        height: size.height,
+        width: size.width,
+      ),
+      topic: (data) => PageViewStackedCards.variant(
+        variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
+        coverSize: size,
+        child: ReadingListCoverSmall(
+          topic: data.topic,
+          onTap: () {
+            AutoRouter.of(context).push(
+              TopicPage(
+                topicSlug: data.topic.slug,
+                topic: data.topic,
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }

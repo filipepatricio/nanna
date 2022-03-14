@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
+import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dart';
@@ -13,17 +14,24 @@ import 'switch_bookmark_state_use_case_test.mocks.dart';
   [
     BookmarkRepository,
     AnalyticsRepository,
+    BookmarkChangeNotifier,
   ],
 )
 void main() {
   late MockBookmarkRepository repository;
   late MockAnalyticsRepository analyticsRepository;
+  late MockBookmarkChangeNotifier bookmarkChangeNotifier;
   late SwitchBookmarkStateUseCase useCase;
 
   setUp(() {
     repository = MockBookmarkRepository();
     analyticsRepository = MockAnalyticsRepository();
-    useCase = SwitchBookmarkStateUseCase(repository, analyticsRepository);
+    bookmarkChangeNotifier = MockBookmarkChangeNotifier();
+    useCase = SwitchBookmarkStateUseCase(
+      repository,
+      analyticsRepository,
+      bookmarkChangeNotifier,
+    );
   });
 
   group('for article type', () {

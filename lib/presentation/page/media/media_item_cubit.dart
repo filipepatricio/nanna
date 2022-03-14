@@ -30,6 +30,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   late String? _briefId;
 
   String? get topicId => _topicId;
+
   String? get briefId => _briefId;
 
   Article? _currentFullArticle;

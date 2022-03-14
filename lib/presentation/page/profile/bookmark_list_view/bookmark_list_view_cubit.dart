@@ -5,11 +5,12 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.dart';
+import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_page_loader.dart';
+import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
-import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -18,10 +19,12 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   BookmarkListViewCubit(
     this._bookmarkPaginationEngineProvider,
     this._getBookmarkChangeStreamUseCase,
+    this._removeBookmarkUseCase,
   ) : super(BookmarkListViewState.initial());
 
   final BookmarkPaginationEngineProvider _bookmarkPaginationEngineProvider;
   final GetBookmarkChangeStreamUseCase _getBookmarkChangeStreamUseCase;
+  final RemoveBookmarkUseCase _removeBookmarkUseCase;
 
   late PaginationEngine<Bookmark> _paginationEngine;
 
@@ -45,7 +48,6 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   Future<void> loadNextPage() async {
     await state.mapOrNull(
       idle: (state) async {
-        Fimber.d('Load more');
         final filter = state.filter;
         final bookmarks = state.bookmarks;
 
@@ -55,6 +57,46 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
         _handlePaginationState(paginationState);
       },
     );
+  }
+
+  Future<void> removeBookmark(Bookmark bookmark) async {
+    final bookmarks = state.bookmarks;
+    final index = bookmarks.map((e) => e.bookmark).toList().indexOf(bookmark);
+
+    if (index != -1) {
+      final updatedList = _paginationEngine.removeItemAt(index);
+
+      final newState = state.mapOrNull(
+        idle: (state) {
+          if (updatedList.isEmpty) {
+            return BookmarkListViewState.empty(state.filter);
+          }
+          return state.copyWith(bookmarks: _getProcessedBookmarks(updatedList));
+        },
+        loadMore: (state) {
+          if (updatedList.isEmpty) {
+            return BookmarkListViewState.loading(state.filter);
+          }
+          return state.copyWith(bookmarks: _getProcessedBookmarks(updatedList));
+        },
+        allLoaded: (state) {
+          if (updatedList.isEmpty) {
+            return BookmarkListViewState.empty(state.filter);
+          }
+          return state.copyWith(bookmarks: _getProcessedBookmarks(updatedList));
+        },
+      );
+
+      if (newState != null) {
+        emit(newState);
+
+        await _removeBookmarkUseCase(bookmark);
+
+        final currentState = state;
+        emit(BookmarkListViewState.bookmarkRemoved());
+        emit(currentState);
+      }
+    }
   }
 
   void _registerBookmarkChangeNotification(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) {
@@ -93,15 +135,43 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     if (bookmarks.isEmpty) {
       emit(BookmarkListViewState.empty(filter));
     } else if (paginationState.allLoaded) {
-      emit(BookmarkListViewState.allLoaded(filter, bookmarks));
+      emit(BookmarkListViewState.allLoaded(filter, _getProcessedBookmarks(bookmarks)));
     } else {
-      emit(BookmarkListViewState.idle(filter, bookmarks));
+      emit(BookmarkListViewState.idle(filter, _getProcessedBookmarks(bookmarks)));
+    }
+  }
+
+  List<BookmarkTileCover> _getProcessedBookmarks(List<Bookmark> bookmarks) {
+    return _processBookmarks(bookmarks).toList(growable: false);
+  }
+
+  Iterable<BookmarkTileCover> _processBookmarks(List<Bookmark> bookmarks) sync* {
+    var topicIndex = 0;
+    var articleIndex = 0;
+
+    for (var i = 0; i < bookmarks.length; i++) {
+      final bookmark = bookmarks[i];
+
+      final cover = bookmark.data.mapOrNull(
+        article: (data) {
+          if (data.article.image == null) {
+            return BookmarkTileCover.dynamic(bookmark, articleIndex++);
+          } else {
+            return BookmarkTileCover.standart(bookmark);
+          }
+        },
+        topic: (data) {
+          return BookmarkTileCover.dynamic(bookmark, topicIndex++);
+        },
+      );
+
+      if (cover != null) yield cover;
     }
   }
 }
 
 extension on BookmarkListViewState {
-  List<Bookmark> get bookmarks {
+  List<BookmarkTileCover> get bookmarks {
     return maybeMap(
       idle: (state) => state.bookmarks,
       loadMore: (state) => state.bookmarks,
@@ -111,13 +181,13 @@ extension on BookmarkListViewState {
   }
 
   BookmarkFilter get requireFilter {
-    return map(
-      initial: (state) => throw Exception('Can not resolve filter on initial state'),
+    return maybeMap(
       loading: (state) => state.filter,
       empty: (state) => state.filter,
       idle: (state) => state.filter,
       loadMore: (state) => state.filter,
       allLoaded: (state) => state.filter,
+      orElse: () => throw Exception('Can not resolve filter at this state'),
     );
   }
 }

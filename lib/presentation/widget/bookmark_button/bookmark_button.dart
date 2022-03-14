@@ -19,7 +19,6 @@ import 'package:flutter_svg/svg.dart';
 
 const _loaderSize = 16.0;
 const _loaderStroke = 2.0;
-const _iconSize = 32.0;
 
 enum BookmarkButtonMode { image, color }
 
@@ -102,7 +101,7 @@ class BookmarkButton extends HookWidget {
     );
 
     return SizedBox.square(
-      dimension: _iconSize,
+      dimension: AppDimens.bookmarkIconSize,
       child: Padding(
         padding: const EdgeInsets.all(AppDimens.xs),
         child: Center(

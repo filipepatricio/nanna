@@ -6,9 +6,13 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+const _borderRadius = 10.0;
+const sortViewHeight = 60.0;
 
 class BookmarkSortConfig {
   const BookmarkSortConfig(this.sort, this.order);
@@ -53,7 +57,7 @@ Future<BookmarkSortConfig?> showBookmarkSortOptionBottomSheet(
   return showModalBottomSheet<BookmarkSortConfig>(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(10),
+        top: Radius.circular(_borderRadius),
       ),
     ),
     useRootNavigator: true,
@@ -89,35 +93,51 @@ class BookmarkSortView extends StatelessWidget {
           );
           if (newConfig != null) onSortConfigChange(newConfig);
         },
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(AppVectorGraphics.sort),
-            const SizedBox(width: AppDimens.s),
-            Text(
-              config!.type.title,
-              style: AppTypography.subH1Regular.copyWith(height: 1.0),
-            ),
-          ],
+        child: Container(
+          height: sortViewHeight,
+          alignment: Alignment.centerLeft,
+          color: AppColors.background,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.l,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset(AppVectorGraphics.sort),
+              const SizedBox(width: AppDimens.s),
+              Text(
+                config!.type.title,
+                style: AppTypography.subH1Regular.copyWith(height: 1.0),
+              ),
+            ],
+          ),
         ),
       );
     } else {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            AppVectorGraphics.sort,
-            color: AppColors.textGrey,
-          ),
-          const SizedBox(width: AppDimens.s),
-          Text(
-            tr(LocaleKeys.bookmark_sortBy),
-            style: AppTypography.subH1Regular.copyWith(
+      return Container(
+        height: sortViewHeight,
+        alignment: Alignment.centerLeft,
+        color: AppColors.background,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimens.l,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              AppVectorGraphics.sort,
               color: AppColors.textGrey,
-              height: 1.0,
             ),
-          ),
-        ],
+            const SizedBox(width: AppDimens.s),
+            Text(
+              tr(LocaleKeys.bookmark_sortBy),
+              style: AppTypography.subH1Regular.copyWith(
+                color: AppColors.textGrey,
+                height: 1.0,
+              ),
+            ),
+          ],
+        ),
       );
     }
   }
@@ -135,7 +155,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       borderRadius: const BorderRadius.vertical(
-        top: Radius.circular(10),
+        top: Radius.circular(_borderRadius),
       ),
       color: AppColors.background,
       child: SafeArea(
@@ -161,10 +181,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppDimens.m),
-              Container(
-                height: 1,
-                color: AppColors.greyDividerColor,
-              ),
+              const InformedDivider(),
               const SizedBox(height: AppDimens.l),
               ..._configMap.entries
                   .map(
