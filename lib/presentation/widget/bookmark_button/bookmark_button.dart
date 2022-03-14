@@ -14,11 +14,14 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_mes
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 const _loaderSize = 16.0;
 const _loaderStroke = 2.0;
+const _iconSize = 32.0;
+const _animationDuration = 100;
 
 enum BookmarkButtonMode { image, color }
 
@@ -65,12 +68,17 @@ class BookmarkButton extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<BookmarkButtonCubit>();
     final state = useCubitBuilder(cubit);
+    final _animationController = useAnimationController(
+      duration: const Duration(
+        milliseconds: _animationDuration,
+      ),
+    );
 
     useCubitListener<BookmarkButtonCubit, BookmarkButtonState>(
       cubit,
       (cubit, state, context) {
         state.mapOrNull(
-          bookmarkedSuccess: (_) {
+          bookmarkAdded: (_) {
             snackbarController?.showMessage(
               SnackbarMessage.simple(
                 message: tr(LocaleKeys.bookmark_bookmarkSuccess),
@@ -78,7 +86,7 @@ class BookmarkButton extends HookWidget {
               ),
             );
           },
-          unbookmarkedSuccess: (_) {
+          bookmarkRemoved: (_) {
             snackbarController?.showMessage(
               SnackbarMessage.simple(
                 message: tr(LocaleKeys.bookmark_unbookmarkSuccess),
@@ -100,28 +108,37 @@ class BookmarkButton extends HookWidget {
       ],
     );
 
-    return SizedBox.square(
-      dimension: AppDimens.bookmarkIconSize,
-      child: Padding(
-        padding: const EdgeInsets.all(AppDimens.xs),
-        child: Center(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 100),
-            child: state.maybeMap(
-              initializing: (_) => const SizedBox.square(
-                dimension: _loaderSize,
-                child: Loader(
-                  color: AppColors.limeGreen,
-                  strokeWidth: _loaderStroke,
+    return ScaleTransition(
+      scale: Tween(begin: 1.0, end: 1.4).animate(
+        CurvedAnimation(
+          parent: _animationController,
+          curve: Curves.bounceInOut,
+        ),
+      ),
+      child: SizedBox.square(
+        dimension: _iconSize,
+        child: Padding(
+          padding: const EdgeInsets.all(AppDimens.xs),
+          child: Center(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: _animationDuration),
+              child: state.maybeMap(
+                initializing: (_) => const SizedBox.square(
+                  dimension: _loaderSize,
+                  child: Loader(
+                    color: AppColors.limeGreen,
+                    strokeWidth: _loaderStroke,
+                  ),
                 ),
+                idle: (state) => _IdleButton(
+                  cubit: cubit,
+                  state: state.state,
+                  mode: mode,
+                  animationController: _animationController,
+                ),
+                switching: (state) => const _Switching(),
+                orElse: () => const SizedBox.shrink(),
               ),
-              idle: (state) => _IdleButton(
-                cubit: cubit,
-                state: state.state,
-                mode: mode,
-              ),
-              switching: (state) => const _Switching(),
-              orElse: () => const SizedBox.shrink(),
             ),
           ),
         ),
@@ -135,17 +152,24 @@ class _IdleButton extends StatelessWidget {
     required this.cubit,
     required this.state,
     required this.mode,
+    required this.animationController,
     Key? key,
   }) : super(key: key);
 
   final BookmarkButtonCubit cubit;
   final BookmarkState state;
   final BookmarkButtonMode mode;
+  final AnimationController animationController;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => cubit.switchState(),
+      onTap: () async {
+        await HapticFeedback.mediumImpact();
+        await animationController.forward();
+        await animationController.reverse();
+        await cubit.switchState();
+      },
       child: state.icon(mode),
     );
   }
