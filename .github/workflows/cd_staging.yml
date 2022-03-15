@@ -23,30 +23,19 @@ env:
   RUBY_VERSION: '2.7'
 
 jobs:
-  update_app_version:
-    name: Update app version
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      build_number: ${{ steps.result.outputs.build }}
-      patch_number: ${{ steps.result.outputs.patch }}
-    steps:
-      - name: Setup build number
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-          RUN_NUMBER: ${{ github.run_number }}
-          BUILD_NUMBER_OFFSET: 570
-          PATCH_NUMBER_OFFSET: -171
-        run: |
-          echo ::set-output name=build::$((RUN_NUMBER+BUILD_NUMBER_OFFSET))
-          echo ::set-output name=patch::$((RUN_NUMBER+PATCH_NUMBER_OFFSET))
-
   deploy_android:
-    needs: [update_app_version]
     name: Deploy Android to Firebase
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      # GitHub run number is being increased by last Bitrise build number so final build number for the app is correct
+      - name: Setup build number
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          ORIGINAL: ${{ github.run_number }}
+        run: |
+          echo ::set-env name=BUILD_NUMBER::$((ORIGINAL+570))
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -64,12 +53,6 @@ jobs:
         run: sh ./.github/scripts/decrypt_android_secrets.sh
         env:
           ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
-
-      - name: Update version in YAML
-        env:
-          BUILD_NUMBER: ${{ needs.update_app_version.outputs.build_number }}
-          PATCH_NUMBER: ${{ needs.update_app_version.outputs.patch_number }}
-        run: sed -i 's/999+999/${PATCH_NUMBER}+${BUILD_NUMBER}/g' pubspec.yaml
 
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
@@ -91,7 +74,9 @@ jobs:
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Build app
-        run: flutter build apk --release --dart-define=env=stage --flavor stage
+        env:
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+        run: flutter build apk --release --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"
 
       - name: Setup Firebase credentials
         run: |
@@ -109,11 +94,17 @@ jobs:
           FIREBASE_APP_ID_ANDROID: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
 
   deploy_ios:
-    needs: [update_app_version]
     name: Deploy iOS to TestFlight
     runs-on: macos-11
     timeout-minutes: 30
     steps:
+      - name: Setup build number
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          ORIGINAL: ${{ github.run_number }}
+        run: |
+          echo ::set-env name=BUILD_NUMBER::$((ORIGINAL+570))
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -121,12 +112,6 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
-
-      - name: Update version in YAML
-        env:
-          BUILD_NUMBER: ${{ needs.update_app_version.outputs.build_number }}
-          PATCH_NUMBER: ${{ needs.update_app_version.outputs.patch_number }}
-        run: sed -i 's/999+999/${PATCH_NUMBER}+${BUILD_NUMBER}/g' pubspec.yaml
 
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
@@ -149,7 +134,9 @@ jobs:
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Build app
-        run: flutter build ios --release --no-codesign --dart-define=env=stage --flavor stage --bundle-sksl-path warmup.sksl.json
+        env:
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+        run: flutter build ios --release --no-codesign --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"
 
       - name: Deploy app to Testflight
         uses: maierj/fastlane-action@v2.1.0
