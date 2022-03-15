@@ -23,9 +23,12 @@ env:
 
 jobs:
   update_app_version:
-    name: Deploy Android to Firebase
+    name: Update app version
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      build_number: ${{ steps.result.outputs.build }}
+      patch_number: ${{ steps.result.outputs.patch }}
     steps:
       - name: Setup build number
         env:
@@ -34,17 +37,8 @@ jobs:
           BUILD_NUMBER_OFFSET: 570
           PATCH_NUMBER_OFFSET: -171
         run: |
-          echo ::set-env name=BUILD_NUMBER::$((RUN_NUMBER+BUILD_NUMBER_OFFSET))
-          echo ::set-env name=PATCH_NUMBER::$((RUN_NUMBER+PATCH_NUMBER_OFFSET))
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Update version in YAML
-        env:
-          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-          PATCH_NUMBER: ${{ env.PATCH_NUMBER }}
-        run: sed -i 's/999+999/${PATCH_NUMBER}+${BUILD_NUMBER}/g' pubspec.yaml
+          echo ::set-output name=build::$((RUN_NUMBER+BUILD_NUMBER_OFFSET))
+          echo ::set-output name=patch::$((RUN_NUMBER+PATCH_NUMBER_OFFSET))
 
   deploy_android:
     needs: [update_app_version]
@@ -69,6 +63,12 @@ jobs:
         run: sh ./.github/scripts/decrypt_android_secrets.sh
         env:
           ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+
+      - name: Update version in YAML
+        env:
+          BUILD_NUMBER: ${{ needs.update_app_version.outputs.build_number }}
+          PATCH_NUMBER: ${{ needs.update_app_version.outputs.patch_number }}
+        run: sed -i 's/999+999/${PATCH_NUMBER}+${BUILD_NUMBER}/g' pubspec.yaml
 
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
@@ -120,6 +120,12 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
+
+      - name: Update version in YAML
+        env:
+          BUILD_NUMBER: ${{ needs.update_app_version.outputs.build_number }}
+          PATCH_NUMBER: ${{ needs.update_app_version.outputs.patch_number }}
+        run: sed -i 's/999+999/${PATCH_NUMBER}+${BUILD_NUMBER}/g' pubspec.yaml
 
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
