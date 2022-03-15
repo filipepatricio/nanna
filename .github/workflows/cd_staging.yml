@@ -69,7 +69,7 @@ jobs:
         env:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
           PATCH_NUMBER: ${{ env.PATCH_NUMBER }}
-        run: sed -i 's/999+999/$PATCH_NUMBER+$BUILD_NUMBER/g' pubspec.yaml
+        run: sed -i 's/999+999/${PATCH_NUMBER}+${BUILD_NUMBER}/g' pubspec.yaml
 
       - name: Install Flutter dependencies
         run: flutter pub get
@@ -136,7 +136,7 @@ jobs:
         env:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
           PATCH_NUMBER: ${{ env.PATCH_NUMBER }}
-        run: sed -i 's/999+999/$PATCH_NUMBER+$BUILD_NUMBER/g' pubspec.yaml
+        run: sed -i 's/999+999/${PATCH_NUMBER}+${BUILD_NUMBER}/g' pubspec.yaml
 
       - name: Get Flutter dependencies
         run: flutter pub get
