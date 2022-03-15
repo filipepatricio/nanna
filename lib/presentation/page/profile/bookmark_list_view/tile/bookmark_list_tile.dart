@@ -80,7 +80,7 @@ class BookmarkListTile extends StatelessWidget {
                     children: [
                       Text(
                         bookmarkCover.bookmark.title,
-                        style: AppTypography.b1Bold,
+                        style: AppTypography.b2Bold,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -155,6 +155,7 @@ extension on Bookmark {
             UpdatedLabel(
               dateTime: data.topic.lastUpdatedAt,
               backgroundColor: AppColors.transparent,
+              fontSize: 10,
               textStyle: AppTypography.subH2BoldSmall.copyWith(
                 color: AppColors.textGrey,
                 letterSpacing: 1,

@@ -516,15 +516,12 @@ class _FreeArticleView extends HookWidget {
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: AppDimens.s),
-            child: BookmarkButton.article(
-              article: article,
-              topicId: cubit.topicId,
-              briefId: cubit.briefId,
-              mode: BookmarkButtonMode.color,
-              snackbarController: snackbarController,
-            ),
+          BookmarkButton.article(
+            article: article,
+            topicId: cubit.topicId,
+            briefId: cubit.briefId,
+            mode: BookmarkButtonMode.color,
+            snackbarController: snackbarController,
           ),
           Padding(
             padding: const EdgeInsets.only(right: AppDimens.l, top: AppDimens.s),

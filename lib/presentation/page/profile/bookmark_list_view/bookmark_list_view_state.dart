@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -38,5 +39,8 @@ class BookmarkListViewState with _$BookmarkListViewState {
     List<BookmarkTileCover> bookmarks,
   ) = _BookmarkListViewStateAllLoaded;
 
-  factory BookmarkListViewState.bookmarkRemoved() = _BookmarkListViewStateBookmarkRemoved;
+  factory BookmarkListViewState.bookmarkRemoved(
+    Bookmark bookmark,
+    int index,
+  ) = _BookmarkListViewStateBookmarkRemoved;
 }

@@ -21,7 +21,7 @@ class BookmarkButtonState with _$BookmarkButtonState {
     BookmarkTypeData data,
   ) = _BookmarkButtonStateSwitching;
 
-  factory BookmarkButtonState.bookmarkedSuccess() = _BookmarkButtonStateBookmarked;
+  factory BookmarkButtonState.bookmarkAdded() = _BookmarkButtonStateBookmarkAdded;
 
-  factory BookmarkButtonState.unbookmarkedSuccess() = _BookmarkButtonStateUnbookmarked;
+  factory BookmarkButtonState.bookmarkRemoved() = _BookmarkButtonStateBookmarkedRemoved;
 }

@@ -17,7 +17,8 @@
     "share": "Share",
     "shareImage": "Share image",
     "shareText": "Share text",
-    "copy": "Copy"
+    "copy": "Copy",
+    "undo": "Undo"
   },
   "commonError": {
     "oops": "Oops",

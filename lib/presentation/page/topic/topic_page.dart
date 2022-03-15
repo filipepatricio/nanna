@@ -228,20 +228,17 @@ class _TopicIdleView extends HookWidget {
             child: Stack(
               children: [
                 Positioned.fill(
-                  child: Opacity(
-                    opacity: .6,
-                    child: CloudinaryProgressiveImage(
-                      width: backgroundImageWidth,
-                      height: backgroundImageHeight,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                      testImage: AppRasterGraphics.testReadingListCoverImage,
-                      cloudinaryTransformation: cloudinaryProvider
-                          .withPublicId(topic.coverImage.publicId)
-                          .transform()
-                          .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
-                          .fit(),
-                    ),
+                  child: CloudinaryProgressiveImage(
+                    width: backgroundImageWidth,
+                    height: backgroundImageHeight,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    testImage: AppRasterGraphics.testReadingListCoverImage,
+                    cloudinaryTransformation: cloudinaryProvider
+                        .withPublicId(topic.coverImage.publicId)
+                        .transform()
+                        .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
+                        .fit(),
                   ),
                 ),
                 NoScrollGlow(
@@ -255,8 +252,8 @@ class _TopicIdleView extends HookWidget {
                     slivers: [
                       TopicAppBar(
                         topic: topic,
-                        isShowingTutorialToast: isShowingTutorialToast,
                         cubit: cubit,
+                        isShowingTutorialToast: isShowingTutorialToast,
                         scrollPositionNotifier: scrollPositionNotifier,
                         onArticlesLabelTap: () => _scrollToArticles(context, gestureManager),
                         onArrowTap: () => _scrollToSummary(context, gestureManager),
@@ -274,7 +271,7 @@ class _TopicIdleView extends HookWidget {
                             ),
                           ],
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),

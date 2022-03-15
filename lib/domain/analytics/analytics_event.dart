@@ -82,6 +82,14 @@ class AnalyticsEvent with _$AnalyticsEvent {
         },
       );
 
+  factory AnalyticsEvent.topicBookmarkRemoveUndo(String topicId, [String? briefId]) => AnalyticsEvent._(
+        'TopicUnfollowUndo',
+        {
+          'topic_id': topicId,
+          'brief_id': briefId,
+        },
+      );
+
   factory AnalyticsEvent.articleBookmarkAdded(String articleId, [String? topicId, String? briefId]) => AnalyticsEvent._(
         'ArticleSaved',
         {
@@ -94,6 +102,16 @@ class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent.articleBookmarkRemoved(String articleId, [String? topicId, String? briefId]) =>
       AnalyticsEvent._(
         'ArticleUnsaved',
+        {
+          'article_id': articleId,
+          'topic_id': topicId,
+          'brief_id': briefId,
+        },
+      );
+
+  factory AnalyticsEvent.articleBookmarkRemoveUndo(String articleId, [String? topicId, String? briefId]) =>
+      AnalyticsEvent._(
+        'ArticleUnsavedUndo',
         {
           'article_id': articleId,
           'topic_id': topicId,

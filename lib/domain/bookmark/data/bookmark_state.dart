@@ -5,6 +5,5 @@ part 'bookmark_state.freezed.dart';
 @freezed
 class BookmarkState with _$BookmarkState {
   factory BookmarkState.bookmarked(String id) = _BookmarkStateBookmarked;
-
   factory BookmarkState.notBookmarked() = _BookmarkStateNotBookmarked;
 }

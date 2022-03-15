@@ -72,6 +72,7 @@ class BookmarkMockDataSource implements BookmarkDataSource {
               null,
               'Are We Entering a New Cold War?',
               'Are We Entering a New Cold War?',
+              'credits',
               'PREMIUM',
               null,
               10,

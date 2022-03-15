@@ -1,14 +1,15 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
 
 class Loader extends StatelessWidget {
   const Loader({
-    this.color,
-    this.strokeWidth = 4.0,
     Key? key,
+    this.color = AppColors.darkGrey,
+    this.strokeWidth = 4.0,
   }) : super(key: key);
 
-  final Color? color;
+  final Color color;
   final double strokeWidth;
 
   @override

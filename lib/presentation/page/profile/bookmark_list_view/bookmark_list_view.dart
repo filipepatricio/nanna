@@ -54,6 +54,12 @@ class BookmarkListView extends HookWidget {
             SnackbarMessage.simple(
               message: tr(LocaleKeys.bookmark_unbookmarkSuccess),
               type: SnackbarMessageType.positive,
+              action: SnackbarAction(
+                label: tr(LocaleKeys.common_undo),
+                callback: () {
+                  cubit.undoRemovingBookmark(state.bookmark, state.index);
+                },
+              ),
             ),
           );
         },

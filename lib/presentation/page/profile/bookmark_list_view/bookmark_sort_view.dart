@@ -132,7 +132,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
                   Expanded(
                     child: Text(
                       tr(LocaleKeys.bookmark_sortBy),
-                      style: AppTypography.b1Bold,
+                      style: AppTypography.b2Bold,
                     ),
                   ),
                   IconButton(
@@ -168,7 +168,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
                               ),
                               child: Text(
                                 entry.key.title,
-                                style: config == entry.value ? AppTypography.b1Bold : AppTypography.b1Regular,
+                                style: config == entry.value ? AppTypography.b2Bold : AppTypography.b2Regular,
                               ),
                             ),
                           ),

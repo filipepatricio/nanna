@@ -86,11 +86,17 @@ class BookmarkButton extends HookWidget {
               ),
             );
           },
-          bookmarkRemoved: (_) {
+          bookmarkRemoved: (value) {
             snackbarController?.showMessage(
               SnackbarMessage.simple(
                 message: tr(LocaleKeys.bookmark_unbookmarkSuccess),
                 type: SnackbarMessageType.positive,
+                action: SnackbarAction(
+                  label: tr(LocaleKeys.common_undo),
+                  callback: () {
+                    cubit.switchState(fromUndo: true);
+                  },
+                ),
               ),
             );
           },

@@ -16,7 +16,7 @@ class UpdatedLabel extends StatelessWidget {
     required this.dateTime,
     required this.backgroundColor,
     this.mode = Brightness.dark,
-    this.fontSize = 10,
+    this.fontSize = 12,
     this.textStyle = AppTypography.systemText,
     Key? key,
   }) : super(key: key);

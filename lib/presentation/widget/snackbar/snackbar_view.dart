@@ -10,10 +10,12 @@ const _maxHeight = 96.0;
 class SnackbarView extends HookWidget {
   const SnackbarView({
     this.message,
+    this.dismissAction,
     Key? key,
   }) : super(key: key);
 
   final SnackbarMessage? message;
+  final VoidCallback? dismissAction;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +39,45 @@ class SnackbarView extends HookWidget {
           Radius.circular(AppDimens.s),
         ),
       ),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: _maxHeight,
-          maxWidth: textWidth,
-        ),
-        child: messageState.value?.content,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: _maxHeight,
+              maxWidth: textWidth,
+            ),
+            child: messageState.value?.content,
+          ),
+          if (messageState.value != null) ...[
+            buildSnackbarAction(messageState.value!),
+          ]
+        ],
       ),
+    );
+  }
+
+  Widget buildSnackbarAction(SnackbarMessage message) {
+    return message.map(
+      simple: (message) {
+        if (message.action == null) {
+          return const SizedBox();
+        }
+        return GestureDetector(
+          onTap: () {
+            dismissAction?.call();
+            message.action!.callback();
+          },
+          child: Text(
+            message.action!.label,
+            style: AppTypography.h4ExtraBold.copyWith(
+              color: AppColors.white,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        );
+      },
+      custom: (message) => const SizedBox(),
     );
   }
 }

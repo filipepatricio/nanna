@@ -150,6 +150,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h4ExtraBold = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 16,
+    height: 1.5,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle headline4Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -177,6 +185,14 @@ class AppTypography {
 
   static const TextStyle subH1Medium = TextStyle(
     fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 14,
+    height: 2.21,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle subH1Regular = TextStyle(
+    fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 14,
     height: 2.21,

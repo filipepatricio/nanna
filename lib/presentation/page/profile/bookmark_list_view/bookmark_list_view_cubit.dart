@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
+import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use_case.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dart';
@@ -20,11 +23,15 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     this._bookmarkPaginationEngineProvider,
     this._getBookmarkChangeStreamUseCase,
     this._removeBookmarkUseCase,
+    this._addBookmarkUseCase,
+    this._trackActivityUseCase,
   ) : super(BookmarkListViewState.initial());
 
   final BookmarkPaginationEngineProvider _bookmarkPaginationEngineProvider;
   final GetBookmarkChangeStreamUseCase _getBookmarkChangeStreamUseCase;
   final RemoveBookmarkUseCase _removeBookmarkUseCase;
+  final AddBookmarkUseCase _addBookmarkUseCase;
+  final TrackActivityUseCase _trackActivityUseCase;
 
   late PaginationEngine<Bookmark> _paginationEngine;
 
@@ -62,7 +69,6 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   Future<void> removeBookmark(Bookmark bookmark) async {
     final bookmarks = state.bookmarks;
     final index = bookmarks.map((e) => e.bookmark).toList().indexOf(bookmark);
-
     if (index != -1) {
       final updatedList = _paginationEngine.removeItemAt(index);
 
@@ -89,14 +95,45 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
 
       if (newState != null) {
         emit(newState);
-
         await _removeBookmarkUseCase(bookmark);
-
         final currentState = state;
-        emit(BookmarkListViewState.bookmarkRemoved());
+        emit(BookmarkListViewState.bookmarkRemoved(bookmark, index));
         emit(currentState);
       }
     }
+  }
+
+  Future<void> undoRemovingBookmark(Bookmark bookmark, int index) async {
+    _trackBookmarkRemoveUndo(bookmark);
+
+    final bookmarkState = await _addBookmarkUseCase(bookmark);
+
+    bookmarkState?.mapOrNull(
+      bookmarked: (value) {
+        final newBookmark = Bookmark(value.id, bookmark.data);
+        final updatedList = _paginationEngine.insert(newBookmark, index);
+        final newState = state.mapOrNull(
+          idle: (state) => state.copyWith(bookmarks: _getProcessedBookmarks(updatedList)),
+          loadMore: (state) => state.copyWith(bookmarks: _getProcessedBookmarks(updatedList)),
+          allLoaded: (state) => state.copyWith(bookmarks: _getProcessedBookmarks(updatedList)),
+        );
+
+        if (newState != null) {
+          emit(newState);
+        }
+      },
+    );
+  }
+
+  void _trackBookmarkRemoveUndo(Bookmark bookmark) {
+    bookmark.data.mapOrNull(
+      article: (value) => _trackActivityUseCase.trackEvent(
+        AnalyticsEvent.articleBookmarkRemoveUndo(value.article.id),
+      ),
+      topic: (value) => _trackActivityUseCase.trackEvent(
+        AnalyticsEvent.topicBookmarkRemoveUndo(value.topic.id),
+      ),
+    );
   }
 
   void _registerBookmarkChangeNotification(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) {
