@@ -22,10 +22,10 @@ env:
   RUBY_VERSION: '2.7'
 
 jobs:
-  deploy_android:
+  update_app_version:
     name: Deploy Android to Firebase
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
     steps:
       - name: Setup build number
         env:
@@ -37,6 +37,21 @@ jobs:
           echo ::set-env name=BUILD_NUMBER::$((RUN_NUMBER+BUILD_NUMBER_OFFSET))
           echo ::set-env name=PATCH_NUMBER::$((RUN_NUMBER+PATCH_NUMBER_OFFSET))
 
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Update version in YAML
+        env:
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+          PATCH_NUMBER: ${{ env.PATCH_NUMBER }}
+        run: sed -i 's/999+999/${PATCH_NUMBER}+${BUILD_NUMBER}/g' pubspec.yaml
+
+  deploy_android:
+    needs: [update_app_version]
+    name: Deploy Android to Firebase
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -64,12 +79,6 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
-
-      - name: Update version in YAML
-        env:
-          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-          PATCH_NUMBER: ${{ env.PATCH_NUMBER }}
-        run: sed -i 's/999+999/$PATCH_NUMBER+$BUILD_NUMBER/g' pubspec.yaml
 
       - name: Install Flutter dependencies
         run: flutter pub get
@@ -99,20 +108,11 @@ jobs:
           FIREBASE_APP_ID_ANDROID: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
 
   deploy_ios:
+    needs: [update_app_version]
     name: Deploy iOS to TestFlight
     runs-on: macos-11
     timeout-minutes: 30
     steps:
-      - name: Setup build number
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-          RUN_NUMBER: ${{ github.run_number }}
-          BUILD_NUMBER_OFFSET: 570
-          PATCH_NUMBER_OFFSET: -171
-        run: |
-          echo ::set-env name=BUILD_NUMBER::$((RUN_NUMBER+BUILD_NUMBER_OFFSET))
-          echo ::set-env name=PATCH_NUMBER::$((RUN_NUMBER+PATCH_NUMBER_OFFSET))
-
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -131,12 +131,6 @@ jobs:
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
       - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
-
-      - name: Update version in YAML
-        env:
-          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-          PATCH_NUMBER: ${{ env.PATCH_NUMBER }}
-        run: sed -i 's/999+999/$PATCH_NUMBER+$BUILD_NUMBER/g' pubspec.yaml
 
       - name: Get Flutter dependencies
         run: flutter pub get
