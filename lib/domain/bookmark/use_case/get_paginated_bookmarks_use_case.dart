@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/bookmark/bookmark_repository.dart';
+import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';

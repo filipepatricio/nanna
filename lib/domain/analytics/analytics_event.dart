@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'analytics_event.freezed.dart';
@@ -99,4 +100,26 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'brief_id': briefId,
         },
       );
+
+  factory AnalyticsEvent.bookmarkSortingOptionSelected(BookmarkSortConfigName configName) => AnalyticsEvent._(
+        'SortingOptionSelected',
+        {
+          'sort_option': configName.eventPropertyName,
+        },
+      );
+}
+
+extension on BookmarkSortConfigName {
+  String get eventPropertyName {
+    switch (this) {
+      case BookmarkSortConfigName.lastUpdated:
+        return 'last_updated';
+      case BookmarkSortConfigName.lastAdded:
+        return 'last_added';
+      case BookmarkSortConfigName.alphabeticalAsc:
+        return 'a_z';
+      case BookmarkSortConfigName.alphabeticalDesc:
+        return 'a_z_reversed';
+    }
+  }
 }

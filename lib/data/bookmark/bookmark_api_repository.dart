@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/data/bookmark/mapper/bookmark_filter_dto_
 import 'package:better_informed_mobile/data/bookmark/mapper/bookmark_id_to_state_mapper.dart';
 import 'package:better_informed_mobile/data/bookmark/mapper/bookmark_order_dto_mapper.dart';
 import 'package:better_informed_mobile/data/bookmark/mapper/bookmark_sort_dto_mapper.dart';
-import 'package:better_informed_mobile/domain/bookmark/bookmark_repository.dart';
+import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';

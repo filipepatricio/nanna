@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
-import 'package:better_informed_mobile/domain/bookmark/bookmark_repository.dart';
+import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:injectable/injectable.dart';
 

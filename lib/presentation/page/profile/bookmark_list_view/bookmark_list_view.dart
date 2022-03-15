@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dart';
@@ -19,26 +18,28 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+typedef OnSortConfigChanged = Function(BookmarkSortConfigName configName);
+
 class BookmarkListView extends HookWidget {
-  const BookmarkListView({
+  BookmarkListView({
     required this.filter,
+    required this.sortConfigName,
+    required this.onSortConfigChanged,
     Key? key,
-  }) : super(key: key);
+  })  : sortConfig = bookmarkConfigMap[sortConfigName]!,
+        super(key: key);
 
   final BookmarkFilter filter;
+  final BookmarkSortConfigName sortConfigName;
+  final BookmarkSortConfig sortConfig;
+  final OnSortConfigChanged onSortConfigChanged;
 
   @override
   Widget build(BuildContext context) {
-    final sortConfigState = useState(
-      const BookmarkSortConfig(
-        BookmarkSort.added,
-        BookmarkOrder.descending,
-      ),
-    );
     final cubit = useCubit<BookmarkListViewCubit>(
       keys: [
         filter,
-        sortConfigState.value,
+        sortConfig,
       ],
     );
     final state = useCubitBuilder(cubit);
@@ -63,8 +64,8 @@ class BookmarkListView extends HookWidget {
       () {
         cubit.initialize(
           filter,
-          sortConfigState.value.sort,
-          sortConfigState.value.order,
+          sortConfig.sort,
+          sortConfig.order,
         );
       },
       [cubit],
@@ -82,8 +83,9 @@ class BookmarkListView extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _SelectedSortConfig(
-                configState: sortConfigState,
-                enabled: true,
+                onSortConfigChanged: onSortConfigChanged,
+                config: sortConfig,
+                enabled: false,
               ),
               const Expanded(
                 child: Loader(
@@ -96,7 +98,8 @@ class BookmarkListView extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _SelectedSortConfig(
-                configState: sortConfigState,
+                onSortConfigChanged: onSortConfigChanged,
+                config: sortConfig,
                 enabled: false,
               ),
               Expanded(
@@ -107,21 +110,24 @@ class BookmarkListView extends HookWidget {
           idle: (state) => _Idle(
             cubit: cubit,
             bookmarks: state.bookmarks,
+            sortConfig: sortConfig,
             scrollController: scrollController,
-            sortConfigState: sortConfigState,
+            onSortConfigChanged: onSortConfigChanged,
           ),
           loadMore: (state) => _Idle(
             cubit: cubit,
             bookmarks: state.bookmarks,
+            sortConfig: sortConfig,
             scrollController: scrollController,
-            sortConfigState: sortConfigState,
+            onSortConfigChanged: onSortConfigChanged,
             withLoader: true,
           ),
           allLoaded: (state) => _Idle(
             cubit: cubit,
             bookmarks: state.bookmarks,
+            sortConfig: sortConfig,
             scrollController: scrollController,
-            sortConfigState: sortConfigState,
+            onSortConfigChanged: onSortConfigChanged,
           ),
           orElse: () => const SizedBox.shrink(),
         ),
@@ -134,17 +140,19 @@ class _Idle extends StatelessWidget {
   const _Idle({
     required this.cubit,
     required this.bookmarks,
+    required this.sortConfig,
     required this.scrollController,
-    required this.sortConfigState,
+    required this.onSortConfigChanged,
     this.withLoader = false,
     Key? key,
   }) : super(key: key);
 
   final BookmarkListViewCubit cubit;
   final List<BookmarkTileCover> bookmarks;
+  final BookmarkSortConfig sortConfig;
   final ScrollController scrollController;
   final bool withLoader;
-  final ValueNotifier<BookmarkSortConfig> sortConfigState;
+  final OnSortConfigChanged onSortConfigChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +164,9 @@ class _Idle extends StatelessWidget {
           collapsedHeight: 0,
           toolbarHeight: 0,
           flexibleSpace: _SelectedSortConfig(
-            configState: sortConfigState,
+            onSortConfigChanged: onSortConfigChanged,
             enabled: bookmarks.length > 1,
+            config: sortConfig,
           ),
           pinned: false,
           floating: true,
@@ -193,20 +202,22 @@ class _Idle extends StatelessWidget {
 
 class _SelectedSortConfig extends StatelessWidget {
   const _SelectedSortConfig({
-    required this.configState,
+    required this.onSortConfigChanged,
+    required this.config,
     required this.enabled,
     Key? key,
   }) : super(key: key);
 
-  final ValueNotifier<BookmarkSortConfig> configState;
+  final OnSortConfigChanged onSortConfigChanged;
+  final BookmarkSortConfig config;
   final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     return BookmarkSortView(
-      config: enabled ? configState.value : null,
+      config: enabled ? config : null,
       onSortConfigChange: (newConfig) {
-        return configState.value = newConfig;
+        onSortConfigChanged(newConfig);
       },
     );
   }

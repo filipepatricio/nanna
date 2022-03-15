@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -13,42 +13,6 @@ import 'package:flutter_svg/svg.dart';
 
 const _borderRadius = 10.0;
 const sortViewHeight = 60.0;
-
-class BookmarkSortConfig {
-  const BookmarkSortConfig(this.sort, this.order);
-
-  final BookmarkSort sort;
-  final BookmarkOrder order;
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is BookmarkSortConfig && sort == other.sort && order == other.order);
-  }
-
-  @override
-  int get hashCode => Object.hash(sort.hashCode, order.hashCode);
-}
-
-enum BookmarkSortConfigName { lastUpdated, lastAdded, alphabeticalAsc, alphabeticalDesc }
-
-const _configMap = {
-  BookmarkSortConfigName.lastAdded: BookmarkSortConfig(
-    BookmarkSort.added,
-    BookmarkOrder.descending,
-  ),
-  BookmarkSortConfigName.lastUpdated: BookmarkSortConfig(
-    BookmarkSort.updated,
-    BookmarkOrder.descending,
-  ),
-  BookmarkSortConfigName.alphabeticalAsc: BookmarkSortConfig(
-    BookmarkSort.alphabetical,
-    BookmarkOrder.ascending,
-  ),
-  BookmarkSortConfigName.alphabeticalDesc: BookmarkSortConfig(
-    BookmarkSort.alphabetical,
-    BookmarkOrder.descending,
-  ),
-};
 
 Future<BookmarkSortConfig?> showBookmarkSortOptionBottomSheet(
   BuildContext context,
@@ -68,8 +32,6 @@ Future<BookmarkSortConfig?> showBookmarkSortOptionBottomSheet(
   );
 }
 
-typedef OnSortConfigChange = Function(BookmarkSortConfig config);
-
 class BookmarkSortView extends StatelessWidget {
   const BookmarkSortView({
     required this.config,
@@ -78,7 +40,7 @@ class BookmarkSortView extends StatelessWidget {
   }) : super(key: key);
 
   final BookmarkSortConfig? config;
-  final OnSortConfigChange onSortConfigChange;
+  final OnSortConfigChanged onSortConfigChange;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +53,7 @@ class BookmarkSortView extends StatelessWidget {
             context,
             config!,
           );
-          if (newConfig != null) onSortConfigChange(newConfig);
+          if (newConfig != null) onSortConfigChange(newConfig.type);
         },
         child: Container(
           height: sortViewHeight,
@@ -183,7 +145,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
               const SizedBox(height: AppDimens.m),
               const InformedDivider(),
               const SizedBox(height: AppDimens.l),
-              ..._configMap.entries
+              ...bookmarkConfigMap.entries
                   .map(
                     (entry) => GestureDetector(
                       onTap: () => AutoRouter.of(context).root.pop(entry.value),
@@ -246,7 +208,7 @@ extension on BookmarkSortConfigName {
 
 extension on BookmarkSortConfig {
   BookmarkSortConfigName get type {
-    return _configMap.entries
+    return bookmarkConfigMap.entries
         .firstWhere(
           (element) => element.value == this,
         )

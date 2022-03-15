@@ -5,9 +5,11 @@ import 'package:better_informed_mobile/presentation/page/profile/profile_filter_
 import 'package:better_informed_mobile/presentation/page/profile/profile_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
@@ -67,8 +69,15 @@ class ProfilePage extends HookWidget {
                   onChange: cubit.changeFilter,
                 ),
                 Expanded(
-                  child: BookmarkListView(
-                    filter: state.filter,
+                  child: state.map(
+                    initializing: (state) => const Loader(
+                      color: AppColors.limeGreen,
+                    ),
+                    idle: (state) => BookmarkListView(
+                      filter: state.filter,
+                      sortConfigName: state.sortConfigName,
+                      onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
+                    ),
                   ),
                 ),
               ],
