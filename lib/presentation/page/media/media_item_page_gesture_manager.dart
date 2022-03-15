@@ -1,8 +1,8 @@
-import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
-class ArticleCustomVerticalDragManager {
+class MediaItemPageGestureManager {
+  final BuildContext context;
   final ScrollController modalController;
   final ScrollController generalViewController;
   final PageController pageViewController;
@@ -11,7 +11,8 @@ class ArticleCustomVerticalDragManager {
   Drag? _drag;
   ScrollController? _activeController;
 
-  ArticleCustomVerticalDragManager({
+  MediaItemPageGestureManager({
+    required this.context,
     required this.modalController,
     required this.generalViewController,
     required this.pageViewController,
@@ -57,6 +58,7 @@ class ArticleCustomVerticalDragManager {
     final primaryDelta = details.primaryDelta ?? 0;
 
     if (_isPullingDownBottomSheet(primaryDelta)) {
+      _detachPageFromPrimaryController();
       _activeController = modalController;
       _drag?.cancel();
       _drag = modalController.position.drag(
@@ -64,6 +66,7 @@ class ArticleCustomVerticalDragManager {
         disposeDrag,
       );
     } else if (_isTopOverscrollingGeneralView(primaryDelta)) {
+      _detachViewFromPrimaryController();
       _activeController = pageViewController;
       _drag?.cancel();
       _drag = pageViewController.position.drag(
@@ -84,6 +87,9 @@ class ArticleCustomVerticalDragManager {
 
   void handleDragEnd(DragEndDetails details) {
     _drag?.end(details);
+    if ((pageViewController.page ?? 0) == 1 || pageViewController.position.maxScrollExtent == 0) {
+      _attachViewFromPrimaryController();
+    }
   }
 
   void handleDragCancel() {
@@ -118,8 +124,30 @@ class ArticleCustomVerticalDragManager {
         (_activeController?.position.pixels ?? 0.0) >= (_activeController?.position.maxScrollExtent ?? 0.0);
   }
 
-  Future<void> animateToStart() async {
-    await generalViewController.animateToStart();
-    await pageViewController.animateToStart();
+  /// Necessary for the [modalController] ([PrimaryScrollController]) to affect the modal sheet.
+  /// It seems that when the [PrimaryScrollController] has multiple attached positions,
+  /// the drag actions don't affect modal sheets - even when specifically pointing to the corresponding [ScrollPosition]
+  void _detachViewFromPrimaryController() {
+    for (final position in generalViewController.positions) {
+      if (modalController.positions.contains(position)) {
+        modalController.detach(position);
+      }
+    }
+  }
+
+  void _detachPageFromPrimaryController() {
+    for (final position in pageViewController.positions) {
+      if (modalController.positions.contains(position)) {
+        modalController.detach(position);
+      }
+    }
+  }
+
+  /// Necessary to achieve the return-to-top feature on iOS
+  void _attachViewFromPrimaryController() {
+    if (generalViewController.hasClients &&
+        !modalController.positions.any((e) => generalViewController.positions.contains(e))) {
+      modalController.attach(generalViewController.positions.first);
+    }
   }
 }

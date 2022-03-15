@@ -4,8 +4,8 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/app_bar/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_vertical_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 /// Make sure that changes to the view won't change depth of the main scroll
@@ -123,19 +122,15 @@ class _TopicIdleView extends HookWidget {
   final TopicPageCubit cubit;
   final TutorialCoachMark tutorialCoachMark;
 
-  void _scrollToSummary(BuildContext context, ScrollController scrollController) {
-    scrollController.animateTo(
+  void _scrollToSummary(BuildContext context, TopicPageGestureManager gestureManager) {
+    gestureManager.animateViewTo(
       AppDimens.topicViewHeaderImageHeight(context) - kToolbarHeight - MediaQuery.of(context).viewPadding.bottom,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOutCubic,
     );
   }
 
-  void _scrollToArticles(BuildContext context, ScrollController scrollController) {
-    scrollController.animateTo(
-      AppDimens.topicArticleSectionTriggerPoint(context),
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOutCubic,
+  void _scrollToArticles(BuildContext context, TopicPageGestureManager gestureManager) {
+    gestureManager.animateViewTo(
+      AppDimens.topicArticleSectionTriggerPoint(context) + kToolbarHeight + MediaQuery.of(context).viewPadding.bottom,
     );
   }
 
@@ -181,7 +176,8 @@ class _TopicIdleView extends HookWidget {
     final modalScrollController = useMemoized(() => ModalScrollController.of(context));
     final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
     final gestureManager = useMemoized(
-      () => TopicVerticalDragManager(
+      () => TopicPageGestureManager(
+        context: context,
         modalController: modalScrollController!,
         generalViewController: scrollController,
       ),
@@ -211,7 +207,7 @@ class _TopicIdleView extends HookWidget {
         showMediaItemTutorialCoachMark: tutorialCoachMark.show,
         skipTutorialCoachMark: () {
           tutorialCoachMark.skip();
-          _scrollToArticles(context, scrollController);
+          _scrollToArticles(context, gestureManager);
         },
         finishTutorialCoachMark: tutorialCoachMark.finish,
       );
@@ -226,60 +222,55 @@ class _TopicIdleView extends HookWidget {
         onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
         child: Listener(
           onPointerUp: (_) => _snapPage(context, scrollController),
-          child: ScrollsToTop(
-            onScrollsToTop: (_) => gestureManager.animateToStart(),
-            child: Scaffold(
-              body: Stack(
-                children: [
-                  Positioned.fill(
-                    child: CloudinaryProgressiveImage(
-                      width: backgroundImageWidth,
-                      height: backgroundImageHeight,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                      testImage: AppRasterGraphics.testReadingListCoverImage,
-                      cloudinaryTransformation: cloudinaryProvider
-                          .withPublicId(topic.coverImage.publicId)
-                          .transform()
-                          .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
-                          .fit(),
-                    ),
-                  ),
-                  NoScrollGlow(
-                    child: CustomScrollView(
-                      physics: NeverScrollableScrollPhysics(
-                        parent: getPlatformScrollPhysics(
-                          const AlwaysScrollableScrollPhysics(),
-                        ),
-                      ),
-                      controller: scrollController,
-                      slivers: [
-                        TopicAppBar(
-                          topic: topic,
-                          isShowingTutorialToast: isShowingTutorialToast,
-                          scrollPositionNotifier: scrollPositionNotifier,
-                          onArticlesLabelTap: () => _scrollToArticles(context, scrollController),
-                          onArrowTap: () => _scrollToSummary(context, scrollController),
-                        ),
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            [
-                              TopicView(
-                                topic: topic,
-                                cubit: cubit,
-                                summaryCardKey: cubit.summaryCardKey,
-                                mediaItemKey: cubit.mediaItemKey,
-                                scrollController: scrollController,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: CloudinaryProgressiveImage(
+                  width: backgroundImageWidth,
+                  height: backgroundImageHeight,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  testImage: AppRasterGraphics.testReadingListCoverImage,
+                  cloudinaryTransformation: cloudinaryProvider
+                      .withPublicId(topic.coverImage.publicId)
+                      .transform()
+                      .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
+                      .fit(),
+                ),
               ),
-            ),
+              NoScrollGlow(
+                child: CustomScrollView(
+                  physics: NeverScrollableScrollPhysics(
+                    parent: getPlatformScrollPhysics(
+                      const AlwaysScrollableScrollPhysics(),
+                    ),
+                  ),
+                  controller: scrollController,
+                  slivers: [
+                    TopicAppBar(
+                      topic: topic,
+                      isShowingTutorialToast: isShowingTutorialToast,
+                      scrollPositionNotifier: scrollPositionNotifier,
+                      onArticlesLabelTap: () => _scrollToArticles(context, gestureManager),
+                      onArrowTap: () => _scrollToSummary(context, gestureManager),
+                    ),
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          TopicView(
+                            topic: topic,
+                            cubit: cubit,
+                            summaryCardKey: cubit.summaryCardKey,
+                            mediaItemKey: cubit.mediaItemKey,
+                            scrollController: scrollController,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
