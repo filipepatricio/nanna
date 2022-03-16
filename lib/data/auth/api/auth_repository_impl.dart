@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/data/auth/api/provider/oauth_sign_in_data
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
 import 'package:better_informed_mobile/domain/auth/auth_repository.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_result.dart';
+import 'package:better_informed_mobile/domain/auth/data/sign_in_credentials.dart';
 import 'package:fimber/fimber.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
@@ -51,5 +52,16 @@ class AuthRepositoryImpl implements AuthRepository {
         .distinct((prev, next) => prev == next)
         .where((event) => event == AuthenticationStatus.unauthenticated)
         .map((event) => Fimber.d('Token has been revoked.'));
+  }
+
+  @override
+  Future<AuthResult> signInWithInviteCode(
+    SignInCredentials credentials,
+    String code,
+  ) async {
+    final result = await _apiDataSource.signInWithInviteCode(credentials, code);
+    final response = _loginResponseDTOMapper(result);
+
+    return AuthResult(response.tokens, credentials.provider, response.user.uuid);
   }
 }
