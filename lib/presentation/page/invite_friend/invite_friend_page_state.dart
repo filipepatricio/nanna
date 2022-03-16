@@ -14,4 +14,6 @@ class InviteFriendPageState with _$InviteFriendPageState {
 
   @Implements<BuildState>()
   factory InviteFriendPageState.error() = _InviteFriendPageStateError;
+
+  factory InviteFriendPageState.codeCopied() = _InviteFriendPageStateCodeCopied;
 }
