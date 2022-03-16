@@ -86,7 +86,8 @@
     "accountInfoSavedSuccessfully": "Your information was saved successfully",
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
-    "wrongEmailInput": "Wrong email input"
+    "wrongEmailInput": "Wrong email input",
+    "inviteFriend": "Invite a friend"
   },
   "signIn": {
     "header": {
