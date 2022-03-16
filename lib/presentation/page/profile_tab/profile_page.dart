@@ -56,7 +56,7 @@ class ProfilePage extends HookWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
+            onPressed: () => AutoRouter.of(context).push(const InviteFriendPageRoute()),
             icon: SvgPicture.asset(
               AppVectorGraphics.gift,
               fit: BoxFit.contain,

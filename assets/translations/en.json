@@ -16,7 +16,8 @@
     "linkCopied": "Successfuly copied link to your clipboard!",
     "share": "Share",
     "shareImage": "Share image",
-    "shareText": "Share text"
+    "shareText": "Share text",
+    "copy": "Copy"
   },
   "commonError": {
     "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "
@@ -196,5 +197,12 @@
       "body": "Hey there,\nwe will check if you are already a member and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
     },
     "emailCopied": "Successfuly copied email to your clipboard!"
+  },
+  "inviteFriend": {
+    "title": "Invite a friend",
+    "header": "Invite your friends",
+    "content": "Share the code below with {} of your friends or ask them to enter it during the login",
+    "inviteAction": "Invite Friend",
+    "usage": "{} of {} invitates has been used"
   }
 }
