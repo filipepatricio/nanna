@@ -204,7 +204,7 @@
     "header": "Invite your friends",
     "content": "Share the code below with {} of your friends or ask them to enter it during the login",
     "inviteAction": "Invite Friend",
-    "usage": "{} of {} invitates has been used",
+    "usage": "{} of {} invites has been used",
     "shareText": "Hey, here is my special code {} to skip the line and use informed right away! {}",
     "codeCopied": "Successfuly copied code to your clipboard!"
   }

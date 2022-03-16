@@ -215,6 +215,7 @@ class _CodeContainer extends StatelessWidget {
               ),
               const Spacer(),
               SvgPicture.asset(AppVectorGraphics.copy),
+              const SizedBox(width: AppDimens.s),
               Text(
                 tr(LocaleKeys.common_copy),
                 style: AppTypography.b3Regular.copyWith(height: 1.5),
