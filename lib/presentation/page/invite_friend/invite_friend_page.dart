@@ -1,18 +1,24 @@
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-class InviteFriendPage extends StatelessWidget {
+class InviteFriendPage extends HookWidget {
   const InviteFriendPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final cubit = useCubit<InviteFriendPageCubit>();
+    final state = useCubitBuilder(cubit);
+
     return Scaffold(
       appBar: AppBar(
         foregroundColor: AppColors.textPrimary,

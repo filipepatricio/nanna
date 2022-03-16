@@ -6,7 +6,9 @@ import 'package:injectable/injectable.dart';
 class InviteFriendPageCubit extends Cubit<InviteFriendPageState> {
   InviteFriendPageCubit() : super(InviteFriendPageState.loading());
 
-  Future<void> initialize() async {}
+  Future<void> initialize() async {
+    
+  }
 
   Future<void> shareCode() async {}
 }
