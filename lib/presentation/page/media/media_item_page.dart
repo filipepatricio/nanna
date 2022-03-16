@@ -14,6 +14,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -26,6 +27,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -356,6 +358,20 @@ class _PremiumArticleView extends HookWidget {
                                 ],
                               ),
                             ),
+                            if (article.credits.isNotEmpty) ...[
+                              SliverPadding(
+                                padding: const EdgeInsets.only(
+                                  top: AppDimens.xl,
+                                  left: AppDimens.l,
+                                  right: AppDimens.l,
+                                ),
+                                sliver: SliverToBoxAdapter(
+                                  child: _Credits(
+                                    article: article,
+                                  ),
+                                ),
+                              ),
+                            ],
                             SliverToBoxAdapter(
                               child: SizedBox(
                                 height: footerHeight,
@@ -412,6 +428,33 @@ class _PremiumArticleView extends HookWidget {
     final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     final position = renderBox?.localToGlobal(Offset.zero);
     return position?.dy;
+  }
+}
+
+class _Credits extends StatelessWidget {
+  const _Credits({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+
+  @override
+  Widget build(BuildContext context) {
+    return MarkdownBody(
+      data: article.credits,
+      styleSheet: MarkdownStyleSheet(
+        p: AppTypography.articleTextRegular.copyWith(
+          color: AppColors.textGrey,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+      onTapLink: (text, href, title) {
+        if (href != null) {
+          openInAppBrowser(href);
+        }
+      },
+    );
   }
 }
 

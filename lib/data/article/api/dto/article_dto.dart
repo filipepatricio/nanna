@@ -12,6 +12,7 @@ class ArticleDTO {
   final String url;
   final String title;
   final String strippedTitle;
+  final String credits;
   final String type;
   final String? publicationDate;
   final int timeToRead;
@@ -28,6 +29,7 @@ class ArticleDTO {
     this.text,
     this.title,
     this.strippedTitle,
+    this.credits,
     this.type,
     this.publicationDate,
     this.timeToRead,

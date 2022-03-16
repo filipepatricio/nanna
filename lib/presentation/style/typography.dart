@@ -359,6 +359,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle articleTextRegular = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyLora,
+    fontSize: 18,
+    height: 1.61,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle articleText = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyLora,
