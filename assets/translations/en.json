@@ -20,6 +20,7 @@
     "copy": "Copy"
   },
   "commonError": {
+    "oops": "Oops",
     "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "
   },
   "onboarding": {
