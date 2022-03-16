@@ -31,6 +31,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
           url: articleDTO.url,
           title: articleDTO.title,
           strippedTitle: articleDTO.strippedTitle,
+          credits: articleDTO.credits,
           timeToRead: articleDTO.timeToRead,
           type: _articleTypeDTOMapper(articleDTO.type),
           publicationDate: publicationDate != null ? DateTime.parse(publicationDate).toLocal() : null,

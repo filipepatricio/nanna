@@ -13,6 +13,7 @@ class MediaItem with _$MediaItem {
     required String url,
     required String title,
     required String strippedTitle,
+    required String credits,
     required ArticleType type,
     required int? timeToRead,
     required Publisher publisher,

@@ -29,6 +29,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleDTO, MediaItemArticle
       url: data.url,
       title: data.title,
       strippedTitle: data.strippedTitle,
+      credits: data.credits,
       type: _articleTypeDTOMapper(data.type),
       timeToRead: data.timeToRead,
       publisher: _publisherDTOMapper(data.publisher),

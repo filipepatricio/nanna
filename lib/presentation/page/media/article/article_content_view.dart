@@ -50,7 +50,6 @@ class ArticleContentView extends StatelessWidget {
                   key: articleContentKey,
                   child: _articleContent(context),
                 ),
-                const SizedBox(height: AppDimens.l),
               ],
             ),
           ),
