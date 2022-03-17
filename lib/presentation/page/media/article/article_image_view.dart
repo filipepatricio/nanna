@@ -69,7 +69,7 @@ class ArticleImageView extends HookWidget {
                   isLight: true,
                   showDate: false,
                   showReadTime: false,
-                  textStyle: AppTypography.b1Regular.copyWith(height: 1),
+                  textStyle: AppTypography.b2Regular.copyWith(height: 1),
                 ),
                 const SizedBox(height: AppDimens.m),
                 Padding(

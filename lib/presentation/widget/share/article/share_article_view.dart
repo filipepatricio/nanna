@@ -202,7 +202,7 @@ class _Sticker extends StatelessWidget {
                   showDate: true,
                   showPublisher: false,
                   showReadTime: true,
-                  textStyle: AppTypography.b1Regular.copyWith(height: 1.25),
+                  textStyle: AppTypography.b2Regular.copyWith(height: 1.25),
                 ),
               ],
             ),

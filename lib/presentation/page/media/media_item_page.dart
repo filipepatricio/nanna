@@ -150,7 +150,7 @@ class _LoadingContent extends StatelessWidget {
         ),
         const Expanded(
           child: Center(
-            child: Loader(color: AppColors.darkGrey),
+            child: Loader(),
           ),
         ),
       ],
