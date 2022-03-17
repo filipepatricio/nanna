@@ -16,9 +16,11 @@
     "linkCopied": "Successfuly copied link to your clipboard!",
     "share": "Share",
     "shareImage": "Share image",
-    "shareText": "Share text"
+    "shareText": "Share text",
+    "copy": "Copy"
   },
   "commonError": {
+    "oops": "Oops",
     "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "
   },
   "onboarding": {
@@ -86,7 +88,8 @@
     "accountInfoSavedSuccessfully": "Your information was saved successfully",
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
-    "wrongEmailInput": "Wrong email input"
+    "wrongEmailInput": "Wrong email input",
+    "inviteFriend": "Invite a friend"
   },
   "signIn": {
     "header": {
@@ -195,5 +198,14 @@
       "body": "Hey there,\nwe will check if you are already a member and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
     },
     "emailCopied": "Successfuly copied email to your clipboard!"
+  },
+  "inviteFriend": {
+    "title": "Invite a friend",
+    "header": "Invite your friends",
+    "content": "Share the code below with {} of your friends or ask them to enter it during the login",
+    "inviteAction": "Invite Friend",
+    "usage": "{} of {} invites has been used",
+    "shareText": "Hey, here is my special code {} to skip the line and use informed right away! {}",
+    "codeCopied": "Successfuly copied code to your clipboard!"
   }
 }
