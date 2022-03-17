@@ -10,7 +10,9 @@ class AppInfoRepositoryImpl implements AppInfoRepository {
   final AppInfoDataSource _appInfoDataSource;
 
   @override
-  Future<String> getAppVersion() {
-    return _appInfoDataSource.getAppVersion();
+  Future<String> getAppVersion() async {
+    final version = await _appInfoDataSource.getAppVersion();
+    final buildNumber = await _appInfoDataSource.getAppBuildNumber();
+    return '$version+$buildNumber';
   }
 }
