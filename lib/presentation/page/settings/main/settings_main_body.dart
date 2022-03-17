@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:better_informed_mobile/presentation/widget/version_label/version_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -85,11 +86,18 @@ class SettingsMainBody extends HookWidget {
               alignment: Alignment.bottomCenter,
               child: UnconstrainedBox(
                 constrainedAxis: Axis.horizontal,
-                child: FilledButton(
-                  text: LocaleKeys.common_signOut.tr(),
-                  fillColor: AppColors.carrotRed,
-                  textColor: AppColors.white,
-                  onTap: () async => await cubit.signOut(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    FilledButton(
+                      text: LocaleKeys.common_signOut.tr(),
+                      fillColor: AppColors.carrotRed,
+                      textColor: AppColors.white,
+                      onTap: () => cubit.signOut(),
+                    ),
+                    const SizedBox(height: AppDimens.s),
+                    const VersionLabel(),
+                  ],
                 ),
               ),
             ),
