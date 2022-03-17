@@ -1,16 +1,24 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
 
 class Loader extends StatelessWidget {
-  const Loader({Key? key, this.color}) : super(key: key);
-  final Color? color;
+  const Loader({
+    Key? key,
+    this.color = AppColors.darkGrey,
+    this.strokeWidth = 4.0,
+  }) : super(key: key);
+
+  final Color color;
+  final double strokeWidth;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
         value: kIsTest ? .5 : null,
-        valueColor: color != null ? AlwaysStoppedAnimation(color) : null,
+        strokeWidth: strokeWidth,
+        valueColor: AlwaysStoppedAnimation(color),
       ),
     );
   }

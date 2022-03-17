@@ -42,7 +42,9 @@ class SignInPage extends HookWidget {
           ],
         ),
         noMemberAccess: (state) {
-          AutoRouter.of(context).push(const NoMemberAccessPageRoute());
+          context.pushRoute(
+            NoMemberAccessPageRoute(credentials: state.credentials),
+          );
         },
         generalError: (_) {
           snackbarController.showMessage(

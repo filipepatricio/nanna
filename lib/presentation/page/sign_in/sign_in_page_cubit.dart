@@ -79,19 +79,19 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   }
 
   Future<void> _subscribeForMagicLink() async {
-    _magicLinkSubscription = _subscribeForMagicLinkTokenUseCase().listen((event) async {
-      await _signInWithMagicLink(event);
+    _magicLinkSubscription = _subscribeForMagicLinkTokenUseCase().listen((token) async {
+      await _signInWithMagicLink(token);
     });
   }
 
-  Future<void> _signInWithMagicLink(String event) async {
+  Future<void> _signInWithMagicLink(String token) async {
     emit(SignInPageState.processing());
 
     try {
-      await _signInWithMagicLinkTokenUseCase(event);
+      await _signInWithMagicLinkTokenUseCase(token);
       await _finishSignIn();
     } on AuthException catch (authException) {
-      _resolveAuthException(authException);
+      _resolveAuthException(authException, token);
     } catch (e, s) {
       Fimber.e('Signing in with magic link failed', ex: e, stacktrace: s);
       emit(SignInPageState.generalError());
@@ -105,9 +105,9 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     emit(SignInPageState.success(isOnboardingSeen));
   }
 
-  void _resolveAuthException(AuthException authException) {
+  void _resolveAuthException(AuthException authException, [String? magicLinkToken]) {
     authException.map(
-      noMemberAccess: (_) => emit(SignInPageState.noMemberAccess()),
+      noMemberAccess: (state) => emit(SignInPageState.noMemberAccess(state.credentials)),
       unknown: (_) => emit(SignInPageState.generalError()),
     );
   }
