@@ -53,8 +53,8 @@ class ReadingListCoverSmall extends HookWidget {
                     TopicOwnerAvatar(
                       owner: topic.owner,
                       fontSize: 12,
-                      imageWidth: AppDimens.avatarSize / 2,
-                      imageHeight: AppDimens.avatarSize / 2,
+                      withPrefix: true,
+                      imageSize: AppDimens.avatarSize / 2,
                     ),
                     const SizedBox(height: AppDimens.m),
                     Expanded(

@@ -162,7 +162,7 @@ class _Idle extends StatelessWidget {
         ),
         Text(
           LocaleKeys.profile_stayTunedText.tr(),
-          style: AppTypography.b1Regular,
+          style: AppTypography.b2Regular,
         ),
         const SizedBox(height: AppDimens.xl),
         Padding(

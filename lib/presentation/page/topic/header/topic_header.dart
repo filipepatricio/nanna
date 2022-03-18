@@ -64,48 +64,48 @@ class TopicHeader extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Spacer(flex: 42),
+              const Spacer(flex: 32),
+              InformedMarkdownBody(
+                markdown: topic.title,
+                baseTextStyle: AppTypography.h1Headline(context).copyWith(color: AppColors.white),
+                maxLines: 5,
+              ),
+              const Spacer(flex: 16),
+              UpdatedLabel(
+                dateTime: topic.lastUpdatedAt,
+                mode: Brightness.light,
+                backgroundColor: AppColors.transparent,
+                fontSize: 16,
+              ),
+              const Spacer(flex: 208),
               TopicOwnerAvatar(
+                withPrefix: true,
+                underlined: true,
                 owner: topic.owner,
                 mode: Brightness.light,
-                underlined: true,
+                textStyle: AppTypography.h4Bold,
                 onTap: () => AutoRouter.of(context).push(
                   TopicOwnerPageRoute(owner: topic.owner),
                 ),
               ),
               const Spacer(flex: 16),
               InformedMarkdownBody(
-                markdown: topic.title,
-                baseTextStyle: AppTypography.h1Headline(context).copyWith(color: AppColors.white),
-                maxLines: 5,
-              ),
-              const Spacer(flex: 291),
-              InformedMarkdownBody(
                 markdown: topic.introduction,
+                maxLines: 5,
                 baseTextStyle:
-                    (context.isSmallDevice ? AppTypography.b3RegularLora : AppTypography.b2RegularLora).copyWith(
+                    (context.isSmallDevice ? AppTypography.b2MediumLora : AppTypography.b1MediumLora).copyWith(
                   color: AppColors.white,
                 ),
-                maxLines: 5,
               ),
-              const Spacer(flex: 24),
-              PublisherLogoRow(
-                topic: topic,
-                mode: Brightness.light,
-              ),
-              const Spacer(flex: 24),
+              const Spacer(flex: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SelectedArticlesLabel(onArticlesLabelTap: onArticlesLabelTap, topic: topic),
-                  UpdatedLabel(
-                    dateTime: topic.lastUpdatedAt,
-                    mode: Brightness.light,
-                    backgroundColor: AppColors.transparent,
-                  ),
+                  PublisherLogoRow(topic: topic, mode: Brightness.light),
+                  SelectedArticlesLabel(topic: topic, onTap: onArticlesLabelTap),
                 ],
               ),
-              const Spacer(flex: 32),
+              const Spacer(flex: 40),
               AnimatedPointerDown(arrowColor: AppColors.white, onTap: onArrowTap),
               const Spacer(flex: 40),
             ],

@@ -130,10 +130,7 @@ class NoMemberAccessPage extends HookWidget {
                               state.maybeMap(
                                 processing: (_) => const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: AppDimens.m),
-                                  child: Loader(
-                                    strokeWidth: 3.0,
-                                    color: AppColors.darkGrey,
-                                  ),
+                                  child: Loader(strokeWidth: 3.0),
                                 ),
                                 orElse: () => const SizedBox(height: 0, width: 0),
                               ),

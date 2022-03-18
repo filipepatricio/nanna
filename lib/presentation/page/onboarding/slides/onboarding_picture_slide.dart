@@ -49,7 +49,7 @@ class OnboardingPictureSlide extends StatelessWidget {
                   flex: 10,
                   child: AutoSizeText(
                     description,
-                    style: AppTypography.b1Regular,
+                    style: AppTypography.b2Regular,
                     maxLines: 4,
                     stepGranularity: 0.1,
                   ),

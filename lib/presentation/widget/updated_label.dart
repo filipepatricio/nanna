@@ -9,11 +9,13 @@ class UpdatedLabel extends StatelessWidget {
   final DateTime dateTime;
   final Color backgroundColor;
   final Brightness mode;
+  final double? fontSize;
 
   const UpdatedLabel({
     required this.dateTime,
     required this.backgroundColor,
     this.mode = Brightness.dark,
+    this.fontSize = 12,
     Key? key,
   }) : super(key: key);
 
@@ -23,8 +25,10 @@ class UpdatedLabel extends StatelessWidget {
       child: Text(
         LocaleKeys.topic_updated.tr(
           args: [DateFormatUtil.dateTimeFromNow(dateTime)],
-        ).toUpperCase(),
-        style: AppTypography.smallerLabelText.copyWith(
+        ),
+        style: AppTypography.systemText.copyWith(
+          height: 1,
+          fontSize: fontSize,
           color: mode == Brightness.dark ? null : AppColors.white,
         ),
       ),

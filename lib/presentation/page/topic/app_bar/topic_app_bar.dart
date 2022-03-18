@@ -82,7 +82,8 @@ class TopicAppBar extends HookWidget {
       ),
       leading: IconButton(
         padding: EdgeInsets.zero,
-        icon: const Icon(Icons.close_rounded),
+        icon: const Icon(Icons.arrow_back_ios_rounded),
+        iconSize: AppDimens.backArrowSize,
         color: isExpanded.value ? AppColors.white : AppColors.black,
         onPressed: () => AutoRouter.of(context).pop(),
       ),

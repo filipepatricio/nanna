@@ -96,7 +96,7 @@ class _BulletPointRow extends StatelessWidget {
               Flexible(
                 child: AutoSizeText(
                   description,
-                  style: AppTypography.b1Regular,
+                  style: AppTypography.b2Regular,
                 ),
               ),
             ],

@@ -55,7 +55,7 @@ class InviteFriendPage extends HookWidget {
         centerTitle: true,
         title: Text(
           tr(LocaleKeys.inviteFriend_title),
-          style: AppTypography.b1Bold,
+          style: AppTypography.b2Bold,
         ),
       ),
       body: SnackbarParentView(
@@ -211,7 +211,7 @@ class _CodeContainer extends StatelessWidget {
             children: [
               Text(
                 inviteCode.code,
-                style: AppTypography.b1Bold.copyWith(height: 1.5),
+                style: AppTypography.b2Bold.copyWith(height: 1.5),
               ),
               const Spacer(),
               SvgPicture.asset(AppVectorGraphics.copy),

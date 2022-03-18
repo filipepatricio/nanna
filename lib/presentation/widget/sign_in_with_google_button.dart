@@ -39,7 +39,7 @@ class SignInWithGoogleButton extends StatelessWidget {
             const SizedBox(width: AppDimens.m),
             Text(
               LocaleKeys.signIn_providerButton_google.tr(),
-              style: AppTypography.b1Regular,
+              style: AppTypography.b2Regular,
             ),
           ],
         ),

@@ -262,7 +262,7 @@ class _Greeting extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: InformedMarkdownBody(
               markdown: greeting.headline,
-              baseTextStyle: AppTypography.b1Regular,
+              baseTextStyle: AppTypography.b2Regular,
               textAlignment: TextAlign.left,
             ),
           ),
