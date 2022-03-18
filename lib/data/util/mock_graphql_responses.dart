@@ -20,6 +20,7 @@ class MockGraphqlResponses {
           $topic,
           {
             "id": "aa326e1f-ec14-4829-b8a3-cb21dbd25259",
+            "slug": "lorem-ipsum-slug",
             "title": "Lorem **ipsum dolor** sit amet, consectetur adipiscing elit lorem dolor",
             "strippedTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem dolor",
             "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",

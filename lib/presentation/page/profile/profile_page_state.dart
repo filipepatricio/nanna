@@ -15,4 +15,6 @@ class ProfilePageState with _$ProfilePageState {
     BookmarkFilter filter,
     BookmarkSortConfigName sortConfigName,
   ) = _ProfilePageStateIdle;
+
+  factory ProfilePageState.sendingEmailError() = _ProfilePageStateSendingEmailError;
 }
