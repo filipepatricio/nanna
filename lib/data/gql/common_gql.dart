@@ -92,6 +92,7 @@ class CommonGQLModels {
       author
       title
       strippedTitle
+      credits
       type
       publicationDate
       timeToRead

@@ -9,29 +9,25 @@ import 'package:flutter/material.dart';
 
 class SelectedArticlesLabel extends StatelessWidget {
   const SelectedArticlesLabel({
-    required this.onArticlesLabelTap,
     required this.topic,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
-  final void Function() onArticlesLabelTap;
   final Topic topic;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return ExpandTapWidget(
-      onTap: onArticlesLabelTap,
+      onTap: onTap,
       tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
       child: Text(
-        LocaleKeys.todaysTopics_selectedArticles.tr(
+        LocaleKeys.todaysTopics_articles.tr(
           args: [topic.readingList.entries.length.toString()],
         ),
         textAlign: TextAlign.start,
-        style: AppTypography.b1Regular.copyWith(
-          decoration: TextDecoration.underline,
-          height: 1,
-          color: AppColors.white,
-        ),
+        style: AppTypography.b2Regular.copyWith(color: AppColors.white),
       ),
     );
   }

@@ -7,13 +7,14 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
-import 'package:better_informed_mobile/presentation/page/media/article_custom_vertical_drag_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -26,9 +27,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:scrolls_to_top/scrolls_to_top.dart';
 
 typedef MediaItemNavigationCallback = void Function(int index);
 
@@ -149,7 +150,7 @@ class _LoadingContent extends StatelessWidget {
         ),
         const Expanded(
           child: Center(
-            child: Loader(color: AppColors.darkGrey),
+            child: Loader(),
           ),
         ),
       ],
@@ -290,7 +291,8 @@ class _PremiumArticleView extends HookWidget {
     final footerHeight = MediaQuery.of(context).size.height / 3;
     final readProgress = useMemoized(() => ValueNotifier(0.0));
     final gestureManager = useMemoized(
-      () => ArticleCustomVerticalDragManager(
+      () => MediaItemPageGestureManager(
+        context: context,
         modalController: modalController,
         generalViewController: controller,
         pageViewController: pageController,
@@ -313,83 +315,92 @@ class _PremiumArticleView extends HookWidget {
       behavior: HitTestBehavior.opaque,
       child: NotificationListener<ScrollNotification>(
         onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, showBackToTopicButton, readProgress),
-        child: ScrollsToTop(
-          onScrollsToTop: (_) => gestureManager.animateToStart(),
-          child: Scaffold(
-            body: Stack(
-              alignment: Alignment.bottomCenter,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+              controller: pageController,
+              scrollDirection: Axis.vertical,
+              onPageChanged: (page) {
+                showBackToTopicButton.value = false;
+              },
               children: [
-                PageView(
-                  physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                  controller: pageController,
-                  scrollDirection: Axis.vertical,
-                  onPageChanged: (page) {
-                    showBackToTopicButton.value = false;
-                  },
+                if (articleWithImage)
+                  ArticleImageView(
+                    article: article,
+                    controller: pageController,
+                    fullHeight: fullHeight,
+                  ),
+                Row(
                   children: [
-                    if (articleWithImage)
-                      ArticleImageView(
-                        article: article,
-                        controller: pageController,
-                        fullHeight: fullHeight,
-                      ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: NoScrollGlow(
-                            child: CustomScrollView(
-                              physics: const NeverScrollableScrollPhysics(
-                                parent: BottomBouncingScrollPhysics(
-                                  parent: AlwaysScrollableScrollPhysics(),
-                                ),
-                              ),
-                              controller: controller,
-                              slivers: [
-                                SliverList(
-                                  delegate: SliverChildListDelegate(
-                                    [
-                                      ArticleContentView(
-                                        article: article,
-                                        content: content,
-                                        cubit: cubit,
-                                        controller: controller,
-                                        articleContentKey: _articleContentKey,
-                                        scrollToPosition: () => scrollToPosition(readArticleProgress),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SliverToBoxAdapter(
-                                  child: SizedBox(
-                                    height: footerHeight,
-                                  ),
-                                ),
-                              ],
+                    Expanded(
+                      child: NoScrollGlow(
+                        child: CustomScrollView(
+                          physics: const NeverScrollableScrollPhysics(
+                            parent: BottomBouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics(),
                             ),
                           ),
+                          controller: controller,
+                          slivers: [
+                            SliverList(
+                              delegate: SliverChildListDelegate(
+                                [
+                                  ArticleContentView(
+                                    article: article,
+                                    content: content,
+                                    cubit: cubit,
+                                    controller: controller,
+                                    articleContentKey: _articleContentKey,
+                                    scrollToPosition: () => scrollToPosition(readArticleProgress),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (article.credits.isNotEmpty) ...[
+                              SliverPadding(
+                                padding: const EdgeInsets.only(
+                                  top: AppDimens.xl,
+                                  left: AppDimens.l,
+                                  right: AppDimens.l,
+                                ),
+                                sliver: SliverToBoxAdapter(
+                                  child: _Credits(
+                                    article: article,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: footerHeight,
+                              ),
+                            ),
+                          ],
                         ),
-                        _ArticleProgressBar(readProgress: readProgress),
-                      ],
+                      ),
                     ),
+                    _ArticleProgressBar(readProgress: readProgress),
                   ],
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: _ActionsBar(
-                    article: article,
-                    fullHeight: articleWithImage ? fullHeight : appBarHeight,
-                    controller: pageController,
-                  ),
-                ),
-                _BackToTopicButton(
-                  showButton: showBackToTopicButton,
-                  fromTopic: fromTopic,
                 ),
               ],
             ),
-          ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: _ActionsBar(
+                article: article,
+                fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                controller: pageController,
+              ),
+            ),
+            _BackToTopicButton(
+              showButton: showBackToTopicButton,
+              fromTopic: fromTopic,
+            ),
+          ],
         ),
       ),
     );
@@ -417,6 +428,33 @@ class _PremiumArticleView extends HookWidget {
     final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     final position = renderBox?.localToGlobal(Offset.zero);
     return position?.dy;
+  }
+}
+
+class _Credits extends StatelessWidget {
+  const _Credits({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+
+  @override
+  Widget build(BuildContext context) {
+    return MarkdownBody(
+      data: article.credits,
+      styleSheet: MarkdownStyleSheet(
+        p: AppTypography.articleTextRegular.copyWith(
+          color: AppColors.textGrey,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+      onTapLink: (text, href, title) {
+        if (href != null) {
+          openInAppBrowser(href);
+        }
+      },
+    );
   }
 }
 

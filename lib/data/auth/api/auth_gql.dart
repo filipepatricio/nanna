@@ -6,19 +6,17 @@ class AuthGQL {
         '''
     mutation signIn(\$token: String!, \$provider: String!, \$meta: UserMeta!) {
       signIn(idToken: \$token, provider: \$provider, information: \$meta) {
-        successful
-        errorCode
-        errorMessage
-        tokens {
-          accessToken
-          refreshToken
-        }
-        account {
-          uuid
-          firstName
-          lastName
-          email
-        }
+        $signIn
+      }
+    }
+  ''',
+      );
+
+  static DocumentNode loginWithCode() => gql(
+        '''
+    mutation signIn(\$token: String!, \$provider: String!, \$meta: UserMeta!, \$code: String) {
+      signIn(idToken: \$token, provider: \$provider, information: \$meta, inviteCode: \$code) {
+        $signIn
       }
     }
   ''',
@@ -46,4 +44,20 @@ class AuthGQL {
     }
   ''',
       );
+
+  static const String signIn = '''
+      successful
+      errorCode
+      errorMessage
+      tokens {
+        accessToken
+        refreshToken
+      }
+      account {
+        uuid
+        firstName
+        lastName
+        email
+      }
+  ''';
 }

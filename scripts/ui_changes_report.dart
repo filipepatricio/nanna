@@ -10,16 +10,20 @@ final cacheRoot = Directory('${Directory.systemTemp.path}/cached_goldens');
 
 Future<void> main(List<String> args) async {
   try {
-    await getBaseline();
-    print('> Run visual tests ...');
+    await getBaselineGoldens();
+    print('> Running golden image tests ...');
     final flutterTestResult = await Process.run('flutter', ['test', '--reporter', 'json', 'test/visual']);
     if (flutterTestResult.exitCode == 0) {
-      print('Done: No visual changes');
+      print('✓ Done: No visual changes');
     } else {
       var numVisualChanges = 0;
       var numNewGoldens = 0;
       final unexpectedTestErrors = <String>[];
       final testFilesWhichProduceNewGoldens = <String>{};
+      if (reportDir.existsSync()) {
+        await reportDir.delete(recursive: true);
+      }
+      await reportDir.create();
       for (final failedTest in parseFlutterTestOutput((flutterTestResult.stdout as String).trim())) {
         if (RegExp(r'Pixel\stest\sfailed,\s[0-9.]+%\sdiff\sdetected').hasMatch(failedTest.testOutput)) {
           ++numVisualChanges;
@@ -30,7 +34,7 @@ Future<void> main(List<String> args) async {
         }
       }
       if (numVisualChanges > 0) {
-        print('> Create visual changes report ...');
+        print('> Creating ui changes report ...');
         await createVisualChangesReport();
       }
       if (unexpectedTestErrors.isNotEmpty) {
@@ -41,7 +45,7 @@ Future<void> main(List<String> args) async {
         final knownGoldens = [
           ...goldensDir.listSync().where((x) => x is File && x.path.endsWith('.png')).cast<File>().map((it) => it.name)
         ];
-        print('> Create new goldens ...');
+        print('> Creating new goldens ...');
         await runGuarded(
           before: () async {
             await printAndExec('rm', ['-rf', 'test/visual/goldens.backup']);
@@ -70,11 +74,11 @@ Future<void> main(List<String> args) async {
         );
       }
       if (numVisualChanges == 0 && numNewGoldens == 0) {
-        print('Done: No visual changes, no new goldens');
+        print('✓ Done: No visual changes, no new goldens');
         exit(0);
       }
       print(
-        'Done: Found $numVisualChanges visual change(s) and $numNewGoldens new golden(s), saved in: ${reportDir.absolute.path}',
+        '✓ Done: Found $numVisualChanges visual change(s) and $numNewGoldens new golden(s), saved in: ${reportDir.absolute.path}',
       );
       exit(1);
     }
@@ -190,28 +194,25 @@ Iterable<FailedTest> parseFlutterTestOutput(String flutterTestOutput) sync* {
   }
 }
 
-Future<void> getBaseline() async {
-  final mergeBase = await exec('git', ['merge-base', 'origin/develop', 'HEAD']);
-  await getGoldens(mergeBase);
-}
-
-Future<void> getGoldens(String sha1) async {
+Future<void> getBaselineGoldens() async {
+  final sha1 = await exec('git', ['merge-base', 'origin/develop', 'HEAD']);
   final cacheDir = Directory('${cacheRoot.path}/$sha1');
+
   if (cacheDir.existsSync()) {
-    print('Restore cached goldens from ${cacheDir.path} ...');
+    print('> Restoring cached goldens from ${cacheDir.path} ...');
     if (goldensDir.existsSync()) {
       goldensDir.deleteSync(recursive: true);
     }
     goldensDir.createSync(recursive: true);
     await exec('cp', ['-a', '${cacheDir.path}/.', goldensDir.path]);
   } else {
-    print('Create goldens for $sha1 ...');
+    print('> Creating goldens from baseline...');
     final gitStatus = await exec('git', ['status', '-s']);
     var head = await exec('git', ['rev-parse', 'HEAD']);
     await runGuarded(
       before: () async {
         if (gitStatus.isNotEmpty) {
-          print('> Create temporary WIP commit containing work directory changes ...');
+          print('> > Creating temporary WIP commit containing work directory changes ...');
           await printAndExec('git', ['add', '-A']);
           await printAndExec('git', ['commit', '--no-verify', '-m', 'WIP']);
           head = await exec('git', ['rev-parse', 'HEAD']);
@@ -221,35 +222,36 @@ Future<void> getGoldens(String sha1) async {
         await runGuarded(
           before: () async {
             if (head != sha1) {
-              print('> Reset work directory to baseline ...');
+              print('> > Resetting work directory to baseline ...');
               await printAndExec('git', ['reset', '--hard', sha1]);
             }
           },
           body: () async {
-            print('> Rebuild ...');
+            print('> > Rebuilding baseline ...');
             await printAndExec('make', ['get']);
             await printAndExec('make', ['easy_localization']);
             await printAndExec('make', ['build_runner']);
-            print('> Update goldens ...');
+            print('> > Updating goldens ...');
             await printAndExec('make', ['update_goldens']);
-            print('> Cache goldens ...');
+            print('> > Caching goldens ...');
             cacheDir.createSync(recursive: true);
             await exec('cp', ['-a', '${goldensDir.path}/.', cacheDir.path]);
-            print('> Rebuild ...');
-            await printAndExec('make', ['get']);
-            await printAndExec('make', ['easy_localization']);
-            await printAndExec('make', ['build_runner']);
           },
           after: () async {
             if (head != sha1) {
-              print('> Restore work directory ...');
+              print('> > Restoring PR changes ...');
               await printAndExec('git', ['reset', '--hard', head]);
+              print('> > Rebuilding PR changes ...');
+              await printAndExec('make', ['get']);
+              await printAndExec('make', ['easy_localization']);
+              await printAndExec('make', ['build_runner']);
             }
           },
         );
       },
       after: () async {
         if (gitStatus.isNotEmpty) {
+          print('x x Something happened. Reseting to HEAD~1...');
           await printAndExec('git', ['reset', 'HEAD~1']);
         }
       },

@@ -36,6 +36,7 @@ class _InformedSelectableTextState extends State<InformedSelectableText>
   late TextSpanEditingController _controller;
 
   FocusNode? _focusNode;
+
   FocusNode get _effectiveFocusNode => _focusNode ??= FocusNode(skipTraversal: true);
 
   bool _showSelectionHandles = false;
@@ -51,6 +52,7 @@ class _InformedSelectableTextState extends State<InformedSelectableText>
 
   @override
   bool get selectionEnabled => true;
+
   // End of API for TextSelectionGestureDetectorBuilderDelegate.
 
   @override

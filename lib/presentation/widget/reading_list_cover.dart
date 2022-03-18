@@ -58,7 +58,7 @@ class ReadingListCover extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    TopicOwnerAvatar(owner: topic.owner),
+                    TopicOwnerAvatar(owner: topic.owner, withPrefix: true),
                     const Spacer(),
                     _TopicTitleIntroduction(topic: topic),
                     const Spacer(),

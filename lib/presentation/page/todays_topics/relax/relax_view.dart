@@ -74,12 +74,12 @@ class RelaxView extends HookWidget {
                   children: [
                     TextSpan(
                       text: goodbyeHeadline.message,
-                      style: AppTypography.b1Regular,
+                      style: AppTypography.b2Regular,
                     ),
                     const TextSpan(text: ' '),
                     TextSpan(
                       text: LocaleKeys.todaysTopics_goToExplore.tr(),
-                      style: AppTypography.b1Bold.copyWith(decoration: TextDecoration.underline),
+                      style: AppTypography.b2Bold.copyWith(decoration: TextDecoration.underline),
                       recognizer: TapGestureRecognizer()..onTap = () => _goToExplore(context),
                     ),
                   ],

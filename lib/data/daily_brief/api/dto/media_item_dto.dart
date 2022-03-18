@@ -14,6 +14,7 @@ class MediaItemDTO with _$MediaItemDTO {
     String url,
     String title,
     String strippedTitle,
+    String credits,
     String type,
     String? publicationDate,
     int? timeToRead,

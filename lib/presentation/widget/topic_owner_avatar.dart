@@ -14,28 +14,32 @@ class TopicOwnerAvatar extends HookWidget {
   const TopicOwnerAvatar({
     required this.owner,
     Key? key,
-    this.profileMode = false,
+    this.withPrefix = false,
+    this.textStyle = defaultAvatarTextStyle,
     this.mode = Brightness.dark,
-    this.imageHeight = AppDimens.avatarSize,
-    this.imageWidth = AppDimens.avatarSize,
+    this.imageSize = AppDimens.avatarSize,
     this.underlined = false,
     this.fontSize,
     this.onTap,
   }) : super(key: key);
 
   final TopicOwner owner;
-  final bool profileMode;
+  final TextStyle textStyle;
   final Brightness mode;
   final bool underlined;
-  final double imageHeight;
-  final double imageWidth;
+  final bool withPrefix;
+  final double imageSize;
   final double? fontSize;
   final Function()? onTap;
+
+  static const defaultAvatarTextStyle = AppTypography.h3boldLoraItalic;
 
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
     final imageId = owner.avatar?.publicId;
+    final imageWidth = imageSize;
+    final imageHeight = imageSize;
 
     // Using non-dynamic resolution to force the use of the same cached image everywhere
     // Using 4 because the max. device pixel ratio currently is 3, 3.5. 4 covers all devices with good quality
@@ -75,27 +79,21 @@ class TopicOwnerAvatar extends HookWidget {
             child: RichText(
               text: TextSpan(
                 children: [
-                  if (!profileMode)
+                  if (withPrefix)
                     TextSpan(
                       text: '${LocaleKeys.article_by.tr()} ',
-                      style: AppTypography.h3boldLoraItalic.copyWith(
+                      style: textStyle.copyWith(
                         fontSize: fontSize,
                         color: mode == Brightness.light ? AppColors.white : null,
                       ),
                     ),
                   TextSpan(
                     text: owner.name,
-                    style: profileMode
-                        ? AppTypography.h3bold.copyWith(
-                            fontSize: fontSize,
-                            color: mode == Brightness.light ? AppColors.white : null,
-                            decoration: underlined ? TextDecoration.underline : null,
-                          )
-                        : AppTypography.h3boldLoraItalic.copyWith(
-                            fontSize: fontSize,
-                            color: mode == Brightness.light ? AppColors.white : null,
-                            decoration: underlined ? TextDecoration.underline : null,
-                          ),
+                    style: textStyle.copyWith(
+                      fontSize: fontSize,
+                      color: mode == Brightness.light ? AppColors.white : null,
+                      decoration: underlined ? TextDecoration.underline : null,
+                    ),
                   ),
                 ],
               ),

@@ -237,7 +237,7 @@ class _TopicHeader extends StatelessWidget {
                     padding: const EdgeInsets.only(top: AppDimens.xl),
                     child: Text(
                       LocaleKeys.todaysTopics_selectedArticles.tr(args: ['$articlesLength']),
-                      style: AppTypography.b1Regular.copyWith(color: AppColors.white, height: 1),
+                      style: AppTypography.b2Regular.copyWith(color: AppColors.white, height: 1),
                     ),
                   ),
                 ],

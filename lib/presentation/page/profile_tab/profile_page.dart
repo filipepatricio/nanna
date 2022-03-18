@@ -55,16 +55,23 @@ class ProfilePage extends HookWidget {
           style: AppTypography.h1Bold,
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-            child: IconButton(
-              onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
-              icon: SvgPicture.asset(
-                AppVectorGraphics.settings,
-                fit: BoxFit.contain,
-              ),
+          IconButton(
+            onPressed: () => AutoRouter.of(context).push(const InviteFriendPageRoute()),
+            icon: SvgPicture.asset(
+              AppVectorGraphics.gift,
+              fit: BoxFit.contain,
             ),
-          )
+            splashRadius: AppDimens.l,
+          ),
+          IconButton(
+            onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
+            icon: SvgPicture.asset(
+              AppVectorGraphics.settings,
+              fit: BoxFit.contain,
+            ),
+            splashRadius: AppDimens.l,
+          ),
+          const SizedBox(width: AppDimens.s),
         ],
       ),
       body: ReadingBannerWrapper(
@@ -155,7 +162,7 @@ class _Idle extends StatelessWidget {
         ),
         Text(
           LocaleKeys.profile_stayTunedText.tr(),
-          style: AppTypography.b1Regular,
+          style: AppTypography.b2Regular,
         ),
         const SizedBox(height: AppDimens.xl),
         Padding(

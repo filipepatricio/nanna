@@ -16,9 +16,11 @@
     "linkCopied": "Successfuly copied link to your clipboard!",
     "share": "Share",
     "shareImage": "Share image",
-    "shareText": "Share text"
+    "shareText": "Share text",
+    "copy": "Copy"
   },
   "commonError": {
+    "oops": "Oops",
     "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy "
   },
   "onboarding": {
@@ -86,7 +88,8 @@
     "accountInfoSavedSuccessfully": "Your information was saved successfully",
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
-    "wrongEmailInput": "Wrong email input"
+    "wrongEmailInput": "Wrong email input",
+    "inviteFriend": "Invite a friend"
   },
   "signIn": {
     "header": {
@@ -183,17 +186,28 @@
     "asStory": "Share quote as story"
   },
   "noMemberAccessPage": {
-    "headline": "Ooops, looks like you are not a member yet!",
+    "headline": "Almost done! Please enter your invite code below to get started",
+    "invalidCode": "Ooops, looks like the invite code is not valid!",
     "infoParts": {
-      "0": "If you think you are, ",
-      "1": "reach out to feedback@informed.so.",
-      "2": "Otherwise, you can request an invite below."
+      "0": "No code? Not a problem! If you are already a member, then just reach out ",
+      "1": "feedback@informed.so ",
+      "2": "or ",
+      "3": "request an invite"
     },
-    "waitlistAction": "Request an invite",
+    "yourInviteCode": "Your invite code",
     "email": {
       "subject": "I'm already a member",
       "body": "Hey there,\nwe will check if you are already a member and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
     },
     "emailCopied": "Successfuly copied email to your clipboard!"
+  },
+  "inviteFriend": {
+    "title": "Invite a friend",
+    "header": "Invite your friends",
+    "content": "Share the code below with {} of your friends or ask them to enter it during the login",
+    "inviteAction": "Invite a Friend",
+    "usage": "{} of {} invites have been used",
+    "shareText": "Hey, here is my special code {} to skip the line and use informed right away! {}",
+    "codeCopied": "Successfuly copied code to your clipboard!"
   }
 }

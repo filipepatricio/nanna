@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:better_informed_mobile/presentation/widget/version_label/version_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -27,16 +28,13 @@ class SettingsMainBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(AppDimens.l),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l) + const EdgeInsets.only(top: AppDimens.l),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(
+              [
                 Text(
                   LocaleKeys.settings_profileHeader.tr(),
                   style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
@@ -52,6 +50,12 @@ class SettingsMainBody extends HookWidget {
                   label: LocaleKeys.settings_pushNotifications.tr(),
                   icon: AppVectorGraphics.notifications,
                   onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
+                ),
+                const SizedBox(height: AppDimens.ml),
+                SettingsMainItem(
+                  label: LocaleKeys.settings_inviteFriend.tr(),
+                  icon: AppVectorGraphics.gift,
+                  onTap: () => AutoRouter.of(context).push(const InviteFriendPageRoute()),
                 ),
                 const SizedBox(height: AppDimens.xxxl),
                 Text(
@@ -70,19 +74,36 @@ class SettingsMainBody extends HookWidget {
                   icon: AppVectorGraphics.terms,
                   onTap: () => _openInBrowser(termsOfServiceUri),
                 ),
-                const Spacer(),
-                FilledButton(
-                  text: LocaleKeys.common_signOut.tr(),
-                  fillColor: AppColors.carrotRed,
-                  textColor: AppColors.white,
-                  onTap: () async => await cubit.signOut(),
-                ),
-                const SizedBox(height: AppDimens.ml),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Container(
+            padding: const EdgeInsets.all(AppDimens.l),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: UnconstrainedBox(
+                constrainedAxis: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    FilledButton(
+                      text: LocaleKeys.common_signOut.tr(),
+                      fillColor: AppColors.carrotRed,
+                      textColor: AppColors.white,
+                      onTap: () => cubit.signOut(),
+                    ),
+                    const SizedBox(height: AppDimens.s),
+                    const VersionLabel(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

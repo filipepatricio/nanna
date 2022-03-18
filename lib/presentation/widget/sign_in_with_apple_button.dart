@@ -43,7 +43,7 @@ class SignInWithAppleButton extends StatelessWidget {
             ),
             Text(
               LocaleKeys.signIn_providerButton_apple.tr(),
-              style: AppTypography.b1Regular,
+              style: AppTypography.b2Regular,
             ),
           ],
         ),

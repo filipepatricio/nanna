@@ -38,7 +38,7 @@ class EntryPage extends HookWidget {
 
     return const Scaffold(
       backgroundColor: AppColors.background,
-      body: Loader(color: AppColors.darkGrey),
+      body: Loader(),
     );
   }
 }

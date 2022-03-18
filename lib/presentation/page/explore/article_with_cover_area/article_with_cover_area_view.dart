@@ -101,7 +101,7 @@ class ArticleWithCoverAreaView extends HookWidget {
               ),
             ),
           ),
-          const SizedBox(height: AppDimens.xl),
+          const SizedBox(height: AppDimens.l),
         ],
       ),
     );

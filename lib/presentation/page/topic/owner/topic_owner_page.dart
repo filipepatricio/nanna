@@ -88,9 +88,8 @@ class TopicOwnerPage extends HookWidget {
                     padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                     child: TopicOwnerAvatar(
                       owner: owner,
-                      profileMode: true,
-                      imageHeight: AppDimens.avatarSize * 1.3,
-                      imageWidth: AppDimens.avatarSize * 1.3,
+                      textStyle: AppTypography.h3bold,
+                      imageSize: AppDimens.avatarSize * 1.3,
                     ),
                   ),
                   const SizedBox(height: AppDimens.m),
@@ -99,7 +98,7 @@ class TopicOwnerPage extends HookWidget {
                     child: Text(
                       owner is Expert ? (owner as Expert).bio : LocaleKeys.topic_owner_editorBio.tr(),
                       softWrap: true,
-                      style: AppTypography.b1Regular,
+                      style: AppTypography.b2Regular,
                     ),
                   ),
                   const SizedBox(height: AppDimens.xl),

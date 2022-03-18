@@ -12,6 +12,7 @@ class TestData {
         url: '',
         title: 'How golden tests changed my life',
         strippedTitle: 'How golden tests changed my life',
+        credits: 'This article originally appeared here',
         type: ArticleType.premium,
         timeToRead: 0,
         publisher: Publisher(darkLogo: null, lightLogo: null, name: 'New York Times'),
