@@ -26,7 +26,6 @@ class TopicAppBar extends HookWidget {
 
   const TopicAppBar({
     required this.topic,
-    required this.isShowingTutorialToast,
     required this.cubit,
     required this.isShowingTutorialToast,
     required this.scrollPositionNotifier,
