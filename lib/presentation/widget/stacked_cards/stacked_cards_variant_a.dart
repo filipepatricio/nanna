@@ -29,6 +29,7 @@ class StackedCardsVariantA extends StatelessWidget {
     final middleCardWidth = topCardWidth - topCardWidth / 12;
 
     return Stack(
+      alignment: centered ? AlignmentDirectional.topCenter : AlignmentDirectional.topStart,
       children: [
         Container(
           color: AppColors.background,
