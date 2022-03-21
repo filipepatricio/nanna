@@ -126,7 +126,7 @@ class _ArticleHeader extends StatelessWidget {
         const SizedBox(height: AppDimens.xl),
         const Divider(
           height: 0.5,
-          color: AppColors.greyDividerColor,
+          color: AppColors.dividerGreyLight,
           indent: AppDimens.xxl,
           endIndent: AppDimens.xxl,
         ),

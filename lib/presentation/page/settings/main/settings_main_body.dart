@@ -47,7 +47,7 @@ class SettingsMainBody extends HookWidget {
                 ),
                 const SizedBox(height: AppDimens.ml),
                 SettingsMainItem(
-                  label: LocaleKeys.settings_pushNotifications.tr(),
+                  label: LocaleKeys.settings_notifications.tr(),
                   icon: AppVectorGraphics.notifications,
                   onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
                 ),

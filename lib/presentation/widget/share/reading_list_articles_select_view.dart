@@ -130,7 +130,7 @@ class _ContainerIOS extends StatelessWidget {
           const SizedBox(height: AppDimens.m),
           const _IOSHeader(),
           const SizedBox(height: AppDimens.m),
-          const Divider(height: 0.5, color: AppColors.greyDividerColor),
+          const Divider(height: 0.5, color: AppColors.dividerGreyLight),
           const SizedBox(height: AppDimens.s),
           Expanded(child: child),
         ],

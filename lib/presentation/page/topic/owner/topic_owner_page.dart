@@ -112,7 +112,7 @@ class TopicOwnerPage extends HookWidget {
                         children: [
                           Text(
                             LocaleKeys.topic_howDoWeCurateContent_label.tr(),
-                            style: AppTypography.h3Bold16.copyWith(decoration: TextDecoration.underline),
+                            style: AppTypography.h4Bold.copyWith(decoration: TextDecoration.underline),
                           ),
                           const SizedBox(width: AppDimens.xs),
                           const Icon(Icons.arrow_forward_ios_rounded, size: 12),
@@ -255,7 +255,7 @@ class _ActionsBar extends HookWidget {
               opacity: showOwnerTitle.value,
               duration: const Duration(milliseconds: 200),
               child: Center(
-                child: Text(owner.name, style: AppTypography.h3Bold16),
+                child: Text(owner.name, style: AppTypography.h4Bold),
               ),
             )
           ],

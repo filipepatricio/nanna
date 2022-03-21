@@ -8,7 +8,7 @@ class InformedDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 1.0,
-      color: AppColors.greyDividerColor,
+      color: AppColors.dividerGreyLight,
     );
   }
 }

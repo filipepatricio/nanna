@@ -50,7 +50,7 @@ SnackbarMessage _browserErrorMessage(String uri, SnackbarController snackbarCont
       text: TextSpan(
         children: [
           TextSpan(
-            text: tr(LocaleKeys.commonError_noBrowser),
+            text: tr(LocaleKeys.common_error_noBrowser),
             style: AppTypography.h4Normal.copyWith(color: AppColors.white),
           ),
           TextSpan(

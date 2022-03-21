@@ -5,15 +5,16 @@ import 'package:better_informed_mobile/data/push_notification/api/dto/registered
 import 'package:better_informed_mobile/data/push_notification/api/push_notification_api_data_source.dart';
 import 'package:better_informed_mobile/data/push_notification/api/push_notification_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: PushNotificationApiDataSource)
-class PushNotificationGraphqlApiDataSource implements PushNotificationApiDataSource {
+@LazySingleton(as: PushNotificationApiDataSource, env: liveEnvs)
+class PushNotificationGraphqlDataSource implements PushNotificationApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
 
-  PushNotificationGraphqlApiDataSource(this._client, this._responseResolver);
+  PushNotificationGraphqlDataSource(this._client, this._responseResolver);
 
   @override
   Future<RegisteredPushTokenDTO> registerToken(String token) async {

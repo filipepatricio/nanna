@@ -92,15 +92,6 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h3Bold16 = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 16,
-    height: 1.25,
-    letterSpacing: 0.15,
-    color: AppColors.textPrimary,
-  );
-
   static const TextStyle h3Normal = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,

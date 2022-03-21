@@ -1,19 +1,27 @@
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
+import 'package:better_informed_mobile/generated/local_keys.g.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch_state.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_type.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class NotificationSettingSwitch extends HookWidget {
   final NotificationChannel channel;
   final NotificationType notificationType;
+  final SnackbarController snackbarController;
 
   const NotificationSettingSwitch({
     required this.channel,
     required this.notificationType,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
@@ -30,15 +38,27 @@ class NotificationSettingSwitch extends HookWidget {
       [cubit],
     );
 
+    useCubitListener<NotificationSettingSwitchCubit, NotificationSettingSwitchState>(
+      cubit,
+      (cubit, state, context) {
+        state.mapOrNull(
+          generalError: (_) {
+            snackbarController.showMessage(
+              SnackbarMessage.simple(
+                message: LocaleKeys.common_error_tryAgainLater.tr(),
+                type: SnackbarMessageType.negative,
+              ),
+            );
+          },
+        );
+      },
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
       child: state.maybeMap(
         notInitialized: (_) => const _NotInitialized(),
-        processing: (state) => _Processing(
-          name: state.name,
-          value: state.value,
-          switchKey: key,
-        ),
+        processing: (state) => _Processing(),
         idle: (state) => _Idle(
           name: state.name,
           value: state.value,
@@ -61,34 +81,16 @@ class _NotInitialized extends StatelessWidget {
 }
 
 class _Processing extends StatelessWidget {
-  final String name;
-  final bool value;
-  final Key switchKey;
-
-  const _Processing({
-    required this.name,
-    required this.value,
-    required this.switchKey,
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            name,
-            style: AppTypography.h4Medium,
-          ),
-        ),
-        const SizedBox(width: AppDimens.s),
-        CupertinoSwitch(
-          key: switchKey,
-          onChanged: null,
-          value: value,
-        ),
-      ],
+    return Container(
+      height: AppDimens.l,
+      width: AppDimens.l,
+      padding: const EdgeInsets.all(AppDimens.one),
+      child: const Loader(
+        strokeWidth: 2.0,
+        color: AppColors.dividerGreyLight,
+      ),
     );
   }
 }
@@ -109,21 +111,30 @@ class _Idle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            name,
-            style: AppTypography.h4Medium,
+    return Theme(
+      data: Theme.of(context).copyWith(unselectedWidgetColor: AppColors.transparent),
+      child: Container(
+        width: AppDimens.l,
+        height: AppDimens.l,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: value ? AppColors.limeGreenDark : AppColors.transparent,
+          border: Border.fromBorderSide(
+            BorderSide(
+              width: 2.0,
+              color: value ? AppColors.limeGreenDark : AppColors.dividerGreyLight,
+            ),
           ),
         ),
-        const SizedBox(width: AppDimens.s),
-        CupertinoSwitch(
+        child: Checkbox(
           key: switchKey,
-          onChanged: onChange,
           value: value,
+          shape: const CircleBorder(),
+          activeColor: AppColors.limeGreenDark,
+          visualDensity: VisualDensity.compact,
+          onChanged: (value) => onChange(value!),
         ),
-      ],
+      ),
     );
   }
 }
