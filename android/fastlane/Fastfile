@@ -34,6 +34,7 @@ platform :android do
         firebase_app_distribution(
             service_credentials_file: "../firebase_credentials.json",
             app: ENV["FIREBASE_APP_ID_ANDROID"],
+            groups: "iteo, informed, external",
             apk_path: "../build/app/outputs/flutter-apk/app-stage-release.apk"
         )
     end
