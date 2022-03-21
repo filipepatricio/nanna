@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ShareButton extends StatelessWidget {
-  final VoidCallback onTap;
-
   const ShareButton({
     required this.onTap,
+    Color? backgroundColor,
     Key? key,
-  }) : super(key: key);
+  })  : backgroundColor = backgroundColor ?? AppColors.white,
+        super(key: key);
+
+  final VoidCallback onTap;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +21,9 @@ class ShareButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(AppDimens.xs),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: AppColors.white,
+          color: backgroundColor,
         ),
         child: SvgPicture.asset(
           AppVectorGraphics.share,

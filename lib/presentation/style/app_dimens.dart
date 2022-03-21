@@ -149,4 +149,6 @@ class AppDimens {
 
   /// 260
   static const exploreAreaTopicSeeAllCoverHeight = 250.0;
+
+  static const bookmarkIconSize = 32.0;
 }

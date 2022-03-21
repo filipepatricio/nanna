@@ -8,7 +8,7 @@ import 'package:better_informed_mobile/presentation/page/invite_friend/invite_fr
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
-import 'package:better_informed_mobile/presentation/page/profile_tab/profile_page.dart';
+import 'package:better_informed_mobile/presentation/page/profile/profile_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';

@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
@@ -106,6 +107,7 @@ class _ArticleImageOverlay extends StatelessWidget {
             baseTextStyle: AppTypography.h5BoldSmall.copyWith(
               height: hasImage ? 1.71 : 1.5,
               color: hasImage ? AppColors.white : AppColors.textPrimary,
+              fontSize: context.isSmallDevice ? 12 : null,
             ),
           ),
           const Spacer(),

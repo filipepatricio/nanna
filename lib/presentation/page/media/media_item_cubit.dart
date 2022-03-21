@@ -26,6 +26,13 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final TradeTopicIdForSlugUseCase _tradeTopicIdForSlugUseCase;
 
   late MediaItemArticle _currentArticle;
+  late String? _topicId;
+  late String? _briefId;
+
+  String? get topicId => _topicId;
+
+  String? get briefId => _briefId;
+
   Article? _currentFullArticle;
 
   MediaItemScrollData scrollData = MediaItemScrollData.initial();
@@ -45,12 +52,16 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     String? slug,
     String? topicId,
     String? topicSlug,
+    String? briefId,
   ) async {
     if (article == null && slug == null) {
       emit(const MediaItemState.emptyError());
       Fimber.e('Article and slug were null on article page.');
       return;
     }
+
+    _topicId = topicId;
+    _briefId = briefId;
 
     if (article != null) {
       await _initializeWithArticle(article, topicId);

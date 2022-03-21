@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -34,7 +35,6 @@ class ArticleSeeAllPage extends HookWidget {
     final cubit = useCubit<ArticleSeeAllPageCubit>();
     final state = useCubitBuilder<ArticleSeeAllPageCubit, ArticleSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
-    final screenHeight = MediaQuery.of(context).size.height;
 
     useEffect(
       () {
@@ -48,33 +48,21 @@ class ArticleSeeAllPage extends HookWidget {
       orElse: () => false,
     );
 
-    useEffect(
-      () {
-        final listener = shouldListen
-            ? () {
-                final position = scrollController.position;
-
-                if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
-                  cubit.loadNextPage();
-                }
-              }
-            : () {};
-        scrollController.addListener(listener);
-        return () => scrollController.removeListener(listener);
-      },
-      [scrollController, shouldListen],
-    );
-
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: title),
-      body: TabBarListener(
-        currentPage: context.routeData,
-        controller: scrollController,
-        child: _Body(
-          title: title,
-          state: state,
-          scrollController: scrollController,
-          pageStorageKey: pageStorageKey,
+      body: NextPageLoadExecutor(
+        enabled: shouldListen,
+        onNextPageLoad: cubit.loadNextPage,
+        scrollController: scrollController,
+        child: TabBarListener(
+          currentPage: context.routeData,
+          controller: scrollController,
+          child: _Body(
+            title: title,
+            state: state,
+            scrollController: scrollController,
+            pageStorageKey: pageStorageKey,
+          ),
         ),
       ),
     );

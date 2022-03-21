@@ -1,14 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/profile_tab/profile_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/profile_tab/profile_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view.dart';
+import 'package:better_informed_mobile/presentation/page/profile/profile_filter_tab_bar.dart';
+import 'package:better_informed_mobile/presentation/page/profile/profile_page_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/profile/profile_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -27,6 +28,7 @@ class ProfilePage extends HookWidget {
     final cubit = useCubit<ProfilePageCubit>();
     final state = useCubitBuilder(cubit);
     final snackbarController = useMemoized(() => SnackbarController());
+    final tabController = useTabController(initialLength: 3);
 
     useCubitListener<ProfilePageCubit, ProfilePageState>(cubit, (cubit, state, context) {
       state.mapOrNull(
@@ -82,11 +84,20 @@ class ProfilePage extends HookWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: AppDimens.m),
+                ProfileFilterTabBar(
+                  controller: tabController,
+                  onChange: cubit.changeFilter,
+                ),
                 Expanded(
                   child: state.maybeMap(
-                    initialLoading: (_) => const Loader(),
-                    idle: (state) => _Idle(cubit: cubit),
+                    initializing: (state) => const Loader(
+                      color: AppColors.limeGreen,
+                    ),
+                    idle: (state) => BookmarkListView(
+                      filter: state.filter,
+                      sortConfigName: state.sortConfigName,
+                      onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
+                    ),
                     orElse: () => const SizedBox(),
                   ),
                 ),
@@ -134,53 +145,6 @@ class ProfilePage extends HookWidget {
         message: LocaleKeys.profile_emailCopied.tr(),
         type: SnackbarMessageType.positive,
       ),
-    );
-  }
-}
-
-class _Idle extends StatelessWidget {
-  const _Idle({
-    required this.cubit,
-    Key? key,
-  }) : super(key: key);
-
-  final ProfilePageCubit cubit;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          AppVectorGraphics.stayTuned,
-        ),
-        const SizedBox(height: AppDimens.m),
-        Text(
-          LocaleKeys.profile_stayTuned.tr(),
-          style: AppTypography.h3Bold16,
-        ),
-        Text(
-          LocaleKeys.profile_stayTunedText.tr(),
-          style: AppTypography.b2Regular,
-        ),
-        const SizedBox(height: AppDimens.xl),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: FilledButton(
-            text: LocaleKeys.profile_feedbackButton.tr(),
-            fillColor: AppColors.textPrimary,
-            textColor: AppColors.white,
-            onTap: () {
-              cubit.sendFeedbackEmail(
-                _feedbackEmail,
-                LocaleKeys.profile_feedbackSubject.tr(),
-                LocaleKeys.profile_feedbackText.tr(),
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 }

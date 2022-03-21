@@ -30,6 +30,7 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
   Topic call(TopicDTO data) {
     return Topic(
       id: data.id,
+      slug: data.slug,
       title: data.title,
       strippedTitle: data.strippedTitle,
       introduction: data.introduction,

@@ -3,6 +3,7 @@ class CommonGQLModels {
 
   static const String topic = '''
     id
+    slug
     title
     url
     strippedTitle
