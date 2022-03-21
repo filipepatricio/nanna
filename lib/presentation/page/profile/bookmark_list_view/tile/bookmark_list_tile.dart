@@ -154,7 +154,6 @@ extension on Bookmark {
             const SizedBox(height: AppDimens.m),
             UpdatedLabel(
               dateTime: data.topic.lastUpdatedAt,
-              backgroundColor: AppColors.transparent,
               fontSize: 10,
               textStyle: AppTypography.subH2BoldSmall.copyWith(
                 color: AppColors.textGrey,

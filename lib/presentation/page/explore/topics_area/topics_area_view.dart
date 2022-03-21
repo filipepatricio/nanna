@@ -14,6 +14,7 @@ import 'package:better_informed_mobile/presentation/widget/reading_list_cover.da
 import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,8 @@ class TopicsAreaView extends HookWidget {
           const SizedBox(height: AppDimens.l),
           Container(
             height: cardStackHeight,
-            child: StackedCardsRandomVariantBuilder(
+            child: StackedCardsRandomVariantBuilder<StackedCardsVariant>(
+              variants: StackedCardsVariant.values,
               count: area.topics.length,
               builder: (variants) {
                 return NoScrollGlow(

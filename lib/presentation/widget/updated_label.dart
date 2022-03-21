@@ -7,14 +7,12 @@ import 'package:flutter/material.dart';
 
 class UpdatedLabel extends StatelessWidget {
   final DateTime dateTime;
-  final Color backgroundColor;
   final Brightness mode;
   final double? fontSize;
   final TextStyle textStyle;
 
   const UpdatedLabel({
     required this.dateTime,
-    required this.backgroundColor,
     this.mode = Brightness.dark,
     this.fontSize = 12,
     this.textStyle = AppTypography.systemText,
