@@ -1,3 +1,6 @@
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.dart';
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.dart';
+import 'package:better_informed_mobile/data/push_notification/api/push_notification_api_data_source.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences.dart';
@@ -9,7 +12,17 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: PushNotificationRepository, env: mockEnvs)
 class PushNotificationRepositoryMock implements PushNotificationRepository {
+  final PushNotificationApiDataSource _pushNotificationApiDataSource;
+  final NotificationPreferencesDTOMapper _notificationPreferencesDTOMapper;
+  final NotificationChannelDTOMapper _notificationChannelDTOMapper;
+
   final pushToken = 'pushToken';
+
+  PushNotificationRepositoryMock(
+    this._pushNotificationApiDataSource,
+    this._notificationPreferencesDTOMapper,
+    this._notificationChannelDTOMapper,
+  );
 
   @override
   Future<RegisteredPushToken> registerToken() async {
@@ -38,16 +51,13 @@ class PushNotificationRepositoryMock implements PushNotificationRepository {
 
   @override
   Future<NotificationPreferences> getNotificationPreferences() async {
-    return NotificationPreferences(groups: []);
+    return _notificationPreferencesDTOMapper(await _pushNotificationApiDataSource.getNotificationPreferences());
   }
 
   @override
   Future<NotificationChannel> setNotificationChannel(String id, bool? pushEnabled, bool? emailEnabled) async {
-    return NotificationChannel(
-      id: id,
-      name: 'channel',
-      pushEnabled: pushEnabled ?? true,
-      emailEnabled: emailEnabled ?? true,
+    return _notificationChannelDTOMapper.to(
+      await _pushNotificationApiDataSource.setNotificationChannel(id, pushEnabled, emailEnabled),
     );
   }
 

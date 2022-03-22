@@ -37,7 +37,7 @@ class ProfileFilterTabBar extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Container(
               height: 1,
-              color: AppColors.greyDividerColor,
+              color: AppColors.dividerGreyLight,
             ),
           ),
         ),

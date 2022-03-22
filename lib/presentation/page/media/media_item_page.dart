@@ -595,7 +595,7 @@ class _BackToTopicButton extends StatelessWidget {
         foregroundColor: AppColors.white,
         label: Text(
           fromTopic ? LocaleKeys.article_goBackToTopic.tr() : LocaleKeys.article_goBackToExplore.tr(),
-          style: AppTypography.h3Bold16.copyWith(height: 1.0, color: AppColors.white),
+          style: AppTypography.h4Bold.copyWith(height: 1.0, color: AppColors.white),
         ),
         icon: const Icon(
           Icons.arrow_back_ios_new_rounded,

@@ -7,6 +7,7 @@ class AppColors {
   static const Color black = Color(0xff000000);
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreenVivid = Color(0xffA2F054);
+  static const Color limeGreenDark = Color(0xff6AE476);
   static const Color limeGreenBleached = Color(0x64BBF383);
   static const Color textPrimary = Color(0xff282B35);
   static const Color textGrey = Color(0xff989898);
@@ -23,7 +24,6 @@ class AppColors {
   static const Color pastelGreen = Color(0xffE4F1E2);
   static const Color pastelPurple = Color(0xffDFBFFF);
   static const Color beige = Color(0xffF2E8E7);
-  static const Color dividerGrey = Color(0xffD1D5DB);
   static const Color darkGrey = Color(0xff6B7280);
   static const Color carrotRed = Color(0xffFB6F43);
   static const Color peach10 = Color(0xffF2E8E7);
@@ -42,7 +42,8 @@ class AppColors {
 
   static const Color socialNetworksIcon = Color(0x80282B35);
 
-  static const Color greyDividerColor = Color(0xffE5E5EA);
+  static const Color dividerGrey = Color(0xffD1D5DB);
+  static const Color dividerGreyLight = Color(0xffE5E5EA);
 
   static const mockedColors = [
     AppColors.pastelGreen,

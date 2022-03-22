@@ -74,7 +74,7 @@ class InviteFriendPage extends HookWidget {
                 cubit: cubit,
               ),
               error: (state) => GeneralErrorView(
-                title: tr(LocaleKeys.commonError_oops),
+                title: tr(LocaleKeys.common_error_oops),
                 content: tr(LocaleKeys.common_generalError),
                 svgPath: AppVectorGraphics.magError,
                 retryCallback: () => cubit.initialize(),

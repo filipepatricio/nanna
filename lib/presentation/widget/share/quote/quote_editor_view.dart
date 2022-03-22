@@ -213,7 +213,7 @@ class _ColorSquareOption extends StatelessWidget {
     }
 
     return Border.all(
-      color: AppColors.greyDividerColor,
+      color: AppColors.dividerGreyLight,
       width: _unselectedBorderWidth,
     );
   }
