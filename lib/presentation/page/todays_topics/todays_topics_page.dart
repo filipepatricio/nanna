@@ -179,6 +179,7 @@ class _IdleContent extends HookWidget {
                         StackedCardsRandomVariantBuilder(
                           count: currentBrief.topics.length,
                           builder: (variants) => PageViewStackedCards.variant(
+                            centered: true,
                             variant: variants[currentTopicIndex],
                             coverSize: Size(cardStackWidth, cardStackHeight),
                             child: ReadingListCover(
