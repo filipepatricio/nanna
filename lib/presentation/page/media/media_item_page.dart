@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
+import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
@@ -310,6 +311,11 @@ class _PremiumArticleView extends HookWidget {
       [articleWithImage],
     );
 
+    //TODO: Check if article supports audio mode
+    final articleOutputMode = useMemoized(
+      () => ValueNotifier(ArticleOutputMode.read),
+    );
+
     useEffect(
       () {
         WidgetsBinding.instance?.addPostFrameCallback((_) => calculateArticleContentOffset());
@@ -408,6 +414,7 @@ class _PremiumArticleView extends HookWidget {
                     controller: pageController,
                     snackbarController: snackbarController,
                     cubit: cubit,
+                    articleOutputMode: articleOutputMode,
                   ),
                 ),
                 _BackToTopicButton(
@@ -643,6 +650,7 @@ class _ActionsBar extends HookWidget {
     required this.controller,
     required this.snackbarController,
     required this.cubit,
+    required this.articleOutputMode,
     Key? key,
   }) : super(key: key);
 
@@ -651,6 +659,7 @@ class _ActionsBar extends HookWidget {
   final PageController controller;
   final SnackbarController snackbarController;
   final MediaItemCubit cubit;
+  final ValueNotifier<ArticleOutputMode>? articleOutputMode;
 
   @override
   Widget build(BuildContext context) {
@@ -721,6 +730,9 @@ class _ActionsBar extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                if (articleOutputMode != null) ...[
+                  _AudioButton(buttonColor: buttonColor, articleOutputMode: articleOutputMode)
+                ],
                 ValueListenableBuilder(
                   valueListenable: bookmarkMode,
                   builder: (BuildContext context, BookmarkButtonMode value, Widget? child) {
@@ -754,6 +766,50 @@ class _ActionsBar extends HookWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _AudioButton extends StatelessWidget {
+  const _AudioButton({
+    required this.buttonColor,
+    required this.articleOutputMode,
+    Key? key,
+  }) : super(key: key);
+
+  final ValueNotifier<Color> buttonColor;
+  final ValueNotifier<ArticleOutputMode>? articleOutputMode;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: buttonColor,
+      builder: (BuildContext context, Color colorValue, Widget? child) {
+        return ValueListenableBuilder(
+          valueListenable: articleOutputMode!,
+          builder: (BuildContext context, ArticleOutputMode value, Widget? child) {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+              child: GestureDetector(
+                onTap: () {
+                  switch (value) {
+                    case ArticleOutputMode.read:
+                      articleOutputMode!.value = ArticleOutputMode.audio;
+                      break;
+                    case ArticleOutputMode.audio:
+                      articleOutputMode!.value = ArticleOutputMode.read;
+                      break;
+                  }
+                },
+                child: SvgPicture.asset(
+                  value == ArticleOutputMode.read ? AppVectorGraphics.headphones : AppVectorGraphics.lines,
+                  color: colorValue,
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

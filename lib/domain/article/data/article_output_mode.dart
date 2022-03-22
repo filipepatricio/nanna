@@ -1,0 +1,1 @@
+enum ArticleOutputMode { read, audio }

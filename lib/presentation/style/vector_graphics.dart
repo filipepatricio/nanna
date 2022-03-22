@@ -79,4 +79,7 @@ class AppVectorGraphics {
   static const String heartSelectedNoBorder = 'assets/vector_graphics/heart_selected_no_border.svg';
   static const String heartUnselected = 'assets/vector_graphics/heart_unselected.svg';
   static const String heartUnselectedWhite = 'assets/vector_graphics/heart_unselected_white.svg';
+
+  static const String headphones = 'assets/vector_graphics/headphones.svg';
+  static const String lines = 'assets/vector_graphics/lines.svg';
 }
