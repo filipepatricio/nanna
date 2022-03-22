@@ -6,7 +6,6 @@ import 'visual_test_utils.dart';
 void main() {
   visualTest(InviteFriendPage, (tester) async {
     await tester.startApp(initialRoute: const InviteFriendPageRoute());
-    await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
 }

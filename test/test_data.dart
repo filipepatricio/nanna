@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 class TestData {
   const TestData._();
 
-  static MediaItemArticle get articleMock => MediaItem.article(
+  static MediaItemArticle get article => MediaItem.article(
         id: 'id',
         slug: 'slug',
         url: '',

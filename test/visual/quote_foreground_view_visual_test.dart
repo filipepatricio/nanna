@@ -23,11 +23,10 @@ void main() {
           child: QuoteForegroundView(
             quote: quote,
             quoteVariantData: quoteVariantDataList[0],
-            article: TestData.articleMock,
+            article: TestData.article,
           ),
         ),
       );
-      await tester.pumpAndSettle();
       await tester.matchGoldenFile('quote_foreground_view_(linen)');
 
       final context = tester.element(find.byType(Container).first);
@@ -39,7 +38,7 @@ void main() {
             child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[1],
-              article: TestData.articleMock,
+              article: TestData.article,
             ),
           ),
         ),
@@ -53,7 +52,7 @@ void main() {
             child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[2],
-              article: TestData.articleMock,
+              article: TestData.article,
             ),
           ),
         ),
@@ -67,7 +66,7 @@ void main() {
             child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[3],
-              article: TestData.articleMock,
+              article: TestData.article,
             ),
           ),
         ),
@@ -81,7 +80,7 @@ void main() {
             child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[4],
-              article: TestData.articleMock,
+              article: TestData.article,
             ),
           ),
         ),

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -48,7 +49,7 @@ class RelaxView extends HookWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (goodbyeHeadline.icon != null)
+            if (goodbyeHeadline.icon != null && !kIsTest)
               Image.network(
                 cloudinaryProvider
                     .withPublicIdAsPng(goodbyeHeadline.icon!)
