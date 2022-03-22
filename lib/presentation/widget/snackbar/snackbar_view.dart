@@ -97,7 +97,7 @@ extension on SnackbarMessage {
       simple: (simple) {
         return Text(
           simple.message,
-          style: AppTypography.h4Normal.copyWith(color: AppColors.white),
+          style: AppTypography.b2Regular.copyWith(color: AppColors.white),
         );
       },
       custom: (custom) {

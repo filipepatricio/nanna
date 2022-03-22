@@ -117,11 +117,11 @@ class ProfilePage extends HookWidget {
             children: [
               TextSpan(
                 text: LocaleKeys.profile_feedbackMailError.tr(),
-                style: AppTypography.h4Normal.copyWith(color: AppColors.white),
+                style: AppTypography.b2Regular.copyWith(color: AppColors.white),
               ),
               TextSpan(
                 text: _feedbackEmail,
-                style: AppTypography.h4Normal.copyWith(
+                style: AppTypography.b2Regular.copyWith(
                   color: AppColors.white,
                   decoration: TextDecoration.underline,
                 ),

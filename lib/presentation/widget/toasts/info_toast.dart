@@ -60,7 +60,7 @@ class InfoToast extends StatelessWidget {
                 children: [
                   InformedMarkdownBody(
                     markdown: text,
-                    baseTextStyle: AppTypography.h4Normal.copyWith(
+                    baseTextStyle: AppTypography.b2Regular.copyWith(
                       color: AppColors.textPrimary,
                     ),
                   ),

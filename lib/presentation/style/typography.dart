@@ -117,14 +117,6 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h4Normal = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 16,
-    height: 1.5,
-    color: AppColors.textPrimary,
-  );
-
   static const TextStyle h4Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -310,15 +302,7 @@ class AppTypography {
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 18,
-    height: 1.44,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle bodyText = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontFamily: fontFamilyLora,
-    fontSize: 18,
-    height: 1.75,
+    height: 1.61,
     color: AppColors.textPrimary,
   );
 
@@ -344,15 +328,6 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 16,
     height: 1,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle input1Medium = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 16,
-    height: 2.02,
-    letterSpacing: 0.15,
     color: AppColors.textPrimary,
   );
 

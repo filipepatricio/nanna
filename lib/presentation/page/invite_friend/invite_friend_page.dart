@@ -121,7 +121,7 @@ class _Idle extends StatelessWidget {
             ],
           ),
           textAlign: TextAlign.center,
-          style: AppTypography.h4Normal,
+          style: AppTypography.b2Regular,
         ),
         const SizedBox(height: AppDimens.xxl),
         _CodeContainer(
@@ -165,7 +165,7 @@ class _Idle extends StatelessWidget {
             ],
           ),
           textAlign: TextAlign.center,
-          style: AppTypography.h4Normal.copyWith(
+          style: AppTypography.b2Regular.copyWith(
             color: AppColors.textGrey,
           ),
         ),

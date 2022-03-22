@@ -216,10 +216,17 @@ class _EmailInput extends StatelessWidget {
       key: _emailInputKey,
       controller: controller,
       onChanged: cubit.updateEmail,
-      style: AppTypography.input1Medium,
+      style: AppTypography.b2Regular.copyWith(
+        height: 2.02,
+        letterSpacing: 0.15,
+      ),
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        hintStyle: AppTypography.input1Medium.copyWith(color: AppColors.black.withOpacity(0.64)),
+        hintStyle: AppTypography.b2Regular.copyWith(
+          height: 2.02,
+          letterSpacing: 0.15,
+          color: AppColors.shadowDarkColor,
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(width: 1, color: AppColors.black),
           borderRadius: BorderRadius.circular(AppDimens.sl),

@@ -47,7 +47,10 @@ class SettingsInputItem extends HookWidget {
           validator: validator,
           controller: controller,
           enabled: isEditable,
-          style: AppTypography.input1Medium,
+          style: AppTypography.b2Regular.copyWith(
+            height: 2.02,
+            letterSpacing: 0.15,
+          ),
           textCapitalization: textCapitalization ?? TextCapitalization.none,
           onChanged: (value) => onChanged(value),
           onFieldSubmitted: (value) {
