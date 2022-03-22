@@ -123,7 +123,7 @@ class _SummaryCard extends StatelessWidget {
           Expanded(
             child: InformedMarkdownBody(
               markdown: markdownText,
-              baseTextStyle: AppTypography.b2MediumLora,
+              baseTextStyle: AppTypography.b2Regular,
               pPadding: const EdgeInsets.only(bottom: AppDimens.xs),
             ),
           ),

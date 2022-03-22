@@ -38,7 +38,7 @@ class ProfileEmptyPage extends StatelessWidget {
                 ),
                 TextSpan(
                   text: filter.infoText,
-                  style: AppTypography.h4Normal,
+                  style: AppTypography.b2Regular,
                 ),
               ],
             ),

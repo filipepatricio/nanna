@@ -142,11 +142,11 @@ class NoMemberAccessPage extends HookWidget {
                               children: [
                                 TextSpan(
                                   text: LocaleKeys.noMemberAccessPage_infoParts_0.tr(),
-                                  style: AppTypography.h4Normal,
+                                  style: AppTypography.b2Regular,
                                 ),
                                 TextSpan(
                                   text: LocaleKeys.noMemberAccessPage_infoParts_1.tr(),
-                                  style: AppTypography.h4Normal.copyWith(
+                                  style: AppTypography.b2Regular.copyWith(
                                     color: AppColors.blue,
                                     decoration: TextDecoration.underline,
                                   ),
@@ -158,11 +158,11 @@ class NoMemberAccessPage extends HookWidget {
                                 ),
                                 TextSpan(
                                   text: LocaleKeys.noMemberAccessPage_infoParts_2.tr(),
-                                  style: AppTypography.h4Normal,
+                                  style: AppTypography.b2Regular,
                                 ),
                                 TextSpan(
                                   text: LocaleKeys.noMemberAccessPage_infoParts_3.tr(),
-                                  style: AppTypography.h4Normal.copyWith(
+                                  style: AppTypography.b2Regular.copyWith(
                                     color: AppColors.blue,
                                     decoration: TextDecoration.underline,
                                   ),
@@ -214,10 +214,17 @@ class _InviteCodeInput extends StatelessWidget {
     return TextField(
       key: _inviteCodeInputKey,
       controller: controller,
-      style: AppTypography.input1Medium,
+      style: AppTypography.b2Regular.copyWith(
+        height: 2.02,
+        letterSpacing: 0.15,
+      ),
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
-        hintStyle: AppTypography.input1Medium.copyWith(color: AppColors.black.withOpacity(0.64)),
+        hintStyle: AppTypography.b2Regular.copyWith(
+          height: 2.02,
+          letterSpacing: 0.15,
+          color: AppColors.shadowDarkColor,
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(width: 1, color: AppColors.black),
           borderRadius: BorderRadius.circular(AppDimens.sl),

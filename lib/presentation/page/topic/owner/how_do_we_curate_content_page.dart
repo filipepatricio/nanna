@@ -39,7 +39,9 @@ class HowDoWeCurateContentPage extends HookWidget {
                         Text(
                           LocaleKeys.topic_howDoWeCurateContent_text.tr(),
                           softWrap: true,
-                          style: AppTypography.bodyText,
+                          style: AppTypography.articleTextRegular.copyWith(
+                            height: 1.75,
+                          ),
                         ),
                         const SizedBox(height: AppDimens.xxl),
                       ],

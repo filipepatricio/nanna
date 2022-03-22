@@ -51,11 +51,11 @@ SnackbarMessage _browserErrorMessage(String uri, SnackbarController snackbarCont
         children: [
           TextSpan(
             text: tr(LocaleKeys.common_error_noBrowser),
-            style: AppTypography.h4Normal.copyWith(color: AppColors.white),
+            style: AppTypography.b2Regular.copyWith(color: AppColors.white),
           ),
           TextSpan(
             text: uri,
-            style: AppTypography.h4Normal.copyWith(
+            style: AppTypography.b2Regular.copyWith(
               color: AppColors.white,
               decoration: TextDecoration.underline,
             ),
