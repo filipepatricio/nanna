@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -87,18 +87,20 @@ class TodaysTopicsPage extends HookWidget {
                           cardStackHeight: cardStackHeight,
                         ),
                         error: (_) => SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: cardSectionMaxHeight,
+                          child: Center(
                             child: StackedCardsErrorView(
+                              useRoundedCardStack: true,
                               retryAction: cubit.loadTodaysTopics,
-                              cardStackWidth: cardStackWidth,
+                              size: Size(cardStackWidth, cardStackHeight),
                             ),
                           ),
                         ),
                         loading: (_) => SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: cardSectionMaxHeight,
-                            child: StackedCardsLoadingView(cardStackWidth: cardStackWidth),
+                          child: TodaysTopicsLoadingView(
+                            coverSize: Size(
+                              cardStackWidth,
+                              cardStackHeight,
+                            ),
                           ),
                         ),
                         orElse: () => const SizedBox(),

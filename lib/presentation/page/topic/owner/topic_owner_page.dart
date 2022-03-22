@@ -150,7 +150,7 @@ class TopicOwnerPage extends HookWidget {
                         height: cardStackHeight,
                         child: StackedCardsErrorView(
                           padding: EdgeInsets.zero,
-                          cardStackWidth: cardStackWidth,
+                          size: Size(cardStackWidth, cardStackHeight),
                         ),
                       ),
                       orElse: () => const SizedBox(),
