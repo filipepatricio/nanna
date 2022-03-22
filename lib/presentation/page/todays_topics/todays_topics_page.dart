@@ -37,7 +37,6 @@ class TodaysTopicsPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
-    final cardSectionMaxHeight = AppDimens.todaysTopicCardSectionHeight(context);
     final cardStackHeight = AppDimens.todaysTopicCardStackHeight(context);
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
