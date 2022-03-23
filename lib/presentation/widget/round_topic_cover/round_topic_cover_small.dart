@@ -3,15 +3,13 @@ import 'package:better_informed_mobile/generated/local_keys.g.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_responsive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
-import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-class RoundTopicCoverLarge extends StatelessWidget {
-  const RoundTopicCoverLarge({
+class RoundTopicCoverSmall extends StatelessWidget {
+  const RoundTopicCoverSmall({
     required this.topic,
     Key? key,
   }) : super(key: key);
@@ -29,11 +27,11 @@ class RoundTopicCoverLarge extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.symmetric(
-            horizontal: AppDimens.l,
+            horizontal: AppDimens.m,
           ) +
           const EdgeInsets.only(
-            top: AppDimens.xl,
-            bottom: AppDimens.l,
+            top: AppDimens.m,
+            bottom: AppDimens.m,
           ),
       child: Stack(
         children: [
@@ -66,41 +64,25 @@ class _CoverContent extends StatelessWidget {
       children: [
         InformedMarkdownBody(
           markdown: topic.title,
-          baseTextStyle: AppTypography.h1ExtraBold,
+          baseTextStyle: AppTypography.h4ExtraBold,
           maxLines: 4,
-        ),
-        const SizedBox(height: AppDimens.s),
-        UpdatedLabel(
-          dateTime: topic.lastUpdatedAt,
         ),
         const Spacer(),
         TopicOwnerAvatar(
           owner: topic.owner,
           withPrefix: true,
-          fontSize: 16,
+          imageSize: AppDimens.l,
+          fontSize: 14,
         ),
         const SizedBox(height: AppDimens.s),
-        InformedMarkdownBody(
-          markdown: topic.introduction,
-          baseTextStyle: AppTypography.b3MediumLora,
-          maxLines: 5,
-        ),
-        const SizedBox(height: AppDimens.m),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            PublisherLogoRow(topic: topic),
-            const Spacer(),
-            Text(
-              LocaleKeys.readingList_articleCount.tr(
-                args: [topic.readingList.entries.length.toString()],
-              ),
-              style: AppTypography.b3Regular.copyWith(
-                height: 1.5,
-                letterSpacing: null,
-              ),
-            ),
-          ],
+        Text(
+          LocaleKeys.readingList_articleCount.tr(
+            args: [topic.readingList.entries.length.toString()],
+          ),
+          style: AppTypography.b3Regular.copyWith(
+            height: 1.5,
+            letterSpacing: null,
+          ),
         ),
       ],
     );

@@ -14,6 +14,9 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
 import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_small.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
 import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
@@ -88,8 +91,8 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StackedCardsRandomVariantBuilder<StackedCardsVariant>(
-      variants: StackedCardsVariant.values,
+    return StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
+      variants: RoundStackCardVariant.values,
       count: state.maybeMap(
         loadingMore: (state) => state.topics.length,
         withPagination: (state) => state.topics.length,
@@ -136,7 +139,7 @@ class _TopicGrid extends StatelessWidget {
   final List<Topic> topics;
   final ScrollController scrollController;
   final bool withLoader;
-  final List<StackedCardsVariant> cardVariants;
+  final List<RoundStackCardVariant> cardVariants;
 
   const _TopicGrid({
     required this.title,
@@ -184,8 +187,8 @@ class _TopicGrid extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisExtent: AppDimens.exploreAreaTopicSeeAllCoverHeight,
-                mainAxisSpacing: AppDimens.m,
-                crossAxisSpacing: AppDimens.m,
+                mainAxisSpacing: AppDimens.xl,
+                crossAxisSpacing: AppDimens.l,
               ),
             ),
           ),
@@ -198,7 +201,7 @@ class _TopicGrid extends StatelessWidget {
 
 class _GridItem extends StatelessWidget {
   final Topic topic;
-  final StackedCardsVariant cardVariant;
+  final RoundStackCardVariant cardVariant;
 
   const _GridItem({
     required this.topic,
@@ -212,10 +215,15 @@ class _GridItem extends StatelessWidget {
       onTap: () => _onTopicTap(context, topic),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return PageViewStackedCards.variant(
+          return RoundStackedCards.variant(
             variant: cardVariant,
-            coverSize: Size(constraints.maxWidth, AppDimens.exploreAreaTopicSeeAllCoverHeight),
-            child: ReadingListCoverSmall(topic: topic),
+            coverSize: Size(
+              constraints.maxWidth,
+              AppDimens.exploreAreaTopicSeeAllCoverHeight,
+            ),
+            child: RoundTopicCoverSmall(
+              topic: topic,
+            ),
           );
         },
       ),
