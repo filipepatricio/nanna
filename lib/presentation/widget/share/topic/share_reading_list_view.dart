@@ -70,20 +70,13 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
     final cloudinary = useCloudinaryProvider();
     final image = useMemoized(
       () {
-        final imageUrl = cloudinary
-            .withPublicId(topic.heroImage.publicId)
-            .transform()
-            .width(_topicHeaderImageWidth.toInt())
-            .height(_topicHeaderImageHeight.toInt())
-            .autoGravity()
-            .autoQuality()
-            .generateNotNull();
-
-        return Image.network(
-          imageUrl,
+        return cloudinaryImageAuto(
+          cloudinary: cloudinary,
+          publicId: topic.heroImage.publicId,
           width: _topicHeaderImageWidth,
           height: _topicHeaderImageHeight,
           fit: BoxFit.fill,
+          testImage: AppRasterGraphics.testArticleHeroImage,
         );
       },
     );

@@ -54,20 +54,13 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
       () {
         if (articleImageId == null) return null;
 
-        final imageUrl = cloudinary
-            .withPublicId(articleImageId)
-            .transform()
-            .width(_headerWidth.toInt())
-            .height(_headerHeight.toInt())
-            .autoGravity()
-            .autoQuality()
-            .generateNotNull();
-
-        return Image.network(
-          imageUrl,
+        return cloudinaryImageAuto(
+          cloudinary: cloudinary,
+          publicId: articleImageId,
           width: _headerWidth,
           height: _headerHeight,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
+          testImage: AppRasterGraphics.testArticleHeroImage,
         );
       },
     );
@@ -76,16 +69,9 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
       () {
         if (logoImageId == null) return null;
 
-        final imageUrl = cloudinary
-            .withPublicIdAsPng(logoImageId)
-            .transform()
-            .width(_logoSize.toInt())
-            .height(_logoSize.toInt())
-            .fit()
-            .generateNotNull();
-
-        return Image.network(
-          imageUrl,
+        return cloudinaryImageFit(
+          cloudinary: cloudinary,
+          publicId: logoImageId,
           width: _logoSize,
           height: _logoSize,
           fit: BoxFit.fill,

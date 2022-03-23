@@ -39,6 +39,7 @@ class ColoredCover extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   DottedArticleInfo(
                     article: article,

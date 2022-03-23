@@ -114,6 +114,7 @@ class TopicAppBar extends HookWidget {
           snackbarController: snackbarController,
         ),
         IconButton(
+          key: const Key('share-topic-button'),
           onPressed: () => shareReadingList(context, topic),
           padding: const EdgeInsets.only(right: AppDimens.s),
           icon: SvgPicture.asset(

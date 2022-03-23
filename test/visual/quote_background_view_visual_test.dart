@@ -11,12 +11,10 @@ void main() {
       await tester.startApp(
         initialRoute: PlaceholderPageRoute(
           child: QuoteBackgroundView(
-            article: TestData.articleMock,
+            article: TestData.article,
           ),
         ),
       );
-
-      await tester.pumpAndSettle();
       await tester.matchGoldenFile();
     },
     testConfig: const TestConfig.stickerDevice(),
