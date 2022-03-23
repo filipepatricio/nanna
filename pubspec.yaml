@@ -82,6 +82,7 @@ dependencies:
   social_share: 2.2.1
   scrolls_to_top: 1.1.1
   dotted_border: 2.0.0+2
+  audio_video_progress_bar: 0.10.0
   upgrader: 3.13.0
 
 dev_dependencies:

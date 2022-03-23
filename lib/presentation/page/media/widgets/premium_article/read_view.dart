@@ -6,15 +6,17 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_i
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/credits.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ReadView extends HookWidget {
   ReadView({
@@ -182,7 +184,7 @@ class ReadView extends HookWidget {
                                   right: AppDimens.l,
                                 ),
                                 sliver: SliverToBoxAdapter(
-                                  child: Credits(
+                                  child: _Credits(
                                     article: article,
                                   ),
                                 ),
@@ -239,6 +241,33 @@ class _ArticleProgressBar extends HookWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class _Credits extends StatelessWidget {
+  const _Credits({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+
+  @override
+  Widget build(BuildContext context) {
+    return MarkdownBody(
+      data: article.credits,
+      styleSheet: MarkdownStyleSheet(
+        p: AppTypography.articleTextRegular.copyWith(
+          color: AppColors.textGrey,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+      onTapLink: (text, href, title) {
+        if (href != null) {
+          openInAppBrowser(href);
+        }
+      },
     );
   }
 }
