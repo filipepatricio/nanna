@@ -13,18 +13,28 @@ const _publisherLogoSize = 24.0;
 class PublisherLogo extends HookWidget {
   final Publisher publisher;
   final informed.Image? image;
+  final double size;
 
-  const PublisherLogo._({required this.publisher, required this.image, Key? key}) : super(key: key);
+  const PublisherLogo._({
+    required this.publisher,
+    required this.image,
+    required this.size,
+    Key? key,
+  }) : super(key: key);
 
-  factory PublisherLogo.dark({required Publisher publisher, Key? key}) => PublisherLogo._(
+  factory PublisherLogo.dark({required Publisher publisher, double size = _publisherLogoSize, Key? key}) =>
+      PublisherLogo._(
         publisher: publisher,
         image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoDark) : publisher.darkLogo,
+        size: size,
         key: key,
       );
 
-  factory PublisherLogo.light({required Publisher publisher, Key? key}) => PublisherLogo._(
+  factory PublisherLogo.light({required Publisher publisher, double size = _publisherLogoSize, Key? key}) =>
+      PublisherLogo._(
         publisher: publisher,
         image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoLight) : publisher.lightLogo,
+        size: size,
         key: key,
       );
 
@@ -53,8 +63,8 @@ class PublisherLogo extends HookWidget {
                           .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                           .fit()
                           .generateNotNull(),
-                      width: _publisherLogoSize,
-                      height: _publisherLogoSize,
+                      width: size,
+                      height: size,
                       fit: BoxFit.contain,
                     ),
             ),

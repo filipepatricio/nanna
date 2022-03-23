@@ -7,12 +7,11 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_cubit.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -433,7 +432,6 @@ class _ArticleItemBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinary = useCloudinaryProvider();
     final logoUrl = header.publisher.darkLogo;
     final timeToRead = header.timeToRead;
 
@@ -444,14 +442,9 @@ class _ArticleItemBody extends HookWidget {
         children: [
           const SizedBox(height: AppDimens.xl),
           if (logoUrl != null)
-            Image.network(
-              cloudinary
-                  .withPublicIdAsPng(logoUrl.publicId)
-                  .transform()
-                  .width(DimensionUtil.getPhysicalPixelsAsInt(AppDimens.m, context))
-                  .generateNotNull(),
-              height: AppDimens.m,
-              width: AppDimens.m,
+            PublisherLogo.dark(
+              publisher: header.publisher,
+              size: AppDimens.m,
             )
           else
             Container(

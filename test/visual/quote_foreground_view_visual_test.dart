@@ -27,7 +27,7 @@ void main() {
           ),
         ),
       );
-      await tester.matchGoldenFile('quote_foreground_view_(linen)');
+      await tester.matchGoldenFile('quote_foreground_view.linen');
 
       final context = tester.element(find.byType(Container).first);
       final router = AutoRouter.of(context);
@@ -44,7 +44,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(rose)');
+      await tester.matchGoldenFile('quote_foreground_view.rose');
 
       unawaited(
         router.replace(
@@ -58,7 +58,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(green)');
+      await tester.matchGoldenFile('quote_foreground_view.green');
 
       unawaited(
         router.replace(
@@ -72,7 +72,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(peach)');
+      await tester.matchGoldenFile('quote_foreground_view.peach');
 
       unawaited(
         router.replace(
@@ -86,7 +86,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(charcoal)');
+      await tester.matchGoldenFile('quote_foreground_view.charcoal');
     },
     testConfig: const TestConfig.stickerDevice(),
   );
