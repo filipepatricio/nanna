@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -213,6 +215,33 @@ class _ArticleProgressBar extends HookWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class _Credits extends StatelessWidget {
+  const _Credits({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+
+  @override
+  Widget build(BuildContext context) {
+    return MarkdownBody(
+      data: article.credits,
+      styleSheet: MarkdownStyleSheet(
+        p: AppTypography.articleTextRegular.copyWith(
+          color: AppColors.textGrey,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+      onTapLink: (text, href, title) {
+        if (href != null) {
+          openInAppBrowser(href);
+        }
+      },
     );
   }
 }
