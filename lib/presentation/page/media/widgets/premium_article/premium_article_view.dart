@@ -3,8 +3,6 @@ import 'package:better_informed_mobile/domain/article/data/article_output_mode.d
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/read_view.dart';
@@ -40,46 +38,8 @@ class PremiumArticleView extends HookWidget {
 
   bool get articleWithImage => article.image != null;
 
-  bool _updateScrollPosition(
-    ScrollNotification scrollInfo,
-    ValueNotifier<bool> showBackToTopicButton,
-    ValueNotifier<double> readProgress,
-  ) {
-    if (controller.hasClients) {
-      if (scrollInfo is ScrollUpdateNotification) {
-        final newProgress = controller.offset / controller.position.maxScrollExtent;
-        showBackToTopicButton.value = newProgress < readProgress.value;
-        readProgress.value = newProgress.isFinite ? newProgress : 0;
-      }
-      if (scrollInfo is ScrollEndNotification) {
-        var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
-        if (readScrollOffset < 0) {
-          readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
-        }
-
-        cubit.updateScrollData(
-          readScrollOffset,
-          controller.position.maxScrollExtent,
-        );
-      }
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final gestureManager = useMemoized(
-      () => MediaItemPageGestureManager(
-        context: context,
-        modalController: modalController,
-        generalViewController: controller,
-        pageViewController: pageController,
-        articleHasImage: articleWithImage,
-      ),
-      [articleWithImage],
-    );
-    final readProgress = useMemoized(() => ValueNotifier(0.0));
-    final showBackToTopicButton = useState(false);
     final horizontalPageController = usePageController();
 
     //TODO: Check if article supports audio mode
@@ -116,94 +76,56 @@ class PremiumArticleView extends HookWidget {
     return Scaffold(
       body: SnackbarParentView(
         controller: snackbarController,
-        child: RawGestureDetector(
-          gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
-            [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
-          ),
-          behavior: HitTestBehavior.opaque,
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, showBackToTopicButton, readProgress),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            PageView(
+              physics: const ClampingScrollPhysics(),
+              controller: horizontalPageController,
+              scrollDirection: Axis.horizontal,
+              onPageChanged: (page) {
+                switch (page) {
+                  case 0:
+                    articleOutputMode.value = ArticleOutputMode.read;
+                    break;
+                  case 1:
+                    articleOutputMode.value = ArticleOutputMode.audio;
+                    break;
+                }
+              },
               children: [
-                PageView(
-                  physics: const ClampingScrollPhysics(),
-                  controller: horizontalPageController,
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: (page) {
-                    switch (page) {
-                      case 0:
-                        articleOutputMode.value = ArticleOutputMode.read;
-                        break;
-                      case 1:
-                        articleOutputMode.value = ArticleOutputMode.audio;
-                        break;
-                    }
-                  },
-                  children: [
-                    ReadView(
-                      article: article,
-                      content: content,
-                      modalController: modalController,
-                      controller: controller,
-                      pageController: pageController,
-                      snackbarController: snackbarController,
-                      cubit: cubit,
-                      fullHeight: fullHeight,
-                      fromTopic: fromTopic,
-                      readArticleProgress: readArticleProgress,
-                      readProgress: readProgress,
-                      showBackToTopicButton: showBackToTopicButton,
-                      articleOutputMode: articleOutputMode,
-                    ),
-                    const AudioView()
-                  ],
-                ),
-                // ValueListenableBuilder(
-                //   valueListenable: articleOutputMode,
-                //   builder: (BuildContext context, ArticleOutputMode value, Widget? child) {
-                //     switch (value) {
-                //       case ArticleOutputMode.read:
-                //         return ReadView(
-                //           article: article,
-                //           content: content,
-                //           modalController: modalController,
-                //           controller: controller,
-                //           pageController: pageController,
-                //           snackbarController: snackbarController,
-                //           cubit: cubit,
-                //           fullHeight: fullHeight,
-                //           fromTopic: fromTopic,
-                //           readArticleProgress: readArticleProgress,
-                //           readProgress: readProgress,
-                //           showBackToTopicButton: showBackToTopicButton,
-                //           articleOutputMode: articleOutputMode,
-                //         );
-                //       case ArticleOutputMode.audio:
-                //         return Container(color: AppColors.blue);
-                //     }
-                //   },
-                // ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: ActionsBar(
-                    article: article,
-                    fullHeight: articleWithImage ? fullHeight : appBarHeight,
-                    pageController: pageController,
-                    snackbarController: snackbarController,
-                    cubit: cubit,
-                    articleOutputMode: articleOutputMode,
-                  ),
-                ),
-                BackToTopicButton(
-                  showButton: showBackToTopicButton,
+                ReadView(
+                  article: article,
+                  content: content,
+                  modalController: modalController,
+                  controller: controller,
+                  pageController: pageController,
+                  snackbarController: snackbarController,
+                  cubit: cubit,
+                  fullHeight: fullHeight,
                   fromTopic: fromTopic,
+                  readArticleProgress: readArticleProgress,
+                  articleOutputMode: articleOutputMode,
+                ),
+                AudioView(
+                  article: article,
                 ),
               ],
             ),
-          ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: ActionsBar(
+                article: article,
+                fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                pageController: pageController,
+                snackbarController: snackbarController,
+                cubit: cubit,
+                articleOutputMode: articleOutputMode,
+              ),
+            ),
+          ],
         ),
       ),
     );

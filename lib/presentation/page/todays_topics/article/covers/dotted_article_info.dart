@@ -38,6 +38,7 @@ class DottedArticleInfo extends StatelessWidget {
     final timeToRead = article.timeToRead;
 
     return Row(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (showPublisher) ...[
