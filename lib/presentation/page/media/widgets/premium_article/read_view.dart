@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_t
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
@@ -17,6 +18,7 @@ import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_al
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ReadView extends HookWidget {
   ReadView({
@@ -105,7 +107,6 @@ class ReadView extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive(wantKeepAlive: true);
     final footerHeight = MediaQuery.of(context).size.height / 3;
-
     final gestureManager = useMemoized(
       () => MediaItemPageGestureManager(
         context: context,
@@ -118,12 +119,47 @@ class ReadView extends HookWidget {
     );
     final readProgress = useMemoized(() => ValueNotifier(0.0));
     final showBackToTopicButton = useState(false);
+    final showAudioFloatingButton = useState(false);
 
     useEffect(
       () {
         WidgetsBinding.instance?.addPostFrameCallback((_) => calculateArticleContentOffset());
       },
       [],
+    );
+
+    useEffect(
+      () {
+        final listener = () {
+          showAudioFloatingButton.value = !showBackToTopicButton.value;
+        };
+        showBackToTopicButton.addListener(listener);
+        return () => showBackToTopicButton.removeListener(listener);
+      },
+      [showAudioFloatingButton, showBackToTopicButton],
+    );
+
+    useEffect(
+      () {
+        final listener = () {
+          final page = pageController.page ?? 0.0;
+          showAudioFloatingButton.value = page > 0.5 && !showBackToTopicButton.value;
+        };
+        pageController.addListener(listener);
+        return () => pageController.removeListener(listener);
+      },
+      [showAudioFloatingButton, pageController],
+    );
+
+    useEffect(
+      () {
+        final listener = () {
+          showAudioFloatingButton.value = controller.offset < 300.0 && !showBackToTopicButton.value;
+        };
+        readProgress.addListener(listener);
+        return () => readProgress.removeListener(listener);
+      },
+      [showAudioFloatingButton, controller],
     );
 
     return RawGestureDetector(
@@ -208,7 +244,40 @@ class ReadView extends HookWidget {
               showButton: showBackToTopicButton,
               fromTopic: fromTopic,
             ),
+            AudioFloatingButton(showButton: showAudioFloatingButton),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class AudioFloatingButton extends StatelessWidget {
+  const AudioFloatingButton({
+    required this.showButton,
+    Key? key,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> showButton;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      right: AppDimens.l,
+      bottom: showButton.value ? AppDimens.l : -AppDimens.c,
+      curve: Curves.elasticInOut,
+      duration: const Duration(milliseconds: 500),
+      child: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimens.xl)),
+        onPressed: () {},
+        backgroundColor: AppColors.white,
+        child: Padding(
+          padding: const EdgeInsets.only(left: AppDimens.xs),
+          child: SvgPicture.asset(
+            AppVectorGraphics.play_arrow,
+            height: AppDimens.sl + AppDimens.xs,
+            color: AppColors.textPrimary,
+          ),
         ),
       ),
     );
