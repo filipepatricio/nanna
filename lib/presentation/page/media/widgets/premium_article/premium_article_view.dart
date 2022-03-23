@@ -6,6 +6,11 @@ import 'package:better_informed_mobile/presentation/page/media/media_item_page.d
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/actions_bar.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/audio_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/read_view.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
