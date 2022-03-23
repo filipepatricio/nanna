@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -14,11 +14,14 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_large.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -132,22 +135,24 @@ class TopicOwnerPage extends HookWidget {
                         style: AppTypography.h3bold,
                       ),
                     ),
-                    const SizedBox(height: AppDimens.l),
+                    const SizedBox(height: AppDimens.s),
                     state.maybeMap(
                       idleExpert: (state) => _LastUpdatedTopics(
                         topics: state.topicsFromExpert,
                         cardStackHeight: cardStackHeight,
                       ),
-                      loading: (_) => SizedBox(
-                        height: cardStackHeight,
-                        child: StackedCardsLoadingView(
-                          padding: EdgeInsets.zero,
-                          cardStackWidth: cardStackWidth,
-                          subtitle: LocaleKeys.topic_owner_loadingExpertTopics.tr(args: [owner.name]),
+                      loading: (_) => Padding(
+                        padding: const EdgeInsets.only(top: AppDimens.l),
+                        child: RoundStackedCards.variant(
+                          coverSize: Size(cardStackWidth, cardStackHeight),
+                          variant: RoundStackCardVariant.a,
+                          child: const LoadingShimmer.defaultColor(
+                            radius: AppDimens.m,
+                          ),
                         ),
                       ),
-                      error: (_) => SizedBox(
-                        height: cardStackHeight,
+                      error: (_) => Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: StackedCardsErrorView(
                           padding: EdgeInsets.zero,
                           size: Size(cardStackWidth, cardStackHeight),
@@ -273,41 +278,48 @@ class _LastUpdatedTopics extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topicsController = usePageController(viewportFraction: AppDimens.topicCardWidthViewportFraction);
+    final topicsController = usePageController(viewportFraction: 1.0);
     final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: cardStackHeight,
-          child: PageView.builder(
-            padEnds: false,
-            itemCount: topics.length,
-            controller: topicsController,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 16),
-                child: PageViewStackedCards.random(
-                  coverSize: Size(cardStackWidth, cardStackHeight),
-                  child: ReadingListCover(
-                    topic: topics[index],
+    return StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
+      count: topics.length,
+      variants: RoundStackCardVariant.values,
+      canNeighboursRepeat: false,
+      builder: (variants) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: cardStackHeight + AppDimens.xl * 2,
+            child: PageView.builder(
+              itemCount: topics.length,
+              controller: topicsController,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppDimens.xl),
+                  child: GestureDetector(
                     onTap: () => _onTopicTap(context, topics[index]),
+                    child: RoundStackedCards.variant(
+                      variant: variants[index],
+                      coverSize: Size(cardStackWidth, cardStackHeight),
+                      child: RoundTopicCoverLarge(
+                        topic: topics[index],
+                      ),
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-        const SizedBox(height: AppDimens.l),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
-          child: PageDotIndicator(
-            pageCount: topics.length,
-            controller: topicsController,
+          const SizedBox(height: AppDimens.l),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+            child: PageDotIndicator(
+              pageCount: topics.length,
+              controller: topicsController,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

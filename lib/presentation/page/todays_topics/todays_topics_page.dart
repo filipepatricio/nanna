@@ -88,7 +88,6 @@ class TodaysTopicsPage extends HookWidget {
                         error: (_) => SliverToBoxAdapter(
                           child: Center(
                             child: StackedCardsErrorView(
-                              useRoundedCardStack: true,
                               retryAction: cubit.loadTodaysTopics,
                               size: Size(cardStackWidth, cardStackHeight),
                             ),

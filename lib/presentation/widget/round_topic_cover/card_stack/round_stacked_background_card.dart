@@ -9,29 +9,28 @@ class RoundStackedBackgroundCard extends StatelessWidget {
     required this.width,
     required this.height,
     required this.rotation,
-    required this.margins,
+    required this.topMargin,
     Key? key,
   }) : super(key: key);
 
   final double width;
   final double height;
   final double rotation;
-  final EdgeInsets margins;
+  final double topMargin;
 
   @override
   Widget build(BuildContext context) {
-    return UnconstrainedBox(
-      child: Padding(
-        padding: margins,
-        child: Container(
-          transform: Matrix4.identity()..rotateZ(rotation * pi / 180),
-          width: width,
-          height: height,
-          decoration: const BoxDecoration(
-            borderRadius: roundedStackedCardsBorder,
-            color: AppColors.darkLinen,
-            boxShadow: roundedStackedCardsShadow,
-          ),
+    return Padding(
+      padding: EdgeInsets.only(top: topMargin),
+      child: Container(
+        transformAlignment: Alignment.center,
+        transform: Matrix4.identity()..rotateZ(rotation * pi / 180),
+        width: width,
+        height: height,
+        decoration: const BoxDecoration(
+          borderRadius: roundedStackedCardsBorder,
+          color: AppColors.darkLinen,
+          boxShadow: roundedStackedCardsShadow,
         ),
       ),
     );
