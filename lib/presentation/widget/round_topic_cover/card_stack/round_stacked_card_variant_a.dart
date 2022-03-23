@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_math.dart';
 import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_background_card.dart';

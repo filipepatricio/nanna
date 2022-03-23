@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -41,7 +41,7 @@ class StackedCardsRandomVariantBuilder<T> extends HookWidget {
 
   List<T> _randomizeVariantsWithRepeat(Random random) {
     return List.generate(count, (index) {
-      final randomIndex = random.nextInt(StackedCardsVariant.values.length);
+      final randomIndex = random.nextInt(variants.length);
       return variants[randomIndex];
     });
   }
