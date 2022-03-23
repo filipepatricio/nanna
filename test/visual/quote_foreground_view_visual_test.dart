@@ -27,6 +27,7 @@ void main() {
           ),
         ),
       );
+      // By specifying the variant with a dot (.linen), the screens_report command will group all of them in a single image
       await tester.matchGoldenFile('quote_foreground_view.linen');
 
       final context = tester.element(find.byType(Container).first);

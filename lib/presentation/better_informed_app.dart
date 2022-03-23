@@ -16,9 +16,9 @@ class BetterInformedApp extends HookWidget {
     return MaterialApp.router(
       title: 'InformedApp',
       debugShowCheckedModeBanner: !kIsTest,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
+      localizationsDelegates: !kIsTest ? context.localizationDelegates : null,
+      supportedLocales: !kIsTest ? context.supportedLocales : const [Locale('en')],
+      locale: !kIsTest ? context.locale : null,
       routeInformationParser: mainRouter.defaultRouteParser(),
       routerDelegate: mainRouter.delegate(
         navigatorObservers: () => [MainNavigationObserver()],

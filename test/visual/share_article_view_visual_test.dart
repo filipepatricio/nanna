@@ -8,11 +8,7 @@ import 'visual_test_utils.dart';
 void main() {
   visualTest(ShareReadingListView, (tester) async {
     await tester.startApp(
-      initialRoute: MainPageRoute(
-        children: [
-          TopicPage(topicSlug: ''),
-        ],
-      ),
+      initialRoute: MainPageRoute(children: [TopicPage(topicSlug: '')]),
     );
     await tester.tap(find.byKey(const Key('share-topic-button')));
     await tester.pumpAndSettle();

@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/widget/share/quote/quote_for
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:bloc/bloc.dart';
+import 'package:clock/clock.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -59,7 +60,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     );
     final image = await generateShareImage(
       generator,
-      'quote_${DateTime.now().millisecondsSinceEpoch}.png',
+      'quote_${clock.now().millisecondsSinceEpoch}.png',
     );
 
     await _shareImageUseCase(image, shareText);
@@ -95,7 +96,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     );
     final backgroundImage = await generateShareImage(
       backgroundGenerator,
-      'quote_${DateTime.now().millisecondsSinceEpoch}_background.png',
+      'quote_${clock.now().millisecondsSinceEpoch}_background.png',
     );
 
     final foregroundGenerator = ShareViewImageGenerator(
@@ -107,7 +108,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     );
     final foregroundImage = await generateShareImage(
       foregroundGenerator,
-      'quote_${DateTime.now().millisecondsSinceEpoch}_foreground.png',
+      'quote_${clock.now().millisecondsSinceEpoch}_foreground.png',
     );
 
     await _shareUsingInstagramUseCase(
