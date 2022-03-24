@@ -95,7 +95,7 @@ class TopicAppBar extends HookWidget {
         onPressed: () => AutoRouter.of(context).pop(),
       ),
       title: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
         child: hasScrolled.value || isExpanded.value
             ? title
             : Marquee(
@@ -113,10 +113,11 @@ class TopicAppBar extends HookWidget {
           mode: isExpanded.value ? BookmarkButtonMode.image : BookmarkButtonMode.color,
           snackbarController: snackbarController,
         ),
+        const SizedBox(width: AppDimens.s),
         IconButton(
           key: const Key('share-topic-button'),
           onPressed: () => shareReadingList(context, topic),
-          padding: const EdgeInsets.only(right: AppDimens.s),
+          iconSize: AppDimens.xxl,
           icon: SvgPicture.asset(
             AppVectorGraphics.share,
             color: isExpanded.value ? AppColors.white : AppColors.black,
