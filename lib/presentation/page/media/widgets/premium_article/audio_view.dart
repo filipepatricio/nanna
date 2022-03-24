@@ -40,10 +40,10 @@ class AudioView extends HookWidget {
         children: [
           const SizedBox(height: AppDimens.appBarHeight + AppDimens.m),
           if (context.isNotSmallDevice) ...[
-            Expanded(
+            Flexible(
               flex: 10,
               child: AspectRatio(
-                aspectRatio: 0.7,
+                aspectRatio: 0.65,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return ArticleListItem(

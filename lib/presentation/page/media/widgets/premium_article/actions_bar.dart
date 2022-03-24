@@ -108,7 +108,8 @@ class ActionsBar extends HookWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l) + const EdgeInsets.only(top: AppDimens.s),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.ml) +
+            const EdgeInsets.only(top: AppDimens.xs + AppDimens.xxs),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -125,11 +126,12 @@ class ActionsBar extends HookWidget {
               },
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (articleOutputMode != null) ...[
                   _AudioButton(buttonColor: buttonColor, articleOutputMode: articleOutputMode)
                 ],
+                const SizedBox(width: AppDimens.sl),
                 ValueListenableBuilder(
                   valueListenable: bookmarkMode,
                   builder: (BuildContext context, BookmarkButtonMode value, Widget? child) {
@@ -142,6 +144,7 @@ class ActionsBar extends HookWidget {
                     );
                   },
                 ),
+                const SizedBox(width: AppDimens.sl),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
                   child: ShareArticleButton(
