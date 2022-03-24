@@ -99,17 +99,15 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
 
   Map<String, Image> _prepareLogos(CloudinaryImageProvider cloudinary) {
     final entries = articles.where((element) => element.publisher.darkLogo != null).map((article) {
-      final image = Image.network(
-        cloudinary
-            .withPublicIdAsPng(article.publisher.darkLogo!.publicId)
-            .transform()
-            .width(_publisherLogoSize.toInt())
-            .height(_publisherLogoSize.toInt())
-            .fit()
-            .generateNotNull(),
+      final image = cloudinaryImageFit(
+        cloudinary: cloudinary,
+        publicId: article.publisher.darkLogo!.publicId,
         width: _publisherLogoSize,
         height: _publisherLogoSize,
+        fit: BoxFit.fill,
+        testImage: AppRasterGraphics.testPublisherLogoDark,
       );
+
       return MapEntry(article.id, image);
     }).toList();
 
