@@ -14,7 +14,7 @@ import 'package:flutter_svg/svg.dart';
 
 const _barHeight = 3.0;
 const _thumbRadius = 6.0;
-const _thumbGlowRadius = 12.0;
+const _thumbGlowRadius = 15.0;
 
 class AudioView extends HookWidget {
   const AudioView({
@@ -73,32 +73,35 @@ class AudioView extends HookWidget {
             textStyle: metadataStyle,
             color: metadataStyle.color,
           ),
-          const Spacer(flex: 2),
-          ValueListenableBuilder(
-            valueListenable: audioProgress,
-            builder: (BuildContext context, int value, Widget? child) {
-              return ProgressBar(
-                progress: Duration(seconds: value),
-                total: const Duration(seconds: audioTotalSeconds),
-                progressBarColor: AppColors.textPrimary,
-                baseBarColor: AppColors.grey,
-                bufferedBarColor: AppColors.transparent,
-                thumbColor: AppColors.textPrimary,
-                barHeight: _barHeight,
-                thumbRadius: _thumbRadius,
-                thumbGlowRadius: _thumbGlowRadius,
-                timeLabelLocation: TimeLabelLocation.sides,
-                timeLabelTextStyle: AppTypography.timeLabelText,
-                onDragUpdate: (details) {
-                  audioProgress.value = details.timeStamp.inSeconds;
-                },
-                onSeek: (duration) {
-                  //TODO: Advance audio to duration
-                },
-              );
-            },
+          const Spacer(),
+          Expanded(
+            flex: 2,
+            child: ValueListenableBuilder(
+              valueListenable: audioProgress,
+              builder: (BuildContext context, int value, Widget? child) {
+                return ProgressBar(
+                  progress: Duration(seconds: value),
+                  total: const Duration(seconds: audioTotalSeconds),
+                  progressBarColor: AppColors.textPrimary,
+                  baseBarColor: AppColors.grey,
+                  bufferedBarColor: AppColors.transparent,
+                  thumbColor: AppColors.textPrimary,
+                  barHeight: _barHeight,
+                  thumbRadius: _thumbRadius,
+                  thumbGlowRadius: _thumbGlowRadius,
+                  timeLabelLocation: TimeLabelLocation.sides,
+                  timeLabelTextStyle: AppTypography.timeLabelText,
+                  onDragUpdate: (details) {
+                    audioProgress.value = details.timeStamp.inSeconds;
+                  },
+                  onSeek: (duration) {
+                    //TODO: Advance audio to duration
+                  },
+                );
+              },
+            ),
           ),
-          const Spacer(flex: 2),
+          const Spacer(),
           _AudioComponentsView(
             article: article,
             isPlaying: isPlaying,
