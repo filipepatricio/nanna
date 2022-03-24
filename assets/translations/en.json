@@ -212,7 +212,7 @@
     "yourInviteCode": "Your invite code",
     "email": {
       "subject": "I'm already a member",
-      "body": "Hey there,\nwe will check if you are already a member and we will contact you as soon as possible! Thanks!\n\nYour team at Informed"
+      "body": "Hi team at informed,\nI am already a member, can you please check and give me access?\nThanks!"
     },
     "emailCopied": "Successfuly copied email to your clipboard!"
   },
