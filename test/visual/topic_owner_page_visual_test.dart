@@ -11,7 +11,7 @@ void main() {
   visualTest(
     TopicOwnerPage,
     (tester) async {
-      await tester.startApp(initialRoute: TopicPage(topicSlug: 'slug'));
+      await tester.startApp(initialRoute: TopicPage(topicSlug: ''));
       await tester.tap(find.byType(TopicOwnerAvatar).last);
       await tester.pumpAndSettle();
       await tester.matchGoldenFile();

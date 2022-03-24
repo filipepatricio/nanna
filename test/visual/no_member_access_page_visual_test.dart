@@ -7,9 +7,7 @@ import 'visual_test_utils.dart';
 void main() {
   visualTest(NoMemberAccessPage, (tester) async {
     await tester.startApp(
-      initialRoute: NoMemberAccessPageRoute(
-        credentials: SignInCredentials(provider: '', token: ''),
-      ),
+      initialRoute: NoMemberAccessPageRoute(credentials: SignInCredentials(provider: '', token: '')),
     );
     await tester.matchGoldenFile();
   });

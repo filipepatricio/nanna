@@ -7,19 +7,13 @@ import 'visual_test_utils.dart';
 
 void main() {
   visualTest(ArticleSeeAllPage, (tester) async {
-    final exploreArea = TestData.exploreContent.areas.firstWhere(
+    final area = TestData.exploreContent.areas.firstWhere(
       (area) => area is ExploreContentAreaArticleWithFeature,
     ) as ExploreContentAreaArticleWithFeature;
 
     await tester.startApp(
       initialRoute: ExploreTabGroupRouter(
-        children: [
-          ArticleSeeAllPageRoute(
-            areaId: exploreArea.id,
-            title: exploreArea.title,
-            entries: exploreArea.articles,
-          ),
-        ],
+        children: [ArticleSeeAllPageRoute(areaId: area.id, title: area.title, entries: area.articles)],
       ),
     );
     await tester.matchGoldenFile();

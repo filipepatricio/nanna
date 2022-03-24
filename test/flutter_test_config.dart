@@ -1,8 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/routing/main_router.dart';
+import 'package:easy_localization/src/localization.dart';
+import 'package:easy_localization/src/translations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/src/keyboard_visibility_handler.dart';
@@ -14,7 +20,13 @@ import 'package:visibility_detector/visibility_detector.dart';
 late BetterInformedTestWidgetsFlutterBinding binding;
 final debugPrintBuffer = <String>[];
 
+const defaultInitialRoute = TabBarPageRoute();
+
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
+  /// Replaces the need for [EasyLocalization] wrapper widget - part 1
+  final content = await File('assets/translations/en.json').readAsString();
+  final data = jsonDecode(content) as Map<String, dynamic>;
+
   WidgetController.hitTestWarningShouldBeFatal = true;
 
   await configureDependencies(AppConfig.mock.name);
@@ -23,8 +35,14 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   setUp(() async {
     debugPrintBuffer.clear();
     SharedPreferences.setMockInitialValues({});
-    await EasyLocalization.ensureInitialized();
   });
+
+  /// Replaces the need for [EasyLocalization] wrapper widget - part 2
+  Localization.load(
+    const Locale('en'),
+    translations: Translations(data),
+  );
+
   VisibilityDetectorController.instance.updateInterval = Duration.zero;
   KeyboardVisibilityHandler.setVisibilityForTesting(false);
   await loadAppFonts();
@@ -108,4 +126,9 @@ void onlyPrintOnError(String? message, {int? wrapWidth}) {
   } else {
     debugPrintBuffer.add(message ?? '');
   }
+}
+
+bool isTabRoute(PageRouteInfo route) {
+  final routeName = route.routeName;
+  return dashboardTabRouter.children?.map((tabRoute) => tabRoute.name).contains(routeName) ?? false;
 }

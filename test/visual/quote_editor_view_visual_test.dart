@@ -11,11 +11,7 @@ import 'visual_test_utils.dart';
 void main() {
   visualTest(QuoteEditorView, (tester) async {
     await tester.startApp(
-      initialRoute: MainPageRoute(
-        children: [
-          MediaItemPageRoute(slug: TestData.article.slug),
-        ],
-      ),
+      initialRoute: MainPageRoute(children: [MediaItemPageRoute(slug: '')]),
     );
     await tester.tap(find.byType(AnimatedPointerDown).last);
     await tester.pumpAndSettle();

@@ -21,6 +21,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart'
 /// To be use as a response for mock implementations of remote data sources
 /// And as a source for TestData getters - see test/test_data.dart
 class MockDTO {
+  const MockDTO._();
+
   /// Settings
 
   static final notificationPreferences = NotificationPreferencesDTO(

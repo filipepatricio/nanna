@@ -1,14 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/better_informed_app.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+
+import '../flutter_test_config.dart';
 
 const defaultDevices = [
   Device(name: 'iPhone_08,4', size: Size(320, 568)), // iPhone SE
@@ -100,29 +100,17 @@ void visualTest(
   );
 }
 
-const _defaultInitialRoute = TabBarPageRoute();
-
 extension StartAppExtension on WidgetTester {
-  Future<void> startApp({PageRouteInfo initialRoute = _defaultInitialRoute}) async {
+  Future<void> startApp({PageRouteInfo initialRoute = defaultInitialRoute}) async {
     final isTab = isTabRoute(initialRoute);
 
     final mainRouter = MainRouter(mainRouterKey);
 
-    await pumpWidgetBuilder(
-      EasyLocalization(
-        path: 'assets/translations',
-        supportedLocales: availableLocales.values.toList(),
-        startLocale: availableLocales.values.first,
-        fallbackLocale: availableLocales[fallbackLanguageCode],
-        useOnlyLangCode: true,
-        saveLocale: true,
-        child: BetterInformedApp(mainRouter: mainRouter),
-      ),
-    );
+    await pumpWidgetBuilder(BetterInformedApp(mainRouter: mainRouter));
 
     await pumpAndSettle();
 
-    if (initialRoute != _defaultInitialRoute) {
+    if (initialRoute != defaultInitialRoute) {
       if (isTab) {
         await mainRouter.navigate(TabBarPageRoute(children: [initialRoute]));
       } else {
@@ -173,11 +161,6 @@ extension StartAppExtension on WidgetTester {
     final fileName = '$fileNamePrefix';
     await multiScreenGolden(this, '$fileName', devices: _selectedDevices);
   }
-}
-
-bool isTabRoute(PageRouteInfo route) {
-  final routeName = route.routeName;
-  return dashboardTabRouter.children?.map((tabRoute) => tabRoute.name).contains(routeName) ?? false;
 }
 
 typedef VisualTestCallback = Future<void> Function(WidgetTester widgetTester);

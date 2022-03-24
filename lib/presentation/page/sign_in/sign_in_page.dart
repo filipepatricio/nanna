@@ -173,7 +173,7 @@ class _IdleContent extends HookWidget {
                         ),
                       ],
                       const SizedBox(height: AppDimens.s),
-                      _EmailInput(
+                      EmailInput(
                         controller: emailController,
                         cubit: cubit,
                         validEmail: isEmailValid,
@@ -198,12 +198,12 @@ class _IdleContent extends HookWidget {
   }
 }
 
-class _EmailInput extends StatelessWidget {
+class EmailInput extends StatelessWidget {
   final TextEditingController controller;
   final SignInPageCubit cubit;
   final bool validEmail;
 
-  const _EmailInput({
+  const EmailInput({
     required this.controller,
     required this.cubit,
     required this.validEmail,
