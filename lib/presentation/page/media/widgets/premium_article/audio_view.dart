@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/page/explore/article_with_co
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/bordered_button.dart';
@@ -38,23 +39,25 @@ class AudioView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: AppDimens.appBarHeight + AppDimens.m),
-          Expanded(
-            flex: 10,
-            child: AspectRatio(
-              aspectRatio: 0.60,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return ArticleListItem(
-                    article: article,
-                    themeColor: AppColors.background,
-                    cardColor: AppColors.mockedColors[0],
-                    height: constraints.maxHeight,
-                    width: constraints.maxWidth,
-                  );
-                },
+          if (context.isNotSmallDevice) ...[
+            Expanded(
+              flex: 10,
+              child: AspectRatio(
+                aspectRatio: 0.7,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return ArticleListItem(
+                      article: article,
+                      themeColor: AppColors.background,
+                      cardColor: AppColors.mockedColors[0],
+                      height: constraints.maxHeight,
+                      width: constraints.maxWidth,
+                    );
+                  },
+                ),
               ),
             ),
-          ),
+          ],
           const Spacer(),
           Text(
             article.strippedTitle,
@@ -100,7 +103,7 @@ class AudioView extends HookWidget {
             article: article,
             isPlaying: isPlaying,
           ),
-          const Spacer(flex: 3),
+          const Spacer(flex: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,7 +117,7 @@ class AudioView extends HookWidget {
               ),
             ],
           ),
-          const Spacer(flex: 3),
+          const Spacer(flex: 2),
         ],
       ),
     );
