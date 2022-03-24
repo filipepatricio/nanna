@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary_section.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
-import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_large.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'visual_test_utils.dart';
@@ -11,7 +11,7 @@ void main() {
     TopicPage,
     (tester) async {
       await tester.startApp();
-      await tester.tap(find.byType(ReadingListCover).first);
+      await tester.tap(find.byType(RoundTopicCoverLarge).first);
       await tester.pumpAndSettle();
       await tester.matchGoldenFile('topic_page_(header)');
       await tester.dragUntilVisible(

@@ -2,24 +2,24 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_card_variant_a.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class StackedCardsErrorView extends HookWidget {
-  final double cardStackWidth;
+  final Size size;
   final EdgeInsets padding;
   final VoidCallback? retryAction;
 
   const StackedCardsErrorView({
-    required this.cardStackWidth,
+    required this.size,
     this.retryAction,
-    Key? key,
     this.padding = const EdgeInsets.only(
       bottom: AppDimens.c,
       top: AppDimens.xl,
     ),
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -28,9 +28,8 @@ class StackedCardsErrorView extends HookWidget {
       padding: padding,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return PageViewStackedCards.random(
-            coverSize: Size(cardStackWidth, constraints.maxHeight),
-            centered: true,
+          return _CardStack(
+            size: size,
             child: GeneralErrorView(
               title: LocaleKeys.todaysTopics_oops.tr(),
               content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
@@ -40,6 +39,26 @@ class StackedCardsErrorView extends HookWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _CardStack extends StatelessWidget {
+  const _CardStack({
+    required this.size,
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  final Size size;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return RoundStackedCardVariantA(
+      size: size,
+      child: child,
     );
   }
 }

@@ -1,23 +1,25 @@
 import 'dart:math';
 
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-typedef StackedCardsRandomBuilder = Widget Function(List<StackedCardsVariant>);
+typedef StackedCardsRandomBuilder<T> = Widget Function(List<T>);
 
-class StackedCardsRandomVariantBuilder extends HookWidget {
+class StackedCardsRandomVariantBuilder<T> extends HookWidget {
   const StackedCardsRandomVariantBuilder({
     required this.count,
     required this.builder,
+    required this.variants,
     this.canNeighboursRepeat = false,
     Key? key,
   }) : super(key: key);
 
-  final StackedCardsRandomBuilder builder;
+  final StackedCardsRandomBuilder<T> builder;
   final int count;
   final bool canNeighboursRepeat;
+  final List<T> variants;
 
   @override
   Widget build(BuildContext context) {
@@ -32,27 +34,27 @@ class StackedCardsRandomVariantBuilder extends HookWidget {
     return Random().nextInt(2 ^ 32);
   }
 
-  List<StackedCardsVariant> _randomizeVariants(int seed) {
+  List<T> _randomizeVariants(int seed) {
     final random = Random(seed);
     return canNeighboursRepeat ? _randomizeVariantsWithRepeat(random) : _randomizeVariantsNoRepeat(random).toList();
   }
 
-  List<StackedCardsVariant> _randomizeVariantsWithRepeat(Random random) {
+  List<T> _randomizeVariantsWithRepeat(Random random) {
     return List.generate(count, (index) {
-      final randomIndex = random.nextInt(StackedCardsVariant.values.length);
-      return StackedCardsVariant.values[randomIndex];
+      final randomIndex = random.nextInt(variants.length);
+      return variants[randomIndex];
     });
   }
 
-  Iterable<StackedCardsVariant> _randomizeVariantsNoRepeat(Random random) sync* {
-    final variantsCount = StackedCardsVariant.values.length;
+  Iterable<T> _randomizeVariantsNoRepeat(Random random) sync* {
+    final variantsCount = variants.length;
     final groupsCount = count / variantsCount + 1;
 
-    List<StackedCardsVariant>? lastVariantsGroup;
-    var availableVariants = StackedCardsVariant.values;
+    List<T>? lastVariantsGroup;
+    var availableVariants = variants;
 
     for (var i = 0; i < groupsCount; i++) {
-      final variantsGroup = <StackedCardsVariant>[];
+      final variantsGroup = <T>[];
 
       if (lastVariantsGroup != null) {
         final lastItemInPreviousGroup = lastVariantsGroup.last;
@@ -71,7 +73,7 @@ class StackedCardsRandomVariantBuilder extends HookWidget {
       }
 
       lastVariantsGroup = variantsGroup;
-      availableVariants = StackedCardsVariant.values;
+      availableVariants = variants;
       yield* variantsGroup;
     }
   }
