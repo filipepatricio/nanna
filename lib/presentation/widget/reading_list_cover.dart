@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
@@ -74,7 +73,9 @@ class ReadingListCover extends HookWidget {
                           style: AppTypography.b3Regular.copyWith(decoration: TextDecoration.underline, height: 1),
                         ),
                         const Spacer(),
-                        UpdatedLabel(dateTime: topic.lastUpdatedAt, backgroundColor: AppColors.white),
+                        UpdatedLabel(
+                          dateTime: topic.lastUpdatedAt,
+                        ),
                       ],
                     ),
                   ],

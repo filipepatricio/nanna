@@ -9,6 +9,7 @@ class LoadingShimmer extends StatelessWidget {
   final EdgeInsets padding;
   final double height;
   final double width;
+  final double radius;
 
   const LoadingShimmer({
     required this.mainColor,
@@ -16,10 +17,12 @@ class LoadingShimmer extends StatelessWidget {
     EdgeInsets? padding,
     double? height,
     double? width,
+    double? radius,
     Key? key,
   })  : padding = padding ?? EdgeInsets.zero,
         height = height ?? double.infinity,
         width = width ?? double.infinity,
+        radius = radius ?? 0,
         super(key: key);
 
   const LoadingShimmer.defaultColor({
@@ -27,6 +30,7 @@ class LoadingShimmer extends StatelessWidget {
     EdgeInsets? padding,
     double? height,
     double? width,
+    double? radius,
     Key? key,
   }) : this(
           mainColor: AppColors.pastelGreen,
@@ -34,21 +38,29 @@ class LoadingShimmer extends StatelessWidget {
           padding: padding,
           height: height,
           width: width,
+          radius: radius,
           key: key,
         );
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: padding,
-      height: height,
-      width: width,
-      child: Shimmer.fromColors(
-        enabled: enabled && !kIsTest,
-        direction: ShimmerDirection.ltr,
-        baseColor: AppColors.background,
-        highlightColor: mainColor,
-        child: Container(color: AppColors.background),
+    return ClipRRect(
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          radius,
+        ),
+      ),
+      child: Container(
+        padding: padding,
+        height: height,
+        width: width,
+        child: Shimmer.fromColors(
+          enabled: enabled && !kIsTest,
+          direction: ShimmerDirection.ltr,
+          baseColor: AppColors.background,
+          highlightColor: mainColor,
+          child: Container(color: AppColors.background),
+        ),
       ),
     );
   }

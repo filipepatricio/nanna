@@ -89,10 +89,10 @@ class MockDTO {
   static final topic = TopicDTO(
     'topic-id',
     'topic-slug',
-    // title
-    'Lorem **ipsum dolor** sit amet, consectetur adipiscing elit lorem dolor',
-    // strippedTitle
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem dolor',
+    // title, max length is 45 chars
+    'Lorem ipsum **dolor sit** amet, consectetur adip',
+    // strippedTitle, max length is 45 chars
+    'Lorem ipsum dolor sit amet, consectetur adip',
     // introduction
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     'url',
