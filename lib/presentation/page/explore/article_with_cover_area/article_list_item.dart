@@ -20,6 +20,7 @@ class ArticleListItem extends HookWidget {
   final Color cardColor;
   final double height;
   final double width;
+  final bool shouldShowTextOverlay;
 
   const ArticleListItem({
     required this.article,
@@ -27,6 +28,7 @@ class ArticleListItem extends HookWidget {
     this.cardColor = AppColors.transparent,
     this.height = AppDimens.exploreAreaArticleListItemHeight,
     this.width = AppDimens.exploreAreaArticleListItemWidth,
+    this.shouldShowTextOverlay = true,
     Key? key,
   }) : super(key: key);
 
@@ -59,7 +61,8 @@ class ArticleListItem extends HookWidget {
             themeColor: themeColor,
             height: height,
             width: width,
-          ),
+            shouldShowTextOverlay: shouldShowTextOverlay,
+          )
         ],
       ),
     );
@@ -71,12 +74,14 @@ class _ArticleImageOverlay extends StatelessWidget {
   final Color themeColor;
   final double? height;
   final double? width;
+  final bool shouldShowTextOverlay;
 
   const _ArticleImageOverlay({
     required this.article,
     required this.themeColor,
     required this.height,
     required this.width,
+    required this.shouldShowTextOverlay,
     Key? key,
   }) : super(key: key);
 
@@ -94,29 +99,31 @@ class _ArticleImageOverlay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (hasImage)
-            PublisherLogo.light(publisher: article.publisher)
-          else
-            PublisherLogo.dark(publisher: article.publisher),
-          const SizedBox(height: AppDimens.m),
-          InformedMarkdownBody(
-            maxLines: hasImage ? 4 : 5,
-            markdown: article.title,
-            highlightColor: hasImage ? AppColors.transparent : AppColors.limeGreen,
-            baseTextStyle: AppTypography.h5BoldSmall.copyWith(
-              height: hasImage ? 1.71 : 1.5,
-              color: hasImage ? AppColors.white : AppColors.textPrimary,
-              fontSize: context.isSmallDevice ? 12 : null,
-            ),
-          ),
-          const Spacer(),
-          if (timeToRead != null)
-            Text(
-              LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
-              style: AppTypography.systemText.copyWith(
+          if (shouldShowTextOverlay) ...[
+            if (hasImage)
+              PublisherLogo.light(publisher: article.publisher)
+            else
+              PublisherLogo.dark(publisher: article.publisher),
+            const SizedBox(height: AppDimens.m),
+            InformedMarkdownBody(
+              maxLines: hasImage ? 4 : 5,
+              markdown: article.title,
+              highlightColor: hasImage ? AppColors.transparent : AppColors.limeGreen,
+              baseTextStyle: AppTypography.h5BoldSmall.copyWith(
+                height: hasImage ? 1.71 : 1.5,
                 color: hasImage ? AppColors.white : AppColors.textPrimary,
+                fontSize: context.isSmallDevice ? 12 : null,
               ),
             ),
+            const Spacer(),
+            if (timeToRead != null)
+              Text(
+                LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
+                style: AppTypography.systemText.copyWith(
+                  color: hasImage ? AppColors.white : AppColors.textPrimary,
+                ),
+              ),
+          ],
         ],
       ),
     );

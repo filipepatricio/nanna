@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
@@ -39,19 +41,20 @@ class AudioView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: AppDimens.appBarHeight + AppDimens.m),
-          if (context.isNotSmallDevice) ...[
+          if (context.isNotSmallDevice || article.image != null) ...[
             Flexible(
-              flex: 10,
+              flex: 9,
               child: AspectRatio(
-                aspectRatio: 0.65,
+                aspectRatio: context.isNotSmallDevice ? 0.65 : 1,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return ArticleListItem(
                       article: article,
                       themeColor: AppColors.background,
-                      cardColor: AppColors.mockedColors[0],
+                      cardColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
                       height: constraints.maxHeight,
                       width: constraints.maxWidth,
+                      shouldShowTextOverlay: context.isNotSmallDevice,
                     );
                   },
                 ),

@@ -59,7 +59,10 @@ class ActionsBar extends HookWidget {
     ) {
       final buttonTween = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
 
-      final page = pageController.page ?? 0.0;
+      var page = 0.0;
+      if (pageController.positions.isNotEmpty) {
+        page = pageController.page ?? 0.0;
+      }
 
       backgroundColor.value = page == 1.0 ? AppColors.background : AppColors.transparent;
       bookmarkMode.value = page > 0.5 ? BookmarkButtonMode.color : BookmarkButtonMode.image;
