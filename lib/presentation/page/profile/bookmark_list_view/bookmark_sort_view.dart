@@ -148,6 +148,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
               ...bookmarkConfigMap.entries
                   .map(
                     (entry) => GestureDetector(
+                      behavior: HitTestBehavior.translucent,
                       onTap: () => AutoRouter.of(context).root.pop(entry.value),
                       child: Row(
                         children: [
