@@ -18,8 +18,8 @@ const _barHeight = 3.0;
 const _thumbRadius = 6.0;
 const _thumbGlowRadius = 15.0;
 
-class AudioView extends HookWidget {
-  const AudioView({
+class PremiumArticleAudioView extends HookWidget {
+  const PremiumArticleAudioView({
     required this.article,
     Key? key,
   }) : super(key: key);
@@ -72,7 +72,7 @@ class AudioView extends HookWidget {
             article: article,
             isLight: false,
             showLogo: false,
-            fullDate: true,
+            fullDate: context.isNotSmallDevice,
             textStyle: metadataStyle,
             color: metadataStyle.color,
           ),

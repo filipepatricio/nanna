@@ -3,9 +3,9 @@ import 'package:better_informed_mobile/domain/article/data/article_output_mode.d
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/actions_bar.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/audio_view.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/read_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -94,7 +94,7 @@ class PremiumArticleView extends HookWidget {
                 }
               },
               children: [
-                ReadView(
+                PremiumArticleReadView(
                   article: article,
                   content: content,
                   modalController: modalController,
@@ -107,7 +107,7 @@ class PremiumArticleView extends HookWidget {
                   readArticleProgress: readArticleProgress,
                   articleOutputMode: articleOutputMode,
                 ),
-                AudioView(
+                PremiumArticleAudioView(
                   article: article,
                 ),
               ],
@@ -116,7 +116,7 @@ class PremiumArticleView extends HookWidget {
               top: 0,
               left: 0,
               right: 0,
-              child: ActionsBar(
+              child: PremiumArticleActionsBar(
                 article: article,
                 fullHeight: articleWithImage ? fullHeight : appBarHeight,
                 pageController: pageController,

@@ -20,8 +20,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ReadView extends HookWidget {
-  ReadView({
+class PremiumArticleReadView extends HookWidget {
+  PremiumArticleReadView({
     required this.article,
     required this.content,
     required this.modalController,

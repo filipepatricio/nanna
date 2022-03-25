@@ -14,8 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ActionsBar extends HookWidget {
-  const ActionsBar({
+class PremiumArticleActionsBar extends HookWidget {
+  const PremiumArticleActionsBar({
     required this.article,
     required this.fullHeight,
     required this.pageController,
@@ -132,7 +132,7 @@ class ActionsBar extends HookWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (articleOutputMode != null) ...[
-                  _AudioButton(buttonColor: buttonColor, articleOutputMode: articleOutputMode)
+                  AudioButton(buttonColor: buttonColor, articleOutputMode: articleOutputMode)
                 ],
                 const SizedBox(width: AppDimens.sl),
                 ValueListenableBuilder(
@@ -172,8 +172,8 @@ class ActionsBar extends HookWidget {
   }
 }
 
-class _AudioButton extends StatelessWidget {
-  const _AudioButton({
+class AudioButton extends StatelessWidget {
+  const AudioButton({
     required this.buttonColor,
     required this.articleOutputMode,
     Key? key,
