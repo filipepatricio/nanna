@@ -112,6 +112,7 @@ class MockDTO {
       [
         _premiumArticleEntry,
         _freeArticleEntry,
+        _freeArticleEntry,
       ],
     ),
     [
