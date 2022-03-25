@@ -97,6 +97,9 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
         emit(newState);
         await _removeBookmarkUseCase(bookmark);
         final currentState = state;
+
+        if (isClosed) return;
+
         emit(BookmarkListViewState.bookmarkRemoved(bookmark, index));
         emit(currentState);
       }
@@ -107,6 +110,8 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     _trackBookmarkRemoveUndo(bookmark);
 
     final bookmarkState = await _addBookmarkUseCase(bookmark);
+
+    if (isClosed) return;
 
     bookmarkState?.mapOrNull(
       bookmarked: (value) {
@@ -166,6 +171,8 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   }
 
   void _handlePaginationState(PaginationEngineState<Bookmark> paginationState) {
+    if (isClosed) return;
+
     final filter = state.requireFilter;
     final bookmarks = paginationState.data;
 
