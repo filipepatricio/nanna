@@ -63,8 +63,9 @@ class FreeArticleView extends HookWidget {
             mode: BookmarkButtonMode.color,
             snackbarController: snackbarController,
           ),
+          const SizedBox(width: AppDimens.m),
           Padding(
-            padding: const EdgeInsets.only(right: AppDimens.l, top: AppDimens.s),
+            padding: const EdgeInsets.only(right: AppDimens.s, top: AppDimens.s),
             child: ShareArticleButton(
               article: article,
               buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
