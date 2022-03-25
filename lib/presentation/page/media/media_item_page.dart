@@ -523,8 +523,9 @@ class _FreeArticleView extends HookWidget {
             mode: BookmarkButtonMode.color,
             snackbarController: snackbarController,
           ),
+          const SizedBox(width: AppDimens.m),
           Padding(
-            padding: const EdgeInsets.only(right: AppDimens.l, top: AppDimens.s),
+            padding: const EdgeInsets.only(right: AppDimens.s, top: AppDimens.s),
             child: ShareArticleButton(
               article: article,
               buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
@@ -702,7 +703,7 @@ class _ActionsBar extends HookWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l) + const EdgeInsets.only(top: AppDimens.s),
+        padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.s, top: AppDimens.s),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -733,6 +734,7 @@ class _ActionsBar extends HookWidget {
                     );
                   },
                 ),
+                const SizedBox(width: AppDimens.m),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
                   child: ShareArticleButton(
