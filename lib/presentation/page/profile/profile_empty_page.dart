@@ -72,8 +72,8 @@ extension on BookmarkFilter {
   String get buttonText {
     switch (this) {
       case BookmarkFilter.topic:
-      case BookmarkFilter.all:
         return tr(LocaleKeys.profile_emptyPage_topicAction);
+      case BookmarkFilter.all:
       case BookmarkFilter.article:
         return tr(LocaleKeys.profile_emptyPage_articleAction);
     }
@@ -82,7 +82,6 @@ extension on BookmarkFilter {
   VoidCallback buttonAction(BuildContext context) {
     switch (this) {
       case BookmarkFilter.topic:
-      case BookmarkFilter.all:
         return () {
           AutoRouter.of(context).navigate(
             const TodayTabGroupRouter(
@@ -92,6 +91,7 @@ extension on BookmarkFilter {
             ),
           );
         };
+      case BookmarkFilter.all:
       case BookmarkFilter.article:
         return () {
           AutoRouter.of(context).navigate(
