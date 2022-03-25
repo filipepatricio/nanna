@@ -17,6 +17,8 @@ const defaultDevices = [
   Device(name: 'iPhone_13,4', size: Size(428, 926)), // iPhone 12 Pro Max
 ];
 
+const shareImage = Device(name: 'share_image', size: Size(720, 1280));
+
 /// Can be used to take screenshots of very long lists without hiding overflowing widgets.
 const veryHighDevices = [
   Device(name: 'small_device_full_screen', size: Size(359, 2500)),
