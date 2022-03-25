@@ -23,8 +23,8 @@ const _cardShadow = BoxShadow(
 const _viewHeight = 1280.0;
 const _viewWidth = 720.0;
 
-const _headerWidth = 480.0;
-const _headerHeight = 640.0;
+const _headerWidth = 520.0;
+const _headerHeight = 878.0;
 
 const _logoSize = 40.0;
 
@@ -75,6 +75,7 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
           width: _logoSize,
           height: _logoSize,
           fit: BoxFit.fill,
+          testImage: AppRasterGraphics.testPublisherLogoDark,
         );
       },
     );
@@ -180,7 +181,7 @@ class _Sticker extends StatelessWidget {
                   ),
                   maxLines: 6,
                 ),
-                const SizedBox(height: AppDimens.xxxl),
+                const SizedBox(height: AppDimens.xxxc),
                 DottedArticleInfo(
                   article: article,
                   isLight: mainImage != null,

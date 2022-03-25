@@ -16,14 +16,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _topicTitleStyle = TextStyle(
-  color: AppColors.white,
-  fontSize: 40,
-  height: 1.25,
-  fontWeight: FontWeight.w700,
-  fontFamily: fontFamilyPlusJakartaSans,
-);
-
 const _cardShadow = BoxShadow(
   color: AppColors.shadowColor,
   offset: Offset(0.0, 4.0),
@@ -34,18 +26,18 @@ const _cardShadow = BoxShadow(
 const _viewHeight = 1280.0;
 const _viewWidth = 720.0;
 
-const _topicHeaderHeight = 640.0;
-const _topicHeaderWidth = 480.0;
+const _topicHeaderHeight = 878.0;
+const _topicHeaderWidth = 520.0;
 
-const _topicHeaderImageHeight = 366.0;
-const _topicHeaderImageWidth = 480.0;
+const _topicHeaderImageHeight = 587.0;
+const _topicHeaderImageWidth = 520.0;
 
 const _publisherLogoSize = 28.0;
 
-const _articleItemWidth = 140.0;
-const _articleItemHeight = 210.0;
+const _articleItemWidth = 152.0;
+const _articleItemHeight = 227.0;
 
-const _articleListPadding = 22.0;
+const _articleListPadding = 20.0;
 
 class ShareReadingListView extends HookWidget implements BaseShareCompletable {
   final Topic topic;
@@ -75,7 +67,7 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
           publicId: topic.heroImage.publicId,
           width: _topicHeaderImageWidth,
           height: _topicHeaderImageHeight,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
           testImage: AppRasterGraphics.testArticleHeroImage,
         );
       },
@@ -99,17 +91,15 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
 
   Map<String, Image> _prepareLogos(CloudinaryImageProvider cloudinary) {
     final entries = articles.where((element) => element.publisher.darkLogo != null).map((article) {
-      final image = Image.network(
-        cloudinary
-            .withPublicIdAsPng(article.publisher.darkLogo!.publicId)
-            .transform()
-            .width(_publisherLogoSize.toInt())
-            .height(_publisherLogoSize.toInt())
-            .fit()
-            .generateNotNull(),
+      final image = cloudinaryImageFit(
+        cloudinary: cloudinary,
+        publicId: article.publisher.darkLogo!.publicId,
         width: _publisherLogoSize,
         height: _publisherLogoSize,
+        fit: BoxFit.fill,
+        testImage: AppRasterGraphics.testPublisherLogoDark,
       );
+
       return MapEntry(article.id, image);
     }).toList();
 
@@ -128,7 +118,7 @@ class _Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Container(
+      child: SizedBox(
         width: _viewWidth,
         height: _viewHeight,
         child: Stack(
@@ -168,23 +158,26 @@ class _Sticker extends StatelessWidget {
         color: AppColors.background,
         boxShadow: [_cardShadow],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Stack(
         children: [
-          _TopicHeader(
-            topic: topic,
-            image: image,
-            articlesLength: articles.length,
+          Positioned(
+            top: 0,
+            left: 0,
+            child: _TopicHeader(
+              topic: topic,
+              image: image,
+              articlesLength: articles.length,
+            ),
           ),
-          const SizedBox(height: AppDimens.xl),
-          Padding(
-            padding: const EdgeInsets.only(left: _articleListPadding),
+          Positioned(
+            bottom: AppDimens.xl,
+            left: _articleListPadding,
+            right: _articleListPadding,
             child: _ArticleRow(
               articles: articles,
               articleLogos: articleLogos,
             ),
           ),
-          const SizedBox(height: AppDimens.xl),
         ],
       ),
     );
@@ -211,27 +204,39 @@ class _TopicHeader extends StatelessWidget {
       child: Stack(
         children: [
           image,
-          Container(
-            color: AppColors.black.withOpacity(0.4),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl, vertical: AppDimens.xl),
+          Positioned.fill(
+            child: Container(color: AppColors.black.withOpacity(0.4)),
+          ),
+          Positioned(
+            top: AppDimens.xxl,
+            left: AppDimens.xl,
+            right: AppDimens.xl,
+            child: TopicOwnerAvatar(
+              withPrefix: true,
+              owner: topic.owner,
+              mode: Brightness.light,
+            ),
+          ),
+          Positioned(
+            bottom: AppDimens.xl,
+            left: AppDimens.xl,
+            right: AppDimens.xl,
+            child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TopicOwnerAvatar(owner: topic.owner, mode: Brightness.light),
-                  const Spacer(),
-                  Expanded(
-                    child: InformedMarkdownBody(
-                      markdown: topic.title,
-                      baseTextStyle: _topicTitleStyle,
+                  InformedMarkdownBody(
+                    markdown: topic.title,
+                    baseTextStyle: AppTypography.h0Bold.copyWith(
+                      color: AppColors.white,
+                      height: 1.25,
                     ),
+                    maxLines: 6,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: AppDimens.xl),
-                    child: Text(
-                      LocaleKeys.todaysTopics_selectedArticles.tr(args: ['$articlesLength']),
-                      style: AppTypography.b2Regular.copyWith(color: AppColors.white, height: 1),
-                    ),
+                  const SizedBox(height: AppDimens.xl),
+                  Text(
+                    LocaleKeys.todaysTopics_selectedArticles.tr(args: ['$articlesLength']),
+                    style: AppTypography.b2Regular.copyWith(color: AppColors.white, height: 1),
                   ),
                 ],
               ),
@@ -256,12 +261,13 @@ class _ArticleRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: _generateRow(),
     );
   }
 
   List<Widget> _generateRow() {
-    return _createArticleWidgets(articles).expand((element) => [element, const SizedBox(width: AppDimens.s)]).toList();
+    return _createArticleWidgets(articles).toList();
   }
 
   Iterable<Widget> _createArticleWidgets(List<MediaItemArticle> articles) sync* {
@@ -299,33 +305,40 @@ class _ArticleItem extends StatelessWidget {
       height: _articleItemHeight,
       padding: const EdgeInsets.all(AppDimens.m),
       color: backgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Stack(
         children: [
-          if (logo != null)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: logo,
-            )
-          else
-            const SizedBox(height: _publisherLogoSize),
-          const SizedBox(height: AppDimens.m),
-          Expanded(
-            child: InformedMarkdownBody(
-              markdown: article.title,
-              baseTextStyle: AppTypography.h5BoldSmall.copyWith(height: 1.15),
-              maxLines: 5,
-              highlightColor: AppColors.transparent,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (logo != null)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: logo,
+                )
+              else
+                const SizedBox(height: _publisherLogoSize),
+              const SizedBox(height: AppDimens.m),
+              Expanded(
+                child: InformedMarkdownBody(
+                  markdown: article.title,
+                  baseTextStyle: AppTypography.h5BoldSmall.copyWith(height: 1.15),
+                  maxLines: 5,
+                  highlightColor: AppColors.transparent,
+                ),
+              ),
+            ],
           ),
           if (timeToRead != null) ...[
-            const SizedBox(height: AppDimens.s),
-            Text(
-              tr(
-                LocaleKeys.article_readMinutes,
-                args: [article.timeToRead.toString()],
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Text(
+                tr(
+                  LocaleKeys.article_readMinutes,
+                  args: [article.timeToRead.toString()],
+                ),
+                style: AppTypography.systemText,
               ),
-              style: AppTypography.systemText,
             ),
           ],
         ],
