@@ -84,6 +84,9 @@ dependencies:
   dotted_border: 2.0.0+2
   audio_video_progress_bar: 0.10.0
   upgrader: 3.13.0
+  just_audio: 0.9.20
+  audio_service: 0.18.4
+  audio_session: 0.1.6+1
 
 dev_dependencies:
   flutter_test:
@@ -156,3 +159,4 @@ flutter:
     - assets/translations/
     - assets/vector_graphics/
     - assets/raster_graphics/
+    - assets/audio/

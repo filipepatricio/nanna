@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit_provider.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
@@ -79,58 +80,61 @@ class PremiumArticleView extends HookWidget {
     return Scaffold(
       body: SnackbarParentView(
         controller: snackbarController,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            PageView(
-              physics: const ClampingScrollPhysics(),
-              controller: horizontalPageController,
-              scrollDirection: Axis.horizontal,
-              onPageChanged: (page) {
-                switch (page) {
-                  case 0:
-                    articleOutputMode.value = ArticleOutputMode.read;
-                    break;
-                  case 1:
-                    articleOutputMode.value = ArticleOutputMode.audio;
-                    break;
-                }
-              },
-              children: [
-                PremiumArticleReadView(
+        child: PremiumArticleAudioCubitProvider(
+          article: article,
+          audioCubitBuilder: (audioCubit) => Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              PageView(
+                physics: const ClampingScrollPhysics(),
+                controller: horizontalPageController,
+                scrollDirection: Axis.horizontal,
+                onPageChanged: (page) {
+                  switch (page) {
+                    case 0:
+                      articleOutputMode.value = ArticleOutputMode.read;
+                      break;
+                    case 1:
+                      articleOutputMode.value = ArticleOutputMode.audio;
+                      break;
+                  }
+                },
+                children: [
+                  PremiumArticleReadView(
+                    article: article,
+                    content: content,
+                    modalController: modalController,
+                    controller: controller,
+                    pageController: pageController,
+                    snackbarController: snackbarController,
+                    cubit: cubit,
+                    fullHeight: fullHeight,
+                    fromTopic: fromTopic,
+                    readArticleProgress: readArticleProgress,
+                    articleOutputMode: articleOutputMode,
+                  ),
+                  if (article.hasAudioVersion)
+                    PremiumArticleAudioView(
+                      article: article,
+                      cubit: audioCubit,
+                    ),
+                ],
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: PremiumArticleActionsBar(
                   article: article,
-                  content: content,
-                  modalController: modalController,
-                  controller: controller,
+                  fullHeight: articleWithImage ? fullHeight : appBarHeight,
                   pageController: pageController,
                   snackbarController: snackbarController,
                   cubit: cubit,
-                  fullHeight: fullHeight,
-                  fromTopic: fromTopic,
-                  readArticleProgress: readArticleProgress,
                   articleOutputMode: articleOutputMode,
                 ),
-                if (article.hasAudioVersion) ...[
-                  PremiumArticleAudioView(
-                    article: article,
-                  ),
-                ],
-              ],
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: PremiumArticleActionsBar(
-                article: article,
-                fullHeight: articleWithImage ? fullHeight : appBarHeight,
-                pageController: pageController,
-                snackbarController: snackbarController,
-                cubit: cubit,
-                articleOutputMode: articleOutputMode,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

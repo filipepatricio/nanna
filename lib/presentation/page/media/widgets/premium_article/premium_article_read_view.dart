@@ -5,11 +5,11 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_c
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
@@ -18,7 +18,6 @@ import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_al
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_svg/svg.dart';
 
 class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
@@ -244,7 +243,7 @@ class PremiumArticleReadView extends HookWidget {
               showButton: showBackToTopicButton,
               fromTopic: fromTopic,
             ),
-            AudioFloatingButton(showButton: showAudioFloatingButton),
+            _AnimatedAudioButton(showButton: showAudioFloatingButton),
           ],
         ),
       ),
@@ -252,8 +251,8 @@ class PremiumArticleReadView extends HookWidget {
   }
 }
 
-class AudioFloatingButton extends StatelessWidget {
-  const AudioFloatingButton({
+class _AnimatedAudioButton extends StatelessWidget {
+  const _AnimatedAudioButton({
     required this.showButton,
     Key? key,
   }) : super(key: key);
@@ -267,19 +266,7 @@ class AudioFloatingButton extends StatelessWidget {
       bottom: showButton.value ? AppDimens.l : -AppDimens.c,
       curve: Curves.elasticInOut,
       duration: const Duration(milliseconds: 500),
-      child: FloatingActionButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimens.xl)),
-        onPressed: () {},
-        backgroundColor: AppColors.white,
-        child: Padding(
-          padding: const EdgeInsets.only(left: AppDimens.xs),
-          child: SvgPicture.asset(
-            AppVectorGraphics.play_arrow,
-            height: AppDimens.sl + AppDimens.xs,
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ),
+      child: const AudioFloatingControlButton(),
     );
   }
 }

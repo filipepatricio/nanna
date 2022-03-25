@@ -1,38 +1,43 @@
 import 'dart:math';
 
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/fast_forward_button/audio_fast_forward_button.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/progress_bar/audio_progress_bar.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/rewind_button/audio_rewind_button.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view_state.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/bordered_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-const _barHeight = 3.0;
-const _thumbRadius = 6.0;
-const _thumbGlowRadius = 15.0;
-
 class PremiumArticleAudioView extends HookWidget {
   const PremiumArticleAudioView({
     required this.article,
+    required this.cubit,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
+  final PremiumArticleAudioViewCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    const audioTotalSeconds = 120;
-    final audioProgress = useMemoized(() => ValueNotifier(0));
-    final isPlaying = useMemoized(() => ValueNotifier(false));
+    final state = useCubitBuilder(cubit);
 
-    final metadataStyle = AppTypography.systemText.copyWith(color: AppColors.textGrey, height: 1.12);
+    final metadataStyle = AppTypography.systemText.copyWith(
+      color: AppColors.textGrey,
+      height: 1.12,
+    );
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       color: AppColors.background,
@@ -78,37 +83,15 @@ class PremiumArticleAudioView extends HookWidget {
             color: metadataStyle.color,
           ),
           const Spacer(),
-          Expanded(
+          const Expanded(
             flex: 2,
-            child: ValueListenableBuilder(
-              valueListenable: audioProgress,
-              builder: (BuildContext context, int value, Widget? child) {
-                return ProgressBar(
-                  progress: Duration(seconds: value),
-                  total: const Duration(seconds: audioTotalSeconds),
-                  progressBarColor: AppColors.textPrimary,
-                  baseBarColor: AppColors.grey,
-                  bufferedBarColor: AppColors.transparent,
-                  thumbColor: AppColors.textPrimary,
-                  barHeight: _barHeight,
-                  thumbRadius: _thumbRadius,
-                  thumbGlowRadius: _thumbGlowRadius,
-                  timeLabelLocation: TimeLabelLocation.sides,
-                  timeLabelTextStyle: AppTypography.timeLabelText,
-                  onDragUpdate: (details) {
-                    audioProgress.value = details.timeStamp.inSeconds;
-                  },
-                  onSeek: (duration) {
-                    //TODO: Advance audio to duration
-                  },
-                );
-              },
-            ),
+            child: AudioProgressProgressBar(),
           ),
           const Spacer(),
           _AudioComponentsView(
+            cubit: cubit,
             article: article,
-            isPlaying: isPlaying,
+            isPlaying: state.isPlaying,
           ),
           const Spacer(flex: 2),
           Row(
@@ -133,13 +116,15 @@ class PremiumArticleAudioView extends HookWidget {
 
 class _AudioComponentsView extends StatelessWidget {
   const _AudioComponentsView({
+    required this.cubit,
     required this.article,
     required this.isPlaying,
     Key? key,
   }) : super(key: key);
 
+  final PremiumArticleAudioViewCubit cubit;
   final MediaItemArticle article;
-  final ValueNotifier<bool> isPlaying;
+  final bool isPlaying;
 
   @override
   Widget build(BuildContext context) {
@@ -149,43 +134,31 @@ class _AudioComponentsView extends StatelessWidget {
         Row(
           children: [
             const Spacer(flex: 5),
+            const AudioRewindButton(),
+            const Spacer(),
             IconButton(
-              onPressed: () {},
+              onPressed: isPlaying ? () => cubit.pause() : () => cubit.play(),
               padding: const EdgeInsets.only(right: AppDimens.s),
               icon: SvgPicture.asset(
-                AppVectorGraphics.skip_back_10_seconds,
+                isPlaying ? AppVectorGraphics.pause : AppVectorGraphics.play_arrow,
                 color: AppColors.textPrimary,
               ),
             ),
             const Spacer(),
-            ValueListenableBuilder(
-              valueListenable: isPlaying,
-              builder: (BuildContext context, bool value, Widget? child) {
-                return IconButton(
-                  onPressed: () {
-                    isPlaying.value = !value;
-                  },
-                  padding: const EdgeInsets.only(right: AppDimens.s),
-                  icon: SvgPicture.asset(
-                    value ? AppVectorGraphics.pause : AppVectorGraphics.play_arrow,
-                    color: AppColors.textPrimary,
-                  ),
-                );
-              },
-            ),
-            const Spacer(),
-            IconButton(
-              onPressed: () {},
-              padding: const EdgeInsets.only(right: AppDimens.s),
-              icon: SvgPicture.asset(
-                AppVectorGraphics.skip_forward_10_seconds,
-                color: AppColors.textPrimary,
-              ),
-            ),
+            const AudioFastForwardButton(),
             const Spacer(flex: 5),
           ],
         )
       ],
+    );
+  }
+}
+
+extension on PremiumArticleAudioViewState {
+  bool get isPlaying {
+    return maybeMap(
+      playing: (_) => true,
+      orElse: () => false,
     );
   }
 }
