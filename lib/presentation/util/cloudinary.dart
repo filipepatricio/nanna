@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/widgets.dart';
@@ -57,4 +58,66 @@ extension CloudinaryTransformationExtension on CloudinaryTransformation {
   String generateNotNull() {
     return generate()!;
   }
+}
+
+Image cloudinaryImageAuto({
+  required CloudinaryImageProvider cloudinary,
+  required String publicId,
+  required double width,
+  required double height,
+  BoxFit? fit,
+  String? testImage,
+}) =>
+    cloudinaryImage(
+      transformation: cloudinary
+          .withPublicId(publicId)
+          .transform()
+          .width(width.toInt())
+          .height(height.toInt())
+          .autoGravity()
+          .autoQuality(),
+      width: width,
+      height: height,
+      fit: fit,
+      testImage: testImage,
+    );
+
+Image cloudinaryImageFit({
+  required CloudinaryImageProvider cloudinary,
+  required String publicId,
+  required double width,
+  required double height,
+  BoxFit? fit,
+  String? testImage,
+}) =>
+    cloudinaryImage(
+      transformation: cloudinary.withPublicId(publicId).transform().width(width.toInt()).height(height.toInt()).fit(),
+      width: width,
+      height: height,
+      fit: fit,
+      testImage: testImage,
+    );
+
+Image cloudinaryImage({
+  required CloudinaryTransformation transformation,
+  required double width,
+  required double height,
+  BoxFit? fit,
+  String? testImage,
+}) {
+  if (kIsTest) {
+    return Image.asset(
+      testImage ?? AppRasterGraphics.testReadingListCoverImage,
+      width: width,
+      height: height,
+      fit: fit,
+    );
+  }
+
+  return Image.network(
+    transformation.generateNotNull(),
+    width: width,
+    height: height,
+    fit: fit,
+  );
 }

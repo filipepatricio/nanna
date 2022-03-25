@@ -14,4 +14,6 @@ class NotificationSettingSwitchState with _$NotificationSettingSwitchState {
 
   @Implements<BuildState>()
   factory NotificationSettingSwitchState.idle(String name, bool value) = _NotificationSettingSwitchStateIdle;
+
+  factory NotificationSettingSwitchState.generalError() = _NotificationSettingSwitchStateGeneralError;
 }

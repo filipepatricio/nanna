@@ -1,0 +1,1 @@
+enum BookmarkOrder { ascending, descending }

@@ -30,6 +30,16 @@ class PaginationEngine<T> {
     return _onDataLoaded(result, config.limit);
   }
 
+  List<T> removeItemAt(int index) {
+    _data.removeAt(index);
+    return List.of(_data);
+  }
+
+  List<T> insert(T element, int index) {
+    _data.insert(index, element);
+    return List.of(_data);
+  }
+
   PaginationEngineState<T> _onDataLoaded(List<T> data, int requestedLimit) {
     final allLoaded = data.length < requestedLimit;
     _data.addAll(data);

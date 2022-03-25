@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ class SettingsNotificationsPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsNotificationCubit>();
     final state = useCubitBuilder<SettingsNotificationCubit, SettingsNotificationsState>(cubit);
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -37,10 +39,16 @@ class SettingsNotificationsPage extends HookWidget {
           style: AppTypography.subH1Medium.copyWith(height: 1),
         ),
       ),
-      body: state.maybeWhen(
-        loading: () => const Loader(),
-        notificationSettingsLoaded: (data) => SettingsNotificationsBody(groups: data),
-        orElse: () => const SizedBox(),
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: state.maybeWhen(
+          loading: () => const Loader(),
+          notificationSettingsLoaded: (data) => SettingsNotificationsBody(
+            snackbarController: snackbarController,
+            groups: data,
+          ),
+          orElse: () => const SizedBox(),
+        ),
       ),
     );
   }

@@ -23,8 +23,8 @@ const _cardShadow = BoxShadow(
 const _viewHeight = 1280.0;
 const _viewWidth = 720.0;
 
-const _headerWidth = 480.0;
-const _headerHeight = 640.0;
+const _headerWidth = 520.0;
+const _headerHeight = 878.0;
 
 const _logoSize = 40.0;
 
@@ -54,20 +54,13 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
       () {
         if (articleImageId == null) return null;
 
-        final imageUrl = cloudinary
-            .withPublicId(articleImageId)
-            .transform()
-            .width(_headerWidth.toInt())
-            .height(_headerHeight.toInt())
-            .autoGravity()
-            .autoQuality()
-            .generateNotNull();
-
-        return Image.network(
-          imageUrl,
+        return cloudinaryImageAuto(
+          cloudinary: cloudinary,
+          publicId: articleImageId,
           width: _headerWidth,
           height: _headerHeight,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
+          testImage: AppRasterGraphics.testArticleHeroImage,
         );
       },
     );
@@ -76,19 +69,13 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
       () {
         if (logoImageId == null) return null;
 
-        final imageUrl = cloudinary
-            .withPublicIdAsPng(logoImageId)
-            .transform()
-            .width(_logoSize.toInt())
-            .height(_logoSize.toInt())
-            .fit()
-            .generateNotNull();
-
-        return Image.network(
-          imageUrl,
+        return cloudinaryImageFit(
+          cloudinary: cloudinary,
+          publicId: logoImageId,
           width: _logoSize,
           height: _logoSize,
           fit: BoxFit.fill,
+          testImage: AppRasterGraphics.testPublisherLogoDark,
         );
       },
     );
@@ -194,7 +181,7 @@ class _Sticker extends StatelessWidget {
                   ),
                   maxLines: 6,
                 ),
-                const SizedBox(height: AppDimens.xxxl),
+                const SizedBox(height: AppDimens.xxxc),
                 DottedArticleInfo(
                   article: article,
                   isLight: mainImage != null,

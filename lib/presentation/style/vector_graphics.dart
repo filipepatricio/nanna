@@ -55,6 +55,8 @@ class AppVectorGraphics {
   static const String sunRays = 'assets/vector_graphics/sun_rays.svg';
   static const String sadSun = 'assets/vector_graphics/sad_sun.svg';
   static const String magError = 'assets/vector_graphics/mag_error_ic.svg';
+  static const String pin = 'assets/vector_graphics/pin.svg';
+  static const String sort = 'assets/vector_graphics/sort.svg';
 
   static const String stayTuned = 'assets/vector_graphics/stay_tuned.svg';
   static const String openWeb = 'assets/vector_graphics/open_web_ic.svg';
@@ -66,7 +68,15 @@ class AppVectorGraphics {
   static const String shareText = 'assets/vector_graphics/share_text.svg';
   static const String shareStory = 'assets/vector_graphics/share_story.svg';
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
+  static const String checkmark = 'assets/vector_graphics/checkmark.svg';
+  static const String close = 'assets/vector_graphics/close.svg';
 
   static const String tutorialArrowDown = 'assets/vector_graphics/tutorial_arrow_down.svg';
   static const String tutorialArrowUp = 'assets/vector_graphics/tutorial_arrow_up.svg';
+
+  static const String heartInactive = 'assets/vector_graphics/heart_inactive.svg';
+  static const String heartSelected = 'assets/vector_graphics/heart_selected.svg';
+  static const String heartSelectedNoBorder = 'assets/vector_graphics/heart_selected_no_border.svg';
+  static const String heartUnselected = 'assets/vector_graphics/heart_unselected.svg';
+  static const String heartUnselectedWhite = 'assets/vector_graphics/heart_unselected_white.svg';
 }

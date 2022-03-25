@@ -33,6 +33,7 @@ class NotificationSettingSwitchCubit extends Cubit<NotificationSettingSwitchStat
       _channel = await _updateChannel(value);
     } catch (e, s) {
       Fimber.e('Setting notification channel failed', ex: e, stacktrace: s);
+      emit(NotificationSettingSwitchState.generalError());
     }
 
     emit(NotificationSettingSwitchState.idle(_channel.name, _getValue()));

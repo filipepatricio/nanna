@@ -17,6 +17,7 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -169,10 +170,10 @@ class _TopicIdleView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
+    final snackbarController = useMemoized(() => SnackbarController());
     final backgroundImageWidth = MediaQuery.of(context).size.width;
     final backgroundImageHeight = AppDimens.topicViewHeaderImageHeight(context);
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
-
     final modalScrollController = useMemoized(() => ModalScrollController.of(context));
     final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
     final gestureManager = useMemoized(
@@ -213,64 +214,69 @@ class _TopicIdleView extends HookWidget {
       );
     });
 
-    return RawGestureDetector(
-      gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
-        [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
-      ),
-      behavior: HitTestBehavior.opaque,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
-        child: Listener(
-          onPointerUp: (_) => _snapPage(context, scrollController),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: CloudinaryProgressiveImage(
-                  width: backgroundImageWidth,
-                  height: backgroundImageHeight,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                  testImage: AppRasterGraphics.testReadingListCoverImage,
-                  cloudinaryTransformation: cloudinaryProvider
-                      .withPublicId(topic.coverImage.publicId)
-                      .transform()
-                      .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
-                      .fit(),
-                ),
-              ),
-              NoScrollGlow(
-                child: CustomScrollView(
-                  physics: NeverScrollableScrollPhysics(
-                    parent: getPlatformScrollPhysics(
-                      const AlwaysScrollableScrollPhysics(),
-                    ),
+    return SnackbarParentView(
+      controller: snackbarController,
+      child: RawGestureDetector(
+        gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
+          [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
+        ),
+        behavior: HitTestBehavior.opaque,
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
+          child: Listener(
+            onPointerUp: (_) => _snapPage(context, scrollController),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: CloudinaryProgressiveImage(
+                    width: backgroundImageWidth,
+                    height: backgroundImageHeight,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    testImage: AppRasterGraphics.testReadingListCoverImage,
+                    cloudinaryTransformation: cloudinaryProvider
+                        .withPublicId(topic.coverImage.publicId)
+                        .transform()
+                        .withLogicalSize(backgroundImageWidth, backgroundImageWidth, context)
+                        .fit(),
                   ),
-                  controller: scrollController,
-                  slivers: [
-                    TopicAppBar(
-                      topic: topic,
-                      isShowingTutorialToast: isShowingTutorialToast,
-                      scrollPositionNotifier: scrollPositionNotifier,
-                      onArticlesLabelTap: () => _scrollToArticles(context, gestureManager),
-                      onArrowTap: () => _scrollToSummary(context, gestureManager),
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          TopicView(
-                            topic: topic,
-                            cubit: cubit,
-                            summaryCardKey: cubit.summaryCardKey,
-                            mediaItemKey: cubit.mediaItemKey,
-                            scrollController: scrollController,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
                 ),
-              ),
-            ],
+                NoScrollGlow(
+                  child: CustomScrollView(
+                    physics: NeverScrollableScrollPhysics(
+                      parent: getPlatformScrollPhysics(
+                        const AlwaysScrollableScrollPhysics(),
+                      ),
+                    ),
+                    controller: scrollController,
+                    slivers: [
+                      TopicAppBar(
+                        topic: topic,
+                        cubit: cubit,
+                        isShowingTutorialToast: isShowingTutorialToast,
+                        scrollPositionNotifier: scrollPositionNotifier,
+                        onArticlesLabelTap: () => _scrollToArticles(context, gestureManager),
+                        onArrowTap: () => _scrollToSummary(context, gestureManager),
+                        snackbarController: snackbarController,
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            TopicView(
+                              topic: topic,
+                              cubit: cubit,
+                              summaryCardKey: cubit.summaryCardKey,
+                              mediaItemKey: cubit.mediaItemKey,
+                              scrollController: scrollController,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

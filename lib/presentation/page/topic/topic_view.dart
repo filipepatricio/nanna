@@ -65,6 +65,7 @@ class TopicView extends HookWidget {
           child: TopicMediaItemsList(
             pageIndex: pageIndex,
             topic: topic,
+            cubit: cubit,
             eventController: eventController,
             mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
           ),

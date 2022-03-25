@@ -12,10 +12,11 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:better_informed_mobile/presentation/widget/reading_list_cover_small.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_small.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -37,7 +38,6 @@ class TopicsSeeAllPage extends HookWidget {
     final cubit = useCubit<TopicsSeeAllPageCubit>();
     final state = useCubitBuilder<TopicsSeeAllPageCubit, TopicsSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
-    final screenHeight = MediaQuery.of(context).size.height;
 
     useEffect(
       () {
@@ -51,33 +51,21 @@ class TopicsSeeAllPage extends HookWidget {
       orElse: () => false,
     );
 
-    useEffect(
-      () {
-        final listener = shouldListen
-            ? () {
-                final position = scrollController.position;
-
-                if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
-                  cubit.loadNextPage();
-                }
-              }
-            : () {};
-        scrollController.addListener(listener);
-        return () => scrollController.removeListener(listener);
-      },
-      [scrollController, shouldListen],
-    );
-
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: title),
-      body: TabBarListener(
-        currentPage: context.routeData,
-        controller: scrollController,
-        child: _Body(
-          title: title,
-          pageStorageKey: pageStorageKey,
-          scrollController: scrollController,
-          state: state,
+      body: NextPageLoadExecutor(
+        enabled: shouldListen,
+        onNextPageLoad: cubit.loadNextPage,
+        scrollController: scrollController,
+        child: TabBarListener(
+          currentPage: context.routeData,
+          controller: scrollController,
+          child: _Body(
+            title: title,
+            pageStorageKey: pageStorageKey,
+            scrollController: scrollController,
+            state: state,
+          ),
         ),
       ),
     );
@@ -100,7 +88,8 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StackedCardsRandomVariantBuilder(
+    return StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
+      variants: RoundStackCardVariant.values,
       count: state.maybeMap(
         loadingMore: (state) => state.topics.length,
         withPagination: (state) => state.topics.length,
@@ -147,7 +136,7 @@ class _TopicGrid extends StatelessWidget {
   final List<Topic> topics;
   final ScrollController scrollController;
   final bool withLoader;
-  final List<StackedCardsVariant> cardVariants;
+  final List<RoundStackCardVariant> cardVariants;
 
   const _TopicGrid({
     required this.title,
@@ -195,8 +184,8 @@ class _TopicGrid extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisExtent: AppDimens.exploreAreaTopicSeeAllCoverHeight,
-                mainAxisSpacing: AppDimens.m,
-                crossAxisSpacing: AppDimens.m,
+                mainAxisSpacing: AppDimens.xl,
+                crossAxisSpacing: AppDimens.l,
               ),
             ),
           ),
@@ -209,7 +198,7 @@ class _TopicGrid extends StatelessWidget {
 
 class _GridItem extends StatelessWidget {
   final Topic topic;
-  final StackedCardsVariant cardVariant;
+  final RoundStackCardVariant cardVariant;
 
   const _GridItem({
     required this.topic,
@@ -223,10 +212,15 @@ class _GridItem extends StatelessWidget {
       onTap: () => _onTopicTap(context, topic),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return PageViewStackedCards.variant(
+          return RoundStackedCards.variant(
             variant: cardVariant,
-            coverSize: Size(constraints.maxWidth, AppDimens.exploreAreaTopicSeeAllCoverHeight),
-            child: ReadingListCoverSmall(topic: topic),
+            coverSize: Size(
+              constraints.maxWidth,
+              AppDimens.exploreAreaTopicSeeAllCoverHeight,
+            ),
+            child: RoundTopicCoverSmall(
+              topic: topic,
+            ),
           );
         },
       ),

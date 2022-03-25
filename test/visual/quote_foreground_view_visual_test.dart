@@ -23,12 +23,12 @@ void main() {
           child: QuoteForegroundView(
             quote: quote,
             quoteVariantData: quoteVariantDataList[0],
-            article: TestData.articleMock,
+            article: TestData.article,
           ),
         ),
       );
-      await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(linen)');
+      // By specifying the variant with a dot (.linen), the screens_report command will group all of them in a single image
+      await tester.matchGoldenFile('quote_foreground_view.linen');
 
       final context = tester.element(find.byType(Container).first);
       final router = AutoRouter.of(context);
@@ -39,13 +39,13 @@ void main() {
             child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[1],
-              article: TestData.articleMock,
+              article: TestData.article,
             ),
           ),
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(rose)');
+      await tester.matchGoldenFile('quote_foreground_view.rose');
 
       unawaited(
         router.replace(
@@ -53,13 +53,13 @@ void main() {
             child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[2],
-              article: TestData.articleMock,
+              article: TestData.article,
             ),
           ),
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(green)');
+      await tester.matchGoldenFile('quote_foreground_view.green');
 
       unawaited(
         router.replace(
@@ -67,13 +67,13 @@ void main() {
             child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[3],
-              article: TestData.articleMock,
+              article: TestData.article,
             ),
           ),
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(peach)');
+      await tester.matchGoldenFile('quote_foreground_view.peach');
 
       unawaited(
         router.replace(
@@ -81,13 +81,13 @@ void main() {
             child: QuoteForegroundView(
               quote: quote,
               quoteVariantData: quoteVariantDataList[4],
-              article: TestData.articleMock,
+              article: TestData.article,
             ),
           ),
         ),
       );
       await tester.pumpAndSettle();
-      await tester.matchGoldenFile('quote_foreground_view_(charcoal)');
+      await tester.matchGoldenFile('quote_foreground_view.charcoal');
     },
     testConfig: const TestConfig.stickerDevice(),
   );

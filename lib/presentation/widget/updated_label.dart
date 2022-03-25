@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 
 class UpdatedLabel extends StatelessWidget {
   final DateTime dateTime;
-  final Color backgroundColor;
   final Brightness mode;
   final double? fontSize;
+  final TextStyle textStyle;
 
   const UpdatedLabel({
     required this.dateTime,
-    required this.backgroundColor,
     this.mode = Brightness.dark,
     this.fontSize = 12,
+    this.textStyle = AppTypography.systemText,
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +26,7 @@ class UpdatedLabel extends StatelessWidget {
         LocaleKeys.topic_updated.tr(
           args: [DateFormatUtil.dateTimeFromNow(dateTime)],
         ),
-        style: AppTypography.systemText.copyWith(
+        style: textStyle.copyWith(
           height: 1,
           fontSize: fontSize,
           color: mode == Brightness.dark ? null : AppColors.white,

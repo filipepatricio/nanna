@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -15,10 +15,11 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_large.dart';
 import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -36,7 +37,6 @@ class TodaysTopicsPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
-    final cardSectionMaxHeight = AppDimens.todaysTopicCardSectionHeight(context);
     final cardStackHeight = AppDimens.todaysTopicCardStackHeight(context);
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
@@ -86,18 +86,19 @@ class TodaysTopicsPage extends HookWidget {
                           cardStackHeight: cardStackHeight,
                         ),
                         error: (_) => SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: cardSectionMaxHeight,
+                          child: Center(
                             child: StackedCardsErrorView(
                               retryAction: cubit.loadTodaysTopics,
-                              cardStackWidth: cardStackWidth,
+                              size: Size(cardStackWidth, cardStackHeight),
                             ),
                           ),
                         ),
                         loading: (_) => SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: cardSectionMaxHeight,
-                            child: StackedCardsLoadingView(cardStackWidth: cardStackWidth),
+                          child: TodaysTopicsLoadingView(
+                            coverSize: Size(
+                              cardStackWidth,
+                              cardStackHeight,
+                            ),
                           ),
                         ),
                         orElse: () => const SizedBox(),
@@ -148,59 +149,54 @@ class _IdleContent extends HookWidget {
       [scrollController],
     );
 
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int index) {
-          if (index == 0) {
-            return _Greeting(
-              greeting: currentBrief.greeting,
-            );
-          } else if (index == currentBrief.topics.length + 1) {
-            return _RelaxSection(
-              onVisible: todaysTopicsCubit.trackRelaxPage,
-              goodbyeHeadline: currentBrief.goodbye,
-              lastPageAnimationProgressState: lastPageAnimationProgressState,
-            );
-          } else {
-            final currentTopicIndex = index - 1;
-            final currentTopic = currentBrief.topics[currentTopicIndex];
-            return ViewVisibilityNotifier(
-              detectorKey: Key(currentTopic.id),
-              onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, currentTopicIndex + 1),
-              borderFraction: 0.6,
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: cardStackHeight,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        StackedCardsRandomVariantBuilder(
-                          count: currentBrief.topics.length,
-                          builder: (variants) => PageViewStackedCards.variant(
-                            variant: variants[currentTopicIndex],
-                            coverSize: Size(cardStackWidth, cardStackHeight),
-                            child: ReadingListCover(
-                              topic: currentTopic,
-                              onTap: () => _onTopicCardPressed(
-                                context,
-                                currentTopicIndex,
-                                currentBrief,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+    return StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
+      variants: RoundStackCardVariant.values,
+      count: currentBrief.topics.length,
+      canNeighboursRepeat: false,
+      builder: (variants) => SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            if (index == 0) {
+              return _Greeting(
+                greeting: currentBrief.greeting,
+              );
+            } else if (index == currentBrief.topics.length + 1) {
+              return _RelaxSection(
+                onVisible: todaysTopicsCubit.trackRelaxPage,
+                goodbyeHeadline: currentBrief.goodbye,
+                lastPageAnimationProgressState: lastPageAnimationProgressState,
+              );
+            } else {
+              final currentTopicIndex = index - 1;
+              final currentTopic = currentBrief.topics[currentTopicIndex];
+              return ViewVisibilityNotifier(
+                detectorKey: Key(currentTopic.id),
+                onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, currentTopicIndex + 1),
+                borderFraction: 0.6,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => _onTopicCardPressed(
+                        context,
+                        currentTopicIndex,
+                        currentBrief,
+                      ),
+                      child: RoundStackedCards.variant(
+                        variant: variants[currentTopicIndex],
+                        coverSize: Size(cardStackWidth, cardStackHeight),
+                        child: RoundTopicCoverLarge(
+                          topic: currentTopic,
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: AppDimens.m),
-                ],
-              ),
-            );
-          }
-        },
-        childCount: currentBrief.topics.length + 2,
+                    const SizedBox(height: AppDimens.xxxl),
+                  ],
+                ),
+              );
+            }
+          },
+          childCount: currentBrief.topics.length + 2,
+        ),
       ),
     );
   }
@@ -266,7 +262,7 @@ class _Greeting extends StatelessWidget {
               textAlignment: TextAlign.left,
             ),
           ),
-          const SizedBox(height: AppDimens.m),
+          const SizedBox(height: AppDimens.xl),
         ],
       ],
     );

@@ -55,6 +55,7 @@ class SnackbarParentView extends HookWidget {
             },
             child: SnackbarView(
               message: state.nullableMessage,
+              dismissAction: cubit.discardMessage,
             ),
           ),
         ),

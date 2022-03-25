@@ -103,8 +103,11 @@ class AppDimens {
   static double todaysTopicCardSectionHeight(BuildContext context) =>
       min(MediaQuery.of(context).size.height * 0.85, 575);
 
-  /// The smallest value from 70% of screen height and 500
-  static double todaysTopicCardStackHeight(BuildContext context) => min(MediaQuery.of(context).size.height * 0.7, 500);
+  /// The smallest value from 70% of screen height and 400
+  static double todaysTopicCardStackHeight(BuildContext context) => min(
+        MediaQuery.of(context).size.height * 0.7,
+        400,
+      );
 
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
@@ -149,4 +152,6 @@ class AppDimens {
 
   /// 260
   static const exploreAreaTopicSeeAllCoverHeight = 250.0;
+
+  static const bookmarkIconSize = 32.0;
 }

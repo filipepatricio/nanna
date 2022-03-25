@@ -30,6 +30,11 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   late bool _isTopicSummaryCardTutorialStepSeen;
   late bool _isTopicMediaItemTutorialStepSeen;
 
+  late Topic _topic;
+  late String? _briefId;
+
+  String? get briefId => _briefId;
+
   List<TargetFocus> targets = <TargetFocus>[];
   final summaryCardKey = GlobalKey();
   final mediaItemKey = GlobalKey();
@@ -54,9 +59,11 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   }
 
   Future<void> initialize(Topic topic, String? briefId) async {
-    _trackActivityUseCase.trackPage(AnalyticsPage.topic(topic.id, briefId));
+    _topic = topic;
+    _briefId = briefId;
+    _trackActivityUseCase.trackPage(AnalyticsPage.topic(_topic.id, _briefId));
 
-    emit(TopicPageState.idle(topic));
+    emit(TopicPageState.idle(_topic));
   }
 
   Future<void> initializeTutorialStep() async {

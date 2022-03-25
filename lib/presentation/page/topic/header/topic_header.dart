@@ -74,7 +74,6 @@ class TopicHeader extends HookWidget {
               UpdatedLabel(
                 dateTime: topic.lastUpdatedAt,
                 mode: Brightness.light,
-                backgroundColor: AppColors.transparent,
                 fontSize: 16,
               ),
               const Spacer(flex: 208),

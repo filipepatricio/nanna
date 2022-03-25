@@ -10,10 +10,11 @@ import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
-import 'package:better_informed_mobile/presentation/widget/reading_list_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_large.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/page_view_stacked_card.dart';
-import 'package:better_informed_mobile/presentation/widget/stacked_cards/stacked_cards_random_variant_builder.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class TopicsAreaView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final eventController = useEventTrackController();
-    final controller = usePageController(viewportFraction: AppDimens.topicCardWidthViewportFraction);
+    final controller = usePageController(viewportFraction: 1);
     final width = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
     final cardStackHeight =
         MediaQuery.of(context).size.width * 0.5 > 450 ? MediaQuery.of(context).size.width * 0.5 : 450.0;
@@ -68,14 +69,14 @@ class TopicsAreaView extends HookWidget {
           const SizedBox(height: AppDimens.l),
           Container(
             height: cardStackHeight,
-            child: StackedCardsRandomVariantBuilder(
+            child: StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
+              variants: RoundStackCardVariant.values,
               count: area.topics.length,
               builder: (variants) {
                 return NoScrollGlow(
                   child: PageView.builder(
                     physics: const ClampingScrollPhysics(),
                     controller: controller,
-                    padEnds: false,
                     onPageChanged: (page) => eventController.track(
                       AnalyticsEvent.exploreAreaCarouselBrowsed(
                         area.id,
@@ -91,14 +92,15 @@ class TopicsAreaView extends HookWidget {
                       }
 
                       return Padding(
-                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 16),
-                        child: PageViewStackedCards.variant(
-                          variant: variants[index],
-                          centered: true,
-                          coverSize: Size(width, cardStackHeight),
-                          child: ReadingListCover(
-                            topic: area.topics[index],
-                            onTap: () => _onTopicTap(context, index),
+                        padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
+                        child: GestureDetector(
+                          onTap: () => _onTopicTap(context, index),
+                          child: RoundStackedCards.variant(
+                            variant: variants[index],
+                            coverSize: Size(width, cardStackHeight),
+                            child: RoundTopicCoverLarge(
+                              topic: area.topics[index],
+                            ),
                           ),
                         ),
                       );

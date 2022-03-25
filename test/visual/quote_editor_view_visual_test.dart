@@ -11,20 +11,15 @@ import 'visual_test_utils.dart';
 void main() {
   visualTest(QuoteEditorView, (tester) async {
     await tester.startApp(
-      initialRoute: MainPageRoute(
-        children: [
-          MediaItemPageRoute(slug: 'slug'),
-        ],
-      ),
+      initialRoute: MainPageRoute(children: [MediaItemPageRoute(slug: '')]),
     );
-    await tester.pumpAndSettle();
     await tester.tap(find.byType(AnimatedPointerDown).last);
     await tester.pumpAndSettle();
 
     final context = tester.element(find.byType(Container).first);
-    unawaited(showQuoteEditor(context, TestData.articleMock, 'Some quote'));
+    unawaited(showQuoteEditor(context, TestData.article, 'Some quote'));
     await tester.pumpAndSettle();
 
-    await tester.matchGoldenFile('quote_editor_view');
+    await tester.matchGoldenFile();
   });
 }

@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -16,12 +17,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class TopicMediaItemsList extends HookWidget {
   final ValueNotifier<int> pageIndex;
   final Topic topic;
+  final TopicPageCubit cubit;
   final GeneralEventTrackerController eventController;
   final GlobalKey? mediaItemKey;
 
   const TopicMediaItemsList({
     required this.pageIndex,
     required this.topic,
+    required this.cubit,
     required this.eventController,
     this.mediaItemKey,
   });
@@ -98,6 +101,7 @@ class TopicMediaItemsList extends HookWidget {
       MediaItemPageRoute(
         article: topic.articleAt(index),
         topicId: topic.id,
+        briefId: cubit.briefId,
       ),
     );
     return;

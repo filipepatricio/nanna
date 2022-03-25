@@ -14,6 +14,7 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -57,6 +58,7 @@ class InviteFriendPage extends HookWidget {
           tr(LocaleKeys.inviteFriend_title),
           style: AppTypography.b2Bold,
         ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: SnackbarParentView(
         controller: snackbarController,
@@ -72,7 +74,7 @@ class InviteFriendPage extends HookWidget {
                 cubit: cubit,
               ),
               error: (state) => GeneralErrorView(
-                title: tr(LocaleKeys.commonError_oops),
+                title: tr(LocaleKeys.common_error_oops),
                 content: tr(LocaleKeys.common_generalError),
                 svgPath: AppVectorGraphics.magError,
                 retryCallback: () => cubit.initialize(),
@@ -119,7 +121,7 @@ class _Idle extends StatelessWidget {
             ],
           ),
           textAlign: TextAlign.center,
-          style: AppTypography.h4Normal,
+          style: AppTypography.b2Regular,
         ),
         const SizedBox(height: AppDimens.xxl),
         _CodeContainer(
@@ -163,7 +165,7 @@ class _Idle extends StatelessWidget {
             ],
           ),
           textAlign: TextAlign.center,
-          style: AppTypography.h4Normal.copyWith(
+          style: AppTypography.b2Regular.copyWith(
             color: AppColors.textGrey,
           ),
         ),
