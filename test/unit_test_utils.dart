@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/better_informed_app.dart';
+import 'package:better_informed_mobile/presentation/informed_app.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -15,7 +15,7 @@ extension WidgetTesterExtension on WidgetTester {
 
     final mainRouter = MainRouter(mainRouterKey);
 
-    await pumpWidget(BetterInformedApp(mainRouter: mainRouter));
+    await pumpWidget(InformedApp(mainRouter: mainRouter));
 
     await pumpAndSettle();
 

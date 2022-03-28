@@ -49,9 +49,7 @@ Future<void> main() async {
         fallbackLocale: availableLocales[fallbackLanguageCode],
         useOnlyLangCode: true,
         saveLocale: true,
-        child: BetterInformedApp(
-          mainRouter: mainRouter,
-        ),
+        child: InformedApp(mainRouter: mainRouter),
       ),
     ),
   );

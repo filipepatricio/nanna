@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/better_informed_app.dart';
+import 'package:better_informed_mobile/presentation/informed_app.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -108,7 +108,7 @@ extension StartAppExtension on WidgetTester {
 
     final mainRouter = MainRouter(mainRouterKey);
 
-    await pumpWidgetBuilder(BetterInformedApp(mainRouter: mainRouter));
+    await pumpWidgetBuilder(InformedApp(mainRouter: mainRouter));
 
     await pumpAndSettle();
 
