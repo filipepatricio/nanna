@@ -28,19 +28,16 @@ class RoundTopicCoverLarge extends StatelessWidget {
           ),
         ),
       ),
-      padding: const EdgeInsets.symmetric(
-            horizontal: AppDimens.l,
-          ) +
-          const EdgeInsets.only(
-            top: AppDimens.xl,
-            bottom: AppDimens.l,
-          ),
       child: Stack(
         children: [
           RoundTopicCoverResponsiveImage(
             topic: topic,
           ),
           Positioned.fill(
+            top: AppDimens.xl,
+            bottom: AppDimens.l,
+            left: AppDimens.l,
+            right: AppDimens.l,
             child: _CoverContent(
               topic: topic,
             ),
