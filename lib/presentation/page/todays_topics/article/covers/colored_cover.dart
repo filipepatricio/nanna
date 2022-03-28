@@ -2,12 +2,15 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_editors_note.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/shadow_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ColoredCover extends StatelessWidget {
   final MediaItemArticle article;
@@ -41,13 +44,25 @@ class ColoredCover extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  DottedArticleInfo(
-                    article: article,
-                    isLight: false,
-                    showDate: false,
-                    showReadTime: false,
-                    showLogo: true,
-                    showPublisher: true,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DottedArticleInfo(
+                        article: article,
+                        isLight: false,
+                        showDate: false,
+                        showReadTime: false,
+                        showLogo: true,
+                        showPublisher: true,
+                      ),
+                      if (article.hasAudioVersion) ...[
+                        SvgPicture.asset(
+                          AppVectorGraphics.headphones,
+                          height: AppDimens.ml,
+                          color: AppColors.textPrimary,
+                        )
+                      ],
+                    ],
                   ),
                   const SizedBox(height: AppDimens.m),
                   InformedMarkdownBody(

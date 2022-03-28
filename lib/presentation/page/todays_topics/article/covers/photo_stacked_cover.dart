@@ -5,12 +5,14 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/shadow_util.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
 class PhotoStackedCover extends HookWidget {
   final MediaItemArticle article;
@@ -74,13 +76,25 @@ class PhotoStackedCover extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          DottedArticleInfo(
-                            article: article,
-                            isLight: true,
-                            showDate: false,
-                            showReadTime: false,
-                            showLogo: true,
-                            showPublisher: true,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              DottedArticleInfo(
+                                article: article,
+                                isLight: true,
+                                showDate: false,
+                                showReadTime: false,
+                                showLogo: true,
+                                showPublisher: true,
+                              ),
+                              if (article.hasAudioVersion) ...[
+                                SvgPicture.asset(
+                                  AppVectorGraphics.headphones,
+                                  height: AppDimens.ml,
+                                  color: AppColors.white,
+                                )
+                              ],
+                            ],
                           ),
                           const SizedBox(height: AppDimens.m),
                           InformedMarkdownBody(
