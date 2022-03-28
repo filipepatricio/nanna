@@ -26,7 +26,7 @@ class AudioFileDataSource implements AudioFileApiDataSource {
       (raw) {
         return AudioFileDTO.fromJson(raw);
       },
-      rootKey: 'data',
+      rootKey: 'getArticleAudioFile',
     );
 
     if (dto == null) throw Exception('AudioFile is null');

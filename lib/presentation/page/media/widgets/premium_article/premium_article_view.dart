@@ -41,8 +41,6 @@ class PremiumArticleView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final horizontalPageController = usePageController();
-
-    //TODO: Check if article supports audio mode
     final articleOutputMode = useMemoized(
       () => ValueNotifier(ArticleOutputMode.read),
     );
@@ -107,9 +105,11 @@ class PremiumArticleView extends HookWidget {
                   readArticleProgress: readArticleProgress,
                   articleOutputMode: articleOutputMode,
                 ),
-                PremiumArticleAudioView(
-                  article: article,
-                ),
+                if (article.hasAudioVersion) ...[
+                  PremiumArticleAudioView(
+                    article: article,
+                  ),
+                ],
               ],
             ),
             Positioned(

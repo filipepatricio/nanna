@@ -30,7 +30,7 @@ class PremiumArticleActionsBar extends HookWidget {
   final PageController pageController;
   final SnackbarController snackbarController;
   final MediaItemCubit cubit;
-  final ValueNotifier<ArticleOutputMode>? articleOutputMode;
+  final ValueNotifier<ArticleOutputMode> articleOutputMode;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class PremiumArticleActionsBar extends HookWidget {
       () {
         if (!hasImage) return () {};
         final listener = () {
-          final audioMode = articleOutputMode?.value == ArticleOutputMode.audio;
+          final audioMode = articleOutputMode.value == ArticleOutputMode.audio;
           if (audioMode) {
             backgroundColor.value = AppColors.background;
             bookmarkMode.value = BookmarkButtonMode.color;
@@ -96,8 +96,8 @@ class PremiumArticleActionsBar extends HookWidget {
             _setButtonColor(backgroundColor, bookmarkMode, buttonColor, pageController);
           }
         };
-        articleOutputMode?.addListener(listener);
-        return () => articleOutputMode?.removeListener(listener);
+        articleOutputMode.addListener(listener);
+        return () => articleOutputMode.removeListener(listener);
       },
       [pageController, articleOutputMode],
     );
@@ -131,7 +131,7 @@ class PremiumArticleActionsBar extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (articleOutputMode != null) ...[
+                if (article.hasAudioVersion) ...[
                   AudioButton(buttonColor: buttonColor, articleOutputMode: articleOutputMode)
                 ],
                 const SizedBox(width: AppDimens.sl),
@@ -180,7 +180,7 @@ class AudioButton extends StatelessWidget {
   }) : super(key: key);
 
   final ValueNotifier<Color> buttonColor;
-  final ValueNotifier<ArticleOutputMode>? articleOutputMode;
+  final ValueNotifier<ArticleOutputMode> articleOutputMode;
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +188,7 @@ class AudioButton extends StatelessWidget {
       valueListenable: buttonColor,
       builder: (BuildContext context, Color colorValue, Widget? child) {
         return ValueListenableBuilder(
-          valueListenable: articleOutputMode!,
+          valueListenable: articleOutputMode,
           builder: (BuildContext context, ArticleOutputMode value, Widget? child) {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
@@ -196,10 +196,10 @@ class AudioButton extends StatelessWidget {
                 onTap: () {
                   switch (value) {
                     case ArticleOutputMode.read:
-                      articleOutputMode!.value = ArticleOutputMode.audio;
+                      articleOutputMode.value = ArticleOutputMode.audio;
                       break;
                     case ArticleOutputMode.audio:
-                      articleOutputMode!.value = ArticleOutputMode.read;
+                      articleOutputMode.value = ArticleOutputMode.read;
                       break;
                   }
                 },
