@@ -1,13 +1,11 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_body.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_state.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -18,8 +16,6 @@ class SettingsMainPage extends HookWidget {
     final cubit = useCubit<SettingsMainCubit>();
     final state = useCubitBuilder(cubit);
     final snackbarController = useMemoized(() => SnackbarController());
-
-    useCubitListener(cubit, _handleState);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -43,12 +39,6 @@ class SettingsMainPage extends HookWidget {
           orElse: () => const SizedBox(),
         ),
       ),
-    );
-  }
-
-  void _handleState(SettingsMainCubit cubit, SettingsMainState state, BuildContext context) {
-    state.maybeWhen(
-      orElse: () {},
     );
   }
 }

@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dart';
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 

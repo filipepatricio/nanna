@@ -11,7 +11,6 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_ste
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
