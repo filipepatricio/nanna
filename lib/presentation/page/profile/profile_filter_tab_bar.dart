@@ -1,9 +1,8 @@
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
-import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/exports.dart' hide TextDirection;
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 

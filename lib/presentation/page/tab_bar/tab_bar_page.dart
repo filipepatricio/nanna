@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar
 import 'package:better_informed_mobile/presentation/routing/observers/tabs_navigation_observer.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker.dart';
 import 'package:flutter/material.dart' hide TabBar;
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -29,17 +30,19 @@ class TabBarPage extends HookWidget {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
         child: ScrollsToTop(
-          onScrollsToTop: (event) => Future.microtask(() => cubit.scrollToTop()),
-          child: AutoTabsScaffold(
-            key: tabBarPageKey,
-            animationDuration: const Duration(),
-            routes: const [
-              TodayTabGroupRouter(),
-              ExploreTabGroupRouter(),
-              ProfileTabGroupRouter(),
-            ],
-            bottomNavigationBuilder: (context, tabsRouter) => TabBar(tabsRouter),
-            navigatorObservers: () => [getIt<TabsNavigationObserver>()],
+          onScrollsToTop: (event) async => cubit.scrollToTop(),
+          child: AppUpdateChecker(
+            child: AutoTabsScaffold(
+              key: tabBarPageKey,
+              animationDuration: const Duration(),
+              routes: const [
+                TodayTabGroupRouter(),
+                ExploreTabGroupRouter(),
+                ProfileTabGroupRouter(),
+              ],
+              bottomNavigationBuilder: (context, tabsRouter) => TabBar(tabsRouter),
+              navigatorObservers: () => [getIt<TabsNavigationObserver>()],
+            ),
           ),
         ),
       ),

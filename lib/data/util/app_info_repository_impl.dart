@@ -15,4 +15,14 @@ class AppInfoRepositoryImpl implements AppInfoRepository {
     final buildNumber = await _appInfoDataSource.getAppBuildNumber();
     return '$version+$buildNumber';
   }
+
+  @override
+  Future<String?> getLatestAvailableVersion() {
+    return _appInfoDataSource.latestAvailableVersion();
+  }
+
+  @override
+  Future<bool> shouldUpdate() {
+    return _appInfoDataSource.shouldUpdate();
+  }
 }

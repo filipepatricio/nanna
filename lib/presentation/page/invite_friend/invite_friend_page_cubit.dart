@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/share/use_case/share_text_use_case
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_state.dart';
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
