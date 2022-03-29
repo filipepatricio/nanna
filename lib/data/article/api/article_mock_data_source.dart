@@ -19,6 +19,9 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
 
   @override
   Future<ArticleDTO> getArticleHeader(String slug) async {
+    if (slug == MockDTO.premiumMediaItemArticleWithAudio.slug) {
+      return MockDTO.premiumArticleWithAudio;
+    }
     return MockDTO.premiumArticle;
   }
 }

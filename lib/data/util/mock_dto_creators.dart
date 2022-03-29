@@ -115,7 +115,7 @@ class MockDTO {
       'reading-list-id',
       [
         _premiumArticleEntry,
-        _freeArticleEntry,
+        _premiumArticleWithAudioEntry,
         _freeArticleEntry,
       ],
     ),
@@ -157,7 +157,32 @@ class MockDTO {
     'source-url',
     // author
     'Cassandre Lueilwitz',
+    // hasAudioVersion
     false,
+  );
+
+  static final premiumArticleWithAudio = ArticleDTO(
+    'id-premium-audio',
+    'slug-premium-audio',
+    'url',
+    articleContentMarkdown,
+    // title
+    "Denmark's role in the NSA spying scandal",
+    // strippedTitle
+    "Denmark's role in the NSA spying scandal",
+    // credits
+    'This article originally appeared here',
+    'PREMIUM',
+    '2021-12-03',
+    // timeToRead
+    10,
+    'source-url',
+    _image,
+    _publisher,
+    // author
+    'Cassandre Lueilwitz',
+    // hasAudioVersion
+    true,
   );
 
   static final articleContentMarkdown = ArticleContentDTO(
@@ -254,6 +279,13 @@ class MockDTO {
     EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithBigImage),
   );
 
+  static final _premiumArticleWithAudioEntry = EntryDTO(
+    premiumMediaItemArticleWithAudio,
+    // note
+    'Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.',
+    EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithBigImage),
+  );
+
   static final _freeArticleEntry = EntryDTO(
     _freeMediaItemArticle,
     // note
@@ -280,7 +312,31 @@ class MockDTO {
     'source-url',
     // author
     'Cassandre Lueilwitz',
+    // hasAudioVersion
     false,
+  );
+
+  static final premiumMediaItemArticleWithAudio = MediaItemDTO.article(
+    'id-premium-audio',
+    'slug-premium-audio',
+    'url',
+    // title
+    "Denmark's role in the NSA spying scandal",
+    // strippedTitle
+    "Denmark's role in the NSA spying scandal",
+    // credits
+    'This article originally appeared here',
+    'PREMIUM',
+    '2021-12-03',
+    // timeToRead
+    10,
+    _publisher,
+    _image,
+    'source-url',
+    // author
+    'Cassandre Lueilwitz',
+    // hasAudioVersion
+    true,
   );
 
   static final _freeMediaItemArticle = MediaItemDTO.article(
@@ -302,6 +358,7 @@ class MockDTO {
     'source-url',
     // author
     'Cassandre Lueilwitz',
+    // hasAudioVersion
     false,
   );
 

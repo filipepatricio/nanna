@@ -13,6 +13,9 @@ class TestData {
   static MediaItemArticle get article =>
       getIt<MediaItemDTOMapper>().call(MockDTO.topic.readingList.entries.first.item) as MediaItemArticle;
 
+  static MediaItemArticle get premiumArticleWithAudio =>
+      getIt<MediaItemDTOMapper>().call(MockDTO.premiumMediaItemArticleWithAudio) as MediaItemArticle;
+
   static Topic get topic => getIt<TopicDTOMapper>().call(MockDTO.topic);
 
   static Topic get topicWithUnknownOwner => getIt<TopicDTOMapper>().call(MockDTO.topicWithUnknownOwner);
