@@ -15,11 +15,16 @@ class AudioPlaybackStateMapper implements Mapper<PlaybackState, AudioPlaybackSta
         return const AudioPlaybackState.notInitialized();
       case AudioProcessingState.loading:
       case AudioProcessingState.buffering:
-        return const AudioPlaybackState.loading();
+        return AudioPlaybackState.loading(
+          speed: data.speed,
+        );
       case AudioProcessingState.ready:
         return _mapReadyState(data);
       case AudioProcessingState.completed:
-        return AudioPlaybackState.completed(duration);
+        return AudioPlaybackState.completed(
+          duration: duration,
+          speed: data.speed,
+        );
       case AudioProcessingState.error:
         throw Exception('While playing audio some error occurred');
     }
@@ -29,9 +34,15 @@ class AudioPlaybackStateMapper implements Mapper<PlaybackState, AudioPlaybackSta
     final duration = data.bufferedPosition;
 
     if (data.playing) {
-      return AudioPlaybackState.playing(duration);
+      return AudioPlaybackState.playing(
+        duration: duration,
+        speed: data.speed,
+      );
     } else {
-      return AudioPlaybackState.paused(duration);
+      return AudioPlaybackState.paused(
+        duration: duration,
+        speed: data.speed,
+      );
     }
   }
 }

@@ -81,6 +81,11 @@ class AudioRepositoryImpl implements AudioRepository {
     await _audioHandler.rewind();
   }
 
+  @override
+  Future<void> changeAudioSpeed(double speed) async {
+    await _audioHandler.setSpeed(speed);
+  }
+
   Future<File> _getAudioFile() async {
     final tmpDir = await getTemporaryDirectory();
     final fileName = join(tmpDir.path, _audioFileName);

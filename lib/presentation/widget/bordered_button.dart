@@ -10,7 +10,7 @@ class BorderedButton extends StatelessWidget {
   }) : super(key: key);
 
   final Text text;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

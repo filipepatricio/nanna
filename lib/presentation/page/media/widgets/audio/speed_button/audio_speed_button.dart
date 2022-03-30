@@ -1,4 +1,6 @@
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/speed_button/audio_speed_button_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/speed_button/audio_speed_button_state.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/bordered_button.dart';
@@ -20,12 +22,38 @@ class AudioSpeedButton extends HookWidget {
       [cubit],
     );
 
-    return BorderedButton(
-      text: Text(
-        'Speed 1.0x',
-        style: AppTypography.h5BoldSmall.copyWith(height: 1.2),
+    return UnconstrainedBox(
+      child: Opacity(
+        opacity: state.isEnabled ? 1.0 : 0.7,
+        child: BorderedButton(
+          text: Text(
+            tr(
+              LocaleKeys.audio_speed,
+              args: [
+                state.currentSpeed,
+              ],
+            ),
+            style: AppTypography.h5BoldSmall.copyWith(height: 1.2),
+          ),
+          onTap: state.isEnabled ? cubit.switchSpeed : null,
+        ),
       ),
-      onTap: cubit.switchSpeed,
+    );
+  }
+}
+
+extension on AudioSpeedButtonState {
+  bool get isEnabled {
+    return map(
+      disabled: (_) => false,
+      enabled: (_) => true,
+    );
+  }
+
+  String get currentSpeed {
+    return map(
+      disabled: (_) => '',
+      enabled: (state) => '${state.speed}x',
     );
   }
 }

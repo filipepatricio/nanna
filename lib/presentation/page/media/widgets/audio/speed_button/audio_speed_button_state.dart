@@ -6,8 +6,8 @@ part 'audio_speed_button_state.freezed.dart';
 @freezed
 class AudioSpeedButtonState with _$AudioSpeedButtonState {
   @Implements<BuildState>()
-  factory AudioSpeedButtonState.notInitialized() = _AudioSpeedButtonStateNotInitialized;
+  factory AudioSpeedButtonState.disabled() = _AudioSpeedButtonStateDisabled;
 
   @Implements<BuildState>()
-  factory AudioSpeedButtonState.idle(double speed) = _AudioSpeedButtonStateIdle;
+  factory AudioSpeedButtonState.enabled(double speed) = _AudioSpeedButtonStateEnabled;
 }

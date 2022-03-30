@@ -19,6 +19,7 @@ class InformedAudioHandler extends BaseAudioHandler with SeekHandler {
   @override
   Future<void> playMediaItem(MediaItem item) async {
     await _audioPlayer.pause();
+    await _audioPlayer.setSpeed(1.0);
 
     mediaItem.add(item);
     playbackState.add(PlaybackStateExtension.getLoading());
@@ -64,6 +65,18 @@ class InformedAudioHandler extends BaseAudioHandler with SeekHandler {
       processingState: isComplete ? AudioProcessingState.completed : AudioProcessingState.ready,
     );
     playbackState.add(state);
+  }
+
+  @override
+  Future<void> setSpeed(double speed) async {
+    await _audioPlayer.setSpeed(speed);
+
+    final event = _audioPlayer.playbackEvent;
+    final newState = playbackState.value.copyWith(
+      speed: speed,
+      updatePosition: event.updatePosition,
+    );
+    playbackState.add(newState);
   }
 
   Future<void> _registerPlaybackEventListener() async {

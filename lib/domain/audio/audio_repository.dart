@@ -16,6 +16,8 @@ abstract class AudioRepository {
 
   Future<void> rewind();
 
+  Future<void> changeAudioSpeed(double speed);
+
   Stream<AudioPlaybackState> get playbackState;
 
   Stream<Duration> get position;

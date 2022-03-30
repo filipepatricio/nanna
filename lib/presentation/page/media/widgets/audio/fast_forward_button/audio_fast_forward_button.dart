@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/fast_forward_button/audio_fast_forward_button_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/fast_forward_button/audio_fast_forward_button_state.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -13,14 +14,38 @@ class AudioFastForwardButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<AufioFastForwardButtonCubit>();
+    final state = useCubitBuilder(cubit);
+
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
 
     return IconButton(
-      onPressed: cubit.fastForward,
+      onPressed: state.isEnabled ? cubit.fastForward : null,
       padding: const EdgeInsets.only(right: AppDimens.s),
       icon: SvgPicture.asset(
         AppVectorGraphics.skip_forward_10_seconds,
-        color: AppColors.textPrimary,
+        color: state.imageColor,
       ),
+    );
+  }
+}
+
+extension on AudioFastForwardButtonState {
+  bool get isEnabled {
+    return map(
+      disabled: (_) => false,
+      enabled: (_) => true,
+    );
+  }
+
+  Color get imageColor {
+    return map(
+      disabled: (_) => AppColors.textGrey,
+      enabled: (_) => AppColors.textPrimary,
     );
   }
 }

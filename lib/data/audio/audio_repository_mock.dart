@@ -32,4 +32,7 @@ class AudioRepositoryMock implements AudioRepository {
 
   @override
   Future<void> rewind() async {}
+
+  @override
+  Future<void> changeAudioSpeed(double speed) async {}
 }
