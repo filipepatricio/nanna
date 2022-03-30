@@ -10,4 +10,6 @@ class SettingsMainState with _$SettingsMainState {
 
   @Implements<BuildState>()
   const factory SettingsMainState.loading() = SettingsMainStateLoading;
+
+  factory SettingsMainState.sendingEmailError() = _SettingsMainStateSendingEmailError;
 }
