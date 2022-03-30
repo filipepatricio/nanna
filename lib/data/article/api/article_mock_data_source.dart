@@ -27,7 +27,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  Future<AudioFileDTO> getArticleAudioFile(String slug) async {
+  Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh) async {
     return MockDTO.audioFile;
   }
 }

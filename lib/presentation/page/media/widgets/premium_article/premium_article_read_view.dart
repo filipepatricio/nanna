@@ -243,7 +243,10 @@ class PremiumArticleReadView extends HookWidget {
               showButton: showBackToTopicButton,
               fromTopic: fromTopic,
             ),
-            _AnimatedAudioButton(showButton: showAudioFloatingButton),
+            _AnimatedAudioButton(
+              article: article,
+              showButton: showAudioFloatingButton,
+            ),
           ],
         ),
       ),
@@ -253,10 +256,12 @@ class PremiumArticleReadView extends HookWidget {
 
 class _AnimatedAudioButton extends StatelessWidget {
   const _AnimatedAudioButton({
+    required this.article,
     required this.showButton,
     Key? key,
   }) : super(key: key);
 
+  final MediaItemArticle article;
   final ValueNotifier<bool> showButton;
 
   @override
@@ -266,7 +271,7 @@ class _AnimatedAudioButton extends StatelessWidget {
       bottom: showButton.value ? AppDimens.l : -AppDimens.c,
       curve: Curves.elasticInOut,
       duration: const Duration(milliseconds: 500),
-      child: const AudioFloatingControlButton(),
+      child: AudioFloatingControlButton(article: article),
     );
   }
 }

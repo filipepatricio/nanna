@@ -1,15 +1,13 @@
-import 'dart:io';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class AudioItem {
-  AudioItem({
-    required this.file,
-    required this.title,
-    required this.publisher,
-    this.imageUrl,
-  });
+part 'audio_item.freezed.dart';
 
-  final File file;
-  final String title;
-  final String publisher;
-  final String? imageUrl;
+@freezed
+class AudioItem with _$AudioItem {
+  factory AudioItem({
+    required String fileUrl,
+    required String title,
+    required String author,
+    required String? imageUrl,
+  }) = _AudioItem;
 }

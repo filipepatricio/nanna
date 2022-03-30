@@ -80,10 +80,11 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  Future<AudioFileDTO> getArticleAudioFile(String slug) async {
+  Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh) async {
     final result = await _client.query(
       QueryOptions(
         document: ArticleGQL.articleAudioFile(slug),
+        fetchPolicy: forceFresh ? FetchPolicy.networkOnly : FetchPolicy.cacheAndNetwork,
       ),
     );
 

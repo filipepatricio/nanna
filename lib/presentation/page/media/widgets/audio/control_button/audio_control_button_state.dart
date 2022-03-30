@@ -6,7 +6,10 @@ part 'audio_control_button_state.freezed.dart';
 @freezed
 class AudioControlButtonState with _$AudioControlButtonState {
   @Implements<BuildState>()
-  factory AudioControlButtonState.initializing() = _AudioControlButtonStateInitializing;
+  factory AudioControlButtonState.notInitilized() = _AudioControlButtonStateNotInitialized;
+
+  @Implements<BuildState>()
+  factory AudioControlButtonState.loading() = _AudioControlButtonStateLoading;
 
   @Implements<BuildState>()
   factory AudioControlButtonState.playing() = _AudioControlButtonStatePlaying;

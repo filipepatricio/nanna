@@ -1,34 +1,42 @@
-import 'dart:io';
-
+import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dart';
+import 'package:better_informed_mobile/domain/audio/exception/file_access_expired.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 @injectable
-class PrepareAudioTrackUseCase {
-  PrepareAudioTrackUseCase(this._audioRepository);
+class PrepareArticleAudioTrackUseCase {
+  PrepareArticleAudioTrackUseCase(
+    this._audioRepository,
+    this._articleRepository,
+  );
 
   final AudioRepository _audioRepository;
+  final ArticleRepository _articleRepository;
 
-  Future<void> call(MediaItemArticle article, String? imageUrl) async {
-    final mp3 = await rootBundle.load('assets/audio/yes.mp3');
-
-    final tmpDir = await getTemporaryDirectory();
-    final fileName = join(tmpDir.path, 'yes.mp3');
-    final file = File(fileName);
-    await file.writeAsBytes(mp3.buffer.asInt8List());
+  Future<void> call({
+    required MediaItemArticle article,
+    String? imageUrl,
+  }) async {
+    final audioFile = await _articleRepository.getArticleAudioFile(article.slug);
 
     final item = AudioItem(
-      file: file,
       title: article.strippedTitle,
-      publisher: article.publisher.name,
+      author: article.publisher.name,
+      fileUrl: audioFile.url,
       imageUrl: imageUrl,
     );
 
-    await _audioRepository.prepareItem(item);
+    try {
+      await _audioRepository.prepareItem(item);
+    } on FileAccessExpired catch (_) {
+      final audioFile = await _articleRepository.getArticleAudioFile(
+        article.slug,
+        true,
+      );
+      final freshItem = item.copyWith(fileUrl: audioFile.url);
+      await _audioRepository.prepareItem(freshItem);
+    }
   }
 }

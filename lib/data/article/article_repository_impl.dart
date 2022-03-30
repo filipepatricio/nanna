@@ -56,8 +56,8 @@ class ArticleRepositoryImpl implements ArticleRepository {
   }
 
   @override
-  Future<AudioFile> getArticleAudioFile(String slug) async {
-    final dto = await _articleDataSource.getArticleAudioFile(slug);
+  Future<AudioFile> getArticleAudioFile(String slug, [bool forceFresh = false]) async {
+    final dto = await _articleDataSource.getArticleAudioFile(slug, forceFresh);
     return _audioFileDTOMapper(dto);
   }
 }

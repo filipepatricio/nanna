@@ -1,23 +1,29 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
-import 'package:better_informed_mobile/data/audio/mapper/audio_media_item_mapper.dart';
+import 'package:better_informed_mobile/data/audio/audio_file_downloader.dart';
 import 'package:better_informed_mobile/data/audio/mapper/audio_playback_state_mapper.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+
+const _audioFileName = 'audio_file';
 
 @LazySingleton(as: AudioRepository, env: liveEnvs)
 class AudioRepositoryImpl implements AudioRepository {
   AudioRepositoryImpl(
     this._audioHandler,
     this._audioPlaybackStateMapper,
-    this._audioMediaItemMapper,
+    this._audioFileDownloader,
   );
 
   final AudioHandler _audioHandler;
   final AudioPlaybackStateMapper _audioPlaybackStateMapper;
-  final AudioMediaItemMapper _audioMediaItemMapper;
+  final AudioFileDownloader _audioFileDownloader;
 
   @override
   Future<void> closeItem() async {
@@ -26,7 +32,19 @@ class AudioRepositoryImpl implements AudioRepository {
 
   @override
   Future<void> prepareItem(AudioItem item) async {
-    final mediaItem = _audioMediaItemMapper(item);
+    await _audioHandler.prepare();
+
+    final audioFile = await _getAudioFile();
+    await _audioFileDownloader.loadAndSaveFile(audioFile, item.fileUrl);
+
+    final imageUrl = item.imageUrl;
+    final mediaItem = MediaItem(
+      id: audioFile.path,
+      title: item.title,
+      artist: item.author,
+      artUri: imageUrl == null ? null : Uri.parse(imageUrl),
+    );
+
     await _audioHandler.playMediaItem(mediaItem);
   }
 
@@ -61,5 +79,11 @@ class AudioRepositoryImpl implements AudioRepository {
   @override
   Future<void> rewind() async {
     await _audioHandler.rewind();
+  }
+
+  Future<File> _getAudioFile() async {
+    final tmpDir = await getTemporaryDirectory();
+    final fileName = join(tmpDir.path, _audioFileName);
+    return File(fileName);
   }
 }

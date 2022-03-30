@@ -1,0 +1,1 @@
+class FileAccessExpired implements Exception {}

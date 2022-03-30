@@ -12,6 +12,11 @@ class InformedAudioHandler extends BaseAudioHandler with SeekHandler {
   StreamSubscription? _audioEventSubscription;
 
   @override
+  Future<void> prepare() async {
+    playbackState.add(PlaybackStateExtension.getLoading());
+  }
+
+  @override
   Future<void> playMediaItem(MediaItem item) async {
     await _audioPlayer.pause();
 

@@ -15,5 +15,5 @@ abstract class ArticleRepository {
 
   Future<Article> getFullArticle(String slug);
 
-  Future<AudioFile> getArticleAudioFile(String slug);
+  Future<AudioFile> getArticleAudioFile(String slug, [bool forceFresh = false]);
 }

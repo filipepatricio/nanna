@@ -10,9 +10,9 @@ extension PlaybackStateExtension on PlaybackState {
         playing: false,
         processingState: AudioProcessingState.ready,
         controls: [
+          MediaControl.rewind,
           MediaControl.play,
           MediaControl.fastForward,
-          MediaControl.rewind,
         ],
         bufferedPosition: duration,
       );
@@ -20,18 +20,18 @@ extension PlaybackStateExtension on PlaybackState {
   PlaybackState getPlaying() => copyWith(
         playing: true,
         controls: [
+          MediaControl.rewind,
           MediaControl.pause,
           MediaControl.fastForward,
-          MediaControl.rewind,
         ],
       );
 
   PlaybackState getPaused(Duration updatePosition) => copyWith(
         playing: false,
         controls: [
+          MediaControl.rewind,
           MediaControl.play,
           MediaControl.fastForward,
-          MediaControl.rewind,
         ],
         updatePosition: updatePosition,
       );

@@ -13,11 +13,31 @@ class AudioPositionStreamUseCase {
   Stream<AudioPosition> call() {
     return Rx.combineLatest2<Duration, AudioPlaybackState, AudioPosition>(
       _audioRepository.position,
-      _audioRepository.playbackState,
+      _audioRepository.playbackState.where((state) => state.hasDuration),
       (position, playbackState) => AudioPosition(
         position: position,
-        totalDuration: playbackState.duration,
+        totalDuration: playbackState.requireDuration,
       ),
+    );
+  }
+}
+
+extension on AudioPlaybackState {
+  bool get hasDuration {
+    return maybeMap(
+      playing: (_) => true,
+      paused: (_) => true,
+      completed: (_) => true,
+      orElse: () => false,
+    );
+  }
+
+  Duration get requireDuration {
+    return maybeMap(
+      playing: (state) => state.duration,
+      paused: (state) => state.duration,
+      completed: (state) => state.duration,
+      orElse: () => throw Exception('This state does not have duration'),
     );
   }
 }
