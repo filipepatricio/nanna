@@ -209,6 +209,23 @@ class MockDTO {
     'audio-file-url',
   );
 
+  static final bookmarkList = BookmarkListDTO(
+    [
+      BookmarkDTO(
+        '0000',
+        BookmarkDataDTO.article(
+          MockDTO.premiumArticle,
+        ),
+      ),
+      BookmarkDTO(
+        '0000',
+        BookmarkDataDTO.topic(
+          MockDTO.topic,
+        ),
+      ),
+    ],
+  );
+
   /// Internal
 
   static final _expert = TopicOwnerDTO.expert(
