@@ -5,14 +5,13 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/shadow_util.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 class PhotoStackedCover extends HookWidget {
   final MediaItemArticle article;
@@ -87,13 +86,7 @@ class PhotoStackedCover extends HookWidget {
                                 showLogo: true,
                                 showPublisher: true,
                               ),
-                              if (article.hasAudioVersion) ...[
-                                SvgPicture.asset(
-                                  AppVectorGraphics.headphones,
-                                  height: AppDimens.ml,
-                                  color: AppColors.white,
-                                )
-                              ],
+                              if (article.hasAudioVersion) AudioIcon.light(),
                             ],
                           ),
                           const SizedBox(height: AppDimens.m),

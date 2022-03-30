@@ -55,6 +55,7 @@ class PremiumArticleAudioView extends HookWidget {
                       height: constraints.maxHeight,
                       width: constraints.maxWidth,
                       shouldShowTextOverlay: context.isNotSmallDevice,
+                      shouldShowAudioIcon: false,
                     );
                   },
                 ),

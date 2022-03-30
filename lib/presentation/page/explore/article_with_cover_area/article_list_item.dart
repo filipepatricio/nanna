@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
@@ -21,6 +22,7 @@ class ArticleListItem extends HookWidget {
   final double height;
   final double width;
   final bool shouldShowTextOverlay;
+  final bool shouldShowAudioIcon;
 
   const ArticleListItem({
     required this.article,
@@ -29,6 +31,7 @@ class ArticleListItem extends HookWidget {
     this.height = AppDimens.exploreAreaArticleListItemHeight,
     this.width = AppDimens.exploreAreaArticleListItemWidth,
     this.shouldShowTextOverlay = true,
+    this.shouldShowAudioIcon = true,
     Key? key,
   }) : super(key: key);
 
@@ -62,6 +65,7 @@ class ArticleListItem extends HookWidget {
             height: height,
             width: width,
             shouldShowTextOverlay: shouldShowTextOverlay,
+            shouldShowAudioIcon: shouldShowAudioIcon,
           )
         ],
       ),
@@ -75,6 +79,7 @@ class _ArticleImageOverlay extends StatelessWidget {
   final double? height;
   final double? width;
   final bool shouldShowTextOverlay;
+  final bool shouldShowAudioIcon;
 
   const _ArticleImageOverlay({
     required this.article,
@@ -82,6 +87,7 @@ class _ArticleImageOverlay extends StatelessWidget {
     required this.height,
     required this.width,
     required this.shouldShowTextOverlay,
+    required this.shouldShowAudioIcon,
     Key? key,
   }) : super(key: key);
 
@@ -100,10 +106,18 @@ class _ArticleImageOverlay extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (shouldShowTextOverlay) ...[
-            if (hasImage)
-              PublisherLogo.light(publisher: article.publisher)
-            else
-              PublisherLogo.dark(publisher: article.publisher),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (hasImage) ...[
+                  PublisherLogo.light(publisher: article.publisher),
+                  if (article.hasAudioVersion && shouldShowAudioIcon) AudioIcon.light()
+                ] else ...[
+                  PublisherLogo.dark(publisher: article.publisher),
+                  if (article.hasAudioVersion && shouldShowAudioIcon) AudioIcon.dark()
+                ]
+              ],
+            ),
             const SizedBox(height: AppDimens.m),
             InformedMarkdownBody(
               maxLines: hasImage ? 4 : 5,
