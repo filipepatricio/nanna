@@ -35,4 +35,14 @@ class ArticleGQL {
     }
   ''',
       );
+
+  static DocumentNode articleAudioFile(String slug) => gql(
+        '''
+    query {
+      getArticleAudioFile(slug: "$slug") {
+        url
+      }
+    }
+  ''',
+      );
 }
