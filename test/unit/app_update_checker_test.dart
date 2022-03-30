@@ -9,7 +9,6 @@ void main() {
     'app udpate dialog does not show up under normal circumstances',
     (tester) async {
       await tester.startApp();
-      await tester.pumpAndSettle();
       expect(find.byText(LocaleKeys.update_title.tr()), findsNothing);
     },
   );
@@ -20,7 +19,6 @@ void main() {
       // Forcing dialog to show because fetching and solving version logic is already tested by package
       Upgrader().debugDisplayAlways = true;
       await tester.startApp();
-      await tester.pumpAndSettle();
       expect(find.byText(LocaleKeys.update_title.tr()), findsOneWidget);
     },
   );

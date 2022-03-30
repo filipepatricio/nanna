@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topics_from_editor_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/topics_api_data_source.dart';
 import 'package:better_informed_mobile/data/topic/api/topics_gql.dart';
@@ -28,6 +29,22 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
     );
 
     return dto ?? (throw Exception('Topics from experts are null'));
+  }
+
+  @override
+  Future<TopicsFromEditorDTO> getTopicsFromEditor(String editorId) async {
+    final result = await _client.query(
+      QueryOptions(
+        document: TopicsGql.getTopicsFromEditor(editorId),
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => TopicsFromEditorDTO.fromJson(raw),
+    );
+
+    return dto ?? (throw Exception('Topics from editor are null'));
   }
 
   @override

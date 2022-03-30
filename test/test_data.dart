@@ -15,5 +15,9 @@ class TestData {
 
   static Topic get topic => getIt<TopicDTOMapper>().call(MockDTO.topic);
 
+  static Topic get topicWithUnknownOwner => getIt<TopicDTOMapper>().call(MockDTO.topicWithUnknownOwner);
+
+  static Topic get topicWithEditorOwner => getIt<TopicDTOMapper>().call(MockDTO.topicWithEditorOwner);
+
   static ExploreContent get exploreContent => getIt<ExploreContentDTOMapper>().call(MockDTO.exploreContent);
 }
