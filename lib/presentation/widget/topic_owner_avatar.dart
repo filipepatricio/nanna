@@ -45,6 +45,10 @@ class TopicOwnerAvatar extends HookWidget {
     final avatarResolutionWidth = (imageWidth * 4).toInt();
     final avatarResolutionHeight = (imageHeight * 4).toInt();
 
+    if (owner is UnknownOwner) {
+      return const UnknownOwnerAvatar();
+    }
+
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -68,7 +72,7 @@ class TopicOwnerAvatar extends HookWidget {
                     width: imageWidth,
                   )
                 : Image.asset(
-                    owner is Editor ? AppRasterGraphics.editorialTeamAvatar : AppRasterGraphics.expertAvatar,
+                    owner is Expert ? AppRasterGraphics.expertAvatar : AppRasterGraphics.editorialTeamAvatar,
                     width: imageWidth,
                     height: imageHeight,
                   ),
@@ -102,6 +106,19 @@ class TopicOwnerAvatar extends HookWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class UnknownOwnerAvatar extends StatelessWidget {
+  const UnknownOwnerAvatar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox.square(
+      dimension: AppDimens.zero,
     );
   }
 }

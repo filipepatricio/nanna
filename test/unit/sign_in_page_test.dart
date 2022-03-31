@@ -12,7 +12,6 @@ void main() {
     (tester) async {
       kIsAppleDevice = true;
       await tester.startApp(initialRoute: const SignInPageRoute());
-      await tester.pumpAndSettle();
       expect(find.byText(LocaleKeys.signIn_providerButton_apple.tr()), findsOneWidget);
     },
   );
@@ -22,7 +21,6 @@ void main() {
     (tester) async {
       kIsAppleDevice = false;
       await tester.startApp(initialRoute: const SignInPageRoute());
-      await tester.pumpAndSettle();
       expect(find.byText(LocaleKeys.signIn_providerButton_google.tr()), findsOneWidget);
     },
   );
@@ -31,7 +29,6 @@ void main() {
     'magic link sent page is shown after submitting an email address',
     (tester) async {
       await tester.startApp(initialRoute: const SignInPageRoute());
-      await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), '');
       await tester.pumpAndSettle();
       expect(find.byWidgetPredicate((widget) => widget is EmailInput && !widget.validEmail), findsOneWidget);

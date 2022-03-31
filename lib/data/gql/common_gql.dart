@@ -16,6 +16,9 @@ class CommonGQLModels {
       ... on Editor {
         $editor
       }
+      ... on EditorialTeam {
+        $editorialTeam
+      }
     }
     summaryCards{
       text
@@ -61,10 +64,17 @@ class CommonGQLModels {
   ''';
 
   static const String editor = '''
+      id
       name
+      bio
       avatar {
         publicId
       }
+  ''';
+
+  static const String editorialTeam = '''
+      name
+      bio
   ''';
 
   static const String publisher = '''
