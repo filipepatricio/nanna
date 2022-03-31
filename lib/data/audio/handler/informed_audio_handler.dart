@@ -101,8 +101,11 @@ class InformedAudioHandler extends BaseAudioHandler with SeekHandler {
 
   @override
   Future<void> stop() async {
+    playbackState.add(PlaybackStateExtension.getClosed());
+
     await _audioEventSubscription?.cancel();
     await _audioPlayer.stop();
+
     return super.stop();
   }
 }

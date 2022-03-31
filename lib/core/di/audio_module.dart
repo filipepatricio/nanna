@@ -23,7 +23,7 @@ abstract class AudioModule {
       config: const AudioServiceConfig(
         androidNotificationChannelId: 'so.informed.channel.audio',
         androidNotificationChannelName: 'Article audio playback',
-        androidNotificationOngoing: true,
+        androidNotificationOngoing: false,
         androidStopForegroundOnPause: true,
         fastForwardInterval: Duration(seconds: 10),
         rewindInterval: Duration(seconds: 10),

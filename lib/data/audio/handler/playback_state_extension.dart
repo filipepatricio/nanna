@@ -1,6 +1,11 @@
 import 'package:audio_service/audio_service.dart';
 
 extension PlaybackStateExtension on PlaybackState {
+  static PlaybackState getClosed() => PlaybackState(
+        playing: false,
+        processingState: AudioProcessingState.idle,
+      );
+
   static PlaybackState getLoading() => PlaybackState(
         playing: false,
         processingState: AudioProcessingState.loading,
