@@ -3,9 +3,8 @@ import 'dart:math';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/fast_forward_button/audio_fast_forward_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/progress_bar/audio_progress_bar.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/rewind_button/audio_rewind_button.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/speed_button/audio_speed_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view_cubit.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
@@ -118,11 +117,11 @@ class _AudioComponentsView extends StatelessWidget {
         Row(
           children: [
             const Spacer(flex: 5),
-            const AudioRewindButton(),
+            const AudioSeekButton.rewind(),
             const Spacer(),
             AudioControlButton(article: article),
             const Spacer(),
-            const AudioFastForwardButton(),
+            const AudioSeekButton.fastForward(),
             const Spacer(flex: 5),
           ],
         )
