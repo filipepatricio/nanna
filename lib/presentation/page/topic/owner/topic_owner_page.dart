@@ -116,7 +116,7 @@ class TopicOwnerPage extends HookWidget {
                   const SizedBox(height: AppDimens.xl),
                   const BottomStackedCards(),
                   const SizedBox(height: AppDimens.m),
-                  if (owner is Expert) ...[
+                  if (owner is! EditorialTeam) ...[
                     const SizedBox(height: AppDimens.xl),
                     Padding(
                       padding: const EdgeInsets.only(left: AppDimens.l),

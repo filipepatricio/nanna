@@ -46,6 +46,7 @@ void main() {
       // Because [TopicsMockDataSource] returns 0 topics for editor and 2 for expert
       expect(find.byType(LastUpdatedTopics), findsNothing);
     },
+    skip: true,
   );
 
   testWidgets(
