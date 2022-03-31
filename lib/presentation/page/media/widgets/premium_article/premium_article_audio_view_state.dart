@@ -11,6 +11,6 @@ class PremiumArticleAudioViewState with _$PremiumArticleAudioViewState {
   @Implements<BuildState>()
   factory PremiumArticleAudioViewState.initializing() = _PremiumArticleAudioViewStateInitializing;
 
-   @Implements<BuildState>()
+  @Implements<BuildState>()
   factory PremiumArticleAudioViewState.initialized() = _PremiumArticleAudioViewStateInitialized;
 }

@@ -37,38 +37,71 @@ class ArticleListItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = article.image?.publicId;
-
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
         MediaItemPageRoute(article: article),
       ),
-      child: Stack(
-        children: [
-          if (imageId != null)
-            CloudinaryProgressiveImage(
-              cloudinaryTransformation: cloudinaryProvider
-                  .withPublicIdAsPlatform(imageId)
-                  .transform()
-                  .autoGravity()
-                  .withLogicalSize(width, height, context),
-              width: width,
-              height: height,
-              testImage: AppRasterGraphics.testArticleHeroImage,
-            )
-          else
-            Container(color: cardColor, width: width, height: height),
-          _ArticleImageOverlay(
-            article: article,
-            themeColor: themeColor,
-            height: height,
-            width: width,
-            shouldShowTextOverlay: shouldShowTextOverlay,
-            shouldShowAudioIcon: shouldShowAudioIcon,
-          )
-        ],
+      child: ArticleListCover(
+        article: article,
+        width: width,
+        height: height,
+        cardColor: cardColor,
+        themeColor: themeColor,
+        shouldShowTextOverlay: shouldShowTextOverlay,
+        shouldShowAudioIcon: shouldShowAudioIcon,
       ),
+    );
+  }
+}
+
+class ArticleListCover extends HookWidget {
+  const ArticleListCover({
+    required this.article,
+    required this.width,
+    required this.height,
+    required this.cardColor,
+    required this.themeColor,
+    required this.shouldShowTextOverlay,
+    required this.shouldShowAudioIcon,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+  final double width;
+  final double height;
+  final Color cardColor;
+  final Color themeColor;
+  final bool shouldShowTextOverlay;
+  final bool shouldShowAudioIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    final cloudinaryProvider = useCloudinaryProvider();
+    final imageId = article.image?.publicId;
+    return Stack(
+      children: [
+        if (imageId != null)
+          CloudinaryProgressiveImage(
+            cloudinaryTransformation: cloudinaryProvider
+                .withPublicIdAsPlatform(imageId)
+                .transform()
+                .autoGravity()
+                .withLogicalSize(width, height, context),
+            width: width,
+            height: height,
+            testImage: AppRasterGraphics.testArticleHeroImage,
+          )
+        else
+          Container(color: cardColor, width: width, height: height),
+        _ArticleImageOverlay(
+          article: article,
+          themeColor: themeColor,
+          height: height,
+          width: width,
+          shouldShowTextOverlay: shouldShowTextOverlay,
+          shouldShowAudioIcon: shouldShowAudioIcon,
+        )
+      ],
     );
   }
 }

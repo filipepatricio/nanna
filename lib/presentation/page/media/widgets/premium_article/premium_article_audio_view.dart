@@ -55,7 +55,7 @@ class PremiumArticleAudioView extends HookWidget {
                 aspectRatio: context.isNotSmallDevice ? 0.65 : 1,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    return ArticleListItem(
+                    return ArticleListCover(
                       article: article,
                       themeColor: AppColors.background,
                       cardColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
