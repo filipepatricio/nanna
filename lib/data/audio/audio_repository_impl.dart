@@ -11,8 +11,6 @@ import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-const _audioFileName = 'audio_file.mp3';
-
 @LazySingleton(as: AudioRepository, env: liveEnvs)
 class AudioRepositoryImpl implements AudioRepository {
   AudioRepositoryImpl(
@@ -34,7 +32,8 @@ class AudioRepositoryImpl implements AudioRepository {
   Future<void> prepareItem(AudioItem item) async {
     await _audioHandler.prepare();
 
-    final audioFile = await _getAudioFile();
+    final fileName = _getAudioFileName(item);
+    final audioFile = await _getAudioFile(fileName);
     await _audioFileDownloader.loadAndSaveFile(audioFile, item.fileUrl);
 
     final imageUrl = item.imageUrl;
@@ -86,9 +85,15 @@ class AudioRepositoryImpl implements AudioRepository {
     await _audioHandler.setSpeed(speed);
   }
 
-  Future<File> _getAudioFile() async {
+  Future<File> _getAudioFile(String fileName) async {
     final tmpDir = await getTemporaryDirectory();
-    final fileName = join(tmpDir.path, _audioFileName);
-    return File(fileName);
+    final filePath = join(tmpDir.path, fileName);
+    return File(filePath);
+  }
+
+  String _getAudioFileName(AudioItem audioItem) {
+    final uri = Uri.parse(audioItem.fileUrl);
+    final lastSegment = uri.pathSegments.last;
+    return lastSegment;
   }
 }
