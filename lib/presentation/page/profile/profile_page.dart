@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_filter_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/profile/profile_page_state.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -11,31 +10,17 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-
-const _feedbackEmail = 'feedback@informed.so';
 
 class ProfilePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<ProfilePageCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController());
     final tabController = useTabController(initialLength: 3);
-
-    useCubitListener<ProfilePageCubit, ProfilePageState>(cubit, (cubit, state, context) {
-      state.mapOrNull(
-        sendingEmailError: (error) {
-          _showEmailErrorMessage(snackbarController);
-        },
-      );
-    });
 
     useEffect(
       () {
@@ -76,73 +61,31 @@ class ProfilePage extends HookWidget {
         ],
       ),
       body: ReadingBannerWrapper(
-        child: SnackbarParentView(
-          controller: snackbarController,
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.dark,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ProfileFilterTabBar(
-                  controller: tabController,
-                  onChange: cubit.changeFilter,
-                ),
-                Expanded(
-                  child: state.maybeMap(
-                    initializing: (state) => const Loader(
-                      color: AppColors.limeGreen,
-                    ),
-                    idle: (state) => BookmarkListView(
-                      filter: state.filter,
-                      sortConfigName: state.sortConfigName,
-                      onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
-                    ),
-                    orElse: () => const SizedBox(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showEmailErrorMessage(SnackbarController controller) {
-    controller.showMessage(
-      SnackbarMessage.custom(
-        message: RichText(
-          text: TextSpan(
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextSpan(
-                text: LocaleKeys.profile_feedbackMailError.tr(),
-                style: AppTypography.b2Regular.copyWith(color: AppColors.white),
+              ProfileFilterTabBar(
+                controller: tabController,
+                onChange: cubit.changeFilter,
               ),
-              TextSpan(
-                text: _feedbackEmail,
-                style: AppTypography.b2Regular.copyWith(
-                  color: AppColors.white,
-                  decoration: TextDecoration.underline,
+              Expanded(
+                child: state.maybeMap(
+                  initializing: (state) => const Loader(
+                    color: AppColors.limeGreen,
+                  ),
+                  idle: (state) => BookmarkListView(
+                    filter: state.filter,
+                    sortConfigName: state.sortConfigName,
+                    onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
+                  ),
+                  orElse: () => const SizedBox(),
                 ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    _copyEmailToClipboard(controller);
-                  },
               ),
             ],
           ),
         ),
-        type: SnackbarMessageType.negative,
-      ),
-    );
-  }
-
-  void _copyEmailToClipboard(SnackbarController controller) {
-    Clipboard.setData(const ClipboardData(text: _feedbackEmail));
-    controller.showMessage(
-      SnackbarMessage.simple(
-        message: LocaleKeys.profile_emailCopied.tr(),
-        type: SnackbarMessageType.positive,
       ),
     );
   }
