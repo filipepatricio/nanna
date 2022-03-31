@@ -19,6 +19,7 @@ class AppConfig {
   final String apiUrl;
   final String cloudinaryCloudName;
   final String sentryEventDns;
+  final String appId;
   final String? segmentWriteKey;
 
   const AppConfig._({
@@ -26,6 +27,7 @@ class AppConfig {
     required this.apiUrl,
     required this.cloudinaryCloudName,
     required this.sentryEventDns,
+    required this.appId,
     this.segmentWriteKey,
   });
 
@@ -34,6 +36,7 @@ class AppConfig {
     apiUrl: String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
     cloudinaryCloudName: 'informed-development',
     sentryEventDns: '',
+    appId: 'so.informed.dev',
   );
 
   static const mock = AppConfig._(
@@ -41,6 +44,7 @@ class AppConfig {
     apiUrl: String.fromEnvironment(_environmentArgHost, defaultValue: 'apiUrl'),
     cloudinaryCloudName: 'informed-development',
     sentryEventDns: '',
+    appId: 'so.informed.mock',
   );
 
   static const stage = AppConfig._(
@@ -52,6 +56,7 @@ class AppConfig {
     cloudinaryCloudName: 'informed-staging',
     sentryEventDns: 'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
     segmentWriteKey: 'jmJAkhCovDOdxwUqbDBgpFW4xWkpLUte',
+    appId: 'so.informed.staging',
   );
 
   static const prod = AppConfig._(
@@ -60,5 +65,6 @@ class AppConfig {
     cloudinaryCloudName: 'informed',
     sentryEventDns: 'https://f42ea2c9bc304c3a88dd68ff3a0cd061@o785865.ingest.sentry.io/5977082',
     segmentWriteKey: 'Jp2reNsfGRxapvFlgmDYBsRJ2LA2TLSP',
+    appId: 'so.informed',
   );
 }

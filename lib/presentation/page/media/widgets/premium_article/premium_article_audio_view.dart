@@ -87,7 +87,7 @@ class PremiumArticleAudioView extends HookWidget {
           const Spacer(),
           const Expanded(
             flex: 2,
-            child: AudioProgressProgressBar(),
+            child: AudioProgressBar(),
           ),
           const Spacer(),
           _AudioComponentsView(article: article),

@@ -16,17 +16,21 @@ abstract class AudioModule {
 
   @preResolve
   @LazySingleton(env: liveEnvs)
-  Future<AudioHandler> getAudioHandler(AudioPlayer player, AudioSession audioSession) async {
+  Future<AudioHandler> getAudioHandler(
+    AudioPlayer player,
+    AudioSession audioSession,
+    AppConfig config,
+  ) async {
     await audioSession.configure(const AudioSessionConfiguration.speech());
     return AudioService.init(
       builder: () => InformedAudioHandler(player),
-      config: const AudioServiceConfig(
-        androidNotificationChannelId: 'so.informed.channel.audio',
+      config: AudioServiceConfig(
+        androidNotificationChannelId: '${config.appId}.channel.audio',
         androidNotificationChannelName: 'Article audio playback',
         androidNotificationOngoing: false,
         androidStopForegroundOnPause: true,
-        fastForwardInterval: Duration(seconds: 10),
-        rewindInterval: Duration(seconds: 10),
+        fastForwardInterval: const Duration(seconds: 10),
+        rewindInterval: const Duration(seconds: 10),
       ),
     );
   }

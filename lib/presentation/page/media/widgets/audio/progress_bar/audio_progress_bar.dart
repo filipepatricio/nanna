@@ -10,8 +10,8 @@ const _barHeight = 3.0;
 const _thumbRadius = 6.0;
 const _thumbGlowRadius = 15.0;
 
-class AudioProgressProgressBar extends HookWidget {
-  const AudioProgressProgressBar({Key? key}) : super(key: key);
+class AudioProgressBar extends HookWidget {
+  const AudioProgressBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class AudioProgressProgressBar extends HookWidget {
     );
 
     return state.map(
-      inactive: (_) => const _InactiveProgressbar(),
+      inactive: (_) => const _InactiveProgressBar(),
       active: (state) => _ActiveProgressBar(
         cubit: cubit,
         position: state.progress,
@@ -67,8 +67,8 @@ class _ActiveProgressBar extends StatelessWidget {
   }
 }
 
-class _InactiveProgressbar extends StatelessWidget {
-  const _InactiveProgressbar({Key? key}) : super(key: key);
+class _InactiveProgressBar extends StatelessWidget {
+  const _InactiveProgressBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
