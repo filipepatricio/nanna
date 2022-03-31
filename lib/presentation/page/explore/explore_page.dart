@@ -212,6 +212,7 @@ class _Area extends HookWidget {
           articles: (area) => ArticleAreaView(area: area),
           articleWithFeature: (area) => ArticleWithCoverAreaView(area: area),
           topics: (area) => TopicsAreaView(area: area),
+          unknown: (_) => Container(),
         ),
       ),
     );

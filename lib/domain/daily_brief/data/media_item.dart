@@ -22,4 +22,6 @@ class MediaItem with _$MediaItem {
     Image? image,
     String? author,
   }) = MediaItemArticle;
+
+  const factory MediaItem.unknown() = _MediaItemUnknown;
 }

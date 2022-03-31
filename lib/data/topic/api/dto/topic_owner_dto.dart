@@ -1,12 +1,11 @@
 import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dart';
+import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'topic_owner_dto.freezed.dart';
 part 'topic_owner_dto.g.dart';
 
-const _unknownKey = 'unknown';
-
-@Freezed(unionKey: '__typename', fallbackUnion: _unknownKey)
+@Freezed(unionKey: '__typename', fallbackUnion: unknownKey)
 class TopicOwnerDTO with _$TopicOwnerDTO {
   @FreezedUnionValue('Expert')
   factory TopicOwnerDTO.expert(
@@ -33,7 +32,7 @@ class TopicOwnerDTO with _$TopicOwnerDTO {
     String bio,
   ) = _TopicOwnerDTOEditorialTeam;
 
-  @FreezedUnionValue(_unknownKey)
+  @FreezedUnionValue(unknownKey)
   factory TopicOwnerDTO.unknown() = _TopicOwnerDTOUnknown;
 
   factory TopicOwnerDTO.fromJson(Map<String, dynamic> json) => _$TopicOwnerDTOFromJson(json);

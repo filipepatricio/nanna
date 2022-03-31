@@ -20,7 +20,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
 
   @override
   MediaItem call(MediaItemDTO data) {
-    return data.maybeMap(
+    return data.map(
       article: (MediaItemDTOArticle articleDTO) {
         final image = articleDTO.image;
         final publicationDate = articleDTO.publicationDate;
@@ -41,9 +41,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
           author: articleDTO.author,
         );
       },
-      orElse: () {
-        throw Exception('Not supported media item type.');
-      },
+      unknown: (_) => const MediaItem.unknown(),
     );
   }
 }
