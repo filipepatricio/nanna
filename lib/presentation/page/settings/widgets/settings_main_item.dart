@@ -20,6 +20,7 @@ class SettingsMainItem extends StatelessWidget {
       onTap: () => onTap(),
       child: Container(
         height: AppDimens.settingsItemHeight,
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -46,13 +46,16 @@ class SettingsMainBody extends HookWidget {
       physics: const ClampingScrollPhysics(),
       slivers: [
         SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l) + const EdgeInsets.only(top: AppDimens.l),
+          padding: const EdgeInsets.only(top: AppDimens.l),
           sliver: SliverList(
             delegate: SliverChildListDelegate(
               [
-                Text(
-                  LocaleKeys.settings_profileHeader.tr(),
-                  style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: Text(
+                    LocaleKeys.settings_profileHeader.tr(),
+                    style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+                  ),
                 ),
                 const SizedBox(height: AppDimens.l),
                 SettingsMainItem(
@@ -73,9 +76,12 @@ class SettingsMainBody extends HookWidget {
                   onTap: () => AutoRouter.of(context).push(const InviteFriendPageRoute()),
                 ),
                 const SizedBox(height: AppDimens.xxxl),
-                Text(
-                  LocaleKeys.settings_aboutHeader.tr(),
-                  style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: Text(
+                    LocaleKeys.settings_aboutHeader.tr(),
+                    style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+                  ),
                 ),
                 const SizedBox(height: AppDimens.l),
                 SettingsMainItem(
