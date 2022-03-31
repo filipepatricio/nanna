@@ -57,6 +57,8 @@ class PremiumArticleActionsBar extends HookWidget {
       ValueNotifier<Color> buttonColor,
       PageController pageController,
     ) {
+      if (articleOutputMode.value == ArticleOutputMode.audio) return;
+
       final buttonTween = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
 
       var page = 0.0;
@@ -89,7 +91,7 @@ class PremiumArticleActionsBar extends HookWidget {
         final listener = () {
           final audioMode = articleOutputMode.value == ArticleOutputMode.audio;
           if (audioMode) {
-            backgroundColor.value = AppColors.background;
+            backgroundColor.value = AppColors.transparent;
             bookmarkMode.value = BookmarkButtonMode.color;
             buttonColor.value = AppColors.textPrimary;
           } else {
