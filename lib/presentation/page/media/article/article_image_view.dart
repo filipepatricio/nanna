@@ -51,7 +51,7 @@ class ArticleImageView extends HookWidget {
           Container(color: AppColors.background),
         Positioned.fill(
           child: Container(
-            color: AppColors.black.withOpacity(0.40),
+            color: AppColors.black40,
           ),
         ),
         Positioned.fill(

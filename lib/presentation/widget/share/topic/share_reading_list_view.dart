@@ -204,7 +204,7 @@ class _TopicHeader extends StatelessWidget {
         children: [
           image,
           Positioned.fill(
-            child: Container(color: AppColors.black.withOpacity(0.4)),
+            child: Container(color: AppColors.black40),
           ),
           Positioned(
             top: AppDimens.xxl,

@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/widget/round_topic_cover/car
 import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
 import 'package:flutter/material.dart';
 
-const _itemCount = 3;
+const _itemCount = 2;
 
 class TodaysTopicsLoadingView extends StatelessWidget {
   const TodaysTopicsLoadingView({
@@ -21,24 +21,26 @@ class TodaysTopicsLoadingView extends StatelessWidget {
       count: _itemCount,
       canNeighboursRepeat: false,
       variants: RoundStackCardVariant.values,
-      builder: (variants) => ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: _itemCount,
-        itemBuilder: (context, index) {
-          return RoundStackedCards.variant(
+      builder: (variants) => Column(
+        children: [
+          RoundStackedCards.variant(
             coverSize: coverSize,
-            variant: variants[index],
+            variant: variants[0],
             child: const LoadingShimmer.defaultColor(
               radius: AppDimens.m,
             ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return const SizedBox(
+          ),
+          const SizedBox(
             height: AppDimens.xxxl,
-          );
-        },
+          ),
+          RoundStackedCards.variant(
+            coverSize: coverSize,
+            variant: variants[0],
+            child: const LoadingShimmer.defaultColor(
+              radius: AppDimens.m,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -91,10 +91,10 @@ class _Quote extends StatelessWidget {
             borderRadius: const BorderRadius.all(
               Radius.circular(AppDimens.l),
             ),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
-                color: AppColors.black.withOpacity(0.2),
-                offset: const Offset(0.0, 6.0),
+                color: AppColors.black20,
+                offset: Offset(0.0, 6.0),
                 blurRadius: 15,
               ),
             ],

@@ -149,7 +149,7 @@ class _Sticker extends StatelessWidget {
         children: [
           if (mainImage != null) ...[
             mainImage,
-            Container(color: AppColors.black.withOpacity(0.4)),
+            Container(color: AppColors.black40),
           ],
           Positioned.fill(
             left: AppDimens.xl,
