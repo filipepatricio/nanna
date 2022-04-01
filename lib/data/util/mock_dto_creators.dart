@@ -1,6 +1,9 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dart';
+import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dart';
+import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dart';
+import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.dart';
@@ -68,8 +71,8 @@ class MockDTO {
     HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
     [
       topic,
-      topic,
-      topic,
+      topicWithEditorOwner,
+      topicWithUnknownOwner,
     ],
     3,
   );
@@ -121,13 +124,22 @@ class MockDTO {
     ],
   );
 
+  static final topicWithEditorOwner = topic.copyWith(
+    slug: 'topic-with-editor-owner',
+    owner: _editor,
+  );
+
+  static final topicWithUnknownOwner = topic.copyWith(
+    slug: 'topic-with-unknown-owner',
+    owner: TopicOwnerDTO.unknown(),
+  );
+
   /// Articles
 
   static final premiumArticle = ArticleDTO(
     'id-premium',
     'slug-premium',
     'url',
-    articleContentMarkdown,
     // title
     "Denmark's role in the NSA spying scandal",
     // strippedTitle
@@ -138,9 +150,10 @@ class MockDTO {
     '2021-12-03',
     // timeToRead
     10,
-    'source-url',
-    _image,
     _publisher,
+    _image,
+    articleContentMarkdown,
+    'source-url',
     // author
     'Cassandre Lueilwitz',
   );
@@ -150,15 +163,44 @@ class MockDTO {
     'MARKDOWN',
   );
 
+  /// Bookmarks
+
+  static final bookmarkList = BookmarkListDTO(
+    [
+      BookmarkDTO(
+        '0000',
+        BookmarkDataDTO.article(MockDTO.premiumArticle),
+      ),
+      BookmarkDTO(
+        '0000',
+        BookmarkDataDTO.topic(MockDTO.topic),
+      ),
+    ],
+  );
+
   /// Internal
 
   static final _expert = TopicOwnerDTO.expert(
-    'f5d7f2d5-1cd8-458a-a42d-dd130cbbbcc0',
+    'expert-id',
+    // name
     '@billgates',
+    // bio
     "Hi, it's Bill Gates!If you don't know me... look outside... Windows!\\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mu.",
+    // areaOfExpertise
     'Global Warming',
     'instagram.com',
     'linkedin.com',
+    // avatar
+    ImageDTO('owner_1'),
+  );
+
+  static final _editor = TopicOwnerDTO.editor(
+    'editor-id',
+    // name
+    'Editor',
+    // bio
+    "Hi, it's Editor!\\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mu.",
+    // avatar
     ImageDTO('owner_1'),
   );
 
@@ -272,4 +314,38 @@ class MockDTO {
   static final _summaryCardShort = SummaryCardDTO(
     'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.',
   );
+}
+
+extension on TopicDTO {
+  TopicDTO copyWith({
+    String? id,
+    String? slug,
+    String? title,
+    String? strippedTitle,
+    String? introduction,
+    String? url,
+    TopicOwnerDTO? owner,
+    String? lastUpdatedAt,
+    List<PublisherDTO>? highlightedPublishers,
+    ImageDTO? heroImage,
+    ImageDTO? coverImage,
+    ReadingListDTO? readingList,
+    List<SummaryCardDTO>? summaryCards,
+  }) {
+    return TopicDTO(
+      id ?? this.id,
+      slug ?? this.slug,
+      title ?? this.title,
+      strippedTitle ?? this.strippedTitle,
+      introduction ?? this.introduction,
+      url ?? this.url,
+      owner ?? this.owner,
+      lastUpdatedAt ?? this.lastUpdatedAt,
+      highlightedPublishers ?? this.highlightedPublishers,
+      heroImage ?? this.heroImage,
+      coverImage ?? this.coverImage,
+      readingList ?? this.readingList,
+      summaryCards ?? this.summaryCards,
+    );
+  }
 }

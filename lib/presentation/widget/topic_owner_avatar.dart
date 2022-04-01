@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -46,6 +45,10 @@ class TopicOwnerAvatar extends HookWidget {
     final avatarResolutionWidth = (imageWidth * 4).toInt();
     final avatarResolutionHeight = (imageHeight * 4).toInt();
 
+    if (owner is UnknownOwner) {
+      return const UnknownOwnerAvatar();
+    }
+
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -69,7 +72,7 @@ class TopicOwnerAvatar extends HookWidget {
                     width: imageWidth,
                   )
                 : Image.asset(
-                    owner is Editor ? AppRasterGraphics.editorialTeamAvatar : AppRasterGraphics.expertAvatar,
+                    owner is Expert ? AppRasterGraphics.expertAvatar : AppRasterGraphics.editorialTeamAvatar,
                     width: imageWidth,
                     height: imageHeight,
                   ),
@@ -103,6 +106,19 @@ class TopicOwnerAvatar extends HookWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class UnknownOwnerAvatar extends StatelessWidget {
+  const UnknownOwnerAvatar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox.square(
+      dimension: AppDimens.zero,
     );
   }
 }

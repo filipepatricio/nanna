@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topics_from_editor_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/topics_api_data_source.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
@@ -13,7 +14,20 @@ class TopicsMockDataSource implements TopicsApiDataSource {
   }
 
   @override
+  Future<TopicsFromEditorDTO> getTopicsFromEditor(String editorId) async {
+    return TopicsFromEditorDTO([]);
+  }
+
+  @override
   Future<TopicDTO> getTopicBySlug(String slug) async {
+    if (slug == MockDTO.topicWithUnknownOwner.slug) {
+      return MockDTO.topicWithUnknownOwner;
+    }
+
+    if (slug == MockDTO.topicWithEditorOwner.slug) {
+      return MockDTO.topicWithEditorOwner;
+    }
+
     return MockDTO.topic;
   }
 

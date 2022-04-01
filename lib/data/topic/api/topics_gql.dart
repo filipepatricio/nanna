@@ -13,6 +13,16 @@ class TopicsGql {
   ''',
       );
 
+  static DocumentNode getTopicsFromEditor(String editorId) => gql(
+        '''
+    query {
+      getTopicsFromEditor(editorId: "$editorId") {
+        ${CommonGQLModels.topic}
+      }
+    }
+  ''',
+      );
+
   static DocumentNode getTopicBySlug(String slug) => gql(
         '''
     query {

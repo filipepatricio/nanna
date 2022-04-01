@@ -24,7 +24,9 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
 
     final bookmarkState = await _getBookmarkStateUseCase(data);
 
-    emit(BookmarkButtonState.idle(data, bookmarkState));
+    if (!isClosed) {
+      emit(BookmarkButtonState.idle(data, bookmarkState));
+    }
   }
 
   Future<void> switchState({bool? fromUndo}) async {

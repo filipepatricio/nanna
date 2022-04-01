@@ -9,11 +9,15 @@ import 'package:url_launcher/url_launcher.dart';
 
 class OpenWebButton extends StatelessWidget {
   final String url;
+  final bool withIcon;
   final String buttonLabel;
+  final EdgeInsets padding;
 
   const OpenWebButton({
     required this.url,
     required this.buttonLabel,
+    this.withIcon = true,
+    this.padding = const EdgeInsets.symmetric(horizontal: AppDimens.l),
     Key? key,
   }) : super(key: key);
 
@@ -29,7 +33,7 @@ class OpenWebButton extends StatelessWidget {
           }
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          padding: padding,
           child: Container(
             height: AppDimens.buttonHeight,
             decoration: const BoxDecoration(
@@ -41,12 +45,14 @@ class OpenWebButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  AppVectorGraphics.openWeb,
-                  fit: BoxFit.contain,
-                  height: AppDimens.m,
-                ),
-                const SizedBox(width: AppDimens.sl),
+                if (withIcon) ...[
+                  SvgPicture.asset(
+                    AppVectorGraphics.openWeb,
+                    fit: BoxFit.contain,
+                    height: AppDimens.m,
+                  ),
+                  const SizedBox(width: AppDimens.sl),
+                ],
                 Text(
                   buttonLabel,
                   style: AppTypography.buttonBold.copyWith(color: AppColors.white),

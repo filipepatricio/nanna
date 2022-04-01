@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:better_informed_mobile/exports.dart';
 
 class DateHelper {
   const DateHelper._();

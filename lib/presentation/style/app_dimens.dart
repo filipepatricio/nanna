@@ -61,7 +61,7 @@ class AppDimens {
   static const readMoreArrowSize = 14.0;
 
   /// 43
-  static const settingsItemHeight = 43.0;
+  static const settingsItemHeight = 44.0;
 
   /// 8
   static const buttonRadius = 8.0;

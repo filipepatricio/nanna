@@ -11,7 +11,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 

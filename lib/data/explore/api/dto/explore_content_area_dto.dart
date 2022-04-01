@@ -1,13 +1,12 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dart';
+import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'explore_content_area_dto.freezed.dart';
 part 'explore_content_area_dto.g.dart';
 
-const _unknownKey = 'unknown';
-
-@Freezed(unionKey: '__typename', fallbackUnion: _unknownKey)
+@Freezed(unionKey: '__typename', fallbackUnion: unknownKey)
 class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   @FreezedUnionValue('ArticlesExploreArea')
   factory ExploreContentAreaDTO.articles(
@@ -31,8 +30,8 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
     List<TopicDTO> topics,
   ) = _ExploreContentAreaDTOTopics;
 
-  @FreezedUnionValue(_unknownKey)
-  factory ExploreContentAreaDTO.unknown() = _ExploreContentAreaDTOUnknown;
+  @FreezedUnionValue(unknownKey)
+  factory ExploreContentAreaDTO.unknown(String id) = _ExploreContentAreaDTOUnknown;
 
   factory ExploreContentAreaDTO.fromJson(Map<String, dynamic> json) => _$ExploreContentAreaDTOFromJson(json);
 }

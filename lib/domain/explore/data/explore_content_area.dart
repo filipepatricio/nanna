@@ -25,4 +25,8 @@ class ExploreContentArea with _$ExploreContentArea {
     required String title,
     required List<Topic> topics,
   }) = ExploreContentAreaTopics;
+
+  factory ExploreContentArea.unknown({
+    required String id,
+  }) = ExploreContentAreaUnknown;
 }

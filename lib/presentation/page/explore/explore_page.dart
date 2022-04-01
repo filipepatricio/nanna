@@ -21,7 +21,6 @@ import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -213,6 +212,7 @@ class _Area extends HookWidget {
           articles: (area) => ArticleAreaView(area: area),
           articleWithFeature: (area) => ArticleWithCoverAreaView(area: area),
           topics: (area) => TopicsAreaView(area: area),
+          unknown: (_) => Container(),
         ),
       ),
     );

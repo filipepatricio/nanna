@@ -92,7 +92,11 @@
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
     "wrongEmailInput": "Wrong email input",
-    "inviteFriend": "Invite a friend"
+    "inviteFriend": "Invite a friend",
+    "feedbackButton": "Give feedback",
+    "feedbackSubject": "Feedback on Informed App",
+    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
+    "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to "
   },
   "signIn": {
     "header": {
@@ -168,12 +172,6 @@
   },
   "profile": {
     "title": "Profile",
-    "stayTuned": "Stay Tuned",
-    "stayTunedText": "This page will be evolving soon",
-    "feedbackButton": "Give feedback",
-    "feedbackSubject": "Feedback on Informed App",
-    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
-    "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
     "emailCopied": "Successfully copied email to your clipboard!",
     "filter": {
       "all": "All",
@@ -235,5 +233,11 @@
       "alphabeticalAsc": "Alphabetical (a-z)",
       "alphabeticalDesc": "Alphabetical (z-a)"
     }
+  },
+  "update": {
+    "title": "Breaking News: App Update",
+    "body": "New stories and features hot off the press! Update your app now to catch up on the latest news",
+    "versionAvailable": "Version {} is now available",
+    "button": "Update"
   }
 }
