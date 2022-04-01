@@ -20,6 +20,7 @@ class GetExploreContentUseCase {
       articles: (area) => area.articles.isNotEmpty,
       articleWithFeature: (area) => area.articles.isNotEmpty,
       topics: (area) => area.topics.isNotEmpty,
+      unknown: (_) => false,
     );
   }
 }

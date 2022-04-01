@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.dart';
 import 'package:better_informed_mobile/data/util/color_dto_mapper.dart';
+import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
@@ -55,7 +56,7 @@ class ExploreContentAreaDTOMapper implements Mapper<ExploreContentAreaDTO, Explo
         title: area.name,
         topics: area.topics.map<Topic>(_topicDTOMapper).toList(),
       ),
-      unknown: (area) => throw Exception('Unknown area'),
+      unknown: (_) => ExploreContentArea.unknown(id: unknownKey),
     );
   }
 }

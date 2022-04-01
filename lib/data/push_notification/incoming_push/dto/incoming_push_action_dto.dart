@@ -1,13 +1,11 @@
 import 'package:better_informed_mobile/data/push_notification/incoming_push/dto/navigate_action_args_dto.dart';
+import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'incoming_push_action_dto.freezed.dart';
 part 'incoming_push_action_dto.g.dart';
 
-@Freezed(
-  unionKey: 'type',
-  fallbackUnion: 'unknown',
-)
+@Freezed(unionKey: 'type', fallbackUnion: unknownKey)
 class IncomingPushActionDTO with _$IncomingPushActionDTO {
   @FreezedUnionValue('refresh_daily_brief')
   factory IncomingPushActionDTO.refreshDailyBrief() = _IncomingPushActionDTORefreshDailyBrief;
@@ -15,7 +13,7 @@ class IncomingPushActionDTO with _$IncomingPushActionDTO {
   @FreezedUnionValue('navigate_to')
   factory IncomingPushActionDTO.navigateTo(NavigateActionArgsDTO args) = _IncomingPushActionDTONavigateTo;
 
-  @FreezedUnionValue('unknown')
+  @FreezedUnionValue(unknownKey)
   factory IncomingPushActionDTO.unknown(String type) = _IncomingPushActionDTOUnknown;
 
   factory IncomingPushActionDTO.fromJson(Map<String, dynamic> json) => _$IncomingPushActionDTOFromJson(json);
