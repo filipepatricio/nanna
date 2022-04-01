@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../test_data.dart';

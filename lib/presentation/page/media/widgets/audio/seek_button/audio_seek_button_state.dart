@@ -5,7 +5,7 @@ part 'audio_seek_button_state.freezed.dart';
 
 @freezed
 class AudioSeekButtonState with _$AudioSeekButtonState {
-    @Implements<BuildState>()
+  @Implements<BuildState>()
   factory AudioSeekButtonState.disabled() = _AudioSeekButtonStateDisabled;
 
   @Implements<BuildState>()

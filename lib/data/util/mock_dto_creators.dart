@@ -165,7 +165,6 @@ class MockDTO {
     'id-premium-audio',
     'slug-premium-audio',
     'url',
-    articleContentMarkdown,
     // title
     "Denmark's role in the NSA spying scandal",
     // strippedTitle
@@ -176,9 +175,10 @@ class MockDTO {
     '2021-12-03',
     // timeToRead
     10,
-    'source-url',
-    _image,
     _publisher,
+    _image,
+    articleContentMarkdown,
+    'source-url',
     // author
     'Cassandre Lueilwitz',
     // hasAudioVersion
@@ -207,23 +207,6 @@ class MockDTO {
 
   static final audioFile = AudioFileDTO(
     'audio-file-url',
-  );
-
-  static final bookmarkList = BookmarkListDTO(
-    [
-      BookmarkDTO(
-        '0000',
-        BookmarkDataDTO.article(
-          MockDTO.premiumArticle,
-        ),
-      ),
-      BookmarkDTO(
-        '0000',
-        BookmarkDataDTO.topic(
-          MockDTO.topic,
-        ),
-      ),
-    ],
   );
 
   /// Internal
@@ -354,7 +337,7 @@ class MockDTO {
     'Cassandre Lueilwitz',
     // hasAudioVersion
     true,
-  );
+  ) as MediaItemDTOArticle;
 
   static final _freeMediaItemArticle = MediaItemDTO.article(
     'id-free',
