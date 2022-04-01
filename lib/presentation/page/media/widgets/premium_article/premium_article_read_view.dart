@@ -150,17 +150,6 @@ class PremiumArticleReadView extends HookWidget {
       [showAudioFloatingButton, pageController],
     );
 
-    useEffect(
-      () {
-        final listener = () {
-          showAudioFloatingButton.value = controller.offset < 300.0 && !showBackToTopicButton.value;
-        };
-        readProgress.addListener(listener);
-        return () => readProgress.removeListener(listener);
-      },
-      [showAudioFloatingButton, controller],
-    );
-
     return RawGestureDetector(
       gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
         [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
