@@ -1,6 +1,6 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button_state.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/widgets.dart';

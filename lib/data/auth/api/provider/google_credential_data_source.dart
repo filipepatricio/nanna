@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/auth/api/dto/oauth_user_meta_credentials_dto.dart';
-import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
-import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dart';
+import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';

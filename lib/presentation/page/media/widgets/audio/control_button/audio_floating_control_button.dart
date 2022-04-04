@@ -1,5 +1,5 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button_cubit.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button_state_ext.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';

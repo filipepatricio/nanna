@@ -1,6 +1,6 @@
-import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
+import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dt.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
-import 'package:better_informed_mobile/domain/push_notification/use_case/set_channel_push_setting_use_case.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/set_channel_push_setting_use_case.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

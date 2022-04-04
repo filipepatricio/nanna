@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/invite/data/invite_code.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -10,7 +10,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/bordered_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_body.dart';
-import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_state.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';

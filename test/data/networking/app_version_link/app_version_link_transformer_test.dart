@@ -1,5 +1,5 @@
-import 'package:better_informed_mobile/data/networking/app_version_link/app_version_link_transformer.dart';
-import 'package:better_informed_mobile/data/util/app_info_data_source.dart';
+import 'package:better_informed_mobile/data/networking/app_version_link/app_version_link_transformer.di.dart';
+import 'package:better_informed_mobile/data/util/app_info_data_source.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mockito/annotations.dart';

@@ -1,6 +1,6 @@
-import 'package:better_informed_mobile/data/user/api/dto/user_dto.dart';
+import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 
-import 'dto/user_meta_dto.dart';
+import 'dto/user_meta_dto.dt.dart';
 
 abstract class UserDataSource {
   Future<UserDTO> getUser();

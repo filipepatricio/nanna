@@ -5,8 +5,8 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_loading_view.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
@@ -25,7 +25,7 @@ import 'package:better_informed_mobile/presentation/widget/track/view_visibility
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'todays_topics_page_state.dart';
+import 'todays_topics_page_state.dt.dart';
 
 class TodaysTopicsPage extends HookWidget {
   const TodaysTopicsPage({Key? key}) : super(key: key);

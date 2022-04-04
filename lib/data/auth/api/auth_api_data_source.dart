@@ -1,5 +1,5 @@
-import 'package:better_informed_mobile/data/auth/api/dto/login_response_dto.dart';
-import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dart';
+import 'package:better_informed_mobile/data/auth/api/dto/login_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/sign_in_credentials.dart';
 
 abstract class AuthApiDataSource {

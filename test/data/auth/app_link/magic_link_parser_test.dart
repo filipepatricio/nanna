@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/auth/app_link/magic_link_parser.dart';
+import 'package:better_informed_mobile/data/auth/app_link/magic_link_parser.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
