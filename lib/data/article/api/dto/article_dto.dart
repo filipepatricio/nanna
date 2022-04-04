@@ -21,6 +21,7 @@ class ArticleDTO {
   final ArticleContentDTO? text;
   final String sourceUrl;
   final String? author;
+  final bool hasAudioVersion;
 
   ArticleDTO(
     this.id,
@@ -37,6 +38,7 @@ class ArticleDTO {
     this.text,
     this.sourceUrl,
     this.author,
+    this.hasAudioVersion,
   );
 
   factory ArticleDTO.fromJson(Map<String, dynamic> json) => _$ArticleDTOFromJson(json);

@@ -17,6 +17,7 @@ class MediaItem with _$MediaItem {
     required ArticleType type,
     required int? timeToRead,
     required Publisher publisher,
+    required bool hasAudioVersion,
     required String sourceUrl,
     DateTime? publicationDate,
     Image? image,

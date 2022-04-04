@@ -154,4 +154,6 @@ class AppDimens {
   static const exploreAreaTopicSeeAllCoverHeight = 250.0;
 
   static const bookmarkIconSize = 32.0;
+
+  static const articleAudioCoverSize = 1024;
 }

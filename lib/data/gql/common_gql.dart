@@ -107,6 +107,7 @@ class CommonGQLModels {
       type
       publicationDate
       timeToRead
+      hasAudioVersion
       image {
         publicId
       }

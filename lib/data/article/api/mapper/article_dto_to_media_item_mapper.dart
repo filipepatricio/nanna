@@ -37,6 +37,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleDTO, MediaItemArticle
       author: data.author,
       image: image != null ? _imageDTOMapper(image) : null,
       publicationDate: publicationDate != null ? DateTime.parse(publicationDate).toLocal() : null,
+      hasAudioVersion: data.hasAudioVersion,
     );
   }
 }
