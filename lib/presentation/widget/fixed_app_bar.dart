@@ -40,7 +40,7 @@ class FixedAppBar extends HookWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.background,
       centerTitle: true,
       elevation: showCenterTitle ? 3 : 0,
-      shadowColor: AppColors.shadowDarkColor,
+      shadowColor: AppColors.black40,
       titleSpacing: 0,
       title: showCenterTitle
           ? Text(

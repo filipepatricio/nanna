@@ -224,7 +224,7 @@ class EmailInput extends StatelessWidget {
         hintStyle: AppTypography.b2Regular.copyWith(
           height: 2.02,
           letterSpacing: 0.15,
-          color: AppColors.shadowDarkColor,
+          color: AppColors.black40,
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(width: 1, color: AppColors.black),

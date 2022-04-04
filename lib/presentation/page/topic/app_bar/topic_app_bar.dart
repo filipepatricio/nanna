@@ -70,7 +70,7 @@ class TopicAppBar extends HookWidget {
     return SliverAppBar(
       pinned: true,
       elevation: 3.0,
-      shadowColor: AppColors.shadowDarkColor,
+      shadowColor: AppColors.black40,
       backgroundColor: AppColors.background,
       titleSpacing: 0,
       automaticallyImplyLeading: false,

@@ -8,7 +8,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 const double kPreviousPageVisibleOffset = 10;
 const Radius _kDefaultTopRadius = Radius.circular(12);
-const BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: AppColors.shadowDarkColor, spreadRadius: 5);
+const BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: AppColors.black40, spreadRadius: 5);
 const SystemUiOverlayStyle lightNavBarStyle = SystemUiOverlayStyle(
   // The first three were extracted from SystemOverlay.light
   statusBarIconBrightness: Brightness.light,
@@ -72,7 +72,7 @@ Route<T> cupertinoBottomSheetPageRouteBuilder<T>(BuildContext context, Widget ch
     ),
     expanded: false,
     barrierLabel: '',
-    modalBarrierColor: AppColors.shadowDarkColor,
+    modalBarrierColor: AppColors.black40,
     topRadius: topRadius ?? _kDefaultTopRadius,
     animationCurve: Curves.easeInOutCubic,
     duration: const Duration(milliseconds: 500),
@@ -86,7 +86,7 @@ Route<T> modalFullScreenBottomSheetPageRouteBuilder<T>(BuildContext context, Wid
     builder: (context) => child,
     expanded: true,
     barrierLabel: '',
-    modalBarrierColor: AppColors.shadowDarkColor,
+    modalBarrierColor: AppColors.black40,
     animationCurve: Curves.easeInOut,
     duration: const Duration(milliseconds: 350),
     settings: page,

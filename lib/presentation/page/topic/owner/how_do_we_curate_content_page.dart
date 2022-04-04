@@ -17,7 +17,6 @@ class HowDoWeCurateContentPage extends HookWidget {
       body: NoScrollGlow(
         child: CustomScrollView(
           physics: getPlatformScrollPhysics(),
-          shrinkWrap: true,
           slivers: [
             const _ActionsBar(),
             SliverList(

@@ -130,7 +130,7 @@ class _ArticleImageOverlay extends StatelessWidget {
     final hasImage = article.image?.publicId != null;
 
     return Container(
-      color: hasImage ? AppColors.black.withOpacity(0.4) : null,
+      color: hasImage ? AppColors.black40 : null,
       padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.xl, AppDimens.m, AppDimens.m),
       height: height,
       width: width,

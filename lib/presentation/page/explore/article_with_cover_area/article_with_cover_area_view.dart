@@ -141,7 +141,7 @@ class _MainArticle extends HookWidget {
             Container(
               height: AppDimens.exploreAreaFeaturedArticleHeight,
               foregroundDecoration: BoxDecoration(
-                color: imageId != null ? AppColors.black.withOpacity(0.4) : AppColors.background,
+                color: imageId != null ? AppColors.black40 : AppColors.background,
               ),
               child: imageId != null
                   ? CloudinaryProgressiveImage(

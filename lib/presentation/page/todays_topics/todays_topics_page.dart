@@ -70,7 +70,11 @@ class TodaysTopicsPage extends HookWidget {
                 child: NoScrollGlow(
                   child: CustomScrollView(
                     controller: scrollController,
-                    physics: AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
+                    physics: state.maybeMap(
+                      error: (_) => const NeverScrollableScrollPhysics(),
+                      loading: (_) => const NeverScrollableScrollPhysics(),
+                      orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
+                    ),
                     slivers: [
                       ScrollableSliverAppBar(
                         scrollController: scrollController,
