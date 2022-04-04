@@ -131,7 +131,7 @@ jobs:
       - name: Build app
         env:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-        run: flutter build ios --release --no-codesign --dart-define=env=prod --flavor prod --build-number="$BUILD_NUMBER" --bundle-sksl-path warmup.sksl.json
+        run: flutter build ios --config-only --release --no-codesign --dart-define=env=prod --flavor prod --build-number="$BUILD_NUMBER" --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
         uses: maierj/fastlane-action@v2.1.0
