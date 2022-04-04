@@ -1,5 +1,5 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/progress_bar/audio_progress_bar_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/progress_bar/audio_progress_bar_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';

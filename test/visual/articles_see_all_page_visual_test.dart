@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page.dart';
 

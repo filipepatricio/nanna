@@ -1,6 +1,6 @@
-import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dart';
-import 'package:better_informed_mobile/data/article/api/dto/article_dto.dart';
-import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 
 abstract class ArticleApiDataSource {
   Future<ArticleDTO> getArticleHeader(String slug);

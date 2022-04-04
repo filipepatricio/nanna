@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
 import 'package:flutter/material.dart';

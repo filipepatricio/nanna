@@ -1,5 +1,5 @@
-import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
-import 'package:better_informed_mobile/domain/analytics/analytics_page.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 
 abstract class AnalyticsRepository {
   Future<void> initialize();

@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:flutter/material.dart';
 
 class QuoteAuthor extends StatelessWidget {

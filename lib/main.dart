@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/core/di/di_config.dart';
-import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/exports.dart';

@@ -1,5 +1,5 @@
-import 'package:better_informed_mobile/domain/audio/data/audio_item.dart';
-import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dart';
+import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
+import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
 
 abstract class AudioRepository {
   Future<void> prepareItem(AudioItem item);

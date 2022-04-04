@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';

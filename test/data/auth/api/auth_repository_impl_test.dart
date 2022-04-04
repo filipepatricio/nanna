@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
-import 'package:better_informed_mobile/data/auth/api/auth_repository_impl.dart';
-import 'package:better_informed_mobile/data/auth/api/mapper/auth_token_dto_mapper.dart';
-import 'package:better_informed_mobile/data/auth/api/mapper/login_response_dto_mapper.dart';
-import 'package:better_informed_mobile/data/auth/api/provider/oauth_sign_in_data_source.dart';
+import 'package:better_informed_mobile/data/auth/api/auth_repository_impl.di.dart';
+import 'package:better_informed_mobile/data/auth/api/mapper/auth_token_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/auth/api/mapper/login_response_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/oauth_sign_in_data_source.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:mockito/annotations.dart';

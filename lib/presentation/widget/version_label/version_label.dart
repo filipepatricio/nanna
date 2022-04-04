@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/version_label/version_label_cubit.dart';
+import 'package:better_informed_mobile/presentation/widget/version_label/version_label_cubit.di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 

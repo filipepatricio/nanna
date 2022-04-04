@@ -1,5 +1,5 @@
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button_state.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';

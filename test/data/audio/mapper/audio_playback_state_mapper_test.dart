@@ -1,6 +1,6 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:better_informed_mobile/data/audio/mapper/audio_playback_state_mapper.dart';
-import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dart';
+import 'package:better_informed_mobile/data/audio/mapper/audio_playback_state_mapper.di.dart';
+import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

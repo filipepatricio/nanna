@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/networking/should_refresh_validator.dart';
+import 'package:better_informed_mobile/data/networking/should_refresh_validator.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 

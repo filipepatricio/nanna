@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dart';
-import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dart';
-import 'package:better_informed_mobile/data/auth/api/refresh_token_service.dart';
-import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
+import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dt.dart';
+import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
+import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

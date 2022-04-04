@@ -2,7 +2,7 @@ import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/exception/file_access_expired.dart';
-import 'package:better_informed_mobile/domain/audio/use_case/prepare_audio_track_use_case.dart';
+import 'package:better_informed_mobile/domain/audio/use_case/prepare_audio_track_use_case.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

@@ -1,9 +1,9 @@
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
