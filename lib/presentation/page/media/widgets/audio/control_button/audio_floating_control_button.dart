@@ -35,7 +35,9 @@ class AudioFloatingControlButton extends HookWidget {
     );
 
     return FloatingActionButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimens.xl)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppDimens.xl),
+      ),
       onPressed: state.getAction(cubit, article, imageUrl),
       backgroundColor: AppColors.white,
       child: Center(

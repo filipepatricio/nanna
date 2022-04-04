@@ -257,7 +257,7 @@ class _AnimatedAudioButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedPositioned(
       right: AppDimens.l,
-      bottom: showButton.value && article.hasAudioVersion ? AppDimens.l : -AppDimens.c,
+      bottom: showButton.value && article.hasAudioVersion ? AppDimens.l : -AppDimens.xxxc,
       curve: Curves.elasticInOut,
       duration: const Duration(milliseconds: 500),
       child: AudioFloatingControlButton(article: article),
