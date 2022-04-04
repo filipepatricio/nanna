@@ -338,4 +338,12 @@ class AppTypography {
     letterSpacing: 0.2,
     color: AppColors.textPrimary,
   );
+
+  static const TextStyle timeLabelText = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 8,
+    letterSpacing: 1,
+    color: AppColors.textPrimary,
+  );
 }

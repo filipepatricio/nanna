@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
@@ -119,5 +120,24 @@ Image cloudinaryImage({
     width: width,
     height: height,
     fit: fit,
+  );
+}
+
+String? useArticleImageUrl(MediaItemArticle article, int width, int height) {
+  final cloudinaryProvider = useCloudinaryProvider();
+  return useMemoized(
+    () {
+      final optionalId = article.image?.publicId;
+      if (optionalId != null) {
+        return cloudinaryProvider
+            .withPublicIdAsPng(optionalId)
+            .transform()
+            .autoGravity()
+            .width(width)
+            .height(height)
+            .generateNotNull();
+      }
+    },
+    [article],
   );
 }

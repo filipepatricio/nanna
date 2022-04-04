@@ -23,6 +23,7 @@ class MediaItemDTO with _$MediaItemDTO {
     ImageDTO? image,
     String sourceUrl,
     String? author,
+    bool hasAudioVersion,
   ) = MediaItemDTOArticle;
 
   @FreezedUnionValue(unknownKey)

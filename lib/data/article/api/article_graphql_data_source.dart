@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/article/api/article_api_data_source.
 import 'package:better_informed_mobile/data/article/api/article_gql.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_dto.dart';
+import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -75,6 +76,27 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     );
 
     if (dto == null) throw Exception('Article is null');
+    return dto;
+  }
+
+  @override
+  Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh) async {
+    final result = await _client.query(
+      QueryOptions(
+        document: ArticleGQL.articleAudioFile(slug),
+        fetchPolicy: forceFresh ? FetchPolicy.networkOnly : FetchPolicy.cacheAndNetwork,
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        return AudioFileDTO.fromJson(raw);
+      },
+      rootKey: 'getArticleAudioFile',
+    );
+
+    if (dto == null) throw Exception('AudioFile is null');
     return dto;
   }
 }

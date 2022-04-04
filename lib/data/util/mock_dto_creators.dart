@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_dto.dart';
+import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dart';
@@ -114,7 +115,7 @@ class MockDTO {
       'reading-list-id',
       [
         _premiumArticleEntry,
-        _freeArticleEntry,
+        _premiumArticleWithAudioEntry,
         _freeArticleEntry,
       ],
     ),
@@ -156,6 +157,32 @@ class MockDTO {
     'source-url',
     // author
     'Cassandre Lueilwitz',
+    // hasAudioVersion
+    false,
+  );
+
+  static final premiumArticleWithAudio = ArticleDTO(
+    'id-premium-audio',
+    'slug-premium-audio',
+    'url',
+    // title
+    "Denmark's role in the NSA spying scandal",
+    // strippedTitle
+    "Denmark's role in the NSA spying scandal",
+    // credits
+    'This article originally appeared here',
+    'PREMIUM',
+    '2021-12-03',
+    // timeToRead
+    10,
+    _publisher,
+    _image,
+    articleContentMarkdown,
+    'source-url',
+    // author
+    'Cassandre Lueilwitz',
+    // hasAudioVersion
+    true,
   );
 
   static final articleContentMarkdown = ArticleContentDTO(
@@ -176,6 +203,10 @@ class MockDTO {
         BookmarkDataDTO.topic(MockDTO.topic),
       ),
     ],
+  );
+
+  static final audioFile = AudioFileDTO(
+    'audio-file-url',
   );
 
   /// Internal
@@ -248,6 +279,13 @@ class MockDTO {
     EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithBigImage),
   );
 
+  static final _premiumArticleWithAudioEntry = EntryDTO(
+    premiumMediaItemArticleWithAudio,
+    // note
+    'Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.',
+    EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithBigImage),
+  );
+
   static final _freeArticleEntry = EntryDTO(
     _freeMediaItemArticle,
     // note
@@ -274,7 +312,32 @@ class MockDTO {
     'source-url',
     // author
     'Cassandre Lueilwitz',
+    // hasAudioVersion
+    false,
   );
+
+  static final premiumMediaItemArticleWithAudio = MediaItemDTO.article(
+    'id-premium-audio',
+    'slug-premium-audio',
+    'url',
+    // title
+    "Denmark's role in the NSA spying scandal",
+    // strippedTitle
+    "Denmark's role in the NSA spying scandal",
+    // credits
+    'This article originally appeared here',
+    'PREMIUM',
+    '2021-12-03',
+    // timeToRead
+    10,
+    _publisher,
+    _image,
+    'source-url',
+    // author
+    'Cassandre Lueilwitz',
+    // hasAudioVersion
+    true,
+  ) as MediaItemDTOArticle;
 
   static final _freeMediaItemArticle = MediaItemDTO.article(
     'id-free',
@@ -295,6 +358,8 @@ class MockDTO {
     'source-url',
     // author
     'Cassandre Lueilwitz',
+    // hasAudioVersion
+    false,
   );
 
   static final _publisher = PublisherDTO(

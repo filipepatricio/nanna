@@ -156,6 +156,7 @@ class _Sticker extends StatelessWidget {
             right: AppDimens.xl,
             bottom: AppDimens.xxxl,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Row(

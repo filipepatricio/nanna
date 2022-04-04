@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/shadow_util.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
@@ -74,13 +75,19 @@ class PhotoStackedCover extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          DottedArticleInfo(
-                            article: article,
-                            isLight: true,
-                            showDate: false,
-                            showReadTime: false,
-                            showLogo: true,
-                            showPublisher: true,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              DottedArticleInfo(
+                                article: article,
+                                isLight: true,
+                                showDate: false,
+                                showReadTime: false,
+                                showLogo: true,
+                                showPublisher: true,
+                              ),
+                              if (article.hasAudioVersion) AudioIcon.light(),
+                            ],
                           ),
                           const SizedBox(height: AppDimens.m),
                           InformedMarkdownBody(

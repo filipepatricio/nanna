@@ -7,13 +7,18 @@ import 'package:injectable/injectable.dart';
 class GetArticleUseCase {
   final ArticleRepository _articleRepository;
 
-  GetArticleUseCase(this._articleRepository);
+  GetArticleUseCase(
+    this._articleRepository,
+  );
 
   Future<Article> call(MediaItemArticle article) async {
     final content = await _articleRepository.getArticleContent(article.slug);
+    final audioFile = article.hasAudioVersion ? await _articleRepository.getArticleAudioFile(article.slug) : null;
+
     return Article(
       content: content,
       article: article,
+      audioFile: audioFile,
     );
   }
 }
