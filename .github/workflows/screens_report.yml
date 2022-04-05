@@ -26,12 +26,9 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
       - name: Sets Flutter environment
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
-
-      - name: Run flutter clean
-        run: flutter clean
 
       - name: Install Flutter dependencies
         run: flutter pub get
