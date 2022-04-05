@@ -22,4 +22,8 @@ void main() {
       expect(find.byText(LocaleKeys.update_title.tr()), findsOneWidget);
     },
   );
+
+  tearDown(() {
+    Upgrader().debugDisplayAlways = false;
+  });
 }

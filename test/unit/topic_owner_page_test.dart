@@ -44,9 +44,13 @@ void main() {
       );
       await tester.pumpAndSettle();
       // Because [TopicsMockDataSource] returns 0 topics for editor and 2 for expert
-      expect(find.byType(LastUpdatedTopics), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is LastUpdatedTopics && widget.topics.isEmpty,
+        ),
+        findsOneWidget,
+      );
     },
-    skip: true,
   );
 
   testWidgets(
@@ -59,7 +63,12 @@ void main() {
           ],
         ),
       );
-      expect(find.byType(LastUpdatedTopics), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is LastUpdatedTopics && widget.topics.length == 2,
+        ),
+        findsOneWidget,
+      );
     },
   );
 }
