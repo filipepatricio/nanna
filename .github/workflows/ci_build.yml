@@ -93,7 +93,7 @@ jobs:
       - name: Analyze & Test
         run: |
           flutter analyze .
-          flutter test -x visual
+          flutter test test/unit/wrapper_test.dart
 
       - name: Result
         id: result

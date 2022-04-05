@@ -173,10 +173,9 @@ The aim to figure out what has changed in our branch, is to compare the app's st
 So, until this is automated, the steps to achieve this are:
 
 1. Checkout develop branch
-2. Create the golden images -- run `fvm flutter test --update-goldens --reporter expanded test/visual`. You can see the output in `test/visual/goldens`
+2. Create the golden images -- run `fvm flutter test --update-goldens --reporter expanded test/visual/wrapper_test.dart`. You can see the output in `test/visual/goldens`
 3. Checkout the work in progress branch
 4. Compare with the created golden images -- run `fvm flutter test --reporter expanded test/visual`
 5. If there are any differences, the folder `test/golden/failure` will be created, with the before/after files, and the isolated and combine differences
 
 More functionality to come for this feature!
-
