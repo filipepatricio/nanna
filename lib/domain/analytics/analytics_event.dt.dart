@@ -141,7 +141,7 @@ class AnalyticsEvent with _$AnalyticsEvent {
       );
 
   factory AnalyticsEvent.listenedToArticleAudio(String articleId) => AnalyticsEvent._(
-        'listenedToArticleAudio',
+        'ListenedToArticleAudio',
         {
           'article_id': articleId,
         },
