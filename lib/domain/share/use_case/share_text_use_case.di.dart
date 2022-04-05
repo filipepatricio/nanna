@@ -7,7 +7,7 @@ class ShareTextUseCase {
 
   final ShareRepository _shareRepository;
 
-  Future<void> call(String text) async {
-    return _shareRepository.shareText(text);
+  Future<void> call(String text, [String? subject]) async {
+    return _shareRepository.shareText(text, subject);
   }
 }

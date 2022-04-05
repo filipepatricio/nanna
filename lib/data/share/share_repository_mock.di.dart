@@ -13,10 +13,10 @@ class ShareRepositoryMock implements ShareRepository {
   }
 
   @override
-  Future<void> shareImage(File image, [String? text]) async {}
+  Future<void> shareImage(File image, [String? text, String? subject]) async {}
 
   @override
-  Future<void> shareText(String text) async {}
+  Future<void> shareText(String text, [String? subject]) async {}
 
   @override
   Future<void> shareUsingInstagram(File foregroundFile, File backgroundFile, String url) async {}
