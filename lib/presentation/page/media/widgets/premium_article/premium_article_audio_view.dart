@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/audio/con
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/progress_bar/audio_progress_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/speed_button/audio_speed_button.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -24,7 +24,7 @@ class PremiumArticleAudioView extends HookWidget {
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final PremiumArticleAudioViewCubit cubit;
+  final PremiumArticleAudioCubit cubit;
 
   @override
   Widget build(BuildContext context) {

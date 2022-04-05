@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/pause_audio_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/play_audio_use_case.di.dart';
@@ -16,12 +18,16 @@ class AudioControlButtonCubit extends Cubit<AudioControlButtonState> {
     this._pauseAudioUseCase,
     this._audioPlaybackStateStreamUseCase,
     this._prepareAudioTrackUseCase,
+    this._trackActivityUseCase,
   ) : super(AudioControlButtonState.loading());
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
   final PlayAudioUseCase _playAudioUseCase;
   final PauseAudioUseCase _pauseAudioUseCase;
   final AudioPlaybackStateStreamUseCase _audioPlaybackStateStreamUseCase;
+  final TrackActivityUseCase _trackActivityUseCase;
+
+  late MediaItemArticle _article;
 
   StreamSubscription? _audioPlaybackSubscription;
 
@@ -55,9 +61,12 @@ class AudioControlButtonCubit extends Cubit<AudioControlButtonState> {
       },
       paused: (_) => _playAudioUseCase(),
     );
+    _article = article;
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(_article.id));
   }
 
   Future<void> pause() async {
     await _pauseAudioUseCase();
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.pausedArticleAudio(_article.id));
   }
 }

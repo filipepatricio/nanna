@@ -125,6 +125,27 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'sort_option': configName.eventPropertyName,
         },
       );
+
+  factory AnalyticsEvent.playedArticleAudio(String articleId) => AnalyticsEvent._(
+        'PlayedArticleAudio',
+        {
+          'article_id': articleId,
+        },
+      );
+
+  factory AnalyticsEvent.pausedArticleAudio(String articleId) => AnalyticsEvent._(
+        'PausedArticleAudio',
+        {
+          'article_id': articleId,
+        },
+      );
+
+  factory AnalyticsEvent.listenedToArticleAudio(String articleId) => AnalyticsEvent._(
+        'ListenedToArticleAudio',
+        {
+          'article_id': articleId,
+        },
+      );
 }
 
 extension on BookmarkSortConfigName {
