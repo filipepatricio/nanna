@@ -7,13 +7,13 @@ Nanna is our Flutter-based mobile app named after [Nanna](<https://en.wikipedia.
 Follow those steps to start:
 
 - Check Flutter version in "Mobile introduction" section below
-- Run `flutter pub get` to get dependencies
-- Run `flutter pub run build_runner build --delete-conflicting-outputs` to generate code (routing, json serializers etc.)
-- Run `fvm flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart` to generate translation files
+- Run `make get` or `flutter pub get` to get dependencies.
+- Run `make build_runner` or `flutter pub run build_runner build --delete-conflicting-outputs` to generate code (routing, json serializers etc.). For FVM users, run `make br`
+- Run `make easy_localization` or `flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart` to generate translation files. For FVM users, run `make l10n`
 
 ...and you are ready to go.
 
-# To make the pre-commit hook work
+# Pre-commit hook - how to install
 
 Just run these commands
 
@@ -21,6 +21,14 @@ Just run these commands
 chmod +x scripts/pre-commit.sh
 ln -s ../../scripts/pre-commit.sh .git/hooks/pre-commit
 ```
+
+This hook will run before commiting anything, and it:
+
+1. Generate all needed files with `build_runner`
+2. Update l10n files
+3. Run `flutter format` and `flutter analyze` to check for any inconsistencies in sintax
+
+If this last step fails, an error message will be shown and the commit will not be completed
 
 ## Running App
 
@@ -76,7 +84,7 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
 
 * [ ] Mobile app stack:
 
-- Flutter : 2.8.1 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
+- Flutter : 2.10.1 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
 - Navigation : auto_route
 - Immutable data class : freezed
 - Logs: fimber
@@ -162,20 +170,120 @@ In case you need to deploy application using your local machine, you will need f
 
 Next step is to go to `ios` folder and run `fastlane match appstore --readonly` command and follow instructions. You will end up with all certs and provisioning profiles stored on your machine. Only thing left is archive the app and deploy it.
 
-## Visual Testing
+## Unit testing
+
+Not much to add to basic unit tests building, only that for app specific unit tests, we have some tools to ease its building:
+
+```
+void main() {
+  testWidgets(
+    'sign in with apple button shows on apple device',
+    (tester) async {
+      kIsAppleDevice = true;
+      await tester.startApp(initialRoute: const SignInPageRoute());
+      expect(find.byText(LocaleKeys.signIn_providerButton_apple.tr()), findsOneWidget);
+    },
+  );
+...
+```
+
+## Important:
+
+All tests must be referenced in the file `test/unit/wrapper_test.dart` in order to be picked up by our CI workflows
+
+The `startApp` command ensures that all assets and navigation are set up and loaded before running any other test commands on the app
+
+Make sure to use `setUp` and `tearDown` commands as needed for each test - to change or revert any config changes made for specific tests
+
+```
+...
+  testWidgets(
+    'dialog shows up when app is outdated',
+    (tester) async {
+      // Forcing dialog to show because fetching and solving version logic is already tested by package
+      Upgrader().debugDisplayAlways = true;
+      await tester.startApp();
+      expect(find.byText(LocaleKeys.update_title.tr()), findsOneWidget);
+    },
+  );
+
+  tearDown(() {
+    Upgrader().debugDisplayAlways = false;
+  });
+...
+```
+
+## Golden image Testing
 
 Visual testing is comparing a specific app state with a golden state, created at some point in the past
 
 Our aim is to have a visual test for every screen we have in the app, and in the case of complex ones, several golden images covering their most important states.
+
+So, for the `ExplorePage` screen, we will have
+
+```
+void main() {
+  visualTest(ExplorePage, (tester) async {
+    await tester.startApp(initialRoute: const ExploreTabGroupRouter(children: [ExplorePageRoute()]));
+    await tester.matchGoldenFile();
+  });
+}
+```
+
+### Notes:
+
+1. All golden image tests must be referenced in the file `test/visual/wrapper_test.dart`, otherwise it will not be picked up in our CI worklflows
+1. There is no need to `pumpAndSettle` after calling `startApp`, since it's already done inside it
+1. The first parameter of the `visualTest` method is the name of the test, which will be used for the golden image name if not set explicitly in `matchGoldenFile()`
+1. To create 2 or more golden images in the same tet (to reflect different parts or states of a same screen in a single test), you can set a custom golden file name with the same prefix in all and indicating the difference in parenthesis, as in:
+
+```
+  visualTest(MediaItemPage, (tester) async {
+    await tester.startApp(initialRoute: MainPageRoute(children: [MediaItemPageRoute(slug: '')]));
+
+    await tester.matchGoldenFile('media_item_page_(image)');
+
+    await tester.tap(find.byType(AnimatedPointerDown).last);
+    await tester.pumpAndSettle();
+
+    await tester.matchGoldenFile('media_item_page_(content)');
+  });
+```
+
+4. Each test creates 4 golden images, each for 4 different device sizes (see `defaultDevices` in `visual_test_utils.dart`). To overwrite this behavior, use the `testConfig` parameter in the `visualTest` method:
+
+```
+  visualTest(
+    TopicOwnerPage,
+    (tester) async {
+      ...
+    },
+    testConfig: TestConfig.unitTesting.withDevices([const Device(name: 'full_screen', size: Size(375, 1200))]),
+  );
+```
+
+5. The `screens_report` command groups all golden images of different sizes into a single file. If you need to group different images into a single file, use the same name for all and indicate its difference with a `.` instead of `()`, as in:
+
+```
+ visualTest(
+    QuoteForegroundView,
+    (tester) async {
+      ...
+      // By specifying the variant with a dot (.linen), the screens_report command will group all of them in a single image
+      await tester.matchGoldenFile('quote_foreground_view.linen');
+      ...
+      await tester.matchGoldenFile('quote_foreground_view.rose');
+      ...
+```
 
 The aim to figure out what has changed in our branch, is to compare the app's state in the develop branch, with the app's state in our branch.
 
 So, until this is automated, the steps to achieve this are:
 
 1. Checkout develop branch
-2. Create the golden images -- run `fvm flutter test --update-goldens --reporter expanded test/visual/wrapper_test.dart`. You can see the output in `test/visual/goldens`
+2. Create the golden images -- run `make update_goldens`. You can see the output in `test/visual/goldens`. You can use `make screens_report` after creating the goldens, for an grouped-by-screen version of all available goldens in `test/visual/screens_report`
 3. Checkout the work in progress branch
-4. Compare with the created golden images -- run `fvm flutter test --reporter expanded test/visual`
-5. If there are any differences, the folder `test/golden/failure` will be created, with the before/after files, and the isolated and combine differences
+4. Compare with the created golden images -- run `flutter test test/visual/wrapper_test.dart`
+5. If there are any differences, the folder `test/visual/failures` will be created, with the before/after files, and the isolated and combine differences
 
 More functionality to come for this feature!
