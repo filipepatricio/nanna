@@ -12,10 +12,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 class AudioFloatingControlButton extends HookWidget {
   const AudioFloatingControlButton({
     required this.article,
+    this.elevation,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
+  final double? elevation;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,10 @@ class AudioFloatingControlButton extends HookWidget {
     );
 
     return FloatingActionButton(
+      elevation: elevation,
+      highlightElevation: elevation,
       shape: RoundedRectangleBorder(
+        side: BorderSide(color: elevation != null ? AppColors.grey : AppColors.transparent),
         borderRadius: BorderRadius.circular(AppDimens.xl),
       ),
       onPressed: state.getAction(cubit, article, imageUrl),
@@ -43,7 +48,7 @@ class AudioFloatingControlButton extends HookWidget {
       child: Center(
         child: SvgPicture.asset(
           state.imagePath,
-          height: AppDimens.sl + AppDimens.xs,
+          height: AppDimens.sl + AppDimens.xxs,
           color: state.imageColor,
         ),
       ),
