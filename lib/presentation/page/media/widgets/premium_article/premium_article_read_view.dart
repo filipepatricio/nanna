@@ -31,7 +31,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.fullHeight,
     required this.fromTopic,
     this.readArticleProgress,
-    this.articleOutputMode,
+    this.articleOutputModeNotifier,
     Key? key,
   }) : super(key: key);
 
@@ -45,7 +45,7 @@ class PremiumArticleReadView extends HookWidget {
   final double fullHeight;
   final bool fromTopic;
   final double? readArticleProgress;
-  final ValueNotifier<ArticleOutputMode>? articleOutputMode;
+  final ValueNotifier<ArticleOutputMode>? articleOutputModeNotifier;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();

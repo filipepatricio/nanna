@@ -22,6 +22,7 @@ class PremiumArticleView extends HookWidget {
     required this.cubit,
     required this.fullHeight,
     required this.snackbarController,
+    required this.articleOutputMode,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -36,20 +37,21 @@ class PremiumArticleView extends HookWidget {
   final double fullHeight;
   final double? readArticleProgress;
   final SnackbarController snackbarController;
+  final ArticleOutputMode articleOutputMode;
 
   bool get articleWithImage => article.image != null;
 
   @override
   Widget build(BuildContext context) {
-    final horizontalPageController = usePageController();
-    final articleOutputMode = useMemoized(
-      () => ValueNotifier(ArticleOutputMode.read),
+    final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
+    final articleOutputModeNotifier = useMemoized(
+      () => ValueNotifier(articleOutputMode),
     );
 
     useEffect(
       () {
         final listener = () {
-          switch (articleOutputMode.value) {
+          switch (articleOutputModeNotifier.value) {
             case ArticleOutputMode.read:
               horizontalPageController.animateToPage(
                 ArticleOutputMode.read.index,
@@ -66,10 +68,10 @@ class PremiumArticleView extends HookWidget {
               break;
           }
         };
-        articleOutputMode.addListener(listener);
-        return () => articleOutputMode.removeListener(listener);
+        articleOutputModeNotifier.addListener(listener);
+        return () => articleOutputModeNotifier.removeListener(listener);
       },
-      [horizontalPageController, articleOutputMode],
+      [horizontalPageController, articleOutputModeNotifier],
     );
 
     return Scaffold(
@@ -87,10 +89,10 @@ class PremiumArticleView extends HookWidget {
                 onPageChanged: (page) {
                   switch (page) {
                     case 0:
-                      articleOutputMode.value = ArticleOutputMode.read;
+                      articleOutputModeNotifier.value = ArticleOutputMode.read;
                       break;
                     case 1:
-                      articleOutputMode.value = ArticleOutputMode.audio;
+                      articleOutputModeNotifier.value = ArticleOutputMode.audio;
                       break;
                   }
                 },
@@ -106,7 +108,7 @@ class PremiumArticleView extends HookWidget {
                     fullHeight: fullHeight,
                     fromTopic: fromTopic,
                     readArticleProgress: readArticleProgress,
-                    articleOutputMode: articleOutputMode,
+                    articleOutputModeNotifier: articleOutputModeNotifier,
                   ),
                   if (article.hasAudioVersion)
                     PremiumArticleAudioView(
@@ -125,7 +127,7 @@ class PremiumArticleView extends HookWidget {
                   pageController: pageController,
                   snackbarController: snackbarController,
                   cubit: cubit,
-                  articleOutputMode: articleOutputMode,
+                  articleOutputModeNotifier: articleOutputModeNotifier,
                 ),
               ),
             ],

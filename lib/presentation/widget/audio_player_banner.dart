@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_floating_control_button.dart';
@@ -29,71 +31,85 @@ class AudioPlayerBanner extends HookWidget {
       bottom: 0,
       left: 0,
       right: 0,
-      child: Container(
-        decoration: const BoxDecoration(
-          color: AppColors.background,
-          border: Border.symmetric(
-            horizontal: BorderSide(
-              color: AppColors.grey,
-              width: 1,
-            ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => AutoRouter.of(context).push(
+          MediaItemPageRoute(
+            article: article,
+            articleOutputMode: ArticleOutputMode.audio,
           ),
         ),
-        child: Column(
-          children: [
-            const LinearProgressIndicator(
-              value: 0.4, //TODO: listen audio progress position/totalDuration
-              color: AppColors.textPrimary,
-              backgroundColor: AppColors.transparent,
-              minHeight: 4,
+        child: Container(
+          decoration: const BoxDecoration(
+            color: AppColors.background,
+            border: Border.symmetric(
+              horizontal: BorderSide(
+                color: AppColors.grey,
+                width: 1,
+              ),
             ),
-            Row(
-              children: [
-                if (imageId != null)
-                  CloudinaryProgressiveImage(
-                    cloudinaryTransformation: cloudinaryProvider
-                        .withPublicIdAsPlatform(imageId)
-                        .transform()
-                        .autoGravity()
-                        .withLogicalSize(_imageWidth, _imageHeight, context),
-                    width: _imageWidth,
-                    height: _imageHeight,
-                    testImage: AppRasterGraphics.testArticleHeroImage,
-                  ),
-                const SizedBox(width: AppDimens.l),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        tr(LocaleKeys.continueListening),
-                        style: AppTypography.metadata1Regular.copyWith(color: AppColors.textGrey),
-                      ),
-                      Text(
-                        article.title,
-                        style: AppTypography.b2Bold,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: AppDimens.l),
-                SizedBox(
-                  width: AppDimens.xxl + AppDimens.xxs,
-                  height: AppDimens.xxl + AppDimens.xxs,
-                  child: FittedBox(
-                    child: AudioFloatingControlButton(
-                      article: article,
-                      elevation: 0,
+          ),
+          child: Stack(
+            children: [
+              Row(
+                children: [
+                  if (imageId != null)
+                    CloudinaryProgressiveImage(
+                      cloudinaryTransformation: cloudinaryProvider
+                          .withPublicIdAsPlatform(imageId)
+                          .transform()
+                          .autoGravity()
+                          .withLogicalSize(_imageWidth, _imageHeight, context),
+                      width: _imageWidth,
+                      height: _imageHeight,
+                      testImage: AppRasterGraphics.testArticleHeroImage,
+                    ),
+                  const SizedBox(width: AppDimens.l),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          tr(LocaleKeys.continueListening),
+                          style: AppTypography.metadata1Regular.copyWith(color: AppColors.textGrey),
+                        ),
+                        Text(
+                          article.title,
+                          style: AppTypography.b2Bold,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ),
+                  const SizedBox(width: AppDimens.l),
+                  SizedBox(
+                    width: AppDimens.xxl + AppDimens.xxs,
+                    height: AppDimens.xxl + AppDimens.xxs,
+                    child: FittedBox(
+                      child: AudioFloatingControlButton(
+                        article: article,
+                        elevation: 0,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppDimens.ml),
+                ],
+              ),
+              const Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: LinearProgressIndicator(
+                  value: 0.4, //TODO: listen audio progress position/totalDuration
+                  color: AppColors.textPrimary,
+                  backgroundColor: AppColors.transparent,
+                  minHeight: AppDimens.xs,
                 ),
-                const SizedBox(width: AppDimens.ml),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
