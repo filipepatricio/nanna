@@ -113,6 +113,10 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
 
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
         id: get-flutter-version
