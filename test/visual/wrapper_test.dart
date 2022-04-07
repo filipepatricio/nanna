@@ -16,6 +16,7 @@ import 'tests/settings_account_page_visual_test.dart' as settings_account_page_v
 import 'tests/settings_main_page_visual_test.dart' as settings_main_page_visual_test;
 import 'tests/settings_notifications_page_visual_test.dart' as settings_notifications_page_visual_test;
 import 'tests/share_article_view_visual_test.dart' as share_article_view_visual_test;
+import 'tests/share_reading_list_view_visual_test.dart' as share_reading_list_view_visual_test;
 import 'tests/sign_in_page_visual_test.dart' as sign_in_page_visual_test;
 import 'tests/todays_topics_page_visual_test.dart' as todays_topics_page_visual_test;
 import 'tests/topic_owner_page_visual_test.dart' as topic_owner_page_visual_test;
@@ -41,6 +42,7 @@ void main() {
   group('settings_main_page_visual_test', settings_main_page_visual_test.main);
   group('settings_notifications_page_visual_test', settings_notifications_page_visual_test.main);
   group('share_article_view_visual_test', share_article_view_visual_test.main);
+  group('share_reading_list_view_visual_test', share_reading_list_view_visual_test.main);
   group('sign_in_page_visual_test', sign_in_page_visual_test.main);
   group('todays_topics_page_visual_test', todays_topics_page_visual_test.main);
   group('topic_owner_page_visual_test', topic_owner_page_visual_test.main);
