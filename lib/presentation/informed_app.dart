@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.di.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -31,6 +32,13 @@ class InformedApp extends HookWidget {
       );
     }
 
+    useEffect(
+      () {
+        _precacheImages(context);
+      },
+      [],
+    );
+
     return Provider.value(
       value: getIt,
       child: MaterialApp.router(
@@ -57,4 +65,19 @@ class InformedApp extends HookWidget {
       ),
     );
   }
+}
+
+Future<void> _precacheImages(BuildContext context) async {
+  await precacheImage(
+    const AssetImage(
+      AppRasterGraphics.shareStickerBackgroundGreen,
+    ),
+    context,
+  );
+  await precacheImage(
+    const AssetImage(
+      AppRasterGraphics.shareStickerBackgroundPeach,
+    ),
+    context,
+  );
 }
