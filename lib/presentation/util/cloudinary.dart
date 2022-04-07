@@ -93,7 +93,16 @@ Image cloudinaryImageFit({
   String? testImage,
 }) =>
     cloudinaryImage(
-      transformation: cloudinary.withPublicId(publicId).transform().width(width.toInt()).height(height.toInt()).fit(),
+      transformation: cloudinary
+          .withPublicIdAsPng(publicId)
+          .transform()
+          .width(
+            width.toInt(),
+          )
+          .height(
+            height.toInt(),
+          )
+          .fit(),
       width: width,
       height: height,
       fit: fit,
