@@ -78,6 +78,10 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     }
   }
 
+  void closeMagicLinkView() {
+    emit(SignInPageState.idle(true));
+  }
+
   Future<void> _subscribeForMagicLink() async {
     _magicLinkSubscription = _subscribeForMagicLinkTokenUseCase().listen((token) async {
       await _signInWithMagicLink(token);

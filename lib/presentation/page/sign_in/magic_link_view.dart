@@ -18,7 +18,7 @@ class MagicLinkContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: AppDimens.xxc),
+            const SizedBox(height: AppDimens.m),
             Align(
               alignment: Alignment.centerLeft,
               child: SvgPicture.asset(
