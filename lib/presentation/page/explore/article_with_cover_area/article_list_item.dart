@@ -1,14 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
@@ -54,7 +52,7 @@ class ArticleListItem extends HookWidget {
   }
 }
 
-class ArticleListCover extends HookWidget {
+class ArticleListCover extends StatelessWidget {
   const ArticleListCover({
     required this.article,
     required this.width,
@@ -76,23 +74,22 @@ class ArticleListCover extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = article.image?.publicId;
+    final hasImage = article.hasImage;
     return Stack(
       children: [
-        if (imageId != null)
-          CloudinaryProgressiveImage(
-            cloudinaryTransformation: cloudinaryProvider
-                .withPublicIdAsPlatform(imageId)
-                .transform()
-                .autoGravity()
-                .withLogicalSize(width, height, context),
+        if (hasImage)
+          ArticleImage(
+            image: article.image!,
             width: width,
             height: height,
-            testImage: AppRasterGraphics.testArticleHeroImage,
+            cardColor: cardColor,
           )
         else
-          Container(color: cardColor, width: width, height: height),
+          Container(
+            color: cardColor,
+            width: width,
+            height: height,
+          ),
         _ArticleImageOverlay(
           article: article,
           themeColor: themeColor,
@@ -127,7 +124,7 @@ class _ArticleImageOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeToRead = article.timeToRead;
-    final hasImage = article.image?.publicId != null;
+    final hasImage = article.hasImage;
 
     return Container(
       color: hasImage ? AppColors.black40 : null,

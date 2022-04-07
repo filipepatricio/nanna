@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/images.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
@@ -47,21 +48,34 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
   @override
   Widget build(BuildContext context) {
     final cloudinary = useCloudinaryProvider();
-    final articleImageId = article.image?.publicId;
     final logoImageId = article.publisher.darkLogo?.publicId;
 
     final articleImage = useMemoized(
       () {
-        if (articleImageId == null) return null;
+        final image = article.image;
 
-        return cloudinaryImageAuto(
-          cloudinary: cloudinary,
-          publicId: articleImageId,
-          width: _headerWidth,
-          height: _headerHeight,
-          fit: BoxFit.cover,
-          testImage: AppRasterGraphics.testArticleHeroImage,
-        );
+        if (image == null || image is ArticleImageUnknown) return null;
+
+        if (image is ArticleImageCloudinary) {
+          return cloudinaryImageAuto(
+            cloudinary: cloudinary,
+            publicId: image.publicId,
+            width: _headerWidth,
+            height: _headerHeight,
+            fit: BoxFit.cover,
+            testImage: AppRasterGraphics.testArticleHeroImage,
+          );
+        }
+
+        if (image is ArticleImageRemote) {
+          return remoteImage(
+            url: image.url,
+            width: _headerWidth,
+            height: _headerHeight,
+            fit: BoxFit.cover,
+            testImage: AppRasterGraphics.testArticleHeroImage,
+          );
+        }
       },
     );
 
@@ -78,6 +92,7 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
           testImage: AppRasterGraphics.testPublisherLogoDark,
         );
       },
+      [article.image],
     );
 
     return ImageLoadResolver(

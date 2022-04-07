@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dt.dart';
+import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -20,7 +20,7 @@ class MediaItemDTO with _$MediaItemDTO {
     String? publicationDate,
     int? timeToRead,
     PublisherDTO publisher,
-    ImageDTO? image,
+    ArticleImageDTO? image,
     String sourceUrl,
     String? author,
     bool hasAudioVersion,

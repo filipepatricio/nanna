@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as informed;
+import 'package:better_informed_mobile/domain/image/data/image.dart' as informed;
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
