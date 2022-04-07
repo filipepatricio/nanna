@@ -212,6 +212,7 @@ class EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      autocorrect: false,
       key: _emailInputKey,
       controller: controller,
       onChanged: cubit.updateEmail,
