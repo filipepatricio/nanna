@@ -1,19 +1,16 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_editors_note.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/shadow_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class PhotoStackedCover extends HookWidget {
+class PhotoStackedCover extends StatelessWidget {
   final MediaItemArticle article;
   final String? editorsNote;
 
@@ -25,9 +22,8 @@ class PhotoStackedCover extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = article.image?.publicId;
     final borderRadius = BorderRadius.circular(AppDimens.m);
+    final hasImage = article.hasImage;
 
     return Container(
       width: double.infinity,
@@ -39,26 +35,17 @@ class PhotoStackedCover extends HookWidget {
         borderRadius: borderRadius,
         child: Stack(
           children: [
-            if (imageId != null) ...[
+            if (hasImage) ...[
               Positioned.fill(
                 child: LayoutBuilder(
-                  builder: (context, constrains) {
-                    return CloudinaryProgressiveImage(
-                      testImage: AppRasterGraphics.testArticleHeroImage,
-                      cloudinaryTransformation: cloudinaryProvider
-                          .withPublicIdAsPlatform(imageId)
-                          .transform()
-                          .withLogicalSize(constrains.maxWidth, constrains.maxHeight, context)
-                          .autoGravity(),
-                      height: constrains.maxHeight,
+                  builder: (context, constrains) => Container(
+                    foregroundDecoration: const BoxDecoration(color: AppColors.black40),
+                    child: ArticleImage(
+                      image: article.image!,
                       width: constrains.maxWidth,
-                    );
-                  },
-                ),
-              ),
-              Positioned.fill(
-                child: Container(
-                  color: AppColors.black40,
+                      height: constrains.maxHeight,
+                    ),
+                  ),
                 ),
               ),
             ],

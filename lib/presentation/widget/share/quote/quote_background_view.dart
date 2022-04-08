@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/util/images.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_author.dart';
@@ -38,37 +39,46 @@ class QuoteBackgroundView extends HookWidget implements BaseShareCompletable {
   @override
   Widget build(BuildContext context) {
     final cloudinary = useCloudinaryProvider();
-    final articleImageId = article.image?.publicId;
+    const height = 110.0;
+    const width = 110.0;
 
     final articleImage = useMemoized(
       () {
-        if (articleImageId == null) return null;
+        final image = article.image;
+
+        if (image == null || image is ArticleImageUnknown) return null;
+
+        if (image is ArticleImageCloudinary) {
+          return cloudinaryImageAuto(
+            cloudinary: cloudinary,
+            publicId: image.publicId,
+            width: width,
+            height: height,
+            fit: BoxFit.cover,
+            testImage: AppRasterGraphics.testArticleHeroImage,
+          );
+        }
+
+        if (image is ArticleImageRemote) {
+          return remoteImage(
+            url: image.url,
+            width: width,
+            height: height,
+            fit: BoxFit.fill,
+            testImage: AppRasterGraphics.testArticleHeroImage,
+          );
+        }
 
         if (kIsTest) {
           return Image.asset(
             AppRasterGraphics.testArticleHeroImage,
-            width: 110,
-            height: 110,
-            fit: BoxFit.cover,
+            width: width,
+            height: height,
+            fit: BoxFit.fill,
           );
         }
-
-        final imageUrl = cloudinary
-            .withPublicId(articleImageId)
-            .transform()
-            .width(110)
-            .height(110)
-            .autoGravity()
-            .autoQuality()
-            .generateNotNull();
-
-        return Image.network(
-          imageUrl,
-          width: 110,
-          height: 110,
-          fit: BoxFit.fill,
-        );
       },
+      [article.image],
     );
 
     return MaterialApp(

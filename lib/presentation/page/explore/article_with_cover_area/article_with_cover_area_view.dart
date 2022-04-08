@@ -4,13 +4,11 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
@@ -116,7 +114,7 @@ class ArticleWithCoverAreaView extends HookWidget {
       );
 }
 
-class _MainArticle extends HookWidget {
+class _MainArticle extends StatelessWidget {
   final MediaItemArticle entry;
   final Color themeColor;
 
@@ -128,8 +126,7 @@ class _MainArticle extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = entry.image?.publicId;
+    final hasImage = entry.hasImage;
 
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
@@ -141,27 +138,18 @@ class _MainArticle extends HookWidget {
             Container(
               height: AppDimens.exploreAreaFeaturedArticleHeight,
               foregroundDecoration: BoxDecoration(
-                color: imageId != null ? AppColors.black40 : AppColors.background,
+                color: hasImage ? AppColors.black40 : AppColors.background,
               ),
-              child: imageId != null
-                  ? CloudinaryProgressiveImage(
-                      cloudinaryTransformation: cloudinaryProvider
-                          .withPublicIdAsPlatform(imageId)
-                          .transform()
-                          .withLogicalSize(constraints.maxWidth, constraints.maxHeight, context)
-                          .autoGravity(),
-                      height: constraints.maxHeight,
+              child: hasImage
+                  ? ArticleImage(
+                      image: entry.image!,
                       width: constraints.maxWidth,
-                      testImage: AppRasterGraphics.testArticleHeroImage,
+                      height: constraints.maxHeight,
                     )
                   : Container(),
             ),
             Positioned.fill(
-              child: _MainArticleCover(
-                entry: entry,
-                themeColor: themeColor,
-                hasImage: imageId != null,
-              ),
+              child: _MainArticleCover(entry: entry, themeColor: themeColor, hasImage: hasImage),
             ),
           ],
         ),
