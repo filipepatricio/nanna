@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class AppColors {
   const AppColors._();
 
+  // How to set opacity in Hex https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
+
   static const Color white = Color(0xffffffff);
   static const Color black = Color(0xff000000);
+  static const Color black40 = Color(0x66000000);
+  static const Color black20 = Color(0x33000000);
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreenVivid = Color(0xffA2F054);
   static const Color limeGreenDark = Color(0xff6AE476);
@@ -34,7 +38,6 @@ class AppColors {
   static const Color gradientOverlayEndColor = Color(0x00282B35);
 
   static const Color shadowLinenColor = Color(0x33634633);
-  static const Color shadowDarkColor = Color(0x66000000);
   static const Color shadowColor = Color(0x1f000000);
 
   static const Color settingsHeader = Color(0x44282B35);

@@ -1,6 +1,6 @@
-import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/topics_from_editor_dto.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topics_from_editor_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dt.dart';
 
 abstract class TopicsApiDataSource {
   Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId);

@@ -60,7 +60,7 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
       - name: Sets Flutter environment
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
 
@@ -113,13 +113,17 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
 
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
         id: get-flutter-version
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
       - name: Sets up a Flutter environment for use in actions
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
       - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
@@ -136,7 +140,7 @@ jobs:
       - name: Build app
         env:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-        run: flutter build ios --release --no-codesign --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"  --bundle-sksl-path warmup.sksl.json
+        run: flutter build ios --config-only --release --no-codesign --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"  --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
         uses: maierj/fastlane-action@v2.1.0

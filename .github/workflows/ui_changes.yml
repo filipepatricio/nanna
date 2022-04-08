@@ -12,8 +12,6 @@ on:
       - 'analysis_options.yaml'
       - 'commitlint.config.js'
       - '**/README.md'
-      - 'test/data/**'
-      - 'test/domain/**'
       - 'scripts/**'
       - '.vscode/**'
       - '.github/**'
@@ -22,7 +20,30 @@ on:
       - '.dart_tool/**'
 
 jobs:
+  changes:
+    name: Detect changed files
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
+      tests: ${{ steps.filter.outputs.tests }}
+    steps:
+      # For pull requests it's not necessary to checkout the code
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          list-files: 'json'
+          filters: |
+            app:
+              - 'assets/**'
+              - 'fonts/**'
+              - 'lib/**'
+            tests:
+              - 'test/visual/**'
+
   ui-changes:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.tests == 'true' || needs.changes.outputs.app == 'true' }}
     name: UI changes
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -42,13 +63,9 @@ jobs:
         id: get-flutter-version
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
-      - name: Sets Flutter environment
-        uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
-
-      - name: Run flutter clean
-        run: flutter clean
 
       - name: Get glutter dependencies for base branch
         run: flutter pub get

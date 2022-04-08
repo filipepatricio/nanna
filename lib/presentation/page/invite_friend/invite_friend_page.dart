@@ -1,15 +1,16 @@
 import 'package:better_informed_mobile/domain/invite/data/invite_code.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/bordered_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -128,31 +129,12 @@ class _Idle extends StatelessWidget {
           inviteCode: inviteCode,
         ),
         const SizedBox(height: AppDimens.m),
-        GestureDetector(
-          onTap: () => cubit.shareCode(),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.textPrimary,
-                width: 1.0,
-              ),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(
-                  AppDimens.s,
-                ),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppDimens.m,
-              vertical: AppDimens.sl,
-            ),
-            child: Center(
-              child: Text(
-                tr(LocaleKeys.inviteFriend_inviteAction),
-                style: AppTypography.h4Bold,
-              ),
-            ),
+        BorderedButton(
+          text: Text(
+            tr(LocaleKeys.inviteFriend_inviteAction),
+            style: AppTypography.h4Bold,
           ),
+          onTap: cubit.shareCode,
         ),
         const SizedBox(height: AppDimens.xxl),
         Text(

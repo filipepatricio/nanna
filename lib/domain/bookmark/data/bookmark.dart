@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dart';
 
 class Bookmark {
   Bookmark(this.id, this.data);

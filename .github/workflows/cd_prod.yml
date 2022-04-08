@@ -58,7 +58,7 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
       - name: Sets Flutter environment
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
 
@@ -103,6 +103,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
       - name: Setup Ruby for fastlane
         uses: actions/setup-ruby@v1
         with:
@@ -114,7 +118,7 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
       - name: Sets up a Flutter environment for use in actions
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
       - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
@@ -131,7 +135,7 @@ jobs:
       - name: Build app
         env:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-        run: flutter build ios --release --no-codesign --dart-define=env=prod --flavor prod --build-number="$BUILD_NUMBER" --bundle-sksl-path warmup.sksl.json
+        run: flutter build ios --config-only --release --no-codesign --dart-define=env=prod --flavor prod --build-number="$BUILD_NUMBER" --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
         uses: maierj/fastlane-action@v2.1.0

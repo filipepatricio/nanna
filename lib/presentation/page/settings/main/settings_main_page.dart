@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_body.dart';
-import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';

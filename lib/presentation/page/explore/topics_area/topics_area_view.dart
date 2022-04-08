@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';

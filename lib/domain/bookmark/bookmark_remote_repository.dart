@@ -2,7 +2,7 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 
 abstract class BookmarkRepository {
   Future<BookmarkState> getTopicBookmarkState(String topicSlug);

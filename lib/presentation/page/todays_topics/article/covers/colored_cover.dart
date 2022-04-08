@@ -1,9 +1,10 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_editors_note.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/shadow_util.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,13 +42,19 @@ class ColoredCover extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  DottedArticleInfo(
-                    article: article,
-                    isLight: false,
-                    showDate: false,
-                    showReadTime: false,
-                    showLogo: true,
-                    showPublisher: true,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DottedArticleInfo(
+                        article: article,
+                        isLight: false,
+                        showDate: false,
+                        showReadTime: false,
+                        showLogo: true,
+                        showPublisher: true,
+                      ),
+                      if (article.hasAudioVersion) AudioIcon.dark(),
+                    ],
                   ),
                   const SizedBox(height: AppDimens.m),
                   InformedMarkdownBody(

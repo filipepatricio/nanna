@@ -4,3 +4,30 @@ targets:
       json_serializable:
         options:
           explicit_to_json: true
+        generate_for:
+          include:
+            - lib/**.dt.dart
+      auto_route_generator:autoRouteGenerator:
+        generate_for:
+          include:
+            - lib/presentation/routing/main_router.dart
+      hive_generator:hive_generator:
+        generate_for:
+          exclude:
+            - '*'
+      freezed:freezed:
+        generate_for:
+          include:
+            - lib/**.dt.dart
+      injectable_generator:injectable_builder:
+        generate_for:
+          include:
+            - lib/**.di.dart
+      injectable_generator:injectable_config_builder:
+        generate_for:
+          include:
+            - lib/core/di/di_config.dart
+      mockito:mockBuilder:
+        generate_for:
+          include:
+            - test/**

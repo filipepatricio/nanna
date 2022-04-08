@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_editors_note.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/shadow_util.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class PhotoStackedCover extends HookWidget {
               ),
               Positioned.fill(
                 child: Container(
-                  color: Colors.black.withOpacity(0.40),
+                  color: AppColors.black40,
                 ),
               ),
             ],
@@ -74,13 +75,19 @@ class PhotoStackedCover extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          DottedArticleInfo(
-                            article: article,
-                            isLight: true,
-                            showDate: false,
-                            showReadTime: false,
-                            showLogo: true,
-                            showPublisher: true,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              DottedArticleInfo(
+                                article: article,
+                                isLight: true,
+                                showDate: false,
+                                showReadTime: false,
+                                showLogo: true,
+                                showPublisher: true,
+                              ),
+                              if (article.hasAudioVersion) AudioIcon.light(),
+                            ],
                           ),
                           const SizedBox(height: AppDimens.m),
                           InformedMarkdownBody(

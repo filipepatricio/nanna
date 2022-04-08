@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/analytics/analytics_event.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/app_raster_graphics.da
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
@@ -140,7 +141,7 @@ class _MainArticle extends HookWidget {
             Container(
               height: AppDimens.exploreAreaFeaturedArticleHeight,
               foregroundDecoration: BoxDecoration(
-                color: imageId != null ? AppColors.black.withOpacity(0.4) : AppColors.background,
+                color: imageId != null ? AppColors.black40 : AppColors.background,
               ),
               child: imageId != null
                   ? CloudinaryProgressiveImage(
@@ -192,10 +193,18 @@ class _MainArticleCover extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (hasImage)
-            PublisherLogo.light(publisher: entry.publisher)
-          else
-            PublisherLogo.dark(publisher: entry.publisher),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (hasImage) ...[
+                PublisherLogo.light(publisher: entry.publisher),
+                if (entry.hasAudioVersion) AudioIcon.light()
+              ] else ...[
+                PublisherLogo.dark(publisher: entry.publisher),
+                if (entry.hasAudioVersion) AudioIcon.dark()
+              ]
+            ],
+          ),
           const SizedBox(height: AppDimens.m),
           InformedMarkdownBody(
             markdown: entry.title,

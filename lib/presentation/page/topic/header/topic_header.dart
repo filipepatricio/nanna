@@ -43,7 +43,7 @@ class TopicHeader extends HookWidget {
           child: Container(
             width: topicHeaderImageWidth,
             height: topicHeaderImageHeight,
-            foregroundDecoration: BoxDecoration(color: AppColors.black.withOpacity(0.4)),
+            foregroundDecoration: const BoxDecoration(color: AppColors.black40),
             child: CloudinaryProgressiveImage(
               width: topicHeaderImageWidth,
               height: topicHeaderImageHeight,

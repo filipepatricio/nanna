@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/core/di/di_config.dart';
-import 'package:better_informed_mobile/domain/analytics/analytics_page.dart';
-import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:flutter/material.dart';
 

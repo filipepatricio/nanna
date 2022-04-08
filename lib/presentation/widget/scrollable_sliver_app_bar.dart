@@ -40,7 +40,7 @@ class ScrollableSliverAppBar extends HookWidget {
     return SliverAppBar(
       backgroundColor: AppColors.background,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
-      shadowColor: AppColors.shadowDarkColor,
+      shadowColor: AppColors.black40,
       pinned: true,
       centerTitle: true,
       elevation: 3.0,

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/entry/entry_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/entry/entry_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';

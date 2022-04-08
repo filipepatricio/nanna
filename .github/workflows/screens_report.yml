@@ -26,12 +26,9 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
       - name: Sets Flutter environment
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
-
-      - name: Run flutter clean
-        run: flutter clean
 
       - name: Install Flutter dependencies
         run: flutter pub get
@@ -43,7 +40,7 @@ jobs:
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Create golden files
-        run: flutter test test/visual --update-goldens
+        run: flutter test test/visual/wrapper_test.dart --update-goldens
 
       - name: Generate screens report
         run: make screens_report

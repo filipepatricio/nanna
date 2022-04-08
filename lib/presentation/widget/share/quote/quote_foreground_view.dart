@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -91,10 +91,10 @@ class _Quote extends StatelessWidget {
             borderRadius: const BorderRadius.all(
               Radius.circular(AppDimens.l),
             ),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
-                color: AppColors.black.withOpacity(0.2),
-                offset: const Offset(0.0, 6.0),
+                color: AppColors.black20,
+                offset: Offset(0.0, 6.0),
                 blurRadius: 15,
               ),
             ],

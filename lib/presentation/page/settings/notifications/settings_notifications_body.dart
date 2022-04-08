@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
+import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dt.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences_group.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch.dart';

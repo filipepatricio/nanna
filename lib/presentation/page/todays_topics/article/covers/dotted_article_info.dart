@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -38,6 +38,7 @@ class DottedArticleInfo extends StatelessWidget {
     final timeToRead = article.timeToRead;
 
     return Row(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (showPublisher) ...[

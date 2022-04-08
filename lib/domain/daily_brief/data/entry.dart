@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 
 class Entry {
   final String? note;

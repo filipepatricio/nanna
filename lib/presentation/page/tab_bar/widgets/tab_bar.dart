@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/main/main_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/main/main_state.dart';
+import 'package:better_informed_mobile/presentation/page/main/main_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';

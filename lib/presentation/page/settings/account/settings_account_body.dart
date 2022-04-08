@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dart';
-import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dart';
+import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dt.dart';
+import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/settings/widgets/settings_input_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';

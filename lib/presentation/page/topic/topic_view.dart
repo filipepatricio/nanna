@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/page/topic/mediaitems/topic_media_items_list.dart';
 import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary_section.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';

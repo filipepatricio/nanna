@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dart';
+import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dt.dart';
 
 class NotificationPreferencesGroup {
   final String name;

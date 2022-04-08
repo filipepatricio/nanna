@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
@@ -149,13 +149,14 @@ class _Sticker extends StatelessWidget {
         children: [
           if (mainImage != null) ...[
             mainImage,
-            Container(color: AppColors.black.withOpacity(0.4)),
+            Container(color: AppColors.black40),
           ],
           Positioned.fill(
             left: AppDimens.xl,
             right: AppDimens.xl,
             bottom: AppDimens.xxxl,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Row(

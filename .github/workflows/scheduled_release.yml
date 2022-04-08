@@ -3,8 +3,8 @@ name: Scheduled release
 on:
   workflow_dispatch:
   schedule:
-    # This is set in UTC timezone, so we set 13 to run at 14 in UTC+1
-    - cron: '0 13 * * FRI'
+    # This is set in UTC timezone, so we set 13 to run at 14 in UTC+1 (Summer time)
+    - cron: '0 12 * * FRI'
 
 jobs:
   promote-dev-changes:
