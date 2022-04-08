@@ -93,7 +93,7 @@ class SignInPage extends HookWidget {
               controller: snackbarController,
               child: state.maybeMap(
                 processing: (_) => const Loader(),
-                magicLink: (state) => const MagicLinkContent(),
+                magicLink: (state) => MagicLinkContent(email: state.email),
                 idle: (state) => _IdleContent(
                   cubit: cubit,
                   isEmailValid: state.emailCorrect,

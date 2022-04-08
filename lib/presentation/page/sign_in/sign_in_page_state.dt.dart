@@ -10,7 +10,7 @@ class SignInPageState with _$SignInPageState {
   factory SignInPageState.idle(bool emailCorrect) = _SignInPageStateIdle;
 
   @Implements<BuildState>()
-  factory SignInPageState.magicLink() = _SignInPageStateMagicLink;
+  factory SignInPageState.magicLink(String email) = _SignInPageStateMagicLink;
 
   @Implements<BuildState>()
   factory SignInPageState.processing() = _SignInPageStateProcessing;
