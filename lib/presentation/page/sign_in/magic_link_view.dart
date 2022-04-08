@@ -8,7 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MagicLinkContent extends StatelessWidget {
-  const MagicLinkContent({Key? key}) : super(key: key);
+  const MagicLinkContent({
+    required this.email,
+    Key? key,
+  }) : super(key: key);
+
+  final String email;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,7 @@ class MagicLinkContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: AppDimens.xxc),
+            const SizedBox(height: AppDimens.m),
             Align(
               alignment: Alignment.centerLeft,
               child: SvgPicture.asset(
@@ -40,9 +45,10 @@ class MagicLinkContent extends StatelessWidget {
             ),
             Center(
               child: InformedMarkdownBody(
-                markdown: LocaleKeys.signIn_header_magicLinkTwo.tr(),
+                markdown: LocaleKeys.signIn_header_magicLinkTwo.tr(args: [email]),
                 baseTextStyle: AppTypography.headline4Bold.copyWith(height: 1.4, fontWeight: FontWeight.w400),
-                maxLines: 2,
+                maxLines: 3,
+                textAlignment: TextAlign.center,
               ),
             ),
             const Spacer(flex: 2),
