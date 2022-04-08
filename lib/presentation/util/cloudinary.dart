@@ -143,7 +143,7 @@ Image cloudinaryImage({
   );
 }
 
-String? useArticleImageUrl(MediaItemArticle article, int width, int height) {
+String? useCloudinaryImageUrl(String? publicId, int width, int height) {
   final cloudinaryProvider = useCloudinaryProvider();
   return useMemoized(
     () {
@@ -163,6 +163,6 @@ String? useArticleImageUrl(MediaItemArticle article, int width, int height) {
         }
       }
     },
-    [article],
+    [publicId],
   );
 }

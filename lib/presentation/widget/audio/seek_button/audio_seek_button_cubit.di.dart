@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/fast_forward_audio_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/rewind_audio_use_case.di.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/seek_button/audio_seek_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 

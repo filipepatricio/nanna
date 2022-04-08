@@ -166,4 +166,6 @@ class AppDimens {
   static const bookmarkIconSize = 32.0;
 
   static const articleAudioCoverSize = 1024;
+
+  static const audioBannerHeight = 80.0;
 }

@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'audio_playback_state.dt.freezed.dart';
@@ -13,15 +14,18 @@ class AudioPlaybackState with _$AudioPlaybackState {
   const factory AudioPlaybackState.playing({
     required Duration duration,
     required double speed,
+    required AudioItem audioItem,
   }) = _AudioPlaybackStatePlaying;
 
   const factory AudioPlaybackState.paused({
     required Duration duration,
     required double speed,
+    required AudioItem audioItem,
   }) = _AudioPlaybackStatePaused;
 
   const factory AudioPlaybackState.completed({
     required Duration duration,
     required double speed,
+    required AudioItem audioItem,
   }) = _AudioPlaybackStateCompleted;
 }

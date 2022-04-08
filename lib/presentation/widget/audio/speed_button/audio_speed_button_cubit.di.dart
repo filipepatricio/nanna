@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/change_audio_speed_use_case.di.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/speed_button/audio_speed_button_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/speed_button/audio_speed_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 

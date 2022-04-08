@@ -2,16 +2,16 @@ import 'dart:math';
 
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/progress_bar/audio_progress_bar.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/speed_button/audio_speed_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/seek_button/audio_seek_button.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/speed_button/audio_speed_button.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -87,9 +87,11 @@ class PremiumArticleAudioView extends HookWidget {
             color: metadataStyle.color,
           ),
           const Spacer(),
-          const Expanded(
+          Expanded(
             flex: 2,
-            child: AudioProgressBar(),
+            child: AudioProgressBar(
+              article: article,
+            ),
           ),
           const Spacer(),
           _AudioComponentsView(article: article),

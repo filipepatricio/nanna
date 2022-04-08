@@ -38,7 +38,7 @@ class PremiumArticleAudioCubit extends Cubit<PremiumArticleAudioState> {
   Future<void> close() async {
     await _playbackStateSubscription?.cancel();
     await _audioProgressSubscription?.cancel();
-    await _stopAudioUseCase();
+
     return super.close();
   }
 

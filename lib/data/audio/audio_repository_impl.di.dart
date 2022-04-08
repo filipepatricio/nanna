@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:better_informed_mobile/data/audio/audio_file_downloader.di.dart';
+import 'package:better_informed_mobile/data/audio/handler/informed_base_audio_handler.dart';
+import 'package:better_informed_mobile/data/audio/mapper/audio_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/audio/mapper/audio_playback_state_mapper.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
@@ -16,11 +18,13 @@ class AudioRepositoryImpl implements AudioRepository {
   AudioRepositoryImpl(
     this._audioHandler,
     this._audioPlaybackStateMapper,
+    this._audioItemMapper,
     this._audioFileDownloader,
   );
 
-  final AudioHandler _audioHandler;
+  final InformedBaseAudioHandler _audioHandler;
   final AudioPlaybackStateMapper _audioPlaybackStateMapper;
+  final AudioItemMapper _audioItemMapper;
   final AudioFileDownloader _audioFileDownloader;
 
   @override
@@ -29,22 +33,15 @@ class AudioRepositoryImpl implements AudioRepository {
   }
 
   @override
-  Future<void> prepareItem(AudioItem item) async {
-    await _audioHandler.prepare();
+  Future<void> prepareItem(AudioItem item, String fileUrl) async {
+    final mediaItem = _audioItemMapper.from(item);
+    await _audioHandler.notifyLoading(mediaItem);
 
-    final fileName = _getAudioFileName(item);
+    final fileName = _getAudioFileName(fileUrl);
     final audioFile = await _getAudioFile(fileName);
-    await _audioFileDownloader.loadAndSaveFile(audioFile, item.fileUrl);
+    await _audioFileDownloader.loadAndSaveFile(audioFile, fileUrl);
 
-    final imageUrl = item.imageUrl;
-    final mediaItem = MediaItem(
-      id: audioFile.path,
-      title: item.title,
-      artist: item.author,
-      artUri: imageUrl == null ? null : Uri.parse(imageUrl),
-    );
-
-    await _audioHandler.playMediaItem(mediaItem);
+    await _audioHandler.open(audioFile.path);
   }
 
   @override
@@ -64,7 +61,7 @@ class AudioRepositoryImpl implements AudioRepository {
 
   @override
   Stream<AudioPlaybackState> get playbackState {
-    return _audioHandler.playbackState.map(_audioPlaybackStateMapper);
+    return _audioHandler.currentAudioItemStream.map(_audioPlaybackStateMapper);
   }
 
   @override
@@ -91,8 +88,8 @@ class AudioRepositoryImpl implements AudioRepository {
     return File(filePath);
   }
 
-  String _getAudioFileName(AudioItem audioItem) {
-    final uri = Uri.parse(audioItem.fileUrl);
+  String _getAudioFileName(String url) {
+    final uri = Uri.parse(url);
     final lastSegment = uri.pathSegments.last;
     return lastSegment;
   }

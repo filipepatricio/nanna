@@ -5,13 +5,13 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_c
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';

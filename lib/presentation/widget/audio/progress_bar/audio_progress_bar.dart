@@ -1,8 +1,9 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/progress_bar/audio_progress_bar_cubit.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar_cubit.di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -11,7 +12,12 @@ const _thumbRadius = 6.0;
 const _thumbGlowRadius = 15.0;
 
 class AudioProgressBar extends HookWidget {
-  const AudioProgressBar({Key? key}) : super(key: key);
+  const AudioProgressBar({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,7 @@ class AudioProgressBar extends HookWidget {
 
     useEffect(
       () {
-        cubit.initialize();
+        cubit.initialize(article.id);
       },
       [cubit],
     );
