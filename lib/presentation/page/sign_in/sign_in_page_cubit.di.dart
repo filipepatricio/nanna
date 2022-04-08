@@ -54,7 +54,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     emit(SignInPageState.processing());
     try {
       await _sendMagicLinkUseCase(_email);
-      emit(SignInPageState.magicLink());
+      emit(SignInPageState.magicLink(_email));
     } catch (_) {
       emit(SignInPageState.generalError());
       emit(SignInPageState.idle(false));
@@ -76,6 +76,10 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     } finally {
       emit(SignInPageState.idle(false));
     }
+  }
+
+  void closeMagicLinkView() {
+    emit(SignInPageState.idle(true));
   }
 
   Future<void> _subscribeForMagicLink() async {

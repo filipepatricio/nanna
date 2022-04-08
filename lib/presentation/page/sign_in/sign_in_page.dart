@@ -65,6 +65,25 @@ class SignInPage extends HookWidget {
     );
 
     return Scaffold(
+      appBar: AppBar(
+        leading: state.maybeMap(
+          magicLink: (state) => Padding(
+            padding: const EdgeInsets.only(left: AppDimens.m + AppDimens.xxs),
+            child: IconButton(
+              icon: const Icon(Icons.close_rounded),
+              color: AppColors.textPrimary,
+              highlightColor: AppColors.transparent,
+              splashColor: AppColors.transparent,
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                cubit.closeMagicLinkView();
+              },
+            ),
+          ),
+          orElse: () => const SizedBox(),
+        ),
+      ),
       body: Container(
         color: AppColors.background,
         child: KeyboardVisibilityBuilder(
@@ -74,7 +93,7 @@ class SignInPage extends HookWidget {
               controller: snackbarController,
               child: state.maybeMap(
                 processing: (_) => const Loader(),
-                magicLink: (state) => const MagicLinkContent(),
+                magicLink: (state) => MagicLinkContent(email: state.email),
                 idle: (state) => _IdleContent(
                   cubit: cubit,
                   isEmailValid: state.emailCorrect,
@@ -119,12 +138,12 @@ class _IdleContent extends HookWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: AppDimens.m),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: AppDimens.xxc),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: SvgPicture.asset(

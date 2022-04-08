@@ -102,7 +102,7 @@
     "header": {
       "signIn": "Welcome to the smart & flexible news format",
       "magicLinkOne": "_Check your mail!_",
-      "magicLinkTwo": "We’ve sent you a magic link."
+      "magicLinkTwo": "We've sent you a magic link to {}"
     },
     "providerButton": {
       "apple": "Sign in with Apple",
