@@ -22,7 +22,12 @@ class _CubitDefaults {
 T useCubit<T extends Cubit>({bool closeOnDispose = true, List<dynamic> keys = const <dynamic>[]}) {
   final getIt = useGetIt();
   final cubit = useMemoized(() => getIt<T>(), keys);
-  if (closeOnDispose) useEffect(() => cubit.close, [cubit]);
+  useEffect(
+    () {
+      return closeOnDispose ? cubit.close : null;
+    },
+    [cubit],
+  );
   return cubit;
 }
 
@@ -31,6 +36,7 @@ T useCubitFactory<T extends Cubit, F extends CubitFactory<T>>({
   bool closeOnDispose = true,
   List<dynamic> keys = const <dynamic>[],
 }) {
+  final getIt = useGetIt();
   final factory = useMemoized(() => getIt<F>(), keys);
   final cubit = useMemoized(
     () {
@@ -39,7 +45,14 @@ T useCubitFactory<T extends Cubit, F extends CubitFactory<T>>({
     },
     [factory],
   );
-  if (closeOnDispose) useEffect(() => cubit.close, [cubit]);
+
+  useEffect(
+    () {
+      return closeOnDispose ? cubit.close : null;
+    },
+    [cubit],
+  );
+
   return cubit;
 }
 
