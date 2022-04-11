@@ -22,7 +22,7 @@ class PremiumArticleAudioCubitProvider extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<PremiumArticleAudioCubit>();
     final imageUrl = useCloudinaryImageUrl(
-      article.image?.publicId,
+      article,
       AppDimens.articleAudioCoverSize,
       AppDimens.articleAudioCoverSize,
     );

@@ -28,7 +28,7 @@ class AudioFloatingControlButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final imageUrl = useCloudinaryImageUrl(
-      article?.image?.publicId,
+      article,
       AppDimens.articleAudioCoverSize,
       AppDimens.articleAudioCoverSize,
     );
