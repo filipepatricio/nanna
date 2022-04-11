@@ -26,7 +26,7 @@ class AudioRepositoryMock implements AudioRepository {
           id: '000-000',
           title: 'Some title',
           author: 'New York Times',
-          imageUrl: '',
+          imageUrl: null,
         ),
       ),
     );
@@ -42,7 +42,7 @@ class AudioRepositoryMock implements AudioRepository {
           id: '000-000',
           title: 'Some title',
           author: 'New York Times',
-          imageUrl: '',
+          imageUrl: null,
         ),
       ),
     );
@@ -58,7 +58,7 @@ class AudioRepositoryMock implements AudioRepository {
           id: '000-000',
           title: 'Some title',
           author: 'New York Times',
-          imageUrl: '',
+          imageUrl: null,
         ),
       ),
     );
