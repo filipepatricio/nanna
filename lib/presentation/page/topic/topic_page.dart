@@ -126,9 +126,7 @@ class _TopicIdleView extends HookWidget {
   }
 
   void _scrollToArticles(BuildContext context, TopicPageGestureManager gestureManager) {
-    gestureManager.animateViewTo(
-      AppDimens.topicArticleSectionTriggerPoint(context) + kToolbarHeight + MediaQuery.of(context).viewPadding.bottom,
-    );
+    gestureManager.animateViewTo(AppDimens.topicArticleSectionTriggerPoint(context));
   }
 
   bool _updateScrollPosition(ScrollNotification scrollInfo, ValueNotifier<double> scrollPositionNotifier) {

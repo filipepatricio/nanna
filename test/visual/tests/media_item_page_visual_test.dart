@@ -16,7 +16,7 @@ void main() {
     await tester.matchGoldenFile('media_item_page_(content)');
   });
 
-  visualTest('${MediaItemPage}_audio_view', (tester) async {
+  visualTest('${MediaItemPage}_(audio)', (tester) async {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [

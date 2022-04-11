@@ -81,6 +81,7 @@ class PremiumArticleAudioView extends HookWidget {
             article: article,
             isLight: false,
             showLogo: false,
+            showReadTime: false,
             fullDate: context.isNotSmallDevice,
             textStyle: metadataStyle,
             color: metadataStyle.color,

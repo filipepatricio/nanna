@@ -111,7 +111,11 @@ class AppDimens {
 
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
-      topicViewHeaderImageHeight(context) + topicViewTopicHeaderPadding + topicViewSummaryTextHeight;
+      topicViewHeaderImageHeight(context) +
+      topicViewTopicHeaderPadding +
+      topicViewSummaryTextHeight +
+      kToolbarHeight +
+      MediaQuery.of(context).viewPadding.bottom;
 
   /// Full screen
   static double topicViewHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
