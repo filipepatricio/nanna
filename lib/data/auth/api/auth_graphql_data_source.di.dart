@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/login_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/auth_exception.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/sign_in_credentials.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -10,7 +11,7 @@ import 'package:injectable/injectable.dart';
 
 const _noMemberAccessErrorCode = 'no_beta_access';
 
-@LazySingleton(as: AuthApiDataSource)
+@LazySingleton(as: AuthApiDataSource, env: liveEnvs)
 class AuthGraphqlDataSource implements AuthApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
