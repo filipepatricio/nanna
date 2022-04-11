@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_position_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/prepare_audio_track_use_case.di.dart';
-import 'package:better_informed_mobile/domain/audio/use_case/stop_audio_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -16,13 +15,11 @@ class PremiumArticleAudioCubit extends Cubit<PremiumArticleAudioState> {
   PremiumArticleAudioCubit(
     this._prepareAudioTrackUseCase,
     this._audioPlaybackStateStreamUseCase,
-    this._stopAudioUseCase,
     this._audioPositionStreamUseCase,
     this._trackActivityUseCase,
   ) : super(PremiumArticleAudioState.notInitialized());
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
-  final StopAudioUseCase _stopAudioUseCase;
   final AudioPlaybackStateStreamUseCase _audioPlaybackStateStreamUseCase;
   final AudioPositionStreamUseCase _audioPositionStreamUseCase;
   final TrackActivityUseCase _trackActivityUseCase;

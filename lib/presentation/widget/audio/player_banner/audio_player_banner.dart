@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
@@ -14,6 +15,7 @@ import 'package:better_informed_mobile/presentation/widget/cloudinary_progressiv
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
 const _imageWidth = 80.0;
 const _imageHeight = 80.0;
@@ -99,7 +101,7 @@ class AudioPlayerBanner extends HookWidget {
                     ),
                     const SizedBox(width: AppDimens.l),
                     _AudioControlButton(state: state),
-                    const SizedBox(width: AppDimens.ml),
+                    const SizedBox(width: AppDimens.xxl),
                   ],
                 ),
               ),
@@ -108,6 +110,20 @@ class AudioPlayerBanner extends HookWidget {
                 left: 0,
                 right: 0,
                 child: SimpleAudioProgressBar(),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => cubit.stop(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
+                    child: SvgPicture.asset(
+                      AppVectorGraphics.close,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
