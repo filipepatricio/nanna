@@ -6,9 +6,9 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/audio/spe
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-const _maxSpeed = 2.0;
+const _maxSpeed = 1.5;
 const _defaultSpeed = 1.0;
-const _speedStep = 0.5;
+const _speedStep = 0.25;
 
 @injectable
 class AudioSpeedButtonCubit extends Cubit<AudioSpeedButtonState> {
