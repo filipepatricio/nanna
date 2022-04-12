@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -59,7 +60,7 @@ class TopicOwnerAvatar extends HookWidget {
             height: imageHeight,
             clipBehavior: Clip.antiAlias,
             decoration: const BoxDecoration(shape: BoxShape.circle),
-            child: imageId != null
+            child: imageId != null && !kIsTest
                 ? CachedNetworkImage(
                     width: imageWidth,
                     height: imageHeight,
