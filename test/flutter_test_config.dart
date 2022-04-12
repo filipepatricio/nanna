@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/core/di/di_config.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:easy_localization/src/localization.dart';
@@ -28,8 +26,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   final data = jsonDecode(content) as Map<String, dynamic>;
 
   WidgetController.hitTestWarningShouldBeFatal = true;
-
-  await configureDependencies(AppConfig.mock.name);
+  
   // Prevent printing to stdout (unless a test fails) ...
   binding = BetterInformedTestWidgetsFlutterBinding();
   setUp(() async {

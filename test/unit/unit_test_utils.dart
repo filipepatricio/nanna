@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
@@ -12,10 +14,15 @@ extension WidgetTesterExtension on WidgetTester {
     PageRouteInfo initialRoute = defaultInitialRoute,
   }) async {
     final isTab = isTabRoute(initialRoute);
-
     final mainRouter = MainRouter(mainRouterKey);
+    final getIt = await configureDependencies(AppConfig.mock.name);
 
-    await pumpWidget(InformedApp(mainRouter: mainRouter));
+    await pumpWidget(
+      InformedApp(
+        mainRouter: mainRouter,
+        getIt: getIt,
+      ),
+    );
 
     await pumpAndSettle();
 

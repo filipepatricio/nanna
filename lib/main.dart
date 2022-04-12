@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -29,11 +30,11 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
 
-  await configureDependencies(environment);
+  final getIt = await configureDependencies(environment);
 
   final appConfig = getIt.get<AppConfig>();
-  _setupFimber();
-  await _setupAnalytics();
+  _setupFimber(getIt);
+  await _setupAnalytics(getIt);
 
   await Hive.initFlutter();
   final mainRouter = MainRouter(mainRouterKey);
@@ -49,13 +50,16 @@ Future<void> main() async {
         fallbackLocale: availableLocales[fallbackLanguageCode],
         useOnlyLangCode: true,
         saveLocale: true,
-        child: InformedApp(mainRouter: mainRouter),
+        child: InformedApp(
+          mainRouter: mainRouter,
+          getIt: getIt,
+        ),
       ),
     ),
   );
 }
 
-void _setupFimber() {
+void _setupFimber(GetIt getIt) {
   if (kDebugMode) {
     Fimber.plantTree(DebugTree(useColors: true));
   } else {
@@ -63,7 +67,7 @@ void _setupFimber() {
   }
 }
 
-Future<void> _setupAnalytics() => getIt<InitializeAnalyticsUseCase>()();
+Future<void> _setupAnalytics(GetIt getIt) => getIt<InitializeAnalyticsUseCase>()();
 
 String _getEnvironment() {
   const env = String.fromEnvironment(_environmentArgKey, defaultValue: Environment.dev);
