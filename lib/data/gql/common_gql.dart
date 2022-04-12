@@ -31,7 +31,7 @@ class CommonGQLModels {
       publicId
     }
     heroImage {
-      publicId
+      $image
     }
     readingList {
       id
@@ -109,10 +109,15 @@ class CommonGQLModels {
       timeToRead
       hasAudioVersion
       image {
-        publicId
+        $image
       }
       publisher {
         $publisher
       }
+  ''';
+
+  static const String image = '''
+        publicId
+        caption
   ''';
 }

@@ -8,7 +8,7 @@ class ArticleImageDTOMapper implements Mapper<ArticleImageDTO, ArticleImage> {
   @override
   ArticleImage call(ArticleImageDTO data) {
     return data.map(
-      cloudinary: (data) => ArticleImage.cloudinary(publicId: data.publicId),
+      cloudinary: (data) => ArticleImage.cloudinary(publicId: data.publicId, caption: data.caption),
       remote: (data) => ArticleImage.remote(url: data.url),
       unknown: (_) => const ArticleImage.unknown(),
     );

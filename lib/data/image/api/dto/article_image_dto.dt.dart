@@ -7,7 +7,7 @@ part 'article_image_dto.dt.g.dart';
 @Freezed(unionKey: '__typename', fallbackUnion: unknownKey)
 class ArticleImageDTO with _$ArticleImageDTO {
   @FreezedUnionValue('CloudinaryImage')
-  factory ArticleImageDTO.cloudinary(String publicId) = ArticleImageDTOCloudinary;
+  factory ArticleImageDTO.cloudinary(String publicId, {String? caption}) = ArticleImageDTOCloudinary;
 
   @FreezedUnionValue('RemoteImage')
   factory ArticleImageDTO.remote(String url) = ArticleImageDTORemote;
