@@ -6,9 +6,8 @@ import 'package:better_informed_mobile/presentation/style/app_raster_graphics.da
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/selected_articles_label.dart';
@@ -31,7 +30,6 @@ class TopicHeader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinaryProvider = useCloudinaryProvider();
     final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
     final topicHeaderImageWidth = MediaQuery.of(context).size.width;
 
@@ -45,15 +43,17 @@ class TopicHeader extends HookWidget {
             height: topicHeaderImageHeight,
             foregroundDecoration: const BoxDecoration(color: AppColors.black40),
             child: CloudinaryProgressiveImage(
+              publicId: topic.heroImage.publicId,
+              config: CloudinaryConfig(
+                platformBasedExtension: true,
+                autoGravity: true,
+                width: topicHeaderImageWidth,
+                height: topicHeaderImageHeight,
+              ),
               width: topicHeaderImageWidth,
               height: topicHeaderImageHeight,
               fit: BoxFit.fitWidth,
               testImage: AppRasterGraphics.testArticleHeroImage,
-              cloudinaryTransformation: cloudinaryProvider
-                  .withPublicIdAsPlatform(topic.heroImage.publicId)
-                  .transform()
-                  .withLogicalSize(topicHeaderImageWidth, topicHeaderImageHeight, context)
-                  .autoGravity(),
             ),
           ),
         ),

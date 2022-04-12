@@ -1,8 +1,7 @@
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart' as d;
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -26,14 +25,15 @@ class ArticleImage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinaryProvider = useCloudinaryProvider();
     if (image is d.ArticleImageCloudinary) {
       return CloudinaryProgressiveImage(
-        cloudinaryTransformation: cloudinaryProvider
-            .withPublicIdAsPlatform((image as d.ArticleImageCloudinary).publicId)
-            .transform()
-            .autoGravity()
-            .withLogicalSize(width, height, context),
+        publicId: (image as d.ArticleImageCloudinary).publicId,
+        config: CloudinaryConfig(
+          platformBasedExtension: true,
+          autoGravity: true,
+          width: width,
+          height: height,
+        ),
         width: width,
         height: height,
         fit: fit,
