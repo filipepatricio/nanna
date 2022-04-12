@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -49,8 +50,8 @@ class RelaxView extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (goodbyeHeadline.icon != null && !kIsTest)
-              Image.network(
-                cloudinaryProvider
+              CachedNetworkImage(
+                imageUrl: cloudinaryProvider
                     .withPublicIdAsPng(goodbyeHeadline.icon!)
                     .transform()
                     .width(DimensionUtil.getPhysicalPixelsAsInt(168.0, context))

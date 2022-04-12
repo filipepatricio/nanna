@@ -67,34 +67,34 @@ class MediaItemPage extends HookWidget {
       [cubit],
     );
 
-    return LayoutBuilder(
-      builder: (context, constraints) => Scaffold(
-        backgroundColor: AppColors.background,
-        body: Column(
-          children: [
-            /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
-            ///
-            /// As cupertino bottom sheet works on ScrollNotification
-            /// instead of ScrollController itself it's the only way
-            /// to make sure it will work - at least only way I found
-            NoScrollGlow(
-              child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: modalController,
-                child: const SizedBox.shrink(),
-              ),
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: Column(
+        children: [
+          /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
+          ///
+          /// As cupertino bottom sheet works on ScrollNotification
+          /// instead of ScrollController itself it's the only way
+          /// to make sure it will work - at least only way I found
+          NoScrollGlow(
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+              controller: modalController,
+              child: const SizedBox.shrink(),
             ),
-            Expanded(
-              child: _AnimatedSwitcher(
-                child: state.maybeMap(
-                  loading: (state) => const _LoadingContent(),
-                  idleFree: (state) => FreeArticleView(
-                    article: state.header,
-                    cubit: cubit,
-                    fromTopic: topicId != null || topicSlug != null,
-                    snackbarController: snackbarController,
-                  ),
-                  idlePremium: (state) => PremiumArticleView(
+          ),
+          Expanded(
+            child: _AnimatedSwitcher(
+              child: state.maybeMap(
+                loading: (state) => const _LoadingContent(),
+                idleFree: (state) => FreeArticleView(
+                  article: state.header,
+                  cubit: cubit,
+                  fromTopic: topicId != null || topicSlug != null,
+                  snackbarController: snackbarController,
+                ),
+                idlePremium: (state) => LayoutBuilder(
+                  builder: (context, constraints) => PremiumArticleView(
                     article: state.header,
                     content: state.content,
                     fromTopic: topicId != null || topicSlug != null,
@@ -106,18 +106,18 @@ class MediaItemPage extends HookWidget {
                     fullHeight: constraints.maxHeight,
                     readArticleProgress: readArticleProgress,
                   ),
-                  error: (state) => _ErrorContent(article: state.article),
-                  emptyError: (_) => _ErrorContent(
-                    onTryAgain: () {
-                      cubit.initialize(article, slug, topicId, topicSlug, briefId);
-                    },
-                  ),
-                  orElse: () => const SizedBox(),
                 ),
+                error: (state) => _ErrorContent(article: state.article),
+                emptyError: (_) => _ErrorContent(
+                  onTryAgain: () {
+                    cubit.initialize(article, slug, topicId, topicSlug, briefId);
+                  },
+                ),
+                orElse: () => const SizedBox(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

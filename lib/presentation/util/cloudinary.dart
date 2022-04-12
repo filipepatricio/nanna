@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -125,8 +126,8 @@ Image cloudinaryImage({
     );
   }
 
-  return Image.network(
-    transformation.generateNotNull(),
+  return Image(
+    image: CachedNetworkImageProvider(transformation.generateNotNull()),
     width: width,
     height: height,
     fit: fit,

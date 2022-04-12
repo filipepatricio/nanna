@@ -5,7 +5,8 @@ import 'package:better_informed_mobile/presentation/style/app_raster_graphics.da
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -59,17 +60,22 @@ class TopicOwnerAvatar extends HookWidget {
             clipBehavior: Clip.antiAlias,
             decoration: const BoxDecoration(shape: BoxShape.circle),
             child: imageId != null
-                ? CloudinaryProgressiveImage(
-                    testImage: AppRasterGraphics.editorialTeamAvatar,
-                    cloudinaryTransformation: cloudinaryProvider
+                ? CachedNetworkImage(
+                    width: imageWidth,
+                    height: imageHeight,
+                    imageUrl: cloudinaryProvider
                         .withPublicIdAsPlatform(imageId)
                         .transform()
                         .width(avatarResolutionWidth)
                         .height(avatarResolutionHeight)
                         .autoQuality()
-                        .autoGravity(),
-                    height: imageHeight,
-                    width: imageWidth,
+                        .autoGravity()
+                        .generateNotNull(),
+                    placeholder: (context, _) => LoadingShimmer(
+                      width: imageWidth,
+                      height: imageHeight,
+                      mainColor: AppColors.white,
+                    ),
                   )
                 : Image.asset(
                     owner is Expert ? AppRasterGraphics.expertAvatar : AppRasterGraphics.editorialTeamAvatar,
