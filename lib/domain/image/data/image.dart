@@ -1,8 +1,8 @@
-class Image {
+class CloudinaryImage {
   final String publicId;
   final String? caption;
 
-  Image({
+  CloudinaryImage({
     required this.publicId,
     this.caption,
   });

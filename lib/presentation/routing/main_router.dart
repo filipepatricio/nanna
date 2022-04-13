@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/page/invite_friend/invite_fr
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
+import 'package:better_informed_mobile/presentation/page/photo_caption/photo_caption_page.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
@@ -40,6 +41,7 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
     AutoRoute(page: InviteFriendPage),
+    AutoRoute(page: PhotoCaptionPage),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
   ],

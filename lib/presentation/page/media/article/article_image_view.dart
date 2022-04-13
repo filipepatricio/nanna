@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/photo_caption_button.dart';
+import 'package:better_informed_mobile/presentation/widget/photo_caption/photo_caption_button.dart';
 import 'package:flutter/material.dart';
 
 class ArticleImageView extends StatelessWidget {
@@ -24,9 +24,7 @@ class ArticleImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasImage = article.hasImage;
-    final articlePhotoCaption = article.image?.mapOrNull(
-      cloudinary: (image) => image.caption,
-    );
+    final articleImage = article.image;
 
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -86,7 +84,11 @@ class ArticleImageView extends StatelessWidget {
             ),
           ),
         ),
-        if (articlePhotoCaption != null) PhotoCaption(caption: articlePhotoCaption),
+        if (articleImage != null)
+          articleImage.maybeMap(
+            cloudinary: (image) => PhotoCaptionButton(cloudinaryImage: image.cloudinaryImage),
+            orElse: () => const SizedBox(),
+          )
       ],
     );
   }

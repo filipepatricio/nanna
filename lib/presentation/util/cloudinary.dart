@@ -154,7 +154,7 @@ String? useArticleImageUrl(MediaItemArticle article, int width, int height) {
 
         if (article.image is ArticleImageCloudinary) {
           return cloudinaryProvider
-              .withPublicIdAsPng((article.image as ArticleImageCloudinary).publicId)
+              .withPublicIdAsPng((article.image as ArticleImageCloudinary).cloudinaryImage.publicId)
               .transform()
               .autoGravity()
               .width(width)

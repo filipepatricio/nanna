@@ -11,7 +11,7 @@ abstract class TopicOwner {
   final String id;
   final String name;
   final String bio;
-  final Image? avatar;
+  final CloudinaryImage? avatar;
 }
 
 class Editor extends TopicOwner {
@@ -19,7 +19,7 @@ class Editor extends TopicOwner {
     required String id,
     required String name,
     required String bio,
-    Image? avatar,
+    CloudinaryImage? avatar,
   }) : super(
           id: id,
           name: name,
@@ -36,7 +36,7 @@ class Expert extends TopicOwner {
     required this.areaOfExpertise,
     this.instagram,
     this.linkedin,
-    Image? avatar,
+    CloudinaryImage? avatar,
   }) : super(
           id: id,
           name: name,

@@ -13,7 +13,7 @@ const _publisherLogoSize = 24.0;
 
 class PublisherLogo extends HookWidget {
   final Publisher publisher;
-  final informed.Image? image;
+  final informed.CloudinaryImage? image;
   final double size;
 
   const PublisherLogo._({
@@ -26,7 +26,8 @@ class PublisherLogo extends HookWidget {
   factory PublisherLogo.dark({required Publisher publisher, double size = _publisherLogoSize, Key? key}) =>
       PublisherLogo._(
         publisher: publisher,
-        image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoDark) : publisher.darkLogo,
+        image:
+            kIsTest ? informed.CloudinaryImage(publicId: AppRasterGraphics.testPublisherLogoDark) : publisher.darkLogo,
         size: size,
         key: key,
       );
@@ -34,7 +35,9 @@ class PublisherLogo extends HookWidget {
   factory PublisherLogo.light({required Publisher publisher, double size = _publisherLogoSize, Key? key}) =>
       PublisherLogo._(
         publisher: publisher,
-        image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoLight) : publisher.lightLogo,
+        image: kIsTest
+            ? informed.CloudinaryImage(publicId: AppRasterGraphics.testPublisherLogoLight)
+            : publisher.lightLogo,
         size: size,
         key: key,
       );

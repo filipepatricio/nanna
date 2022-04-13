@@ -51,7 +51,7 @@ class QuoteBackgroundView extends HookWidget implements BaseShareCompletable {
         if (image is ArticleImageCloudinary) {
           return cloudinaryImageAuto(
             cloudinary: cloudinary,
-            publicId: image.publicId,
+            publicId: image.cloudinaryImage.publicId,
             width: width,
             height: height,
             fit: BoxFit.cover,

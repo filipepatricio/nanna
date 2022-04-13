@@ -18,8 +18,8 @@ class Topic {
   final DateTime lastUpdatedAt;
   final List<Publisher> highlightedPublishers;
   final TopicCategory? category;
-  final Image heroImage;
-  final Image coverImage;
+  final CloudinaryImage heroImage;
+  final CloudinaryImage coverImage;
   final ReadingList readingList;
 
   Topic({
