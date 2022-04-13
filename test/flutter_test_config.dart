@@ -26,7 +26,7 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   final data = jsonDecode(content) as Map<String, dynamic>;
 
   WidgetController.hitTestWarningShouldBeFatal = true;
-  
+
   // Prevent printing to stdout (unless a test fails) ...
   binding = BetterInformedTestWidgetsFlutterBinding();
   setUp(() async {
