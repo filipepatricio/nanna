@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -72,12 +73,19 @@ class AudioPlayerBanner extends HookWidget {
                 height: AppDimens.audioBannerHeight,
                 child: Row(
                   children: [
-                    if (imageUrl != null && !kIsTest)
-                      CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        width: _imageWidth,
-                        height: _imageHeight,
-                      ),
+                    if (imageUrl != null)
+                      if (!kIsTest)
+                        CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          width: _imageWidth,
+                          height: _imageHeight,
+                        )
+                      else
+                        Image.asset(
+                          AppRasterGraphics.testReadingListCoverImageCropped,
+                          height: _imageHeight,
+                          width: _imageWidth,
+                        ),
                     const SizedBox(width: AppDimens.l),
                     Expanded(
                       child: Column(
