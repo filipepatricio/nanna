@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/photo_caption_button.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/selected_articles_label.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
@@ -32,6 +33,7 @@ class TopicHeader extends HookWidget {
   Widget build(BuildContext context) {
     final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
     final topicHeaderImageWidth = MediaQuery.of(context).size.width;
+    final topicPhotoCaption = topic.heroImage.caption;
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -110,6 +112,7 @@ class TopicHeader extends HookWidget {
             ],
           ),
         ),
+        if (topicPhotoCaption != null) PhotoCaption(caption: topicPhotoCaption),
       ],
     );
   }

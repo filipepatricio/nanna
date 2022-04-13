@@ -83,7 +83,6 @@ class TopicAppBar extends HookWidget {
         collapseMode: CollapseMode.parallax,
         background: TopicHeader(
           topic: topic,
-          cubit: cubit,
           onArticlesLabelTap: onArticlesLabelTap,
           onArrowTap: onArrowTap,
         ),
