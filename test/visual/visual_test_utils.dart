@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 
 import '../flutter_test_config.dart';
 
+typedef DependencyOverrideCallback = Future<void> Function(GetIt getIt);
+
 const defaultDevices = [
   Device(name: 'iPhone_08,4', size: Size(320, 568)), // iPhone SE
   Device(name: 'iPhone_09,3', size: Size(375, 667)), // iPhone 7
@@ -104,10 +106,16 @@ void visualTest(
 }
 
 extension StartAppExtension on WidgetTester {
-  Future<void> startApp({PageRouteInfo initialRoute = defaultInitialRoute}) async {
+  Future<void> startApp<T extends Object>({
+    PageRouteInfo initialRoute = defaultInitialRoute,
+    DependencyOverrideCallback? dependencyOverride,
+  }) async {
     final isTab = isTabRoute(initialRoute);
     final mainRouter = MainRouter(mainRouterKey);
+
     final getIt = await configureDependencies(AppConfig.mock.name);
+    getIt.allowReassignment = true;
+    await dependencyOverride?.call(getIt);
 
     await pumpWidgetBuilder(
       InformedApp(

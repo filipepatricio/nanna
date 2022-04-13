@@ -13,7 +13,13 @@ void main() {
 
     await tester.startApp(
       initialRoute: ExploreTabGroupRouter(
-        children: [ArticleSeeAllPageRoute(areaId: area.id, title: area.title, entries: area.articles)],
+        children: [
+          ArticleSeeAllPageRoute(
+            areaId: area.id,
+            title: area.title,
+            entries: area.articles,
+          ),
+        ],
       ),
     );
     await tester.matchGoldenFile();
