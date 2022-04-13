@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
@@ -6,9 +7,13 @@ import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:provider/provider.dart';
 
 import '../flutter_test_config.dart';
+
+typedef DependencyOverrideCallback = Future<void> Function(GetIt getIt);
 
 const defaultDevices = [
   Device(name: 'iPhone_08,4', size: Size(320, 568)), // iPhone SE
@@ -101,12 +106,25 @@ void visualTest(
 }
 
 extension StartAppExtension on WidgetTester {
-  Future<void> startApp({PageRouteInfo initialRoute = defaultInitialRoute}) async {
+  Future<void> startApp<T extends Object>({
+    PageRouteInfo initialRoute = defaultInitialRoute,
+    DependencyOverrideCallback? dependencyOverride,
+  }) async {
     final isTab = isTabRoute(initialRoute);
-
     final mainRouter = MainRouter(mainRouterKey);
 
-    await pumpWidgetBuilder(InformedApp(mainRouter: mainRouter));
+    final getIt = await configureDependencies(AppConfig.mock.name);
+    getIt.allowReassignment = true;
+    await dependencyOverride?.call(getIt);
+
+    await pumpWidgetBuilder(
+      InformedApp(
+        mainRouter: mainRouter,
+        getIt: getIt,
+      ),
+      // pumpWidgetBuilder by default adds it's own MaterialApp over child we pass, this code disables it
+      wrapper: (widget) => widget,
+    );
 
     await pumpAndSettle();
 
@@ -160,6 +178,11 @@ extension StartAppExtension on WidgetTester {
     _matchGoldenFileCalled = true;
     final fileName = '$fileNamePrefix';
     await multiScreenGolden(this, '$fileName', devices: _selectedDevices);
+  }
+
+  void mockDependency<T extends Object>(T dependency) {
+    final BuildContext context = element(find.byType(Container));
+    context.read<GetIt>().registerSingleton<T>(dependency);
   }
 }
 

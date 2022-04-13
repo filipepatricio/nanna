@@ -1,21 +1,35 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 import '../flutter_test_config.dart';
+
+typedef DependencyOverrideCallback = Future<void> Function(GetIt getIt);
 
 extension WidgetTesterExtension on WidgetTester {
   Future<void> startApp({
     String? initialDeepLink,
     PageRouteInfo initialRoute = defaultInitialRoute,
+    DependencyOverrideCallback? dependencyOverride,
   }) async {
     final isTab = isTabRoute(initialRoute);
-
     final mainRouter = MainRouter(mainRouterKey);
 
-    await pumpWidget(InformedApp(mainRouter: mainRouter));
+    final getIt = await configureDependencies(AppConfig.mock.name);
+    getIt.allowReassignment = true;
+    await dependencyOverride?.call(getIt);
+
+    await pumpWidget(
+      InformedApp(
+        mainRouter: mainRouter,
+        getIt: getIt,
+      ),
+    );
 
     await pumpAndSettle();
 

@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/presentation/util/di_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,12 +15,14 @@ class _CubitDefaults {
 }
 
 T useCubit<T extends Cubit>({bool closeOnDispose = true, List<dynamic> keys = const <dynamic>[]}) {
+  final getIt = useGetIt();
   final cubit = useMemoized(() => getIt<T>(), keys);
   if (closeOnDispose) useEffect(() => cubit.close, [cubit]);
   return cubit;
 }
 
 T useCubitWithParams<T extends Cubit>(param1, param2, [List<dynamic> keys = const <dynamic>[]]) {
+  final getIt = useGetIt();
   final cubit = useMemoized(() => getIt.get<T>(param1: param1, param2: param2), keys);
   useEffect(() => cubit.close, [cubit]);
   return cubit;

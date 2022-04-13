@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
-import 'package:uni_links/uni_links.dart';
 
 class AppLinkDataSourceMock implements AppLinkDataSource {
   final StreamController<Uri> _appLinkStream = StreamController.broadcast();
@@ -21,7 +20,7 @@ class AppLinkDataSourceMock implements AppLinkDataSource {
 
   Future<void> _initialize() async {
     try {
-      _initialRoute = await getInitialUri();
+      _initialRoute = null;
     } catch (_) {}
   }
 
