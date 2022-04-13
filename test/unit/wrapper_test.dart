@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import 'data/audio/mapper/audio_item_mapper_test.dart' as audio_item_mapper_test;
 import 'data/audio/mapper/audio_playback_state_mapper_test.dart' as audio_playback_state_mapper_test;
 import 'data/auth/api/auth_repository_impl_test.dart' as auth_repository_impl_test;
 import 'data/auth/api/refresh_token_service_test.dart' as refresh_token_service_test;
@@ -7,7 +8,6 @@ import 'data/auth/app_link/auth_app_link_repository_impl_test.dart' as auth_app_
 import 'data/auth/app_link/magic_link_parser_test.dart' as magic_link_parser_test;
 import 'data/networking/app_version_link/app_version_link_transformer_test.dart' as app_version_link_transformer_test;
 import 'data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
-
 import 'domain/audio/prepare_audio_track_use_case_test.dart' as prepare_audio_track_use_case_test;
 import 'domain/bookmark/use_case/get_bookmark_state_use_case_test.dart' as get_bookmark_state_use_case_test;
 import 'domain/bookmark/use_case/switch_bookmark_state_use_case_test.dart' as switch_bookmark_state_use_case_test;
@@ -17,7 +17,6 @@ import 'domain/push_notification/use_case/set_channel_email_setting_use_case_tes
     as set_channel_email_setting_use_case_test;
 import 'domain/push_notification/use_case/set_channel_push_setting_use_case_test.dart'
     as set_channel_push_setting_use_case_test;
-
 import 'presentation/app_update_checker_test.dart' as app_update_checker_test;
 import 'presentation/media_item_page_test.dart' as media_item_page_test;
 import 'presentation/sign_in_page_test.dart' as sign_in_page_test;
@@ -27,6 +26,7 @@ import 'presentation/topic_owner_page_test.dart' as topic_owner_page_test;
 
 void main() {
   // Data
+  group('audio_item_mapper_test', audio_item_mapper_test.main);
   group('audio_playback_state_mapper_test', audio_playback_state_mapper_test.main);
   group('auth_repository_impl_test', auth_repository_impl_test.main);
   group('refresh_token_service_test', refresh_token_service_test.main);

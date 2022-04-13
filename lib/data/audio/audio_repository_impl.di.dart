@@ -27,8 +27,11 @@ class AudioRepositoryImpl implements AudioRepository {
   final AudioItemMapper _audioItemMapper;
   final AudioFileDownloader _audioFileDownloader;
 
+  var _lastPosition = Duration.zero;
+
   @override
   Future<void> closeItem() async {
+    _lastPosition = Duration.zero;
     await _audioHandler.stop();
   }
 
@@ -65,7 +68,13 @@ class AudioRepositoryImpl implements AudioRepository {
   }
 
   @override
-  Stream<Duration> get position => AudioService.position;
+  Stream<Duration> get position async* {
+    yield _lastPosition;
+    await for (final position in AudioService.position) {
+      _lastPosition = position;
+      yield position;
+    }
+  }
 
   @override
   Future<void> fastForward() async {

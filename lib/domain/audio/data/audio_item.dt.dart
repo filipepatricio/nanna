@@ -6,6 +6,7 @@ part 'audio_item.dt.freezed.dart';
 class AudioItem with _$AudioItem {
   factory AudioItem({
     required String id,
+    required String slug,
     required String title,
     required String author,
     required String? imageUrl,

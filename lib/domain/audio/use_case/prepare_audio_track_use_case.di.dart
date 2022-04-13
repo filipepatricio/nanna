@@ -23,6 +23,7 @@ class PrepareArticleAudioTrackUseCase {
 
     final item = AudioItem(
       id: article.id,
+      slug: article.slug,
       title: article.strippedTitle,
       author: article.publisher.name,
       imageUrl: imageUrl,

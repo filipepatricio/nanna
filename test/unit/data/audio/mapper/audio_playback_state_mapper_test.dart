@@ -94,6 +94,7 @@ void main() {
       );
       final audioItem = AudioItem(
         id: 'id',
+        slug: 'slug',
         title: 'title',
         author: 'author',
         imageUrl: 'imageUrl',
@@ -127,6 +128,7 @@ void main() {
     );
     final audioItem = AudioItem(
       id: 'id',
+      slug: 'slug',
       title: 'title',
       author: 'author',
       imageUrl: 'imageUrl',
@@ -161,6 +163,7 @@ void main() {
     );
     final audioItem = AudioItem(
       id: 'id',
+      slug: 'slug',
       title: 'title',
       author: 'author',
       imageUrl: 'imageUrl',
@@ -195,6 +198,7 @@ void main() {
     );
     final audioItem = AudioItem(
       id: 'id',
+      slug: 'slug',
       title: 'title',
       author: 'author',
       imageUrl: 'imageUrl',

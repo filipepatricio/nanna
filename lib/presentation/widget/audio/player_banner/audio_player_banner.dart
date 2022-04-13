@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -11,8 +11,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/simple_audio_progress_bar.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary_progressive_image.dart';
-import 'package:cloudinary_sdk/cloudinary_sdk.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -73,12 +72,11 @@ class AudioPlayerBanner extends HookWidget {
                 height: AppDimens.audioBannerHeight,
                 child: Row(
                   children: [
-                    if (imageUrl != null)
-                      CloudinaryProgressiveImage(
-                        cloudinaryTransformation: CloudinaryImage(imageUrl).transform(),
+                    if (imageUrl != null && !kIsTest)
+                      CachedNetworkImage(
+                        imageUrl: imageUrl,
                         width: _imageWidth,
                         height: _imageHeight,
-                        testImage: AppRasterGraphics.testArticleHeroImage,
                       ),
                     const SizedBox(width: AppDimens.l),
                     Expanded(
@@ -174,7 +172,7 @@ extension on AudioPlayerBannerState {
       notInitialized: (_) => null,
       visible: (state) => () => AutoRouter.of(context).push(
             MediaItemPageRoute(
-              slug: '',
+              slug: state.audioItem.slug,
               articleOutputMode: ArticleOutputMode.audio,
             ),
           ),

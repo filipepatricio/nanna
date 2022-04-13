@@ -17,7 +17,7 @@ class PremiumArticleAudioCubit extends Cubit<PremiumArticleAudioState> {
     this._audioPlaybackStateStreamUseCase,
     this._audioPositionStreamUseCase,
     this._trackActivityUseCase,
-  ) : super(PremiumArticleAudioState.notInitialized());
+  ) : super(PremiumArticleAudioState.initializing());
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
   final AudioPlaybackStateStreamUseCase _audioPlaybackStateStreamUseCase;

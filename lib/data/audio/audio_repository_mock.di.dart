@@ -24,6 +24,7 @@ class AudioRepositoryMock implements AudioRepository {
         speed: 1.0,
         audioItem: AudioItem(
           id: '000-000',
+          slug: 'article',
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
@@ -40,6 +41,7 @@ class AudioRepositoryMock implements AudioRepository {
         speed: 1.0,
         audioItem: AudioItem(
           id: '000-000',
+          slug: 'article',
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
@@ -56,6 +58,7 @@ class AudioRepositoryMock implements AudioRepository {
         speed: 1.0,
         audioItem: AudioItem(
           id: '000-000',
+          slug: 'article',
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
