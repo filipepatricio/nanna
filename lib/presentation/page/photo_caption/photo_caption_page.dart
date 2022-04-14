@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/image/data/image.dart';
+import 'package:better_informed_mobile/domain/image/data/image.dart' as informed;
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -15,7 +15,7 @@ class PhotoCaptionPage extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final CloudinaryImage cloudinaryImage;
+  final informed.Image cloudinaryImage;
 
   @override
   Widget build(BuildContext context) {

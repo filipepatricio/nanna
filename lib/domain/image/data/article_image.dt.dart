@@ -5,7 +5,7 @@ part 'article_image.dt.freezed.dart';
 
 @freezed
 class ArticleImage with _$ArticleImage {
-  const factory ArticleImage.cloudinary(CloudinaryImage cloudinaryImage) = ArticleImageCloudinary;
+  const factory ArticleImage.cloudinary(Image cloudinaryImage) = ArticleImageCloudinary;
 
   const factory ArticleImage.remote({required String url}) = ArticleImageRemote;
 

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
-import 'package:better_informed_mobile/domain/image/data/image.dart';
+import 'package:better_informed_mobile/domain/image/data/image.dart' as informed;
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -21,7 +21,7 @@ class PhotoCaptionButton extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final CloudinaryImage cloudinaryImage;
+  final informed.Image cloudinaryImage;
   final String? topicId;
   final String? articleId;
 
