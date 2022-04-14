@@ -142,8 +142,8 @@ class AppDimens {
   /// Full screen width
   static double photoCaptionImageContainerWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
-  /// 70% Full screen height
-  static double photoCaptionImageContainerHeight(BuildContext context) => MediaQuery.of(context).size.height * .7;
+  /// 65% Full screen height
+  static double photoCaptionImageContainerHeight(BuildContext context) => MediaQuery.of(context).size.height * .65;
 
   /// 72
   static const topicViewArticleSectionArticleCountLabelHeight = 72.0;

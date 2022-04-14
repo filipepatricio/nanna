@@ -146,6 +146,14 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'article_id': articleId,
         },
       );
+
+  factory AnalyticsEvent.imageCaptionRead({String? topicId, String? articleId}) => AnalyticsEvent._(
+        'ImageCaptionRead',
+        {
+          'topic_id': topicId,
+          'article_id': articleId,
+        },
+      );
 }
 
 extension on BookmarkSortConfigName {

@@ -22,20 +22,36 @@ class InformedTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                color: AppColors.pastelPurple,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(AppDimens.s),
+        Container(
+          decoration: const BoxDecoration(
+            color: AppColors.pastelPurple,
+            borderRadius: BorderRadius.all(
+              Radius.circular(AppDimens.s),
+            ),
+          ),
+          child: Stack(
+            children: [
+              if (onDismiss != null)
+                Positioned(
+                  top: AppDimens.s,
+                  right: AppDimens.s,
+                  child: IconButton(
+                    icon: const Icon(Icons.close_rounded),
+                    color: AppColors.textPrimary,
+                    highlightColor: AppColors.transparent,
+                    splashColor: AppColors.transparent,
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      onDismiss!();
+                    },
+                  ),
                 ),
-              ),
-              child: Padding(
+              Padding(
                 padding:
                     const EdgeInsets.only(top: AppDimens.m, left: AppDimens.m, right: AppDimens.m, bottom: AppDimens.s),
                 child: Column(
@@ -54,13 +70,16 @@ class InformedTooltip extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          TextButton(
-                            onPressed: onActionButtonTap,
-                            child: Text(
-                              actionButtonText!,
-                              style: AppTypography.h5BoldSmall.copyWith(
-                                color: AppColors.textPrimary,
-                                decoration: TextDecoration.underline,
+                          GestureDetector(
+                            onTap: onActionButtonTap,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: AppDimens.m),
+                              child: Text(
+                                actionButtonText!,
+                                style: AppTypography.h5BoldSmall.copyWith(
+                                  color: AppColors.textPrimary,
+                                  decoration: TextDecoration.underline,
+                                ),
                               ),
                             ),
                           )
@@ -69,25 +88,9 @@ class InformedTooltip extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
-        if (onDismiss != null)
-          Positioned(
-            top: AppDimens.s,
-            right: AppDimens.s,
-            child: IconButton(
-              icon: const Icon(Icons.close_rounded),
-              color: AppColors.textPrimary,
-              highlightColor: AppColors.transparent,
-              splashColor: AppColors.transparent,
-              alignment: Alignment.topRight,
-              padding: EdgeInsets.zero,
-              onPressed: () {
-                onDismiss!();
-              },
-            ),
+            ],
           ),
+        ),
       ],
     );
   }

@@ -90,6 +90,7 @@ class ArticleImageView extends StatelessWidget {
           articleImage.maybeMap(
             cloudinary: (image) => PhotoCaptionButton(
               cloudinaryImage: image.cloudinaryImage,
+              articleId: article.id,
             ),
             orElse: () => const SizedBox(),
           )

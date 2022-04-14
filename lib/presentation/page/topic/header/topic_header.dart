@@ -113,6 +113,7 @@ class TopicHeader extends HookWidget {
         ),
         PhotoCaptionButton(
           cloudinaryImage: topic.heroImage,
+          topicId: topic.id,
         ),
       ],
     );
