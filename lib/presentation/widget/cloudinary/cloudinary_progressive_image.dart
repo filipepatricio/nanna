@@ -22,6 +22,7 @@ class CloudinaryProgressiveImage extends HookWidget {
   final Alignment alignment;
   final String testImage;
   final CloudinaryConfig config;
+  final bool showLoadingShimmer;
 
   const CloudinaryProgressiveImage({
     required this.publicId,
@@ -31,6 +32,7 @@ class CloudinaryProgressiveImage extends HookWidget {
     this.alignment = Alignment.center,
     this.testImage = AppRasterGraphics.testReadingListCoverImage,
     this.config = const CloudinaryConfig(),
+    this.showLoadingShimmer = true,
     Key? key,
   }) : super(key: key);
 
@@ -53,11 +55,15 @@ class CloudinaryProgressiveImage extends HookWidget {
 
     return ProgressiveImage.custom(
       alignment: alignment,
-      placeholderBuilder: (context) => LoadingShimmer(
-        width: width,
-        height: height,
-        mainColor: AppColors.white,
-      ),
+      placeholderBuilder: (context) {
+        return showLoadingShimmer
+            ? LoadingShimmer(
+                width: width,
+                height: height,
+                mainColor: AppColors.white,
+              )
+            : const CircularProgressIndicator(color: AppColors.limeGreen);
+      },
       thumbnail: CachedNetworkImageProvider(thumbnailUrl),
       image: CachedNetworkImageProvider(imageUrl),
       width: width,

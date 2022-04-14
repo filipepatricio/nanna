@@ -25,6 +25,8 @@ class ArticleImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasImage = article.hasImage;
     final articleImage = article.image;
+    final imageWidth = MediaQuery.of(context).size.width;
+    final imageHeight = fullHeight;
 
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -36,8 +38,8 @@ class ArticleImageView extends StatelessWidget {
             foregroundDecoration: const BoxDecoration(color: AppColors.black40),
             child: ArticleImage(
               image: article.image!,
-              width: MediaQuery.of(context).size.width,
-              height: fullHeight,
+              width: imageWidth,
+              height: imageHeight,
               cardColor: AppColors.background,
               fit: BoxFit.cover,
             ),
@@ -86,7 +88,9 @@ class ArticleImageView extends StatelessWidget {
         ),
         if (articleImage != null)
           articleImage.maybeMap(
-            cloudinary: (image) => PhotoCaptionButton(cloudinaryImage: image.cloudinaryImage),
+            cloudinary: (image) => PhotoCaptionButton(
+              cloudinaryImage: image.cloudinaryImage,
+            ),
             orElse: () => const SizedBox(),
           )
       ],

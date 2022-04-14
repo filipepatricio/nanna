@@ -20,7 +20,7 @@ class PhotoCaptionPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final imageWidth = MediaQuery.of(context).size.width;
-    final imageHeight = AppDimens.photoCaptionImageHeight(context);
+    final imageHeight = MediaQuery.of(context).size.height;
     final imageCaption = cloudinaryImage.caption;
     return Scaffold(
       backgroundColor: AppColors.textPrimary,
@@ -43,8 +43,9 @@ class PhotoCaptionPage extends HookWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: imageWidth,
-              foregroundDecoration: const BoxDecoration(color: AppColors.transparent),
+              width: AppDimens.photoCaptionImageContainerWidth(context),
+              height: AppDimens.photoCaptionImageContainerHeight(context),
+              color: AppColors.textPrimary,
               child: CloudinaryProgressiveImage(
                 publicId: cloudinaryImage.publicId,
                 config: CloudinaryConfig(
@@ -55,6 +56,7 @@ class PhotoCaptionPage extends HookWidget {
                 width: imageWidth,
                 height: imageHeight,
                 fit: BoxFit.fitWidth,
+                showLoadingShimmer: false,
                 testImage: AppRasterGraphics.testArticleHeroImage,
               ),
             ),

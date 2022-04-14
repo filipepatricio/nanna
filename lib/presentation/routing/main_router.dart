@@ -41,7 +41,6 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
     AutoRoute(page: InviteFriendPage),
-    AutoRoute(page: PhotoCaptionPage),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
   ],
@@ -66,6 +65,7 @@ const mainPageRoute = CustomRoute(
     ),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
+    CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
     RedirectRoute(path: '', redirectTo: topicsPathSegment),
   ],
 );
