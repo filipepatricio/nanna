@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/routing/observers/tabs_navig
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/di_util.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker.dart';
 import 'package:flutter/material.dart' hide TabBar;
 import 'package:flutter/services.dart';
@@ -36,16 +36,9 @@ class TabBarPage extends HookWidget {
           child: AppUpdateChecker(
             child: AutoTabsScaffold(
               builder: (context, child, animation) {
-                return Stack(
-                  children: [
-                    child,
-                    const Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: AudioPlayerBanner(),
-                    ),
-                  ],
+                return AudioPlayerBannerWrapper(
+                  layout: AudioPlayerBannerLayout.stack,
+                  child: child,
                 );
               },
               key: tabBarPageKey,

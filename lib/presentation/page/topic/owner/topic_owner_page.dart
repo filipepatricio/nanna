@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
@@ -66,107 +67,110 @@ class TopicOwnerPage extends HookWidget {
     );
 
     return Material(
-      child: NoScrollGlow(
-        child: CustomScrollView(
-          physics: getPlatformScrollPhysics(),
-          shrinkWrap: true,
-          controller: scrollController,
-          slivers: [
-            _ActionsBar(controller: scrollController, owner: owner),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  const SizedBox(height: AppDimens.l),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                    child: TopicOwnerAvatar(
-                      owner: owner,
-                      textStyle: AppTypography.h3bold,
-                      imageSize: AppDimens.avatarSize * 1.3,
-                    ),
-                  ),
-                  const SizedBox(height: AppDimens.m),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                    child: Text(
-                      owner.bio,
-                      softWrap: true,
-                      style: AppTypography.b2Regular,
-                    ),
-                  ),
-                  const SizedBox(height: AppDimens.xl),
-                  GestureDetector(
-                    onTap: () {
-                      context.pushRoute(const HowDoWeCurateContentPageRoute());
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                      child: Row(
-                        children: [
-                          Text(
-                            LocaleKeys.topic_howDoWeCurateContent_label.tr(),
-                            style: AppTypography.h4Bold.copyWith(decoration: TextDecoration.underline),
-                          ),
-                          const SizedBox(width: AppDimens.xs),
-                          const Icon(Icons.arrow_forward_ios_rounded, size: 12),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppDimens.xl),
-                  const BottomStackedCards(),
-                  const SizedBox(height: AppDimens.m),
-                  if (owner is! EditorialTeam) ...[
-                    const SizedBox(height: AppDimens.xl),
+      child: AudioPlayerBannerWrapper(
+        layout: AudioPlayerBannerLayout.column,
+        child: NoScrollGlow(
+          child: CustomScrollView(
+            physics: getPlatformScrollPhysics(),
+            shrinkWrap: true,
+            controller: scrollController,
+            slivers: [
+              _ActionsBar(controller: scrollController, owner: owner),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    const SizedBox(height: AppDimens.l),
                     Padding(
-                      padding: const EdgeInsets.only(left: AppDimens.l),
-                      child: Text(
-                        LocaleKeys.topic_owner_lastUpdated.tr(),
-                        style: AppTypography.h3bold,
+                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                      child: TopicOwnerAvatar(
+                        owner: owner,
+                        textStyle: AppTypography.h3bold,
+                        imageSize: AppDimens.avatarSize * 1.3,
                       ),
                     ),
-                    const SizedBox(height: AppDimens.s),
-                    state.maybeMap(
-                      idleExpert: (state) => LastUpdatedTopics(
-                        topics: state.topics,
-                        cardStackHeight: cardStackHeight,
+                    const SizedBox(height: AppDimens.m),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                      child: Text(
+                        owner.bio,
+                        softWrap: true,
+                        style: AppTypography.b2Regular,
                       ),
-                      idleEditor: (state) => LastUpdatedTopics(
-                        topics: state.topics,
-                        cardStackHeight: cardStackHeight,
+                    ),
+                    const SizedBox(height: AppDimens.xl),
+                    GestureDetector(
+                      onTap: () {
+                        context.pushRoute(const HowDoWeCurateContentPageRoute());
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                        child: Row(
+                          children: [
+                            Text(
+                              LocaleKeys.topic_howDoWeCurateContent_label.tr(),
+                              style: AppTypography.h4Bold.copyWith(decoration: TextDecoration.underline),
+                            ),
+                            const SizedBox(width: AppDimens.xs),
+                            const Icon(Icons.arrow_forward_ios_rounded, size: 12),
+                          ],
+                        ),
                       ),
-                      loading: (_) => Padding(
-                        padding: const EdgeInsets.only(top: AppDimens.l),
-                        child: RoundStackedCards.variant(
-                          coverSize: Size(cardStackWidth, cardStackHeight),
-                          variant: RoundStackCardVariant.a,
-                          child: const LoadingShimmer.defaultColor(
-                            radius: AppDimens.m,
+                    ),
+                    const SizedBox(height: AppDimens.xl),
+                    const BottomStackedCards(),
+                    const SizedBox(height: AppDimens.m),
+                    if (owner is! EditorialTeam) ...[
+                      const SizedBox(height: AppDimens.xl),
+                      Padding(
+                        padding: const EdgeInsets.only(left: AppDimens.l),
+                        child: Text(
+                          LocaleKeys.topic_owner_lastUpdated.tr(),
+                          style: AppTypography.h3bold,
+                        ),
+                      ),
+                      const SizedBox(height: AppDimens.s),
+                      state.maybeMap(
+                        idleExpert: (state) => LastUpdatedTopics(
+                          topics: state.topics,
+                          cardStackHeight: cardStackHeight,
+                        ),
+                        idleEditor: (state) => LastUpdatedTopics(
+                          topics: state.topics,
+                          cardStackHeight: cardStackHeight,
+                        ),
+                        loading: (_) => Padding(
+                          padding: const EdgeInsets.only(top: AppDimens.l),
+                          child: RoundStackedCards.variant(
+                            coverSize: Size(cardStackWidth, cardStackHeight),
+                            variant: RoundStackCardVariant.a,
+                            child: const LoadingShimmer.defaultColor(
+                              radius: AppDimens.m,
+                            ),
                           ),
                         ),
-                      ),
-                      error: (_) => Padding(
-                        padding: const EdgeInsets.only(top: AppDimens.l),
-                        child: StackedCardsErrorView(
-                          padding: EdgeInsets.zero,
-                          size: Size(cardStackWidth, cardStackHeight),
+                        error: (_) => Padding(
+                          padding: const EdgeInsets.only(top: AppDimens.l),
+                          child: StackedCardsErrorView(
+                            padding: EdgeInsets.zero,
+                            size: Size(cardStackWidth, cardStackHeight),
+                          ),
                         ),
+                        orElse: () => const SizedBox(),
                       ),
-                      orElse: () => const SizedBox(),
-                    ),
-                    const SizedBox(height: AppDimens.xxl),
-                    if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
-                      _SocialMediaLinks(
-                        cubit: cubit,
-                        owner: owner as Expert,
-                      ),
-                      const SizedBox(height: AppDimens.c),
-                    ],
-                  ]
-                ],
+                      const SizedBox(height: AppDimens.xxl),
+                      if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
+                        _SocialMediaLinks(
+                          cubit: cubit,
+                          owner: owner as Expert,
+                        ),
+                        const SizedBox(height: AppDimens.c),
+                      ],
+                    ]
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

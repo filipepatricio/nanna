@@ -14,9 +14,13 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
+import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 class TestData {
   const TestData._();
@@ -73,4 +77,26 @@ class TestData {
   static Topic get topicWithEditorOwner => _topicMapper(MockDTO.topicWithEditorOwner);
 
   static ExploreContent get exploreContent => _exploreContentMapper(MockDTO.exploreContent);
+}
+
+class AudioPlayerBannerCubitFake extends Fake implements AudioPlayerBannerCubit {
+  @override
+  Future<void> initialize() async {}
+
+  @override
+  AudioPlayerBannerState get state => AudioPlayerBannerState.visible(
+        AudioItem(
+          id: '000',
+          author: 'Cool author',
+          imageUrl: 'www.url.com',
+          slug: 'cool-audio',
+          title: 'Cool audio title',
+        ),
+      );
+
+  @override
+  Stream<AudioPlayerBannerState> get stream => Stream.value(state);
+
+  @override
+  Future<void> close() async {}
 }

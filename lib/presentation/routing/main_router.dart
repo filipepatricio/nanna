@@ -43,6 +43,11 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: InviteFriendPage),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
+    CustomRoute(
+      path: '$articlePathSegment/:articleSlug',
+      page: MediaItemPage,
+      customRouteBuilder: cupertinoBottomSheetPageRouteBuilder,
+    ),
   ],
 )
 class $MainRouter {}

@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@lazySingleton
 class AudioPlayerBannerCubit extends Cubit<AudioPlayerBannerState> {
   AudioPlayerBannerCubit(
     this._audioPlaybackStateStreamUseCase,

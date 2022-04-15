@@ -11,21 +11,22 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/simple_audio_progress_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/current_audio_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 const _imageWidth = 80.0;
-const _imageHeight = 80.0;
 
 class AudioPlayerBanner extends HookWidget {
-  const AudioPlayerBanner({Key? key}) : super(key: key);
+  const AudioPlayerBanner({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<AudioPlayerBannerCubit>();
+    final cubit = useCubit<AudioPlayerBannerCubit>(closeOnDispose: false);
     final state = useCubitBuilder(cubit);
 
     useEffect(
@@ -39,9 +40,17 @@ class AudioPlayerBanner extends HookWidget {
       duration: const Duration(
         milliseconds: 300,
       ),
+      initialValue: state.maybeMap(
+        visible: (_) => 1.0,
+        orElse: () => 0,
+      ),
     );
-    final slideTween = Tween(begin: const Offset(0, -200), end: Offset.zero);
-    final slideAnimation = animationController.drive(slideTween);
+    final sizeTween = Tween(begin: 0.0, end: 1.0).chain(
+      CurveTween(
+        curve: Curves.easeInOut,
+      ),
+    );
+    final sizeAnimation = animationController.drive(sizeTween);
 
     useEffect(
       () {
@@ -52,86 +61,94 @@ class AudioPlayerBanner extends HookWidget {
 
     final imageUrl = state.imageUrl;
 
-    return SlideTransition(
-      position: slideAnimation,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: state.getOnTap(context),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: AppColors.background,
-            border: Border.symmetric(
-              horizontal: BorderSide(
-                color: AppColors.grey,
-                width: 1,
+    final bottomSpacing = MediaQuery.of(context).padding.bottom;
+    final height = AppDimens.audioBannerHeight + MediaQuery.of(context).padding.bottom;
+
+    return Hero(
+      tag: 'audio_banner',
+      child: Material(
+        child: SizeTransition(
+          sizeFactor: sizeAnimation,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: state.getOnTap(context),
+            child: Container(
+              height: height,
+              decoration: const BoxDecoration(
+                color: AppColors.background,
               ),
-            ),
-          ),
-          child: Stack(
-            children: [
-              SizedBox(
-                height: AppDimens.audioBannerHeight,
-                child: Row(
-                  children: [
-                    if (imageUrl != null)
-                      if (!kIsTest)
-                        CachedNetworkImage(
-                          imageUrl: imageUrl,
-                          width: _imageWidth,
-                          height: _imageHeight,
-                        )
-                      else
-                        Image.asset(
-                          AppRasterGraphics.testReadingListCoverImageCropped,
-                          height: _imageHeight,
-                          width: _imageWidth,
+              child: Stack(
+                children: [
+                  Row(
+                    children: [
+                      if (imageUrl != null)
+                        if (!kIsTest)
+                          CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            width: _imageWidth,
+                            height: height,
+                            fit: BoxFit.cover,
+                          )
+                        else
+                          Image.asset(
+                            AppRasterGraphics.testReadingListCoverImageCropped,
+                            height: height,
+                            width: _imageWidth,
+                            fit: BoxFit.cover,
+                          ),
+                      const SizedBox(width: AppDimens.l),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: bottomSpacing),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                tr(LocaleKeys.continueListening),
+                                style: AppTypography.metadata1Regular.copyWith(color: AppColors.textGrey),
+                              ),
+                              Text(
+                                state.optionalTitle,
+                                style: AppTypography.b2Bold,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
-                    const SizedBox(width: AppDimens.l),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            tr(LocaleKeys.continueListening),
-                            style: AppTypography.metadata1Regular.copyWith(color: AppColors.textGrey),
-                          ),
-                          Text(
-                            state.optionalTitle,
-                            style: AppTypography.b2Bold,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                      ),
+                      const SizedBox(width: AppDimens.l),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: bottomSpacing),
+                        child: _AudioControlButton(state: state),
+                      ),
+                      const SizedBox(width: AppDimens.xxl),
+                    ],
+                  ),
+                  const Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: CurrentAudioProgressBar(),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => cubit.stop(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
+                        child: SvgPicture.asset(
+                          AppVectorGraphics.close,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: AppDimens.l),
-                    _AudioControlButton(state: state),
-                    const SizedBox(width: AppDimens.xxl),
-                  ],
-                ),
-              ),
-              const Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: SimpleAudioProgressBar(),
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => cubit.stop(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
-                    child: SvgPicture.asset(
-                      AppVectorGraphics.close,
-                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
