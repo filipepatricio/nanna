@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/mapper/image_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:injectable/injectable.dart';

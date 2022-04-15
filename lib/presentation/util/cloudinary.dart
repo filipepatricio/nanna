@@ -1,8 +1,10 @@
-import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/di_util.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -30,6 +32,7 @@ class CloudinaryImageProvider {
 }
 
 CloudinaryImageProvider useCloudinaryProvider() {
+  final getIt = useGetIt();
   return useMemoized(() {
     final cloudName = getIt<AppConfig>().cloudinaryCloudName;
     return CloudinaryImageProvider._(cloudName);
@@ -124,8 +127,8 @@ Image cloudinaryImage({
     );
   }
 
-  return Image.network(
-    transformation.generateNotNull(),
+  return Image(
+    image: CachedNetworkImageProvider(transformation.generateNotNull()),
     width: width,
     height: height,
     fit: fit,
@@ -136,15 +139,20 @@ String? useArticleImageUrl(MediaItemArticle article, int width, int height) {
   final cloudinaryProvider = useCloudinaryProvider();
   return useMemoized(
     () {
-      final optionalId = article.image?.publicId;
-      if (optionalId != null) {
-        return cloudinaryProvider
-            .withPublicIdAsPng(optionalId)
-            .transform()
-            .autoGravity()
-            .width(width)
-            .height(height)
-            .generateNotNull();
+      if (article.hasImage) {
+        if (article.image is ArticleImageRemote) {
+          return (article.image as ArticleImageRemote).url;
+        }
+
+        if (article.image is ArticleImageCloudinary) {
+          return cloudinaryProvider
+              .withPublicIdAsPng((article.image as ArticleImageCloudinary).publicId)
+              .transform()
+              .autoGravity()
+              .width(width)
+              .height(height)
+              .generateNotNull();
+        }
       }
     },
     [article],

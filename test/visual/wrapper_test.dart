@@ -4,6 +4,7 @@ import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_te
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
 import 'tests/explore_page_visual_test.dart' as explore_page_visual_test;
 import 'tests/invite_friend_page_visual_test.dart' as invite_friend_page_visual_test;
+import 'tests/magic_link_view_visual_test.dart' as magic_link_view_visual_test;
 import 'tests/media_item_page_visual_test.dart' as media_item_page_visual_test;
 import 'tests/no_member_access_page_visual_test.dart' as no_member_access_page_visual_test;
 import 'tests/onboarding_page_visual_test.dart' as onboarding_page_visual_test;
@@ -30,6 +31,7 @@ void main() {
   group('articles_see_all_page_visual_test', articles_see_all_page_visual_test.main);
   group('explore_page_visual_test', explore_page_visual_test.main);
   group('invite_friend_page_visual_test', invite_friend_page_visual_test.main);
+  group('magic_link_view_visual_test', magic_link_view_visual_test.main);
   group('media_item_page_visual_test', media_item_page_visual_test.main);
   group('no_member_access_page_visual_test', no_member_access_page_visual_test.main);
   group('onboarding_page_visual_test', onboarding_page_visual_test.main);

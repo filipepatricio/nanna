@@ -28,13 +28,13 @@ class ShareRepositoryImpl implements ShareRepository {
   }
 
   @override
-  Future<void> shareImage(File image, [String? text]) async {
-    await Share.shareFiles([image.path], text: text);
+  Future<void> shareImage(File image, [String? text, String? subject]) async {
+    await Share.shareFiles([image.path], text: text, subject: subject);
   }
 
   @override
-  Future<void> shareText(String text) async {
-    await Share.share(text);
+  Future<void> shareText(String text, [String? subject]) async {
+    await Share.share(text, subject: subject);
   }
 
   @override

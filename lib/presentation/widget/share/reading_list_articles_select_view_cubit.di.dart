@@ -51,7 +51,11 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
       ),
     );
     final image = await generateShareImage(generator, '${_topic.id}_share_topic.png');
-    await _shareImageUseCase(image, _topic.url);
+    await _shareImageUseCase(
+      image,
+      _topic.url,
+      _topic.strippedTitle,
+    );
 
     emit(ReadingListArticlesSelectViewState.shared());
   }

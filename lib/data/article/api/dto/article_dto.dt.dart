@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dt.dart';
+import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'article_dto.dt.g.dart';
@@ -17,7 +17,7 @@ class ArticleDTO {
   final String? publicationDate;
   final int timeToRead;
   final PublisherDTO publisher;
-  final ImageDTO? image;
+  final ArticleImageDTO? image;
   final ArticleContentDTO? text;
   final String sourceUrl;
   final String? author;

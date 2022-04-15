@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dt.dart';
+import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/reading_list_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';

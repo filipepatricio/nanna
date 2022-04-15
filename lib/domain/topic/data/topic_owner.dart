@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/image.dart';
+import 'package:better_informed_mobile/domain/image/data/image.dart';
 
 abstract class TopicOwner {
   const TopicOwner({

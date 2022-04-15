@@ -9,10 +9,11 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dt
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
+import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_dto.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
@@ -84,6 +85,7 @@ class MockDTO {
     [
       _exploreFeaturedArticlesArea,
       _exploreTopicsArea,
+      _exploreArticlesArea,
       _exploreTopicsArea2,
     ],
   );
@@ -137,52 +139,17 @@ class MockDTO {
 
   /// Articles
 
-  static final premiumArticle = ArticleDTO(
-    'id-premium',
-    'slug-premium',
-    'url',
-    // title
-    "Denmark's role in the NSA spying scandal",
-    // strippedTitle
-    "Denmark's role in the NSA spying scandal",
-    // credits
-    'This article originally appeared here',
-    'PREMIUM',
-    '2021-12-03',
-    // timeToRead
-    10,
-    _publisher,
-    _image,
-    articleContentMarkdown,
-    'source-url',
-    // author
-    'Cassandre Lueilwitz',
-    // hasAudioVersion
-    false,
+  static final premiumArticle = _freeArticle.copyWith(
+    id: 'id-premium',
+    slug: 'slug-premium',
+    type: 'PREMIUM',
+    image: _articleImageCloudinary,
   );
 
-  static final premiumArticleWithAudio = ArticleDTO(
-    'id-premium-audio',
-    'slug-premium-audio',
-    'url',
-    // title
-    "Denmark's role in the NSA spying scandal",
-    // strippedTitle
-    "Denmark's role in the NSA spying scandal",
-    // credits
-    'This article originally appeared here',
-    'PREMIUM',
-    '2021-12-03',
-    // timeToRead
-    10,
-    _publisher,
-    _image,
-    articleContentMarkdown,
-    'source-url',
-    // author
-    'Cassandre Lueilwitz',
-    // hasAudioVersion
-    true,
+  static final premiumArticleWithAudio = premiumArticle.copyWith(
+    id: 'id-premium-audio',
+    slug: 'slug-premium-audio',
+    hasAudioVersion: true,
   );
 
   static final articleContentMarkdown = ArticleContentDTO(
@@ -236,14 +203,26 @@ class MockDTO {
   );
 
   static final _exploreFeaturedArticlesArea = ExploreContentAreaDTO.articlesWithFeature(
-    'explore-articles-id',
-    'Premium Articles',
+    'explore-featured-id',
+    'Featured Articles',
     '#E4F1E2',
     [
       premiumArticle,
+      _freeArticle,
       premiumArticle,
+      _freeArticle,
       premiumArticle,
+    ],
+  );
+
+  static final _exploreArticlesArea = ExploreContentAreaDTO.articles(
+    'explore-articles-id',
+    'By Publisher',
+    [
       premiumArticle,
+      _freeArticle,
+      premiumArticle,
+      _freeArticle,
       premiumArticle,
     ],
   );
@@ -308,7 +287,7 @@ class MockDTO {
     // timeToRead
     10,
     _publisher,
-    _image,
+    _articleImageCloudinary,
     'source-url',
     // author
     'Cassandre Lueilwitz',
@@ -331,13 +310,40 @@ class MockDTO {
     // timeToRead
     10,
     _publisher,
-    _image,
+    _articleImageCloudinary,
     'source-url',
     // author
     'Cassandre Lueilwitz',
     // hasAudioVersion
     true,
   ) as MediaItemDTOArticle;
+
+  static final _freeArticle = ArticleDTO(
+    'id-free',
+    'slug-free',
+    'url',
+    // title
+    "Denmark's role in the NSA spying scandal",
+    // strippedTitle
+    "Denmark's role in the NSA spying scandal",
+    // credits
+    'This article originally appeared here',
+    // type
+    'FREE',
+    // publicationDate
+    '2021-12-03',
+    // timeToRead
+    10,
+    _publisher,
+    // image
+    null,
+    articleContentMarkdown,
+    'source-url',
+    // author
+    'Cassandre Lueilwitz',
+    // hasAudioVersion
+    false,
+  );
 
   static final _freeMediaItemArticle = MediaItemDTO.article(
     'id-free',
@@ -354,7 +360,7 @@ class MockDTO {
     // timeToRead
     10,
     _publisher,
-    _image,
+    _articleImageRemote,
     'source-url',
     // author
     'Cassandre Lueilwitz',
@@ -370,6 +376,10 @@ class MockDTO {
 
   static final _image = ImageDTO('topics/pizza');
 
+  static final _articleImageCloudinary = ArticleImageDTO.cloudinary('topics/pizza');
+
+  static final _articleImageRemote = ArticleImageDTO.remote('url');
+
   static final _cover = ImageDTO('covers/Cover_5');
 
   static final _summaryCardLong = SummaryCardDTO(
@@ -379,6 +389,44 @@ class MockDTO {
   static final _summaryCardShort = SummaryCardDTO(
     'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.',
   );
+}
+
+extension on ArticleDTO {
+  ArticleDTO copyWith({
+    String? id,
+    String? slug,
+    String? url,
+    String? title,
+    String? strippedTitle,
+    String? credits,
+    String? type,
+    String? publicationDate,
+    int? timeToRead,
+    PublisherDTO? publisher,
+    ArticleImageDTO? image,
+    ArticleContentDTO? text,
+    String? sourceUrl,
+    String? author,
+    bool? hasAudioVersion,
+  }) {
+    return ArticleDTO(
+      id ?? this.id,
+      slug ?? this.slug,
+      url ?? this.url,
+      title ?? this.title,
+      strippedTitle ?? this.strippedTitle,
+      credits ?? this.credits,
+      type ?? this.type,
+      publicationDate ?? this.publicationDate,
+      timeToRead ?? this.timeToRead,
+      publisher ?? this.publisher,
+      image ?? this.image,
+      text ?? this.text,
+      sourceUrl ?? this.sourceUrl,
+      author ?? this.author,
+      hasAudioVersion ?? this.hasAudioVersion,
+    );
+  }
 }
 
 extension on TopicDTO {

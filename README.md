@@ -258,7 +258,7 @@ void main() {
     (tester) async {
       ...
     },
-    testConfig: TestConfig.unitTesting.withDevices([const Device(name: 'full_screen', size: Size(375, 1200))]),
+    testConfig: TestConfig.unitTesting.withDevices([highDevice]),
   );
 ```
 

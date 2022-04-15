@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/daily_brief/api/dto/image_dto.dt.dart';
+import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

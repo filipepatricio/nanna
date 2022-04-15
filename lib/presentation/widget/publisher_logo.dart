@@ -1,10 +1,11 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/image.dart' as informed;
+import 'package:better_informed_mobile/domain/image/data/image.dart' as informed;
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -56,8 +57,8 @@ class PublisherLogo extends HookWidget {
                       height: _publisherLogoSize,
                       fit: BoxFit.contain,
                     )
-                  : Image.network(
-                      cloudinaryProvider
+                  : CachedNetworkImage(
+                      imageUrl: cloudinaryProvider
                           .withPublicIdAsPng(publisherLogoId)
                           .transform()
                           .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))

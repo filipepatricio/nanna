@@ -20,24 +20,19 @@ class RoundTopicCoverSmall extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(
-            AppDimens.m,
-          ),
+          Radius.circular(AppDimens.m),
         ),
       ),
-      padding: const EdgeInsets.symmetric(
-            horizontal: AppDimens.m,
-          ) +
-          const EdgeInsets.only(
-            top: AppDimens.m,
-            bottom: AppDimens.m,
-          ),
       child: Stack(
         children: [
           RoundTopicCoverResponsiveImage(
             topic: topic,
           ),
-          Positioned.fill(
+          Positioned(
+            top: AppDimens.m,
+            bottom: AppDimens.m,
+            right: AppDimens.m,
+            left: AppDimens.m,
             child: _CoverContent(
               topic: topic,
             ),

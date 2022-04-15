@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -33,15 +34,14 @@ class ReadingBannerView extends HookWidget {
   }
 }
 
-class _ReadingBannerBody extends HookWidget {
+class _ReadingBannerBody extends StatelessWidget {
   final ReadingBanner readingBanner;
 
-  const _ReadingBannerBody(this.readingBanner, {Key? key}) : super(key: key);
+  const _ReadingBannerBody(this.readingBanner);
 
   @override
   Widget build(BuildContext context) {
-    final cloudinaryProvider = useCloudinaryProvider();
-    final imageId = readingBanner.article.image?.publicId;
+    final hasImage = readingBanner.article.hasImage;
 
     return GestureDetector(
       onTap: () {
@@ -71,14 +71,11 @@ class _ReadingBannerBody extends HookWidget {
                     width: _iconSize,
                     height: _iconSize,
                     decoration: const BoxDecoration(shape: BoxShape.rectangle),
-                    child: imageId != null
-                        ? Image.network(
-                            cloudinaryProvider
-                                .withPublicId(imageId)
-                                .transform()
-                                .withLogicalSize(_iconSize, _iconSize, context)
-                                .autoGravity()
-                                .generateNotNull(),
+                    child: hasImage
+                        ? ArticleImage(
+                            image: readingBanner.article.image!,
+                            width: _iconSize,
+                            height: _iconSize,
                             fit: BoxFit.cover,
                           )
                         : const SizedBox(),
