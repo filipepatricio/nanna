@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'data/audio/mapper/audio_item_mapper_test.dart' as audio_item_mapper_test;
-import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
 import 'data/audio/mapper/audio_playback_state_mapper_test.dart' as audio_playback_state_mapper_test;
 import 'data/auth/api/auth_repository_impl_test.dart' as auth_repository_impl_test;
 import 'data/auth/api/refresh_token_service_test.dart' as refresh_token_service_test;
@@ -9,6 +8,7 @@ import 'data/auth/app_link/auth_app_link_repository_impl_test.dart' as auth_app_
 import 'data/auth/app_link/magic_link_parser_test.dart' as magic_link_parser_test;
 import 'data/networking/app_version_link/app_version_link_transformer_test.dart' as app_version_link_transformer_test;
 import 'data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
+import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
 import 'domain/audio/prepare_audio_track_use_case_test.dart' as prepare_audio_track_use_case_test;
 import 'domain/bookmark/use_case/get_bookmark_state_use_case_test.dart' as get_bookmark_state_use_case_test;
 import 'domain/bookmark/use_case/switch_bookmark_state_use_case_test.dart' as switch_bookmark_state_use_case_test;

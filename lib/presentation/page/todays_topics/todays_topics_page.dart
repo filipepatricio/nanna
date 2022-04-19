@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
@@ -102,8 +103,8 @@ class TodaysTopicsPage extends HookWidget {
                     ),
                     orElse: () => const SizedBox(),
                   ),
-                  const SliverPadding(
-                    padding: EdgeInsets.only(bottom: AppDimens.audioBannerHeight),
+                  const SliverToBoxAdapter(
+                    child: AudioPlayerBannerPlaceholder(),
                   ),
                 ],
               ),

@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
@@ -68,7 +69,7 @@ class TopicOwnerPage extends HookWidget {
 
     return Material(
       child: AudioPlayerBannerWrapper(
-        layout: AudioPlayerBannerLayout.column,
+        layout: AudioPlayerBannerLayout.stack,
         child: NoScrollGlow(
           child: CustomScrollView(
             physics: getPlatformScrollPhysics(),
@@ -165,6 +166,7 @@ class TopicOwnerPage extends HookWidget {
                         ),
                         const SizedBox(height: AppDimens.c),
                       ],
+                      const AudioPlayerBannerPlaceholder(),
                     ]
                   ],
                 ),
