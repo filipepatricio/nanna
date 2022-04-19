@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'data/audio/mapper/audio_item_mapper_test.dart' as audio_item_mapper_test;
+import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
 import 'data/audio/mapper/audio_playback_state_mapper_test.dart' as audio_playback_state_mapper_test;
 import 'data/auth/api/auth_repository_impl_test.dart' as auth_repository_impl_test;
 import 'data/auth/api/refresh_token_service_test.dart' as refresh_token_service_test;
@@ -28,6 +29,7 @@ void main() {
   // Data
   group('audio_item_mapper_test', audio_item_mapper_test.main);
   group('audio_playback_state_mapper_test', audio_playback_state_mapper_test.main);
+  group('audio_progress_tracker_test', audio_progress_tracker_test.main);
   group('auth_repository_impl_test', auth_repository_impl_test.main);
   group('refresh_token_service_test', refresh_token_service_test.main);
   group('auth_app_link_repository_impl_test', auth_app_link_repository_impl_test.main);

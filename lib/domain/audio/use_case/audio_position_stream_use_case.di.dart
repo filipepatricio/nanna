@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/audio/audio_progress_tracker.di.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
@@ -7,19 +8,30 @@ import 'package:rxdart/rxdart.dart';
 
 @injectable
 class AudioPositionStreamUseCase {
-  AudioPositionStreamUseCase(this._audioRepository);
+  AudioPositionStreamUseCase(
+    this._audioRepository,
+    this._audioProgressTracker,
+  );
 
   final AudioRepository _audioRepository;
+  final AudioProgressTracker _audioProgressTracker;
 
   Stream<AudioPosition> call() {
     return Rx.combineLatest2<Duration, AudioPlaybackState, AudioPosition>(
-      _audioRepository.position.startWith(Duration.zero),
+      _audioRepository.position,
       _audioRepository.playbackState.where((state) => state.hasDuration),
-      (position, playbackState) => AudioPosition(
-        audioItemID: playbackState.requireAudioItem.id,
-        position: position,
-        totalDuration: playbackState.requireDuration,
-      ),
+      (position, playbackState) {
+        _audioProgressTracker.track(
+          playbackState.requireAudioItem.id,
+          position,
+          playbackState.requireDuration,
+        );
+        return AudioPosition(
+          audioItemID: playbackState.requireAudioItem.id,
+          position: position,
+          totalDuration: playbackState.requireDuration,
+        );
+      },
     );
   }
 }
