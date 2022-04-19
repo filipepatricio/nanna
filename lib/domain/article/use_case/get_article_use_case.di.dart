@@ -17,7 +17,7 @@ class GetArticleUseCase {
 
     return Article(
       content: content,
-      article: article,
+      metadata: article,
       audioFile: audioFile,
     );
   }

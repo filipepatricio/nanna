@@ -87,14 +87,6 @@ class CommonGQLModels {
       }
   ''';
 
-  static const String fullArticle = '''
-    $article
-    text {
-      content
-      markupLanguage
-    }
-  ''';
-
   static const String article = '''
       sourceUrl
       slug

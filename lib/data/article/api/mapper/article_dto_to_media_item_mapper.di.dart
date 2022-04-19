@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/article/api/dto/article_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:injectable/injectable.dart';
 
 @injectable
-class ArticleDTOToMediaItemMapper implements Mapper<ArticleDTO, MediaItemArticle> {
+class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemArticle> {
   final ArticleImageDTOMapper _articleImageDTOMapper;
   final PublisherDTOMapper _publisherDTOMapper;
   final ArticleTypeDTOMapper _articleTypeDTOMapper;
@@ -19,7 +19,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleDTO, MediaItemArticle
   );
 
   @override
-  MediaItemArticle call(ArticleDTO data) {
+  MediaItemArticle call(ArticleHeaderDTO data) {
     final image = data.image;
     final publicationDate = data.publicationDate;
 

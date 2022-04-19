@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -25,7 +25,7 @@ class PremiumArticleActionsBar extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final MediaItemArticle article;
+  final Article article;
   final double fullHeight;
   final PageController pageController;
   final SnackbarController snackbarController;
@@ -34,7 +34,7 @@ class PremiumArticleActionsBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasImage = useMemoized(() => article.image != null, [article]);
+    final hasImage = useMemoized(() => article.metadata.image != null, [article]);
 
     final backgroundColor = useMemoized(
       () => ValueNotifier(
@@ -140,7 +140,7 @@ class PremiumArticleActionsBar extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (article.hasAudioVersion) ...[
+                if (article.metadata.hasAudioVersion) ...[
                   AudioButton(
                     buttonColor: buttonColor,
                     articleOutputMode: articleOutputModeNotifier,
@@ -151,7 +151,7 @@ class PremiumArticleActionsBar extends HookWidget {
                   valueListenable: bookmarkMode,
                   builder: (BuildContext context, BookmarkButtonMode value, Widget? child) {
                     return BookmarkButton.article(
-                      article: article,
+                      article: article.metadata,
                       topicId: cubit.topicId,
                       briefId: cubit.briefId,
                       mode: bookmarkMode.value,
@@ -163,7 +163,7 @@ class PremiumArticleActionsBar extends HookWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
                   child: ShareArticleButton(
-                    article: article,
+                    article: article.metadata,
                     buttonBuilder: (context) => ValueListenableBuilder(
                       valueListenable: buttonColor,
                       builder: (BuildContext context, Color value, Widget? child) {

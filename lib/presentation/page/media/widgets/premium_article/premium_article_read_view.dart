@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article_content.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
@@ -22,7 +22,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.article,
-    required this.content,
     required this.modalController,
     required this.controller,
     required this.pageController,
@@ -35,8 +34,7 @@ class PremiumArticleReadView extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final MediaItemArticle article;
-  final ArticleContent content;
+  final Article article;
   final ScrollController modalController;
   final ScrollController controller;
   final PageController pageController;
@@ -50,7 +48,7 @@ class PremiumArticleReadView extends HookWidget {
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
 
-  bool get articleWithImage => article.image != null;
+  bool get articleWithImage => article.metadata.image != null;
 
   void calculateArticleContentOffset() {
     final globalContentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
@@ -170,7 +168,7 @@ class PremiumArticleReadView extends HookWidget {
               children: [
                 if (articleWithImage)
                   ArticleImageView(
-                    article: article,
+                    article: article.metadata,
                     controller: pageController,
                     fullHeight: fullHeight,
                   ),
@@ -191,7 +189,6 @@ class PremiumArticleReadView extends HookWidget {
                                 [
                                   ArticleContentView(
                                     article: article,
-                                    content: content,
                                     cubit: cubit,
                                     controller: controller,
                                     articleContentKey: _articleContentKey,
@@ -200,7 +197,7 @@ class PremiumArticleReadView extends HookWidget {
                                 ],
                               ),
                             ),
-                            if (article.credits.isNotEmpty) ...[
+                            if (article.metadata.credits.isNotEmpty) ...[
                               SliverPadding(
                                 padding: const EdgeInsets.only(
                                   top: AppDimens.xl,
@@ -209,7 +206,7 @@ class PremiumArticleReadView extends HookWidget {
                                 ),
                                 sliver: SliverToBoxAdapter(
                                   child: _Credits(
-                                    article: article,
+                                    credits: article.metadata.credits,
                                   ),
                                 ),
                               ),
@@ -233,7 +230,7 @@ class PremiumArticleReadView extends HookWidget {
               fromTopic: fromTopic,
             ),
             _AnimatedAudioButton(
-              article: article,
+              article: article.metadata,
               showButton: showAudioFloatingButton,
             ),
           ],
@@ -297,16 +294,16 @@ class _ArticleProgressBar extends HookWidget {
 
 class _Credits extends StatelessWidget {
   const _Credits({
-    required this.article,
+    required this.credits,
     Key? key,
   }) : super(key: key);
 
-  final MediaItemArticle article;
+  final String credits;
 
   @override
   Widget build(BuildContext context) {
     return MarkdownBody(
-      data: article.credits,
+      data: credits,
       styleSheet: MarkdownStyleSheet(
         p: AppTypography.articleTextRegular.copyWith(
           color: AppColors.textGrey,

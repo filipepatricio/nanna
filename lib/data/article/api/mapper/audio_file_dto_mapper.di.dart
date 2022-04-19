@@ -11,6 +11,7 @@ class AudioFileDTOMapper implements Mapper<AudioFileDTO, AudioFile> {
   AudioFile call(AudioFileDTO data) {
     return AudioFile(
       url: data.url,
+      credits: data.credits,
     );
   }
 }

@@ -154,7 +154,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     if (article == null) {
       emit(MediaItemState.error(_getCurrentHeader()));
     } else {
-      emit(MediaItemState.idlePremium(article.article, article.content));
+      emit(MediaItemState.idlePremium(article));
     }
   }
 

@@ -32,7 +32,7 @@ void main() {
 
   test('successfuly prepares audio', () async {
     final article = TestData.premiumArticleWithAudio;
-    final audioFile = AudioFile(url: 'url');
+    final audioFile = AudioFile(url: 'url', credits: 'credits');
     const imageUrl = 'url';
 
     when(articleRepository.getArticleAudioFile(article.slug, any)).thenAnswer(
@@ -51,7 +51,7 @@ void main() {
 
   test('successfuly prepares audio after expired error', () async {
     final article = TestData.premiumArticleWithAudio;
-    final audioFile = AudioFile(url: 'url');
+    final audioFile = AudioFile(url: 'url', credits: 'credits');
     const imageUrl = 'url';
 
     var invocationCounter = 0;

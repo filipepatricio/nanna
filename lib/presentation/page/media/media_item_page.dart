@@ -98,8 +98,7 @@ class MediaItemPage extends HookWidget {
                 ),
                 idlePremium: (state) => LayoutBuilder(
                   builder: (context, constraints) => PremiumArticleView(
-                    article: state.header,
-                    content: state.content,
+                    article: state.article,
                     fromTopic: topicId != null || topicSlug != null,
                     modalController: modalController,
                     controller: scrollController,

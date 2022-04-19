@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article_content.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -14,8 +14,7 @@ import 'package:better_informed_mobile/presentation/widget/share/quote/quote_edi
 import 'package:flutter/material.dart';
 
 class ArticleContentView extends StatelessWidget {
-  final MediaItemArticle article;
-  final ArticleContent content;
+  final Article article;
   final MediaItemCubit cubit;
   final ScrollController controller;
   final Key articleContentKey;
@@ -23,7 +22,6 @@ class ArticleContentView extends StatelessWidget {
 
   const ArticleContentView({
     required this.article,
-    required this.content,
     required this.cubit,
     required this.controller,
     required this.articleContentKey,
@@ -39,7 +37,7 @@ class ArticleContentView extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _ArticleHeader(article: article),
+            child: _ArticleHeader(article: article.metadata),
           ),
           Container(
             child: Column(
@@ -58,21 +56,21 @@ class ArticleContentView extends StatelessWidget {
   }
 
   Widget? _articleContent(BuildContext context) {
-    if (content.type == ArticleContentType.markdown) {
+    if (article.content.type == ArticleContentType.markdown) {
       return ArticleContentMarkdown(
-        markdown: content.content,
+        markdown: article.content.content,
         shareTextCallback: (quote) {
           showQuoteEditor(
             context,
-            article,
+            article.metadata,
             quote,
           );
         },
         scrollToPosition: scrollToPosition,
       );
-    } else if (content.type == ArticleContentType.html) {
+    } else if (article.content.type == ArticleContentType.html) {
       return ArticleContentHtml(
-        html: content.content,
+        html: article.content.content,
         cubit: cubit,
         scrollToPosition: scrollToPosition,
       );

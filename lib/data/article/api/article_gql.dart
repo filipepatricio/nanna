@@ -3,16 +3,6 @@ import 'package:gql/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ArticleGQL {
-  static DocumentNode fullArticle(String slug) => gql(
-        '''
-    query {
-      article(slug: "$slug") {
-        ${CommonGQLModels.fullArticle}
-      }
-    }
-  ''',
-      );
-
   static DocumentNode articleHeader(String slug) => gql(
         '''
     query {
@@ -41,6 +31,7 @@ class ArticleGQL {
     query {
       getArticleAudioFile(slug: "$slug") {
         url
+        credits
       }
     }
   ''',

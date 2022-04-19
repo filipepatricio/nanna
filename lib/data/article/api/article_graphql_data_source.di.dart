@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/article_gql.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
-import 'package:better_informed_mobile/data/article/api/dto/article_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -40,27 +40,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  Future<ArticleDTO> getFullArticle(String slug) async {
-    final result = await _client.query(
-      QueryOptions(
-        document: ArticleGQL.fullArticle(slug),
-      ),
-    );
-
-    final dto = _responseResolver.resolve(
-      result,
-      (raw) {
-        return ArticleDTO.fromJson(raw);
-      },
-      rootKey: 'article',
-    );
-
-    if (dto == null) throw Exception('Article is null');
-    return dto;
-  }
-
-  @override
-  Future<ArticleDTO> getArticleHeader(String slug) async {
+  Future<ArticleHeaderDTO> getArticleHeader(String slug) async {
     final result = await _client.query(
       QueryOptions(
         document: ArticleGQL.articleHeader(slug),
@@ -70,7 +50,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     final dto = _responseResolver.resolve(
       result,
       (raw) {
-        return ArticleDTO.fromJson(raw);
+        return ArticleHeaderDTO.fromJson(raw);
       },
       rootKey: 'article',
     );

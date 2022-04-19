@@ -1,12 +1,11 @@
-import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'article_dto.dt.g.dart';
+part 'article_header_dto.dt.g.dart';
 
 @JsonSerializable()
-class ArticleDTO {
+class ArticleHeaderDTO {
   final String id;
   final String slug;
   final String url;
@@ -18,12 +17,11 @@ class ArticleDTO {
   final int timeToRead;
   final PublisherDTO publisher;
   final ArticleImageDTO? image;
-  final ArticleContentDTO? text;
   final String sourceUrl;
   final String? author;
   final bool hasAudioVersion;
 
-  ArticleDTO(
+  ArticleHeaderDTO(
     this.id,
     this.slug,
     this.url,
@@ -35,13 +33,12 @@ class ArticleDTO {
     this.timeToRead,
     this.publisher,
     this.image,
-    this.text,
     this.sourceUrl,
     this.author,
     this.hasAudioVersion,
   );
 
-  factory ArticleDTO.fromJson(Map<String, dynamic> json) => _$ArticleDTOFromJson(json);
+  factory ArticleHeaderDTO.fromJson(Map<String, dynamic> json) => _$ArticleHeaderDTOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ArticleDTOToJson(this);
+  Map<String, dynamic> toJson() => _$ArticleHeaderDTOToJson(this);
 }
