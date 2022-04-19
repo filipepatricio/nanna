@@ -13,6 +13,7 @@ const _bottomSheetRadius = 10.0;
 Future<bool> showSwitchAudioPopup(BuildContext context) async {
   final result = await showModalBottomSheet(
     context: context,
+    isScrollControlled: true,
     constraints: BoxConstraints.loose(
       Size.fromHeight(
         MediaQuery.of(context).size.height,

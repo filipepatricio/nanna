@@ -204,11 +204,11 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
   }
 
   @override
-  Future<void> play([bool force = false]) async {
+  Future<void> play([bool forceNewAudio = false]) async {
     await state.mapOrNull(
       notInitilized: (state) => _prepareNewAudio(),
       inDifferentAudio: (state) async {
-        if (force || state.completed) {
+        if (forceNewAudio || state.completed) {
           await _prepareNewAudio();
         } else {
           emit(AudioControlButtonState.showSwitchAudioPopup());
