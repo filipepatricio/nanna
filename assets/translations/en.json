@@ -243,6 +243,12 @@
     "button": "Update"
   },
   "audio": {
-    "speed": "Speed {}"
+    "speed": "Speed {}",
+    "switchAudio": {
+      "title": "This action will replace the current audio\n",
+      "info": "Are you sure you want to switch and start listening to a new article?",
+      "deny": "No, keep current",
+      "approve":"Yes, switch"
+    }
   }
 }

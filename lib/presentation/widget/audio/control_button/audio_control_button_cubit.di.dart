@@ -86,7 +86,7 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> {
 
   Future<void> initialize();
 
-  Future<void> play();
+  Future<void> play([bool force = false]);
 
   Future<void> pause();
 
@@ -145,7 +145,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
   }
 
   @override
-  Future<void> play() async {
+  Future<void> play([bool force = false]) async {
     await state.maybeMap(
       paused: (state) async {
         await _playAudioUseCase();
@@ -204,10 +204,17 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
   }
 
   @override
-  Future<void> play() async {
+  Future<void> play([bool force = false]) async {
     await state.mapOrNull(
       notInitilized: (state) => _prepareNewAudio(),
-      inDifferentAudio: (state) => _prepareNewAudio(),
+      inDifferentAudio: (state) async {
+        if (force || state.completed) {
+          await _prepareNewAudio();
+        } else {
+          emit(AudioControlButtonState.showSwitchAudioPopup());
+          emit(state);
+        }
+      },
       paused: (_) => _playAudioUseCase(),
     );
     _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(_article.id));
@@ -225,7 +232,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     if (audioItem.id == _article.id) {
       return AudioControlButtonState.playing(audioItem: audioItem);
     } else {
-      return AudioControlButtonState.inDifferentAudio();
+      return AudioControlButtonState.inDifferentAudio(false);
     }
   }
 
@@ -233,7 +240,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     if (audioItem.id == _article.id) {
       return AudioControlButtonState.paused(audioItem: audioItem);
     } else {
-      return AudioControlButtonState.inDifferentAudio();
+      return AudioControlButtonState.inDifferentAudio(false);
     }
   }
 
@@ -241,7 +248,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     if (audioItem.id == _article.id) {
       return AudioControlButtonState.paused(audioItem: audioItem);
     } else {
-      return AudioControlButtonState.inDifferentAudio();
+      return AudioControlButtonState.inDifferentAudio(true);
     }
   }
 }

@@ -3,8 +3,9 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_cubit.di.dart';
-
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state_ext.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/switch_audio/switch_audio_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,6 +32,20 @@ class AudioControlButton extends HookWidget {
       keys: [article],
     );
     final state = useCubitBuilder(cubit);
+
+    useCubitListener<AudioControlButtonCubit, AudioControlButtonState>(
+      cubit,
+      (cubit, state, context) {
+        state.mapOrNull(
+          showSwitchAudioPopup: (_) async {
+            final shouldSwitch = await showSwitchAudioPopup(context);
+            if (shouldSwitch) {
+              await cubit.play(true);
+            }
+          },
+        );
+      },
+    );
 
     useEffect(
       () {

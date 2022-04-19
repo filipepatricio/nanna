@@ -9,8 +9,10 @@ class AudioControlButtonState with _$AudioControlButtonState {
   @Implements<BuildState>()
   factory AudioControlButtonState.notInitilized() = _AudioControlButtonStateNotInitialized;
 
-    @Implements<BuildState>()
-  factory AudioControlButtonState.inDifferentAudio() = _AudioControlButtonStateInDifferentAudio;
+  @Implements<BuildState>()
+  factory AudioControlButtonState.inDifferentAudio(
+    bool completed,
+  ) = _AudioControlButtonStateInDifferentAudio;
 
   @Implements<BuildState>()
   factory AudioControlButtonState.loading() = _AudioControlButtonStateLoading;
@@ -24,4 +26,6 @@ class AudioControlButtonState with _$AudioControlButtonState {
   factory AudioControlButtonState.paused({
     required AudioItem audioItem,
   }) = _AudioControlButtonStatePaused;
+
+  factory AudioControlButtonState.showSwitchAudioPopup() = _$AudioControlButtonStateShowSwitchAudioPopup;
 }

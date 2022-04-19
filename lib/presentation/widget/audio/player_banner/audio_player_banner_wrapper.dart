@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_shadow.dart';
 import 'package:flutter/material.dart';

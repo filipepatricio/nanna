@@ -8,32 +8,35 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
   Function()? getAction(
     AudioControlButtonCubit cubit,
   ) {
-    return map(
+    return maybeMap(
       notInitilized: (_) => () => cubit.play(),
       inDifferentAudio: (_) => () => cubit.play(),
       loading: (_) => null,
       playing: (_) => () => cubit.pause(),
       paused: (_) => () => cubit.play(),
+      orElse: () => throw Exception('Unhandled type'),
     );
   }
 
   String get imagePath {
-    return map(
+    return maybeMap(
       notInitilized: (_) => AppVectorGraphics.play_arrow,
       inDifferentAudio: (_) => AppVectorGraphics.play_arrow,
       loading: (_) => AppVectorGraphics.play_arrow,
       playing: (_) => AppVectorGraphics.pause,
       paused: (_) => AppVectorGraphics.play_arrow,
+      orElse: () => throw Exception('Unhandled type'),
     );
   }
 
   Color get imageColor {
-    return map(
+    return maybeMap(
       notInitilized: (_) => AppColors.textPrimary,
       inDifferentAudio: (_) => AppColors.textPrimary,
       loading: (_) => AppColors.textGrey,
       playing: (_) => AppColors.textPrimary,
       paused: (_) => AppColors.textPrimary,
+      orElse: () => throw Exception('Unhandled type'),
     );
   }
 }
