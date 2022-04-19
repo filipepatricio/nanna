@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
@@ -23,8 +24,8 @@ class AudioRepositoryMock implements AudioRepository {
         duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
-          id: '000-000',
-          slug: 'article',
+          id: MockDTO.premiumMediaItemArticleWithAudio.id,
+          slug: MockDTO.premiumMediaItemArticleWithAudio.slug,
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
@@ -40,8 +41,8 @@ class AudioRepositoryMock implements AudioRepository {
         duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
-          id: '000-000',
-          slug: 'article',
+          id: MockDTO.premiumMediaItemArticleWithAudio.id,
+          slug: MockDTO.premiumMediaItemArticleWithAudio.slug,
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
@@ -57,8 +58,8 @@ class AudioRepositoryMock implements AudioRepository {
         duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
-          id: '000-000',
-          slug: 'article',
+          id: MockDTO.premiumMediaItemArticleWithAudio.id,
+          slug: MockDTO.premiumMediaItemArticleWithAudio.slug,
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
