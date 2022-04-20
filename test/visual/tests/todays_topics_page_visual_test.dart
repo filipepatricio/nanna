@@ -23,6 +23,8 @@ void main() {
         );
       },
     );
+    await tester.fling(find.byType(RoundTopicCoverLarge).first, const Offset(0, -10000), 100);
+    await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
 }
