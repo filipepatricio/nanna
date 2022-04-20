@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/widget/share/share_util.dart
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic/share_reading_list_view.dart';
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 const articlesSelectionLimit = 3;
@@ -38,7 +39,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
     _emitIdleState();
   }
 
-  Future<void> shareImage() async {
+  Future<void> shareImage(GetIt getIt) async {
     emit(ReadingListArticlesSelectViewState.generatingShareImage());
 
     final articles =
@@ -48,6 +49,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
       () => ShareReadingListView(
         topic: _topic,
         articles: articles,
+        getIt: getIt,
       ),
     );
     final image = await generateShareImage(generator, '${_topic.id}_share_topic.png');
