@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/data/audio/handler/informed_base_audio_ha
 import 'package:better_informed_mobile/data/audio/mapper/audio_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/audio/mapper/audio_playback_state_mapper.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
@@ -36,15 +37,15 @@ class AudioRepositoryImpl implements AudioRepository {
   }
 
   @override
-  Future<void> prepareItem(AudioItem item, String fileUrl) async {
+  Future<void> prepareItem(AudioItem item, AudioFile audioFile) async {
     final mediaItem = _audioItemMapper.from(item);
     await _audioHandler.notifyLoading(mediaItem);
 
-    final fileName = _getAudioFileName(fileUrl);
-    final audioFile = await _getAudioFile(fileName);
-    await _audioFileDownloader.loadAndSaveFile(audioFile, fileUrl);
+    final fileName = _getAudioFileName(audioFile.url);
+    final file = await _getAudioFile(fileName);
+    await _audioFileDownloader.loadAndSaveFile(file, audioFile.url);
 
-    await _audioHandler.open(audioFile.path);
+    await _audioHandler.open(file.path);
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
@@ -17,7 +18,7 @@ class AudioRepositoryMock implements AudioRepository {
   }
 
   @override
-  Future<void> prepareItem(AudioItem item, String url) async {
+  Future<void> prepareItem(AudioItem item, AudioFile audioFile) async {
     _playbackState.add(const AudioPlaybackState.loading(speed: 1.0));
     _playbackState.add(
       AudioPlaybackState.paused(

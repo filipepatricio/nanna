@@ -30,13 +30,13 @@ class PrepareArticleAudioTrackUseCase {
     );
 
     try {
-      await _audioRepository.prepareItem(item, audioFile.url);
+      await _audioRepository.prepareItem(item, audioFile);
     } on FileAccessExpired catch (_) {
       final audioFile = await _articleRepository.getArticleAudioFile(
         article.slug,
         true,
       );
-      await _audioRepository.prepareItem(item, audioFile.url);
+      await _audioRepository.prepareItem(item, audioFile);
     }
   }
 }
