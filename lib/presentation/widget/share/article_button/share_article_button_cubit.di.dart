@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/widget/share/article/share_a
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 enum ShareArticleButtonState { idle, processing }
@@ -14,12 +15,13 @@ class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
 
   final ShareImageUseCase _shareImageUseCase;
 
-  Future<void> share(MediaItemArticle article) async {
+  Future<void> share(MediaItemArticle article, GetIt getIt) async {
     emit(ShareArticleButtonState.processing);
 
     final generator = ShareViewImageGenerator(
       () => ShareArticleView(
         article: article,
+        getIt: getIt,
       ),
     );
     final image = await generateShareImage(

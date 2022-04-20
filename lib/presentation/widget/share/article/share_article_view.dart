@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/widget/share/base_share_comp
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:get_it/get_it.dart';
 
 const _cardShadow = BoxShadow(
   color: AppColors.shadowColor,
@@ -32,9 +33,11 @@ const _logoSize = 40.0;
 class ShareArticleView extends HookWidget implements BaseShareCompletable {
   final MediaItemArticle article;
   final Completer _baseViewCompleter;
+  final GetIt getIt;
 
   ShareArticleView({
     required this.article,
+    required this.getIt,
     Key? key,
   })  : _baseViewCompleter = Completer(),
         super(key: key);
@@ -47,7 +50,7 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinary = useCloudinaryProvider();
+    final cloudinary = createCloudinaryProvider(getIt);
     final logoImageId = article.publisher.darkLogo?.publicId;
 
     final articleImage = useMemoized(

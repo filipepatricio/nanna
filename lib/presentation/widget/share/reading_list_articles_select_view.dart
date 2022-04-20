@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/di_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -180,7 +181,7 @@ class _ProcessingView extends StatelessWidget {
   }
 }
 
-class _IdleView extends StatelessWidget {
+class _IdleView extends HookWidget {
   final ReadingListArticlesSelectViewCubit cubit;
   final List<MediaItemArticle> articles;
   final Set<int> selectedIndexes;
@@ -198,6 +199,8 @@ class _IdleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final getIt = useGetIt();
+
     return SafeArea(
       child: Column(
         children: [
@@ -225,7 +228,7 @@ class _IdleView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
             child: FilledButton(
-              onTap: () => cubit.shareImage(),
+              onTap: () => cubit.shareImage(getIt),
               text: LocaleKeys.common_next.tr(),
               fillColor: AppColors.darkGreyBackground,
               textColor: AppColors.white,
