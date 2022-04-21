@@ -87,6 +87,8 @@ dependencies:
   just_audio: 0.9.20
   audio_service: 0.18.4
   audio_session: 0.1.6+1
+  launchdarkly_flutter_client_sdk: 1.0.0
+  jwt_decoder: 2.0.1
 
 dev_dependencies:
   flutter_test:

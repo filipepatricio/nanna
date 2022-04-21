@@ -130,6 +130,14 @@ PODS:
   - GTMSessionFetcher/Core (1.7.0)
   - just_audio (0.0.1):
     - Flutter
+  - LaunchDarkly (5.4.3):
+    - LaunchDarkly/Core (= 5.4.3)
+  - LaunchDarkly/Core (5.4.3):
+    - LDSwiftEventSource (= 1.2.1)
+  - launchdarkly_flutter_client_sdk (0.0.1):
+    - Flutter
+    - LaunchDarkly (= 5.4.3)
+  - LDSwiftEventSource (1.2.1)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -195,6 +203,7 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - launchdarkly_flutter_client_sdk (from `.symlinks/plugins/launchdarkly_flutter_client_sdk/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
@@ -226,6 +235,8 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - LaunchDarkly
+    - LDSwiftEventSource
     - nanopb
     - OrderedSet
     - PromisesObjC
@@ -272,6 +283,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   just_audio:
     :path: ".symlinks/plugins/just_audio/ios"
+  launchdarkly_flutter_client_sdk:
+    :path: ".symlinks/plugins/launchdarkly_flutter_client_sdk/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_ios:
@@ -338,6 +351,9 @@ SPEC CHECKSUMS:
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
+  LaunchDarkly: a4552a94d29a13cdd755374f4331f8d68dd7a58e
+  launchdarkly_flutter_client_sdk: f1e6cd993e123233d4e471f07a7016ac23f7f749
+  LDSwiftEventSource: 4f48b8d123032c64073a0fabc2d2ce60da27f820
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
