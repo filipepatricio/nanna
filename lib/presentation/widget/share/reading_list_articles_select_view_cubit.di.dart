@@ -1,6 +1,8 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/share/use_case/share_image_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
@@ -13,16 +15,28 @@ const articlesSelectionLimit = 3;
 
 @injectable
 class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelectViewState> {
-  ReadingListArticlesSelectViewCubit(this._shareImageUseCase)
-      : super(ReadingListArticlesSelectViewState.initializing());
+  ReadingListArticlesSelectViewCubit(
+    this._shareImageUseCase,
+    this._getTopicBySlugUseCase,
+  ) : super(ReadingListArticlesSelectViewState.initializing());
 
   final ShareImageUseCase _shareImageUseCase;
+  final GetTopicBySlugUseCase _getTopicBySlugUseCase;
 
   late Topic _topic;
   final Set<int> _selectedIndexes = {};
 
-  void initialize(Topic topic) {
-    _topic = topic;
+  Future<void> initialize(Topic? topic, TopicPreview? preview) async {
+    throwIf(
+      topic == null && preview == null,
+      Exception('At least one value needs to exist'),
+    );
+
+    if (preview != null) {
+      _topic = await _getTopicBySlugUseCase(preview.slug);
+    } else if (topic != null) {
+      _topic = topic;
+    }
 
     _emitIdleState();
   }

@@ -85,7 +85,7 @@ class BookmarkGraphql {
                 }
 
                 ... on Topic {
-                  ${CommonGQLModels.topic}
+                  ${CommonGQLModels.topicPreview}
                 }
               }
             }

@@ -133,8 +133,7 @@ class TopicsAreaView extends HookWidget {
 
   void _onTopicTap(BuildContext context, int index) => context.pushRoute(
         TopicPage(
-          topicSlug: area.topics[index].id,
-          topic: area.topics[index],
+          topicSlug: area.topics[index].slug,
         ),
       );
 }

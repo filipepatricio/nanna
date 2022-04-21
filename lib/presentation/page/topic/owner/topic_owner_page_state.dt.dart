@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -7,10 +7,10 @@ part 'topic_owner_page_state.dt.freezed.dart';
 @freezed
 class TopicOwnerPageState with _$TopicOwnerPageState {
   @Implements<BuildState>()
-  factory TopicOwnerPageState.idleExpert(List<Topic> topics) = _TopicOwnerPageStateIdleExpert;
+  factory TopicOwnerPageState.idleExpert(List<TopicPreview> topics) = _TopicOwnerPageStateIdleExpert;
 
   @Implements<BuildState>()
-  factory TopicOwnerPageState.idleEditor(List<Topic> topics) = _TopicOwnerPageStateIdleEditor;
+  factory TopicOwnerPageState.idleEditor(List<TopicPreview> topics) = _TopicOwnerPageStateIdleEditor;
 
   @Implements<BuildState>()
   factory TopicOwnerPageState.idleEditorialTeam() = _TopicOwnerPageStateIdleEditorialTeam;

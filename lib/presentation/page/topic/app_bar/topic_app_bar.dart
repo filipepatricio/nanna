@@ -116,7 +116,7 @@ class TopicAppBar extends HookWidget {
         const SizedBox(width: AppDimens.s),
         IconButton(
           key: const Key('share-topic-button'),
-          onPressed: () => shareReadingList(context, topic),
+          onPressed: () => shareReadingListUsingTopic(context, topic),
           iconSize: AppDimens.xxl,
           icon: SvgPicture.asset(
             AppVectorGraphics.share,
