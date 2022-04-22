@@ -172,7 +172,7 @@ extension on Bookmark {
         article: data.article,
       ),
       topic: (data) => ShareButton(
-        onTap: () => shareReadingListUsingTopicPreview(context, data.topic),
+        onTap: () => shareReadingListUsingTopic(context, data.topic),
         backgroundColor: AppColors.transparent,
       ),
       unknown: (_) => const SizedBox(),
@@ -233,7 +233,7 @@ extension on BookmarkTileCover {
             );
           },
           child: RoundTopicCoverSmall(
-            topic: data.topic,
+            topic: data.topic.asPreview,
           ),
         ),
       ),

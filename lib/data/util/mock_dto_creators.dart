@@ -175,7 +175,7 @@ class MockDTO {
       ),
       BookmarkDTO(
         '0000',
-        BookmarkDataDTO.topic(MockDTO.topicPreview),
+        BookmarkDataDTO.topic(MockDTO.topic),
       ),
     ],
   );

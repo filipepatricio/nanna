@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -36,14 +35,7 @@ const _labelTextStyle = TextStyle(
 Future<void> shareReadingListUsingTopic(BuildContext context, Topic topic) async {
   return _showBottomSheet(
     context,
-    (context) => ReadingListArticlesSelectView.withTopic(topic: topic),
-  );
-}
-
-Future<void> shareReadingListUsingTopicPreview(BuildContext context, TopicPreview topicPreview) async {
-  return _showBottomSheet(
-    context,
-    (context) => ReadingListArticlesSelectView.withPreview(topicPreview: topicPreview),
+    (context) => ReadingListArticlesSelectView(topic: topic),
   );
 }
 
@@ -61,20 +53,12 @@ Future<void> _showBottomSheet(BuildContext context, WidgetBuilder builder) {
 }
 
 class ReadingListArticlesSelectView extends HookWidget {
-  const ReadingListArticlesSelectView.withTopic({
+  const ReadingListArticlesSelectView({
     required this.topic,
     Key? key,
-  })  : topicPreview = null,
-        super(key: key);
+  }) : super(key: key);
 
-  const ReadingListArticlesSelectView.withPreview({
-    required this.topicPreview,
-    Key? key,
-  })  : topic = null,
-        super(key: key);
-
-  final Topic? topic;
-  final TopicPreview? topicPreview;
+  final Topic topic;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +79,7 @@ class ReadingListArticlesSelectView extends HookWidget {
 
     useEffect(
       () {
-        cubit.initialize(topic, topicPreview);
+        cubit.initialize(topic);
       },
       [cubit],
     );
