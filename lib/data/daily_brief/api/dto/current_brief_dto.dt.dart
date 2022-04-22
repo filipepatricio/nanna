@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -9,7 +10,7 @@ class CurrentBriefDTO {
   final String id;
   final HeadlineDTO greeting;
   final HeadlineDTO goodbye;
-  final List<TopicPreviewDTO> topics;
+  final List<TopicDTO> topics;
   final int numberOfTopics;
 
   CurrentBriefDTO(this.id, this.greeting, this.goodbye, this.topics, this.numberOfTopics);

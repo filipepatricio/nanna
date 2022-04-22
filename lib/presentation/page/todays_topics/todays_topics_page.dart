@@ -186,7 +186,7 @@ class _IdleContent extends HookWidget {
                         variant: variants[currentTopicIndex],
                         coverSize: Size(cardStackWidth, cardStackHeight),
                         child: RoundTopicCoverLarge(
-                          topic: currentTopic,
+                          topic: currentTopic.asPreview,
                         ),
                       ),
                     ),
@@ -207,6 +207,7 @@ class _IdleContent extends HookWidget {
       TopicPage(
         topicSlug: currentBrief.topics[index].slug,
         briefId: currentBrief.id,
+        topic: currentBrief.topics[index],
       ),
     );
   }

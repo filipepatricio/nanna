@@ -12,7 +12,7 @@ class DailyBriefGql {
         $_goodbye
         numberOfTopics
         topics {
-          ${CommonGQLModels.topicPreview}
+          ${CommonGQLModels.topic}
         }
       }
     }

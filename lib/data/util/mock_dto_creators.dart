@@ -74,9 +74,9 @@ class MockDTO {
     // goodbye
     HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
     [
-      topicPreview,
-      topicPreviewWithEditorOwner,
-      topicPreviewWithUnknownOwner,
+      topic,
+      topicWithEditorOwner,
+      topicWithUnknownOwner,
     ],
     3,
   );
