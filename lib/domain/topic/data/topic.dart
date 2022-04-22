@@ -23,7 +23,7 @@ class Topic {
   final Image coverImage;
   final ReadingList readingList;
 
-Topic({
+  Topic({
     required this.id,
     required this.slug,
     required this.title,
