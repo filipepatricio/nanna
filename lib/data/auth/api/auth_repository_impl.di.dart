@@ -34,7 +34,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final result = await _apiDataSource.signInWithProvider(oAuthToken.token, oAuthToken.provider, oAuthToken.userMeta);
     final response = _loginResponseDTOMapper(result);
 
-    return AuthResult(response.tokens, oAuthToken.provider, response.user);
+    return AuthResult(response.tokens, oAuthToken.provider, response.user.uuid);
   }
 
   @override
@@ -43,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final result = await _apiDataSource.signInWithProvider(token, signInMethod);
     final response = _loginResponseDTOMapper(result);
 
-    return AuthResult(response.tokens, signInMethod, response.user);
+    return AuthResult(response.tokens, signInMethod, response.user.uuid);
   }
 
   @override
@@ -62,6 +62,6 @@ class AuthRepositoryImpl implements AuthRepository {
     final result = await _apiDataSource.signInWithInviteCode(credentials, code);
     final response = _loginResponseDTOMapper(result);
 
-    return AuthResult(response.tokens, credentials.provider, response.user);
+    return AuthResult(response.tokens, credentials.provider, response.user.uuid);
   }
 }

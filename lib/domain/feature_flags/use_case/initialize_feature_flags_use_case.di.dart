@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
-import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/user/user_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -17,30 +16,26 @@ class InitializeFeatureFlagsUseCase {
   );
 
   Future<void> call() async {
-    final authToken = await _authStore.read();
-    if (authToken != null) {
-      final tokenData = authToken.accessToken.decoded();
+    final tokenData = await _authStore.accessTokenData();
 
-      final uuid = tokenData['sub'] as String?;
-      var email = tokenData['email'] as String?;
-      var lastName = tokenData['family_name'] as String?;
-      var firstName = tokenData['given_name'] as String?;
+    if (tokenData != null) {
+      var email = tokenData.email;
+      var lastName = tokenData.firstName;
+      var firstName = tokenData.lastName;
 
-      if (uuid != null) {
-        if (email == null || firstName == null || lastName == null) {
-          final user = await _userRepository.getUser();
-          email = user.email;
-          firstName = user.firstName;
-          lastName = user.lastName;
-        }
-
-        await _featuresFlagsRepository.initialize(
-          uuid,
-          email,
-          firstName,
-          lastName,
-        );
+      if (email == null || firstName == null || lastName == null) {
+        final user = await _userRepository.getUser();
+        email = user.email;
+        firstName = user.firstName;
+        lastName = user.lastName;
       }
+
+      await _featuresFlagsRepository.initialize(
+        tokenData.uuid,
+        email,
+        firstName,
+        lastName,
+      );
     }
   }
 }

@@ -154,6 +154,8 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'article_id': articleId,
         },
       );
+
+  factory AnalyticsEvent.logout() => AnalyticsEvent._('Logout');
 }
 
 extension on BookmarkSortConfigName {
