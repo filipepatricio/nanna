@@ -18,9 +18,11 @@ import 'package:better_informed_mobile/data/push_notification/api/dto/notificati
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_dto.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/reading_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/reading_list_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
 
 /// To be use as a response for mock implementations of remote data sources
@@ -137,6 +139,12 @@ class MockDTO {
     owner: TopicOwnerDTO.unknown(),
   );
 
+  static final topicPreview = topic.asPreview;
+
+  static final topicPreviewWithEditorOwner = topicWithEditorOwner.asPreview;
+
+  static final topicPreviewWithUnknownOwner = topicWithUnknownOwner.asPreview;
+
   /// Articles
 
   static final premiumArticle = _freeArticle.copyWith(
@@ -233,11 +241,11 @@ class MockDTO {
     'explore-topics-id',
     'Hot topics',
     [
-      topic,
-      topic,
-      topic,
-      topic,
-      topic,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
     ],
   );
 
@@ -245,11 +253,11 @@ class MockDTO {
     'explore-topics-2-id',
     'By our experts',
     [
-      topic,
-      topic,
-      topic,
-      topic,
-      topic,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
     ],
   );
 
@@ -458,6 +466,25 @@ extension on TopicDTO {
       coverImage ?? this.coverImage,
       readingList ?? this.readingList,
       summaryCards ?? this.summaryCards,
+    );
+  }
+
+  TopicPreviewDTO get asPreview {
+    return TopicPreviewDTO(
+      id,
+      slug,
+      title,
+      strippedTitle,
+      introduction,
+      url,
+      owner,
+      lastUpdatedAt,
+      highlightedPublishers,
+      heroImage,
+      coverImage,
+      ReadingListPreviewDTO(
+        readingList.entries.length,
+      ),
     );
   }
 }

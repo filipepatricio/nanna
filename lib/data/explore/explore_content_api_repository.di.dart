@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_d
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/explore_content_repository.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: ExploreContentRepository)
@@ -38,7 +38,7 @@ class ExploreContentApiRepository implements ExploreContentRepository {
   }
 
   @override
-  Future<List<Topic>> getPaginatedTopics(String areaId, int limit, int offset) async {
+  Future<List<TopicPreview>> getPaginatedTopics(String areaId, int limit, int offset) async {
     final dto = await _dataSource.getPaginatedExploreArea(areaId, limit, offset);
     final area = _exploreContentAreaDTOMapper(dto);
 

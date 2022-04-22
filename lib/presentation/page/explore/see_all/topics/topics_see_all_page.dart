@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_cubit.di.dart';
@@ -24,7 +24,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class TopicsSeeAllPage extends HookWidget {
   final String areaId;
   final String title;
-  final List<Topic> topics;
+  final List<TopicPreview> topics;
 
   const TopicsSeeAllPage({
     required this.areaId,
@@ -137,7 +137,7 @@ class _Body extends StatelessWidget {
 class _TopicGrid extends StatelessWidget {
   final String title;
   final PageStorageKey pageStorageKey;
-  final List<Topic> topics;
+  final List<TopicPreview> topics;
   final ScrollController scrollController;
   final bool withLoader;
   final List<RoundStackCardVariant> cardVariants;
@@ -201,7 +201,7 @@ class _TopicGrid extends StatelessWidget {
 }
 
 class _GridItem extends StatelessWidget {
-  final Topic topic;
+  final TopicPreview topic;
   final RoundStackCardVariant cardVariant;
 
   const _GridItem({
@@ -231,11 +231,10 @@ class _GridItem extends StatelessWidget {
     );
   }
 
-  void _onTopicTap(BuildContext context, Topic topic) {
+  void _onTopicTap(BuildContext context, TopicPreview topic) {
     AutoRouter.of(context).push(
       TopicPage(
-        topicSlug: topic.id,
-        topic: topic,
+        topicSlug: topic.slug,
       ),
     );
   }

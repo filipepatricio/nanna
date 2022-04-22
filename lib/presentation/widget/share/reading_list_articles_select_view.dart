@@ -32,13 +32,20 @@ const _labelTextStyle = TextStyle(
   height: 1.4,
 );
 
-Future<void> shareReadingList(BuildContext context, Topic topic) async {
+Future<void> shareReadingListUsingTopic(BuildContext context, Topic topic) async {
+  return _showBottomSheet(
+    context,
+    (context) => ReadingListArticlesSelectView(topic: topic),
+  );
+}
+
+Future<void> _showBottomSheet(BuildContext context, WidgetBuilder builder) {
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
     builder: (context) => Container(
       height: MediaQuery.of(context).size.height * 0.6,
-      child: ReadingListArticlesSelectView(topic: topic),
+      child: builder(context),
     ),
     useRootNavigator: true,
     backgroundColor: Colors.transparent,
@@ -46,12 +53,12 @@ Future<void> shareReadingList(BuildContext context, Topic topic) async {
 }
 
 class ReadingListArticlesSelectView extends HookWidget {
-  final Topic topic;
-
   const ReadingListArticlesSelectView({
     required this.topic,
     Key? key,
   }) : super(key: key);
+
+  final Topic topic;
 
   @override
   Widget build(BuildContext context) {

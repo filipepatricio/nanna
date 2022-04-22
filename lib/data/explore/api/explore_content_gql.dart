@@ -27,7 +27,7 @@ class ExploreContentGQL {
 
         ... on TopicsExploreArea {
           topics {
-            ${CommonGQLModels.topic}
+            ${CommonGQLModels.topicPreview}
           }
         }
       }
@@ -59,7 +59,7 @@ class ExploreContentGQL {
 
         ... on TopicsExploreArea {
           topics(pagination: {limit: $limit, offset: $offset}) {
-            ${CommonGQLModels.topic}
+            ${CommonGQLModels.topicPreview}
           }
         }
       }

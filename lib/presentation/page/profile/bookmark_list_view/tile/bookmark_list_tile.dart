@@ -172,7 +172,7 @@ extension on Bookmark {
         article: data.article,
       ),
       topic: (data) => ShareButton(
-        onTap: () => shareReadingList(context, data.topic),
+        onTap: () => shareReadingListUsingTopic(context, data.topic),
         backgroundColor: AppColors.transparent,
       ),
       unknown: (_) => const SizedBox(),
@@ -229,12 +229,11 @@ extension on BookmarkTileCover {
             AutoRouter.of(context).push(
               TopicPage(
                 topicSlug: data.topic.slug,
-                topic: data.topic,
               ),
             );
           },
           child: RoundTopicCoverSmall(
-            topic: data.topic,
+            topic: data.topic.asPreview,
           ),
         ),
       ),

@@ -1,7 +1,7 @@
 class CommonGQLModels {
   const CommonGQLModels._();
 
-  static const String topic = '''
+  static const String topicPreview = ''' 
     id
     slug
     title
@@ -20,9 +20,6 @@ class CommonGQLModels {
         $editorialTeam
       }
     }
-    summaryCards{
-      text
-    }
     introduction
     highlightedPublishers {
       $publisher
@@ -32,6 +29,16 @@ class CommonGQLModels {
     }
     heroImage {
       $image
+    }
+    readingList {
+      entryCount
+    }
+  ''';
+
+  static const String topic = '''
+    $topicPreview
+    summaryCards{
+      text
     }
     readingList {
       id

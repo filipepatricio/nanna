@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,5 +8,5 @@ class GetTopicsFromEditorUseCase {
 
   GetTopicsFromEditorUseCase(this._topicsRepository);
 
-  Future<List<Topic>> call(String editorId) => _topicsRepository.getTopicsFromEditor(editorId);
+  Future<List<TopicPreview>> call(String editorId) => _topicsRepository.getTopicPreviewsFromEditor(editorId);
 }

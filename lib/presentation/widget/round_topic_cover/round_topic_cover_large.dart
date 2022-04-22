@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -15,7 +15,7 @@ class RoundTopicCoverLarge extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final Topic topic;
+  final TopicPreview topic;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class _CoverContent extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final Topic topic;
+  final TopicPreview topic;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class _CoverContent extends StatelessWidget {
             const Spacer(),
             Text(
               LocaleKeys.readingList_articleCount.tr(
-                args: [topic.readingList.entries.length.toString()],
+                args: [topic.entryCount.toString()],
               ),
               style: AppTypography.b3Regular.copyWith(
                 height: 1.5,

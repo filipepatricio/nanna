@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_progressive_image.dart';
@@ -11,7 +11,7 @@ class RoundTopicCoverResponsiveImage extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final Topic topic;
+  final TopicPreview topic;
 
   @override
   Widget build(BuildContext context) {

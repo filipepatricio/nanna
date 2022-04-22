@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class LastUpdatedTopics extends HookWidget {
-  final List<Topic> topics;
+  final List<TopicPreview> topics;
   final double cardStackHeight;
 
   const LastUpdatedTopics({
@@ -68,11 +68,10 @@ class LastUpdatedTopics extends HookWidget {
   }
 }
 
-void _onTopicTap(BuildContext context, Topic topic) {
+void _onTopicTap(BuildContext context, TopicPreview topic) {
   AutoRouter.of(context).push(
     TopicPage(
-      topicSlug: topic.id,
-      topic: topic,
+      topicSlug: topic.slug,
     ),
   );
 }

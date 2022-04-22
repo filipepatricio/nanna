@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topics_from_editor_
 import 'package:better_informed_mobile/data/topic/api/mapper/topics_from_expert_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/topics_api_data_source.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -21,13 +22,13 @@ class TopicsApiRepository implements TopicsRepository {
   );
 
   @override
-  Future<List<Topic>> getTopicsFromExpert(String expertId) async {
+  Future<List<TopicPreview>> getTopicPreviewsFromExpert(String expertId) async {
     final dto = await _topicsApiDataSource.getTopicsFromExpert(expertId);
     return _topicsFromExpertDTOMapper(dto);
   }
 
   @override
-  Future<List<Topic>> getTopicsFromEditor(String editorId) async {
+  Future<List<TopicPreview>> getTopicPreviewsFromEditor(String editorId) async {
     final dto = await _topicsApiDataSource.getTopicsFromEditor(editorId);
     return _topicsFromEditorDTOMapper(dto);
   }

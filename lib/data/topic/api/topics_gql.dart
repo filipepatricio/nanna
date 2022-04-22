@@ -7,7 +7,7 @@ class TopicsGql {
         '''
     query {
       getTopicsFromExpert(expertId: "$expertId") {
-        ${CommonGQLModels.topic}
+        ${CommonGQLModels.topicPreview}
       }
     }
   ''',
@@ -17,7 +17,7 @@ class TopicsGql {
         '''
     query {
       getTopicsFromEditor(editorId: "$editorId") {
-        ${CommonGQLModels.topic}
+        ${CommonGQLModels.topicPreview}
       }
     }
   ''',

@@ -13,17 +13,17 @@ const articlesSelectionLimit = 3;
 
 @injectable
 class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelectViewState> {
-  ReadingListArticlesSelectViewCubit(this._shareImageUseCase)
-      : super(ReadingListArticlesSelectViewState.initializing());
+  ReadingListArticlesSelectViewCubit(
+    this._shareImageUseCase,
+  ) : super(ReadingListArticlesSelectViewState.initializing());
 
   final ShareImageUseCase _shareImageUseCase;
 
   late Topic _topic;
   final Set<int> _selectedIndexes = {};
 
-  void initialize(Topic topic) {
+  Future<void> initialize(Topic topic) async {
     _topic = topic;
-
     _emitIdleState();
   }
 
