@@ -481,6 +481,7 @@ extension on TopicDTO {
       highlightedPublishers,
       heroImage,
       coverImage,
+      readingList.entries.length,
     );
   }
 }

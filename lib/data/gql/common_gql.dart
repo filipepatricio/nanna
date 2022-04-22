@@ -30,6 +30,7 @@ class CommonGQLModels {
     heroImage {
       $image
     }
+    entryCount
   ''';
 
   static const String topic = '''

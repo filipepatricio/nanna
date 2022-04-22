@@ -49,7 +49,7 @@ void main() {
       publishers,
       heroImage,
       coverImage,
-      5, // TODO change
+      3,
     );
 
     when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);

@@ -32,7 +32,7 @@ class TopicPreviewDTOMapper implements Mapper<TopicPreviewDTO, TopicPreview> {
       data.highlightedPublishers.map((publisher) => _publisherDTOMapper(publisher)).toList(),
       _imageDTOMapper(data.heroImage),
       _imageDTOMapper(data.coverImage),
-      5, // TODO ask for entry count in API as field
+      data.entryCount,
     );
   }
 }
