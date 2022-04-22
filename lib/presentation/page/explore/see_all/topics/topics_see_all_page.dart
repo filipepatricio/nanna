@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -53,18 +54,21 @@ class TopicsSeeAllPage extends HookWidget {
 
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: title),
-      body: NextPageLoadExecutor(
-        enabled: shouldListen,
-        onNextPageLoad: cubit.loadNextPage,
-        scrollController: scrollController,
-        child: TabBarListener(
-          currentPage: context.routeData,
-          controller: scrollController,
-          child: _Body(
-            title: title,
-            pageStorageKey: pageStorageKey,
-            scrollController: scrollController,
-            state: state,
+      body: AudioPlayerBannerWrapper(
+        layout: AudioPlayerBannerLayout.column,
+        child: NextPageLoadExecutor(
+          enabled: shouldListen,
+          onNextPageLoad: cubit.loadNextPage,
+          scrollController: scrollController,
+          child: TabBarListener(
+            currentPage: context.routeData,
+            controller: scrollController,
+            child: _Body(
+              title: title,
+              pageStorageKey: pageStorageKey,
+              scrollController: scrollController,
+              state: state,
+            ),
           ),
         ),
       ),

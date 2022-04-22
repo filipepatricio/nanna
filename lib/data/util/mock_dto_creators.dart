@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
-import 'package:better_informed_mobile/data/article/api/dto/article_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
@@ -174,6 +174,7 @@ class MockDTO {
 
   static final audioFile = AudioFileDTO(
     'audio-file-url',
+    'Created by informed under the license of the Financial Times.',
   );
 
   /// Internal
@@ -188,6 +189,7 @@ class MockDTO {
     'Global Warming',
     'instagram.com',
     'linkedin.com',
+    'website.com',
     // avatar
     ImageDTO('owner_1'),
   );
@@ -318,7 +320,7 @@ class MockDTO {
     true,
   ) as MediaItemDTOArticle;
 
-  static final _freeArticle = ArticleDTO(
+  static final _freeArticle = ArticleHeaderDTO(
     'id-free',
     'slug-free',
     'url',
@@ -337,7 +339,6 @@ class MockDTO {
     _publisher,
     // image
     null,
-    articleContentMarkdown,
     'source-url',
     // author
     'Cassandre Lueilwitz',
@@ -391,8 +392,8 @@ class MockDTO {
   );
 }
 
-extension on ArticleDTO {
-  ArticleDTO copyWith({
+extension on ArticleHeaderDTO {
+  ArticleHeaderDTO copyWith({
     String? id,
     String? slug,
     String? url,
@@ -404,12 +405,11 @@ extension on ArticleDTO {
     int? timeToRead,
     PublisherDTO? publisher,
     ArticleImageDTO? image,
-    ArticleContentDTO? text,
     String? sourceUrl,
     String? author,
     bool? hasAudioVersion,
   }) {
-    return ArticleDTO(
+    return ArticleHeaderDTO(
       id ?? this.id,
       slug ?? this.slug,
       url ?? this.url,
@@ -421,7 +421,6 @@ extension on ArticleDTO {
       timeToRead ?? this.timeToRead,
       publisher ?? this.publisher,
       image ?? this.image,
-      text ?? this.text,
       sourceUrl ?? this.sourceUrl,
       author ?? this.author,
       hasAudioVersion ?? this.hasAudioVersion,

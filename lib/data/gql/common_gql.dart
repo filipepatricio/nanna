@@ -31,7 +31,7 @@ class CommonGQLModels {
       publicId
     }
     heroImage {
-      publicId
+      $image
     }
     readingList {
       id
@@ -58,6 +58,7 @@ class CommonGQLModels {
       areaOfExpertise
       instagram
       linkedin
+      website
       avatar {
         publicId
       }
@@ -87,14 +88,6 @@ class CommonGQLModels {
       }
   ''';
 
-  static const String fullArticle = '''
-    $article
-    text {
-      content
-      markupLanguage
-    }
-  ''';
-
   static const String article = '''
       sourceUrl
       slug
@@ -109,10 +102,15 @@ class CommonGQLModels {
       timeToRead
       hasAudioVersion
       image {
-        publicId
+        $image
       }
       publisher {
         $publisher
       }
+  ''';
+
+  static const String image = '''
+        publicId
+        caption
   ''';
 }

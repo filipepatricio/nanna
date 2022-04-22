@@ -85,7 +85,9 @@ class ExplorePage extends HookWidget {
                             child: SizedBox(),
                           ),
                         ),
-                        const SliverToBoxAdapter(child: SizedBox(height: AppDimens.xl))
+                        const SliverToBoxAdapter(
+                          child: SizedBox(height: AppDimens.xl + AppDimens.audioBannerHeight),
+                        ),
                       ],
                     ),
                   ),

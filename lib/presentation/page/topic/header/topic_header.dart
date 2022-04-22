@@ -7,8 +7,10 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_progressive_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/photo_caption/photo_caption_button.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/selected_articles_label.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
@@ -107,8 +109,13 @@ class TopicHeader extends HookWidget {
               const SizedBox(height: AppDimens.xl),
               AnimatedPointerDown(arrowColor: AppColors.white, onTap: onArrowTap),
               const SizedBox(height: AppDimens.xxl),
+              const AudioPlayerBannerPlaceholder(),
             ],
           ),
+        ),
+        PhotoCaptionButton(
+          cloudinaryImage: topic.heroImage,
+          topicId: topic.id,
         ),
       ],
     );

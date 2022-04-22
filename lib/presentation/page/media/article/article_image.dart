@@ -27,7 +27,7 @@ class ArticleImage extends HookWidget {
   Widget build(BuildContext context) {
     if (image is d.ArticleImageCloudinary) {
       return CloudinaryProgressiveImage(
-        publicId: (image as d.ArticleImageCloudinary).publicId,
+        publicId: (image as d.ArticleImageCloudinary).cloudinaryImage.publicId,
         config: CloudinaryConfig(
           platformBasedExtension: true,
           autoGravity: true,

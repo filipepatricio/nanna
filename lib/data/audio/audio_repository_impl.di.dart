@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:better_informed_mobile/data/audio/audio_file_downloader.di.dart';
+import 'package:better_informed_mobile/data/audio/handler/informed_base_audio_handler.dart';
+import 'package:better_informed_mobile/data/audio/mapper/audio_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/audio/mapper/audio_playback_state_mapper.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
@@ -16,35 +19,33 @@ class AudioRepositoryImpl implements AudioRepository {
   AudioRepositoryImpl(
     this._audioHandler,
     this._audioPlaybackStateMapper,
+    this._audioItemMapper,
     this._audioFileDownloader,
   );
 
-  final AudioHandler _audioHandler;
+  final InformedBaseAudioHandler _audioHandler;
   final AudioPlaybackStateMapper _audioPlaybackStateMapper;
+  final AudioItemMapper _audioItemMapper;
   final AudioFileDownloader _audioFileDownloader;
+
+  var _lastPosition = Duration.zero;
 
   @override
   Future<void> closeItem() async {
+    _lastPosition = Duration.zero;
     await _audioHandler.stop();
   }
 
   @override
-  Future<void> prepareItem(AudioItem item) async {
-    await _audioHandler.prepare();
+  Future<void> prepareItem(AudioItem item, AudioFile audioFile) async {
+    final mediaItem = _audioItemMapper.from(item);
+    await _audioHandler.notifyLoading(mediaItem);
 
-    final fileName = _getAudioFileName(item);
-    final audioFile = await _getAudioFile(fileName);
-    await _audioFileDownloader.loadAndSaveFile(audioFile, item.fileUrl);
+    final fileName = _getAudioFileName(audioFile.url);
+    final file = await _getAudioFile(fileName);
+    await _audioFileDownloader.loadAndSaveFile(file, audioFile.url);
 
-    final imageUrl = item.imageUrl;
-    final mediaItem = MediaItem(
-      id: audioFile.path,
-      title: item.title,
-      artist: item.author,
-      artUri: imageUrl == null ? null : Uri.parse(imageUrl),
-    );
-
-    await _audioHandler.playMediaItem(mediaItem);
+    await _audioHandler.open(file.path);
   }
 
   @override
@@ -64,11 +65,17 @@ class AudioRepositoryImpl implements AudioRepository {
 
   @override
   Stream<AudioPlaybackState> get playbackState {
-    return _audioHandler.playbackState.map(_audioPlaybackStateMapper);
+    return _audioHandler.currentAudioItemStream.map(_audioPlaybackStateMapper);
   }
 
   @override
-  Stream<Duration> get position => AudioService.position;
+  Stream<Duration> get position async* {
+    yield _lastPosition;
+    await for (final position in AudioService.position) {
+      _lastPosition = position;
+      yield position;
+    }
+  }
 
   @override
   Future<void> fastForward() async {
@@ -91,8 +98,8 @@ class AudioRepositoryImpl implements AudioRepository {
     return File(filePath);
   }
 
-  String _getAudioFileName(AudioItem audioItem) {
-    final uri = Uri.parse(audioItem.fileUrl);
+  String _getAudioFileName(String url) {
+    final uri = Uri.parse(url);
     final lastSegment = uri.pathSegments.last;
     return lastSegment;
   }

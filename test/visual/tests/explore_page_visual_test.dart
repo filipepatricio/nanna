@@ -5,14 +5,26 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(ExplorePage, (tester) async {
-    await tester.startApp(initialRoute: const ExploreTabGroupRouter(children: [ExplorePageRoute()]));
+    await tester.startApp(
+      initialRoute: const ExploreTabGroupRouter(
+        children: [
+          ExplorePageRoute(),
+        ],
+      ),
+    );
     await tester.matchGoldenFile();
   });
 
   visualTest(
     '${ExplorePage}_(full_height)',
     (tester) async {
-      await tester.startApp(initialRoute: const ExploreTabGroupRouter(children: [ExplorePageRoute()]));
+      await tester.startApp(
+        initialRoute: const ExploreTabGroupRouter(
+          children: [
+            ExplorePageRoute(),
+          ],
+        ),
+      );
       await tester.matchGoldenFile();
     },
     testConfig: TestConfig.unitTesting.withDevices([veryHighDevice]),

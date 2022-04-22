@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -61,22 +62,25 @@ class TopicPage extends HookWidget {
     return WillPopScope(
       onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
       child: Material(
-        child: state.maybeMap(
-          idle: (state) => _TopicIdleView(
-            topic: state.topic,
-            cubit: cubit,
-            tutorialCoachMark: tutorialCoachMark,
-          ),
-          loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
-          error: (_) => _DefaultAppBarWrapper(
-            child: GeneralErrorView(
-              title: LocaleKeys.todaysTopics_oops.tr(),
-              content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
-              svgPath: AppVectorGraphics.magError,
-              retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+        child: AudioPlayerBannerWrapper(
+          layout: AudioPlayerBannerLayout.column,
+          child: state.maybeMap(
+            idle: (state) => _TopicIdleView(
+              topic: state.topic,
+              cubit: cubit,
+              tutorialCoachMark: tutorialCoachMark,
             ),
+            loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
+            error: (_) => _DefaultAppBarWrapper(
+              child: GeneralErrorView(
+                title: LocaleKeys.todaysTopics_oops.tr(),
+                content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+                svgPath: AppVectorGraphics.magError,
+                retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+              ),
+            ),
+            orElse: () => const SizedBox(),
           ),
-          orElse: () => const SizedBox(),
         ),
       ),
     );

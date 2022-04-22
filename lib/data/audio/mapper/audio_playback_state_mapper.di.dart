@@ -1,14 +1,26 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:better_informed_mobile/data/audio/handler/current_audio_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/audio/mapper/audio_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class AudioPlaybackStateMapper implements Mapper<PlaybackState, AudioPlaybackState> {
+class AudioPlaybackStateMapper implements Mapper<CurrentAudioItemDTO, AudioPlaybackState> {
+  AudioPlaybackStateMapper(this._audioItemMapper);
+
+  final AudioItemMapper _audioItemMapper;
+
   @override
-  AudioPlaybackState call(PlaybackState data) {
-    final processingState = data.processingState;
-    final duration = data.bufferedPosition;
+  AudioPlaybackState call(CurrentAudioItemDTO data) {
+    final processingState = data.state.processingState;
+    final mediaItem = data.mediaItem;
+
+    if (mediaItem == null) {
+      return const AudioPlaybackState.notInitialized();
+    }
+
+    final duration = mediaItem.duration;
 
     switch (processingState) {
       case AudioProcessingState.idle:
@@ -16,32 +28,41 @@ class AudioPlaybackStateMapper implements Mapper<PlaybackState, AudioPlaybackSta
       case AudioProcessingState.loading:
       case AudioProcessingState.buffering:
         return AudioPlaybackState.loading(
-          speed: data.speed,
+          speed: data.state.speed,
         );
       case AudioProcessingState.ready:
-        return _mapReadyState(data);
+        return _mapReadyState(data.state, mediaItem);
       case AudioProcessingState.completed:
         return AudioPlaybackState.completed(
-          duration: duration,
-          speed: data.speed,
+          duration: duration!,
+          speed: data.state.speed,
+          audioItem: _audioItemMapper.to(mediaItem),
         );
       case AudioProcessingState.error:
         throw Exception('While playing audio some error occurred');
     }
   }
 
-  AudioPlaybackState _mapReadyState(PlaybackState data) {
-    final duration = data.bufferedPosition;
+  AudioPlaybackState _mapReadyState(PlaybackState state, MediaItem mediaItem) {
+    final duration = mediaItem.duration;
 
-    if (data.playing) {
+    if (duration == null) {
+      return AudioPlaybackState.loading(
+        speed: state.speed,
+      );
+    }
+
+    if (state.playing) {
       return AudioPlaybackState.playing(
         duration: duration,
-        speed: data.speed,
+        speed: state.speed,
+        audioItem: _audioItemMapper.to(mediaItem),
       );
     } else {
       return AudioPlaybackState.paused(
         duration: duration,
-        speed: data.speed,
+        speed: state.speed,
+        audioItem: _audioItemMapper.to(mediaItem),
       );
     }
   }

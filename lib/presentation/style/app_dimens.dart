@@ -139,6 +139,12 @@ class AppDimens {
       topicViewArticleSectionNoteHeight(context) +
       topicViewStackedCardsDividerHeight(context);
 
+  /// Full screen width
+  static double photoCaptionImageContainerWidth(BuildContext context) => MediaQuery.of(context).size.width;
+
+  /// 65% Full screen height
+  static double photoCaptionImageContainerHeight(BuildContext context) => MediaQuery.of(context).size.height * .65;
+
   /// 72
   static const topicViewArticleSectionArticleCountLabelHeight = 72.0;
 
@@ -160,4 +166,6 @@ class AppDimens {
   static const bookmarkIconSize = 32.0;
 
   static const articleAudioCoverSize = 1024;
+
+  static const audioBannerHeight = 80.0;
 }

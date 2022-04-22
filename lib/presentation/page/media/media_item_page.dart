@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
@@ -33,6 +34,7 @@ class MediaItemPage extends HookWidget {
     this.topicId,
     this.briefId,
     this.readArticleProgress,
+    this.articleOutputMode = ArticleOutputMode.read,
     Key? key,
   }) : super(key: key);
 
@@ -41,6 +43,7 @@ class MediaItemPage extends HookWidget {
   final MediaItemArticle? article;
   final String? slug;
   final String? topicSlug;
+  final ArticleOutputMode articleOutputMode;
 
   final double? readArticleProgress;
 
@@ -95,8 +98,7 @@ class MediaItemPage extends HookWidget {
                 ),
                 idlePremium: (state) => LayoutBuilder(
                   builder: (context, constraints) => PremiumArticleView(
-                    article: state.header,
-                    content: state.content,
+                    article: state.article,
                     fromTopic: topicId != null || topicSlug != null,
                     modalController: modalController,
                     controller: scrollController,
@@ -105,6 +107,7 @@ class MediaItemPage extends HookWidget {
                     cubit: cubit,
                     fullHeight: constraints.maxHeight,
                     readArticleProgress: readArticleProgress,
+                    articleOutputMode: articleOutputMode,
                   ),
                 ),
                 error: (state) => _ErrorContent(article: state.article),

@@ -200,6 +200,11 @@ class _Idle extends StatelessWidget {
               ),
             ),
           ),
+        const SliverPadding(
+          padding: EdgeInsets.only(
+            bottom: AppDimens.audioBannerHeight,
+          ),
+        ),
       ],
     );
   }

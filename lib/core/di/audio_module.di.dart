@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:better_informed_mobile/data/audio/handler/informed_audio_handler.dart';
+import 'package:better_informed_mobile/data/audio/handler/informed_base_audio_handler.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:injectable/injectable.dart';
 import 'package:just_audio/just_audio.dart';
@@ -16,13 +17,13 @@ abstract class AudioModule {
 
   @preResolve
   @LazySingleton(env: liveEnvs)
-  Future<AudioHandler> getAudioHandler(
+  Future<InformedBaseAudioHandler> getAudioHandler(
     AudioPlayer player,
     AudioSession audioSession,
     AppConfig config,
   ) async {
     await audioSession.configure(const AudioSessionConfiguration.speech());
-    return AudioService.init(
+    final handler = await AudioService.init(
       builder: () => InformedAudioHandler(player),
       config: AudioServiceConfig(
         androidNotificationChannelId: '${config.appId}.channel.audio',
@@ -33,5 +34,7 @@ abstract class AudioModule {
         rewindInterval: const Duration(seconds: 10),
       ),
     );
+    await handler.initialize();
+    return handler;
   }
 }

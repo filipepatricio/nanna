@@ -32,26 +32,26 @@ void main() {
 
   test('successfuly prepares audio', () async {
     final article = TestData.premiumArticleWithAudio;
-    final audioFile = AudioFile(url: 'url');
+    final audioFile = AudioFile(url: 'url', credits: 'credits');
     const imageUrl = 'url';
 
     when(articleRepository.getArticleAudioFile(article.slug, any)).thenAnswer(
       (realInvocation) async => audioFile,
     );
-    when(audioRepository.prepareItem(any)).thenAnswer((_) async {});
+    when(audioRepository.prepareItem(any, audioFile)).thenAnswer((_) async {});
 
     await expectLater(
       useCase(article: article, imageUrl: imageUrl),
       completes,
     );
 
-    verify(audioRepository.prepareItem(any));
+    verify(audioRepository.prepareItem(any, audioFile));
     verify(articleRepository.getArticleAudioFile(article.slug));
   });
 
   test('successfuly prepares audio after expired error', () async {
     final article = TestData.premiumArticleWithAudio;
-    final audioFile = AudioFile(url: 'url');
+    final audioFile = AudioFile(url: 'url', credits: 'credits');
     const imageUrl = 'url';
 
     var invocationCounter = 0;
@@ -59,7 +59,7 @@ void main() {
     when(articleRepository.getArticleAudioFile(article.slug, any)).thenAnswer(
       (realInvocation) async => audioFile,
     );
-    when(audioRepository.prepareItem(any)).thenAnswer((invocation) async {
+    when(audioRepository.prepareItem(any, audioFile)).thenAnswer((invocation) async {
       if (invocationCounter++ == 0) {
         throw FileAccessExpired();
       }
@@ -70,7 +70,7 @@ void main() {
       completes,
     );
 
-    verify(audioRepository.prepareItem(any)).called(2);
+    verify(audioRepository.prepareItem(any, audioFile)).called(2);
     verify(articleRepository.getArticleAudioFile(article.slug)).called(1);
     verify(articleRepository.getArticleAudioFile(article.slug, true)).called(1);
   });
@@ -89,7 +89,7 @@ void main() {
       throwsA(exception),
     );
 
-    verifyNever(audioRepository.prepareItem(any));
+    verifyNever(audioRepository.prepareItem(any, any));
     verify(articleRepository.getArticleAudioFile(article.slug)).called(1);
   });
 }

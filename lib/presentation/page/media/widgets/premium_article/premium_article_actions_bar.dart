@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -21,33 +21,41 @@ class PremiumArticleActionsBar extends HookWidget {
     required this.pageController,
     required this.snackbarController,
     required this.cubit,
-    required this.articleOutputMode,
+    required this.articleOutputModeNotifier,
     Key? key,
   }) : super(key: key);
 
-  final MediaItemArticle article;
+  final Article article;
   final double fullHeight;
   final PageController pageController;
   final SnackbarController snackbarController;
   final MediaItemCubit cubit;
-  final ValueNotifier<ArticleOutputMode> articleOutputMode;
+  final ValueNotifier<ArticleOutputMode> articleOutputModeNotifier;
 
   @override
   Widget build(BuildContext context) {
-    final hasImage = useMemoized(() => article.image != null, [article]);
+    final hasImage = useMemoized(() => article.metadata.image != null, [article]);
 
     final backgroundColor = useMemoized(
-      () => ValueNotifier(hasImage ? AppColors.transparent : AppColors.background),
+      () => ValueNotifier(
+        hasImage ? AppColors.transparent : AppColors.background,
+      ),
       [hasImage],
     );
 
     final buttonColor = useMemoized(
-      () => ValueNotifier(hasImage ? AppColors.white : AppColors.textPrimary),
+      () => ValueNotifier(
+        hasImage && articleOutputModeNotifier.value == ArticleOutputMode.read ? AppColors.white : AppColors.textPrimary,
+      ),
       [hasImage],
     );
 
     final bookmarkMode = useMemoized(
-      () => ValueNotifier(hasImage ? BookmarkButtonMode.image : BookmarkButtonMode.color),
+      () => ValueNotifier(
+        hasImage && articleOutputModeNotifier.value == ArticleOutputMode.read
+            ? BookmarkButtonMode.image
+            : BookmarkButtonMode.color,
+      ),
       [hasImage],
     );
 
@@ -57,7 +65,7 @@ class PremiumArticleActionsBar extends HookWidget {
       ValueNotifier<Color> buttonColor,
       PageController pageController,
     ) {
-      if (articleOutputMode.value == ArticleOutputMode.audio) return;
+      if (articleOutputModeNotifier.value == ArticleOutputMode.audio) return;
 
       final buttonTween = ColorTween(begin: AppColors.white, end: AppColors.textPrimary);
 
@@ -82,14 +90,14 @@ class PremiumArticleActionsBar extends HookWidget {
         pageController.addListener(listener);
         return () => pageController.removeListener(listener);
       },
-      [pageController, articleOutputMode],
+      [pageController, articleOutputModeNotifier],
     );
 
     useEffect(
       () {
         if (!hasImage) return () {};
         final listener = () {
-          final audioMode = articleOutputMode.value == ArticleOutputMode.audio;
+          final audioMode = articleOutputModeNotifier.value == ArticleOutputMode.audio;
           if (audioMode) {
             backgroundColor.value = AppColors.transparent;
             bookmarkMode.value = BookmarkButtonMode.color;
@@ -98,10 +106,10 @@ class PremiumArticleActionsBar extends HookWidget {
             _setButtonColor(backgroundColor, bookmarkMode, buttonColor, pageController);
           }
         };
-        articleOutputMode.addListener(listener);
-        return () => articleOutputMode.removeListener(listener);
+        articleOutputModeNotifier.addListener(listener);
+        return () => articleOutputModeNotifier.removeListener(listener);
       },
-      [pageController, articleOutputMode],
+      [pageController, articleOutputModeNotifier],
     );
 
     return ValueListenableBuilder(
@@ -132,10 +140,10 @@ class PremiumArticleActionsBar extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (article.hasAudioVersion) ...[
+                if (article.metadata.hasAudioVersion) ...[
                   AudioButton(
                     buttonColor: buttonColor,
-                    articleOutputMode: articleOutputMode,
+                    articleOutputMode: articleOutputModeNotifier,
                   )
                 ],
                 const SizedBox(width: AppDimens.m),
@@ -143,7 +151,7 @@ class PremiumArticleActionsBar extends HookWidget {
                   valueListenable: bookmarkMode,
                   builder: (BuildContext context, BookmarkButtonMode value, Widget? child) {
                     return BookmarkButton.article(
-                      article: article,
+                      article: article.metadata,
                       topicId: cubit.topicId,
                       briefId: cubit.briefId,
                       mode: bookmarkMode.value,
@@ -155,7 +163,7 @@ class PremiumArticleActionsBar extends HookWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
                   child: ShareArticleButton(
-                    article: article,
+                    article: article.metadata,
                     buttonBuilder: (context) => ValueListenableBuilder(
                       valueListenable: buttonColor,
                       builder: (BuildContext context, Color value, Widget? child) {

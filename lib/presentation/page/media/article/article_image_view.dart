@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/photo_caption/photo_caption_button.dart';
 import 'package:flutter/material.dart';
 
 class ArticleImageView extends StatelessWidget {
@@ -23,6 +24,9 @@ class ArticleImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasImage = article.hasImage;
+    final articleImage = article.image;
+    final imageWidth = MediaQuery.of(context).size.width;
+    final imageHeight = fullHeight;
 
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -34,8 +38,8 @@ class ArticleImageView extends StatelessWidget {
             foregroundDecoration: const BoxDecoration(color: AppColors.black40),
             child: ArticleImage(
               image: article.image!,
-              width: MediaQuery.of(context).size.width,
-              height: fullHeight,
+              width: imageWidth,
+              height: imageHeight,
               cardColor: AppColors.background,
               fit: BoxFit.cover,
             ),
@@ -82,6 +86,14 @@ class ArticleImageView extends StatelessWidget {
             ),
           ),
         ),
+        if (articleImage != null)
+          articleImage.maybeMap(
+            cloudinary: (image) => PhotoCaptionButton(
+              cloudinaryImage: image.cloudinaryImage,
+              articleId: article.id,
+            ),
+            orElse: () => const SizedBox(),
+          )
       ],
     );
   }

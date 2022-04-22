@@ -8,6 +8,7 @@ class AppVectorGraphics {
   static const String megaphone = 'assets/vector_graphics/megaphone_ic.svg';
   static const String fullArrowRight = 'assets/vector_graphics/full_arrow_right_ic.svg';
   static const String memberAccess = 'assets/vector_graphics/member_access.svg';
+  static const String flag = 'assets/vector_graphics/flag.svg';
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
   static const String exploreSelected = 'assets/vector_graphics/explore_selected_ic.svg';
@@ -24,6 +25,7 @@ class AppVectorGraphics {
   static const String lock = 'assets/vector_graphics/lock_ic.svg';
   static const String instagram = 'assets/vector_graphics/instagram.svg';
   static const String linkedin = 'assets/vector_graphics/linkedin.svg';
+  static const String website = 'assets/vector_graphics/website.svg';
 
   static const String settings = 'assets/vector_graphics/settings_ic.svg';
   static const String account = 'assets/vector_graphics/account_ic.svg';
@@ -70,6 +72,7 @@ class AppVectorGraphics {
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
   static const String close = 'assets/vector_graphics/close.svg';
+  static const String photoCaption = 'assets/vector_graphics/photo_caption_ic.svg';
 
   static const String tutorialArrowDown = 'assets/vector_graphics/tutorial_arrow_down.svg';
   static const String tutorialArrowUp = 'assets/vector_graphics/tutorial_arrow_up.svg';

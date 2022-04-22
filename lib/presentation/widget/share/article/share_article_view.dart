@@ -62,7 +62,7 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
         if (image is ArticleImageCloudinary) {
           return cloudinaryImageAuto(
             cloudinary: cloudinary,
-            publicId: image.publicId,
+            publicId: image.cloudinaryImage.publicId,
             width: _headerWidth,
             height: _headerHeight,
             fit: BoxFit.cover,

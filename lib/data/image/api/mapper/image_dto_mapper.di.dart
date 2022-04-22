@@ -9,6 +9,7 @@ class ImageDTOMapper implements Mapper<ImageDTO, Image> {
   Image call(ImageDTO data) {
     return Image(
       publicId: data.publicId,
+      caption: data.caption,
     );
   }
 }

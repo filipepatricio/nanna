@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/bordered_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -60,24 +61,27 @@ class InviteFriendPage extends HookWidget {
         ),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      body: SnackbarParentView(
-        controller: snackbarController,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: state.mapOrNull(
-              loading: (_) => const Loader(
-                color: AppColors.limeGreen,
-              ),
-              idle: (state) => _Idle(
-                inviteCode: state.code,
-                cubit: cubit,
-              ),
-              error: (state) => GeneralErrorView(
-                title: tr(LocaleKeys.common_error_oops),
-                content: tr(LocaleKeys.common_generalError),
-                svgPath: AppVectorGraphics.magError,
-                retryCallback: () => cubit.initialize(),
+      body: AudioPlayerBannerWrapper(
+        layout: AudioPlayerBannerLayout.column,
+        child: SnackbarParentView(
+          controller: snackbarController,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: state.mapOrNull(
+                loading: (_) => const Loader(
+                  color: AppColors.limeGreen,
+                ),
+                idle: (state) => _Idle(
+                  inviteCode: state.code,
+                  cubit: cubit,
+                ),
+                error: (state) => GeneralErrorView(
+                  title: tr(LocaleKeys.common_error_oops),
+                  content: tr(LocaleKeys.common_generalError),
+                  svgPath: AppVectorGraphics.magError,
+                  retryCallback: () => cubit.initialize(),
+                ),
               ),
             ),
           ),

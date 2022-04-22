@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
@@ -24,8 +25,6 @@ import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dar
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-import 'todays_topics_page_state.dt.dart';
 
 class TodaysTopicsPage extends HookWidget {
   const TodaysTopicsPage({Key? key}) : super(key: key);
@@ -62,55 +61,54 @@ class TodaysTopicsPage extends HookWidget {
         controller: scrollController,
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
-          child: Stack(
-            children: <Widget>[
-              RefreshIndicator(
-                onRefresh: cubit.loadTodaysTopics,
-                color: AppColors.darkGrey,
-                child: NoScrollGlow(
-                  child: CustomScrollView(
-                    controller: scrollController,
-                    physics: state.maybeMap(
-                      error: (_) => const NeverScrollableScrollPhysics(),
-                      loading: (_) => const NeverScrollableScrollPhysics(),
-                      orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
-                    ),
-                    slivers: [
-                      ScrollableSliverAppBar(
-                        scrollController: scrollController,
-                        title: LocaleKeys.todaysTopics_title.tr(),
-                      ),
-                      state.maybeMap(
-                        idle: (state) => _IdleContent(
-                          todaysTopicsCubit: cubit,
-                          currentBrief: state.currentBrief,
-                          scrollController: scrollController,
-                          cardStackWidth: cardStackWidth,
-                          cardStackHeight: cardStackHeight,
-                        ),
-                        error: (_) => SliverToBoxAdapter(
-                          child: Center(
-                            child: StackedCardsErrorView(
-                              retryAction: cubit.loadTodaysTopics,
-                              size: Size(cardStackWidth, cardStackHeight),
-                            ),
-                          ),
-                        ),
-                        loading: (_) => SliverToBoxAdapter(
-                          child: TodaysTopicsLoadingView(
-                            coverSize: Size(
-                              cardStackWidth,
-                              cardStackHeight,
-                            ),
-                          ),
-                        ),
-                        orElse: () => const SizedBox(),
-                      ),
-                    ],
-                  ),
+          child: RefreshIndicator(
+            onRefresh: cubit.loadTodaysTopics,
+            color: AppColors.darkGrey,
+            child: NoScrollGlow(
+              child: CustomScrollView(
+                controller: scrollController,
+                physics: state.maybeMap(
+                  error: (_) => const NeverScrollableScrollPhysics(),
+                  loading: (_) => const NeverScrollableScrollPhysics(),
+                  orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
                 ),
+                slivers: [
+                  ScrollableSliverAppBar(
+                    scrollController: scrollController,
+                    title: LocaleKeys.todaysTopics_title.tr(),
+                  ),
+                  state.maybeMap(
+                    idle: (state) => _IdleContent(
+                      todaysTopicsCubit: cubit,
+                      currentBrief: state.currentBrief,
+                      scrollController: scrollController,
+                      cardStackWidth: cardStackWidth,
+                      cardStackHeight: cardStackHeight,
+                    ),
+                    error: (_) => SliverToBoxAdapter(
+                      child: Center(
+                        child: StackedCardsErrorView(
+                          retryAction: cubit.loadTodaysTopics,
+                          size: Size(cardStackWidth, cardStackHeight),
+                        ),
+                      ),
+                    ),
+                    loading: (_) => SliverToBoxAdapter(
+                      child: TodaysTopicsLoadingView(
+                        coverSize: Size(
+                          cardStackWidth,
+                          cardStackHeight,
+                        ),
+                      ),
+                    ),
+                    orElse: () => const SizedBox(),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: AudioPlayerBannerPlaceholder(),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

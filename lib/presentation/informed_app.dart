@@ -34,7 +34,9 @@ class InformedApp extends HookWidget {
 
     useEffect(
       () {
-        _precacheImages(context);
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+          _precacheImages(context);
+        });
       },
       [],
     );

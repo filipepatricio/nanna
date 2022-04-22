@@ -22,21 +22,21 @@ class PrepareArticleAudioTrackUseCase {
     final audioFile = await _articleRepository.getArticleAudioFile(article.slug);
 
     final item = AudioItem(
+      id: article.id,
+      slug: article.slug,
       title: article.strippedTitle,
       author: article.publisher.name,
-      fileUrl: audioFile.url,
       imageUrl: imageUrl,
     );
 
     try {
-      await _audioRepository.prepareItem(item);
+      await _audioRepository.prepareItem(item, audioFile);
     } on FileAccessExpired catch (_) {
       final audioFile = await _articleRepository.getArticleAudioFile(
         article.slug,
         true,
       );
-      final freshItem = item.copyWith(fileUrl: audioFile.url);
-      await _audioRepository.prepareItem(freshItem);
+      await _audioRepository.prepareItem(item, audioFile);
     }
   }
 }

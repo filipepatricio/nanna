@@ -1,35 +1,49 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:better_informed_mobile/data/audio/handler/current_audio_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/audio/handler/informed_base_audio_handler.dart';
 import 'package:better_informed_mobile/data/audio/handler/playback_state_extension.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 
-class InformedAudioHandler extends BaseAudioHandler with SeekHandler {
+class InformedAudioHandler extends InformedBaseAudioHandler with SeekHandler {
   InformedAudioHandler(this._audioPlayer);
 
   final AudioPlayer _audioPlayer;
+  final BehaviorSubject<CurrentAudioItemDTO> _currentAudioItemSubject = BehaviorSubject();
 
   StreamSubscription? _audioEventSubscription;
 
   @override
-  Future<void> prepare() async {
-    playbackState.add(PlaybackStateExtension.getLoading());
+  Future<void> initialize() async {
+    Rx.combineLatest2<PlaybackState, MediaItem?, CurrentAudioItemDTO>(
+      playbackState,
+      mediaItem,
+      (playbackState, mediaItme) => CurrentAudioItemDTO(
+        state: playbackState,
+        mediaItem: mediaItme,
+      ),
+    ).listen(_currentAudioItemSubject.add);
   }
 
   @override
-  Future<void> playMediaItem(MediaItem item) async {
+  Future<void> notifyLoading(MediaItem item) async {
     await _audioPlayer.pause();
     await _audioPlayer.setSpeed(1.0);
 
     mediaItem.add(item);
     playbackState.add(PlaybackStateExtension.getLoading());
+  }
 
-    final duration = await _audioPlayer.setFilePath(item.id);
-    if (duration == null) throw Exception('Unknown audio file duration: ${item.id}');
+  @override
+  Future<void> open(String path) async {
+    final duration = await _audioPlayer.setFilePath(path);
+    if (duration == null) throw Exception('Unknown audio file duration: $path');
 
     await _registerPlaybackEventListener();
 
-    mediaItem.add(item.copyWith(duration: duration));
+    mediaItem.add(mediaItem.value?.copyWith(duration: duration));
     playbackState.add(PlaybackStateExtension.getLoaded(duration));
   }
 
@@ -102,10 +116,14 @@ class InformedAudioHandler extends BaseAudioHandler with SeekHandler {
   @override
   Future<void> stop() async {
     playbackState.add(PlaybackStateExtension.getClosed());
+    mediaItem.add(null);
 
     await _audioEventSubscription?.cancel();
     await _audioPlayer.stop();
 
     return super.stop();
   }
+
+  @override
+  Stream<CurrentAudioItemDTO> get currentAudioItemStream => _currentAudioItemSubject;
 }

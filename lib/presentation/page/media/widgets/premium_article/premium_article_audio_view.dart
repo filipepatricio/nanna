@@ -1,17 +1,18 @@
 import 'dart:math';
 
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/control_button/audio_control_button.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/progress_bar/audio_progress_bar.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/seek_button/audio_seek_button.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/audio/speed_button/audio_speed_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/seek_button/audio_seek_button.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/speed_button/audio_speed_button.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,8 +24,10 @@ class PremiumArticleAudioView extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final MediaItemArticle article;
+  final Article article;
   final PremiumArticleAudioCubit cubit;
+
+  bool get hasAudioCredits => article.audioFile?.credits?.isNotEmpty ?? false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +52,15 @@ class PremiumArticleAudioView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: AppDimens.appBarHeight + AppDimens.m),
-          if (context.isNotSmallDevice || article.image != null) ...[
+          if (context.isNotSmallDevice || article.metadata.image != null) ...[
             Flexible(
-              flex: 9,
+              flex: 15,
               child: AspectRatio(
                 aspectRatio: context.isNotSmallDevice ? 0.65 : 1,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return ArticleListCover(
-                      article: article,
+                      article: article.metadata,
                       themeColor: AppColors.background,
                       cardColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
                       height: constraints.maxHeight,
@@ -72,13 +75,13 @@ class PremiumArticleAudioView extends HookWidget {
           ],
           const Spacer(),
           Text(
-            article.strippedTitle,
+            article.metadata.strippedTitle,
             textAlign: TextAlign.center,
             style: AppTypography.h4Bold,
           ),
           const Spacer(),
           DottedArticleInfo(
-            article: article,
+            article: article.metadata,
             isLight: false,
             showLogo: false,
             showReadTime: false,
@@ -87,12 +90,28 @@ class PremiumArticleAudioView extends HookWidget {
             color: metadataStyle.color,
           ),
           const Spacer(),
-          const Expanded(
+          if (hasAudioCredits) ...[
+            Padding(
+              padding: const EdgeInsets.only(top: AppDimens.zero),
+              child: Text(
+                article.audioFile!.credits!,
+                textAlign: TextAlign.center,
+                style: metadataStyle.copyWith(
+                  height: 1.6,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            const Spacer(),
+          ],
+          Expanded(
             flex: 2,
-            child: AudioProgressBar(),
+            child: AudioProgressBar(
+              article: article.metadata,
+            ),
           ),
           const Spacer(),
-          _AudioComponentsView(article: article),
+          _AudioComponentsView(article: article.metadata),
           const Spacer(flex: 2),
           const Center(
             child: AudioSpeedButton(),
@@ -118,14 +137,13 @@ class _AudioComponentsView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Spacer(flex: 5),
             const AudioSeekButton.rewind(),
-            const Spacer(),
+            const SizedBox(width: AppDimens.m),
             AudioControlButton(article: article),
-            const Spacer(),
+            const SizedBox(width: AppDimens.m),
             const AudioSeekButton.fastForward(),
-            const Spacer(flex: 5),
           ],
         )
       ],

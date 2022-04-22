@@ -19,6 +19,7 @@ import 'tests/settings_notifications_page_visual_test.dart' as settings_notifica
 import 'tests/share_article_view_visual_test.dart' as share_article_view_visual_test;
 import 'tests/share_reading_list_view_visual_test.dart' as share_reading_list_view_visual_test;
 import 'tests/sign_in_page_visual_test.dart' as sign_in_page_visual_test;
+import 'tests/switch_audio_popup_visual_test.dart' as switch_audio_popup_visual_test;
 import 'tests/todays_topics_page_visual_test.dart' as todays_topics_page_visual_test;
 import 'tests/topic_owner_page_visual_test.dart' as topic_owner_page_visual_test;
 import 'tests/topic_page_visual_test.dart' as topic_page_visual_test;
@@ -27,6 +28,7 @@ import 'tests/topics_see_all_page_visual_test.dart' as topics_see_all_page_visua
 // All visual tests must be referenced here to be included in the CI and Screens report workflows
 
 void main() {
+  group('switch_audio_popup_visual_test', switch_audio_popup_visual_test.main);
   group('app_update_dialog_visual_test', app_update_dialog_visual_test.main);
   group('articles_see_all_page_visual_test', articles_see_all_page_visual_test.main);
   group('explore_page_visual_test', explore_page_visual_test.main);

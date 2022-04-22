@@ -5,7 +5,13 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(ProfilePage, (tester) async {
-    await tester.startApp(initialRoute: const ProfileTabGroupRouter(children: [ProfilePageRoute()]));
+    await tester.startApp(
+      initialRoute: const ProfileTabGroupRouter(
+        children: [
+          ProfilePageRoute(),
+        ],
+      ),
+    );
     await tester.matchGoldenFile();
   });
 }
