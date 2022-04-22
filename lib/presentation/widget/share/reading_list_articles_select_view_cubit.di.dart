@@ -29,7 +29,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
   Future<void> initialize(Topic? topic, TopicPreview? preview) async {
     throwIf(
       topic == null && preview == null,
-      Exception('At least one value needs to exist'),
+      ArgumentError('At least one value needs to exist'),
     );
 
     if (preview != null) {

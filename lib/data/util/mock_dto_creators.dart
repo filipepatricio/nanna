@@ -17,8 +17,8 @@ import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_dto.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/reading_list_count_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/reading_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/reading_list_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
@@ -482,7 +482,7 @@ extension on TopicDTO {
       highlightedPublishers,
       heroImage,
       coverImage,
-      ReadingListCountDTO(
+      ReadingListPreviewDTO(
         readingList.entries.length,
       ),
     );
