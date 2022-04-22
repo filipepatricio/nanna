@@ -20,6 +20,7 @@ class TopicOwnerDTOMapper implements Mapper<TopicOwnerDTO, TopicOwner> {
         areaOfExpertise: data.areaOfExpertise,
         instagram: data.instagram,
         linkedin: data.linkedin,
+        website: data.website,
         avatar: data.avatar != null ? _imageDTOMapper(data.avatar!) : null,
       ),
       editor: (data) => Editor(

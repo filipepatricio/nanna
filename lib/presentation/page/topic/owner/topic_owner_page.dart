@@ -284,6 +284,8 @@ class _SocialMediaLinks extends StatelessWidget {
   Widget build(BuildContext context) {
     final instagram = owner.instagram;
     final linkedin = owner.linkedin;
+    final website = owner.website;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       child: Column(
@@ -308,6 +310,13 @@ class _SocialMediaLinks extends StatelessWidget {
                   icon: AppVectorGraphics.linkedin,
                   onTap: () {
                     cubit.openSocialMediaLink(linkedin);
+                  },
+                ),
+              if (website != null)
+                _SocialMediaIcon(
+                  icon: AppVectorGraphics.website,
+                  onTap: () {
+                    cubit.openSocialMediaLink(website);
                   },
                 ),
             ],

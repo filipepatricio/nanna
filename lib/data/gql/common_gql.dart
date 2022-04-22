@@ -58,6 +58,7 @@ class CommonGQLModels {
       areaOfExpertise
       instagram
       linkedin
+      website
       avatar {
         publicId
       }
