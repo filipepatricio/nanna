@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/networking/store/auth_token_entity_t
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
+import 'package:better_informed_mobile/domain/auth/data/token_data.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
 
@@ -31,5 +32,10 @@ class AuthStoreMock implements AuthStore {
   @override
   Future<void> save(AuthToken token) async {
     return;
+  }
+
+  @override
+  Future<TokenData?> accessTokenData() {
+    return Future.value(null);
   }
 }

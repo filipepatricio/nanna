@@ -20,6 +20,7 @@ class SignInWithDefaultProviderUseCase {
 
   Future<void> call() async {
     final authResult = await _authRepository.signInWithDefaultProvider();
+
     await _authStore.save(authResult.authToken);
     await _userStore.setCurrentUserUuid(authResult.userUuid);
 
