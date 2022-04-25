@@ -1,7 +1,7 @@
 class CommonGQLModels {
   const CommonGQLModels._();
 
-  static const String topicPreview = ''' 
+  static const String topicPreview = '''
     id
     slug
     title
@@ -28,7 +28,7 @@ class CommonGQLModels {
       publicId
     }
     heroImage {
-      $image
+      $cloudinaryImage
     }
     readingList {
       entryCount
@@ -108,15 +108,21 @@ class CommonGQLModels {
       publicationDate
       timeToRead
       hasAudioVersion
-      image {
-        $image
+      articleImage {
+        __typename
+        ... on CloudinaryImage {
+          $cloudinaryImage
+        }
+        ... on RemoteImage {
+          url
+        }
       }
       publisher {
         $publisher
       }
   ''';
 
-  static const String image = '''
+  static const String cloudinaryImage = '''
         publicId
         caption
   ''';

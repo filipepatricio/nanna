@@ -52,7 +52,7 @@ class PremiumArticleAudioView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: AppDimens.appBarHeight + AppDimens.m),
-          if (context.isNotSmallDevice || article.metadata.image != null) ...[
+          if (context.isNotSmallDevice || article.hasImage) ...[
             Flexible(
               flex: 15,
               child: AspectRatio(

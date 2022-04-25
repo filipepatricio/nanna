@@ -71,10 +71,10 @@ class ArticleSeeAllPageCubit extends Cubit<ArticleSeeAllPageState> {
       final article = articles[i];
       final image = article.image;
 
-      if (image == null) {
-        yield ArticleWithBackground.color(article, nextColorIndex++);
+      if (article.hasImage) {
+        yield ArticleWithBackground.image(article, image!);
       } else {
-        yield ArticleWithBackground.image(article, image);
+        yield ArticleWithBackground.color(article, nextColorIndex++);
       }
     }
   }

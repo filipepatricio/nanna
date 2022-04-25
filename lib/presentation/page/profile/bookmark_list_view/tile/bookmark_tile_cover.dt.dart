@@ -5,7 +5,7 @@ part 'bookmark_tile_cover.dt.freezed.dart';
 
 @freezed
 class BookmarkTileCover with _$BookmarkTileCover {
-  factory BookmarkTileCover.standart(Bookmark bookmark) = _BookmarkTileCoverStandard;
+  factory BookmarkTileCover.standard(Bookmark bookmark) = _BookmarkTileCoverStandard;
 
   factory BookmarkTileCover.dynamic(
     Bookmark bookmark,

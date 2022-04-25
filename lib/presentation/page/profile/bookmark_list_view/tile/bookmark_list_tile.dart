@@ -183,7 +183,7 @@ extension on Bookmark {
 extension on BookmarkTileCover {
   Widget getContent(BuildContext context, Size size) {
     return map(
-      standart: (_) {
+      standard: (_) {
         return bookmark.data.mapOrNull(
               article: (data) => ArticleListItem(
                 article: data.article,

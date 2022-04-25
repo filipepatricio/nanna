@@ -52,9 +52,9 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
 
     final articleImage = useMemoized(
       () {
-        final image = article.image;
+        if (!article.hasImage) return null;
 
-        if (image == null || image is ArticleImageUnknown) return null;
+        final image = article.image;
 
         if (image is ArticleImageCloudinary) {
           return cloudinaryImageAuto(
