@@ -14,6 +14,8 @@ jobs:
     # Set job outputs to values from filter step
     outputs:
       app: ${{ steps.filter.outputs.app }}
+      android: ${{ steps.filter.outputs.android }}
+      ios: ${{ steps.filter.outputs.ios }}
       tests: ${{ steps.filter.outputs.tests }}
     steps:
       # For pull requests it's not necessary to checkout the code
@@ -23,12 +25,14 @@ jobs:
           list-files: 'json'
           filters: |
             app:
-              - 'android/**'
               - 'assets/**'
               - 'fonts/**'
-              - 'ios/**'
               - 'lib/**'
               - '**.yaml'
+            ios:
+              - 'ios/**'
+            android:
+              - 'android/**'
             tests:
               - 'test/**'
 
@@ -56,7 +60,7 @@ jobs:
 
   code_lint_test:
     needs: [changes, commit_lint]
-    if: ${{ needs.changes.outputs.tests == 'true' || needs.changes.outputs.app == 'true' }}
+    if: ${{ needs.changes.outputs.tests == 'true' || needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true' || needs.changes.outputs.ios == 'true' }}
     name: Linting & Testing
     runs-on: ubuntu-latest
     outputs:
@@ -102,9 +106,11 @@ jobs:
 
   build_android:
     needs: [changes, commit_lint, code_lint_test]
-    if: ${{ needs.changes.outputs.app == 'true' }}
+    if: ${{ needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true' }}
     name: Android build
     runs-on: ubuntu-latest
+    outputs:
+      succeeded: ${{ steps.result.outputs.result }}
     timeout-minutes: 20
     steps:
       - name: Cancel previous jobs
@@ -135,9 +141,14 @@ jobs:
       - name: Build Android app
         run: flutter build apk --release --dart-define=env=prod --flavor prod
 
+      - name: Result
+        id: result
+        if: success()
+        run: echo "::set-output name=result::true"
+
   build_ios:
     needs: [changes, commit_lint, code_lint_test]
-    if: ${{ needs.changes.outputs.app == 'true' }}
+    if: ${{ needs.changes.outputs.app == 'true' || needs.changes.outputs.ios == 'true' }}
     name: iOS build
     runs-on: macos-latest
     outputs:
@@ -187,14 +198,18 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: App building failed
-        if: ${{ needs.changes.outputs.app == 'true' && (needs.code_lint_test.outputs.succeeded != 'true' || needs.build_ios.outputs.succeeded != 'true') }}
-        run: exit 1
-
-      - name: Tests failed
-        if: ${{ needs.changes.outputs.app == 'false' && needs.changes.outputs.tests == 'true' && needs.code_lint_test.outputs.succeeded != 'true' }}
-        run: exit 1
-
-      - name: Linting failed
+      - name: Commit linting failed
         if: ${{ needs.commit_lint.outputs.succeeded != 'true' }}
+        run: exit 1
+
+      - name: Code linting & Testing failed
+        if: ${{ (needs.changes.outputs.tests == 'true' || needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true' || needs.changes.outputs.ios == 'true') && needs.code_lint_test.outputs.succeeded != 'true' }}
+        run: exit 1
+
+      - name: Android app building failed
+        if: ${{ (needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true') &&  needs.build_android.outputs.succeeded != 'true' }}
+        run: exit 1
+
+      - name: iOS app building failed
+        if: ${{ (needs.changes.outputs.app == 'true' || needs.changes.outputs.ios == 'true') && needs.build_ios.outputs.succeeded != 'true' }}
         run: exit 1
