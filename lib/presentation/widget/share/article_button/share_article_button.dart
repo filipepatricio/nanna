@@ -2,13 +2,11 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/di_util.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:get_it/get_it.dart';
 
 class ShareArticleButton extends HookWidget {
   final MediaItemArticle article;
@@ -24,7 +22,6 @@ class ShareArticleButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final getIt = useGetIt();
     final cubit = useCubit<ShareArticleButtonCubit>();
     final state = useCubitBuilder(cubit, buildWhen: (state) => true);
 
@@ -40,7 +37,6 @@ class ShareArticleButton extends HookWidget {
             article: article,
             buttonBuilder: buttonBuilder,
             backgroundColor: backgroundColor,
-            getIt: getIt,
           ),
         ),
         if (state == ShareArticleButtonState.processing)
@@ -65,7 +61,6 @@ class _Button extends StatelessWidget {
     required this.article,
     required this.buttonBuilder,
     required this.backgroundColor,
-    required this.getIt,
     Key? key,
   }) : super(key: key);
 
@@ -73,7 +68,6 @@ class _Button extends StatelessWidget {
   final WidgetBuilder? buttonBuilder;
   final Color? backgroundColor;
   final ShareArticleButtonCubit cubit;
-  final GetIt getIt;
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +76,11 @@ class _Button extends StatelessWidget {
     if (builder == null) {
       return ShareButton(
         backgroundColor: backgroundColor,
-        onTap: () => cubit.share(article, getIt),
+        onTap: () => cubit.share(article),
       );
     } else {
       return GestureDetector(
-        onTap: () => cubit.share(article, getIt),
+        onTap: () => cubit.share(article),
         child: builder(context),
       );
     }
