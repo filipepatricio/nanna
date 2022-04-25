@@ -44,9 +44,9 @@ class QuoteBackgroundView extends HookWidget implements BaseShareCompletable {
 
     final articleImage = useMemoized(
       () {
-        final image = article.image;
+        if (!article.hasImage) return null;
 
-        if (image == null || image is ArticleImageUnknown) return null;
+        final image = article.image;
 
         if (image is ArticleImageCloudinary) {
           return cloudinaryImageAuto(
@@ -147,7 +147,7 @@ class _ArticleBanner extends StatelessWidget {
                 borderRadius: const BorderRadius.all(
                   Radius.circular(_cardRadius),
                 ),
-                child: image!,
+                child: image,
               ),
               const SizedBox(width: AppDimens.l),
             ],

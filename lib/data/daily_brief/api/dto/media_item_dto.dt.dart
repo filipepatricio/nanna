@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
@@ -20,7 +22,7 @@ class MediaItemDTO with _$MediaItemDTO {
     String? publicationDate,
     int? timeToRead,
     PublisherDTO publisher,
-    ArticleImageDTO? image,
+    @JsonKey(name: 'articleImage') ArticleImageDTO? image,
     String sourceUrl,
     String? author,
     bool hasAudioVersion,

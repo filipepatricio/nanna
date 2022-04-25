@@ -12,7 +12,7 @@ class ArticleImage extends HookWidget {
     required this.image,
     required this.width,
     required this.height,
-    this.fit = BoxFit.fill,
+    this.fit = BoxFit.cover,
     this.cardColor,
     Key? key,
   }) : super(key: key);
@@ -46,6 +46,7 @@ class ArticleImage extends HookWidget {
         imageUrl: (image as d.ArticleImageRemote).url,
         width: width,
         height: height,
+        fit: fit,
         placeholder: (context, _) => LoadingShimmer(
           width: width,
           height: height,

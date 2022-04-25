@@ -14,4 +14,6 @@ class Article {
     required this.content,
     this.audioFile,
   });
+
+  bool get hasImage => metadata.hasImage;
 }

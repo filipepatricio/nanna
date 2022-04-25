@@ -48,7 +48,7 @@ class PremiumArticleReadView extends HookWidget {
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
 
-  bool get articleWithImage => article.metadata.image != null;
+  bool get articleWithImage => article.metadata.hasImage;
 
   void calculateArticleContentOffset() {
     final globalContentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
