@@ -10,7 +10,7 @@ import 'package:better_informed_mobile/presentation/widget/share/quote/quote_bac
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_foreground_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
-import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:clock/clock.dart';
 import 'package:injectable/injectable.dart';
@@ -23,6 +23,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     this._shareTextUseCase,
     this._shareImageUseCase,
     this._shareUsingInstagramUseCase,
+    this._shareViewImageGenerator,
   ) : super(QuoteEditorViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -30,6 +31,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   final ShareTextUseCase _shareTextUseCase;
   final ShareImageUseCase _shareImageUseCase;
   final ShareUsingInstagramUseCase _shareUsingInstagramUseCase;
+  final ShareViewImageGenerator _shareViewImageGenerator;
 
   Future<void> initialize() async {
     final isInstagramAvailable = await _isInstagramAvailable();
@@ -51,15 +53,14 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     final fixedQuote = _getFixedQuote(quote);
     final shareText = article.url;
 
-    final generator = ShareViewImageGenerator(
-      () => QuoteForegroundView(
-        quote: fixedQuote,
-        article: article,
-        quoteVariantData: state.variants[state.selectedIndex],
-      ),
-    );
+    final factory = () => QuoteForegroundView(
+          quote: fixedQuote,
+          article: article,
+          quoteVariantData: state.variants[state.selectedIndex],
+        );
     final image = await generateShareImage(
-      generator,
+      _shareViewImageGenerator,
+      factory,
       'quote_${clock.now().millisecondsSinceEpoch}.png',
     );
 
@@ -89,25 +90,23 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   Future<void> shareStory(MediaItemArticle article, String quote) async {
     final fixedQuote = _getFixedQuote(quote);
 
-    final backgroundGenerator = ShareViewImageGenerator(
-      () => QuoteBackgroundView(
-        article: article,
-      ),
-    );
+    final backgroundFactory = () => QuoteBackgroundView(
+          article: article,
+        );
     final backgroundImage = await generateShareImage(
-      backgroundGenerator,
+      _shareViewImageGenerator,
+      backgroundFactory,
       'quote_${clock.now().millisecondsSinceEpoch}_background.png',
     );
 
-    final foregroundGenerator = ShareViewImageGenerator(
-      () => QuoteForegroundView(
-        quote: fixedQuote,
-        article: article,
-        quoteVariantData: state.variants[state.selectedIndex],
-      ),
-    );
+    final foregroundFactory = () => QuoteForegroundView(
+          quote: fixedQuote,
+          article: article,
+          quoteVariantData: state.variants[state.selectedIndex],
+        );
     final foregroundImage = await generateShareImage(
-      foregroundGenerator,
+      _shareViewImageGenerator,
+      foregroundFactory,
       'quote_${clock.now().millisecondsSinceEpoch}_foreground.png',
     );
 

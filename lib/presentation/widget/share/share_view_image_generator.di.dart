@@ -6,15 +6,19 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
+import 'package:provider/provider.dart';
 
 typedef WidgetFactory = BaseShare Function();
 
+@injectable
 class ShareViewImageGenerator {
-  final WidgetFactory widgetFactory;
+  ShareViewImageGenerator(this._getIt);
 
-  ShareViewImageGenerator(this.widgetFactory);
+  final GetIt _getIt;
 
-  Future<ByteData?> generate() async {
+  Future<ByteData?> generate(WidgetFactory widgetFactory) async {
     final repaintBoundary = RenderRepaintBoundary();
     final shareWidget = widgetFactory();
     final renderView = _createRenderView(shareWidget.size, repaintBoundary);
@@ -46,10 +50,13 @@ class ShareViewImageGenerator {
       container: repaintBoundary,
       child: Directionality(
         textDirection: TextDirection.ltr,
-        child: Container(
-          height: shareWidget.size.height,
-          width: shareWidget.size.width,
-          child: shareWidget,
+        child: Provider.value(
+          value: _getIt,
+          child: Container(
+            height: shareWidget.size.height,
+            width: shareWidget.size.width,
+            child: shareWidget,
+          ),
         ),
       ),
     );

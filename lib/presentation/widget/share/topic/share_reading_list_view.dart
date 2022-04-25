@@ -14,8 +14,6 @@ import 'package:better_informed_mobile/presentation/widget/share/image_load_reso
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 
 const _cardShadow = BoxShadow(
   color: AppColors.shadowColor,
@@ -44,7 +42,6 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
   ShareReadingListView({
     required this.topic,
     required this.articles,
-    required this.getIt,
     Key? key,
   })  : _baseViewCompleter = Completer(),
         super(key: key);
@@ -52,7 +49,6 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
   final Topic topic;
   final List<MediaItemArticle> articles;
   final Completer _baseViewCompleter;
-  final GetIt getIt;
 
   @override
   Size get size => const Size(_viewWidth, _viewHeight);
@@ -62,7 +58,7 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
 
   @override
   Widget build(BuildContext context) {
-    final cloudinary = createCloudinaryProvider(getIt);
+    final cloudinary = useCloudinaryProvider();
     final image = useMemoized(
       () {
         return cloudinaryImageAuto(
@@ -81,15 +77,12 @@ class ShareReadingListView extends HookWidget implements BaseShareCompletable {
     return ImageLoadResolver(
       images: [image, ...logosMap.values],
       completer: _baseViewCompleter,
-      child: Provider.value(
-        value: getIt,
-        child: _Background(
-          child: _Sticker(
-            topic: topic,
-            articles: articles,
-            image: image,
-            articleLogos: logosMap,
-          ),
+      child: _Background(
+        child: _Sticker(
+          topic: topic,
+          articles: articles,
+          image: image,
+          articleLogos: logosMap,
         ),
       ),
     );
