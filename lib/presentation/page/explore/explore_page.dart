@@ -1,3 +1,6 @@
+import 'dart:core';
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
@@ -24,9 +27,16 @@ import 'package:better_informed_mobile/presentation/widget/track/view_visibility
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 const _tryAgainButtonWidth = 150.0;
+const _maxPillLines = 3;
+const _maxPillsPerLine = 3;
+const _maxPillsSectionHeight = 170.0;
+const _pillLineHeight = 50.0;
+const _pillPadding = 8.0;
 
 class ExplorePage extends HookWidget {
   @override
@@ -77,7 +87,7 @@ class ExplorePage extends HookWidget {
                           initialLoading: (_) => const SliverToBoxAdapter(
                             child: ArticleWithCoverAreaLoadingView.loading(),
                           ),
-                          idle: (state) => _Idle(areas: state.areas),
+                          idle: (state) => _Idle(areas: state.areas, headerColor: headerColor),
                           error: (_) => const SliverToBoxAdapter(
                             child: ArticleWithCoverAreaLoadingView.static(),
                           ),
@@ -167,17 +177,94 @@ class _ErrorView extends StatelessWidget {
 
 class _Idle extends StatelessWidget {
   final List<ExploreContentArea> areas;
+  final Color headerColor;
 
   const _Idle({
     required this.areas,
+    required this.headerColor,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildListDelegate(
-        areas.map((area) => _Area(area: area, orderIndex: areas.indexOf(area))).toList(growable: false),
+    return MultiSliver(
+      children: [
+        _PillsSection(areas: areas, headerColor: headerColor),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            areas.map((area) => _Area(area: area, orderIndex: areas.indexOf(area))).toList(growable: false),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PillsSection extends HookWidget {
+  final List<ExploreContentArea> areas;
+  final Color headerColor;
+
+  const _PillsSection({
+    required this.areas,
+    required this.headerColor,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final lineCount = min(_maxPillLines, (areas.length / _maxPillsPerLine).ceil());
+    final height = min(_maxPillsSectionHeight, lineCount * _pillLineHeight + (lineCount > 1 ? _pillPadding : 0));
+
+    return SliverToBoxAdapter(
+      child: Container(
+        height: height,
+        color: headerColor,
+        child: MasonryGridView.count(
+          padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.m),
+          scrollDirection: Axis.horizontal,
+          crossAxisCount: lineCount,
+          mainAxisSpacing: _pillPadding,
+          crossAxisSpacing: _pillPadding,
+          itemCount: areas.length,
+          itemBuilder: (context, index) {
+            return areas[index].map(
+              articles: (area) => _AreaPillItem(
+                title: area.title,
+                index: index,
+                onTap: () => AutoRouter.of(context).push(
+                  ArticleSeeAllPageRoute(
+                    areaId: area.id,
+                    title: area.title,
+                    entries: area.articles,
+                  ),
+                ),
+              ),
+              articleWithFeature: (area) => _AreaPillItem(
+                title: area.title,
+                index: index,
+                onTap: () => AutoRouter.of(context).push(
+                  ArticleSeeAllPageRoute(
+                    areaId: area.id,
+                    title: area.title,
+                    entries: [area.featuredArticle] + area.articles,
+                  ),
+                ),
+              ),
+              topics: (area) => _AreaPillItem(
+                title: area.title,
+                index: index,
+                onTap: () => context.pushRoute(
+                  TopicsSeeAllPageRoute(
+                    areaId: area.id,
+                    title: area.title,
+                    topics: area.topics,
+                  ),
+                ),
+              ),
+              unknown: (_) => const SizedBox(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -215,6 +302,44 @@ class _Area extends HookWidget {
           articleWithFeature: (area) => ArticleWithCoverAreaView(area: area),
           topics: (area) => TopicsAreaView(area: area),
           unknown: (_) => Container(),
+        ),
+      ),
+    );
+  }
+}
+
+class _AreaPillItem extends StatelessWidget {
+  final String title;
+  final int index;
+  final VoidCallback onTap;
+  final Color? color;
+
+  const _AreaPillItem({
+    required this.title,
+    required this.index,
+    required this.onTap,
+    this.color = AppColors.white,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: AppColors.dividerGreyLight,
+            width: 1,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: AppDimens.m, horizontal: AppDimens.l),
+        child: Text(
+          title,
+          style: AppTypography.b3Regular.copyWith(height: 1),
         ),
       ),
     );
