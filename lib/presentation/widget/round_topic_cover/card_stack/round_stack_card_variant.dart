@@ -1,1 +1,0 @@
-enum RoundStackCardVariant { a, b }

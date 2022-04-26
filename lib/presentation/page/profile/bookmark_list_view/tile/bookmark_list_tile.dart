@@ -8,12 +8,12 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_small.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -221,8 +221,8 @@ extension on BookmarkTileCover {
         height: size.height,
         width: size.width,
       ),
-      topic: (data) => RoundStackedCards.variant(
-        variant: RoundStackCardVariant.values[index % RoundStackCardVariant.values.length],
+      topic: (data) => StackedCards.variant(
+        variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
         coverSize: size,
         child: GestureDetector(
           onTap: () {
@@ -232,7 +232,7 @@ extension on BookmarkTileCover {
               ),
             );
           },
-          child: RoundTopicCoverSmall(
+          child: TopicCover.small(
             topic: data.topic.asPreview,
           ),
         ),

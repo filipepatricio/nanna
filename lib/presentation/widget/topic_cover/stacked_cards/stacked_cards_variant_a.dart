@@ -1,11 +1,10 @@
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_math.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_background_card.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_card_style.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_background.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_utils.dart';
 import 'package:flutter/material.dart';
 
-class RoundStackedCardVariantB extends StatelessWidget {
-  const RoundStackedCardVariantB({
+class StackedCardsVariantA extends StatelessWidget {
+  const StackedCardsVariantA({
     required this.size,
     required this.child,
     Key? key,
@@ -16,12 +15,12 @@ class RoundStackedCardVariantB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bottomCardHeight = size.height * roundCardHeightScale;
-    final bottomCardWidth = size.width * roundCardWidthScale;
+    final bottomCardHeight = size.height * cardHeightScale;
+    final bottomCardWidth = size.width * cardWidthScale;
     final bottomCardHeightDifference = size.height - bottomCardHeight;
 
     final cornersHeightDiff = calculateCornersHeightDifference(
-      angle: 5,
+      angle: -5,
       leftCorner: const Offset(0, 0),
       rightCorner: Offset(bottomCardWidth, 0),
       origin: Offset(bottomCardWidth / 2, bottomCardHeight / 2),
@@ -35,22 +34,23 @@ class RoundStackedCardVariantB extends StatelessWidget {
           height: size.height,
         ),
         Align(
-          alignment: const Alignment(0.5, 1.0),
-          child: RoundStackedBackgroundCard(
+          alignment: const Alignment(-0.5, 0.0),
+          child: StackedCardsBackground(
             height: bottomCardHeight,
             width: bottomCardWidth,
-            rotation: 5,
+            rotation: -5,
             topMargin: heightDifference,
           ),
         ),
-        Center(
+        Align(
+          alignment: Alignment.topCenter,
           child: Container(
             width: size.width,
             height: size.height,
             decoration: const BoxDecoration(
               color: AppColors.background,
-              borderRadius: roundedStackedCardsBorder,
-              boxShadow: roundedStackedCardsShadow,
+              borderRadius: stackedCardsBorder,
+              boxShadow: stackedCardsShadows,
             ),
             child: child,
           ),

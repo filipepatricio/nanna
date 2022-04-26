@@ -1,0 +1,1 @@
+enum StackedCardsVariant { a, b }

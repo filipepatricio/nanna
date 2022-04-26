@@ -18,7 +18,7 @@ class FilledButton extends StatelessWidget {
     this.isEnabled = true,
     this.onTap,
     this.fillColor = AppColors.limeGreen,
-    this.disableColor = AppColors.lightGrey,
+    this.disableColor = AppColors.background,
     this.textColor = AppColors.textPrimary,
     this.isLoading = false,
     this.leading,

@@ -81,10 +81,9 @@ class QuoteEditorView extends HookWidget {
             variants: state.variants,
           ),
           const SizedBox(height: AppDimens.l),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          const Divider(
             height: _separatorHeight,
-            color: AppColors.appBarBackground.withOpacity(0.14),
+            color: AppColors.dividerGrey,
           ),
           const SizedBox(height: AppDimens.l),
           _Button(

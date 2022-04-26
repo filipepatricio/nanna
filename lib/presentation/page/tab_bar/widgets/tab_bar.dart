@@ -21,7 +21,7 @@ class TabBar extends HookWidget {
     final cubit = useCubit<TabBarCubit>();
 
     return BottomNavigationBar(
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: AppColors.background,
       items: [
         ...MainTab.values.map(
           (tab) => BottomNavigationBarItem(

@@ -2,7 +2,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_card_variant_a.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant_a.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -55,7 +55,7 @@ class _CardStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RoundStackedCardVariantA(
+    return StackedCardsVariantA(
       size: size,
       child: child,
     );

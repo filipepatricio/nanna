@@ -26,4 +26,9 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
       await LDClient.startFuture(timeLimit: const Duration(seconds: 5));
     }
   }
+
+  @override
+  Future<bool> showPhotoOnTopicCover() async {
+    return await LDClient.boolVariation('photo-on-topic-card', false);
+  }
 }
