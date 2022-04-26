@@ -19,4 +19,9 @@ class AppInfoRepositoryMock implements AppInfoRepository {
   Future<bool> shouldUpdate() async {
     return Upgrader().shouldDisplayUpgrade();
   }
+
+  @override
+  String getPlatform() {
+    return 'platform';
+  }
 }
