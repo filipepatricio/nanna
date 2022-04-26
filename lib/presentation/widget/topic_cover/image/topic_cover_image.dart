@@ -44,7 +44,8 @@ class TopicCoverImage extends HookWidget {
               height: height,
               fit: BoxFit.cover,
               alignment: Alignment.center,
-              testImage: AppRasterGraphics.testReadingListCoverImage,
+              testImage:
+                  showPhoto ? AppRasterGraphics.testArticleHeroImage : AppRasterGraphics.testReadingListCoverImage,
             ),
           ),
         );

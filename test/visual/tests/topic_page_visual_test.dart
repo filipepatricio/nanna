@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../test_data.dart';
+import '../../fakes.dart';
 import '../visual_test_utils.dart';
 
 void main() {
@@ -45,7 +45,7 @@ void main() {
         ),
         dependencyOverride: (getIt) async {
           getIt.registerSingleton<AudioPlayerBannerCubit>(
-            AudioPlayerBannerCubitFake(),
+            FakeAudioPlayerBannerCubit(),
           );
         },
       );
