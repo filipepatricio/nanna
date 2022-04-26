@@ -10,4 +10,9 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
   Future<void> initialize(String uuid, String email, String firstName, String lastName) async {
     return;
   }
+
+  @override
+  Future<bool> showPhotoOnTopicCover() {
+    return Future.value(false);
+  }
 }

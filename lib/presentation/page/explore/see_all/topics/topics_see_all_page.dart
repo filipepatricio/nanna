@@ -14,10 +14,10 @@ import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_small.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -92,8 +92,8 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
-      variants: RoundStackCardVariant.values,
+    return StackedCardsRandomVariantBuilder<StackedCardsVariant>(
+      variants: StackedCardsVariant.values,
       count: state.maybeMap(
         loadingMore: (state) => state.topics.length,
         withPagination: (state) => state.topics.length,
@@ -140,7 +140,7 @@ class _TopicGrid extends StatelessWidget {
   final List<TopicPreview> topics;
   final ScrollController scrollController;
   final bool withLoader;
-  final List<RoundStackCardVariant> cardVariants;
+  final List<StackedCardsVariant> cardVariants;
 
   const _TopicGrid({
     required this.title,
@@ -202,7 +202,7 @@ class _TopicGrid extends StatelessWidget {
 
 class _GridItem extends StatelessWidget {
   final TopicPreview topic;
-  final RoundStackCardVariant cardVariant;
+  final StackedCardsVariant cardVariant;
 
   const _GridItem({
     required this.topic,
@@ -216,13 +216,13 @@ class _GridItem extends StatelessWidget {
       onTap: () => _onTopicTap(context, topic),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return RoundStackedCards.variant(
+          return StackedCards.variant(
             variant: cardVariant,
             coverSize: Size(
               constraints.maxWidth,
               AppDimens.exploreAreaTopicSeeAllCoverHeight,
             ),
-            child: RoundTopicCoverSmall(
+            child: TopicCover.small(
               topic: topic,
             ),
           );

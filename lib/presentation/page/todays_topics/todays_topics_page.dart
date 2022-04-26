@@ -16,12 +16,12 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_large.dart';
 import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -117,12 +117,6 @@ class TodaysTopicsPage extends HookWidget {
 }
 
 class _IdleContent extends HookWidget {
-  final TodaysTopicsPageCubit todaysTopicsCubit;
-  final CurrentBrief currentBrief;
-  final ScrollController scrollController;
-  final double cardStackWidth;
-  final double cardStackHeight;
-
   const _IdleContent({
     required this.todaysTopicsCubit,
     required this.currentBrief,
@@ -131,6 +125,12 @@ class _IdleContent extends HookWidget {
     required this.cardStackHeight,
     Key? key,
   }) : super(key: key);
+
+  final TodaysTopicsPageCubit todaysTopicsCubit;
+  final CurrentBrief currentBrief;
+  final ScrollController scrollController;
+  final double cardStackWidth;
+  final double cardStackHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -150,8 +150,8 @@ class _IdleContent extends HookWidget {
       [scrollController],
     );
 
-    return StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
-      variants: RoundStackCardVariant.values,
+    return StackedCardsRandomVariantBuilder<StackedCardsVariant>(
+      variants: StackedCardsVariant.values,
       count: currentBrief.topics.length,
       canNeighboursRepeat: false,
       builder: (variants) => SliverList(
@@ -161,40 +161,42 @@ class _IdleContent extends HookWidget {
               return _Greeting(
                 greeting: currentBrief.greeting,
               );
-            } else if (index == currentBrief.topics.length + 1) {
+            }
+
+            if (index == currentBrief.topics.length + 1) {
               return _RelaxSection(
                 onVisible: todaysTopicsCubit.trackRelaxPage,
                 goodbyeHeadline: currentBrief.goodbye,
                 lastPageAnimationProgressState: lastPageAnimationProgressState,
               );
-            } else {
-              final currentTopicIndex = index - 1;
-              final currentTopic = currentBrief.topics[currentTopicIndex];
-              return ViewVisibilityNotifier(
-                detectorKey: Key(currentTopic.id),
-                onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, currentTopicIndex + 1),
-                borderFraction: 0.6,
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () => _onTopicCardPressed(
-                        context,
-                        currentTopicIndex,
-                        currentBrief,
-                      ),
-                      child: RoundStackedCards.variant(
-                        variant: variants[currentTopicIndex],
-                        coverSize: Size(cardStackWidth, cardStackHeight),
-                        child: RoundTopicCoverLarge(
-                          topic: currentTopic.asPreview,
-                        ),
+            }
+
+            final currentTopicIndex = index - 1;
+            final currentTopic = currentBrief.topics[currentTopicIndex];
+            return ViewVisibilityNotifier(
+              detectorKey: Key(currentTopic.id),
+              onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, currentTopicIndex + 1),
+              borderFraction: 0.6,
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () => _onTopicCardPressed(
+                      context,
+                      currentTopicIndex,
+                      currentBrief,
+                    ),
+                    child: StackedCards.variant(
+                      variant: variants[currentTopicIndex],
+                      coverSize: Size(cardStackWidth, cardStackHeight),
+                      child: TopicCover.large(
+                        topic: currentTopic.asPreview,
                       ),
                     ),
-                    const SizedBox(height: AppDimens.xxxl),
-                  ],
-                ),
-              );
-            }
+                  ),
+                  const SizedBox(height: AppDimens.xxxl),
+                ],
+              ),
+            );
           },
           childCount: currentBrief.topics.length + 2,
         ),
@@ -241,31 +243,29 @@ class _RelaxSection extends StatelessWidget {
 }
 
 class _Greeting extends StatelessWidget {
-  final Headline greeting;
-
   const _Greeting({
     required this.greeting,
     Key? key,
   }) : super(key: key);
 
+  final Headline greeting;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (context.isNotSmallDevice) ...[
-          const SizedBox(height: AppDimens.s),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: InformedMarkdownBody(
-              markdown: greeting.headline,
-              baseTextStyle: AppTypography.b2Regular,
-              textAlignment: TextAlign.left,
-            ),
-          ),
-          const SizedBox(height: AppDimens.xl),
-        ],
-      ],
+    if (context.isSmallDevice) return Container();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppDimens.l,
+        AppDimens.zero,
+        AppDimens.l,
+        AppDimens.xl,
+      ),
+      child: InformedMarkdownBody(
+        markdown: greeting.headline,
+        baseTextStyle: AppTypography.b2Regular,
+        textAlignment: TextAlign.left,
+      ),
     );
   }
 }

@@ -10,11 +10,11 @@ import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_large.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -68,8 +68,8 @@ class TopicsAreaView extends HookWidget {
           const SizedBox(height: AppDimens.l),
           Container(
             height: cardStackHeight,
-            child: StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
-              variants: RoundStackCardVariant.values,
+            child: StackedCardsRandomVariantBuilder<StackedCardsVariant>(
+              variants: StackedCardsVariant.values,
               count: area.topics.length,
               builder: (variants) {
                 return NoScrollGlow(
@@ -94,10 +94,10 @@ class TopicsAreaView extends HookWidget {
                         padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
                         child: GestureDetector(
                           onTap: () => _onTopicTap(context, index),
-                          child: RoundStackedCards.variant(
+                          child: StackedCards.variant(
                             variant: variants[index],
                             coverSize: Size(width, cardStackHeight),
-                            child: RoundTopicCoverLarge(
+                            child: TopicCover.large(
                               topic: area.topics[index],
                             ),
                           ),
