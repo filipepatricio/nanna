@@ -35,31 +35,19 @@ class InformedTooltip extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              if (onDismiss != null)
-                Positioned(
-                  top: AppDimens.s,
-                  right: AppDimens.s,
-                  child: IconButton(
-                    icon: const Icon(Icons.close_rounded),
-                    color: AppColors.textPrimary,
-                    highlightColor: AppColors.transparent,
-                    splashColor: AppColors.transparent,
-                    alignment: Alignment.topRight,
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      onDismiss!();
-                    },
-                  ),
-                ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: AppDimens.m, left: AppDimens.m, right: AppDimens.m, bottom: AppDimens.s),
+                padding: const EdgeInsets.only(
+                  top: AppDimens.m,
+                  left: AppDimens.m,
+                  right: AppDimens.m,
+                  bottom: AppDimens.s,
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(bottom: AppDimens.xs),
+                      padding: const EdgeInsets.only(bottom: AppDimens.xs, right: AppDimens.ml),
                       child: InformedMarkdownBody(
                         markdown: text,
                         baseTextStyle: style.copyWith(color: AppColors.textPrimary),
@@ -88,6 +76,21 @@ class InformedTooltip extends StatelessWidget {
                   ],
                 ),
               ),
+              if (onDismiss != null)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    icon: const Icon(Icons.close_rounded),
+                    color: AppColors.textPrimary,
+                    highlightColor: AppColors.transparent,
+                    splashColor: AppColors.transparent,
+                    padding: const EdgeInsets.all(AppDimens.sl),
+                    onPressed: () {
+                      onDismiss!();
+                    },
+                  ),
+                ),
             ],
           ),
         ),
