@@ -4,4 +4,6 @@ abstract class AppInfoRepository {
   Future<bool> shouldUpdate();
 
   Future<String?> getLatestAvailableVersion();
+
+  String getPlatform();
 }
