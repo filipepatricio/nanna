@@ -49,7 +49,7 @@ class StackedCardsVariantB extends StatelessWidget {
             decoration: const BoxDecoration(
               color: AppColors.background,
               borderRadius: stackedCardsBorder,
-              boxShadow: stackedCardsShadow,
+              boxShadow: stackedCardsShadows,
             ),
             child: child,
           ),

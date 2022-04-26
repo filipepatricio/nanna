@@ -30,7 +30,7 @@ class AppColors {
   static const Color background = linen;
   static const Color textPrimary = darkGreyBackground;
 
-  static const Color shadowLinenColor = Color(0x33634633);
+  static const Color shadowLinenColor = Color(0x336B6346);
   static const Color shadowColor = Color(0x1f000000);
 
   static const Color settingsHeader = Color(0x44282B35);

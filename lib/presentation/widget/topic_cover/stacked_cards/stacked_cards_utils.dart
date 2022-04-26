@@ -21,12 +21,18 @@ double calculateCornersHeightDifference({
 const cardHeightScale = 388 / 400;
 const cardWidthScale = 274 / 327;
 
-const stackedCardsShadow = [
+const stackedCardsShadows = [
   BoxShadow(
     color: AppColors.shadowColor,
-    offset: Offset(0.0, 3.0),
-    blurRadius: 4.0,
-    spreadRadius: 1,
+    offset: Offset(0.0, 10),
+    blurRadius: 10, // Should be 80 by design but it gets cut by the white appbars and linen sections in Explore
+    spreadRadius: -4,
+  ),
+  BoxShadow(
+    offset: Offset(0, 2),
+    blurRadius: 4,
+    spreadRadius: 0,
+    color: AppColors.shadowLinenColor,
   ),
 ];
 

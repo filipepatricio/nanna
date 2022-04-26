@@ -30,7 +30,7 @@ class StackedCardsBackground extends StatelessWidget {
         decoration: const BoxDecoration(
           borderRadius: stackedCardsBorder,
           color: AppColors.darkLinen,
-          boxShadow: stackedCardsShadow,
+          boxShadow: stackedCardsShadows,
         ),
       ),
     );
