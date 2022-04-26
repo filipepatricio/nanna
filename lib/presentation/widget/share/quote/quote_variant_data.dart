@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 const quoteVariantDataList = [
   QuoteVariantData._(
-    backgroundColor: AppColors.lightGrey,
+    backgroundColor: AppColors.background,
     foregroundColor: AppColors.textPrimary,
     withTextMark: false,
     iconPath: AppVectorGraphics.newspaper,
@@ -20,7 +20,7 @@ const quoteVariantDataList = [
     withTextMark: true,
   ),
   QuoteVariantData._(
-    backgroundColor: AppColors.peach10,
+    backgroundColor: AppColors.peach,
     foregroundColor: AppColors.textPrimary,
     withTextMark: true,
   ),

@@ -18,7 +18,7 @@ class BottomStackedCards extends StatelessWidget {
           height: AppDimens.topicViewStackedCardsDividerHeight(context),
           width: MediaQuery.of(context).size.width * 0.9,
           decoration: const BoxDecoration(
-            color: AppColors.lightGrey,
+            color: AppColors.background,
             boxShadow: [
               BoxShadow(
                 color: AppColors.shadowColor,
@@ -31,7 +31,7 @@ class BottomStackedCards extends StatelessWidget {
         ),
         Container(
           height: _upperDiagonalCardFillerHeight,
-          color: AppColors.lightGrey,
+          color: AppColors.background,
           width: double.infinity,
         ),
         Positioned(
@@ -41,7 +41,7 @@ class BottomStackedCards extends StatelessWidget {
               height: _upperDiagonalCardHeight,
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: AppColors.lightGrey,
+                color: AppColors.background,
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadowColor,

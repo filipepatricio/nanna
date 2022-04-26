@@ -55,7 +55,7 @@ class _ReadingBannerBody extends StatelessWidget {
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          color: AppColors.lightGrey,
+          color: AppColors.background,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

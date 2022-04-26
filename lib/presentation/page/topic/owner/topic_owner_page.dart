@@ -244,7 +244,7 @@ class _ActionsBar extends HookWidget {
                   padding: const EdgeInsets.all(6.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppDimens.xxs),
-                    color: owner is Editor ? AppColors.limeGreen : AppColors.peach10,
+                    color: owner is Editor ? AppColors.limeGreen : AppColors.peach,
                   ),
                   child: Text(
                     (owner is Expert
