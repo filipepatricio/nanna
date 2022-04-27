@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
@@ -236,6 +237,7 @@ class _PillsSection extends HookWidget {
                     areaId: area.id,
                     title: area.title,
                     entries: area.articles,
+                    referred: ExploreAreaReferred.pill,
                   ),
                 ),
               ),
@@ -247,6 +249,7 @@ class _PillsSection extends HookWidget {
                     areaId: area.id,
                     title: area.title,
                     entries: [area.featuredArticle] + area.articles,
+                    referred: ExploreAreaReferred.pill,
                   ),
                 ),
               ),
@@ -258,6 +261,7 @@ class _PillsSection extends HookWidget {
                     areaId: area.id,
                     title: area.title,
                     topics: area.topics,
+                    referred: ExploreAreaReferred.pill,
                   ),
                 ),
               ),

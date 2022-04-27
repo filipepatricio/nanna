@@ -8,8 +8,8 @@ class AnalyticsPage with _$AnalyticsPage {
 
   factory AnalyticsPage.onboarding(int index) => AnalyticsPage._('Onboarding', {'index': index});
 
-  factory AnalyticsPage.exploreArea(String exploreAreaId) =>
-      AnalyticsPage._('Explore Area', {'explore_area_id': exploreAreaId});
+  factory AnalyticsPage.exploreArea(String exploreAreaId, String referred) =>
+      AnalyticsPage._('Explore Area', {'explore_area_id': exploreAreaId, 'referred': referred});
 
   factory AnalyticsPage.article(String articleId, [String? topicId]) =>
       AnalyticsPage._('Article', {'article_id': articleId, 'topic_id': topicId});

@@ -19,10 +19,10 @@ class MainNavigationObserver extends AutoRouterObserver {
         return;
       case ArticleSeeAllPageRoute.name:
         final args = route.settings.arguments as ArticleSeeAllPageRouteArgs;
-        return _trackActivityUseCase.trackPage(AnalyticsPage.exploreArea(args.areaId));
+        return _trackActivityUseCase.trackPage(AnalyticsPage.exploreArea(args.areaId, args.referred.name));
       case TopicsSeeAllPageRoute.name:
         final args = route.settings.arguments as TopicsSeeAllPageRouteArgs;
-        return _trackActivityUseCase.trackPage(AnalyticsPage.exploreArea(args.areaId));
+        return _trackActivityUseCase.trackPage(AnalyticsPage.exploreArea(args.areaId, args.referred.name));
       case SettingsMainPageRoute.name:
         return _trackActivityUseCase.trackPage(AnalyticsPage.settings());
       case SettingsAccountPageRoute.name:
