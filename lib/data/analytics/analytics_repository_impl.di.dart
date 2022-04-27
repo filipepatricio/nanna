@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
@@ -43,5 +44,10 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   @override
   void event(AnalyticsEvent event) {
     _analyticsFacade.event(event);
+  }
+
+  @override
+  Future<void> requestTrackingPermission() async {
+    await AppTrackingTransparency.requestTrackingAuthorization();
   }
 }

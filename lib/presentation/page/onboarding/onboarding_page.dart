@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_picture_slide.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_tracking_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -14,23 +15,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OnboardingPage extends HookWidget {
-  final List<Widget> _pageList = [
-    OnboardingPictureSlide(
-      title: LocaleKeys.onboarding_title.tr(),
-      descriptionHeader: LocaleKeys.onboarding_headerSlideOne.tr(),
-      description: LocaleKeys.onboarding_descriptionSlideOne.tr(),
-      imageAsset: AppVectorGraphics.onboardingSlideOne,
-    ),
-    OnboardingPictureSlide(
-      title: LocaleKeys.onboarding_title.tr(),
-      descriptionHeader: LocaleKeys.onboarding_headerSlideTwo.tr(),
-      description: LocaleKeys.onboarding_descriptionSlideTwo.tr(),
-      imageAsset: AppVectorGraphics.onboardingSlideTwo,
-    ),
-    const OnboardingNotificationsSlide(),
-  ];
+final List<Widget> _pageList = [
+  OnboardingPictureSlide(
+    title: LocaleKeys.onboarding_title.tr(),
+    descriptionHeader: LocaleKeys.onboarding_headerSlideOne.tr(),
+    description: LocaleKeys.onboarding_descriptionSlideOne.tr(),
+    imageAsset: AppVectorGraphics.onboardingSlideOne,
+  ),
+  OnboardingPictureSlide(
+    title: LocaleKeys.onboarding_title.tr(),
+    descriptionHeader: LocaleKeys.onboarding_headerSlideTwo.tr(),
+    description: LocaleKeys.onboarding_descriptionSlideTwo.tr(),
+    imageAsset: AppVectorGraphics.onboardingSlideTwo,
+  ),
+  const OnboardingNotificationsSlide(),
+  const OnboardingTrackingSlide(),
+];
 
+class OnboardingPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<OnboardingPageCubit>();
@@ -77,10 +79,10 @@ class OnboardingPage extends HookWidget {
                   const SizedBox(height: AppDimens.m),
                   Row(
                     children: [
-                      if (!isLastPage)
+                      if (pageIndex.value == 0)
                         _SkipButton(
                           cubit: cubit,
-                          isLastPage: isLastPage,
+                          controller: controller,
                         ),
                       const Spacer(),
                       if (isLastPage)
@@ -88,10 +90,17 @@ class OnboardingPage extends HookWidget {
                           text: LocaleKeys.common_continue.tr(),
                           fillColor: AppColors.limeGreen,
                           textColor: AppColors.textPrimary,
-                          onTap: () => _navigateToMainPage(context, cubit, isLastPage),
+                          onTap: () => _navigateToMainPage(
+                            context,
+                            cubit,
+                          ),
                         )
                       else
-                        _NextPageButton(controller: controller),
+                        _NextPageButton(
+                          cubit: cubit,
+                          controller: controller,
+                          currentPage: pageIndex.value,
+                        ),
                     ],
                   ),
                 ],
@@ -107,13 +116,13 @@ class OnboardingPage extends HookWidget {
 
 class _SkipButton extends StatelessWidget {
   const _SkipButton({
+    required this.controller,
     required this.cubit,
-    required this.isLastPage,
     Key? key,
   }) : super(key: key);
 
+  final PageController controller;
   final OnboardingPageCubit cubit;
-  final bool isLastPage;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +132,14 @@ class _SkipButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
-      onPressed: () => _navigateToMainPage(context, cubit, isLastPage),
+      onPressed: () {
+        controller.animateToPage(
+          2,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeIn,
+        );
+        cubit.trackOnboardingSkipped();
+      },
       child: Text(
         LocaleKeys.common_skip.tr(),
         style: AppTypography.buttonBold,
@@ -134,19 +150,29 @@ class _SkipButton extends StatelessWidget {
 
 class _NextPageButton extends StatelessWidget {
   const _NextPageButton({
+    required this.cubit,
     required this.controller,
+    required this.currentPage,
     Key? key,
   }) : super(key: key);
 
+  final OnboardingPageCubit cubit;
   final PageController controller;
+  final int currentPage;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => controller.nextPage(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeIn,
-      ),
+      onPressed: () async {
+        if (currentPage == 2) {
+          await cubit.requestNotificationPermission();
+        }
+
+        await controller.nextPage(
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeIn,
+        );
+      },
       icon: SvgPicture.asset(
         AppVectorGraphics.fullArrowRight,
         fit: BoxFit.contain,
@@ -158,11 +184,8 @@ class _NextPageButton extends StatelessWidget {
 Future<void> _navigateToMainPage(
   BuildContext context,
   OnboardingPageCubit cubit,
-  bool isLastPage,
 ) async {
-  final isSkipped = !isLastPage;
-  await cubit.setOnboardingCompleted(isSkipped);
-  await cubit.requestNotificationPermission();
+  await cubit.setOnboardingCompleted();
   await AutoRouter.of(context).replaceAll(
     [
       const MainPageRoute(),

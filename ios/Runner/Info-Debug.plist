@@ -39,8 +39,8 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
-        <string>fetch</string>
-        <string>remote-notification</string>
+		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -65,5 +65,7 @@
 	<true/>
 	<key>com.claimsforce.segment.WRITE_KEY</key>
 	<string>$(SEGMENT_WRITE_KEY)</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Tracking description</string>
 </dict>
 </plist>
