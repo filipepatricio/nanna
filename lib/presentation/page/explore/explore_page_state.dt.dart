@@ -10,7 +10,7 @@ class ExplorePageState with _$ExplorePageState {
   factory ExplorePageState.initialLoading() = _ExplorePageStateInitialLoading;
 
   @Implements<BuildState>()
-  factory ExplorePageState.idle(List<ExploreContentArea> areas) = _ExplorePageStateIdle;
+  factory ExplorePageState.idle(List<ExploreContentArea> areas, bool showPillsOnExplorePage) = _ExplorePageStateIdle;
 
   @Implements<BuildState>()
   factory ExplorePageState.error() = _ExplorePageStateError;

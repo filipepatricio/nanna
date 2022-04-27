@@ -88,7 +88,11 @@ class ExplorePage extends HookWidget {
                           initialLoading: (_) => const SliverToBoxAdapter(
                             child: ArticleWithCoverAreaLoadingView.loading(),
                           ),
-                          idle: (state) => _Idle(areas: state.areas, headerColor: headerColor),
+                          idle: (state) => _Idle(
+                            areas: state.areas,
+                            showPillsOnExplorePage: state.showPillsOnExplorePage,
+                            headerColor: headerColor,
+                          ),
                           error: (_) => const SliverToBoxAdapter(
                             child: ArticleWithCoverAreaLoadingView.static(),
                           ),
@@ -178,10 +182,12 @@ class _ErrorView extends StatelessWidget {
 
 class _Idle extends StatelessWidget {
   final List<ExploreContentArea> areas;
+  final bool showPillsOnExplorePage;
   final Color headerColor;
 
   const _Idle({
     required this.areas,
+    required this.showPillsOnExplorePage,
     required this.headerColor,
     Key? key,
   }) : super(key: key);
@@ -190,7 +196,7 @@ class _Idle extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiSliver(
       children: [
-        _PillsSection(areas: areas, headerColor: headerColor),
+        if (showPillsOnExplorePage) _PillsSection(areas: areas, headerColor: headerColor),
         SliverList(
           delegate: SliverChildListDelegate(
             areas.map((area) => _Area(area: area, orderIndex: areas.indexOf(area))).toList(growable: false),

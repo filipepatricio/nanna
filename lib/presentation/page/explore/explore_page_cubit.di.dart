@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/show_pills_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
@@ -13,12 +14,14 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final GetExploreContentUseCase _getExploreContentUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  final ShowPillsOnExplorePageUseCase _showPillsOnExplorePageUseCase;
   late bool _isExploreTutorialStepSeen;
 
   ExplorePageCubit(
     this._getExploreContentUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
+    this._showPillsOnExplorePageUseCase,
   ) : super(ExplorePageState.initialLoading());
 
   Future<void> initialize() async {
@@ -44,7 +47,8 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   Future<void> _loadExplorePageData() async {
     final exploreContent = await _getExploreContentUseCase();
-    emit(ExplorePageState.idle(exploreContent.areas));
+    final showPillsOnExplorePage = await _showPillsOnExplorePageUseCase();
+    emit(ExplorePageState.idle(exploreContent.areas, showPillsOnExplorePage));
   }
 
   Future<void> _showTutorialSnackBar() async {
