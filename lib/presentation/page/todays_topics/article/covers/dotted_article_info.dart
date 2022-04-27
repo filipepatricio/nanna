@@ -7,16 +7,6 @@ import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/widgets.dart';
 
 class DottedArticleInfo extends StatelessWidget {
-  final MediaItemArticle article;
-  final bool isLight;
-  final bool showPublisher;
-  final bool showLogo;
-  final bool showDate;
-  final bool fullDate;
-  final bool showReadTime;
-  final TextStyle textStyle;
-  final Color? color;
-
   const DottedArticleInfo({
     required this.article,
     required this.isLight,
@@ -31,11 +21,24 @@ class DottedArticleInfo extends StatelessWidget {
   })  : assert(showPublisher || showDate || showReadTime, 'Select at least one of the sections to show'),
         super(key: key);
 
+  final MediaItemArticle article;
+  final bool isLight;
+  final bool showPublisher;
+  final bool showLogo;
+  final bool showDate;
+  final bool fullDate;
+  final bool showReadTime;
+  final TextStyle textStyle;
+  final Color? color;
+
   @override
   Widget build(BuildContext context) {
     final mainColor = color ?? (isLight ? AppColors.white : AppColors.black);
-    final publicationDate = article.publicationDate;
     final timeToRead = article.timeToRead;
+    final publicationDate = article.publicationDate;
+
+    final _showReadTime = showReadTime && timeToRead != null;
+    final _showDate = showDate && publicationDate != null;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -53,14 +56,14 @@ class DottedArticleInfo extends StatelessWidget {
             style: textStyle.copyWith(color: mainColor, height: 1),
           ),
         ],
-        if (showDate && publicationDate != null)
+        if (_showDate)
           Text(
             '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
             style: textStyle.copyWith(color: mainColor, height: 1),
           ),
-        if (showReadTime && timeToRead != null)
+        if (_showReadTime)
           Text(
-            '${showPublisher || showDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
+            '${showPublisher || _showDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
               args: [timeToRead.toString()],
             )}',
             style: textStyle.copyWith(color: mainColor, height: 1),
