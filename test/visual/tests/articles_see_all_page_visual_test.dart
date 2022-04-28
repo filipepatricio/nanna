@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page.dart';
@@ -18,6 +19,7 @@ void main() {
             areaId: area.id,
             title: area.title,
             entries: area.articles,
+            referred: ExploreAreaReferred.stream,
           ),
         ],
       ),

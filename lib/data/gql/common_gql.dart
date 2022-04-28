@@ -126,4 +126,30 @@ class CommonGQLModels {
         publicId
         caption
   ''';
+
+  static const String exploreSection = '''
+          __typename
+
+        id
+        name
+
+        ... on ArticlesExploreArea {
+          articles {
+            ${CommonGQLModels.article}
+          }
+        }
+
+        ... on ArticlesWithFeatureExploreArea {
+          backgroundColor
+          articles {
+            ${CommonGQLModels.article}
+          }
+        }
+
+        ... on TopicsExploreArea {
+          topics {
+            ${CommonGQLModels.topicPreview}
+          }
+        }
+  ''';
 }

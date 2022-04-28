@@ -26,16 +26,18 @@ class TopicsSeeAllPageCubit extends Cubit<TopicsSeeAllPageState> {
     this._trackActivityUseCase,
   ) : super(TopicsSeeAllPageState.loading());
 
-  Future<void> initialize(String areaId, List<TopicPreview> topics) async {
+  Future<void> initialize(String areaId, List<TopicPreview>? topics) async {
     _areaId = areaId;
-    _topics = topics;
     _nextArticlePageLoader = NextTopicPageLoader(_getExplorePaginatedTopicsUseCase, areaId);
     _paginationEngine = PaginationEngine(_nextArticlePageLoader);
-    _paginationEngine.initialize(topics);
-
-    _trackActivityUseCase.trackEvent(AnalyticsEvent.exploreAreaScrolled(_areaId, 0));
-
-    emit(TopicsSeeAllPageState.withPagination(topics));
+    if (topics != null) {
+      _topics = topics;
+      _paginationEngine.initialize(topics);
+      emit(TopicsSeeAllPageState.withPagination(topics));
+      _trackActivityUseCase.trackEvent(AnalyticsEvent.exploreAreaScrolled(_areaId, 0));
+    } else {
+      await loadNextPage();
+    }
   }
 
   Future<void> loadNextPage() async {

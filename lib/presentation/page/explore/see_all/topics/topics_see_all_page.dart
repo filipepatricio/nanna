@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
@@ -24,12 +25,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class TopicsSeeAllPage extends HookWidget {
   final String areaId;
   final String title;
-  final List<TopicPreview> topics;
+  final List<TopicPreview>? topics;
+  final ExploreAreaReferred referred;
 
   const TopicsSeeAllPage({
     required this.areaId,
     required this.title,
-    required this.topics,
+    required this.referred,
+    this.topics,
     Key? key,
   }) : super(key: key);
 

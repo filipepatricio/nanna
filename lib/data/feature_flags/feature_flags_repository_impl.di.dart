@@ -50,4 +50,14 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   Future<bool> showPhotoOnTopicCover() async {
     return await LDClient.boolVariation('photo-on-topic-card', false);
   }
+
+  @override
+  Future<bool> showPillsOnExplorePage() async {
+    return await LDClient.boolVariation('show-pills-on-explore-page', false);
+  }
+
+  @override
+  Future<bool> showAllStreamsInPillsOnExplorePage() async {
+    return await LDClient.boolVariation('show-all-streams-in-pills', false);
+  }
 }

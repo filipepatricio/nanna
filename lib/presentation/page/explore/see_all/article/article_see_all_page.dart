@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page_state.dt.dart';
@@ -21,12 +22,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class ArticleSeeAllPage extends HookWidget {
   final String areaId;
   final String title;
-  final List<MediaItemArticle> entries;
+  final List<MediaItemArticle>? entries;
+  final ExploreAreaReferred referred;
 
   const ArticleSeeAllPage({
     required this.areaId,
     required this.title,
-    required this.entries,
+    required this.referred,
+    this.entries,
     Key? key,
   }) : super(key: key);
 

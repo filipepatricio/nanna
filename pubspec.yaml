@@ -91,6 +91,8 @@ dependencies:
   jwt_decoder: 2.0.1
   appsflyer_sdk: 6.5.2+2
   app_tracking_transparency: 2.0.2+4
+  flutter_staggered_grid_view: 0.6.1
+  sliver_tools: 0.2.5
 
 dev_dependencies:
   flutter_test:
