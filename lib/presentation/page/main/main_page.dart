@@ -11,6 +11,8 @@ import 'package:url_launcher/url_launcher.dart';
 final mainPageKey = GlobalKey();
 
 class MainPage extends HookWidget {
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<MainCubit>();
@@ -21,6 +23,7 @@ class MainPage extends HookWidget {
         navigate: (navigate) {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
             await closeWebView();
+            _resetNestedRouters();
             await context.navigateNamedTo(
               navigate.path,
               onFailure: (failure) {
@@ -32,6 +35,7 @@ class MainPage extends HookWidget {
         multiNavigate: (navigate) {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
             await closeWebView();
+            _resetNestedRouters();
             for (final path in navigate.path) {
               await context.navigateNamedTo(
                 path,
@@ -53,10 +57,19 @@ class MainPage extends HookWidget {
       [cubit],
     );
 
-    return const AutoRouter();
+    return AutoRouter(
+      navigatorKey: _navigatorKey,
+    );
   }
 
   void _onTokenExpiredEvent(BuildContext context) {
     AutoRouter.of(context).replaceAll([const SignInPageRoute()]);
+  }
+
+  void _resetNestedRouters() {
+    final nestedNavigatorContext = _navigatorKey.currentContext;
+    if (nestedNavigatorContext != null) {
+      AutoRouter.of(nestedNavigatorContext).popUntilRoot();
+    }
   }
 }
