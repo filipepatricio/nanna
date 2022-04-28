@@ -1,5 +1,5 @@
 abstract class OnboardingDatabase {
-  @Deprecated('Deprecated after version 1.6, to be removed')
+  // TODO: We should remove this one when all users will migrate
   Future<bool> isOnboardingSeen(String userUuid);
 
   Future<int?> getOnboardingVersion(String userUuid);

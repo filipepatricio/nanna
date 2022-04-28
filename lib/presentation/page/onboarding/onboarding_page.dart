@@ -33,6 +33,9 @@ final List<Widget> _pageList = [
   const OnboardingTrackingSlide(),
 ];
 
+const _notificationSlide = 2;
+const _trackingSlide = 3;
+
 class OnboardingPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,7 @@ class OnboardingPage extends HookWidget {
       (cubit, state, context) {
         state.mapOrNull(
           jumpToTrackingPage: (_) {
-            controller.jumpToPage(3);
+            controller.jumpToPage(_trackingSlide);
           },
         );
       },
@@ -145,7 +148,7 @@ class _SkipButton extends StatelessWidget {
       ),
       onPressed: () {
         controller.animateToPage(
-          2,
+          _notificationSlide,
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeIn,
         );
@@ -175,7 +178,7 @@ class _NextPageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        if (currentPage == 2) {
+        if (currentPage == _notificationSlide) {
           await cubit.requestNotificationPermission();
         }
 
