@@ -4,7 +4,13 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AttributionRepository, env: liveEnvs)
+@LazySingleton(
+  as: AttributionRepository,
+  env: [
+    Environment.test,
+    Environment.prod,
+  ],
+)
 class AttributionRepositoryAppsflyer implements AttributionRepository {
   AttributionRepositoryAppsflyer._(this._sdk);
 
