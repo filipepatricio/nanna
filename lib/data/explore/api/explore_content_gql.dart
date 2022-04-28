@@ -7,32 +7,26 @@ class ExploreContentGQL {
         '''
     query {
       getExploreSection {
-        __typename
-
-        id
-        name
-
-        ... on ArticlesExploreArea {
-          articles {
-            ${CommonGQLModels.article}
-          }
-        }
-
-        ... on ArticlesWithFeatureExploreArea {
-          backgroundColor
-          articles {
-            ${CommonGQLModels.article}
-          }
-        }
-
-        ... on TopicsExploreArea {
-          topics {
-            ${CommonGQLModels.topicPreview}
-          }
-        }
+        ${CommonGQLModels.exploreSection}
       }
     }
   ''',
+      );
+
+  static DocumentNode highlightedContent({required bool showAllStreamsInPills}) => gql(
+        '''
+      query getExploreSection {
+        pillSection: getExploreSection(${showAllStreamsInPills ? '' : 'isHighlighted: false'}) {
+          __typename
+          id
+          name
+        }
+      
+        highlightedSection: getExploreSection(isHighlighted: true) {
+          ${CommonGQLModels.exploreSection}
+        }
+      }
+    ''',
       );
 
   static DocumentNode paginated(String id, int limit, int offset) => gql(

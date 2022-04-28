@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,7 +10,7 @@ class ExplorePageState with _$ExplorePageState {
   factory ExplorePageState.initialLoading() = _ExplorePageStateInitialLoading;
 
   @Implements<BuildState>()
-  factory ExplorePageState.idle(List<ExploreContentArea> areas, bool showPillsOnExplorePage) = _ExplorePageStateIdle;
+  factory ExplorePageState.idle(ExploreContent exploreContent) = _ExplorePageStateIdle;
 
   @Implements<BuildState>()
   factory ExplorePageState.error() = _ExplorePageStateError;

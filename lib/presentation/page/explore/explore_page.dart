@@ -4,7 +4,9 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_pill.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_with_cover_area_loading_view.dart';
@@ -89,8 +91,7 @@ class ExplorePage extends HookWidget {
                             child: ArticleWithCoverAreaLoadingView.loading(),
                           ),
                           idle: (state) => _Idle(
-                            areas: state.areas,
-                            showPillsOnExplorePage: state.showPillsOnExplorePage,
+                            exploreContent: state.exploreContent,
                             headerColor: headerColor,
                           ),
                           error: (_) => const SliverToBoxAdapter(
@@ -125,10 +126,10 @@ class ExplorePage extends HookWidget {
   Color _getHeaderColor(ExplorePageState state) {
     return state.maybeMap(
       idle: (idle) {
-        if (idle.areas.isEmpty) {
+        if (idle.exploreContent.areas.isEmpty) {
           return AppColors.background;
         }
-        final firstArea = idle.areas.first;
+        final firstArea = idle.exploreContent.areas.first;
         return firstArea.maybeMap(
           articleWithFeature: (state) => Color(state.backgroundColor),
           orElse: () => AppColors.background,
@@ -181,25 +182,26 @@ class _ErrorView extends StatelessWidget {
 }
 
 class _Idle extends StatelessWidget {
-  final List<ExploreContentArea> areas;
-  final bool showPillsOnExplorePage;
+  final ExploreContent exploreContent;
   final Color headerColor;
 
   const _Idle({
-    required this.areas,
-    required this.showPillsOnExplorePage,
+    required this.exploreContent,
     required this.headerColor,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final pills = exploreContent.pills;
     return MultiSliver(
       children: [
-        if (showPillsOnExplorePage) _PillsSection(areas: areas, headerColor: headerColor),
+        if (pills != null) _PillsSection(pills: pills, headerColor: headerColor),
         SliverList(
           delegate: SliverChildListDelegate(
-            areas.map((area) => _Area(area: area, orderIndex: areas.indexOf(area))).toList(growable: false),
+            exploreContent.areas
+                .map((area) => _Area(area: area, orderIndex: exploreContent.areas.indexOf(area)))
+                .toList(growable: false),
           ),
         ),
       ],
@@ -208,18 +210,18 @@ class _Idle extends StatelessWidget {
 }
 
 class _PillsSection extends HookWidget {
-  final List<ExploreContentArea> areas;
+  final List<ExploreContentPill> pills;
   final Color headerColor;
 
   const _PillsSection({
-    required this.areas,
+    required this.pills,
     required this.headerColor,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final lineCount = min(_maxPillLines, (areas.length / _maxPillsPerLine).ceil());
+    final lineCount = min(_maxPillLines, (pills.length / _maxPillsPerLine).ceil());
     final height = min(_maxPillsSectionHeight, lineCount * _pillLineHeight + (lineCount > 1 ? _pillPadding : 0));
 
     return SliverToBoxAdapter(
@@ -232,9 +234,9 @@ class _PillsSection extends HookWidget {
           crossAxisCount: lineCount,
           mainAxisSpacing: _pillPadding,
           crossAxisSpacing: _pillPadding,
-          itemCount: areas.length,
+          itemCount: pills.length,
           itemBuilder: (context, index) {
-            return areas[index].map(
+            return pills[index].map(
               articles: (area) => _AreaPillItem(
                 title: area.title,
                 index: index,
@@ -242,7 +244,6 @@ class _PillsSection extends HookWidget {
                   ArticleSeeAllPageRoute(
                     areaId: area.id,
                     title: area.title,
-                    entries: area.articles,
                     referred: ExploreAreaReferred.pill,
                   ),
                 ),
@@ -254,7 +255,6 @@ class _PillsSection extends HookWidget {
                   ArticleSeeAllPageRoute(
                     areaId: area.id,
                     title: area.title,
-                    entries: [area.featuredArticle] + area.articles,
                     referred: ExploreAreaReferred.pill,
                   ),
                 ),
@@ -266,7 +266,6 @@ class _PillsSection extends HookWidget {
                   TopicsSeeAllPageRoute(
                     areaId: area.id,
                     title: area.title,
-                    topics: area.topics,
                     referred: ExploreAreaReferred.pill,
                   ),
                 ),
@@ -346,10 +345,10 @@ class _AreaPillItem extends StatelessWidget {
             width: 1,
           ),
         ),
-        padding: const EdgeInsets.symmetric(vertical: AppDimens.m, horizontal: AppDimens.l),
+        padding: const EdgeInsets.symmetric(vertical: AppDimens.sl, horizontal: AppDimens.l),
         child: Text(
           title,
-          style: AppTypography.b3Regular.copyWith(height: 1),
+          style: AppTypography.b3Regular.copyWith(height: 1.4),
         ),
       ),
     );

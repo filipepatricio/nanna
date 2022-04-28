@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/explore/api/explore_content_api_data_source.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_area_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/explore/api/mapper/explore_highlighted_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/explore_content_repository.dart';
@@ -11,18 +12,26 @@ import 'package:injectable/injectable.dart';
 class ExploreContentApiRepository implements ExploreContentRepository {
   final ExploreContentApiDataSource _dataSource;
   final ExploreContentDTOMapper _exploreContentDTOMapper;
+  final ExploreHighlightedContentDTOMapper _exploreHighlightedContentDTOMapper;
   final ExploreContentAreaDTOMapper _exploreContentAreaDTOMapper;
 
   ExploreContentApiRepository(
     this._dataSource,
     this._exploreContentDTOMapper,
     this._exploreContentAreaDTOMapper,
+    this._exploreHighlightedContentDTOMapper,
   );
 
   @override
   Future<ExploreContent> getExploreContent() async {
     final dto = await _dataSource.getExploreContent();
     return _exploreContentDTOMapper(dto);
+  }
+
+  @override
+  Future<ExploreContent> getExploreHighlightedContent({required bool showAllStreamsInPills}) async {
+    final dto = await _dataSource.getExploreHighlightedContent(showAllStreamsInPills: showAllStreamsInPills);
+    return _exploreHighlightedContentDTOMapper(dto);
   }
 
   @override

@@ -11,4 +11,5 @@ abstract class FeaturesFlagsRepository {
 
   Future<bool> showPhotoOnTopicCover();
   Future<bool> showPillsOnExplorePage();
+  Future<bool> showAllStreamsInPillsOnExplorePage();
 }

@@ -1,0 +1,25 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'explore_content_pill.dt.freezed.dart';
+
+@freezed
+class ExploreContentPill with _$ExploreContentPill {
+  factory ExploreContentPill.articles({
+    required String id,
+    required String title,
+  }) = ExploreContentPillArticles;
+
+  factory ExploreContentPill.articleWithFeature({
+    required String id,
+    required String title,
+  }) = ExploreContentPillArticleWithFeature;
+
+  factory ExploreContentPill.topics({
+    required String id,
+    required String title,
+  }) = ExploreContentPillTopics;
+
+  factory ExploreContentPill.unknown({
+    required String id,
+  }) = ExploreContentPillUnknown;
+}

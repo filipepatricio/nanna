@@ -25,14 +25,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class TopicsSeeAllPage extends HookWidget {
   final String areaId;
   final String title;
-  final List<TopicPreview> topics;
+  final List<TopicPreview>? topics;
   final ExploreAreaReferred referred;
 
   const TopicsSeeAllPage({
     required this.areaId,
     required this.title,
-    required this.topics,
     required this.referred,
+    this.topics,
     Key? key,
   }) : super(key: key);
 

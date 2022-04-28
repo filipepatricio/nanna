@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/show_all_streams_in_pills_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/show_pills_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
@@ -15,6 +16,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final ShowPillsOnExplorePageUseCase _showPillsOnExplorePageUseCase;
+  final ShowAllStreamsInPillsOnExplorePageUseCase _showAllStreamsInPillsOnExplorePageUseCase;
   late bool _isExploreTutorialStepSeen;
 
   ExplorePageCubit(
@@ -22,6 +24,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._showPillsOnExplorePageUseCase,
+    this._showAllStreamsInPillsOnExplorePageUseCase,
   ) : super(ExplorePageState.initialLoading());
 
   Future<void> initialize() async {
@@ -46,9 +49,13 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> _loadExplorePageData() async {
-    final exploreContent = await _getExploreContentUseCase();
-    final showPillsOnExplorePage = await _showPillsOnExplorePageUseCase();
-    emit(ExplorePageState.idle(exploreContent.areas, showPillsOnExplorePage));
+    final showPills = await _showPillsOnExplorePageUseCase();
+    final showAllStreamsInPills = await _showAllStreamsInPillsOnExplorePageUseCase();
+    final exploreContent = await _getExploreContentUseCase.call(
+      showPills: showPills,
+      showAllStreamsInPills: showAllStreamsInPills,
+    );
+    emit(ExplorePageState.idle(exploreContent));
   }
 
   Future<void> _showTutorialSnackBar() async {

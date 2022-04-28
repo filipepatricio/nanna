@@ -22,14 +22,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class ArticleSeeAllPage extends HookWidget {
   final String areaId;
   final String title;
-  final List<MediaItemArticle> entries;
+  final List<MediaItemArticle>? entries;
   final ExploreAreaReferred referred;
 
   const ArticleSeeAllPage({
     required this.areaId,
     required this.title,
-    required this.entries,
     required this.referred,
+    this.entries,
     Key? key,
   }) : super(key: key);
 
