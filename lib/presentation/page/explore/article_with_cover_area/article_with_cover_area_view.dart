@@ -21,9 +21,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ArticleWithCoverAreaView extends HookWidget {
   final ExploreContentAreaArticleWithFeature area;
+  final bool isHighlighted;
 
   const ArticleWithCoverAreaView({
     required this.area,
+    required this.isHighlighted,
     Key? key,
   }) : super(key: key);
 
@@ -111,7 +113,7 @@ class ArticleWithCoverAreaView extends HookWidget {
           areaId: area.id,
           title: area.title,
           entries: [area.featuredArticle] + area.articles,
-          referred: ExploreAreaReferred.stream,
+          referred: isHighlighted ? ExploreAreaReferred.highlighted_stream : ExploreAreaReferred.stream,
         ),
       );
 }

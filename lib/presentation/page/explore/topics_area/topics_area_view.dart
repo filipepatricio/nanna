@@ -22,9 +22,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicsAreaView extends HookWidget {
   final ExploreContentAreaTopics area;
+  final bool isHighlighted;
 
   const TopicsAreaView({
     required this.area,
+    required this.isHighlighted,
     Key? key,
   }) : super(key: key);
 
@@ -129,7 +131,7 @@ class TopicsAreaView extends HookWidget {
           areaId: area.id,
           title: area.title,
           topics: area.topics,
-          referred: ExploreAreaReferred.stream,
+          referred: isHighlighted ? ExploreAreaReferred.highlighted_stream : ExploreAreaReferred.stream,
         ),
       );
 

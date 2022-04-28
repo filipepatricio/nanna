@@ -194,13 +194,20 @@ class _Idle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pills = exploreContent.pills;
+    final isHighlighted = pills != null;
     return MultiSliver(
       children: [
         if (pills != null) _PillsSection(pills: pills, headerColor: headerColor),
         SliverList(
           delegate: SliverChildListDelegate(
             exploreContent.areas
-                .map((area) => _Area(area: area, orderIndex: exploreContent.areas.indexOf(area)))
+                .map(
+                  (area) => _Area(
+                    area: area,
+                    orderIndex: exploreContent.areas.indexOf(area),
+                    isHighlighted: isHighlighted,
+                  ),
+                )
                 .toList(growable: false),
           ),
         ),
@@ -282,10 +289,12 @@ class _PillsSection extends HookWidget {
 class _Area extends HookWidget {
   final ExploreContentArea area;
   final int orderIndex;
+  final bool isHighlighted;
 
   const _Area({
     required this.area,
     required this.orderIndex,
+    required this.isHighlighted,
     Key? key,
   }) : super(key: key);
 
@@ -307,9 +316,9 @@ class _Area extends HookWidget {
         },
         borderFraction: 0.6,
         child: area.map(
-          articles: (area) => ArticleAreaView(area: area),
-          articleWithFeature: (area) => ArticleWithCoverAreaView(area: area),
-          topics: (area) => TopicsAreaView(area: area),
+          articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),
+          articleWithFeature: (area) => ArticleWithCoverAreaView(area: area, isHighlighted: isHighlighted),
+          topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
           unknown: (_) => Container(),
         ),
       ),
