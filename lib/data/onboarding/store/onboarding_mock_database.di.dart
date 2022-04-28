@@ -17,6 +17,6 @@ class OnboardingMockDatabase implements OnboardingDatabase {
 
   @override
   Future<int?> getOnboardingVersion(String userUuid) async {
-    return null;
+    return 1;
   }
 }

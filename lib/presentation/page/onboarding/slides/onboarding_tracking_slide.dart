@@ -19,7 +19,7 @@ class OnboardingTrackingSlide extends StatelessWidget {
         children: [
           const Spacer(flex: 2),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Text(
               tr(LocaleKeys.onboarding_tracking_title),
               style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
@@ -47,7 +47,7 @@ class OnboardingTrackingSlide extends StatelessWidget {
               ],
             ),
           ),
-          const Spacer(flex: 10),
+          const Spacer(flex: 9),
         ],
       ),
     );
