@@ -27,7 +27,7 @@ class OnboardingTrackingSlide extends StatelessWidget {
           ),
           const Spacer(),
           Expanded(
-            flex: 4,
+            flex: 13,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -47,7 +47,6 @@ class OnboardingTrackingSlide extends StatelessWidget {
               ],
             ),
           ),
-          const Spacer(flex: 9),
         ],
       ),
     );
