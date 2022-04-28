@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -71,8 +72,12 @@ class _CoverContentLarge extends StatelessWidget {
           TopicOwnerAvatar(
             owner: topic.owner,
             withPrefix: true,
-            fontSize: 16,
+            underlined: true,
             mode: mode,
+            textStyle: AppTypography.h4Bold,
+            onTap: () => AutoRouter.of(context).push(
+              TopicOwnerPageRoute(owner: topic.owner),
+            ),
           ),
           const SizedBox(height: AppDimens.s),
           InformedMarkdownBody(
