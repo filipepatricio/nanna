@@ -10,8 +10,13 @@ class OnboardingMockDatabase implements OnboardingDatabase {
   }
 
   @override
-  Future<void> setOnboardingSeen(String userUuid) async {}
+  Future<void> setOnboardingVersion(String userUuid, int version) async {}
 
   @override
   Future<void> resetOnboarding(String userUuid) async {}
+
+  @override
+  Future<int?> getOnboardingVersion(String userUuid) async {
+    return null;
+  }
 }

@@ -8,6 +8,7 @@ import 'data/auth/app_link/auth_app_link_repository_impl_test.dart' as auth_app_
 import 'data/auth/app_link/magic_link_parser_test.dart' as magic_link_parser_test;
 import 'data/networking/app_version_link/app_version_link_transformer_test.dart' as app_version_link_transformer_test;
 import 'data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
+import 'data/onboarding/onboarding_store_impl_test.dart' as onboarding_store_impl_test;
 import 'data/topic/api/mapper/topic_dto_mapper_test.dart' as topic_dto_mapper_test;
 import 'data/topic/api/mapper/topic_preview_dto_mapper_test.dart' as topic_preview_dto_mapper_test;
 import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
@@ -29,6 +30,7 @@ import 'presentation/topic_owner_page_test.dart' as topic_owner_page_test;
 
 void main() {
   // Data
+  group('onboarding_store_impl_test', onboarding_store_impl_test.main);
   group('audio_item_mapper_test', audio_item_mapper_test.main);
   group('topic_dto_mapper_test', topic_dto_mapper_test.main);
   group('topic_preview_dto_mapper_test', topic_preview_dto_mapper_test.main);

@@ -21,14 +21,21 @@ class OnboardingHiveDatabase implements OnboardingDatabase {
   }
 
   @override
-  Future<void> setOnboardingSeen(String userUuid) async {
+  Future<void> setOnboardingVersion(String userUuid, int version) async {
     final box = await _openUserBox(userUuid, _hiveBoxName);
-    await box.put(_onboardingKey, true);
+    await box.put(_onboardingKey, version);
   }
 
   @override
   Future<void> resetOnboarding(String userUuid) async {
     final box = await _openUserBox(userUuid, _hiveBoxName);
     await box.clear();
+  }
+
+  @override
+  Future<int?> getOnboardingVersion(String userUuid) async {
+    final box = await _openUserBox(userUuid, _hiveBoxName);
+    final onboardingValue = box.get(_onboardingKey) as int?;
+    return onboardingValue;
   }
 }
