@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_picture_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_tracking_slide.dart';
@@ -43,10 +44,20 @@ class OnboardingPage extends HookWidget {
 
     useEffect(
       () {
-        cubit.trackOnboardingStarted();
-        cubit.trackOnboardingPage(0);
+        cubit.initialize();
       },
       [cubit],
+    );
+
+    useCubitListener<OnboardingPageCubit, OnboardingPageState>(
+      cubit,
+      (cubit, state, context) {
+        state.mapOrNull(
+          jumpToTrackingPage: (_) {
+            controller.jumpToPage(3);
+          },
+        );
+      },
     );
 
     return Scaffold(
