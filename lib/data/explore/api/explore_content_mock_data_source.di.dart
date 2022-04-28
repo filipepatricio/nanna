@@ -14,9 +14,8 @@ class ExploreMockDataSource implements ExploreContentApiDataSource {
   }
 
   @override
-  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent({required bool showAllStreamsInPills}) {
-    // TODO: implement getExploreHighlightedContent
-    throw UnimplementedError();
+  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent({required bool showAllStreamsInPills}) async {
+    return MockDTO.exploreHighlightedContent;
   }
 
   @override

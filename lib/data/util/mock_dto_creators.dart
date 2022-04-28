@@ -12,6 +12,8 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
+import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
@@ -84,6 +86,26 @@ class MockDTO {
   /// Explore
 
   static final exploreContent = ExploreContentDTO(
+    [
+      _exploreFeaturedArticlesArea,
+      _exploreTopicsArea,
+      _exploreArticlesArea,
+      _exploreTopicsArea2,
+    ],
+  );
+
+  static final exploreHighlightedContent = ExploreHighlightedContentDTO(
+    [
+      ExploreContentPillDTO.articles('articles', 'Articles'),
+      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
+      ExploreContentPillDTO.articles('topics', 'Topics'),
+      ExploreContentPillDTO.articles('articles', 'Articles'),
+      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
+      ExploreContentPillDTO.articles('topics', 'Topics'),
+      ExploreContentPillDTO.articles('articles', 'Articles'),
+      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
+      ExploreContentPillDTO.articles('topics', 'Topics'),
+    ],
     [
       _exploreFeaturedArticlesArea,
       _exploreTopicsArea,
