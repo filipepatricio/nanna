@@ -25,6 +25,10 @@ class EntryPage extends HookWidget {
           const SignInPageRoute(),
           predicate: (_) => false,
         ),
+        onboarding: () => AutoRouter.of(context).pushAndPopUntil(
+          const OnboardingPageRoute(),
+          predicate: (_) => false,
+        ),
         orElse: () {},
       );
     });

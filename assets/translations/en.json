@@ -39,6 +39,10 @@
       "descTwo": "Emerging updates and new topics will be provided for you on a rolling basis, every day.",
       "headerThree": "Fresh App Updates",
       "descThree": "We are constantly improving our product. We will keep you posted on new improvements and features."
+    },
+    "tracking": {
+      "title": "Improve your experience",
+      "info": "We track the behavior of our users to better understand their needs and to improve performance. Please consider allowing tracking for an enhaced experience."
     }
   },
   "tutorial": {

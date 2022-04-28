@@ -1,11 +1,19 @@
 PODS:
   - Amplitude (7.0.1)
   - Analytics (4.1.6)
+  - app_tracking_transparency (0.0.1):
+    - Flutter
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - appsflyer_sdk (6.4.4):
+    - AppsFlyerFramework (= 6.5.2)
+    - Flutter
+  - AppsFlyerFramework (6.5.2):
+    - AppsFlyerFramework/Main (= 6.5.2)
+  - AppsFlyerFramework/Main (6.5.2)
   - audio_service (0.0.1):
     - Flutter
   - audio_session (0.0.1):
@@ -184,6 +192,8 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
+  - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - audio_service (from `.symlinks/plugins/audio_service/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
@@ -223,6 +233,7 @@ SPEC REPOS:
     - Amplitude
     - Analytics
     - AppAuth
+    - AppsFlyerFramework
     - Firebase
     - FirebaseAuth
     - FirebaseCore
@@ -246,6 +257,10 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  app_tracking_transparency:
+    :path: ".symlinks/plugins/app_tracking_transparency/ios"
+  appsflyer_sdk:
+    :path: ".symlinks/plugins/appsflyer_sdk/ios"
   audio_service:
     :path: ".symlinks/plugins/audio_service/ios"
   audio_session:
@@ -320,7 +335,10 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Amplitude: 31a9038dca905b78294418ed277da9c2e07658ad
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
+  app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  appsflyer_sdk: 1e59c8c01aeeab556f299cbe66bf769862026cdb
+  AppsFlyerFramework: 9f304d91cc80b6579b1206a59220383056b58b47
   audio_service: f509d65da41b9521a61f1c404dd58651f265a567
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e

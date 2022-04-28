@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_exception.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/send_magic_link_use_case.di.dart';
@@ -23,6 +24,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final SignInWithMagicLinkTokenUseCase _signInWithMagicLinkTokenUseCase;
   final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
   final InitializeFeatureFlagsUseCase _initializeFeatureFlagsUseCase;
+  final InitializeAttributionUseCase _initializeAttributionUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
@@ -35,6 +37,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._signInWithMagicLinkTokenUseCase,
     this._isOnboardingSeenUseCase,
     this._initializeFeatureFlagsUseCase,
+    this._initializeAttributionUseCase,
   ) : super(SignInPageState.idle(false));
 
   @override
@@ -109,7 +112,12 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   Future<void> _finishSignIn() async {
     await _initializeFeatureFlagsUseCase();
-    final isOnboardingSeen = await _isOnboardingSeenUseCase.call();
+
+    final isOnboardingSeen = await _isOnboardingSeenUseCase();
+    if (isOnboardingSeen) {
+      await _initializeAttributionUseCase();
+    }
+
     emit(SignInPageState.success(isOnboardingSeen));
   }
 

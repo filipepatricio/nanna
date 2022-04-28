@@ -89,6 +89,8 @@ dependencies:
   audio_session: 0.1.6+1
   launchdarkly_flutter_client_sdk: 1.0.0
   jwt_decoder: 2.0.1
+  appsflyer_sdk: 6.5.2+2
+  app_tracking_transparency: 2.0.2+4
 
 dev_dependencies:
   flutter_test:

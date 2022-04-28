@@ -15,5 +15,8 @@ void main() {
     await tester.fling(find.byType(PageView).first, const Offset(-1000, 0), 100);
     await tester.pumpAndSettle();
     await tester.matchGoldenFile('onboarding_page_(step_3)');
+    await tester.fling(find.byType(PageView).first, const Offset(-1000, 0), 100);
+    await tester.pumpAndSettle();
+    await tester.matchGoldenFile('onboarding_page_(step_4)');
   });
 }
