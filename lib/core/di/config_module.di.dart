@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/util/sentry_reporting_tree.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/onboarding/data/onboarding_version.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
@@ -36,4 +37,7 @@ abstract class ConfigModule {
   @Environment(mockName)
   @singleton
   LogTree get mockLogTree => DebugTree(useColors: true);
+
+  @singleton
+  OnboardingVersion get currentOnboardingVersion => OnboardingVersion.v2;
 }
