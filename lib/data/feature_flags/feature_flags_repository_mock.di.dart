@@ -33,4 +33,9 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
   Future<bool> showAllStreamsInPillsOnExplorePage() {
     return Future.value(false);
   }
+
+  @override
+  Future<String> initialTab() {
+    return Future.value('');
+  }
 }
