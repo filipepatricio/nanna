@@ -8,7 +8,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:get_it/get_it.dart';
 
 const String pngExtension = '.png';
 const String jpgExtension = '.jpg';
@@ -34,13 +33,6 @@ class CloudinaryImageProvider {
 
 CloudinaryImageProvider useCloudinaryProvider() {
   final getIt = useGetIt();
-  return useMemoized(() {
-    final cloudName = getIt<AppConfig>().cloudinaryCloudName;
-    return CloudinaryImageProvider._(cloudName);
-  });
-}
-
-CloudinaryImageProvider createCloudinaryProvider(GetIt getIt) {
   return useMemoized(() {
     final cloudName = getIt<AppConfig>().cloudinaryCloudName;
     return CloudinaryImageProvider._(cloudName);

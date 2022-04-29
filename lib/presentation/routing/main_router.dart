@@ -84,7 +84,7 @@ const dashboardTabRouter = CustomRoute(
       name: 'TodayTabGroupRouter',
       page: HeroEmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: TodaysTopicsPage, initial: true),
+        AutoRoute(path: 'todays_topics', page: TodaysTopicsPage, initial: true),
       ],
     ),
     AutoRoute(

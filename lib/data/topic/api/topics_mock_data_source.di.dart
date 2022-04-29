@@ -10,7 +10,12 @@ import 'package:injectable/injectable.dart';
 class TopicsMockDataSource implements TopicsApiDataSource {
   @override
   Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId) async {
-    return TopicsFromExpertDTO([MockDTO.topic, MockDTO.topic]);
+    return TopicsFromExpertDTO(
+      [
+        MockDTO.topicPreview,
+        MockDTO.topicPreview,
+      ],
+    );
   }
 
   @override

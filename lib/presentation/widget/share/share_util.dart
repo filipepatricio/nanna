@@ -1,11 +1,15 @@
 import 'dart:io';
 
-import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.di.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-Future<File> generateShareImage(ShareViewImageGenerator generator, String fileName) async {
-  final imageBytes = await generator.generate();
+Future<File> generateShareImage(
+  ShareViewImageGenerator generator,
+  WidgetFactory widgetFactory,
+  String fileName,
+) async {
+  final imageBytes = await generator.generate(widgetFactory);
 
   if (imageBytes != null) {
     final tempDir = await getTemporaryDirectory();

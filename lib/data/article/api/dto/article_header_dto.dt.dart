@@ -16,6 +16,7 @@ class ArticleHeaderDTO {
   final String? publicationDate;
   final int timeToRead;
   final PublisherDTO publisher;
+  @JsonKey(name: 'articleImage')
   final ArticleImageDTO? image;
   final String sourceUrl;
   final String? author;

@@ -17,9 +17,9 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -141,9 +141,9 @@ class TopicOwnerPage extends HookWidget {
                         ),
                         loading: (_) => Padding(
                           padding: const EdgeInsets.only(top: AppDimens.l),
-                          child: RoundStackedCards.variant(
+                          child: StackedCards.variant(
                             coverSize: Size(cardStackWidth, cardStackHeight),
-                            variant: RoundStackCardVariant.a,
+                            variant: StackedCardsVariant.a,
                             child: const LoadingShimmer.defaultColor(
                               radius: AppDimens.m,
                             ),
@@ -244,7 +244,7 @@ class _ActionsBar extends HookWidget {
                   padding: const EdgeInsets.all(6.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppDimens.xxs),
-                    color: owner is Editor ? AppColors.limeGreen : AppColors.peach10,
+                    color: owner is Editor ? AppColors.limeGreen : AppColors.peach,
                   ),
                   child: Text(
                     (owner is Expert

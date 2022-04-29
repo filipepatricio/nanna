@@ -27,16 +27,18 @@ class ArticleSeeAllPageCubit extends Cubit<ArticleSeeAllPageState> {
     this._trackActivityUseCase,
   ) : super(ArticleSeeAllPageState.loading());
 
-  Future<void> initialize(String areaId, List<MediaItemArticle> articles) async {
+  Future<void> initialize(String areaId, List<MediaItemArticle>? articles) async {
     _areaId = areaId;
-    _articles = _processArticles(articles).toList();
     _nextArticlePageLoader = NextArticlePageLoader(_getExplorePaginatedArticlesUseCase, areaId);
     _paginationEngine = PaginationEngine(_nextArticlePageLoader);
-    _paginationEngine.initialize(articles);
-
-    _trackActivityUseCase.trackEvent(AnalyticsEvent.exploreAreaScrolled(_areaId, 0));
-
-    emit(ArticleSeeAllPageState.withPagination(_articles));
+    if (articles != null) {
+      _articles = _processArticles(articles).toList();
+      _paginationEngine.initialize(articles);
+      emit(ArticleSeeAllPageState.withPagination(_articles));
+      _trackActivityUseCase.trackEvent(AnalyticsEvent.exploreAreaScrolled(_areaId, 0));
+    } else {
+      await loadNextPage();
+    }
   }
 
   Future<void> loadNextPage() async {
@@ -71,10 +73,10 @@ class ArticleSeeAllPageCubit extends Cubit<ArticleSeeAllPageState> {
       final article = articles[i];
       final image = article.image;
 
-      if (image == null) {
-        yield ArticleWithBackground.color(article, nextColorIndex++);
+      if (article.hasImage) {
+        yield ArticleWithBackground.image(article, image!);
       } else {
-        yield ArticleWithBackground.image(article, image);
+        yield ArticleWithBackground.color(article, nextColorIndex++);
       }
     }
   }

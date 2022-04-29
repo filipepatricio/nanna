@@ -98,6 +98,7 @@ class _DefaultAppBarWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.topCenter,
       children: [
         child,
         Align(

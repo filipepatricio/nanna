@@ -34,7 +34,7 @@ class PremiumArticleActionsBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasImage = useMemoized(() => article.metadata.image != null, [article]);
+    final hasImage = useMemoized(() => article.hasImage, [article]);
 
     final backgroundColor = useMemoized(
       () => ValueNotifier(

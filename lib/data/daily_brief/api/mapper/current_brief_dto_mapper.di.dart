@@ -8,10 +8,13 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class CurrentBriefDTOMapper implements Mapper<CurrentBriefDTO, CurrentBrief> {
+  CurrentBriefDTOMapper(
+    this._headlineDTOMapper,
+    this._topicDTOMapper,
+  );
+
   final HeadlineDTOMapper _headlineDTOMapper;
   final TopicDTOMapper _topicDTOMapper;
-
-  CurrentBriefDTOMapper(this._headlineDTOMapper, this._topicDTOMapper);
 
   @override
   CurrentBrief call(CurrentBriefDTO data) {

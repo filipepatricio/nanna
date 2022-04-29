@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_exception.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/send_magic_link_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_default_provider_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_magic_link_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_link_token_use_case.di.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page_state.dt.dart';
@@ -21,6 +23,8 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final SubscribeForMagicLinkTokenUseCase _subscribeForMagicLinkTokenUseCase;
   final SignInWithMagicLinkTokenUseCase _signInWithMagicLinkTokenUseCase;
   final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
+  final InitializeFeatureFlagsUseCase _initializeFeatureFlagsUseCase;
+  final InitializeAttributionUseCase _initializeAttributionUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
@@ -32,6 +36,8 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._subscribeForMagicLinkTokenUseCase,
     this._signInWithMagicLinkTokenUseCase,
     this._isOnboardingSeenUseCase,
+    this._initializeFeatureFlagsUseCase,
+    this._initializeAttributionUseCase,
   ) : super(SignInPageState.idle(false));
 
   @override
@@ -105,7 +111,13 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   }
 
   Future<void> _finishSignIn() async {
-    final isOnboardingSeen = await _isOnboardingSeenUseCase.call();
+    await _initializeFeatureFlagsUseCase();
+
+    final isOnboardingSeen = await _isOnboardingSeenUseCase();
+    if (isOnboardingSeen) {
+      await _initializeAttributionUseCase();
+    }
+
     emit(SignInPageState.success(isOnboardingSeen));
   }
 

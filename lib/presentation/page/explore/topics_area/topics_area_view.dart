@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -10,20 +11,22 @@ import 'package:better_informed_mobile/presentation/widget/hero_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_large.dart';
 import 'package:better_informed_mobile/presentation/widget/see_all_arrow.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicsAreaView extends HookWidget {
   final ExploreContentAreaTopics area;
+  final bool isHighlighted;
 
   const TopicsAreaView({
     required this.area,
+    required this.isHighlighted,
     Key? key,
   }) : super(key: key);
 
@@ -68,8 +71,8 @@ class TopicsAreaView extends HookWidget {
           const SizedBox(height: AppDimens.l),
           Container(
             height: cardStackHeight,
-            child: StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
-              variants: RoundStackCardVariant.values,
+            child: StackedCardsRandomVariantBuilder<StackedCardsVariant>(
+              variants: StackedCardsVariant.values,
               count: area.topics.length,
               builder: (variants) {
                 return NoScrollGlow(
@@ -94,10 +97,10 @@ class TopicsAreaView extends HookWidget {
                         padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
                         child: GestureDetector(
                           onTap: () => _onTopicTap(context, index),
-                          child: RoundStackedCards.variant(
+                          child: StackedCards.variant(
                             variant: variants[index],
                             coverSize: Size(width, cardStackHeight),
-                            child: RoundTopicCoverLarge(
+                            child: TopicCover.large(
                               topic: area.topics[index],
                             ),
                           ),
@@ -128,13 +131,13 @@ class TopicsAreaView extends HookWidget {
           areaId: area.id,
           title: area.title,
           topics: area.topics,
+          referred: isHighlighted ? ExploreAreaReferred.highlighted_stream : ExploreAreaReferred.stream,
         ),
       );
 
   void _onTopicTap(BuildContext context, int index) => context.pushRoute(
         TopicPage(
-          topicSlug: area.topics[index].id,
-          topic: area.topics[index],
+          topicSlug: area.topics[index].slug,
         ),
       );
 }

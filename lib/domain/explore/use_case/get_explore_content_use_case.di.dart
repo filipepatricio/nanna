@@ -9,10 +9,12 @@ class GetExploreContentUseCase {
 
   GetExploreContentUseCase(this._exploreContentRepository);
 
-  Future<ExploreContent> call() async {
-    final content = await _exploreContentRepository.getExploreContent();
+  Future<ExploreContent> call({required bool showPills, required bool showAllStreamsInPills}) async {
+    final content = showPills
+        ? await _exploreContentRepository.getExploreHighlightedContent(showAllStreamsInPills: showAllStreamsInPills)
+        : await _exploreContentRepository.getExploreContent();
     final notEmptyAreas = content.areas.where(_isNotEmptyArea).toList();
-    return ExploreContent(areas: notEmptyAreas);
+    return ExploreContent(pills: content.pills, areas: notEmptyAreas);
   }
 
   bool _isNotEmptyArea(ExploreContentArea areas) {

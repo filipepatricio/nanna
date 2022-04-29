@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -27,7 +27,7 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   factory ExploreContentAreaDTO.topics(
     String id,
     String name,
-    List<TopicDTO> topics,
+    List<TopicPreviewDTO> topics,
   ) = _ExploreContentAreaDTOTopics;
 
   @FreezedUnionValue(unknownKey)

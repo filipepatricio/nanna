@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page.dart';
@@ -13,7 +14,14 @@ void main() {
 
     await tester.startApp(
       initialRoute: ExploreTabGroupRouter(
-        children: [TopicsSeeAllPageRoute(areaId: area.id, title: area.title, topics: area.topics)],
+        children: [
+          TopicsSeeAllPageRoute(
+            areaId: area.id,
+            title: area.title,
+            topics: area.topics,
+            referred: ExploreAreaReferred.stream,
+          )
+        ],
       ),
     );
     await tester.matchGoldenFile();

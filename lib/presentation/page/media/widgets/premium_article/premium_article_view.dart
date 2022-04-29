@@ -36,8 +36,6 @@ class PremiumArticleView extends HookWidget {
   final SnackbarController snackbarController;
   final ArticleOutputMode articleOutputMode;
 
-  bool get articleWithImage => article.metadata.image != null;
-
   @override
   Widget build(BuildContext context) {
     final metadata = article.metadata;
@@ -120,7 +118,7 @@ class PremiumArticleView extends HookWidget {
                 right: 0,
                 child: PremiumArticleActionsBar(
                   article: article,
-                  fullHeight: articleWithImage ? fullHeight : appBarHeight,
+                  fullHeight: article.hasImage ? fullHeight : appBarHeight,
                   pageController: pageController,
                   snackbarController: snackbarController,
                   cubit: cubit,

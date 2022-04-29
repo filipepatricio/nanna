@@ -30,4 +30,7 @@ class AnalyticsRepositoryMock implements AnalyticsRepository {
   void event(AnalyticsEvent event) {
     return;
   }
+
+  @override
+  Future<void> requestTrackingPermission() async {}
 }

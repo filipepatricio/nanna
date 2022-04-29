@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
@@ -20,8 +22,22 @@ class TabBar extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<TabBarCubit>();
 
+    useEffect(
+      () {
+        WidgetsBinding.instance?.addPostFrameCallback(
+          (_) async {
+            final initialTab = await cubit.getInitialTab();
+            if (initialTab.isNotEmpty) {
+              unawaited(context.navigateNamedTo(initialTab));
+            }
+          },
+        );
+      },
+      [cubit],
+    );
+
     return BottomNavigationBar(
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: AppColors.background,
       items: [
         ...MainTab.values.map(
           (tab) => BottomNavigationBarItem(

@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_card_style.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_utils.dart';
 import 'package:flutter/material.dart';
 
-class RoundStackedBackgroundCard extends StatelessWidget {
-  const RoundStackedBackgroundCard({
+class StackedCardsBackground extends StatelessWidget {
+  const StackedCardsBackground({
     required this.width,
     required this.height,
     required this.rotation,
@@ -28,9 +28,9 @@ class RoundStackedBackgroundCard extends StatelessWidget {
         width: width,
         height: height,
         decoration: const BoxDecoration(
-          borderRadius: roundedStackedCardsBorder,
+          borderRadius: stackedCardsBorder,
           color: AppColors.darkLinen,
-          boxShadow: roundedStackedCardsShadow,
+          boxShadow: stackedCardsShadows,
         ),
       ),
     );

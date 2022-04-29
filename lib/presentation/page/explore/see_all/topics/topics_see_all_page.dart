@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_cubit.di.dart';
@@ -14,22 +15,24 @@ import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_small.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_random_variant_builder.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicsSeeAllPage extends HookWidget {
   final String areaId;
   final String title;
-  final List<Topic> topics;
+  final List<TopicPreview>? topics;
+  final ExploreAreaReferred referred;
 
   const TopicsSeeAllPage({
     required this.areaId,
     required this.title,
-    required this.topics,
+    required this.referred,
+    this.topics,
     Key? key,
   }) : super(key: key);
 
@@ -92,8 +95,8 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StackedCardsRandomVariantBuilder<RoundStackCardVariant>(
-      variants: RoundStackCardVariant.values,
+    return StackedCardsRandomVariantBuilder<StackedCardsVariant>(
+      variants: StackedCardsVariant.values,
       count: state.maybeMap(
         loadingMore: (state) => state.topics.length,
         withPagination: (state) => state.topics.length,
@@ -137,10 +140,10 @@ class _Body extends StatelessWidget {
 class _TopicGrid extends StatelessWidget {
   final String title;
   final PageStorageKey pageStorageKey;
-  final List<Topic> topics;
+  final List<TopicPreview> topics;
   final ScrollController scrollController;
   final bool withLoader;
-  final List<RoundStackCardVariant> cardVariants;
+  final List<StackedCardsVariant> cardVariants;
 
   const _TopicGrid({
     required this.title,
@@ -201,8 +204,8 @@ class _TopicGrid extends StatelessWidget {
 }
 
 class _GridItem extends StatelessWidget {
-  final Topic topic;
-  final RoundStackCardVariant cardVariant;
+  final TopicPreview topic;
+  final StackedCardsVariant cardVariant;
 
   const _GridItem({
     required this.topic,
@@ -216,13 +219,13 @@ class _GridItem extends StatelessWidget {
       onTap: () => _onTopicTap(context, topic),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return RoundStackedCards.variant(
+          return StackedCards.variant(
             variant: cardVariant,
             coverSize: Size(
               constraints.maxWidth,
               AppDimens.exploreAreaTopicSeeAllCoverHeight,
             ),
-            child: RoundTopicCoverSmall(
+            child: TopicCover.small(
               topic: topic,
             ),
           );
@@ -231,11 +234,10 @@ class _GridItem extends StatelessWidget {
     );
   }
 
-  void _onTopicTap(BuildContext context, Topic topic) {
+  void _onTopicTap(BuildContext context, TopicPreview topic) {
     AutoRouter.of(context).push(
       TopicPage(
-        topicSlug: topic.id,
-        topic: topic,
+        topicSlug: topic.slug,
       ),
     );
   }

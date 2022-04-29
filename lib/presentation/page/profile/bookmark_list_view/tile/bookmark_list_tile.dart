@@ -8,12 +8,12 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stack_card_variant.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/card_stack/round_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/round_topic_cover/round_topic_cover_small.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -172,7 +172,7 @@ extension on Bookmark {
         article: data.article,
       ),
       topic: (data) => ShareButton(
-        onTap: () => shareReadingList(context, data.topic),
+        onTap: () => shareReadingListUsingTopic(context, data.topic),
         backgroundColor: AppColors.transparent,
       ),
       unknown: (_) => const SizedBox(),
@@ -183,7 +183,7 @@ extension on Bookmark {
 extension on BookmarkTileCover {
   Widget getContent(BuildContext context, Size size) {
     return map(
-      standart: (_) {
+      standard: (_) {
         return bookmark.data.mapOrNull(
               article: (data) => ArticleListItem(
                 article: data.article,
@@ -221,20 +221,19 @@ extension on BookmarkTileCover {
         height: size.height,
         width: size.width,
       ),
-      topic: (data) => RoundStackedCards.variant(
-        variant: RoundStackCardVariant.values[index % RoundStackCardVariant.values.length],
+      topic: (data) => StackedCards.variant(
+        variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
         coverSize: size,
         child: GestureDetector(
           onTap: () {
             AutoRouter.of(context).push(
               TopicPage(
                 topicSlug: data.topic.slug,
-                topic: data.topic,
               ),
             );
           },
-          child: RoundTopicCoverSmall(
-            topic: data.topic,
+          child: TopicCover.small(
+            topic: data.topic.asPreview,
           ),
         ),
       ),

@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:better_informed_mobile/data/util/app_info_data_source.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
@@ -11,9 +13,7 @@ class AppInfoRepositoryImpl implements AppInfoRepository {
 
   @override
   Future<String> getAppVersion() async {
-    final version = await _appInfoDataSource.getAppVersion();
-    final buildNumber = await _appInfoDataSource.getAppBuildNumber();
-    return '$version+$buildNumber';
+    return await _appInfoDataSource.getAppVersion();
   }
 
   @override
@@ -24,5 +24,10 @@ class AppInfoRepositoryImpl implements AppInfoRepository {
   @override
   Future<bool> shouldUpdate() {
     return _appInfoDataSource.shouldUpdate();
+  }
+
+  @override
+  String getPlatform() {
+    return Platform.operatingSystem;
   }
 }

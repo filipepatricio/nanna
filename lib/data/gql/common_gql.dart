@@ -1,7 +1,7 @@
 class CommonGQLModels {
   const CommonGQLModels._();
 
-  static const String topic = '''
+  static const String topicPreview = '''
     id
     slug
     title
@@ -20,9 +20,6 @@ class CommonGQLModels {
         $editorialTeam
       }
     }
-    summaryCards{
-      text
-    }
     introduction
     highlightedPublishers {
       $publisher
@@ -31,7 +28,17 @@ class CommonGQLModels {
       publicId
     }
     heroImage {
-      $image
+      $cloudinaryImage
+    }
+    readingList {
+      entryCount
+    }
+  ''';
+
+  static const String topic = '''
+    $topicPreview
+    summaryCards{
+      text
     }
     readingList {
       id
@@ -101,16 +108,48 @@ class CommonGQLModels {
       publicationDate
       timeToRead
       hasAudioVersion
-      image {
-        $image
+      articleImage {
+        __typename
+        ... on CloudinaryImage {
+          $cloudinaryImage
+        }
+        ... on RemoteImage {
+          url
+        }
       }
       publisher {
         $publisher
       }
   ''';
 
-  static const String image = '''
+  static const String cloudinaryImage = '''
         publicId
         caption
+  ''';
+
+  static const String exploreSection = '''
+          __typename
+
+        id
+        name
+
+        ... on ArticlesExploreArea {
+          articles {
+            ${CommonGQLModels.article}
+          }
+        }
+
+        ... on ArticlesWithFeatureExploreArea {
+          backgroundColor
+          articles {
+            ${CommonGQLModels.article}
+          }
+        }
+
+        ... on TopicsExploreArea {
+          topics {
+            ${CommonGQLModels.topicPreview}
+          }
+        }
   ''';
 }

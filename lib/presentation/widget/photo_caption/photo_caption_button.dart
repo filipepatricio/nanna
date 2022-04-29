@@ -34,7 +34,18 @@ class PhotoCaptionButton extends HookWidget {
         ? const SizedBox()
         : Stack(
             children: [
-              if (showPhotoCaptionTooltip.value)
+              if (showPhotoCaptionTooltip.value) ...[
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    showPhotoCaptionTooltip.value = false;
+                  },
+                  child: Container(
+                    color: AppColors.transparent,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                ),
                 Positioned(
                   bottom: 96,
                   right: AppDimens.m,
@@ -52,6 +63,7 @@ class PhotoCaptionButton extends HookWidget {
                     },
                   ),
                 ),
+              ],
               Positioned(
                 bottom: AppDimens.xxl,
                 right: AppDimens.xxl,

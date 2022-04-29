@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
@@ -20,9 +21,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ArticleWithCoverAreaView extends HookWidget {
   final ExploreContentAreaArticleWithFeature area;
+  final bool isHighlighted;
 
   const ArticleWithCoverAreaView({
     required this.area,
+    required this.isHighlighted,
     Key? key,
   }) : super(key: key);
 
@@ -110,6 +113,7 @@ class ArticleWithCoverAreaView extends HookWidget {
           areaId: area.id,
           title: area.title,
           entries: [area.featuredArticle] + area.articles,
+          referred: isHighlighted ? ExploreAreaReferred.highlighted_stream : ExploreAreaReferred.stream,
         ),
       );
 }

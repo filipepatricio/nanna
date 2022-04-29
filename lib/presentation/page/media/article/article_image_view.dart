@@ -37,7 +37,7 @@ class ArticleImageView extends StatelessWidget {
             height: fullHeight,
             foregroundDecoration: const BoxDecoration(color: AppColors.black40),
             child: ArticleImage(
-              image: article.image!,
+              image: articleImage!,
               width: imageWidth,
               height: imageHeight,
               cardColor: AppColors.background,
@@ -86,8 +86,8 @@ class ArticleImageView extends StatelessWidget {
             ),
           ),
         ),
-        if (articleImage != null)
-          articleImage.maybeMap(
+        if (hasImage)
+          articleImage!.maybeMap(
             cloudinary: (image) => PhotoCaptionButton(
               cloudinaryImage: image.cloudinaryImage,
               articleId: article.id,

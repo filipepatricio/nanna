@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_page_loader.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dt.dart';
@@ -198,10 +199,10 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
 
       final cover = bookmark.data.mapOrNull(
         article: (data) {
-          if (data.article.image == null) {
-            return BookmarkTileCover.dynamic(bookmark, articleIndex++);
+          if (data.article.hasImage) {
+            return BookmarkTileCover.standard(bookmark);
           } else {
-            return BookmarkTileCover.standart(bookmark);
+            return BookmarkTileCover.dynamic(bookmark, articleIndex++);
           }
         },
         topic: (data) {

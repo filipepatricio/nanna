@@ -9,12 +9,14 @@ import 'package:injectable/injectable.dart';
 class ExploreContentDTOMapper implements Mapper<ExploreContentDTO, ExploreContent> {
   final ExploreContentAreaDTOMapper _exploreContentAreaDTOMapper;
 
-  ExploreContentDTOMapper(this._exploreContentAreaDTOMapper);
+  ExploreContentDTOMapper(
+    this._exploreContentAreaDTOMapper,
+  );
 
   @override
   ExploreContent call(ExploreContentDTO data) {
     return ExploreContent(
-      areas: data.data.map<ExploreContentArea>(_exploreContentAreaDTOMapper).toList(),
+      areas: data.exploreSection.map<ExploreContentArea>(_exploreContentAreaDTOMapper).toList(),
     );
   }
 }

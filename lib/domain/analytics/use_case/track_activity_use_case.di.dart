@@ -9,7 +9,11 @@ class TrackActivityUseCase {
 
   TrackActivityUseCase(this._analyticsRepository);
 
-  void trackPage(AnalyticsPage page) => _analyticsRepository.page(page);
+  void trackPage(AnalyticsPage page) {
+    _analyticsRepository.page(page);
+  }
 
-  void trackEvent(AnalyticsEvent event) => _analyticsRepository.event(event);
+  void trackEvent(AnalyticsEvent event) {
+    _analyticsRepository.event(event);
+  }
 }

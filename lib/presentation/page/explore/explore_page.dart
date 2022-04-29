@@ -1,6 +1,12 @@
+import 'dart:core';
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_content_pill.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_with_cover_area_loading_view.dart';
@@ -24,9 +30,16 @@ import 'package:better_informed_mobile/presentation/widget/track/view_visibility
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 const _tryAgainButtonWidth = 150.0;
+const _maxPillLines = 3;
+const _maxPillsPerLine = 3;
+const _maxPillsSectionHeight = 170.0;
+const _pillLineHeight = 50.0;
+const _pillPadding = 8.0;
 
 class ExplorePage extends HookWidget {
   @override
@@ -77,7 +90,10 @@ class ExplorePage extends HookWidget {
                           initialLoading: (_) => const SliverToBoxAdapter(
                             child: ArticleWithCoverAreaLoadingView.loading(),
                           ),
-                          idle: (state) => _Idle(areas: state.areas),
+                          idle: (state) => _Idle(
+                            exploreContent: state.exploreContent,
+                            headerColor: headerColor,
+                          ),
                           error: (_) => const SliverToBoxAdapter(
                             child: ArticleWithCoverAreaLoadingView.static(),
                           ),
@@ -110,10 +126,10 @@ class ExplorePage extends HookWidget {
   Color _getHeaderColor(ExplorePageState state) {
     return state.maybeMap(
       idle: (idle) {
-        if (idle.areas.isEmpty) {
+        if (idle.exploreContent.areas.isEmpty) {
           return AppColors.background;
         }
-        final firstArea = idle.areas.first;
+        final firstArea = idle.exploreContent.areas.first;
         return firstArea.maybeMap(
           articleWithFeature: (state) => Color(state.backgroundColor),
           orElse: () => AppColors.background,
@@ -166,18 +182,105 @@ class _ErrorView extends StatelessWidget {
 }
 
 class _Idle extends StatelessWidget {
-  final List<ExploreContentArea> areas;
+  final ExploreContent exploreContent;
+  final Color headerColor;
 
   const _Idle({
-    required this.areas,
+    required this.exploreContent,
+    required this.headerColor,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildListDelegate(
-        areas.map((area) => _Area(area: area, orderIndex: areas.indexOf(area))).toList(growable: false),
+    final pills = exploreContent.pills;
+    final isHighlighted = pills != null;
+    return MultiSliver(
+      children: [
+        if (pills != null) _PillsSection(pills: pills, headerColor: headerColor),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            exploreContent.areas
+                .map(
+                  (area) => _Area(
+                    area: area,
+                    orderIndex: exploreContent.areas.indexOf(area),
+                    isHighlighted: isHighlighted,
+                  ),
+                )
+                .toList(growable: false),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PillsSection extends HookWidget {
+  final List<ExploreContentPill> pills;
+  final Color headerColor;
+
+  const _PillsSection({
+    required this.pills,
+    required this.headerColor,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final lineCount = min(_maxPillLines, (pills.length / _maxPillsPerLine).ceil());
+    final height = min(_maxPillsSectionHeight, lineCount * _pillLineHeight + (lineCount > 1 ? _pillPadding : 0));
+
+    return SliverToBoxAdapter(
+      child: Container(
+        height: height,
+        color: headerColor,
+        child: MasonryGridView.count(
+          padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.m),
+          scrollDirection: Axis.horizontal,
+          crossAxisCount: lineCount,
+          mainAxisSpacing: _pillPadding,
+          crossAxisSpacing: _pillPadding,
+          itemCount: pills.length,
+          itemBuilder: (context, index) {
+            return pills[index].map(
+              articles: (area) => _AreaPillItem(
+                title: area.title,
+                index: index,
+                onTap: () => AutoRouter.of(context).push(
+                  ArticleSeeAllPageRoute(
+                    areaId: area.id,
+                    title: area.title,
+                    referred: ExploreAreaReferred.pill,
+                  ),
+                ),
+              ),
+              articleWithFeature: (area) => _AreaPillItem(
+                title: area.title,
+                index: index,
+                onTap: () => AutoRouter.of(context).push(
+                  ArticleSeeAllPageRoute(
+                    areaId: area.id,
+                    title: area.title,
+                    referred: ExploreAreaReferred.pill,
+                  ),
+                ),
+              ),
+              topics: (area) => _AreaPillItem(
+                title: area.title,
+                index: index,
+                onTap: () => context.pushRoute(
+                  TopicsSeeAllPageRoute(
+                    areaId: area.id,
+                    title: area.title,
+                    referred: ExploreAreaReferred.pill,
+                  ),
+                ),
+              ),
+              unknown: (_) => const SizedBox(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -186,10 +289,12 @@ class _Idle extends StatelessWidget {
 class _Area extends HookWidget {
   final ExploreContentArea area;
   final int orderIndex;
+  final bool isHighlighted;
 
   const _Area({
     required this.area,
     required this.orderIndex,
+    required this.isHighlighted,
     Key? key,
   }) : super(key: key);
 
@@ -211,10 +316,48 @@ class _Area extends HookWidget {
         },
         borderFraction: 0.6,
         child: area.map(
-          articles: (area) => ArticleAreaView(area: area),
-          articleWithFeature: (area) => ArticleWithCoverAreaView(area: area),
-          topics: (area) => TopicsAreaView(area: area),
+          articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),
+          articleWithFeature: (area) => ArticleWithCoverAreaView(area: area, isHighlighted: isHighlighted),
+          topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
           unknown: (_) => Container(),
+        ),
+      ),
+    );
+  }
+}
+
+class _AreaPillItem extends StatelessWidget {
+  final String title;
+  final int index;
+  final VoidCallback onTap;
+  final Color? color;
+
+  const _AreaPillItem({
+    required this.title,
+    required this.index,
+    required this.onTap,
+    this.color = AppColors.white,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: AppColors.dividerGreyLight,
+            width: 1,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: AppDimens.sl, horizontal: AppDimens.l),
+        child: Text(
+          title,
+          style: AppTypography.b3Regular.copyWith(height: 1.4),
         ),
       ),
     );

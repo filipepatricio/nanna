@@ -12,15 +12,19 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
+import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_dto.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/reading_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/reading_list_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
 
 /// To be use as a response for mock implementations of remote data sources
@@ -90,6 +94,26 @@ class MockDTO {
     ],
   );
 
+  static final exploreHighlightedContent = ExploreHighlightedContentDTO(
+    [
+      ExploreContentPillDTO.articles('articles', 'Articles'),
+      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
+      ExploreContentPillDTO.articles('topics', 'Topics'),
+      ExploreContentPillDTO.articles('articles', 'Articles'),
+      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
+      ExploreContentPillDTO.articles('topics', 'Topics'),
+      ExploreContentPillDTO.articles('articles', 'Articles'),
+      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
+      ExploreContentPillDTO.articles('topics', 'Topics'),
+    ],
+    [
+      _exploreFeaturedArticlesArea,
+      _exploreTopicsArea,
+      _exploreArticlesArea,
+      _exploreTopicsArea2,
+    ],
+  );
+
   /// Topics
 
   static final topic = TopicDTO(
@@ -136,6 +160,12 @@ class MockDTO {
     slug: 'topic-with-unknown-owner',
     owner: TopicOwnerDTO.unknown(),
   );
+
+  static final topicPreview = topic.asPreview;
+
+  static final topicPreviewWithEditorOwner = topicWithEditorOwner.asPreview;
+
+  static final topicPreviewWithUnknownOwner = topicWithUnknownOwner.asPreview;
 
   /// Articles
 
@@ -233,11 +263,11 @@ class MockDTO {
     'explore-topics-id',
     'Hot topics',
     [
-      topic,
-      topic,
-      topic,
-      topic,
-      topic,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
     ],
   );
 
@@ -245,11 +275,11 @@ class MockDTO {
     'explore-topics-2-id',
     'By our experts',
     [
-      topic,
-      topic,
-      topic,
-      topic,
-      topic,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
     ],
   );
 
@@ -458,6 +488,25 @@ extension on TopicDTO {
       coverImage ?? this.coverImage,
       readingList ?? this.readingList,
       summaryCards ?? this.summaryCards,
+    );
+  }
+
+  TopicPreviewDTO get asPreview {
+    return TopicPreviewDTO(
+      id,
+      slug,
+      title,
+      strippedTitle,
+      introduction,
+      url,
+      owner,
+      lastUpdatedAt,
+      highlightedPublishers,
+      heroImage,
+      coverImage,
+      ReadingListPreviewDTO(
+        readingList.entries.length,
+      ),
     );
   }
 }

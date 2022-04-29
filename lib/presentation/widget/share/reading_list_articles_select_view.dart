@@ -8,7 +8,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/di_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -32,13 +31,20 @@ const _labelTextStyle = TextStyle(
   height: 1.4,
 );
 
-Future<void> shareReadingList(BuildContext context, Topic topic) async {
+Future<void> shareReadingListUsingTopic(BuildContext context, Topic topic) async {
+  return _showBottomSheet(
+    context,
+    (context) => ReadingListArticlesSelectView(topic: topic),
+  );
+}
+
+Future<void> _showBottomSheet(BuildContext context, WidgetBuilder builder) {
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
     builder: (context) => Container(
       height: MediaQuery.of(context).size.height * 0.6,
-      child: ReadingListArticlesSelectView(topic: topic),
+      child: builder(context),
     ),
     useRootNavigator: true,
     backgroundColor: Colors.transparent,
@@ -46,12 +52,12 @@ Future<void> shareReadingList(BuildContext context, Topic topic) async {
 }
 
 class ReadingListArticlesSelectView extends HookWidget {
-  final Topic topic;
-
   const ReadingListArticlesSelectView({
     required this.topic,
     Key? key,
   }) : super(key: key);
+
+  final Topic topic;
 
   @override
   Widget build(BuildContext context) {
@@ -199,8 +205,6 @@ class _IdleView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final getIt = useGetIt();
-
     return SafeArea(
       child: Column(
         children: [
@@ -228,7 +232,7 @@ class _IdleView extends HookWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
             child: FilledButton(
-              onTap: () => cubit.shareImage(getIt),
+              onTap: () => cubit.shareImage(),
               text: LocaleKeys.common_next.tr(),
               fillColor: AppColors.darkGreyBackground,
               textColor: AppColors.white,

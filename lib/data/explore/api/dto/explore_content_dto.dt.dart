@@ -6,9 +6,9 @@ part 'explore_content_dto.dt.g.dart';
 @JsonSerializable()
 class ExploreContentDTO {
   @JsonKey(name: 'getExploreSection')
-  final List<ExploreContentAreaDTO> data;
+  final List<ExploreContentAreaDTO> exploreSection;
 
-  ExploreContentDTO(this.data);
+  ExploreContentDTO(this.exploreSection);
 
   factory ExploreContentDTO.fromJson(Map<String, dynamic> json) => _$ExploreContentDTOFromJson(json);
 

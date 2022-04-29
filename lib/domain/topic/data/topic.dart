@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/image/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_category.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
 
 class Topic {
@@ -40,4 +41,21 @@ class Topic {
   });
 
   MediaItemArticle articleAt(int index) => readingList.entries[index].item as MediaItemArticle;
+
+  TopicPreview get asPreview {
+    return TopicPreview(
+      id,
+      slug,
+      title,
+      strippedTitle,
+      introduction,
+      url,
+      owner,
+      lastUpdatedAt,
+      highlightedPublishers,
+      heroImage,
+      coverImage,
+      readingList.entries.length,
+    );
+  }
 }

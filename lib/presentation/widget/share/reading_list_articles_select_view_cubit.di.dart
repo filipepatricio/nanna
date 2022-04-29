@@ -3,27 +3,28 @@ import 'package:better_informed_mobile/domain/share/use_case/share_image_use_cas
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
-import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic/share_reading_list_view.dart';
 import 'package:bloc/bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 const articlesSelectionLimit = 3;
 
 @injectable
 class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelectViewState> {
-  ReadingListArticlesSelectViewCubit(this._shareImageUseCase)
-      : super(ReadingListArticlesSelectViewState.initializing());
+  ReadingListArticlesSelectViewCubit(
+    this._shareImageUseCase,
+    this._shareViewImageGenerator,
+  ) : super(ReadingListArticlesSelectViewState.initializing());
 
   final ShareImageUseCase _shareImageUseCase;
+  final ShareViewImageGenerator _shareViewImageGenerator;
 
   late Topic _topic;
   final Set<int> _selectedIndexes = {};
 
-  void initialize(Topic topic) {
+  Future<void> initialize(Topic topic) async {
     _topic = topic;
-
     _emitIdleState();
   }
 
@@ -39,20 +40,21 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
     _emitIdleState();
   }
 
-  Future<void> shareImage(GetIt getIt) async {
+  Future<void> shareImage() async {
     emit(ReadingListArticlesSelectViewState.generatingShareImage());
 
     final articles =
         _selectedIndexes.map((e) => _topic.readingList.entries[e]).map((e) => e.item as MediaItemArticle).toList();
 
-    final generator = ShareViewImageGenerator(
-      () => ShareReadingListView(
-        topic: _topic,
-        articles: articles,
-        getIt: getIt,
-      ),
+    final factory = () => ShareReadingListView(
+          topic: _topic,
+          articles: articles,
+        );
+    final image = await generateShareImage(
+      _shareViewImageGenerator,
+      factory,
+      '${_topic.id}_share_topic.png',
     );
-    final image = await generateShareImage(generator, '${_topic.id}_share_topic.png');
     await _shareImageUseCase(
       image,
       _topic.url,
