@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
-import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_category.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
@@ -21,7 +21,7 @@ class Topic {
   final TopicCategory? category;
   final Image heroImage;
   final Image coverImage;
-  final ReadingList readingList;
+  final List<Entry> entries;
 
   Topic({
     required this.id,
@@ -36,11 +36,11 @@ class Topic {
     required this.highlightedPublishers,
     required this.heroImage,
     required this.coverImage,
-    required this.readingList,
+    required this.entries,
     this.category,
   });
 
-  MediaItemArticle articleAt(int index) => readingList.entries[index].item as MediaItemArticle;
+  MediaItemArticle articleAt(int index) => entries[index].item as MediaItemArticle;
 
   TopicPreview get asPreview {
     return TopicPreview(
@@ -55,7 +55,7 @@ class Topic {
       highlightedPublishers,
       heroImage,
       coverImage,
-      readingList.entries.length,
+      entries.length,
     );
   }
 }

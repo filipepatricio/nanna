@@ -44,7 +44,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
     emit(ReadingListArticlesSelectViewState.generatingShareImage());
 
     final articles =
-        _selectedIndexes.map((e) => _topic.readingList.entries[e]).map((e) => e.item as MediaItemArticle).toList();
+        _selectedIndexes.map((e) => _topic.entries[e]).map((e) => e.item as MediaItemArticle).toList();
 
     final factory = () => ShareReadingListView(
           topic: _topic,
@@ -68,7 +68,7 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
     emit(
       ReadingListArticlesSelectViewState.idle(
         _canSelectMore(),
-        _topic.readingList.entries.map((entry) => entry.item).whereType<MediaItemArticle>().toList(),
+        _topic.entries.map((entry) => entry.item).whereType<MediaItemArticle>().toList(),
         Set.from(_selectedIndexes),
         articlesSelectionLimit,
       ),

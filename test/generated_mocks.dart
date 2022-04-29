@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/mapper/onboarding_version_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/store/onboarding_database.dart';
-import 'package:better_informed_mobile/data/topic/api/mapper/reading_list_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
@@ -17,7 +17,7 @@ const _classes = [
   TopicOwnerDTOMapper,
   PublisherDTOMapper,
   ImageDTOMapper,
-  ReadingListDTOMapper,
+  EntryDTOMapper,
   SummaryCardDTOMapper,
   OnboardingDatabase,
   OnboardingVersionEntityMapper,

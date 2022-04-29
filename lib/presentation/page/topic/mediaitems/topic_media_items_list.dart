@@ -30,7 +30,7 @@ class TopicMediaItemsList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final entryList = topic.readingList.entries;
+    final entryList = topic.entries;
 
     useEffect(
       () {
@@ -47,7 +47,7 @@ class TopicMediaItemsList extends HookWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xl),
             child: Text(
-              LocaleKeys.todaysTopics_articlesCount.tr(args: [topic.readingList.entries.length.toString()]),
+              LocaleKeys.todaysTopics_articlesCount.tr(args: [topic.entries.length.toString()]),
               style: AppTypography.h2Jakarta,
               maxLines: 1,
             ),
@@ -60,7 +60,7 @@ class TopicMediaItemsList extends HookWidget {
             separatorBuilder: (context, index) => const SizedBox(height: AppDimens.l),
             itemCount: entryList.length,
             itemBuilder: (context, index) {
-              final entry = topic.readingList.entries[index];
+              final entry = topic.entries[index];
               if (entry.item is MediaItemArticle) {
                 final article = entry.item as MediaItemArticle;
                 return ViewVisibilityNotifier(

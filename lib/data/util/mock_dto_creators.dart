@@ -19,8 +19,6 @@ import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_dto.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/reading_list_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/reading_list_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
@@ -137,14 +135,11 @@ class MockDTO {
     _image,
     // coverImage
     _cover,
-    ReadingListDTO(
-      'reading-list-id',
-      [
-        _premiumArticleEntry,
-        _premiumArticleWithAudioEntry,
-        _freeArticleEntry,
-      ],
-    ),
+    [
+      _premiumArticleEntry,
+      _premiumArticleWithAudioEntry,
+      _freeArticleEntry,
+    ],
     [
       _summaryCardLong,
       _summaryCardShort,
@@ -471,7 +466,7 @@ extension on TopicDTO {
     List<PublisherDTO>? highlightedPublishers,
     ImageDTO? heroImage,
     ImageDTO? coverImage,
-    ReadingListDTO? readingList,
+    List<EntryDTO>? entries,
     List<SummaryCardDTO>? summaryCards,
   }) {
     return TopicDTO(
@@ -486,7 +481,7 @@ extension on TopicDTO {
       highlightedPublishers ?? this.highlightedPublishers,
       heroImage ?? this.heroImage,
       coverImage ?? this.coverImage,
-      readingList ?? this.readingList,
+      entries ?? this.entries,
       summaryCards ?? this.summaryCards,
     );
   }
@@ -504,9 +499,7 @@ extension on TopicDTO {
       highlightedPublishers,
       heroImage,
       coverImage,
-      ReadingListPreviewDTO(
-        readingList.entries.length,
-      ),
+      entries.length,
     );
   }
 }
