@@ -1,21 +1,21 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/share/use_case/share_image_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
-import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.di.dart';
-import 'package:better_informed_mobile/presentation/widget/share/topic/share_reading_list_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/topic/share_topic_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
 const articlesSelectionLimit = 3;
 
 @injectable
-class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelectViewState> {
-  ReadingListArticlesSelectViewCubit(
+class TopicArticlesSelectViewCubit extends Cubit<TopicArticlesSelectViewState> {
+  TopicArticlesSelectViewCubit(
     this._shareImageUseCase,
     this._shareViewImageGenerator,
-  ) : super(ReadingListArticlesSelectViewState.initializing());
+  ) : super(TopicArticlesSelectViewState.initializing());
 
   final ShareImageUseCase _shareImageUseCase;
   final ShareViewImageGenerator _shareViewImageGenerator;
@@ -41,12 +41,11 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
   }
 
   Future<void> shareImage() async {
-    emit(ReadingListArticlesSelectViewState.generatingShareImage());
+    emit(TopicArticlesSelectViewState.generatingShareImage());
 
-    final articles =
-        _selectedIndexes.map((e) => _topic.entries[e]).map((e) => e.item as MediaItemArticle).toList();
+    final articles = _selectedIndexes.map((e) => _topic.entries[e]).map((e) => e.item as MediaItemArticle).toList();
 
-    final factory = () => ShareReadingListView(
+    final factory = () => ShareTopicView(
           topic: _topic,
           articles: articles,
         );
@@ -61,12 +60,12 @@ class ReadingListArticlesSelectViewCubit extends Cubit<ReadingListArticlesSelect
       _topic.strippedTitle,
     );
 
-    emit(ReadingListArticlesSelectViewState.shared());
+    emit(TopicArticlesSelectViewState.shared());
   }
 
   void _emitIdleState() {
     emit(
-      ReadingListArticlesSelectViewState.idle(
+      TopicArticlesSelectViewState.idle(
         _canSelectMore(),
         _topic.entries.map((entry) => entry.item).whereType<MediaItemArticle>().toList(),
         Set.from(_selectedIndexes),
