@@ -182,6 +182,59 @@ class _LoadingSection extends StatelessWidget {
   }
 }
 
+class _SearchBarButton extends StatelessWidget {
+  const _SearchBarButton({
+    required this.headerColor,
+    Key? key,
+  }) : super(key: key);
+
+  final Color headerColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        color: headerColor,
+        padding: const EdgeInsets.only(bottom: AppDimens.m, left: AppDimens.l, right: AppDimens.l),
+        child: GestureDetector(
+          onTap: () {
+            AutoRouter.of(context).push(const SearchPageRoute());
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            height: AppDimens.xxl + AppDimens.xxs,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(
+                color: AppColors.textGrey,
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  AppVectorGraphics.search,
+                  color: AppColors.darkGreyBackground,
+                  fit: BoxFit.scaleDown,
+                ),
+                const SizedBox(width: AppDimens.s),
+                Text(
+                  LocaleKeys.common_search.tr(),
+                  style: AppTypography.h4Medium.copyWith(
+                    color: AppColors.textGrey,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _ItemList extends StatelessWidget {
   const _ItemList({
     required this.items,

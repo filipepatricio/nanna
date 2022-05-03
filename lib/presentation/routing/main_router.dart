@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/page/media/media_item_page.d
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
 import 'package:better_informed_mobile/presentation/page/photo_caption/photo_caption_page.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page.dart';
+import 'package:better_informed_mobile/presentation/page/search/search_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
@@ -95,6 +96,10 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(path: '', page: ExplorePage, initial: true),
         AutoRoute(page: ArticleSeeAllPage),
         AutoRoute(page: TopicsSeeAllPage),
+        CustomRoute(
+          page: SearchPage,
+          transitionsBuilder: searchTransition,
+        ),
       ],
     ),
     AutoRoute(
@@ -108,3 +113,15 @@ const dashboardTabRouter = CustomRoute(
     RedirectRoute(path: '', redirectTo: topicsPathSegment),
   ],
 );
+
+Widget searchTransition(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  return FadeTransition(
+    opacity: animation,
+    child: child,
+  );
+}

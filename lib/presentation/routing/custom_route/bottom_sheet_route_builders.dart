@@ -93,3 +93,15 @@ Route<T> modalFullScreenBottomSheetPageRouteBuilder<T>(BuildContext context, Wid
     settings: page,
   );
 }
+
+Route<T> searchModalFullScreenBottomSheetPageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
+  return ModalBottomSheetRoute<T>(
+    builder: (context) => child,
+    expanded: true,
+    barrierLabel: '',
+    modalBarrierColor: AppColors.black40,
+    animationCurve: Curves.easeInOut,
+    duration: const Duration(milliseconds: 50),
+    settings: page,
+  );
+}
