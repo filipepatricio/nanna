@@ -6,11 +6,11 @@ import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class ReadingListEntriesDTOMapper implements Mapper<EntryDTO, Entry> {
+class EntryDTOMapper implements Mapper<EntryDTO, Entry> {
   final MediaItemDTOMapper _mediaItemDTOMapper;
   final EntryStyleDTOMapper _entryStyleDTOMapper;
 
-  ReadingListEntriesDTOMapper(
+  EntryDTOMapper(
     this._mediaItemDTOMapper,
     this._entryStyleDTOMapper,
   );

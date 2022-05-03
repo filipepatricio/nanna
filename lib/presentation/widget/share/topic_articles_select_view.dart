@@ -12,8 +12,8 @@ import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
-import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view_state.dt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,10 +31,10 @@ const _labelTextStyle = TextStyle(
   height: 1.4,
 );
 
-Future<void> shareReadingListUsingTopic(BuildContext context, Topic topic) async {
+Future<void> shareTopicArticlesList(BuildContext context, Topic topic) async {
   return _showBottomSheet(
     context,
-    (context) => ReadingListArticlesSelectView(topic: topic),
+    (context) => TopicArticlesSelectView(topic: topic),
   );
 }
 
@@ -51,8 +51,8 @@ Future<void> _showBottomSheet(BuildContext context, WidgetBuilder builder) {
   );
 }
 
-class ReadingListArticlesSelectView extends HookWidget {
-  const ReadingListArticlesSelectView({
+class TopicArticlesSelectView extends HookWidget {
+  const TopicArticlesSelectView({
     required this.topic,
     Key? key,
   }) : super(key: key);
@@ -61,10 +61,10 @@ class ReadingListArticlesSelectView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<ReadingListArticlesSelectViewCubit>();
+    final cubit = useCubit<TopicArticlesSelectViewCubit>();
     final state = useCubitBuilder(cubit);
 
-    useCubitListener<ReadingListArticlesSelectViewCubit, ReadingListArticlesSelectViewState>(
+    useCubitListener<TopicArticlesSelectViewCubit, TopicArticlesSelectViewState>(
       cubit,
       (cubit, state, context) {
         state.maybeMap(
@@ -188,7 +188,7 @@ class _ProcessingView extends StatelessWidget {
 }
 
 class _IdleView extends HookWidget {
-  final ReadingListArticlesSelectViewCubit cubit;
+  final TopicArticlesSelectViewCubit cubit;
   final List<MediaItemArticle> articles;
   final Set<int> selectedIndexes;
   final bool canSelectMore;
@@ -337,7 +337,7 @@ class _IOSHeader extends StatelessWidget {
 }
 
 class _ArticlesGridView extends StatelessWidget {
-  final ReadingListArticlesSelectViewCubit cubit;
+  final TopicArticlesSelectViewCubit cubit;
   final List<MediaItemArticle> articles;
   final Set<int> selectedIndexes;
   final bool canSelectMore;
@@ -376,7 +376,7 @@ class _ArticlesGridView extends StatelessWidget {
 }
 
 class _ArticleItemView extends StatelessWidget {
-  final ReadingListArticlesSelectViewCubit cubit;
+  final TopicArticlesSelectViewCubit cubit;
   final int index;
   final MediaItemArticle header;
   final bool selected;

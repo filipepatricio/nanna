@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/reading_list_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -20,7 +20,7 @@ class TopicDTO {
   final List<PublisherDTO> highlightedPublishers;
   final ImageDTO heroImage;
   final ImageDTO coverImage;
-  final ReadingListDTO readingList;
+  final List<EntryDTO> entries;
   final List<SummaryCardDTO> summaryCards;
 
   TopicDTO(
@@ -35,7 +35,7 @@ class TopicDTO {
     this.highlightedPublishers,
     this.heroImage,
     this.coverImage,
-    this.readingList,
+    this.entries,
     this.summaryCards,
   );
 
