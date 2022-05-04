@@ -10,7 +10,11 @@ class AnimatedPointerDown extends HookWidget {
   final Color arrowColor;
   final Function()? onTap;
 
-  const AnimatedPointerDown({required this.arrowColor, this.onTap, Key? key}) : super(key: key);
+  const AnimatedPointerDown({
+    required this.arrowColor,
+    this.onTap,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +30,16 @@ class AnimatedPointerDown extends HookWidget {
       [],
     );
 
-    return ExpandTapWidget(
-      tapPadding: const EdgeInsets.all(AppDimens.m),
-      onTap: onTap ?? () {},
-      child: SlideTransition(
-        position: animation,
-        child: SvgPicture.asset(
-          AppVectorGraphics.arrowDown,
-          color: arrowColor,
+    return RepaintBoundary(
+      child: ExpandTapWidget(
+        tapPadding: const EdgeInsets.all(AppDimens.m),
+        onTap: onTap ?? () {},
+        child: SlideTransition(
+          position: animation,
+          child: SvgPicture.asset(
+            AppVectorGraphics.arrowDown,
+            color: arrowColor,
+          ),
         ),
       ),
     );
