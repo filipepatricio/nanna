@@ -88,7 +88,10 @@ class BottomBouncingScrollPhysics extends ScrollPhysics {
   // ClampingScrollPhysics so we require a more deliberate input gesture
   // to trigger a fling.
   @override
-  double get minFlingVelocity => kMinFlingVelocity * 1.5;
+  double get minFlingVelocity => kMinFlingVelocity;
+
+  @override
+  double get maxFlingVelocity => parent?.maxFlingVelocity ?? kMaxFlingVelocity * 2;
 
   // Methodology:
   // 1- Use https://github.com/flutter/platform_tests/tree/master/scroll_overlay to test with
