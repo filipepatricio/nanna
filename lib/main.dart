@@ -43,7 +43,7 @@ Future<void> main() async {
 
   await SentryFlutter.init(
     (options) => options
-      ..dsn = kDebugMode ? '' : appConfig.sentryEventDns
+      ..dsn = (kDebugMode || kProfileMode) ? '' : appConfig.sentryEventDns
       ..environment = environment,
     appRunner: () => runApp(
       EasyLocalization(

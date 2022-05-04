@@ -24,11 +24,13 @@ class CurrentAudioProgressBar extends HookWidget {
       [cubit],
     );
 
-    return LinearProgressIndicator(
-      value: state.progress,
-      color: state.progressColor,
-      backgroundColor: AppColors.transparent,
-      minHeight: AppDimens.xs,
+    return RepaintBoundary(
+      child: LinearProgressIndicator(
+        value: state.progress,
+        color: state.progressColor,
+        backgroundColor: AppColors.transparent,
+        minHeight: AppDimens.xs,
+      ),
     );
   }
 }

@@ -107,7 +107,10 @@ class TopicHeader extends HookWidget {
                 ],
               ),
               const SizedBox(height: AppDimens.xl),
-              AnimatedPointerDown(arrowColor: AppColors.white, onTap: onArrowTap),
+              AnimatedPointerDown(
+                arrowColor: AppColors.white,
+                onTap: onArrowTap,
+              ),
               const SizedBox(height: AppDimens.xxl),
               const AudioPlayerBannerPlaceholder(),
             ],
