@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_progressive_image.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -46,7 +46,7 @@ class PhotoCaptionPage extends HookWidget {
               width: AppDimens.photoCaptionImageContainerWidth(context),
               height: AppDimens.photoCaptionImageContainerHeight(context),
               color: AppColors.textPrimary,
-              child: CloudinaryProgressiveImage(
+              child: CloudinaryImage(
                 publicId: cloudinaryImage.publicId,
                 config: CloudinaryConfig(
                   platformBasedExtension: true,
