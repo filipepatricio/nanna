@@ -142,13 +142,14 @@ class _MainArticle extends StatelessWidget {
             Container(
               height: AppDimens.exploreAreaFeaturedArticleHeight,
               foregroundDecoration: BoxDecoration(
-                color: hasImage ? AppColors.black40 : AppColors.background,
+                color: hasImage ? null : AppColors.background,
               ),
               child: hasImage
                   ? ArticleImage(
                       image: entry.image!,
                       width: constraints.maxWidth,
                       height: constraints.maxHeight,
+                      showDarkened: true,
                     )
                   : Container(),
             ),

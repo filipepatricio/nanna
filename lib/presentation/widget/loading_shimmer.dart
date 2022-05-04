@@ -5,6 +5,7 @@ import 'package:shimmer/shimmer.dart';
 
 class LoadingShimmer extends StatelessWidget {
   final Color mainColor;
+  final Color baseColor;
   final bool enabled;
   final EdgeInsets padding;
   final double height;
@@ -13,6 +14,7 @@ class LoadingShimmer extends StatelessWidget {
 
   const LoadingShimmer({
     required this.mainColor,
+    this.baseColor = AppColors.background,
     this.enabled = true,
     EdgeInsets? padding,
     double? height,
@@ -57,7 +59,7 @@ class LoadingShimmer extends StatelessWidget {
         child: Shimmer.fromColors(
           enabled: enabled && !kIsTest,
           direction: ShimmerDirection.ltr,
-          baseColor: AppColors.background,
+          baseColor: baseColor,
           highlightColor: mainColor,
           child: Container(color: AppColors.background),
         ),

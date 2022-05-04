@@ -83,6 +83,7 @@ class ArticleListCover extends StatelessWidget {
             width: width,
             height: height,
             cardColor: cardColor,
+            showDarkened: true,
           )
         else
           Container(
@@ -127,7 +128,6 @@ class _ArticleImageOverlay extends StatelessWidget {
     final hasImage = article.hasImage;
 
     return Container(
-      color: hasImage ? AppColors.black40 : null,
       padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.xl, AppDimens.m, AppDimens.m),
       height: height,
       width: width,
