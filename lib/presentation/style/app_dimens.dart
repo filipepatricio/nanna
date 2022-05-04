@@ -189,4 +189,6 @@ class AppDimens {
   static const articleAudioCoverSize = 1024;
 
   static const audioBannerHeight = 80.0;
+
+  static const searchBarHeight = 42.0;
 }
