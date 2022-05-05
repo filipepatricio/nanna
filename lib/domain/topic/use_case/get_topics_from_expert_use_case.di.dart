@@ -8,5 +8,9 @@ class GetTopicsFromExpertUseCase {
 
   GetTopicsFromExpertUseCase(this._topicsRepository);
 
-  Future<List<TopicPreview>> call(String expertId) => _topicsRepository.getTopicPreviewsFromExpert(expertId);
+  Future<List<TopicPreview>> call(
+    String expertId, [
+    String? excludedTopicSlug,
+  ]) =>
+      _topicsRepository.getTopicPreviewsFromExpert(expertId, excludedTopicSlug);
 }

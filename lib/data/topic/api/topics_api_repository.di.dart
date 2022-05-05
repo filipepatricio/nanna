@@ -22,14 +22,14 @@ class TopicsApiRepository implements TopicsRepository {
   );
 
   @override
-  Future<List<TopicPreview>> getTopicPreviewsFromExpert(String expertId) async {
-    final dto = await _topicsApiDataSource.getTopicsFromExpert(expertId);
+  Future<List<TopicPreview>> getTopicPreviewsFromExpert(String expertId, [String? excludedTopicSlug]) async {
+    final dto = await _topicsApiDataSource.getTopicsFromExpert(expertId, excludedTopicSlug);
     return _topicsFromExpertDTOMapper(dto);
   }
 
   @override
-  Future<List<TopicPreview>> getTopicPreviewsFromEditor(String editorId) async {
-    final dto = await _topicsApiDataSource.getTopicsFromEditor(editorId);
+  Future<List<TopicPreview>> getTopicPreviewsFromEditor(String editorId, [String? excludedTopicSlug]) async {
+    final dto = await _topicsApiDataSource.getTopicsFromEditor(editorId, excludedTopicSlug);
     return _topicsFromEditorDTOMapper(dto);
   }
 
