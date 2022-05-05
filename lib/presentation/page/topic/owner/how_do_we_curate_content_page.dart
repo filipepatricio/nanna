@@ -18,36 +18,30 @@ class HowDoWeCurateContentPage extends HookWidget {
       body: AudioPlayerBannerWrapper(
         layout: AudioPlayerBannerLayout.column,
         child: NoScrollGlow(
-          child: CustomScrollView(
+          child: ListView(
             physics: getPlatformScrollPhysics(),
-            slivers: [
+            children: [
               const _ActionsBar(),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: AppDimens.l),
-                          Text(
-                            LocaleKeys.topic_howDoWeCurateContent_title.tr(),
-                            softWrap: true,
-                            style: AppTypography.h1Bold,
-                          ),
-                          const SizedBox(height: AppDimens.l),
-                          Text(
-                            LocaleKeys.topic_howDoWeCurateContent_text.tr(),
-                            softWrap: true,
-                            style: AppTypography.articleTextRegular.copyWith(
-                              height: 1.75,
-                            ),
-                          ),
-                          const SizedBox(height: AppDimens.xxl),
-                        ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: AppDimens.l),
+                    Text(
+                      LocaleKeys.topic_howDoWeCurateContent_title.tr(),
+                      softWrap: true,
+                      style: AppTypography.h1Bold,
+                    ),
+                    const SizedBox(height: AppDimens.l),
+                    Text(
+                      LocaleKeys.topic_howDoWeCurateContent_text.tr(),
+                      softWrap: true,
+                      style: AppTypography.articleTextRegular.copyWith(
+                        height: 1.75,
                       ),
                     ),
+                    const SizedBox(height: AppDimens.xxl),
                   ],
                 ),
               ),
@@ -64,8 +58,7 @@ class _ActionsBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      pinned: true,
+    return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: AppDimens.appBarHeight,
       elevation: 0,

@@ -77,6 +77,7 @@ Route<T> cupertinoBottomSheetPageRouteBuilder<T>(BuildContext context, Widget ch
     animationCurve: Curves.easeInOutCubic,
     duration: const Duration(milliseconds: 500),
     previousRouteAnimationCurve: null,
+    closeProgressThreshold: 0.85,
     settings: page,
   );
 }
