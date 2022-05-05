@@ -1,25 +1,70 @@
-import 'package:better_informed_mobile/domain/search/use_case/search_content_use_case.di.dart';
+import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
+import 'package:better_informed_mobile/presentation/page/search/search_page_loader.di.dart';
 import 'package:better_informed_mobile/presentation/page/search/search_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/util/debouncer.dart';
+import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class SearchPageCubit extends Cubit<SearchPageState> {
-  final SearchContentUseCase _searchContentUseCase;
+  final SearchPaginationEngineProvider _searchPaginationEngineProvider;
+  late PaginationEngine<SearchResult> _paginationEngine;
+
+  final debouncer = Debouncer(milliseconds: 2000);
 
   SearchPageCubit(
-    this._searchContentUseCase,
-  ) : super(SearchPageState.loading());
+    this._searchPaginationEngineProvider,
+  ) : super(SearchPageState.initial());
 
   Future<void> initialize() async {
-    emit(SearchPageState.loading());
+    emit(SearchPageState.empty());
   }
 
-  Future<void> search(String query, {int limit = 10, int offset = 0}) async {
+  Future<void> search(String query) async {
     if (query.length < 3) {
+      emit(SearchPageState.empty());
       return;
     }
-    final searchContent = await _searchContentUseCase.call(query, limit, offset);
-    print(searchContent);
+
+    final paginationState = await _initializePaginationEngine(query);
+    debouncer.run(() => _handlePaginationState(paginationState));
+  }
+
+  Future<PaginationEngineState<SearchResult>> _initializePaginationEngine(
+    String query,
+  ) async {
+    emit(SearchPageState.loading());
+    _paginationEngine = _searchPaginationEngineProvider.get(
+      query: query,
+    );
+    return _paginationEngine.loadMore();
+  }
+
+  Future<void> loadNextPage() async {
+    await state.mapOrNull(
+      idle: (state) async {
+        final results = state.results;
+
+        emit(SearchPageState.loadMore(results));
+
+        final paginationState = await _paginationEngine.loadMore();
+        _handlePaginationState(paginationState);
+      },
+    );
+  }
+
+  void _handlePaginationState(PaginationEngineState<SearchResult> paginationState) {
+    if (isClosed) return;
+
+    final results = paginationState.data;
+
+    if (results.isEmpty) {
+      emit(SearchPageState.empty());
+    } else if (paginationState.allLoaded) {
+      emit(SearchPageState.allLoaded(results));
+    } else {
+      emit(SearchPageState.idle(results));
+    }
   }
 }

@@ -29,5 +29,5 @@ class TopicPreview {
   final List<Publisher> highlightedPublishers;
   final Image heroImage;
   final Image coverImage;
-  final int entryCount;
+  final int? entryCount;
 }

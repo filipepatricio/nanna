@@ -6,7 +6,7 @@ class SearchGQL {
   static DocumentNode search(String query, int limit, int offset) => gql(
         '''
         query {
-          search(query: "$query", pagination: {limit: $limit, offset: $offset}) {
+          search(query: "$query", pagination: { limit: $limit, offset: $offset }) {
               __typename
               ... on Topic {
                 ${CommonGQLModels.topicPreview}
