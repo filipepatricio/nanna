@@ -40,6 +40,8 @@ class Topic {
     this.category,
   });
 
+  bool get hasSummary => topicSummaryList.isNotEmpty;
+
   MediaItemArticle articleAt(int index) => entries[index].item as MediaItemArticle;
 
   TopicPreview get asPreview {

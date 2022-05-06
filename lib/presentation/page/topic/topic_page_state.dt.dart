@@ -26,7 +26,9 @@ class TopicPageState with _$TopicPageState {
 
   factory TopicPageState.showMediaItemTutorialCoachMark() = _TopicPageStateShowMediaItemTutorialCoachMark;
 
-  factory TopicPageState.skipTutorialCoachMark() = _TopicPageStateSkipTutorialCoachMark;
+  factory TopicPageState.skipTutorialCoachMark({
+    required bool jumpToNextCoachMark,
+  }) = _TopicPageStateSkipTutorialCoachMark;
 
   factory TopicPageState.finishTutorialCoachMark() = _TopicPageStateFinishTutorialCoachMark;
 }

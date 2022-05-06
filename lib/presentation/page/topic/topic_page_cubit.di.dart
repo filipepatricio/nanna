@@ -78,9 +78,9 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     _isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicMediaItem);
 
     targets.clear();
-    if (!_isTopicSummaryCardTutorialStepSeen) {
+    if (!_isTopicSummaryCardTutorialStepSeen && _topic.hasSummary) {
       emit(TopicPageState.shouldShowSummaryCardTutorialCoachMark());
-      _initializeSummaryCardTutorialCoachMarkTarget();
+      _initializeSummaryCardTutorialCoachMarkTarget(!_isTopicMediaItemTutorialStepSeen);
     }
     if (!_isTopicMediaItemTutorialStepSeen) {
       emit(TopicPageState.shouldShowMediaItemTutorialCoachMark());
@@ -99,7 +99,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     );
   }
 
-  void _initializeSummaryCardTutorialCoachMarkTarget() {
+  void _initializeSummaryCardTutorialCoachMarkTarget(bool isNextCoachMarkNotSeen) {
     targets.add(
       TargetFocus(
         identify: TutorialCoachMarkStep.summaryCard.key,
@@ -118,7 +118,9 @@ class TopicPageCubit extends Cubit<TopicPageState> {
                 tutorialLength: TutorialCoachMarkStep.values.length,
                 dismissButtonText: LocaleKeys.common_continue.tr(),
                 tutorialTooltipPosition: TutorialTooltipPosition.bottom,
-                onDismiss: () => emit(TopicPageState.skipTutorialCoachMark()),
+                onDismiss: () => emit(
+                  TopicPageState.skipTutorialCoachMark(jumpToNextCoachMark: isNextCoachMarkNotSeen),
+                ),
               );
             },
           )
@@ -184,7 +186,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
 
   Future<bool> onAndroidBackButtonPress(bool isShowingTutorialCoachMark) async {
     if (isShowingTutorialCoachMark) {
-      emit(TopicPageState.skipTutorialCoachMark());
+      emit(TopicPageState.skipTutorialCoachMark(jumpToNextCoachMark: true));
       return Future<bool>.value(false);
     }
     return Future<bool>.value(true);

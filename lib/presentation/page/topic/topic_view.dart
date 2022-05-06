@@ -45,7 +45,9 @@ class TopicView extends HookWidget {
           scrollController.addListener(listener);
         },
         shouldShowMediaItemTutorialCoachMark: () {
-          final topicArticleSectionTriggerPoint = AppDimens.topicArticleSectionTriggerPoint(context);
+          final topicArticleSectionTriggerPoint = topic.hasSummary
+              ? AppDimens.topicArticleSectionTriggerPoint(context)
+              : AppDimens.topicViewHeaderImageHeight(context);
           final listener = mediaItemTutorialListener(scrollController, topicArticleSectionTriggerPoint);
           scrollController.addListener(listener);
         },

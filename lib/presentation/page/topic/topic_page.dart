@@ -202,9 +202,11 @@ class _TopicIdleView extends HookWidget {
         },
         showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
         showMediaItemTutorialCoachMark: tutorialCoachMark.show,
-        skipTutorialCoachMark: () {
+        skipTutorialCoachMark: (jumpToNextCoachMark) {
           tutorialCoachMark.skip();
-          _scrollToArticles(context, gestureManager);
+          if (jumpToNextCoachMark) {
+            _scrollToArticles(context, gestureManager);
+          }
         },
         finishTutorialCoachMark: tutorialCoachMark.finish,
       );
@@ -235,7 +237,9 @@ class _TopicIdleView extends HookWidget {
                     cubit: cubit,
                     isShowingTutorialToast: isShowingTutorialToast,
                     scrollPositionNotifier: scrollPositionNotifier,
-                    onArticlesLabelTap: () => _scrollToArticles(context, gestureManager),
+                    onArticlesLabelTap: () => topic.hasSummary
+                        ? _scrollToArticles(context, gestureManager)
+                        : _scrollToSummary(context, gestureManager),
                     onArrowTap: () => _scrollToSummary(context, gestureManager),
                     snackbarController: snackbarController,
                   ),
