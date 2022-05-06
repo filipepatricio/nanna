@@ -9,7 +9,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
-import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
@@ -172,7 +172,7 @@ extension on Bookmark {
         article: data.article,
       ),
       topic: (data) => ShareButton(
-        onTap: () => shareReadingListUsingTopic(context, data.topic),
+        onTap: () => shareTopicArticlesList(context, data.topic),
         backgroundColor: AppColors.transparent,
       ),
       unknown: (_) => const SizedBox(),

@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart' as d;
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_progressive_image.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ class ArticleImage extends HookWidget {
     required this.height,
     this.fit = BoxFit.cover,
     this.cardColor,
+    this.showDarkened = false,
     Key? key,
   }) : super(key: key);
 
@@ -22,11 +23,12 @@ class ArticleImage extends HookWidget {
   final double height;
   final BoxFit fit;
   final Color? cardColor;
+  final bool showDarkened;
 
   @override
   Widget build(BuildContext context) {
     if (image is d.ArticleImageCloudinary) {
-      return CloudinaryProgressiveImage(
+      return CloudinaryImage(
         publicId: (image as d.ArticleImageCloudinary).cloudinaryImage.publicId,
         config: CloudinaryConfig(
           platformBasedExtension: true,
@@ -37,6 +39,7 @@ class ArticleImage extends HookWidget {
         width: width,
         height: height,
         fit: fit,
+        showDarkened: showDarkened,
         testImage: AppRasterGraphics.testArticleHeroImage,
       );
     }
@@ -47,6 +50,17 @@ class ArticleImage extends HookWidget {
         width: width,
         height: height,
         fit: fit,
+        imageBuilder: (context, image) => Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: image,
+              fit: BoxFit.cover,
+            ),
+          ),
+          foregroundDecoration: BoxDecoration(
+            color: showDarkened ? AppColors.black40 : null,
+          ),
+        ),
         placeholder: (context, _) => LoadingShimmer(
           width: width,
           height: height,

@@ -8,7 +8,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/marquee.dart';
-import 'package:better_informed_mobile/presentation/widget/share/reading_list_articles_select_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,7 +116,7 @@ class TopicAppBar extends HookWidget {
         const SizedBox(width: AppDimens.s),
         IconButton(
           key: const Key('share-topic-button'),
-          onPressed: () => shareReadingListUsingTopic(context, topic),
+          onPressed: () => shareTopicArticlesList(context, topic),
           iconSize: AppDimens.xxl,
           icon: SvgPicture.asset(
             AppVectorGraphics.share,

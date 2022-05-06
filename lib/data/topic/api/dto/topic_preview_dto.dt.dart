@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/reading_list_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -19,7 +18,7 @@ class TopicPreviewDTO {
   final List<PublisherDTO> highlightedPublishers;
   final ImageDTO heroImage;
   final ImageDTO coverImage;
-  final ReadingListPreviewDTO readingList;
+  final int entryCount;
 
   TopicPreviewDTO(
     this.id,
@@ -33,7 +32,7 @@ class TopicPreviewDTO {
     this.highlightedPublishers,
     this.heroImage,
     this.coverImage,
-    this.readingList,
+    this.entryCount,
   );
 
   factory TopicPreviewDTO.fromJson(Map<String, dynamic> json) => _$TopicPreviewDTOFromJson(json);

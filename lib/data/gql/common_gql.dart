@@ -30,9 +30,7 @@ class CommonGQLModels {
     heroImage {
       $cloudinaryImage
     }
-    readingList {
-      entryCount
-    }
+    entryCount
   ''';
 
   static const String topic = '''
@@ -40,19 +38,16 @@ class CommonGQLModels {
     summaryCards{
       text
     }
-    readingList {
-      id
-      entries {
-        note
-        style {
-          color
-          type
-        }
-        item {
-          __typename
-          ... on Article {
-            $article
-          }
+    entries {
+      note
+      style {
+        color
+        type
+      }
+      item {
+        __typename
+        ... on Article {
+          $article
         }
       }
     }

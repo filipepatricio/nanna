@@ -38,8 +38,8 @@ const _articleItemHeight = 227.0;
 
 const _articleListPadding = 20.0;
 
-class ShareReadingListView extends HookWidget implements BaseShareCompletable {
-  ShareReadingListView({
+class ShareTopicView extends HookWidget implements BaseShareCompletable {
+  ShareTopicView({
     required this.topic,
     required this.articles,
     Key? key,

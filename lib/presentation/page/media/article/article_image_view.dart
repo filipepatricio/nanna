@@ -35,13 +35,13 @@ class ArticleImageView extends StatelessWidget {
           Container(
             width: double.infinity,
             height: fullHeight,
-            foregroundDecoration: const BoxDecoration(color: AppColors.black40),
             child: ArticleImage(
               image: articleImage!,
               width: imageWidth,
               height: imageHeight,
               cardColor: AppColors.background,
               fit: BoxFit.cover,
+              showDarkened: true,
             ),
           )
         else

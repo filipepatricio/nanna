@@ -24,7 +24,7 @@ class TopicSummarySection extends HookWidget {
   Widget build(BuildContext context) {
     final controller = usePageController();
 
-    if (topic.topicSummaryList.isEmpty) {
+    if (!topic.hasSummary) {
       return const SizedBox();
     }
 

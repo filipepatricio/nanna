@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
-import 'package:better_informed_mobile/domain/topic/data/reading_list.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
@@ -13,7 +13,7 @@ import '../../../../../generated_mocks.mocks.dart';
 
 void main() {
   late MockImageDTOMapper imageDTOMapper;
-  late MockReadingListDTOMapper readingListDTOMapper;
+  late MockEntryDTOMapper entryDTOMapper;
   late MockSummaryCardDTOMapper summaryCardDTOMapper;
   late MockPublisherDTOMapper publisherDTOMapper;
   late MockTopicOwnerDTOMapper topicOwnerDTOMapper;
@@ -21,13 +21,13 @@ void main() {
 
   setUp(() {
     imageDTOMapper = MockImageDTOMapper();
-    readingListDTOMapper = MockReadingListDTOMapper();
+    entryDTOMapper = MockEntryDTOMapper();
     summaryCardDTOMapper = MockSummaryCardDTOMapper();
     publisherDTOMapper = MockPublisherDTOMapper();
     topicOwnerDTOMapper = MockTopicOwnerDTOMapper();
     mapper = TopicDTOMapper(
       imageDTOMapper,
-      readingListDTOMapper,
+      entryDTOMapper,
       summaryCardDTOMapper,
       publisherDTOMapper,
       topicOwnerDTOMapper,
@@ -43,7 +43,8 @@ void main() {
       publisher,
       publisher,
     ];
-    final readingList = FakeReadingList();
+    final entry = FakeEntry();
+    final entries = [entry, entry, entry];
     final summaryCard = FakeSummaryCard();
     final summaryCards = [
       summaryCard,
@@ -66,12 +67,12 @@ void main() {
       highlightedPublishers: publishers,
       heroImage: heroImage,
       coverImage: coverImage,
-      readingList: readingList,
+      entries: entries,
     );
 
     when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
     when(publisherDTOMapper(any)).thenAnswer((realInvocation) => publisher);
-    when(readingListDTOMapper(dto.readingList)).thenAnswer((realInvocation) => readingList);
+    when(entryDTOMapper(any)).thenAnswer((realInvocation) => entry);
     when(summaryCardDTOMapper(any)).thenAnswer((realInvocation) => summaryCard);
     when(imageDTOMapper(dto.heroImage)).thenAnswer((realInvocation) => heroImage);
     when(imageDTOMapper(dto.coverImage)).thenAnswer((realInvocation) => coverImage);
@@ -89,7 +90,7 @@ void main() {
           .having((preview) => preview.url, 'url', expected.url)
           .having((preview) => preview.owner, 'owner', expected.owner)
           .having((preview) => preview.topicSummaryList, 'topicSummaryList', expected.topicSummaryList)
-          .having((preview) => preview.readingList, 'readingList', expected.readingList)
+          .having((preview) => preview.entries, 'readingList', expected.entries)
           .having((preview) => preview.lastUpdatedAt, 'lastUpdatedAt', expected.lastUpdatedAt)
           .having((preview) => preview.highlightedPublishers, 'highlightedPublishers', expected.highlightedPublishers)
           .having((preview) => preview.heroImage, 'heroImage', expected.heroImage)
@@ -104,6 +105,6 @@ class FakePublisher extends Fake implements Publisher {}
 
 class FakeImage extends Fake implements Image {}
 
-class FakeReadingList extends Fake implements ReadingList {}
+class FakeEntry extends Fake implements Entry {}
 
 class FakeSummaryCard extends Fake implements TopicSummary {}
