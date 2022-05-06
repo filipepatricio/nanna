@@ -86,7 +86,7 @@ class TopicHeader extends HookWidget {
                 mode: Brightness.light,
                 textStyle: AppTypography.h4Bold,
                 onTap: () => AutoRouter.of(context).push(
-                  TopicOwnerPageRoute(owner: topic.owner),
+                  TopicOwnerPageRoute(owner: topic.owner, fromTopicSlug: topic.slug),
                 ),
               ),
               const Spacer(flex: 16),

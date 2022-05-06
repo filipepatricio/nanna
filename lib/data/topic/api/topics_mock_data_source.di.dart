@@ -9,7 +9,7 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: TopicsApiDataSource, env: mockEnvs)
 class TopicsMockDataSource implements TopicsApiDataSource {
   @override
-  Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId) async {
+  Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId, [String? excludedTopicSlug]) async {
     return TopicsFromExpertDTO(
       [
         MockDTO.topicPreview,
@@ -19,7 +19,7 @@ class TopicsMockDataSource implements TopicsApiDataSource {
   }
 
   @override
-  Future<TopicsFromEditorDTO> getTopicsFromEditor(String editorId) async {
+  Future<TopicsFromEditorDTO> getTopicsFromEditor(String editorId, [String? excludedTopicSlug]) async {
     return TopicsFromEditorDTO([]);
   }
 

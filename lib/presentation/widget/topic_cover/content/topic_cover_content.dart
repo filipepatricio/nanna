@@ -76,7 +76,7 @@ class _CoverContentLarge extends StatelessWidget {
             mode: mode,
             textStyle: AppTypography.h4Bold,
             onTap: () => AutoRouter.of(context).push(
-              TopicOwnerPageRoute(owner: topic.owner),
+              TopicOwnerPageRoute(owner: topic.owner, fromTopicSlug: topic.slug),
             ),
           ),
           const SizedBox(height: AppDimens.s),

@@ -16,10 +16,10 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
   TopicsGraphqlDataSource(this._client, this._responseResolver);
 
   @override
-  Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId) async {
+  Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId, [String? excludedTopicSlug]) async {
     final result = await _client.query(
       QueryOptions(
-        document: TopicsGql.getTopicsFromExpert(expertId),
+        document: TopicsGql.getTopicsFromExpert(expertId, excludedTopicSlug),
       ),
     );
 
@@ -32,10 +32,10 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
   }
 
   @override
-  Future<TopicsFromEditorDTO> getTopicsFromEditor(String editorId) async {
+  Future<TopicsFromEditorDTO> getTopicsFromEditor(String editorId, [String? excludedTopicSlug]) async {
     final result = await _client.query(
       QueryOptions(
-        document: TopicsGql.getTopicsFromEditor(editorId),
+        document: TopicsGql.getTopicsFromEditor(editorId, excludedTopicSlug),
       ),
     );
 
