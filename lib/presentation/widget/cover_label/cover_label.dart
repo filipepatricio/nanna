@@ -5,15 +5,21 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CoverLabel extends StatelessWidget {
   const CoverLabel._({
-    required this.icon,
-    required this.label,
+    this.icon,
+    this.label,
+    this.child,
     Key? key,
-  }) : super(key: key);
+  })  : assert(
+          child == null || (icon == null && label == null),
+          'The label can contain either a child or icon and label, not both',
+        ),
+        super(key: key);
 
   factory CoverLabel.topic({required TopicPreview topic}) => topic.owner is Expert
       ? CoverLabel._(
@@ -30,15 +36,20 @@ class CoverLabel extends StatelessWidget {
         label: LocaleKeys.article_label.tr(),
       );
 
-  final String icon;
-  final String label;
+  factory CoverLabel.audio() => CoverLabel._(
+        child: AudioIcon.dark(height: AppDimens.backArrowSize),
+      );
+
+  final String? icon;
+  final String? label;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: AppDimens.xs,
-        horizontal: AppDimens.s,
+        horizontal: child != null ? AppDimens.xs : AppDimens.s,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.xs),
@@ -47,18 +58,25 @@ class CoverLabel extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SvgPicture.asset(
-            icon,
-            height: 14,
-            width: 14,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(width: AppDimens.xs),
-          Text(
-            label,
-            maxLines: 1,
-            style: AppTypography.subH2Bold,
-          ),
+          if (child != null)
+            child!
+          else ...[
+            if (icon != null)
+              SvgPicture.asset(
+                icon!,
+                width: 14,
+                height: 14,
+                fit: BoxFit.contain,
+              ),
+            if (label != null) ...[
+              const SizedBox(width: AppDimens.xs),
+              Text(
+                label!,
+                maxLines: 1,
+                style: AppTypography.subH2Bold,
+              ),
+            ],
+          ]
         ],
       ),
     );

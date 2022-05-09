@@ -48,6 +48,7 @@ class HighlightedTopicsAreaView extends HookWidget {
             itemBuilder: (topic, _) => TopicCover.exploreSmall(
               topic: topic,
               onTap: () => context.navigateToTopic(topic),
+              hasBackgroundColor: true,
             ),
             items: _items,
             itemWidth: width,

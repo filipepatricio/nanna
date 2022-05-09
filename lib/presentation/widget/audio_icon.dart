@@ -8,18 +8,22 @@ import 'package:flutter_svg/svg.dart';
 class AudioIcon extends HookWidget {
   const AudioIcon._({
     required this.color,
+    this.height = AppDimens.ml,
     Key? key,
   }) : super(key: key);
 
   final Color color;
+  final double? height;
 
-  factory AudioIcon.dark({Color color = AppColors.textPrimary, Key? key}) => AudioIcon._(
+  factory AudioIcon.dark({Color color = AppColors.textPrimary, double? height, Key? key}) => AudioIcon._(
         color: color,
+        height: height,
         key: key,
       );
 
-  factory AudioIcon.light({Color color = AppColors.white, Key? key}) => AudioIcon._(
+  factory AudioIcon.light({Color color = AppColors.white, double? height, Key? key}) => AudioIcon._(
         color: color,
+        height: height,
         key: key,
       );
 
@@ -27,7 +31,7 @@ class AudioIcon extends HookWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       AppVectorGraphics.headphones,
-      height: AppDimens.ml,
+      height: height,
       color: color,
     );
   }

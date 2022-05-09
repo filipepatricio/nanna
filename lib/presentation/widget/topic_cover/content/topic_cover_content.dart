@@ -17,12 +17,14 @@ class TopicCoverContent extends StatelessWidget {
     required this.topic,
     required this.type,
     this.mode = Brightness.dark,
+    this.hasBackgroundColor = false,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final TopicCoverType type;
   final Brightness mode;
+  final bool hasBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class TopicCoverContent extends StatelessWidget {
       case TopicCoverType.exploreLarge:
         return _CoverContentExploreLarge(topic: topic);
       case TopicCoverType.exploreSmall:
-        return _CoverContentExploreSmall(topic: topic);
+        return _CoverContentExploreSmall(topic: topic, hasBackgroundColor: hasBackgroundColor);
     }
   }
 }
@@ -212,10 +214,12 @@ class _CoverContentSmall extends StatelessWidget {
 class _CoverContentExploreSmall extends StatelessWidget {
   const _CoverContentExploreSmall({
     required this.topic,
+    this.hasBackgroundColor = false,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
+  final bool hasBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +244,7 @@ class _CoverContentExploreSmall extends StatelessWidget {
         UpdatedLabel(
           dateTime: topic.lastUpdatedAt,
           mode: Brightness.dark,
-          textStyle: AppTypography.subH2Medium.copyWith(color: AppColors.textGrey),
+          textStyle: AppTypography.subH2Medium.copyWith(color: hasBackgroundColor ? null : AppColors.textGrey),
         ),
       ],
     );

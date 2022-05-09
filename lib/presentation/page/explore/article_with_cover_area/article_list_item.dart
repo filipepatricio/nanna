@@ -8,7 +8,6 @@ import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -80,8 +79,6 @@ class ArticleListCover extends StatelessWidget {
         if (hasImage)
           ArticleImage(
             image: article.image!,
-            width: width,
-            height: height,
             cardColor: cardColor,
             showDarkened: true,
           )
@@ -91,14 +88,14 @@ class ArticleListCover extends StatelessWidget {
             width: width,
             height: height,
           ),
-        _ArticleImageOverlay(
-          article: article,
-          themeColor: themeColor,
-          height: height,
-          width: width,
-          shouldShowTextOverlay: shouldShowTextOverlay,
-          shouldShowAudioIcon: shouldShowAudioIcon,
-        )
+        if (shouldShowTextOverlay)
+          _ArticleImageOverlay(
+            article: article,
+            themeColor: themeColor,
+            height: height,
+            width: width,
+            shouldShowAudioIcon: shouldShowAudioIcon,
+          )
       ],
     );
   }
@@ -109,7 +106,6 @@ class _ArticleImageOverlay extends StatelessWidget {
   final Color themeColor;
   final double? height;
   final double? width;
-  final bool shouldShowTextOverlay;
   final bool shouldShowAudioIcon;
 
   const _ArticleImageOverlay({
@@ -117,7 +113,6 @@ class _ArticleImageOverlay extends StatelessWidget {
     required this.themeColor,
     required this.height,
     required this.width,
-    required this.shouldShowTextOverlay,
     required this.shouldShowAudioIcon,
     Key? key,
   }) : super(key: key);
@@ -135,66 +130,38 @@ class _ArticleImageOverlay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (shouldShowTextOverlay) ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (hasImage) ...[
-                  PublisherLogo.light(publisher: article.publisher),
-                  if (article.hasAudioVersion && shouldShowAudioIcon) AudioIcon.light()
-                ] else ...[
-                  PublisherLogo.dark(publisher: article.publisher),
-                  if (article.hasAudioVersion && shouldShowAudioIcon) AudioIcon.dark()
-                ]
-              ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (hasImage) ...[
+                PublisherLogo.light(publisher: article.publisher),
+                if (article.hasAudioVersion && shouldShowAudioIcon) AudioIcon.light()
+              ] else ...[
+                PublisherLogo.dark(publisher: article.publisher),
+                if (article.hasAudioVersion && shouldShowAudioIcon) AudioIcon.dark()
+              ]
+            ],
+          ),
+          const SizedBox(height: AppDimens.m),
+          InformedMarkdownBody(
+            maxLines: hasImage ? 4 : 5,
+            markdown: article.title,
+            highlightColor: hasImage ? AppColors.transparent : AppColors.limeGreen,
+            baseTextStyle: AppTypography.h5BoldSmall.copyWith(
+              height: hasImage ? 1.71 : 1.5,
+              color: hasImage ? AppColors.white : AppColors.textPrimary,
+              fontSize: context.isSmallDevice ? 12 : null,
             ),
-            const SizedBox(height: AppDimens.m),
-            InformedMarkdownBody(
-              maxLines: hasImage ? 4 : 5,
-              markdown: article.title,
-              highlightColor: hasImage ? AppColors.transparent : AppColors.limeGreen,
-              baseTextStyle: AppTypography.h5BoldSmall.copyWith(
-                height: hasImage ? 1.71 : 1.5,
+          ),
+          const Spacer(),
+          if (timeToRead != null)
+            Text(
+              LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
+              style: AppTypography.systemText.copyWith(
                 color: hasImage ? AppColors.white : AppColors.textPrimary,
-                fontSize: context.isSmallDevice ? 12 : null,
               ),
             ),
-            const Spacer(),
-            if (timeToRead != null)
-              Text(
-                LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
-                style: AppTypography.systemText.copyWith(
-                  color: hasImage ? AppColors.white : AppColors.textPrimary,
-                ),
-              ),
-          ],
         ],
-      ),
-    );
-  }
-}
-
-class SeeAllArticlesListItem extends StatelessWidget {
-  final void Function() onTap;
-
-  const SeeAllArticlesListItem({
-    required this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: AppDimens.exploreAreaArticleListItemHeight,
-      width: AppDimens.exploreAreaArticleListItemWidth,
-      child: Padding(
-        padding: const EdgeInsets.only(right: AppDimens.s),
-        child: LinkLabel(
-          //TODO: To be replaced in article areas redesign
-          labelText: LocaleKeys.explore_viewAll.tr(args: ['articles']),
-          horizontalAlignment: MainAxisAlignment.end,
-          onTap: onTap,
-        ),
       ),
     );
   }

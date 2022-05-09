@@ -11,23 +11,18 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 enum TopicCoverType { small, large, exploreLarge, exploreSmall }
 
-const _exploreLargeCoverHeight = 270.0;
-const _exploreLargeCoverWidth = 270.0;
-
 class TopicCover extends HookWidget {
   const TopicCover._({
     required this.topic,
     required this.type,
-    this.height,
-    this.width,
+    this.hasBackgroundColor = false,
     this.onTap,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final TopicCoverType type;
-  final double? height;
-  final double? width;
+  final bool hasBackgroundColor;
   final Function()? onTap;
 
   factory TopicCover.large({required TopicPreview topic, Function()? onTap}) => TopicCover._(
@@ -45,15 +40,15 @@ class TopicCover extends HookWidget {
   factory TopicCover.exploreLarge({required TopicPreview topic, Function()? onTap}) => TopicCover._(
         type: TopicCoverType.exploreLarge,
         topic: topic,
-        height: _exploreLargeCoverHeight,
-        width: _exploreLargeCoverWidth,
         onTap: onTap,
       );
 
-  factory TopicCover.exploreSmall({required TopicPreview topic, Function()? onTap}) => TopicCover._(
+  factory TopicCover.exploreSmall({required TopicPreview topic, bool hasBackgroundColor = false, Function()? onTap}) =>
+      TopicCover._(
         type: TopicCoverType.exploreSmall,
         topic: topic,
         onTap: onTap,
+        hasBackgroundColor: hasBackgroundColor,
       );
 
   @override
@@ -63,15 +58,11 @@ class TopicCover extends HookWidget {
       case TopicCoverType.exploreLarge:
         return GestureDetector(
           onTap: onTap,
-          child: Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppDimens.s),
-            ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppDimens.s),
             child: type == TopicCoverType.exploreLarge
-                ? _TopicCoverExploreLarge(topic: topic, type: type)
-                : _TopicCoverExploreSmall(onTap: onTap, width: width, height: height, topic: topic, type: type),
+                ? _TopicCoverExploreLarge(topic: topic)
+                : _TopicCoverExploreSmall(topic: topic, hasBackgroundColor: hasBackgroundColor),
           ),
         );
 
@@ -89,12 +80,8 @@ class TopicCover extends HookWidget {
 
         return GestureDetector(
           onTap: onTap,
-          child: Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppDimens.m),
-            ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppDimens.m),
             child: Stack(
               children: state.map(
                 idle: (data) => [
@@ -125,12 +112,10 @@ class TopicCover extends HookWidget {
 class _TopicCoverExploreLarge extends StatelessWidget {
   const _TopicCoverExploreLarge({
     required this.topic,
-    required this.type,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final TopicCoverType type;
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +128,7 @@ class _TopicCoverExploreLarge extends StatelessWidget {
         ),
         TopicCoverContent(
           topic: topic,
-          type: type,
+          type: TopicCoverType.exploreLarge,
           mode: Brightness.light,
         ),
       ],
@@ -153,19 +138,13 @@ class _TopicCoverExploreLarge extends StatelessWidget {
 
 class _TopicCoverExploreSmall extends StatelessWidget {
   const _TopicCoverExploreSmall({
-    required this.onTap,
-    required this.width,
-    required this.height,
     required this.topic,
-    required this.type,
+    this.hasBackgroundColor = false,
     Key? key,
   }) : super(key: key);
 
-  final Function()? onTap;
-  final double? width;
-  final double? height;
   final TopicPreview topic;
-  final TopicCoverType type;
+  final bool hasBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -199,8 +178,9 @@ class _TopicCoverExploreSmall extends StatelessWidget {
           flex: _contentHeightFactor,
           child: TopicCoverContent(
             topic: topic,
-            type: type,
+            type: TopicCoverType.exploreSmall,
             mode: Brightness.light,
+            hasBackgroundColor: hasBackgroundColor,
           ),
         ),
       ],

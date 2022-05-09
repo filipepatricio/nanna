@@ -74,8 +74,6 @@ class _ReadingBannerBody extends StatelessWidget {
                     child: hasImage
                         ? ArticleImage(
                             image: readingBanner.article.image!,
-                            width: _iconSize,
-                            height: _iconSize,
                             fit: BoxFit.cover,
                           )
                         : const SizedBox(),

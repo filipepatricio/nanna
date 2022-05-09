@@ -54,13 +54,13 @@ class AppDimens {
   /// 80.0
   static const xxxc = 80.0;
 
-  /// 14
+  /// 18.0
   static const backArrowSize = 18.0;
 
   /// 14
   static const readMoreArrowSize = 14.0;
 
-  /// 43
+  /// 44.0
   static const settingsItemHeight = 44.0;
 
   /// 8
