@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 typedef ExploreAreaItemBuilder<T> = Widget Function(T itemValue, int index);
-typedef OnViewAllTap = void Function();
 
 class ExploreAreaItemCarouselView<T> extends HookWidget {
   const ExploreAreaItemCarouselView({
@@ -27,7 +26,7 @@ class ExploreAreaItemCarouselView<T> extends HookWidget {
   final List<ExploreAreaItem<T>> items;
   final double itemWidth;
   final double itemHeight;
-  final OnViewAllTap? onViewAllTap;
+  final VoidCallback? onViewAllTap;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +88,7 @@ class _Cell<T> extends StatelessWidget {
   final double itemWidth;
   final double itemHeight;
   final int index;
-  final OnViewAllTap? onViewAllTap;
+  final VoidCallback? onViewAllTap;
 
   @override
   Widget build(BuildContext context) {
@@ -104,11 +103,12 @@ class _Cell<T> extends StatelessWidget {
       ),
       viewAll: (item) => Align(
         alignment: Alignment.topCenter,
-        child: SizedBox.square(
-          dimension: itemWidth,
-          child: GestureDetector(
+        child: SizedBox(
+          height: itemHeight * AppDimens.exploreTopicCarousellSmallCoverImageHeightFactor,
+          width: itemWidth,
+          child: ViewAllButton(
+            title: item.title,
             onTap: onViewAllTap,
-            child: ViewAllButton(title: item.title),
           ),
         ),
       ),

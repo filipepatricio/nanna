@@ -37,16 +37,12 @@ class TopicsAreaView extends HookWidget {
         const SizedBox(height: AppDimens.m),
         ExploreAreaItemCarouselView<TopicPreview>(
           areaId: area.id,
-          itemBuilder: (topic, index) {
-            return GestureDetector(
-              onTap: () => context.navigateToTopic(topic),
-              child: TopicCover.large(
-                topic: topic,
-              ),
-            );
-          },
           items: _items,
           itemWidth: size,
+          itemBuilder: (topic, index) => TopicCover.exploreLarge(
+            topic: topic,
+            onTap: () => context.navigateToTopic(topic),
+          ),
         ),
         const SizedBox(height: AppDimens.l),
       ],

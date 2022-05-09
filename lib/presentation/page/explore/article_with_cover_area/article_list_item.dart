@@ -190,7 +190,8 @@ class SeeAllArticlesListItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(right: AppDimens.s),
         child: LinkLabel(
-          labelText: LocaleKeys.explore_seeAllArticles.tr(),
+          //TODO: To be replaced in article areas redesign
+          labelText: LocaleKeys.explore_viewAll.tr(args: ['articles']),
           horizontalAlignment: MainAxisAlignment.end,
           onTap: onTap,
         ),

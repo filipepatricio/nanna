@@ -19,11 +19,11 @@ class AppColors {
   static const Color transparent = Color(0x00000000);
   static const Color blue = Color(0xff4579FF);
   static const Color grey = Color(0xffe7e7e7);
-  static const Color grey04 = Color(0xff5F5F5F);
   static const Color rose = Color(0xffF3E5F4);
   static const Color pastelGreen = Color(0xffE4F1E2);
   static const Color pastelPurple = Color(0xffDFBFFF);
   static const Color darkGrey = Color(0xff6B7280);
+  static const Color darkerGrey = Color(0xff5F5F5F);
   static const Color carrotRed = Color(0xffFB6F43);
   static const Color peach = Color(0xffF2E8E7);
   static const Color blueSelected = Color(0xff0099FF);

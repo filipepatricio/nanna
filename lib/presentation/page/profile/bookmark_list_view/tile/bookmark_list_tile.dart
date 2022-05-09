@@ -155,7 +155,7 @@ extension on Bookmark {
             UpdatedLabel(
               dateTime: data.topic.lastUpdatedAt,
               fontSize: 10,
-              textStyle: AppTypography.subH2BoldSmall.copyWith(
+              textStyle: AppTypography.subH2Bold.copyWith(
                 color: AppColors.textGrey,
                 letterSpacing: 1,
               ),
@@ -224,16 +224,12 @@ extension on BookmarkTileCover {
       topic: (data) => StackedCards.variant(
         variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
         coverSize: size,
-        child: GestureDetector(
-          onTap: () {
-            AutoRouter.of(context).push(
-              TopicPage(
-                topicSlug: data.topic.slug,
-              ),
-            );
-          },
-          child: TopicCover.small(
-            topic: data.topic.asPreview,
+        child: TopicCover.small(
+          topic: data.topic.asPreview,
+          onTap: () => AutoRouter.of(context).push(
+            TopicPage(
+              topicSlug: data.topic.slug,
+            ),
           ),
         ),
       ),

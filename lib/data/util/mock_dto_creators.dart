@@ -95,7 +95,8 @@ class MockDTO {
     [
       _exploreTopicsArea,
       _exploreArticlesArea,
-      _exploreTopicsArea2,
+      _exploreHighlightedTopicsArea,
+      _exploreSmallTopicsArea,
     ],
   );
 
@@ -111,7 +112,8 @@ class MockDTO {
     [
       _exploreTopicsArea,
       _exploreArticlesArea,
-      _exploreTopicsArea2,
+      _exploreHighlightedTopicsArea,
+      _exploreSmallTopicsArea,
     ],
   );
 
@@ -257,9 +259,24 @@ class MockDTO {
     ],
   );
 
-  static final _exploreTopicsArea2 = ExploreContentAreaDTO.topics(
-    'explore-topics-2-id',
-    'By our experts',
+  static final _exploreHighlightedTopicsArea = ExploreContentAreaDTO.highlightedTopics(
+    'explore-highlighted-topics-id',
+    'Trending news',
+    'Discover other topics of interest',
+    'DFBFFF',
+    [
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+    ],
+  );
+
+  static final _exploreSmallTopicsArea = ExploreContentAreaDTO.smallTopics(
+    'explore-small-topics-id',
+    'More topics',
+    'Discover other topics of interest',
     [
       topicPreview,
       topicPreview,

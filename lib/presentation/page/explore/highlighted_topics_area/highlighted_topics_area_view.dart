@@ -12,9 +12,6 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cov
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _cellWidthFactor = 0.4;
-const _aspectRatio = 1.52;
-
 class HighlightedTopicsAreaView extends HookWidget {
   HighlightedTopicsAreaView({
     required this.area,
@@ -30,8 +27,8 @@ class HighlightedTopicsAreaView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * _cellWidthFactor;
-    final height = width * _aspectRatio;
+    final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarousellSmallCoverWidthFactor;
+    final height = width * AppDimens.exploreTopicCarousellSmallCoverAspectRatio;
     final backgroundColor = area.backgroundColor == null ? AppColors.background : Color(area.backgroundColor!);
 
     return Container(
@@ -48,10 +45,9 @@ class HighlightedTopicsAreaView extends HookWidget {
           const SizedBox(height: AppDimens.m),
           ExploreAreaItemCarouselView<TopicPreview>(
             areaId: area.id,
-            itemBuilder: (topic, _) => GestureDetector(
-              behavior: HitTestBehavior.opaque,
+            itemBuilder: (topic, _) => TopicCover.exploreSmall(
+              topic: topic,
               onTap: () => context.navigateToTopic(topic),
-              child: TopicCover.small(topic: topic),
             ),
             items: _items,
             itemWidth: width,

@@ -11,9 +11,6 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cov
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _cellWidthFactor = 0.4;
-const _aspectRatio = 1.52;
-
 class SmallTopicsAreaView extends HookWidget {
   SmallTopicsAreaView({
     required this.area,
@@ -29,8 +26,8 @@ class SmallTopicsAreaView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * _cellWidthFactor;
-    final height = width * _aspectRatio;
+    final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarousellSmallCoverWidthFactor;
+    final height = width * AppDimens.exploreTopicCarousellSmallCoverAspectRatio;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -44,14 +41,13 @@ class SmallTopicsAreaView extends HookWidget {
         const SizedBox(height: AppDimens.m),
         ExploreAreaItemCarouselView<TopicPreview>(
           areaId: area.id,
-          itemBuilder: (topic, _) => GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => context.navigateToTopic(topic),
-            child: TopicCover.small(topic: topic),
-          ),
           items: _items,
           itemWidth: width,
           itemHeight: height,
+          itemBuilder: (topic, _) => TopicCover.exploreSmall(
+            topic: topic,
+            onTap: () => context.navigateToTopic(topic),
+          ),
           onViewAllTap: () => _navigateToSeeAll(context),
         ),
         const SizedBox(height: AppDimens.l),

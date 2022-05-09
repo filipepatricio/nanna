@@ -15,6 +15,7 @@ class TopicOwnerAvatar extends HookWidget {
   const TopicOwnerAvatar({
     required this.owner,
     Key? key,
+    this.withImage = true,
     this.withPrefix = false,
     this.textStyle = defaultAvatarTextStyle,
     this.mode = Brightness.dark,
@@ -28,6 +29,7 @@ class TopicOwnerAvatar extends HookWidget {
   final TextStyle textStyle;
   final Brightness mode;
   final bool underlined;
+  final bool withImage;
   final bool withPrefix;
   final double imageSize;
   final double? fontSize;
@@ -55,36 +57,38 @@ class TopicOwnerAvatar extends HookWidget {
       onTap: onTap,
       child: Row(
         children: [
-          Container(
-            width: imageWidth,
-            height: imageHeight,
-            clipBehavior: Clip.antiAlias,
-            decoration: const BoxDecoration(shape: BoxShape.circle),
-            child: imageId != null && !kIsTest
-                ? CachedNetworkImage(
-                    width: imageWidth,
-                    height: imageHeight,
-                    imageUrl: cloudinaryProvider
-                        .withPublicIdAsPlatform(imageId)
-                        .transform()
-                        .width(avatarResolutionWidth)
-                        .height(avatarResolutionHeight)
-                        .autoQuality()
-                        .autoGravity()
-                        .generateNotNull(),
-                    placeholder: (context, _) => LoadingShimmer(
+          if (withImage) ...[
+            Container(
+              width: imageWidth,
+              height: imageHeight,
+              clipBehavior: Clip.antiAlias,
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              child: imageId != null && !kIsTest
+                  ? CachedNetworkImage(
                       width: imageWidth,
                       height: imageHeight,
-                      mainColor: AppColors.white,
+                      imageUrl: cloudinaryProvider
+                          .withPublicIdAsPlatform(imageId)
+                          .transform()
+                          .width(avatarResolutionWidth)
+                          .height(avatarResolutionHeight)
+                          .autoQuality()
+                          .autoGravity()
+                          .generateNotNull(),
+                      placeholder: (context, _) => LoadingShimmer(
+                        width: imageWidth,
+                        height: imageHeight,
+                        mainColor: AppColors.white,
+                      ),
+                    )
+                  : Image.asset(
+                      owner is Expert ? AppRasterGraphics.expertAvatar : AppRasterGraphics.editorialTeamAvatar,
+                      width: imageWidth,
+                      height: imageHeight,
                     ),
-                  )
-                : Image.asset(
-                    owner is Expert ? AppRasterGraphics.expertAvatar : AppRasterGraphics.editorialTeamAvatar,
-                    width: imageWidth,
-                    height: imageHeight,
-                  ),
-          ),
-          const SizedBox(width: AppDimens.s),
+            ),
+            const SizedBox(width: AppDimens.s),
+          ],
           Expanded(
             child: RichText(
               text: TextSpan(

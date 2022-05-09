@@ -109,6 +109,15 @@ class AppDimens {
         400,
       );
 
+  /// 0.4
+  static const exploreTopicCarousellSmallCoverWidthFactor = 0.4;
+
+  /// 0.6
+  static const exploreTopicCarousellSmallCoverImageHeightFactor = 0.6;
+
+  ///1 + [exploreTopicCarousellSmallCoverImageHeightFactor] = 1.6
+  static const exploreTopicCarousellSmallCoverAspectRatio = 1 + exploreTopicCarousellSmallCoverImageHeightFactor;
+
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
       topicViewHeaderImageHeight(context) +

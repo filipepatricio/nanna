@@ -22,7 +22,7 @@ class ExploreContentGQL {
           name
           icon
         }
-      
+
         highlightedSection: getExploreSection(isHighlighted: true) {
           ${CommonGQLModels.exploreSection}
         }
@@ -44,8 +44,6 @@ class ExploreContentGQL {
             ${CommonGQLModels.article}
           }
         }
-
-
 
         ... on TopicsExploreArea {
           topics(pagination: {limit: $limit, offset: $offset}) {

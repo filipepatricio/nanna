@@ -91,7 +91,7 @@ class _ReadingBannerBody extends StatelessWidget {
                         children: [
                           Text(
                             LocaleKeys.continueReading.tr(),
-                            style: AppTypography.subH2RegularSmall.copyWith(color: AppColors.textGrey, height: 1),
+                            style: AppTypography.subH2Regular.copyWith(color: AppColors.textGrey, height: 1),
                           ),
                           const SizedBox(height: AppDimens.s),
                           Text(

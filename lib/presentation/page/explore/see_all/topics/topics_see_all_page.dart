@@ -215,22 +215,20 @@ class _GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _onTopicTap(context, topic),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return StackedCards.variant(
-            variant: cardVariant,
-            coverSize: Size(
-              constraints.maxWidth,
-              AppDimens.exploreAreaTopicSeeAllCoverHeight,
-            ),
-            child: TopicCover.small(
-              topic: topic,
-            ),
-          );
-        },
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return StackedCards.variant(
+          variant: cardVariant,
+          coverSize: Size(
+            constraints.maxWidth,
+            AppDimens.exploreAreaTopicSeeAllCoverHeight,
+          ),
+          child: TopicCover.small(
+            topic: topic,
+            onTap: () => _onTopicTap(context, topic),
+          ),
+        );
+      },
     );
   }
 

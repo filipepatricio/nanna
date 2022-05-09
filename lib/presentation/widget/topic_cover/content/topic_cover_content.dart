@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
@@ -14,22 +15,26 @@ import 'package:flutter/material.dart';
 class TopicCoverContent extends StatelessWidget {
   const TopicCoverContent({
     required this.topic,
-    required this.size,
+    required this.type,
     this.mode = Brightness.dark,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final TopicCoverSize size;
+  final TopicCoverType type;
   final Brightness mode;
 
   @override
   Widget build(BuildContext context) {
-    switch (size) {
-      case TopicCoverSize.large:
+    switch (type) {
+      case TopicCoverType.large:
         return _CoverContentLarge(topic: topic, mode: mode);
-      case TopicCoverSize.small:
+      case TopicCoverType.small:
         return _CoverContentSmall(topic: topic, mode: mode);
+      case TopicCoverType.exploreLarge:
+        return _CoverContentExploreLarge(topic: topic);
+      case TopicCoverType.exploreSmall:
+        return _CoverContentExploreSmall(topic: topic);
     }
   }
 }
@@ -113,6 +118,44 @@ class _CoverContentLarge extends StatelessWidget {
   }
 }
 
+class _CoverContentExploreLarge extends StatelessWidget {
+  const _CoverContentExploreLarge({
+    required this.topic,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      top: AppDimens.m,
+      bottom: AppDimens.l,
+      left: AppDimens.m,
+      right: AppDimens.l,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CoverLabel.topic(topic: topic),
+          const SizedBox(height: AppDimens.m),
+          InformedMarkdownBody(
+            markdown: topic.title,
+            maxLines: 4,
+            baseTextStyle: AppTypography.h1ExtraBold.copyWith(
+              color: AppColors.white,
+            ),
+          ),
+          const SizedBox(height: AppDimens.s),
+          UpdatedLabel(
+            mode: Brightness.light,
+            dateTime: topic.lastUpdatedAt,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _CoverContentSmall extends StatelessWidget {
   const _CoverContentSmall({
     required this.topic,
@@ -162,6 +205,43 @@ class _CoverContentSmall extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _CoverContentExploreSmall extends StatelessWidget {
+  const _CoverContentExploreSmall({
+    required this.topic,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TopicOwnerAvatar(
+          owner: topic.owner,
+          withImage: false,
+          imageSize: AppDimens.zero,
+          textStyle: AppTypography.subH2Medium,
+          mode: Brightness.dark,
+        ),
+        const SizedBox(height: AppDimens.s),
+        InformedMarkdownBody(
+          markdown: topic.title,
+          maxLines: 4,
+          baseTextStyle: AppTypography.metadata1Bold,
+        ),
+        const SizedBox(height: AppDimens.s),
+        UpdatedLabel(
+          dateTime: topic.lastUpdatedAt,
+          mode: Brightness.dark,
+          textStyle: AppTypography.subH2Medium.copyWith(color: AppColors.textGrey),
+        ),
+      ],
     );
   }
 }
