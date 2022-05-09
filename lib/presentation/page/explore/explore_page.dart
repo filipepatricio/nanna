@@ -250,6 +250,7 @@ class _PillsSection extends HookWidget {
             return pills[index].map(
               articles: (area) => _AreaPillItem(
                 title: area.title,
+                icon: area.icon,
                 index: index,
                 onTap: () => AutoRouter.of(context).push(
                   ArticleSeeAllPageRoute(
@@ -261,6 +262,7 @@ class _PillsSection extends HookWidget {
               ),
               topics: (area) => _AreaPillItem(
                 title: area.title,
+                icon: area.icon,
                 index: index,
                 onTap: () => context.pushRoute(
                   TopicsSeeAllPageRoute(
@@ -322,12 +324,14 @@ class _Area extends HookWidget {
 
 class _AreaPillItem extends StatelessWidget {
   final String title;
+  final String icon;
   final int index;
   final VoidCallback onTap;
   final Color? color;
 
   const _AreaPillItem({
     required this.title,
+    required this.icon,
     required this.index,
     required this.onTap,
     this.color = AppColors.white,
@@ -349,9 +353,16 @@ class _AreaPillItem extends StatelessWidget {
           ),
         ),
         padding: const EdgeInsets.symmetric(vertical: AppDimens.sl, horizontal: AppDimens.l),
-        child: Text(
-          title,
-          style: AppTypography.b3Regular.copyWith(height: 1.4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.string(icon),
+            const SizedBox(width: AppDimens.s),
+            Text(
+              title,
+              style: AppTypography.b3Regular.copyWith(height: 1.4),
+            ),
+          ],
         ),
       ),
     );
