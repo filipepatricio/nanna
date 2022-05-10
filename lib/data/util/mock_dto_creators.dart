@@ -85,7 +85,6 @@ class MockDTO {
 
   static final exploreContent = ExploreContentDTO(
     [
-      _exploreFeaturedArticlesArea,
       _exploreTopicsArea,
       _exploreArticlesArea,
       _exploreTopicsArea2,
@@ -95,17 +94,13 @@ class MockDTO {
   static final exploreHighlightedContent = ExploreHighlightedContentDTO(
     [
       ExploreContentPillDTO.articles('articles', 'Articles'),
-      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
       ExploreContentPillDTO.articles('topics', 'Topics'),
       ExploreContentPillDTO.articles('articles', 'Articles'),
-      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
       ExploreContentPillDTO.articles('topics', 'Topics'),
       ExploreContentPillDTO.articles('articles', 'Articles'),
-      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
       ExploreContentPillDTO.articles('topics', 'Topics'),
     ],
     [
-      _exploreFeaturedArticlesArea,
       _exploreTopicsArea,
       _exploreArticlesArea,
       _exploreTopicsArea2,
@@ -229,22 +224,10 @@ class MockDTO {
     ImageDTO('owner_1'),
   );
 
-  static final _exploreFeaturedArticlesArea = ExploreContentAreaDTO.articlesWithFeature(
-    'explore-featured-id',
-    'Featured Articles',
-    '#E4F1E2',
-    [
-      premiumArticle,
-      _freeArticle,
-      premiumArticle,
-      _freeArticle,
-      premiumArticle,
-    ],
-  );
-
   static final _exploreArticlesArea = ExploreContentAreaDTO.articles(
     'explore-articles-id',
     'By Publisher',
+    'This is description',
     [
       premiumArticle,
       _freeArticle,

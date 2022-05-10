@@ -44,14 +44,21 @@ class ExploreContentGQL {
           }
         }
 
-        ... on ArticlesWithFeatureExploreArea {
-          backgroundColor
-          articles(pagination: {limit: $limit, offset: $offset}) {
-            ${CommonGQLModels.article}
+
+
+        ... on TopicsExploreArea {
+          topics(pagination: {limit: $limit, offset: $offset}) {
+            ${CommonGQLModels.topicPreview}
           }
         }
 
-        ... on TopicsExploreArea {
+        ... on SmallTopicsExploreArea {
+          topics(pagination: {limit: $limit, offset: $offset}) {
+            ${CommonGQLModels.topicPreview}
+          }
+        }
+
+        ... on HighlightedTopicsExploreArea {
           topics(pagination: {limit: $limit, offset: $offset}) {
             ${CommonGQLModels.topicPreview}
           }

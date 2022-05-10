@@ -10,9 +10,10 @@ import 'package:better_informed_mobile/domain/explore/data/explore_content_pill.
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_with_cover_area_loading_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_with_cover_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -131,7 +132,7 @@ class ExplorePage extends HookWidget {
         }
         final firstArea = idle.exploreContent.areas.first;
         return firstArea.maybeMap(
-          articleWithFeature: (state) => Color(state.backgroundColor),
+          highlightedTopics: (state) => Color(state.backgroundColor),
           orElse: () => AppColors.background,
         );
       },
@@ -255,17 +256,6 @@ class _PillsSection extends HookWidget {
                   ),
                 ),
               ),
-              articleWithFeature: (area) => _AreaPillItem(
-                title: area.title,
-                index: index,
-                onTap: () => AutoRouter.of(context).push(
-                  ArticleSeeAllPageRoute(
-                    areaId: area.id,
-                    title: area.title,
-                    referred: ExploreAreaReferred.pill,
-                  ),
-                ),
-              ),
               topics: (area) => _AreaPillItem(
                 title: area.title,
                 index: index,
@@ -317,8 +307,9 @@ class _Area extends HookWidget {
         borderFraction: 0.6,
         child: area.map(
           articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),
-          articleWithFeature: (area) => ArticleWithCoverAreaView(area: area, isHighlighted: isHighlighted),
           topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
+          smallTopics: (area) => SmallTopicsAreaView(area: area),
+          highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),
           unknown: (_) => Container(),
         ),
       ),

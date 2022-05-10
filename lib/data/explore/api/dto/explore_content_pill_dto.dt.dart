@@ -12,17 +12,23 @@ class ExploreContentPillDTO with _$ExploreContentPillDTO {
     String name,
   ) = _ExploreContentPillDTOArticles;
 
-  @FreezedUnionValue('ArticlesWithFeatureExploreArea')
-  factory ExploreContentPillDTO.articlesWithFeature(
-    String id,
-    String name,
-  ) = _ExploreContentPillDTOArticlesWithFeature;
-
   @FreezedUnionValue('TopicsExploreArea')
   factory ExploreContentPillDTO.topics(
     String id,
     String name,
   ) = _ExploreContentPillDTOTopics;
+
+  @FreezedUnionValue('SmallTopicsExploreArea')
+  factory ExploreContentPillDTO.smallTopics(
+    String id,
+    String name,
+  ) = _ExploreContentPillDTOSmallTopics;
+
+  @FreezedUnionValue('HighlightedTopicsExploreArea')
+  factory ExploreContentPillDTO.highlightedTopics(
+    String id,
+    String name,
+  ) = _ExploreContentPillDTOHighlightedTopics;
 
   @FreezedUnionValue(unknownKey)
   factory ExploreContentPillDTO.unknown(String id) = _ExploreContentPillDTOUnknown;

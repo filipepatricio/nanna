@@ -158,6 +158,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h5ExtraBald = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 24,
+    height: 1.5,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle subH1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,

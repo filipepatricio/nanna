@@ -174,7 +174,8 @@
   "explore": {
     "title": "Explore",
     "seeAllArticles": "See all articles",
-    "seeAllTopics": "See all topics"
+    "seeAllTopics": "See all topics",
+    "viewAll": "View All\n{}"
   },
   "profile": {
     "title": "Profile",

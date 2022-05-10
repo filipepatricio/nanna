@@ -9,11 +9,6 @@ class ExploreContentPill with _$ExploreContentPill {
     required String title,
   }) = ExploreContentPillArticles;
 
-  factory ExploreContentPill.articleWithFeature({
-    required String id,
-    required String title,
-  }) = ExploreContentPillArticleWithFeature;
-
   factory ExploreContentPill.topics({
     required String id,
     required String title,

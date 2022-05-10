@@ -1,1 +1,1 @@
-enum ExploreAreaReferred { stream, highlighted_stream, pill }
+enum ExploreAreaReferred { stream, highlightedStream, pill }

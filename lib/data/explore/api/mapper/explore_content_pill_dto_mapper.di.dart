@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
-import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_pill.dt.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,15 +12,19 @@ class ExploreContentPillDTOMapper implements Mapper<ExploreContentPillDTO, Explo
         id: pill.id,
         title: pill.name,
       ),
-      articlesWithFeature: (pill) => ExploreContentPill.articles(
-        id: pill.id,
-        title: pill.name,
-      ),
       topics: (area) => ExploreContentPill.topics(
         id: area.id,
         title: area.name,
       ),
-      unknown: (_) => ExploreContentPill.unknown(id: unknownKey),
+      smallTopics: (area) => ExploreContentPill.topics(
+        id: area.id,
+        title: area.name,
+      ),
+      highlightedTopics: (area) => ExploreContentPill.topics(
+        id: area.id,
+        title: area.name,
+      ),
+      unknown: (area) => ExploreContentPill.unknown(id: area.id),
     );
   }
 }
