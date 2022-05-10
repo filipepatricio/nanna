@@ -222,6 +222,7 @@ class _CoverContentExploreSmall extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        const SizedBox(height: AppDimens.s),
         TopicOwnerAvatar(
           owner: topic.owner,
           withImage: false,

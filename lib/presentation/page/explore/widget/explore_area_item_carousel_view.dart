@@ -103,9 +103,8 @@ class _Cell<T> extends StatelessWidget {
       ),
       viewAll: (item) => Align(
         alignment: Alignment.topCenter,
-        child: SizedBox(
-          height: itemHeight * AppDimens.exploreTopicCarousellSmallCoverImageHeightFactor,
-          width: itemWidth,
+        child: SizedBox.square(
+          dimension: itemWidth,
           child: ViewAllButton(
             title: item.title,
             onTap: onViewAllTap,

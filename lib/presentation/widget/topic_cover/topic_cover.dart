@@ -195,7 +195,6 @@ class _TopicCoverExploreSmall extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: AppDimens.s),
         Expanded(
           flex: _contentHeightFactor,
           child: TopicCoverContent(
