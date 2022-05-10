@@ -53,6 +53,7 @@ class AppVectorGraphics {
   static const String articleError = 'assets/vector_graphics/article_error_ic.svg';
   static const String relaxCoffee = 'assets/vector_graphics/relax_coffee_ic.svg';
   static const String briefLoading = 'assets/vector_graphics/daily_brief_loading.svg';
+  static const String emptySearchResults = 'assets/vector_graphics/empty_search_ic.svg';
 
   static const String arrowRight = 'assets/vector_graphics/arrow_right_ic.svg';
   static const String arrowDown = 'assets/vector_graphics/arrow_down.svg';

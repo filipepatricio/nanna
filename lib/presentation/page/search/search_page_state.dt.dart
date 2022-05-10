@@ -13,7 +13,7 @@ class SearchPageState with _$SearchPageState {
   factory SearchPageState.loading() = _SearchPageStateLoading;
 
   @Implements<BuildState>()
-  factory SearchPageState.empty() = _SearchPageStateEmpty;
+  factory SearchPageState.empty(String query) = _SearchPageStateEmpty;
 
   @Implements<BuildState>()
   factory SearchPageState.idle(List<SearchResult> results) = _SearchPageStateIdle;

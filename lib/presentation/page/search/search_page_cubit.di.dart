@@ -10,25 +10,27 @@ import 'package:injectable/injectable.dart';
 class SearchPageCubit extends Cubit<SearchPageState> {
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
   late PaginationEngine<SearchResult> _paginationEngine;
+  late String _query;
 
-  final debouncer = Debouncer(milliseconds: 300);
+  final _debouncer = Debouncer(milliseconds: 300);
 
   SearchPageCubit(
     this._searchPaginationEngineProvider,
   ) : super(SearchPageState.initial());
 
   Future<void> initialize() async {
-    emit(SearchPageState.empty());
+    emit(SearchPageState.initial());
   }
 
   Future<void> search(String query) async {
+    _query = query;
     if (query.length < 3) {
-      emit(SearchPageState.empty());
+      emit(SearchPageState.initial());
       return;
     }
 
     final paginationState = await _initializePaginationEngine(query);
-    debouncer.run(() => _handlePaginationState(paginationState));
+    _debouncer.run(() => _handlePaginationState(paginationState));
   }
 
   Future<PaginationEngineState<SearchResult>> _initializePaginationEngine(
@@ -60,7 +62,7 @@ class SearchPageCubit extends Cubit<SearchPageState> {
     final results = paginationState.data;
 
     if (results.isEmpty) {
-      emit(SearchPageState.empty());
+      emit(SearchPageState.empty(_query));
     } else if (paginationState.allLoaded) {
       emit(SearchPageState.allLoaded(results));
     } else {

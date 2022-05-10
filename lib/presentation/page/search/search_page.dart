@@ -1,9 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
-import 'package:better_informed_mobile/generated/local_keys.g.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/search/search_page_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -15,7 +14,6 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -49,7 +47,6 @@ class SearchPage extends HookWidget {
         centerTitle: false,
         actions: [
           Container(
-            width: 65,
             margin: const EdgeInsets.only(right: AppDimens.m),
             child: TextButton(
               onPressed: () {
@@ -63,7 +60,7 @@ class SearchPage extends HookWidget {
               ),
               child: Text(
                 LocaleKeys.common_cancel.tr(),
-                style: AppTypography.subH1Medium.copyWith(
+                style: AppTypography.h4Bold.copyWith(
                   color: AppColors.darkGreyBackground,
                   height: 1.3,
                 ),
@@ -91,14 +88,7 @@ class SearchPage extends HookWidget {
                 ),
               ],
             ),
-            empty: (_) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
-                // Expanded(
-                //   child: ProfileEmptyPage(filter: filter),
-                // ),
-              ],
-            ),
+            empty: (state) => _EmptyView(query: state.query),
             idle: (state) => _Idle(
               cubit: cubit,
               results: state.results,
@@ -119,6 +109,68 @@ class SearchPage extends HookWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _EmptyView extends StatelessWidget {
+  const _EmptyView({
+    required this.query,
+    Key? key,
+  }) : super(key: key);
+
+  final String query;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(
+            left: AppDimens.xxxc,
+            right: AppDimens.xxxc,
+            top: AppDimens.l,
+            bottom: AppDimens.ml,
+          ),
+          height: 250,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Center(
+                  child: SvgPicture.asset(
+                    AppVectorGraphics.emptySearchResults,
+                    height: AppDimens.c,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Center(
+                  child: Text(
+                    LocaleKeys.search_emptyResults.tr(args: [query]),
+                    style: AppTypography.b2Bold,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    LocaleKeys.search_callToAction.tr(),
+                    style: AppTypography.b2Regular,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
