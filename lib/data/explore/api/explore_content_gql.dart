@@ -20,6 +20,7 @@ class ExploreContentGQL {
           __typename
           id
           name
+          icon
         }
       
         highlightedSection: getExploreSection(isHighlighted: true) {
