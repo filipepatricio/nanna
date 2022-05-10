@@ -324,7 +324,7 @@ class _Area extends HookWidget {
 
 class _AreaPillItem extends StatelessWidget {
   final String title;
-  final String icon;
+  final String? icon;
   final int index;
   final VoidCallback onTap;
   final Color? color;
@@ -356,8 +356,10 @@ class _AreaPillItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgPicture.string(icon),
-            const SizedBox(width: AppDimens.s),
+            if (icon != null) ...[
+              SvgPicture.string(icon!),
+              const SizedBox(width: AppDimens.s),
+            ],
             Text(
               title,
               style: AppTypography.b3Regular.copyWith(height: 1.4),

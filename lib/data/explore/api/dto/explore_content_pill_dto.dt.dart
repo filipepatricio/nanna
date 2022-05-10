@@ -10,14 +10,14 @@ class ExploreContentPillDTO with _$ExploreContentPillDTO {
   factory ExploreContentPillDTO.articles(
     String id,
     String name,
-    String icon,
+    String? icon,
   ) = _ExploreContentPillDTOArticles;
 
   @FreezedUnionValue('TopicsExploreArea')
   factory ExploreContentPillDTO.topics(
     String id,
     String name,
-    String icon,
+    String? icon,
   ) = _ExploreContentPillDTOTopics;
 
   @FreezedUnionValue('SmallTopicsExploreArea')
