@@ -24,12 +24,14 @@ class ExploreContentPillDTO with _$ExploreContentPillDTO {
   factory ExploreContentPillDTO.smallTopics(
     String id,
     String name,
+    String? icon,
   ) = _ExploreContentPillDTOSmallTopics;
 
   @FreezedUnionValue('HighlightedTopicsExploreArea')
   factory ExploreContentPillDTO.highlightedTopics(
     String id,
     String name,
+    String? icon,
   ) = _ExploreContentPillDTOHighlightedTopics;
 
   @FreezedUnionValue(unknownKey)

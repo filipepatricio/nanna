@@ -13,23 +13,20 @@ class ExploreContentPillDTOMapper implements Mapper<ExploreContentPillDTO, Explo
         title: pill.name,
         icon: pill.icon,
       ),
-      articlesWithFeature: (pill) => ExploreContentPill.articles(
-        id: pill.id,
-        title: pill.name,
-        icon: pill.icon,
-      ),
       topics: (pill) => ExploreContentPill.topics(
         id: pill.id,
         title: pill.name,
         icon: pill.icon,
       ),
-      smallTopics: (area) => ExploreContentPill.topics(
-        id: area.id,
-        title: area.name,
+      smallTopics: (pill) => ExploreContentPill.topics(
+        id: pill.id,
+        title: pill.name,
+        icon: pill.icon,
       ),
-      highlightedTopics: (area) => ExploreContentPill.topics(
-        id: area.id,
-        title: area.name,
+      highlightedTopics: (pill) => ExploreContentPill.topics(
+        id: pill.id,
+        title: pill.name,
+        icon: pill.icon,
       ),
       unknown: (area) => ExploreContentPill.unknown(id: area.id),
     );
