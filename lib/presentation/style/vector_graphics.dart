@@ -79,7 +79,7 @@ class AppVectorGraphics {
   static const String close = 'assets/vector_graphics/close.svg';
   static const String photoCaption = 'assets/vector_graphics/photo_caption_ic.svg';
   static const String search = 'assets/vector_graphics/search_ic.svg';
-  static const String clearText = 'assets/vector_graphics/clearText.svg';
+  static const String clearText = 'assets/vector_graphics/clear_text.svg';
 
   static const String tutorialArrowDown = 'assets/vector_graphics/tutorial_arrow_down.svg';
   static const String tutorialArrowUp = 'assets/vector_graphics/tutorial_arrow_up.svg';

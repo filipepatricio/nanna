@@ -11,7 +11,7 @@ class SearchPageCubit extends Cubit<SearchPageState> {
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
   late PaginationEngine<SearchResult> _paginationEngine;
 
-  final debouncer = Debouncer(milliseconds: 2000);
+  final debouncer = Debouncer(milliseconds: 300);
 
   SearchPageCubit(
     this._searchPaginationEngineProvider,

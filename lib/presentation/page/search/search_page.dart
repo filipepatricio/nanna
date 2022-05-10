@@ -275,7 +275,6 @@ class _SearchBar extends HookWidget {
                   },
                   child: SvgPicture.asset(
                     AppVectorGraphics.clearText,
-                    color: AppColors.darkGreyBackground,
                     height: AppDimens.xs,
                     fit: BoxFit.scaleDown,
                   ),
