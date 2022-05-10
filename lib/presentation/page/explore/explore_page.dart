@@ -132,7 +132,10 @@ class ExplorePage extends HookWidget {
         }
         final firstArea = idle.exploreContent.areas.first;
         return firstArea.maybeMap(
-          highlightedTopics: (state) => Color(state.backgroundColor),
+          highlightedTopics: (state) {
+            final color = state.backgroundColor;
+            return color == null ? AppColors.background : Color(color);
+          },
           orElse: () => AppColors.background,
         );
       },

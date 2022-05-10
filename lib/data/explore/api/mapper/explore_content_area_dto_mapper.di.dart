@@ -41,13 +41,16 @@ class ExploreContentAreaDTOMapper implements Mapper<ExploreContentAreaDTO, Explo
         description: area.description,
         topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
       ),
-      highlightedTopics: (area) => ExploreContentArea.highlightedTopics(
-        id: area.id,
-        title: area.name,
-        description: area.description,
-        backgroundColor: _colorDTOMapper(area.backgroundColor),
-        topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
-      ),
+      highlightedTopics: (area) {
+        final backgroundColor = area.backgroundColor;
+        return ExploreContentArea.highlightedTopics(
+          id: area.id,
+          title: area.name,
+          description: area.description,
+          backgroundColor: backgroundColor != null ? _colorDTOMapper(backgroundColor) : null,
+          topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
+        );
+      },
       unknown: (_) => ExploreContentArea.unknown(id: unknownKey),
     );
   }

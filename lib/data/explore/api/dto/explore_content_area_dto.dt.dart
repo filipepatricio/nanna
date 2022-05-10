@@ -12,7 +12,7 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   factory ExploreContentAreaDTO.articles(
     String id,
     String name,
-    String description,
+    String? description,
     List<ArticleHeaderDTO> articles,
   ) = _ExploreContentAreaDTOArticles;
 
@@ -27,7 +27,7 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   factory ExploreContentAreaDTO.smallTopics(
     String id,
     String name,
-    String description,
+    String? description,
     List<TopicPreviewDTO> topics,
   ) = _ExploreContentAreaDTOSmallTopics;
 
@@ -35,8 +35,8 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   factory ExploreContentAreaDTO.highlightedTopics(
     String id,
     String name,
-    String description,
-    String backgroundColor,
+    String? description,
+    String? backgroundColor,
     List<TopicPreviewDTO> topics,
   ) = _ExploreContentAreaDTOHighlightedTopics;
 

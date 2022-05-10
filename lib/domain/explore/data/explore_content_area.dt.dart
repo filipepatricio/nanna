@@ -9,7 +9,7 @@ class ExploreContentArea with _$ExploreContentArea {
   factory ExploreContentArea.articles({
     required String id,
     required String title,
-    required String description,
+    required String? description,
     required List<MediaItemArticle> articles,
   }) = ExploreContentAreaArticles;
 
@@ -22,15 +22,15 @@ class ExploreContentArea with _$ExploreContentArea {
   factory ExploreContentArea.smallTopics({
     required String id,
     required String title,
-    required String description,
+    required String? description,
     required List<TopicPreview> topics,
   }) = ExploreContentAreaSmallTopics;
 
   factory ExploreContentArea.highlightedTopics({
     required String id,
     required String title,
-    required String description,
-    required int backgroundColor,
+    required String? description,
+    required int? backgroundColor,
     required List<TopicPreview> topics,
   }) = ExploreContentAreaHighlightedTopics;
 
