@@ -237,7 +237,7 @@ class _CoverContentExploreSmall extends StatelessWidget {
         const SizedBox(height: AppDimens.s),
         InformedMarkdownBody(
           markdown: topic.title,
-          maxLines: 4,
+          maxLines: 2,
           baseTextStyle: AppTypography.metadata1Bold,
         ),
         const SizedBox(height: AppDimens.s),

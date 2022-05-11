@@ -56,55 +56,51 @@ class _ArticleCoverExplore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _imageHeightFactor = (AppDimens.exploreTopicCarousellSmallCoverImageHeightFactor * 100).toInt();
-    final _contentHeightFactor = 100 - _imageHeightFactor;
-
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            flex: _imageHeightFactor,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppDimens.s),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(AppDimens.s),
-                      child: article.hasImage
-                          ? ArticleImage(
-                              image: article.image!,
-                              cardColor: coverColor,
-                              showDarkened: true,
-                            )
-                          : SizedBox.expand(
-                              child: Container(color: coverColor),
-                            ),
+      child: LayoutBuilder(
+        builder: (context, constraints) => Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox.square(
+              dimension: constraints.maxWidth,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppDimens.s),
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(AppDimens.s),
+                        child: article.hasImage
+                            ? ArticleImage(
+                                image: article.image!,
+                                cardColor: coverColor,
+                                showDarkened: true,
+                              )
+                            : SizedBox.expand(
+                                child: Container(color: coverColor),
+                              ),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    top: AppDimens.s,
-                    left: AppDimens.s,
-                    child: CoverLabel.article(),
-                  ),
-                  if (article.hasAudioVersion)
                     Positioned(
-                      bottom: AppDimens.s,
-                      right: AppDimens.s,
-                      child: CoverLabel.audio(),
+                      top: AppDimens.s,
+                      left: AppDimens.s,
+                      child: CoverLabel.article(),
                     ),
-                ],
+                    if (article.hasAudioVersion)
+                      Positioned(
+                        bottom: AppDimens.s,
+                        right: AppDimens.s,
+                        child: CoverLabel.audio(),
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: _contentHeightFactor,
-            child: ArticleCoverContent(article: article),
-          )
-        ],
+            ArticleCoverContent(article: article)
+          ],
+        ),
       ),
     );
   }

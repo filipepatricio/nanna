@@ -148,42 +148,38 @@ class _TopicCoverExploreSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _imageHeightFactor = (AppDimens.exploreTopicCarousellSmallCoverImageHeightFactor * 100).toInt();
-    final _contentHeightFactor = 100 - _imageHeightFactor;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          flex: _imageHeightFactor,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: TopicCoverImage(
-                  topic: topic,
-                  showPhoto: true,
-                  borderRadius: AppDimens.s,
+    return LayoutBuilder(
+      builder: (context, constraints) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox.square(
+            dimension: constraints.maxWidth,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: TopicCoverImage(
+                    topic: topic,
+                    showPhoto: true,
+                    borderRadius: AppDimens.s,
+                  ),
                 ),
-              ),
-              Positioned(
-                top: AppDimens.s,
-                left: AppDimens.s,
-                child: CoverLabel.topic(topic: topic),
-              ),
-            ],
+                Positioned(
+                  top: AppDimens.s,
+                  left: AppDimens.s,
+                  child: CoverLabel.topic(topic: topic),
+                ),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          flex: _contentHeightFactor,
-          child: TopicCoverContent(
+          TopicCoverContent(
             topic: topic,
             type: TopicCoverType.exploreSmall,
             mode: Brightness.light,
             hasBackgroundColor: hasBackgroundColor,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

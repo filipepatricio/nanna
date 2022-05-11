@@ -6,21 +6,17 @@ import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TopicsSeeAllPage extends HookWidget {
   final String areaId;
@@ -95,44 +91,30 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StackedCardsRandomVariantBuilder<StackedCardsVariant>(
-      variants: StackedCardsVariant.values,
-      count: state.maybeMap(
-        loadingMore: (state) => state.topics.length,
-        withPagination: (state) => state.topics.length,
-        allLoaded: (state) => state.topics.length,
-        orElse: () => 0,
+    return state.maybeMap(
+      loading: (_) => const Loader(),
+      withPagination: (state) => _TopicGrid(
+        title: title,
+        pageStorageKey: pageStorageKey,
+        topics: state.topics,
+        scrollController: scrollController,
+        withLoader: false,
       ),
-      builder: (cardVariants) {
-        return state.maybeMap(
-          loading: (_) => const Loader(),
-          withPagination: (state) => _TopicGrid(
-            title: title,
-            pageStorageKey: pageStorageKey,
-            topics: state.topics,
-            scrollController: scrollController,
-            withLoader: false,
-            cardVariants: cardVariants,
-          ),
-          loadingMore: (state) => _TopicGrid(
-            title: title,
-            pageStorageKey: pageStorageKey,
-            topics: state.topics,
-            scrollController: scrollController,
-            withLoader: true,
-            cardVariants: cardVariants,
-          ),
-          allLoaded: (state) => _TopicGrid(
-            title: title,
-            pageStorageKey: pageStorageKey,
-            topics: state.topics,
-            scrollController: scrollController,
-            withLoader: false,
-            cardVariants: cardVariants,
-          ),
-          orElse: () => const SizedBox(),
-        );
-      },
+      loadingMore: (state) => _TopicGrid(
+        title: title,
+        pageStorageKey: pageStorageKey,
+        topics: state.topics,
+        scrollController: scrollController,
+        withLoader: true,
+      ),
+      allLoaded: (state) => _TopicGrid(
+        title: title,
+        pageStorageKey: pageStorageKey,
+        topics: state.topics,
+        scrollController: scrollController,
+        withLoader: false,
+      ),
+      orElse: () => const SizedBox(),
     );
   }
 }
@@ -143,7 +125,6 @@ class _TopicGrid extends StatelessWidget {
   final List<TopicPreview> topics;
   final ScrollController scrollController;
   final bool withLoader;
-  final List<StackedCardsVariant> cardVariants;
 
   const _TopicGrid({
     required this.title,
@@ -151,7 +132,6 @@ class _TopicGrid extends StatelessWidget {
     required this.topics,
     required this.scrollController,
     required this.withLoader,
-    required this.cardVariants,
     Key? key,
   }) : super(key: key);
 
@@ -159,40 +139,22 @@ class _TopicGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return NoScrollGlow(
       child: CustomScrollView(
-        controller: scrollController,
         key: pageStorageKey,
+        controller: scrollController,
         slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate.fixed(
-              [
-                const SizedBox(height: AppDimens.l),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  child: InformedMarkdownBody(
-                    markdown: title,
-                    highlightColor: AppColors.transparent,
-                    baseTextStyle: AppTypography.h1,
-                  ),
-                ),
-                const SizedBox(height: AppDimens.l),
-              ],
-            ),
-          ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            sliver: SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _GridItem(
-                  topic: topics[index],
-                  cardVariant: cardVariants[index],
-                ),
-                childCount: topics.length,
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            padding: const EdgeInsets.all(AppDimens.l),
+            sliver: SliverToBoxAdapter(
+              child: MasonryGridView.count(
+                physics: const BottomBouncingScrollPhysics(),
+                shrinkWrap: true,
                 crossAxisCount: 2,
-                mainAxisExtent: AppDimens.exploreAreaTopicSeeAllCoverHeight,
-                mainAxisSpacing: AppDimens.xl,
+                itemCount: topics.length,
                 crossAxisSpacing: AppDimens.l,
+                mainAxisSpacing: AppDimens.m,
+                itemBuilder: (context, index) => _GridItem(
+                  topic: topics[index],
+                ),
               ),
             ),
           ),
@@ -205,37 +167,20 @@ class _TopicGrid extends StatelessWidget {
 
 class _GridItem extends StatelessWidget {
   final TopicPreview topic;
-  final StackedCardsVariant cardVariant;
 
   const _GridItem({
     required this.topic,
-    required this.cardVariant,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return StackedCards.variant(
-          variant: cardVariant,
-          coverSize: Size(
-            constraints.maxWidth,
-            AppDimens.exploreAreaTopicSeeAllCoverHeight,
-          ),
-          child: TopicCover.small(
-            topic: topic,
-            onTap: () => _onTopicTap(context, topic),
-          ),
-        );
-      },
-    );
-  }
-
-  void _onTopicTap(BuildContext context, TopicPreview topic) {
-    AutoRouter.of(context).push(
-      TopicPage(
-        topicSlug: topic.slug,
+    return TopicCover.exploreSmall(
+      topic: topic,
+      onTap: () => context.pushRoute(
+        TopicPage(
+          topicSlug: topic.slug,
+        ),
       ),
     );
   }

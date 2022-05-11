@@ -25,7 +25,7 @@ class NextPageLoadExecutor extends HookWidget {
             ? () {
                 final position = scrollController.position;
 
-                if (position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
+                if (position.pixels > 0 && position.maxScrollExtent - position.pixels < (screenHeight / 2)) {
                   onNextPageLoad();
                 }
               }

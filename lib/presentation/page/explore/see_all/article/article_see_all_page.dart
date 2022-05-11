@@ -1,23 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
-import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_with_background.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ArticleSeeAllPage extends HookWidget {
   final String areaId;
@@ -143,37 +143,20 @@ class _ArticleGrid extends StatelessWidget {
         controller: scrollController,
         key: pageStorageKey,
         slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate.fixed(
-              [
-                const SizedBox(height: AppDimens.l),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  child: InformedMarkdownBody(
-                    markdown: title,
-                    highlightColor: AppColors.transparent,
-                    baseTextStyle: AppTypography.h1,
-                  ),
-                ),
-                const SizedBox(height: AppDimens.l),
-              ],
-            ),
-          ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            sliver: SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _GridItem(
+            padding: const EdgeInsets.all(AppDimens.l),
+            sliver: SliverToBoxAdapter(
+              child: MasonryGridView.count(
+                physics: const BottomBouncingScrollPhysics(),
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                crossAxisSpacing: AppDimens.l,
+                mainAxisSpacing: AppDimens.m,
+                itemCount: articles.length,
+                itemBuilder: (context, index) => _GridItem(
                   article: articles[index],
                   index: index,
                 ),
-                childCount: articles.length,
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: AppDimens.exploreAreaArticleSeeAllCoverHeight,
-                crossAxisSpacing: AppDimens.m,
-                mainAxisSpacing: AppDimens.l,
               ),
             ),
           ),
@@ -196,22 +179,14 @@ class _GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return article.map(
-          image: (data) => ArticleListItem(
-            article: article.article,
-            themeColor: AppColors.background,
-            height: AppDimens.exploreAreaArticleSeeAllCoverHeight,
-          ),
-          color: (data) => ArticleListItem(
-            article: article.article,
-            themeColor: AppColors.background,
-            cardColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
-            height: AppDimens.exploreAreaArticleSeeAllCoverHeight,
-          ),
-        );
-      },
+    return article.map(
+      image: (data) => ArticleCover.explore(
+        article: article.article,
+      ),
+      color: (data) => ArticleCover.explore(
+        article: article.article,
+        coverColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
+      ),
     );
   }
 }
