@@ -176,7 +176,7 @@ class _CancelButton extends HookWidget {
       builder: (context, visible) => Container(
         child: visible || state.maybeMap(search: (_) => true, orElse: () => false)
             ? Container(
-                margin: const EdgeInsets.only(right: AppDimens.m),
+                margin: const EdgeInsets.only(right: AppDimens.l),
                 child: TextButton(
                   onPressed: () {
                     cubit.idle();

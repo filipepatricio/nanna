@@ -191,4 +191,7 @@ class AppDimens {
   static const audioBannerHeight = 80.0;
 
   static const searchBarHeight = 42.0;
+
+  /// 0 / 45
+  static double searchItemsAspectRatio(BuildContext context) => context.isSmallDevice ? 0.6 : 0.7;
 }
