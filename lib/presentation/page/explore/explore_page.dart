@@ -99,6 +99,7 @@ class ExplorePage extends HookWidget {
                           centerTitle: false,
                           elevation: 3.0,
                           expandedHeight: AppDimens.appBarHeight,
+                          titleSpacing: AppDimens.l,
                           actions: [
                             _CancelButton(
                               cubit: cubit,
@@ -437,7 +438,6 @@ class _SearchBar extends HookWidget {
 
     return Container(
       height: AppDimens.searchBarHeight,
-      margin: const EdgeInsets.only(left: AppDimens.s),
       decoration: BoxDecoration(
         color: AppColors.transparent,
         borderRadius: BorderRadius.circular(100),
