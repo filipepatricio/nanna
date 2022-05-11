@@ -1,31 +1,31 @@
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
-import 'package:better_informed_mobile/presentation/page/search/search_page_loader.di.dart';
-import 'package:better_informed_mobile/presentation/page/search/search_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view_loader.di.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/util/debouncer.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class SearchPageCubit extends Cubit<SearchPageState> {
+class SearchViewCubit extends Cubit<SearchViewState> {
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
   late PaginationEngine<SearchResult> _paginationEngine;
   late String _query;
 
-  final _debouncer = Debouncer(milliseconds: 300);
+  final _debouncer = Debouncer(milliseconds: 500);
 
-  SearchPageCubit(
+  SearchViewCubit(
     this._searchPaginationEngineProvider,
-  ) : super(SearchPageState.initial());
+  ) : super(SearchViewState.initial());
 
   Future<void> initialize() async {
-    emit(SearchPageState.initial());
+    emit(SearchViewState.initial());
   }
 
   Future<void> search(String query) async {
     _query = query;
     if (query.length < 3) {
-      emit(SearchPageState.initial());
+      emit(SearchViewState.initial());
       return;
     }
 
@@ -36,7 +36,7 @@ class SearchPageCubit extends Cubit<SearchPageState> {
   Future<PaginationEngineState<SearchResult>> _initializePaginationEngine(
     String query,
   ) async {
-    emit(SearchPageState.loading());
+    emit(SearchViewState.loading());
     _paginationEngine = _searchPaginationEngineProvider.get(
       query: query,
     );
@@ -48,7 +48,7 @@ class SearchPageCubit extends Cubit<SearchPageState> {
       idle: (state) async {
         final results = state.results;
 
-        emit(SearchPageState.loadMore(results));
+        emit(SearchViewState.loadMore(results));
 
         final paginationState = await _paginationEngine.loadMore();
         _handlePaginationState(paginationState);
@@ -62,11 +62,11 @@ class SearchPageCubit extends Cubit<SearchPageState> {
     final results = paginationState.data;
 
     if (results.isEmpty) {
-      emit(SearchPageState.empty(_query));
+      emit(SearchViewState.empty(_query));
     } else if (paginationState.allLoaded) {
-      emit(SearchPageState.allLoaded(results));
+      emit(SearchViewState.allLoaded(results));
     } else {
-      emit(SearchPageState.idle(results));
+      emit(SearchViewState.idle(results));
     }
   }
 }

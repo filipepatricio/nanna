@@ -8,6 +8,8 @@ import 'package:better_informed_mobile/presentation/page/explore/article_area/ar
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
@@ -23,7 +25,6 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -42,13 +43,24 @@ class ExplorePage extends HookWidget {
     final scrollController = useScrollController();
     final headerColor = _getHeaderColor(state);
 
+    final searchViewCubit = useCubit<SearchViewCubit>();
+    final searchController = useTextEditingController();
+
+    final isTyping = useState(false);
+
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(showTutorialToast: (text) => showInfoToast(context: context, text: text));
+      state.whenOrNull(
+        showTutorialToast: (text) => showInfoToast(context: context, text: text),
+        typing: () {
+          isTyping.value = true;
+        },
+      );
     });
 
     useEffect(
       () {
         cubit.initialize();
+        searchViewCubit.initialize();
       },
       [cubit],
     );
@@ -67,6 +79,7 @@ class ExplorePage extends HookWidget {
                     color: AppColors.darkGrey,
                     onRefresh: cubit.loadExplorePageData,
                     child: CustomScrollView(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       controller: scrollController,
                       physics: state.maybeMap(
                         initialLoading: (_) => const NeverScrollableScrollPhysics(),
@@ -74,10 +87,49 @@ class ExplorePage extends HookWidget {
                         orElse: () => getPlatformScrollPhysics(),
                       ),
                       slivers: [
-                        ScrollableSliverAppBar(
-                          scrollController: scrollController,
-                          title: LocaleKeys.explore_title.tr(),
-                          headerColor: headerColor,
+                        SliverAppBar(
+                          backgroundColor: AppColors.background,
+                          systemOverlayStyle: SystemUiOverlayStyle.dark,
+                          shadowColor: AppColors.black40,
+                          pinned: true,
+                          centerTitle: false,
+                          elevation: 3.0,
+                          expandedHeight: AppDimens.appBarHeight,
+                          actions: [
+                            if (isTyping.value)
+                              Container(
+                                margin: const EdgeInsets.only(right: AppDimens.m),
+                                child: TextButton(
+                                  onPressed: () {
+                                    cubit.idle();
+                                    searchController.clear();
+                                    isTyping.value = false;
+                                    final currentFocus = FocusScope.of(context);
+                                    if (!currentFocus.hasPrimaryFocus) {
+                                      currentFocus.unfocus();
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    minimumSize: Size.zero,
+                                    padding: EdgeInsets.zero,
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    splashFactory: NoSplash.splashFactory,
+                                  ),
+                                  child: Text(
+                                    LocaleKeys.common_cancel.tr(),
+                                    style: AppTypography.h4Bold.copyWith(
+                                      color: AppColors.darkGreyBackground,
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                          title: _SearchBar(
+                            explorePageCubit: cubit,
+                            searchViewCubit: searchViewCubit,
+                            searchController: searchController,
+                          ),
                         ),
                         state.maybeMap(
                           initialLoading: (_) => const _LoadingSection(),
@@ -88,6 +140,10 @@ class ExplorePage extends HookWidget {
                           idle: (state) => _ItemList(
                             items: state.items,
                             headerColor: _getHeaderColor(state),
+                          ),
+                          search: (_) => SearchView(
+                            cubit: searchViewCubit,
+                            scrollController: scrollController,
                           ),
                           orElse: () => const SliverToBoxAdapter(),
                         ),

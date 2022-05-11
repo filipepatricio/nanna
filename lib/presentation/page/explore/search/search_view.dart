@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
-import 'package:better_informed_mobile/presentation/page/search/search_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -10,104 +10,65 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 const _aspectRatio = 0.8;
 const _gridColumnCount = 2;
 
-class SearchPage extends HookWidget {
-  const SearchPage({Key? key}) : super(key: key);
+class SearchView extends HookWidget {
+  const SearchView({
+    required this.cubit,
+    required this.scrollController,
+    Key? key,
+  }) : super(key: key);
+
+  final SearchViewCubit cubit;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<SearchPageCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController());
-    final scrollController = useScrollController();
+    scrollController.jumpTo(0);
 
-    useEffect(
-      () {
-        cubit.initialize();
-      },
-      [cubit],
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        centerTitle: false,
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: AppDimens.m),
-            child: TextButton(
-              onPressed: () {
-                AutoRouter.of(context).pop();
-              },
-              style: TextButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                splashFactory: NoSplash.splashFactory,
-              ),
-              child: Text(
-                LocaleKeys.common_cancel.tr(),
-                style: AppTypography.h4Bold.copyWith(
-                  color: AppColors.darkGreyBackground,
-                  height: 1.3,
-                ),
-              ),
+    return NextPageLoadExecutor(
+      enabled: true,
+      onNextPageLoad: cubit.loadNextPage,
+      scrollController: scrollController,
+      child: state.maybeMap(
+        initial: (_) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+        loading: (_) => const SliverFillRemaining(
+          child: Center(
+            child: Loader(
+              color: AppColors.limeGreen,
             ),
-          ),
-        ],
-        title: _SearchBar(cubit: cubit),
-      ),
-      body: SnackbarParentView(
-        controller: snackbarController,
-        child: NextPageLoadExecutor(
-          enabled: true,
-          onNextPageLoad: cubit.loadNextPage,
-          scrollController: scrollController,
-          child: state.maybeMap(
-            initial: (_) => const SizedBox.shrink(),
-            loading: (_) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
-                Expanded(
-                  child: Loader(
-                    color: AppColors.limeGreen,
-                  ),
-                ),
-              ],
-            ),
-            empty: (state) => _EmptyView(query: state.query),
-            idle: (state) => _Idle(
-              cubit: cubit,
-              results: state.results,
-              scrollController: scrollController,
-            ),
-            loadMore: (state) => _Idle(
-              cubit: cubit,
-              results: state.results,
-              scrollController: scrollController,
-              withLoader: true,
-            ),
-            allLoaded: (state) => _Idle(
-              cubit: cubit,
-              results: state.results,
-              scrollController: scrollController,
-            ),
-            orElse: () => const SizedBox.shrink(),
           ),
         ),
+        empty: (state) => SliverToBoxAdapter(
+          child: _EmptyView(query: state.query),
+        ),
+        idle: (state) => _Idle(
+          cubit: cubit,
+          results: state.results,
+          scrollController: scrollController,
+        ),
+        loadMore: (state) => _Idle(
+          cubit: cubit,
+          results: state.results,
+          scrollController: scrollController,
+          withLoader: true,
+        ),
+        allLoaded: (state) => _Idle(
+          cubit: cubit,
+          results: state.results,
+          scrollController: scrollController,
+        ),
+        orElse: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
       ),
     );
   }
@@ -180,16 +141,15 @@ class _Idle extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final SearchPageCubit cubit;
+  final SearchViewCubit cubit;
   final List<SearchResult> results;
   final ScrollController scrollController;
   final bool withLoader;
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: scrollController,
-      slivers: [
+    return MultiSliver(
+      children: [
         SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: _gridColumnCount,
@@ -257,83 +217,6 @@ class _Idle extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SearchBar extends HookWidget {
-  const _SearchBar({
-    required this.cubit,
-    Key? key,
-  }) : super(key: key);
-
-  final SearchPageCubit cubit;
-
-  @override
-  Widget build(BuildContext context) {
-    final searchController = useTextEditingController();
-    final query = useState('');
-
-    useEffect(
-      () {
-        final listener = () {
-          query.value = searchController.text;
-          cubit.search(query.value);
-        };
-        searchController.addListener(listener);
-        return () => searchController.removeListener(listener);
-      },
-      [cubit, searchController],
-    );
-
-    return Container(
-      height: AppDimens.searchBarHeight,
-      margin: const EdgeInsets.only(left: AppDimens.s),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(
-          color: AppColors.textGrey,
-          width: 1,
-        ),
-      ),
-      child: TextFormField(
-        controller: searchController,
-        autofocus: true,
-        cursorHeight: AppDimens.m,
-        cursorColor: AppColors.darkGreyBackground,
-        textInputAction: TextInputAction.search,
-        autocorrect: false,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: LocaleKeys.common_search.tr(),
-          hintStyle: AppTypography.h4Medium.copyWith(
-            color: AppColors.textGrey,
-            height: 1.23,
-          ),
-          prefixIcon: SvgPicture.asset(
-            AppVectorGraphics.search,
-            color: AppColors.darkGreyBackground,
-            fit: BoxFit.scaleDown,
-          ),
-          suffixIcon: query.value.isNotEmpty
-              ? GestureDetector(
-                  onTap: () {
-                    searchController.text = '';
-                  },
-                  child: SvgPicture.asset(
-                    AppVectorGraphics.clearText,
-                    height: AppDimens.xs,
-                    fit: BoxFit.scaleDown,
-                  ),
-                )
-              : const SizedBox(),
-        ),
-        style: AppTypography.h4Medium.copyWith(
-          color: AppColors.darkGreyBackground,
-          height: 1.3,
-        ),
-      ),
     );
   }
 }

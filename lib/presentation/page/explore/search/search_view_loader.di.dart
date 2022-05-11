@@ -3,8 +3,8 @@ import 'package:better_informed_mobile/domain/search/use_case/search_content_use
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:injectable/injectable.dart';
 
-class SearchPageLoader implements NextPageLoader<SearchResult> {
-  SearchPageLoader(
+class SearchViewLoader implements NextPageLoader<SearchResult> {
+  SearchViewLoader(
     this._searchContentUseCase, {
     required this.query,
   });
@@ -29,7 +29,7 @@ class SearchPaginationEngineProvider {
   final GetPaginatedSearchContentUseCase _searchContentUseCase;
 
   PaginationEngine<SearchResult> get({required String query}) {
-    final nextPageLoader = SearchPageLoader(
+    final nextPageLoader = SearchViewLoader(
       _searchContentUseCase,
       query: query,
     );

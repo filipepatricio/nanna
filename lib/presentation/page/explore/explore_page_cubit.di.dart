@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/show_all_streams_in_pills_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/show_pills_on_explore_page_use_case.di.dart';
@@ -19,6 +20,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final ShowPillsOnExplorePageUseCase _showPillsOnExplorePageUseCase;
   final ShowAllStreamsInPillsOnExplorePageUseCase _showAllStreamsInPillsOnExplorePageUseCase;
   late bool _isExploreTutorialStepSeen;
+  late ExploreContent _exploreContent;
 
   ExplorePageCubit(
     this._getExploreContentUseCase,
@@ -52,16 +54,16 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> _loadExplorePageData() async {
     final showPills = await _showPillsOnExplorePageUseCase();
     final showAllStreamsInPills = await _showAllStreamsInPillsOnExplorePageUseCase();
-    final exploreContent = await _getExploreContentUseCase(
+    _exploreContent = await _getExploreContentUseCase(
       showPills: showPills,
       showAllStreamsInPills: showAllStreamsInPills,
     );
 
-    final pills = exploreContent.pills;
+    final pills = _exploreContent.pills;
 
     int? backgroundColor;
-    if (exploreContent.areas.isNotEmpty) {
-      final firstArea = exploreContent.areas[0];
+    if (_exploreContent.areas.isNotEmpty) {
+      final firstArea = _exploreContent.areas[0];
       firstArea.mapOrNull(
         highlightedTopics: (area) {
           backgroundColor = area.backgroundColor;
@@ -73,7 +75,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
       ExplorePageState.idle(
         [
           if (pills != null) ExploreItem.pills(pills),
-          ...exploreContent.areas.map(ExploreItem.stream).toList(),
+          ..._exploreContent.areas.map(ExploreItem.stream).toList(),
         ],
         backgroundColor,
       ),
@@ -86,5 +88,17 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
       emit(ExplorePageState.showTutorialToast(LocaleKeys.tutorial_exploreSnackBarText.tr()));
       await _setTutorialStepSeenUseCase(TutorialStep.explore);
     }
+  }
+
+  Future<void> search() async {
+    emit(ExplorePageState.search());
+  }
+
+  Future<void> typing() async {
+    emit(ExplorePageState.typing());
+  }
+
+  Future<void> idle() async {
+    emit(ExplorePageState.idle(_exploreContent));
   }
 }
