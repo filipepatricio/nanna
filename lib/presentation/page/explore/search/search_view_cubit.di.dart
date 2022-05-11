@@ -24,7 +24,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
 
   Future<void> search(String query) async {
     _query = query;
-    if (query.length < 3) {
+    if (query.isEmpty) {
       emit(SearchViewState.initial());
       return;
     }

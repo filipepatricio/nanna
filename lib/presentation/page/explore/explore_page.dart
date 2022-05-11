@@ -373,3 +373,92 @@ class _Area extends HookWidget {
     );
   }
 }
+
+class _SearchBar extends HookWidget {
+  const _SearchBar({
+    required this.explorePageCubit,
+    required this.searchViewCubit,
+    required this.searchController,
+    Key? key,
+  }) : super(key: key);
+
+  final ExplorePageCubit explorePageCubit;
+  final SearchViewCubit searchViewCubit;
+  final TextEditingController searchController;
+
+  @override
+  Widget build(BuildContext context) {
+    final query = useState('');
+
+    useEffect(
+      () {
+        final listener = () {
+          query.value = searchController.text;
+          searchViewCubit.search(query.value);
+
+          if (query.value.isNotEmpty) {
+            explorePageCubit.search();
+          } else {
+            explorePageCubit.idle();
+          }
+        };
+        searchController.addListener(listener);
+        return () => searchController.removeListener(listener);
+      },
+      [SearchViewCubit, searchController],
+    );
+
+    return Container(
+      height: AppDimens.searchBarHeight,
+      margin: const EdgeInsets.only(left: AppDimens.s),
+      decoration: BoxDecoration(
+        color: AppColors.transparent,
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(
+          color: AppColors.textGrey,
+          width: 1,
+        ),
+      ),
+      child: TextFormField(
+        controller: searchController,
+        autofocus: false,
+        cursorHeight: AppDimens.m,
+        cursorColor: AppColors.darkGreyBackground,
+        textInputAction: TextInputAction.search,
+        autocorrect: false,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: LocaleKeys.common_search.tr(),
+          hintStyle: AppTypography.h4Medium.copyWith(
+            color: AppColors.textGrey,
+            height: 1.23,
+          ),
+          prefixIcon: SvgPicture.asset(
+            AppVectorGraphics.search,
+            color: AppColors.darkGreyBackground,
+            fit: BoxFit.scaleDown,
+          ),
+          suffixIcon: query.value.isNotEmpty
+              ? GestureDetector(
+                  onTap: () {
+                    searchController.text = '';
+                  },
+                  child: SvgPicture.asset(
+                    AppVectorGraphics.clearText,
+                    height: AppDimens.xs,
+                    fit: BoxFit.scaleDown,
+                  ),
+                )
+              : const SizedBox(),
+        ),
+        style: AppTypography.h4Medium.copyWith(
+          color: AppColors.darkGreyBackground,
+          height: 1.3,
+        ),
+        onTap: () {
+          explorePageCubit.typing();
+        },
+      ),
+    );
+  }
+}
