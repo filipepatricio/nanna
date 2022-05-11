@@ -31,6 +31,8 @@ import 'package:better_informed_mobile/presentation/widget/track/view_visibility
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 const _tryAgainButtonWidth = 150.0;
@@ -46,14 +48,9 @@ class ExplorePage extends HookWidget {
     final searchViewCubit = useCubit<SearchViewCubit>();
     final searchTextEditingController = useTextEditingController();
 
-    final isTyping = useState(false);
-
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showTutorialToast: (text) => showInfoToast(context: context, text: text),
-        typing: () {
-          isTyping.value = true;
-        },
         search: () {
           scrollController.jumpTo(0);
         },
@@ -103,12 +100,10 @@ class ExplorePage extends HookWidget {
                           elevation: 3.0,
                           expandedHeight: AppDimens.appBarHeight,
                           actions: [
-                            if (isTyping.value)
-                              _CancelButton(
-                                cubit: cubit,
-                                searchController: searchTextEditingController,
-                                isTyping: isTyping,
-                              ),
+                            _CancelButton(
+                              cubit: cubit,
+                              searchController: searchTextEditingController,
+                            ),
                           ],
                           title: _SearchBar(
                             explorePageCubit: cubit,
@@ -164,45 +159,49 @@ class ExplorePage extends HookWidget {
   }
 }
 
-class _CancelButton extends StatelessWidget {
+class _CancelButton extends HookWidget {
   const _CancelButton({
     required this.cubit,
     required this.searchController,
-    required this.isTyping,
     Key? key,
   }) : super(key: key);
 
   final ExplorePageCubit cubit;
   final TextEditingController searchController;
-  final ValueNotifier<bool> isTyping;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: AppDimens.m),
-      child: TextButton(
-        onPressed: () {
-          cubit.idle();
-          searchController.clear();
-          isTyping.value = false;
-          final currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        style: TextButton.styleFrom(
-          minimumSize: Size.zero,
-          padding: EdgeInsets.zero,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          splashFactory: NoSplash.splashFactory,
-        ),
-        child: Text(
-          LocaleKeys.common_cancel.tr(),
-          style: AppTypography.h4Bold.copyWith(
-            color: AppColors.darkGreyBackground,
-            height: 1.3,
-          ),
-        ),
+    final state = useCubitBuilder(cubit);
+    return KeyboardVisibilityBuilder(
+      builder: (context, visible) => Container(
+        child: visible || state.maybeMap(search: (_) => true, orElse: () => false)
+            ? Container(
+                margin: const EdgeInsets.only(right: AppDimens.m),
+                child: TextButton(
+                  onPressed: () {
+                    cubit.idle();
+                    searchController.clear();
+                    final currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    splashFactory: NoSplash.splashFactory,
+                  ),
+                  child: Text(
+                    LocaleKeys.common_cancel.tr(),
+                    style: AppTypography.h4Bold.copyWith(
+                      color: AppColors.darkGreyBackground,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              )
+            : const SizedBox(),
       ),
     );
   }
