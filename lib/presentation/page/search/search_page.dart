@@ -138,7 +138,6 @@ class _EmptyView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 2,
                 child: Center(
                   child: SvgPicture.asset(
                     AppVectorGraphics.emptySearchResults,
@@ -148,25 +147,22 @@ class _EmptyView extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 2,
-                child: Center(
-                  child: Text(
-                    LocaleKeys.search_emptyResults.tr(args: [query]),
-                    style: AppTypography.b2Bold,
-                    textAlign: TextAlign.center,
-                  ),
+                child: Text(
+                  LocaleKeys.search_emptyResults.tr(args: [query]),
+                  style: AppTypography.b2Bold,
+                  textAlign: TextAlign.center,
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Text(
-                    LocaleKeys.search_callToAction.tr(),
-                    style: AppTypography.b2Regular,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
+              // Expanded(
+              //   flex: 1,
+              //   child: Center(
+              //     child: Text(
+              //       LocaleKeys.search_callToAction.tr(),
+              //       style: AppTypography.b2Regular,
+              //       textAlign: TextAlign.center,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
