@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -58,7 +56,7 @@ class CloudinaryImage extends HookWidget {
 
     final imageProvider = useCloudinaryProvider();
     final imageUrl = config.apply(context, publicId, imageProvider).autoQuality().generateNotNull();
-    log(imageUrl);
+
     return CachedNetworkImage(
       imageUrl: imageUrl,
       imageBuilder: (context, image) => Container(

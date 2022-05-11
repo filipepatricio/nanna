@@ -145,7 +145,7 @@ class _TopicGrid extends StatelessWidget {
           SliverPadding(
             padding: const EdgeInsets.all(AppDimens.l),
             sliver: SliverToBoxAdapter(
-              child: MasonryGridView.count(
+              child: AlignedGridView.count(
                 physics: const BottomBouncingScrollPhysics(),
                 shrinkWrap: true,
                 crossAxisCount: 2,

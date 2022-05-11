@@ -10,8 +10,6 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cov
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _cellSizeFactor = 0.72;
-
 class TopicsAreaView extends HookWidget {
   TopicsAreaView({
     required this.area,
@@ -26,7 +24,7 @@ class TopicsAreaView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size.width * _cellSizeFactor;
+    final size = MediaQuery.of(context).size.width * AppDimens.exploreTopicCellSizeFactor;
 
     return Column(
       mainAxisSize: MainAxisSize.min,

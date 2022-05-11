@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -51,11 +52,32 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> _loadExplorePageData() async {
     final showPills = await _showPillsOnExplorePageUseCase();
     final showAllStreamsInPills = await _showAllStreamsInPillsOnExplorePageUseCase();
-    final exploreContent = await _getExploreContentUseCase.call(
+    final exploreContent = await _getExploreContentUseCase(
       showPills: showPills,
       showAllStreamsInPills: showAllStreamsInPills,
     );
-    emit(ExplorePageState.idle(exploreContent));
+
+    final pills = exploreContent.pills;
+
+    int? backgroundColor;
+    if (exploreContent.areas.isNotEmpty) {
+      final firstArea = exploreContent.areas[0];
+      firstArea.mapOrNull(
+        highlightedTopics: (area) {
+          backgroundColor = area.backgroundColor;
+        },
+      );
+    }
+
+    emit(
+      ExplorePageState.idle(
+        [
+          if (pills != null) ExploreItem.pills(pills),
+          ...exploreContent.areas.map(ExploreItem.stream).toList(),
+        ],
+        backgroundColor,
+      ),
+    );
   }
 
   Future<void> _showTutorialSnackBar() async {

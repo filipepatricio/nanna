@@ -121,6 +121,9 @@ class AppDimens {
   /// 1.8
   static double exploreSeeAllSmallCoverAspectRatio = 1.55;
 
+  /// 0.72
+  static const exploreTopicCellSizeFactor = 0.72;
+
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
       topicViewHeaderImageHeight(context) +
@@ -174,6 +177,12 @@ class AppDimens {
 
   /// 260
   static const exploreAreaTopicSeeAllCoverHeight = 250.0;
+
+  /// 170
+  static const explorePillAreaHeight = 170.0;
+
+  /// 50
+  static const explorePillHeight = 50.0;
 
   static const bookmarkIconSize = 32.0;
 
