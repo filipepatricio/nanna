@@ -33,6 +33,10 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     _debouncer.run(() => _handlePaginationState(paginationState));
   }
 
+  Future<void> refresh() async {
+    await search(_query);
+  }
+
   Future<PaginationEngineState<SearchResult>> _initializePaginationEngine(
     String query,
   ) async {

@@ -44,7 +44,7 @@ class ExplorePage extends HookWidget {
     final headerColor = _getHeaderColor(state);
 
     final searchViewCubit = useCubit<SearchViewCubit>();
-    final searchController = useTextEditingController();
+    final searchTextEditingController = useTextEditingController();
 
     final isTyping = useState(false);
 
@@ -53,6 +53,9 @@ class ExplorePage extends HookWidget {
         showTutorialToast: (text) => showInfoToast(context: context, text: text),
         typing: () {
           isTyping.value = true;
+        },
+        search: () {
+          scrollController.jumpTo(0);
         },
       );
     });
@@ -77,12 +80,16 @@ class ExplorePage extends HookWidget {
                 NoScrollGlow(
                   child: RefreshIndicator(
                     color: AppColors.darkGrey,
-                    onRefresh: cubit.loadExplorePageData,
+                    onRefresh: state.maybeMap(
+                      search: (_) => searchViewCubit.refresh,
+                      orElse: () => cubit.loadExplorePageData,
+                    ),
                     child: CustomScrollView(
                       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       controller: scrollController,
                       physics: state.maybeMap(
                         initialLoading: (_) => const NeverScrollableScrollPhysics(),
+                        search: (_) => const NeverScrollableScrollPhysics(),
                         error: (_) => const NeverScrollableScrollPhysics(),
                         orElse: () => getPlatformScrollPhysics(),
                       ),
@@ -97,38 +104,16 @@ class ExplorePage extends HookWidget {
                           expandedHeight: AppDimens.appBarHeight,
                           actions: [
                             if (isTyping.value)
-                              Container(
-                                margin: const EdgeInsets.only(right: AppDimens.m),
-                                child: TextButton(
-                                  onPressed: () {
-                                    cubit.idle();
-                                    searchController.clear();
-                                    isTyping.value = false;
-                                    final currentFocus = FocusScope.of(context);
-                                    if (!currentFocus.hasPrimaryFocus) {
-                                      currentFocus.unfocus();
-                                    }
-                                  },
-                                  style: TextButton.styleFrom(
-                                    minimumSize: Size.zero,
-                                    padding: EdgeInsets.zero,
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    splashFactory: NoSplash.splashFactory,
-                                  ),
-                                  child: Text(
-                                    LocaleKeys.common_cancel.tr(),
-                                    style: AppTypography.h4Bold.copyWith(
-                                      color: AppColors.darkGreyBackground,
-                                      height: 1.3,
-                                    ),
-                                  ),
-                                ),
+                              _CancelButton(
+                                cubit: cubit,
+                                searchController: searchTextEditingController,
+                                isTyping: isTyping,
                               ),
                           ],
                           title: _SearchBar(
                             explorePageCubit: cubit,
                             searchViewCubit: searchViewCubit,
-                            searchController: searchController,
+                            searchController: searchTextEditingController,
                           ),
                         ),
                         state.maybeMap(
@@ -143,7 +128,6 @@ class ExplorePage extends HookWidget {
                           ),
                           search: (_) => SearchView(
                             cubit: searchViewCubit,
-                            scrollController: scrollController,
                           ),
                           orElse: () => const SliverToBoxAdapter(),
                         ),
@@ -176,6 +160,50 @@ class ExplorePage extends HookWidget {
         return backgroundColor == null ? AppColors.background : Color(backgroundColor);
       },
       orElse: () => AppColors.background,
+    );
+  }
+}
+
+class _CancelButton extends StatelessWidget {
+  const _CancelButton({
+    required this.cubit,
+    required this.searchController,
+    required this.isTyping,
+    Key? key,
+  }) : super(key: key);
+
+  final ExplorePageCubit cubit;
+  final TextEditingController searchController;
+  final ValueNotifier<bool> isTyping;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: AppDimens.m),
+      child: TextButton(
+        onPressed: () {
+          cubit.idle();
+          searchController.clear();
+          isTyping.value = false;
+          final currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        style: TextButton.styleFrom(
+          minimumSize: Size.zero,
+          padding: EdgeInsets.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          splashFactory: NoSplash.splashFactory,
+        ),
+        child: Text(
+          LocaleKeys.common_cancel.tr(),
+          style: AppTypography.h4Bold.copyWith(
+            color: AppColors.darkGreyBackground,
+            height: 1.3,
+          ),
+        ),
+      ),
     );
   }
 }

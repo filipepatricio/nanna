@@ -16,7 +16,6 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cov
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 const _aspectRatio = 0.8;
 const _gridColumnCount = 2;
@@ -24,17 +23,15 @@ const _gridColumnCount = 2;
 class SearchView extends HookWidget {
   const SearchView({
     required this.cubit,
-    required this.scrollController,
     Key? key,
   }) : super(key: key);
 
   final SearchViewCubit cubit;
-  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     final state = useCubitBuilder(cubit);
-    scrollController.jumpTo(0);
+    final scrollController = useScrollController();
 
     return NextPageLoadExecutor(
       enabled: true,
@@ -148,75 +145,78 @@ class _Idle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiSliver(
-      children: [
-        SliverGrid(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: _gridColumnCount,
-            childAspectRatio: _aspectRatio,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return results[index].mapOrNull(
-                article: (data) => LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ArticleListItem(
-                          article: data.article,
-                          themeColor: AppColors.background,
-                          cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
-                          height: constraints.maxHeight * 0.9,
-                          width: constraints.maxWidth * 0.85,
+    return SliverFillRemaining(
+      child: CustomScrollView(
+        controller: scrollController,
+        slivers: [
+          SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: _gridColumnCount,
+              childAspectRatio: _aspectRatio,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return results[index].mapOrNull(
+                  article: (data) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ArticleListItem(
+                            article: data.article,
+                            themeColor: AppColors.background,
+                            cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+                            height: constraints.maxHeight * 0.9,
+                            width: constraints.maxWidth * 0.85,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  topic: (data) => LayoutBuilder(
+                    builder: (context, constraints) {
+                      return StackedCards.variant(
+                        variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
+                        coverSize: Size(
+                          constraints.maxWidth * 0.85,
+                          constraints.maxHeight * 0.9,
                         ),
-                      ],
-                    );
-                  },
-                ),
-                topic: (data) => LayoutBuilder(
-                  builder: (context, constraints) {
-                    return StackedCards.variant(
-                      variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
-                      coverSize: Size(
-                        constraints.maxWidth * 0.85,
-                        constraints.maxHeight * 0.9,
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          AutoRouter.of(context).push(
-                            TopicPage(
-                              topicSlug: data.topicPreview.slug,
-                            ),
-                          );
-                        },
-                        child: TopicCover.small(
-                          topic: data.topicPreview,
+                        child: GestureDetector(
+                          onTap: () {
+                            AutoRouter.of(context).push(
+                              TopicPage(
+                                topicSlug: data.topicPreview.slug,
+                              ),
+                            );
+                          },
+                          child: TopicCover.small(
+                            topic: data.topicPreview,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-            childCount: results.length,
-          ),
-        ),
-        if (withLoader)
-          const SliverPadding(
-            padding: EdgeInsets.all(AppDimens.xl),
-            sliver: SliverToBoxAdapter(
-              child: Loader(
-                color: AppColors.limeGreen,
-              ),
+                      );
+                    },
+                  ),
+                );
+              },
+              childCount: results.length,
             ),
           ),
-        const SliverPadding(
-          padding: EdgeInsets.only(
-            bottom: AppDimens.audioBannerHeight,
+          if (withLoader)
+            const SliverPadding(
+              padding: EdgeInsets.all(AppDimens.xl),
+              sliver: SliverToBoxAdapter(
+                child: Loader(
+                  color: AppColors.limeGreen,
+                ),
+              ),
+            ),
+          const SliverPadding(
+            padding: EdgeInsets.only(
+              bottom: AppDimens.audioBannerHeight,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
