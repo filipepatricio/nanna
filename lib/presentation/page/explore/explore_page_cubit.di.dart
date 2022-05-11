@@ -94,10 +94,6 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     emit(ExplorePageState.search());
   }
 
-  Future<void> typing() async {
-    emit(ExplorePageState.typing());
-  }
-
   Future<void> idle() async {
     emit(ExplorePageState.idle(_exploreContent));
   }

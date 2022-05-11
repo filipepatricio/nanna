@@ -482,9 +482,6 @@ class _SearchBar extends HookWidget {
           color: AppColors.darkGreyBackground,
           height: 1.3,
         ),
-        onTap: () {
-          explorePageCubit.typing();
-        },
       ),
     );
   }
