@@ -48,7 +48,6 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
 
     _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((newCurrentBrief) {
       _currentBrief = newCurrentBrief;
-      emit(TodaysTopicsPageState.loading());
       emit(TodaysTopicsPageState.idle(_currentBrief));
     });
 
