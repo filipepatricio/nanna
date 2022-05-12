@@ -140,7 +140,7 @@ class _Idle extends StatelessWidget {
     return MultiSliver(
       children: [
         SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          padding: const EdgeInsets.all(AppDimens.l),
           sliver: SliverAlignedGrid.count(
             crossAxisCount: _gridColumnCount,
             mainAxisSpacing: AppDimens.l,
