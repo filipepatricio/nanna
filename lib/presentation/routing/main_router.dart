@@ -108,15 +108,3 @@ const dashboardTabRouter = CustomRoute(
     RedirectRoute(path: '', redirectTo: topicsPathSegment),
   ],
 );
-
-Widget searchTransition(
-  BuildContext context,
-  Animation<double> animation,
-  Animation<double> secondaryAnimation,
-  Widget child,
-) {
-  return FadeTransition(
-    opacity: animation,
-    child: child,
-  );
-}

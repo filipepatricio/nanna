@@ -5,7 +5,6 @@ part 'search_content_dto.dt.g.dart';
 
 @JsonSerializable(createToJson: false)
 class SearchContentDTO {
-  @JsonKey(name: 'search')
   final List<SearchResultDTO> search;
 
   SearchContentDTO(this.search);

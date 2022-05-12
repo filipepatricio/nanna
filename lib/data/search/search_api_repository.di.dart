@@ -1,9 +1,7 @@
 import 'package:better_informed_mobile/data/search/api/mapper/search_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/search/api/search_api_data_source.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/search/data/search_content.dart';
 import 'package:better_informed_mobile/domain/search/search_repository.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: SearchRepository)
@@ -20,17 +18,5 @@ class SearchApiRepository implements SearchRepository {
   Future<SearchContent> searchContent(String query, int limit, int offset) async {
     final dto = await _dataSource.searchContent(query, limit, offset);
     return _searchContentDTOMapper(dto);
-  }
-
-  @override
-  Future<List<MediaItemArticle>> searchPaginatedArticles(String query, int limit, int offset) {
-    // TODO: implement searchPaginatedArticles
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<TopicPreview>> searchPaginatedTopics(String query, int limit, int offset) {
-    // TODO: implement searchPaginatedTopics
-    throw UnimplementedError();
   }
 }

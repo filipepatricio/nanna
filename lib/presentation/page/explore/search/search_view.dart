@@ -110,16 +110,6 @@ class _EmptyView extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              // Expanded(
-              //   flex: 1,
-              //   child: Center(
-              //     child: Text(
-              //       LocaleKeys.search_callToAction.tr(),
-              //       style: AppTypography.b2Regular,
-              //       textAlign: TextAlign.center,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
