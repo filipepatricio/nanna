@@ -13,7 +13,5 @@ abstract class FeaturesFlagsRepository {
 
   Future<bool> showPillsOnExplorePage();
 
-  Future<bool> showAllStreamsInPillsOnExplorePage();
-
   Future<String> initialTab();
 }

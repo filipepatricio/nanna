@@ -13,10 +13,10 @@ class ExploreContentGQL {
   ''',
       );
 
-  static DocumentNode highlightedContent({required bool showAllStreamsInPills}) => gql(
+  static DocumentNode highlightedContent() => gql(
         '''
       query getExploreSection {
-        pillSection: getExploreSection(${showAllStreamsInPills ? '' : 'isHighlighted: false'}) {
+        pillSection: getExploreSection(isHighlighted: false) {
           __typename
           id
           name

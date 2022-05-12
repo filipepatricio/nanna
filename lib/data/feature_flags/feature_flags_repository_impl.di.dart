@@ -57,11 +57,6 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   }
 
   @override
-  Future<bool> showAllStreamsInPillsOnExplorePage() async {
-    return await LDClient.boolVariation('show-all-streams-in-pills', false);
-  }
-
-  @override
   Future<String> initialTab() async {
     return await LDClient.stringVariation('root-route', '') ?? '';
   }

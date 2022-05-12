@@ -1,5 +1,7 @@
+import 'dart:async';
+
+import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/show_all_streams_in_pills_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/show_pills_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
@@ -13,27 +15,38 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ExplorePageCubit extends Cubit<ExplorePageState> {
-  final GetExploreContentUseCase _getExploreContentUseCase;
-  final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
-  final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
-  final ShowPillsOnExplorePageUseCase _showPillsOnExplorePageUseCase;
-  final ShowAllStreamsInPillsOnExplorePageUseCase _showAllStreamsInPillsOnExplorePageUseCase;
-  late bool _isExploreTutorialStepSeen;
-  late ExplorePageState _latestIdleState;
-
   ExplorePageCubit(
     this._getExploreContentUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._showPillsOnExplorePageUseCase,
-    this._showAllStreamsInPillsOnExplorePageUseCase,
   ) : super(ExplorePageState.initialLoading());
+
+  final GetExploreContentUseCase _getExploreContentUseCase;
+  final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
+  final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  final ShowPillsOnExplorePageUseCase _showPillsOnExplorePageUseCase;
+
+  late bool _isExploreTutorialStepSeen;
+  late ExplorePageState _latestIdleState;
+
+  StreamSubscription? _exploreContentSubscription;
+
+  @override
+  Future<void> close() async {
+    await _exploreContentSubscription?.cancel();
+    await super.close();
+  }
 
   Future<void> initialize() async {
     emit(ExplorePageState.initialLoading());
 
+    final showPills = await _showPillsOnExplorePageUseCase();
+    _exploreContentSubscription = showPills
+        ? _getExploreContentUseCase.highlightedContentStream.listen(_processAndEmitExploreContent)
+        : _getExploreContentUseCase.contentStream.listen(_processAndEmitExploreContent);
+
     try {
-      await _loadExplorePageData();
       await _showTutorialSnackBar();
     } catch (e, s) {
       Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
@@ -43,21 +56,20 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   Future<void> loadExplorePageData() async {
     try {
-      await _loadExplorePageData();
+      await _fetchExploreContent();
     } catch (e, s) {
       Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
       emit(ExplorePageState.error());
     }
   }
 
-  Future<void> _loadExplorePageData() async {
+  Future<void> _fetchExploreContent() async {
     final showPills = await _showPillsOnExplorePageUseCase();
-    final showAllStreamsInPills = await _showAllStreamsInPillsOnExplorePageUseCase();
-    final exploreContent = await _getExploreContentUseCase(
-      showPills: showPills,
-      showAllStreamsInPills: showAllStreamsInPills,
-    );
+    final exploreContent = await _getExploreContentUseCase(showPills: showPills);
+    _processAndEmitExploreContent(exploreContent);
+  }
 
+  void _processAndEmitExploreContent(ExploreContent exploreContent) {
     final pills = exploreContent.pills;
     _latestIdleState = ExplorePageState.idle(
       [
