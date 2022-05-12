@@ -116,7 +116,7 @@ class AppDimens {
   static double exploreTopicCarousellSmallCoverImageHeightFactor = 0.5;
 
   /// 1.6
-  static double exploreTopicCarousellSmallCoverAspectRatio = 1.6;
+  static double exploreTopicCarousellSmallCoverAspectRatio = 1.65;
 
   /// 1.8
   static double exploreSeeAllSmallCoverAspectRatio = 1.55;
@@ -189,4 +189,6 @@ class AppDimens {
   static const articleAudioCoverSize = 1024;
 
   static const audioBannerHeight = 80.0;
+
+  static const searchBarHeight = 42.0;
 }

@@ -10,6 +10,9 @@ import 'package:better_informed_mobile/presentation/page/explore/explore_page_cu
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/sliver_search_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_loading_section.dart';
@@ -23,7 +26,6 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -41,14 +43,28 @@ class ExplorePage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final headerColor = _getHeaderColor(state);
+    final scrollControllerIdleOffset = useState(0.0);
+
+    final searchViewCubit = useCubit<SearchViewCubit>();
+    final searchTextEditingController = useTextEditingController();
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(showTutorialToast: (text) => showInfoToast(context: context, text: text));
+      state.whenOrNull(
+        showTutorialToast: (text) => showInfoToast(context: context, text: text),
+        idle: (itemList, background) {
+          scrollController.jumpTo(scrollControllerIdleOffset.value);
+        },
+        search: () {
+          scrollControllerIdleOffset.value = scrollController.offset;
+          scrollController.jumpTo(0);
+        },
+      );
     });
 
     useEffect(
       () {
         cubit.initialize();
+        searchViewCubit.initialize();
       },
       [cubit],
     );
@@ -65,8 +81,12 @@ class ExplorePage extends HookWidget {
                 NoScrollGlow(
                   child: RefreshIndicator(
                     color: AppColors.darkGrey,
-                    onRefresh: cubit.loadExplorePageData,
+                    onRefresh: state.maybeMap(
+                      search: (_) => searchViewCubit.refresh,
+                      orElse: () => cubit.loadExplorePageData,
+                    ),
                     child: CustomScrollView(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       controller: scrollController,
                       physics: state.maybeMap(
                         initialLoading: (_) => const NeverScrollableScrollPhysics(),
@@ -74,10 +94,11 @@ class ExplorePage extends HookWidget {
                         orElse: () => getPlatformScrollPhysics(),
                       ),
                       slivers: [
-                        ScrollableSliverAppBar(
-                          scrollController: scrollController,
-                          title: LocaleKeys.explore_title.tr(),
+                        SliverSearchAppBar(
                           headerColor: headerColor,
+                          explorePageCubit: cubit,
+                          searchTextEditingController: searchTextEditingController,
+                          searchViewCubit: searchViewCubit,
                         ),
                         state.maybeMap(
                           initialLoading: (_) => const _LoadingSection(),
@@ -88,6 +109,10 @@ class ExplorePage extends HookWidget {
                           idle: (state) => _ItemList(
                             items: state.items,
                             headerColor: _getHeaderColor(state),
+                          ),
+                          search: (_) => SearchView(
+                            cubit: searchViewCubit,
+                            scrollController: scrollController,
                           ),
                           orElse: () => const SliverToBoxAdapter(),
                         ),

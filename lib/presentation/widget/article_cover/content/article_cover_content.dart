@@ -18,6 +18,8 @@ class ArticleCoverContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeToRead = article.timeToRead;
+    const titleStyle = AppTypography.metadata1ExtraBold;
+    final titleHeight = (titleStyle.fontSize! * (titleStyle.height ?? 1)) * 2;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -33,11 +35,14 @@ class ArticleCoverContent extends StatelessWidget {
           textStyle: AppTypography.metadata1Regular.copyWith(height: 1.2),
         ),
         const SizedBox(height: AppDimens.s),
-        InformedMarkdownBody(
-          maxLines: 2,
-          markdown: article.title,
-          highlightColor: AppColors.transparent,
-          baseTextStyle: AppTypography.metadata1ExtraBold,
+        SizedBox(
+          height: titleHeight,
+          child: InformedMarkdownBody(
+            maxLines: 2,
+            markdown: article.title,
+            highlightColor: AppColors.transparent,
+            baseTextStyle: titleStyle,
+          ),
         ),
         if (timeToRead != null) ...[
           const SizedBox(height: AppDimens.s),

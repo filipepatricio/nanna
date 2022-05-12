@@ -60,6 +60,7 @@ class ExploreContentGQL {
         ... on HighlightedTopicsExploreArea {
           topics(pagination: {limit: $limit, offset: $offset}) {
             ${CommonGQLModels.topicPreview}
+            entryCount
           }
         }
       }

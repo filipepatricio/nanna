@@ -19,6 +19,8 @@ import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_dto.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
+import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
@@ -114,6 +116,15 @@ class MockDTO {
       _exploreArticlesArea,
       _exploreHighlightedTopicsArea,
       _exploreSmallTopicsArea,
+    ],
+  );
+
+  static final search = SearchContentDTO(
+    [
+      SearchResultDTO.topic(topicPreview),
+      SearchResultDTO.article(_freeArticle),
+      SearchResultDTO.article(_freeArticle),
+      SearchResultDTO.topic(topicPreview),
     ],
   );
 
