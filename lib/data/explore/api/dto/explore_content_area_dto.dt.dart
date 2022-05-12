@@ -12,16 +12,9 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   factory ExploreContentAreaDTO.articles(
     String id,
     String name,
+    String? description,
     List<ArticleHeaderDTO> articles,
   ) = _ExploreContentAreaDTOArticles;
-
-  @FreezedUnionValue('ArticlesWithFeatureExploreArea')
-  factory ExploreContentAreaDTO.articlesWithFeature(
-    String id,
-    String name,
-    String backgroundColor,
-    List<ArticleHeaderDTO> articles,
-  ) = _ExploreContentAreaDTOArticlesWithFeature;
 
   @FreezedUnionValue('TopicsExploreArea')
   factory ExploreContentAreaDTO.topics(
@@ -29,6 +22,23 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
     String name,
     List<TopicPreviewDTO> topics,
   ) = _ExploreContentAreaDTOTopics;
+
+  @FreezedUnionValue('SmallTopicsExploreArea')
+  factory ExploreContentAreaDTO.smallTopics(
+    String id,
+    String name,
+    String? description,
+    List<TopicPreviewDTO> topics,
+  ) = _ExploreContentAreaDTOSmallTopics;
+
+  @FreezedUnionValue('HighlightedTopicsExploreArea')
+  factory ExploreContentAreaDTO.highlightedTopics(
+    String id,
+    String name,
+    String? description,
+    String? backgroundColor,
+    List<TopicPreviewDTO> topics,
+  ) = _ExploreContentAreaDTOHighlightedTopics;
 
   @FreezedUnionValue(unknownKey)
   factory ExploreContentAreaDTO.unknown(String id) = _ExploreContentAreaDTOUnknown;

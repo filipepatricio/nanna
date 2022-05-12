@@ -27,35 +27,30 @@ class ExploreContentAreaDTOMapper implements Mapper<ExploreContentAreaDTO, Explo
       articles: (area) => ExploreContentArea.articles(
         id: area.id,
         title: area.name,
+        description: area.description,
         articles: area.articles.map<MediaItemArticle>(_articleDTOToMediaItemMapper).toList(),
       ),
-      articlesWithFeature: (area) {
-        final articles = area.articles.map<MediaItemArticle>(_articleDTOToMediaItemMapper).toList();
-
-        if (articles.isEmpty) {
-          return ExploreContentArea.articles(
-            id: area.id,
-            title: area.name,
-            articles: [],
-          );
-        }
-
-        final feature = articles.first;
-        final list = articles.skip(1).toList();
-
-        return ExploreContentArea.articleWithFeature(
-          id: area.id,
-          title: area.name,
-          backgroundColor: _colorDTOMapper(area.backgroundColor),
-          featuredArticle: feature,
-          articles: list,
-        );
-      },
       topics: (area) => ExploreContentArea.topics(
         id: area.id,
         title: area.name,
         topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
       ),
+      smallTopics: (area) => ExploreContentArea.smallTopics(
+        id: area.id,
+        title: area.name,
+        description: area.description,
+        topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
+      ),
+      highlightedTopics: (area) {
+        final backgroundColor = area.backgroundColor;
+        return ExploreContentArea.highlightedTopics(
+          id: area.id,
+          title: area.name,
+          description: area.description,
+          backgroundColor: backgroundColor != null ? _colorDTOMapper(backgroundColor) : null,
+          topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
+        );
+      },
       unknown: (_) => ExploreContentArea.unknown(id: unknownKey),
     );
   }

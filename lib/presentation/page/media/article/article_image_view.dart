@@ -25,8 +25,6 @@ class ArticleImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasImage = article.hasImage;
     final articleImage = article.image;
-    final imageWidth = MediaQuery.of(context).size.width;
-    final imageHeight = fullHeight;
 
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -37,8 +35,6 @@ class ArticleImageView extends StatelessWidget {
             height: fullHeight,
             child: ArticleImage(
               image: articleImage!,
-              width: imageWidth,
-              height: imageHeight,
               cardColor: AppColors.background,
               fit: BoxFit.cover,
               showDarkened: true,

@@ -20,8 +20,9 @@ class GetExploreContentUseCase {
   bool _isNotEmptyArea(ExploreContentArea areas) {
     return areas.map(
       articles: (area) => area.articles.isNotEmpty,
-      articleWithFeature: (area) => area.articles.isNotEmpty,
       topics: (area) => area.topics.isNotEmpty,
+      smallTopics: (area) => area.topics.isNotEmpty,
+      highlightedTopics: (area) => area.topics.isNotEmpty,
       unknown: (_) => false,
     );
   }

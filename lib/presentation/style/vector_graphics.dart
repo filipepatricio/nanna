@@ -18,6 +18,10 @@ class AppVectorGraphics {
   static const String profile = 'assets/vector_graphics/profile_ic.svg';
   static const String profileSelected = 'assets/vector_graphics/profile_selected_ic.svg';
 
+  static const String topicLabel = 'assets/vector_graphics/topic_label.svg';
+  static const String expertTopicLabel = 'assets/vector_graphics/expert_topic_label.svg';
+  static const String articleLabel = 'assets/vector_graphics/article_label.svg';
+
   static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
 
   static const String info = 'assets/vector_graphics/info.svg';

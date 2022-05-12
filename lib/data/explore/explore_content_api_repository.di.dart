@@ -41,7 +41,6 @@ class ExploreContentApiRepository implements ExploreContentRepository {
 
     return area.maybeMap(
       articles: (data) => data.articles,
-      articleWithFeature: (data) => [data.featuredArticle] + data.articles,
       orElse: () => [],
     );
   }
@@ -53,6 +52,8 @@ class ExploreContentApiRepository implements ExploreContentRepository {
 
     return area.maybeMap(
       topics: (data) => data.topics,
+      smallTopics: (data) => data.topics,
+      highlightedTopics: (data) => data.topics,
       orElse: () => [],
     );
   }

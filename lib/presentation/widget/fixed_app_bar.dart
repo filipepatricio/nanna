@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -41,24 +39,19 @@ class FixedAppBar extends HookWidget implements PreferredSizeWidget {
       centerTitle: true,
       elevation: showCenterTitle ? 3 : 0,
       shadowColor: AppColors.black40,
-      titleSpacing: 0,
-      title: showCenterTitle
-          ? Text(
-              title,
-              style: AppTypography.h4Bold.copyWith(
-                height: 2.25,
-                color: AppColors.textPrimary.withOpacity(
-                  min(1, scrollOffset.value / 70),
-                ),
-              ),
-            )
-          : const SizedBox(),
+      title: Text(
+        title,
+        style: AppTypography.h4Bold.copyWith(
+          height: 2.25,
+          color: AppColors.textPrimary,
+        ),
+      ),
       leading: IconButton(
         padding: const EdgeInsets.only(top: AppDimens.sl),
         icon: const Icon(Icons.arrow_back_ios_new_rounded),
         iconSize: AppDimens.backArrowSize,
         color: AppColors.textPrimary,
-        onPressed: () => AutoRouter.of(context).pop(),
+        onPressed: () => context.popRoute(),
       ),
     );
   }

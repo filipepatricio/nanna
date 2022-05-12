@@ -23,7 +23,7 @@
             "args": [
                 "--flavor", "dev",
                 "--dart-define=env=dev",
-                "--dart-define=host=http://192.168.0.38:4000/graphql"
+                "--dart-define=host=http://192.168.1.143:4000/graphql"
             ]
         },
         {
@@ -34,7 +34,7 @@
             "args": [
                 "--flavor", "dev",
                 "--dart-define=env=dev",
-                "--dart-define=host=http://192.168.0.38:4000/graphql"
+                "--dart-define=host=http://192.168.1.143:4000/graphql"
             ]
         },
         {

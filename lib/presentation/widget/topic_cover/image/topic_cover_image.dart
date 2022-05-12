@@ -8,24 +8,24 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class TopicCoverImage extends HookWidget {
   const TopicCoverImage({
     required this.topic,
+    this.borderRadius = AppDimens.m,
     this.showPhoto = false,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
+  final double borderRadius;
   final bool showPhoto;
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(AppDimens.m);
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final height = constraints.maxHeight;
         final width = constraints.maxWidth;
 
         return ClipRRect(
-          borderRadius: borderRadius,
+          borderRadius: BorderRadius.circular(borderRadius),
           child: CloudinaryImage(
             publicId: showPhoto ? topic.heroImage.publicId : topic.coverImage.publicId,
             config: CloudinaryConfig(
@@ -39,7 +39,7 @@ class TopicCoverImage extends HookWidget {
             fit: BoxFit.cover,
             alignment: Alignment.center,
             showDarkened: showPhoto,
-            testImage: showPhoto ? AppRasterGraphics.testArticleHeroImage : AppRasterGraphics.testReadingListCoverImage,
+            testImage: showPhoto ? AppRasterGraphics.testTopicHeroImage : AppRasterGraphics.testReadingListCoverImage,
           ),
         );
       },
