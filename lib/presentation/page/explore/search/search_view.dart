@@ -15,22 +15,25 @@ import 'package:better_informed_mobile/presentation/widget/next_page_load_execut
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 const _gridColumnCount = 2;
 
 class SearchView extends HookWidget {
   const SearchView({
     required this.cubit,
+    required this.scrollController,
     Key? key,
   }) : super(key: key);
 
   final SearchViewCubit cubit;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     final state = useCubitBuilder(cubit);
-    final scrollController = useScrollController();
 
     return NextPageLoadExecutor(
       enabled: true,
@@ -134,54 +137,46 @@ class _Idle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverFillRemaining(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-        child: CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: _gridColumnCount,
-                childAspectRatio: AppDimens.searchItemsAspectRatio(context),
-                mainAxisSpacing: AppDimens.l,
-                crossAxisSpacing: AppDimens.l,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return results[index].mapOrNull(
-                    article: (data) => ArticleCover.explore(
-                      article: data.article,
-                      onTap: () => context.navigateToArticle(data.article),
-                      coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
-                    ),
-                    topic: (data) => TopicCover.exploreSmall(
-                      topic: data.topicPreview,
-                      onTap: () => context.navigateToTopic(data.topicPreview),
-                      hasBackgroundColor: true,
-                    ),
-                  );
-                },
-                childCount: results.length,
-              ),
-            ),
-            if (withLoader)
-              const SliverPadding(
-                padding: EdgeInsets.all(AppDimens.xl),
-                sliver: SliverToBoxAdapter(
-                  child: Loader(
-                    color: AppColors.limeGreen,
-                  ),
+    return MultiSliver(
+      children: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          sliver: SliverAlignedGrid.count(
+            crossAxisCount: _gridColumnCount,
+            mainAxisSpacing: AppDimens.l,
+            crossAxisSpacing: AppDimens.l,
+            itemCount: results.length,
+            itemBuilder: (context, index) {
+              return results[index].mapOrNull(
+                article: (data) => ArticleCover.explore(
+                  article: data.article,
+                  onTap: () => context.navigateToArticle(data.article),
+                  coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
                 ),
-              ),
-            const SliverPadding(
-              padding: EdgeInsets.only(
-                bottom: AppDimens.audioBannerHeight,
+                topic: (data) => TopicCover.exploreSmall(
+                  topic: data.topicPreview,
+                  onTap: () => context.navigateToTopic(data.topicPreview),
+                  hasBackgroundColor: true,
+                ),
+              );
+            },
+          ),
+        ),
+        if (withLoader)
+          const SliverPadding(
+            padding: EdgeInsets.all(AppDimens.xl),
+            sliver: SliverToBoxAdapter(
+              child: Loader(
+                color: AppColors.limeGreen,
               ),
             ),
-          ],
+          ),
+        const SliverPadding(
+          padding: EdgeInsets.only(
+            bottom: AppDimens.audioBannerHeight,
+          ),
         ),
-      ),
+      ],
     );
   }
 }
