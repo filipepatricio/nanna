@@ -15,14 +15,12 @@ import 'package:flutter_svg/svg.dart';
 
 class SliverSearchAppBar extends StatelessWidget {
   const SliverSearchAppBar({
-    required this.headerColor,
     required this.explorePageCubit,
     required this.searchTextEditingController,
     required this.searchViewCubit,
     Key? key,
   }) : super(key: key);
 
-  final Color headerColor;
   final ExplorePageCubit explorePageCubit;
   final TextEditingController searchTextEditingController;
   final SearchViewCubit searchViewCubit;
@@ -30,7 +28,7 @@ class SliverSearchAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: headerColor,
+      backgroundColor: AppColors.background,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       shadowColor: AppColors.black40,
       pinned: true,

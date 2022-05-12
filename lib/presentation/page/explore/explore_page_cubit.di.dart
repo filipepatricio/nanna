@@ -59,23 +59,11 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     );
 
     final pills = exploreContent.pills;
-
-    int? backgroundColor;
-    if (exploreContent.areas.isNotEmpty) {
-      final firstArea = exploreContent.areas[0];
-      firstArea.mapOrNull(
-        highlightedTopics: (area) {
-          backgroundColor = area.backgroundColor;
-        },
-      );
-    }
-
     _latestIdleState = ExplorePageState.idle(
       [
         if (pills != null) ExploreItem.pills(pills),
         ...exploreContent.areas.map(ExploreItem.stream).toList(),
       ],
-      backgroundColor,
     );
 
     emit(_latestIdleState);
