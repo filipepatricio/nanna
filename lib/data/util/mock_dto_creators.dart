@@ -99,6 +99,7 @@ class MockDTO {
       _exploreArticlesArea,
       _exploreHighlightedTopicsArea,
       _exploreSmallTopicsArea,
+      _exploreArticlesListArea,
     ],
   );
 
@@ -116,6 +117,7 @@ class MockDTO {
       _exploreArticlesArea,
       _exploreHighlightedTopicsArea,
       _exploreSmallTopicsArea,
+      _exploreArticlesListArea,
     ],
   );
 
@@ -294,6 +296,19 @@ class MockDTO {
       topicPreview,
       topicPreview,
       topicPreview,
+    ],
+  );
+
+  static final _exploreArticlesListArea = ExploreContentAreaDTO.articlesList(
+    'explore-articles-list-id',
+    'Some more articles',
+    'Those are articles in the list',
+    [
+      premiumArticle,
+      _freeArticle,
+      premiumArticle,
+      _freeArticle,
+      premiumArticle,
     ],
   );
 

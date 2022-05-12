@@ -18,8 +18,6 @@ class ArticleListAreaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final coverSize = MediaQuery.of(context).size.width * 0.26;
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
