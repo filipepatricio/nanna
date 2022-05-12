@@ -42,7 +42,6 @@ class ExplorePage extends HookWidget {
     final cubit = useCubit<ExplorePageCubit>();
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
-    final headerColor = _getHeaderColor(state);
     final scrollControllerIdleOffset = useState(0.0);
 
     final searchViewCubit = useCubit<SearchViewCubit>();
@@ -51,7 +50,7 @@ class ExplorePage extends HookWidget {
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showTutorialToast: (text) => showInfoToast(context: context, text: text),
-        idle: (itemList, background) {
+        idle: (_) {
           scrollController.jumpTo(scrollControllerIdleOffset.value);
         },
         search: () {
@@ -95,7 +94,6 @@ class ExplorePage extends HookWidget {
                       ),
                       slivers: [
                         SliverSearchAppBar(
-                          headerColor: headerColor,
                           explorePageCubit: cubit,
                           searchTextEditingController: searchTextEditingController,
                           searchViewCubit: searchViewCubit,
@@ -108,7 +106,6 @@ class ExplorePage extends HookWidget {
                         state.maybeMap(
                           idle: (state) => _ItemList(
                             items: state.items,
-                            headerColor: _getHeaderColor(state),
                           ),
                           search: (_) => SearchView(
                             cubit: searchViewCubit,
@@ -135,16 +132,6 @@ class ExplorePage extends HookWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Color _getHeaderColor(ExplorePageState state) {
-    return state.maybeMap(
-      idle: (idle) {
-        final backgroundColor = idle.backgroundColor;
-        return backgroundColor == null ? AppColors.background : Color(backgroundColor);
-      },
-      orElse: () => AppColors.background,
     );
   }
 }
@@ -210,12 +197,10 @@ class _LoadingSection extends StatelessWidget {
 class _ItemList extends StatelessWidget {
   const _ItemList({
     required this.items,
-    required this.headerColor,
     Key? key,
   }) : super(key: key);
 
   final List<ExploreItem> items;
-  final Color headerColor;
 
   @override
   Widget build(BuildContext context) {
@@ -234,7 +219,6 @@ class _ItemList extends StatelessWidget {
           return item.map(
             pills: (item) => ExplorePillsAreaView(
               pills: item.list,
-              headerColor: headerColor,
             ),
             stream: (item) => _Area(
               area: item.area,
