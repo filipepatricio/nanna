@@ -19,6 +19,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final ShowPillsOnExplorePageUseCase _showPillsOnExplorePageUseCase;
   final ShowAllStreamsInPillsOnExplorePageUseCase _showAllStreamsInPillsOnExplorePageUseCase;
   late bool _isExploreTutorialStepSeen;
+  late ExplorePageState _latestIdleState;
 
   ExplorePageCubit(
     this._getExploreContentUseCase,
@@ -69,15 +70,15 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
       );
     }
 
-    emit(
-      ExplorePageState.idle(
-        [
-          if (pills != null) ExploreItem.pills(pills),
-          ...exploreContent.areas.map(ExploreItem.stream).toList(),
-        ],
-        backgroundColor,
-      ),
+    _latestIdleState = ExplorePageState.idle(
+      [
+        if (pills != null) ExploreItem.pills(pills),
+        ...exploreContent.areas.map(ExploreItem.stream).toList(),
+      ],
+      backgroundColor,
     );
+
+    emit(_latestIdleState);
   }
 
   Future<void> _showTutorialSnackBar() async {
@@ -86,5 +87,13 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
       emit(ExplorePageState.showTutorialToast(LocaleKeys.tutorial_exploreSnackBarText.tr()));
       await _setTutorialStepSeenUseCase(TutorialStep.explore);
     }
+  }
+
+  Future<void> search() async {
+    emit(ExplorePageState.search());
+  }
+
+  Future<void> idle() async {
+    emit(_latestIdleState);
   }
 }

@@ -12,6 +12,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 const _maxPillLines = 3;
 const _maxPillsPerLine = 3;
 const _pillPadding = 8.0;
+const _pillsTopPadding = AppDimens.m;
 
 class ExplorePillsAreaView extends StatelessWidget {
   const ExplorePillsAreaView({
@@ -27,15 +28,20 @@ class ExplorePillsAreaView extends StatelessWidget {
   Widget build(BuildContext context) {
     final lineCount = min(_maxPillLines, (pills.length / _maxPillsPerLine).ceil());
     final height = min(
-      AppDimens.explorePillAreaHeight,
-      lineCount * AppDimens.explorePillHeight + (lineCount > 1 ? _pillPadding : 0),
-    );
+          AppDimens.explorePillAreaHeight,
+          lineCount * AppDimens.explorePillHeight + (lineCount > 1 ? _pillPadding : 0),
+        ) +
+        _pillsTopPadding;
 
     return Container(
       height: height,
       color: headerColor,
       child: MasonryGridView.count(
-        padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.m),
+        padding: const EdgeInsets.only(
+          left: AppDimens.l,
+          right: AppDimens.m,
+          top: _pillsTopPadding,
+        ),
         scrollDirection: Axis.horizontal,
         crossAxisCount: lineCount,
         mainAxisSpacing: _pillPadding,

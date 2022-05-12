@@ -18,5 +18,10 @@ class ExplorePageState with _$ExplorePageState {
   @Implements<BuildState>()
   factory ExplorePageState.error() = _ExplorePageStateError;
 
+  @Implements<BuildState>()
+  factory ExplorePageState.search() = _ExplorePageStateSearch;
+
+  factory ExplorePageState.typing() = _ExplorePageStateTyping;
+
   factory ExplorePageState.showTutorialToast(String text) = _ExplorePageStateShowTutorialToast;
 }
