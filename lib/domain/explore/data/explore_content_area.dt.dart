@@ -13,6 +13,13 @@ class ExploreContentArea with _$ExploreContentArea {
     required List<MediaItemArticle> articles,
   }) = ExploreContentAreaArticles;
 
+  factory ExploreContentArea.articlesList({
+    required String id,
+    required String title,
+    required String? description,
+    required List<MediaItemArticle> articles,
+  }) = ExploreContentAreaArticlesList;
+
   factory ExploreContentArea.topics({
     required String id,
     required String title,

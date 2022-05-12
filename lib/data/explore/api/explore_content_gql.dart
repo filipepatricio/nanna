@@ -45,6 +45,12 @@ class ExploreContentGQL {
           }
         }
 
+        ... on ArticlesListExploreArea {
+          articles(pagination: {limit: $limit, offset: $offset}) {
+            ${CommonGQLModels.article}
+          }
+        }
+
         ... on TopicsExploreArea {
           topics(pagination: {limit: $limit, offset: $offset}) {
             ${CommonGQLModels.topicPreview}

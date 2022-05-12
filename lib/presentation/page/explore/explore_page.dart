@@ -264,6 +264,7 @@ class _Area extends HookWidget {
         borderFraction: 0.6,
         child: area.map(
           articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),
+          articlesList: (area) => const SizedBox(),
           topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
           smallTopics: (area) => SmallTopicsAreaView(area: area),
           highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),

@@ -135,6 +135,13 @@ class CommonGQLModels {
           }
         }
 
+        ... on ArticlesListExploreArea {
+          description
+          articles {
+            ${CommonGQLModels.article}
+          }
+        }
+
         ... on TopicsExploreArea {
           topics {
             ${CommonGQLModels.topicPreview}

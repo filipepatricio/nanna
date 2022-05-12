@@ -16,6 +16,14 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
     List<ArticleHeaderDTO> articles,
   ) = _ExploreContentAreaDTOArticles;
 
+  @FreezedUnionValue('ArticlesListExploreArea')
+  factory ExploreContentAreaDTO.articlesList(
+    String id,
+    String name,
+    String? description,
+    List<ArticleHeaderDTO> articles,
+  ) = _ExploreContentAreaDTOArticlesList;
+
   @FreezedUnionValue('TopicsExploreArea')
   factory ExploreContentAreaDTO.topics(
     String id,
@@ -41,7 +49,9 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   ) = _ExploreContentAreaDTOHighlightedTopics;
 
   @FreezedUnionValue(unknownKey)
-  factory ExploreContentAreaDTO.unknown(String id) = _ExploreContentAreaDTOUnknown;
+  factory ExploreContentAreaDTO.unknown(String id) =
+      _ExploreContentAreaDTOUnknown;
 
-  factory ExploreContentAreaDTO.fromJson(Map<String, dynamic> json) => _$ExploreContentAreaDTOFromJson(json);
+  factory ExploreContentAreaDTO.fromJson(Map<String, dynamic> json) =>
+      _$ExploreContentAreaDTOFromJson(json);
 }
