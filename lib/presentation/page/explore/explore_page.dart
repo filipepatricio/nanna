@@ -20,6 +20,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
@@ -91,9 +92,7 @@ class ExplorePage extends HookWidget {
                           orElse: () => const SliverToBoxAdapter(),
                         ),
                         const SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: AppDimens.xl + AppDimens.audioBannerHeight,
-                          ),
+                          child: AudioPlayerBannerPlaceholder(),
                         ),
                       ],
                     ),
