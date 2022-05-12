@@ -30,20 +30,23 @@ class ArticleCoverContent extends StatelessWidget {
           showLogo: false,
           showDate: false,
           showReadTime: false,
-          textStyle: AppTypography.subH2Medium,
+          textStyle: AppTypography.metadata1Regular.copyWith(height: 1.2),
         ),
         const SizedBox(height: AppDimens.s),
         InformedMarkdownBody(
           maxLines: 2,
           markdown: article.title,
           highlightColor: AppColors.transparent,
-          baseTextStyle: AppTypography.metadata1Bold,
+          baseTextStyle: AppTypography.metadata1ExtraBold,
         ),
         if (timeToRead != null) ...[
           const SizedBox(height: AppDimens.s),
           Text(
             LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
-            style: AppTypography.subH2Medium.copyWith(color: AppColors.textGrey),
+            style: AppTypography.metadata1Regular.copyWith(
+              height: 1.2,
+              color: AppColors.textGrey,
+            ),
           ),
         ]
       ],

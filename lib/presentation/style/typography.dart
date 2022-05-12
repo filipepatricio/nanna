@@ -290,6 +290,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle metadata1ExtraBold = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 12,
+    height: 1.2,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle metadata1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
