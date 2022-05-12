@@ -10,4 +10,9 @@ class DailyBriefMockDataSource implements DailyBriefApiDataSource {
   Future<CurrentBriefDTO> currentBrief() async {
     return MockDTO.currentBrief;
   }
+
+  @override
+  Stream<CurrentBriefDTO?> currentBriefStream() async* {
+    yield MockDTO.currentBrief;
+  }
 }

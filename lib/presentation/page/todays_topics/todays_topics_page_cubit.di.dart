@@ -16,6 +16,14 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
+  TodaysTopicsPageCubit(
+    this._getCurrentBriefUseCase,
+    this._isTutorialStepSeenUseCase,
+    this._setTutorialStepSeenUseCase,
+    this._trackActivityUseCase,
+    this._incomingPushDataRefreshStreamUseCase,
+  ) : super(TodaysTopicsPageState.loading());
+
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
@@ -26,23 +34,23 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   late CurrentBrief _currentBrief;
 
   StreamSubscription? _dataRefreshSubscription;
-
-  TodaysTopicsPageCubit(
-    this._getCurrentBriefUseCase,
-    this._isTutorialStepSeenUseCase,
-    this._setTutorialStepSeenUseCase,
-    this._trackActivityUseCase,
-    this._incomingPushDataRefreshStreamUseCase,
-  ) : super(TodaysTopicsPageState.loading());
+  StreamSubscription? _currentBriefSubscription;
 
   @override
   Future<void> close() async {
     await _dataRefreshSubscription?.cancel();
+    await _currentBriefSubscription?.cancel();
     await super.close();
   }
 
   Future<void> initialize() async {
     await loadTodaysTopics();
+
+    _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((newCurrentBrief) {
+      _currentBrief = newCurrentBrief;
+      emit(TodaysTopicsPageState.loading());
+      emit(TodaysTopicsPageState.idle(_currentBrief));
+    });
 
     _dataRefreshSubscription = _incomingPushDataRefreshStreamUseCase().listen((event) {
       Fimber.d('Incoming push - refreshing todays topics');
