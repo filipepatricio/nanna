@@ -12,7 +12,6 @@ class ExplorePageState with _$ExplorePageState {
   @Implements<BuildState>()
   factory ExplorePageState.idle(
     List<ExploreItem> items,
-    int? backgroundColor,
   ) = _ExplorePageStateIdle;
 
   @Implements<BuildState>()

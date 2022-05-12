@@ -13,16 +13,15 @@ const _maxPillLines = 3;
 const _maxPillsPerLine = 3;
 const _pillPadding = 8.0;
 const _pillsTopPadding = AppDimens.m;
+const _pillsBottomPadding = AppDimens.xl;
 
 class ExplorePillsAreaView extends StatelessWidget {
   const ExplorePillsAreaView({
     required this.pills,
-    required this.headerColor,
     Key? key,
   }) : super(key: key);
 
   final List<ExploreContentPill> pills;
-  final Color headerColor;
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +30,17 @@ class ExplorePillsAreaView extends StatelessWidget {
           AppDimens.explorePillAreaHeight,
           lineCount * AppDimens.explorePillHeight + (lineCount > 1 ? _pillPadding : 0),
         ) +
-        _pillsTopPadding;
+        _pillsTopPadding +
+        _pillsBottomPadding;
 
     return Container(
       height: height,
-      color: headerColor,
       child: MasonryGridView.count(
         padding: const EdgeInsets.only(
           left: AppDimens.l,
-          right: AppDimens.m,
+          right: AppDimens.l,
           top: _pillsTopPadding,
+          bottom: _pillsBottomPadding,
         ),
         scrollDirection: Axis.horizontal,
         crossAxisCount: lineCount,
