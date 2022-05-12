@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/article_list_area/article_list_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
@@ -264,7 +265,7 @@ class _Area extends HookWidget {
         borderFraction: 0.6,
         child: area.map(
           articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),
-          articlesList: (area) => const SizedBox(),
+          articlesList: (area) => ArticleListAreaView(area: area),
           topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
           smallTopics: (area) => SmallTopicsAreaView(area: area),
           highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),

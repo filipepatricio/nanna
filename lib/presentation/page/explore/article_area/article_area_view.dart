@@ -47,7 +47,7 @@ class ArticleAreaView extends HookWidget {
           itemWidth: width,
           itemHeight: height,
           items: _items,
-          itemBuilder: (article, index) => ArticleCover.explore(
+          itemBuilder: (article, index) => ArticleCover.exploreCarousel(
             article: article,
             onTap: () => context.navigateToArticle(article),
             coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],

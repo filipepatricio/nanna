@@ -180,10 +180,10 @@ class _GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return article.map(
-      image: (data) => ArticleCover.explore(
+      image: (data) => ArticleCover.exploreCarousel(
         article: article.article,
       ),
-      color: (data) => ArticleCover.explore(
+      color: (data) => ArticleCover.exploreCarousel(
         article: article.article,
         coverColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
       ),

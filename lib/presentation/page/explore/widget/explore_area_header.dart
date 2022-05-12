@@ -27,7 +27,7 @@ class ExploreAreaHeader extends StatelessWidget {
           InformedMarkdownBody(
             markdown: title,
             highlightColor: AppColors.transparent,
-            baseTextStyle: AppTypography.h5ExtraBald,
+            baseTextStyle: AppTypography.h5ExtraBold,
           ),
           if (optDescription != null) ...[
             const SizedBox(height: AppDimens.xs),
