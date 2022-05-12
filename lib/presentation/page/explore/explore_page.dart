@@ -8,10 +8,10 @@ import 'package:better_informed_mobile/presentation/page/explore/article_area/ar
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_loading_section.dart';
@@ -32,7 +32,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 const _tryAgainButtonWidth = 150.0;
@@ -92,7 +91,7 @@ class ExplorePage extends HookWidget {
                       ),
                       slivers: [
                         SliverAppBar(
-                          backgroundColor: AppColors.background,
+                          backgroundColor: headerColor,
                           systemOverlayStyle: SystemUiOverlayStyle.dark,
                           shadowColor: AppColors.black40,
                           pinned: true,
@@ -261,59 +260,6 @@ class _LoadingSection extends StatelessWidget {
           SizedBox(height: AppDimens.xc),
           ExploreLoadingView.stream(),
         ],
-      ),
-    );
-  }
-}
-
-class _SearchBarButton extends StatelessWidget {
-  const _SearchBarButton({
-    required this.headerColor,
-    Key? key,
-  }) : super(key: key);
-
-  final Color headerColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        color: headerColor,
-        padding: const EdgeInsets.only(bottom: AppDimens.m, left: AppDimens.l, right: AppDimens.l),
-        child: GestureDetector(
-          onTap: () {
-            AutoRouter.of(context).push(const SearchPageRoute());
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-            height: AppDimens.xxl + AppDimens.xxs,
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(100),
-              border: Border.all(
-                color: AppColors.textGrey,
-                width: 1,
-              ),
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  AppVectorGraphics.search,
-                  color: AppColors.darkGreyBackground,
-                  fit: BoxFit.scaleDown,
-                ),
-                const SizedBox(width: AppDimens.s),
-                Text(
-                  LocaleKeys.common_search.tr(),
-                  style: AppTypography.h4Medium.copyWith(
-                    color: AppColors.textGrey,
-                    height: 1.3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

@@ -1,17 +1,17 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_list_item.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -150,44 +150,15 @@ class _Idle extends StatelessWidget {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   return results[index].mapOrNull(
-                    article: (data) => LayoutBuilder(
-                      builder: (context, constraints) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ArticleListItem(
-                              article: data.article,
-                              themeColor: AppColors.background,
-                              cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
-                              height: constraints.maxHeight,
-                              width: constraints.maxWidth,
-                            ),
-                          ],
-                        );
-                      },
+                    article: (data) => ArticleCover.explore(
+                      article: data.article,
+                      onTap: () => context.navigateToArticle(data.article),
+                      coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
                     ),
-                    topic: (data) => LayoutBuilder(
-                      builder: (context, constraints) {
-                        return StackedCards.variant(
-                          variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
-                          coverSize: Size(
-                            constraints.maxWidth,
-                            constraints.maxHeight,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              AutoRouter.of(context).push(
-                                TopicPage(
-                                  topicSlug: data.topicPreview.slug,
-                                ),
-                              );
-                            },
-                            child: TopicCover.small(
-                              topic: data.topicPreview,
-                            ),
-                          ),
-                        );
-                      },
+                    topic: (data) => TopicCover.exploreSmall(
+                      topic: data.topicPreview,
+                      onTap: () => context.navigateToTopic(data.topicPreview),
+                      hasBackgroundColor: true,
                     ),
                   );
                 },
@@ -210,6 +181,22 @@ class _Idle extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+extension on BuildContext {
+  void navigateToArticle(MediaItemArticle article) {
+    pushRoute(
+      MediaItemPageRoute(article: article),
+    );
+  }
+
+  void navigateToTopic(TopicPreview topicPreview) {
+    pushRoute(
+      TopicPage(
+        topicSlug: topicPreview.slug,
       ),
     );
   }

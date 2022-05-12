@@ -193,5 +193,5 @@ class AppDimens {
   static const searchBarHeight = 42.0;
 
   /// 0 / 45
-  static double searchItemsAspectRatio(BuildContext context) => context.isSmallDevice ? 0.6 : 0.7;
+  static double searchItemsAspectRatio(BuildContext context) => context.isSmallDevice ? 0.57 : 0.67;
 }
