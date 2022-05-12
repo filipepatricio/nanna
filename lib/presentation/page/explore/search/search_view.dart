@@ -156,7 +156,7 @@ class _Idle extends StatelessWidget {
                 topic: (data) => TopicCover.exploreSmall(
                   topic: data.topicPreview,
                   onTap: () => context.navigateToTopic(data.topicPreview),
-                  hasBackgroundColor: true,
+                  hasBackgroundColor: false,
                 ),
               );
             },
@@ -171,11 +171,6 @@ class _Idle extends StatelessWidget {
               ),
             ),
           ),
-        const SliverPadding(
-          padding: EdgeInsets.only(
-            bottom: AppDimens.audioBannerHeight,
-          ),
-        ),
       ],
     );
   }

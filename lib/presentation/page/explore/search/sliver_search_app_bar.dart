@@ -90,7 +90,7 @@ class _SearchBar extends HookWidget {
     return Container(
       height: AppDimens.searchBarHeight,
       decoration: BoxDecoration(
-        color: AppColors.transparent,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(100),
         border: Border.all(
           color: AppColors.textGrey,
