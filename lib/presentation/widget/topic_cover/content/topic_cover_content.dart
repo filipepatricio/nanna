@@ -231,20 +231,23 @@ class _CoverContentExploreSmall extends StatelessWidget {
           owner: topic.owner,
           withImage: false,
           imageSize: AppDimens.zero,
-          textStyle: AppTypography.subH2Medium,
+          textStyle: AppTypography.metadata1Regular.copyWith(height: 1.2),
           mode: Brightness.dark,
         ),
         const SizedBox(height: AppDimens.s),
         InformedMarkdownBody(
           markdown: topic.title,
           maxLines: 2,
-          baseTextStyle: AppTypography.metadata1Bold,
+          baseTextStyle: AppTypography.metadata1ExtraBold,
         ),
         const SizedBox(height: AppDimens.s),
         UpdatedLabel(
           dateTime: topic.lastUpdatedAt,
           mode: Brightness.dark,
-          textStyle: AppTypography.subH2Medium.copyWith(color: hasBackgroundColor ? null : AppColors.textGrey),
+          textStyle: AppTypography.metadata1Regular.copyWith(
+            height: 1.2,
+            color: hasBackgroundColor ? null : AppColors.textGrey,
+          ),
         ),
       ],
     );
