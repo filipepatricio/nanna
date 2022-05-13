@@ -54,13 +54,13 @@ class AppDimens {
   /// 80.0
   static const xxxc = 80.0;
 
-  /// 14
+  /// 18.0
   static const backArrowSize = 18.0;
 
   /// 14
   static const readMoreArrowSize = 14.0;
 
-  /// 43
+  /// 44.0
   static const settingsItemHeight = 44.0;
 
   /// 8
@@ -108,6 +108,21 @@ class AppDimens {
         MediaQuery.of(context).size.height * 0.7,
         400,
       );
+
+  /// 0.4
+  static const exploreTopicCarousellSmallCoverWidthFactor = 0.4;
+
+  /// 0.5
+  static double exploreTopicCarousellSmallCoverImageHeightFactor = 0.5;
+
+  /// 1.6
+  static double exploreTopicCarousellSmallCoverAspectRatio = 1.65;
+
+  /// 1.8
+  static double exploreSeeAllSmallCoverAspectRatio = 1.55;
+
+  /// 0.72
+  static const exploreTopicCellSizeFactor = 0.72;
 
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
@@ -163,9 +178,17 @@ class AppDimens {
   /// 260
   static const exploreAreaTopicSeeAllCoverHeight = 250.0;
 
+  /// 170
+  static const explorePillAreaHeight = 170.0;
+
+  /// 50
+  static const explorePillHeight = 50.0;
+
   static const bookmarkIconSize = 32.0;
 
   static const articleAudioCoverSize = 1024;
 
   static const audioBannerHeight = 80.0;
+
+  static const searchBarHeight = 42.0;
 }

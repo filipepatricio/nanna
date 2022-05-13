@@ -5,9 +5,13 @@ import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 abstract class ExploreContentRepository {
   Future<ExploreContent> getExploreContent();
 
-  Future<ExploreContent> getExploreHighlightedContent({required bool showAllStreamsInPills});
+  Future<ExploreContent> getExploreHighlightedContent();
 
   Future<List<MediaItemArticle>> getPaginatedArticles(String areaId, int limit, int offset);
 
   Future<List<TopicPreview>> getPaginatedTopics(String areaId, int limit, int offset);
+
+  Stream<ExploreContent> exploreContentStream();
+
+  Stream<ExploreContent> exploreHighlightedContentStream();
 }

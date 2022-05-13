@@ -37,13 +37,9 @@ class PhotoStackedCover extends StatelessWidget {
           children: [
             if (hasImage) ...[
               Positioned.fill(
-                child: LayoutBuilder(
-                  builder: (context, constrains) => ArticleImage(
-                    image: article.image!,
-                    width: constrains.maxWidth,
-                    height: constrains.maxHeight,
-                    showDarkened: true,
-                  ),
+                child: ArticleImage(
+                  image: article.image!,
+                  showDarkened: true,
                 ),
               ),
             ],

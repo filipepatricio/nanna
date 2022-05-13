@@ -18,6 +18,10 @@ class AppVectorGraphics {
   static const String profile = 'assets/vector_graphics/profile_ic.svg';
   static const String profileSelected = 'assets/vector_graphics/profile_selected_ic.svg';
 
+  static const String topicLabel = 'assets/vector_graphics/topic_label.svg';
+  static const String expertTopicLabel = 'assets/vector_graphics/expert_topic_label.svg';
+  static const String articleLabel = 'assets/vector_graphics/article_label.svg';
+
   static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
 
   static const String info = 'assets/vector_graphics/info.svg';
@@ -49,6 +53,7 @@ class AppVectorGraphics {
   static const String articleError = 'assets/vector_graphics/article_error_ic.svg';
   static const String relaxCoffee = 'assets/vector_graphics/relax_coffee_ic.svg';
   static const String briefLoading = 'assets/vector_graphics/daily_brief_loading.svg';
+  static const String emptySearchResults = 'assets/vector_graphics/empty_search_ic.svg';
 
   static const String arrowRight = 'assets/vector_graphics/arrow_right_ic.svg';
   static const String arrowDown = 'assets/vector_graphics/arrow_down.svg';
@@ -74,6 +79,8 @@ class AppVectorGraphics {
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
   static const String close = 'assets/vector_graphics/close.svg';
   static const String photoCaption = 'assets/vector_graphics/photo_caption_ic.svg';
+  static const String search = 'assets/vector_graphics/search_ic.svg';
+  static const String clearText = 'assets/vector_graphics/clear_text.svg';
 
   static const String tutorialArrowDown = 'assets/vector_graphics/tutorial_arrow_down.svg';
   static const String tutorialArrowUp = 'assets/vector_graphics/tutorial_arrow_up.svg';

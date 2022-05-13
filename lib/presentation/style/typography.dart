@@ -158,6 +158,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h5ExtraBold = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 24,
+    height: 1.5,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle subH1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -182,7 +190,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle subH2BoldSmall = TextStyle(
+  static const TextStyle subH2Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 10,
@@ -191,7 +199,15 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle subH2RegularSmall = TextStyle(
+  static const TextStyle subH2Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 10,
+    height: 1.2,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle subH2Regular = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 10,
@@ -274,11 +290,35 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle metadata1ExtraBold = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 12,
+    height: 1.2,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle metadata1Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 12,
+    height: 1.2,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle metadata1Regular = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 12,
     height: 1.83,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle caption1Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 12,
+    height: 1.25,
     color: AppColors.textPrimary,
   );
 

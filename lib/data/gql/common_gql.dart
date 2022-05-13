@@ -123,25 +123,41 @@ class CommonGQLModels {
   ''';
 
   static const String exploreSection = '''
-          __typename
+        __typename
 
         id
         name
 
         ... on ArticlesExploreArea {
+          description
           articles {
             ${CommonGQLModels.article}
           }
         }
 
-        ... on ArticlesWithFeatureExploreArea {
-          backgroundColor
+        ... on ArticlesListExploreArea {
+          description
           articles {
             ${CommonGQLModels.article}
           }
         }
 
         ... on TopicsExploreArea {
+          topics {
+            ${CommonGQLModels.topicPreview}
+          }
+        }
+
+        ... on SmallTopicsExploreArea {
+          description
+          topics {
+            ${CommonGQLModels.topicPreview}
+          }
+        }
+
+        ... on HighlightedTopicsExploreArea {
+          backgroundColor
+          description
           topics {
             ${CommonGQLModels.topicPreview}
           }

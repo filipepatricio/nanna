@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/widgets/last_updated_topics.dart';
@@ -15,11 +15,8 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -29,18 +26,19 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 const appBarHeight = kToolbarHeight + AppDimens.m;
 
 class TopicOwnerPage extends HookWidget {
-  final TopicOwner owner;
-
   const TopicOwnerPage({
     required this.owner,
+    this.fromTopicSlug,
     Key? key,
   }) : super(key: key);
+
+  final TopicOwner owner;
+  final String? fromTopicSlug;
 
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<TopicOwnerPageCubit>();
     final state = useCubitBuilder(cubit);
-    final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
     final cardStackHeight =
         MediaQuery.of(context).size.width * 0.5 > 450 ? MediaQuery.of(context).size.width * 0.5 : 450.0;
     final snackbarController = useMemoized(() => SnackbarController());
@@ -58,7 +56,7 @@ class TopicOwnerPage extends HookWidget {
 
     useEffect(
       () {
-        cubit.initialize(owner);
+        cubit.initialize(owner, fromTopicSlug);
       },
       [owner],
     );
@@ -122,53 +120,33 @@ class TopicOwnerPage extends HookWidget {
                   const BottomStackedCards(),
                   const SizedBox(height: AppDimens.m),
                   if (owner is! EditorialTeam) ...[
-                    const SizedBox(height: AppDimens.xl),
-                    Padding(
-                      padding: const EdgeInsets.only(left: AppDimens.l),
-                      child: Text(
-                        LocaleKeys.topic_owner_lastUpdated.tr(),
-                        style: AppTypography.h3bold,
+                    _AnimatedSwitcher(
+                      child: state.maybeMap(
+                        idleExpert: (state) => state.topics.isEmpty
+                            ? const SizedBox()
+                            : LastUpdatedTopics(
+                                topics: state.topics,
+                                cardStackHeight: cardStackHeight,
+                              ),
+                        idleEditor: (state) => state.topics.isEmpty
+                            ? const SizedBox()
+                            : LastUpdatedTopics(
+                                topics: state.topics,
+                                cardStackHeight: cardStackHeight,
+                              ),
+                        orElse: () => const SizedBox(),
                       ),
-                    ),
-                    const SizedBox(height: AppDimens.s),
-                    state.maybeMap(
-                      idleExpert: (state) => LastUpdatedTopics(
-                        topics: state.topics,
-                        cardStackHeight: cardStackHeight,
-                      ),
-                      idleEditor: (state) => LastUpdatedTopics(
-                        topics: state.topics,
-                        cardStackHeight: cardStackHeight,
-                      ),
-                      loading: (_) => Padding(
-                        padding: const EdgeInsets.only(top: AppDimens.l),
-                        child: StackedCards.variant(
-                          coverSize: Size(cardStackWidth, cardStackHeight),
-                          variant: StackedCardsVariant.a,
-                          child: const LoadingShimmer.defaultColor(
-                            radius: AppDimens.m,
-                          ),
-                        ),
-                      ),
-                      error: (_) => Padding(
-                        padding: const EdgeInsets.only(top: AppDimens.l),
-                        child: StackedCardsErrorView(
-                          padding: EdgeInsets.zero,
-                          size: Size(cardStackWidth, cardStackHeight),
-                        ),
-                      ),
-                      orElse: () => const SizedBox(),
                     ),
                     const SizedBox(height: AppDimens.xxl),
-                    if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
-                      _SocialMediaLinks(
-                        cubit: cubit,
-                        owner: owner as Expert,
-                      ),
-                      const SizedBox(height: AppDimens.c),
-                    ],
-                    const AudioPlayerBannerPlaceholder(),
-                  ]
+                  ],
+                  if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
+                    _SocialMediaLinks(
+                      cubit: cubit,
+                      owner: owner as Expert,
+                    ),
+                    const SizedBox(height: AppDimens.c),
+                  ],
+                  const AudioPlayerBannerPlaceholder(),
                 ],
               ),
             ],
@@ -348,5 +326,21 @@ class _SocialMediaIcon extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _AnimatedSwitcher extends StatelessWidget {
+  final Widget child;
+
+  const _AnimatedSwitcher({required this.child, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return kIsTest
+        ? child
+        : AnimatedSwitcher(
+            duration: const Duration(milliseconds: 1000),
+            child: child,
+          );
   }
 }

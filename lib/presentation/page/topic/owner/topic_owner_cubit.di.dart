@@ -17,7 +17,7 @@ class TopicOwnerPageCubit extends Cubit<TopicOwnerPageState> {
     this._getTopicsFromEditorUseCase,
   ) : super(TopicOwnerPageState.loading());
 
-  Future<void> initialize(TopicOwner owner) async {
+  Future<void> initialize(TopicOwner owner, [String? fromTopicSlug]) async {
     if (owner is EditorialTeam) {
       emit(TopicOwnerPageState.idleEditorialTeam());
       return;
@@ -27,11 +27,15 @@ class TopicOwnerPageCubit extends Cubit<TopicOwnerPageState> {
 
     try {
       if (owner is Expert) {
-        emit(TopicOwnerPageState.idleExpert(await _getTopicsFromExpertUseCase.call(owner.id)));
+        emit(
+          TopicOwnerPageState.idleExpert(await _getTopicsFromExpertUseCase.call(owner.id, fromTopicSlug)),
+        );
         return;
       }
 
-      emit(TopicOwnerPageState.idleEditor(await _getTopicsFromEditorUseCase.call(owner.id)));
+      emit(
+        TopicOwnerPageState.idleEditor(await _getTopicsFromEditorUseCase.call(owner.id, fromTopicSlug)),
+      );
       return;
     } catch (e, s) {
       Fimber.e('Fetching ${owner.runtimeType} topics failed', ex: e, stacktrace: s);

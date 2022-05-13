@@ -9,22 +9,37 @@ class ExploreContentArea with _$ExploreContentArea {
   factory ExploreContentArea.articles({
     required String id,
     required String title,
+    required String? description,
     required List<MediaItemArticle> articles,
   }) = ExploreContentAreaArticles;
 
-  factory ExploreContentArea.articleWithFeature({
+  factory ExploreContentArea.articlesList({
     required String id,
     required String title,
-    required int backgroundColor,
-    required MediaItemArticle featuredArticle,
+    required String? description,
     required List<MediaItemArticle> articles,
-  }) = ExploreContentAreaArticleWithFeature;
+  }) = ExploreContentAreaArticlesList;
 
   factory ExploreContentArea.topics({
     required String id,
     required String title,
     required List<TopicPreview> topics,
   }) = ExploreContentAreaTopics;
+
+  factory ExploreContentArea.smallTopics({
+    required String id,
+    required String title,
+    required String? description,
+    required List<TopicPreview> topics,
+  }) = ExploreContentAreaSmallTopics;
+
+  factory ExploreContentArea.highlightedTopics({
+    required String id,
+    required String title,
+    required String? description,
+    required int? backgroundColor,
+    required List<TopicPreview> topics,
+  }) = ExploreContentAreaHighlightedTopics;
 
   factory ExploreContentArea.unknown({
     required String id,

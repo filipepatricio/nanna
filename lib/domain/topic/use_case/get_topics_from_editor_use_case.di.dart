@@ -8,5 +8,9 @@ class GetTopicsFromEditorUseCase {
 
   GetTopicsFromEditorUseCase(this._topicsRepository);
 
-  Future<List<TopicPreview>> call(String editorId) => _topicsRepository.getTopicPreviewsFromEditor(editorId);
+  Future<List<TopicPreview>> call(
+    String editorId, [
+    String? excludedTopicSlug,
+  ]) =>
+      _topicsRepository.getTopicPreviewsFromEditor(editorId, excludedTopicSlug);
 }

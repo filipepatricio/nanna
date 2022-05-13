@@ -179,17 +179,15 @@ class _IdleContent extends HookWidget {
               borderFraction: 0.6,
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () => _onTopicCardPressed(
-                      context,
-                      currentTopicIndex,
-                      currentBrief,
-                    ),
-                    child: StackedCards.variant(
-                      variant: variants[currentTopicIndex],
-                      coverSize: Size(cardStackWidth, cardStackHeight),
-                      child: TopicCover.large(
-                        topic: currentTopic.asPreview,
+                  StackedCards.variant(
+                    variant: variants[currentTopicIndex],
+                    coverSize: Size(cardStackWidth, cardStackHeight),
+                    child: TopicCover.large(
+                      topic: currentTopic.asPreview,
+                      onTap: () => _onTopicCardPressed(
+                        context,
+                        currentTopicIndex,
+                        currentBrief,
                       ),
                     ),
                   ),

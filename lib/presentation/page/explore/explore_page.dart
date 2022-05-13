@@ -1,19 +1,22 @@
 import 'dart:core';
-import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content_pill.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_with_cover_area_loading_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore/article_with_cover_area/article_with_cover_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/article_list_area/article_list_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/sliver_search_app_bar.dart';
+import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_loading_section.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -21,25 +24,18 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 const _tryAgainButtonWidth = 150.0;
-const _maxPillLines = 3;
-const _maxPillsPerLine = 3;
-const _maxPillsSectionHeight = 170.0;
-const _pillLineHeight = 50.0;
-const _pillPadding = 8.0;
 
 class ExplorePage extends HookWidget {
   @override
@@ -47,15 +43,30 @@ class ExplorePage extends HookWidget {
     final cubit = useCubit<ExplorePageCubit>();
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
-    final headerColor = _getHeaderColor(state);
+    final scrollControllerIdleOffset = useState(0.0);
+
+    final searchViewCubit = useCubit<SearchViewCubit>();
+    final searchTextEditingController = useTextEditingController();
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(showTutorialToast: (text) => showInfoToast(context: context, text: text));
+      state.whenOrNull(
+        showTutorialToast: (text) => showInfoToast(context: context, text: text),
+        startExploring: () {
+          scrollController.jumpTo(scrollControllerIdleOffset.value);
+        },
+        startSearching: () {
+          scrollController.jumpTo(0);
+        },
+        startTyping: () {
+          scrollControllerIdleOffset.value = scrollController.offset;
+        },
+      );
     });
 
     useEffect(
       () {
         cubit.initialize();
+        searchViewCubit.initialize();
       },
       [cubit],
     );
@@ -72,8 +83,12 @@ class ExplorePage extends HookWidget {
                 NoScrollGlow(
                   child: RefreshIndicator(
                     color: AppColors.darkGrey,
-                    onRefresh: cubit.loadExplorePageData,
+                    onRefresh: state.maybeMap(
+                      search: (_) => searchViewCubit.refresh,
+                      orElse: () => cubit.loadExplorePageData,
+                    ),
                     child: CustomScrollView(
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       controller: scrollController,
                       physics: state.maybeMap(
                         initialLoading: (_) => const NeverScrollableScrollPhysics(),
@@ -81,28 +96,28 @@ class ExplorePage extends HookWidget {
                         orElse: () => getPlatformScrollPhysics(),
                       ),
                       slivers: [
-                        ScrollableSliverAppBar(
-                          scrollController: scrollController,
-                          title: LocaleKeys.explore_title.tr(),
-                          headerColor: headerColor,
+                        SliverSearchAppBar(
+                          explorePageCubit: cubit,
+                          searchTextEditingController: searchTextEditingController,
+                          searchViewCubit: searchViewCubit,
                         ),
                         state.maybeMap(
-                          initialLoading: (_) => const SliverToBoxAdapter(
-                            child: ArticleWithCoverAreaLoadingView.loading(),
+                          initialLoading: (_) => const _LoadingSection(),
+                          error: (_) => const _LoadingSection(),
+                          orElse: () => const SliverToBoxAdapter(),
+                        ),
+                        state.maybeMap(
+                          idle: (state) => _ItemList(
+                            items: state.items,
                           ),
-                          idle: (state) => _Idle(
-                            exploreContent: state.exploreContent,
-                            headerColor: headerColor,
+                          search: (_) => SearchView(
+                            cubit: searchViewCubit,
+                            scrollController: scrollController,
                           ),
-                          error: (_) => const SliverToBoxAdapter(
-                            child: ArticleWithCoverAreaLoadingView.static(),
-                          ),
-                          orElse: () => const SliverToBoxAdapter(
-                            child: SizedBox(),
-                          ),
+                          orElse: () => const SliverToBoxAdapter(),
                         ),
                         const SliverToBoxAdapter(
-                          child: SizedBox(height: AppDimens.xl + AppDimens.audioBannerHeight),
+                          child: AudioPlayerBannerPlaceholder(),
                         ),
                       ],
                     ),
@@ -120,22 +135,6 @@ class ExplorePage extends HookWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Color _getHeaderColor(ExplorePageState state) {
-    return state.maybeMap(
-      idle: (idle) {
-        if (idle.exploreContent.areas.isEmpty) {
-          return AppColors.background;
-        }
-        final firstArea = idle.exploreContent.areas.first;
-        return firstArea.maybeMap(
-          articleWithFeature: (state) => Color(state.backgroundColor),
-          orElse: () => AppColors.background,
-        );
-      },
-      orElse: () => AppColors.background,
     );
   }
 }
@@ -181,106 +180,57 @@ class _ErrorView extends StatelessWidget {
   }
 }
 
-class _Idle extends StatelessWidget {
-  final ExploreContent exploreContent;
-  final Color headerColor;
-
-  const _Idle({
-    required this.exploreContent,
-    required this.headerColor,
-    Key? key,
-  }) : super(key: key);
+class _LoadingSection extends StatelessWidget {
+  const _LoadingSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final pills = exploreContent.pills;
-    final isHighlighted = pills != null;
-    return MultiSliver(
-      children: [
-        if (pills != null) _PillsSection(pills: pills, headerColor: headerColor),
-        SliverList(
-          delegate: SliverChildListDelegate(
-            exploreContent.areas
-                .map(
-                  (area) => _Area(
-                    area: area,
-                    orderIndex: exploreContent.areas.indexOf(area),
-                    isHighlighted: isHighlighted,
-                  ),
-                )
-                .toList(growable: false),
-          ),
-        ),
-      ],
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        const [
+          ExploreLoadingView.pills(),
+          SizedBox(height: AppDimens.xc),
+          ExploreLoadingView.stream(),
+        ],
+      ),
     );
   }
 }
 
-class _PillsSection extends HookWidget {
-  final List<ExploreContentPill> pills;
-  final Color headerColor;
-
-  const _PillsSection({
-    required this.pills,
-    required this.headerColor,
+class _ItemList extends StatelessWidget {
+  const _ItemList({
+    required this.items,
     Key? key,
   }) : super(key: key);
 
+  final List<ExploreItem> items;
+
   @override
   Widget build(BuildContext context) {
-    final lineCount = min(_maxPillLines, (pills.length / _maxPillsPerLine).ceil());
-    final height = min(_maxPillsSectionHeight, lineCount * _pillLineHeight + (lineCount > 1 ? _pillPadding : 0));
+    final isHighlighted = items.any(
+      (item) => item.maybeMap(
+        pills: (_) => true,
+        orElse: () => false,
+      ),
+    );
 
-    return SliverToBoxAdapter(
-      child: Container(
-        height: height,
-        color: headerColor,
-        child: MasonryGridView.count(
-          padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.m),
-          scrollDirection: Axis.horizontal,
-          crossAxisCount: lineCount,
-          mainAxisSpacing: _pillPadding,
-          crossAxisSpacing: _pillPadding,
-          itemCount: pills.length,
-          itemBuilder: (context, index) {
-            return pills[index].map(
-              articles: (area) => _AreaPillItem(
-                title: area.title,
-                index: index,
-                onTap: () => AutoRouter.of(context).push(
-                  ArticleSeeAllPageRoute(
-                    areaId: area.id,
-                    title: area.title,
-                    referred: ExploreAreaReferred.pill,
-                  ),
-                ),
-              ),
-              articleWithFeature: (area) => _AreaPillItem(
-                title: area.title,
-                index: index,
-                onTap: () => AutoRouter.of(context).push(
-                  ArticleSeeAllPageRoute(
-                    areaId: area.id,
-                    title: area.title,
-                    referred: ExploreAreaReferred.pill,
-                  ),
-                ),
-              ),
-              topics: (area) => _AreaPillItem(
-                title: area.title,
-                index: index,
-                onTap: () => context.pushRoute(
-                  TopicsSeeAllPageRoute(
-                    areaId: area.id,
-                    title: area.title,
-                    referred: ExploreAreaReferred.pill,
-                  ),
-                ),
-              ),
-              unknown: (_) => const SizedBox(),
-            );
-          },
-        ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final item = items[index];
+
+          return item.map(
+            pills: (item) => ExplorePillsAreaView(
+              pills: item.list,
+            ),
+            stream: (item) => _Area(
+              area: item.area,
+              orderIndex: index,
+              isHighlighted: isHighlighted,
+            ),
+          );
+        },
+        childCount: items.length,
       ),
     );
   }
@@ -317,47 +267,11 @@ class _Area extends HookWidget {
         borderFraction: 0.6,
         child: area.map(
           articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),
-          articleWithFeature: (area) => ArticleWithCoverAreaView(area: area, isHighlighted: isHighlighted),
+          articlesList: (area) => ArticleListAreaView(area: area),
           topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
+          smallTopics: (area) => SmallTopicsAreaView(area: area),
+          highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),
           unknown: (_) => Container(),
-        ),
-      ),
-    );
-  }
-}
-
-class _AreaPillItem extends StatelessWidget {
-  final String title;
-  final int index;
-  final VoidCallback onTap;
-  final Color? color;
-
-  const _AreaPillItem({
-    required this.title,
-    required this.index,
-    required this.onTap,
-    this.color = AppColors.white,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: AppColors.dividerGreyLight,
-            width: 1,
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: AppDimens.sl, horizontal: AppDimens.l),
-        child: Text(
-          title,
-          style: AppTypography.b3Regular.copyWith(height: 1.4),
         ),
       ),
     );

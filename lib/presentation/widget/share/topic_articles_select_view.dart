@@ -459,7 +459,7 @@ class _ArticleItemBody extends HookWidget {
           const SizedBox(height: AppDimens.s),
           InformedMarkdownBody(
             markdown: header.title,
-            baseTextStyle: AppTypography.subH2BoldSmall,
+            baseTextStyle: AppTypography.subH2Bold,
             maxLines: 4,
             highlightColor: AppColors.transparent,
           ),

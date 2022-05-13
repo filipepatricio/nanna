@@ -5,14 +5,24 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetExploreContentUseCase {
-  final ExploreContentRepository _exploreContentRepository;
-
   GetExploreContentUseCase(this._exploreContentRepository);
 
-  Future<ExploreContent> call({required bool showPills, required bool showAllStreamsInPills}) async {
+  final ExploreContentRepository _exploreContentRepository;
+
+  Future<ExploreContent> call({required bool showPills}) async {
     final content = showPills
-        ? await _exploreContentRepository.getExploreHighlightedContent(showAllStreamsInPills: showAllStreamsInPills)
+        ? await _exploreContentRepository.getExploreHighlightedContent()
         : await _exploreContentRepository.getExploreContent();
+    return _filterOutEmptyAreas(content);
+  }
+
+  Stream<ExploreContent> get contentStream =>
+      _exploreContentRepository.exploreContentStream().map(_filterOutEmptyAreas);
+
+  Stream<ExploreContent> get highlightedContentStream =>
+      _exploreContentRepository.exploreHighlightedContentStream().map(_filterOutEmptyAreas);
+
+  ExploreContent _filterOutEmptyAreas(ExploreContent content) {
     final notEmptyAreas = content.areas.where(_isNotEmptyArea).toList();
     return ExploreContent(pills: content.pills, areas: notEmptyAreas);
   }
@@ -20,8 +30,10 @@ class GetExploreContentUseCase {
   bool _isNotEmptyArea(ExploreContentArea areas) {
     return areas.map(
       articles: (area) => area.articles.isNotEmpty,
-      articleWithFeature: (area) => area.articles.isNotEmpty,
+      articlesList: (area) => area.articles.isNotEmpty,
       topics: (area) => area.topics.isNotEmpty,
+      smallTopics: (area) => area.topics.isNotEmpty,
+      highlightedTopics: (area) => area.topics.isNotEmpty,
       unknown: (_) => false,
     );
   }

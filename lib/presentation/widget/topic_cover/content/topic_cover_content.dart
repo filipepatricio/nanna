@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
@@ -14,22 +15,28 @@ import 'package:flutter/material.dart';
 class TopicCoverContent extends StatelessWidget {
   const TopicCoverContent({
     required this.topic,
-    required this.size,
+    required this.type,
     this.mode = Brightness.dark,
+    this.hasBackgroundColor = false,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final TopicCoverSize size;
+  final TopicCoverType type;
   final Brightness mode;
+  final bool hasBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    switch (size) {
-      case TopicCoverSize.large:
+    switch (type) {
+      case TopicCoverType.large:
         return _CoverContentLarge(topic: topic, mode: mode);
-      case TopicCoverSize.small:
+      case TopicCoverType.small:
         return _CoverContentSmall(topic: topic, mode: mode);
+      case TopicCoverType.exploreLarge:
+        return _CoverContentExploreLarge(topic: topic);
+      case TopicCoverType.exploreSmall:
+        return _CoverContentExploreSmall(topic: topic, hasBackgroundColor: hasBackgroundColor);
     }
   }
 }
@@ -76,7 +83,7 @@ class _CoverContentLarge extends StatelessWidget {
             mode: mode,
             textStyle: AppTypography.h4Bold,
             onTap: () => AutoRouter.of(context).push(
-              TopicOwnerPageRoute(owner: topic.owner),
+              TopicOwnerPageRoute(owner: topic.owner, fromTopicSlug: topic.slug),
             ),
           ),
           const SizedBox(height: AppDimens.s),
@@ -106,6 +113,44 @@ class _CoverContentLarge extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CoverContentExploreLarge extends StatelessWidget {
+  const _CoverContentExploreLarge({
+    required this.topic,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      top: AppDimens.m,
+      bottom: AppDimens.l,
+      left: AppDimens.m,
+      right: AppDimens.l,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CoverLabel.topic(topic: topic),
+          const SizedBox(height: AppDimens.m),
+          InformedMarkdownBody(
+            markdown: topic.title,
+            maxLines: 4,
+            baseTextStyle: AppTypography.h1ExtraBold.copyWith(
+              color: AppColors.white,
+            ),
+          ),
+          const SizedBox(height: AppDimens.s),
+          UpdatedLabel(
+            mode: Brightness.light,
+            dateTime: topic.lastUpdatedAt,
           ),
         ],
       ),
@@ -162,6 +207,61 @@ class _CoverContentSmall extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _CoverContentExploreSmall extends StatelessWidget {
+  const _CoverContentExploreSmall({
+    required this.topic,
+    this.hasBackgroundColor = false,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+  final bool hasBackgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    const titleStyle = AppTypography.metadata1ExtraBold;
+    final titleHeight = (titleStyle.fontSize! * (titleStyle.height ?? 1)) * 2;
+
+    final updatedLabelStyle = AppTypography.metadata1Regular.copyWith(
+      height: 1.2,
+      color: hasBackgroundColor ? null : AppColors.textGrey,
+    );
+    final updatedLabelHeight = (updatedLabelStyle.fontSize! * (updatedLabelStyle.height ?? 1)) * 2;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: AppDimens.s),
+        TopicOwnerAvatar(
+          owner: topic.owner,
+          withImage: false,
+          imageSize: AppDimens.zero,
+          textStyle: AppTypography.caption1Medium,
+          mode: Brightness.dark,
+        ),
+        const SizedBox(height: AppDimens.s),
+        SizedBox(
+          height: titleHeight,
+          child: InformedMarkdownBody(
+            markdown: topic.title,
+            maxLines: 2,
+            baseTextStyle: titleStyle,
+          ),
+        ),
+        const SizedBox(height: AppDimens.s),
+        SizedBox(
+          height: updatedLabelHeight,
+          child: UpdatedLabel(
+            dateTime: topic.lastUpdatedAt,
+            mode: Brightness.dark,
+            textStyle: updatedLabelStyle,
+          ),
+        ),
+      ],
     );
   }
 }

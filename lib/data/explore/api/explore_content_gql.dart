@@ -13,15 +13,16 @@ class ExploreContentGQL {
   ''',
       );
 
-  static DocumentNode highlightedContent({required bool showAllStreamsInPills}) => gql(
+  static DocumentNode highlightedContent() => gql(
         '''
       query getExploreSection {
-        pillSection: getExploreSection(${showAllStreamsInPills ? '' : 'isHighlighted: false'}) {
+        pillSection: getExploreSection(isHighlighted: false) {
           __typename
           id
           name
+          icon
         }
-      
+
         highlightedSection: getExploreSection(isHighlighted: true) {
           ${CommonGQLModels.exploreSection}
         }
@@ -44,8 +45,7 @@ class ExploreContentGQL {
           }
         }
 
-        ... on ArticlesWithFeatureExploreArea {
-          backgroundColor
+        ... on ArticlesListExploreArea {
           articles(pagination: {limit: $limit, offset: $offset}) {
             ${CommonGQLModels.article}
           }
@@ -54,6 +54,19 @@ class ExploreContentGQL {
         ... on TopicsExploreArea {
           topics(pagination: {limit: $limit, offset: $offset}) {
             ${CommonGQLModels.topicPreview}
+          }
+        }
+
+        ... on SmallTopicsExploreArea {
+          topics(pagination: {limit: $limit, offset: $offset}) {
+            ${CommonGQLModels.topicPreview}
+          }
+        }
+
+        ... on HighlightedTopicsExploreArea {
+          topics(pagination: {limit: $limit, offset: $offset}) {
+            ${CommonGQLModels.topicPreview}
+            entryCount
           }
         }
       }

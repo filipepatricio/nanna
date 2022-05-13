@@ -5,7 +5,11 @@ import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_
 abstract class ExploreContentApiDataSource {
   Future<ExploreContentDTO> getExploreContent();
 
-  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent({required bool showAllStreamsInPills});
+  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent();
 
   Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset);
+
+  Stream<ExploreContentDTO?> exploreContentStream();
+
+  Stream<ExploreHighlightedContentDTO?> exploreHighlightedContentStream();
 }

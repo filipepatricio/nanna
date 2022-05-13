@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/data/util/reporting_tree_error_filter.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
@@ -41,23 +42,32 @@ Future<void> main() async {
   await Hive.initFlutter();
   final mainRouter = MainRouter(mainRouterKey);
 
-  await SentryFlutter.init(
-    (options) => options
-      ..dsn = (kDebugMode || kProfileMode) ? '' : appConfig.sentryEventDns
-      ..environment = environment,
-    appRunner: () => runApp(
-      EasyLocalization(
-        path: 'assets/translations',
-        supportedLocales: availableLocales.values.toList(),
-        fallbackLocale: availableLocales[fallbackLanguageCode],
-        useOnlyLangCode: true,
-        saveLocale: true,
-        child: InformedApp(
-          mainRouter: mainRouter,
-          getIt: getIt,
+  await runZonedGuarded(
+    () async {
+      await SentryFlutter.init(
+        (options) => options
+          ..dsn = (kDebugMode || kProfileMode) ? '' : appConfig.sentryEventDns
+          ..environment = environment,
+      );
+      return runApp(
+        EasyLocalization(
+          path: 'assets/translations',
+          supportedLocales: availableLocales.values.toList(),
+          fallbackLocale: availableLocales[fallbackLanguageCode],
+          useOnlyLangCode: true,
+          saveLocale: true,
+          child: InformedApp(
+            mainRouter: mainRouter,
+            getIt: getIt,
+          ),
         ),
-      ),
-    ),
+      );
+    },
+    (error, stack) async {
+      final filter = getIt<ReportingTreeErrorFilterController>();
+      if (filter.shouldFilterOut(error)) return;
+      await Sentry.captureException(error, stackTrace: stack);
+    },
   );
 }
 

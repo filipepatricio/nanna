@@ -42,13 +42,7 @@ void main() {
           ],
         ),
       );
-      // Because [TopicsMockDataSource] returns 0 topics for editor and 2 for expert
-      expect(
-        find.byWidgetPredicate(
-          (widget) => widget is LastUpdatedTopics && widget.topics.isEmpty,
-        ),
-        findsOneWidget,
-      );
+      expect(find.byType(LastUpdatedTopics), findsNothing);
     },
   );
 

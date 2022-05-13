@@ -123,14 +123,11 @@
     }
   },
   "article": {
+    "label": "Article",
     "types": {
       "freemium": "Free",
       "premium": "Premium",
       "exclusive": "Exclusive"
-    },
-    "label": {
-      "opinion": "Opinion",
-      "feature": "Feature"
     },
     "appBar": {
       "freemium": "Free Article",
@@ -153,6 +150,8 @@
     "articleCount": "{} articles"
   },
   "topic": {
+    "label": "Topic",
+    "expert": "Expert",
     "updated": "Updated {}",
     "owner": {
       "editorialTeam": "Informed Editorial Team",
@@ -173,8 +172,11 @@
   "continueListening": "Continue listening",
   "explore": {
     "title": "Explore",
-    "seeAllArticles": "See all articles",
-    "seeAllTopics": "See all topics"
+    "viewAll": "View All\n{}"
+  },
+  "search": {
+    "emptyResults": "We couldn’t find any results matching '{}'",
+    "callToAction": "Check out our latest content"
   },
   "profile": {
     "title": "Profile",
@@ -252,7 +254,7 @@
       "title": "This action will replace the current audio\n",
       "info": "Are you sure you want to switch and start listening to a new article?",
       "deny": "No, keep current",
-      "approve":"Yes, switch"
+      "approve": "Yes, switch"
     }
   }
 }

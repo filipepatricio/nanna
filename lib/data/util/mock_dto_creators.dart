@@ -19,11 +19,21 @@ import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_dto.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
+import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
+
+const _mockedPillIcon = '''
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2.04297" y="4.60938" width="2.42259" height="19.5556" rx="1.21129" transform="rotate(-15 2.04297 4.60938)" stroke="#282B35" stroke-width="1.5"/>
+    <path d="M10.8841 4.1995C7.88347 3.30431 5.98922 4.82088 4.87387 5.80993L7.17454 14.3962C8.19918 13.3547 10.3341 11.5914 13.1847 12.7857C16.7053 14.2607 19.3675 11.8193 19.3675 11.8193L16.0664 8.04753L16.8943 2.58907C16.8943 2.58907 14.3331 5.22847 10.8841 4.1995Z" fill="#F3E5F4"/>
+    <path d="M4.87387 5.80993L4.37627 5.24878C4.16372 5.43725 4.0759 5.72964 4.14942 6.00404L4.87387 5.80993ZM10.8841 4.1995L11.0985 3.4808L11.0985 3.4808L10.8841 4.1995ZM16.8943 2.58907L17.6358 2.70153C17.6847 2.37913 17.5197 2.06207 17.2275 1.91718C16.9354 1.77228 16.5831 1.83275 16.356 2.06677L16.8943 2.58907ZM16.0664 8.04753L15.3249 7.93506C15.2918 8.15342 15.3566 8.37528 15.502 8.54147L16.0664 8.04753ZM19.3675 11.8193L19.8744 12.372C20.1747 12.0966 20.2002 11.6319 19.9319 11.3253L19.3675 11.8193ZM13.1847 12.7857L13.4746 12.094L13.1847 12.7857ZM7.17454 14.3962L6.4501 14.5903C6.51973 14.8501 6.72322 15.0528 6.98337 15.1214C7.24352 15.19 7.52048 15.1139 7.70916 14.9222L7.17454 14.3962ZM5.37147 6.37108C6.44763 5.41679 8.06639 4.14154 10.6697 4.9182L11.0985 3.4808C7.70055 2.46707 5.53081 4.22498 4.37627 5.24878L5.37147 6.37108ZM10.6697 4.9182C12.6292 5.5028 14.3315 5.03923 15.5157 4.45209C16.1075 4.15865 16.5791 3.8305 16.904 3.57478C17.067 3.44652 17.1946 3.33533 17.2835 3.25409C17.3279 3.21343 17.3629 3.18016 17.3878 3.15588C17.4003 3.14373 17.4103 3.13381 17.4178 3.12633C17.4215 3.12259 17.4246 3.11946 17.4271 3.11695C17.4283 3.1157 17.4294 3.11461 17.4303 3.11368C17.4307 3.11321 17.4311 3.11278 17.4315 3.1124C17.4317 3.11221 17.432 3.11195 17.432 3.11185C17.4323 3.1116 17.4325 3.11136 16.8943 2.58907C16.356 2.06677 16.3562 2.06655 16.3564 2.06635C16.3565 2.06629 16.3567 2.06609 16.3568 2.06598C16.357 2.06575 16.3572 2.06557 16.3574 2.06542C16.3576 2.06513 16.3578 2.06499 16.3578 2.065C16.3577 2.06503 16.3571 2.06566 16.3559 2.06688C16.3535 2.06933 16.3486 2.07411 16.3415 2.08104C16.3273 2.09491 16.3038 2.11735 16.2715 2.14685C16.2069 2.20593 16.1074 2.29291 15.9764 2.39601C15.7133 2.60302 15.329 2.87041 14.8494 3.10821C13.8907 3.58352 12.588 3.92517 11.0985 3.4808L10.6697 4.9182ZM16.1528 2.4766L15.3249 7.93506L16.8079 8.15999L17.6358 2.70153L16.1528 2.4766ZM15.502 8.54147L18.8031 12.3132L19.9319 11.3253L16.6308 7.55358L15.502 8.54147ZM19.3675 11.8193C18.8606 11.2665 18.8608 11.2663 18.8611 11.2661C18.8611 11.266 18.8614 11.2658 18.8615 11.2657C18.8618 11.2654 18.862 11.2652 18.8622 11.265C18.8626 11.2647 18.8628 11.2645 18.8628 11.2644C18.863 11.2643 18.8625 11.2648 18.8614 11.2657C18.8592 11.2677 18.8545 11.2718 18.8475 11.2779C18.8334 11.29 18.8098 11.3099 18.7771 11.3361C18.7116 11.3886 18.6103 11.4659 18.4766 11.5563C18.2082 11.7376 17.8157 11.9673 17.3267 12.1558C16.3557 12.5299 15.0157 12.7396 13.4746 12.094L12.8949 13.4775C14.8744 14.3068 16.6257 14.0333 17.866 13.5555C18.4826 13.3179 18.9757 13.0294 19.3165 12.7991C19.4874 12.6836 19.6215 12.5817 19.7154 12.5064C19.7624 12.4688 19.7994 12.4377 19.826 12.4148C19.8393 12.4033 19.85 12.3939 19.8581 12.3867C19.8622 12.3831 19.8655 12.3801 19.8683 12.3776C19.8696 12.3764 19.8708 12.3753 19.8718 12.3744C19.8724 12.3739 19.8728 12.3735 19.8733 12.3731C19.8735 12.3729 19.8738 12.3726 19.8739 12.3725C19.8741 12.3723 19.8744 12.372 19.3675 11.8193ZM13.4746 12.094C10.1569 10.704 7.69256 12.8003 6.63992 13.8702L7.70916 14.9222C8.70579 13.9092 10.5112 12.4788 12.8949 13.4775L13.4746 12.094ZM4.14942 6.00404L6.4501 14.5903L7.89899 14.202L5.59831 5.61581L4.14942 6.00404Z" fill="#282B35"/>
+  </svg>
+''';
 
 /// To be use as a response for mock implementations of remote data sources
 /// And as a source for TestData getters - see test/test_data.dart
@@ -85,30 +95,38 @@ class MockDTO {
 
   static final exploreContent = ExploreContentDTO(
     [
-      _exploreFeaturedArticlesArea,
       _exploreTopicsArea,
       _exploreArticlesArea,
-      _exploreTopicsArea2,
+      _exploreHighlightedTopicsArea,
+      _exploreSmallTopicsArea,
+      _exploreArticlesListArea,
     ],
   );
 
   static final exploreHighlightedContent = ExploreHighlightedContentDTO(
     [
-      ExploreContentPillDTO.articles('articles', 'Articles'),
-      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
-      ExploreContentPillDTO.articles('topics', 'Topics'),
-      ExploreContentPillDTO.articles('articles', 'Articles'),
-      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
-      ExploreContentPillDTO.articles('topics', 'Topics'),
-      ExploreContentPillDTO.articles('articles', 'Articles'),
-      ExploreContentPillDTO.articlesWithFeature('articles-with-feature', 'Articles With Feature'),
-      ExploreContentPillDTO.articles('topics', 'Topics'),
+      ExploreContentPillDTO.articles('articles', 'Articles', _mockedPillIcon),
+      ExploreContentPillDTO.articles('topics', 'Topics', _mockedPillIcon),
+      ExploreContentPillDTO.articles('articles', 'Articles', null),
+      ExploreContentPillDTO.articles('topics', 'Topics', null),
+      ExploreContentPillDTO.articles('articles', 'Articles', _mockedPillIcon),
+      ExploreContentPillDTO.articles('topics', 'Topics', _mockedPillIcon),
     ],
     [
-      _exploreFeaturedArticlesArea,
       _exploreTopicsArea,
       _exploreArticlesArea,
-      _exploreTopicsArea2,
+      _exploreHighlightedTopicsArea,
+      _exploreSmallTopicsArea,
+      _exploreArticlesListArea,
+    ],
+  );
+
+  static final search = SearchContentDTO(
+    [
+      SearchResultDTO.topic(topicPreview),
+      SearchResultDTO.article(_freeArticle),
+      SearchResultDTO.article(_freeArticle),
+      SearchResultDTO.topic(topicPreview),
     ],
   );
 
@@ -229,22 +247,10 @@ class MockDTO {
     ImageDTO('owner_1'),
   );
 
-  static final _exploreFeaturedArticlesArea = ExploreContentAreaDTO.articlesWithFeature(
-    'explore-featured-id',
-    'Featured Articles',
-    '#E4F1E2',
-    [
-      premiumArticle,
-      _freeArticle,
-      premiumArticle,
-      _freeArticle,
-      premiumArticle,
-    ],
-  );
-
   static final _exploreArticlesArea = ExploreContentAreaDTO.articles(
     'explore-articles-id',
     'By Publisher',
+    'This is description',
     [
       premiumArticle,
       _freeArticle,
@@ -266,15 +272,43 @@ class MockDTO {
     ],
   );
 
-  static final _exploreTopicsArea2 = ExploreContentAreaDTO.topics(
-    'explore-topics-2-id',
-    'By our experts',
+  static final _exploreHighlightedTopicsArea = ExploreContentAreaDTO.highlightedTopics(
+    'explore-highlighted-topics-id',
+    'Trending news',
+    'Discover other topics of interest',
+    'DFBFFF',
     [
       topicPreview,
       topicPreview,
       topicPreview,
       topicPreview,
       topicPreview,
+    ],
+  );
+
+  static final _exploreSmallTopicsArea = ExploreContentAreaDTO.smallTopics(
+    'explore-small-topics-id',
+    'More topics',
+    'Discover other topics of interest',
+    [
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+      topicPreview,
+    ],
+  );
+
+  static final _exploreArticlesListArea = ExploreContentAreaDTO.articlesList(
+    'explore-articles-list-id',
+    'Some more articles',
+    'Those are articles in the list',
+    [
+      premiumArticle,
+      _freeArticle,
+      premiumArticle,
+      _freeArticle,
+      premiumArticle,
     ],
   );
 
