@@ -60,4 +60,9 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   Future<String> initialTab() async {
     return await LDClient.stringVariation('root-route', '') ?? '';
   }
+
+  @override
+  Future<bool> showSearchInExplorePage() async {
+    return await LDClient.boolVariation('show-search-in-explore', false);
+  }
 }

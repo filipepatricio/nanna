@@ -13,5 +13,7 @@ abstract class FeaturesFlagsRepository {
 
   Future<bool> showPillsOnExplorePage();
 
+  Future<bool> showSearchInExplorePage();
+
   Future<String> initialTab();
 }
