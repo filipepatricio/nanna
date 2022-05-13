@@ -30,6 +30,12 @@ class ExploreContentAreaDTOMapper implements Mapper<ExploreContentAreaDTO, Explo
         description: area.description,
         articles: area.articles.map<MediaItemArticle>(_articleDTOToMediaItemMapper).toList(),
       ),
+      articlesList: (area) => ExploreContentArea.articlesList(
+        id: area.id,
+        title: area.name,
+        description: area.description,
+        articles: area.articles.map<MediaItemArticle>(_articleDTOToMediaItemMapper).toList(),
+      ),
       topics: (area) => ExploreContentArea.topics(
         id: area.id,
         title: area.name,

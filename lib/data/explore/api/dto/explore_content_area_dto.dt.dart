@@ -16,6 +16,14 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
     List<ArticleHeaderDTO> articles,
   ) = _ExploreContentAreaDTOArticles;
 
+  @FreezedUnionValue('ArticlesListExploreArea')
+  factory ExploreContentAreaDTO.articlesList(
+    String id,
+    String name,
+    String? description,
+    List<ArticleHeaderDTO> articles,
+  ) = _ExploreContentAreaDTOArticlesList;
+
   @FreezedUnionValue('TopicsExploreArea')
   factory ExploreContentAreaDTO.topics(
     String id,
