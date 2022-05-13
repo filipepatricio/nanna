@@ -76,7 +76,7 @@ class _SearchBar extends HookWidget {
           if (query.value.isNotEmpty) {
             explorePageCubit.search();
           } else {
-            explorePageCubit.idle();
+            explorePageCubit.explore();
           }
         };
         searchController.addListener(listener);
@@ -131,6 +131,7 @@ class _SearchBar extends HookWidget {
           color: AppColors.darkGreyBackground,
           height: 1.3,
         ),
+        onTap: explorePageCubit.startTyping,
       ),
     );
   }
@@ -156,7 +157,7 @@ class _CancelButton extends HookWidget {
                 margin: const EdgeInsets.only(right: AppDimens.l),
                 child: TextButton(
                   onPressed: () {
-                    cubit.idle();
+                    cubit.explore();
                     searchController.clear();
                     final currentFocus = FocusScope.of(context);
                     if (!currentFocus.hasPrimaryFocus) {

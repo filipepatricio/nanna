@@ -48,31 +48,20 @@ class ExplorePage extends HookWidget {
     final searchViewCubit = useCubit<SearchViewCubit>();
     final searchTextEditingController = useTextEditingController();
 
-    final scrollControllerOffsetListener = () {
-      scrollControllerIdleOffset.value = scrollController.offset;
-    };
-
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showTutorialToast: (text) => showInfoToast(context: context, text: text),
-        idle: (_) {
-          scrollController.removeListener(scrollControllerOffsetListener);
-          scrollController.addListener(scrollControllerOffsetListener);
+        startExploring: () {
           scrollController.jumpTo(scrollControllerIdleOffset.value);
         },
-        search: () {
-          scrollController.removeListener(scrollControllerOffsetListener);
+        startSearching: () {
           scrollController.jumpTo(0);
+        },
+        startTyping: () {
+          scrollControllerIdleOffset.value = scrollController.offset;
         },
       );
     });
-
-    useEffect(
-      () {
-        return () => scrollController.removeListener(scrollControllerOffsetListener);
-      },
-      [scrollController],
-    );
 
     useEffect(
       () {
