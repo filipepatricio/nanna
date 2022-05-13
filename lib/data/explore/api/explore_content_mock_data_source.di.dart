@@ -14,12 +14,22 @@ class ExploreMockDataSource implements ExploreContentApiDataSource {
   }
 
   @override
-  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent({required bool showAllStreamsInPills}) async {
+  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent() async {
     return MockDTO.exploreHighlightedContent;
   }
 
   @override
   Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset) {
     throw UnimplementedError();
+  }
+
+  @override
+  Stream<ExploreContentDTO?> exploreContentStream() async* {
+    yield MockDTO.exploreContent;
+  }
+
+  @override
+  Stream<ExploreHighlightedContentDTO?> exploreHighlightedContentStream() async* {
+    yield MockDTO.exploreHighlightedContent;
   }
 }

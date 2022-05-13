@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
@@ -10,16 +12,22 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: ExploreContentApiDataSource, env: liveEnvs)
 class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
+  ExploreContentGraphqlDataSource(
+    this._client,
+    this._responseResolver,
+  );
+
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
 
-  ExploreContentGraphqlDataSource(this._client, this._responseResolver);
+  int? _exploreContentHashCode;
+  int? _exploreHighlightedContentHashCode;
 
   @override
   Future<ExploreContentDTO> getExploreContent() async {
     final result = await _client.query(
       QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
         document: ExploreContentGQL.content(),
       ),
     );
@@ -33,11 +41,11 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   }
 
   @override
-  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent({required bool showAllStreamsInPills}) async {
+  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent() async {
     final result = await _client.query(
       QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
-        document: ExploreContentGQL.highlightedContent(showAllStreamsInPills: showAllStreamsInPills),
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        document: ExploreContentGQL.highlightedContent(),
       ),
     );
 
@@ -65,5 +73,57 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
     );
 
     return dto ?? (throw Exception('Explore content area can not be null'));
+  }
+
+  @override
+  Stream<ExploreContentDTO?> exploreContentStream() async* {
+    final observableQuery = _client.watchQuery(
+      WatchQueryOptions(
+        document: ExploreContentGQL.content(),
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        pollInterval: const Duration(minutes: 10),
+        fetchResults: true,
+      ),
+    );
+
+    yield* observableQuery.stream.map(
+      (result) => _responseResolver.resolve<ExploreContentDTO?>(
+        result,
+        (raw) {
+          final newHashCode = jsonEncode(raw).hashCode;
+          if (_exploreContentHashCode == newHashCode) {
+            return null;
+          }
+          _exploreContentHashCode = newHashCode;
+          return ExploreContentDTO.fromJson(raw);
+        },
+      ),
+    );
+  }
+
+  @override
+  Stream<ExploreHighlightedContentDTO?> exploreHighlightedContentStream() async* {
+    final observableQuery = _client.watchQuery(
+      WatchQueryOptions(
+        document: ExploreContentGQL.highlightedContent(),
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        pollInterval: const Duration(minutes: 10),
+        fetchResults: true,
+      ),
+    );
+
+    yield* observableQuery.stream.map(
+      (result) => _responseResolver.resolve<ExploreHighlightedContentDTO?>(
+        result,
+        (raw) {
+          final newHashCode = jsonEncode(raw).hashCode;
+          if (_exploreHighlightedContentHashCode == newHashCode) {
+            return null;
+          }
+          _exploreHighlightedContentHashCode = newHashCode;
+          return ExploreHighlightedContentDTO.fromJson(raw);
+        },
+      ),
+    );
   }
 }
