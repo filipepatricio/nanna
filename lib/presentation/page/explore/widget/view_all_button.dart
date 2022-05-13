@@ -18,7 +18,7 @@ class ViewAllButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.darkLinen,
           borderRadius: BorderRadius.circular(AppDimens.s),

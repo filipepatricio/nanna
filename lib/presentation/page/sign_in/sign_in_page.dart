@@ -81,7 +81,7 @@ class SignInPage extends HookWidget {
               },
             ),
           ),
-          orElse: () => const SizedBox(),
+          orElse: () => const SizedBox.shrink(),
         ),
       ),
       body: Container(
@@ -101,7 +101,7 @@ class SignInPage extends HookWidget {
                   emailController: emailController,
                   snackbarController: snackbarController,
                 ),
-                orElse: () => const SizedBox(),
+                orElse: () => const SizedBox.shrink(),
               ),
             ),
           ),

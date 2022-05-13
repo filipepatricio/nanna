@@ -38,7 +38,7 @@ class TutorialTooltip extends StatelessWidget {
             child: SvgPicture.asset(AppVectorGraphics.tutorialArrowUp),
           )
         ],
-        Container(
+        DecoratedBox(
           decoration: tutorialTooltipPosition == TutorialTooltipPosition.top
               ? const BoxDecoration(
                   color: AppColors.pastelPurple,

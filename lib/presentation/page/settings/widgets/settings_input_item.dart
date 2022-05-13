@@ -64,14 +64,14 @@ class SettingsInputItem extends HookWidget {
                       controller.clear();
                       onClear();
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppDimens.sl),
-                      child: Container(
-                        decoration: const BoxDecoration(
+                    child: const Padding(
+                      padding: EdgeInsets.all(AppDimens.sl),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
                           color: AppColors.grey,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.clear,
                           size: AppDimens.m,
                           color: AppColors.settingsIcon,

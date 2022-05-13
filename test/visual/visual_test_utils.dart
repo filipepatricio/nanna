@@ -176,8 +176,8 @@ extension StartAppExtension on WidgetTester {
       fileNamePrefix = _defaultGoldenFileName;
     }
     _matchGoldenFileCalled = true;
-    final fileName = '$fileNamePrefix';
-    await multiScreenGolden(this, '$fileName', devices: _selectedDevices);
+    final fileName = fileNamePrefix;
+    await multiScreenGolden(this, fileName, devices: _selectedDevices);
   }
 
   void mockDependency<T extends Object>(T dependency) {

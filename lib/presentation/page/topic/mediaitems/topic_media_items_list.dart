@@ -78,7 +78,7 @@ class TopicMediaItemsList extends HookWidget {
                   ),
                 );
               }
-              return const SizedBox();
+              return const SizedBox.shrink();
             },
           ),
           const SizedBox(height: AppDimens.xl)

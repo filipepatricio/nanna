@@ -124,7 +124,7 @@ class ExplorePage extends HookWidget {
                   alignment: Alignment.center,
                   child: state.maybeMap(
                     error: (_) => _ErrorView(refreshCallback: () => cubit.initialize()),
-                    orElse: () => const SizedBox(),
+                    orElse: () => const SizedBox.shrink(),
                   ),
                 ),
               ],
@@ -163,7 +163,7 @@ class _ErrorView extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: AppDimens.l),
-        Container(
+        SizedBox(
           width: _tryAgainButtonWidth,
           child: FilledButton(
             text: LocaleKeys.common_tryAgain.tr(),
@@ -267,7 +267,7 @@ class _Area extends HookWidget {
           topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
           smallTopics: (area) => SmallTopicsAreaView(area: area),
           highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),
-          unknown: (_) => Container(),
+          unknown: (_) => const SizedBox.shrink(),
         ),
       ),
     );

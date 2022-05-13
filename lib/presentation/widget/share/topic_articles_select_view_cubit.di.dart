@@ -45,7 +45,7 @@ class TopicArticlesSelectViewCubit extends Cubit<TopicArticlesSelectViewState> {
 
     final articles = _selectedIndexes.map((e) => _topic.entries[e]).map((e) => e.item as MediaItemArticle).toList();
 
-    final factory = () => ShareTopicView(
+    ShareTopicView factory() => ShareTopicView(
           topic: _topic,
           articles: articles,
         );

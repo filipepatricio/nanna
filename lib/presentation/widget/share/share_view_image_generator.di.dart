@@ -52,7 +52,7 @@ class ShareViewImageGenerator {
         textDirection: TextDirection.ltr,
         child: Provider.value(
           value: _getIt,
-          child: Container(
+          child: SizedBox(
             height: shareWidget.size.height,
             width: shareWidget.size.width,
             child: shareWidget,

@@ -80,7 +80,7 @@ class ProfilePage extends HookWidget {
                     sortConfigName: state.sortConfigName,
                     onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
                   ),
-                  orElse: () => const SizedBox(),
+                  orElse: () => const SizedBox.shrink(),
                 ),
               ),
             ],

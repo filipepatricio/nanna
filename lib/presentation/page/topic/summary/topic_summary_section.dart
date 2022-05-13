@@ -25,7 +25,7 @@ class TopicSummarySection extends HookWidget {
     final controller = usePageController();
 
     if (!topic.hasSummary) {
-      return const SizedBox();
+      return const SizedBox.shrink();
     }
 
     final content = TopicSummaryTracker(
@@ -82,7 +82,7 @@ class _SummaryCardPageView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: AppDimens.topicViewSummaryTextHeight,
       child: PageView.builder(
         controller: controller,

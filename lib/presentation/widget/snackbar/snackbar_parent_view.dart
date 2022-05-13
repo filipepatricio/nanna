@@ -31,7 +31,7 @@ class SnackbarParentView extends HookWidget {
 
     useEffect(
       () {
-        final listener = (SnackbarMessage message) => cubit.addMessage(message);
+        Future<void> listener(SnackbarMessage message) => cubit.addMessage(message);
         controller._addListener(listener);
         return () => controller._removeListener(listener);
       },

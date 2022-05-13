@@ -27,9 +27,10 @@ class ScrollableSliverAppBar extends HookWidget {
     final scrollOffset = useState(0.0);
     useEffect(
       () {
-        final listener = () {
+        void listener() {
           scrollOffset.value = scrollController.offset;
-        };
+        }
+
         scrollController.addListener(listener);
         return () => scrollController.removeListener(listener);
       },
@@ -56,7 +57,7 @@ class ScrollableSliverAppBar extends HookWidget {
                 ),
               ),
             )
-          : const SizedBox(),
+          : const SizedBox.shrink(),
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Container(

@@ -46,7 +46,7 @@ class LastUpdatedTopics extends HookWidget {
           builder: (variants) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 height: cardStackHeight + AppDimens.xl * 2,
                 child: PageView.builder(
                   itemCount: topics.length,
