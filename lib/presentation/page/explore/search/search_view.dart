@@ -36,7 +36,10 @@ class SearchView extends HookWidget {
     final state = useCubitBuilder(cubit);
 
     return NextPageLoadExecutor(
-      enabled: true,
+      enabled: state.maybeMap(
+        idle: (_) => true,
+        orElse: () => false,
+      ),
       onNextPageLoad: cubit.loadNextPage,
       scrollController: scrollController,
       child: state.maybeMap(
