@@ -42,32 +42,28 @@ Future<void> main() async {
   await Hive.initFlutter();
   final mainRouter = MainRouter(mainRouterKey);
 
-  await runZonedGuarded(
-    () async {
-      await SentryFlutter.init(
-        (options) => options
-          ..dsn = (kDebugMode || kProfileMode) ? '' : appConfig.sentryEventDns
-          ..environment = environment,
-      );
-      return runApp(
-        EasyLocalization(
-          path: 'assets/translations',
-          supportedLocales: availableLocales.values.toList(),
-          fallbackLocale: availableLocales[fallbackLanguageCode],
-          useOnlyLangCode: true,
-          saveLocale: true,
-          child: InformedApp(
-            mainRouter: mainRouter,
-            getIt: getIt,
-          ),
+  final filterController = getIt<ReportingTreeErrorFilterController>();
+  await SentryFlutter.init(
+    (options) => options
+      ..beforeSend = (event, {hint}) {
+        if (filterController.shouldFilterOut(event.throwable)) return null;
+        return event;
+      }
+      ..dsn = (kDebugMode || kProfileMode) ? '' : appConfig.sentryEventDns
+      ..environment = environment,
+    appRunner: () => runApp(
+      EasyLocalization(
+        path: 'assets/translations',
+        supportedLocales: availableLocales.values.toList(),
+        fallbackLocale: availableLocales[fallbackLanguageCode],
+        useOnlyLangCode: true,
+        saveLocale: true,
+        child: InformedApp(
+          mainRouter: mainRouter,
+          getIt: getIt,
         ),
-      );
-    },
-    (error, stack) async {
-      final filter = getIt<ReportingTreeErrorFilterController>();
-      if (filter.shouldFilterOut(error)) return;
-      await Sentry.captureException(error, stackTrace: stack);
-    },
+      ),
+    ),
   );
 }
 

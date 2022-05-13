@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
+import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
@@ -23,7 +24,12 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   Future<void> initialize() async {
     final signedIn = await _isSignedInUseCase();
     if (signedIn) {
-      await _initializeFeatureFlagsUseCase();
+      try {
+        await _initializeFeatureFlagsUseCase();
+      } on UnauthorizedException {
+        emit(EntryPageState.notSignedIn());
+        return;
+      }
 
       final onboardingSeen = await _isOnboardingSeenUseCase();
       if (onboardingSeen) {
