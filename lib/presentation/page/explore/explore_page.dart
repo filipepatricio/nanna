@@ -27,6 +27,7 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -46,6 +47,7 @@ class ExplorePage extends HookWidget {
     final scrollControllerIdleOffset = useState(0.0);
 
     final searchViewCubit = useCubit<SearchViewCubit>();
+    final searchViewState = useCubitBuilder(searchViewCubit);
     final searchTextEditingController = useTextEditingController();
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
@@ -96,10 +98,22 @@ class ExplorePage extends HookWidget {
                         orElse: () => getPlatformScrollPhysics(),
                       ),
                       slivers: [
-                        SliverSearchAppBar(
-                          explorePageCubit: cubit,
-                          searchTextEditingController: searchTextEditingController,
-                          searchViewCubit: searchViewCubit,
+                        searchViewState.maybeMap(
+                          initial: (state) => state.showSearchBar
+                              ? SliverSearchAppBar(
+                                  explorePageCubit: cubit,
+                                  searchTextEditingController: searchTextEditingController,
+                                  searchViewCubit: searchViewCubit,
+                                )
+                              : ScrollableSliverAppBar(
+                                  scrollController: scrollController,
+                                  title: LocaleKeys.explore_title.tr(),
+                                ),
+                          orElse: () => SliverSearchAppBar(
+                            explorePageCubit: cubit,
+                            searchTextEditingController: searchTextEditingController,
+                            searchViewCubit: searchViewCubit,
+                          ),
                         ),
                         state.maybeMap(
                           initialLoading: (_) => const _LoadingSection(),

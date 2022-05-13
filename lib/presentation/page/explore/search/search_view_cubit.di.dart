@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/feature_flags/use_case/show_search_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_loader.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_state.dt.dart';
@@ -8,24 +9,27 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SearchViewCubit extends Cubit<SearchViewState> {
+  SearchViewCubit(
+    this._searchPaginationEngineProvider,
+    this._showSearchOnExplorePageUseCase,
+  ) : super(SearchViewState.initial(showSearchBar: false));
+
+  final ShowSearchOnExplorePageUseCase _showSearchOnExplorePageUseCase;
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
   late PaginationEngine<SearchResult> _paginationEngine;
   late String _query;
 
   final _debouncer = Debouncer(milliseconds: 500);
 
-  SearchViewCubit(
-    this._searchPaginationEngineProvider,
-  ) : super(SearchViewState.initial());
-
   Future<void> initialize() async {
-    emit(SearchViewState.initial());
+    final showSearchBar = await _showSearchOnExplorePageUseCase();
+    emit(SearchViewState.initial(showSearchBar: showSearchBar));
   }
 
   Future<void> search(String query) async {
     _query = query;
     if (query.isEmpty) {
-      emit(SearchViewState.initial());
+      emit(SearchViewState.initial(showSearchBar: true));
       return;
     }
 
