@@ -27,12 +27,12 @@ abstract class ConfigModule {
   LogTree get devLogTree => DebugTree(useColors: true);
 
   @prod
-  @singleton
-  LogTree get prodLogTree => SentryReportingTree();
+  @Singleton(as: LogTree)
+  SentryReportingTree get prodLogTree;
 
   @test
-  @singleton
-  LogTree get stagingLogTree => SentryReportingTree();
+  @Singleton(as: LogTree)
+  SentryReportingTree get stagingLogTree;
 
   @Environment(mockName)
   @singleton
