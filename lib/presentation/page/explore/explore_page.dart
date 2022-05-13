@@ -51,12 +51,14 @@ class ExplorePage extends HookWidget {
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showTutorialToast: (text) => showInfoToast(context: context, text: text),
-        idle: (_) {
+        startExploring: () {
           scrollController.jumpTo(scrollControllerIdleOffset.value);
         },
-        search: () {
-          scrollControllerIdleOffset.value = scrollController.offset;
+        startSearching: () {
           scrollController.jumpTo(0);
+        },
+        startTyping: () {
+          scrollControllerIdleOffset.value = scrollController.offset;
         },
       );
     });

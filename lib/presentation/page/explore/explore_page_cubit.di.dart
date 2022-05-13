@@ -89,11 +89,17 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     }
   }
 
+  Future<void> startTyping() async {
+    emit(ExplorePageState.startTyping());
+  }
+
   Future<void> search() async {
+    emit(ExplorePageState.startSearching());
     emit(ExplorePageState.search());
   }
 
-  Future<void> idle() async {
+  Future<void> explore() async {
+    emit(ExplorePageState.startExploring());
     emit(_latestIdleState);
   }
 }
