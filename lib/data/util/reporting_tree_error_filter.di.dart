@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
+import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class ReportingTreeErrorFilter {
@@ -8,6 +10,8 @@ abstract class ReportingTreeErrorFilter {
 class ReportingTreeErrorFilterController {
   final List<ReportingTreeErrorFilter> _filters = [
     _CubitClosedErrorFilter(),
+    _TypeErrorFilter<NoInternetConnectionException>(),
+    _TypeErrorFilter<UnauthorizedException>(),
   ];
 
   bool shouldFilterOut(dynamic error) {
@@ -20,4 +24,9 @@ class _CubitClosedErrorFilter implements ReportingTreeErrorFilter {
   bool filterOut(error) {
     return error is StateError && error.message == 'Cannot emit new states after calling close';
   }
+}
+
+class _TypeErrorFilter<T> implements ReportingTreeErrorFilter {
+  @override
+  bool filterOut(error) => error is T;
 }

@@ -1,15 +1,22 @@
+import 'package:better_informed_mobile/data/exception/common_exception_mapper.di.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 class GraphQLResponseResolver {
+  GraphQLResponseResolver(this._generalExceptionMapper);
+
+  final CommonExceptionMapper _generalExceptionMapper;
+
   T? resolve<T>(
     QueryResult result,
     T Function(Map<String, dynamic> raw) mapper, {
     String? rootKey,
   }) {
     final optionalException = result.exception;
-    if (result.hasException && optionalException != null) throw optionalException;
+    if (result.hasException && optionalException != null) {
+      throw _generalExceptionMapper.map(optionalException);
+    }
 
     final rawData = result.data;
     if (rawData == null) return null;
