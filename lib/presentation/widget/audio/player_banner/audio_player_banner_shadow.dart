@@ -19,14 +19,14 @@ class AudioPlayerBannerShadow extends HookWidget {
     );
     final state = useCubitBuilder(cubit);
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         boxShadow: [
           ...state.maybeMap(
             visible: (_) => [
               const BoxShadow(
                 color: AppColors.shadowColor,
-                offset: Offset(0.0, 0.0),
+                offset: Offset.zero,
                 blurRadius: 1.0,
                 spreadRadius: 0,
               ),

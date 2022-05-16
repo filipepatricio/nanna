@@ -30,7 +30,7 @@ class ProfileFilterTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: _tabHeight + _tabIndicatorWeight,
           child: Align(
             alignment: Alignment.bottomCenter,

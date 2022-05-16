@@ -44,7 +44,7 @@ class BookmarkListTile extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: AppDimens.m),
-          Container(
+          SizedBox(
             height: height + AppDimens.m,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +52,7 @@ class BookmarkListTile extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width * _contentWidthFactor,
                       child: AspectRatio(
                         aspectRatio: _aspectRatio,
@@ -175,7 +175,7 @@ extension on Bookmark {
         onTap: () => shareTopicArticlesList(context, data.topic),
         backgroundColor: AppColors.transparent,
       ),
-      unknown: (_) => const SizedBox(),
+      unknown: (_) => const SizedBox.shrink(),
     );
   }
 }
@@ -193,7 +193,7 @@ extension on BookmarkTileCover {
               ),
               topic: (_) => throw Exception('There should not be topic with static cover'),
             ) ??
-            const SizedBox();
+            const SizedBox.shrink();
       },
       dynamic: (cover) {
         return _createDynamicCover(
@@ -202,7 +202,7 @@ extension on BookmarkTileCover {
               cover.indexOfType,
               bookmark,
             ) ??
-            const SizedBox();
+            const SizedBox.shrink();
       },
     );
   }

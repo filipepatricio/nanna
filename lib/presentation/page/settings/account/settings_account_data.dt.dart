@@ -16,19 +16,21 @@ class SettingsAccountData with _$SettingsAccountData {
 
   const SettingsAccountData._();
 
-  factory SettingsAccountData.fromUser(User user) {
-    return SettingsAccountData(
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    );
-  }
+  factory SettingsAccountData.empty() => SettingsAccountData(
+        firstName: '',
+        lastName: '',
+        email: '',
+      );
 
-  SettingsAccountData copyWithUser(User user) {
-    return copyWith(
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    );
-  }
+  factory SettingsAccountData.fromUser(User user) => SettingsAccountData(
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      );
+
+  SettingsAccountData copyWithUser(User user) => copyWith(
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      );
 }

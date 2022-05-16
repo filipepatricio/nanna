@@ -40,7 +40,7 @@ class TopicHeader extends HookWidget {
       children: [
         Positioned(
           top: 0,
-          child: Container(
+          child: SizedBox(
             width: topicHeaderImageWidth,
             height: topicHeaderImageHeight,
             child: CloudinaryImage(

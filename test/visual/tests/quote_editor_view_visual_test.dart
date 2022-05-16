@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pedantic/pedantic.dart';
 
 import '../../test_data.dart';
 import '../visual_test_utils.dart';

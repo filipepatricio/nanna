@@ -28,9 +28,10 @@ class TopicSummaryTracker extends HookWidget {
       () {
         if (state == TopicSummaryTrackerState.disabled) return () {};
 
-        final listener = () {
+        void listener() {
           cubit.track(topic, summaryPageController.page);
-        };
+        }
+
         summaryPageController.addListener(listener);
         return () => summaryPageController.removeListener(listener);
       },

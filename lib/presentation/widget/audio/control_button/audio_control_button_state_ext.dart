@@ -20,11 +20,11 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
 
   String get imagePath {
     return maybeMap(
-      notInitilized: (_) => AppVectorGraphics.play_arrow,
-      inDifferentAudio: (_) => AppVectorGraphics.play_arrow,
-      loading: (_) => AppVectorGraphics.play_arrow,
+      notInitilized: (_) => AppVectorGraphics.playArrow,
+      inDifferentAudio: (_) => AppVectorGraphics.playArrow,
+      loading: (_) => AppVectorGraphics.playArrow,
       playing: (_) => AppVectorGraphics.pause,
-      paused: (_) => AppVectorGraphics.play_arrow,
+      paused: (_) => AppVectorGraphics.playArrow,
       orElse: () => throw Exception('Unhandled type'),
     );
   }

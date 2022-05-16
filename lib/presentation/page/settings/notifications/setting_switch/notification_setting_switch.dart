@@ -64,7 +64,7 @@ class NotificationSettingSwitch extends HookWidget {
           switchKey: key,
           onChange: cubit.changeSetting,
         ),
-        orElse: () => const SizedBox(),
+        orElse: () => const SizedBox.shrink(),
       ),
     );
   }
@@ -75,7 +75,7 @@ class _NotInitialized extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox();
+    return const SizedBox.shrink();
   }
 }
 

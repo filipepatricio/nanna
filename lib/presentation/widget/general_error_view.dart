@@ -50,7 +50,7 @@ class GeneralErrorView extends StatelessWidget {
                     retryCallback?.call();
                   },
                 )
-              : const SizedBox(),
+              : const SizedBox.shrink(),
         ),
       ],
     );

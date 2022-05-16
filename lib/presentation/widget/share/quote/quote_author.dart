@@ -15,7 +15,7 @@ class QuoteAuthor extends StatelessWidget {
   Widget build(BuildContext context) {
     if (article.author == null) {
       return Text(
-        '${article.publisher.name}',
+        article.publisher.name,
         style: style,
         maxLines: 1,
       );

@@ -3,5 +3,5 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class IsEmailValidUseCase {
-  Future<bool> call(String email) async => EmailValidator.validate(email);
+  bool call(String email) => EmailValidator.validate(email);
 }

@@ -127,9 +127,10 @@ class PremiumArticleReadView extends HookWidget {
 
     useEffect(
       () {
-        final listener = () {
+        void listener() {
           showAudioFloatingButton.value = !showBackToTopicButton.value;
-        };
+        }
+
         showBackToTopicButton.addListener(listener);
         return () => showBackToTopicButton.removeListener(listener);
       },
@@ -138,10 +139,11 @@ class PremiumArticleReadView extends HookWidget {
 
     useEffect(
       () {
-        final listener = () {
+        void listener() {
           final page = pageController.page ?? 0.0;
           showAudioFloatingButton.value = page > 0.5 && !showBackToTopicButton.value;
-        };
+        }
+
         pageController.addListener(listener);
         return () => pageController.removeListener(listener);
       },
