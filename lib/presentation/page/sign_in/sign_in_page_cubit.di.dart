@@ -17,6 +17,17 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SignInPageCubit extends Cubit<SignInPageState> {
+  SignInPageCubit(
+    this._isEmailValidUseCase,
+    this._sendMagicLinkUseCase,
+    this._signInWithDefaultProviderUseCase,
+    this._subscribeForMagicLinkTokenUseCase,
+    this._signInWithMagicLinkTokenUseCase,
+    this._isOnboardingSeenUseCase,
+    this._initializeFeatureFlagsUseCase,
+    this._initializeAttributionUseCase,
+  ) : super(SignInPageState.idle(false));
+
   final IsEmailValidUseCase _isEmailValidUseCase;
   final SendMagicLinkUseCase _sendMagicLinkUseCase;
   final SignInWithDefaultProviderUseCase _signInWithDefaultProviderUseCase;
@@ -29,17 +40,6 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   StreamSubscription? _magicLinkSubscription;
   late String _email;
 
-  SignInPageCubit(
-    this._isEmailValidUseCase,
-    this._sendMagicLinkUseCase,
-    this._signInWithDefaultProviderUseCase,
-    this._subscribeForMagicLinkTokenUseCase,
-    this._signInWithMagicLinkTokenUseCase,
-    this._isOnboardingSeenUseCase,
-    this._initializeFeatureFlagsUseCase,
-    this._initializeAttributionUseCase,
-  ) : super(SignInPageState.idle(false));
-
   @override
   Future<void> close() async {
     await _magicLinkSubscription?.cancel();
@@ -50,9 +50,9 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     await _subscribeForMagicLink();
   }
 
-  Future<void> updateEmail(String email) async {
+  void updateEmail(String email) {
     _email = email;
-    final valid = await _isEmailValidUseCase(email);
+    final valid = _isEmailValidUseCase(email);
     emit(SignInPageState.idle(valid));
   }
 
