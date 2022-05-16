@@ -53,7 +53,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     final fixedQuote = _getFixedQuote(quote);
     final shareText = article.url;
 
-    final factory = () => QuoteForegroundView(
+    QuoteForegroundView factory() => QuoteForegroundView(
           quote: fixedQuote,
           article: article,
           quoteVariantData: state.variants[state.selectedIndex],
@@ -90,7 +90,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   Future<void> shareStory(MediaItemArticle article, String quote) async {
     final fixedQuote = _getFixedQuote(quote);
 
-    final backgroundFactory = () => QuoteBackgroundView(
+    QuoteBackgroundView backgroundFactory() => QuoteBackgroundView(
           article: article,
         );
     final backgroundImage = await generateShareImage(
@@ -99,7 +99,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
       'quote_${clock.now().millisecondsSinceEpoch}_background.png',
     );
 
-    final foregroundFactory = () => QuoteForegroundView(
+    QuoteForegroundView foregroundFactory() => QuoteForegroundView(
           quote: fixedQuote,
           article: article,
           quoteVariantData: state.variants[state.selectedIndex],
@@ -128,7 +128,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     var fixedQuote = quote;
 
     if (quote.length > 140) {
-      fixedQuote = quote.substring(0, 140) + '...';
+      fixedQuote = '${quote.substring(0, 140)}...';
     }
 
     return fixedQuote;

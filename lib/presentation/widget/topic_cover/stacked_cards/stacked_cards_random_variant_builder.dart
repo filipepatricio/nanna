@@ -65,7 +65,7 @@ class StackedCardsRandomVariantBuilder<T> extends HookWidget {
       }
 
       final iterationsLeft = availableVariants.length;
-      for (var _ = 0; _ < iterationsLeft; _++) {
+      for (var i = 0; i < iterationsLeft; i++) {
         final randomIndex = random.nextInt(availableVariants.length);
         final randomVariant = availableVariants[randomIndex];
         availableVariants = availableVariants.where((value) => value != randomVariant).toList();

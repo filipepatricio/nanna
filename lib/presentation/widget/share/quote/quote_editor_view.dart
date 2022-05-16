@@ -187,7 +187,7 @@ class _ColorSquareOption extends StatelessWidget {
       aspectRatio: 1,
       child: GestureDetector(
         onTap: selectionChanged,
-        child: Container(
+        child: DecoratedBox(
           decoration: BoxDecoration(
             color: color,
             border: _getBorder(),

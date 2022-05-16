@@ -49,7 +49,7 @@ class SettingsNotificationsPage extends HookWidget {
               snackbarController: snackbarController,
               groups: data,
             ),
-            orElse: () => const SizedBox(),
+            orElse: () => const SizedBox.shrink(),
           ),
         ),
       ),

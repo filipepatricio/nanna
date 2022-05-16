@@ -65,7 +65,7 @@ class SettingsAccountBody extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: AppDimens.l),
-                        Container(
+                        SizedBox(
                           height: AppDimens.settingsItemHeight,
                           child: Row(
                             children: [

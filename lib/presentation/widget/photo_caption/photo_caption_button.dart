@@ -31,7 +31,7 @@ class PhotoCaptionButton extends HookWidget {
     final showPhotoCaptionTooltip = useState(false);
     final caption = cloudinaryImage.caption;
     return caption == null
-        ? const SizedBox()
+        ? const SizedBox.shrink()
         : Stack(
             children: [
               if (showPhotoCaptionTooltip.value) ...[

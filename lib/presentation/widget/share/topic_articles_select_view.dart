@@ -42,7 +42,7 @@ Future<void> _showBottomSheet(BuildContext context, WidgetBuilder builder) {
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
-    builder: (context) => Container(
+    builder: (context) => SizedBox(
       height: MediaQuery.of(context).size.height * 0.6,
       child: builder(context),
     ),
@@ -93,7 +93,7 @@ class TopicArticlesSelectView extends HookWidget {
         canSelectMore: state.canSelectMore,
         maxArticles: state.articlesSelectionLimit,
       ),
-      orElse: () => const SizedBox(),
+      orElse: () => const SizedBox.shrink(),
     );
 
     if (kIsAppleDevice) {

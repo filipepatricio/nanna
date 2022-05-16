@@ -153,7 +153,7 @@ example:
         child: state.maybeMap(
             initialLoading: (_) => const Loader(),
             idle: (state) => _Idle(content: state.content),
-            orElse: () => const SizedBox(),
+            orElse: () => const SizedBox.shrink(),
         ),
     ),
 ```

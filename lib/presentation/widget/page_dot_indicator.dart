@@ -29,9 +29,10 @@ class PageDotIndicator extends HookWidget {
 
     useEffect(
       () {
-        final onPageChanged = () {
+        void onPageChanged() {
           currentPageState.value = min(controller.page ?? 0.0, pageCount.toDouble() - 1);
-        };
+        }
+
         controller.addListener(onPageChanged);
         return () => controller.removeListener(onPageChanged);
       },
@@ -68,7 +69,7 @@ class PageDotIndicator extends HookWidget {
       );
     }
 
-    return Container(
+    return SizedBox(
       height: _dotMaxSize,
       child: content,
     );

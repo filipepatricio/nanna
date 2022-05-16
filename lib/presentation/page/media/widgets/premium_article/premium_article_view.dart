@@ -46,7 +46,7 @@ class PremiumArticleView extends HookWidget {
 
     useEffect(
       () {
-        final listener = () {
+        void listener() {
           switch (articleOutputModeNotifier.value) {
             case ArticleOutputMode.read:
               horizontalPageController.animateToPage(
@@ -63,7 +63,8 @@ class PremiumArticleView extends HookWidget {
               );
               break;
           }
-        };
+        }
+
         articleOutputModeNotifier.addListener(listener);
         return () => articleOutputModeNotifier.removeListener(listener);
       },

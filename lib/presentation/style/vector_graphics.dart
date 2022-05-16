@@ -94,8 +94,8 @@ class AppVectorGraphics {
   static const String headphones = 'assets/vector_graphics/headphones.svg';
   static const String lines = 'assets/vector_graphics/lines.svg';
 
-  static const String play_arrow = 'assets/vector_graphics/play_arrow.svg';
+  static const String playArrow = 'assets/vector_graphics/play_arrow.svg';
   static const String pause = 'assets/vector_graphics/pause.svg';
-  static const String skip_back_10_seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
-  static const String skip_forward_10_seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
+  static const String skipBack10Seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
+  static const String skipForward10Seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
 }

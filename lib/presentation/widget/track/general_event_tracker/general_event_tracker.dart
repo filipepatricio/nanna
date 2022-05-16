@@ -36,7 +36,7 @@ class GeneralEventTracker extends HookWidget {
 
     useEffect(
       () {
-        final listener = (AnalyticsEvent event) => cubit.trackEvent(event);
+        void listener(AnalyticsEvent event) => cubit.trackEvent(event);
         controller._onEvent = listener;
         return () => controller._onEvent = null;
       },

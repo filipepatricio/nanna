@@ -123,18 +123,18 @@ class TopicOwnerPage extends HookWidget {
                     _AnimatedSwitcher(
                       child: state.maybeMap(
                         idleExpert: (state) => state.topics.isEmpty
-                            ? const SizedBox()
+                            ? const SizedBox.shrink()
                             : LastUpdatedTopics(
                                 topics: state.topics,
                                 cardStackHeight: cardStackHeight,
                               ),
                         idleEditor: (state) => state.topics.isEmpty
-                            ? const SizedBox()
+                            ? const SizedBox.shrink()
                             : LastUpdatedTopics(
                                 topics: state.topics,
                                 cardStackHeight: cardStackHeight,
                               ),
-                        orElse: () => const SizedBox(),
+                        orElse: () => const SizedBox.shrink(),
                       ),
                     ),
                     const SizedBox(height: AppDimens.xxl),

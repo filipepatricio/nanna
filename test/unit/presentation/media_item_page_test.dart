@@ -75,7 +75,7 @@ void main() {
                 )
                 .pictureProvider as ExactAssetPicture)
             .assetName,
-        AppVectorGraphics.play_arrow,
+        AppVectorGraphics.playArrow,
       );
       await tester.tap(playButton);
       await tester.pumpAndSettle();

@@ -61,7 +61,7 @@ class SnackbarView extends HookWidget {
     return message.map(
       simple: (message) {
         if (message.action == null) {
-          return const SizedBox();
+          return const SizedBox.shrink();
         }
         return GestureDetector(
           onTap: () {
@@ -77,7 +77,7 @@ class SnackbarView extends HookWidget {
           ),
         );
       },
-      custom: (message) => const SizedBox(),
+      custom: (message) => const SizedBox.shrink(),
     );
   }
 }

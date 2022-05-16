@@ -30,14 +30,16 @@ void hideKeyboard() {
 }
 
 class NoScrollGlow extends NotificationListener<OverscrollIndicatorNotification> {
-  NoScrollGlow({required Widget child})
+  const NoScrollGlow({required Widget child})
       : super(
-          onNotification: (overscroll) {
-            overscroll.disallowIndicator();
-            return false;
-          },
+          onNotification: noOverscroll,
           child: child,
         );
+
+  static bool noOverscroll(OverscrollIndicatorNotification overscroll) {
+    overscroll.disallowIndicator();
+    return false;
+  }
 }
 
 extension BackToTop on ScrollController {

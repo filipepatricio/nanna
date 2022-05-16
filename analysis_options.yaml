@@ -1,9 +1,12 @@
-include: package:pedantic/analysis_options.1.11.0.yaml
+include: package:flutter_lints/flutter.yaml
 
 analyzer:
   errors:
     missing_required_param: error
     body_might_complete_normally_nullable: ignore
+    use_key_in_widget_constructors: ignore
+  language:
+    strict-casts: true
   exclude:
     - 'build/**'
     - 'bin/cache/**'
@@ -36,6 +39,7 @@ linter:
     - avoid_init_to_null
     - avoid_null_checks_in_equality_operators
     - avoid_relative_lib_imports
+    - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
     - avoid_returning_null_for_void
     - avoid_slow_async_io
@@ -46,12 +50,16 @@ linter:
     - camel_case_extensions
     - camel_case_types
     - cancel_subscriptions
+    - avoid_single_cascade_in_expression_statements
+    - constant_identifier_names
     - control_flow_in_finally
+    - depend_on_referenced_packages
     - directives_ordering
     - empty_catches
     - empty_constructor_bodies
     - empty_statements
     - hash_and_equals
+    - exhaustive_cases
     - implementation_imports
     - iterable_contains_unrelated_type
     - library_names
@@ -60,6 +68,10 @@ linter:
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
     - non_constant_identifier_names
+    - library_private_types_in_public_api
+    - no_leading_underscores_for_library_prefixes
+    - no_leading_underscores_for_local_identifiers
+    - null_closures
     - overridden_fields
     - package_api_docs
     - package_names
@@ -82,35 +94,51 @@ linter:
     - prefer_foreach
     - prefer_generic_function_type_aliases
     - prefer_if_elements_to_conditional_expressions
+    - prefer_function_declarations_over_variables
     - prefer_if_null_operators
     - prefer_initializing_formals
     - prefer_inlined_adds
     - prefer_is_empty
     - prefer_is_not_empty
+    - prefer_interpolation_to_compose_strings
     - prefer_is_not_operator
     - prefer_iterable_whereType
     - prefer_mixin
+    - prefer_null_aware_operators
     - prefer_spread_collections
     - prefer_typing_uninitialized_variables
     - prefer_void_to_null
     - recursive_getters
+    - sized_box_shrink_expand
     - slash_for_doc_comments
+    - sort_child_properties_last
+    # TODO: Uncomment and fix all 347 cases in a separate PR
+    # - sort_constructors_first
     - sort_unnamed_constructors_first
     - test_types_in_equals
     - throw_in_finally
     - type_init_formals
     - unnecessary_brace_in_string_interps
     - unnecessary_const
+    - unnecessary_constructor_name
     - unnecessary_getters_setters
+    - unnecessary_late
     - unnecessary_new
     - unnecessary_null_aware_assignments
     - unnecessary_null_in_if_null_operators
+    - unnecessary_nullable_for_final_variable_declarations
     - unnecessary_overrides
     - unnecessary_parenthesis
+    - unnecessary_raw_strings
     - unnecessary_statements
+    - unnecessary_string_escapes
+    - unnecessary_string_interpolations
     - unnecessary_this
     - unrelated_type_equality_checks
+    - use_decorated_box
     - use_full_hex_values_for_flutter_colors
+    - use_function_type_syntax_for_parameters
+    - use_named_constants
     - use_rethrow_when_possible
     - valid_regexps
     - void_checks
