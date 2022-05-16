@@ -14,11 +14,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SettingsAccountBody extends HookWidget {
-  final SettingsAccountCubit cubit;
-  final SettingsAccountState state;
-  final SettingsAccountData originalData;
-  final SettingsAccountData modifiedData;
-
   const SettingsAccountBody({
     required this.cubit,
     required this.state,
@@ -26,6 +21,11 @@ class SettingsAccountBody extends HookWidget {
     required this.modifiedData,
     Key? key,
   }) : super(key: key);
+
+  final SettingsAccountCubit cubit;
+  final SettingsAccountState state;
+  final SettingsAccountData originalData;
+  final SettingsAccountData modifiedData;
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +83,12 @@ class SettingsAccountBody extends HookWidget {
                           initialInput: originalData.firstName,
                           isEditable: true,
                           isFormFocused: isFormFocused.value,
-                          onChanged: (String inputText) => cubit.updateFirstName(inputText),
-                          validator: (String? value) => modifiedData.firstNameValidator,
-                          onClear: () => cubit.clearNameInput(),
-                          onTap: () => isFormFocused.value = true,
+                          validator: (_) => modifiedData.firstNameValidator,
                           textCapitalization: TextCapitalization.words,
-                          onSubmitted: () => cubit.saveAccountData(),
+                          onChanged: cubit.updateFirstName,
+                          onClear: cubit.clearNameInput,
+                          onSubmitted: cubit.saveAccountData,
+                          onTap: () => isFormFocused.value = true,
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
@@ -97,12 +97,12 @@ class SettingsAccountBody extends HookWidget {
                           initialInput: originalData.lastName,
                           isEditable: true,
                           isFormFocused: isFormFocused.value,
-                          onChanged: (String inputText) => cubit.updateLastName(inputText),
-                          validator: (String? value) => modifiedData.lastNameValidator,
-                          onClear: () => cubit.clearLastNameInput(),
-                          onTap: () => isFormFocused.value = true,
+                          validator: (_) => modifiedData.lastNameValidator,
                           textCapitalization: TextCapitalization.words,
-                          onSubmitted: () => cubit.saveAccountData(),
+                          onChanged: cubit.updateLastName,
+                          onClear: cubit.clearLastNameInput,
+                          onSubmitted: cubit.saveAccountData,
+                          onTap: () => isFormFocused.value = true,
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
@@ -111,11 +111,11 @@ class SettingsAccountBody extends HookWidget {
                           initialInput: originalData.email,
                           isEditable: false,
                           isFormFocused: isFormFocused.value,
-                          onChanged: (String inputText) => cubit.updateEmail(inputText),
-                          validator: (String? value) => modifiedData.emailValidator,
-                          onClear: () => cubit.clearEmailInput(),
+                          validator: (_) => modifiedData.emailValidator,
+                          onChanged: cubit.updateEmail,
+                          onClear: cubit.clearEmailInput,
+                          onSubmitted: cubit.saveAccountData,
                           onTap: () => isFormFocused.value = true,
-                          onSubmitted: () => cubit.saveAccountData(),
                         ),
                         const SizedBox(height: AppDimens.l),
                       ],

@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/update_user_use_case.di.dart';
@@ -10,17 +11,18 @@ import 'package:injectable/injectable.dart';
 
 @Injectable()
 class SettingsAccountCubit extends Cubit<SettingsAccountState> {
+  SettingsAccountCubit(
+    this._getUserUseCase,
+    this._updateUserUseCase,
+    this._isEmailValidUseCase,
+  ) : super(const SettingsAccountState.loading());
+
+  final IsEmailValidUseCase _isEmailValidUseCase;
   final GetUserUseCase _getUserUseCase;
   final UpdateUserUseCase _updateUserUseCase;
 
   late SettingsAccountData _originalData;
-  SettingsAccountData _modifiedData = SettingsAccountData(
-    firstName: '',
-    lastName: '',
-    email: '',
-  );
-
-  SettingsAccountCubit(this._getUserUseCase, this._updateUserUseCase) : super(const SettingsAccountState.loading());
+  SettingsAccountData _modifiedData = SettingsAccountData.empty();
 
   Future<void> initialize() async {
     try {
@@ -102,9 +104,8 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     return LocaleKeys.settings_wrongLastNameInput.tr();
   }
 
-  String? _validateEmail(String? value) {
-    //TODO: Do proper email validation
-    if (value != null && value.isNotEmpty) {
+  String? _validateEmail(String email) {
+    if (_isEmailValidUseCase(email)) {
       return null;
     }
     return LocaleKeys.settings_wrongEmailInput.tr();
