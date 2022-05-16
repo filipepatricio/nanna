@@ -67,7 +67,7 @@ class BookmarkButton extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<BookmarkButtonCubit>();
     final state = useCubitBuilder(cubit);
-    final _animationController = useAnimationController(
+    final animationController = useAnimationController(
       duration: const Duration(
         milliseconds: _animationDuration,
       ),
@@ -116,7 +116,7 @@ class BookmarkButton extends HookWidget {
     return ScaleTransition(
       scale: Tween(begin: 1.0, end: 1.4).animate(
         CurvedAnimation(
-          parent: _animationController,
+          parent: animationController,
           curve: Curves.bounceInOut,
         ),
       ),
@@ -139,7 +139,7 @@ class BookmarkButton extends HookWidget {
                   cubit: cubit,
                   state: state.state,
                   mode: mode,
-                  animationController: _animationController,
+                  animationController: animationController,
                 ),
                 switching: (state) => const _Switching(),
                 orElse: () => const SizedBox.shrink(),

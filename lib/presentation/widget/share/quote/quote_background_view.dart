@@ -90,7 +90,7 @@ class QuoteBackgroundView extends HookWidget implements BaseShareCompletable {
           color: AppColors.background,
           child: Stack(
             children: [
-              Container(
+              SizedBox(
                 width: size.width,
                 height: size.height,
               ),

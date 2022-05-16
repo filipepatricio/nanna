@@ -86,7 +86,7 @@ class TopicView extends HookWidget {
 
   VoidCallback summaryCardTutorialListener(ScrollController listScrollController, double topicHeaderImageHeight) {
     var isToShowSummaryCardTutorialCoachMark = true;
-    final summaryCardTutorialListener = () {
+    void summaryCardTutorialListener() {
       final summaryCardTriggerPosition = topicHeaderImageHeight - AppDimens.topicViewTopicHeaderPadding;
       if (didListScrollReachSummaryCard(listScrollController, summaryCardTriggerPosition) &&
           isToShowSummaryCardTutorialCoachMark) {
@@ -98,13 +98,14 @@ class TopicView extends HookWidget {
         cubit.showSummaryCardTutorialCoachMark();
         isToShowSummaryCardTutorialCoachMark = false;
       }
-    };
+    }
+
     return summaryCardTutorialListener;
   }
 
   VoidCallback mediaItemTutorialListener(ScrollController listScrollController, double articleTriggerPosition) {
     var isToShowMediaItemTutorialCoachMark = true;
-    final mediaItemTutorialListener = () {
+    void mediaItemTutorialListener() {
       if (isToShowMediaItemTutorialCoachMark &&
           didListScrollReachMediaItem(listScrollController, articleTriggerPosition)) {
         listScrollController.animateTo(
@@ -115,7 +116,8 @@ class TopicView extends HookWidget {
         cubit.showMediaItemTutorialCoachMark();
         isToShowMediaItemTutorialCoachMark = false;
       }
-    };
+    }
+
     return mediaItemTutorialListener;
   }
 }

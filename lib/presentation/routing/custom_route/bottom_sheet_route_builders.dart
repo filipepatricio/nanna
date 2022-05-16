@@ -19,11 +19,6 @@ const SystemUiOverlayStyle lightNavBarStyle = SystemUiOverlayStyle(
 );
 
 class _CupertinoBottomSheetContainer extends StatelessWidget {
-  final Widget child;
-  final Color? backgroundColor;
-  final Radius topRadius;
-  final BoxShadow? shadow;
-
   const _CupertinoBottomSheetContainer({
     required this.child,
     required this.topRadius,
@@ -32,12 +27,16 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  final Widget child;
+  final Color? backgroundColor;
+  final Radius topRadius;
+  final BoxShadow? shadow;
+
   @override
   Widget build(BuildContext context) {
     final topSafeAreaPadding = MediaQuery.of(context).padding.top;
     final topPadding = kPreviousPageVisibleOffset + topSafeAreaPadding;
-    final _shadow = shadow ?? _kDefaultBoxShadow;
-    final _backgroundColor = backgroundColor ?? CupertinoTheme.of(context).scaffoldBackgroundColor;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: lightNavBarStyle,
       child: Padding(
@@ -45,7 +44,10 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.vertical(top: topRadius),
           child: Container(
-            decoration: BoxDecoration(color: _backgroundColor, boxShadow: [_shadow]),
+            decoration: BoxDecoration(
+              color: backgroundColor ?? CupertinoTheme.of(context).scaffoldBackgroundColor,
+              boxShadow: [shadow ?? _kDefaultBoxShadow],
+            ),
             width: double.infinity,
             child: MediaQuery.removePadding(
               context: context,

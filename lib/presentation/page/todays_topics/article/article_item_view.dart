@@ -24,7 +24,7 @@ class ArticleItemView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: AppDimens.topicViewMediaItemMaxHeight(context),
       child: GestureDetector(
         onTap: onTap,

@@ -21,7 +21,7 @@ class StackedCardsVariantA extends StatelessWidget {
 
     final cornersHeightDiff = calculateCornersHeightDifference(
       angle: -5,
-      leftCorner: const Offset(0, 0),
+      leftCorner: Offset.zero,
       rightCorner: Offset(bottomCardWidth, 0),
       origin: Offset(bottomCardWidth / 2, bottomCardHeight / 2),
     );

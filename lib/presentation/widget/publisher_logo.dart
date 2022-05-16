@@ -45,7 +45,7 @@ class PublisherLogo extends HookWidget {
     final publisherLogoId = image?.publicId;
 
     return publisherLogoId == null
-        ? const SizedBox()
+        ? const SizedBox.shrink()
         : Padding(
             padding: const EdgeInsets.only(right: AppDimens.s),
             child: Align(

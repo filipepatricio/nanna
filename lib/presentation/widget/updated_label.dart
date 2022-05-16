@@ -20,16 +20,14 @@ class UpdatedLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        LocaleKeys.topic_updated.tr(
-          args: [DateFormatUtil.dateTimeFromNow(dateTime)],
-        ),
-        style: textStyle.copyWith(
-          height: 1,
-          fontSize: fontSize,
-          color: mode == Brightness.dark ? null : AppColors.white,
-        ),
+    return Text(
+      LocaleKeys.topic_updated.tr(
+        args: [DateFormatUtil.dateTimeFromNow(dateTime)],
+      ),
+      style: textStyle.copyWith(
+        height: 1,
+        fontSize: fontSize,
+        color: mode == Brightness.dark ? null : AppColors.white,
       ),
     );
   }

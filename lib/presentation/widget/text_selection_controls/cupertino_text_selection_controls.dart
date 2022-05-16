@@ -128,7 +128,7 @@ class _CupertinoTextSelectionControlsToolbarState extends State<_CupertinoTextSe
 
     // If there is no option available, build an empty widget.
     if (items.isEmpty) {
-      return const SizedBox(width: 0.0, height: 0.0);
+      return const SizedBox.shrink();
     }
 
     return CupertinoTextSelectionToolbar(
@@ -278,7 +278,7 @@ class CupertinoTextSelectionControls extends TextSelectionControls {
         );
       // iOS doesn't draw anything for collapsed selections.
       case TextSelectionHandleType.collapsed:
-        return const SizedBox();
+        return const SizedBox.shrink();
     }
   }
 

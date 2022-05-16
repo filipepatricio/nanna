@@ -42,7 +42,7 @@ class TabBarPage extends HookWidget {
                 );
               },
               key: tabBarPageKey,
-              animationDuration: const Duration(),
+              animationDuration: Duration.zero,
               routes: const [
                 TodayTabGroupRouter(),
                 ExploreTabGroupRouter(),

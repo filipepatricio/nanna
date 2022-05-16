@@ -116,7 +116,7 @@ class MediaItemPage extends HookWidget {
                     cubit.initialize(article, slug, topicId, topicSlug, briefId);
                   },
                 ),
-                orElse: () => const SizedBox(),
+                orElse: () => const SizedBox.shrink(),
               ),
             ),
           ),

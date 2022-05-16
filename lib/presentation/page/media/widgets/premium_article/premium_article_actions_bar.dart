@@ -84,9 +84,10 @@ class PremiumArticleActionsBar extends HookWidget {
     useEffect(
       () {
         if (!hasImage) return () {};
-        final listener = () {
+        void listener() {
           _setButtonColor(backgroundColor, bookmarkMode, buttonColor, pageController);
-        };
+        }
+
         pageController.addListener(listener);
         return () => pageController.removeListener(listener);
       },
@@ -96,7 +97,7 @@ class PremiumArticleActionsBar extends HookWidget {
     useEffect(
       () {
         if (!hasImage) return () {};
-        final listener = () {
+        void listener() {
           final audioMode = articleOutputModeNotifier.value == ArticleOutputMode.audio;
           if (audioMode) {
             backgroundColor.value = AppColors.transparent;
@@ -105,7 +106,8 @@ class PremiumArticleActionsBar extends HookWidget {
           } else {
             _setButtonColor(backgroundColor, bookmarkMode, buttonColor, pageController);
           }
-        };
+        }
+
         articleOutputModeNotifier.addListener(listener);
         return () => articleOutputModeNotifier.removeListener(listener);
       },

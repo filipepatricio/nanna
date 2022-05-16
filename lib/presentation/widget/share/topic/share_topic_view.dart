@@ -220,25 +220,23 @@ class _TopicHeader extends StatelessWidget {
             bottom: AppDimens.xl,
             left: AppDimens.xl,
             right: AppDimens.xl,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  InformedMarkdownBody(
-                    markdown: topic.title,
-                    baseTextStyle: AppTypography.h0Bold.copyWith(
-                      color: AppColors.white,
-                      height: 1.25,
-                    ),
-                    maxLines: 6,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                InformedMarkdownBody(
+                  markdown: topic.title,
+                  baseTextStyle: AppTypography.h0Bold.copyWith(
+                    color: AppColors.white,
+                    height: 1.25,
                   ),
-                  const SizedBox(height: AppDimens.xl),
-                  Text(
-                    LocaleKeys.todaysTopics_selectedArticles.tr(args: ['$articlesLength']),
-                    style: AppTypography.b2Regular.copyWith(color: AppColors.white, height: 1),
-                  ),
-                ],
-              ),
+                  maxLines: 6,
+                ),
+                const SizedBox(height: AppDimens.xl),
+                Text(
+                  LocaleKeys.todaysTopics_selectedArticles.tr(args: ['$articlesLength']),
+                  style: AppTypography.b2Regular.copyWith(color: AppColors.white, height: 1),
+                ),
+              ],
             ),
           ),
         ],

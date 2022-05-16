@@ -23,9 +23,10 @@ class FixedAppBar extends HookWidget implements PreferredSizeWidget {
     final scrollOffset = useState(0.0);
     useEffect(
       () {
-        final listener = () {
+        void listener() {
           scrollOffset.value = scrollController.offset;
-        };
+        }
+
         scrollController.addListener(listener);
         return () => scrollController.removeListener(listener);
       },

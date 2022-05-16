@@ -91,15 +91,12 @@ class PremiumArticleAudioView extends HookWidget {
           ),
           const Spacer(),
           if (hasAudioCredits) ...[
-            Padding(
-              padding: const EdgeInsets.only(top: AppDimens.zero),
-              child: Text(
-                article.audioFile!.credits!,
-                textAlign: TextAlign.center,
-                style: metadataStyle.copyWith(
-                  height: 1.6,
-                  fontStyle: FontStyle.italic,
-                ),
+            Text(
+              article.audioFile!.credits!,
+              textAlign: TextAlign.center,
+              style: metadataStyle.copyWith(
+                height: 1.6,
+                fontStyle: FontStyle.italic,
               ),
             ),
             const Spacer(),
@@ -139,11 +136,11 @@ class _AudioComponentsView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const AudioSeekButton.rewind(),
+            AudioSeekButton.rewind(),
             const SizedBox(width: AppDimens.m),
             AudioControlButton(article: article),
             const SizedBox(width: AppDimens.m),
-            const AudioSeekButton.fastForward(),
+            AudioSeekButton.fastForward(),
           ],
         )
       ],

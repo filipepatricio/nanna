@@ -26,7 +26,7 @@ class InformedTooltip extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
+        DecoratedBox(
           decoration: const BoxDecoration(
             color: AppColors.pastelPurple,
             borderRadius: BorderRadius.all(

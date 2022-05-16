@@ -69,7 +69,7 @@ class _SearchBar extends HookWidget {
 
     useEffect(
       () {
-        final listener = () {
+        void listener() {
           query.value = searchController.text;
           searchViewCubit.search(query.value);
 
@@ -78,7 +78,8 @@ class _SearchBar extends HookWidget {
           } else {
             explorePageCubit.explore();
           }
-        };
+        }
+
         searchController.addListener(listener);
         return () => searchController.removeListener(listener);
       },
@@ -125,7 +126,7 @@ class _SearchBar extends HookWidget {
                     fit: BoxFit.scaleDown,
                   ),
                 )
-              : const SizedBox(),
+              : const SizedBox.shrink(),
         ),
         style: AppTypography.h4Medium.copyWith(
           color: AppColors.darkGreyBackground,
@@ -179,7 +180,7 @@ class _CancelButton extends HookWidget {
                   ),
                 ),
               )
-            : const SizedBox(),
+            : const SizedBox.shrink(),
       ),
     );
   }

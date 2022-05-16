@@ -33,7 +33,7 @@ class ExplorePillsAreaView extends StatelessWidget {
         _pillsTopPadding +
         _pillsBottomPadding;
 
-    return Container(
+    return SizedBox(
       height: height,
       child: MasonryGridView.count(
         padding: const EdgeInsets.only(
@@ -73,7 +73,7 @@ class ExplorePillsAreaView extends StatelessWidget {
                 ),
               ),
             ),
-            unknown: (_) => const SizedBox(),
+            unknown: (_) => const SizedBox.shrink(),
           );
         },
       ),

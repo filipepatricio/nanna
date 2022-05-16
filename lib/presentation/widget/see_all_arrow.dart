@@ -13,7 +13,7 @@ class SeeAllArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      padding: const EdgeInsets.all(0),
+      padding: EdgeInsets.zero,
       onPressed: onTap,
       icon: SvgPicture.asset(
         AppVectorGraphics.fullArrowRight,

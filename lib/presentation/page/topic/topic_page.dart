@@ -79,7 +79,7 @@ class TopicPage extends HookWidget {
                 retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
               ),
             ),
-            orElse: () => const SizedBox(),
+            orElse: () => const SizedBox.shrink(),
           ),
         ),
       ),
