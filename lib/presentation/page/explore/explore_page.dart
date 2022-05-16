@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/article_list_area/article_list_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
@@ -26,6 +27,7 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -45,17 +47,20 @@ class ExplorePage extends HookWidget {
     final scrollControllerIdleOffset = useState(0.0);
 
     final searchViewCubit = useCubit<SearchViewCubit>();
+    final searchViewState = useCubitBuilder(searchViewCubit);
     final searchTextEditingController = useTextEditingController();
 
     useCubitListener<ExplorePageCubit, ExplorePageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showTutorialToast: (text) => showInfoToast(context: context, text: text),
-        idle: (_) {
+        startExploring: () {
           scrollController.jumpTo(scrollControllerIdleOffset.value);
         },
-        search: () {
-          scrollControllerIdleOffset.value = scrollController.offset;
+        startSearching: () {
           scrollController.jumpTo(0);
+        },
+        startTyping: () {
+          scrollControllerIdleOffset.value = scrollController.offset;
         },
       );
     });
@@ -93,10 +98,22 @@ class ExplorePage extends HookWidget {
                         orElse: () => getPlatformScrollPhysics(),
                       ),
                       slivers: [
-                        SliverSearchAppBar(
-                          explorePageCubit: cubit,
-                          searchTextEditingController: searchTextEditingController,
-                          searchViewCubit: searchViewCubit,
+                        searchViewState.maybeMap(
+                          initial: (state) => state.showSearchBar
+                              ? SliverSearchAppBar(
+                                  explorePageCubit: cubit,
+                                  searchTextEditingController: searchTextEditingController,
+                                  searchViewCubit: searchViewCubit,
+                                )
+                              : ScrollableSliverAppBar(
+                                  scrollController: scrollController,
+                                  title: LocaleKeys.explore_title.tr(),
+                                ),
+                          orElse: () => SliverSearchAppBar(
+                            explorePageCubit: cubit,
+                            searchTextEditingController: searchTextEditingController,
+                            searchViewCubit: searchViewCubit,
+                          ),
                         ),
                         state.maybeMap(
                           initialLoading: (_) => const _LoadingSection(),
@@ -264,6 +281,7 @@ class _Area extends HookWidget {
         borderFraction: 0.6,
         child: area.map(
           articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),
+          articlesList: (area) => ArticleListAreaView(area: area),
           topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
           smallTopics: (area) => SmallTopicsAreaView(area: area),
           highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),

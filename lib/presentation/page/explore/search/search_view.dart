@@ -36,7 +36,10 @@ class SearchView extends HookWidget {
     final state = useCubitBuilder(cubit);
 
     return NextPageLoadExecutor(
-      enabled: true,
+      enabled: state.maybeMap(
+        idle: (_) => true,
+        orElse: () => false,
+      ),
       onNextPageLoad: cubit.loadNextPage,
       scrollController: scrollController,
       child: state.maybeMap(
@@ -148,7 +151,7 @@ class _Idle extends StatelessWidget {
             itemCount: results.length,
             itemBuilder: (context, index) {
               return results[index].mapOrNull(
-                article: (data) => ArticleCover.explore(
+                article: (data) => ArticleCover.exploreCarousel(
                   article: data.article,
                   onTap: () => context.navigateToArticle(data.article),
                   coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],

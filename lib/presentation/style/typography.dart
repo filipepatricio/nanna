@@ -158,7 +158,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h5ExtraBald = TextStyle(
+  static const TextStyle h5ExtraBold = TextStyle(
     fontWeight: FontWeight.w800,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 24,
@@ -311,6 +311,14 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 12,
     height: 1.83,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle caption1Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 12,
+    height: 1.25,
     color: AppColors.textPrimary,
   );
 

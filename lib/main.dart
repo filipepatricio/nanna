@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/core/di/di_config.dart';
+import 'package:better_informed_mobile/data/util/reporting_tree_error_filter.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
@@ -41,8 +42,13 @@ Future<void> main() async {
   await Hive.initFlutter();
   final mainRouter = MainRouter(mainRouterKey);
 
+  final filterController = getIt<ReportingTreeErrorFilterController>();
   await SentryFlutter.init(
     (options) => options
+      ..beforeSend = (event, {hint}) {
+        if (filterController.shouldFilterOut(event.throwable)) return null;
+        return event;
+      }
       ..dsn = (kDebugMode || kProfileMode) ? '' : appConfig.sentryEventDns
       ..environment = environment,
     appRunner: () => runApp(

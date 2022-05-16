@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_with_background.dt.dart';
@@ -180,13 +181,23 @@ class _GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return article.map(
-      image: (data) => ArticleCover.explore(
+      image: (data) => ArticleCover.exploreCarousel(
         article: article.article,
+        onTap: () => context.navigateToArticle(article.article),
       ),
-      color: (data) => ArticleCover.explore(
+      color: (data) => ArticleCover.exploreCarousel(
         article: article.article,
         coverColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
+        onTap: () => context.navigateToArticle(article.article),
       ),
+    );
+  }
+}
+
+extension on BuildContext {
+  void navigateToArticle(MediaItemArticle article) {
+    pushRoute(
+      MediaItemPageRoute(article: article),
     );
   }
 }

@@ -240,7 +240,7 @@ class _CoverContentExploreSmall extends StatelessWidget {
           owner: topic.owner,
           withImage: false,
           imageSize: AppDimens.zero,
-          textStyle: AppTypography.metadata1Regular.copyWith(height: 1.2),
+          textStyle: AppTypography.caption1Medium,
           mode: Brightness.dark,
         ),
         const SizedBox(height: AppDimens.s),

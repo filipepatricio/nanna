@@ -3,7 +3,13 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 class SentryReportingTree implements LogTree {
   @override
-  Future<void> log(String level, String message, {String? tag, dynamic ex, StackTrace? stacktrace}) async {
+  Future<void> log(
+    String level,
+    String message, {
+    String? tag,
+    dynamic ex,
+    StackTrace? stacktrace,
+  }) async {
     if (ex != null) {
       await Sentry.captureException(
         ex,

@@ -1,40 +1,74 @@
+import 'dart:async';
+
+import 'package:better_informed_mobile/domain/feature_flags/use_case/show_search_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_loader.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_state.dt.dart';
-import 'package:better_informed_mobile/presentation/util/debouncer.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @injectable
 class SearchViewCubit extends Cubit<SearchViewState> {
+  SearchViewCubit(
+    this._searchPaginationEngineProvider,
+    this._showSearchOnExplorePageUseCase,
+  ) : super(SearchViewState.initial(showSearchBar: false));
+
+  final ShowSearchOnExplorePageUseCase _showSearchOnExplorePageUseCase;
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
   late PaginationEngine<SearchResult> _paginationEngine;
   late String _query;
 
-  final _debouncer = Debouncer(milliseconds: 500);
-
-  SearchViewCubit(
-    this._searchPaginationEngineProvider,
-  ) : super(SearchViewState.initial());
+  StreamController<String>? _queryStreamController;
+  StreamController? _nextPageStreamController = StreamController.broadcast();
+  StreamSubscription? _querySubscription;
+  StreamSubscription? _nextPageSubscription;
 
   Future<void> initialize() async {
-    emit(SearchViewState.initial());
+    final showSearchBar = await _showSearchOnExplorePageUseCase();
+    emit(SearchViewState.initial(showSearchBar: showSearchBar));
+    await _initializeQueryController();
+  }
+
+  @override
+  Future<void> close() async {
+    await _querySubscription?.cancel();
+    await _nextPageSubscription?.cancel();
+    await _queryStreamController?.close();
+    await _nextPageStreamController?.close();
+    return super.close();
   }
 
   Future<void> search(String query) async {
     _query = query;
     if (query.isEmpty) {
-      emit(SearchViewState.initial());
-      return;
+      emit(SearchViewState.initial(showSearchBar: true));
     }
 
-    final paginationState = await _initializePaginationEngine(query);
-    _debouncer.run(() => _handlePaginationState(paginationState));
+    _queryStreamController?.add(query);
   }
 
   Future<void> refresh() async {
+    await _initializeQueryController();
     await search(_query);
+  }
+
+  Future<void> loadNextPage() async {
+    _nextPageStreamController?.add(null);
+  }
+
+  Future<void> _initializeQueryController() async {
+    await _querySubscription?.cancel();
+    await _queryStreamController?.close();
+    _queryStreamController = StreamController.broadcast();
+    _querySubscription = _queryStreamController?.stream
+        .debounceTime(const Duration(milliseconds: 500))
+        .distinct()
+        .where((event) => event.isNotEmpty)
+        .switchMap((value) => Stream.fromFuture(_initializePaginationEngine(value)))
+        .listen((event) => _onQueryChange(event));
   }
 
   Future<PaginationEngineState<SearchResult>> _initializePaginationEngine(
@@ -47,21 +81,32 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     return _paginationEngine.loadMore();
   }
 
-  Future<void> loadNextPage() async {
-    await state.mapOrNull(
+  void _onQueryChange(PaginationEngineState<SearchResult> event) {
+    _nextPageSubscription?.cancel();
+    _nextPageStreamController?.close();
+    _nextPageStreamController = StreamController.broadcast();
+    _nextPageSubscription = _nextPageStreamController?.stream
+        .asyncMap((_) => _loadNextPage())
+        .listen((event) => _handlePaginationState(event));
+
+    _handlePaginationState(event);
+  }
+
+  Future<PaginationEngineState<SearchResult>?> _loadNextPage() async {
+    return state.maybeMap(
       idle: (state) async {
         final results = state.results;
 
         emit(SearchViewState.loadMore(results));
 
-        final paginationState = await _paginationEngine.loadMore();
-        _handlePaginationState(paginationState);
+        return _paginationEngine.loadMore();
       },
+      orElse: () => null,
     );
   }
 
-  void _handlePaginationState(PaginationEngineState<SearchResult> paginationState) {
-    if (isClosed) return;
+  void _handlePaginationState(PaginationEngineState<SearchResult>? paginationState) {
+    if (paginationState == null || isClosed) return;
 
     final results = paginationState.data;
 
