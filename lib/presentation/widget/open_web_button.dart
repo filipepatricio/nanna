@@ -26,8 +26,9 @@ class OpenWebButton extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: () async {
-          if (await canLaunch(url)) {
-            await launch(url);
+          final uri = Uri.parse(url);
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri);
           } else {
             Fimber.e('Could not launch $url');
           }

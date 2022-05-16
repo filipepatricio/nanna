@@ -24,13 +24,12 @@ class TabBar extends HookWidget {
 
     useEffect(
       () {
-        WidgetsBinding.instance?.addPostFrameCallback(
-          (_) async {
-            final initialTab = await cubit.getInitialTab();
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) async => await cubit.getInitialTab().then((initialTab) {
             if (initialTab.isNotEmpty) {
               unawaited(context.navigateNamedTo(initialTab));
             }
-          },
+          }),
         );
       },
       [cubit],

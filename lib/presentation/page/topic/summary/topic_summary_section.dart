@@ -49,7 +49,7 @@ class TopicSummarySection extends HookWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Text(
               LocaleKeys.todaysTopics_summaryHeadline.tr(),
-              style: AppTypography.h2Jakarta,
+              style: AppTypography.h2Regular,
             ),
           ),
           const SizedBox(height: AppDimens.l),

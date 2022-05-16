@@ -84,7 +84,7 @@ If you really want to run app locally with `release` mode, change in xcode `Auto
 
 * [ ] Mobile app stack:
 
-- Flutter : 2.10.1 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
+- Flutter : 3.0.0 (for Flutter version management we are using FVM https://fvm.app/, but it isn't required)
 - Navigation : auto_route
 - Immutable data class : freezed
 - Logs: fimber

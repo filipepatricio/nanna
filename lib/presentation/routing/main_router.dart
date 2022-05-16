@@ -24,6 +24,7 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/bottom_
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
 import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const topicsPathSegment = 'topics';
@@ -57,21 +58,12 @@ const mainPageRoute = CustomRoute(
   durationInMilliseconds: 0,
   children: [
     dashboardTabRouter,
-    CustomRoute(
-      path: '$articlePathSegment/:articleSlug',
-      page: MediaItemPage,
-      customRouteBuilder: cupertinoBottomSheetPageRouteBuilder,
-    ),
-    CustomRoute(
-      page: TopicPage,
-      path: '$topicsPathSegment/:topicSlug',
-      name: 'TopicPage',
-      customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder,
-    ),
+    RedirectRoute(path: '', redirectTo: topicsPathSegment),
+    AutoRoute(path: '$topicsPathSegment/:topicSlug', page: TopicPage, name: 'TopicPage'),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
-    RedirectRoute(path: '', redirectTo: topicsPathSegment),
+    AutoRoute(path: '$articlePathSegment/:articleSlug', page: MediaItemPage),
   ],
 );
 

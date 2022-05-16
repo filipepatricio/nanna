@@ -76,7 +76,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h2Jakarta = TextStyle(
+  static const TextStyle h2Regular = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 24,
@@ -138,15 +138,6 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 16,
     height: 1.5,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle headline4Bold = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 24,
-    height: 1.34,
-    letterSpacing: 0.15,
     color: AppColors.textPrimary,
   );
 

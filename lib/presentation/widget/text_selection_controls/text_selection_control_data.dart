@@ -31,7 +31,7 @@ class DelegateTextSelectionControlData {
 extension DelegateTextSelectionControlDataExtension on List<DelegateTextSelectionControlData> {
   List<TextSelectionControlData> mapToSelectionData(
     TextSelectionDelegate delegate,
-    ClipboardStatusNotifier clipboardStatus,
+    ClipboardStatusNotifier? clipboardStatus,
   ) {
     return where((element) => element.validator(delegate))
         .map(

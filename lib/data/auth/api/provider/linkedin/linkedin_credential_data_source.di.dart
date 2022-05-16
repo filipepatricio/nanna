@@ -71,16 +71,12 @@ class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource 
         rethrow;
       }
     } else {
-      final openedWithSuccess = await launch(
-        authUri.toString(),
-        forceSafariVC: false,
-        statusBarBrightness: Brightness.light,
-      );
+      final openedWithSuccess = await launchUrl(authUri);
 
       if (!openedWithSuccess) throw Exception('LinkedIn authorization uri failed to open');
 
       final redirect = await uriLinkStream.whereType<Uri>().first;
-      await closeWebView();
+      await closeInAppWebView();
 
       return redirect;
     }

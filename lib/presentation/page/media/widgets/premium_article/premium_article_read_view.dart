@@ -22,7 +22,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.article,
-    required this.modalController,
     required this.controller,
     required this.pageController,
     required this.snackbarController,
@@ -35,7 +34,6 @@ class PremiumArticleReadView extends HookWidget {
   }) : super(key: key);
 
   final Article article;
-  final ScrollController modalController;
   final ScrollController controller;
   final PageController pageController;
   final SnackbarController snackbarController;
@@ -107,7 +105,6 @@ class PremiumArticleReadView extends HookWidget {
     final gestureManager = useMemoized(
       () => MediaItemPageGestureManager(
         context: context,
-        modalController: modalController,
         generalViewController: controller,
         pageViewController: pageController,
         articleHasImage: articleWithImage,
@@ -120,7 +117,9 @@ class PremiumArticleReadView extends HookWidget {
 
     useEffect(
       () {
-        WidgetsBinding.instance?.addPostFrameCallback((_) => calculateArticleContentOffset());
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => calculateArticleContentOffset(),
+        );
       },
       [],
     );
