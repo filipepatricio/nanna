@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/auth/auth_exception.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/send_magic_link_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_default_provider_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_linkedin_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_magic_link_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_link_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
@@ -36,6 +37,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
   final InitializeFeatureFlagsUseCase _initializeFeatureFlagsUseCase;
   final InitializeAttributionUseCase _initializeAttributionUseCase;
+  final SignInWithLinkedinUseCase _signInWithLinkedinUseCase;
 
   StreamSubscription? _magicLinkSubscription;
   late String _email;
@@ -67,7 +69,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     }
   }
 
-  Future<void> signInWithProvider() async {
+  Future<void> signInWithPlatformProvider() async {
     emit(SignInPageState.processing());
     try {
       await _signInWithDefaultProviderUseCase();

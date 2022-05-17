@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:better_informed_mobile/domain/app_config/linkedin_config.dart';
 import 'package:injectable/injectable.dart';
 
 const _environmentArgHost = 'host';
@@ -21,6 +22,7 @@ class AppConfig {
   final String sentryEventDns;
   final String appId;
   final String appleStoreId;
+  final LinkedinConfig linkedinConfig;
   final String? segmentWriteKey;
   final String? launchDarklyKey;
   final String? appsFlyerKey;
@@ -32,6 +34,7 @@ class AppConfig {
     required this.sentryEventDns,
     required this.appId,
     required this.appleStoreId,
+    required this.linkedinConfig,
     this.segmentWriteKey,
     this.launchDarklyKey,
     this.appsFlyerKey,
@@ -44,6 +47,7 @@ class AppConfig {
     sentryEventDns: '',
     appId: 'so.informed.dev',
     appleStoreId: '',
+    linkedinConfig: LinkedinConfig.dev(),
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
   );
 
@@ -54,6 +58,7 @@ class AppConfig {
     sentryEventDns: '',
     appId: 'so.informed.mock',
     appleStoreId: '',
+    linkedinConfig: LinkedinConfig.dev(),
   );
 
   static const stage = AppConfig._(
@@ -67,6 +72,7 @@ class AppConfig {
     segmentWriteKey: 'jmJAkhCovDOdxwUqbDBgpFW4xWkpLUte',
     appId: 'so.informed.staging',
     appleStoreId: '1587844260',
+    linkedinConfig: LinkedinConfig.staging(),
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',
   );
@@ -79,6 +85,7 @@ class AppConfig {
     segmentWriteKey: 'Jp2reNsfGRxapvFlgmDYBsRJ2LA2TLSP',
     appId: 'so.informed',
     appleStoreId: '1577915307',
+    linkedinConfig: LinkedinConfig.prod(),
     launchDarklyKey: 'mob-15482f92-5c32-458a-a3c9-4323b6d03656',
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',
   );

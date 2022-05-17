@@ -19,6 +19,8 @@ abstract class DataSourceModule {
   Future<AppLinkDataSource> getAppLinkDataSourceMock(AppConfig appConfig) => AppLinkDataSourceMock.create();
 
   @lazySingleton
-  OAuthCredentialProviderDataSource getOAuthCredentialProvider(OAuthCredentialProviderDataSourceFactory factory) =>
+  OAuthCredentialProviderDataSource getOAuthCredentialProvider(
+    OAuthCredentialPlatformProviderDataSourceFactory factory,
+  ) =>
       factory.create();
 }

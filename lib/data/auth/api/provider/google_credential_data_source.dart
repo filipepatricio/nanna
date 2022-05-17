@@ -1,17 +1,12 @@
-import 'package:better_informed_mobile/data/auth/api/dto/oauth_user_meta_credentials_dto.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
   @override
-  String get provider => SignInProviderDTO.google;
-
-  @override
-  Future<OAuthUserMetaCredentialsDTO> getUserMetaCredential() async {
+  Future<OAuthUserDTO> fetchOAuthUser() async {
     final googleSignIn = GoogleSignIn(scopes: ['email']);
 
     if (await googleSignIn.isSignedIn()) {
@@ -22,14 +17,20 @@ class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
 
     if (account != null) {
       final userNameParts = account.displayName?.split(' ');
-      final userMetaDto = UserMetaDTO(userNameParts?.first, userNameParts?.sublist(1).join(' '), account.photoUrl);
+      final userMetaDto = UserMetaDTO(
+        userNameParts?.first,
+        userNameParts?.sublist(1).join(' '),
+        account.photoUrl,
+      );
       final auth = await account.authentication;
-      return OAuthUserMetaCredentialsDTO(
-        userMetaDto,
-        GoogleAuthProvider.credential(
-          accessToken: auth.accessToken,
-          idToken: auth.idToken,
-        ),
+
+      final token = auth.idToken;
+      if (token == null) throw Exception('Google sign in did not respond with idToken');
+
+      return OAuthUserDTO(
+        user: userMetaDto,
+        token: token,
+        provider: SignInProviderDTO.google,
       );
     }
 

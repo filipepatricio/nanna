@@ -45,10 +45,19 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="http" android:host="@string/app_link_host" android:pathPrefix="/magic"/>
-                <data android:scheme="http" android:host="@string/app_link_host" android:pathPrefix="/topics"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/magic"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/topics"/>
+                <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/articles"/>
+            </intent-filter>
+        </activity>
+
+         <!-- LinkedIn sign in -->
+         <activity android:name="com.linusu.flutter_web_auth.CallbackActivity" android:exported="true">
+            <intent-filter android:label="flutter_web_auth" android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/api/auth/callback/linkedin" />
             </intent-filter>
         </activity>
 
