@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/sign_in_with_linkedin_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/gestures.dart';
@@ -160,6 +161,8 @@ class _IdleContent extends HookWidget {
                       if (!keyboardVisible) ...[
                         const SizedBox(height: AppDimens.xl),
                         SignInWithProviderView(onSignInTap: () => cubit.signInWithPlatformProvider()),
+                        const SizedBox(height: AppDimens.m),
+                        SignInWithLinkedInButton(onTap: () => cubit.signInWithLinkedin()),
                         const SizedBox(height: AppDimens.xxl),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,

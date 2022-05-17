@@ -16,6 +16,8 @@ import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
+typedef _SignInFunction = Future<void> Function();
+
 @injectable
 class SignInPageCubit extends Cubit<SignInPageState> {
   SignInPageCubit(
@@ -69,10 +71,22 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     }
   }
 
+  Future<void> signInWithLinkedin() async {
+    await _signInWithOAuthProvider(_signInWithLinkedinUseCase);
+  }
+
   Future<void> signInWithPlatformProvider() async {
+    await _signInWithOAuthProvider(_signInWithDefaultProviderUseCase);
+  }
+
+  void closeMagicLinkView() {
+    emit(SignInPageState.idle(true));
+  }
+
+  Future<void> _signInWithOAuthProvider(_SignInFunction signIn) async {
     emit(SignInPageState.processing());
     try {
-      await _signInWithDefaultProviderUseCase();
+      await signIn();
       await _finishSignIn();
     } on SignInAbortedException {
       // Do nothing
@@ -84,10 +98,6 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     } finally {
       emit(SignInPageState.idle(false));
     }
-  }
-
-  void closeMagicLinkView() {
-    emit(SignInPageState.idle(true));
   }
 
   Future<void> _subscribeForMagicLink() async {

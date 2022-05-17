@@ -110,7 +110,8 @@
     },
     "providerButton": {
       "apple": "Sign in with Apple",
-      "google": "Sign in with Google"
+      "google": "Sign in with Google",
+      "linkedin": "Sign in with LinkedIn"
     },
     "emailLabel": "Email address",
     "orContinue": "Or continue with",
