@@ -197,6 +197,7 @@ jobs:
     name: All jobs succeeded
     runs-on: ubuntu-latest
     if: always()
+
     steps:
       - name: Commit linting failed
         if: ${{ needs.commit_lint.outputs.succeeded != 'true' }}

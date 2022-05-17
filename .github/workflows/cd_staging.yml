@@ -28,16 +28,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Setup build and minor version numbers
+      - name: Setup build number
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-          ORIGINAL: ${{ github.run_number }}
           BUILD_NUMBER_OFFSET: 570
-          MINOR_VERSION_NUMBER_OFFSET: -27
         run: |
           echo ::set-env name=BUILD_NUMBER::$((github.run_number + BUILD_NUMBER_OFFSET))
-          echo ::set-env name=MINOR_VERSION_NUMBER::$(( github.run_number + MINOR_VERSION_NUMBER_OFFSET ))
-          echo "Setting up minor version number ${{ MINOR_VERSION_NUMBER }} and build number ${{ BUILD_NUMBER }}"
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -79,8 +75,7 @@ jobs:
       - name: Build app
         env:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-          MINOR_VERSION_NUMBER: ${{ env.MINOR_VERSION_NUMBER }}
-        run: flutter build apk --release --dart-define=env=stage --flavor stage --build-name=1.$MINOR_VERSION_NUMBER.0 --build-number="$BUILD_NUMBER"
+        run: flutter build apk --release --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"
 
       - name: Setup Firebase credentials
         run: |
@@ -102,16 +97,13 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
-      - name: Setup build and minor version numbers
+      - name: Setup build number
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-          ORIGINAL: ${{ github.run_number }}
           BUILD_NUMBER_OFFSET: 570
           MINOR_VERSION_NUMBER_OFFSET: -27
         run: |
           echo ::set-env name=BUILD_NUMBER::$((github.run_number + BUILD_NUMBER_OFFSET))
-          echo ::set-env name=MINOR_VERSION_NUMBER::$(( github.run_number + MINOR_VERSION_NUMBER_OFFSET ))
-          echo "Setting up minor version number ${{ MINOR_VERSION_NUMBER }} and build number ${{ BUILD_NUMBER }}"
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -148,8 +140,7 @@ jobs:
       - name: Build app
         env:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-          MINOR_VERSION_NUMBER: ${{ env.MINOR_VERSION_NUMBER }}
-        run: flutter build ios --config-only --release --no-codesign --dart-define=env=stage --flavor stage --build-name=1.$MINOR_VERSION_NUMBER.0 --build-number="$BUILD_NUMBER"  --bundle-sksl-path warmup.sksl.json
+        run: flutter build ios --config-only --release --no-codesign --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"  --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
         uses: maierj/fastlane-action@v2.1.0
