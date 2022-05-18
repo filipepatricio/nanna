@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content_area.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -15,7 +16,10 @@ class TopicsAreaView extends HookWidget {
     required this.area,
     required this.isHighlighted,
     Key? key,
-  })  : _items = ExploreAreaItemGenerator.generate(area.topics),
+  })  : _items = ExploreAreaItemGenerator.generate(
+          area.topics,
+          viewAllTitle: area.title,
+        ),
         super(key: key);
 
   final ExploreContentAreaTopics area;
@@ -37,6 +41,7 @@ class TopicsAreaView extends HookWidget {
           areaId: area.id,
           items: _items,
           itemWidth: size,
+          onViewAllTap: () => context.navigateToSeeAll(area),
           itemBuilder: (topic, index) => TopicCover.exploreLarge(
             topic: topic,
             onTap: () => context.navigateToTopic(topic),
@@ -53,6 +58,17 @@ extension on BuildContext {
     pushRoute(
       TopicPage(
         topicSlug: topic.slug,
+      ),
+    );
+  }
+
+  void navigateToSeeAll(ExploreContentAreaTopics area) {
+    pushRoute(
+      TopicsSeeAllPageRoute(
+        areaId: area.id,
+        title: area.title,
+        topics: area.topics,
+        referred: ExploreAreaReferred.highlightedStream,
       ),
     );
   }
