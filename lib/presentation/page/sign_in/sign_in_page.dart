@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/sign_in_with_linkedin_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/gestures.dart';
@@ -32,6 +33,12 @@ class SignInPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final emailController = useTextEditingController();
     final snackbarController = useMemoized(() => SnackbarController());
+
+    useOnAppLifecycleStateChange((previous, current) {
+      if (current != previous && current == AppLifecycleState.resumed) {
+        cubit.cancelLinkedInSignIn();
+      }
+    });
 
     useCubitListener<SignInPageCubit, SignInPageState>(cubit, (cubit, state, context) {
       state.maybeMap(
@@ -93,6 +100,7 @@ class SignInPage extends HookWidget {
               controller: snackbarController,
               child: state.maybeMap(
                 processing: (_) => const Loader(),
+                processingLinkedIn: (_) => const Loader(),
                 magicLink: (state) => MagicLinkContent(email: state.email),
                 idle: (state) => _IdleContent(
                   cubit: cubit,
@@ -159,7 +167,9 @@ class _IdleContent extends HookWidget {
                       ),
                       if (!keyboardVisible) ...[
                         const SizedBox(height: AppDimens.xl),
-                        SignInWithProviderView(onSignInTap: () => cubit.signInWithProvider()),
+                        SignInWithProviderView(onSignInTap: () => cubit.signInWithPlatformProvider()),
+                        const SizedBox(height: AppDimens.m),
+                        SignInWithLinkedInButton(onTap: () => cubit.signInWithLinkedin()),
                         const SizedBox(height: AppDimens.xxl),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,

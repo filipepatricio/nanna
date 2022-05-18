@@ -15,6 +15,9 @@ class SignInPageState with _$SignInPageState {
   @Implements<BuildState>()
   factory SignInPageState.processing() = _SignInPageStateProcessing;
 
+  @Implements<BuildState>()
+  factory SignInPageState.processingLinkedIn() = _SignInPageStateProcessingLinkedIn;
+
   factory SignInPageState.success(bool isOnboardingSeen) = _SignInPageStateSuccess;
 
   factory SignInPageState.generalError() = _SignInPageStateGeneralError;

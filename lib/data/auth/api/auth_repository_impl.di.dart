@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/mapper/login_response_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/auth/api/provider/oauth_sign_in_data_source.di.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/linkedin/linkedin_credential_data_source.di.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
 import 'package:better_informed_mobile/domain/auth/auth_repository.dart';
 import 'package:better_informed_mobile/domain/auth/data/auth_result.dart';
@@ -12,15 +13,17 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final AuthApiDataSource _apiDataSource;
-  final OAuthSignInDataSource _oAuthSignInDataSource;
+  final OAuthCredentialProviderDataSource _oAuthPlatformSignInDataSource;
   final FreshLink<OAuth2Token> _freshLink;
   final LoginResponseDTOMapper _loginResponseDTOMapper;
+  final LinkedinCredentialDataSource _linkedinCredentialDataSource;
 
   AuthRepositoryImpl(
     this._apiDataSource,
-    this._oAuthSignInDataSource,
+    this._oAuthPlatformSignInDataSource,
     this._freshLink,
     this._loginResponseDTOMapper,
+    this._linkedinCredentialDataSource,
   );
 
   @override
@@ -30,11 +33,31 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<AuthResult> signInWithDefaultProvider() async {
-    final oAuthToken = await _oAuthSignInDataSource.getProviderToken();
-    final result = await _apiDataSource.signInWithProvider(oAuthToken.token, oAuthToken.provider, oAuthToken.userMeta);
+    final oAuthToken = await _oAuthPlatformSignInDataSource.fetchOAuthUser();
+    final result = await _apiDataSource.signInWithProvider(
+      oAuthToken.token,
+      oAuthToken.provider,
+      oAuthToken.user,
+    );
     final response = _loginResponseDTOMapper(result);
 
     return AuthResult(response.tokens, oAuthToken.provider, response.user.uuid);
+  }
+
+  @override
+  Future<AuthResult> signInWithLinkedin() async {
+    final oAuthToken = await _linkedinCredentialDataSource.fetchOAuthUser();
+    final result = await _apiDataSource.signInWithProvider(
+      oAuthToken.token,
+      oAuthToken.provider,
+    );
+    final response = _loginResponseDTOMapper(result);
+
+    return AuthResult(
+      response.tokens,
+      oAuthToken.provider,
+      response.user.uuid,
+    );
   }
 
   @override
