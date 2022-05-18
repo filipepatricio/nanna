@@ -1,3 +1,4 @@
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
@@ -8,7 +9,14 @@ import 'package:launchdarkly_flutter_client_sdk/launchdarkly_flutter_client_sdk.
 
 @LazySingleton(as: AnalyticsFacade, env: liveEnvs)
 class AnalyticsFacadeImpl implements AnalyticsFacade {
-  AnalyticsFacadeImpl();
+  AnalyticsFacadeImpl(this._appsflyerSdk);
+
+  final AppsflyerSdk _appsflyerSdk;
+
+  @override
+  Future<void> initializeAttribution() async {
+    await _appsflyerSdk.initSdk();
+  }
 
   @override
   Future<void> config(String writeKey) async {
@@ -34,13 +42,17 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
   @override
   void page(AnalyticsPage page) {
     Segment.screen(screenName: page.name, properties: page.properties);
-    LDClient.track('${page.name} Screen View', data: _tryGenerateTrackData(page.properties));
+
+    final pageEventName = '${page.name} Screen View';
+    LDClient.track(pageEventName, data: _tryGenerateTrackData(page.properties));
+    _appsflyerSdk.logEvent(pageEventName, page.properties);
   }
 
   @override
   Future<void> event(AnalyticsEvent event) async {
     await Segment.track(eventName: event.name, properties: event.properties);
     await LDClient.track(event.name, data: _tryGenerateTrackData(event.properties));
+    await _appsflyerSdk.logEvent(event.name, event.properties);
   }
 
   @override
