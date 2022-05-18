@@ -31,7 +31,7 @@ class ArticleCoverContent extends StatelessWidget {
           showDate: false,
           showReadTime: false,
           color: AppColors.textGrey,
-          textStyle: AppTypography.caption1Medium.copyWith(height: 1.2),
+          textStyle: AppTypography.caption1Medium.copyWith(height: 1.1),
         ),
         const SizedBox(height: AppDimens.s),
         SizedBox(
