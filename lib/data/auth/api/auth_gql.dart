@@ -5,7 +5,7 @@ class AuthGQL {
   static DocumentNode login() => gql(
         '''
     mutation signIn(\$token: String!, \$provider: String!, \$meta: UserMeta!) {
-      signIn(idToken: \$token, provider: \$provider, information: \$meta) {
+      signIn(token: \$token, provider: \$provider, information: \$meta) {
         $signIn
       }
     }
@@ -15,7 +15,7 @@ class AuthGQL {
   static DocumentNode loginWithCode() => gql(
         '''
     mutation signIn(\$token: String!, \$provider: String!, \$meta: UserMeta!, \$code: String) {
-      signIn(idToken: \$token, provider: \$provider, information: \$meta, inviteCode: \$code) {
+      signIn(token: \$token, provider: \$provider, information: \$meta, inviteCode: \$code) {
         $signIn
       }
     }
