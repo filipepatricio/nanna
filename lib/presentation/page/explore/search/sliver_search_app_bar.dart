@@ -39,7 +39,7 @@ class SliverSearchAppBar extends StatelessWidget {
       actions: [
         _CancelButton(
           cubit: explorePageCubit,
-          searchController: searchTextEditingController,
+          searchTextEditingController: searchTextEditingController,
         ),
       ],
       title: _SearchBar(
@@ -120,7 +120,7 @@ class _SearchBar extends HookWidget {
           suffixIcon: query.value.isNotEmpty
               ? GestureDetector(
                   onTap: () {
-                    searchTextEditingController.text = '';
+                    searchTextEditingController.clear();
                     FocusScope.of(context).requestFocus(searchTextFieldfocusNode);
                   },
                   child: SvgPicture.asset(
@@ -144,12 +144,12 @@ class _SearchBar extends HookWidget {
 class _CancelButton extends HookWidget {
   const _CancelButton({
     required this.cubit,
-    required this.searchController,
+    required this.searchTextEditingController,
     Key? key,
   }) : super(key: key);
 
   final ExplorePageCubit cubit;
-  final TextEditingController searchController;
+  final TextEditingController searchTextEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -166,8 +166,8 @@ class _CancelButton extends HookWidget {
                 margin: const EdgeInsets.only(right: AppDimens.l),
                 child: TextButton(
                   onPressed: () {
+                    searchTextEditingController.clear();
                     cubit.explore();
-                    searchController.clear();
                     final currentFocus = FocusScope.of(context);
                     if (!currentFocus.hasPrimaryFocus) {
                       currentFocus.unfocus();
