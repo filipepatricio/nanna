@@ -29,6 +29,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._isOnboardingSeenUseCase,
     this._initializeFeatureFlagsUseCase,
     this._initializeAttributionUseCase,
+    this._signInWithLinkedinUseCase,
   ) : super(SignInPageState.idle(false));
 
   final IsEmailValidUseCase _isEmailValidUseCase;
@@ -72,10 +73,12 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   }
 
   Future<void> signInWithLinkedin() async {
+    emit(SignInPageState.processingLinkedIn());
     await _signInWithOAuthProvider(_signInWithLinkedinUseCase);
   }
 
   Future<void> signInWithPlatformProvider() async {
+    emit(SignInPageState.processing());
     await _signInWithOAuthProvider(_signInWithDefaultProviderUseCase);
   }
 
@@ -83,10 +86,18 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     emit(SignInPageState.idle(true));
   }
 
+  Future<void> cancelLinkedInSignIn() async {
+    await Future.delayed(const Duration(seconds: 5));
+
+    state.mapOrNull(
+      processingLinkedIn: (_) => emit(SignInPageState.idle(true)),
+    );
+  }
+
   Future<void> _signInWithOAuthProvider(_SignInFunction signIn) async {
-    emit(SignInPageState.processing());
     try {
       await signIn();
+      emit(SignInPageState.processing());
       await _finishSignIn();
     } on SignInAbortedException {
       // Do nothing

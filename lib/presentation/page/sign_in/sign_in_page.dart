@@ -34,6 +34,12 @@ class SignInPage extends HookWidget {
     final emailController = useTextEditingController();
     final snackbarController = useMemoized(() => SnackbarController());
 
+    useOnAppLifecycleStateChange((previous, current) {
+      if (current != previous && current == AppLifecycleState.resumed) {
+        cubit.cancelLinkedInSignIn();
+      }
+    });
+
     useCubitListener<SignInPageCubit, SignInPageState>(cubit, (cubit, state, context) {
       state.maybeMap(
         success: (state) => AutoRouter.of(context).replaceAll(
@@ -94,6 +100,7 @@ class SignInPage extends HookWidget {
               controller: snackbarController,
               child: state.maybeMap(
                 processing: (_) => const Loader(),
+                processingLinkedIn: (_) => const Loader(),
                 magicLink: (state) => MagicLinkContent(email: state.email),
                 idle: (state) => _IdleContent(
                   cubit: cubit,

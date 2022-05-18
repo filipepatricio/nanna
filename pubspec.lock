@@ -740,7 +740,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_web_auth:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_web_auth
       url: "https://pub.dartlang.org"
@@ -1157,6 +1157,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  oauth2:
+    dependency: "direct main"
+    description:
+      name: oauth2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   oauth2_client:
     dependency: "direct main"
     description:
