@@ -223,6 +223,10 @@ class _CoverContentExploreSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const titleMaxLines = 2;
+    const titleStyle = AppTypography.metadata1ExtraBold;
+    final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -236,11 +240,11 @@ class _CoverContentExploreSmall extends StatelessWidget {
         ),
         const SizedBox(height: AppDimens.s),
         SizedBox(
-          height: AppDimens.l + AppDimens.s,
+          height: titleHeight,
           child: InformedMarkdownBody(
             markdown: topic.title,
-            maxLines: 2,
-            baseTextStyle: AppTypography.metadata1ExtraBold,
+            maxLines: titleMaxLines,
+            baseTextStyle: titleStyle,
           ),
         ),
         const SizedBox(height: AppDimens.s),

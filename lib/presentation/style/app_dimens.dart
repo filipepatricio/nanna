@@ -191,4 +191,7 @@ class AppDimens {
   static const audioBannerHeight = 80.0;
 
   static const searchBarHeight = 42.0;
+
+  static double textHeight({required TextStyle style, required int maxLines}) =>
+      (style.fontSize! * 1.05 * (style.height ?? 1)) * maxLines;
 }
