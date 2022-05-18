@@ -37,8 +37,8 @@ class SignInWithLinkedInButton extends StatelessWidget {
           children: [
             SvgPicture.asset(
               AppVectorGraphics.linkedinSignIn,
-              width: 24,
-              height: 24,
+              width: AppDimens.l,
+              height: AppDimens.l,
             ),
             const SizedBox(width: AppDimens.m),
             Text(

@@ -6,8 +6,6 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-const _appleLogoSize = 50.0;
-
 class SignInWithAppleButton extends StatelessWidget {
   final VoidCallback onTap;
 
@@ -21,7 +19,7 @@ class SignInWithAppleButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        padding: const EdgeInsets.all(AppDimens.sl),
         decoration: BoxDecoration(
           color: AppColors.white,
           border: Border.all(
@@ -38,8 +36,9 @@ class SignInWithAppleButton extends StatelessWidget {
           children: [
             SvgPicture.asset(
               AppVectorGraphics.appleSignIn,
-              height: _appleLogoSize,
+              height: AppDimens.l,
             ),
+            const SizedBox(width: AppDimens.m),
             Text(
               LocaleKeys.signIn_providerButton_apple.tr(),
               style: AppTypography.b2Regular,

@@ -47,7 +47,7 @@ class AppVectorGraphics {
 
   static const String mail = 'assets/vector_graphics/mail_ic.svg';
   static const String googleSignIn = 'assets/vector_graphics/google_sign_in.svg';
-  static const String appleSignIn = 'assets/vector_graphics/apple_logo_black.svg';
+  static const String appleSignIn = 'assets/vector_graphics/apple_sign_in.svg';
   static const String linkedinSignIn = 'assets/vector_graphics/sign_in_linkedin.svg';
 
   static const String readsExploreError = 'assets/vector_graphics/my_reads_explore_error_ic.svg';
