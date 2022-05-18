@@ -34,7 +34,7 @@ class TopicsAreaView extends HookWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: AppDimens.l),
+        const SizedBox(height: AppDimens.ml),
         ExploreAreaHeader(title: area.title),
         const SizedBox(height: AppDimens.m),
         ExploreAreaItemCarouselView<TopicPreview>(
@@ -47,7 +47,7 @@ class TopicsAreaView extends HookWidget {
             onTap: () => context.navigateToTopic(topic),
           ),
         ),
-        const SizedBox(height: AppDimens.l),
+        const SizedBox(height: AppDimens.ml),
       ],
     );
   }

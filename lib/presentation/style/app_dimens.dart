@@ -115,7 +115,7 @@ class AppDimens {
   /// 0.5
   static double exploreTopicCarousellSmallCoverImageHeightFactor = 0.5;
 
-  /// 1.6
+  /// 1.65
   static double exploreTopicCarousellSmallCoverAspectRatio = 1.65;
 
   /// 1.8

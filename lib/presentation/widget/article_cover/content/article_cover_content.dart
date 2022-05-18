@@ -18,8 +18,6 @@ class ArticleCoverContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeToRead = article.timeToRead;
-    const titleStyle = AppTypography.metadata1ExtraBold;
-    final titleHeight = (titleStyle.fontSize! * (titleStyle.height ?? 1)) * 2;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -32,23 +30,24 @@ class ArticleCoverContent extends StatelessWidget {
           showLogo: false,
           showDate: false,
           showReadTime: false,
-          textStyle: AppTypography.metadata1Regular.copyWith(height: 1.2),
+          color: AppColors.textGrey,
+          textStyle: AppTypography.caption1Medium.copyWith(height: 1.2),
         ),
         const SizedBox(height: AppDimens.s),
         SizedBox(
-          height: titleHeight,
+          height: AppDimens.l + AppDimens.s,
           child: InformedMarkdownBody(
             maxLines: 2,
             markdown: article.title,
             highlightColor: AppColors.transparent,
-            baseTextStyle: titleStyle,
+            baseTextStyle: AppTypography.metadata1ExtraBold,
           ),
         ),
         if (timeToRead != null) ...[
           const SizedBox(height: AppDimens.s),
           Text(
             LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
-            style: AppTypography.metadata1Regular.copyWith(
+            style: AppTypography.caption1Medium.copyWith(
               height: 1.2,
               color: AppColors.textGrey,
             ),
