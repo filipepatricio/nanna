@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/page/explore/explore_page_cu
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/sliver_search_app_bar.dart';
@@ -61,6 +62,13 @@ class ExplorePage extends HookWidget {
         },
         startTyping: () {
           scrollControllerIdleOffset.value = scrollController.offset;
+        },
+        searchHistoryQueryTapped: (query) {
+          searchTextEditingController.text = query;
+          final currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
         },
       );
     });
@@ -124,9 +132,15 @@ class ExplorePage extends HookWidget {
                           idle: (state) => _ItemList(
                             items: state.items,
                           ),
-                          search: (_) => SearchView(
+                          search: (state) => SearchView(
                             cubit: searchViewCubit,
                             scrollController: scrollController,
+                          ),
+                          searchHistory: (state) => SearchHistoryView(
+                            explorePageCubit: cubit,
+                            searchViewCubit: searchViewCubit,
+                            scrollController: scrollController,
+                            searchHistory: state.searchHistory,
                           ),
                           orElse: () => const SliverToBoxAdapter(),
                         ),

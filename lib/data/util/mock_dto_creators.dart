@@ -136,9 +136,9 @@ class MockDTO {
     'topic-id',
     'topic-slug',
     // title, max length is 45 chars
-    'Lorem ipsum **dolor sit** amet, consectetur adip',
+    'Lorem ipsum **dolor sit** amet, consectetur adi🌍',
     // strippedTitle, max length is 45 chars
-    'Lorem ipsum dolor sit amet, consectetur adip',
+    'Lorem ipsum dolor sit amet, consectetur adi🌍',
     // introduction
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     'url',
