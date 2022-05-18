@@ -247,7 +247,7 @@ class _CoverContentExploreSmall extends StatelessWidget {
         Wrap(
           children: [
             UpdatedLabel(
-              hideUpdatedText: true,
+              withPrefix: false,
               dateTime: topic.lastUpdatedAt,
               mode: Brightness.dark,
               textStyle: AppTypography.caption1Medium.copyWith(

@@ -10,25 +10,25 @@ class UpdatedLabel extends StatelessWidget {
   final Brightness mode;
   final double? fontSize;
   final TextStyle textStyle;
-  final bool hideUpdatedText;
+  final bool withPrefix;
 
   const UpdatedLabel({
     required this.dateTime,
     this.mode = Brightness.dark,
     this.fontSize = 12,
     this.textStyle = AppTypography.systemText,
-    this.hideUpdatedText = false,
+    this.withPrefix = true,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      hideUpdatedText
-          ? DateFormatUtil.dateTimeFromNow(dateTime).toCapitalized()
-          : LocaleKeys.topic_updated.tr(
+      withPrefix
+          ? LocaleKeys.topic_updated.tr(
               args: [DateFormatUtil.dateTimeFromNow(dateTime)],
-            ),
+            )
+          : DateFormatUtil.dateTimeFromNow(dateTime).toCapitalized(),
       style: textStyle.copyWith(
         height: 1,
         fontSize: fontSize,
