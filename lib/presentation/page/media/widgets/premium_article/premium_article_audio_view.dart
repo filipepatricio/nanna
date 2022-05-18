@@ -88,6 +88,7 @@ class PremiumArticleAudioView extends HookWidget {
             fullDate: context.isNotSmallDevice,
             textStyle: metadataStyle,
             color: metadataStyle.color,
+            centerContent: true,
           ),
           const Spacer(),
           if (hasAudioCredits) ...[

@@ -37,7 +37,7 @@ class HighlightedTopicsAreaView extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.l),
+          const SizedBox(height: AppDimens.ml),
           ExploreAreaHeader(
             title: area.title,
             description: area.description,
@@ -55,7 +55,7 @@ class HighlightedTopicsAreaView extends HookWidget {
             itemHeight: height,
             onViewAllTap: () => _navigateToSeeAll(context),
           ),
-          const SizedBox(height: AppDimens.l),
+          const SizedBox(height: AppDimens.ml),
         ],
       ),
     );
