@@ -40,7 +40,9 @@ class DottedArticleInfo extends StatelessWidget {
     final canShowReadTime = showReadTime && timeToRead != null;
     final canShowDate = showDate && publicationDate != null;
 
-    return Wrap(
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (showPublisher) ...[
           if (showLogo) ...[
@@ -49,18 +51,20 @@ class DottedArticleInfo extends StatelessWidget {
             else
               PublisherLogo.dark(publisher: article.publisher),
           ],
-          Text(
-            article.publisher.name,
-            style: textStyle.copyWith(color: mainColor, height: 1),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          Flexible(
+            child: Text(
+              article.publisher.name,
+              style: textStyle.copyWith(color: mainColor, height: 1),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
         if (canShowDate)
           Text(
             '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
             style: textStyle.copyWith(color: mainColor, height: 1),
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         if (canShowReadTime)
@@ -69,7 +73,7 @@ class DottedArticleInfo extends StatelessWidget {
               args: [timeToRead.toString()],
             )}',
             style: textStyle.copyWith(color: mainColor, height: 1),
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
       ],

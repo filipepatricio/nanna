@@ -429,7 +429,7 @@ class MockDTO {
   );
 
   static final _publisher = PublisherDTO(
-    'New York Times',
+    'Manhattan Center for Cognitive Behavioral Therapy',
     ImageDTO('publishers/nyt-black'),
     ImageDTO('publishers/nyt-white'),
   );
