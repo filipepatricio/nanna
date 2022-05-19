@@ -30,6 +30,8 @@
 	<false/>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Your data will be used to further improve our application&apos;s features and performance.</string>
+    <key>NSAdvertisingAttributionReportEndpoint</key>
+	<string>https://appsflyer-skadnetwork.com/</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>instagram-stories</string>

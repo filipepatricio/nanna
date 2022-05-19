@@ -25,6 +25,12 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
     await _analyticsFacade.config(writeKey);
   }
 
+  /// Deferred initialization of Appsflyer for its dependency on device's IDFA (we need to request permission first)
+  @override
+  Future<void> initializeAttribution() async {
+    await _analyticsFacade.initializeAttribution();
+  }
+
   @override
   Future<void> login(String userId, String method) async {
     await _analyticsFacade.identify(userId, method);
