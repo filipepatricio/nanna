@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/show_search_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/domain/search/use_case/add_search_history_query_use_case.di.dart';
@@ -16,10 +18,12 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     this._searchPaginationEngineProvider,
     this._showSearchOnExplorePageUseCase,
     this._addSearchHistoryQueryUseCase,
+    this._trackActivityUseCase,
   ) : super(SearchViewState.initial(showSearchBar: false));
 
   final ShowSearchOnExplorePageUseCase _showSearchOnExplorePageUseCase;
   final AddSearchHistoryQueryUseCase _addSearchHistoryQueryUseCase;
+  final TrackActivityUseCase _trackActivityUseCase;
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
   late PaginationEngine<SearchResult> _paginationEngine;
   late String _query;
@@ -79,6 +83,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   ) async {
     emit(SearchViewState.loading());
     await _addSearchHistoryQueryUseCase(query);
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.searched(query: _query));
     _paginationEngine = _searchPaginationEngineProvider.get(
       query: query,
     );
