@@ -47,6 +47,19 @@ void main() {
     await tester.matchGoldenFile();
   });
 
+  visualTest('${ExplorePage}_(searchHistory)', (tester) async {
+    await tester.startApp(
+      initialRoute: const ExploreTabGroupRouter(
+        children: [
+          ExplorePageRoute(),
+        ],
+      ),
+    );
+    await tester.tap(find.byType(TextFormField));
+    await tester.pumpAndSettle();
+    await tester.matchGoldenFile();
+  });
+
   visualTest('${ExplorePage}_(with_pills)', (tester) async {
     await tester.startApp(
       initialRoute: const ExploreTabGroupRouter(

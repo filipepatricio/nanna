@@ -20,6 +20,13 @@ class ExplorePageState with _$ExplorePageState {
   @Implements<BuildState>()
   factory ExplorePageState.search() = _ExplorePageStateSearch;
 
+  @Implements<BuildState>()
+  factory ExplorePageState.searchHistory(List<String> searchHistory) = _ExplorePageStateSearchHistory;
+
+  factory ExplorePageState.searchHistoryUpdated() = _ExplorePageStateSearchHistoryUpdated;
+
+  factory ExplorePageState.searchHistoryQueryTapped(String query) = _ExplorePageStateSearchHistoryQueryTapped;
+
   factory ExplorePageState.startTyping() = _ExplorePageStateStartTyping;
 
   factory ExplorePageState.startSearching() = _ExplorePageStateStartSearching;
