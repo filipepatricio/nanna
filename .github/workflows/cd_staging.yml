@@ -86,7 +86,7 @@ jobs:
           FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
 
       - name: Distribute app to Firebase
-        uses: maierj/fastlane-action@v2.1.0
+        uses: maierj/fastlane-action@v2.2.0
         with:
           lane: 'firebase_deploy'
           subdirectory: android
@@ -144,7 +144,7 @@ jobs:
         run: flutter build ios --config-only --release --no-codesign --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER"  --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
-        uses: maierj/fastlane-action@v2.1.0
+        uses: maierj/fastlane-action@v2.2.0
         with:
           lane: 'closed_beta'
           subdirectory: ios
