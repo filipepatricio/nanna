@@ -21,6 +21,7 @@ import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dar
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 /// Make sure that changes to the view won't change depth of the main scroll
@@ -238,44 +239,47 @@ class _TopicIdleView extends HookWidget {
       );
     });
 
-    return SnackbarParentView(
-      controller: snackbarController,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
-        child: Listener(
-          onPointerUp: (_) => _snapPage(context, scrollController),
-          child: NoScrollGlow(
-            child: CustomScrollView(
-              physics: getPlatformScrollPhysics(
-                const AlwaysScrollableScrollPhysics(),
-              ),
-              controller: scrollController,
-              slivers: [
-                TopicAppBar(
-                  topic: topic,
-                  cubit: cubit,
-                  isShowingTutorialToast: isShowingTutorialToast,
-                  scrollPositionNotifier: scrollPositionNotifier,
-                  onArticlesLabelTap: () => topic.hasSummary
-                      ? _scrollToArticles(context, scrollController)
-                      : _scrollToSummary(context, scrollController),
-                  onArrowTap: () => _scrollToSummary(context, scrollController),
-                  snackbarController: snackbarController,
+    return ScrollsToTop(
+      onScrollsToTop: (_) => scrollController.animateToStart(),
+      child: SnackbarParentView(
+        controller: snackbarController,
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
+          child: Listener(
+            onPointerUp: (_) => _snapPage(context, scrollController),
+            child: NoScrollGlow(
+              child: CustomScrollView(
+                physics: getPlatformScrollPhysics(
+                  const AlwaysScrollableScrollPhysics(),
                 ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      TopicView(
-                        topic: topic,
-                        cubit: cubit,
-                        summaryCardKey: cubit.summaryCardKey,
-                        mediaItemKey: cubit.mediaItemKey,
-                        scrollController: scrollController,
-                      ),
-                    ],
+                controller: scrollController,
+                slivers: [
+                  TopicAppBar(
+                    topic: topic,
+                    cubit: cubit,
+                    isShowingTutorialToast: isShowingTutorialToast,
+                    scrollPositionNotifier: scrollPositionNotifier,
+                    onArticlesLabelTap: () => topic.hasSummary
+                        ? _scrollToArticles(context, scrollController)
+                        : _scrollToSummary(context, scrollController),
+                    onArrowTap: () => _scrollToSummary(context, scrollController),
+                    snackbarController: snackbarController,
                   ),
-                )
-              ],
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        TopicView(
+                          topic: topic,
+                          cubit: cubit,
+                          summaryCardKey: cubit.summaryCardKey,
+                          mediaItemKey: cubit.mediaItemKey,
+                          scrollController: scrollController,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
