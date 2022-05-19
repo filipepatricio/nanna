@@ -32,6 +32,9 @@ build_runner:
 easy_localization:
 	flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
 
+unit_tests:
+	-flutter test test/unit/wrapper_test.dart
+
 update_goldens:
 	-flutter test test/visual/wrapper_test.dart --update-goldens
 

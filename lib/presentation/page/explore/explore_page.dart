@@ -139,7 +139,7 @@ class ExplorePage extends HookWidget {
                           idle: (state) => _ItemList(
                             items: state.items,
                           ),
-                          search: (state) => SearchView(
+                          search: (_) => SearchView(
                             cubit: searchViewCubit,
                             scrollController: scrollController,
                           ),

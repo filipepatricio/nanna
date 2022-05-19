@@ -1,8 +1,9 @@
 import 'package:better_informed_mobile/data/search/store/search_database.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/search/search_store.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: SearchStore)
+@LazySingleton(as: SearchStore, env: liveEnvs)
 class SearchStoreImpl extends SearchStore {
   final SearchDatabase _database;
 
