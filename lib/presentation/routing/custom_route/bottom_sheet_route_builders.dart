@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:flutter/cupertino.dart' show CupertinoTheme;
+import 'package:flutter/cupertino.dart' show CupertinoPageRoute, CupertinoTheme;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -22,15 +22,11 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
   const _CupertinoBottomSheetContainer({
     required this.child,
     required this.topRadius,
-    this.backgroundColor,
-    this.shadow,
     Key? key,
   }) : super(key: key);
 
   final Widget child;
-  final Color? backgroundColor;
   final Radius topRadius;
-  final BoxShadow? shadow;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +41,8 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
           borderRadius: BorderRadius.vertical(top: topRadius),
           child: Container(
             decoration: BoxDecoration(
-              color: backgroundColor ?? CupertinoTheme.of(context).scaffoldBackgroundColor,
-              boxShadow: [shadow ?? _kDefaultBoxShadow],
+              color: CupertinoTheme.of(context).scaffoldBackgroundColor,
+              boxShadow: const [_kDefaultBoxShadow],
             ),
             width: double.infinity,
             child: MediaQuery.removePadding(
@@ -92,6 +88,13 @@ Route<T> modalFullScreenBottomSheetPageRouteBuilder<T>(BuildContext context, Wid
     modalBarrierColor: AppColors.black40,
     animationCurve: Curves.easeInOut,
     duration: const Duration(milliseconds: 350),
+    settings: page,
+  );
+}
+
+Route<T> cupertinoRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
+  return CupertinoPageRoute<T>(
+    builder: (context) => child,
     settings: page,
   );
 }

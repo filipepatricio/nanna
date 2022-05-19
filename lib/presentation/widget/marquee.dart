@@ -25,7 +25,9 @@ class Marquee extends HookWidget {
     useEffect(
       () {
         if (!kIsTest) {
-          WidgetsBinding.instance?.addPostFrameCallback((_) => scroll(scrollController));
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) => scroll(scrollController),
+          );
         }
       },
       [scrollController],

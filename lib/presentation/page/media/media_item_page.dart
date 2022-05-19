@@ -11,7 +11,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
@@ -19,7 +18,6 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 typedef MediaItemNavigationCallback = void Function(int index);
 
@@ -52,15 +50,7 @@ class MediaItemPage extends HookWidget {
     final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
     final snackbarController = useMemoized(() => SnackbarController());
-
-    final modalController = useMemoized(
-      () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
-    );
-
-    final scrollController = useMemoized(
-      () => ScrollController(keepScrollOffset: true),
-    );
-
+    final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
     final pageController = usePageController();
 
     useEffect(
@@ -74,18 +64,6 @@ class MediaItemPage extends HookWidget {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          /// This invisible scroll view is a way around to make cupertino bottom sheet work with pull down gesture
-          ///
-          /// As cupertino bottom sheet works on ScrollNotification
-          /// instead of ScrollController itself it's the only way
-          /// to make sure it will work - at least only way I found
-          NoScrollGlow(
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-              controller: modalController,
-              child: const SizedBox.shrink(),
-            ),
-          ),
           Expanded(
             child: _AnimatedSwitcher(
               child: state.maybeMap(
@@ -100,7 +78,6 @@ class MediaItemPage extends HookWidget {
                   builder: (context, constraints) => PremiumArticleView(
                     article: state.article,
                     fromTopic: topicId != null || topicSlug != null,
-                    modalController: modalController,
                     controller: scrollController,
                     pageController: pageController,
                     snackbarController: snackbarController,

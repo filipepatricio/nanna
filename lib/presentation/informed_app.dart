@@ -34,9 +34,9 @@ class InformedApp extends HookWidget {
 
     useEffect(
       () {
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
-          _precacheImages(context);
-        });
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _precacheImages(context),
+        );
       },
       [],
     );
@@ -69,14 +69,14 @@ class InformedApp extends HookWidget {
   }
 }
 
-Future<void> _precacheImages(BuildContext context) async {
-  await precacheImage(
+void _precacheImages(BuildContext context) {
+  precacheImage(
     const AssetImage(
       AppRasterGraphics.shareStickerBackgroundGreen,
     ),
     context,
   );
-  await precacheImage(
+  precacheImage(
     const AssetImage(
       AppRasterGraphics.shareStickerBackgroundPeach,
     ),

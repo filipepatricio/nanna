@@ -13,16 +13,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 typedef ShareTextCallback = Function(String text);
 
 class InformedRichText extends HookWidget implements RichTextBase {
-  @override
-  final TextSpan textSpan;
-
-  final bool selectable;
-  final Color highlightColor;
-  final TextAlign textAlign;
-  final int? maxLines;
-  final ShareTextCallback? shareCallback;
-  final SelectionControllerBundle? selectionControllers;
-
   const InformedRichText({
     required this.textSpan,
     required this.highlightColor,
@@ -44,6 +34,16 @@ class InformedRichText extends HookWidget implements RichTextBase {
     Key? key,
   })  : selectable = true,
         super(key: key);
+
+  @override
+  final TextSpan textSpan;
+
+  final bool selectable;
+  final Color highlightColor;
+  final TextAlign textAlign;
+  final int? maxLines;
+  final ShareTextCallback? shareCallback;
+  final SelectionControllerBundle? selectionControllers;
 
   @override
   Widget build(BuildContext context) {
@@ -205,10 +205,8 @@ class _CustomTextPainter extends HookWidget {
   }
 
   double _computeTextWidth(TextPainter textPainter) {
-    return textPainter
-        .computeLineMetrics()
-        .map((lineMetrics) => lineMetrics.width)
-        .reduce((value, element) => value + element);
+    final widths = textPainter.computeLineMetrics().map((lineMetrics) => lineMetrics.width);
+    return widths.isEmpty ? 0.0 : widths.reduce((value, element) => value + element);
   }
 }
 

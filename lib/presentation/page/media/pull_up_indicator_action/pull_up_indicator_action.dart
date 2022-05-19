@@ -32,13 +32,14 @@ class SliverPullUpIndicatorAction extends HookWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxHeight > triggerExtent && !keepExtent.value) {
-            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
               keepExtent.value = true;
 
               final completer = Completer();
               completer.future.then((value) {
                 keepExtent.value = false;
               });
+
               triggerFunction(completer);
             });
           }

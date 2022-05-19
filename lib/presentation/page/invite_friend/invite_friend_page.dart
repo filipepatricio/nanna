@@ -114,7 +114,7 @@ class _Idle extends StatelessWidget {
         Text(
           tr(LocaleKeys.inviteFriend_header),
           textAlign: TextAlign.center,
-          style: AppTypography.h2Jakarta,
+          style: AppTypography.h2Regular,
         ),
         const SizedBox(height: AppDimens.s),
         Text(

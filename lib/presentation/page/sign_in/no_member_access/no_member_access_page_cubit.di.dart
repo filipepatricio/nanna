@@ -33,10 +33,10 @@ class NoMemberAccessPageCubit extends Cubit<NoMemberAccessPageState> {
   }
 
   Future<void> sendAccessEmail(String subject, String body) async {
-    final mailToLink = Uri.parse('mailto:$_email?subject=$subject&body=$body').toString();
+    final mailToLink = Uri.parse('mailto:$_email?subject=$subject&body=$body');
 
     try {
-      await launch(mailToLink);
+      await launchUrl(mailToLink);
     } catch (_) {
       await Clipboard.setData(const ClipboardData(text: _email));
       emit(NoMemberAccessPageState.emailCopied());

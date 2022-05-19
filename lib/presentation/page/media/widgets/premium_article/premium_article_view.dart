@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit_provider.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,7 +15,6 @@ class PremiumArticleView extends HookWidget {
   const PremiumArticleView({
     required this.article,
     required this.fromTopic,
-    required this.modalController,
     required this.controller,
     required this.pageController,
     required this.cubit,
@@ -27,7 +27,6 @@ class PremiumArticleView extends HookWidget {
 
   final Article article;
   final bool fromTopic;
-  final ScrollController modalController;
   final ScrollController controller;
   final PageController pageController;
   final MediaItemCubit cubit;
@@ -79,39 +78,40 @@ class PremiumArticleView extends HookWidget {
           audioCubitBuilder: (audioCubit) => Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              PageView(
-                physics: const ClampingScrollPhysics(),
-                controller: horizontalPageController,
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (page) {
-                  switch (page) {
-                    case 0:
-                      articleOutputModeNotifier.value = ArticleOutputMode.read;
-                      break;
-                    case 1:
-                      articleOutputModeNotifier.value = ArticleOutputMode.audio;
-                      break;
-                  }
-                },
-                children: [
-                  PremiumArticleReadView(
-                    article: article,
-                    modalController: modalController,
-                    controller: controller,
-                    pageController: pageController,
-                    snackbarController: snackbarController,
-                    cubit: cubit,
-                    fullHeight: fullHeight,
-                    fromTopic: fromTopic,
-                    readArticleProgress: readArticleProgress,
-                    articleOutputModeNotifier: articleOutputModeNotifier,
-                  ),
-                  if (metadata.hasAudioVersion)
-                    PremiumArticleAudioView(
+              NoScrollGlow(
+                child: PageView(
+                  physics: const ClampingScrollPhysics(),
+                  controller: horizontalPageController,
+                  scrollDirection: Axis.horizontal,
+                  onPageChanged: (page) {
+                    switch (page) {
+                      case 0:
+                        articleOutputModeNotifier.value = ArticleOutputMode.read;
+                        break;
+                      case 1:
+                        articleOutputModeNotifier.value = ArticleOutputMode.audio;
+                        break;
+                    }
+                  },
+                  children: [
+                    PremiumArticleReadView(
                       article: article,
-                      cubit: audioCubit,
+                      controller: controller,
+                      pageController: pageController,
+                      snackbarController: snackbarController,
+                      cubit: cubit,
+                      fullHeight: fullHeight,
+                      fromTopic: fromTopic,
+                      readArticleProgress: readArticleProgress,
+                      articleOutputModeNotifier: articleOutputModeNotifier,
                     ),
-                ],
+                    if (metadata.hasAudioVersion)
+                      PremiumArticleAudioView(
+                        article: article,
+                        cubit: audioCubit,
+                      ),
+                  ],
+                ),
               ),
               Positioned(
                 top: 0,
