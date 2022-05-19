@@ -107,16 +107,23 @@ class ExplorePage extends HookWidget {
                       ),
                       slivers: [
                         searchViewState.maybeMap(
-                          initial: (state) => state.showSearchBar
-                              ? SliverSearchAppBar(
-                                  explorePageCubit: cubit,
-                                  searchTextEditingController: searchTextEditingController,
-                                  searchViewCubit: searchViewCubit,
-                                )
-                              : ScrollableSliverAppBar(
-                                  scrollController: scrollController,
-                                  title: LocaleKeys.explore_title.tr(),
-                                ),
+                          initial: (state) {
+                            final bool? showSearchBar = state.showSearchBar;
+                            if (showSearchBar != null) {
+                              return showSearchBar
+                                  ? SliverSearchAppBar(
+                                      explorePageCubit: cubit,
+                                      searchTextEditingController: searchTextEditingController,
+                                      searchViewCubit: searchViewCubit,
+                                    )
+                                  : ScrollableSliverAppBar(
+                                      scrollController: scrollController,
+                                      title: LocaleKeys.explore_title.tr(),
+                                    );
+                            } else {
+                              return const SliverToBoxAdapter();
+                            }
+                          },
                           orElse: () => SliverSearchAppBar(
                             explorePageCubit: cubit,
                             searchTextEditingController: searchTextEditingController,

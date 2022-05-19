@@ -19,7 +19,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     this._showSearchOnExplorePageUseCase,
     this._addSearchHistoryQueryUseCase,
     this._trackActivityUseCase,
-  ) : super(SearchViewState.initial(showSearchBar: false));
+  ) : super(SearchViewState.initial());
 
   final ShowSearchOnExplorePageUseCase _showSearchOnExplorePageUseCase;
   final AddSearchHistoryQueryUseCase _addSearchHistoryQueryUseCase;
@@ -50,10 +50,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
 
   Future<void> search(String query) async {
     _query = query;
-    if (query.isEmpty) {
-      emit(SearchViewState.initial(showSearchBar: true));
-    }
-
+    emit(SearchViewState.queryChanged());
     _queryStreamController?.add(query);
   }
 
