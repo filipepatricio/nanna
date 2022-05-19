@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/exception/common_exception_mapper.di.dart';
+import 'package:better_informed_mobile/data/exception/exception_mapper_facade.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,10 +13,12 @@ class GraphQLResponseResolver {
     QueryResult result,
     T Function(Map<String, dynamic> raw) mapper, {
     String? rootKey,
+    ExceptionMapperFacade? customMapper,
   }) {
     final optionalException = result.exception;
     if (result.hasException && optionalException != null) {
-      throw _generalExceptionMapper.map(optionalException);
+      customMapper?.mapAndThrow(optionalException);
+      _generalExceptionMapper.mapAndThrow(optionalException);
     }
 
     final rawData = result.data;

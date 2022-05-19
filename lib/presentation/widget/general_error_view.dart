@@ -9,41 +9,53 @@ import 'package:flutter_svg/flutter_svg.dart';
 class GeneralErrorView extends StatelessWidget {
   final String title;
   final String content;
-  final String svgPath;
+  final String action;
+  final String? svgPath;
   final VoidCallback? retryCallback;
 
-  const GeneralErrorView({
+  GeneralErrorView({
     required this.title,
     required this.content,
-    required this.svgPath,
+    this.svgPath,
     this.retryCallback,
+    String? action,
     Key? key,
-  }) : super(key: key);
+  })  : action = action ?? LocaleKeys.common_tryAgain.tr(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final svg = svgPath;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SvgPicture.asset(svgPath),
-        const SizedBox(height: AppDimens.l),
-        Text(
-          title,
-          style: AppTypography.h3bold,
+        if (svg != null) ...[
+          SvgPicture.asset(svg),
+          const SizedBox(height: AppDimens.l),
+        ],
+        RichText(
           textAlign: TextAlign.center,
-        ),
-        Text(
-          content,
-          style: AppTypography.h3Normal,
-          textAlign: TextAlign.center,
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: '$title\n',
+                style: AppTypography.h3bold,
+              ),
+              TextSpan(
+                text: content,
+                style: AppTypography.h3Normal,
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: AppDimens.l),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
           child: retryCallback != null
               ? FilledButton(
-                  text: LocaleKeys.common_tryAgain.tr(),
+                  text: action,
                   fillColor: AppColors.textPrimary,
                   textColor: AppColors.white,
                   onTap: () {
