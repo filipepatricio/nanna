@@ -16,4 +16,3 @@
     java.lang.String getId();
     boolean isLimitAdTrackingEnabled();
 }
--keep public class com.android.installreferrer.** { *; }
