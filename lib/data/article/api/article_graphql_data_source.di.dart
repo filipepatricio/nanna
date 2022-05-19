@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/article/api/article_gql.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -14,8 +15,13 @@ const _contentKey = 'text';
 class ArticleGraphqlDataSource implements ArticleApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
+  final ArticleExceptionMapperFacade _articleExceptionMapperFacade;
 
-  ArticleGraphqlDataSource(this._client, this._responseResolver);
+  ArticleGraphqlDataSource(
+    this._client,
+    this._responseResolver,
+    this._articleExceptionMapperFacade,
+  );
 
   @override
   Future<ArticleContentDTO> getArticleContent(String slug) async {
@@ -33,6 +39,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
         return ArticleContentDTO.fromJson(content);
       },
       rootKey: 'article',
+      customMapper: _articleExceptionMapperFacade,
     );
 
     if (dto == null) throw Exception('ArticleContent is null');
@@ -53,6 +60,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
         return ArticleHeaderDTO.fromJson(raw);
       },
       rootKey: 'article',
+      customMapper: _articleExceptionMapperFacade,
     );
 
     if (dto == null) throw Exception('Article is null');
@@ -74,6 +82,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
         return AudioFileDTO.fromJson(raw);
       },
       rootKey: 'getArticleAudioFile',
+      customMapper: _articleExceptionMapperFacade,
     );
 
     if (dto == null) throw Exception('AudioFile is null');

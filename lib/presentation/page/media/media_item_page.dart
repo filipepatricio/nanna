@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -93,6 +94,7 @@ class MediaItemPage extends HookWidget {
                     cubit.initialize(article, slug, topicId, topicSlug, briefId);
                   },
                 ),
+                geoblocked: (_) => const _ErrorGeoblocked(),
                 orElse: () => const SizedBox.shrink(),
               ),
             ),
@@ -219,5 +221,22 @@ class _AnimatedSwitcher extends StatelessWidget {
             duration: const Duration(milliseconds: 250),
             child: child,
           );
+  }
+}
+
+class _ErrorGeoblocked extends StatelessWidget {
+  const _ErrorGeoblocked({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      child: GeneralErrorView(
+        title: LocaleKeys.article_geoblockedError_title.tr(),
+        content: LocaleKeys.article_geoblockedError_content.tr(),
+        action: LocaleKeys.article_geoblockedError_action.tr(),
+        retryCallback: () => context.popRoute(),
+      ),
+    );
   }
 }
