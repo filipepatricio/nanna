@@ -319,7 +319,7 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 12,
     height: 1.25,
-    color: AppColors.textPrimary,
+    color: AppColors.textGrey,
   );
 
   static const TextStyle articleTextRegular = TextStyle(

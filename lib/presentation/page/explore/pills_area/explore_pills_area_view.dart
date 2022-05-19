@@ -12,8 +12,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 const _maxPillLines = 3;
 const _maxPillsPerLine = 3;
 const _pillPadding = 8.0;
-const _pillsTopPadding = AppDimens.m;
-const _pillsBottomPadding = AppDimens.xl;
+const _pillsTopPadding = AppDimens.sl;
+const _pillsBottomPadding = AppDimens.ml;
 
 class ExplorePillsAreaView extends StatelessWidget {
   const ExplorePillsAreaView({

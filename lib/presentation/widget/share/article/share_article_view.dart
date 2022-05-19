@@ -180,10 +180,12 @@ class _Sticker extends StatelessWidget {
                       logoImage ?? const SizedBox.shrink(),
                       const SizedBox(width: AppDimens.m),
                     ],
-                    Text(
-                      article.publisher.name,
-                      style: AppTypography.h3bold.copyWith(
-                        color: mainImage == null ? AppColors.textPrimary : AppColors.white,
+                    Flexible(
+                      child: Text(
+                        article.publisher.name,
+                        style: AppTypography.h3bold.copyWith(
+                          color: mainImage == null ? AppColors.textPrimary : AppColors.white,
+                        ),
                       ),
                     ),
                   ],

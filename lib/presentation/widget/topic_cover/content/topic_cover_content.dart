@@ -223,14 +223,9 @@ class _CoverContentExploreSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const titleMaxLines = 2;
     const titleStyle = AppTypography.metadata1ExtraBold;
-    final titleHeight = (titleStyle.fontSize! * (titleStyle.height ?? 1)) * 2;
-
-    final updatedLabelStyle = AppTypography.metadata1Regular.copyWith(
-      height: 1.2,
-      color: hasBackgroundColor ? null : AppColors.textGrey,
-    );
-    final updatedLabelHeight = (updatedLabelStyle.fontSize! * (updatedLabelStyle.height ?? 1)) * 2;
+    final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -248,18 +243,23 @@ class _CoverContentExploreSmall extends StatelessWidget {
           height: titleHeight,
           child: InformedMarkdownBody(
             markdown: topic.title,
-            maxLines: 2,
+            maxLines: titleMaxLines,
             baseTextStyle: titleStyle,
           ),
         ),
         const SizedBox(height: AppDimens.s),
-        SizedBox(
-          height: updatedLabelHeight,
-          child: UpdatedLabel(
-            dateTime: topic.lastUpdatedAt,
-            mode: Brightness.dark,
-            textStyle: updatedLabelStyle,
-          ),
+        Wrap(
+          children: [
+            UpdatedLabel(
+              withPrefix: false,
+              dateTime: topic.lastUpdatedAt,
+              mode: Brightness.dark,
+              textStyle: AppTypography.caption1Medium.copyWith(
+                height: 1.2,
+                color: hasBackgroundColor ? null : AppColors.textGrey,
+              ),
+            ),
+          ],
         ),
       ],
     );

@@ -36,7 +36,7 @@ class ArticleAreaView extends HookWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: AppDimens.l),
+        const SizedBox(height: AppDimens.ml),
         ExploreAreaHeader(
           title: area.title,
           description: area.description,
@@ -54,7 +54,7 @@ class ArticleAreaView extends HookWidget {
           ),
           onViewAllTap: () => context.navigateToSeeAll(area, isHighlighted),
         ),
-        const SizedBox(height: AppDimens.l),
+        const SizedBox(height: AppDimens.ml),
       ],
     );
   }

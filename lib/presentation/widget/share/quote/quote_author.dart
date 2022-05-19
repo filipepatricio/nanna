@@ -13,18 +13,30 @@ class QuoteAuthor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (article.author == null) {
-      return Text(
-        article.publisher.name,
-        style: style,
-        maxLines: 1,
-      );
-    } else {
-      return Text(
-        '${article.publisher.name} · By ${article.author}',
-        style: style,
-        maxLines: 1,
-      );
-    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (article.author != null) ...[
+          Flexible(
+            child: Text(
+              article.publisher.name,
+              style: style,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Text(
+            ' . ',
+            style: style,
+            maxLines: 1,
+          ),
+        ],
+        Text(
+          'By ${article.author}',
+          style: style,
+          maxLines: 1,
+        )
+      ],
+    );
   }
 }

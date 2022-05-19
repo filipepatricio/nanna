@@ -115,7 +115,7 @@ class AppDimens {
   /// 0.5
   static double exploreTopicCarousellSmallCoverImageHeightFactor = 0.5;
 
-  /// 1.6
+  /// 1.65
   static double exploreTopicCarousellSmallCoverAspectRatio = 1.65;
 
   /// 1.8
@@ -191,4 +191,7 @@ class AppDimens {
   static const audioBannerHeight = 80.0;
 
   static const searchBarHeight = 42.0;
+
+  static double textHeight({required TextStyle style, required int maxLines}) =>
+      (style.fontSize! * 1.05 * (style.height ?? 1)) * maxLines;
 }
