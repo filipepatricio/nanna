@@ -47,10 +47,11 @@ class FreeArticleView extends HookWidget {
       appBar: AppBar(
         foregroundColor: AppColors.textPrimary,
         leading: Padding(
-          padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.s),
+          padding: const EdgeInsets.only(left: AppDimens.s),
           child: IconButton(
-            icon: const Icon(Icons.close_rounded),
-            alignment: Alignment.centerLeft,
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            iconSize: AppDimens.backArrowSize,
+            alignment: Alignment.center,
             padding: EdgeInsets.zero,
             onPressed: () => context.popRoute(),
           ),
