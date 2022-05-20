@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/page/explore/explore_page_cu
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/sliver_search_app_bar.dart';
@@ -62,6 +63,13 @@ class ExplorePage extends HookWidget {
         startTyping: () {
           scrollControllerIdleOffset.value = scrollController.offset;
         },
+        searchHistoryQueryTapped: (query) {
+          searchTextEditingController.text = query;
+          final currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
       );
     });
 
@@ -99,16 +107,23 @@ class ExplorePage extends HookWidget {
                       ),
                       slivers: [
                         searchViewState.maybeMap(
-                          initial: (state) => state.showSearchBar
-                              ? SliverSearchAppBar(
-                                  explorePageCubit: cubit,
-                                  searchTextEditingController: searchTextEditingController,
-                                  searchViewCubit: searchViewCubit,
-                                )
-                              : ScrollableSliverAppBar(
-                                  scrollController: scrollController,
-                                  title: LocaleKeys.explore_title.tr(),
-                                ),
+                          initial: (state) {
+                            final bool? showSearchBar = state.showSearchBar;
+                            if (showSearchBar != null) {
+                              return showSearchBar
+                                  ? SliverSearchAppBar(
+                                      explorePageCubit: cubit,
+                                      searchTextEditingController: searchTextEditingController,
+                                      searchViewCubit: searchViewCubit,
+                                    )
+                                  : ScrollableSliverAppBar(
+                                      scrollController: scrollController,
+                                      title: LocaleKeys.explore_title.tr(),
+                                    );
+                            } else {
+                              return const SliverToBoxAdapter();
+                            }
+                          },
                           orElse: () => SliverSearchAppBar(
                             explorePageCubit: cubit,
                             searchTextEditingController: searchTextEditingController,
@@ -128,6 +143,12 @@ class ExplorePage extends HookWidget {
                             cubit: searchViewCubit,
                             scrollController: scrollController,
                           ),
+                          searchHistory: (state) => SearchHistoryView(
+                            explorePageCubit: cubit,
+                            searchViewCubit: searchViewCubit,
+                            scrollController: scrollController,
+                            searchHistory: state.searchHistory,
+                          ),
                           orElse: () => const SliverToBoxAdapter(),
                         ),
                         const SliverToBoxAdapter(
@@ -141,7 +162,7 @@ class ExplorePage extends HookWidget {
                   alignment: Alignment.center,
                   child: state.maybeMap(
                     error: (_) => _ErrorView(refreshCallback: () => cubit.initialize()),
-                    orElse: () => const SizedBox(),
+                    orElse: () => const SizedBox.shrink(),
                   ),
                 ),
               ],
@@ -180,7 +201,7 @@ class _ErrorView extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: AppDimens.l),
-        Container(
+        SizedBox(
           width: _tryAgainButtonWidth,
           child: FilledButton(
             text: LocaleKeys.common_tryAgain.tr(),
@@ -285,7 +306,7 @@ class _Area extends HookWidget {
           topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
           smallTopics: (area) => SmallTopicsAreaView(area: area),
           highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),
-          unknown: (_) => Container(),
+          unknown: (_) => const SizedBox.shrink(),
         ),
       ),
     );

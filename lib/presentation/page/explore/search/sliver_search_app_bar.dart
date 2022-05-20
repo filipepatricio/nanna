@@ -39,13 +39,13 @@ class SliverSearchAppBar extends StatelessWidget {
       actions: [
         _CancelButton(
           cubit: explorePageCubit,
-          searchController: searchTextEditingController,
+          searchTextEditingController: searchTextEditingController,
         ),
       ],
       title: _SearchBar(
         explorePageCubit: explorePageCubit,
         searchViewCubit: searchViewCubit,
-        searchController: searchTextEditingController,
+        searchTextEditingController: searchTextEditingController,
       ),
     );
   }
@@ -55,34 +55,36 @@ class _SearchBar extends HookWidget {
   const _SearchBar({
     required this.explorePageCubit,
     required this.searchViewCubit,
-    required this.searchController,
+    required this.searchTextEditingController,
     Key? key,
   }) : super(key: key);
 
   final ExplorePageCubit explorePageCubit;
   final SearchViewCubit searchViewCubit;
-  final TextEditingController searchController;
+  final TextEditingController searchTextEditingController;
 
   @override
   Widget build(BuildContext context) {
     final query = useState('');
+    final searchTextFieldfocusNode = useFocusNode();
 
     useEffect(
       () {
-        final listener = () {
-          query.value = searchController.text;
+        void listener() {
+          query.value = searchTextEditingController.text;
           searchViewCubit.search(query.value);
 
           if (query.value.isNotEmpty) {
             explorePageCubit.search();
           } else {
-            explorePageCubit.explore();
+            explorePageCubit.startTyping();
           }
-        };
-        searchController.addListener(listener);
-        return () => searchController.removeListener(listener);
+        }
+
+        searchTextEditingController.addListener(listener);
+        return () => searchTextEditingController.removeListener(listener);
       },
-      [SearchViewCubit, searchController],
+      [SearchViewCubit, searchTextEditingController],
     );
 
     return Container(
@@ -96,9 +98,10 @@ class _SearchBar extends HookWidget {
         ),
       ),
       child: TextFormField(
-        controller: searchController,
+        controller: searchTextEditingController,
         autofocus: false,
-        cursorHeight: AppDimens.m,
+        focusNode: searchTextFieldfocusNode,
+        cursorHeight: AppDimens.sl,
         cursorColor: AppColors.darkGreyBackground,
         textInputAction: TextInputAction.search,
         autocorrect: false,
@@ -117,7 +120,8 @@ class _SearchBar extends HookWidget {
           suffixIcon: query.value.isNotEmpty
               ? GestureDetector(
                   onTap: () {
-                    searchController.text = '';
+                    searchTextEditingController.clear();
+                    FocusScope.of(context).requestFocus(searchTextFieldfocusNode);
                   },
                   child: SvgPicture.asset(
                     AppVectorGraphics.clearText,
@@ -125,11 +129,11 @@ class _SearchBar extends HookWidget {
                     fit: BoxFit.scaleDown,
                   ),
                 )
-              : const SizedBox(),
+              : const SizedBox.shrink(),
         ),
         style: AppTypography.h4Medium.copyWith(
           color: AppColors.darkGreyBackground,
-          height: 1.3,
+          height: 1,
         ),
         onTap: explorePageCubit.startTyping,
       ),
@@ -140,25 +144,30 @@ class _SearchBar extends HookWidget {
 class _CancelButton extends HookWidget {
   const _CancelButton({
     required this.cubit,
-    required this.searchController,
+    required this.searchTextEditingController,
     Key? key,
   }) : super(key: key);
 
   final ExplorePageCubit cubit;
-  final TextEditingController searchController;
+  final TextEditingController searchTextEditingController;
 
   @override
   Widget build(BuildContext context) {
     final state = useCubitBuilder(cubit);
     return KeyboardVisibilityBuilder(
       builder: (context, visible) => Container(
-        child: visible || state.maybeMap(search: (_) => true, orElse: () => false)
+        child: visible ||
+                state.maybeMap(
+                  search: (_) => true,
+                  searchHistory: (_) => true,
+                  orElse: () => false,
+                )
             ? Container(
                 margin: const EdgeInsets.only(right: AppDimens.l),
                 child: TextButton(
                   onPressed: () {
+                    searchTextEditingController.clear();
                     cubit.explore();
-                    searchController.clear();
                     final currentFocus = FocusScope.of(context);
                     if (!currentFocus.hasPrimaryFocus) {
                       currentFocus.unfocus();
@@ -179,7 +188,7 @@ class _CancelButton extends HookWidget {
                   ),
                 ),
               )
-            : const SizedBox(),
+            : const SizedBox.shrink(),
       ),
     );
   }

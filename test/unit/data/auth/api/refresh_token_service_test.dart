@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dt.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
@@ -46,9 +47,10 @@ void main() {
         ),
       );
       final result = QueryResult(
-        parserFn: (data) {
-          return data;
-        },
+        options: QueryOptions(
+          document: AuthGQL.refresh(refreshToken),
+          parserFn: (data) => data,
+        ),
         source: QueryResultSource.network,
         data: {
           'refresh': {
@@ -72,15 +74,13 @@ void main() {
     });
 
     test('throws [RevokeTokenException] when tokens in response are [null]', () async {
-      final dto = AuthTokenResponseDTO(
-        true,
-        null,
-        null,
-      );
+      final dto = AuthTokenResponseDTO(true, null, null);
+
       final result = QueryResult(
-        parserFn: (data) {
-          return data;
-        },
+        options: QueryOptions(
+          document: AuthGQL.refresh(''),
+          parserFn: (data) => data,
+        ),
         source: QueryResultSource.network,
         data: {
           'refresh': {
@@ -105,9 +105,10 @@ void main() {
     test('throws [OperationException] when result has [OperationException]', () async {
       final exception = OperationException();
       final result = QueryResult(
-        parserFn: (data) {
-          return data;
-        },
+        options: QueryOptions(
+          document: AuthGQL.refresh(''),
+          parserFn: (data) => data,
+        ),
         exception: exception,
         source: QueryResultSource.network,
         data: {
@@ -141,10 +142,12 @@ void main() {
           refreshToken,
         ),
       );
+
       final result = QueryResult(
-        parserFn: (data) {
-          return data;
-        },
+        options: QueryOptions(
+          document: AuthGQL.refresh(refreshToken),
+          parserFn: (data) => data,
+        ),
         source: QueryResultSource.network,
         data: {
           'refresh': {
@@ -203,15 +206,13 @@ void main() {
       const accessToken = 'abcd1234';
       const refreshToken = 'bcda4321';
       const oldRefreshToken = 'ababab999';
-      final dto = AuthTokenResponseDTO(
-        true,
-        null,
-        null,
-      );
+      final dto = AuthTokenResponseDTO(true, null, null);
+
       final result = QueryResult(
-        parserFn: (data) {
-          return data;
-        },
+        options: QueryOptions(
+          document: AuthGQL.refresh(refreshToken),
+          parserFn: (data) => data,
+        ),
         source: QueryResultSource.network,
         data: {
           'refresh': {

@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/data/audio/handler/current_audio_item_dto
 abstract class InformedBaseAudioHandler extends BaseAudioHandler {
   Future<void> initialize();
 
-  Future<void> notifyLoading(MediaItem mediaItem);
+  Future<void> notifyLoading(MediaItem item);
 
   Future<void> open(String path);
 

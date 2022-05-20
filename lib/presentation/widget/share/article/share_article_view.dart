@@ -120,7 +120,7 @@ class _Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Container(
+      child: SizedBox(
         height: _viewHeight,
         width: _viewWidth,
         child: Stack(
@@ -177,13 +177,15 @@ class _Sticker extends StatelessWidget {
                 Row(
                   children: [
                     if (logoImage != null) ...[
-                      logoImage ?? const SizedBox(),
+                      logoImage ?? const SizedBox.shrink(),
                       const SizedBox(width: AppDimens.m),
                     ],
-                    Text(
-                      article.publisher.name,
-                      style: AppTypography.h3bold.copyWith(
-                        color: mainImage == null ? AppColors.textPrimary : AppColors.white,
+                    Flexible(
+                      child: Text(
+                        article.publisher.name,
+                        style: AppTypography.h3bold.copyWith(
+                          color: mainImage == null ? AppColors.textPrimary : AppColors.white,
+                        ),
                       ),
                     ),
                   ],

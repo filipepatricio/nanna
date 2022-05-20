@@ -31,27 +31,23 @@ class ArticleContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            child: _ArticleHeader(article: article.metadata),
-          ),
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  key: articleContentKey,
-                  child: _articleContent(context),
-                ),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: _ArticleHeader(article: article.metadata),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              key: articleContentKey,
+              child: _articleContent(context),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -87,7 +83,7 @@ class _ArticleHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final author = article.author;
-    final metadataStyle = AppTypography.systemText.copyWith(color: AppColors.textGrey, height: 1.12);
+    final metadataStyle = AppTypography.systemText.copyWith(color: AppColors.textGrey, height: 1.5);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,6 +115,7 @@ class _ArticleHeader extends StatelessWidget {
           showLogo: false,
           textStyle: metadataStyle,
           color: metadataStyle.color,
+          publisherMaxLines: 2,
         ),
         const SizedBox(height: AppDimens.xl),
         const Divider(

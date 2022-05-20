@@ -131,7 +131,7 @@ class NoMemberAccessPage extends HookWidget {
                                   padding: EdgeInsets.symmetric(horizontal: AppDimens.m),
                                   child: Loader(strokeWidth: 3.0),
                                 ),
-                                orElse: () => const SizedBox(height: 0, width: 0),
+                                orElse: () => const SizedBox.shrink(),
                               ),
                             ],
                           ),

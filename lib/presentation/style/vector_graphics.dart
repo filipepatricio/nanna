@@ -47,7 +47,8 @@ class AppVectorGraphics {
 
   static const String mail = 'assets/vector_graphics/mail_ic.svg';
   static const String googleSignIn = 'assets/vector_graphics/google_sign_in.svg';
-  static const String appleSignIn = 'assets/vector_graphics/apple_logo_black.svg';
+  static const String appleSignIn = 'assets/vector_graphics/apple_sign_in.svg';
+  static const String linkedinSignIn = 'assets/vector_graphics/sign_in_linkedin.svg';
 
   static const String readsExploreError = 'assets/vector_graphics/my_reads_explore_error_ic.svg';
   static const String articleError = 'assets/vector_graphics/article_error_ic.svg';
@@ -94,8 +95,8 @@ class AppVectorGraphics {
   static const String headphones = 'assets/vector_graphics/headphones.svg';
   static const String lines = 'assets/vector_graphics/lines.svg';
 
-  static const String play_arrow = 'assets/vector_graphics/play_arrow.svg';
+  static const String playArrow = 'assets/vector_graphics/play_arrow.svg';
   static const String pause = 'assets/vector_graphics/pause.svg';
-  static const String skip_back_10_seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
-  static const String skip_forward_10_seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
+  static const String skipBack10Seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
+  static const String skipForward10Seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
 }

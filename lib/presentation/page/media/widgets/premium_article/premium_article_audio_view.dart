@@ -51,7 +51,7 @@ class PremiumArticleAudioView extends HookWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: AppDimens.appBarHeight + AppDimens.m),
+          SizedBox(height: AppDimens.appBarHeight + MediaQuery.of(context).padding.top),
           if (context.isNotSmallDevice || article.hasImage) ...[
             Flexible(
               flex: 15,
@@ -88,18 +88,16 @@ class PremiumArticleAudioView extends HookWidget {
             fullDate: context.isNotSmallDevice,
             textStyle: metadataStyle,
             color: metadataStyle.color,
+            centerContent: true,
           ),
           const Spacer(),
           if (hasAudioCredits) ...[
-            Padding(
-              padding: const EdgeInsets.only(top: AppDimens.zero),
-              child: Text(
-                article.audioFile!.credits!,
-                textAlign: TextAlign.center,
-                style: metadataStyle.copyWith(
-                  height: 1.6,
-                  fontStyle: FontStyle.italic,
-                ),
+            Text(
+              article.audioFile!.credits!,
+              textAlign: TextAlign.center,
+              style: metadataStyle.copyWith(
+                height: 1.6,
+                fontStyle: FontStyle.italic,
               ),
             ),
             const Spacer(),
@@ -139,11 +137,11 @@ class _AudioComponentsView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const AudioSeekButton.rewind(),
+            AudioSeekButton.rewind(),
             const SizedBox(width: AppDimens.m),
             AudioControlButton(article: article),
             const SizedBox(width: AppDimens.m),
-            const AudioSeekButton.fastForward(),
+            AudioSeekButton.fastForward(),
           ],
         )
       ],

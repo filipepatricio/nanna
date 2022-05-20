@@ -45,13 +45,15 @@ class ColoredCover extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DottedArticleInfo(
-                        article: article,
-                        isLight: false,
-                        showDate: false,
-                        showReadTime: false,
-                        showLogo: true,
-                        showPublisher: true,
+                      Flexible(
+                        child: DottedArticleInfo(
+                          article: article,
+                          isLight: false,
+                          showDate: false,
+                          showReadTime: false,
+                          showLogo: true,
+                          showPublisher: true,
+                        ),
                       ),
                       if (article.hasAudioVersion) AudioIcon.dark(),
                     ],

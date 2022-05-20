@@ -116,7 +116,7 @@ class _Body extends StatelessWidget {
         scrollController: scrollController,
         withLoader: false,
       ),
-      orElse: () => const SizedBox(),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }

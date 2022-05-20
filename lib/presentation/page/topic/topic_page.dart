@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/app_bar/topic_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -20,7 +21,7 @@ import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dar
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 /// Make sure that changes to the view won't change depth of the main scroll
@@ -59,28 +60,62 @@ class TopicPage extends HookWidget {
       [topicSlug, cubit],
     );
 
-    return WillPopScope(
-      onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
-      child: Material(
-        child: AudioPlayerBannerWrapper(
-          layout: AudioPlayerBannerLayout.column,
-          child: state.maybeMap(
-            idle: (state) => _TopicIdleView(
-              topic: state.topic,
-              cubit: cubit,
-              tutorialCoachMark: tutorialCoachMark,
-            ),
-            loading: (_) => const _DefaultAppBarWrapper(child: TopicLoadingView()),
-            error: (_) => _DefaultAppBarWrapper(
-              child: GeneralErrorView(
-                title: LocaleKeys.todaysTopics_oops.tr(),
-                content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
-                svgPath: AppVectorGraphics.magError,
-                retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
-              ),
-            ),
-            orElse: () => const SizedBox(),
+    final body = _TopicPage(
+      state: state,
+      cubit: cubit,
+      tutorialCoachMark: tutorialCoachMark,
+      topicSlug: topicSlug,
+      briefId: briefId,
+    );
+
+    return Platform.isAndroid
+        ? WillPopScope(
+            onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
+            child: body,
+          )
+        : body;
+  }
+}
+
+class _TopicPage extends StatelessWidget {
+  const _TopicPage({
+    required this.state,
+    required this.cubit,
+    required this.tutorialCoachMark,
+    required this.topicSlug,
+    required this.briefId,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPageState state;
+  final TopicPageCubit cubit;
+  final TutorialCoachMark tutorialCoachMark;
+  final String topicSlug;
+  final String? briefId;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AudioPlayerBannerWrapper(
+        layout: AudioPlayerBannerLayout.column,
+        child: state.maybeMap(
+          idle: (state) => _TopicIdleView(
+            topic: state.topic,
+            cubit: cubit,
+            tutorialCoachMark: tutorialCoachMark,
           ),
+          loading: (_) => const _DefaultAppBarWrapper(
+            child: TopicLoadingView(),
+          ),
+          error: (_) => _DefaultAppBarWrapper(
+            child: GeneralErrorView(
+              title: LocaleKeys.todaysTopics_oops.tr(),
+              content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+              svgPath: AppVectorGraphics.magError,
+              retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+            ),
+          ),
+          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );
@@ -124,14 +159,14 @@ class _TopicIdleView extends HookWidget {
   final TopicPageCubit cubit;
   final TutorialCoachMark tutorialCoachMark;
 
-  void _scrollToSummary(BuildContext context, TopicPageGestureManager gestureManager) {
-    gestureManager.animateViewTo(
+  void _scrollToSummary(BuildContext context, ScrollController controller) {
+    controller.animateViewTo(
       AppDimens.topicViewHeaderImageHeight(context) - kToolbarHeight - MediaQuery.of(context).viewPadding.bottom,
     );
   }
 
-  void _scrollToArticles(BuildContext context, TopicPageGestureManager gestureManager) {
-    gestureManager.animateViewTo(AppDimens.topicArticleSectionTriggerPoint(context));
+  void _scrollToArticles(BuildContext context, ScrollController controller) {
+    controller.animateViewTo(AppDimens.topicArticleSectionTriggerPoint(context));
   }
 
   bool _updateScrollPosition(ScrollNotification scrollInfo, ValueNotifier<double> scrollPositionNotifier) {
@@ -170,15 +205,7 @@ class _TopicIdleView extends HookWidget {
   Widget build(BuildContext context) {
     final snackbarController = useMemoized(() => SnackbarController());
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
-    final modalScrollController = useMemoized(() => ModalScrollController.of(context));
     final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
-    final gestureManager = useMemoized(
-      () => TopicPageGestureManager(
-        context: context,
-        modalController: modalScrollController!,
-        generalViewController: scrollController,
-      ),
-    );
     final isShowingTutorialToast = useState(false);
 
     useEffect(
@@ -205,30 +232,25 @@ class _TopicIdleView extends HookWidget {
         skipTutorialCoachMark: (jumpToNextCoachMark) {
           tutorialCoachMark.skip();
           if (jumpToNextCoachMark) {
-            _scrollToArticles(context, gestureManager);
+            _scrollToArticles(context, scrollController);
           }
         },
         finishTutorialCoachMark: tutorialCoachMark.finish,
       );
     });
 
-    return SnackbarParentView(
-      controller: snackbarController,
-      child: RawGestureDetector(
-        gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
-          [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
-        ),
-        behavior: HitTestBehavior.opaque,
+    return ScrollsToTop(
+      onScrollsToTop: (_) => scrollController.animateToStart(),
+      child: SnackbarParentView(
+        controller: snackbarController,
         child: NotificationListener<ScrollNotification>(
           onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
           child: Listener(
             onPointerUp: (_) => _snapPage(context, scrollController),
             child: NoScrollGlow(
               child: CustomScrollView(
-                physics: NeverScrollableScrollPhysics(
-                  parent: getPlatformScrollPhysics(
-                    const AlwaysScrollableScrollPhysics(),
-                  ),
+                physics: getPlatformScrollPhysics(
+                  const AlwaysScrollableScrollPhysics(),
                 ),
                 controller: scrollController,
                 slivers: [
@@ -238,9 +260,9 @@ class _TopicIdleView extends HookWidget {
                     isShowingTutorialToast: isShowingTutorialToast,
                     scrollPositionNotifier: scrollPositionNotifier,
                     onArticlesLabelTap: () => topic.hasSummary
-                        ? _scrollToArticles(context, gestureManager)
-                        : _scrollToSummary(context, gestureManager),
-                    onArrowTap: () => _scrollToSummary(context, gestureManager),
+                        ? _scrollToArticles(context, scrollController)
+                        : _scrollToSummary(context, scrollController),
+                    onArrowTap: () => _scrollToSummary(context, scrollController),
                     snackbarController: snackbarController,
                   ),
                   SliverList(
@@ -264,4 +286,12 @@ class _TopicIdleView extends HookWidget {
       ),
     );
   }
+}
+
+extension on ScrollController {
+  Future<void> animateViewTo(double offset) => animateTo(
+        offset,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOutCubic,
+      );
 }

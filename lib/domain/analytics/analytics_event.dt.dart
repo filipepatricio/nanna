@@ -156,6 +156,13 @@ class AnalyticsEvent with _$AnalyticsEvent {
       );
 
   factory AnalyticsEvent.logout() => AnalyticsEvent._('Logout');
+
+  factory AnalyticsEvent.searched({required String query}) => AnalyticsEvent._(
+        'Searched',
+        {
+          'query': query,
+        },
+      );
 }
 
 extension on BookmarkSortConfigName {

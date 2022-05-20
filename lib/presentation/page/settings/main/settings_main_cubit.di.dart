@@ -24,10 +24,10 @@ class SettingsMainCubit extends Cubit<SettingsMainState> {
   }
 
   Future<void> sendFeedbackEmail(String email, String subject, String body) async {
-    final mailToLink = Uri.parse('mailto:$email?subject=$subject&body=$body').toString();
+    final mailToLink = Uri.parse('mailto:$email?subject=$subject&body=$body');
 
     try {
-      await launch(mailToLink);
+      await launchUrl(mailToLink);
     } catch (_) {
       await _sendEmailWithFallbackOption(email, subject, body);
     }

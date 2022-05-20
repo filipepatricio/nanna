@@ -40,13 +40,19 @@ class MagicLinkContent extends StatelessWidget {
             Center(
               child: InformedMarkdownBody(
                 markdown: LocaleKeys.signIn_header_magicLinkOne.tr(),
-                baseTextStyle: AppTypography.headline4Bold.copyWith(height: 1.4, fontWeight: FontWeight.w400),
+                baseTextStyle: AppTypography.h2Regular.copyWith(
+                  height: 1.4,
+                  letterSpacing: 0.15,
+                ),
               ),
             ),
             Center(
               child: InformedMarkdownBody(
                 markdown: LocaleKeys.signIn_header_magicLinkTwo.tr(args: [email]),
-                baseTextStyle: AppTypography.headline4Bold.copyWith(height: 1.4, fontWeight: FontWeight.w400),
+                baseTextStyle: AppTypography.h2Regular.copyWith(
+                  height: 1.4,
+                  letterSpacing: 0.15,
+                ),
                 maxLines: 3,
                 textAlignment: TextAlign.center,
               ),

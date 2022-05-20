@@ -23,7 +23,9 @@ class ArticleContentMarkdown extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(
       () {
-        WidgetsBinding.instance?.addPostFrameCallback((_) => scrollToPosition());
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => scrollToPosition(),
+        );
       },
       [],
     );

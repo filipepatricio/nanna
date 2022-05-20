@@ -51,7 +51,7 @@ class SettingsAccountPage extends HookWidget {
             modifiedData: data.data,
             originalData: data.original,
           ),
-          orElse: () => const SizedBox(),
+          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );

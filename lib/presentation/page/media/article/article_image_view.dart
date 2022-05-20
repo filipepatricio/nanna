@@ -30,7 +30,7 @@ class ArticleImageView extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       children: [
         if (hasImage)
-          Container(
+          SizedBox(
             width: double.infinity,
             height: fullHeight,
             child: ArticleImage(
@@ -88,7 +88,7 @@ class ArticleImageView extends StatelessWidget {
               cloudinaryImage: image.cloudinaryImage,
               articleId: article.id,
             ),
-            orElse: () => const SizedBox(),
+            orElse: () => const SizedBox.shrink(),
           )
       ],
     );

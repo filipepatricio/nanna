@@ -90,45 +90,43 @@ class _AppUpdateDialog extends HookWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         children: [
-          Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SvgPicture.asset(
-                  AppVectorGraphics.megaphone,
-                  width: AppDimens.onboardingIconSize,
-                  height: AppDimens.onboardingIconSize,
-                  fit: BoxFit.contain,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SvgPicture.asset(
+                AppVectorGraphics.megaphone,
+                width: AppDimens.onboardingIconSize,
+                height: AppDimens.onboardingIconSize,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: AppDimens.l),
+              Text(
+                LocaleKeys.update_title.tr(),
+                style: AppTypography.h4Bold,
+              ),
+              const SizedBox(height: AppDimens.m),
+              Text(
+                LocaleKeys.update_body.tr(),
+                style: AppTypography.b2Regular,
+              ),
+              const SizedBox(height: AppDimens.l),
+              if (availableVersion != null) ...[
+                Text(
+                  LocaleKeys.update_versionAvailable.tr(args: [availableVersion!]),
+                  style: AppTypography.b2Regular.copyWith(color: AppColors.textGrey),
                 ),
                 const SizedBox(height: AppDimens.l),
-                Text(
-                  LocaleKeys.update_title.tr(),
-                  style: AppTypography.h4Bold,
-                ),
-                const SizedBox(height: AppDimens.m),
-                Text(
-                  LocaleKeys.update_body.tr(),
-                  style: AppTypography.b2Regular,
-                ),
-                const SizedBox(height: AppDimens.l),
-                if (availableVersion != null) ...[
-                  Text(
-                    LocaleKeys.update_versionAvailable.tr(args: [availableVersion!]),
-                    style: AppTypography.b2Regular.copyWith(color: AppColors.textGrey),
-                  ),
-                  const SizedBox(height: AppDimens.l),
-                ],
-                Center(
-                  child: OpenWebButton(
-                    withIcon: false,
-                    url: platformStoreLink,
-                    buttonLabel: LocaleKeys.update_button.tr(),
-                    padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
-                  ),
-                ),
               ],
-            ),
+              Center(
+                child: OpenWebButton(
+                  withIcon: false,
+                  url: platformStoreLink,
+                  buttonLabel: LocaleKeys.update_button.tr(),
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
+                ),
+              ),
+            ],
           ),
         ],
       ),

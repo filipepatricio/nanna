@@ -41,9 +41,9 @@ class QuoteForegroundView extends HookWidget implements BaseShareCompletable {
   Widget build(BuildContext context) {
     useEffect(
       () {
-        WidgetsBinding.instance?.addPostFrameCallback((_) {
-          _completer.complete();
-        });
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _completer.complete(),
+        );
       },
       [],
     );
@@ -118,7 +118,7 @@ class _Quote extends StatelessWidget {
               const SizedBox(height: AppDimens.xxl),
               QuoteAuthor(
                 article: article,
-                style: AppTypography.h2Jakarta.copyWith(
+                style: AppTypography.h2Regular.copyWith(
                   fontSize: 21,
                   color: quoteVariantData.foregroundColor,
                 ),
@@ -126,7 +126,7 @@ class _Quote extends StatelessWidget {
               const SizedBox(height: AppDimens.s),
               Text(
                 tr(LocaleKeys.shareQuote_title, args: [article.strippedTitle]),
-                style: AppTypography.h2Jakarta.copyWith(
+                style: AppTypography.h2Regular.copyWith(
                   fontSize: 21,
                   color: quoteVariantData.foregroundColor,
                 ),

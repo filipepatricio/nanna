@@ -21,9 +21,10 @@ class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
   Future<void> share(MediaItemArticle article) async {
     emit(ShareArticleButtonState.processing);
 
-    final factory = () => ShareArticleView(
+    ShareArticleView factory() => ShareArticleView(
           article: article,
         );
+
     final image = await generateShareImage(
       _shareViewImageGenerator,
       factory,

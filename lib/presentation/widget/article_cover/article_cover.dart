@@ -151,10 +151,13 @@ class _ArticleCoverExploreList extends StatelessWidget {
                   Row(
                     children: [
                       if (article.publisher.darkLogo != null) PublisherLogo.dark(publisher: article.publisher),
-                      Text(
-                        article.publisher.name,
-                        maxLines: 1,
-                        style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
+                      Flexible(
+                        child: Text(
+                          article.publisher.name,
+                          maxLines: 1,
+                          style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
@@ -166,16 +169,18 @@ class _ArticleCoverExploreList extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const Spacer(),
-                  DottedArticleInfo(
-                    article: article,
-                    isLight: false,
-                    showLogo: false,
-                    showDate: true,
-                    showReadTime: true,
-                    showPublisher: false,
-                    fullDate: true,
-                    textStyle: AppTypography.caption1Medium,
-                    color: AppColors.textGrey,
+                  Flexible(
+                    child: DottedArticleInfo(
+                      article: article,
+                      isLight: false,
+                      showLogo: false,
+                      showDate: true,
+                      showReadTime: true,
+                      showPublisher: false,
+                      fullDate: true,
+                      textStyle: AppTypography.caption1Medium,
+                      color: AppColors.textGrey,
+                    ),
                   ),
                 ],
               ),

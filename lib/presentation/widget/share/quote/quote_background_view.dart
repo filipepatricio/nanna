@@ -90,7 +90,7 @@ class QuoteBackgroundView extends HookWidget implements BaseShareCompletable {
           color: AppColors.background,
           child: Stack(
             children: [
-              Container(
+              SizedBox(
                 width: size.width,
                 height: size.height,
               ),
@@ -165,7 +165,7 @@ class _ArticleBanner extends StatelessWidget {
                   const SizedBox(height: AppDimens.s),
                   QuoteAuthor(
                     article: article,
-                    style: AppTypography.h2Jakarta,
+                    style: AppTypography.h2Regular,
                   ),
                 ],
               ),

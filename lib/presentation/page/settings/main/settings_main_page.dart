@@ -39,7 +39,7 @@ class SettingsMainPage extends HookWidget {
               snackbarController: snackbarController,
             ),
             loading: () => const Loader(),
-            orElse: () => const SizedBox(),
+            orElse: () => const SizedBox.shrink(),
           ),
         ),
       ),

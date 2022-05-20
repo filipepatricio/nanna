@@ -16,9 +16,9 @@ class AudioSeekButton extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  const AudioSeekButton.rewind() : this._(type: AudioSeekButtonType.rewind);
+  factory AudioSeekButton.rewind() => const AudioSeekButton._(type: AudioSeekButtonType.rewind);
 
-  const AudioSeekButton.fastForward() : this._(type: AudioSeekButtonType.fastForward);
+  factory AudioSeekButton.fastForward() => const AudioSeekButton._(type: AudioSeekButtonType.fastForward);
 
   final AudioSeekButtonType type;
 
@@ -65,7 +65,7 @@ class _RewindButton extends StatelessWidget {
       onPressed: state.isEnabled ? cubit.rewind : null,
       padding: const EdgeInsets.only(right: AppDimens.s),
       icon: SvgPicture.asset(
-        AppVectorGraphics.skip_back_10_seconds,
+        AppVectorGraphics.skipBack10Seconds,
         color: state.imageColor,
       ),
     );
@@ -88,7 +88,7 @@ class _FastForwardButton extends StatelessWidget {
       onPressed: state.isEnabled ? cubit.fastForward : null,
       padding: const EdgeInsets.only(right: AppDimens.s),
       icon: SvgPicture.asset(
-        AppVectorGraphics.skip_forward_10_seconds,
+        AppVectorGraphics.skipForward10Seconds,
         color: state.imageColor,
       ),
     );

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/show_pills_on_explore_page_use_case.di.dart';
+import 'package:better_informed_mobile/domain/search/use_case/get_search_history_use_case.di.dart';
+import 'package:better_informed_mobile/domain/search/use_case/remove_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
@@ -20,12 +22,16 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._showPillsOnExplorePageUseCase,
+    this._getSearchHistoryUseCase,
+    this._removeSearchHistoryQueryUseCase,
   ) : super(ExplorePageState.initialLoading());
 
   final GetExploreContentUseCase _getExploreContentUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final ShowPillsOnExplorePageUseCase _showPillsOnExplorePageUseCase;
+  final GetSearchHistoryUseCase _getSearchHistoryUseCase;
+  final RemoveSearchHistoryQueryUseCase _removeSearchHistoryQueryUseCase;
 
   late bool _isExploreTutorialStepSeen;
   late ExplorePageState _latestIdleState;
@@ -91,6 +97,10 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   Future<void> startTyping() async {
     emit(ExplorePageState.startTyping());
+    final searchHistory = await _getSearchHistoryUseCase.call();
+    if (searchHistory.isNotEmpty) {
+      emit(ExplorePageState.searchHistory(searchHistory));
+    }
   }
 
   Future<void> search() async {
@@ -101,5 +111,24 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> explore() async {
     emit(ExplorePageState.startExploring());
     emit(_latestIdleState);
+  }
+
+  Future<void> removeSearchHistoryQuery(String query) async {
+    final searchHistory = await _removeSearchHistoryQueryUseCase(query);
+    emit(ExplorePageState.searchHistoryUpdated());
+    _checkSearchHistory(searchHistory);
+  }
+
+  Future<void> _checkSearchHistory(List<String> searchHistory) async {
+    if (searchHistory.isNotEmpty) {
+      emit(ExplorePageState.searchHistory(searchHistory));
+    } else {
+      emit(ExplorePageState.startExploring());
+      emit(_latestIdleState);
+    }
+  }
+
+  Future<void> searchHistoryQueryTapped(String query) async {
+    emit(ExplorePageState.searchHistoryQueryTapped(query));
   }
 }

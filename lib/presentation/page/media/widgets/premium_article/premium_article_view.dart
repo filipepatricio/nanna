@@ -1,20 +1,20 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit_provider.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:scrolls_to_top/scrolls_to_top.dart';
 
 class PremiumArticleView extends HookWidget {
   const PremiumArticleView({
     required this.article,
     required this.fromTopic,
-    required this.modalController,
     required this.controller,
     required this.pageController,
     required this.cubit,
@@ -27,7 +27,6 @@ class PremiumArticleView extends HookWidget {
 
   final Article article;
   final bool fromTopic;
-  final ScrollController modalController;
   final ScrollController controller;
   final PageController pageController;
   final MediaItemCubit cubit;
@@ -46,7 +45,7 @@ class PremiumArticleView extends HookWidget {
 
     useEffect(
       () {
-        final listener = () {
+        void listener() {
           switch (articleOutputModeNotifier.value) {
             case ArticleOutputMode.read:
               horizontalPageController.animateToPage(
@@ -63,7 +62,8 @@ class PremiumArticleView extends HookWidget {
               );
               break;
           }
-        };
+        }
+
         articleOutputModeNotifier.addListener(listener);
         return () => articleOutputModeNotifier.removeListener(listener);
       },
@@ -71,61 +71,64 @@ class PremiumArticleView extends HookWidget {
     );
 
     return Scaffold(
-      body: SnackbarParentView(
-        controller: snackbarController,
-        child: PremiumArticleAudioCubitProvider(
-          article: metadata,
-          audioCubitBuilder: (audioCubit) => Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              PageView(
-                physics: const ClampingScrollPhysics(),
-                controller: horizontalPageController,
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (page) {
-                  switch (page) {
-                    case 0:
-                      articleOutputModeNotifier.value = ArticleOutputMode.read;
-                      break;
-                    case 1:
-                      articleOutputModeNotifier.value = ArticleOutputMode.audio;
-                      break;
-                  }
-                },
-                children: [
-                  PremiumArticleReadView(
+      body: ScrollsToTop(
+        onScrollsToTop: (_) => controller.animateToStart(),
+        child: SnackbarParentView(
+          controller: snackbarController,
+          child: PremiumArticleAudioCubitProvider(
+            article: metadata,
+            audioCubitBuilder: (audioCubit) => Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                NoScrollGlow(
+                  child: PageView(
+                    physics: const ClampingScrollPhysics(),
+                    controller: horizontalPageController,
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (page) {
+                      switch (page) {
+                        case 0:
+                          articleOutputModeNotifier.value = ArticleOutputMode.read;
+                          break;
+                        case 1:
+                          articleOutputModeNotifier.value = ArticleOutputMode.audio;
+                          break;
+                      }
+                    },
+                    children: [
+                      PremiumArticleReadView(
+                        article: article,
+                        controller: controller,
+                        pageController: pageController,
+                        snackbarController: snackbarController,
+                        cubit: cubit,
+                        fullHeight: fullHeight,
+                        fromTopic: fromTopic,
+                        readArticleProgress: readArticleProgress,
+                        articleOutputModeNotifier: articleOutputModeNotifier,
+                      ),
+                      if (metadata.hasAudioVersion)
+                        PremiumArticleAudioView(
+                          article: article,
+                          cubit: audioCubit,
+                        ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: MediaQuery.of(context).padding.top,
+                  left: 0,
+                  right: 0,
+                  child: PremiumArticleActionsBar(
                     article: article,
-                    modalController: modalController,
-                    controller: controller,
                     pageController: pageController,
                     snackbarController: snackbarController,
                     cubit: cubit,
-                    fullHeight: fullHeight,
-                    fromTopic: fromTopic,
-                    readArticleProgress: readArticleProgress,
                     articleOutputModeNotifier: articleOutputModeNotifier,
                   ),
-                  if (metadata.hasAudioVersion)
-                    PremiumArticleAudioView(
-                      article: article,
-                      cubit: audioCubit,
-                    ),
-                ],
-              ),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: PremiumArticleActionsBar(
-                  article: article,
-                  fullHeight: article.hasImage ? fullHeight : appBarHeight,
-                  pageController: pageController,
-                  snackbarController: snackbarController,
-                  cubit: cubit,
-                  articleOutputModeNotifier: articleOutputModeNotifier,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

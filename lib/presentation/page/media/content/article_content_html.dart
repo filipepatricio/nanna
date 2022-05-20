@@ -32,9 +32,9 @@ class ArticleContentHtml extends HookWidget {
 
     useEffect(
       () {
-        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-          scrollToPosition();
-        });
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => scrollToPosition(),
+        );
       },
       [],
     );
@@ -60,12 +60,9 @@ class ArticleContentHtml extends HookWidget {
 
   Future<void> _onLinkTap(String? url, context, attrs, element) async {
     if (url != null) {
-      if (await canLaunch(url)) {
-        await launch(
-          url,
-          forceSafariVC: true,
-          forceWebView: true,
-        );
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
       }
     }
   }
@@ -75,7 +72,7 @@ String _makeHtmlContentResponsive(String htmlContent) {
   return '''<!DOCTYPE html>
       <html>
         <head>
-          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
               body {
                 color: #282B35;

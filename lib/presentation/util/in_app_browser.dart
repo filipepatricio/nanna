@@ -37,7 +37,7 @@ Future<void> _openWithCustomTabs(String uri, OpenInAppBrowserErrorCallback? onEr
 
 Future<void> _openWithAnyApp(String uri, OpenInAppBrowserErrorCallback? onError) async {
   try {
-    await url_launcher.launch(uri);
+    await url_launcher.launchUrl(Uri.parse(uri));
   } catch (e, s) {
     onError?.call(e, s);
   }

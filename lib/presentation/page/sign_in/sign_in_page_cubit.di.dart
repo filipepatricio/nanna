@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/auth/auth_exception.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/send_magic_link_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_default_provider_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_linkedin_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_magic_link_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_link_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
@@ -15,20 +16,10 @@ import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
+typedef _SignInFunction = Future<void> Function();
+
 @injectable
 class SignInPageCubit extends Cubit<SignInPageState> {
-  final IsEmailValidUseCase _isEmailValidUseCase;
-  final SendMagicLinkUseCase _sendMagicLinkUseCase;
-  final SignInWithDefaultProviderUseCase _signInWithDefaultProviderUseCase;
-  final SubscribeForMagicLinkTokenUseCase _subscribeForMagicLinkTokenUseCase;
-  final SignInWithMagicLinkTokenUseCase _signInWithMagicLinkTokenUseCase;
-  final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
-  final InitializeFeatureFlagsUseCase _initializeFeatureFlagsUseCase;
-  final InitializeAttributionUseCase _initializeAttributionUseCase;
-
-  StreamSubscription? _magicLinkSubscription;
-  late String _email;
-
   SignInPageCubit(
     this._isEmailValidUseCase,
     this._sendMagicLinkUseCase,
@@ -38,7 +29,21 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     this._isOnboardingSeenUseCase,
     this._initializeFeatureFlagsUseCase,
     this._initializeAttributionUseCase,
+    this._signInWithLinkedinUseCase,
   ) : super(SignInPageState.idle(false));
+
+  final IsEmailValidUseCase _isEmailValidUseCase;
+  final SendMagicLinkUseCase _sendMagicLinkUseCase;
+  final SignInWithDefaultProviderUseCase _signInWithDefaultProviderUseCase;
+  final SubscribeForMagicLinkTokenUseCase _subscribeForMagicLinkTokenUseCase;
+  final SignInWithMagicLinkTokenUseCase _signInWithMagicLinkTokenUseCase;
+  final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
+  final InitializeFeatureFlagsUseCase _initializeFeatureFlagsUseCase;
+  final InitializeAttributionUseCase _initializeAttributionUseCase;
+  final SignInWithLinkedinUseCase _signInWithLinkedinUseCase;
+
+  StreamSubscription? _magicLinkSubscription;
+  late String _email;
 
   @override
   Future<void> close() async {
@@ -50,9 +55,9 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     await _subscribeForMagicLink();
   }
 
-  Future<void> updateEmail(String email) async {
+  void updateEmail(String email) {
     _email = email;
-    final valid = await _isEmailValidUseCase(email);
+    final valid = _isEmailValidUseCase(email);
     emit(SignInPageState.idle(valid));
   }
 
@@ -67,10 +72,32 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     }
   }
 
-  Future<void> signInWithProvider() async {
+  Future<void> signInWithLinkedin() async {
+    emit(SignInPageState.processingLinkedIn());
+    await _signInWithOAuthProvider(_signInWithLinkedinUseCase);
+  }
+
+  Future<void> signInWithPlatformProvider() async {
     emit(SignInPageState.processing());
+    await _signInWithOAuthProvider(_signInWithDefaultProviderUseCase);
+  }
+
+  void closeMagicLinkView() {
+    emit(SignInPageState.idle(true));
+  }
+
+  Future<void> cancelLinkedInSignIn() async {
+    await Future.delayed(const Duration(seconds: 5));
+
+    state.mapOrNull(
+      processingLinkedIn: (_) => emit(SignInPageState.idle(true)),
+    );
+  }
+
+  Future<void> _signInWithOAuthProvider(_SignInFunction signIn) async {
     try {
-      await _signInWithDefaultProviderUseCase();
+      await signIn();
+      emit(SignInPageState.processing());
       await _finishSignIn();
     } on SignInAbortedException {
       // Do nothing
@@ -82,10 +109,6 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     } finally {
       emit(SignInPageState.idle(false));
     }
-  }
-
-  void closeMagicLinkView() {
-    emit(SignInPageState.idle(true));
   }
 
   Future<void> _subscribeForMagicLink() async {

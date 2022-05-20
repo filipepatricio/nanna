@@ -10,13 +10,13 @@ void main() {
   });
 
   test('returns false when response has [null] errors', () async {
-    const response = Response(errors: null);
+    const response = Response(response: {}, errors: null);
 
     expect(validator(response), false);
   });
 
   test('returns false when response has empty error list', () async {
-    const response = Response(errors: []);
+    const response = Response(response: {}, errors: []);
 
     expect(validator(response), false);
   });
@@ -25,6 +25,7 @@ void main() {
     'returns true when response has error extension containing only entry [$unauthenticatedErrorKey] : [$unauthenticatedErrorValue]',
     () async {
       const response = Response(
+        response: {},
         errors: [
           GraphQLError(
             message: 'message',
@@ -43,6 +44,7 @@ void main() {
     'returns true when response has error extension containing entry [$unauthenticatedErrorKey] : [$unauthenticatedErrorValue]',
     () async {
       const response = Response(
+        response: {},
         errors: [
           GraphQLError(
             message: 'message',
@@ -62,6 +64,7 @@ void main() {
     'returns true when response has multiple errors, one of them with extension containing entry [$unauthenticatedErrorKey] : [$unauthenticatedErrorValue]',
     () async {
       const response = Response(
+        response: {},
         errors: [
           GraphQLError(
             message: 'message',
@@ -92,6 +95,7 @@ void main() {
     'returns false when response has error has no extension entry [$unauthenticatedErrorKey] : [$unauthenticatedErrorValue]',
     () async {
       const response = Response(
+        response: {},
         errors: [
           GraphQLError(
             message: 'message',

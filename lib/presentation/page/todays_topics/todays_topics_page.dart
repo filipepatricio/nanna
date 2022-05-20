@@ -101,7 +101,7 @@ class TodaysTopicsPage extends HookWidget {
                         ),
                       ),
                     ),
-                    orElse: () => const SizedBox(),
+                    orElse: () => const SizedBox.shrink(),
                   ),
                   const SliverToBoxAdapter(
                     child: AudioPlayerBannerPlaceholder(),
@@ -138,12 +138,13 @@ class _IdleContent extends HookWidget {
 
     useEffect(
       () {
-        final listener = () {
+        void listener() {
           lastPageAnimationProgressState.value = calculateLastPageShownFactor(
             scrollController,
             AppDimens.todaysTopicCardStackHeight(context),
           );
-        };
+        }
+
         scrollController.addListener(listener);
         return () => scrollController.removeListener(listener);
       },
@@ -250,7 +251,7 @@ class _Greeting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (context.isSmallDevice) return Container();
+    if (context.isSmallDevice) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(

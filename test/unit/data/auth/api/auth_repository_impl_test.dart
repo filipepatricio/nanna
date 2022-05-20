@@ -1,42 +1,31 @@
-import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/auth_repository_impl.di.dart';
-import 'package:better_informed_mobile/data/auth/api/mapper/auth_token_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/auth/api/mapper/login_response_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/auth/api/provider/oauth_sign_in_data_source.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'auth_repository_impl_test.mocks.dart';
+import '../../../../generated_mocks.mocks.dart';
 
-@GenerateMocks(
-  [
-    AuthApiDataSource,
-    OAuthSignInDataSource,
-    AuthTokenDTOMapper,
-    FreshLink,
-    LoginResponseDTOMapper,
-  ],
-)
 void main() {
   late MockAuthApiDataSource authApiDataSource;
-  late MockOAuthSignInDataSource oAuthSignInDataSource;
+  late MockOAuthCredentialProviderDataSource oAuthSignInDataSource;
   late MockFreshLink<OAuth2Token> freshLink;
   late MockLoginResponseDTOMapper loginDtoMapper;
+  late MockLinkedinCredentialDataSource linkedinCredentialDataSource;
   late AuthRepositoryImpl repository;
 
   setUp(() {
     authApiDataSource = MockAuthApiDataSource();
-    oAuthSignInDataSource = MockOAuthSignInDataSource();
+    oAuthSignInDataSource = MockOAuthCredentialProviderDataSource();
     freshLink = MockFreshLink();
     loginDtoMapper = MockLoginResponseDTOMapper();
+    linkedinCredentialDataSource = MockLinkedinCredentialDataSource();
 
     repository = AuthRepositoryImpl(
       authApiDataSource,
       oAuthSignInDataSource,
       freshLink,
       loginDtoMapper,
+      linkedinCredentialDataSource,
     );
   });
 

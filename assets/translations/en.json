@@ -110,7 +110,8 @@
     },
     "providerButton": {
       "apple": "Sign in with Apple",
-      "google": "Sign in with Google"
+      "google": "Sign in with Google",
+      "linkedin": "Sign in with LinkedIn"
     },
     "emailLabel": "Email address",
     "orContinue": "Or continue with",
@@ -143,7 +144,12 @@
     "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
     "loadError": "Something went wrong\n while loading the article",
-    "continueToArticle": "Continue reading"
+    "continueToArticle": "Continue reading",
+    "geoblockedError": {
+      "title": "Content unavailable",
+      "content": "Bummer. The content you requested is not available in your country.",
+      "action": "Okay"
+    }
   },
   "readingList": {
     "title": "Reading list",

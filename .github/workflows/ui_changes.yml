@@ -67,7 +67,7 @@ jobs:
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
 
-      - name: Get glutter dependencies for base branch
+      - name: Get flutter dependencies for base branch
         run: flutter pub get
 
       - name: Generate ui changes report

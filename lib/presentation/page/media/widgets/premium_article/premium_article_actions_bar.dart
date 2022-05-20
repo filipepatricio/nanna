@@ -17,7 +17,6 @@ import 'package:flutter_svg/svg.dart';
 class PremiumArticleActionsBar extends HookWidget {
   const PremiumArticleActionsBar({
     required this.article,
-    required this.fullHeight,
     required this.pageController,
     required this.snackbarController,
     required this.cubit,
@@ -26,7 +25,6 @@ class PremiumArticleActionsBar extends HookWidget {
   }) : super(key: key);
 
   final Article article;
-  final double fullHeight;
   final PageController pageController;
   final SnackbarController snackbarController;
   final MediaItemCubit cubit;
@@ -84,9 +82,10 @@ class PremiumArticleActionsBar extends HookWidget {
     useEffect(
       () {
         if (!hasImage) return () {};
-        final listener = () {
+        void listener() {
           _setButtonColor(backgroundColor, bookmarkMode, buttonColor, pageController);
-        };
+        }
+
         pageController.addListener(listener);
         return () => pageController.removeListener(listener);
       },
@@ -96,7 +95,7 @@ class PremiumArticleActionsBar extends HookWidget {
     useEffect(
       () {
         if (!hasImage) return () {};
-        final listener = () {
+        void listener() {
           final audioMode = articleOutputModeNotifier.value == ArticleOutputMode.audio;
           if (audioMode) {
             backgroundColor.value = AppColors.transparent;
@@ -105,7 +104,8 @@ class PremiumArticleActionsBar extends HookWidget {
           } else {
             _setButtonColor(backgroundColor, bookmarkMode, buttonColor, pageController);
           }
-        };
+        }
+
         articleOutputModeNotifier.addListener(listener);
         return () => articleOutputModeNotifier.removeListener(listener);
       },
@@ -121,7 +121,7 @@ class PremiumArticleActionsBar extends HookWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: AppDimens.l, right: AppDimens.s, top: AppDimens.s),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -129,9 +129,10 @@ class PremiumArticleActionsBar extends HookWidget {
               valueListenable: buttonColor,
               builder: (BuildContext context, Color value, Widget? child) {
                 return IconButton(
-                  icon: const Icon(Icons.close_rounded),
+                  icon: const Icon(Icons.arrow_back_ios_rounded),
+                  iconSize: AppDimens.backArrowSize,
                   color: value,
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   padding: EdgeInsets.zero,
                   onPressed: () => context.popRoute(),
                 );

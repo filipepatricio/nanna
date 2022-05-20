@@ -21,30 +21,36 @@ class MainPage extends HookWidget {
       state.maybeMap(
         tokenExpired: (_) => _onTokenExpiredEvent(context),
         navigate: (navigate) {
-          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-            await closeWebView();
-            _resetNestedRouters();
-            await context.navigateNamedTo(
-              navigate.path,
-              onFailure: (failure) {
-                Fimber.e('Incoming push - navigation failed', ex: failure);
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) async => await closeInAppWebView().then(
+              (_) async {
+                _resetNestedRouters();
+                await context.navigateNamedTo(
+                  navigate.path,
+                  onFailure: (failure) {
+                    Fimber.e('Incoming push - navigation failed', ex: failure);
+                  },
+                );
               },
-            );
-          });
+            ),
+          );
         },
         multiNavigate: (navigate) {
-          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-            await closeWebView();
-            _resetNestedRouters();
-            for (final path in navigate.path) {
-              await context.navigateNamedTo(
-                path,
-                onFailure: (failure) {
-                  Fimber.e('Incoming push - navigation failed', ex: failure);
-                },
-              );
-            }
-          });
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) async => await closeInAppWebView().then(
+              (_) async {
+                _resetNestedRouters();
+                for (final path in navigate.path) {
+                  await context.navigateNamedTo(
+                    path,
+                    onFailure: (failure) {
+                      Fimber.e('Incoming push - navigation failed', ex: failure);
+                    },
+                  );
+                }
+              },
+            ),
+          );
         },
         orElse: () {},
       );

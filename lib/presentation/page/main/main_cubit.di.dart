@@ -79,8 +79,8 @@ class MainCubit extends Cubit<MainState> {
     if (articleIndex != -1) {
       final topicSlug = _findTopicSlug(path);
 
-      final firstPart = const MainPageRoute().path + '/' + uri.pathSegments.take(max(0, articleIndex)).join('/');
-      final secondPart = const MainPageRoute().path + '/' + uri.pathSegments.skip(max(0, articleIndex)).join('/');
+      final firstPart = '${const MainPageRoute().path}/${uri.pathSegments.take(max(0, articleIndex)).join('/')}';
+      final secondPart = '${const MainPageRoute().path}/${uri.pathSegments.skip(max(0, articleIndex)).join('/')}';
 
       if (topicSlug == null) {
         return MainState.multiNavigate([firstPart, secondPart]);

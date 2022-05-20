@@ -48,7 +48,7 @@ class TopicMediaItemsList extends HookWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xl),
             child: Text(
               LocaleKeys.todaysTopics_articlesCount.tr(args: [topic.entries.length.toString()]),
-              style: AppTypography.h2Jakarta,
+              style: AppTypography.h2Regular,
               maxLines: 1,
             ),
           ),
@@ -78,7 +78,7 @@ class TopicMediaItemsList extends HookWidget {
                   ),
                 );
               }
-              return const SizedBox();
+              return const SizedBox.shrink();
             },
           ),
           const SizedBox(height: AppDimens.xl)

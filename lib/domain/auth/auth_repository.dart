@@ -6,6 +6,8 @@ abstract class AuthRepository {
 
   Future<AuthResult> signInWithDefaultProvider();
 
+  Future<AuthResult> signInWithLinkedin();
+
   Future<AuthResult> signInWithMagicLinkToken(String token);
 
   Future<AuthResult> signInWithInviteCode(SignInCredentials credentials, String code);

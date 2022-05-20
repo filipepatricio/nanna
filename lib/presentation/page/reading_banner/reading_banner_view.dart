@@ -27,9 +27,9 @@ class ReadingBannerView extends HookWidget {
     );
 
     return state.maybeMap(
-      notVisible: (state) => const SizedBox(),
+      notVisible: (state) => const SizedBox.shrink(),
       visible: (state) => _ReadingBannerBody(state.readingBanner),
-      orElse: () => const SizedBox(),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }
@@ -76,7 +76,7 @@ class _ReadingBannerBody extends StatelessWidget {
                             image: readingBanner.article.image!,
                             fit: BoxFit.cover,
                           )
-                        : const SizedBox(),
+                        : const SizedBox.shrink(),
                   ),
                   const SizedBox(width: AppDimens.s),
                   Expanded(
