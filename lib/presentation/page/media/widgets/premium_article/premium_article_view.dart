@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit_provider.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
@@ -117,12 +116,11 @@ class PremiumArticleView extends HookWidget {
                   ),
                 ),
                 Positioned(
-                  top: 0,
+                  top: MediaQuery.of(context).padding.top,
                   left: 0,
                   right: 0,
                   child: PremiumArticleActionsBar(
                     article: article,
-                    fullHeight: article.hasImage ? fullHeight : appBarHeight,
                     pageController: pageController,
                     snackbarController: snackbarController,
                     cubit: cubit,
