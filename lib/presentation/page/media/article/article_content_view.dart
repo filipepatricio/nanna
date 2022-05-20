@@ -34,6 +34,7 @@ class ArticleContentView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        SizedBox(height: MediaQuery.of(context).padding.top),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: _ArticleHeader(article: article.metadata),
