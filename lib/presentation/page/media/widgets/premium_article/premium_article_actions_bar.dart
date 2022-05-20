@@ -121,7 +121,11 @@ class PremiumArticleActionsBar extends HookWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+        padding: EdgeInsets.only(
+          left: AppDimens.s,
+          right: AppDimens.s,
+          top: MediaQuery.of(context).padding.top,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

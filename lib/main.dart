@@ -50,17 +50,21 @@ Future<void> main() async {
         return event;
       }
       ..dsn = (kDebugMode || kProfileMode) ? '' : appConfig.sentryEventDns
+      ..tracesSampleRate = 0.2
       ..environment = environment,
     appRunner: () => runApp(
-      EasyLocalization(
-        path: 'assets/translations',
-        supportedLocales: availableLocales.values.toList(),
-        fallbackLocale: availableLocales[fallbackLanguageCode],
-        useOnlyLangCode: true,
-        saveLocale: true,
-        child: InformedApp(
-          mainRouter: mainRouter,
-          getIt: getIt,
+      DefaultAssetBundle(
+        bundle: SentryAssetBundle(),
+        child: EasyLocalization(
+          path: 'assets/translations',
+          supportedLocales: availableLocales.values.toList(),
+          fallbackLocale: availableLocales[fallbackLanguageCode],
+          useOnlyLangCode: true,
+          saveLocale: true,
+          child: InformedApp(
+            mainRouter: mainRouter,
+            getIt: getIt,
+          ),
         ),
       ),
     ),

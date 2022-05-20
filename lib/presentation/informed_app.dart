@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class InformedApp extends HookWidget {
   const InformedApp({
@@ -49,7 +50,10 @@ class InformedApp extends HookWidget {
         locale: context.locale,
         routeInformationParser: mainRouter.defaultRouteParser(),
         routerDelegate: mainRouter.delegate(
-          navigatorObservers: () => [getIt<MainNavigationObserver>()],
+          navigatorObservers: () => [
+            getIt<MainNavigationObserver>(),
+            SentryNavigatorObserver(),
+          ],
         ),
         theme: AppTheme.mainTheme,
         builder: (context, child) {
