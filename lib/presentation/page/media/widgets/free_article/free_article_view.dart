@@ -9,8 +9,6 @@ import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookm
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:fimber/fimber.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -83,9 +81,6 @@ class FreeArticleView extends HookWidget {
             InAppWebView(
               initialOptions: webViewOptions,
               initialUrlRequest: URLRequest(url: Uri.parse(article.sourceUrl)),
-              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                Factory(() => EagerGestureRecognizer()),
-              },
               onProgressChanged: (_, progress) {
                 pageLoadingProgress.value = progress == 100 ? 0.0 : progress / 100;
               },
