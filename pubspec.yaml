@@ -57,7 +57,7 @@ dependencies:
   progressive_image: 2.0.0
   jiffy: 5.0.0
   flutter_html: 2.2.1
-  flutter_segment: 3.7.0
+  flutter_segment: 3.3.0
   fluttertoast: 8.0.9
   flutter_email_sender: 5.1.0
   share_plus: 4.0.4

@@ -23,5 +23,8 @@ class MediaItemState with _$MediaItemState {
   const factory MediaItemState.error(MediaItemArticle article) = _MediaItemStateError;
 
   @Implements<BuildState>()
+  const factory MediaItemState.geoblocked() = _MediaItemStateGeoblocked;
+
+  @Implements<BuildState>()
   const factory MediaItemState.emptyError() = _MediaItemStateEmptyError;
 }

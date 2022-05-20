@@ -87,7 +87,7 @@ jobs:
           GOOGLE_PLAY_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_CREDENTIALS }}
 
       - name: Upload appbundle to internal testing
-        uses: maierj/fastlane-action@v2.1.0
+        uses: maierj/fastlane-action@v2.2.0
         with:
           lane: 'internal_play_store'
           subdirectory: android
@@ -144,7 +144,7 @@ jobs:
         run: flutter build ios --config-only --release --no-codesign --dart-define=env=prod --flavor prod --build-name="1.${{ env.MINOR_VERSION_NUMBER }}.0" --build-number="$BUILD_NUMBER" --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
-        uses: maierj/fastlane-action@v2.1.0
+        uses: maierj/fastlane-action@v2.2.0
         with:
           lane: 'closed_beta'
           subdirectory: ios

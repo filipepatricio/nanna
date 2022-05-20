@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
+import 'package:better_informed_mobile/domain/article/exception/article_geoblocked_exception.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_header_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.di.dart';
@@ -120,6 +121,8 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     try {
       _currentFullArticle = await _getArticleUseCase(article);
       _showIdlePremiumOrErrorState();
+    } on ArticleGeoblockedException {
+      emit(const MediaItemState.geoblocked());
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
       emit(MediaItemState.error(_currentArticle));
