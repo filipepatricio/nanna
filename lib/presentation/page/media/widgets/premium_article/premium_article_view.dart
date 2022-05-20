@@ -116,7 +116,7 @@ class PremiumArticleView extends HookWidget {
                   ),
                 ),
                 Positioned(
-                  top: MediaQuery.of(context).padding.top,
+                  top: 0,
                   left: 0,
                   right: 0,
                   child: PremiumArticleActionsBar(
