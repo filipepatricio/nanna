@@ -287,3 +287,15 @@ So, until this is automated, the steps to achieve this are:
 5. If there are any differences, the folder `test/visual/failures` will be created, with the before/after files, and the isolated and combine differences
 
 More functionality to come for this feature!
+
+## Performance Monitoring
+
+We are using Sentry to monitor app's performance online. 2 fronts:
+
+1. Navigation performance, with the `SentryNavigatorObserver` - how long it takes for screens to load - dropped frames rate - frozen frames rate.
+   Check out https://docs.sentry.io/platforms/flutter/performance/instrumentation/automatic-instrumentation/#routing-instrumentation
+2. Asset loading performance, with `SentryAssetBundle` - basically how it takes to load all of app's asset files. Soon to come, how long it takes to serialize all static structured data
+   Check out https://docs.sentry.io/platforms/flutter/performance/instrumentation/automatic-instrumentation/#assetbundle-instrumentation
+
+The `tracesSampleRate` property in `SentryFlutterOptions` sets the % of transactions that will be saved and sent back to Sentry. Sending 100% of them is not sensible because such traffic volume impacts performance, the recommended rate is 0.2.
+Check out https://docs.sentry.io/platforms/flutter/performance/#configure-the-sample-rate
