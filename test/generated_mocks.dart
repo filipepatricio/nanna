@@ -13,6 +13,9 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_map
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
+import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
+import 'package:better_informed_mobile/domain/release_notes/release_notes_remote_repository.dart';
+import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:mockito/annotations.dart';
 
@@ -33,6 +36,9 @@ const _classes = [
   AuthTokenDTOMapper,
   FreshLink,
   LoginResponseDTOMapper,
+  ReleaseNotesRemoteRepository,
+  ReleaseNotesLocalRepository,
+  AppInfoRepository,
 ];
 
 @GenerateMocks(_classes)
