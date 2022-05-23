@@ -58,7 +58,7 @@ class TodaysTopicsPage extends HookWidget {
     return Scaffold(
       body: TabBarListener(
         currentPage: context.routeData,
-        controller: scrollController,
+        scrollController: scrollController,
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
           child: RefreshIndicator(

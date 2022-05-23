@@ -83,7 +83,7 @@ class ExplorePage extends HookWidget {
 
     return Scaffold(
       body: TabBarListener(
-        controller: scrollController,
+        scrollController: scrollController,
         currentPage: context.routeData,
         child: ReadingBannerWrapper(
           child: AnnotatedRegion<SystemUiOverlayStyle>(
