@@ -9,8 +9,6 @@ import 'package:better_informed_mobile/domain/auth/data/sign_in_credentials.dart
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-const _noMemberAccessErrorCode = 'no_beta_access';
-
 @LazySingleton(as: AuthApiDataSource, env: liveEnvs)
 class AuthGraphqlDataSource implements AuthApiDataSource {
   final GraphQLClient _client;
@@ -84,10 +82,6 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
   }
 
   Object _resolveSignInError(String? errorCode, SignInCredentials credentials) {
-    if (errorCode == _noMemberAccessErrorCode) {
-      return AuthException.noMemberAccess(credentials);
-    }
-
     return AuthException.unknown();
   }
 }

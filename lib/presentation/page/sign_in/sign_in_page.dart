@@ -47,11 +47,6 @@ class SignInPage extends HookWidget {
             if (!state.isOnboardingSeen) const OnboardingPageRoute() else const MainPageRoute(),
           ],
         ),
-        noMemberAccess: (state) {
-          context.pushRoute(
-            NoMemberAccessPageRoute(credentials: state.credentials),
-          );
-        },
         generalError: (_) {
           snackbarController.showMessage(
             SnackbarMessage.simple(
