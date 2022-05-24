@@ -96,7 +96,6 @@
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
     "wrongEmailInput": "Wrong email input",
-    "inviteFriend": "Invite a friend",
     "feedbackButton": "Give feedback",
     "feedbackSubject": "Feedback on Informed App",
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
@@ -211,31 +210,6 @@
     "asImage": "Share quote as image",
     "asText": "Share quote as text",
     "asStory": "Share quote as story"
-  },
-  "noMemberAccessPage": {
-    "headline": "Almost done! Please enter your invite code below to get started",
-    "invalidCode": "Ooops, looks like the invite code is not valid!",
-    "infoParts": {
-      "0": "No code? Not a problem! If you are already a member, then just reach out ",
-      "1": "feedback@informed.so ",
-      "2": "or ",
-      "3": "request an invite"
-    },
-    "yourInviteCode": "Your invite code",
-    "email": {
-      "subject": "I'm already a member",
-      "body": "Hi team at informed,\nI am already a member, can you please check and give me access?\nThanks!"
-    },
-    "emailCopied": "Successfuly copied email to your clipboard!"
-  },
-  "inviteFriend": {
-    "title": "Invite a friend",
-    "header": "Invite your friends",
-    "content": "Share the code below with {} of your friends or ask them to enter it during the login",
-    "inviteAction": "Invite a Friend",
-    "usage": "{} of {} invites have been used",
-    "shareText": "Hey, here is my special code {} to skip the line and use informed right away! {}",
-    "codeCopied": "Successfuly copied code to your clipboard!"
   },
   "bookmark": {
     "bookmarkSuccess": "👍  Saved to your Profile",

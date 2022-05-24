@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/auth/data/sign_in_credentials.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -21,6 +20,4 @@ class SignInPageState with _$SignInPageState {
   factory SignInPageState.success(bool isOnboardingSeen) = _SignInPageStateSuccess;
 
   factory SignInPageState.generalError() = _SignInPageStateGeneralError;
-
-  factory SignInPageState.noMemberAccess(SignInCredentials credentials) = _SignInPageStateNoMemberAccess;
 }

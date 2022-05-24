@@ -146,7 +146,6 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   void _resolveAuthException(AuthException authException, [String? magicLinkToken]) {
     authException.map(
-      noMemberAccess: (state) => emit(SignInPageState.noMemberAccess(state.credentials)),
       unknown: (_) => emit(SignInPageState.generalError()),
     );
   }

@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page.dart';
-import 'package:better_informed_mobile/presentation/page/invite_friend/invite_friend_page.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page.dart';
@@ -13,7 +12,6 @@ import 'package:better_informed_mobile/presentation/page/profile/profile_page.da
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
-import 'package:better_informed_mobile/presentation/page/sign_in/no_member_access/no_member_access_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page.dart';
@@ -35,13 +33,11 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
 @AdaptiveAutoRouter(
   routes: [
     CustomRoute(page: EntryPage, initial: true, customRouteBuilder: fadePageRouteBuilder),
-    AutoRoute(page: NoMemberAccessPage),
     AutoRoute(page: OnboardingPage),
     AutoRoute(page: SignInPage),
     AutoRoute(page: SettingsMainPage),
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
-    AutoRoute(page: InviteFriendPage),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
     CustomRoute(
