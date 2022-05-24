@@ -173,6 +173,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle subtitle1Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 16,
+    height: 1.5,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle subH1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,

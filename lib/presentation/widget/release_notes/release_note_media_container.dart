@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/release_notes/data/release_note.dart';
 import 'package:better_informed_mobile/domain/release_notes/data/release_note_media.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +26,7 @@ class ReleaseNoteMediaContainer extends HookWidget {
     final controller = usePageController();
 
     return Stack(
+      fit: StackFit.expand,
       children: [
         if (releaseNote.hasMultipleMedia)
           _MultiMediaContainer(
@@ -82,11 +86,32 @@ class _MediaView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return media.map(
-      image: (media) => Image.network(
-        media.url,
-        fit: BoxFit.cover,
-      ),
+      image: (media) => _Image(url: media.url),
       video: (media) => _VideoContainer(videoUrl: media.url),
+    );
+  }
+}
+
+class _Image extends StatelessWidget {
+  const _Image({
+    required this.url,
+    Key? key,
+  }) : super(key: key);
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    if (kIsTest) {
+      return Image.asset(
+        AppRasterGraphics.testTopicHeroImage,
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
     );
   }
 }
@@ -113,9 +138,7 @@ class _VideoContainer extends HookWidget {
     return ValueListenableBuilder<VideoPlayerValue>(
       valueListenable: videoController,
       builder: (context, controller, view) {
-        return controller.isInitialized
-            ? _Video(videoController: videoController)
-            : const Center(child: CircularProgressIndicator());
+        return controller.isInitialized ? _Video(videoController: videoController) : const Center(child: Loader());
       },
     );
   }

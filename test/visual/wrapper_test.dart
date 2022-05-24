@@ -10,6 +10,7 @@ import 'tests/profile_page_visual_test.dart' as profile_page_visual_test;
 import 'tests/quote_background_view_visual_test.dart' as quote_background_view_visual_test;
 import 'tests/quote_editor_view_visual_test.dart' as quote_editor_view_visual_test;
 import 'tests/quote_foreground_view_visual_test.dart' as quote_foreground_view_visual_test;
+import 'tests/release_note_popup_visual_test.dart' as release_note_popup_visual_test;
 import 'tests/settings_account_page_visual_test.dart' as settings_account_page_visual_test;
 import 'tests/settings_main_page_visual_test.dart' as settings_main_page_visual_test;
 import 'tests/settings_notifications_page_visual_test.dart' as settings_notifications_page_visual_test;
@@ -48,4 +49,5 @@ void main() {
   group('topic_owner_page_visual_test', topic_owner_page_visual_test.main);
   group('topic_page_visual_test', topic_page_visual_test.main);
   group('topics_see_all_page_visual_test', topics_see_all_page_visual_test.main);
+  group('release_note_popup_visual_test', release_note_popup_visual_test.main);
 }

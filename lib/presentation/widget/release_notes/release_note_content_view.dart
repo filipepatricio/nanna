@@ -3,10 +3,10 @@ import 'package:better_informed_mobile/domain/release_notes/data/release_note.da
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
-import 'package:better_informed_mobile/presentation/util/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -73,12 +73,12 @@ class ReleaseNoteContentView extends StatelessWidget {
               ],
             ],
           ),
-          const SizedBox(height: AppDimens.l),
+          if (context.isSmallDevice) const SizedBox(height: AppDimens.s) else const SizedBox(height: AppDimens.l),
           Text(
             releaseNote.headline,
-            style: AppTypography.h5Bold,
+            style: context.isSmallDevice ? AppTypography.subtitle1Bold : AppTypography.h5Bold,
           ),
-          const SizedBox(height: AppDimens.l),
+          if (context.isSmallDevice) const SizedBox(height: AppDimens.zero) else const SizedBox(height: AppDimens.l),
           Text(
             releaseNote.content,
             style: AppTypography.b1Medium,

@@ -19,6 +19,8 @@ import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_dto.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
+import 'package:better_informed_mobile/data/release_notes/dto/release_note_dto.dt.dart';
+import 'package:better_informed_mobile/data/release_notes/dto/release_note_media_dto.dt.dart';
 import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
@@ -39,6 +41,41 @@ const _mockedPillIcon = '''
 /// And as a source for TestData getters - see test/test_data.dart
 class MockDTO {
   const MockDTO._();
+
+  /// Release notes
+  ///
+  static final noMediaReleaseNote = ReleaseNoteDTO(
+    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+    date: '2022-05-20',
+    media: [],
+    version: '1.0.0',
+  );
+
+  static final singleMediaReleaseNote = ReleaseNoteDTO(
+    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+    date: '2022-05-20',
+    media: [
+      ReleaseNoteMediaDTO.png('png', 'www.image.com'),
+    ],
+    version: '1.0.1',
+  );
+
+  static final multipleMediaReleaseNote = ReleaseNoteDTO(
+    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+    date: '2022-05-20',
+    media: [
+      ReleaseNoteMediaDTO.png('png', 'www.image.com'),
+      ReleaseNoteMediaDTO.png('png', 'www.image.com'),
+      ReleaseNoteMediaDTO.png('png', 'www.image.com'),
+    ],
+    version: '1.0.2',
+  );
 
   /// Settings
 

@@ -24,7 +24,7 @@ class GetCurrentReleaseNoteUseCase {
       final releaseNote = await _releaseNotesRemoteRepository.getReleaseNote(appVersion);
 
       if (releaseNote != null) {
-        _releaseNotesLocalRepository.saveVersion(appVersion);
+        await _releaseNotesLocalRepository.saveVersion(appVersion);
       }
 
       return releaseNote;
