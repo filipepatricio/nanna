@@ -61,13 +61,13 @@ class TabBarListener extends HookWidget {
   ///
   /// Set [activeTab] to implement scrolling to top when on a tab's base page
   const TabBarListener({
-    required this.controller,
+    required this.scrollController,
     required this.currentPage,
     required this.child,
     Key? key,
   }) : super(key: key);
 
-  final ScrollController controller;
+  final ScrollController scrollController;
   final RouteData currentPage;
   final Widget child;
 
@@ -83,12 +83,12 @@ class TabBarListener extends HookWidget {
           state.maybeWhen(
             tabPressed: (tab) {
               if (currentPage.isActive && tab == MainTabExtension.fromIndex(context.tabsRouter.activeIndex)) {
-                controller.animateToStart();
+                scrollController.animateToStart();
               }
             },
             scrollToTop: () {
               if (currentPage.isActive) {
-                controller.animateToStart();
+                scrollController.animateToStart();
               }
             },
             orElse: () {},

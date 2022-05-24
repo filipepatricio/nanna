@@ -24,10 +24,12 @@ class BookmarkListView extends HookWidget {
     required this.filter,
     required this.sortConfigName,
     required this.onSortConfigChanged,
+    required this.scrollController,
     Key? key,
   })  : sortConfig = bookmarkConfigMap[sortConfigName]!,
         super(key: key);
 
+  final ScrollController scrollController;
   final BookmarkFilter filter;
   final BookmarkSortConfigName sortConfigName;
   final BookmarkSortConfig sortConfig;
@@ -43,7 +45,6 @@ class BookmarkListView extends HookWidget {
     );
     final state = useCubitBuilder(cubit);
 
-    final scrollController = useScrollController();
     final snackbarController = useMemoized(() => SnackbarController());
 
     useCubitListener<BookmarkListViewCubit, BookmarkListViewState>(cubit, (cubit, state, context) {
