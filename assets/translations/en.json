@@ -96,7 +96,6 @@
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
     "wrongEmailInput": "Wrong email input",
-    "inviteFriend": "Invite a friend",
     "feedbackButton": "Give feedback",
     "feedbackSubject": "Feedback on Informed App",
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
@@ -211,15 +210,6 @@
     "asImage": "Share quote as image",
     "asText": "Share quote as text",
     "asStory": "Share quote as story"
-  },
-  "inviteFriend": {
-    "title": "Invite a friend",
-    "header": "Invite your friends",
-    "content": "Share the code below with {} of your friends or ask them to enter it during the login",
-    "inviteAction": "Invite a Friend",
-    "usage": "{} of {} invites have been used",
-    "shareText": "Hey, here is my special code {} to skip the line and use informed right away! {}",
-    "codeCopied": "Successfuly copied code to your clipboard!"
   },
   "bookmark": {
     "bookmarkSuccess": "👍  Saved to your Profile",
