@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/release_notes/data/release_note.da
 import 'package:better_informed_mobile/domain/release_notes/data/release_note_media.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
@@ -25,35 +26,48 @@ class ReleaseNoteMediaContainer extends HookWidget {
   Widget build(BuildContext context) {
     final controller = usePageController();
 
-    return Stack(
-      fit: StackFit.expand,
+    return Column(
       children: [
-        if (releaseNote.hasMultipleMedia)
-          _MultiMediaContainer(
-            releaseNote: releaseNote,
-            pageController: controller,
-          )
-        else
-          _MediaView(media: releaseNote.media.first),
-        Align(
-          alignment: Alignment.topRight,
-          child: IconButton(
-            icon: SvgPicture.asset(AppVectorGraphics.close),
-            onPressed: () => context.popRoute(),
+        Expanded(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              if (releaseNote.hasMultipleMedia)
+                _MultiMediaContainer(
+                  releaseNote: releaseNote,
+                  pageController: controller,
+                )
+              else
+                _MediaView(media: releaseNote.media.first),
+              Positioned(
+                top: AppDimens.m,
+                right: AppDimens.m,
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: SvgPicture.asset(AppVectorGraphics.close),
+                    onPressed: () => context.popRoute(),
+                    padding: const EdgeInsets.all(AppDimens.xs),
+                    constraints: const BoxConstraints(),
+                    splashRadius: AppDimens.l,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        if (releaseNote.hasMultipleMedia)
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: AppDimens.m,
-            child: Center(
-              child: PageDotIndicator(
-                controller: controller,
-                pageCount: releaseNote.media.length,
-              ),
+        if (releaseNote.hasMultipleMedia) ...[
+          const SizedBox(height: AppDimens.m),
+          Center(
+            child: PageDotIndicator(
+              controller: controller,
+              pageCount: releaseNote.media.length,
             ),
           ),
+        ]
       ],
     );
   }

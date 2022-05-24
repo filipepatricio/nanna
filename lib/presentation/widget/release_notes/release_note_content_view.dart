@@ -54,10 +54,11 @@ class ReleaseNoteContentView extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Text(
-                DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
-                style: AppTypography.b2MediumLora.copyWith(color: AppColors.textGrey),
-              ),
+              if (context.isNotSmallDevice)
+                Text(
+                  DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
+                  style: AppTypography.b2MediumLora.copyWith(color: AppColors.textGrey),
+                ),
               if (showCloseButton) ...[
                 const SizedBox(width: AppDimens.m),
                 IconButton(
@@ -73,12 +74,19 @@ class ReleaseNoteContentView extends StatelessWidget {
               ],
             ],
           ),
-          if (context.isSmallDevice) const SizedBox(height: AppDimens.s) else const SizedBox(height: AppDimens.l),
+          if (context.isSmallDevice) ...[
+            const SizedBox(height: AppDimens.m),
+            Text(
+              DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
+              style: AppTypography.b2MediumLora.copyWith(color: AppColors.textGrey),
+            ),
+          ],
+          if (context.isSmallDevice) const SizedBox(height: AppDimens.s) else const SizedBox(height: AppDimens.m),
           Text(
             releaseNote.headline,
             style: context.isSmallDevice ? AppTypography.subtitle1Bold : AppTypography.h5Bold,
           ),
-          if (context.isSmallDevice) const SizedBox(height: AppDimens.zero) else const SizedBox(height: AppDimens.l),
+          if (context.isSmallDevice) const SizedBox(height: AppDimens.zero) else const SizedBox(height: AppDimens.s),
           Text(
             releaseNote.content,
             style: AppTypography.b1Medium,
