@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/domain/deep_link/use_case/subscribe_for_d
 import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_navigation_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/maybe_register_push_notification_token_use_case.di.dart';
+import 'package:better_informed_mobile/domain/release_notes/use_case/get_current_release_note_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
@@ -16,21 +17,23 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class MainCubit extends Cubit<MainState> {
-  final GetTokenExpirationStreamUseCase _getTokenExpirationStreamUseCase;
-  final MaybeRegisterPushNotificationTokenUseCase _maybeRegisterPushNotificationTokenUseCase;
-  final IncomingPushNavigationStreamUseCase _incomingPushNavigationStreamUseCase;
-  final SubscribeForDeepLinkUseCase _subscribeForDeepLinkUseCase;
-
-  StreamSubscription? _incomingPushNavigationSubscription;
-  StreamSubscription? _tokenExpirationSubscription;
-  StreamSubscription? _deepLinkSubscription;
-
   MainCubit(
     this._getTokenExpirationStreamUseCase,
     this._maybeRegisterPushNotificationTokenUseCase,
     this._incomingPushNavigationStreamUseCase,
     this._subscribeForDeepLinkUseCase,
+    this._getCurrentReleaseNoteUseCase,
   ) : super(const MainState.init());
+
+  final GetTokenExpirationStreamUseCase _getTokenExpirationStreamUseCase;
+  final MaybeRegisterPushNotificationTokenUseCase _maybeRegisterPushNotificationTokenUseCase;
+  final IncomingPushNavigationStreamUseCase _incomingPushNavigationStreamUseCase;
+  final SubscribeForDeepLinkUseCase _subscribeForDeepLinkUseCase;
+  final GetCurrentReleaseNoteUseCase _getCurrentReleaseNoteUseCase;
+
+  StreamSubscription? _incomingPushNavigationSubscription;
+  StreamSubscription? _tokenExpirationSubscription;
+  StreamSubscription? _deepLinkSubscription;
 
   @override
   Future<void> close() async {
@@ -47,7 +50,6 @@ class MainCubit extends Cubit<MainState> {
     });
 
     _subscribeToPushNavigationStream();
-
     _subscribeToDeepLinkStream();
 
     try {
@@ -55,6 +57,8 @@ class MainCubit extends Cubit<MainState> {
     } catch (e, s) {
       Fimber.e('Push token registration failed', ex: e, stacktrace: s);
     }
+
+    await _getReleaseNote();
   }
 
   void _subscribeToPushNavigationStream() {
@@ -69,6 +73,18 @@ class MainCubit extends Cubit<MainState> {
       emit(_handleNavigationAction(path));
       emit(const MainState.init());
     });
+  }
+
+  Future<void> _getReleaseNote() async {
+    try {
+      final releaseNote = await _getCurrentReleaseNoteUseCase();
+      if (releaseNote != null) {
+        emit(MainState.showReleaseNote(releaseNote));
+        emit(const MainState.init());
+      }
+    } catch (e, s) {
+      Fimber.e('Getting release note failed', ex: e, stacktrace: s);
+    }
   }
 
   MainState _handleNavigationAction(String path) {

@@ -6,8 +6,8 @@ class ReleaseNotesGraphql {
 
   static DocumentNode getReleaseNotes(String version) => gql(
         '''
-        query getReleaseNotes($version: String!) {
-          releaseNote(filter: {version: {eq: $version}}) {
+        query {
+          releaseNote(filter: {version: {eq:"$version"}}) {
             headline
             date
             content

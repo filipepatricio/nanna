@@ -236,5 +236,8 @@
       "deny": "No, keep current",
       "approve": "Yes, switch"
     }
+  },
+  "releaseNotes": {
+    "updateLabel": "Product Updates"
   }
 }
