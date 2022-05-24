@@ -37,4 +37,16 @@ class DateFormatUtil {
   static String dateTimeFromNow(DateTime dateTime) {
     return Jiffy(dateTime).fromNow();
   }
+
+  static String timezoneOffset() {
+    final dateTime = DateTime.now();
+    final offset = dateTime.timeZoneOffset;
+    final hours = offset.inHours > 0 ? offset.inHours : 1; // For fixing divide by 0
+
+    if (!offset.isNegative) {
+      return "+${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
+    } else {
+      return "-${(-offset.inHours).toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
+    }
+  }
 }
