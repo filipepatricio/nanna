@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
@@ -29,8 +30,10 @@ final List<Widget> _pageList = [
     description: LocaleKeys.onboarding_descriptionSlideTwo.tr(),
     imageAsset: AppVectorGraphics.onboardingSlideTwo,
   ),
-  const OnboardingNotificationsSlide(),
-  const OnboardingTrackingSlide(),
+  if (kIsAppleDevice) ...[
+    const OnboardingNotificationsSlide(),
+    const OnboardingTrackingSlide(),
+  ]
 ];
 
 const _notificationSlide = 2;
