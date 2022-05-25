@@ -31,13 +31,13 @@ class RelaxView extends HookWidget {
       margin: const EdgeInsets.only(
         left: AppDimens.l,
         right: AppDimens.l,
-        bottom: AppDimens.xxl,
+        bottom: AppDimens.xxxc + AppDimens.xxl,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.m),
         color: AppColors.darkLinen,
       ),
-      height: AppDimens.todaysTopicCardStackHeight(context),
+      height: AppDimens.todaysTopicCardStackHeight,
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

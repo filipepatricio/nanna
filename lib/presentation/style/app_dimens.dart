@@ -103,11 +103,8 @@ class AppDimens {
   static double todaysTopicCardSectionHeight(BuildContext context) =>
       min(MediaQuery.of(context).size.height * 0.85, 575);
 
-  /// The smallest value from 70% of screen height and 400
-  static double todaysTopicCardStackHeight(BuildContext context) => min(
-        MediaQuery.of(context).size.height * 0.7,
-        400,
-      );
+  /// 350.0
+  static const todaysTopicCardStackHeight = 350.0;
 
   /// 0.4
   static const exploreTopicCarousellSmallCoverWidthFactor = 0.4;

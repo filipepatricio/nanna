@@ -18,9 +18,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/scrollable_sliver_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_random_variant_builder.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +33,7 @@ class TodaysTopicsPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
-    final cardStackHeight = AppDimens.todaysTopicCardStackHeight(context);
+    const cardStackHeight = AppDimens.todaysTopicCardStackHeight;
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
@@ -140,39 +137,34 @@ class _IdleContent extends HookWidget {
         _Greeting(
           greeting: currentBrief.greeting,
         ),
-        StackedCardsRandomVariantBuilder<StackedCardsVariant>(
-          variants: StackedCardsVariant.values,
-          count: currentBrief.topics.length,
-          canNeighboursRepeat: false,
-          builder: (variants) => SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final currentTopic = currentBrief.topics[index];
-                return ViewVisibilityNotifier(
-                  detectorKey: Key(currentTopic.id),
-                  onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, index),
-                  borderFraction: 0.6,
-                  child: Column(
-                    children: [
-                      StackedCards.variant(
-                        variant: variants[index],
-                        coverSize: Size(cardStackWidth, cardStackHeight),
-                        child: TopicCover.large(
-                          topic: currentTopic.asPreview,
-                          onTap: () => _onTopicCardPressed(
-                            context,
-                            index,
-                            currentBrief,
-                          ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              final currentTopic = currentBrief.topics[index];
+              return ViewVisibilityNotifier(
+                detectorKey: Key(currentTopic.id),
+                onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, index),
+                borderFraction: 0.6,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: cardStackHeight,
+                      width: cardStackWidth,
+                      child: TopicCover.large(
+                        topic: currentTopic.asPreview,
+                        onTap: () => _onTopicCardPressed(
+                          context,
+                          index,
+                          currentBrief,
                         ),
                       ),
-                      const SizedBox(height: AppDimens.xxxl),
-                    ],
-                  ),
-                );
-              },
-              childCount: currentBrief.topics.length,
-            ),
+                    ),
+                    const SizedBox(height: AppDimens.l),
+                  ],
+                ),
+              );
+            },
+            childCount: currentBrief.topics.length,
           ),
         ),
         _RelaxSection(
