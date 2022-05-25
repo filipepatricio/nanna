@@ -97,11 +97,12 @@ class TopicCover extends HookWidget {
                           borderRadius: AppDimens.s,
                         ),
                       ),
-                      Positioned(
-                        top: AppDimens.m,
-                        left: AppDimens.m,
-                        child: CoverLabel.topic(topic: topic),
-                      ),
+                      if (type == TopicCoverType.large)
+                        Positioned(
+                          top: AppDimens.m,
+                          left: AppDimens.m,
+                          child: CoverLabel.topic(topic: topic),
+                        ),
                     ],
                   ),
                   TopicCoverContent(
