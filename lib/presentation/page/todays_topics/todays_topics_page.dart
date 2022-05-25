@@ -25,6 +25,7 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cov
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class TodaysTopicsPage extends HookWidget {
   const TodaysTopicsPage({Key? key}) : super(key: key);
@@ -134,72 +135,51 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lastPageAnimationProgressState = useMemoized(() => ValueNotifier(0.0));
-
-    useEffect(
-      () {
-        void listener() {
-          lastPageAnimationProgressState.value = calculateLastPageShownFactor(
-            scrollController,
-            AppDimens.todaysTopicCardStackHeight(context),
-          );
-        }
-
-        scrollController.addListener(listener);
-        return () => scrollController.removeListener(listener);
-      },
-      [scrollController],
-    );
-
-    return StackedCardsRandomVariantBuilder<StackedCardsVariant>(
-      variants: StackedCardsVariant.values,
-      count: currentBrief.topics.length,
-      canNeighboursRepeat: false,
-      builder: (variants) => SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            if (index == 0) {
-              return _Greeting(
-                greeting: currentBrief.greeting,
-              );
-            }
-
-            if (index == currentBrief.topics.length + 1) {
-              return _RelaxSection(
-                onVisible: todaysTopicsCubit.trackRelaxPage,
-                goodbyeHeadline: currentBrief.goodbye,
-                lastPageAnimationProgressState: lastPageAnimationProgressState,
-              );
-            }
-
-            final currentTopicIndex = index - 1;
-            final currentTopic = currentBrief.topics[currentTopicIndex];
-            return ViewVisibilityNotifier(
-              detectorKey: Key(currentTopic.id),
-              onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, currentTopicIndex + 1),
-              borderFraction: 0.6,
-              child: Column(
-                children: [
-                  StackedCards.variant(
-                    variant: variants[currentTopicIndex],
-                    coverSize: Size(cardStackWidth, cardStackHeight),
-                    child: TopicCover.large(
-                      topic: currentTopic.asPreview,
-                      onTap: () => _onTopicCardPressed(
-                        context,
-                        currentTopicIndex,
-                        currentBrief,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppDimens.xxxl),
-                ],
-              ),
-            );
-          },
-          childCount: currentBrief.topics.length + 2,
+    return MultiSliver(
+      children: [
+        _Greeting(
+          greeting: currentBrief.greeting,
         ),
-      ),
+        StackedCardsRandomVariantBuilder<StackedCardsVariant>(
+          variants: StackedCardsVariant.values,
+          count: currentBrief.topics.length,
+          canNeighboursRepeat: false,
+          builder: (variants) => SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                final currentTopic = currentBrief.topics[index];
+                return ViewVisibilityNotifier(
+                  detectorKey: Key(currentTopic.id),
+                  onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, index),
+                  borderFraction: 0.6,
+                  child: Column(
+                    children: [
+                      StackedCards.variant(
+                        variant: variants[index],
+                        coverSize: Size(cardStackWidth, cardStackHeight),
+                        child: TopicCover.large(
+                          topic: currentTopic.asPreview,
+                          onTap: () => _onTopicCardPressed(
+                            context,
+                            index,
+                            currentBrief,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: AppDimens.xxxl),
+                    ],
+                  ),
+                );
+              },
+              childCount: currentBrief.topics.length,
+            ),
+          ),
+        ),
+        _RelaxSection(
+          onVisible: todaysTopicsCubit.trackRelaxPage,
+          goodbyeHeadline: currentBrief.goodbye,
+        ),
+      ],
     );
   }
 
@@ -217,7 +197,6 @@ class _IdleContent extends HookWidget {
 class _RelaxSection extends StatelessWidget {
   const _RelaxSection({
     required this.onVisible,
-    required this.lastPageAnimationProgressState,
     required this.goodbyeHeadline,
     Key? key,
   }) : super(key: key);
@@ -225,7 +204,6 @@ class _RelaxSection extends StatelessWidget {
   static const String relaxSectionKey = 'kRelaxSectionKey';
   final VoidCallback onVisible;
   final Headline goodbyeHeadline;
-  final ValueNotifier<double> lastPageAnimationProgressState;
 
   @override
   Widget build(BuildContext context) {
@@ -234,7 +212,6 @@ class _RelaxSection extends StatelessWidget {
       onVisible: onVisible,
       borderFraction: 0.6,
       child: RelaxView(
-        lastPageAnimationProgressState: lastPageAnimationProgressState,
         goodbyeHeadline: goodbyeHeadline,
       ),
     );
