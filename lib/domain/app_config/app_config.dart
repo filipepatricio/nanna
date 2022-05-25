@@ -52,6 +52,7 @@ class AppConfig {
     datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.dev(),
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
+    appsFlyerKey: 'dev_key',
   );
 
   static const mock = AppConfig._(

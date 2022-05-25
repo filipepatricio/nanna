@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/networking/app_version_link/app_version_link.di.dart';
+import 'package:better_informed_mobile/data/networking/timezone_link/timezone_link.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -9,11 +10,13 @@ class GraphQLClientFactory {
   final AppConfig _appConfig;
   final FreshLink<OAuth2Token> _freshLink;
   final AppVersionLink _appVersionLink;
+  final TimezoneLink _timezoneLink;
 
   GraphQLClientFactory(
     this._appConfig,
     this._freshLink,
     this._appVersionLink,
+    this._timezoneLink,
   );
 
   GraphQLClient create() {
@@ -24,6 +27,7 @@ class GraphQLClientFactory {
       [
         _freshLink,
         _appVersionLink,
+        _timezoneLink,
         httpLink,
       ],
     );
