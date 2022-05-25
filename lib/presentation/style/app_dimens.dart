@@ -99,10 +99,6 @@ class AppDimens {
   /// 300
   static const topicViewSummaryTextHeight = 300.0;
 
-  /// The smallest value from 85% of screen height and 575
-  static double todaysTopicCardSectionHeight(BuildContext context) =>
-      min(MediaQuery.of(context).size.height * 0.85, 575);
-
   /// 350.0
   static const todaysTopicCardStackHeight = 350.0;
 
