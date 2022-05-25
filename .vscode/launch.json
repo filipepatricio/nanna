@@ -80,6 +80,18 @@
             ]
         },
         {
+            "name": "prod-profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "prod",
+                "--dart-define=env=prod",
+                "--bundle-sksl-path warmup.sksl.json"
+            ]
+        },
+        {
             "name": "prod-profile-sksl-warmup",
             "request": "launch",
             "type": "dart",
