@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -19,7 +18,7 @@ class TimezoneLinkTransformer {
   }
 
   Future<String> _createTimezoneHeaderValue() async {
-    return DateFormatUtil.timezoneOffset();
+    return DateTime.now().timeZoneOffsetString;
   }
 
   Request _transformRequest(Request request, String timezoneHeaderValue) {
@@ -39,5 +38,18 @@ class TimezoneLinkTransformer {
         }
       },
     );
+  }
+}
+
+extension on DateTime {
+  String get timeZoneOffsetString {
+    final offset = timeZoneOffset;
+    final hours = offset.inHours > 0 ? offset.inHours : 1; // For fixing divide by 0
+
+    if (!offset.isNegative) {
+      return "+${offset.inHours.toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
+    } else {
+      return "-${(-offset.inHours).toString().padLeft(2, '0')}:${(offset.inMinutes % (hours * 60)).toString().padLeft(2, '0')}";
+    }
   }
 }
