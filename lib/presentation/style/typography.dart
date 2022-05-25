@@ -344,6 +344,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle metadata1Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 12,
+    height: 1.83,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle caption1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,

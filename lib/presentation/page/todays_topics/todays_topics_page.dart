@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/stacked_cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dt.dart';
@@ -32,7 +32,7 @@ class TodaysTopicsPage extends HookWidget {
     final cubit = useCubit<TodaysTopicsPageCubit>();
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
-    final cardStackWidth = MediaQuery.of(context).size.width * AppDimens.topicCardWidthViewportFraction;
+    final cardStackWidth = MediaQuery.of(context).size.width;
     const cardStackHeight = AppDimens.todaysTopicCardStackHeight;
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
@@ -85,7 +85,7 @@ class TodaysTopicsPage extends HookWidget {
                     ),
                     error: (_) => SliverToBoxAdapter(
                       child: Center(
-                        child: StackedCardsErrorView(
+                        child: CardsErrorView(
                           retryAction: cubit.loadTodaysTopics,
                           size: Size(cardStackWidth, cardStackHeight),
                         ),
@@ -132,46 +132,54 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiSliver(
-      children: [
-        _Greeting(
-          greeting: currentBrief.greeting,
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              final currentTopic = currentBrief.topics[index];
-              return ViewVisibilityNotifier(
-                detectorKey: Key(currentTopic.id),
-                onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, index),
-                borderFraction: 0.6,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: cardStackHeight,
-                      width: cardStackWidth,
-                      child: TopicCover.large(
-                        topic: currentTopic.asPreview,
-                        onTap: () => _onTopicCardPressed(
-                          context,
-                          index,
-                          currentBrief,
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(
+        AppDimens.l,
+        AppDimens.zero,
+        AppDimens.l,
+        AppDimens.xxxc + AppDimens.xxl,
+      ),
+      sliver: MultiSliver(
+        children: [
+          _Greeting(
+            greeting: currentBrief.greeting,
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                final currentTopic = currentBrief.topics[index];
+                return ViewVisibilityNotifier(
+                  detectorKey: Key(currentTopic.id),
+                  onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, index),
+                  borderFraction: 0.6,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: cardStackHeight,
+                        width: cardStackWidth,
+                        child: TopicCover.large(
+                          topic: currentTopic.asPreview,
+                          onTap: () => _onTopicCardPressed(
+                            context,
+                            index,
+                            currentBrief,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: AppDimens.l),
-                  ],
-                ),
-              );
-            },
-            childCount: currentBrief.topics.length,
+                      const SizedBox(height: AppDimens.l),
+                    ],
+                  ),
+                );
+              },
+              childCount: currentBrief.topics.length,
+            ),
           ),
-        ),
-        _RelaxSection(
-          onVisible: todaysTopicsCubit.trackRelaxPage,
-          goodbyeHeadline: currentBrief.goodbye,
-        ),
-      ],
+          _RelaxSection(
+            onVisible: todaysTopicsCubit.trackRelaxPage,
+            goodbyeHeadline: currentBrief.goodbye,
+          ),
+        ],
+      ),
     );
   }
 
@@ -223,12 +231,7 @@ class _Greeting extends StatelessWidget {
     if (context.isSmallDevice) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppDimens.l,
-        AppDimens.zero,
-        AppDimens.l,
-        AppDimens.xl,
-      ),
+      padding: const EdgeInsets.only(bottom: AppDimens.xl),
       child: InformedMarkdownBody(
         markdown: greeting.headline,
         baseTextStyle: AppTypography.b2Regular,

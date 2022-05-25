@@ -28,11 +28,6 @@ class RelaxView extends HookWidget {
     final cloudinaryProvider = useCloudinaryProvider();
 
     return Container(
-      margin: const EdgeInsets.only(
-        left: AppDimens.l,
-        right: AppDimens.l,
-        bottom: AppDimens.xxxc + AppDimens.xxl,
-      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.m),
         color: AppColors.darkLinen,
