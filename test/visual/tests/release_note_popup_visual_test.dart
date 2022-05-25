@@ -66,4 +66,7 @@ class FakeReleaseNotesLocalRepository extends Fake implements ReleaseNotesLocalR
 
   @override
   Future<void> saveVersion(String version) async {}
+
+  @override
+  Future<List<String>> getAllVersions() async => [];
 }

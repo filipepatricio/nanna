@@ -172,7 +172,7 @@ class _Video extends HookWidget {
     final cheewieController = useMemoized(
       () => ChewieController(
         videoPlayerController: videoController,
-        showControlsOnInitialize: true,
+        autoPlay: true,
         customControls: const ReleaseNoteVideoControls(),
       ),
     );
