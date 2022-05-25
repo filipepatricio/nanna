@@ -66,6 +66,7 @@ class AppVectorGraphics {
   static const String magError = 'assets/vector_graphics/mag_error_ic.svg';
   static const String pin = 'assets/vector_graphics/pin.svg';
   static const String sort = 'assets/vector_graphics/sort.svg';
+  static const String productUpdate = 'assets/vector_graphics/product_update.svg';
 
   static const String stayTuned = 'assets/vector_graphics/stay_tuned.svg';
   static const String openWeb = 'assets/vector_graphics/open_web_ic.svg';

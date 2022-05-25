@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/release_notes/data/release_note.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,4 +14,6 @@ class MainState with _$MainState {
   const factory MainState.navigate(String path) = _MainStateNavigate;
 
   const factory MainState.multiNavigate(List<String> path) = __MainStateMultiNavigate;
+
+  const factory MainState.showReleaseNote(ReleaseNote releaseNote) = _MainStateShowReleaseNote;
 }

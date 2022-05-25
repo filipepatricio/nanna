@@ -13,7 +13,7 @@ class AppInfoRepositoryImpl implements AppInfoRepository {
 
   @override
   Future<String> getAppVersion() async {
-    return await _appInfoDataSource.getAppVersion();
+    return _appInfoDataSource.getAppVersion();
   }
 
   @override

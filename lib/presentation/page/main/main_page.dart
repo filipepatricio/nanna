@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/release_notes/release_note_popup.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -52,6 +53,10 @@ class MainPage extends HookWidget {
             ),
           );
         },
+        showReleaseNote: (state) => ReleaseNotePopup.show(
+          context: context,
+          releaseNote: state.releaseNote,
+        ),
         orElse: () {},
       );
     });
