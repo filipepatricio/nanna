@@ -48,6 +48,18 @@
             ]
         },
         {
+            "name": "stage-profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "stage",
+                "--dart-define=env=stage",
+                "--bundle-sksl-path warmup.sksl.json"
+            ]
+        },
+        {
             "name": "stage-release",
             "request": "launch",
             "type": "dart",
