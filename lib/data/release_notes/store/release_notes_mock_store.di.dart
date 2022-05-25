@@ -11,4 +11,7 @@ class ReleaseNotesMockStore implements ReleaseNotesStore {
 
   @override
   Future<void> saveVersion(String version) async {}
+
+  @override
+  Future<List<String>> getAllVersions() async => [];
 }

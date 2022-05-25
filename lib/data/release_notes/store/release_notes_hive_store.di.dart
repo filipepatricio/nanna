@@ -18,4 +18,10 @@ class ReleaseNotesHiveStore implements ReleaseNotesStore {
     final box = await Hive.openBox<String>(_boxName);
     await box.add(version);
   }
+
+  @override
+  Future<List<String>> getAllVersions() async {
+    final box = await Hive.openBox<String>(_boxName);
+    return box.values.toList(growable: false);
+  }
 }

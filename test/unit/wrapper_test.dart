@@ -23,6 +23,8 @@ import 'domain/push_notification/use_case/set_channel_push_setting_use_case_test
     as set_channel_push_setting_use_case_test;
 import 'domain/release_notes/use_case/get_current_release_note_use_case_test.dart'
     as get_current_release_note_use_case_test;
+import 'domain/release_notes/use_case/save_release_note_if_first_run_use_case_test.dart'
+    as save_release_note_if_first_run_use_case_test;
 import 'presentation/app_update_checker_test.dart' as app_update_checker_test;
 import 'presentation/media_item_page_test.dart' as media_item_page_test;
 import 'presentation/sign_in_page_test.dart' as sign_in_page_test;
@@ -47,6 +49,7 @@ void main() {
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);
+  group('save_release_note_if_first_run_use_case_test', save_release_note_if_first_run_use_case_test.main);
   group('prepare_audio_track_use_case_test', prepare_audio_track_use_case_test.main);
   group('get_bookmark_state_use_case_test', get_bookmark_state_use_case_test.main);
   group('switch_bookmark_state_use_case_test', switch_bookmark_state_use_case_test.main);

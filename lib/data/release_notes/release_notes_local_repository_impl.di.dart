@@ -18,4 +18,9 @@ class ReleaseNotesLocalRepositoryImpl implements ReleaseNotesLocalRepository {
   Future<void> saveVersion(String version) async {
     await _store.saveVersion(version);
   }
+
+  @override
+  Future<List<String>> getAllVersions() {
+    return _store.getAllVersions();
+  }
 }
