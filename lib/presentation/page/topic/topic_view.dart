@@ -14,12 +14,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class TopicView extends HookWidget {
-  final Topic topic;
-  final TopicPageCubit cubit;
-  final GlobalKey? summaryCardKey;
-  final GlobalKey? mediaItemKey;
-  final ScrollController scrollController;
-
   const TopicView({
     required this.topic,
     required this.cubit,
@@ -28,6 +22,14 @@ class TopicView extends HookWidget {
     this.mediaItemKey,
     Key? key,
   }) : super(key: key);
+
+  final Topic topic;
+  final TopicPageCubit cubit;
+  final GlobalKey? summaryCardKey;
+  final GlobalKey? mediaItemKey;
+  final ScrollController scrollController;
+
+  static const bottomPaddingKey = Key('topic-view-bottom-padding');
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,10 @@ class TopicView extends HookWidget {
           eventController: eventController,
           mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
         ),
-        const SliverPadding(padding: EdgeInsets.only(bottom: AppDimens.xl)),
+        const SliverPadding(
+          key: bottomPaddingKey,
+          padding: EdgeInsets.only(bottom: AppDimens.xl),
+        ),
       ],
     );
   }
