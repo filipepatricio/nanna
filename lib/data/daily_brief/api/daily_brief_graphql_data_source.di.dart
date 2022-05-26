@@ -46,6 +46,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
         pollInterval: const Duration(minutes: 10),
         fetchResults: true,
         eagerlyFetchResults: false,
+        cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
       ),
     );
 

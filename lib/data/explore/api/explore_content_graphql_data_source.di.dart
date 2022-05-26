@@ -109,6 +109,7 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
         fetchPolicy: FetchPolicy.cacheAndNetwork,
         pollInterval: const Duration(minutes: 10),
         fetchResults: true,
+        cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
       ),
     );
 

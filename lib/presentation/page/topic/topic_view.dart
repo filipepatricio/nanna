@@ -1,21 +1,19 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/generated/local_keys.g.dart';
 import 'package:better_informed_mobile/presentation/page/topic/mediaitems/topic_media_items_list.dart';
 import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary_section.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class TopicView extends HookWidget {
-  final Topic topic;
-  final TopicPageCubit cubit;
-  final GlobalKey? summaryCardKey;
-  final GlobalKey? mediaItemKey;
-  final ScrollController scrollController;
-
   const TopicView({
     required this.topic,
     required this.cubit,
@@ -24,6 +22,14 @@ class TopicView extends HookWidget {
     this.mediaItemKey,
     Key? key,
   }) : super(key: key);
+
+  final Topic topic;
+  final TopicPageCubit cubit;
+  final GlobalKey? summaryCardKey;
+  final GlobalKey? mediaItemKey;
+  final ScrollController scrollController;
+
+  static const bottomPaddingKey = Key('topic-view-bottom-padding');
 
   @override
   Widget build(BuildContext context) {
@@ -54,23 +60,36 @@ class TopicView extends HookWidget {
       );
     });
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return MultiSliver(
       children: [
-        TopicSummarySection(
-          topic: topic,
-          summaryCardKey: summaryCardKey,
-        ),
-        GeneralEventTracker(
-          controller: eventController,
-          child: TopicMediaItemsList(
-            pageIndex: pageIndex,
-            topic: topic,
-            cubit: cubit,
-            eventController: eventController,
-            mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              TopicSummarySection(
+                topic: topic,
+                summaryCardKey: summaryCardKey,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xl),
+                child: Text(
+                  LocaleKeys.todaysTopics_articlesCount.tr(args: [topic.entries.length.toString()]),
+                  style: AppTypography.h2Regular,
+                  maxLines: 1,
+                ),
+              ),
+            ],
           ),
+        ),
+        TopicMediaItemsList(
+          pageIndex: pageIndex,
+          topic: topic,
+          cubit: cubit,
+          eventController: eventController,
+          mediaItemKey: pageIndex.value == 0 ? mediaItemKey : null,
+        ),
+        const SliverPadding(
+          key: bottomPaddingKey,
+          padding: EdgeInsets.only(bottom: AppDimens.xl),
         ),
       ],
     );

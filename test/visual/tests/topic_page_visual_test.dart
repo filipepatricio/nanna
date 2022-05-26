@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/exports.dart' as e;
-import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_item_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary_section.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
+import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -23,10 +23,11 @@ void main() {
       );
       await tester.pumpAndSettle();
       await tester.matchGoldenFile('topic_page_(summary)');
+
       await tester.dragUntilVisible(
-        find.byType(ArticleItemView).last,
+        find.byKey(TopicView.bottomPaddingKey).first,
         find.byType(TopicPage),
-        const Offset(0, -10),
+        const Offset(0, -25),
         maxIteration: 1000,
       );
       await tester.pumpAndSettle();
@@ -57,10 +58,11 @@ void main() {
         const Offset(0, -25),
       );
       await tester.pumpAndSettle();
+
       await tester.dragUntilVisible(
-        find.byType(ArticleItemView).last,
+        find.byKey(TopicView.bottomPaddingKey).first,
         find.byType(TopicPage),
-        const Offset(0, -10),
+        const Offset(0, -25),
         maxIteration: 1000,
       );
       await tester.pumpAndSettle();
