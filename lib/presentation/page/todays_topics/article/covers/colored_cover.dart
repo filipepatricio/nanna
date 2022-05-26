@@ -76,7 +76,10 @@ class ColoredCover extends StatelessWidget {
                 isLight: false,
               ),
             ),
-            if (editorsNote != null) ArticleEditorsNote(note: editorsNote!),
+            if (editorsNote != null)
+              ArticleEditorsNote(
+                note: editorsNote!,
+              ),
           ],
         ),
       ),

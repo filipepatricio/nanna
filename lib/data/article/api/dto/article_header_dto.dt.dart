@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -13,6 +14,7 @@ class ArticleHeaderDTO {
   final String strippedTitle;
   final String credits;
   final String type;
+  final ArticleKindDTO? kind;
   final String? publicationDate;
   final int timeToRead;
   final PublisherDTO publisher;
@@ -30,6 +32,7 @@ class ArticleHeaderDTO {
     this.strippedTitle,
     this.credits,
     this.type,
+    this.kind,
     this.publicationDate,
     this.timeToRead,
     this.publisher,

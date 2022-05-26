@@ -79,31 +79,39 @@ class TodaysTopicsPage extends HookWidget {
                     ),
                     orElse: () => const SliverToBoxAdapter(),
                   ),
-                  state.maybeMap(
-                    idle: (state) => _IdleContent(
-                      todaysTopicsCubit: cubit,
-                      currentBrief: state.currentBrief,
-                      scrollController: scrollController,
-                      cardStackWidth: cardStackWidth,
-                      cardStackHeight: cardStackHeight,
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppDimens.l,
+                      AppDimens.zero,
+                      AppDimens.l,
+                      AppDimens.xxxc + AppDimens.xxl,
                     ),
-                    error: (_) => SliverToBoxAdapter(
-                      child: Center(
-                        child: CardsErrorView(
-                          retryAction: cubit.loadTodaysTopics,
-                          size: Size(cardStackWidth, cardStackHeight),
+                    sliver: state.maybeMap(
+                      idle: (state) => _IdleContent(
+                        todaysTopicsCubit: cubit,
+                        currentBrief: state.currentBrief,
+                        scrollController: scrollController,
+                        cardStackWidth: cardStackWidth,
+                        cardStackHeight: cardStackHeight,
+                      ),
+                      error: (_) => SliverToBoxAdapter(
+                        child: Center(
+                          child: CardsErrorView(
+                            retryAction: cubit.loadTodaysTopics,
+                            size: Size(cardStackWidth, cardStackHeight),
+                          ),
                         ),
                       ),
-                    ),
-                    loading: (_) => SliverToBoxAdapter(
-                      child: TodaysTopicsLoadingView(
-                        coverSize: Size(
-                          cardStackWidth,
-                          cardStackHeight,
+                      loading: (_) => SliverToBoxAdapter(
+                        child: TodaysTopicsLoadingView(
+                          coverSize: Size(
+                            cardStackWidth,
+                            cardStackHeight,
+                          ),
                         ),
                       ),
+                      orElse: () => const SizedBox.shrink(),
                     ),
-                    orElse: () => const SizedBox.shrink(),
                   ),
                   const SliverToBoxAdapter(
                     child: AudioPlayerBannerPlaceholder(),
@@ -136,55 +144,46 @@ class _IdleContent extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.fromLTRB(
-        AppDimens.l,
-        AppDimens.zero,
-        AppDimens.l,
-        AppDimens.xxxc + AppDimens.xxl,
-      ),
-      sliver: MultiSliver(
-        children: [
-          _Greeting(
-            greeting: currentBrief.greeting,
-            introduction: currentBrief.introduction,
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                final currentTopic = currentBrief.topics[index];
-                return ViewVisibilityNotifier(
-                  detectorKey: Key(currentTopic.id),
-                  onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, index),
-                  borderFraction: 0.6,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: cardStackHeight,
-                        width: cardStackWidth,
-                        child: TopicCover.large(
-                          topic: currentTopic.asPreview,
-                          onTap: () => _onTopicCardPressed(
-                            context,
-                            index,
-                            currentBrief,
-                          ),
+    return MultiSliver(
+      children: [
+        _Greeting(
+          greeting: currentBrief.greeting,
+        introduction: currentBrief.introduction,),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              final currentTopic = currentBrief.topics[index];
+              return ViewVisibilityNotifier(
+                detectorKey: Key(currentTopic.id),
+                onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, index),
+                borderFraction: 0.6,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: cardStackHeight,
+                      width: cardStackWidth,
+                      child: TopicCover.large(
+                        topic: currentTopic.asPreview,
+                        onTap: () => _onTopicCardPressed(
+                          context,
+                          index,
+                          currentBrief,
                         ),
                       ),
-                      const SizedBox(height: AppDimens.l),
-                    ],
-                  ),
-                );
-              },
-              childCount: currentBrief.topics.length,
-            ),
+                    ),
+                    const SizedBox(height: AppDimens.l),
+                  ],
+                ),
+              );
+            },
+            childCount: currentBrief.topics.length,
           ),
-          _RelaxSection(
-            onVisible: todaysTopicsCubit.trackRelaxPage,
-            goodbyeHeadline: currentBrief.goodbye,
-          ),
-        ],
-      ),
+        ),
+        _RelaxSection(
+          onVisible: todaysTopicsCubit.trackRelaxPage,
+          goodbyeHeadline: currentBrief.goodbye,
+        ),
+      ],
     );
   }
 
