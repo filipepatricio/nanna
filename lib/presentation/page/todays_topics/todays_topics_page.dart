@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/relax/rel
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_scrollable_app_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -72,9 +73,12 @@ class TodaysTopicsPage extends HookWidget {
                   orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
                 ),
                 slivers: [
-                  ScrollableSliverAppBar(
-                    scrollController: scrollController,
-                    title: LocaleKeys.todaysTopics_title.tr(),
+                  state.maybeMap(
+                    idle: (state) => TodaysTopicsScrollableAppBar(
+                      scrollController: scrollController,
+                      briefDate: state.currentBrief.date,
+                    ),
+                    orElse: () => const SliverToBoxAdapter(),
                   ),
                   state.maybeMap(
                     idle: (state) => _IdleContent(
