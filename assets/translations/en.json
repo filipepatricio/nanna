@@ -58,7 +58,10 @@
     "profileTab": "Profile"
   },
   "todaysTopics": {
-    "title": "Today's topics",
+    "title": {
+      "today": "Today",
+      "yesterday": "Yesterday"
+    },
     "justSec": "Just a sec...",
     "loading": "We’re loading your brief",
     "oops": "Oops!",

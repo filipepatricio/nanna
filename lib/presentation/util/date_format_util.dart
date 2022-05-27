@@ -44,9 +44,9 @@ class DateFormatUtil {
     final daysDifference = daysBetween(briefDate, now);
 
     if (daysDifference == 0) {
-      return 'Today';
+      return LocaleKeys.todaysTopics_title_today.tr();
     } else if (daysDifference == 1) {
-      return 'Yesterday';
+      return LocaleKeys.todaysTopics_title_yesterday.tr();
     }
 
     return DateFormat('EEEE').format(briefDate);
