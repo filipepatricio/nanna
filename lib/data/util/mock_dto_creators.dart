@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.da
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_introduction_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
@@ -118,6 +119,12 @@ class MockDTO {
     'brief-id',
     // greeting
     HeadlineDTO('**👋 Moritz**, here are the topics of the day', null, null),
+    // introduction - text max length: 150 chars
+    CurrentBriefIntroductionDTO(
+      icon: _mockedPillIcon,
+      text:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
+    ),
     // goodbye
     HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
     [
@@ -126,6 +133,7 @@ class MockDTO {
       topicWithUnknownOwner,
     ],
     3,
+    DateTime(2022, 05, 10).toIso8601String(),
   );
 
   /// Explore

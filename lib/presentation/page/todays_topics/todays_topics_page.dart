@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/current_brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/cards_error_view.dart';
@@ -9,9 +10,9 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/todays_to
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/markdown_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
@@ -143,6 +144,7 @@ class _IdleContent extends HookWidget {
         children: [
           _Greeting(
             greeting: currentBrief.greeting,
+            introduction: currentBrief.introduction,
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -221,22 +223,47 @@ class _RelaxSection extends StatelessWidget {
 class _Greeting extends StatelessWidget {
   const _Greeting({
     required this.greeting,
+    required this.introduction,
     Key? key,
   }) : super(key: key);
 
   final Headline greeting;
+  final CurrentBriefIntroduction? introduction;
 
   @override
   Widget build(BuildContext context) {
-    if (context.isSmallDevice) return const SizedBox.shrink();
+    final intro = introduction;
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppDimens.xl),
-      child: InformedMarkdownBody(
-        markdown: greeting.headline,
-        baseTextStyle: AppTypography.b2Regular,
-        textAlignment: TextAlign.left,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InformedMarkdownBody(
+          markdown: greeting.headline,
+          baseTextStyle: AppTypography.b3Medium.copyWith(color: AppColors.textGrey),
+        ),
+        if (intro != null) ...[
+          const SizedBox(height: AppDimens.s),
+          Container(
+            padding: const EdgeInsets.all(AppDimens.l),
+            decoration: const BoxDecoration(
+              color: AppColors.pastelGreen,
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  AppDimens.l,
+                ),
+              ),
+            ),
+            child: InformedMarkdownBody(
+              markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)} ${intro.text}',
+              baseTextStyle: AppTypography.b2Medium,
+              textAlignment: TextAlign.left,
+              markdownImageBuilder: MarkdownUtil.rawSvgMarkdownBuilder,
+            ),
+          ),
+        ],
+        const SizedBox(height: AppDimens.l),
+      ],
     );
   }
 }
