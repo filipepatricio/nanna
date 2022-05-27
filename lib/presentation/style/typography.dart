@@ -141,6 +141,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h5Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 24,
+    height: 1.5,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h5BoldSmall = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -162,6 +170,14 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 14,
     height: 2.21,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle subtitle1Bold = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 16,
+    height: 1.5,
     color: AppColors.textPrimary,
   );
 
@@ -204,6 +220,14 @@ class AppTypography {
     fontSize: 10,
     height: 2.58,
     letterSpacing: 0.15,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle b1Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 16,
+    height: 1.5,
     color: AppColors.textPrimary,
   );
 
@@ -310,6 +334,14 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 12,
     height: 1.25,
+    color: AppColors.textGrey,
+  );
+
+  static const TextStyle caption2Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 10,
+    height: 1.2,
     color: AppColors.textGrey,
   );
 

@@ -116,7 +116,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> removeSearchHistoryQuery(String query) async {
     final searchHistory = await _removeSearchHistoryQueryUseCase(query);
     emit(ExplorePageState.searchHistoryUpdated());
-    _checkSearchHistory(searchHistory);
+    await _checkSearchHistory(searchHistory);
   }
 
   Future<void> _checkSearchHistory(List<String> searchHistory) async {

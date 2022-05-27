@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,7 @@ class ProfilePage extends HookWidget {
     final cubit = useCubit<ProfilePageCubit>();
     final state = useCubitBuilder(cubit);
     final tabController = useTabController(initialLength: 3);
+    final scrollController = useScrollController();
 
     useEffect(
       () {
@@ -42,14 +44,6 @@ class ProfilePage extends HookWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => AutoRouter.of(context).push(const InviteFriendPageRoute()),
-            icon: SvgPicture.asset(
-              AppVectorGraphics.gift,
-              fit: BoxFit.contain,
-            ),
-            splashRadius: AppDimens.l,
-          ),
-          IconButton(
             onPressed: () => AutoRouter.of(context).push(const SettingsMainPageRoute()),
             icon: SvgPicture.asset(
               AppVectorGraphics.settings,
@@ -60,30 +54,35 @@ class ProfilePage extends HookWidget {
           const SizedBox(width: AppDimens.s),
         ],
       ),
-      body: ReadingBannerWrapper(
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ProfileFilterTabBar(
-                controller: tabController,
-                onChange: cubit.changeFilter,
-              ),
-              Expanded(
-                child: state.maybeMap(
-                  initializing: (state) => const Loader(
-                    color: AppColors.limeGreen,
-                  ),
-                  idle: (state) => BookmarkListView(
-                    filter: state.filter,
-                    sortConfigName: state.sortConfigName,
-                    onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
-                  ),
-                  orElse: () => const SizedBox.shrink(),
+      body: TabBarListener(
+        scrollController: scrollController,
+        currentPage: context.routeData,
+        child: ReadingBannerWrapper(
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.dark,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ProfileFilterTabBar(
+                  controller: tabController,
+                  onChange: cubit.changeFilter,
                 ),
-              ),
-            ],
+                Expanded(
+                  child: state.maybeMap(
+                    initializing: (state) => const Loader(
+                      color: AppColors.limeGreen,
+                    ),
+                    idle: (state) => BookmarkListView(
+                      scrollController: scrollController,
+                      filter: state.filter,
+                      sortConfigName: state.sortConfigName,
+                      onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
+                    ),
+                    orElse: () => const SizedBox.shrink(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -265,19 +265,13 @@ class _TopicIdleView extends HookWidget {
                     onArrowTap: () => _scrollToSummary(context, scrollController),
                     snackbarController: snackbarController,
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        TopicView(
-                          topic: topic,
-                          cubit: cubit,
-                          summaryCardKey: cubit.summaryCardKey,
-                          mediaItemKey: cubit.mediaItemKey,
-                          scrollController: scrollController,
-                        ),
-                      ],
-                    ),
-                  )
+                  TopicView(
+                    topic: topic,
+                    cubit: cubit,
+                    summaryCardKey: cubit.summaryCardKey,
+                    mediaItemKey: cubit.mediaItemKey,
+                    scrollController: scrollController,
+                  ),
                 ],
               ),
             ),

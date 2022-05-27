@@ -22,6 +22,7 @@ class AppConfig {
   final String sentryEventDns;
   final String appId;
   final String appleStoreId;
+  final String datoCMSKey;
   final LinkedinConfig linkedinConfig;
   final String? segmentWriteKey;
   final String? launchDarklyKey;
@@ -34,6 +35,7 @@ class AppConfig {
     required this.sentryEventDns,
     required this.appId,
     required this.appleStoreId,
+    required this.datoCMSKey,
     required this.linkedinConfig,
     this.segmentWriteKey,
     this.launchDarklyKey,
@@ -47,8 +49,10 @@ class AppConfig {
     sentryEventDns: '',
     appId: 'so.informed.dev',
     appleStoreId: '',
+    datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.dev(),
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
+    appsFlyerKey: 'dev_key',
   );
 
   static const mock = AppConfig._(
@@ -58,6 +62,7 @@ class AppConfig {
     sentryEventDns: '',
     appId: 'so.informed.mock',
     appleStoreId: '',
+    datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.dev(),
   );
 
@@ -72,6 +77,7 @@ class AppConfig {
     segmentWriteKey: 'jmJAkhCovDOdxwUqbDBgpFW4xWkpLUte',
     appId: 'so.informed.staging',
     appleStoreId: '1587844260',
+    datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.staging(),
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',
@@ -85,6 +91,7 @@ class AppConfig {
     segmentWriteKey: 'Jp2reNsfGRxapvFlgmDYBsRJ2LA2TLSP',
     appId: 'so.informed',
     appleStoreId: '1577915307',
+    datoCMSKey: '1ecd2461c830b09d98d34b7cc9cd25',
     linkedinConfig: LinkedinConfig.prod(),
     launchDarklyKey: 'mob-15482f92-5c32-458a-a3c9-4323b6d03656',
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',

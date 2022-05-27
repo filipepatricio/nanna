@@ -69,12 +69,6 @@ class SettingsMainBody extends HookWidget {
                   icon: AppVectorGraphics.notifications,
                   onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
                 ),
-                const SizedBox(height: AppDimens.l),
-                SettingsMainItem(
-                  label: LocaleKeys.settings_inviteFriend.tr(),
-                  icon: AppVectorGraphics.gift,
-                  onTap: () => AutoRouter.of(context).push(const InviteFriendPageRoute()),
-                ),
                 const SizedBox(height: AppDimens.xxxl),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),

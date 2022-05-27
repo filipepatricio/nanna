@@ -61,7 +61,7 @@ class TopicsSeeAllPage extends HookWidget {
           scrollController: scrollController,
           child: TabBarListener(
             currentPage: context.routeData,
-            controller: scrollController,
+            scrollController: scrollController,
             child: _Body(
               title: title,
               pageStorageKey: pageStorageKey,

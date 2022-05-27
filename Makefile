@@ -35,8 +35,14 @@ easy_localization:
 unit_tests:
 	-flutter test test/unit/wrapper_test.dart
 
+fvm_unit_tests:
+	-fvm flutter test test/unit/wrapper_test.dart
+
 update_goldens:
 	-flutter test test/visual/wrapper_test.dart --update-goldens
+
+fvm_update_goldens:
+	-fvm flutter test test/visual/wrapper_test.dart --update-goldens
 
 screens_report:
 	dart scripts/screens_report.dart

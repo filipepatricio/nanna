@@ -16,7 +16,7 @@ class RemoveSearchHistoryQueryUseCase {
     final currentUserUuid = await _userStore.getCurrentUserUuid();
     final searchHistory = await _searchStore.getSearchHistory(userUuid: currentUserUuid);
     searchHistory.remove(query);
-    _searchStore.setSearchHistory(searchHistory, userUuid: currentUserUuid);
+    await _searchStore.setSearchHistory(searchHistory, userUuid: currentUserUuid);
     return searchHistory;
   }
 }
