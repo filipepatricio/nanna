@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:better_informed_mobile/presentation/widget/svg_span.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 
 class MarkdownUtil {
   const MarkdownUtil._();
@@ -17,7 +17,7 @@ class MarkdownUtil {
     if (uri.scheme == _rawSvgScheme) {
       final rawSvgBase64 = uri.path.split(',')[1];
       final rawSvg = utf8.decode(base64Decode(rawSvgBase64));
-      return SvgPicture.string(rawSvg);
+      return SvgSpan(rawSvg: rawSvg);
     }
 
     return const SizedBox.shrink();

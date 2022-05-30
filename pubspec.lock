@@ -666,11 +666,11 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/flutter_markdown"
-      ref: "version/0-6-8"
-      resolved-ref: "98a18e180b592398ccc3f2f2ed1a841bfba382d9"
+      ref: "version/0-7-0"
+      resolved-ref: a27b86f4a372b9af2c701b822c3cc3de098906a0
       url: "https://github.com/dawidkiteo/packages.git"
     source: git
-    version: "0.6.8"
+    version: "0.6.10+1"
   flutter_math_fork:
     dependency: transitive
     description:
@@ -1100,7 +1100,7 @@ packages:
       name: markdown
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.1"
+    version: "5.0.0"
   matcher:
     dependency: transitive
     description:
