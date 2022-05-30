@@ -32,10 +32,10 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
           MINOR_VERSION_NUMBER_OFFSET: -28
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
-          echo ::set-env name=BUILD_NUMBER::${{ github.run_number }}
-          echo ::set-env name=MINOR_VERSION_NUMBER::$(( github.run_number + MINOR_VERSION_NUMBER_OFFSET ))
-          echo "Setting up minor version number ${{ env.MINOR_VERSION_NUMBER }} and build number ${{ env.BUILD_NUMBER }}"
+          echo ::set-env name=BUILD_NUMBER::$RUN_NUMBER
+          echo ::set-env name=MINOR_VERSION_NUMBER::$(($RUN_NUMBER + $MINOR_VERSION_NUMBER_OFFSET))
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -101,10 +101,10 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
           MINOR_VERSION_NUMBER_OFFSET: -28
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
-          echo ::set-env name=BUILD_NUMBER::${{ github.run_number }}
-          echo ::set-env name=MINOR_VERSION_NUMBER::$(( github.run_number + MINOR_VERSION_NUMBER_OFFSET ))
-          echo "Setting up minor version number ${{ env.MINOR_VERSION_NUMBER }} and build number ${{ env.BUILD_NUMBER }}"
+          echo ::set-env name=BUILD_NUMBER::$RUN_NUMBER
+          echo ::set-env name=MINOR_VERSION_NUMBER::$(($RUN_NUMBER + $MINOR_VERSION_NUMBER_OFFSET))
 
       - name: Checkout code
         uses: actions/checkout@v2
