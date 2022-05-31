@@ -36,7 +36,6 @@ class ArticleImage extends HookWidget {
               autoGravity: true,
               width: width,
               height: height,
-              sizeRoundUp: true,
             ),
             width: width,
             height: height,

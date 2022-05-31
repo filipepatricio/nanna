@@ -33,7 +33,6 @@ class TopicCoverImage extends HookWidget {
               autoGravity: true,
               height: height,
               width: width,
-              sizeRoundUp: true,
             ),
             width: width,
             height: height,

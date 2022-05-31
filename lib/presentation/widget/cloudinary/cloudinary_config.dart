@@ -10,7 +10,7 @@ class CloudinaryConfig {
     this.platformBasedExtension = false,
     this.autoGravity = false,
     this.autoQuality = false,
-    this.sizeRoundUp = false,
+    this.sizeRoundUp = true,
   });
 
   final double? height;

@@ -50,7 +50,6 @@ class TopicHeader extends HookWidget {
                 autoGravity: true,
                 width: topicHeaderImageWidth,
                 height: topicHeaderImageHeight,
-                sizeRoundUp: true,
               ),
               width: topicHeaderImageWidth,
               height: topicHeaderImageHeight,
