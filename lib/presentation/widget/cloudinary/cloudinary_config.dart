@@ -10,6 +10,7 @@ class CloudinaryConfig {
     this.platformBasedExtension = false,
     this.autoGravity = false,
     this.autoQuality = false,
+    this.sizeRoundUp = false,
   });
 
   final double? height;
@@ -17,15 +18,19 @@ class CloudinaryConfig {
   final bool platformBasedExtension;
   final bool autoGravity;
   final bool autoQuality;
+  final bool sizeRoundUp;
 
   CloudinaryTransformation apply(BuildContext context, String publicId, CloudinaryImageProvider provider) {
     final image = platformBasedExtension ? provider.withPublicIdAsPlatform(publicId) : provider.withPublicId(publicId);
 
     final transformation = image.transform();
 
-    if (height != null) transformation.height(DimensionUtil.getPhysicalPixelsAsInt(height!, context));
-
-    if (width != null) transformation.width(DimensionUtil.getPhysicalPixelsAsInt(width!, context));
+    if (sizeRoundUp && _hasBothDimensions) {
+      transformation.withLogicalSize(width!, height!, context);
+    } else {
+      if (height != null) transformation.height(DimensionUtil.getPhysicalPixelsAsInt(height!, context));
+      if (width != null) transformation.width(DimensionUtil.getPhysicalPixelsAsInt(width!, context));
+    }
 
     if (autoGravity) transformation.autoGravity();
 
@@ -33,4 +38,6 @@ class CloudinaryConfig {
 
     return transformation;
   }
+
+  bool get _hasBothDimensions => height != null && width != null;
 }
