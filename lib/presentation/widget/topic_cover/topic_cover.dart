@@ -108,7 +108,7 @@ class TopicCover extends HookWidget {
                   TopicCoverContent(
                     topic: topic,
                     type: type,
-                    mode: data.showPhoto ? Brightness.light : Brightness.dark,
+                    mode: Brightness.light,
                   ),
                 ],
                 loading: (_) => [
