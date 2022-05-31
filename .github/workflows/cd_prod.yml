@@ -92,6 +92,19 @@ jobs:
           lane: 'internal_play_store'
           subdirectory: android
 
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'here'
+          if_mention: failure
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
+
   deploy_ios:
     name: Deploy to TestFlight
     runs-on: macos-latest
@@ -163,3 +176,16 @@ jobs:
           PROVISIONING_PROFILE_SPECIFIER: 'match AppStore so.informed'
           PROVISIONING_PROFILE_SPECIFIER_NOTIFICATION: 'match AppStore so.informed.ImageNotification'
           APPLICATION_ID: '1577915307'
+
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          fields: all
+          mention: 'here'
+          if_mention: failure
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
