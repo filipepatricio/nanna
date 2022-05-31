@@ -24,7 +24,6 @@ env:
 
 jobs:
   deploy_android:
-    name: Deploy Android to Firebase
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -98,16 +97,15 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          fields: all
+          fields: repo,author,job,took,workflow,pullRequest
           mention: 'here'
           if_mention: failure
           channel: 'C03HLNW54EN'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
-          MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
   deploy_ios:
-    name: Deploy iOS to TestFlight
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
@@ -182,10 +180,10 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          fields: all
+          fields: repo,author,job,took,workflow,pullRequest
           mention: 'here'
           if_mention: failure
           channel: 'C03HLNW54EN'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
-          MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
