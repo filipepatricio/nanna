@@ -131,6 +131,12 @@ class AppDimens {
   /// The smallest value from 70% of screen height and 500
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .70, 500);
 
+  /// 410
+  static double articleLargeImageCoverHeight = 410;
+
+  /// 410
+  static double articleSmallImageCoverHeight = 322;
+
   /// 0 / 45
   static double topicViewStackedCardsDividerHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 45.0;
 

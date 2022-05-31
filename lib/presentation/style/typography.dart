@@ -123,6 +123,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h3ExtraBold = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 18,
+    height: 1.7,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h3boldLoraItalic = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyLora,
