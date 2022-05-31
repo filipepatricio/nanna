@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
 import 'package:launchdarkly_flutter_client_sdk/launchdarkly_flutter_client_sdk.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 @LazySingleton(as: AnalyticsFacade, env: liveEnvs)
 class AnalyticsFacadeImpl implements AnalyticsFacade {
@@ -50,6 +51,7 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
 
   @override
   Future<void> event(AnalyticsEvent event) async {
+    Sentry.addBreadcrumb(Breadcrumb(message: event.name, category: 'event', data: event.properties));
     await Segment.track(eventName: event.name, properties: event.properties);
     await LDClient.track(event.name, data: _tryGenerateTrackData(event.properties));
     await _appsflyerSdk.logEvent(event.name, event.properties);
