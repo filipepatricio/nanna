@@ -29,6 +29,7 @@ import 'presentation/app_update_checker_test.dart' as app_update_checker_test;
 import 'presentation/media_item_page_test.dart' as media_item_page_test;
 import 'presentation/sign_in_page_test.dart' as sign_in_page_test;
 import 'presentation/topic_owner_page_test.dart' as topic_owner_page_test;
+import 'presentation/util/date_format_util_test.dart' as date_format_util_test;
 
 // All unit tests must be referenced here to be included in the CI workflow
 
@@ -65,4 +66,5 @@ void main() {
   group('media_item_page_test', media_item_page_test.main);
   group('sign_in_page_test', sign_in_page_test.main);
   group('topic_owner_page_test', topic_owner_page_test.main);
+  group('date_format_util_test', date_format_util_test.main);
 }

@@ -99,15 +99,8 @@ class AppDimens {
   /// 300
   static const topicViewSummaryTextHeight = 300.0;
 
-  /// The smallest value from 85% of screen height and 575
-  static double todaysTopicCardSectionHeight(BuildContext context) =>
-      min(MediaQuery.of(context).size.height * 0.85, 575);
-
-  /// The smallest value from 70% of screen height and 400
-  static double todaysTopicCardStackHeight(BuildContext context) => min(
-        MediaQuery.of(context).size.height * 0.7,
-        400,
-      );
+  /// 350.0
+  static const todaysTopicCardStackHeight = 350.0;
 
   /// 0.4
   static const exploreTopicCarousellSmallCoverWidthFactor = 0.4;
@@ -137,6 +130,12 @@ class AppDimens {
 
   /// The smallest value from 70% of screen height and 500
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .70, 500);
+
+  /// 410
+  static double articleLargeImageCoverHeight = 410;
+
+  /// 410
+  static double articleSmallImageCoverHeight = 322;
 
   /// 0 / 45
   static double topicViewStackedCardsDividerHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 45.0;

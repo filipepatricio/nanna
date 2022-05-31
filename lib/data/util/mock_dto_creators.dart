@@ -1,11 +1,13 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_introduction_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
@@ -118,6 +120,12 @@ class MockDTO {
     'brief-id',
     // greeting
     HeadlineDTO('**👋 Moritz**, here are the topics of the day', null, null),
+    // introduction - text max length: 150 chars
+    CurrentBriefIntroductionDTO(
+      icon: _mockedPillIcon,
+      text:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
+    ),
     // goodbye
     HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
     [
@@ -126,6 +134,7 @@ class MockDTO {
       topicWithUnknownOwner,
     ],
     3,
+    DateTime(2022, 05, 10).toIso8601String(),
   );
 
   /// Explore
@@ -371,8 +380,11 @@ class MockDTO {
   );
 
   static final _premiumMediaItemArticle = MediaItemDTO.article(
+    // id
     'id-premium',
+    // slug
     'slug-premium',
+    // url
     'url',
     // title
     "Denmark's role in the NSA spying scandal",
@@ -380,12 +392,19 @@ class MockDTO {
     "Denmark's role in the NSA spying scandal",
     // credits
     'This article originally appeared here',
+    //type
     'PREMIUM',
+    // kind
+    _kind,
+    // publicationDate
     '2021-12-03',
     // timeToRead
     10,
+    // publisher
     _publisher,
+    // image
     _articleImageCloudinary,
+    // sourceUrl
     'source-url',
     // author
     'Cassandre Lueilwitz',
@@ -394,8 +413,11 @@ class MockDTO {
   );
 
   static final premiumMediaItemArticleWithAudio = MediaItemDTO.article(
+    // id
     'id-premium-audio',
+    // slug
     'slug-premium-audio',
+    // url
     'url',
     // title
     "Denmark's role in the NSA spying scandal",
@@ -403,12 +425,19 @@ class MockDTO {
     "Denmark's role in the NSA spying scandal",
     // credits
     'This article originally appeared here',
+    // type
     'PREMIUM',
+    // kind
+    _kind,
+    // publicationDate
     '2021-12-03',
     // timeToRead
     10,
+    // publisher
     _publisher,
+    // image
     _articleImageCloudinary,
+    // sourceUrl
     'source-url',
     // author
     'Cassandre Lueilwitz',
@@ -417,8 +446,11 @@ class MockDTO {
   ) as MediaItemDTOArticle;
 
   static final _freeArticle = ArticleHeaderDTO(
+    // id
     'id-free',
+    // slug
     'slug-free',
+    // url
     'url',
     // title
     "Denmark's role in the NSA spying scandal",
@@ -428,13 +460,17 @@ class MockDTO {
     'This article originally appeared here',
     // type
     'FREE',
+    // kind
+    _kind,
     // publicationDate
     '2021-12-03',
     // timeToRead
     10,
+    // publisher
     _publisher,
     // image
     null,
+    // sourceUrl
     'source-url',
     // author
     'Cassandre Lueilwitz',
@@ -443,8 +479,11 @@ class MockDTO {
   );
 
   static final _freeMediaItemArticle = MediaItemDTO.article(
+    // id
     'id-free',
+    // slug
     'slug-free',
+    // url
     'url',
     // title
     'NSA files: Decoded',
@@ -452,17 +491,28 @@ class MockDTO {
     'NSA files: Decoded',
     // credits
     'This article originally appeared here',
+    // type
     'FREE',
+    // kind
+    _kind,
+    // publicationDate
     '2021-12-03',
     // timeToRead
     10,
+    // publisher
     _publisher,
+    // image
     _articleImageRemote,
+    // sourceUrl
     'source-url',
     // author
     'Cassandre Lueilwitz',
     // hasAudioVersion
     false,
+  );
+
+  static final _kind = ArticleKindDTO(
+    'Opinion',
   );
 
   static final _publisher = PublisherDTO(
@@ -497,6 +547,7 @@ extension on ArticleHeaderDTO {
     String? strippedTitle,
     String? credits,
     String? type,
+    ArticleKindDTO? kind,
     String? publicationDate,
     int? timeToRead,
     PublisherDTO? publisher,
@@ -513,6 +564,7 @@ extension on ArticleHeaderDTO {
       strippedTitle ?? this.strippedTitle,
       credits ?? this.credits,
       type ?? this.type,
+      kind ?? this.kind,
       publicationDate ?? this.publicationDate,
       timeToRead ?? this.timeToRead,
       publisher ?? this.publisher,

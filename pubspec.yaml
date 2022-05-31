@@ -45,7 +45,7 @@ dependencies:
   flutter_markdown:
     git:
       url: https://github.com/dawidkiteo/packages.git
-      ref: version/0-6-8
+      ref: version/0-7-0
       path: packages/flutter_markdown
   cloudinary_sdk: 3.0.1+7
   rxdart: 0.27.3
@@ -86,7 +86,7 @@ dependencies:
   gql: 0.13.1
   http: 0.13.4
   provider: 6.0.2
-  markdown: 4.0.1
+  markdown: 5.0.0
   html: 0.15.0
   shared_preferences: 2.0.15
   oauth2: 2.0.0

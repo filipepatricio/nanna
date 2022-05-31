@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
@@ -27,6 +28,7 @@ class TestData {
       ImageDTOMapper(),
     ),
     ArticleTypeDTOMapper(),
+    ArticleKindDTOMapper(),
   );
 
   static final _topicPreviewMapper = TopicPreviewDTOMapper(
@@ -62,6 +64,7 @@ class TestData {
           ImageDTOMapper(),
         ),
         ArticleTypeDTOMapper(),
+        ArticleKindDTOMapper(),
       ),
       _topicPreviewMapper,
       ColorDTOMapper(),

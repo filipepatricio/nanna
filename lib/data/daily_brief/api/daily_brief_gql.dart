@@ -10,10 +10,15 @@ class DailyBriefGql {
         id
         $_greeting
         $_goodbye
+        introduction {
+          icon
+          text
+        }
         numberOfTopics
         topics {
           ${CommonGQLModels.topic}
         }
+        date
       }
     }
   ''',

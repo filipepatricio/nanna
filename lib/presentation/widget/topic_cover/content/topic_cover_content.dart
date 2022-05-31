@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
@@ -55,14 +54,13 @@ class _CoverContentLarge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned.fill(
-      top: AppDimens.xl,
-      bottom: AppDimens.l,
-      left: AppDimens.l,
-      right: AppDimens.l,
+    return Padding(
+      padding: const EdgeInsets.all(AppDimens.m),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const Spacer(),
           InformedMarkdownBody(
             markdown: topic.title,
             baseTextStyle: AppTypography.h1ExtraBold.copyWith(
@@ -70,44 +68,29 @@ class _CoverContentLarge extends StatelessWidget {
             ),
             maxLines: 4,
           ),
-          const SizedBox(height: AppDimens.s),
-          UpdatedLabel(
-            dateTime: topic.lastUpdatedAt,
-            mode: mode,
-          ),
-          const Spacer(),
-          TopicOwnerAvatar(
-            owner: topic.owner,
-            withPrefix: true,
-            underlined: true,
-            mode: mode,
-            textStyle: AppTypography.h4Bold,
-            onTap: () => AutoRouter.of(context).push(
-              TopicOwnerPageRoute(owner: topic.owner, fromTopicSlug: topic.slug),
-            ),
-          ),
-          const SizedBox(height: AppDimens.s),
-          InformedMarkdownBody(
-            markdown: topic.introduction,
-            baseTextStyle: AppTypography.b3MediumLora.copyWith(
-              color: darkMode ? null : AppColors.white,
-            ),
-            maxLines: 5,
-          ),
-          const SizedBox(height: AppDimens.m),
+          const SizedBox(height: AppDimens.l),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              PublisherLogoRow(
-                topic: topic,
-                mode: mode,
+              Flexible(
+                child: TopicOwnerAvatar(
+                  owner: topic.owner,
+                  withPrefix: true,
+                  underlined: true,
+                  mode: mode,
+                  imageSize: AppDimens.l,
+                  textStyle: AppTypography.h5BoldSmall.copyWith(height: 1.5),
+                  onTap: () => AutoRouter.of(context).push(
+                    TopicOwnerPageRoute(owner: topic.owner, fromTopicSlug: topic.slug),
+                  ),
+                ),
               ),
-              const Spacer(),
               Text(
                 LocaleKeys.readingList_articleCount.tr(
                   args: [topic.entryCount.toString()],
                 ),
-                style: AppTypography.b3Regular.copyWith(
+                style: AppTypography.metadata1Medium.copyWith(
                   height: 1.5,
                   color: darkMode ? null : AppColors.white,
                 ),

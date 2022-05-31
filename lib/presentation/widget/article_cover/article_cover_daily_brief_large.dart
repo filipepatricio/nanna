@@ -1,20 +1,19 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_editors_note.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_labels_editors_note.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/article_cover_shadow.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
 
-class PhotoStackedCover extends StatelessWidget {
+class ArticleCoverDailyBriefLarge extends StatelessWidget {
   final MediaItemArticle article;
   final String? editorsNote;
 
-  const PhotoStackedCover({
+  const ArticleCoverDailyBriefLarge({
     required this.article,
     this.editorsNote,
     Key? key,
@@ -27,6 +26,7 @@ class PhotoStackedCover extends StatelessWidget {
 
     return Container(
       width: double.infinity,
+      height: AppDimens.articleLargeImageCoverHeight,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         boxShadow: articleCoverShadows,
@@ -45,15 +45,21 @@ class PhotoStackedCover extends StatelessWidget {
             ],
             Align(
               alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: AppDimens.l),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppDimens.m,
+                        AppDimens.m,
+                        AppDimens.m,
+                        AppDimens.l,
+                      ),
                       child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Row(
@@ -67,39 +73,30 @@ class PhotoStackedCover extends StatelessWidget {
                                   showReadTime: false,
                                   showLogo: true,
                                   showPublisher: true,
+                                  textStyle: AppTypography.metadata1Medium,
                                 ),
                               ),
                               if (article.hasAudioVersion) AudioIcon.light(),
                             ],
                           ),
-                          const SizedBox(height: AppDimens.m),
-                          InformedMarkdownBody(
-                            markdown: article.title,
-                            baseTextStyle: AppTypography.h1Bold.copyWith(
+                          Text(
+                            article.strippedTitle,
+                            style: AppTypography.h4ExtraBold.copyWith(
                               color: AppColors.white,
                               overflow: TextOverflow.ellipsis,
+                              height: 1.7,
                             ),
-                            highlightColor: AppColors.transparent,
                             maxLines: 5,
                           ),
                         ],
                       ),
                     ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: AppDimens.l, bottom: AppDimens.l),
-                      child: DottedArticleInfo(
-                        article: article,
-                        showPublisher: false,
-                        isLight: true,
-                      ),
-                    ),
-                    if (editorsNote != null)
-                      ArticleEditorsNote(
-                        note: editorsNote!,
-                      ),
-                  ],
-                ),
+                  ),
+                  ArticleLabelsEditorsNote(
+                    note: editorsNote,
+                    article: article,
+                  ),
+                ],
               ),
             ),
           ],

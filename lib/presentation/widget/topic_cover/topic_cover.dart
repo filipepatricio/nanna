@@ -88,14 +88,27 @@ class TopicCover extends HookWidget {
             child: Stack(
               children: state.map(
                 idle: (data) => [
-                  TopicCoverImage(
-                    topic: topic,
-                    showPhoto: data.showPhoto,
+                  Stack(
+                    children: [
+                      Positioned.fill(
+                        child: TopicCoverImage(
+                          topic: topic,
+                          showPhoto: true,
+                          borderRadius: AppDimens.s,
+                        ),
+                      ),
+                      if (type == TopicCoverType.large)
+                        Positioned(
+                          top: AppDimens.m,
+                          left: AppDimens.m,
+                          child: CoverLabel.topic(topic: topic),
+                        ),
+                    ],
                   ),
                   TopicCoverContent(
                     topic: topic,
                     type: type,
-                    mode: data.showPhoto ? Brightness.light : Brightness.dark,
+                    mode: Brightness.light,
                   ),
                 ],
                 loading: (_) => [

@@ -16,11 +16,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 class RelaxView extends HookWidget {
-  final ValueNotifier<double> lastPageAnimationProgressState;
   final Headline goodbyeHeadline;
 
   const RelaxView({
-    required this.lastPageAnimationProgressState,
     required this.goodbyeHeadline,
     Key? key,
   }) : super(key: key);
@@ -29,67 +27,62 @@ class RelaxView extends HookWidget {
   Widget build(BuildContext context) {
     final cloudinaryProvider = useCloudinaryProvider();
 
-    return ValueListenableBuilder<double>(
-      valueListenable: lastPageAnimationProgressState,
-      builder: (context, value, child) {
-        final animation = AlwaysStoppedAnimation(Offset(-1 - (value > 0.5 ? (value - (1 + value)) : 0), 0));
-
-        return Opacity(
-          opacity: value > 0.5 ? (value - (1 - value)) : 0,
-          child: SlideTransition(
-            position: animation,
-            child: child,
-          ),
-        );
-      },
-      child: SizedBox(
-        height: AppDimens.todaysTopicCardStackHeight(context),
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (goodbyeHeadline.icon != null && !kIsTest)
-              CachedNetworkImage(
-                imageUrl: cloudinaryProvider
-                    .withPublicIdAsPng(goodbyeHeadline.icon!)
-                    .transform()
-                    .width(DimensionUtil.getPhysicalPixelsAsInt(168.0, context))
-                    .fit()
-                    .generateNotNull(),
-              )
-            else
-              SvgPicture.asset(AppVectorGraphics.relaxCoffee),
-            const SizedBox(height: AppDimens.l),
-            InformedMarkdownBody(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppDimens.m),
+        color: AppColors.darkLinen,
+      ),
+      height: AppDimens.todaysTopicCardStackHeight,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Spacer(flex: 1),
+          if (goodbyeHeadline.icon != null && !kIsTest)
+            CachedNetworkImage(
+              imageUrl: cloudinaryProvider
+                  .withPublicIdAsPng(goodbyeHeadline.icon!)
+                  .transform()
+                  .width(DimensionUtil.getPhysicalPixelsAsInt(168.0, context))
+                  .fit()
+                  .generateNotNull(),
+            )
+          else
+            SvgPicture.asset(AppVectorGraphics.relaxCoffee),
+          const SizedBox(height: AppDimens.l),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            child: InformedMarkdownBody(
               markdown: goodbyeHeadline.headline,
-              baseTextStyle: AppTypography.h1,
+              baseTextStyle: AppTypography.h2Medium,
               highlightColor: AppColors.limeGreen,
-              textAlignment: TextAlign.end,
+              textAlignment: TextAlign.center,
             ),
-            if (goodbyeHeadline.message != null) ...[
-              const SizedBox(height: AppDimens.ml),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: goodbyeHeadline.message,
-                      style: AppTypography.b2Regular,
-                    ),
-                    const TextSpan(text: ' '),
-                    TextSpan(
-                      text: LocaleKeys.todaysTopics_goToExplore.tr(),
-                      style: AppTypography.b2Bold.copyWith(decoration: TextDecoration.underline),
-                      recognizer: TapGestureRecognizer()..onTap = () => _goToExplore(context),
-                    ),
-                  ],
-                ),
+          ),
+          const Spacer(flex: 1),
+          if (goodbyeHeadline.message != null) ...[
+            const SizedBox(height: AppDimens.ml),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: goodbyeHeadline.message,
+                    style: AppTypography.b2Medium,
+                  ),
+                  const TextSpan(text: ' '),
+                  TextSpan(
+                    text: LocaleKeys.todaysTopics_goToExplore.tr(),
+                    style: AppTypography.b2Bold.copyWith(decoration: TextDecoration.underline),
+                    recognizer: TapGestureRecognizer()..onTap = () => _goToExplore(context),
+                  ),
+                ],
               ),
-            ],
-            const SizedBox(height: AppDimens.xc),
+            ),
           ],
-        ),
+          const SizedBox(height: AppDimens.l),
+        ],
       ),
     );
   }

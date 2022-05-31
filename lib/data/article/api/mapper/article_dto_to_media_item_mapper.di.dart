@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
@@ -11,17 +12,20 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemA
   final ArticleImageDTOMapper _articleImageDTOMapper;
   final PublisherDTOMapper _publisherDTOMapper;
   final ArticleTypeDTOMapper _articleTypeDTOMapper;
+  final ArticleKindDTOMapper _articleKindDTOMapper;
 
   ArticleDTOToMediaItemMapper(
     this._articleImageDTOMapper,
     this._publisherDTOMapper,
     this._articleTypeDTOMapper,
+    this._articleKindDTOMapper,
   );
 
   @override
   MediaItemArticle call(ArticleHeaderDTO data) {
     final image = data.image;
     final publicationDate = data.publicationDate;
+    final kind = data.kind;
 
     return MediaItemArticle(
       id: data.id,
@@ -31,6 +35,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemA
       strippedTitle: data.strippedTitle,
       credits: data.credits,
       type: _articleTypeDTOMapper(data.type),
+      kind: kind != null ? _articleKindDTOMapper(kind) : null,
       timeToRead: data.timeToRead,
       publisher: _publisherDTOMapper(data.publisher),
       sourceUrl: data.sourceUrl,
