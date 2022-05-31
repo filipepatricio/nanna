@@ -24,7 +24,6 @@ env:
 
 jobs:
   deploy_android:
-    name: Deploy to Google Console
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -92,8 +91,20 @@ jobs:
           lane: 'internal_play_store'
           subdirectory: android
 
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          fields: repo,author,job,took,workflow,pullRequest
+          mention: 'here'
+          if_mention: failure
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+
   deploy_ios:
-    name: Deploy to TestFlight
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
@@ -163,3 +174,16 @@ jobs:
           PROVISIONING_PROFILE_SPECIFIER: 'match AppStore so.informed'
           PROVISIONING_PROFILE_SPECIFIER_NOTIFICATION: 'match AppStore so.informed.ImageNotification'
           APPLICATION_ID: '1577915307'
+
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          fields: repo,author,job,took,workflow,pullRequest
+          mention: 'here'
+          if_mention: failure
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}

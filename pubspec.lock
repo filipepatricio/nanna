@@ -1192,13 +1192,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  oauth2_client:
-    dependency: "direct main"
-    description:
-      name: oauth2_client
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.4.0"
   octo_image:
     dependency: transitive
     description:
@@ -1374,13 +1367,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
-  progressive_image:
-    dependency: "direct main"
-    description:
-      name: progressive_image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   provider:
     dependency: "direct main"
     description:
@@ -1409,13 +1395,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
-  random_string:
-    dependency: transitive
-    description:
-      name: random_string
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.1"
   rxdart:
     dependency: "direct main"
     description:

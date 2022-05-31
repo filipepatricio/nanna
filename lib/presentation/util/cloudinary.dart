@@ -43,12 +43,12 @@ extension CloudinaryTransformationExtension on CloudinaryTransformation {
   CloudinaryTransformation withLogicalSize(double width, double height, BuildContext context) {
     // Maintain expected aspect ratio, but fetching next 100th measure of width (this would decrease number of different image sizes fetched)
     final aspectRatio = width / height;
-    final roundedUpWidth = (width / 100).ceil() * 100.0;
-    final roundedUpHeight = (roundedUpWidth / aspectRatio).ceilToDouble();
 
-    return this
-        .width(DimensionUtil.getPhysicalPixelsAsInt(roundedUpWidth, context))
-        .height(DimensionUtil.getPhysicalPixelsAsInt(roundedUpHeight, context));
+    final physicalWidth = DimensionUtil.getPhysicalPixelsAsInt(width, context);
+    final roundedUpWidth = (physicalWidth / 100).ceil() * 100;
+    final roundedUpHeight = (roundedUpWidth / aspectRatio).ceil();
+
+    return this.width(roundedUpWidth).height(roundedUpHeight);
   }
 
   CloudinaryTransformation autoGravity() {
