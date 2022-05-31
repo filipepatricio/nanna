@@ -9,14 +9,14 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:flutter/material.dart';
 
-class SmallImageCover extends StatelessWidget {
+class ArticleCoverDailyBriefSmall extends StatelessWidget {
   final MediaItemArticle article;
   final String? editorsNote;
-  final Color backgroundColor;
+  final Color? coverColor;
 
-  const SmallImageCover({
+  const ArticleCoverDailyBriefSmall({
     required this.article,
-    required this.backgroundColor,
+    this.coverColor,
     this.editorsNote,
     Key? key,
   }) : super(key: key);
@@ -39,7 +39,7 @@ class SmallImageCover extends StatelessWidget {
           children: [
             Positioned.fill(
               child: Container(
-                color: backgroundColor,
+                color: coverColor ?? AppColors.mockedColors[0],
               ),
             ),
             Align(

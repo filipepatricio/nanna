@@ -148,7 +148,8 @@ class _IdleContent extends HookWidget {
       children: [
         _Greeting(
           greeting: currentBrief.greeting,
-        introduction: currentBrief.introduction,),
+          introduction: currentBrief.introduction,
+        ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {

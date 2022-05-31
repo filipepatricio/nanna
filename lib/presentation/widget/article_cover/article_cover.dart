@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/article/c
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover_daily_brief_large.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover_daily_brief_small.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_cover_content.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
@@ -11,7 +13,7 @@ import 'package:flutter/material.dart';
 
 const _coverSizeToScreenWidthFactor = 0.26;
 
-enum ArticleCoverType { exploreCarousel, exploreList }
+enum ArticleCoverType { exploreCarousel, exploreList, dailyBriefLarge, dailyBriefSmall }
 
 class ArticleCover extends StatelessWidget {
   const ArticleCover._(
@@ -19,6 +21,7 @@ class ArticleCover extends StatelessWidget {
     required this.article,
     this.coverColor,
     this.onTap,
+    this.editorsNote,
     Key? key,
   }) : super(key: key);
 
@@ -26,6 +29,7 @@ class ArticleCover extends StatelessWidget {
   final MediaItemArticle article;
   final VoidCallback? onTap;
   final Color? coverColor;
+  final String? editorsNote;
 
   factory ArticleCover.exploreCarousel({
     required MediaItemArticle article,
@@ -51,6 +55,28 @@ class ArticleCover extends StatelessWidget {
         onTap: onTap,
       );
 
+  factory ArticleCover.dailyBriefLarge({
+    required MediaItemArticle article,
+    String? editorsNote,
+  }) =>
+      ArticleCover._(
+        ArticleCoverType.dailyBriefLarge,
+        article: article,
+        editorsNote: editorsNote,
+      );
+
+  factory ArticleCover.dailyBriefSmall({
+    required MediaItemArticle article,
+    Color? coverColor,
+    String? editorsNote,
+  }) =>
+      ArticleCover._(
+        ArticleCoverType.dailyBriefSmall,
+        article: article,
+        coverColor: coverColor,
+        editorsNote: editorsNote,
+      );
+
   @override
   Widget build(BuildContext context) {
     switch (_type) {
@@ -65,6 +91,17 @@ class ArticleCover extends StatelessWidget {
           onTap: onTap,
           article: article,
           coverColor: coverColor,
+        );
+      case ArticleCoverType.dailyBriefLarge:
+        return ArticleCoverDailyBriefLarge(
+          article: article,
+          editorsNote: editorsNote,
+        );
+      case ArticleCoverType.dailyBriefSmall:
+        return ArticleCoverDailyBriefSmall(
+          article: article,
+          coverColor: coverColor,
+          editorsNote: editorsNote,
         );
     }
   }

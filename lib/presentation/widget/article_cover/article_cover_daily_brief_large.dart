@@ -9,11 +9,11 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:flutter/material.dart';
 
-class LargeImageCover extends StatelessWidget {
+class ArticleCoverDailyBriefLarge extends StatelessWidget {
   final MediaItemArticle article;
   final String? editorsNote;
 
-  const LargeImageCover({
+  const ArticleCoverDailyBriefLarge({
     required this.article,
     this.editorsNote,
     Key? key,
