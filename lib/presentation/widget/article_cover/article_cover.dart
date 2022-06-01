@@ -1,19 +1,28 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_labels_editors_note.dart';
+import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/article_cover_shadow.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover_daily_brief_large.dart';
-import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover_daily_brief_small.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_cover_content.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/material.dart';
 
+part 'article_cover_bookmark_list.dart';
+part 'article_cover_daily_brief_large.dart';
+part 'article_cover_daily_brief_small.dart';
+
 const _coverSizeToScreenWidthFactor = 0.26;
 
-enum ArticleCoverType { exploreCarousel, exploreList, dailyBriefLarge, dailyBriefSmall }
+enum ArticleCoverType { exploreCarousel, exploreList, dailyBriefLarge, dailyBriefSmall, bookmarkList }
 
 class ArticleCover extends StatelessWidget {
   const ArticleCover._(
@@ -22,6 +31,10 @@ class ArticleCover extends StatelessWidget {
     this.coverColor,
     this.onTap,
     this.editorsNote,
+    this.height,
+    this.width,
+    this.shouldShowAudioIcon,
+    this.shouldShowTextOverlay,
     Key? key,
   }) : super(key: key);
 
@@ -30,6 +43,10 @@ class ArticleCover extends StatelessWidget {
   final VoidCallback? onTap;
   final Color? coverColor;
   final String? editorsNote;
+  final double? height;
+  final double? width;
+  final bool? shouldShowTextOverlay;
+  final bool? shouldShowAudioIcon;
 
   factory ArticleCover.exploreCarousel({
     required MediaItemArticle article,
@@ -77,6 +94,26 @@ class ArticleCover extends StatelessWidget {
         editorsNote: editorsNote,
       );
 
+  factory ArticleCover.bookmarkList({
+    required MediaItemArticle article,
+    required double height,
+    required double width,
+    Color coverColor = AppColors.transparent,
+    bool shouldShowTextOverlay = true,
+    bool shouldShowAudioIcon = true,
+    VoidCallback? onTap,
+  }) =>
+      ArticleCover._(
+        ArticleCoverType.bookmarkList,
+        article: article,
+        height: height,
+        width: width,
+        coverColor: coverColor,
+        onTap: onTap,
+        shouldShowAudioIcon: shouldShowAudioIcon,
+        shouldShowTextOverlay: shouldShowTextOverlay,
+      );
+
   @override
   Widget build(BuildContext context) {
     switch (_type) {
@@ -93,15 +130,27 @@ class ArticleCover extends StatelessWidget {
           coverColor: coverColor,
         );
       case ArticleCoverType.dailyBriefLarge:
-        return ArticleCoverDailyBriefLarge(
+        return _ArticleCoverDailyBriefLarge(
           article: article,
           editorsNote: editorsNote,
         );
       case ArticleCoverType.dailyBriefSmall:
-        return ArticleCoverDailyBriefSmall(
+        return _ArticleCoverDailyBriefSmall(
           article: article,
           coverColor: coverColor,
           editorsNote: editorsNote,
+        );
+      case ArticleCoverType.bookmarkList:
+        return _ArticleCoverBookmarkList(
+          article: article,
+          cardColor: coverColor!,
+          height: height!,
+          width: width!,
+          shouldShowAudioIcon: shouldShowAudioIcon!,
+          shouldShowTextOverlay: shouldShowTextOverlay!,
+          onTap: () => AutoRouter.of(context).push(
+            MediaItemPageRoute(article: article),
+          ),
         );
     }
   }

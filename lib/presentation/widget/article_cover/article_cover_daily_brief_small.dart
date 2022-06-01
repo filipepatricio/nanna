@@ -1,25 +1,16 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/article/article_labels_editors_note.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/article_cover_shadow.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/dotted_article_info.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
-import 'package:flutter/material.dart';
+part of 'article_cover.dart';
 
-class ArticleCoverDailyBriefSmall extends StatelessWidget {
-  final MediaItemArticle article;
-  final String? editorsNote;
-  final Color? coverColor;
-
-  const ArticleCoverDailyBriefSmall({
+class _ArticleCoverDailyBriefSmall extends StatelessWidget {
+  const _ArticleCoverDailyBriefSmall({
     required this.article,
     this.coverColor,
     this.editorsNote,
     Key? key,
   }) : super(key: key);
+
+  final MediaItemArticle article;
+  final String? editorsNote;
+  final Color? coverColor;
 
   @override
   Widget build(BuildContext context) {

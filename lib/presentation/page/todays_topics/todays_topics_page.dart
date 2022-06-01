@@ -84,7 +84,7 @@ class TodaysTopicsPage extends HookWidget {
                       AppDimens.l,
                       AppDimens.zero,
                       AppDimens.l,
-                      AppDimens.xxxc + AppDimens.xxl,
+                      AppDimens.l,
                     ),
                     sliver: state.maybeMap(
                       idle: (state) => _IdleContent(
@@ -241,31 +241,30 @@ class _Greeting extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
+        const SizedBox(height: AppDimens.xs),
         InformedMarkdownBody(
           markdown: greeting.headline,
           baseTextStyle: AppTypography.b3Medium.copyWith(color: AppColors.textGrey),
         ),
         if (intro != null) ...[
-          const SizedBox(height: AppDimens.s),
+          const SizedBox(height: AppDimens.m),
           Container(
             padding: const EdgeInsets.all(AppDimens.l),
             decoration: const BoxDecoration(
               color: AppColors.pastelGreen,
               borderRadius: BorderRadius.all(
-                Radius.circular(
-                  AppDimens.l,
-                ),
+                Radius.circular(AppDimens.l),
               ),
             ),
             child: InformedMarkdownBody(
-              markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)} ${intro.text}',
+              markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)}    ${intro.text}',
               baseTextStyle: AppTypography.b2Medium,
               textAlignment: TextAlign.left,
               markdownImageBuilder: MarkdownUtil.rawSvgMarkdownBuilder,
             ),
           ),
         ],
-        const SizedBox(height: AppDimens.l),
+        const SizedBox(height: AppDimens.m),
       ],
     );
   }

@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/article_list_item.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
@@ -27,11 +27,13 @@ class BookmarkListTile extends StatelessWidget {
   const BookmarkListTile({
     required this.bookmarkCover,
     required this.onRemoveBookmarkPressed,
+    this.isLast = false,
     Key? key,
   }) : super(key: key);
 
   final BookmarkTileCover bookmarkCover;
   final OnRemoveBookmarkPressed onRemoveBookmarkPressed;
+  final bool isLast;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +106,7 @@ class BookmarkListTile extends StatelessWidget {
               ],
             ),
           ),
-          const InformedDivider(),
+          if (!isLast) const InformedDivider(),
         ],
       ),
     );
@@ -185,9 +187,8 @@ extension on BookmarkTileCover {
     return map(
       standard: (_) {
         return bookmark.data.mapOrNull(
-              article: (data) => ArticleListItem(
+              article: (data) => ArticleCover.bookmarkList(
                 article: data.article,
-                themeColor: AppColors.background,
                 height: size.height,
                 width: size.width,
               ),
@@ -214,10 +215,9 @@ extension on BookmarkTileCover {
     Bookmark bookmark,
   ) {
     return bookmark.data.mapOrNull(
-      article: (data) => ArticleListItem(
+      article: (data) => ArticleCover.bookmarkList(
         article: data.article,
-        themeColor: AppColors.background,
-        cardColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+        coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
         height: size.height,
         width: size.width,
       ),
