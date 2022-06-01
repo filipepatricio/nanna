@@ -20,22 +20,7 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
   }
 
   @override
-  Future<bool> showPhotoOnTopicCover() {
-    return Future.value(false);
-  }
-
-  @override
-  Future<bool> showPillsOnExplorePage() {
-    return Future.value(false);
-  }
-
-  @override
   Future<String> initialTab() {
     return Future.value('');
-  }
-
-  @override
-  Future<bool> showSearchInExplorePage() {
-    return Future.value(true);
   }
 }

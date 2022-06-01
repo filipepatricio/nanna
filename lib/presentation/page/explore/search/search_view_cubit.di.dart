@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/show_search_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/domain/search/use_case/add_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_loader.di.dart';
@@ -16,12 +15,10 @@ import 'package:rxdart/rxdart.dart';
 class SearchViewCubit extends Cubit<SearchViewState> {
   SearchViewCubit(
     this._searchPaginationEngineProvider,
-    this._showSearchOnExplorePageUseCase,
     this._addSearchHistoryQueryUseCase,
     this._trackActivityUseCase,
   ) : super(SearchViewState.initial());
 
-  final ShowSearchOnExplorePageUseCase _showSearchOnExplorePageUseCase;
   final AddSearchHistoryQueryUseCase _addSearchHistoryQueryUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
@@ -34,8 +31,6 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   StreamSubscription? _nextPageSubscription;
 
   Future<void> initialize() async {
-    final showSearchBar = await _showSearchOnExplorePageUseCase();
-    emit(SearchViewState.initial(showSearchBar: showSearchBar));
     await _initializeQueryController();
   }
 

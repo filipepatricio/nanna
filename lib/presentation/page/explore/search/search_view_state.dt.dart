@@ -7,7 +7,7 @@ part 'search_view_state.dt.freezed.dart';
 @freezed
 class SearchViewState with _$SearchViewState {
   @Implements<BuildState>()
-  factory SearchViewState.initial({bool? showSearchBar}) = _SearchViewStateInitial;
+  factory SearchViewState.initial() = _SearchViewStateInitial;
 
   @Implements<BuildState>()
   factory SearchViewState.loading() = _SearchViewStateLoading;

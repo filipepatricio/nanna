@@ -36,7 +36,6 @@ void main() {
       publisher,
     ];
     final heroImage = FakeImage();
-    final coverImage = FakeImage();
     final expected = TopicPreview(
       'topic-id',
       'topic-slug',
@@ -48,14 +47,12 @@ void main() {
       DateTime.utc(2021, 12, 23, 11, 38, 26).toLocal(),
       publishers,
       heroImage,
-      coverImage,
       3,
     );
 
     when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
     when(publisherDTOMapper(any)).thenAnswer((realInvocation) => publisher);
     when(imageDTOMapper(dto.heroImage)).thenAnswer((realInvocation) => heroImage);
-    when(imageDTOMapper(dto.coverImage)).thenAnswer((realInvocation) => coverImage);
 
     final actual = mapper(dto);
 
@@ -72,7 +69,6 @@ void main() {
           .having((preview) => preview.lastUpdatedAt, 'lastUpdatedAt', expected.lastUpdatedAt)
           .having((preview) => preview.highlightedPublishers, 'highlightedPublishers', expected.highlightedPublishers)
           .having((preview) => preview.heroImage, 'heroImage', expected.heroImage)
-          .having((preview) => preview.coverImage, 'coverImage', expected.coverImage)
           .having((preview) => preview.entryCount, 'entryCount', expected.entryCount),
     );
   });

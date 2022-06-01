@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
-import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/explore_content_api_data_source.dart';
 import 'package:better_informed_mobile/data/explore/api/explore_content_gql.dart';
@@ -20,25 +19,7 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
 
-  int? _exploreContentHashCode;
   int? _exploreHighlightedContentHashCode;
-
-  @override
-  Future<ExploreContentDTO> getExploreContent() async {
-    final result = await _client.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.cacheAndNetwork,
-        document: ExploreContentGQL.content(),
-      ),
-    );
-
-    final dto = _responseResolver.resolve(
-      result,
-      (raw) => ExploreContentDTO.fromJson(raw),
-    );
-
-    return dto ?? (throw Exception('Explore content can not be null'));
-  }
 
   @override
   Future<ExploreHighlightedContentDTO> getExploreHighlightedContent() async {
@@ -73,32 +54,6 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
     );
 
     return dto ?? (throw Exception('Explore content area can not be null'));
-  }
-
-  @override
-  Stream<ExploreContentDTO?> exploreContentStream() async* {
-    final observableQuery = _client.watchQuery(
-      WatchQueryOptions(
-        document: ExploreContentGQL.content(),
-        fetchPolicy: FetchPolicy.cacheAndNetwork,
-        pollInterval: const Duration(minutes: 10),
-        fetchResults: true,
-      ),
-    );
-
-    yield* observableQuery.stream.map(
-      (result) => _responseResolver.resolve<ExploreContentDTO?>(
-        result,
-        (raw) {
-          final newHashCode = jsonEncode(raw).hashCode;
-          if (_exploreContentHashCode == newHashCode) {
-            return null;
-          }
-          _exploreContentHashCode = newHashCode;
-          return ExploreContentDTO.fromJson(raw);
-        },
-      ),
-    );
   }
 
   @override

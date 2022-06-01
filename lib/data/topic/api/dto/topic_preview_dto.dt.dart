@@ -17,7 +17,6 @@ class TopicPreviewDTO {
   final String lastUpdatedAt;
   final List<PublisherDTO> highlightedPublishers;
   final ImageDTO heroImage;
-  final ImageDTO coverImage;
   final int entryCount;
 
   TopicPreviewDTO(
@@ -31,7 +30,6 @@ class TopicPreviewDTO {
     this.lastUpdatedAt,
     this.highlightedPublishers,
     this.heroImage,
-    this.coverImage,
     this.entryCount,
   );
 

@@ -6,7 +6,8 @@ import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_map
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_style_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_area_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_pill_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/explore/api/mapper/explore_highlighted_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
@@ -56,7 +57,8 @@ class TestData {
     ),
   );
 
-  static final _exploreContentMapper = ExploreContentDTOMapper(
+  static final _exploreHighlightedContentMapper = ExploreHighlightedContentDTOMapper(
+    ExploreContentPillDTOMapper(),
     ExploreContentAreaDTOMapper(
       ArticleDTOToMediaItemMapper(
         ArticleImageDTOMapper(),
@@ -82,5 +84,6 @@ class TestData {
 
   static Topic get topicWithEditorOwner => _topicMapper(MockDTO.topicWithEditorOwner);
 
-  static ExploreContent get exploreContent => _exploreContentMapper(MockDTO.exploreContent);
+  static ExploreContent get exploreHighlightedContent =>
+      _exploreHighlightedContentMapper(MockDTO.exploreHighlightedContent);
 }

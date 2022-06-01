@@ -14,7 +14,6 @@ class TopicPreview {
     this.lastUpdatedAt,
     this.highlightedPublishers,
     this.heroImage,
-    this.coverImage,
     this.entryCount,
   );
 
@@ -28,6 +27,5 @@ class TopicPreview {
   final DateTime lastUpdatedAt;
   final List<Publisher> highlightedPublishers;
   final Image heroImage;
-  final Image coverImage;
   final int entryCount;
 }

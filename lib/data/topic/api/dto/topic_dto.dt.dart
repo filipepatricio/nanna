@@ -19,7 +19,6 @@ class TopicDTO {
   final String lastUpdatedAt;
   final List<PublisherDTO> highlightedPublishers;
   final ImageDTO heroImage;
-  final ImageDTO coverImage;
   final List<EntryDTO> entries;
   final List<SummaryCardDTO> summaryCards;
 
@@ -34,7 +33,6 @@ class TopicDTO {
     this.lastUpdatedAt,
     this.highlightedPublishers,
     this.heroImage,
-    this.coverImage,
     this.entries,
     this.summaryCards,
   );
