@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/show_pills_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover_cubit.di.dart';
@@ -63,11 +62,4 @@ class FakeTopicCoverCubit extends Fake implements TopicCoverCubit {
 
   @override
   Future<void> close() async {}
-}
-
-class FakeShowPillsOnExplorePageUseCase extends Fake implements ShowPillsOnExplorePageUseCase {
-  @override
-  Future<bool> call() async {
-    return true;
-  }
 }

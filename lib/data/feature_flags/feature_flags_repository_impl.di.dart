@@ -52,11 +52,6 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   }
 
   @override
-  Future<bool> showPillsOnExplorePage() async {
-    return await LDClient.boolVariation('show-pills-on-explore-page', false);
-  }
-
-  @override
   Future<String> initialTab() async {
     return await LDClient.stringVariation('root-route', '') ?? '';
   }

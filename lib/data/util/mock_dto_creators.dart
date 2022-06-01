@@ -13,7 +13,6 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
-import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
@@ -138,16 +137,6 @@ class MockDTO {
   );
 
   /// Explore
-
-  static final exploreContent = ExploreContentDTO(
-    [
-      _exploreTopicsArea,
-      _exploreArticlesArea,
-      _exploreHighlightedTopicsArea,
-      _exploreSmallTopicsArea,
-      _exploreArticlesListArea,
-    ],
-  );
 
   static final exploreHighlightedContent = ExploreHighlightedContentDTO(
     [
