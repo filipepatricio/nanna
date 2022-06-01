@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
@@ -13,6 +14,12 @@ import 'package:better_informed_mobile/presentation/page/todays_topics/todays_to
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
+
+const _minVisibilityToTrack = 0.9;
+const _trackEventTotalBufferTime = Duration(seconds: 1);
+const _trackEventBufferTime = Duration(milliseconds: 100);
+final _requiredEventsCount = _trackEventTotalBufferTime.inMilliseconds / _trackEventBufferTime.inMilliseconds;
 
 @injectable
 class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
@@ -30,6 +37,8 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final IncomingPushDataRefreshStreamUseCase _incomingPushDataRefreshStreamUseCase;
 
+  final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
+
   late bool _isTodaysTopicsTutorialStepSeen;
   late CurrentBrief _currentBrief;
 
@@ -40,6 +49,7 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   Future<void> close() async {
     await _dataRefreshSubscription?.cancel();
     await _currentBriefSubscription?.cancel();
+    await _trackItemController.close();
     await super.close();
   }
 
@@ -61,6 +71,8 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
       emit(TodaysTopicsPageState.showTutorialToast(LocaleKeys.tutorial_todaysTopicsSnackBarText.tr()));
       await _setTutorialStepSeenUseCase(TutorialStep.todaysTopics);
     }
+
+    _initializeItemPreviewTracker();
   }
 
   Future<void> loadTodaysTopics() async {
@@ -78,6 +90,51 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   void trackRelaxPage() =>
       _trackActivityUseCase.trackEvent(AnalyticsEvent.dailyBriefRelaxMessageViewed(_currentBrief.id));
 
-  void trackTopicPreviewed(String topicId, int position) =>
-      _trackActivityUseCase.trackEvent(AnalyticsEvent.dailyBriefTopicPreviewed(_currentBrief.id, topicId, position));
+  void trackTopicPreviewed(String topicId, int position, double visibility) {
+    final event = AnalyticsEvent.dailyBriefTopicPreviewed(_currentBrief.id, topicId, position);
+    _emitItemPreviewedEvent(topicId, event, visibility);
+  }
+
+  void _emitItemPreviewedEvent(String id, AnalyticsEvent event, double visibility) {
+    final visibilityEvent = _ItemVisibilityEvent(id, visibility > _minVisibilityToTrack, event);
+    _trackItemController.add(visibilityEvent);
+  }
+
+  void _initializeItemPreviewTracker() {
+    _trackItemController.stream
+        .groupBy(
+          (value) => value.id,
+          durationSelector: (grouped) => grouped.debounceTime(_trackEventTotalBufferTime * 2),
+        )
+        .flatMap(
+          (value) => value
+              .bufferTime(_trackEventBufferTime)
+              .scan<Queue<List<_ItemVisibilityEvent>>>(
+                (accumulated, buffered, index) {
+                  accumulated.add(buffered);
+                  if (accumulated.length > _requiredEventsCount) {
+                    accumulated.removeFirst();
+                  }
+
+                  return accumulated;
+                },
+                Queue(),
+              )
+              .where((event) => event.length == _requiredEventsCount)
+              .where((event) => event.expand((item) => item).every((item) => item.visible))
+              .where((event) => event.isNotEmpty)
+              .map((event) => event.expand((element) => element).first.event)
+              .distinct(),
+        )
+        .distinct()
+        .listen((event) => _trackActivityUseCase.trackEvent(event));
+  }
+}
+
+class _ItemVisibilityEvent {
+  _ItemVisibilityEvent(this.id, this.visible, this.event);
+
+  final String id;
+  final bool visible;
+  final AnalyticsEvent event;
 }
