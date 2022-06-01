@@ -13,11 +13,11 @@ class MarkdownUtil {
     return '![]($_rawSvgScheme:image/svg;base64,$rawSvgBase64)';
   }
 
-  static Widget rawSvgMarkdownBuilder(Uri uri, String? title, String? alt) {
+  static Widget rawSvgMarkdownBuilder(Uri uri, String? title, String? alt, double size) {
     if (uri.scheme == _rawSvgScheme) {
       final rawSvgBase64 = uri.path.split(',')[1];
       final rawSvg = utf8.decode(base64Decode(rawSvgBase64));
-      return SvgSpan(rawSvg: rawSvg);
+      return SvgSpan(rawSvg: rawSvg, size: size);
     }
 
     return const SizedBox.shrink();

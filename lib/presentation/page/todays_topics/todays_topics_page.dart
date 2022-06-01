@@ -257,10 +257,15 @@ class _Greeting extends StatelessWidget {
               ),
             ),
             child: InformedMarkdownBody(
-              markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)}    ${intro.text}',
+              markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)}   ${intro.text}',
               baseTextStyle: AppTypography.b2Medium,
               textAlignment: TextAlign.left,
-              markdownImageBuilder: MarkdownUtil.rawSvgMarkdownBuilder,
+              markdownImageBuilder: (uri, title, alt) => MarkdownUtil.rawSvgMarkdownBuilder(
+                uri,
+                title,
+                alt,
+                AppTypography.b2Medium.fontSize! * 1.2,
+              ),
             ),
           ),
         ],
