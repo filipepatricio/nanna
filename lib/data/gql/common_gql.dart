@@ -24,9 +24,6 @@ class CommonGQLModels {
     highlightedPublishers {
       $publisher
     }
-    coverImage {
-      publicId
-    }
     heroImage {
       $cloudinaryImage
     }

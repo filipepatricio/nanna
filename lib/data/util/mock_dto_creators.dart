@@ -186,8 +186,6 @@ class MockDTO {
     ],
     // heroImage
     _image,
-    // coverImage
-    _cover,
     [
       _premiumArticleEntry,
       _premiumArticleWithAudioEntry,
@@ -516,8 +514,6 @@ class MockDTO {
 
   static final _articleImageRemote = ArticleImageDTO.remote('url');
 
-  static final _cover = ImageDTO('covers/Cover_5');
-
   static final _summaryCardLong = SummaryCardDTO(
     'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mu.',
   );
@@ -577,7 +573,6 @@ extension on TopicDTO {
     String? lastUpdatedAt,
     List<PublisherDTO>? highlightedPublishers,
     ImageDTO? heroImage,
-    ImageDTO? coverImage,
     List<EntryDTO>? entries,
     List<SummaryCardDTO>? summaryCards,
   }) {
@@ -592,7 +587,6 @@ extension on TopicDTO {
       lastUpdatedAt ?? this.lastUpdatedAt,
       highlightedPublishers ?? this.highlightedPublishers,
       heroImage ?? this.heroImage,
-      coverImage ?? this.coverImage,
       entries ?? this.entries,
       summaryCards ?? this.summaryCards,
     );
@@ -610,7 +604,6 @@ extension on TopicDTO {
       lastUpdatedAt,
       highlightedPublishers,
       heroImage,
-      coverImage,
       entries.length,
     );
   }

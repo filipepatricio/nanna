@@ -31,7 +31,6 @@ class TopicPreviewDTOMapper implements Mapper<TopicPreviewDTO, TopicPreview> {
       DateTime.parse(data.lastUpdatedAt).toLocal(),
       data.highlightedPublishers.map((publisher) => _publisherDTOMapper(publisher)).toList(),
       _imageDTOMapper(data.heroImage),
-      _imageDTOMapper(data.coverImage),
       data.entryCount,
     );
   }

@@ -51,7 +51,6 @@ void main() {
       summaryCard,
     ];
     final heroImage = FakeImage();
-    final coverImage = FakeImage();
 
     final expected = Topic(
       id: 'topic-id',
@@ -66,7 +65,6 @@ void main() {
       topicSummaryList: summaryCards,
       highlightedPublishers: publishers,
       heroImage: heroImage,
-      coverImage: coverImage,
       entries: entries,
     );
 
@@ -75,7 +73,6 @@ void main() {
     when(entryDTOMapper(any)).thenAnswer((realInvocation) => entry);
     when(summaryCardDTOMapper(any)).thenAnswer((realInvocation) => summaryCard);
     when(imageDTOMapper(dto.heroImage)).thenAnswer((realInvocation) => heroImage);
-    when(imageDTOMapper(dto.coverImage)).thenAnswer((realInvocation) => coverImage);
 
     final actual = mapper(dto);
 
@@ -93,8 +90,7 @@ void main() {
           .having((preview) => preview.entries, 'readingList', expected.entries)
           .having((preview) => preview.lastUpdatedAt, 'lastUpdatedAt', expected.lastUpdatedAt)
           .having((preview) => preview.highlightedPublishers, 'highlightedPublishers', expected.highlightedPublishers)
-          .having((preview) => preview.heroImage, 'heroImage', expected.heroImage)
-          .having((preview) => preview.coverImage, 'coverImage', expected.coverImage),
+          .having((preview) => preview.heroImage, 'heroImage', expected.heroImage),
     );
   });
 }

@@ -9,7 +9,5 @@ abstract class FeaturesFlagsRepository {
     String clientPlatform,
   );
 
-  Future<bool> showPhotoOnTopicCover();
-
   Future<String> initialTab();
 }

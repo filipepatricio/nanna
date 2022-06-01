@@ -1,8 +1,6 @@
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_state.dt.dart';
 import 'package:mockito/mockito.dart';
@@ -45,20 +43,6 @@ class FakeAudioPlayerBannerCubit extends Fake implements AudioPlayerBannerCubit 
 
   @override
   Stream<AudioPlayerBannerState> get stream => Stream.value(state);
-
-  @override
-  Future<void> close() async {}
-}
-
-class FakeTopicCoverCubit extends Fake implements TopicCoverCubit {
-  @override
-  Future<void> initialize() async {}
-
-  @override
-  TopicCoverState get state => TopicCoverState.idle(showPhoto: true);
-
-  @override
-  Stream<TopicCoverState> get stream => Stream.value(state);
 
   @override
   Future<void> close() async {}

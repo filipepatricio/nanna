@@ -20,7 +20,6 @@ class Topic {
   final List<Publisher> highlightedPublishers;
   final TopicCategory? category;
   final Image heroImage;
-  final Image coverImage;
   final List<Entry> entries;
 
   Topic({
@@ -35,7 +34,6 @@ class Topic {
     required this.topicSummaryList,
     required this.highlightedPublishers,
     required this.heroImage,
-    required this.coverImage,
     required this.entries,
     this.category,
   });
@@ -56,7 +54,6 @@ class Topic {
       lastUpdatedAt,
       highlightedPublishers,
       heroImage,
-      coverImage,
       entries.length,
     );
   }

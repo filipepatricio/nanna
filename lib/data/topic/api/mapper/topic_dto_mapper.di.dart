@@ -40,7 +40,6 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
       lastUpdatedAt: DateTime.parse(data.lastUpdatedAt).toLocal(),
       highlightedPublishers: data.highlightedPublishers.map<Publisher>(_publisherDTOMapper).toList(),
       heroImage: _imageDTOMapper(data.heroImage),
-      coverImage: _imageDTOMapper(data.coverImage),
       entries: data.entries.map<Entry>(_entryDTOMapper).toList(),
       topicSummaryList: data.summaryCards.map<TopicSummary>(_summaryCardDTOMapper).toList(),
     );

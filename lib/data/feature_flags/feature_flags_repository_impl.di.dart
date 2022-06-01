@@ -47,11 +47,6 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   }
 
   @override
-  Future<bool> showPhotoOnTopicCover() async {
-    return await LDClient.boolVariation('photo-on-topic-card', false);
-  }
-
-  @override
   Future<String> initialTab() async {
     return await LDClient.stringVariation('root-route', '') ?? '';
   }
