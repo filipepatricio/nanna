@@ -134,6 +134,8 @@ class MockDTO {
     ],
     3,
     DateTime(2022, 05, 10).toIso8601String(),
+    //entries
+    [],
   );
 
   /// Explore

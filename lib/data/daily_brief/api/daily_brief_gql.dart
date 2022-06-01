@@ -19,6 +19,9 @@ class DailyBriefGql {
           ${CommonGQLModels.topic}
         }
         date
+        entries {
+          $_briefEntry
+			  }
       }
     }
   ''',
@@ -38,5 +41,21 @@ class DailyBriefGql {
       message
       icon
     }
+  ''';
+
+  static const String _briefEntry = '''
+    style {
+				backgroundColor
+				type
+			}
+			item {
+				__typename
+				... on Article {
+          ${CommonGQLModels.article}
+				}
+				... on Topic {
+					${CommonGQLModels.topic}
+				}
+			}
   ''';
 }

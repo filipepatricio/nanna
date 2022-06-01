@@ -93,19 +93,25 @@ class TodaysTopicsPage extends HookWidget {
                         cardStackWidth: cardStackWidth,
                         cardStackHeight: cardStackHeight,
                       ),
-                      error: (_) => SliverToBoxAdapter(
-                        child: Center(
-                          child: CardsErrorView(
-                            retryAction: cubit.loadTodaysTopics,
-                            size: Size(cardStackWidth, cardStackHeight),
+                      error: (_) => SliverPadding(
+                        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                        sliver: SliverToBoxAdapter(
+                          child: Center(
+                            child: CardsErrorView(
+                              retryAction: cubit.loadTodaysTopics,
+                              size: Size(cardStackWidth, cardStackHeight),
+                            ),
                           ),
                         ),
                       ),
-                      loading: (_) => SliverToBoxAdapter(
-                        child: TodaysTopicsLoadingView(
-                          coverSize: Size(
-                            cardStackWidth,
-                            cardStackHeight,
+                      loading: (_) => SliverPadding(
+                        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                        sliver: SliverToBoxAdapter(
+                          child: TodaysTopicsLoadingView(
+                            coverSize: Size(
+                              cardStackWidth,
+                              cardStackHeight,
+                            ),
                           ),
                         ),
                       ),

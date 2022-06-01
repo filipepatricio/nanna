@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_introduction_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
@@ -15,6 +16,7 @@ class CurrentBriefDTO {
     this.topics,
     this.numberOfTopics,
     this.date,
+    this.entries,
   );
 
   final String id;
@@ -24,6 +26,7 @@ class CurrentBriefDTO {
   final List<TopicDTO> topics;
   final int numberOfTopics;
   final String date;
+  final List<BriefEntryDTO> entries;
 
   factory CurrentBriefDTO.fromJson(Map<String, dynamic> json) => _$CurrentBriefDTOFromJson(json);
 }
