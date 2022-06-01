@@ -33,9 +33,4 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
   Future<String> initialTab() {
     return Future.value('');
   }
-
-  @override
-  Future<bool> showSearchInExplorePage() {
-    return Future.value(true);
-  }
 }
