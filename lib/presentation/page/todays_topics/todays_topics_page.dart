@@ -184,6 +184,9 @@ class _IdleContent extends HookWidget {
           onVisible: todaysTopicsCubit.trackRelaxPage,
           goodbyeHeadline: currentBrief.goodbye,
         ),
+        const SliverToBoxAdapter(
+          child: AudioPlayerBannerPlaceholder(),
+        ),
       ],
     );
   }
