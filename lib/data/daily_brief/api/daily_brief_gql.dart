@@ -14,10 +14,6 @@ class DailyBriefGql {
           icon
           text
         }
-        numberOfTopics
-        topics {
-          ${CommonGQLModels.topic}
-        }
         date
         entries {
           $_briefEntry
@@ -54,7 +50,7 @@ class DailyBriefGql {
           ${CommonGQLModels.article}
 				}
 				... on Topic {
-					${CommonGQLModels.topic}
+					${CommonGQLModels.topicPreview}
 				}
 			}
   ''';

@@ -2,10 +2,8 @@
 
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,6 +20,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String url,
     String title,
     String strippedTitle,
+    String? note,
     String credits,
     String type,
     ArticleKindDTO? kind,
@@ -35,7 +34,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
   ) = BriefEntryItemDTOArticle;
 
   @FreezedUnionValue('Topic')
-  const factory BriefEntryItemDTO.topic(
+  const factory BriefEntryItemDTO.topicPreview(
     String id,
     String slug,
     String title,
@@ -46,9 +45,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String lastUpdatedAt,
     List<PublisherDTO> highlightedPublishers,
     ImageDTO heroImage,
-    ImageDTO coverImage,
-    List<EntryDTO> entries,
-    List<SummaryCardDTO> summaryCards,
+    int entryCount,
   ) = BriefEntryItemDTOTopic;
 
   @FreezedUnionValue(unknownKey)

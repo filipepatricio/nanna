@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_loading_view.dart';
@@ -16,10 +15,10 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/markdown_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
+import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -156,27 +155,22 @@ class _IdleContent extends HookWidget {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              final currentTopic = currentBrief.topics[index];
-              return ViewVisibilityNotifier(
-                detectorKey: Key(currentTopic.id),
-                onVisible: () => todaysTopicsCubit.trackTopicPreviewed(currentTopic.id, index),
-                borderFraction: 0.6,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: cardStackHeight,
-                      width: cardStackWidth,
-                      child: TopicCover.large(
-                        topic: currentTopic.asPreview,
-                        onTap: () => _onTopicCardPressed(context, index, currentBrief),
-                      ),
+              final currentEntry = currentBrief.entries[index];
+              return Column(
+                children: [
+                  SizedBox(
+                    height: cardStackHeight,
+                    width: cardStackWidth,
+                    child: BriefEntryCover(
+                      briefEntry: currentEntry,
+                      briefId: currentBrief.id,
                     ),
-                    const SizedBox(height: AppDimens.l),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: AppDimens.l),
+                ],
               );
             },
-            childCount: currentBrief.topics.length,
+            childCount: currentBrief.entries.length,
           ),
         ),
         _RelaxSection(
@@ -187,16 +181,6 @@ class _IdleContent extends HookWidget {
           child: AudioPlayerBannerPlaceholder(),
         ),
       ],
-    );
-  }
-
-  void _onTopicCardPressed(BuildContext context, int index, CurrentBrief currentBrief) {
-    AutoRouter.of(context).push(
-      TopicPage(
-        topicSlug: currentBrief.topics[index].slug,
-        briefId: currentBrief.id,
-        topic: currentBrief.topics[index],
-      ),
     );
   }
 }

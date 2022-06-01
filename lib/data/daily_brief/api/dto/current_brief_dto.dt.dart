@@ -13,8 +13,6 @@ class CurrentBriefDTO {
     this.greeting,
     this.introduction,
     this.goodbye,
-    this.topics,
-    this.numberOfTopics,
     this.date,
     this.entries,
   );
@@ -23,8 +21,6 @@ class CurrentBriefDTO {
   final HeadlineDTO greeting;
   final CurrentBriefIntroductionDTO? introduction;
   final HeadlineDTO goodbye;
-  final List<TopicDTO> topics;
-  final int numberOfTopics;
   final String date;
   final List<BriefEntryDTO> entries;
 

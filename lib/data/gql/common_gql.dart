@@ -99,6 +99,7 @@ class CommonGQLModels {
       author
       title
       strippedTitle
+      note
       credits
       type
       kind {

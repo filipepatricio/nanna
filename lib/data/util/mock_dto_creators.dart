@@ -127,12 +127,6 @@ class MockDTO {
     ),
     // goodbye
     HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
-    [
-      topic,
-      topicWithEditorOwner,
-      topicWithUnknownOwner,
-    ],
-    3,
     DateTime(2022, 05, 10).toIso8601String(),
     //entries
     [],
@@ -379,6 +373,8 @@ class MockDTO {
     "Denmark's role in the NSA spying scandal",
     // strippedTitle
     "Denmark's role in the NSA spying scandal",
+    // note
+    'Note',
     // credits
     'This article originally appeared here',
     //type
@@ -412,6 +408,8 @@ class MockDTO {
     "Denmark's role in the NSA spying scandal",
     // strippedTitle
     "Denmark's role in the NSA spying scandal",
+    // note
+    'Note',
     // credits
     'This article originally appeared here',
     // type
@@ -445,6 +443,8 @@ class MockDTO {
     "Denmark's role in the NSA spying scandal",
     // strippedTitle
     "Denmark's role in the NSA spying scandal",
+    // note
+    'Note',
     // credits
     'This article originally appeared here',
     // type
@@ -478,6 +478,8 @@ class MockDTO {
     'NSA files: Decoded',
     // strippedTitle
     'NSA files: Decoded',
+    // note
+    'Note',
     // credits
     'This article originally appeared here',
     // type
@@ -532,6 +534,7 @@ extension on ArticleHeaderDTO {
     String? url,
     String? title,
     String? strippedTitle,
+    String? note,
     String? credits,
     String? type,
     ArticleKindDTO? kind,
@@ -549,6 +552,7 @@ extension on ArticleHeaderDTO {
       url ?? this.url,
       title ?? this.title,
       strippedTitle ?? this.strippedTitle,
+      note ?? this.note,
       credits ?? this.credits,
       type ?? this.type,
       kind ?? this.kind,
