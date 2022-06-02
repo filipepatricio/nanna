@@ -22,9 +22,7 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: AppDimens.articleSmallImageCoverHeight,
+      child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: borderRadius,
           boxShadow: articleCoverShadows,
@@ -41,15 +39,15 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
+                    Flexible(
                       child: Padding(
                         padding: const EdgeInsets.all(AppDimens.m),
                         child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Row(
@@ -69,6 +67,7 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                 if (article.hasAudioVersion) AudioIcon.dark(),
                               ],
                             ),
+                            const SizedBox(height: AppDimens.m),
                             Row(
                               children: [
                                 if (hasImage) ...[

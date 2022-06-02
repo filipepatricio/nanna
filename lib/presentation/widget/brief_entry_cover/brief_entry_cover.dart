@@ -13,11 +13,15 @@ class BriefEntryCover extends HookWidget {
   const BriefEntryCover({
     required this.briefEntry,
     required this.briefId,
+    required this.width,
+    required this.height,
     Key? key,
   }) : super(key: key);
 
   final BriefEntry briefEntry;
   final String briefId;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +31,14 @@ class BriefEntryCover extends HookWidget {
       case BriefEntryStyleType.articleCardWithLargeImage:
         return item.maybeMap(
           article: (data) => data.article.map(
-            article: (article) => ArticleCover.dailyBriefLarge(
-              article: article,
-              editorsNote: article.note,
-              onTap: () => context.navigateToArticle(article),
+            article: (article) => LimitedBox(
+              maxWidth: width,
+              maxHeight: height,
+              child: ArticleCover.dailyBriefLarge(
+                article: article,
+                editorsNote: article.note,
+                onTap: () => context.navigateToArticle(article),
+              ),
             ),
             unknown: (_) => const SizedBox(),
           ),
@@ -51,11 +59,15 @@ class BriefEntryCover extends HookWidget {
         );
       case BriefEntryStyleType.topicCard:
         return item.maybeMap(
-          topicPreview: (data) => TopicCover.large(
-            topic: data.topicPreview,
-            onTap: () => context.navigateToTopic(
-              topicPreview: data.topicPreview,
-              briefId: briefId,
+          topicPreview: (data) => LimitedBox(
+            maxWidth: width,
+            maxHeight: height,
+            child: TopicCover.large(
+              topic: data.topicPreview,
+              onTap: () => context.navigateToTopic(
+                topicPreview: data.topicPreview,
+                briefId: briefId,
+              ),
             ),
           ),
           orElse: () => const SizedBox(),

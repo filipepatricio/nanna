@@ -94,7 +94,7 @@ class AppDimens {
   static const topicViewSummaryTextHeight = 300.0;
 
   /// 350.0
-  static const todaysTopicCardStackHeight = 350.0;
+  static const briefEntryCardStackHeight = 350.0;
 
   /// 0.4
   static const exploreTopicCarousellSmallCoverWidthFactor = 0.4;

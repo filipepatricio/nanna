@@ -32,7 +32,7 @@ class RelaxView extends HookWidget {
         borderRadius: BorderRadius.circular(AppDimens.m),
         color: AppColors.darkLinen,
       ),
-      height: AppDimens.todaysTopicCardStackHeight,
+      height: AppDimens.briefEntryCardStackHeight,
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

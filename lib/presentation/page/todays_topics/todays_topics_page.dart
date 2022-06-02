@@ -33,7 +33,7 @@ class TodaysTopicsPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width;
-    const cardStackHeight = AppDimens.todaysTopicCardStackHeight;
+    const cardStackHeight = AppDimens.briefEntryCardStackHeight;
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
@@ -157,14 +157,13 @@ class _IdleContent extends HookWidget {
             (BuildContext context, int index) {
               final currentEntry = currentBrief.entries[index];
               return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(
-                    height: cardStackHeight,
+                  BriefEntryCover(
+                    briefEntry: currentEntry,
+                    briefId: currentBrief.id,
                     width: cardStackWidth,
-                    child: BriefEntryCover(
-                      briefEntry: currentEntry,
-                      briefId: currentBrief.id,
-                    ),
+                    height: cardStackHeight,
                   ),
                   const SizedBox(height: AppDimens.l),
                 ],
