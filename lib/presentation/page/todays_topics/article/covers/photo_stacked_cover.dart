@@ -65,8 +65,6 @@ class PhotoStackedCover extends StatelessWidget {
                                   isLight: true,
                                   showDate: false,
                                   showReadTime: false,
-                                  showLogo: true,
-                                  showPublisher: true,
                                 ),
                               ),
                               if (article.hasAudioVersion) AudioIcon.light(),
@@ -90,8 +88,8 @@ class PhotoStackedCover extends StatelessWidget {
                       padding: const EdgeInsets.only(left: AppDimens.l, bottom: AppDimens.l),
                       child: DottedArticleInfo(
                         article: article,
-                        showPublisher: false,
                         isLight: true,
+                        showPublisher: false,
                       ),
                     ),
                     if (editorsNote != null)

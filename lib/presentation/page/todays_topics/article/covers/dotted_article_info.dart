@@ -8,6 +8,8 @@ import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/widgets.dart';
 
+const _publisherMaxWidthRatio = 0.5;
+
 class DottedArticleInfo extends StatelessWidget {
   const DottedArticleInfo({
     required this.article,
@@ -43,6 +45,7 @@ class DottedArticleInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainColor = color ?? (isLight ? AppColors.white : AppColors.black);
+    final finalTextStyle = textStyle.copyWith(color: mainColor);
     final timeToRead = article.timeToRead;
     final publicationDate = article.publicationDate;
 
@@ -54,29 +57,16 @@ class DottedArticleInfo extends StatelessWidget {
         final String publisherName = article.publisher.name;
         final publisherNameSpan = TextSpan(
           text: publisherName,
-          style: textStyle.copyWith(color: mainColor),
+          style: finalTextStyle,
         );
         final publisherNameTextPainter = TextPainter(
           text: publisherNameSpan,
           textDirection: ui.TextDirection.ltr,
         );
         publisherNameTextPainter.layout(maxWidth: constraints.maxWidth);
-        final publisherNameLinesCount = publisherNameTextPainter.computeLineMetrics().length;
 
-        final String date = fullDate
-            ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate!)
-            : DateFormatUtil.formatShortMonthNameDay(publicationDate!);
-
-        final dateSpan = TextSpan(
-          text: date,
-          style: textStyle.copyWith(color: mainColor),
-        );
-        final dateTextPainter = TextPainter(
-          text: dateSpan,
-          textDirection: ui.TextDirection.ltr,
-        );
-        dateTextPainter.layout(maxWidth: constraints.maxWidth);
-        final dateLinesCount = dateTextPainter.computeLineMetrics().length;
+        final publisherNameWidthRatio = publisherNameTextPainter.size.width / constraints.maxWidth;
+        final renderInTwoRows = publisherNameWidthRatio >= _publisherMaxWidthRatio;
 
         return Wrap(
           runAlignment: WrapAlignment.center,
@@ -86,7 +76,7 @@ class DottedArticleInfo extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: centerContent ? MainAxisAlignment.center : MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: renderInTwoRows ? MainAxisSize.max : MainAxisSize.min,
                 children: [
                   if (showLogo) ...[
                     if (isLight)
@@ -97,7 +87,7 @@ class DottedArticleInfo extends StatelessWidget {
                   Flexible(
                     child: Text(
                       publisherName,
-                      style: textStyle.copyWith(color: mainColor),
+                      style: finalTextStyle,
                       maxLines: publisherMaxLines,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -105,22 +95,32 @@ class DottedArticleInfo extends StatelessWidget {
                 ],
               ),
             ],
-            if (canShowDate)
-              Text(
-                '${showPublisher && publisherNameLinesCount <= 1 ? ' · ' : ''}$date',
-                style: textStyle.copyWith(color: mainColor),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            if (canShowReadTime)
-              Text(
-                '${(showPublisher || canShowDate) && dateLinesCount <= 1 ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
-                  args: [timeToRead.toString()],
-                )}',
-                style: textStyle.copyWith(color: mainColor),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (showPublisher && (canShowDate || canShowReadTime) && !renderInTwoRows)
+                  Text(' · ', style: finalTextStyle),
+                if (canShowDate) ...[
+                  Text(
+                    fullDate
+                        ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate)
+                        : DateFormatUtil.formatShortMonthNameDay(publicationDate),
+                    style: finalTextStyle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+                if (canShowReadTime)
+                  Text(
+                    '${canShowDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
+                      args: [timeToRead.toString()],
+                    )}',
+                    style: finalTextStyle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            )
           ],
         );
       },
