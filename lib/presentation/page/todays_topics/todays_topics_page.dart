@@ -173,12 +173,9 @@ class _IdleContent extends HookWidget {
             childCount: currentBrief.entries.length,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: AppDimens.xxxc + AppDimens.ml),
-          child: _RelaxSection(
-            onVisible: todaysTopicsCubit.trackRelaxPage,
-            goodbyeHeadline: currentBrief.goodbye,
-          ),
+        _RelaxSection(
+          onVisible: todaysTopicsCubit.trackRelaxPage,
+          goodbyeHeadline: currentBrief.goodbye,
         ),
       ],
     );

@@ -59,7 +59,6 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                     isLight: true,
                                     showDate: false,
                                     showReadTime: false,
-
                                     textStyle: AppTypography.metadata1Medium,
                                     color: AppColors.textGrey,
                                   ),
