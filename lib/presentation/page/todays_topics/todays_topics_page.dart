@@ -172,12 +172,12 @@ class _IdleContent extends HookWidget {
             childCount: currentBrief.entries.length,
           ),
         ),
-        _RelaxSection(
-          onVisible: todaysTopicsCubit.trackRelaxPage,
-          goodbyeHeadline: currentBrief.goodbye,
-        ),
-        const SliverToBoxAdapter(
-          child: AudioPlayerBannerPlaceholder(),
+        Padding(
+          padding: const EdgeInsets.only(bottom: AppDimens.xxxc + AppDimens.ml),
+          child: _RelaxSection(
+            onVisible: todaysTopicsCubit.trackRelaxPage,
+            goodbyeHeadline: currentBrief.goodbye,
+          ),
         ),
       ],
     );
