@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -20,7 +22,10 @@ class DottedArticleInfo extends StatelessWidget {
     this.publisherMaxLines = 1,
     this.centerContent = false,
     Key? key,
-  })  : assert(showPublisher || showDate || showReadTime, 'Select at least one of the sections to show'),
+  })  : assert(
+          showPublisher || showDate || showReadTime,
+          'Select at least one of the sections to show',
+        ),
         super(key: key);
 
   final MediaItemArticle article;
@@ -44,50 +49,81 @@ class DottedArticleInfo extends StatelessWidget {
     final canShowReadTime = showReadTime && timeToRead != null;
     final canShowDate = showDate && publicationDate != null;
 
-    return Wrap(
-      runAlignment: WrapAlignment.center,
-      alignment: centerContent ? WrapAlignment.center : WrapAlignment.start,
-      children: [
-        if (showPublisher) ...[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: centerContent ? MainAxisAlignment.center : MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showLogo) ...[
-                if (isLight)
-                  PublisherLogo.light(publisher: article.publisher)
-                else
-                  PublisherLogo.dark(publisher: article.publisher),
-              ],
-              Flexible(
-                child: Text(
-                  article.publisher.name,
-                  style: textStyle.copyWith(color: mainColor),
-                  maxLines: publisherMaxLines,
-                  overflow: TextOverflow.ellipsis,
-                ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final String publisherName = article.publisher.name;
+        final publisherNameSpan = TextSpan(
+          text: publisherName,
+          style: textStyle.copyWith(color: mainColor),
+        );
+        final publisherNameTextPainter = TextPainter(
+          text: publisherNameSpan,
+          textDirection: ui.TextDirection.ltr,
+        );
+        publisherNameTextPainter.layout(maxWidth: constraints.maxWidth);
+        final publisherNameLinesCount = publisherNameTextPainter.computeLineMetrics().length;
+
+        final String date = fullDate
+            ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate!)
+            : DateFormatUtil.formatShortMonthNameDay(publicationDate!);
+
+        final dateSpan = TextSpan(
+          text: date,
+          style: textStyle.copyWith(color: mainColor),
+        );
+        final dateTextPainter = TextPainter(
+          text: dateSpan,
+          textDirection: ui.TextDirection.ltr,
+        );
+        dateTextPainter.layout(maxWidth: constraints.maxWidth);
+        final dateLinesCount = dateTextPainter.computeLineMetrics().length;
+
+        return Wrap(
+          runAlignment: WrapAlignment.center,
+          alignment: centerContent ? WrapAlignment.center : WrapAlignment.start,
+          children: [
+            if (showPublisher) ...[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: centerContent ? MainAxisAlignment.center : MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (showLogo) ...[
+                    if (isLight)
+                      PublisherLogo.light(publisher: article.publisher)
+                    else
+                      PublisherLogo.dark(publisher: article.publisher),
+                  ],
+                  Flexible(
+                    child: Text(
+                      publisherName,
+                      style: textStyle.copyWith(color: mainColor),
+                      maxLines: publisherMaxLines,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
-        if (canShowDate)
-          Text(
-            '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
-            style: textStyle.copyWith(color: mainColor),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        if (canShowReadTime)
-          Text(
-            '${showPublisher || canShowDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
-              args: [timeToRead.toString()],
-            )}',
-            style: textStyle.copyWith(color: mainColor),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-      ],
+            if (canShowDate)
+              Text(
+                '${showPublisher && publisherNameLinesCount <= 1 ? ' · ' : ''}$date',
+                style: textStyle.copyWith(color: mainColor),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            if (canShowReadTime)
+              Text(
+                '${(showPublisher || canShowDate) && dateLinesCount <= 1 ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
+                  args: [timeToRead.toString()],
+                )}',
+                style: textStyle.copyWith(color: mainColor),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+          ],
+        );
+      },
     );
   }
 }
