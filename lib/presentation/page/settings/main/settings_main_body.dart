@@ -23,14 +23,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 const _feedbackEmail = 'feedback@informed.so';
 
 class SettingsMainBody extends HookWidget {
-  final SettingsMainCubit cubit;
-  final SnackbarController snackbarController;
-
   const SettingsMainBody({
     required this.cubit,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
+
+  final SettingsMainCubit cubit;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {

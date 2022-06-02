@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/page/profile/profile_empty_p
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
@@ -187,6 +188,7 @@ class _Idle extends StatelessWidget {
                 onRemoveBookmarkPressed: (bookmark) {
                   cubit.removeBookmark(bookmark);
                 },
+                isLast: index == bookmarks.length - 1,
               );
             },
             childCount: bookmarks.length,
@@ -201,10 +203,8 @@ class _Idle extends StatelessWidget {
               ),
             ),
           ),
-        const SliverPadding(
-          padding: EdgeInsets.only(
-            bottom: AppDimens.audioBannerHeight,
-          ),
+        const SliverToBoxAdapter(
+          child: AudioPlayerBannerPlaceholder(),
         ),
       ],
     );

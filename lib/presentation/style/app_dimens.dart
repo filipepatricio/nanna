@@ -57,9 +57,6 @@ class AppDimens {
   /// 18.0
   static const backArrowSize = 18.0;
 
-  /// 14
-  static const readMoreArrowSize = 14.0;
-
   /// 44.0
   static const settingsItemHeight = 44.0;
 
@@ -87,9 +84,6 @@ class AppDimens {
   /// 0.85
   static const topicCardWidthViewportFraction = 0.85;
 
-  // 0.7
-  static const relaxViewportFraction = 0.7;
-
   /// 32
   static const avatarSize = 32.0;
 
@@ -105,14 +99,8 @@ class AppDimens {
   /// 0.4
   static const exploreTopicCarousellSmallCoverWidthFactor = 0.4;
 
-  /// 0.5
-  static double exploreTopicCarousellSmallCoverImageHeightFactor = 0.5;
-
   /// 1.65
   static double exploreTopicCarousellSmallCoverAspectRatio = 1.65;
-
-  /// 1.8
-  static double exploreSeeAllSmallCoverAspectRatio = 1.55;
 
   /// 0.72
   static const exploreTopicCellSizeFactor = 0.72;
@@ -140,42 +128,11 @@ class AppDimens {
   /// 0 / 45
   static double topicViewStackedCardsDividerHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 45.0;
 
-  /// 283 / 270
-  static double topicViewArticleSectionImageHeight(BuildContext context) => context.isSmallDevice ? 283.0 : 270.0;
-
-  /// 0 / 120
-  static double topicViewArticleSectionNoteHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 120.0;
-
-  /// 145 or 195 + [topicViewArticleSectionImageHeight] + [topicViewArticleSectionNoteHeight] + [topicViewStackedCardsDividerHeight]
-  static double topicViewArticleSectionFullHeight(BuildContext context) =>
-      (context.isSmallDevice ? 145.0 : 195.0) +
-      topicViewArticleSectionImageHeight(context) +
-      topicViewArticleSectionNoteHeight(context) +
-      topicViewStackedCardsDividerHeight(context);
-
   /// Full screen width
   static double photoCaptionImageContainerWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   /// 65% Full screen height
   static double photoCaptionImageContainerHeight(BuildContext context) => MediaQuery.of(context).size.height * .65;
-
-  /// 72
-  static const topicViewArticleSectionArticleCountLabelHeight = 72.0;
-
-  /// 366
-  static const exploreAreaFeaturedArticleHeight = 366.0;
-
-  /// 155
-  static const exploreAreaArticleListItemWidth = 155.0;
-
-  /// 260
-  static const exploreAreaArticleListItemHeight = 260.0;
-
-  /// 260
-  static const exploreAreaArticleSeeAllCoverHeight = 260.0;
-
-  /// 260
-  static const exploreAreaTopicSeeAllCoverHeight = 250.0;
 
   /// 170
   static const explorePillAreaHeight = 170.0;
@@ -183,12 +140,16 @@ class AppDimens {
   /// 50
   static const explorePillHeight = 50.0;
 
+  /// 32
   static const bookmarkIconSize = 32.0;
 
+  /// 1024
   static const articleAudioCoverSize = 1024;
 
+  /// 80
   static const audioBannerHeight = 80.0;
 
+  /// 42
   static const searchBarHeight = 42.0;
 
   static double textHeight({required TextStyle style, required int maxLines}) =>

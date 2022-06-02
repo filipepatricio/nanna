@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -21,11 +19,12 @@ class TodaysTopicsScrollableAppBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
-    final scrollOffset = useState(0.0);
+    final showCenterTitle = useState(false);
+
     useEffect(
       () {
         void listener() {
-          scrollOffset.value = scrollController.offset;
+          showCenterTitle.value = scrollController.offset >= AppDimens.s;
         }
 
         scrollController.addListener(listener);
@@ -33,7 +32,6 @@ class TodaysTopicsScrollableAppBar extends HookWidget {
       },
       [scrollController],
     );
-    final showCenterTitle = scrollOffset.value >= AppDimens.s;
 
     return SliverAppBar(
       backgroundColor: AppColors.background,
@@ -43,17 +41,14 @@ class TodaysTopicsScrollableAppBar extends HookWidget {
       centerTitle: true,
       elevation: 3.0,
       expandedHeight: AppDimens.appBarHeight,
-      title: showCenterTitle
-          ? Text(
-              DateFormatUtil.currentBriefDate(briefDate),
-              style: AppTypography.h4Bold.copyWith(
-                height: 2.25,
-                color: AppColors.textPrimary.withOpacity(
-                  min(1, scrollOffset.value / 20),
-                ),
-              ),
-            )
-          : const SizedBox.shrink(),
+      title: AnimatedOpacity(
+        duration: const Duration(milliseconds: 50),
+        opacity: showCenterTitle.value ? 1 : 0,
+        child: Text(
+          DateFormatUtil.currentBriefDate(briefDate),
+          style: AppTypography.h4Bold.copyWith(height: 2.25),
+        ),
+      ),
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Container(
