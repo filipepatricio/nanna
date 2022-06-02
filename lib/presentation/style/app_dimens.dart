@@ -116,8 +116,8 @@ class AppDimens {
   /// Full screen
   static double topicViewHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
 
-  /// The smallest value from 70% of screen height and 500
-  static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .70, 500);
+  /// The smallest value from 75% of screen height and 500
+  static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);
 
   /// 410
   static double articleLargeImageCoverHeight = 410;
@@ -154,4 +154,6 @@ class AppDimens {
 
   static double textHeight({required TextStyle style, required int maxLines}) =>
       (style.fontSize! * 1.05 * (style.height ?? 1)) * maxLines;
+
+  static double safeTopPadding(BuildContext context) => MediaQuery.of(context).padding.top;
 }

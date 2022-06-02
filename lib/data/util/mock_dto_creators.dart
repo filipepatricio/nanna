@@ -6,6 +6,9 @@ import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dar
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_introduction_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
@@ -28,6 +31,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.da
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
 
 const _mockedPillIcon = '''
@@ -129,11 +133,37 @@ class MockDTO {
     HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
     DateTime(2022, 05, 10).toIso8601String(),
     //entries
-    [],
+    [
+      BriefEntryDTO(
+        topic.asBriefEntryItem,
+        _briefEntryStyleTopic,
+      ),
+      BriefEntryDTO(
+        topicWithEditorOwner.asBriefEntryItem,
+        _briefEntryStyleTopic,
+      ),
+      BriefEntryDTO(
+        _freeArticle.asBriefEntryItem,
+        _briefEntryStyleArticleLarge,
+      ),
+      BriefEntryDTO(
+        premiumArticle.asBriefEntryItem,
+        _briefEntryStyleArticleSmall,
+      ),
+      BriefEntryDTO(
+        premiumArticleWithAudio.asBriefEntryItem,
+        _briefEntryStyleArticleLarge,
+      ),
+    ],
   );
 
-  /// Explore
+  static final _briefEntryStyleTopic = BriefEntryStyleDTO(null, BriefEntryStyleType.topicCard);
+  static final _briefEntryStyleArticleSmall =
+      BriefEntryStyleDTO('#F2E8E7', BriefEntryStyleType.articleCardWithSmallImage);
+  static final _briefEntryStyleArticleLarge = BriefEntryStyleDTO(null, BriefEntryStyleType.articleCardWithLargeImage);
 
+  /// Explore
+  ///
   static final exploreHighlightedContent = ExploreHighlightedContentDTO(
     [
       ExploreContentPillDTO.articles('articles', 'Articles', _mockedPillIcon),
@@ -210,6 +240,41 @@ class MockDTO {
   static final topicPreviewWithUnknownOwner = topicWithUnknownOwner.asPreview;
 
   /// Articles
+
+  static final _freeArticle = ArticleHeaderDTO(
+    // id
+    'id-free',
+    // slug
+    'slug-free',
+    // url
+    'url',
+    // title
+    "Denmark's role in the NSA spying scandal",
+    // strippedTitle
+    "Denmark's role in the NSA spying scandal",
+    // note
+    'Note',
+    // credits
+    'This article originally appeared here',
+    // type
+    'FREE',
+    // kind
+    _kind,
+    // publicationDate
+    '2021-12-03',
+    // timeToRead
+    10,
+    // publisher
+    _publisher,
+    // image
+    null,
+    // sourceUrl
+    'source-url',
+    // author
+    'Cassandre Lueilwitz',
+    // hasAudioVersion
+    false,
+  );
 
   static final premiumArticle = _freeArticle.copyWith(
     id: 'id-premium',
@@ -342,164 +407,24 @@ class MockDTO {
   );
 
   static final _premiumArticleEntry = EntryDTO(
-    _premiumMediaItemArticle,
+    premiumArticle.asMediaItem,
     // note
     'Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.',
     EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithBigImage),
   );
 
   static final _premiumArticleWithAudioEntry = EntryDTO(
-    premiumMediaItemArticleWithAudio,
+    premiumArticleWithAudio.asMediaItem,
     // note
     'Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.',
     EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithBigImage),
   );
 
   static final _freeArticleEntry = EntryDTO(
-    _freeMediaItemArticle,
+    _freeArticle.asMediaItem,
     // note
     'Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.',
     EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithoutImage),
-  );
-
-  static final _premiumMediaItemArticle = MediaItemDTO.article(
-    // id
-    'id-premium',
-    // slug
-    'slug-premium',
-    // url
-    'url',
-    // title
-    "Denmark's role in the NSA spying scandal",
-    // strippedTitle
-    "Denmark's role in the NSA spying scandal",
-    // note
-    'Note',
-    // credits
-    'This article originally appeared here',
-    //type
-    'PREMIUM',
-    // kind
-    _kind,
-    // publicationDate
-    '2021-12-03',
-    // timeToRead
-    10,
-    // publisher
-    _publisher,
-    // image
-    _articleImageCloudinary,
-    // sourceUrl
-    'source-url',
-    // author
-    'Cassandre Lueilwitz',
-    // hasAudioVersion
-    false,
-  );
-
-  static final premiumMediaItemArticleWithAudio = MediaItemDTO.article(
-    // id
-    'id-premium-audio',
-    // slug
-    'slug-premium-audio',
-    // url
-    'url',
-    // title
-    "Denmark's role in the NSA spying scandal",
-    // strippedTitle
-    "Denmark's role in the NSA spying scandal",
-    // note
-    'Note',
-    // credits
-    'This article originally appeared here',
-    // type
-    'PREMIUM',
-    // kind
-    _kind,
-    // publicationDate
-    '2021-12-03',
-    // timeToRead
-    10,
-    // publisher
-    _publisher,
-    // image
-    _articleImageCloudinary,
-    // sourceUrl
-    'source-url',
-    // author
-    'Cassandre Lueilwitz',
-    // hasAudioVersion
-    true,
-  ) as MediaItemDTOArticle;
-
-  static final _freeArticle = ArticleHeaderDTO(
-    // id
-    'id-free',
-    // slug
-    'slug-free',
-    // url
-    'url',
-    // title
-    "Denmark's role in the NSA spying scandal",
-    // strippedTitle
-    "Denmark's role in the NSA spying scandal",
-    // note
-    'Note',
-    // credits
-    'This article originally appeared here',
-    // type
-    'FREE',
-    // kind
-    _kind,
-    // publicationDate
-    '2021-12-03',
-    // timeToRead
-    10,
-    // publisher
-    _publisher,
-    // image
-    null,
-    // sourceUrl
-    'source-url',
-    // author
-    'Cassandre Lueilwitz',
-    // hasAudioVersion
-    false,
-  );
-
-  static final _freeMediaItemArticle = MediaItemDTO.article(
-    // id
-    'id-free',
-    // slug
-    'slug-free',
-    // url
-    'url',
-    // title
-    'NSA files: Decoded',
-    // strippedTitle
-    'NSA files: Decoded',
-    // note
-    'Note',
-    // credits
-    'This article originally appeared here',
-    // type
-    'FREE',
-    // kind
-    _kind,
-    // publicationDate
-    '2021-12-03',
-    // timeToRead
-    10,
-    // publisher
-    _publisher,
-    // image
-    _articleImageRemote,
-    // sourceUrl
-    'source-url',
-    // author
-    'Cassandre Lueilwitz',
-    // hasAudioVersion
-    false,
   );
 
   static final _kind = ArticleKindDTO(
@@ -516,8 +441,6 @@ class MockDTO {
 
   static final _articleImageCloudinary = ArticleImageDTO.cloudinary('topics/pizza');
 
-  static final _articleImageRemote = ArticleImageDTO.remote('url');
-
   static final _summaryCardLong = SummaryCardDTO(
     'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mu.',
   );
@@ -527,7 +450,7 @@ class MockDTO {
   );
 }
 
-extension on ArticleHeaderDTO {
+extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
   ArticleHeaderDTO copyWith({
     String? id,
     String? slug,
@@ -565,6 +488,48 @@ extension on ArticleHeaderDTO {
       hasAudioVersion ?? this.hasAudioVersion,
     );
   }
+
+  MediaItemDTO get asMediaItem {
+    return MediaItemDTO.article(
+      id,
+      slug,
+      url,
+      title,
+      strippedTitle,
+      note,
+      credits,
+      type,
+      kind,
+      publicationDate,
+      timeToRead,
+      publisher,
+      image,
+      sourceUrl,
+      author,
+      hasAudioVersion,
+    );
+  }
+
+  BriefEntryItemDTO get asBriefEntryItem {
+    return BriefEntryItemDTO.article(
+      id,
+      slug,
+      url,
+      title,
+      strippedTitle,
+      note,
+      credits,
+      type,
+      kind,
+      publicationDate,
+      timeToRead,
+      publisher,
+      image,
+      sourceUrl,
+      author,
+      hasAudioVersion,
+    );
+  }
 }
 
 extension on TopicDTO {
@@ -600,6 +565,22 @@ extension on TopicDTO {
 
   TopicPreviewDTO get asPreview {
     return TopicPreviewDTO(
+      id,
+      slug,
+      title,
+      strippedTitle,
+      introduction,
+      url,
+      owner,
+      lastUpdatedAt,
+      highlightedPublishers,
+      heroImage,
+      entries.length,
+    );
+  }
+
+  BriefEntryItemDTO get asBriefEntryItem {
+    return BriefEntryItemDTO.topicPreview(
       id,
       slug,
       title,

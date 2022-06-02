@@ -17,13 +17,13 @@ class BriefEntryItemDTOMapper implements Mapper<BriefEntryItemDTO, BriefEntryIte
 
   @override
   BriefEntryItem call(BriefEntryItemDTO data) {
-    final article = _briefEntryMediaItemDTOMapper(data);
-    final topicPreview = _briefEntryTopicPreviewDTOMapper(data);
     return data.map(
       article: (data) {
+        final article = _briefEntryMediaItemDTOMapper(data);
         return article != null ? BriefEntryItem.article(article: article) : const BriefEntryItem.unknown();
       },
       topicPreview: (data) {
+        final topicPreview = _briefEntryTopicPreviewDTOMapper(data);
         return topicPreview != null
             ? BriefEntryItem.topicPreview(topicPreview: topicPreview)
             : const BriefEntryItem.unknown();

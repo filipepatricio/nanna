@@ -34,6 +34,7 @@ class TodaysTopicsPage extends HookWidget {
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width;
     const cardStackHeight = AppDimens.briefEntryCardStackHeight;
+    final topPadding = AppDimens.safeTopPadding(context);
 
     useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
@@ -93,7 +94,7 @@ class TodaysTopicsPage extends HookWidget {
                         cardStackHeight: cardStackHeight,
                       ),
                       error: (_) => SliverPadding(
-                        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                        padding: EdgeInsets.only(top: topPadding),
                         sliver: SliverToBoxAdapter(
                           child: Center(
                             child: CardsErrorView(
@@ -104,7 +105,7 @@ class TodaysTopicsPage extends HookWidget {
                         ),
                       ),
                       loading: (_) => SliverPadding(
-                        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                        padding: EdgeInsets.only(top: topPadding),
                         sliver: SliverToBoxAdapter(
                           child: TodaysTopicsLoadingView(
                             coverSize: Size(
