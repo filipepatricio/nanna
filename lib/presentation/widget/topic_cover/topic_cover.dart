@@ -71,16 +71,15 @@ class TopicCover extends HookWidget {
         return GestureDetector(
           onTap: onTap,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppDimens.m),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(AppDimens.m),
+            ),
             child: Stack(
               children: [
                 Stack(
                   children: [
                     Positioned.fill(
-                      child: TopicCoverImage(
-                        topic: topic,
-                        borderRadius: AppDimens.s,
-                      ),
+                      child: TopicCoverImage(topic: topic),
                     ),
                     if (type == TopicCoverType.large)
                       Positioned(

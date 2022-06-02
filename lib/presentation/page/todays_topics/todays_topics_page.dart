@@ -90,7 +90,6 @@ class TodaysTopicsPage extends HookWidget {
                       idle: (state) => _IdleContent(
                         todaysTopicsCubit: cubit,
                         currentBrief: state.currentBrief,
-                        scrollController: scrollController,
                         cardStackWidth: cardStackWidth,
                         cardStackHeight: cardStackHeight,
                       ),
@@ -130,7 +129,6 @@ class _IdleContent extends HookWidget {
   const _IdleContent({
     required this.todaysTopicsCubit,
     required this.currentBrief,
-    required this.scrollController,
     required this.cardStackWidth,
     required this.cardStackHeight,
     Key? key,
@@ -138,7 +136,6 @@ class _IdleContent extends HookWidget {
 
   final TodaysTopicsPageCubit todaysTopicsCubit;
   final CurrentBrief currentBrief;
-  final ScrollController scrollController;
   final double cardStackWidth;
   final double cardStackHeight;
 
@@ -165,11 +162,7 @@ class _IdleContent extends HookWidget {
                       width: cardStackWidth,
                       child: TopicCover.large(
                         topic: currentTopic.asPreview,
-                        onTap: () => _onTopicCardPressed(
-                          context,
-                          index,
-                          currentBrief,
-                        ),
+                        onTap: () => _onTopicCardPressed(context, index, currentBrief),
                       ),
                     ),
                     const SizedBox(height: AppDimens.l),
@@ -256,7 +249,7 @@ class _Greeting extends StatelessWidget {
             decoration: const BoxDecoration(
               color: AppColors.pastelGreen,
               borderRadius: BorderRadius.all(
-                Radius.circular(AppDimens.l),
+                Radius.circular(AppDimens.m),
               ),
             ),
             child: InformedMarkdownBody(
