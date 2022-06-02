@@ -260,8 +260,6 @@ class _ArticleCoverExploreList extends StatelessWidget {
                       article: article,
                       isLight: false,
                       showLogo: false,
-                      showDate: true,
-                      showReadTime: true,
                       showPublisher: false,
                       fullDate: true,
                       textStyle: AppTypography.caption1Medium,
