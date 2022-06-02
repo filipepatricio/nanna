@@ -154,6 +154,10 @@ class MockDTO {
         premiumArticleWithAudio.asBriefEntryItem,
         _briefEntryStyleArticleLarge,
       ),
+      BriefEntryDTO(
+        topicWithUnknownOwner.asBriefEntryItem,
+        _briefEntryStyleTopic,
+      ),
     ],
   );
 
