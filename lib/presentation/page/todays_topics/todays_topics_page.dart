@@ -159,26 +159,28 @@ class _IdleContent extends HookWidget {
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
               final currentEntry = currentBrief.entries[index];
+
               return VisibilityDetector(
-                key: Key(currentTopic.id),
+                key: Key(currentEntry.id),
                 onVisibilityChanged: kIsTest
                     ? null
-                    : (visibility) => todaysTopicsCubit.trackTopicPreviewed(
-                  currentTopic.id,
-                  index,
-                  visibility.visibleFraction,
-                ),
+                    : (visibility) => todaysTopicsCubit.trackBriefEntryPreviewed(
+                          currentEntry,
+                          index,
+                          visibility.visibleFraction,
+                        ),
                 child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  BriefEntryCover(
-                    briefEntry: currentEntry,
-                    briefId: currentBrief.id,
-                    width: cardStackWidth,
-                    height: cardStackHeight,
-                  ),
-                  const SizedBox(height: AppDimens.l),
-                ],),
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BriefEntryCover(
+                      briefEntry: currentEntry,
+                      briefId: currentBrief.id,
+                      width: cardStackWidth,
+                      height: cardStackHeight,
+                    ),
+                    const SizedBox(height: AppDimens.l),
+                  ],
+                ),
               );
             },
             childCount: currentBrief.entries.length,

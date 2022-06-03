@@ -7,10 +7,11 @@ part 'analytics_event.dt.freezed.dart';
 class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent._(String name, [Map<String, dynamic>? properties]) = _AnalyticsEvent;
 
-  factory AnalyticsEvent.dailyBriefTopicPreviewed(
+  factory AnalyticsEvent.dailyBriefEntryPreviewed(
     String briefId,
     String topicId,
     int position,
+    String type,
   ) =>
       AnalyticsEvent._(
         'DailyBriefItemPreviewed',
@@ -18,22 +19,7 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'brief_id': briefId,
           'item_id': topicId,
           'position': position,
-          'type': 'topic',
-        },
-      );
-
-  factory AnalyticsEvent.dailyBriefArticlePreviewed(
-    String briefId,
-    String articleId,
-    int position,
-  ) =>
-      AnalyticsEvent._(
-        'DailyBriefItemPreviewed',
-        {
-          'brief_id': briefId,
-          'item_id': articleId,
-          'position': position,
-          'type': 'article',
+          'type': type,
         },
       );
 

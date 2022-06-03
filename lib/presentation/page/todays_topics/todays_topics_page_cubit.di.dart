@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
@@ -90,9 +91,10 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   void trackRelaxPage() =>
       _trackActivityUseCase.trackEvent(AnalyticsEvent.dailyBriefRelaxMessageViewed(_currentBrief.id));
 
-  void trackTopicPreviewed(String topicId, int position, double visibility) {
-    final event = AnalyticsEvent.dailyBriefTopicPreviewed(_currentBrief.id, topicId, position);
-    _emitItemPreviewedEvent(topicId, event, visibility);
+  void trackBriefEntryPreviewed(BriefEntry briefEntry, int position, double visibility) {
+    final event =
+        AnalyticsEvent.dailyBriefEntryPreviewed(_currentBrief.id, briefEntry.id, position, briefEntry.type.name);
+    _emitItemPreviewedEvent(briefEntry.id, event, visibility);
   }
 
   void _emitItemPreviewedEvent(String id, AnalyticsEvent event, double visibility) {
