@@ -23,10 +23,7 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-          boxShadow: articleCoverShadows,
-        ),
+        decoration: BoxDecoration(borderRadius: borderRadius),
         child: ClipRRect(
           borderRadius: borderRadius,
           child: Stack(
@@ -63,7 +60,6 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                     color: AppColors.textGrey,
                                   ),
                                 ),
-                                if (article.hasAudioVersion) AudioIcon.dark(),
                               ],
                             ),
                             const SizedBox(height: AppDimens.m),
