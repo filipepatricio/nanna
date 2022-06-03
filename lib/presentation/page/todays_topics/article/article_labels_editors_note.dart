@@ -25,12 +25,11 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
         ? const SizedBox()
         : Container(
             decoration: BoxDecoration(
-              color: AppColors.background,
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.white,
+              border: Border.all(width: AppDimens.one, color: AppColors.darkLinen),
+              borderRadius: BorderRadius.circular(AppDimens.m),
             ),
-            padding: const EdgeInsets.all(
-              AppDimens.m,
-            ),
+            padding: const EdgeInsets.all(AppDimens.m),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,12 +49,19 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
                     if (articleKind != null) CoverLabel.articleKind(articleKind),
                     const Spacer(),
                     if (article.hasAudioVersion)
-                      SizedBox(
+                      Container(
                         width: AppDimens.xxl + AppDimens.xxs,
                         height: AppDimens.xxl + AppDimens.xxs,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(color: AppColors.black05, blurRadius: 5.0),
+                          ],
+                        ),
                         child: AudioFloatingControlButton(
                           article: article,
                           elevation: 0,
+                          color: AppColors.white,
                           imageHeight: AppDimens.sl + AppDimens.xxs,
                         ),
                       ),
