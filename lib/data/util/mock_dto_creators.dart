@@ -271,7 +271,7 @@ class MockDTO {
     // publisher
     _publisher,
     // image
-    null,
+    _articleImageCloudinary,
     // sourceUrl
     'source-url',
     // author

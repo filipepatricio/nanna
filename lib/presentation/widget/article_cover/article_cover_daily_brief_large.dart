@@ -23,10 +23,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: AppDimens.articleLargeImageCoverHeight,
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-          boxShadow: articleCoverShadows,
-        ),
+        decoration: BoxDecoration(borderRadius: borderRadius),
         child: ClipRRect(
           borderRadius: borderRadius,
           child: Stack(
@@ -70,7 +67,6 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                     textStyle: AppTypography.metadata1Medium,
                                   ),
                                 ),
-                                if (article.hasAudioVersion) AudioIcon.light(),
                               ],
                             ),
                             Text(
