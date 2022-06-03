@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
@@ -23,6 +24,7 @@ import 'package:better_informed_mobile/presentation/widget/track/view_visibility
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class TodaysTopicsPage extends HookWidget {
   const TodaysTopicsPage({Key? key}) : super(key: key);
@@ -157,17 +159,28 @@ class _IdleContent extends HookWidget {
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
               final currentEntry = currentBrief.entries[index];
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  BriefEntryCover(
-                    briefEntry: currentEntry,
-                    briefId: currentBrief.id,
-                    width: cardStackWidth,
-                    height: cardStackHeight,
-                  ),
-                  const SizedBox(height: AppDimens.l),
-                ],
+
+              return VisibilityDetector(
+                key: Key(currentEntry.id),
+                onVisibilityChanged: kIsTest
+                    ? null
+                    : (visibility) => todaysTopicsCubit.trackBriefEntryPreviewed(
+                          currentEntry,
+                          index,
+                          visibility.visibleFraction,
+                        ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BriefEntryCover(
+                      briefEntry: currentEntry,
+                      briefId: currentBrief.id,
+                      width: cardStackWidth,
+                      height: cardStackHeight,
+                    ),
+                    const SizedBox(height: AppDimens.l),
+                  ],
+                ),
               );
             },
             childCount: currentBrief.entries.length,
