@@ -51,8 +51,6 @@ class ColoredCover extends StatelessWidget {
                           isLight: false,
                           showDate: false,
                           showReadTime: false,
-                          showLogo: true,
-                          showPublisher: true,
                         ),
                       ),
                       if (article.hasAudioVersion) AudioIcon.dark(),
@@ -76,7 +74,10 @@ class ColoredCover extends StatelessWidget {
                 isLight: false,
               ),
             ),
-            if (editorsNote != null) ArticleEditorsNote(note: editorsNote!),
+            if (editorsNote != null)
+              ArticleEditorsNote(
+                note: editorsNote!,
+              ),
           ],
         ),
       ),

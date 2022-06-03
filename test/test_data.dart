@@ -1,11 +1,13 @@
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_style_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_area_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_pill_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/explore/api/mapper/explore_highlighted_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
@@ -27,6 +29,7 @@ class TestData {
       ImageDTOMapper(),
     ),
     ArticleTypeDTOMapper(),
+    ArticleKindDTOMapper(),
   );
 
   static final _topicPreviewMapper = TopicPreviewDTOMapper(
@@ -54,7 +57,8 @@ class TestData {
     ),
   );
 
-  static final _exploreContentMapper = ExploreContentDTOMapper(
+  static final _exploreHighlightedContentMapper = ExploreHighlightedContentDTOMapper(
+    ExploreContentPillDTOMapper(),
     ExploreContentAreaDTOMapper(
       ArticleDTOToMediaItemMapper(
         ArticleImageDTOMapper(),
@@ -62,6 +66,7 @@ class TestData {
           ImageDTOMapper(),
         ),
         ArticleTypeDTOMapper(),
+        ArticleKindDTOMapper(),
       ),
       _topicPreviewMapper,
       ColorDTOMapper(),
@@ -71,7 +76,7 @@ class TestData {
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;
 
   static MediaItemArticle get premiumArticleWithAudio =>
-      _mediaItemMapper(MockDTO.premiumMediaItemArticleWithAudio) as MediaItemArticle;
+      _mediaItemMapper(MockDTO.premiumArticleWithAudio.asMediaItem) as MediaItemArticle;
 
   static Topic get topic => _topicMapper(MockDTO.topic);
 
@@ -79,5 +84,6 @@ class TestData {
 
   static Topic get topicWithEditorOwner => _topicMapper(MockDTO.topicWithEditorOwner);
 
-  static ExploreContent get exploreContent => _exploreContentMapper(MockDTO.exploreContent);
+  static ExploreContent get exploreHighlightedContent =>
+      _exploreHighlightedContentMapper(MockDTO.exploreHighlightedContent);
 }

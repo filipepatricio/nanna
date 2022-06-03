@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/article/data/article_kind.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -13,6 +14,7 @@ class CoverLabel extends StatelessWidget {
   const CoverLabel._({
     this.icon,
     this.label,
+    this.color,
     this.child,
     Key? key,
   })  : assert(
@@ -36,12 +38,18 @@ class CoverLabel extends StatelessWidget {
         label: LocaleKeys.article_label.tr(),
       );
 
+  factory CoverLabel.articleKind(ArticleKind kind) => CoverLabel._(
+        label: kind.name,
+        color: AppColors.darkLinen,
+      );
+
   factory CoverLabel.audio() => CoverLabel._(
         child: AudioIcon.dark(height: AppDimens.backArrowSize),
       );
 
   final String? icon;
   final String? label;
+  final Color? color;
   final Widget? child;
 
   @override
@@ -53,7 +61,7 @@ class CoverLabel extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.xs),
-        color: AppColors.background,
+        color: color ?? AppColors.background,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

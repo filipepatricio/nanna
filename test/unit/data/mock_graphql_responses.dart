@@ -33,7 +33,6 @@ class MockGraphqlResponses {
             $_highlightedPublishers,
             "category": null,
             $_heroImage2,
-            $_coverImage,
             "readingList": {
               "id": "dd403ae7-eb0c-4710-a40f-1566ce478e7e",
               "entries": [
@@ -112,7 +111,6 @@ class MockGraphqlResponses {
     $_highlightedPublishers,
     "category": null,
     $_heroImage,
-    $_coverImage,
     "readingList": {
       "id": "88afff48-ff28-47ba-9793-a307d98df5f8",
       "entries": [
@@ -120,12 +118,6 @@ class MockGraphqlResponses {
         $_readingLisEntryFreeWithoutImage
       ]
     }
-  }
-  ''';
-
-  static const _coverImage = '''
-  "coverImage": {
-    "publicId": "covers/Cover_5"
   }
   ''';
 

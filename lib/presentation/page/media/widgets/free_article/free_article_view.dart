@@ -10,9 +10,12 @@ import 'package:better_informed_mobile/presentation/widget/share/article_button/
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/svg.dart';
+
+const _finishedAnimation = 1.0;
 
 class FreeArticleView extends HookWidget {
   const FreeArticleView({
@@ -33,6 +36,8 @@ class FreeArticleView extends HookWidget {
     final showBackToTopicButton = useState(false);
     final scrollPosition = useMemoized(() => ValueNotifier(0.0));
     final pageLoadingProgress = useMemoized(() => ValueNotifier(0.0));
+
+    final animation = ModalRoute.of(context)?.animation ?? const AlwaysStoppedAnimation(_finishedAnimation);
 
     final webViewOptions = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
@@ -73,43 +78,53 @@ class FreeArticleView extends HookWidget {
             ),
           ),
         ],
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: SnackbarParentView(
         controller: snackbarController,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            InAppWebView(
-              initialOptions: webViewOptions,
-              initialUrlRequest: URLRequest(url: Uri.parse(article.sourceUrl)),
-              onProgressChanged: (_, progress) {
-                pageLoadingProgress.value = progress == 100 ? 0.0 : progress / 100;
-              },
-              onScrollChanged: (controller, _, y) {
-                if (y > scrollPosition.value) {
-                  scrollPosition.value = y.toDouble();
-                  showBackToTopicButton.value = false;
-                  return;
-                }
+            ValueListenableBuilder<double>(
+              valueListenable: animation,
+              builder: (context, value, child) {
+                if (value == _finishedAnimation) {
+                  return InAppWebView(
+                    initialOptions: webViewOptions,
+                    initialUrlRequest: URLRequest(url: Uri.parse(article.sourceUrl)),
+                    onProgressChanged: (_, progress) {
+                      pageLoadingProgress.value = progress == 100 ? 0.0 : progress / 100;
+                    },
+                    onScrollChanged: (controller, _, y) {
+                      if (y > scrollPosition.value) {
+                        scrollPosition.value = y.toDouble();
+                        showBackToTopicButton.value = false;
+                        return;
+                      }
 
-                if (y < scrollPosition.value) {
-                  scrollPosition.value = y.toDouble();
-                  showBackToTopicButton.value = true;
+                      if (y < scrollPosition.value) {
+                        scrollPosition.value = y.toDouble();
+                        showBackToTopicButton.value = true;
+                      }
+                    },
+                    onOverScrolled: (controller, x, y, clampedX, clampedY) {
+                      if (clampedY && y > 0) {
+                        showBackToTopicButton.value = true;
+                      }
+                    },
+                    androidOnPermissionRequest: (controller, origin, resources) async {
+                      return PermissionRequestResponse(
+                        resources: resources,
+                        action: PermissionRequestResponseAction.GRANT,
+                      );
+                    },
+                    onConsoleMessage: (controller, consoleMessage) {
+                      Fimber.d(consoleMessage.message);
+                    },
+                  );
+                } else {
+                  return const SizedBox.expand();
                 }
-              },
-              onOverScrolled: (controller, x, y, clampedX, clampedY) {
-                if (clampedY && y > 0) {
-                  showBackToTopicButton.value = true;
-                }
-              },
-              androidOnPermissionRequest: (controller, origin, resources) async {
-                return PermissionRequestResponse(
-                  resources: resources,
-                  action: PermissionRequestResponseAction.GRANT,
-                );
-              },
-              onConsoleMessage: (controller, consoleMessage) {
-                Fimber.d(consoleMessage.message);
               },
             ),
             Positioned(

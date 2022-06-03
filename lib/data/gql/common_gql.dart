@@ -24,9 +24,6 @@ class CommonGQLModels {
     highlightedPublishers {
       $publisher
     }
-    coverImage {
-      publicId
-    }
     heroImage {
       $cloudinaryImage
     }
@@ -90,6 +87,10 @@ class CommonGQLModels {
       }
   ''';
 
+  static const String kind = '''
+      name
+  ''';
+
   static const String article = '''
       sourceUrl
       slug
@@ -98,8 +99,12 @@ class CommonGQLModels {
       author
       title
       strippedTitle
+      note
       credits
       type
+      kind {
+        $kind
+      }
       publicationDate
       timeToRead
       hasAudioVersion

@@ -36,6 +36,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle todaysTopicsTitle = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 32,
+    height: 1.375,
+    color: AppColors.textPrimary,
+  );
+
   static TextStyle h0Beta(BuildContext context) => TextStyle(
         fontWeight: FontWeight.w700,
         fontFamily: fontFamilyPlusJakartaSans,
@@ -83,6 +91,13 @@ class AppTypography {
     height: 1.33,
   );
 
+  static const TextStyle h2Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 24,
+    height: 1.33,
+  );
+
   static const TextStyle h2Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -105,6 +120,14 @@ class AppTypography {
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 18,
     height: 1.25,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h3ExtraBold = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 18,
+    height: 1.7,
     color: AppColors.textPrimary,
   );
 
@@ -247,6 +270,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle b2Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 16,
+    height: 1.5,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle b2Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -323,6 +354,14 @@ class AppTypography {
 
   static const TextStyle metadata1Regular = TextStyle(
     fontWeight: FontWeight.w400,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 12,
+    height: 1.83,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle metadata1Medium = TextStyle(
+    fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 12,
     height: 1.83,

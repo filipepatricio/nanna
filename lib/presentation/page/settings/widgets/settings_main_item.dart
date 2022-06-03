@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SettingsMainItem extends StatelessWidget {
-  final String label;
-  final String icon;
-  final Function onTap;
-
   const SettingsMainItem({
     required this.label,
     required this.icon,
     required this.onTap,
   });
 
+  final String label;
+  final String icon;
+  final VoidCallback onTap;
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onTap(),
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Container(
         height: AppDimens.settingsItemHeight,
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),

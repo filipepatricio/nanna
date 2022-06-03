@@ -9,11 +9,5 @@ abstract class FeaturesFlagsRepository {
     String clientPlatform,
   );
 
-  Future<bool> showPhotoOnTopicCover();
-
-  Future<bool> showPillsOnExplorePage();
-
-  Future<bool> showSearchInExplorePage();
-
   Future<String> initialTab();
 }

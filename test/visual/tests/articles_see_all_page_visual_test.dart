@@ -8,7 +8,7 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(ArticleSeeAllPage, (tester) async {
-    final area = TestData.exploreContent.areas.firstWhere(
+    final area = TestData.exploreHighlightedContent.areas.firstWhere(
       (area) => area is ExploreContentAreaArticles,
     ) as ExploreContentAreaArticles;
 

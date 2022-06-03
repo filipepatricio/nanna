@@ -9,13 +9,11 @@ class TopicCoverImage extends HookWidget {
   const TopicCoverImage({
     required this.topic,
     this.borderRadius = AppDimens.m,
-    this.showPhoto = false,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final double borderRadius;
-  final bool showPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class TopicCoverImage extends HookWidget {
         return ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
           child: CloudinaryImage(
-            publicId: showPhoto ? topic.heroImage.publicId : topic.coverImage.publicId,
+            publicId: topic.heroImage.publicId,
             config: CloudinaryConfig(
               platformBasedExtension: true,
               autoGravity: true,
@@ -38,8 +36,8 @@ class TopicCoverImage extends HookWidget {
             height: height,
             fit: BoxFit.cover,
             alignment: Alignment.center,
-            showDarkened: showPhoto,
-            testImage: showPhoto ? AppRasterGraphics.testTopicHeroImage : AppRasterGraphics.testReadingListCoverImage,
+            showDarkened: true,
+            testImage: AppRasterGraphics.testTopicHeroImage,
           ),
         );
       },

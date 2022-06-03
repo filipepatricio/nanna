@@ -116,7 +116,10 @@ class _LoadingContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.s),
+          padding: EdgeInsets.only(
+            left: AppDimens.l,
+            top: MediaQuery.of(context).padding.top + AppDimens.s,
+          ),
           child: IconButton(
             icon: const Icon(Icons.close_rounded),
             color: AppColors.textPrimary,

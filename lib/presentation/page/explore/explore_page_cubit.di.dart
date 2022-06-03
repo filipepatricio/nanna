@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/show_pills_on_explore_page_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/get_search_history_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/remove_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -21,7 +20,6 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._getExploreContentUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
-    this._showPillsOnExplorePageUseCase,
     this._getSearchHistoryUseCase,
     this._removeSearchHistoryQueryUseCase,
   ) : super(ExplorePageState.initialLoading());
@@ -29,7 +27,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final GetExploreContentUseCase _getExploreContentUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
-  final ShowPillsOnExplorePageUseCase _showPillsOnExplorePageUseCase;
+
   final GetSearchHistoryUseCase _getSearchHistoryUseCase;
   final RemoveSearchHistoryQueryUseCase _removeSearchHistoryQueryUseCase;
 
@@ -47,10 +45,8 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> initialize() async {
     emit(ExplorePageState.initialLoading());
 
-    final showPills = await _showPillsOnExplorePageUseCase();
-    _exploreContentSubscription = showPills
-        ? _getExploreContentUseCase.highlightedContentStream.listen(_processAndEmitExploreContent)
-        : _getExploreContentUseCase.contentStream.listen(_processAndEmitExploreContent);
+    _exploreContentSubscription =
+        _getExploreContentUseCase.highlightedContentStream.listen(_processAndEmitExploreContent);
 
     try {
       await _showTutorialSnackBar();
@@ -70,8 +66,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   }
 
   Future<void> _fetchExploreContent() async {
-    final showPills = await _showPillsOnExplorePageUseCase();
-    final exploreContent = await _getExploreContentUseCase(showPills: showPills);
+    final exploreContent = await _getExploreContentUseCase();
     _processAndEmitExploreContent(exploreContent);
   }
 

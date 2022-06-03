@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:better_informed_mobile/exports.dart';
+import 'package:clock/clock.dart';
 import 'package:jiffy/jiffy.dart';
 
 const _locale = 'en';
@@ -36,5 +37,18 @@ class DateFormatUtil {
 
   static String dateTimeFromNow(DateTime dateTime) {
     return Jiffy(dateTime).fromNow();
+  }
+
+  static String currentBriefDate(DateTime briefDate) {
+    final now = clock.now();
+    final daysDifference = daysBetween(briefDate, now);
+
+    if (daysDifference == 0) {
+      return LocaleKeys.todaysTopics_title_today.tr();
+    } else if (daysDifference == 1) {
+      return LocaleKeys.todaysTopics_title_yesterday.tr();
+    }
+
+    return DateFormat('EEEE').format(briefDate);
   }
 }

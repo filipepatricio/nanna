@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article_kind.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -13,8 +14,10 @@ class MediaItem with _$MediaItem {
     required String url,
     required String title,
     required String strippedTitle,
+    required String? note,
     required String credits,
     required ArticleType type,
+    required ArticleKind? kind,
     required int? timeToRead,
     required Publisher publisher,
     required bool hasAudioVersion,

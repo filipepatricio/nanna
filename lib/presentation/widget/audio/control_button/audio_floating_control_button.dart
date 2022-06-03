@@ -15,17 +15,23 @@ class AudioFloatingControlButton extends HookWidget {
   const AudioFloatingControlButton({
     required this.article,
     this.elevation,
+    this.imageHeight = AppDimens.sl + AppDimens.xxs,
+    this.color = AppColors.background,
     Key? key,
   }) : super(key: key);
 
   const AudioFloatingControlButton.forCurrentAudio({
     this.elevation,
+    this.imageHeight = AppDimens.sl + AppDimens.xxs,
+    this.color = AppColors.background,
     Key? key,
   })  : article = null,
         super(key: key);
 
   final MediaItemArticle? article;
   final double? elevation;
+  final double? imageHeight;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +78,11 @@ class AudioFloatingControlButton extends HookWidget {
         borderRadius: BorderRadius.circular(AppDimens.xl),
       ),
       onPressed: state.getAction(cubit),
-      backgroundColor: AppColors.background,
+      backgroundColor: color,
       child: Center(
         child: SvgPicture.asset(
           state.imagePath,
-          height: AppDimens.sl + AppDimens.xxs,
+          height: imageHeight,
           color: state.imageColor,
         ),
       ),

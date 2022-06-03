@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -5,6 +7,8 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/widgets.dart';
+
+const _publisherMaxWidthRatio = 0.5;
 
 class DottedArticleInfo extends StatelessWidget {
   const DottedArticleInfo({
@@ -20,7 +24,10 @@ class DottedArticleInfo extends StatelessWidget {
     this.publisherMaxLines = 1,
     this.centerContent = false,
     Key? key,
-  })  : assert(showPublisher || showDate || showReadTime, 'Select at least one of the sections to show'),
+  })  : assert(
+          showPublisher || showDate || showReadTime,
+          'Select at least one of the sections to show',
+        ),
         super(key: key);
 
   final MediaItemArticle article;
@@ -38,56 +45,85 @@ class DottedArticleInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainColor = color ?? (isLight ? AppColors.white : AppColors.black);
+    final finalTextStyle = textStyle.copyWith(color: mainColor);
     final timeToRead = article.timeToRead;
     final publicationDate = article.publicationDate;
 
     final canShowReadTime = showReadTime && timeToRead != null;
     final canShowDate = showDate && publicationDate != null;
 
-    return Wrap(
-      runAlignment: WrapAlignment.center,
-      alignment: centerContent ? WrapAlignment.center : WrapAlignment.start,
-      children: [
-        if (showPublisher) ...[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: centerContent ? MainAxisAlignment.center : MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showLogo) ...[
-                if (isLight)
-                  PublisherLogo.light(publisher: article.publisher)
-                else
-                  PublisherLogo.dark(publisher: article.publisher),
-              ],
-              Flexible(
-                child: Text(
-                  article.publisher.name,
-                  style: textStyle.copyWith(color: mainColor),
-                  maxLines: publisherMaxLines,
-                  overflow: TextOverflow.ellipsis,
-                ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final String publisherName = article.publisher.name;
+        final publisherNameSpan = TextSpan(
+          text: publisherName,
+          style: finalTextStyle,
+        );
+        final publisherNameTextPainter = TextPainter(
+          text: publisherNameSpan,
+          textDirection: ui.TextDirection.ltr,
+        );
+        publisherNameTextPainter.layout(maxWidth: constraints.maxWidth);
+
+        final publisherNameWidthRatio = publisherNameTextPainter.size.width / constraints.maxWidth;
+        final renderInTwoRows = publisherNameWidthRatio >= _publisherMaxWidthRatio;
+
+        return Wrap(
+          runAlignment: WrapAlignment.center,
+          alignment: centerContent ? WrapAlignment.center : WrapAlignment.start,
+          children: [
+            if (showPublisher) ...[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: centerContent ? MainAxisAlignment.center : MainAxisAlignment.start,
+                mainAxisSize: renderInTwoRows ? MainAxisSize.max : MainAxisSize.min,
+                children: [
+                  if (showLogo) ...[
+                    if (isLight)
+                      PublisherLogo.light(publisher: article.publisher)
+                    else
+                      PublisherLogo.dark(publisher: article.publisher),
+                  ],
+                  Flexible(
+                    child: Text(
+                      publisherName,
+                      style: finalTextStyle,
+                      maxLines: publisherMaxLines,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
-        if (canShowDate)
-          Text(
-            '${showPublisher ? ' · ' : ''}${fullDate ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate) : DateFormatUtil.formatShortMonthNameDay(publicationDate)}',
-            style: textStyle.copyWith(color: mainColor),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        if (canShowReadTime)
-          Text(
-            '${showPublisher || canShowDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
-              args: [timeToRead.toString()],
-            )}',
-            style: textStyle.copyWith(color: mainColor),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-      ],
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (showPublisher && (canShowDate || canShowReadTime) && !renderInTwoRows)
+                  Text(' · ', style: finalTextStyle),
+                if (canShowDate) ...[
+                  Text(
+                    fullDate
+                        ? DateFormatUtil.formatFullMonthNameDayYear(publicationDate)
+                        : DateFormatUtil.formatShortMonthNameDay(publicationDate),
+                    style: finalTextStyle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+                if (canShowReadTime)
+                  Text(
+                    '${canShowDate ? ' · ' : ''}${LocaleKeys.article_readMinutes.tr(
+                      args: [timeToRead.toString()],
+                    )}',
+                    style: finalTextStyle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            )
+          ],
+        );
+      },
     );
   }
 }

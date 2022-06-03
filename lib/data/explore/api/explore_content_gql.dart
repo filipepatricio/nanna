@@ -3,16 +3,6 @@ import 'package:gql/ast.dart' show DocumentNode;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ExploreContentGQL {
-  static DocumentNode content() => gql(
-        '''
-    query {
-      getExploreSection {
-        ${CommonGQLModels.exploreSection}
-      }
-    }
-  ''',
-      );
-
   static DocumentNode highlightedContent() => gql(
         '''
       query getExploreSection {

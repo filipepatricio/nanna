@@ -31,7 +31,7 @@ class AudioPlayerBannerCubit extends Cubit<AudioPlayerBannerState> {
         loading: (_) => emit(AudioPlayerBannerState.hidden()),
         playing: (state) => emit(AudioPlayerBannerState.visible(state.audioItem)),
         paused: (state) => emit(AudioPlayerBannerState.visible(state.audioItem)),
-        completed: (state) => emit(AudioPlayerBannerState.visible(state.audioItem)),
+        completed: (_) => stop(),
       );
     });
   }

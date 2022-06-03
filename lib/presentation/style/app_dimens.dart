@@ -57,9 +57,6 @@ class AppDimens {
   /// 18.0
   static const backArrowSize = 18.0;
 
-  /// 14
-  static const readMoreArrowSize = 14.0;
-
   /// 44.0
   static const settingsItemHeight = 44.0;
 
@@ -87,9 +84,6 @@ class AppDimens {
   /// 0.85
   static const topicCardWidthViewportFraction = 0.85;
 
-  // 0.7
-  static const relaxViewportFraction = 0.7;
-
   /// 32
   static const avatarSize = 32.0;
 
@@ -99,27 +93,14 @@ class AppDimens {
   /// 300
   static const topicViewSummaryTextHeight = 300.0;
 
-  /// The smallest value from 85% of screen height and 575
-  static double todaysTopicCardSectionHeight(BuildContext context) =>
-      min(MediaQuery.of(context).size.height * 0.85, 575);
-
-  /// The smallest value from 70% of screen height and 400
-  static double todaysTopicCardStackHeight(BuildContext context) => min(
-        MediaQuery.of(context).size.height * 0.7,
-        400,
-      );
+  /// 350.0
+  static const briefEntryCardStackHeight = 350.0;
 
   /// 0.4
   static const exploreTopicCarousellSmallCoverWidthFactor = 0.4;
 
-  /// 0.5
-  static double exploreTopicCarousellSmallCoverImageHeightFactor = 0.5;
-
   /// 1.65
   static double exploreTopicCarousellSmallCoverAspectRatio = 1.65;
-
-  /// 1.8
-  static double exploreSeeAllSmallCoverAspectRatio = 1.55;
 
   /// 0.72
   static const exploreTopicCellSizeFactor = 0.72;
@@ -135,24 +116,17 @@ class AppDimens {
   /// Full screen
   static double topicViewHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
 
-  /// The smallest value from 70% of screen height and 500
-  static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .70, 500);
+  /// The smallest value from 75% of screen height and 500
+  static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);
+
+  /// 410
+  static double articleLargeImageCoverHeight = 410;
+
+  /// 410
+  static double articleSmallImageCoverHeight = 322;
 
   /// 0 / 45
   static double topicViewStackedCardsDividerHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 45.0;
-
-  /// 283 / 270
-  static double topicViewArticleSectionImageHeight(BuildContext context) => context.isSmallDevice ? 283.0 : 270.0;
-
-  /// 0 / 120
-  static double topicViewArticleSectionNoteHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 120.0;
-
-  /// 145 or 195 + [topicViewArticleSectionImageHeight] + [topicViewArticleSectionNoteHeight] + [topicViewStackedCardsDividerHeight]
-  static double topicViewArticleSectionFullHeight(BuildContext context) =>
-      (context.isSmallDevice ? 145.0 : 195.0) +
-      topicViewArticleSectionImageHeight(context) +
-      topicViewArticleSectionNoteHeight(context) +
-      topicViewStackedCardsDividerHeight(context);
 
   /// Full screen width
   static double photoCaptionImageContainerWidth(BuildContext context) => MediaQuery.of(context).size.width;
@@ -160,38 +134,26 @@ class AppDimens {
   /// 65% Full screen height
   static double photoCaptionImageContainerHeight(BuildContext context) => MediaQuery.of(context).size.height * .65;
 
-  /// 72
-  static const topicViewArticleSectionArticleCountLabelHeight = 72.0;
-
-  /// 366
-  static const exploreAreaFeaturedArticleHeight = 366.0;
-
-  /// 155
-  static const exploreAreaArticleListItemWidth = 155.0;
-
-  /// 260
-  static const exploreAreaArticleListItemHeight = 260.0;
-
-  /// 260
-  static const exploreAreaArticleSeeAllCoverHeight = 260.0;
-
-  /// 260
-  static const exploreAreaTopicSeeAllCoverHeight = 250.0;
-
   /// 170
   static const explorePillAreaHeight = 170.0;
 
   /// 50
   static const explorePillHeight = 50.0;
 
+  /// 32
   static const bookmarkIconSize = 32.0;
 
+  /// 1024
   static const articleAudioCoverSize = 1024;
 
+  /// 80
   static const audioBannerHeight = 80.0;
 
+  /// 42
   static const searchBarHeight = 42.0;
 
   static double textHeight({required TextStyle style, required int maxLines}) =>
       (style.fontSize! * 1.05 * (style.height ?? 1)) * maxLines;
+
+  static double safeTopPadding(BuildContext context) => MediaQuery.of(context).padding.top;
 }

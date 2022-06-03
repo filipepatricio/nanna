@@ -9,15 +9,10 @@ class GetExploreContentUseCase {
 
   final ExploreContentRepository _exploreContentRepository;
 
-  Future<ExploreContent> call({required bool showPills}) async {
-    final content = showPills
-        ? await _exploreContentRepository.getExploreHighlightedContent()
-        : await _exploreContentRepository.getExploreContent();
+  Future<ExploreContent> call() async {
+    final content = await _exploreContentRepository.getExploreHighlightedContent();
     return _filterOutEmptyAreas(content);
   }
-
-  Stream<ExploreContent> get contentStream =>
-      _exploreContentRepository.exploreContentStream().map(_filterOutEmptyAreas);
 
   Stream<ExploreContent> get highlightedContentStream =>
       _exploreContentRepository.exploreHighlightedContentStream().map(_filterOutEmptyAreas);
