@@ -20,45 +20,49 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final articleKind = article.kind;
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.all(
-        AppDimens.m,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (note != null) ...[
-            InformedMarkdownBody(
-              markdown: note!,
-              baseTextStyle: AppTypography.b3Medium.copyWith(
-                color: AppColors.textGrey,
-              ),
-              maxLines: 4,
+    final shouldShowArticlesNote = note != null || articleKind != null || article.hasAudioVersion;
+    return !shouldShowArticlesNote
+        ? const SizedBox()
+        : Container(
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              borderRadius: BorderRadius.circular(16),
             ),
-            const SizedBox(height: AppDimens.s),
-          ],
-          Row(
-            children: [
-              if (articleKind != null) CoverLabel.articleKind(articleKind),
-              const Spacer(),
-              if (article.hasAudioVersion)
-                SizedBox(
-                  width: AppDimens.xxl + AppDimens.xxs,
-                  height: AppDimens.xxl + AppDimens.xxs,
-                  child: AudioFloatingControlButton(
-                    article: article,
-                    elevation: 0,
-                    imageHeight: AppDimens.sl + AppDimens.xxs,
+            padding: const EdgeInsets.all(
+              AppDimens.m,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (note != null) ...[
+                  InformedMarkdownBody(
+                    markdown: note!,
+                    baseTextStyle: AppTypography.b3Medium.copyWith(
+                      color: AppColors.textGrey,
+                    ),
+                    maxLines: 4,
                   ),
+                  const SizedBox(height: AppDimens.s),
+                ],
+                Row(
+                  children: [
+                    if (articleKind != null) CoverLabel.articleKind(articleKind),
+                    const Spacer(),
+                    if (article.hasAudioVersion)
+                      SizedBox(
+                        width: AppDimens.xxl + AppDimens.xxs,
+                        height: AppDimens.xxl + AppDimens.xxs,
+                        child: AudioFloatingControlButton(
+                          article: article,
+                          elevation: 0,
+                          imageHeight: AppDimens.sl + AppDimens.xxs,
+                        ),
+                      ),
+                  ],
                 ),
-            ],
-          ),
-        ],
-      ),
-    );
+              ],
+            ),
+          );
   }
 }

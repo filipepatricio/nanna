@@ -75,23 +75,27 @@ class ArticleCover extends StatelessWidget {
   factory ArticleCover.dailyBriefLarge({
     required MediaItemArticle article,
     String? editorsNote,
+    VoidCallback? onTap,
   }) =>
       ArticleCover._(
         ArticleCoverType.dailyBriefLarge,
         article: article,
         editorsNote: editorsNote,
+        onTap: onTap,
       );
 
   factory ArticleCover.dailyBriefSmall({
     required MediaItemArticle article,
     Color? coverColor,
     String? editorsNote,
+    VoidCallback? onTap,
   }) =>
       ArticleCover._(
         ArticleCoverType.dailyBriefSmall,
         article: article,
         coverColor: coverColor,
         editorsNote: editorsNote,
+        onTap: onTap,
       );
 
   factory ArticleCover.bookmarkList({
@@ -131,11 +135,13 @@ class ArticleCover extends StatelessWidget {
         );
       case ArticleCoverType.dailyBriefLarge:
         return _ArticleCoverDailyBriefLarge(
+          onTap: onTap,
           article: article,
           editorsNote: editorsNote,
         );
       case ArticleCoverType.dailyBriefSmall:
         return _ArticleCoverDailyBriefSmall(
+          onTap: onTap,
           article: article,
           coverColor: coverColor,
           editorsNote: editorsNote,

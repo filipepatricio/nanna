@@ -3,16 +3,18 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
+import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'media_item_dto.dt.freezed.dart';
-part 'media_item_dto.dt.g.dart';
+part 'brief_entry_item_dto.dt.freezed.dart';
+part 'brief_entry_item_dto.dt.g.dart';
 
 @Freezed(unionKey: '__typename', unionValueCase: FreezedUnionCase.pascal, fallbackUnion: unknownKey)
-class MediaItemDTO with _$MediaItemDTO {
+class BriefEntryItemDTO with _$BriefEntryItemDTO {
   @FreezedUnionValue('Article')
-  const factory MediaItemDTO.article(
+  const factory BriefEntryItemDTO.article(
     String id,
     String slug,
     String url,
@@ -29,10 +31,25 @@ class MediaItemDTO with _$MediaItemDTO {
     String sourceUrl,
     String? author,
     bool hasAudioVersion,
-  ) = MediaItemDTOArticle;
+  ) = BriefEntryItemDTOArticle;
+
+  @FreezedUnionValue('Topic')
+  const factory BriefEntryItemDTO.topicPreview(
+    String id,
+    String slug,
+    String title,
+    String strippedTitle,
+    String introduction,
+    String url,
+    TopicOwnerDTO owner,
+    String lastUpdatedAt,
+    List<PublisherDTO> highlightedPublishers,
+    ImageDTO heroImage,
+    int entryCount,
+  ) = BriefEntryItemDTOTopic;
 
   @FreezedUnionValue(unknownKey)
-  factory MediaItemDTO.unknown() = _MediaItemDTOUnknown;
+  factory BriefEntryItemDTO.unknown() = _BriefEntryItemDTOUnknown;
 
-  factory MediaItemDTO.fromJson(Map<String, dynamic> json) => _$MediaItemDTOFromJson(json);
+  factory BriefEntryItemDTO.fromJson(Map<String, dynamic> json) => _$BriefEntryItemDTOFromJson(json);
 }

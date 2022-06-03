@@ -1,20 +1,20 @@
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
+class BriefEntryMediaItemDTOMapper implements Mapper<BriefEntryItemDTO, MediaItem?> {
   final ArticleImageDTOMapper _articleImageDTOMapper;
   final PublisherDTOMapper _publisherDTOMapper;
   final ArticleTypeDTOMapper _articleTypeDTOMapper;
   final ArticleKindDTOMapper _articleKindDTOMapper;
 
-  MediaItemDTOMapper(
+  BriefEntryMediaItemDTOMapper(
     this._articleImageDTOMapper,
     this._publisherDTOMapper,
     this._articleTypeDTOMapper,
@@ -22,7 +22,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
   );
 
   @override
-  MediaItem call(MediaItemDTO data) {
+  MediaItem? call(BriefEntryItemDTO data) {
     return data.map(
       article: (data) {
         final image = data.image;
@@ -48,6 +48,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
           hasAudioVersion: data.hasAudioVersion,
         );
       },
+      topicPreview: (_) => null,
       unknown: (_) => const MediaItem.unknown(),
     );
   }

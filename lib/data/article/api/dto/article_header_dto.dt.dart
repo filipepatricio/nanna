@@ -13,6 +13,7 @@ class ArticleHeaderDTO {
   final String title;
   final String strippedTitle;
   final String credits;
+  final String? note;
   final String type;
   final ArticleKindDTO? kind;
   final String? publicationDate;
@@ -30,6 +31,7 @@ class ArticleHeaderDTO {
     this.url,
     this.title,
     this.strippedTitle,
+    this.note,
     this.credits,
     this.type,
     this.kind,

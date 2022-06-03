@@ -76,7 +76,7 @@ class TestData {
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;
 
   static MediaItemArticle get premiumArticleWithAudio =>
-      _mediaItemMapper(MockDTO.premiumMediaItemArticleWithAudio) as MediaItemArticle;
+      _mediaItemMapper(MockDTO.premiumArticleWithAudio.asMediaItem) as MediaItemArticle;
 
   static Topic get topic => _topicMapper(MockDTO.topic);
 

@@ -24,7 +24,7 @@ void main() {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
-          MediaItemPageRoute(slug: MockDTO.premiumMediaItemArticleWithAudio.slug),
+          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
         ],
       ),
     );

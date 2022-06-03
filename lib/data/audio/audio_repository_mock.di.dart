@@ -25,8 +25,8 @@ class AudioRepositoryMock implements AudioRepository {
         duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
-          id: MockDTO.premiumMediaItemArticleWithAudio.id,
-          slug: MockDTO.premiumMediaItemArticleWithAudio.slug,
+          id: MockDTO.premiumArticleWithAudio.id,
+          slug: MockDTO.premiumArticleWithAudio.slug,
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
@@ -42,8 +42,8 @@ class AudioRepositoryMock implements AudioRepository {
         duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
-          id: MockDTO.premiumMediaItemArticleWithAudio.id,
-          slug: MockDTO.premiumMediaItemArticleWithAudio.slug,
+          id: MockDTO.premiumArticleWithAudio.id,
+          slug: MockDTO.premiumArticleWithAudio.slug,
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
@@ -59,8 +59,8 @@ class AudioRepositoryMock implements AudioRepository {
         duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
-          id: MockDTO.premiumMediaItemArticleWithAudio.id,
-          slug: MockDTO.premiumMediaItemArticleWithAudio.slug,
+          id: MockDTO.premiumArticleWithAudio.id,
+          slug: MockDTO.premiumArticleWithAudio.slug,
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
