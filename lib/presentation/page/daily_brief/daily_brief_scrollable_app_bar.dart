@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class TodaysTopicsScrollableAppBar extends HookWidget {
-  const TodaysTopicsScrollableAppBar({
+class DailyBriefScrollableAppBar extends HookWidget {
+  const DailyBriefScrollableAppBar({
     required this.scrollController,
     required this.briefDate,
     Key? key,
@@ -59,7 +59,7 @@ class TodaysTopicsScrollableAppBar extends HookWidget {
             children: [
               Text(
                 DateFormatUtil.currentBriefDate(briefDate),
-                style: AppTypography.todaysTopicsTitle,
+                style: AppTypography.dailyBriefTitle,
               ),
               const Spacer(),
               Text(

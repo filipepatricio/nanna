@@ -109,8 +109,8 @@ class _TopicPage extends StatelessWidget {
           ),
           error: (_) => _DefaultAppBarWrapper(
             child: GeneralErrorView(
-              title: LocaleKeys.todaysTopics_oops.tr(),
-              content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+              title: LocaleKeys.dailyBrief_oops.tr(),
+              content: LocaleKeys.dailyBrief_tryAgainLater.tr(),
               svgPath: AppVectorGraphics.magError,
               retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
             ),

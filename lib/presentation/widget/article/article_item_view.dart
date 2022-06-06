@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/colored_cover.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/article/covers/photo_stacked_cover.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/article/covers/colored_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/article/covers/photo_stacked_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
