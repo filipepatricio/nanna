@@ -15,10 +15,7 @@ class PremiumArticleView extends HookWidget {
   const PremiumArticleView({
     required this.article,
     required this.fromTopic,
-    required this.controller,
-    required this.pageController,
     required this.cubit,
-    required this.fullHeight,
     required this.snackbarController,
     required this.articleOutputMode,
     this.readArticleProgress,
@@ -27,10 +24,7 @@ class PremiumArticleView extends HookWidget {
 
   final Article article;
   final bool fromTopic;
-  final ScrollController controller;
-  final PageController pageController;
   final MediaItemCubit cubit;
-  final double fullHeight;
   final double? readArticleProgress;
   final SnackbarController snackbarController;
   final ArticleOutputMode articleOutputMode;
@@ -38,10 +32,10 @@ class PremiumArticleView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final metadata = article.metadata;
+    final pageController = usePageController();
     final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
-    final articleOutputModeNotifier = useMemoized(
-      () => ValueNotifier(articleOutputMode),
-    );
+    final articleOutputModeNotifier = useMemoized(() => ValueNotifier(articleOutputMode));
+    final controller = useMemoized(() => ScrollController(keepScrollOffset: true));
 
     useEffect(
       () {
@@ -102,7 +96,6 @@ class PremiumArticleView extends HookWidget {
                         pageController: pageController,
                         snackbarController: snackbarController,
                         cubit: cubit,
-                        fullHeight: fullHeight,
                         fromTopic: fromTopic,
                         readArticleProgress: readArticleProgress,
                         articleOutputModeNotifier: articleOutputModeNotifier,

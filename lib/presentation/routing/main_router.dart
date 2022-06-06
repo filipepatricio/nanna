@@ -20,7 +20,6 @@ import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/bottom_sheet_route_builders.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
-import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
 import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +69,7 @@ const dashboardTabRouter = CustomRoute(
   children: [
     AutoRoute(
       name: 'TodayTabGroupRouter',
-      page: HeroEmptyRouterPage,
+      page: TodaysTopicsPage,
       children: [
         AutoRoute(path: 'todays_topics', page: TodaysTopicsPage, initial: true),
       ],
@@ -78,7 +77,7 @@ const dashboardTabRouter = CustomRoute(
     AutoRoute(
       path: 'explore',
       name: 'ExploreTabGroupRouter',
-      page: HeroEmptyRouterPage,
+      page: ExplorePage,
       children: [
         AutoRoute(path: '', page: ExplorePage, initial: true),
         AutoRoute(page: ArticleSeeAllPage),
@@ -88,7 +87,7 @@ const dashboardTabRouter = CustomRoute(
     AutoRoute(
       path: 'profile',
       name: 'ProfileTabGroupRouter',
-      page: HeroEmptyRouterPage,
+      page: ProfilePage,
       children: [
         AutoRoute(path: '', page: ProfilePage, initial: true),
       ],
