@@ -6,6 +6,8 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
+const _rootKey = 'releaseNote';
+
 @LazySingleton(as: ReleaseNotesDataSource, env: liveEnvs)
 class ReleaseNotesGraphqlDataSource implements ReleaseNotesDataSource {
   ReleaseNotesGraphqlDataSource(
@@ -24,7 +26,9 @@ class ReleaseNotesGraphqlDataSource implements ReleaseNotesDataSource {
       ),
     );
 
-    final dto = _resolver.resolve(
+    if (result.data?[_rootKey] == null) return null;
+
+    final dto = _resolver.resolve<ReleaseNoteDTO?>(
       result,
       (raw) => ReleaseNoteDTO.fromJson(raw),
       rootKey: 'releaseNote',
