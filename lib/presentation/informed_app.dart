@@ -51,6 +51,8 @@ class InformedApp extends HookWidget {
         routeInformationParser: mainRouter.defaultRouteParser(),
         routerDelegate: mainRouter.delegate(
           navigatorObservers: () => [
+            // To solve issue with Hero animations in tab navigation - https://github.com/Milad-Akarie/auto_route_library/issues/418#issuecomment-997704836
+            HeroController(),
             getIt<MainNavigationObserver>(),
             SentryNavigatorObserver(),
           ],

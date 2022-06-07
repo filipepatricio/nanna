@@ -10,6 +10,7 @@ class AppColors {
   static const Color black40 = Color(0x66000000);
   static const Color black20 = Color(0x33000000);
   static const Color black05 = Color(0x0D000000);
+  static const Color black04 = Color(0x0A000000);
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreenVivid = Color(0xffA2F054);
   static const Color limeGreenDark = Color(0xff6AE476);

@@ -10,16 +10,16 @@ import 'package:better_informed_mobile/presentation/widget/photo_caption/photo_c
 import 'package:flutter/material.dart';
 
 class ArticleImageView extends StatelessWidget {
-  final MediaItemArticle article;
-  final PageController controller;
-  final double fullHeight;
-
   const ArticleImageView({
     required this.article,
     required this.controller,
     required this.fullHeight,
     Key? key,
   }) : super(key: key);
+
+  final MediaItemArticle article;
+  final PageController controller;
+  final double fullHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +66,7 @@ class ArticleImageView extends StatelessWidget {
                     markdown: article.title,
                     highlightColor: AppColors.transparent,
                     baseTextStyle: AppTypography.h0ExtraBold.copyWith(color: AppColors.white),
+                    maxLines: 5,
                   ),
                 ),
                 const SizedBox(height: AppDimens.xc),
