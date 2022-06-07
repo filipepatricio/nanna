@@ -105,11 +105,11 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   void _initializeItemPreviewTracker() {
     _trackItemController.stream
         .groupBy(
-          (value) => value.id,
+          (event) => event.id,
           durationSelector: (grouped) => grouped.debounceTime(_trackEventTotalBufferTime * 2),
         )
         .flatMap(
-          (value) => value
+          (stream) => stream
               .bufferTime(_trackEventBufferTime)
               .scan<Queue<List<_ItemVisibilityEvent>>>(
                 (accumulated, buffered, index) {
@@ -122,10 +122,11 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
                 },
                 Queue(),
               )
-              .where((event) => event.length == _requiredEventsCount)
-              .where((event) => event.expand((item) => item).every((item) => item.visible))
-              .where((event) => event.isNotEmpty)
-              .map((event) => event.expand((element) => element).first.event)
+              .where((queue) => queue.length == _requiredEventsCount)
+              .where((queue) => queue.expand((events) => events).every((event) => event.visible))
+              .where((queue) => queue.isNotEmpty)
+              .where((queue) => queue.expand((events) => events).isNotEmpty)
+              .map((queue) => queue.expand((events) => events).first.event)
               .distinct(),
         )
         .distinct()
