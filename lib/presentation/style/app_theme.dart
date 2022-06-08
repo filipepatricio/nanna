@@ -19,7 +19,13 @@ class AppTheme {
         ),
       );
 
-  static SystemUiOverlayStyle systemUIOverlay = SystemUiOverlayStyle.dark.copyWith(
+  static SystemUiOverlayStyle systemUIOverlayStyleDark = SystemUiOverlayStyle.dark.copyWith(
+    systemNavigationBarColor: AppColors.background,
+    systemNavigationBarDividerColor: AppColors.background,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  );
+
+  static SystemUiOverlayStyle systemUIOverlayStyleLight = SystemUiOverlayStyle.light.copyWith(
     systemNavigationBarColor: AppColors.background,
     systemNavigationBarDividerColor: AppColors.background,
     systemNavigationBarIconBrightness: Brightness.dark,

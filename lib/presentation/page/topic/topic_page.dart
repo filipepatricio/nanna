@@ -140,7 +140,7 @@ class _DefaultAppBarWrapper extends StatelessWidget {
         Align(
           alignment: Alignment.topCenter,
           child: AppBar(
-            systemOverlayStyle: AppTheme.systemUIOverlay,
+            systemOverlayStyle: AppTheme.systemUIOverlayStyleDark,
             foregroundColor: AppColors.textPrimary,
           ),
         ),

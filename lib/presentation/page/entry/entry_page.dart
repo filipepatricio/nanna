@@ -45,7 +45,7 @@ class EntryPage extends HookWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: AppTheme.systemUIOverlay,
+        value: AppTheme.systemUIOverlayStyleDark,
         child: const Loader(),
       ),
     );

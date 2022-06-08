@@ -41,7 +41,7 @@ class TabBarPage extends HookWidget {
 
     return CupertinoScaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: AppTheme.systemUIOverlay,
+        value: AppTheme.systemUIOverlayStyleDark,
         child: ScrollsToTop(
           onScrollsToTop: (event) async => cubit.scrollToTop(),
           child: AppUpdateChecker(

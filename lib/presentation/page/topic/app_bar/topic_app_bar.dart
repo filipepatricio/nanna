@@ -75,7 +75,9 @@ class TopicAppBar extends HookWidget {
       titleSpacing: 0,
       automaticallyImplyLeading: false,
       centerTitle: true,
-      systemOverlayStyle: AppTheme.systemUIOverlay,
+      systemOverlayStyle: isExpanded.value && !isShowingTutorialToast.value
+          ? AppTheme.systemUIOverlayStyleLight
+          : AppTheme.systemUIOverlayStyleDark,
       // Because expandedHeight automatically includes the status bar height, I have to remove it from this value
       expandedHeight: AppDimens.topicViewHeaderImageHeight(context) - MediaQuery.of(context).viewPadding.top,
       flexibleSpace: FlexibleSpaceBar(
