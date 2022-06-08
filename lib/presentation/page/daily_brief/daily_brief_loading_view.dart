@@ -2,8 +2,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:flutter/material.dart';
 
-class TodaysTopicsLoadingView extends StatelessWidget {
-  const TodaysTopicsLoadingView({
+class DailyBriefLoadingView extends StatelessWidget {
+  const DailyBriefLoadingView({
     required this.coverSize,
     Key? key,
   }) : super(key: key);

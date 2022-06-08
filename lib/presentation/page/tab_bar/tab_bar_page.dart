@@ -59,7 +59,7 @@ class TabBarPage extends HookWidget {
               key: tabBarPageKey,
               animationDuration: Duration.zero,
               routes: const [
-                TodayTabGroupRouter(),
+                DailyBriefTabGroupRouter(),
                 ExploreTabGroupRouter(),
                 ProfileTabGroupRouter(),
               ],

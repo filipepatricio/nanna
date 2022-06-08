@@ -170,7 +170,7 @@ class _ErrorView extends StatelessWidget {
         SvgPicture.asset(AppVectorGraphics.magError),
         const SizedBox(height: AppDimens.l),
         Text(
-          LocaleKeys.todaysTopics_oops.tr(),
+          LocaleKeys.dailyBrief_oops.tr(),
           style: AppTypography.h3bold,
           textAlign: TextAlign.center,
         ),

@@ -83,9 +83,9 @@ extension on BookmarkFilter {
       case BookmarkFilter.topic:
         return () {
           AutoRouter.of(context).navigate(
-            const TodayTabGroupRouter(
+            const DailyBriefTabGroupRouter(
               children: [
-                TodaysTopicsPageRoute(),
+                DailyBriefPageRoute(),
               ],
             ),
           );

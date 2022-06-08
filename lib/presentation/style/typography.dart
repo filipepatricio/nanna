@@ -36,7 +36,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle todaysTopicsTitle = TextStyle(
+  static const TextStyle dailyBriefTitle = TextStyle(
     fontWeight: FontWeight.w800,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 32,
