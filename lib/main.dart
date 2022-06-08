@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.dart';
+import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:fimber/fimber.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -27,6 +28,8 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  SystemChrome.setSystemUIOverlayStyle(AppTheme.systemUIOverlayStyleDark);
 
   final environment = _getEnvironment();
 
