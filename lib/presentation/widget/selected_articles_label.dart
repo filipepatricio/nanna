@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 
 class SelectedArticlesLabel extends StatelessWidget {
