@@ -3,12 +3,12 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/cards_error_view.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/relax/relax_view.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_loading_view.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_scrollable_app_bar.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/cards_error_view.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_scrollable_app_bar.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -26,19 +26,19 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class TodaysTopicsPage extends HookWidget {
-  const TodaysTopicsPage({Key? key}) : super(key: key);
+class DailyBriefPage extends HookWidget {
+  const DailyBriefPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<TodaysTopicsPageCubit>();
+    final cubit = useCubit<DailyBriefPageCubit>();
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width;
     const cardStackHeight = AppDimens.briefEntryCardStackHeight;
     final topPadding = AppDimens.safeTopPadding(context);
 
-    useCubitListener<TodaysTopicsPageCubit, TodaysTopicsPageState>(cubit, (cubit, state, context) {
+    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
           showInfoToast(
@@ -63,7 +63,7 @@ class TodaysTopicsPage extends HookWidget {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
           child: RefreshIndicator(
-            onRefresh: cubit.loadTodaysTopics,
+            onRefresh: cubit.loadDailyBrief,
             color: AppColors.darkGrey,
             child: NoScrollGlow(
               child: CustomScrollView(
@@ -75,7 +75,7 @@ class TodaysTopicsPage extends HookWidget {
                 ),
                 slivers: [
                   state.maybeMap(
-                    idle: (state) => TodaysTopicsScrollableAppBar(
+                    idle: (state) => DailyBriefScrollableAppBar(
                       scrollController: scrollController,
                       briefDate: state.currentBrief.date,
                     ),
@@ -90,7 +90,7 @@ class TodaysTopicsPage extends HookWidget {
                     ),
                     sliver: state.maybeMap(
                       idle: (state) => _IdleContent(
-                        todaysTopicsCubit: cubit,
+                        dailyBriefCubit: cubit,
                         currentBrief: state.currentBrief,
                         cardStackWidth: cardStackWidth,
                         cardStackHeight: cardStackHeight,
@@ -100,7 +100,7 @@ class TodaysTopicsPage extends HookWidget {
                         sliver: SliverToBoxAdapter(
                           child: Center(
                             child: CardsErrorView(
-                              retryAction: cubit.loadTodaysTopics,
+                              retryAction: cubit.loadDailyBrief,
                               size: Size(cardStackWidth, cardStackHeight),
                             ),
                           ),
@@ -109,7 +109,7 @@ class TodaysTopicsPage extends HookWidget {
                       loading: (_) => SliverPadding(
                         padding: EdgeInsets.only(top: topPadding),
                         sliver: SliverToBoxAdapter(
-                          child: TodaysTopicsLoadingView(
+                          child: DailyBriefLoadingView(
                             coverSize: Size(
                               cardStackWidth,
                               cardStackHeight,
@@ -135,14 +135,14 @@ class TodaysTopicsPage extends HookWidget {
 
 class _IdleContent extends HookWidget {
   const _IdleContent({
-    required this.todaysTopicsCubit,
+    required this.dailyBriefCubit,
     required this.currentBrief,
     required this.cardStackWidth,
     required this.cardStackHeight,
     Key? key,
   }) : super(key: key);
 
-  final TodaysTopicsPageCubit todaysTopicsCubit;
+  final DailyBriefPageCubit dailyBriefCubit;
   final CurrentBrief currentBrief;
   final double cardStackWidth;
   final double cardStackHeight;
@@ -164,7 +164,7 @@ class _IdleContent extends HookWidget {
                 key: Key(currentEntry.id),
                 onVisibilityChanged: kIsTest
                     ? null
-                    : (visibility) => todaysTopicsCubit.trackBriefEntryPreviewed(
+                    : (visibility) => dailyBriefCubit.trackBriefEntryPreviewed(
                           currentEntry,
                           index,
                           visibility.visibleFraction,
@@ -187,7 +187,7 @@ class _IdleContent extends HookWidget {
           ),
         ),
         _RelaxSection(
-          onVisible: todaysTopicsCubit.trackRelaxPage,
+          onVisible: dailyBriefCubit.trackRelaxPage,
           goodbyeHeadline: currentBrief.goodbye,
         ),
       ],

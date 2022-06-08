@@ -22,7 +22,7 @@ class SelectedArticlesLabel extends StatelessWidget {
       onTap: onTap,
       tapPadding: const EdgeInsets.symmetric(vertical: AppDimens.ml),
       child: Text(
-        LocaleKeys.todaysTopics_articles.tr(
+        LocaleKeys.dailyBrief_articles.tr(
           args: [topic.entries.length.toString()],
         ),
         textAlign: TextAlign.start,

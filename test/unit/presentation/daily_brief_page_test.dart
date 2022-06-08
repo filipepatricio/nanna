@@ -4,13 +4,12 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_b
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../test_data.dart';
-
 import 'daily_brief_page_test.mocks.dart';
 
 @GenerateMocks(
@@ -27,14 +26,14 @@ void main() {
   late MockGetCurrentBriefUseCase getCurrentBriefUseCase;
   late MockIncomingPushDataRefreshStreamUseCase incomingPushDataRefreshStreamUseCase;
   late MockIsTutorialStepSeenUseCase isTutorialStepSeenUseCase;
-  late TodaysTopicsPageCubit todaysTopicsPageCubit;
+  late DailyBriefPageCubit dailyBriefPageCubit;
 
   setUp(() {
     trackActivityUseCase = MockTrackActivityUseCase();
     getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
     incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
     isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
-    todaysTopicsPageCubit = TodaysTopicsPageCubit(
+    dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
       isTutorialStepSeenUseCase,
       MockSetTutorialStepSeenUseCase(),
@@ -65,9 +64,9 @@ void main() {
 
     when(incomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
 
-    await todaysTopicsPageCubit.initialize();
+    await dailyBriefPageCubit.initialize();
 
-    todaysTopicsPageCubit.trackBriefEntryPreviewed(entry, 0, 1);
+    dailyBriefPageCubit.trackBriefEntryPreviewed(entry, 0, 1);
 
     await Future.delayed(const Duration(seconds: 2));
 

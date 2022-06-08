@@ -163,7 +163,7 @@ class _ErrorContent extends StatelessWidget {
             SvgPicture.asset(AppVectorGraphics.articleError),
             const SizedBox(height: AppDimens.m),
             Text(
-              LocaleKeys.todaysTopics_oops.tr(),
+              LocaleKeys.dailyBrief_oops.tr(),
               style: AppTypography.h3bold,
               textAlign: TextAlign.center,
             ),

@@ -233,7 +233,7 @@ class _TopicHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: AppDimens.xl),
                 Text(
-                  LocaleKeys.todaysTopics_selectedArticles.tr(args: ['$articlesLength']),
+                  LocaleKeys.dailyBrief_selectedArticles.tr(args: ['$articlesLength']),
                   style: AppTypography.b2Regular.copyWith(color: AppColors.white, height: 1),
                 ),
               ],
