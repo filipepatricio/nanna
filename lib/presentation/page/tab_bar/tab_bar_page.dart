@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/tabs_navigation_observer.di.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/di_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
@@ -41,11 +41,7 @@ class TabBarPage extends HookWidget {
 
     return CupertinoScaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark.copyWith(
-          systemNavigationBarColor: AppColors.background,
-          systemNavigationBarDividerColor: AppColors.background,
-          systemNavigationBarIconBrightness: Brightness.dark,
-        ),
+        value: AppTheme.systemUIOverlay,
         child: ScrollsToTop(
           onScrollsToTop: (event) async => cubit.scrollToTop(),
           child: AppUpdateChecker(
