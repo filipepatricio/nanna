@@ -68,10 +68,11 @@ const dashboardTabRouter = CustomRoute(
   durationInMilliseconds: 0,
   children: [
     AutoRoute(
+      path: 'todays_topics',
       name: 'DailyBriefTabGroupRouter',
       page: DailyBriefPage,
       children: [
-        AutoRoute(path: 'daily_brief', page: DailyBriefPage, initial: true),
+        AutoRoute(path: '', page: DailyBriefPage, initial: true),
       ],
     ),
     AutoRoute(
