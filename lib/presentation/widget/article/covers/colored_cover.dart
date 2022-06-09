@@ -60,7 +60,7 @@ class ColoredCover extends StatelessWidget {
                   InformedMarkdownBody(
                     markdown: article.title,
                     baseTextStyle: AppTypography.h1SemiBold,
-                    maxLines: 5,
+                    maxLines: 4,
                   ),
                 ],
               ),
