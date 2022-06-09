@@ -12,12 +12,14 @@ class OpenWebButton extends StatelessWidget {
   final bool withIcon;
   final String buttonLabel;
   final EdgeInsets padding;
+  final bool launchExternalApp;
 
   const OpenWebButton({
     required this.url,
     required this.buttonLabel,
     this.withIcon = true,
     this.padding = const EdgeInsets.symmetric(horizontal: AppDimens.l),
+    this.launchExternalApp = false,
     Key? key,
   }) : super(key: key);
 
@@ -28,7 +30,10 @@ class OpenWebButton extends StatelessWidget {
         onTap: () async {
           final uri = Uri.parse(url);
           if (await canLaunchUrl(uri)) {
-            await launchUrl(uri);
+            await launchUrl(
+              uri,
+              mode: launchExternalApp ? LaunchMode.externalApplication : LaunchMode.platformDefault,
+            );
           } else {
             Fimber.e('Could not launch $url');
           }

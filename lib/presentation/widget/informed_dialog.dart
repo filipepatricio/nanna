@@ -67,6 +67,7 @@ class InformedDialog extends HookWidget {
         url: platformStoreLink,
         buttonLabel: LocaleKeys.update_button.tr(),
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
+        launchExternalApp: true,
       ),
       onWillPop: onWillPop ?? () async => true,
     );
