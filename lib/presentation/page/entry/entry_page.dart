@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/page/entry/entry_page_cubit.
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -42,7 +43,9 @@ class EntryPage extends HookWidget {
 
     return const Scaffold(
       backgroundColor: AppColors.background,
-      body: Loader(),
+      body: AppConnectivityChecker(
+        child: Loader(),
+      ),
     );
   }
 }

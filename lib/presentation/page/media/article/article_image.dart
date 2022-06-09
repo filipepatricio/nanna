@@ -62,6 +62,11 @@ class ArticleImage extends HookWidget {
                 color: showDarkened ? AppColors.black40 : null,
               ),
             ),
+            errorWidget: (_, __, ___) => Container(
+              color: cardColor ?? AppColors.black40,
+              width: width,
+              height: height,
+            ),
             placeholder: (context, _) => LoadingShimmer(
               width: width,
               height: height,
