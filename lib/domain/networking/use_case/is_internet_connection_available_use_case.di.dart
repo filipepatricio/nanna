@@ -9,9 +9,7 @@ class IsInternetConnectionAvailableUseCase {
 
   final ConnectivityRepository _connectivityRepository;
 
-  Future<bool> call() async {
-    return await _connectivityRepository.hasInternetConnection();
-  }
+  Future<bool> call() async => await _connectivityRepository.hasInternetConnection();
 
   Stream<bool> get stream => _connectivityRepository.hasInternetConnectionStream;
 }
