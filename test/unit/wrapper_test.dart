@@ -25,6 +25,7 @@ import 'domain/release_notes/use_case/get_current_release_note_use_case_test.dar
     as get_current_release_note_use_case_test;
 import 'domain/release_notes/use_case/save_release_note_if_first_run_use_case_test.dart'
     as save_release_note_if_first_run_use_case_test;
+import 'presentation/app_connectivity_checker_test.dart' as app_connectivity_checker_test;
 import 'presentation/app_update_checker_test.dart' as app_update_checker_test;
 import 'presentation/media_item_page_test.dart' as media_item_page_test;
 import 'presentation/sign_in_page_test.dart' as sign_in_page_test;
@@ -63,6 +64,7 @@ void main() {
 
   // Presentation
   group('app_update_checker_test', app_update_checker_test.main);
+  group('app_connectivity_checker_test', app_connectivity_checker_test.main);
   group('media_item_page_test', media_item_page_test.main);
   group('sign_in_page_test', sign_in_page_test.main);
   group('topic_owner_page_test', topic_owner_page_test.main);

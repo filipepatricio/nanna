@@ -63,8 +63,6 @@ class EntryPageCubit extends Cubit<EntryPageState> {
       return;
     }
 
-    emit(EntryPageState.idle());
-
     try {
       await _initializeFeatureFlagsUseCase();
     } on UnauthorizedException {

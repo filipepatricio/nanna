@@ -32,9 +32,9 @@ class AppConnectivityCheckerCubit extends Cubit<AppConnectivityCheckerState> {
   }
 
   Future<bool> checkIsConnected() async {
-    final isConnected = await _isInternetConnectionAvailableUseCase();
-    _updateConnectionState(isConnected);
-    return isConnected;
+    _isConnected = await _isInternetConnectionAvailableUseCase();
+    _updateConnectionState(_isConnected!);
+    return _isConnected!;
   }
 
   void _updateConnectionState(bool isConnected) {

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import 'tests/app_connectivity_dialog_visual_test.dart' as app_connectivity_dialog_visual_test;
 import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_test;
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
 import 'tests/daily_brief_page_visual_test.dart' as daily_brief_page_visual_test;
@@ -28,6 +29,7 @@ import 'tests/topics_see_all_page_visual_test.dart' as topics_see_all_page_visua
 
 void main() {
   group('switch_audio_popup_visual_test', switch_audio_popup_visual_test.main);
+  group('app_connectivity_dialog_visual_test', app_connectivity_dialog_visual_test.main);
   group('app_update_dialog_visual_test', app_update_dialog_visual_test.main);
   group('articles_see_all_page_visual_test', articles_see_all_page_visual_test.main);
   group('explore_page_visual_test', explore_page_visual_test.main);
