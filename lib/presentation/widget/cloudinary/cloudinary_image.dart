@@ -69,7 +69,12 @@ class CloudinaryImage extends HookWidget {
         ),
         foregroundDecoration: darkeningDecoration,
       ),
-      progressIndicatorBuilder: (context, _, __) => showLoadingShimmer
+      errorWidget: (_, __, ___) => Container(
+        color: AppColors.black40,
+        width: width,
+        height: height,
+      ),
+      placeholder: (context, _) => showLoadingShimmer
           ? const LoadingShimmer(
               mainColor: AppColors.pastelGreen,
               baseColor: AppColors.darkLinen,
