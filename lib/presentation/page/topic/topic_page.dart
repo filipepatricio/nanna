@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -109,8 +110,8 @@ class _TopicPage extends StatelessWidget {
           ),
           error: (_) => _DefaultAppBarWrapper(
             child: GeneralErrorView(
-              title: LocaleKeys.todaysTopics_oops.tr(),
-              content: LocaleKeys.todaysTopics_tryAgainLater.tr(),
+              title: LocaleKeys.dailyBrief_oops.tr(),
+              content: LocaleKeys.dailyBrief_tryAgainLater.tr(),
               svgPath: AppVectorGraphics.magError,
               retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
             ),
@@ -139,6 +140,7 @@ class _DefaultAppBarWrapper extends StatelessWidget {
         Align(
           alignment: Alignment.topCenter,
           child: AppBar(
+            systemOverlayStyle: AppTheme.systemUIOverlayStyleDark,
             foregroundColor: AppColors.textPrimary,
           ),
         ),

@@ -11,7 +11,7 @@ import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
@@ -23,14 +23,14 @@ const _trackEventBufferTime = Duration(milliseconds: 100);
 final _requiredEventsCount = _trackEventTotalBufferTime.inMilliseconds / _trackEventBufferTime.inMilliseconds;
 
 @injectable
-class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
-  TodaysTopicsPageCubit(
+class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
+  DailyBriefPageCubit(
     this._getCurrentBriefUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._trackActivityUseCase,
     this._incomingPushDataRefreshStreamUseCase,
-  ) : super(TodaysTopicsPageState.loading());
+  ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
@@ -40,7 +40,7 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
-  late bool _isTodaysTopicsTutorialStepSeen;
+  late bool _isDailyBriefTutorialStepSeen;
   late CurrentBrief _currentBrief;
 
   StreamSubscription? _dataRefreshSubscription;
@@ -55,36 +55,36 @@ class TodaysTopicsPageCubit extends Cubit<TodaysTopicsPageState> {
   }
 
   Future<void> initialize() async {
-    await loadTodaysTopics();
+    await loadDailyBrief();
 
     _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((newCurrentBrief) {
       _currentBrief = newCurrentBrief;
-      emit(TodaysTopicsPageState.idle(_currentBrief));
+      emit(DailyBriefPageState.idle(_currentBrief));
     });
 
     _dataRefreshSubscription = _incomingPushDataRefreshStreamUseCase().listen((event) {
-      Fimber.d('Incoming push - refreshing todays topics');
-      loadTodaysTopics();
+      Fimber.d('Incoming push - refreshing daily brief');
+      loadDailyBrief();
     });
 
-    _isTodaysTopicsTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.todaysTopics);
-    if (!_isTodaysTopicsTutorialStepSeen) {
-      emit(TodaysTopicsPageState.showTutorialToast(LocaleKeys.tutorial_todaysTopicsSnackBarText.tr()));
-      await _setTutorialStepSeenUseCase(TutorialStep.todaysTopics);
+    _isDailyBriefTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
+    if (!_isDailyBriefTutorialStepSeen) {
+      emit(DailyBriefPageState.showTutorialToast(LocaleKeys.tutorial_dailyBriefSnackBarText.tr()));
+      await _setTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     }
 
     _initializeItemPreviewTracker();
   }
 
-  Future<void> loadTodaysTopics() async {
-    emit(TodaysTopicsPageState.loading());
+  Future<void> loadDailyBrief() async {
+    emit(DailyBriefPageState.loading());
 
     try {
       _currentBrief = await _getCurrentBriefUseCase();
-      emit(TodaysTopicsPageState.idle(_currentBrief));
+      emit(DailyBriefPageState.idle(_currentBrief));
     } catch (e, s) {
       Fimber.e('Loading current brief failed', ex: e, stacktrace: s);
-      emit(TodaysTopicsPageState.error());
+      emit(DailyBriefPageState.error());
     }
   }
 
