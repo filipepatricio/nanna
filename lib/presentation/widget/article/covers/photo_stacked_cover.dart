@@ -78,7 +78,7 @@ class PhotoStackedCover extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             highlightColor: AppColors.transparent,
-                            maxLines: 5,
+                            maxLines: 4,
                           ),
                         ],
                       ),

@@ -253,11 +253,11 @@ class MockDTO {
     // url
     'url',
     // title
-    "Denmark's role in the NSA spying scandal",
+    'Location, Location, Location: Investing in Real Estate in the Metaverse',
     // strippedTitle
-    "Denmark's role in the NSA spying scandal",
+    'Location, Location, Location: Investing in Real Estate in the Metaverse',
     // note
-    'Note',
+    'You should read this because everything you wanted to know about the hype about virtual real estate, major players and how to get started with virtual real estate platforms.',
     // credits
     'This article originally appeared here',
     // type
@@ -413,21 +413,21 @@ class MockDTO {
   static final _premiumArticleEntry = EntryDTO(
     premiumArticle.asMediaItem,
     // note
-    'Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.',
+    'You should read this because everything you wanted to know about the hype about virtual real estate, major players and how to get started with virtual real estate platforms.',
     EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithBigImage),
   );
 
   static final _premiumArticleWithAudioEntry = EntryDTO(
     premiumArticleWithAudio.asMediaItem,
     // note
-    'Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.',
+    'You should read this because everything you wanted to know about the hype about virtual real estate, major players and how to get started with virtual real estate platforms.',
     EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithBigImage),
   );
 
   static final _freeArticleEntry = EntryDTO(
     _freeArticle.asMediaItem,
     // note
-    'Germany is seeking to break a surge in coronavirus infections; India detects two cases of new Omicron variant in Karnataka; Greece and Finland detect first Omicron cases.',
+    'You should read this because everything you wanted to know about the hype about virtual real estate, major players and how to get started with virtual real estate platforms.',
     EntryStyleDTO('#F2E8E7', EntryStyleType.articleCoverWithoutImage),
   );
 
@@ -446,11 +446,11 @@ class MockDTO {
   static final _articleImageCloudinary = ArticleImageDTO.cloudinary('topics/pizza');
 
   static final _summaryCardLong = SummaryCardDTO(
-    'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mu.',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip.\n **Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.** Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip nostrud.',
   );
 
   static final _summaryCardShort = SummaryCardDTO(
-    'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. **Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip.**',
   );
 }
 
