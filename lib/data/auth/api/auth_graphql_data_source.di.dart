@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
-import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
+import 'package:better_informed_mobile/data/auth/api/documents/__generated__/send_link.ast.gql.dart' as send_link;
+import 'package:better_informed_mobile/data/auth/api/documents/__generated__/sign_in.ast.gql.dart' as sign_in;
 import 'package:better_informed_mobile/data/auth/api/dto/login_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
@@ -20,7 +21,8 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
   Future<LoginResponseDTO> signInWithProvider(String token, String provider, [UserMetaDTO? userMeta]) async {
     final result = await _client.mutate(
       MutationOptions(
-        document: AuthGQL.login(),
+        document: sign_in.document,
+        operationName: sign_in.signIn.name?.value,
         variables: {
           'token': token,
           'provider': provider,
@@ -34,32 +36,15 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
   }
 
   @override
-  Future<LoginResponseDTO> signInWithInviteCode(
-    SignInCredentials credentials,
-    String code,
-  ) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: AuthGQL.loginWithCode(),
-        variables: {
-          'token': credentials.token,
-          'provider': credentials.provider,
-          'meta': credentials.userMeta ?? <String, dynamic>{},
-          'code': code,
-        },
-        fetchPolicy: FetchPolicy.noCache,
-      ),
-    );
-
-    return _processSignInResponse(result, credentials);
-  }
-
-  @override
   Future<void> sendMagicLink(String email) async {
     final result = await _client.mutate(
       MutationOptions(
-        document: AuthGQL.sendLink(email),
+        document: send_link.document,
+        operationName: send_link.sendLink.name?.value,
         fetchPolicy: FetchPolicy.noCache,
+        variables: {
+          'email': email,
+        },
       ),
     );
     _responseResolver.resolve(result, (raw) => null, rootKey: null);

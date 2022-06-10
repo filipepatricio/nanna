@@ -1,0 +1,15 @@
+query getRealiseNotes($version: String!){
+    releaseNote(filter: {version: {eq: $version}}) {
+        headline
+        date
+        content
+        media {
+            format
+            url
+            video {
+                mp4Url
+            }
+        }
+        version
+    }
+}

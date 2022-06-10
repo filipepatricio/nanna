@@ -1,0 +1,37 @@
+# import 'package:better_informed_mobile/data/gql/common/kind_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/cloudinary_image_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/publisher_fragment.graphql';
+
+fragment articleFragment on Article {
+    __typename
+    sourceUrl
+    slug
+    id
+    url
+    author
+    title
+    strippedTitle
+    note
+    credits
+    type
+    kind {
+        ...kindFragment
+    }
+
+
+    publicationDate
+    timeToRead
+    hasAudioVersion
+    articleImage {
+        __typename
+        ... on CloudinaryImage {
+            ...cloudinaryImageFragment
+        }
+        ... on RemoteImage {
+            url
+        }
+    }
+    publisher {
+        ...publisherFragment
+    }
+}

@@ -1,0 +1,7 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+
+query articleHeader($slug: String!){
+    article(slug: $slug) {
+        ...articleFragment
+    }
+}

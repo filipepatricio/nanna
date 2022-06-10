@@ -1,0 +1,24 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/topic_preview_fragment.graphql';
+
+
+fragment topicFragment on Topic {
+    __typename
+    ...topicPreviewFragment
+    summaryCards{
+        text
+    }
+    entries {
+        note
+        style {
+            color
+            type
+        }
+        item {
+            __typename
+            ... on Article {
+                ...articleFragment
+            }
+        }
+    }
+}

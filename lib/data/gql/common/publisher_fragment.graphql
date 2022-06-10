@@ -1,0 +1,12 @@
+# import 'package:better_informed_mobile/data/gql/common/cloudinary_image_fragment.graphql';
+
+fragment publisherFragment on Publisher {
+    __typename
+    name
+    darkLogo {
+        ...cloudinaryImageFragment
+    }
+    lightLogo {
+        ...cloudinaryImageFragment
+    }
+}

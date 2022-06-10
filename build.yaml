@@ -31,3 +31,8 @@ targets:
         generate_for:
           include:
             - test/**
+      gql_build|ast_builder:
+        enabled: true
+        generate_for:
+          include:
+            - lib/**.graphql

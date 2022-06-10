@@ -1,0 +1,16 @@
+{
+  "name": "DatoCMS GraphQL Schema",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "https://graphql.datocms.com/",
+        "headers": {
+          "user-agent": "Flutter GraphQL Schema Generator",
+          "authorization" : "Bearer 1ecd2461c830b09d98d34b7cc9cd25"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+query getNotificationPreferencesMobile{
+    getNotificationPreferences {
+        name
+        channels {
+            id
+            name
+            pushEnabled
+            emailEnabled
+        }
+    }
+}

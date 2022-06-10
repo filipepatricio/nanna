@@ -1,0 +1,17 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/topic_fragment.graphql';
+
+query getPaginatedBookmarks($limit: Int!, $offset: Int!, $filter: BookmarksFilterOptions!, $order: BookmarksOrderOptions! , $sortBy : BookmarksSortOptions!){
+    getBookmarks(pagination: { limit: $limit, offset: $offset }, filter: $filter, order: $order, sortBy: $sortBy) {
+        id
+        entity {
+            __typename
+            ... on Article {
+                ...articleFragment
+            }
+            ... on Topic {
+                ...topicFragment
+            }
+        }
+    }
+}

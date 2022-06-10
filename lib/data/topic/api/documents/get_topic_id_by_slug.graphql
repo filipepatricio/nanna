@@ -1,0 +1,5 @@
+query getTopicByIdSlug($slug: String!){
+    topic(slug: $slug) {
+        id
+    }
+}

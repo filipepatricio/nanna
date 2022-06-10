@@ -1,7 +1,8 @@
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/query_user.ast.gql.dart' as query_user;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_user.ast.gql.dart' as update_user;
 import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
-import 'package:better_informed_mobile/data/user/api/user_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -18,7 +19,8 @@ class UserGraphqlDataSource implements UserDataSource {
   Future<UserDTO> getUser() async {
     final result = await _client.query(
       QueryOptions(
-        document: UserGQL.queryUser(),
+        document: query_user.document,
+        operationName: query_user.queryUser.name?.value,
         fetchPolicy: FetchPolicy.noCache,
       ),
     );
@@ -36,8 +38,12 @@ class UserGraphqlDataSource implements UserDataSource {
   Future<UserDTO> updateUser(UserMetaDTO userMetaDto) async {
     final result = await _client.mutate(
       MutationOptions(
-        document: UserGQL.updateUser(),
-        variables: {'firstName': userMetaDto.firstName, 'lastName': userMetaDto.lastName},
+        document: update_user.document,
+        operationName: update_user.updateUserMeta.name?.value,
+        variables: {
+          'firstName': userMetaDto.firstName,
+          'lastName': userMetaDto.lastName,
+        },
         fetchPolicy: FetchPolicy.noCache,
       ),
     );

@@ -1,0 +1,8 @@
+query queryUser{
+    me {
+        uuid
+        email
+        firstName
+        lastName
+    }
+}

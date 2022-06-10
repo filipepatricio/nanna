@@ -1,0 +1,7 @@
+# import 'package:better_informed_mobile/data/gql/common/topic_preview_fragment.graphql';
+
+query getTopicsFromEditor ($editorId: String!, $excludedTopicSlug: String!){
+    getTopicsFromEditor(editorId: $editorId, excludeTopicSlugs: [$excludedTopicSlug]) {
+        ...topicPreviewFragment
+    }
+}

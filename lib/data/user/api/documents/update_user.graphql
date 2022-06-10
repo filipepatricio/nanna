@@ -1,0 +1,8 @@
+mutation updateUserMeta($firstName: String, $lastName: String) {
+    updateUserMeta(information: {firstName: $firstName, lastName: $lastName}) {
+        uuid
+        email
+        firstName
+        lastName
+    }
+}
