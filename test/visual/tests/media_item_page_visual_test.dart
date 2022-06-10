@@ -13,11 +13,20 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(MediaItemPage, (tester) async {
-    await tester.startApp(initialRoute: MainPageRoute(children: [MediaItemPageRoute(slug: '')]));
+    await tester.startApp(
+      initialRoute: MainPageRoute(
+        children: [
+          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
+        ],
+      ),
+    );
     await tester.matchGoldenFile('media_item_page_(image)');
     await tester.tap(find.byType(AnimatedPointerDown).last);
     await tester.pumpAndSettle();
     await tester.matchGoldenFile('media_item_page_(content)');
+    await tester.flingFrom(const Offset(0, 400.0), const Offset(0, -20000), 100);
+    await tester.pumpAndSettle();
+    await tester.matchGoldenFile('media_item_page_(bottom)');
   });
 
   visualTest('${MediaItemPage}_(audio)', (tester) async {

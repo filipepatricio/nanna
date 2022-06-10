@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page.dart';
@@ -14,13 +15,11 @@ import 'package:better_informed_mobile/presentation/page/settings/main/settings_
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
-import 'package:better_informed_mobile/presentation/page/todays_topics/todays_topics_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/how_do_we_curate_content_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/bottom_sheet_route_builders.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
-import 'package:better_informed_mobile/presentation/routing/custom_route/hero_empty_router_page.dart';
 import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,16 +68,17 @@ const dashboardTabRouter = CustomRoute(
   durationInMilliseconds: 0,
   children: [
     AutoRoute(
-      name: 'TodayTabGroupRouter',
-      page: HeroEmptyRouterPage,
+      path: 'todays_topics',
+      name: 'DailyBriefTabGroupRouter',
+      page: DailyBriefPage,
       children: [
-        AutoRoute(path: 'todays_topics', page: TodaysTopicsPage, initial: true),
+        AutoRoute(path: '', page: DailyBriefPage, initial: true),
       ],
     ),
     AutoRoute(
       path: 'explore',
       name: 'ExploreTabGroupRouter',
-      page: HeroEmptyRouterPage,
+      page: ExplorePage,
       children: [
         AutoRoute(path: '', page: ExplorePage, initial: true),
         AutoRoute(page: ArticleSeeAllPage),
@@ -88,7 +88,7 @@ const dashboardTabRouter = CustomRoute(
     AutoRoute(
       path: 'profile',
       name: 'ProfileTabGroupRouter',
-      page: HeroEmptyRouterPage,
+      page: ProfilePage,
       children: [
         AutoRoute(path: '', page: ProfilePage, initial: true),
       ],

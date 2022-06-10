@@ -40,7 +40,7 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
                     baseTextStyle: AppTypography.b3Medium.copyWith(
                       color: AppColors.textGrey,
                     ),
-                    maxLines: 4,
+                    maxLines: 6,
                   ),
                   const SizedBox(height: AppDimens.s),
                 ],

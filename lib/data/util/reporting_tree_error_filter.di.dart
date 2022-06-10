@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class ReportingTreeErrorFilter {
@@ -10,8 +11,9 @@ abstract class ReportingTreeErrorFilter {
 class ReportingTreeErrorFilterController {
   final List<ReportingTreeErrorFilter> _filters = [
     _CubitClosedErrorFilter(),
-    _TypeErrorFilter<NoInternetConnectionException>(),
-    _TypeErrorFilter<UnauthorizedException>(),
+    _FirebaseConnectionErrorFilter(),
+    _ErrorFilter<NoInternetConnectionException>(),
+    _ErrorFilter<UnauthorizedException>(),
   ];
 
   bool shouldFilterOut(dynamic error) {
@@ -26,7 +28,14 @@ class _CubitClosedErrorFilter implements ReportingTreeErrorFilter {
   }
 }
 
-class _TypeErrorFilter<T> implements ReportingTreeErrorFilter {
+class _FirebaseConnectionErrorFilter implements ReportingTreeErrorFilter {
+  @override
+  bool filterOut(error) {
+    return error is FirebaseException && error.message == 'Could not connect to the server';
+  }
+}
+
+class _ErrorFilter<T> implements ReportingTreeErrorFilter {
   @override
   bool filterOut(error) => error is T;
 }

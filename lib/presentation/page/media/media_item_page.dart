@@ -20,9 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-typedef MediaItemNavigationCallback = void Function(int index);
-
-const appBarHeight = kToolbarHeight + AppDimens.xl;
 const _tryAgainButtonWidth = 150.0;
 
 class MediaItemPage extends HookWidget {
@@ -37,22 +34,19 @@ class MediaItemPage extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final String? topicId;
-  final String? briefId;
-  final MediaItemArticle? article;
   final String? slug;
   final String? topicSlug;
-  final ArticleOutputMode articleOutputMode;
-
+  final MediaItemArticle? article;
+  final String? topicId;
+  final String? briefId;
   final double? readArticleProgress;
+  final ArticleOutputMode articleOutputMode;
 
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
     final snackbarController = useMemoized(() => SnackbarController());
-    final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
-    final pageController = usePageController();
 
     useEffect(
       () {
@@ -75,18 +69,13 @@ class MediaItemPage extends HookWidget {
                   fromTopic: topicId != null || topicSlug != null,
                   snackbarController: snackbarController,
                 ),
-                idlePremium: (state) => LayoutBuilder(
-                  builder: (context, constraints) => PremiumArticleView(
-                    article: state.article,
-                    fromTopic: topicId != null || topicSlug != null,
-                    controller: scrollController,
-                    pageController: pageController,
-                    snackbarController: snackbarController,
-                    cubit: cubit,
-                    fullHeight: constraints.maxHeight,
-                    readArticleProgress: readArticleProgress,
-                    articleOutputMode: articleOutputMode,
-                  ),
+                idlePremium: (state) => PremiumArticleView(
+                  cubit: cubit,
+                  article: state.article,
+                  fromTopic: topicId != null || topicSlug != null,
+                  snackbarController: snackbarController,
+                  readArticleProgress: readArticleProgress,
+                  articleOutputMode: articleOutputMode,
                 ),
                 error: (state) => _ErrorContent(article: state.article),
                 emptyError: (_) => _ErrorContent(
@@ -139,14 +128,14 @@ class _LoadingContent extends StatelessWidget {
 }
 
 class _ErrorContent extends StatelessWidget {
-  final MediaItemArticle? article;
-  final VoidCallback? onTryAgain;
-
   const _ErrorContent({
     this.article,
     this.onTryAgain,
     Key? key,
   }) : super(key: key);
+
+  final MediaItemArticle? article;
+  final VoidCallback? onTryAgain;
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +163,7 @@ class _ErrorContent extends StatelessWidget {
             SvgPicture.asset(AppVectorGraphics.articleError),
             const SizedBox(height: AppDimens.m),
             Text(
-              LocaleKeys.todaysTopics_oops.tr(),
+              LocaleKeys.dailyBrief_oops.tr(),
               style: AppTypography.h3bold,
               textAlign: TextAlign.center,
             ),
@@ -212,9 +201,12 @@ class _ErrorContent extends StatelessWidget {
 }
 
 class _AnimatedSwitcher extends StatelessWidget {
-  final Widget child;
+  const _AnimatedSwitcher({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
 
-  const _AnimatedSwitcher({required this.child, Key? key}) : super(key: key);
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

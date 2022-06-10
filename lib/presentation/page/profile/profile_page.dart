@@ -58,31 +58,28 @@ class ProfilePage extends HookWidget {
         scrollController: scrollController,
         currentPage: context.routeData,
         child: ReadingBannerWrapper(
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.dark,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ProfileFilterTabBar(
-                  controller: tabController,
-                  onChange: cubit.changeFilter,
-                ),
-                Expanded(
-                  child: state.maybeMap(
-                    initializing: (state) => const Loader(
-                      color: AppColors.limeGreen,
-                    ),
-                    idle: (state) => BookmarkListView(
-                      scrollController: scrollController,
-                      filter: state.filter,
-                      sortConfigName: state.sortConfigName,
-                      onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
-                    ),
-                    orElse: () => const SizedBox.shrink(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ProfileFilterTabBar(
+                controller: tabController,
+                onChange: cubit.changeFilter,
+              ),
+              Expanded(
+                child: state.maybeMap(
+                  initializing: (state) => const Loader(
+                    color: AppColors.limeGreen,
                   ),
+                  idle: (state) => BookmarkListView(
+                    scrollController: scrollController,
+                    filter: state.filter,
+                    sortConfigName: state.sortConfigName,
+                    onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
+                  ),
+                  orElse: () => const SizedBox.shrink(),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

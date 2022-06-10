@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -33,7 +33,7 @@ class FreeArticleView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showBackToTopicButton = useState(false);
+    final showTabBar = useState(false);
     final scrollPosition = useMemoized(() => ValueNotifier(0.0));
     final pageLoadingProgress = useMemoized(() => ValueNotifier(0.0));
 
@@ -98,18 +98,18 @@ class FreeArticleView extends HookWidget {
                     onScrollChanged: (controller, _, y) {
                       if (y > scrollPosition.value) {
                         scrollPosition.value = y.toDouble();
-                        showBackToTopicButton.value = false;
+                        showTabBar.value = false;
                         return;
                       }
 
                       if (y < scrollPosition.value) {
                         scrollPosition.value = y.toDouble();
-                        showBackToTopicButton.value = true;
+                        showTabBar.value = true;
                       }
                     },
                     onOverScrolled: (controller, x, y, clampedX, clampedY) {
                       if (clampedY && y > 0) {
-                        showBackToTopicButton.value = true;
+                        showTabBar.value = true;
                       }
                     },
                     androidOnPermissionRequest: (controller, origin, resources) async {
@@ -133,10 +133,7 @@ class FreeArticleView extends HookWidget {
               right: 0,
               child: _PageLoadProgressBar(pageLoadingProgress: pageLoadingProgress),
             ),
-            BackToTopicButton(
-              showButton: showBackToTopicButton,
-              fromTopic: fromTopic,
-            ),
+            InformedTabBar.floating(show: showTabBar.value),
           ],
         ),
       ),

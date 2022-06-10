@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_c
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/back_to_topic_button.dart';
+import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -26,7 +26,6 @@ class PremiumArticleReadView extends HookWidget {
     required this.pageController,
     required this.snackbarController,
     required this.cubit,
-    required this.fullHeight,
     required this.fromTopic,
     this.readArticleProgress,
     this.articleOutputModeNotifier,
@@ -38,7 +37,6 @@ class PremiumArticleReadView extends HookWidget {
   final PageController pageController;
   final SnackbarController snackbarController;
   final MediaItemCubit cubit;
-  final double fullHeight;
   final bool fromTopic;
   final double? readArticleProgress;
   final ValueNotifier<ArticleOutputMode>? articleOutputModeNotifier;
@@ -76,6 +74,7 @@ class PremiumArticleReadView extends HookWidget {
     ScrollNotification scrollInfo,
     ValueNotifier<bool> showBackToTopicButton,
     ValueNotifier<double> readProgress,
+    double fullHeight,
   ) {
     if (controller.hasClients) {
       if (scrollInfo is ScrollUpdateNotification) {
@@ -112,7 +111,7 @@ class PremiumArticleReadView extends HookWidget {
       [articleWithImage],
     );
     final readProgress = useMemoized(() => ValueNotifier(0.0));
-    final showBackToTopicButton = useState(false);
+    final showTabBar = useState(false);
     final showAudioFloatingButton = useState(false);
 
     useEffect(
@@ -127,20 +126,20 @@ class PremiumArticleReadView extends HookWidget {
     useEffect(
       () {
         void listener() {
-          showAudioFloatingButton.value = !showBackToTopicButton.value;
+          showAudioFloatingButton.value = !showTabBar.value;
         }
 
-        showBackToTopicButton.addListener(listener);
-        return () => showBackToTopicButton.removeListener(listener);
+        showTabBar.addListener(listener);
+        return () => showTabBar.removeListener(listener);
       },
-      [showAudioFloatingButton, showBackToTopicButton],
+      [showAudioFloatingButton, showTabBar],
     );
 
     useEffect(
       () {
         void listener() {
           final page = pageController.page ?? 0.0;
-          showAudioFloatingButton.value = page > 0.5 && !showBackToTopicButton.value;
+          showAudioFloatingButton.value = page > 0.5 && !showTabBar.value;
         }
 
         pageController.addListener(listener);
@@ -154,87 +153,89 @@ class PremiumArticleReadView extends HookWidget {
         [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
       ),
       behavior: HitTestBehavior.opaque,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, showBackToTopicButton, readProgress),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            PageView(
-              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-              controller: pageController,
-              scrollDirection: Axis.vertical,
-              onPageChanged: (page) {
-                showBackToTopicButton.value = false;
-              },
-              children: [
-                if (articleWithImage)
-                  ArticleImageView(
-                    article: article.metadata,
-                    controller: pageController,
-                    fullHeight: fullHeight,
-                  ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: NoScrollGlow(
-                        child: CustomScrollView(
-                          physics: const NeverScrollableScrollPhysics(
-                            parent: BottomBouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics(),
-                            ),
-                          ),
-                          controller: controller,
-                          slivers: [
-                            SliverList(
-                              delegate: SliverChildListDelegate(
-                                [
-                                  ArticleContentView(
-                                    article: article,
-                                    cubit: cubit,
-                                    controller: controller,
-                                    articleContentKey: _articleContentKey,
-                                    scrollToPosition: () => _scrollToPosition(readArticleProgress),
-                                  ),
-                                ],
+      child: LayoutBuilder(
+        builder: (context, constraints) => NotificationListener<ScrollNotification>(
+          onNotification: (scrollInfo) => _updateScrollPosition(
+            scrollInfo,
+            showTabBar,
+            readProgress,
+            constraints.maxHeight,
+          ),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              PageView(
+                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                controller: pageController,
+                scrollDirection: Axis.vertical,
+                onPageChanged: (page) {
+                  showTabBar.value = false;
+                },
+                children: [
+                  if (articleWithImage)
+                    ArticleImageView(
+                      article: article.metadata,
+                      controller: pageController,
+                      fullHeight: constraints.maxHeight,
+                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: NoScrollGlow(
+                          child: CustomScrollView(
+                            physics: const NeverScrollableScrollPhysics(
+                              parent: BottomBouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics(),
                               ),
                             ),
-                            if (article.metadata.credits.isNotEmpty) ...[
-                              SliverPadding(
-                                padding: const EdgeInsets.only(
-                                  top: AppDimens.xl,
-                                  left: AppDimens.l,
-                                  right: AppDimens.l,
+                            controller: controller,
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildListDelegate(
+                                  [
+                                    ArticleContentView(
+                                      article: article,
+                                      cubit: cubit,
+                                      controller: controller,
+                                      articleContentKey: _articleContentKey,
+                                      scrollToPosition: () => _scrollToPosition(readArticleProgress),
+                                    ),
+                                  ],
                                 ),
-                                sliver: SliverToBoxAdapter(
-                                  child: _Credits(
-                                    credits: article.metadata.credits,
+                              ),
+                              if (article.metadata.credits.isNotEmpty) ...[
+                                SliverPadding(
+                                  padding: const EdgeInsets.only(
+                                    top: AppDimens.xl,
+                                    left: AppDimens.l,
+                                    right: AppDimens.l,
+                                  ),
+                                  sliver: SliverToBoxAdapter(
+                                    child: _Credits(
+                                      credits: article.metadata.credits,
+                                    ),
                                   ),
                                 ),
+                              ],
+                              SliverToBoxAdapter(
+                                child: SizedBox(height: footerHeight),
                               ),
                             ],
-                            SliverToBoxAdapter(
-                              child: SizedBox(
-                                height: footerHeight,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                    _ArticleProgressBar(readProgress: readProgress),
-                  ],
-                ),
-              ],
-            ),
-            BackToTopicButton(
-              showButton: showBackToTopicButton,
-              fromTopic: fromTopic,
-            ),
-            _AnimatedAudioButton(
-              article: article.metadata,
-              showButton: showAudioFloatingButton,
-            ),
-          ],
+                      _ArticleProgressBar(readProgress: readProgress),
+                    ],
+                  ),
+                ],
+              ),
+              InformedTabBar.floating(show: showTabBar.value),
+              _AnimatedAudioButton(
+                article: article.metadata,
+                showButton: showAudioFloatingButton,
+              ),
+            ],
+          ),
         ),
       ),
     );

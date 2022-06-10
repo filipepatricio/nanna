@@ -48,7 +48,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                           AppDimens.m,
                           AppDimens.m,
                           AppDimens.m,
-                          AppDimens.l,
+                          AppDimens.ml,
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -76,7 +76,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 height: 1.7,
                               ),
-                              maxLines: 5,
+                              maxLines: 4,
                             ),
                           ],
                         ),
