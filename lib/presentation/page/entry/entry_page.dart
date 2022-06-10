@@ -44,6 +44,7 @@ class EntryPage extends HookWidget {
     return const Scaffold(
       backgroundColor: AppColors.background,
       body: AppConnectivityChecker(
+        closeCubitOnDispose: true,
         child: Loader(),
       ),
     );
