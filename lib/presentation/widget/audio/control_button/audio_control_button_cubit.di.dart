@@ -193,7 +193,9 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
         paused: (event) => _handlePausedState(event.audioItem),
         completed: (event) => _handleCompletedState(event.audioItem),
       );
-      emit(state);
+      if (!isClosed) {
+        emit(state);
+      }
     });
   }
 

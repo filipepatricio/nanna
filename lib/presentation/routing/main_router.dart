@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
@@ -70,7 +69,7 @@ const dashboardTabRouter = CustomRoute(
     AutoRoute(
       path: 'todays_topics',
       name: 'DailyBriefTabGroupRouter',
-      page: DailyBriefPage,
+      page: EmptyRouterPage,
       children: [
         AutoRoute(path: '', page: DailyBriefPage, initial: true),
       ],
@@ -78,7 +77,7 @@ const dashboardTabRouter = CustomRoute(
     AutoRoute(
       path: 'explore',
       name: 'ExploreTabGroupRouter',
-      page: ExplorePage,
+      page: EmptyRouterPage,
       children: [
         AutoRoute(path: '', page: ExplorePage, initial: true),
         AutoRoute(page: ArticleSeeAllPage),
@@ -88,7 +87,7 @@ const dashboardTabRouter = CustomRoute(
     AutoRoute(
       path: 'profile',
       name: 'ProfileTabGroupRouter',
-      page: ProfilePage,
+      page: EmptyRouterPage,
       children: [
         AutoRoute(path: '', page: ProfilePage, initial: true),
       ],
