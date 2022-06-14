@@ -1,4 +1,6 @@
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -36,4 +38,31 @@ void main() {
     await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
+
+  visualTest(
+    '${DailyBriefPage}_(error)',
+    (tester) async {
+      final cubit = FakeDailyBriefPageCubit();
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => cubit);
+        },
+      );
+      await tester.matchGoldenFile();
+    },
+  );
+}
+
+class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
+  @override
+  DailyBriefPageState get state => DailyBriefPageState.error();
+
+  @override
+  Stream<DailyBriefPageState> get stream => Stream.value(DailyBriefPageState.error());
+
+  @override
+  Future<void> initialize() async {}
+  @override
+  Future<void> close() async {}
 }
