@@ -14,6 +14,7 @@ Future<bool> showSwitchAudioPopup(BuildContext context) async {
   final result = await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useRootNavigator: true,
     constraints: BoxConstraints.loose(
       Size.fromHeight(
         MediaQuery.of(context).size.height,
