@@ -32,27 +32,18 @@ import 'daily_brief_page_test.mocks.dart';
   ],
 )
 void main() {
-  late MockTrackActivityUseCase trackActivityUseCase;
-  late MockGetCurrentBriefUseCase getCurrentBriefUseCase;
-  late MockIncomingPushDataRefreshStreamUseCase incomingPushDataRefreshStreamUseCase;
-  late MockIsTutorialStepSeenUseCase isTutorialStepSeenUseCase;
-  late DailyBriefPageCubit dailyBriefPageCubit;
-
-  setUp(() {
-    trackActivityUseCase = MockTrackActivityUseCase();
-    getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
-    incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
-    isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
-    dailyBriefPageCubit = DailyBriefPageCubit(
+  test('brief entry preview is being tracked correctly', () async {
+    final trackActivityUseCase = MockTrackActivityUseCase();
+    final getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
+    final incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
+    final isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
+    final dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
       isTutorialStepSeenUseCase,
       MockSetTutorialStepSeenUseCase(),
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
     );
-  });
-
-  test('brief entry preview is being tracked correctly', () async {
     final event = AnalyticsEvent.dailyBriefEntryPreviewed(
       TestData.currentBrief.id,
       TestData.currentBrief.entries.first.id,

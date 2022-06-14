@@ -89,7 +89,12 @@ class MainCubit extends Cubit<MainState> {
 
   MainState _handleNavigationAction(String path) {
     final uri = Uri.parse(path);
-    final articleSegment = uri.pathSegments.firstWhere((element) => element == articlePathSegment, orElse: () => '');
+
+    if (uri.pathSegments.any((segment) => segment == magicLinkSegment)) {
+      return MainState.navigate(const MainPageRoute().path);
+    }
+
+    final articleSegment = uri.pathSegments.firstWhere((segment) => segment == articlePathSegment, orElse: () => '');
     final articleIndex = uri.pathSegments.indexOf(articleSegment);
 
     if (articleIndex != -1) {
@@ -100,10 +105,10 @@ class MainCubit extends Cubit<MainState> {
 
       if (topicSlug == null) {
         return MainState.multiNavigate([firstPart, secondPart]);
-      } else {
-        final articleUri = Uri(path: secondPart, queryParameters: {'topicSlug': topicSlug});
-        return MainState.multiNavigate([firstPart, articleUri.toString()]);
       }
+
+      final articleUri = Uri(path: secondPart, queryParameters: {'topicSlug': topicSlug});
+      return MainState.multiNavigate([firstPart, articleUri.toString()]);
     }
 
     return MainState.navigate(const MainPageRoute().path + path);
@@ -111,7 +116,7 @@ class MainCubit extends Cubit<MainState> {
 
   String? _findTopicSlug(String path) {
     final uri = Uri.parse(path);
-    final topicsSegment = uri.pathSegments.firstWhere((element) => element == topicsPathSegment, orElse: () => '');
+    final topicsSegment = uri.pathSegments.firstWhere((segment) => segment == topicsPathSegment, orElse: () => '');
     final topicSegmentIndex = uri.pathSegments.indexOf(topicsSegment);
 
     if (topicSegmentIndex != -1 && uri.pathSegments.length > topicSegmentIndex + 1) {

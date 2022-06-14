@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
@@ -68,9 +69,7 @@ class BookmarkButton extends HookWidget {
     final cubit = useCubit<BookmarkButtonCubit>();
     final state = useCubitBuilder(cubit);
     final animationController = useAnimationController(
-      duration: const Duration(
-        milliseconds: _animationDuration,
-      ),
+      duration: const Duration(milliseconds: _animationDuration),
     );
 
     useCubitListener<BookmarkButtonCubit, BookmarkButtonState>(
@@ -107,19 +106,18 @@ class BookmarkButton extends HookWidget {
       () {
         cubit.initialize(_data);
       },
-      [
-        cubit,
-        _data,
-      ],
+      [cubit, _data],
     );
 
     return ScaleTransition(
-      scale: Tween(begin: 1.0, end: 1.4).animate(
-        CurvedAnimation(
-          parent: animationController,
-          curve: Curves.bounceInOut,
-        ),
-      ),
+      scale: kIsTest
+          ? const AlwaysStoppedAnimation(1.0)
+          : Tween(begin: 1.0, end: 1.4).animate(
+              CurvedAnimation(
+                parent: animationController,
+                curve: Curves.bounceInOut,
+              ),
+            ),
       child: SizedBox.square(
         dimension: _iconSize,
         child: Padding(
