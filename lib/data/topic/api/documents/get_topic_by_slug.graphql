@@ -1,0 +1,8 @@
+# import 'package:better_informed_mobile/data/gql/common/topic_fragment.graphql';
+
+
+query getTopicBySlug($slug: String!){
+    topic(slug: $slug) {
+        ...topicFragment
+    }
+}

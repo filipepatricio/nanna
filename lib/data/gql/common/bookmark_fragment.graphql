@@ -1,0 +1,9 @@
+fragment bookmarkResponseFragment on BookmarkMutationPayload {
+    __typename
+    successful
+    errorCode
+    errorMessage
+    bookmark {
+        id
+    }
+}

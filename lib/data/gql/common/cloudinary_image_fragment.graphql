@@ -1,0 +1,5 @@
+fragment cloudinaryImageFragment on CloudinaryImage {
+    __typename
+    publicId
+    caption
+}

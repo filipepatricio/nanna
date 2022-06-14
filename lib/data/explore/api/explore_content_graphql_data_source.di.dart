@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+import 'package:better_informed_mobile/data/explore/api/documents/__generated__/explore_highlighted_content.ast.gql.dart'
+    as highlighted_content;
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/explore_content_api_data_source.dart';
-import 'package:better_informed_mobile/data/explore/api/explore_content_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -26,7 +27,8 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
     final result = await _client.query(
       QueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        document: ExploreContentGQL.highlightedContent(),
+        document: highlighted_content.document,
+        operationName: highlighted_content.getExploreSection.name?.value,
       ),
     );
 
@@ -42,8 +44,14 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset) async {
     final result = await _client.query(
       QueryOptions(
-        document: ExploreContentGQL.paginated(id, limit, offset),
+        document: highlighted_content.document,
+        operationName: highlighted_content.getExploreSection.name?.value,
         fetchPolicy: FetchPolicy.noCache,
+        variables: {
+          'id': id,
+          'limit': limit,
+          'offset': offset,
+        },
       ),
     );
 
@@ -60,8 +68,9 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   Stream<ExploreHighlightedContentDTO?> exploreHighlightedContentStream() async* {
     final observableQuery = _client.watchQuery(
       WatchQueryOptions(
-        document: ExploreContentGQL.highlightedContent(),
         fetchPolicy: FetchPolicy.cacheAndNetwork,
+        document: highlighted_content.document,
+        operationName: highlighted_content.getExploreSection.name?.value,
         pollInterval: const Duration(minutes: 10),
         fetchResults: true,
         cacheRereadPolicy: CacheRereadPolicy.ignoreAll,

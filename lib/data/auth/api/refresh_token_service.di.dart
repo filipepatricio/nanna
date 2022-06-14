@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:better_informed_mobile/data/auth/api/auth_gql.dart';
+import 'package:better_informed_mobile/data/auth/api/documents/__generated__/refresh.ast.gql.dart' as refresh;
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
@@ -38,7 +38,11 @@ class RefreshTokenService {
     try {
       final result = await _unauthorizedClient.mutate(
         MutationOptions(
-          document: AuthGQL.refresh(refreshToken),
+          document: refresh.document,
+          operationName: refresh.refreshToken.name?.value,
+          variables: {
+            'token': refreshToken,
+          },
         ),
       );
 

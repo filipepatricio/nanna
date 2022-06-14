@@ -1,0 +1,4 @@
+fragment kindFragment on ArticleKind {
+    __typename
+    name
+}

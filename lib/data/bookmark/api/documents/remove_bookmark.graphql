@@ -1,0 +1,7 @@
+# import 'package:better_informed_mobile/data/gql/common/bookmark_fragment.graphql';
+
+mutation removeBookmark($id: UUID!){
+    removeBookmark(id: $id) {
+        ...bookmarkResponseFragment
+    }
+}

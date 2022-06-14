@@ -1,0 +1,5 @@
+fragment editorialTeamFragment on EditorialTeam {
+    __typename
+    name
+    bio
+}

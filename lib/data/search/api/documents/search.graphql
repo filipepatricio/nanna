@@ -1,0 +1,16 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/topic_preview_fragment.graphql';
+
+
+
+query search($query: String!, $limit: Int!, $offset: Int!) {
+    search(query: $query, pagination: { limit: $limit, offset: $offset }) {
+        __typename
+        ... on Topic {
+            ...topicPreviewFragment
+        }
+        ... on Article {
+            ...articleFragment
+        }
+    }
+}

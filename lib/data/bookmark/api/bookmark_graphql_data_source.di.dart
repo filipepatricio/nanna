@@ -1,5 +1,14 @@
 import 'package:better_informed_mobile/data/bookmark/api/bookmark_data_source.dart';
-import 'package:better_informed_mobile/data/bookmark/api/bookmark_graphql.dart';
+import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__/article_id.ast.gql.dart' as article_id;
+import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__/bookmark_article.ast.gql.dart'
+    as bookmark_article;
+import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__/bookmark_topic.ast.gql.dart'
+    as bookmark_topic;
+import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__/get_paginated_bookmarks.ast.gql.dart'
+    as get_paginated_bookmarks;
+import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__/remove_bookmark.ast.gql.dart'
+    as remove_bookmark;
+import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__/topic_id.ast.gql.dart' as topic_id;
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_filter_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_id_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
@@ -22,8 +31,12 @@ class BookmarkGraphqlDataSource implements BookmarkDataSource {
   Future<BookmarkIdDTO?> getArticleBookmarkId(String articleSlug) async {
     final result = await _client.query(
       QueryOptions(
-        document: BookmarkGraphql.articleId(articleSlug),
+        document: article_id.document,
+        operationName: article_id.articleId.name?.value,
         fetchPolicy: FetchPolicy.networkOnly,
+        variables: {
+          'slug': articleSlug,
+        },
       ),
     );
 
@@ -34,8 +47,12 @@ class BookmarkGraphqlDataSource implements BookmarkDataSource {
   Future<BookmarkIdDTO?> getTopicBookmarkId(String topicSlug) async {
     final result = await _client.query(
       QueryOptions(
-        document: BookmarkGraphql.topicId(topicSlug),
+        document: topic_id.document,
+        operationName: topic_id.topicId.name?.value,
         fetchPolicy: FetchPolicy.networkOnly,
+        variables: {
+          'slug': topicSlug,
+        },
       ),
     );
 
@@ -46,7 +63,11 @@ class BookmarkGraphqlDataSource implements BookmarkDataSource {
   Future<UpdateBookmarkResponseDTO> bookmarkArticle(String articleSlug) async {
     final result = await _client.mutate(
       MutationOptions(
-        document: BookmarkGraphql.bookmarkArticle(articleSlug),
+        document: bookmark_article.document,
+        operationName: bookmark_article.bookmarkArticle.name?.value,
+        variables: {
+          'slug': articleSlug,
+        },
       ),
     );
 
@@ -64,7 +85,11 @@ class BookmarkGraphqlDataSource implements BookmarkDataSource {
   Future<UpdateBookmarkResponseDTO> bookmarkTopic(String topicSlug) async {
     final result = await _client.mutate(
       MutationOptions(
-        document: BookmarkGraphql.bookmarkTopic(topicSlug),
+        document: bookmark_topic.document,
+        operationName: bookmark_topic.bookmarkTopic.name?.value,
+        variables: {
+          'slug': topicSlug,
+        },
       ),
     );
 
@@ -82,7 +107,11 @@ class BookmarkGraphqlDataSource implements BookmarkDataSource {
   Future<UpdateBookmarkResponseDTO> removeBookmark(String bookmarkId) async {
     final result = await _client.mutate(
       MutationOptions(
-        document: BookmarkGraphql.removeBookmark(bookmarkId),
+        document: remove_bookmark.document,
+        operationName: remove_bookmark.removeBookmark.name?.value,
+        variables: {
+          'id': bookmarkId,
+        },
       ),
     );
 
@@ -118,14 +147,16 @@ class BookmarkGraphqlDataSource implements BookmarkDataSource {
   }) async {
     final result = await _client.query(
       QueryOptions(
-        document: BookmarkGraphql.getPaginatedBookmarks(
-          limit,
-          offset,
-          filter.value,
-          order.value,
-          sortBy.value,
-        ),
+        document: get_paginated_bookmarks.document,
+        operationName: get_paginated_bookmarks.getPaginatedBookmarks.name?.value,
         fetchPolicy: FetchPolicy.networkOnly,
+        variables: {
+          'limit': limit,
+          'offset': offset,
+          'filter': filter.value,
+          'order': order.value,
+          'sortBy': sortBy.value,
+        },
       ),
     );
 

@@ -1,0 +1,8 @@
+query articleContent($slug: String!) {
+    article(slug: $slug) {
+        text {
+            content
+            markupLanguage
+        }
+    }
+}
