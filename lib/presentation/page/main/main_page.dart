@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
@@ -23,7 +24,7 @@ class MainPage extends HookWidget {
         tokenExpired: (_) => _onTokenExpiredEvent(context),
         navigate: (navigate) {
           WidgetsBinding.instance.addPostFrameCallback(
-            (_) async => await closeInAppWebView().then(
+            (_) async => await _closeWebView().then(
               (_) async {
                 _resetNestedRouters();
                 await context.navigateNamedTo(
@@ -38,7 +39,7 @@ class MainPage extends HookWidget {
         },
         multiNavigate: (navigate) {
           WidgetsBinding.instance.addPostFrameCallback(
-            (_) async => await closeInAppWebView().then(
+            (_) async => await _closeWebView().then(
               (_) async {
                 _resetNestedRouters();
                 for (final path in navigate.path) {
@@ -82,5 +83,9 @@ class MainPage extends HookWidget {
     if (nestedNavigatorContext != null) {
       AutoRouter.of(nestedNavigatorContext).popUntilRoot();
     }
+  }
+
+  Future<void> _closeWebView() async {
+    if (!kIsTest) await closeInAppWebView();
   }
 }

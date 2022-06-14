@@ -3,37 +3,16 @@ import 'dart:async';
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 
 class AppLinkDataSourceMock implements AppLinkDataSource {
-  final StreamController<Uri> _appLinkStream = StreamController.broadcast();
-
-  Uri? _initialRoute;
-  StreamSubscription? _appLinkStreamSubscription;
-
   AppLinkDataSourceMock._();
 
-  static Future<AppLinkDataSourceMock> create() async {
-    final dataSource = AppLinkDataSourceMock._();
-    try {
-      await dataSource._initialize();
-    } catch (_) {}
-    return dataSource;
-  }
-
-  Future<void> _initialize() async {
-    try {
-      _initialRoute = null;
-    } catch (_) {}
-  }
+  static Future<AppLinkDataSourceMock> create() async => AppLinkDataSourceMock._();
 
   @override
-  Future<Uri?> getInitialAction() async {
-    return _initialRoute;
-  }
+  Future<Uri?> getInitialAction() async => null;
 
   @override
-  Stream<Uri> listenForIncomingActions() => _appLinkStream.stream;
+  Stream<Uri> listenForIncomingActions() => Stream.value(Uri());
 
   @override
-  Future<void> clear() async {
-    await _appLinkStreamSubscription?.cancel();
-  }
+  Future<void> clear() async {}
 }

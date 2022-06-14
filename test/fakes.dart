@@ -1,11 +1,36 @@
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_state.dt.dart';
 import 'package:mockito/mockito.dart';
+
+class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
+  @override
+  BookmarkButtonState get state => BookmarkButtonState.idle(
+        const BookmarkTypeData.article('', ''),
+        BookmarkState.notBookmarked(),
+      );
+  @override
+  Stream<BookmarkButtonState> get stream => Stream.value(
+        BookmarkButtonState.idle(
+          const BookmarkTypeData.article('', ''),
+          BookmarkState.notBookmarked(),
+        ),
+      );
+
+  @override
+  Future<void> initialize(BookmarkTypeData data) async {}
+
+  @override
+  Future<void> close() async {}
+}
 
 class FakeAppConnectivityCheckerCubit extends Fake implements AppConnectivityCheckerCubit {
   @override

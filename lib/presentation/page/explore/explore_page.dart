@@ -266,14 +266,12 @@ class _Area extends HookWidget {
       controller: eventController,
       child: ViewVisibilityNotifier(
         detectorKey: Key(area.id),
-        onVisible: () {
-          eventController.track(
-            AnalyticsEvent.exploreAreaPreviewed(
-              area.id,
-              orderIndex,
-            ),
-          );
-        },
+        onVisible: () => eventController.track(
+          AnalyticsEvent.exploreAreaPreviewed(
+            area.id,
+            orderIndex,
+          ),
+        ),
         borderFraction: 0.6,
         child: area.map(
           articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),

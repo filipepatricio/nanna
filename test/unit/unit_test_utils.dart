@@ -16,7 +16,6 @@ typedef DependencyOverrideCallback = Future<void> Function(GetIt getIt);
 
 extension WidgetTesterExtension on WidgetTester {
   Future<void> startApp({
-    String? initialDeepLink,
     PageRouteInfo initialRoute = defaultInitialRoute,
     DependencyOverrideCallback? dependencyOverride,
   }) async {
