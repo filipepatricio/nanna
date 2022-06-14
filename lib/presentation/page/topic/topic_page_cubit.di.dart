@@ -88,16 +88,14 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     }
   }
 
-  TutorialCoachMark tutorialCoachMark(BuildContext context) {
-    return TutorialCoachMark(
-      context,
-      targets: targets,
-      paddingFocus: 0,
-      opacityShadow: 0.5,
-      hideSkip: true,
-      onSkip: onSkipTutorialCoachMark,
-    );
-  }
+  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(
+        context,
+        targets: targets,
+        paddingFocus: 0,
+        opacityShadow: 0.5,
+        hideSkip: true,
+        onSkip: onSkipTutorialCoachMark,
+      );
 
   void _initializeSummaryCardTutorialCoachMarkTarget(bool isNextCoachMarkNotSeen) {
     targets.add(

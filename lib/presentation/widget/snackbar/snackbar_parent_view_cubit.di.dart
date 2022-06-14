@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -37,9 +38,11 @@ class SnackbarParentViewCubit extends Cubit<SnackbarParentViewState> {
   }
 
   void _setupDiscardTime() {
-    _timer = Stream.fromFuture(Future.delayed(_timeoutDuration)).listen((event) {
-      emit(SnackbarParentViewState.idle());
-    });
+    if (!kIsTest) {
+      _timer = Stream.fromFuture(Future.delayed(_timeoutDuration)).listen((event) {
+        emit(SnackbarParentViewState.idle());
+      });
+    }
   }
 
   @override

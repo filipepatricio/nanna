@@ -57,10 +57,7 @@ class SearchHistoryView extends HookWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      explorePageCubit.removeSearchHistoryQuery(query);
-                      // explorePageCubit.removeSearchHistoryQuery(query);
-                    },
+                    onTap: () => explorePageCubit.removeSearchHistoryQuery(query),
                     child: SvgPicture.asset(AppVectorGraphics.close),
                   ),
                 ],

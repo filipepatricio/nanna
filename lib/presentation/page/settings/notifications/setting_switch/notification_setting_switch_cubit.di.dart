@@ -9,16 +9,16 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class NotificationSettingSwitchCubit extends Cubit<NotificationSettingSwitchState> {
+  NotificationSettingSwitchCubit(
+    this._setChannelPushSettingUseCase,
+    this._setChannelEmailSettingUseCase,
+  ) : super(NotificationSettingSwitchState.notInitialized());
+
   final SetChannelPushSettingUseCase _setChannelPushSettingUseCase;
   final SetChannelEmailSettingUseCase _setChannelEmailSettingUseCase;
 
   late NotificationType _notificationType;
   late NotificationChannel _channel;
-
-  NotificationSettingSwitchCubit(
-    this._setChannelPushSettingUseCase,
-    this._setChannelEmailSettingUseCase,
-  ) : super(NotificationSettingSwitchState.notInitialized());
 
   void initialize(NotificationChannel channel, NotificationType notificationType) {
     _notificationType = notificationType;

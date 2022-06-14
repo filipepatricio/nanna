@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -19,7 +20,7 @@ class SnackbarView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textWidth = useMemoized(() => MediaQuery.of(context).size.width - 2 * AppDimens.l - 2 * AppDimens.m);
+    const innerPadding = AppDimens.m;
     final messageState = useState(message);
 
     useEffect(
@@ -32,27 +33,34 @@ class SnackbarView extends HookWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.all(AppDimens.m),
+      padding: const EdgeInsets.fromLTRB(
+        innerPadding,
+        AppDimens.s,
+        innerPadding,
+        innerPadding,
+      ),
       decoration: BoxDecoration(
         color: messageState.value?.backgroundColor,
         borderRadius: const BorderRadius.all(
           Radius.circular(AppDimens.s),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: _maxHeight,
-              maxWidth: textWidth,
+      child: LayoutBuilder(
+        builder: (context, constraints) => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: _maxHeight,
+                maxWidth: constraints.maxWidth - 2 * innerPadding,
+              ),
+              child: messageState.value?.content,
             ),
-            child: messageState.value?.content,
-          ),
-          if (messageState.value != null) ...[
-            buildSnackbarAction(messageState.value!),
-          ]
-        ],
+            if (messageState.value != null) ...[
+              buildSnackbarAction(messageState.value!),
+            ]
+          ],
+        ),
       ),
     );
   }
@@ -95,8 +103,9 @@ extension on SnackbarMessage {
   Widget get content {
     return map(
       simple: (simple) {
-        return Text(
+        return AutoSizeText(
           simple.message,
+          maxLines: 2,
           style: AppTypography.b2Regular.copyWith(color: AppColors.white),
         );
       },
