@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:better_informed_mobile/data/daily_brief/api/daily_brief_api_data_source.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/daily_brief_gql.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/documents/__generated__/current_brief.ast.gql.dart'
+    as current_brief;
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -22,7 +23,8 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   Future<CurrentBriefDTO> currentBrief() async {
     final result = await _client.query(
       QueryOptions(
-        document: DailyBriefGql.currentBrief(),
+        document: current_brief.document,
+        operationName: current_brief.currentBriefForStartupScreen.name?.value,
         fetchPolicy: FetchPolicy.cacheAndNetwork,
         pollInterval: const Duration(minutes: 10),
       ),
@@ -41,7 +43,8 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   Stream<CurrentBriefDTO?> currentBriefStream() async* {
     final observableQuery = _client.watchQuery(
       WatchQueryOptions(
-        document: DailyBriefGql.currentBrief(),
+        document: current_brief.document,
+        operationName: current_brief.currentBriefForStartupScreen.name?.value,
         fetchPolicy: FetchPolicy.cacheAndNetwork,
         pollInterval: const Duration(minutes: 10),
         fetchResults: true,

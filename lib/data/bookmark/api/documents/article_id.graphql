@@ -1,0 +1,5 @@
+query articleId($slug: String!){
+    getArticleBookmark(slug: $slug) {
+        id
+    }
+}

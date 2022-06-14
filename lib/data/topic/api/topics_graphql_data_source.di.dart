@@ -1,8 +1,15 @@
+import 'package:better_informed_mobile/data/topic/api/documents/__generated__/get_topic_by_slug.ast.gql.dart'
+    as get_topic_by_slug;
+import 'package:better_informed_mobile/data/topic/api/documents/__generated__/get_topic_id_by_slug.ast.gql.dart'
+    as get_topic_id_by_slug;
+import 'package:better_informed_mobile/data/topic/api/documents/__generated__/get_topics_from_editor.ast.gql.dart'
+    as get_topics_from_editor;
+import 'package:better_informed_mobile/data/topic/api/documents/__generated__/get_topics_from_expert.ast.gql.dart'
+    as get_topics_from_expert;
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_editor_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/topics_api_data_source.dart';
-import 'package:better_informed_mobile/data/topic/api/topics_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -19,7 +26,12 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
   Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId, [String? excludedTopicSlug]) async {
     final result = await _client.query(
       QueryOptions(
-        document: TopicsGql.getTopicsFromExpert(expertId, excludedTopicSlug),
+        document: get_topics_from_expert.document,
+        operationName: get_topics_from_expert.getTopicsFromExpert.name?.value,
+        variables: {
+          'expertId': expertId,
+          'excludedTopicSlug': excludedTopicSlug ?? '',
+        },
       ),
     );
 
@@ -35,7 +47,12 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
   Future<TopicsFromEditorDTO> getTopicsFromEditor(String editorId, [String? excludedTopicSlug]) async {
     final result = await _client.query(
       QueryOptions(
-        document: TopicsGql.getTopicsFromEditor(editorId, excludedTopicSlug),
+        document: get_topics_from_editor.document,
+        operationName: get_topics_from_editor.getTopicsFromEditor.name?.value,
+        variables: {
+          'editorId': editorId,
+          'excludedTopicSlug': excludedTopicSlug ?? '',
+        },
       ),
     );
 
@@ -51,7 +68,11 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
   Future<TopicDTO> getTopicBySlug(String slug) async {
     final result = await _client.query(
       QueryOptions(
-        document: TopicsGql.getTopicBySlug(slug),
+        document: get_topic_by_slug.document,
+        operationName: get_topic_by_slug.getTopicBySlug.name?.value,
+        variables: {
+          'slug': slug,
+        },
       ),
     );
 
@@ -68,7 +89,11 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
   Future<String> getTopicId(String slug) async {
     final result = await _client.query(
       QueryOptions(
-        document: TopicsGql.getTopicIdBySlug(slug),
+        document: get_topic_id_by_slug.document,
+        operationName: get_topic_id_by_slug.getTopicByIdSlug.name?.value,
+        variables: {
+          'slug': slug,
+        },
       ),
     );
 

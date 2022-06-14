@@ -1,0 +1,42 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/topic_preview_fragment.graphql';
+
+fragment exploreSectionFragment on ExploreArea {
+    __typename
+    id
+    name
+    ... on ArticlesExploreArea {
+        description
+        articles {
+           ...articleFragment
+        }
+    }
+
+    ... on ArticlesListExploreArea {
+        description
+        articles {
+            ...articleFragment
+        }
+    }
+
+    ... on TopicsExploreArea {
+        topics {
+            ...topicPreviewFragment
+        }
+    }
+
+    ... on SmallTopicsExploreArea {
+        description
+        topics {
+            ...topicPreviewFragment
+        }
+    }
+
+    ... on HighlightedTopicsExploreArea {
+        backgroundColor
+        description
+        topics {
+            ...topicPreviewFragment
+        }
+    }
+}

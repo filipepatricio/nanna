@@ -1,0 +1,708 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: RootQueryType
+    mutation: RootMutationType
+}
+
+interface ExploreArea {
+    "The stream's icon"
+    icon: SVG
+    "Globally unique identifier for this area"
+    id: String!
+    "Should the area be highlighted"
+    isHighlighted: Boolean!
+    "Area was selected by user as preferred"
+    isPreferred: Boolean!
+    "The name of the area"
+    name: String!
+}
+
+"Article image"
+union ArticleImage = CloudinaryImage | RemoteImage
+
+"An article or a topic"
+union BookmarkEntity = Article | Topic
+
+"Target Item of the brief entry"
+union BriefEntryItem = Article | Topic
+
+"A media item referenced in the read list entries"
+union ReadingListMediaItem = Article
+
+"A search result"
+union SearchResult = Article | Topic
+
+"A media item in the topic"
+union TopicMediaItem = Article
+
+"A topic owner is the one responsible for the topic"
+union TopicOwner = Editor | EditorialTeam | Expert
+
+"A user account"
+type Account {
+    "The account email"
+    email: String!
+    "The user's first name"
+    firstName: String
+    "The account ID"
+    id: Int! @deprecated(reason: "Must use UUID in public communication")
+    "The user's last name"
+    lastName: String
+    "The account UUID"
+    uuid: UUID!
+}
+
+"An article"
+type Article {
+    "The article's image. May be null if no image is available."
+    articleImage: ArticleImage
+    "The article's author"
+    author: String
+    "The article's categories"
+    categories: [Category]
+    "Credit note for this article"
+    credits: String
+    "Denotes whether this article has an audio version available"
+    hasAudioVersion: Boolean
+    "The database ID"
+    id: UUID!
+    "The main image"
+    image: CloudinaryImage @deprecated(reason: "Deprecated in favour of the ArticleImage union type")
+    "The article's kind"
+    kind: ArticleKind
+    "The editor's note"
+    note: String
+    "Preview text for article content"
+    previewText: Text!
+    "The date the article was published by the publisher"
+    publicationDate: Date
+    "The publisher of this article"
+    publisher: Publisher!
+    "The articles's slug to be used in friendly URLs"
+    slug: String!
+    "The article's source URL"
+    sourceUrl: String!
+    "The article's title without any Markdown formatting"
+    strippedTitle: String!
+    "The article content"
+    text: Text!
+    "The approximated time it takes to read the article in minutes"
+    timeToRead: Int
+    "The article's title"
+    title: String!
+    "The type of article determining who can read the article"
+    type: ArticleType!
+    "The article's URL used for sharing"
+    url: String!
+    "The article's word count, i.e. its length"
+    wordCount: Int
+}
+
+"An article kind"
+type ArticleKind {
+    name: String!
+}
+
+type ArticlesExploreArea implements ExploreArea {
+    articles(pagination: PaginationInput): [Article]!
+    "The area's description"
+    description: String
+    "The stream's icon"
+    icon: SVG
+    "Globally unique identifier for this area"
+    id: String!
+    "Should the area be highlighted"
+    isHighlighted: Boolean!
+    "Area was selected by user as preferred"
+    isPreferred: Boolean!
+    "The name of the area"
+    name: String!
+}
+
+type ArticlesListExploreArea implements ExploreArea {
+    articles(pagination: PaginationInput): [Article]!
+    "The area's description"
+    description: String
+    "The stream's icon"
+    icon: SVG
+    "Globally unique identifier for this area"
+    id: String!
+    "Should the area be highlighted"
+    isHighlighted: Boolean!
+    "Area was selected by user as preferred"
+    isPreferred: Boolean!
+    "The name of the area"
+    name: String!
+}
+
+type ArticlesWithFeatureExploreArea implements ExploreArea {
+    articles(pagination: PaginationInput): [Article]!
+    "The background color to be used for styling"
+    backgroundColor: HexColor
+    "The area's description"
+    description: String
+    "The stream's icon"
+    icon: SVG
+    "Globally unique identifier for this area"
+    id: String!
+    "Should the area be highlighted"
+    isHighlighted: Boolean!
+    "Area was selected by user as preferred"
+    isPreferred: Boolean!
+    "The name of the area"
+    name: String!
+}
+
+"An audio file"
+type AudioFile {
+    "Credit note for this audio file"
+    credits: String
+    "The URL"
+    url: String!
+}
+
+"Authentication tokens"
+type AuthTokens {
+    accessToken: String!
+    refreshToken: String!
+}
+
+"A bookmark"
+type Bookmark {
+    "Bookmark data"
+    entity: BookmarkEntity
+    errorCode: String
+    errorMessage: String
+    "Bookmark ID"
+    id: UUID
+}
+
+"A bookmark"
+type BookmarkMutationPayload {
+    "A bookmark"
+    bookmark: Bookmark
+    errorCode: String
+    errorMessage: String
+    successful: Boolean!
+}
+
+"A brief is a collection of topics"
+type Brief {
+    "A headline for the brief content"
+    contentHeadline: String!
+    "Date of the brief"
+    date: Date!
+    "The entries mentioned in this brief"
+    entries: [BriefEntry]
+    "A status message to be shown when the reader finished the brief"
+    goodbye: StatusMessage!
+    "A status message to be shown at the beginning of the brief"
+    greeting: StatusMessage!
+    "The brief's unique ID"
+    id: UUID!
+    "An introduction for the brief contents"
+    introduction: BriefIntroduction
+    "The number of entries in this brief"
+    numberOfEntries: Int!
+    "The number of topics in this brief"
+    numberOfTopics: Int!
+    "The topics mentioned in this brief"
+    topics: [Topic]
+}
+
+"An entry of the brief"
+type BriefEntry {
+    "Target Item of the brief entry"
+    item: BriefEntryItem!
+    "Style description of the entry"
+    style: BriefEntryStyle!
+}
+
+"An entry of the brief"
+type BriefEntryStyle {
+    "The background color for styling"
+    backgroundColor: HexColor
+    "Style of the entry"
+    type: BriefEntryStyleType!
+}
+
+"An introduction for the brief contents"
+type BriefIntroduction {
+    "The introduction's icon"
+    icon: SVG!
+    "The introduction's text"
+    text: String!
+}
+
+"A category"
+type Category {
+    icon: SVG!
+    id: String!
+    name: String!
+    slug: String!
+}
+
+"A grouping of channels"
+type ChannelCategory {
+    "The channels within this category"
+    channels: [ChannelPreferences]
+    "The name of the category"
+    name: String!
+}
+
+"Notification settings for an update channel"
+type ChannelPreferences {
+    "Indicates whether the user wants to get updates by email"
+    emailEnabled: Boolean!
+    "The channel ID"
+    id: String!
+    "The name of the channel"
+    name: String!
+    "Indicates whether the user wants to get updates by push notification"
+    pushEnabled: Boolean!
+}
+
+"An image hosted on Cloudinary"
+type CloudinaryImage {
+    "Image Caption"
+    caption: String
+    "The public ID"
+    publicId: String!
+}
+
+"A push notification token for a user's device"
+type DeviceRegistrationToken {
+    "The token itself"
+    token: String!
+    "The last time the token was updated"
+    updatedAt: DateTime!
+}
+
+"An editor working for informed"
+type Editor {
+    "The editor's avatar"
+    avatar: CloudinaryImage
+    "Editor's biography"
+    bio: String!
+    "The editor's ID"
+    id: UUID
+    "The editor's name"
+    name: String!
+}
+
+type EditorialTeam {
+    "The editorial team avatar. Currently defaults to null"
+    avatar: CloudinaryImage
+    "The editorial team bio"
+    bio: String!
+    "The editorial team name"
+    name: String!
+}
+
+"A domain expert curating topics"
+type Expert {
+    "The expert's area of expertise"
+    areaOfExpertise: String!
+    "The expert's avatar"
+    avatar: CloudinaryImage
+    "The expert's biography"
+    bio: String!
+    "The expert's biography split into chunks of text"
+    chunkedBio: [String]
+    "The expert's ID"
+    id: UUID!
+    "Link to the expert's Instagram profile"
+    instagram: String
+    "Link to the expert's LinkedIn profile"
+    linkedin: String
+    "The expert's name"
+    name: String!
+    "Link to the expert's Website"
+    website: String
+}
+
+type HighlightedTopicsExploreArea implements ExploreArea {
+    "The background color to be used for styling"
+    backgroundColor: HexColor
+    "The area's description"
+    description: String
+    "The stream's icon"
+    icon: SVG
+    "Globally unique identifier for this area"
+    id: String!
+    "Should the area be highlighted"
+    isHighlighted: Boolean!
+    "Area was selected by user as preferred"
+    isPreferred: Boolean!
+    "The name of the area"
+    name: String!
+    topics(pagination: PaginationInput): [Topic]!
+}
+
+"A publisher"
+type Publisher {
+    "The publisher logo (dark version)"
+    darkLogo: CloudinaryImage
+    "The database ID"
+    id: UUID!
+    "The publisher logo (light version)"
+    lightLogo: CloudinaryImage
+    "The publisher logo"
+    logo: CloudinaryImage @deprecated(reason: "Deprecated in favour of the light and dark logo")
+    "The name of the publishing house"
+    name: String!
+}
+
+"A collection of related articles"
+type ReadingList {
+    "Articles on the list"
+    articles: [Article] @deprecated(reason: "Use ReadingList.entries instead")
+    "Entries of the reading list"
+    entries: [ReadingListEntry]
+    "Number of entries of the reading list"
+    entryCount: Int!
+    "The database ID"
+    id: UUID!
+    "The reading list's name"
+    name: String!
+    "The approximated time it takes to read all articles on this list"
+    timeToRead: Int
+}
+
+"An entry on the reading list"
+type ReadingListEntry {
+    "The media item"
+    item: ReadingListMediaItem!
+    "The editor's note"
+    note: String
+    "The visual styling of the item"
+    style: ReadingListEntryStyle
+    "The URL for sharing this item"
+    url: String!
+}
+
+"Visual styling information for the reading list entry"
+type ReadingListEntryStyle {
+    color: HexColor!
+    type: ReadingListEntryStyleType!
+}
+
+"Payload returned when refreshing the token"
+type RefreshPayload {
+    errorMessage: String
+    successful: Boolean!
+    tokens: AuthTokens
+}
+
+"External image referenced by URL"
+type RemoteImage {
+    "Image's public URL"
+    url: String!
+}
+
+type RootMutationType {
+    "Bookmark an article"
+    bookmarkArticle(
+        "The article's slug"
+        slug: String!
+    ): BookmarkMutationPayload
+    "Bookmark an article or a topic"
+    bookmarkTopic(
+        "The topic's slug"
+        slug: String!
+    ): BookmarkMutationPayload
+    "Exchange the refresh token for a new access token"
+    refresh(refreshToken: String!): RefreshPayload
+    "Remove a bookmark"
+    removeBookmark(
+        "The bookmarks database ID"
+        id: UUID!
+    ): BookmarkMutationPayload
+    "Store a device registration token to receive push notifications"
+    savePushDeviceToken(token: String!): DeviceRegistrationToken
+    "Send a magic login link to an email address"
+    sendMagicLink(callbackUrl: String, email: String!): String
+    "Set subscription preferences for a channel"
+    setNotificationChannelPreferences(emailEnabled: Boolean, id: String!, pushEnabled: Boolean): ChannelPreferences
+    "Login via OAuth provider provided identity token"
+    signIn(idToken: String, information: UserMeta, provider: String!, token: String): SignInPayload
+    "Update preferred categories for the current user"
+    updatePreferredCategories(categoryIds: [UUID!]): UpdatePreferredCategoriesResponse
+    "Store meta information about the current user"
+    updateUserMeta(information: UserMeta!): Account
+}
+
+type RootQueryType {
+    "Get an article by slug"
+    article(slug: String!): Article @deprecated(reason: "Use the more expressive get_article instead")
+    "Current brief"
+    currentBrief: Brief
+    "Get an article by slug"
+    getArticle(slug: String!): Article
+    getArticleAudioFile(slug: String!): AudioFile
+    "Get article bookmark"
+    getArticleBookmark(slug: String!): Bookmark
+    "Request all user's bookmarks"
+    getBookmarks(filter: BookmarksFilterOptions = ALL, order: BookmarksOrderOptions = DESC, pagination: PaginationInput = {limit: 10, offset: 0}, sortBy: BookmarksSortOptions = ADDED): [Bookmark]
+    "Retrieve one area in the explore section"
+    getExploreArea(id: String!): ExploreArea
+    "The content of the explore section"
+    getExploreSection(isHighlighted: Boolean): [ExploreArea]
+    "Retrieve the user's notification preferences"
+    getNotificationPreferences: [ChannelCategory]
+    "Categories that can be selected as preferred"
+    getOnboardingCategories: [Category]
+    "Get articles related to given one"
+    getRelatedArticles(limit: Int = 10, slug: String!): [Article]
+    "Get topic bookmark"
+    getTopicBookmark(slug: String!): Bookmark
+    "Get all topics created by the editor"
+    getTopicsFromEditor(editorId: UUID!, excludeTopicSlugs: [String], pagination: PaginationInput): [Topic]
+    "Get all topics created by an expert"
+    getTopicsFromExpert(excludeTopicSlugs: [String], expertId: UUID!, pagination: PaginationInput): [Topic]
+    "Retrieve information about the current user"
+    me: Account
+    "Perform a full-text search"
+    search(pagination: PaginationInput = {limit: 10, offset: 0}, query: String): [SearchResult]
+    "Perform a full-text search for articles"
+    searchArticles(pagination: PaginationInput = {limit: 10, offset: 0}, query: String): [Article]
+    "Perform a full-text search for topics"
+    searchTopics(pagination: PaginationInput = {limit: 10, offset: 0}, query: String): [Topic]
+    "Get a topic by slug"
+    topic(slug: String!): Topic
+}
+
+"Payload returned from the sign in mutation"
+type SignInPayload {
+    account: Account
+    errorCode: String
+    errorMessage: String
+    successful: Boolean!
+    tokens: AuthTokens
+}
+
+type SmallTopicsExploreArea implements ExploreArea {
+    "The area's description"
+    description: String
+    "The stream's icon"
+    icon: SVG
+    "Globally unique identifier for this area"
+    id: String!
+    "Should the area be highlighted"
+    isHighlighted: Boolean!
+    "Area was selected by user as preferred"
+    isPreferred: Boolean!
+    "The name of the area"
+    name: String!
+    topics(pagination: PaginationInput): [Topic]!
+}
+
+"A message for the user that can be embedded in the app"
+type StatusMessage {
+    "Markdown-formatted headline"
+    headline: String!
+    icon: String
+    "Markdown-formatted message"
+    message: String
+}
+
+"One highlight in the summary"
+type SummaryCard {
+    "The card text (Markdown-formatted)"
+    text: String!
+}
+
+"A text formatted with a Markup language"
+type Text {
+    "The text content containing markup"
+    content: String!
+    "The Markup language used for formatting"
+    markupLanguage: MarkupLanguage!
+}
+
+"A topic is a grouping of related articles"
+type Topic {
+    "The cover image"
+    coverImage: CloudinaryImage!
+    "Entries of this topic"
+    entries: [TopicEntry]
+    "Number of entries in this topic"
+    entryCount: Int!
+    "The hero image"
+    heroImage: CloudinaryImage!
+    "Outstanding article publishers in this topic"
+    highlightedPublishers: [Publisher]
+    "The topic's database ID"
+    id: UUID!
+    "The main image"
+    image: CloudinaryImage! @deprecated(reason: "Main image got deprecated in favour of hero and cover image")
+    "An introductory text about the topic"
+    introduction: String!
+    "When the topic was last updated"
+    lastUpdatedAt: DateTime!
+    "The creator of the topic"
+    owner: TopicOwner!
+    "The creator's note to the topic. Only applicable for editor"
+    ownersNote: String
+    "The reading list relevant for this topic"
+    readingList: ReadingList!
+    "The topic's slug to be used in friendly URLs"
+    slug: String!
+    "The topic's title without any Markdown formatting"
+    strippedTitle: String!
+    "A summary of the topic (Markdown-formatted)"
+    summary: String
+    "The summary split up into multiple flash cards"
+    summaryCards: [SummaryCard]
+    "The approximated time it takes to read all entries in this topic"
+    timeToRead: Int
+    "The topic's title"
+    title: String!
+    "The topic's URL used for sharing"
+    url: String!
+}
+
+"An entry in the topic"
+type TopicEntry {
+    "The media item"
+    item: TopicMediaItem!
+    "The editor's note"
+    note: String
+    "The visual styling of the item"
+    style: TopicEntryStyle
+    "The URL for sharing this item"
+    url: String!
+}
+
+"Visual styling information for the reading list entry"
+type TopicEntryStyle {
+    color: HexColor!
+    type: TopicEntryStyleType!
+}
+
+type TopicsExploreArea implements ExploreArea {
+    "The area's description"
+    description: String
+    "The stream's icon"
+    icon: SVG
+    "Globally unique identifier for this area"
+    id: String!
+    "Should the area be highlighted"
+    isHighlighted: Boolean!
+    "Area was selected by user as preferred"
+    isPreferred: Boolean!
+    "The name of the area"
+    name: String!
+    topics(pagination: PaginationInput): [Topic]!
+}
+
+"Response for updatePreferredCategories mutation"
+type UpdatePreferredCategoriesResponse {
+    successful: Boolean!
+}
+
+"Type of the article"
+enum ArticleType {
+    FREE
+    PREMIUM
+}
+
+"Options For Bookmarks Filtering"
+enum BookmarksFilterOptions {
+    "All bookmarks"
+    ALL
+    "Only Article Bookmarks"
+    ARTICLE
+    "Only Topic Bookmarks"
+    TOPIC
+}
+
+"Options For Bookmarks Ordering"
+enum BookmarksOrderOptions {
+    "Ascending order"
+    ASC
+    "Descending order"
+    DESC
+}
+
+"Options For Bookmarks Sorting"
+enum BookmarksSortOptions {
+    "When bookmark was added"
+    ADDED
+    "Alphabetical order of Topic or/and Article"
+    ALPHABETICAL
+    "When Topic or/and Article was updated"
+    UPDATED
+}
+
+"Types of entry styles available"
+enum BriefEntryStyleType {
+    ARTICLE_CARD
+    SMALL_ARTICLE_CARD
+    TOPIC_CARD
+}
+
+"Markup languages used in the API"
+enum MarkupLanguage {
+    HTML
+    MARKDOWN
+}
+
+"Types of entry styles available"
+enum ReadingListEntryStyleType {
+    ARTICLE_COVER_WITHOUT_IMAGE
+    ARTICLE_COVER_WITH_BIG_IMAGE
+}
+
+"Types of entry styles available"
+enum TopicEntryStyleType {
+    ARTICLE_COVER_WITHOUT_IMAGE
+    ARTICLE_COVER_WITH_BIG_IMAGE
+}
+
+"""
+
+The `Date` scalar type represents a date. The Date appears in a JSON
+response as an ISO8601 formatted string, without a time component.
+"""
+scalar Date
+
+"""
+
+The `DateTime` scalar type represents a date and time in the UTC
+timezone. The DateTime appears in a JSON response as an ISO8601 formatted
+string, including UTC timezone ("Z"). The parsed date and time string will
+be converted to UTC if there is an offset.
+"""
+scalar DateTime
+
+"""
+
+The `HexColor` scalar type represents an RGB color value in hexadecimal
+notation prefixed with a pound sign, e.g. `#333333`.
+"""
+scalar HexColor
+
+"An SVG image"
+scalar SVG
+
+"""
+
+The `UUID4` scalar type represents UUID4 compliant string data, represented
+as UTF-8 character sequences. The UUID4 type is most often used to represent
+unique human-readable ID strings.
+"""
+scalar UUID
+
+input PaginationInput {
+    limit: Int
+    offset: Int
+}
+
+"User meta information"
+input UserMeta {
+    avatarUrl: String
+    firstName: String
+    lastName: String
+}
