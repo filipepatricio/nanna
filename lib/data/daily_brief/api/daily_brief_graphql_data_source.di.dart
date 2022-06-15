@@ -26,7 +26,6 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
         document: current_brief.document,
         operationName: current_brief.currentBriefForStartupScreen.name?.value,
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        pollInterval: const Duration(minutes: 10),
       ),
     );
 
