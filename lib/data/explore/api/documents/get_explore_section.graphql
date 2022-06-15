@@ -1,0 +1,14 @@
+# import 'package:better_informed_mobile/data/gql/common/explore_section_fragment.graphql';
+
+query getExploreSection {
+  pillSection: getExploreSection(isHighlighted: false) {
+    __typename
+    id
+    name
+    icon
+  }
+
+  highlightedSection: getExploreSection(isHighlighted: true) {
+    ...exploreSectionFragment
+  }
+}

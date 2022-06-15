@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-import 'package:better_informed_mobile/data/explore/api/documents/__generated__/explore_highlighted_content.ast.gql.dart'
-    as highlighted_content;
+import 'package:better_informed_mobile/data/explore/api/documents/__generated__/get_explore_area.ast.gql.dart'
+    as get_explore_area;
+import 'package:better_informed_mobile/data/explore/api/documents/__generated__/get_explore_section.ast.gql.dart'
+    as get_explore_section;
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/explore_content_api_data_source.dart';
@@ -26,9 +28,10 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   Future<ExploreHighlightedContentDTO> getExploreHighlightedContent() async {
     final result = await _client.query(
       QueryOptions(
-        fetchPolicy: FetchPolicy.cacheAndNetwork,
-        document: highlighted_content.document,
-        operationName: highlighted_content.getExploreSection.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+        document: get_explore_section.document,
+        operationName: get_explore_section.getExploreSection.name?.value,
+        cacheRereadPolicy: CacheRereadPolicy.ignoreOptimisitic,
       ),
     );
 
@@ -44,8 +47,8 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   Future<ExploreContentAreaDTO> getPaginatedExploreArea(String id, int limit, int offset) async {
     final result = await _client.query(
       QueryOptions(
-        document: highlighted_content.document,
-        operationName: highlighted_content.getExploreSection.name?.value,
+        document: get_explore_area.document,
+        operationName: get_explore_area.getExploreArea.name?.value,
         fetchPolicy: FetchPolicy.noCache,
         variables: {
           'id': id,
@@ -69,8 +72,8 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
     final observableQuery = _client.watchQuery(
       WatchQueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
-        document: highlighted_content.document,
-        operationName: highlighted_content.getExploreSection.name?.value,
+        document: get_explore_section.document,
+        operationName: get_explore_section.getExploreSection.name?.value,
         pollInterval: const Duration(minutes: 10),
         fetchResults: true,
         cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
