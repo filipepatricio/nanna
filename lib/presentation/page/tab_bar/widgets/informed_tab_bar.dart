@@ -36,7 +36,8 @@ class InformedTabBar extends HookWidget {
 
     if (mode == InformedTabBarMode.floating) {
       return AnimatedPositioned(
-        bottom: show ? 0 : -AppDimens.xxc,
+        // Adding up bottom padding to ensure bar is hidden below iPhone Dock
+        bottom: show ? 0 : -(AppDimens.xxc + MediaQuery.of(context).viewPadding.bottom),
         curve: Curves.easeIn,
         duration: const Duration(milliseconds: 200),
         child: SizedBox(
