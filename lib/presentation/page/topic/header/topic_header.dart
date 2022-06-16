@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/photo_caption/photo_caption_button.dart';
@@ -112,7 +111,6 @@ class TopicHeader extends HookWidget {
                 onTap: onArrowTap,
               ),
               const SizedBox(height: AppDimens.xxl),
-              const AudioPlayerBannerPlaceholder(),
             ],
           ),
         ),

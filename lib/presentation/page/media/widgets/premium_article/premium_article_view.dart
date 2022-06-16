@@ -14,7 +14,6 @@ import 'package:scrolls_to_top/scrolls_to_top.dart';
 class PremiumArticleView extends HookWidget {
   const PremiumArticleView({
     required this.article,
-    required this.fromTopic,
     required this.cubit,
     required this.snackbarController,
     required this.articleOutputMode,
@@ -23,7 +22,6 @@ class PremiumArticleView extends HookWidget {
   }) : super(key: key);
 
   final Article article;
-  final bool fromTopic;
   final MediaItemCubit cubit;
   final double? readArticleProgress;
   final SnackbarController snackbarController;
@@ -94,11 +92,8 @@ class PremiumArticleView extends HookWidget {
                         article: article,
                         controller: controller,
                         pageController: pageController,
-                        snackbarController: snackbarController,
                         cubit: cubit,
-                        fromTopic: fromTopic,
                         readArticleProgress: readArticleProgress,
-                        articleOutputModeNotifier: articleOutputModeNotifier,
                       ),
                       if (metadata.hasAudioVersion)
                         PremiumArticleAudioView(

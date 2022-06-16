@@ -22,22 +22,16 @@ class PremiumArticleReadView extends HookWidget {
     required this.article,
     required this.controller,
     required this.pageController,
-    required this.snackbarController,
     required this.cubit,
-    required this.fromTopic,
     this.readArticleProgress,
-    this.articleOutputModeNotifier,
     Key? key,
   }) : super(key: key);
 
   final Article article;
   final ScrollController controller;
   final PageController pageController;
-  final SnackbarController snackbarController;
   final MediaItemCubit cubit;
-  final bool fromTopic;
   final double? readArticleProgress;
-  final ValueNotifier<ArticleOutputMode>? articleOutputModeNotifier;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();

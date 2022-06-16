@@ -14,20 +14,18 @@ import 'package:better_informed_mobile/presentation/widget/share/quote/quote_edi
 import 'package:flutter/material.dart';
 
 class ArticleContentView extends StatelessWidget {
-  final Article article;
-  final MediaItemCubit cubit;
-  final ScrollController controller;
-  final Key articleContentKey;
-  final Function() scrollToPosition;
-
   const ArticleContentView({
     required this.article,
     required this.cubit,
-    required this.controller,
     required this.articleContentKey,
     required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
+
+  final Article article;
+  final MediaItemCubit cubit;
+  final Key articleContentKey;
+  final Function() scrollToPosition;
 
   @override
   Widget build(BuildContext context) {

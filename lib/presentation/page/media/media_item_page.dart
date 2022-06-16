@@ -72,7 +72,6 @@ class MediaItemPage extends HookWidget {
                 idlePremium: (state) => PremiumArticleView(
                   cubit: cubit,
                   article: state.article,
-                  fromTopic: topicId != null || topicSlug != null,
                   snackbarController: snackbarController,
                   readArticleProgress: readArticleProgress,
                   articleOutputMode: articleOutputMode,
