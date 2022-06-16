@@ -14,6 +14,15 @@ void main() {
       await tester.pumpAndSettle();
       await tester.matchGoldenFile();
     },
+  );
+  visualTest(
+    '${TopicOwnerPage}_(full_height)',
+    (tester) async {
+      await tester.startApp(initialRoute: TopicPage(topicSlug: ''));
+      await tester.tap(find.byType(TopicOwnerAvatar).last);
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile();
+    },
     testConfig: TestConfig.unitTesting.withDevices([highDevice]),
   );
 }

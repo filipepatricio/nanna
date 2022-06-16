@@ -197,12 +197,10 @@ class _ActionsBar extends HookWidget {
       [controller],
     );
 
-    return AppBar(
-      automaticallyImplyLeading: false,
-      titleSpacing: 0,
-      elevation: 0,
-      backgroundColor: AppColors.background,
-      title: Stack(
+    return Container(
+      height: kToolbarHeight + AppDimens.m,
+      color: AppColors.background,
+      child: Stack(
         alignment: Alignment.center,
         children: [
           Positioned(

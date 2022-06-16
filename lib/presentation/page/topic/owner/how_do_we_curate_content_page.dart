@@ -66,11 +66,11 @@ class _ActionsBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: AppColors.background,
-      elevation: 0,
-      leading: Padding(
+    return Container(
+      height: kToolbarHeight + AppDimens.m,
+      color: AppColors.background,
+      alignment: Alignment.centerLeft,
+      child: Padding(
         padding: const EdgeInsets.only(left: AppDimens.ml),
         child: IconButton(
           icon: const Icon(Icons.arrow_downward_rounded),
