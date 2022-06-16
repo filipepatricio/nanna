@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
@@ -13,7 +12,6 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -126,20 +124,8 @@ class PremiumArticleReadView extends HookWidget {
     useEffect(
       () {
         void listener() {
-          showAudioFloatingButton.value = !showTabBar.value;
-        }
-
-        showTabBar.addListener(listener);
-        return () => showTabBar.removeListener(listener);
-      },
-      [showAudioFloatingButton, showTabBar],
-    );
-
-    useEffect(
-      () {
-        void listener() {
           final page = pageController.page ?? 0.0;
-          showAudioFloatingButton.value = page > 0.5 && !showTabBar.value;
+          showAudioFloatingButton.value = page > 0.9 && !showTabBar.value;
         }
 
         pageController.addListener(listener);
@@ -196,7 +182,6 @@ class PremiumArticleReadView extends HookWidget {
                                     ArticleContentView(
                                       article: article,
                                       cubit: cubit,
-                                      controller: controller,
                                       articleContentKey: _articleContentKey,
                                       scrollToPosition: () => _scrollToPosition(readArticleProgress),
                                     ),
@@ -230,10 +215,12 @@ class PremiumArticleReadView extends HookWidget {
                 ],
               ),
               InformedTabBar.floating(show: showTabBar.value),
-              _AnimatedAudioButton(
-                article: article.metadata,
-                showButton: showAudioFloatingButton,
-              ),
+              if (article.metadata.hasAudioVersion)
+                _AnimatedAudioButton(
+                  article: article.metadata,
+                  showButton: showAudioFloatingButton,
+                  showingTabBar: showTabBar,
+                ),
             ],
           ),
         ),
@@ -246,31 +233,38 @@ class _AnimatedAudioButton extends StatelessWidget {
   const _AnimatedAudioButton({
     required this.article,
     required this.showButton,
+    required this.showingTabBar,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final ValueNotifier<bool> showButton;
+  final ValueNotifier<bool> showingTabBar;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
       right: AppDimens.l,
-      bottom: showButton.value && article.hasAudioVersion ? AppDimens.l : -AppDimens.xxxc,
-      curve: Curves.elasticInOut,
-      duration: const Duration(milliseconds: 500),
+      bottom: showButton.value
+          ? AppDimens.l +
+              (showingTabBar.value
+                  ? (kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom)
+                  : AppDimens.zero)
+          : -AppDimens.xxxc,
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 200),
       child: AudioFloatingControlButton(article: article),
     );
   }
 }
 
 class _ArticleProgressBar extends HookWidget {
-  final ValueNotifier<double> readProgress;
-
   const _ArticleProgressBar({
     required this.readProgress,
     Key? key,
   }) : super(key: key);
+
+  final ValueNotifier<double> readProgress;
 
   @override
   Widget build(BuildContext context) {
