@@ -92,6 +92,18 @@ Route<T> modalFullScreenBottomSheetPageRouteBuilder<T>(BuildContext context, Wid
   );
 }
 
+Route<T> modalBottomSheetPageRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
+  return ModalBottomSheetRoute<T>(
+    builder: (context) => child,
+    expanded: false,
+    barrierLabel: '',
+    modalBarrierColor: AppColors.black40,
+    animationCurve: Curves.easeInOut,
+    duration: const Duration(milliseconds: 350),
+    settings: page,
+  );
+}
+
 Route<T> cupertinoRouteBuilder<T>(BuildContext context, Widget child, CustomPage page) {
   return CupertinoPageRoute<T>(
     builder: (context) => child,
