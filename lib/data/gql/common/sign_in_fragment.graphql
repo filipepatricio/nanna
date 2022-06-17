@@ -1,0 +1,16 @@
+fragment signInFragment on SignInPayload {
+    __typename
+    successful
+    errorCode
+    errorMessage
+    tokens {
+        accessToken
+        refreshToken
+    }
+    account {
+        uuid
+        firstName
+        lastName
+        email
+    }
+}

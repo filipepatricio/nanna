@@ -1,6 +1,6 @@
+import 'package:better_informed_mobile/data/search/api/documents/__generated__/search.ast.gql.dart' as search;
 import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/search/api/search_api_data_source.dart';
-import 'package:better_informed_mobile/data/search/api/search_gql.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -18,7 +18,13 @@ class SearchGraphqlDataSource implements SearchApiDataSource {
     final result = await _client.query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        document: SearchGQL.search(query, limit, offset),
+        document: search.document,
+        operationName: search.search.name?.value,
+        variables: {
+          'query': query,
+          'limit': limit,
+          'offset': offset,
+        },
       ),
     );
 

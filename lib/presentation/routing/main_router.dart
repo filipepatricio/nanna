@@ -23,6 +23,7 @@ import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+const magicLinkSegment = 'magic';
 const topicsPathSegment = 'topics';
 const articlePathSegment = 'articles';
 
@@ -38,11 +39,6 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: SettingsAccountPage),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
-    CustomRoute(
-      path: '$articlePathSegment/:articleSlug',
-      page: MediaItemPage,
-      customRouteBuilder: cupertinoBottomSheetPageRouteBuilder,
-    ),
   ],
 )
 class $MainRouter {}
@@ -54,8 +50,8 @@ const mainPageRoute = CustomRoute(
     dashboardTabRouter,
     RedirectRoute(path: '', redirectTo: topicsPathSegment),
     AutoRoute(path: '$topicsPathSegment/:topicSlug', page: TopicPage, name: 'TopicPage'),
-    CustomRoute(page: TopicOwnerPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
-    CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: cupertinoBottomSheetPageRouteBuilder),
+    CustomRoute(page: TopicOwnerPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
+    CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
     AutoRoute(path: '$articlePathSegment/:articleSlug', page: MediaItemPage),
   ],

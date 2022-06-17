@@ -1,5 +1,10 @@
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
-import 'package:better_informed_mobile/data/article/api/article_gql.dart';
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/article_audio_file.ast.gql.dart'
+    as article_audio_file;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/article_content.ast.gql.dart'
+    as article_content;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/article_header.ast.gql.dart'
+    as article_header;
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
@@ -27,8 +32,12 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   Future<ArticleContentDTO> getArticleContent(String slug) async {
     final result = await _client.query(
       QueryOptions(
-        document: ArticleGQL.articleContent(slug),
+        document: article_content.document,
+        operationName: article_content.articleContent.name?.value,
         cacheRereadPolicy: CacheRereadPolicy.ignoreOptimisitic,
+        variables: {
+          'slug': slug,
+        },
       ),
     );
 
@@ -50,7 +59,12 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   Future<ArticleHeaderDTO> getArticleHeader(String slug) async {
     final result = await _client.query(
       QueryOptions(
-        document: ArticleGQL.articleHeader(slug),
+        document: article_header.document,
+        operationName: article_header.articleHeader.name?.value,
+        cacheRereadPolicy: CacheRereadPolicy.ignoreOptimisitic,
+        variables: {
+          'slug': slug,
+        },
       ),
     );
 
@@ -71,8 +85,12 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh) async {
     final result = await _client.query(
       QueryOptions(
-        document: ArticleGQL.articleAudioFile(slug),
+        document: article_audio_file.document,
+        operationName: article_audio_file.getArticleAudioFile.name?.value,
         fetchPolicy: forceFresh ? FetchPolicy.networkOnly : FetchPolicy.cacheAndNetwork,
+        variables: {
+          'slug': slug,
+        },
       ),
     );
 

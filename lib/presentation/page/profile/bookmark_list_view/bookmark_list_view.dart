@@ -46,7 +46,7 @@ class BookmarkListView extends HookWidget {
     );
     final state = useCubitBuilder(cubit);
 
-    final snackbarController = useMemoized(() => SnackbarController());
+    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     useCubitListener<BookmarkListViewCubit, BookmarkListViewState>(cubit, (cubit, state, context) {
       state.mapOrNull(

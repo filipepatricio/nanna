@@ -1,0 +1,6 @@
+mutation registerPushDeviceMobile($token: String!){
+    savePushDeviceToken(token: $token) {
+        token
+        updatedAt
+    }
+}

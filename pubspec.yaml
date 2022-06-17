@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Version handled in CD workflows - check out .github/workflows/cd_prod.yml and .github/workflows/cd_staging.yml
-version: 1.13.1+0
+version: 1.14.0+0
 
 environment:
   sdk: '>=2.17.0 <3.0.0'
@@ -56,7 +56,7 @@ dependencies:
   shimmer: 2.0.0
   jiffy: 5.0.0
   flutter_html: 2.2.1
-  flutter_segment: 3.3.0
+  flutter_segment: 3.9.0
   fluttertoast: 8.0.9
   flutter_email_sender: 5.1.0
   share_plus: 4.0.4
@@ -96,6 +96,11 @@ dependencies:
   chewie: 1.3.3
   video_player: 2.4.2
   connectivity_plus: 2.3.3
+  gql_build:
+    git:
+      url: https://github.com/gql-dart/gql.git
+      path: codegen/gql_build
+      ref: c6644dab44234468bfe134cf6316a965912a2bce
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,9 @@
+fragment editorFragment on Editor {
+    __typename
+    id
+    name
+    bio
+    avatar {
+        publicId
+    }
+}

@@ -27,6 +27,9 @@ import 'domain/release_notes/use_case/save_release_note_if_first_run_use_case_te
     as save_release_note_if_first_run_use_case_test;
 import 'presentation/app_connectivity_checker_test.dart' as app_connectivity_checker_test;
 import 'presentation/app_update_checker_test.dart' as app_update_checker_test;
+import 'presentation/daily_brief_page_test.dart' as daily_brief_page_test;
+import 'presentation/explore_page_test.dart' as explore_page_test;
+import 'presentation/main_page_test.dart' as main_page_test;
 import 'presentation/media_item_page_test.dart' as media_item_page_test;
 import 'presentation/sign_in_page_test.dart' as sign_in_page_test;
 import 'presentation/topic_owner_page_test.dart' as topic_owner_page_test;
@@ -63,10 +66,14 @@ void main() {
   group('set_channel_push_setting_use_case_test', set_channel_push_setting_use_case_test.main);
 
   // Presentation
-  group('app_update_checker_test', app_update_checker_test.main);
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);
+  group('app_update_checker_test', app_update_checker_test.main);
+  group('daily_brief_page_test', daily_brief_page_test.main);
+  group('explore_page_test', explore_page_test.main);
+  group('main_page_test', main_page_test.main);
   group('media_item_page_test', media_item_page_test.main);
   group('sign_in_page_test', sign_in_page_test.main);
+
   group('topic_owner_page_test', topic_owner_page_test.main);
   group('date_format_util_test', date_format_util_test.main);
 }

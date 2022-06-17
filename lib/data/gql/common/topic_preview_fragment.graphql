@@ -1,0 +1,36 @@
+# import 'package:better_informed_mobile/data/gql/common/expert_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/editor_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/editorial_team_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/cloudinary_image_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/publisher_fragment.graphql';
+
+
+fragment topicPreviewFragment on Topic {
+    __typename
+    id
+    slug
+    title
+    url
+    strippedTitle
+    lastUpdatedAt
+    owner {
+        __typename
+        ... on Expert {
+            ...expertFragment
+        }
+        ... on Editor {
+            ...editorFragment
+        }
+        ... on EditorialTeam {
+            ...editorialTeamFragment
+        }
+    }
+    introduction
+    highlightedPublishers {
+        ...publisherFragment
+    }
+    heroImage {
+        ...cloudinaryImageFragment
+    }
+    entryCount
+}

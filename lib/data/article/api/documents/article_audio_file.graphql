@@ -1,0 +1,6 @@
+query getArticleAudioFile($slug: String!){
+    getArticleAudioFile(slug: $slug) {
+        url
+        credits
+    }
+}

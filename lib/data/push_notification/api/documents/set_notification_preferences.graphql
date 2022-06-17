@@ -1,0 +1,8 @@
+mutation setNotificationPreferences($id: String!, $pushEnabled: Boolean, $emailEnabled: Boolean){
+    setNotificationChannelPreferences(id: $id, pushEnabled: $pushEnabled, emailEnabled: $emailEnabled) {
+        id
+        name
+        pushEnabled
+        emailEnabled
+    }
+}

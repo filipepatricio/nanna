@@ -1,0 +1,10 @@
+# import 'package:better_informed_mobile/data/gql/common/topic_preview_fragment.graphql';
+
+query getTopicsFromExpert($expertId: UUID!, $excludedTopicSlug: String!) {
+  getTopicsFromExpert(
+    expertId: $expertId
+    excludeTopicSlugs: [$excludedTopicSlug]
+  ) {
+    ...topicPreviewFragment
+  }
+}

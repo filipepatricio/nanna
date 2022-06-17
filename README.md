@@ -161,6 +161,103 @@ example:
 - Hint, you can spend some time and read cubit_hooks.dart file in our project. Because in there we have our own custom hooks for cubits.
   When we create public widgets we use named parameters.
 
+
+- [ ] How to use [gql_build](https://pub.dev/packages/gql_build)?
+
+
+- Create `.graphql` file with [operation](https://graphql.org/learn/queries/) 
+- Run `build_runner`
+- `ast.gql.dart` file will be generated under `__generated__` folder
+- Import generated file with specified prefix (so there will be no conflicts between generated documents)
+- Access document, name etc. through prefix f.e. `generated_file.document`
+
+
+- [ ] Working with  [intelliJ GraphQL plugin](https://plugins.jetbrains.com/plugin/8097-graphql)
+
+
+- Generate `schema.graphql` with `.graphqlconfig` (see xample below) by running graphql endpoint
+- `.graphql` files will use last schema under folder tree 
+
+Graphqlconfig example: 
+```
+{
+  "name": "Some GraphQL Schema",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "https://api.staging.informed.so/graphql",
+        "headers": {
+          "user-agent": "Flutter GraphQL"
+        },
+        "introspect": false
+      }
+    }
+  }
+}
+```
+
+- [ ] While creating `.graphql` files
+
+
+- Add `__typename` in [fragment](https://graphql.org/learn/queries/#fragments) and before object reference if it is [union type](https://graphql.org/learn/schema/#union-types)
+
+But why I need to include `__typename` in fragment?
+
+It's due to [flutter_graphql](https://pub.dev/packages/graphql_flutter) cache, [normalize](https://pub.dev/packages/normalize) cache based on `__typename` without it, null would come in response at place when fragment should be.
+
+
+- If `fragment` is from another file, add import to this file under comment (see example below)
+
+Example:
+
+```
+# import 'package:better_informed_mobile/data/gql/common/sign_in_fragment.graphql';
+
+mutation signIn($token: String!, $provider: String!, $meta: UserMeta!) {
+    signIn(token: $token, provider: $provider, information: $meta) {
+        ...signInFragment
+    }
+}
+```
+
+```
+fragment signInFragment on SignInPayload {
+    __typename
+    successful
+    errorCode
+    errorMessage
+    tokens {
+        accessToken
+        refreshToken
+    }
+    account {
+        uuid
+        firstName
+        lastName
+        email
+    }
+}
+```
+```
+import 'package:better_informed_mobile/data/auth/api/documents/__generated__/sign_in.ast.gql.dart' as sign_in;
+
+    final result = await _client.mutate(
+      MutationOptions(
+        document: sign_in.document,
+        operationName: sign_in.signIn.name?.value,
+        variables: {
+          'token': token,
+          'provider': provider,
+          'meta': userMeta ?? <String, dynamic>{},
+        },
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+```
+
+
+
+
 ## Fastlane
 
 In case you need to deploy application using your local machine, you will need few things:
