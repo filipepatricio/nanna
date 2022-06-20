@@ -11,19 +11,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicMediaItemsList extends HookWidget {
-  final ValueNotifier<int> pageIndex;
-  final Topic topic;
-  final TopicPageCubit cubit;
-  final GeneralEventTrackerController eventController;
-  final GlobalKey? mediaItemKey;
-
   const TopicMediaItemsList({
-    required this.pageIndex,
     required this.topic,
     required this.cubit,
     required this.eventController,
     this.mediaItemKey,
   });
+
+  final Topic topic;
+  final TopicPageCubit cubit;
+  final GeneralEventTrackerController eventController;
+  final GlobalKey? mediaItemKey;
 
   @override
   Widget build(BuildContext context) {

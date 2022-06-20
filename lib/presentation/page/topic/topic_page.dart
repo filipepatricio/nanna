@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' hide log;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
@@ -14,7 +15,8 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_shadow.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -29,18 +31,19 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 /// If they do, adjust depth accordingly
 /// Depth is being changed by modifying scroll nest layers (adding or removing scrollable widget)
 const _mainScrollDepth = 0;
+const _hiddenAudioBannerPosition = AppDimens.xxxc * 4;
 
 class TopicPage extends HookWidget {
-  final String topicSlug;
-  final Topic? topic;
-  final String? briefId;
-
   const TopicPage({
     @pathParam required this.topicSlug,
     this.topic,
     this.briefId,
     Key? key,
   }) : super(key: key);
+
+  final String topicSlug;
+  final Topic? topic;
+  final String? briefId;
 
   @override
   Widget build(BuildContext context) {
@@ -97,27 +100,24 @@ class _TopicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AudioPlayerBannerWrapper(
-        layout: AudioPlayerBannerLayout.column,
-        child: state.maybeMap(
-          idle: (state) => _TopicIdleView(
-            topic: state.topic,
-            cubit: cubit,
-            tutorialCoachMark: tutorialCoachMark,
-          ),
-          loading: (_) => const _DefaultAppBarWrapper(
-            child: TopicLoadingView(),
-          ),
-          error: (_) => _DefaultAppBarWrapper(
-            child: GeneralErrorView(
-              title: LocaleKeys.dailyBrief_oops.tr(),
-              content: LocaleKeys.dailyBrief_tryAgainLater.tr(),
-              svgPath: AppVectorGraphics.magError,
-              retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
-            ),
-          ),
-          orElse: () => const SizedBox.shrink(),
+      body: state.maybeMap(
+        idle: (state) => _TopicIdleView(
+          topic: state.topic,
+          cubit: cubit,
+          tutorialCoachMark: tutorialCoachMark,
         ),
+        loading: (_) => const _DefaultAppBarWrapper(
+          child: TopicLoadingView(),
+        ),
+        error: (_) => _DefaultAppBarWrapper(
+          child: GeneralErrorView(
+            title: LocaleKeys.dailyBrief_oops.tr(),
+            content: LocaleKeys.dailyBrief_tryAgainLater.tr(),
+            svgPath: AppVectorGraphics.magError,
+            retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+          ),
+        ),
+        orElse: () => const SizedBox.shrink(),
       ),
     );
   }
@@ -180,6 +180,26 @@ class _TopicIdleView extends HookWidget {
     return false;
   }
 
+  void _expandCollapseAudioBanner(
+    BuildContext context,
+    ScrollController scrollController,
+    ValueNotifier<double> audioBannerBottomPosition,
+  ) {
+    final position = scrollController.position.pixels;
+    final fullHeight = AppDimens.topicViewHeaderImageHeight(context) -
+        MediaQuery.of(context).viewPadding.bottom -
+        MediaQuery.of(context).viewPadding.top;
+
+    if (scrollController.position.userScrollDirection == ScrollDirection.forward
+        ? (position < fullHeight)
+        : (position > 0 && position < fullHeight)) {
+      audioBannerBottomPosition.value = min(
+        position - _hiddenAudioBannerPosition,
+        0,
+      );
+    }
+  }
+
   void _snapPage(BuildContext context, ScrollController scrollController) {
     final maxHeight = AppDimens.topicViewHeaderImageHeight(context) - MediaQuery.of(context).viewPadding.bottom;
     final minHeight = kToolbarHeight + MediaQuery.of(context).viewInsets.top;
@@ -209,6 +229,8 @@ class _TopicIdleView extends HookWidget {
     final scrollPositionNotifier = useMemoized(() => ValueNotifier(0.0));
     final scrollController = useMemoized(() => ScrollController(keepScrollOffset: true));
     final isShowingTutorialToast = useState(false);
+
+    final audioBannerBottomPosition = useValueNotifier<double>(-_hiddenAudioBannerPosition);
 
     useEffect(
       () {
@@ -246,36 +268,63 @@ class _TopicIdleView extends HookWidget {
       child: SnackbarParentView(
         controller: snackbarController,
         child: NotificationListener<ScrollNotification>(
-          onNotification: (scrollInfo) => _updateScrollPosition(scrollInfo, scrollPositionNotifier),
+          onNotification: (scrollInfo) {
+            _expandCollapseAudioBanner(
+              context,
+              scrollController,
+              audioBannerBottomPosition,
+            );
+
+            return _updateScrollPosition(
+              scrollInfo,
+              scrollPositionNotifier,
+            );
+          },
           child: Listener(
             onPointerUp: (_) => _snapPage(context, scrollController),
-            child: NoScrollGlow(
-              child: CustomScrollView(
-                physics: getPlatformScrollPhysics(
-                  const AlwaysScrollableScrollPhysics(),
+            child: Stack(
+              children: [
+                NoScrollGlow(
+                  child: CustomScrollView(
+                    physics: getPlatformScrollPhysics(
+                      const AlwaysScrollableScrollPhysics(),
+                    ),
+                    controller: scrollController,
+                    slivers: [
+                      TopicAppBar(
+                        topic: topic,
+                        cubit: cubit,
+                        isShowingTutorialToast: isShowingTutorialToast,
+                        scrollPositionNotifier: scrollPositionNotifier,
+                        onArticlesLabelTap: () => topic.hasSummary
+                            ? _scrollToArticles(context, scrollController)
+                            : _scrollToSummary(context, scrollController),
+                        onArrowTap: () => _scrollToSummary(context, scrollController),
+                        snackbarController: snackbarController,
+                      ),
+                      TopicView(
+                        topic: topic,
+                        cubit: cubit,
+                        summaryCardKey: cubit.summaryCardKey,
+                        mediaItemKey: cubit.mediaItemKey,
+                        scrollController: scrollController,
+                      ),
+                    ],
+                  ),
                 ),
-                controller: scrollController,
-                slivers: [
-                  TopicAppBar(
-                    topic: topic,
-                    cubit: cubit,
-                    isShowingTutorialToast: isShowingTutorialToast,
-                    scrollPositionNotifier: scrollPositionNotifier,
-                    onArticlesLabelTap: () => topic.hasSummary
-                        ? _scrollToArticles(context, scrollController)
-                        : _scrollToSummary(context, scrollController),
-                    onArrowTap: () => _scrollToSummary(context, scrollController),
-                    snackbarController: snackbarController,
+                ValueListenableBuilder<double>(
+                  valueListenable: audioBannerBottomPosition,
+                  builder: (context, audioBannerBottomPosition, banner) => Positioned(
+                    bottom: audioBannerBottomPosition,
+                    left: 0,
+                    right: 0,
+                    child: banner!,
                   ),
-                  TopicView(
-                    topic: topic,
-                    cubit: cubit,
-                    summaryCardKey: cubit.summaryCardKey,
-                    mediaItemKey: cubit.mediaItemKey,
-                    scrollController: scrollController,
+                  child: const AudioPlayerBannerShadow(
+                    child: AudioPlayerBanner(),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
