@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/content/topic_cover_content.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/image/topic_cover_image.dart';
@@ -79,7 +80,10 @@ class TopicCover extends HookWidget {
                 Stack(
                   children: [
                     Positioned.fill(
-                      child: TopicCoverImage(topic: topic),
+                      child: TopicCoverImage(
+                        topic: topic,
+                        darkeningMode: type == TopicCoverType.small ? DarkeningMode.solid : DarkeningMode.gradient,
+                      ),
                     ),
                     if (type == TopicCoverType.large)
                       Positioned(
@@ -117,6 +121,7 @@ class _TopicCoverExploreLarge extends StatelessWidget {
         TopicCoverImage(
           topic: topic,
           borderRadius: AppDimens.s,
+          darkeningMode: DarkeningMode.solid,
         ),
         TopicCoverContent(
           topic: topic,

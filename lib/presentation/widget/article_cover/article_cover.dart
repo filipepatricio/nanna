@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/widget/article/article_label
 import 'package:better_informed_mobile/presentation/widget/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_cover_content.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
@@ -304,7 +305,6 @@ class _CoverImage extends StatelessWidget {
                 ? ArticleImage(
                     image: article.image!,
                     cardColor: coverColor,
-                    showDarkened: true,
                   )
                 : SizedBox.expand(
                     child: Container(color: coverColor),

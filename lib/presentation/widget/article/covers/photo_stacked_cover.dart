@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/widget/article/article_edito
 import 'package:better_informed_mobile/presentation/widget/article/covers/article_cover_shadow.dart';
 import 'package:better_informed_mobile/presentation/widget/article/covers/dotted_article_info.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class PhotoStackedCover extends StatelessWidget {
               Positioned.fill(
                 child: ArticleImage(
                   image: article.image!,
-                  showDarkened: true,
+                  darkeningMode: DarkeningMode.solid,
                 ),
               ),
             ],

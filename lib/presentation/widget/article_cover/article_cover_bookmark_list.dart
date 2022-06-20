@@ -31,7 +31,7 @@ class _ArticleCoverBookmarkList extends StatelessWidget {
             ArticleImage(
               image: article.image!,
               cardColor: cardColor,
-              showDarkened: true,
+              darkeningMode: DarkeningMode.solid,
             )
           else
             Container(
