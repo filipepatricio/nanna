@@ -70,14 +70,15 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) {
-        return ArticleHeaderDTO.fromJson(raw);
-      },
+      (raw) => ArticleHeaderDTO.fromJson(raw),
       rootKey: 'article',
       customMapper: _articleExceptionMapperFacade,
     );
 
-    if (dto == null) throw Exception('Article is null');
+    if (dto == null) {
+      throw Exception('Article is null - ${result.hasException ? result.exception : 'no API exception'}');
+    }
+
     return dto;
   }
 
