@@ -25,14 +25,9 @@ class MainPage extends HookWidget {
         navigate: (navigate) {
           WidgetsBinding.instance.addPostFrameCallback(
             (_) async => await _closeWebView().then(
-              (_) async {
+              (_) {
                 _resetNestedRouters();
-                await context.navigateNamedTo(
-                  navigate.path,
-                  onFailure: (failure) {
-                    Fimber.e('Incoming push - navigation failed', ex: failure);
-                  },
-                );
+                _navigateToPath(context, navigate.path);
               },
             ),
           );
@@ -40,15 +35,10 @@ class MainPage extends HookWidget {
         multiNavigate: (navigate) {
           WidgetsBinding.instance.addPostFrameCallback(
             (_) async => await _closeWebView().then(
-              (_) async {
+              (_) {
                 _resetNestedRouters();
                 for (final path in navigate.path) {
-                  await context.navigateNamedTo(
-                    path,
-                    onFailure: (failure) {
-                      Fimber.e('Incoming push - navigation failed', ex: failure);
-                    },
-                  );
+                  _navigateToPath(context, path);
                 }
               },
             ),
@@ -79,13 +69,19 @@ class MainPage extends HookWidget {
   }
 
   void _resetNestedRouters() {
-    final nestedNavigatorContext = _navigatorKey.currentContext;
-    if (nestedNavigatorContext != null) {
-      AutoRouter.of(nestedNavigatorContext).popUntilRoot();
-    }
+    _navigatorKey.currentContext?.router.popUntilRoot();
   }
 
   Future<void> _closeWebView() async {
     if (!kIsTest) await closeInAppWebView();
+  }
+
+  void _navigateToPath(BuildContext context, String path) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async => await context.navigateNamedTo(
+        path,
+        onFailure: (failure) => Fimber.e('Navigation to path - $path - failed', ex: failure),
+      ),
+    );
   }
 }

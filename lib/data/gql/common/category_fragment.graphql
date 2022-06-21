@@ -1,0 +1,7 @@
+fragment categoryFragment on Category {
+    __typename
+    icon
+    id
+    name
+    slug
+}

@@ -1,4 +1,6 @@
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/query_user.ast.gql.dart' as query_user;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_preferred_categories.ast.gql.dart'
+    as update_preferred_categories;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_user.ast.gql.dart' as update_user;
 import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
@@ -56,4 +58,15 @@ class UserGraphqlDataSource implements UserDataSource {
 
     return dto ?? (throw Exception('User can not be null'));
   }
+
+  @override
+  Future<void> updatePreferredCategories(List<String> categoryIds) => _client.mutate(
+        MutationOptions(
+          document: update_preferred_categories.document,
+          operationName: update_preferred_categories.updatePreferredCategories.name?.value,
+          variables: {
+            'categoryIDs': categoryIds,
+          },
+        ),
+      );
 }
