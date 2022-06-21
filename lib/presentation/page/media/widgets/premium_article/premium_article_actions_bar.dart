@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
@@ -31,6 +33,8 @@ class PremiumArticleActionsBar extends HookWidget {
   final SnackbarController snackbarController;
   final MediaItemCubit cubit;
   final ValueNotifier<ArticleOutputMode> articleOutputModeNotifier;
+
+  bool get fromTopic => cubit.topicId != null;
 
   @override
   Widget build(BuildContext context) {
@@ -128,14 +132,12 @@ class PremiumArticleActionsBar extends HookWidget {
       builder: (BuildContext context, SystemUiOverlayStyle value, Widget? child) {
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: value,
-          child: ValueListenableBuilder(
+          child: ValueListenableBuilder<Color>(
             valueListenable: backgroundColor,
-            builder: (BuildContext context, Color value, Widget? child) {
-              return Container(
-                color: value,
-                child: child,
-              );
-            },
+            builder: (context, color, child) => Container(
+              color: color,
+              child: child,
+            ),
             child: Padding(
               padding: EdgeInsets.only(
                 left: AppDimens.s,
@@ -145,18 +147,33 @@ class PremiumArticleActionsBar extends HookWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ValueListenableBuilder(
+                  ValueListenableBuilder<Color>(
                     valueListenable: buttonColor,
-                    builder: (BuildContext context, Color value, Widget? child) {
-                      return IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_rounded),
-                        iconSize: AppDimens.backArrowSize,
-                        color: value,
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.zero,
-                        onPressed: () => context.popRoute(),
-                      );
-                    },
+                    builder: (context, color, child) => TextButton.icon(
+                      label: fromTopic
+                          ? Text(
+                              LocaleKeys.article_topicOverview.tr(),
+                              style: AppTypography.subH1Medium.copyWith(
+                                color: color,
+                                height: 1,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                          EdgeInsets.only(
+                            right: AppDimens.s,
+                            left: fromTopic ? AppDimens.sl : AppDimens.zero,
+                          ),
+                        ),
+                        foregroundColor: MaterialStateProperty.all(color),
+                      ),
+                      icon: const Icon(
+                        Icons.arrow_back_ios_rounded,
+                        size: AppDimens.backArrowSize,
+                      ),
+                      onPressed: () => context.popRoute(),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -168,31 +185,27 @@ class PremiumArticleActionsBar extends HookWidget {
                         )
                       ],
                       const SizedBox(width: AppDimens.m),
-                      ValueListenableBuilder(
+                      ValueListenableBuilder<BookmarkButtonMode>(
                         valueListenable: bookmarkMode,
-                        builder: (BuildContext context, BookmarkButtonMode value, Widget? child) {
-                          return BookmarkButton.article(
-                            article: article.metadata,
-                            topicId: cubit.topicId,
-                            briefId: cubit.briefId,
-                            mode: bookmarkMode.value,
-                            snackbarController: snackbarController,
-                          );
-                        },
+                        builder: (context, mode, child) => BookmarkButton.article(
+                          article: article.metadata,
+                          topicId: cubit.topicId,
+                          briefId: cubit.briefId,
+                          mode: mode,
+                          snackbarController: snackbarController,
+                        ),
                       ),
                       const SizedBox(width: AppDimens.m),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
                         child: ShareArticleButton(
                           article: article.metadata,
-                          buttonBuilder: (context) => ValueListenableBuilder(
+                          buttonBuilder: (context) => ValueListenableBuilder<Color>(
                             valueListenable: buttonColor,
-                            builder: (BuildContext context, Color value, Widget? child) {
-                              return SvgPicture.asset(
-                                AppVectorGraphics.share,
-                                color: value,
-                              );
-                            },
+                            builder: (context, color, child) => SvgPicture.asset(
+                              AppVectorGraphics.share,
+                              color: color,
+                            ),
                           ),
                         ),
                       ),
