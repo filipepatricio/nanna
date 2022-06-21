@@ -66,7 +66,6 @@ class MediaItemPage extends HookWidget {
                 idleFree: (state) => FreeArticleView(
                   article: state.header,
                   cubit: cubit,
-                  fromTopic: topicId != null || topicSlug != null,
                   snackbarController: snackbarController,
                 ),
                 idlePremium: (state) => PremiumArticleView(
@@ -109,7 +108,7 @@ class _LoadingContent extends StatelessWidget {
             top: MediaQuery.of(context).padding.top + AppDimens.s,
           ),
           child: IconButton(
-            icon: const Icon(Icons.close_rounded),
+            icon: const Icon(Icons.arrow_back_ios_rounded),
             color: AppColors.textPrimary,
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.zero,
@@ -147,7 +146,7 @@ class _ErrorContent extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.m),
           child: IconButton(
-            icon: const Icon(Icons.close_rounded),
+            icon: const Icon(Icons.arrow_back_ios_rounded),
             color: AppColors.black,
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.zero,
