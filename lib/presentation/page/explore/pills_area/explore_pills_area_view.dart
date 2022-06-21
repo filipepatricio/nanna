@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_content_pill.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -17,15 +17,15 @@ const _pillsBottomPadding = AppDimens.ml;
 
 class ExplorePillsAreaView extends StatelessWidget {
   const ExplorePillsAreaView({
-    required this.pills,
+    required this.categories,
     Key? key,
   }) : super(key: key);
 
-  final List<ExploreContentPill> pills;
+  final List<Category> categories;
 
   @override
   Widget build(BuildContext context) {
-    final lineCount = min(_maxPillLines, (pills.length / _maxPillsPerLine).ceil());
+    final lineCount = min(_maxPillLines, (categories.length / _maxPillsPerLine).ceil());
     final height = min(
           AppDimens.explorePillAreaHeight,
           lineCount * AppDimens.explorePillHeight + (lineCount > 1 ? _pillPadding : 0),
@@ -46,34 +46,20 @@ class ExplorePillsAreaView extends StatelessWidget {
         crossAxisCount: lineCount,
         mainAxisSpacing: _pillPadding,
         crossAxisSpacing: _pillPadding,
-        itemCount: pills.length,
+        itemCount: categories.length,
         itemBuilder: (context, index) {
-          return pills[index].map(
-            articles: (area) => ExplorePill(
-              title: area.title,
-              icon: area.icon,
-              index: index,
-              onTap: () => AutoRouter.of(context).push(
-                ArticleSeeAllPageRoute(
-                  areaId: area.id,
-                  title: area.title,
-                  referred: ExploreAreaReferred.pill,
-                ),
+          final category = categories[index];
+          return ExplorePill(
+            title: category.name,
+            icon: category.icon,
+            index: index,
+            onTap: () => AutoRouter.of(context).push(
+              ArticleSeeAllPageRoute(
+                areaId: category.id,
+                title: category.name,
+                referred: ExploreAreaReferred.pill,
               ),
             ),
-            topics: (area) => ExplorePill(
-              title: area.title,
-              icon: area.icon,
-              index: index,
-              onTap: () => context.pushRoute(
-                TopicsSeeAllPageRoute(
-                  areaId: area.id,
-                  title: area.title,
-                  referred: ExploreAreaReferred.pill,
-                ),
-              ),
-            ),
-            unknown: (_) => const SizedBox.shrink(),
           );
         },
       ),

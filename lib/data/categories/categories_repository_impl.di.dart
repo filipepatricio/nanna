@@ -24,6 +24,12 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
   }
 
   @override
+  Future<List<Category>> getFeaturedCategories() async {
+    final dto = await _categoriesDataSource.getFeaturedCategories();
+    return dto.getFeaturedCategories?.map<Category>(_categoryMapper.to).toList() ?? [];
+  }
+
+  @override
   Stream<List<Category>> get categoriesStream => _categoryStreamController.stream.asBroadcastStream();
 
   @override

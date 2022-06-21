@@ -10,7 +10,7 @@ class CategoryMapper extends BidirectionalMapper<CategoryDTO, Category> {
         name: data.name,
         id: data.id,
         slug: data.id,
-        icon: data.svgIcon,
+        icon: data.icon,
       );
 
   @override
@@ -18,6 +18,6 @@ class CategoryMapper extends BidirectionalMapper<CategoryDTO, Category> {
         name: data.name,
         id: data.id,
         slug: data.id,
-        svgIcon: data.icon,
+        icon: data.icon,
       );
 }
