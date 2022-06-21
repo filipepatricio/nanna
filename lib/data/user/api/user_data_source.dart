@@ -6,4 +6,6 @@ abstract class UserDataSource {
   Future<UserDTO> getUser();
 
   Future<UserDTO> updateUser(UserMetaDTO userMetaDTO);
+
+  Future<void> updatePreferredCategories(List<String> categoryIds);
 }

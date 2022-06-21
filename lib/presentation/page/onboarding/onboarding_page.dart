@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_picture_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_tracking_slide.dart';
@@ -31,14 +32,15 @@ final List<Widget> _pageList = [
     description: LocaleKeys.onboarding_descriptionSlideTwo.tr(),
     imageAsset: AppVectorGraphics.onboardingSlideTwo,
   ),
+  const OnboardingCategoriesSlide(),
   if (kIsAppleDevice) ...[
     const OnboardingNotificationsSlide(),
     const OnboardingTrackingSlide(),
   ]
 ];
 
-const _notificationSlide = 2;
-const _trackingSlide = 3;
+const _notificationSlide = 3;
+const _trackingSlide = 4;
 
 class OnboardingPage extends HookWidget {
   @override

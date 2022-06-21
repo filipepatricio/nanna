@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/mapper/user_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:better_informed_mobile/domain/user/user_repository.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_data.dt.dart';
@@ -24,5 +25,11 @@ class UserRepositoryImpl implements UserRepository {
     final userMetaDto = UserMetaDTO(settingsAccountData.firstName, settingsAccountData.lastName);
     final dto = await _dataSource.updateUser(userMetaDto);
     return _userDTOMapper.to(dto);
+  }
+
+  @override
+  Future<void> updatePreferredCategories(List<Category> categories) {
+    final categoryIds = categories.map<String>((category) => category.id).toList();
+    return _dataSource.updatePreferredCategories(categoryIds);
   }
 }
