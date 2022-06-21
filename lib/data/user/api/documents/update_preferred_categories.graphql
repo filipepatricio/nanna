@@ -1,0 +1,5 @@
+mutation updatePreferredCategories ($categoryIDs: [UUID!]){
+    updatePreferredCategories(categoryIds: $categoryIDs) {
+        successful
+    }
+}

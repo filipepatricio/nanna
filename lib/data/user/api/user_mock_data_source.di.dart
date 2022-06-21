@@ -33,4 +33,7 @@ class UserMockDataSource implements UserDataSource {
         ? UserDTO(_user!.uuid, _user!.firstName, _user!.lastName, _user!.email)
         : (throw Exception('User can not be null'));
   }
+
+  @override
+  Future<void> updatePreferredCategories(List<String> categoryIds) async {}
 }
