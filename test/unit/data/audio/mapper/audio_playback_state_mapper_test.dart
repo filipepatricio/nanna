@@ -98,6 +98,7 @@ void main() {
         title: 'title',
         author: 'author',
         imageUrl: 'imageUrl',
+        duration: null,
       );
       const expected = AudioPlaybackState.loading(
         speed: 1.0,
@@ -132,9 +133,9 @@ void main() {
       title: 'title',
       author: 'author',
       imageUrl: 'imageUrl',
+      duration: const Duration(seconds: 1),
     );
     final expected = AudioPlaybackState.playing(
-      duration: const Duration(seconds: 1),
       speed: 1.0,
       audioItem: audioItem,
     );
@@ -167,9 +168,9 @@ void main() {
       title: 'title',
       author: 'author',
       imageUrl: 'imageUrl',
+      duration: const Duration(seconds: 1),
     );
     final expected = AudioPlaybackState.paused(
-      duration: const Duration(seconds: 1),
       speed: 1.0,
       audioItem: audioItem,
     );
@@ -202,9 +203,9 @@ void main() {
       title: 'title',
       author: 'author',
       imageUrl: 'imageUrl',
+      duration: const Duration(seconds: 1),
     );
     final expected = AudioPlaybackState.completed(
-      duration: const Duration(seconds: 1),
       speed: 1.0,
       audioItem: audioItem,
     );

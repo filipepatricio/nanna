@@ -27,6 +27,7 @@ class PrepareArticleAudioTrackUseCase {
       title: article.strippedTitle,
       author: article.publisher.name,
       imageUrl: imageUrl,
+      duration: null,
     );
 
     try {

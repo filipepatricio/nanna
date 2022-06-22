@@ -22,7 +22,6 @@ class AudioRepositoryMock implements AudioRepository {
     _playbackState.add(const AudioPlaybackState.loading(speed: 1.0));
     _playbackState.add(
       AudioPlaybackState.paused(
-        duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
           id: MockDTO.premiumArticleWithAudio.id,
@@ -30,6 +29,7 @@ class AudioRepositoryMock implements AudioRepository {
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
+          duration: const Duration(seconds: 120),
         ),
       ),
     );
@@ -39,7 +39,6 @@ class AudioRepositoryMock implements AudioRepository {
   Future<void> pause() async {
     _playbackState.add(
       AudioPlaybackState.paused(
-        duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
           id: MockDTO.premiumArticleWithAudio.id,
@@ -47,6 +46,7 @@ class AudioRepositoryMock implements AudioRepository {
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
+          duration: const Duration(seconds: 120),
         ),
       ),
     );
@@ -56,7 +56,6 @@ class AudioRepositoryMock implements AudioRepository {
   Future<void> play() async {
     _playbackState.add(
       AudioPlaybackState.playing(
-        duration: const Duration(seconds: 120),
         speed: 1.0,
         audioItem: AudioItem(
           id: MockDTO.premiumArticleWithAudio.id,
@@ -64,6 +63,7 @@ class AudioRepositoryMock implements AudioRepository {
           title: 'Some title',
           author: 'New York Times',
           imageUrl: null,
+          duration: const Duration(seconds: 120),
         ),
       ),
     );

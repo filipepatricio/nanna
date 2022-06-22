@@ -57,6 +57,7 @@ class FakeAudioPlayerBannerCubit extends Fake implements AudioPlayerBannerCubit 
           imageUrl: 'www.url.com',
           slug: 'cool-audio',
           title: 'Cool audio title',
+          duration: null,
         ),
       );
 

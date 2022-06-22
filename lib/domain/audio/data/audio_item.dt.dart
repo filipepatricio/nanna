@@ -10,5 +10,6 @@ class AudioItem with _$AudioItem {
     required String title,
     required String author,
     required String? imageUrl,
+    required Duration? duration,
   }) = _AudioItem;
 }
