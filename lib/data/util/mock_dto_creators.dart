@@ -6,6 +6,8 @@ import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dar
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
@@ -50,18 +52,22 @@ class MockDTO {
   /// Release notes
   ///
   static final noMediaReleaseNote = ReleaseNoteDTO(
-    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    headline: 'Lorem ipsum dolor sit amet, consectetur',
+    // max 40 chars
     content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali',
+    // max 120 chars
     date: '2022-05-20',
     media: [],
     version: '1.0.0',
   );
 
   static final singleMediaReleaseNote = ReleaseNoteDTO(
-    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    headline: 'Lorem ipsum dolor sit amet, consectetur',
+    // max 40 chars
     content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali',
+    // max 120 chars
     date: '2022-05-20',
     media: [
       ReleaseNoteMediaDTO.png('png', 'www.image.com'),
@@ -70,9 +76,11 @@ class MockDTO {
   );
 
   static final multipleMediaReleaseNote = ReleaseNoteDTO(
-    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    headline: 'Lorem ipsum dolor sit amet, consectetur',
+    // max 40 chars
     content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali',
+    // max 120 chars
     date: '2022-05-20',
     media: [
       ReleaseNoteMediaDTO.png('png', 'www.image.com'),
@@ -451,6 +459,30 @@ class MockDTO {
 
   static final _summaryCardShort = SummaryCardDTO(
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. **Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip.**',
+  );
+
+  static const mockedCategory = CategoryDTO(
+    name: 'politics',
+    id: 'id',
+    slug: 'slug',
+    icon: _mockedPillIcon,
+  );
+
+  static const mockedCategories = CategoriesDTO(
+    [
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+      mockedCategory,
+    ],
   );
 }
 
