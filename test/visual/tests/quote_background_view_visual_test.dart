@@ -17,6 +17,6 @@ void main() {
       );
       await tester.matchGoldenFile();
     },
-    testConfig: const TestConfig.stickerDevice(),
+    testConfig: TestConfig.stickerDevice(),
   );
 }
