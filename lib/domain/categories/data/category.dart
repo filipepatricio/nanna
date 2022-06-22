@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/general/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
 
 class Category {
   const Category({

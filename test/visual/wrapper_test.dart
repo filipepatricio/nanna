@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'tests/app_connectivity_dialog_visual_test.dart' as app_connectivity_dialog_visual_test;
 import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_test;
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
+import 'tests/category_page_visual_test.dart' as category_page_visual_test;
 import 'tests/daily_brief_page_visual_test.dart' as daily_brief_page_visual_test;
 import 'tests/explore_page_visual_test.dart' as explore_page_visual_test;
 import 'tests/how_do_we_curate_content_page_visual_test.dart' as how_do_we_curate_content_page_visual_test;
@@ -33,6 +34,7 @@ void main() {
   group('app_connectivity_dialog_visual_test', app_connectivity_dialog_visual_test.main);
   group('app_update_dialog_visual_test', app_update_dialog_visual_test.main);
   group('articles_see_all_page_visual_test', articles_see_all_page_visual_test.main);
+  group('category_page_visual_test', category_page_visual_test.main);
   group('explore_page_visual_test', explore_page_visual_test.main);
   group('magic_link_view_visual_test', magic_link_view_visual_test.main);
   group('media_item_page_visual_test', media_item_page_visual_test.main);

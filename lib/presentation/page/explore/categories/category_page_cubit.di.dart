@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_category_use_case.di.dart';
-import 'package:better_informed_mobile/domain/general/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/next_category_item_page_loader.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';

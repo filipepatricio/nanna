@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_me
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_media_item_dto_mapper.di.dart';
@@ -18,12 +19,14 @@ import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_p
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_highlighted_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/result_item/mapper/result_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
@@ -109,6 +112,22 @@ class TestData {
     ),
   );
 
+  static final _articleToMediaItemMapper = ArticleDTOToMediaItemMapper(
+    ArticleImageDTOMapper(),
+    PublisherDTOMapper(
+      ImageDTOMapper(),
+    ),
+    ArticleTypeDTOMapper(),
+    ArticleKindDTOMapper(),
+  );
+
+  static final _resultItemMapper = ResultItemDTOMapper(
+    _topicPreviewMapper,
+    _articleToMediaItemMapper,
+  );
+
+  static final _categoryMapper = CategoryDTOMapper(_resultItemMapper);
+
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;
 
   static MediaItemArticle get premiumArticleWithAudio =>
@@ -124,4 +143,6 @@ class TestData {
       _exploreHighlightedContentMapper(MockDTO.exploreHighlightedContent);
 
   static CurrentBrief get currentBrief => _currentBriefMapper(MockDTO.currentBrief);
+
+  static Category get category => _categoryMapper(MockDTO.category);
 }

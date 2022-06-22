@@ -2,7 +2,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_me
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/data/result_item/dto/result_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
-import 'package:better_informed_mobile/domain/general/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 

@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/general/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
 import 'package:better_informed_mobile/domain/search/use_case/search_content_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:injectable/injectable.dart';

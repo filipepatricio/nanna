@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/general/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
 import 'package:better_informed_mobile/domain/search/use_case/add_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_loader.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_state.dt.dart';
