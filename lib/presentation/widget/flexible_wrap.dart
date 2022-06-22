@@ -59,12 +59,12 @@ class _HookWrap extends HookWidget {
   Widget build(BuildContext context) {
     final flexWidth = useMemoized(
       () => ((constraints.maxWidth - (horizontalPadding * 2)) - (spacing * (childrenRowCount - 1))) / childrenRowCount,
-      [constraints.maxWidth],
+      [constraints],
     );
 
     final flexHeight = useMemoized(
       () => (constraints.maxHeight - (spacing * (childrenColumnCount - 1))) / childrenColumnCount,
-      [constraints.maxHeight],
+      [constraints],
     );
 
     final dividedWidgetList = useMemoized(
@@ -73,6 +73,7 @@ class _HookWrap extends HookWidget {
         childrenBuilder,
         childrenRowCount,
         childrenColumnCount,
+        constraints,
       ],
     );
 
