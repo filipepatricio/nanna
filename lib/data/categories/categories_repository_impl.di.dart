@@ -20,13 +20,13 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
   @override
   Future<List<Category>> getOnboardingCategories() async {
     final dto = await _categoriesDataSource.getOnboardingCategories();
-    return dto.getOnboardingCategories?.map<Category>(_categoryMapper).toList() ?? [];
+    return dto.onboardingCategories?.map<Category>(_categoryMapper).toList() ?? [];
   }
 
   @override
   Future<List<Category>> getFeaturedCategories() async {
     final dto = await _categoriesDataSource.getFeaturedCategories();
-    return dto.getFeaturedCategories?.map<Category>(_categoryMapper).toList() ?? [];
+    return dto.featuredCategories?.map<Category>(_categoryMapper).toList() ?? [];
   }
 
   @override
