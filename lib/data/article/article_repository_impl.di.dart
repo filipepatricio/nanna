@@ -13,19 +13,19 @@ import 'api/mapper/audio_file_dto_mapper.di.dart';
 
 @LazySingleton(as: ArticleRepository)
 class ArticleRepositoryImpl implements ArticleRepository {
-  final ArticleApiDataSource _articleDataSource;
-  final ArticleDTOToMediaItemMapper _articleDTOToMediaItemMapper;
-  final ArticleContentDTOMapper _articleContentDTOMapper;
-  final AudioFileDTOMapper _audioFileDTOMapper;
-
-  final BehaviorSubject<ReadingBanner> _broadcaster = BehaviorSubject();
-
   ArticleRepositoryImpl(
     this._articleDataSource,
     this._articleDTOToMediaItemMapper,
     this._articleContentDTOMapper,
     this._audioFileDTOMapper,
   );
+
+  final ArticleApiDataSource _articleDataSource;
+  final ArticleDTOToMediaItemMapper _articleDTOToMediaItemMapper;
+  final ArticleContentDTOMapper _articleContentDTOMapper;
+  final AudioFileDTOMapper _audioFileDTOMapper;
+
+  final BehaviorSubject<ReadingBanner> _broadcaster = BehaviorSubject();
 
   @override
   Stream<ReadingBanner> getReadingBannerStream() => _broadcaster.stream;
@@ -50,4 +50,12 @@ class ArticleRepositoryImpl implements ArticleRepository {
     final dto = await _articleDataSource.getArticleAudioFile(slug, forceFresh);
     return _audioFileDTOMapper(dto);
   }
+
+  @override
+  void trackAudioPosition(String articleSlug, int position) =>
+      _articleDataSource.trackAudioPosition(articleSlug, position);
+
+  @override
+  void trackReadingProgress(String articleSlug, int progress) =>
+      _articleDataSource.trackReadingProgress(articleSlug, progress);
 }

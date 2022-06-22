@@ -13,4 +13,8 @@ abstract class ArticleRepository {
   Future<ArticleContent> getArticleContent(String slug);
 
   Future<AudioFile> getArticleAudioFile(String slug, [bool forceFresh = false]);
+
+  void trackReadingProgress(String articleSlug, int progress);
+
+  void trackAudioPosition(String articleSlug, int position);
 }
