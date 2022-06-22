@@ -27,8 +27,8 @@ import 'package:better_informed_mobile/data/push_notification/api/dto/notificati
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_preferences_group_dto.dt.dart';
 import 'package:better_informed_mobile/data/release_notes/dto/release_note_dto.dt.dart';
 import 'package:better_informed_mobile/data/release_notes/dto/release_note_media_dto.dt.dart';
+import 'package:better_informed_mobile/data/result_item/dto/result_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt.dart';
-import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
@@ -196,10 +196,10 @@ class MockDTO {
 
   static final search = SearchContentDTO(
     [
-      SearchResultDTO.topic(topicPreview),
-      SearchResultDTO.article(_freeArticle),
-      SearchResultDTO.article(_freeArticle),
-      SearchResultDTO.topic(topicPreview),
+      ResultItemDTO.topic(topicPreview),
+      ResultItemDTO.article(_freeArticle),
+      ResultItemDTO.article(_freeArticle),
+      ResultItemDTO.topic(topicPreview),
     ],
   );
 

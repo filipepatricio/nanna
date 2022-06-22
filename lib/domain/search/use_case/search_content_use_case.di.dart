@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
+import 'package:better_informed_mobile/domain/general/result_item.dt.dart';
 import 'package:better_informed_mobile/domain/search/search_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,7 +8,7 @@ class GetPaginatedSearchContentUseCase {
 
   GetPaginatedSearchContentUseCase(this._searchRepository);
 
-  Future<List<SearchResult>> call({required String query, required int limit, required int offset}) async {
+  Future<List<ResultItem>> call({required String query, required int limit, required int offset}) async {
     final searchContent = await _searchRepository.searchContent(
       query,
       limit,

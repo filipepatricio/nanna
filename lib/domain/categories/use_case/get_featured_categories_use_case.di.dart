@@ -8,7 +8,5 @@ class GetFeaturedCategoriesUseCase {
 
   final CategoriesRepository _categoriesRepository;
 
-  Future<List<Category>> call() => _categoriesRepository.getOnboardingCategories();
-
-  Stream<List<Category>> get stream => _categoriesRepository.categoriesStream;
+  Future<List<Category>> call() => _categoriesRepository.getFeaturedCategories();
 }

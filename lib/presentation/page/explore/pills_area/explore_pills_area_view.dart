@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
-import 'package:better_informed_mobile/domain/explore/data/explore_area_referred.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -54,10 +53,8 @@ class ExplorePillsAreaView extends StatelessWidget {
             icon: category.icon,
             index: index,
             onTap: () => AutoRouter.of(context).push(
-              ArticleSeeAllPageRoute(
-                areaId: category.id,
-                title: category.name,
-                referred: ExploreAreaReferred.pill,
+              CategoryPageRoute(
+                category: category,
               ),
             ),
           );

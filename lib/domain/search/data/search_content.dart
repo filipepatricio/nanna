@@ -1,7 +1,7 @@
-import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
+import 'package:better_informed_mobile/domain/general/result_item.dt.dart';
 
 class SearchContent {
-  final List<SearchResult> results;
+  final List<ResultItem> results;
 
   SearchContent({
     required this.results,
