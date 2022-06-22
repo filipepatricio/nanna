@@ -40,7 +40,7 @@ void main() {
         ],
       ),
     );
-    await tester.tap(find.byType(AudioButton));
+    await tester.tap(find.byType(ArticleOutputModeToggleButton));
     await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
