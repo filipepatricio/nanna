@@ -101,6 +101,7 @@ dependencies:
       url: https://github.com/gql-dart/gql.git
       path: codegen/gql_build
       ref: c6644dab44234468bfe134cf6316a965912a2bce
+  neat_periodic_task: ^2.0.0
 
 dev_dependencies:
   flutter_test:

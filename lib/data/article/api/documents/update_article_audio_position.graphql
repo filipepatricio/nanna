@@ -1,0 +1,5 @@
+mutation updateArticleAudioPosition($slug: String!, $position: Int!) {
+  updateArticleAudioPosition(slug: $slug, position: $position) {
+    successful
+  }
+}

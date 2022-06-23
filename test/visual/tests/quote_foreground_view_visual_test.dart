@@ -89,6 +89,6 @@ void main() {
       await tester.pumpAndSettle();
       await tester.matchGoldenFile('quote_foreground_view.charcoal');
     },
-    testConfig: const TestConfig.stickerDevice(),
+    testConfig: TestConfig.stickerDevice(),
   );
 }

@@ -30,31 +30,33 @@ const veryHighDevice = Device(name: 'very_high_screen', size: Size(375, 2400));
 
 /// Test matrix to define which flavors and which devices should be used for a visual test.
 class TestConfig {
-  const TestConfig._({required this.flavor, this.devices = defaultDevices});
+  const TestConfig._({
+    this.flavor = AppConfig.mock,
+    this.devices = defaultDevices,
+    this.autoHeight = false,
+  });
 
-  const TestConfig.stickerDevice()
-      : this._(
-          flavor: AppConfig.mock,
-          devices: const [
-            Device(
-              size: Size(720, 1280),
-              name: 'sticker_720x1280',
-            ),
-          ],
-        );
+  factory TestConfig.stickerDevice() => const TestConfig._(
+        flavor: AppConfig.mock,
+        devices: [shareImage],
+      );
 
-  static const TestConfig unitTesting = TestConfig._(flavor: AppConfig.mock);
+  factory TestConfig.withDevices(List<Device> devices) => TestConfig._(devices: devices);
 
-  TestConfig withDevices(List<Device> devices) => TestConfig._(flavor: flavor, devices: devices);
+  factory TestConfig.autoHeight() => const TestConfig._(autoHeight: true, devices: []);
+
+  static const unitTesting = TestConfig._();
 
   final AppConfig flavor;
   final List<Device> devices;
+  final bool autoHeight;
 }
 
 late List<Device> _selectedDevices;
-bool _matchGoldenFileCalled = false;
 late String _nameOfCurrentVisualTest;
 late String _defaultGoldenFileName;
+late bool _autoHeight;
+bool _matchGoldenFileCalled = false;
 bool _defaultGoldenFileNameUsed = false;
 
 void visualTest(
@@ -66,6 +68,7 @@ void visualTest(
   testGoldens(
     '$widgetTypeOrDescription (${testConfig.flavor.name})',
     (tester) async {
+      _autoHeight = testConfig.autoHeight;
       _selectedDevices = testConfig.devices.toList();
       _nameOfCurrentVisualTest = widgetTypeOrDescription.toString();
       kIsAppleDevice = true;
@@ -177,7 +180,12 @@ extension StartAppExtension on WidgetTester {
     }
     _matchGoldenFileCalled = true;
     final fileName = fileNamePrefix;
-    await multiScreenGolden(this, fileName, devices: _selectedDevices);
+    await multiScreenGolden(
+      this,
+      fileName,
+      devices: _autoHeight ? null : _selectedDevices,
+      autoHeight: _autoHeight,
+    );
   }
 
   void mockDependency<T extends Object>(T dependency) {

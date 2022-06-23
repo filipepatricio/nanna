@@ -23,6 +23,6 @@ void main() {
       await tester.pumpAndSettle();
       await tester.matchGoldenFile();
     },
-    testConfig: TestConfig.unitTesting.withDevices([highDevice]),
+    testConfig: TestConfig.withDevices([highDevice]),
   );
 }
