@@ -179,7 +179,7 @@ class PremiumArticleActionsBar extends HookWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       if (article.metadata.hasAudioVersion) ...[
-                        AudioButton(
+                        ArticleOutputModeToggleButton(
                           buttonColor: buttonColor,
                           articleOutputMode: articleOutputModeNotifier,
                         )
@@ -221,8 +221,8 @@ class PremiumArticleActionsBar extends HookWidget {
   }
 }
 
-class AudioButton extends StatelessWidget {
-  const AudioButton({
+class ArticleOutputModeToggleButton extends StatelessWidget {
+  const ArticleOutputModeToggleButton({
     required this.buttonColor,
     required this.articleOutputMode,
     Key? key,

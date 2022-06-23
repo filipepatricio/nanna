@@ -23,7 +23,7 @@ void main() {
       await tester.startApp();
       await tester.matchGoldenFile();
     },
-    testConfig: TestConfig.unitTesting.withDevices([veryHighDevice]),
+    testConfig: TestConfig.withDevices([veryHighDevice]),
   );
 
   visualTest('${DailyBriefPage}_(audio_banner)', (tester) async {

@@ -20,8 +20,6 @@ class AudioPlaybackStateMapper implements Mapper<CurrentAudioItemDTO, AudioPlayb
       return const AudioPlaybackState.notInitialized();
     }
 
-    final duration = mediaItem.duration;
-
     switch (processingState) {
       case AudioProcessingState.idle:
         return const AudioPlaybackState.notInitialized();
@@ -34,7 +32,6 @@ class AudioPlaybackStateMapper implements Mapper<CurrentAudioItemDTO, AudioPlayb
         return _mapReadyState(data.state, mediaItem);
       case AudioProcessingState.completed:
         return AudioPlaybackState.completed(
-          duration: duration!,
           speed: data.state.speed,
           audioItem: _audioItemMapper.to(mediaItem),
         );
@@ -54,13 +51,11 @@ class AudioPlaybackStateMapper implements Mapper<CurrentAudioItemDTO, AudioPlayb
 
     if (state.playing) {
       return AudioPlaybackState.playing(
-        duration: duration,
         speed: state.speed,
         audioItem: _audioItemMapper.to(mediaItem),
       );
     } else {
       return AudioPlaybackState.paused(
-        duration: duration,
         speed: state.speed,
         audioItem: _audioItemMapper.to(mediaItem),
       );

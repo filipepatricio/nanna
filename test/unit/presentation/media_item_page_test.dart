@@ -29,7 +29,7 @@ void main() {
         ),
       );
       expect(find.byType(PremiumArticleView), findsOneWidget);
-      expect(find.byType(AudioButton), findsNothing);
+      expect(find.byType(ArticleOutputModeToggleButton), findsNothing);
       expect(find.byType(PremiumArticleAudioView), findsNothing);
     },
   );
@@ -45,8 +45,8 @@ void main() {
         ),
       );
       expect(find.byType(PremiumArticleView), findsOneWidget);
-      expect(find.byType(AudioButton), findsOneWidget);
-      await tester.tap(find.byType(AudioButton));
+      expect(find.byType(ArticleOutputModeToggleButton), findsOneWidget);
+      await tester.tap(find.byType(ArticleOutputModeToggleButton));
       await tester.pumpAndSettle();
       expect(find.byType(PremiumArticleAudioView), findsOneWidget);
     },
@@ -63,8 +63,8 @@ void main() {
         ),
       );
 
-      expect(find.byType(AudioButton), findsOneWidget);
-      await tester.tap(find.byType(AudioButton));
+      expect(find.byType(ArticleOutputModeToggleButton), findsOneWidget);
+      await tester.tap(find.byType(ArticleOutputModeToggleButton));
       await tester.pumpAndSettle();
 
       final playButton = find.byType(AudioControlButton);
