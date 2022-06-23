@@ -10,14 +10,15 @@ class CategoryDTO {
     required this.id,
     required this.slug,
     required this.icon,
-    this.items,
+    required this.items,
   });
 
   final String icon;
   final String id;
   final String name;
   final String slug;
-  final List<ResultItemDTO>? items;
+  @JsonKey(defaultValue: [])
+  final List<ResultItemDTO> items;
 
   factory CategoryDTO.fromJson(Map<String, dynamic> json) => _$CategoryDTOFromJson(json);
 }

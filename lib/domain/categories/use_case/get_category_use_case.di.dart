@@ -10,6 +10,6 @@ class GetCategoryItemsUseCase {
 
   Future<List<ResultItem>> call({required String slug, required int limit, required int offset}) async {
     final category = await _categoriesRepository.getPaginatedCategory(slug, limit, offset);
-    return category.items ?? [];
+    return category.items;
   }
 }

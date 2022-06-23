@@ -19,6 +19,6 @@ class CategoryDTOMapper extends Mapper<CategoryDTO, Category> {
         id: data.id,
         slug: data.slug,
         icon: data.icon,
-        items: data.items?.map<ResultItem>(_resultItemDTOMapper).toList(),
+        items: data.items.map<ResultItem>(_resultItemDTOMapper).toList(),
       );
 }

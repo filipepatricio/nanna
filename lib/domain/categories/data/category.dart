@@ -6,12 +6,12 @@ class Category {
     required this.id,
     required this.slug,
     required this.icon,
-    this.items,
+    required this.items,
   });
 
   final String icon;
   final String id;
   final String name;
   final String slug;
-  final List<ResultItem>? items;
+  final List<ResultItem> items;
 }

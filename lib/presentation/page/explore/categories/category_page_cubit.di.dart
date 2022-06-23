@@ -26,11 +26,11 @@ class CategoryPageCubit extends Cubit<CategoryPageState> {
     this._trackActivityUseCase,
   ) : super(CategoryPageState.loading());
 
-  Future<void> initialize(String categorySlug, List<ResultItem>? items) async {
+  Future<void> initialize(String categorySlug, List<ResultItem> items) async {
     _categorySlug = categorySlug;
     _nextCategoryItemPageLoader = NextCategoryItemPageLoader(_getCategoryItemsUseCase, _categorySlug);
     _paginationEngine = PaginationEngine(_nextCategoryItemPageLoader);
-    if (items != null) {
+    if (items.isNotEmpty) {
       _items = items;
       _paginationEngine.initialize(items);
       emit(CategoryPageState.withPagination(items));
