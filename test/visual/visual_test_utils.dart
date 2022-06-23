@@ -30,9 +30,11 @@ const veryHighDevice = Device(name: 'very_high_screen', size: Size(375, 2400));
 
 /// Test matrix to define which flavors and which devices should be used for a visual test.
 class TestConfig {
-  const TestConfig._({this.flavor = AppConfig.mock, this.devices = defaultDevices, this.autoHeight = false});
-
-  static const unitTesting = TestConfig._();
+  const TestConfig._({
+    this.flavor = AppConfig.mock,
+    this.devices = defaultDevices,
+    this.autoHeight = false,
+  });
 
   factory TestConfig.stickerDevice() => const TestConfig._(
         flavor: AppConfig.mock,
@@ -42,6 +44,8 @@ class TestConfig {
   factory TestConfig.withDevices(List<Device> devices) => TestConfig._(devices: devices);
 
   factory TestConfig.autoHeight() => const TestConfig._(autoHeight: true, devices: []);
+
+  static const unitTesting = TestConfig._();
 
   final AppConfig flavor;
   final List<Device> devices;

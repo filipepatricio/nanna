@@ -156,7 +156,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
       playing: (state) async {
         await _pauseAudioUseCase();
         _trackActivityUseCase.trackEvent(AnalyticsEvent.pausedArticleAudio(state.audioItem.id));
-        _trackArticleAudioPositionUseCase.call(state.audioItem.slug, _currentPosition.inSeconds);
+        _trackArticleAudioPositionUseCase(state.audioItem.slug, _currentPosition.inSeconds);
       },
       orElse: () {
         Fimber.w('Can not pause audio in this state: ${state.toString()}');
@@ -170,7 +170,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
       paused: (state) async {
         await _playAudioUseCase();
         _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(state.audioItem.id));
-        _trackArticleAudioPositionUseCase.call(state.audioItem.slug, _currentPosition.inSeconds);
+        _trackArticleAudioPositionUseCase(state.audioItem.slug, _currentPosition.inSeconds);
       },
       orElse: () {
         Fimber.w('Can not play audio in this state: ${state.toString()}');
@@ -225,7 +225,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
   Future<void> pause() async {
     await _pauseAudioUseCase();
     _trackActivityUseCase.trackEvent(AnalyticsEvent.pausedArticleAudio(_article.id));
-    _trackArticleAudioPositionUseCase.call(_article.slug, _currentPosition.inSeconds);
+    _trackArticleAudioPositionUseCase(_article.slug, _currentPosition.inSeconds);
   }
 
   @override
@@ -236,7 +236,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
         if (forceNewAudio || state.completed) {
           if (!state.completed) {
             // Tracking current audio position before being replaced by new audio
-            _trackArticleAudioPositionUseCase.call(state.currentAudioItem.slug, _currentPosition.inSeconds);
+            _trackArticleAudioPositionUseCase(state.currentAudioItem.slug, _currentPosition.inSeconds);
           }
           await _prepareNewAudio();
         } else {
@@ -246,7 +246,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
       },
       paused: (_) => _playAudioUseCase(),
     );
-    _trackArticleAudioPositionUseCase.call(_article.slug, _currentPosition.inSeconds);
+    _trackArticleAudioPositionUseCase(_article.slug, _currentPosition.inSeconds);
     _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(_article.id));
   }
 
