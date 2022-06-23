@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_visited_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -20,10 +21,19 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 @injectable
 class TopicPageCubit extends Cubit<TopicPageState> {
+  TopicPageCubit(
+    this._isTutorialStepSeenUseCase,
+    this._setTutorialStepSeenUseCase,
+    this._getTopicBySlugUseCase,
+    this._trackActivityUseCase,
+    this._markTopicAsVisitedUseCase,
+  ) : super(TopicPageState.loading());
+
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final GetTopicBySlugUseCase _getTopicBySlugUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
+  final MarkTopicAsVisitedUseCase _markTopicAsVisitedUseCase;
 
   late bool _isTopicTutorialStepSeen;
   late bool _isTopicSummaryCardTutorialStepSeen;
@@ -38,28 +48,29 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   final summaryCardKey = GlobalKey();
   final mediaItemKey = GlobalKey();
 
-  TopicPageCubit(
-    this._isTutorialStepSeenUseCase,
-    this._setTutorialStepSeenUseCase,
-    this._getTopicBySlugUseCase,
-    this._trackActivityUseCase,
-  ) : super(TopicPageState.loading());
-
   Future<void> initializeWithSlug(String slug, String? briefId) async {
     emit(TopicPageState.loading());
 
     try {
       final topic = await _getTopicBySlugUseCase(slug, true);
-      await initialize(topic, briefId);
+      initialize(topic, briefId);
     } catch (e, s) {
       Fimber.e('Topic loading failed', ex: e, stacktrace: s);
       emit(TopicPageState.error());
     }
   }
 
-  Future<void> initialize(Topic topic, String? briefId) async {
+  void initialize(Topic topic, String? briefId) {
     _topic = topic;
     _briefId = briefId;
+    if (!topic.visited) {
+      try {
+        _markTopicAsVisitedUseCase(topic.slug);
+      } catch (e, s) {
+        Fimber.e('Marking topic as visited failed', ex: e, stacktrace: s);
+      }
+    }
+
     _trackActivityUseCase.trackPage(AnalyticsPage.topic(_topic.id, _briefId));
 
     emit(TopicPageState.idle(_topic));

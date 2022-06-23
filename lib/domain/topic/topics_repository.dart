@@ -9,4 +9,6 @@ abstract class TopicsRepository {
   Future<Topic> getTopicBySlug(String slug);
 
   Future<String> tradeTopicIdForSlug(String slug);
+
+  Future<void> markTopicAsVisited(String slug);
 }

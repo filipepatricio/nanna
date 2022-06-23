@@ -66,6 +66,7 @@ void main() {
       highlightedPublishers: publishers,
       heroImage: heroImage,
       entries: entries,
+      visited: false,
     );
 
     when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);

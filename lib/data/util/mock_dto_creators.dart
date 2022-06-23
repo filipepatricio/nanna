@@ -233,6 +233,7 @@ class MockDTO {
       _summaryCardLong,
       _summaryCardShort,
     ],
+    false,
   );
 
   static final topicWithEditorOwner = topic.copyWith(
@@ -244,6 +245,8 @@ class MockDTO {
     slug: 'topic-with-unknown-owner',
     owner: TopicOwnerDTO.unknown(),
   );
+
+  static final topicVisited = topic.copyWith(visited: true);
 
   static final topicPreview = topic.asPreview;
 
@@ -582,6 +585,7 @@ extension on TopicDTO {
     ImageDTO? heroImage,
     List<EntryDTO>? entries,
     List<SummaryCardDTO>? summaryCards,
+    bool? visited,
   }) {
     return TopicDTO(
       id ?? this.id,
@@ -596,6 +600,7 @@ extension on TopicDTO {
       heroImage ?? this.heroImage,
       entries ?? this.entries,
       summaryCards ?? this.summaryCards,
+      visited ?? this.visited,
     );
   }
 

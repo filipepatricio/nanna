@@ -43,4 +43,7 @@ class TopicsApiRepository implements TopicsRepository {
   Future<String> tradeTopicIdForSlug(String slug) async {
     return _topicsApiDataSource.getTopicId(slug);
   }
+
+  @override
+  Future<void> markTopicAsVisited(String slug) => _topicsApiDataSource.markTopicAsVisited(slug);
 }
