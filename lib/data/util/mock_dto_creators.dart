@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dar
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
@@ -339,6 +340,25 @@ class MockDTO {
       ResultItemDTO.article(_freeArticle),
       ResultItemDTO.article(_freeArticle),
       ResultItemDTO.topic(topicPreview),
+    ],
+  );
+
+  // CategoriesDTO
+
+  static final categories = CategoriesDTO(
+    [
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
     ],
   );
 

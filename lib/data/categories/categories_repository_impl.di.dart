@@ -20,13 +20,13 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
   @override
   Future<List<Category>> getOnboardingCategories() async {
     final dto = await _categoriesDataSource.getOnboardingCategories();
-    return dto.onboardingCategories?.map<Category>(_categoryMapper).toList() ?? [];
+    return dto.categories.map<Category>(_categoryMapper).toList();
   }
 
   @override
   Future<List<Category>> getFeaturedCategories() async {
     final dto = await _categoriesDataSource.getFeaturedCategories();
-    return dto.featuredCategories?.map<Category>(_categoryMapper).toList() ?? [];
+    return dto.categories.map<Category>(_categoryMapper).toList();
   }
 
   @override
@@ -38,6 +38,6 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
   @override
   Future<Category> getPaginatedCategory(String slug, int limit, int offset) async {
     final dto = await _categoriesDataSource.getPaginatedCategory(slug, limit, offset);
-    return _categoryMapper(dto.getCategory);
+    return _categoryMapper(dto);
   }
 }
