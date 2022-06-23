@@ -46,6 +46,7 @@ class PushNotificationGraphqlDataSource implements PushNotificationApiDataSource
   Future<NotificationPreferencesDTO> getNotificationPreferences() async {
     final result = await _client.query(
       QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
         document: get_notification_preferences.document,
         operationName: get_notification_preferences.getNotificationPreferencesMobile.name?.value,
       ),
