@@ -33,4 +33,5 @@ fragment topicPreviewFragment on Topic {
         ...cloudinaryImageFragment
     }
     entryCount
+    visited
 }

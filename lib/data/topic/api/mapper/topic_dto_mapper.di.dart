@@ -42,6 +42,7 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
       heroImage: _imageDTOMapper(data.heroImage),
       entries: data.entries.map<Entry>(_entryDTOMapper).toList(),
       topicSummaryList: data.summaryCards.map<TopicSummary>(_summaryCardDTOMapper).toList(),
+      visited: data.visited,
     );
   }
 }
