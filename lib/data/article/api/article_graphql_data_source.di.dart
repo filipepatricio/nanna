@@ -68,6 +68,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       QueryOptions(
         document: article_header.document,
         operationName: article_header.articleHeader.name?.value,
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
         cacheRereadPolicy: CacheRereadPolicy.ignoreOptimisitic,
         variables: {
           'slug': slug,
