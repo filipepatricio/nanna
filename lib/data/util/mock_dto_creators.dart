@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
@@ -329,6 +330,39 @@ class MockDTO {
     'Created by informed under the license of the Financial Times.',
   );
 
+  // CategoryDTO
+  static final category = CategoryDTO(
+    name: 'Politics',
+    id: 'id',
+    slug: 'politics',
+    icon: _mockedPillIcon,
+    items: [
+      CategoryItemDTO.topic(topicPreview),
+      CategoryItemDTO.article(_freeArticle),
+      CategoryItemDTO.article(_freeArticle),
+      CategoryItemDTO.topic(topicPreview),
+    ],
+  );
+
+  // CategoriesDTO
+
+  static final categories = CategoriesDTO(
+    [
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+    ],
+  );
+
   /// Internal
 
   static final _expert = TopicOwnerDTO.expert(
@@ -462,30 +496,6 @@ class MockDTO {
 
   static final _summaryCardShort = SummaryCardDTO(
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. **Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip.**',
-  );
-
-  static const mockedCategory = CategoryDTO(
-    name: 'politics',
-    id: 'id',
-    slug: 'slug',
-    icon: _mockedPillIcon,
-  );
-
-  static const mockedCategories = CategoriesDTO(
-    [
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-      mockedCategory,
-    ],
   );
 }
 

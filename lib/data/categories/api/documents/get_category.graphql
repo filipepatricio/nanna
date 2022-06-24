@@ -1,0 +1,18 @@
+# import 'package:better_informed_mobile/data/gql/common/category_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/topic_fragment.graphql';
+
+query getCategory ($slug: String!, $limit: Int, $offset: Int){
+    getCategory (slug: $slug){
+        ...categoryFragment
+        items (pagination: {limit: $limit, offset: $offset}){
+            __typename
+            ... on Article {
+                ...articleFragment
+            }
+            ... on Topic {
+                ...topicFragment
+            }
+        }
+    }
+}

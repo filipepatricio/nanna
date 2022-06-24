@@ -49,6 +49,9 @@ class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent.exploreAreaScrolled(String id, int offset) =>
       AnalyticsEvent._('ExploreAreaScrolled', {'explore_area_id': id, 'offset': offset});
 
+  factory AnalyticsEvent.categoryPageScrolled(String slug, int offset) =>
+      AnalyticsEvent._('CategoryPageScrolled', {'category_slug': slug, 'offset': offset});
+
   factory AnalyticsEvent.pushNotificationTapped(Map<String, dynamic> meta) =>
       AnalyticsEvent._('PushNotificationTapped', meta);
 

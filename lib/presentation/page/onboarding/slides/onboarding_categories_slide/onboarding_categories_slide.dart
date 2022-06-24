@@ -90,7 +90,7 @@ class _MainContent extends HookWidget {
             ...idleState.data.categories.map(
               (category) => _SelectableCard(
                 icon: SvgPicture.string(
-                  category.svgIcon,
+                  category.icon,
                   color: AppColors.darkGreyBackground,
                 ),
                 height: height,

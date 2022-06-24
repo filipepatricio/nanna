@@ -7,7 +7,6 @@ part 'categories_dto.dt.g.dart';
 class CategoriesDTO {
   const CategoriesDTO(this.categories);
 
-  @JsonKey(name: 'getOnboardingCategories', defaultValue: [])
   final List<CategoryDTO> categories;
 
   factory CategoriesDTO.fromJson(Map<String, dynamic> json) => _$CategoriesDTOFromJson(json);

@@ -231,7 +231,7 @@ class _ItemList extends StatelessWidget {
 
           return item.map(
             pills: (item) => ExplorePillsAreaView(
-              pills: item.list,
+              categories: item.categories,
             ),
             stream: (item) => _Area(
               area: item.area,
