@@ -20,14 +20,12 @@ const _finishedAnimation = 1.0;
 class FreeArticleView extends HookWidget {
   const FreeArticleView({
     required this.article,
-    required this.fromTopic,
     required this.snackbarController,
     required this.cubit,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final bool fromTopic;
   final SnackbarController snackbarController;
   final MediaItemCubit cubit;
 

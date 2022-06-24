@@ -53,7 +53,7 @@ class TopicHeader extends HookWidget {
               width: topicHeaderImageWidth,
               height: topicHeaderImageHeight,
               fit: BoxFit.cover,
-              showDarkened: true,
+              darkeningMode: DarkeningMode.solid,
               testImage: AppRasterGraphics.testArticleHeroImage,
             ),
           ),

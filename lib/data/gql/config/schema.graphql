@@ -27,6 +27,8 @@ union BookmarkEntity = Article | Topic
 "Target Item of the brief entry"
 union BriefEntryItem = Article | Topic
 
+union CategoryItem = Article | Topic
+
 "A media item referenced in the read list entries"
 union ReadingListMediaItem = Article
 
@@ -75,6 +77,8 @@ type Article {
     note: String
     "Preview text for article content"
     previewText: Text!
+    "The article's reading/listening progress"
+    progressState: ArticleProgressState!
     "The date the article was published by the publisher"
     publicationDate: Date
     "The publisher of this article"
@@ -102,6 +106,16 @@ type Article {
 "An article kind"
 type ArticleKind {
     name: String!
+}
+
+"User's progress in article"
+type ArticleProgress {
+    "Position in article's audio in seconds"
+    audioPosition: Int!
+    "Article audio file progress percentage 0-100"
+    audioProgress: Int!
+    "Article text content progress percentage 0-100"
+    contentProgress: Int!
 }
 
 type ArticlesExploreArea implements ExploreArea {
@@ -237,9 +251,15 @@ type BriefIntroduction {
 
 "A category"
 type Category {
-    icon: SVG!
-    id: String!
+    "The category's icon"
+    icon: SVG
+    "Globally unique identifier for this category"
+    id: UUID!
+    "Items in a category"
+    items(pagination: PaginationInput): [CategoryItem]!
+    "The name of the category"
     name: String!
+    "The slug of the category"
     slug: String!
 }
 
@@ -340,6 +360,11 @@ type HighlightedTopicsExploreArea implements ExploreArea {
     topics(pagination: PaginationInput): [Topic]!
 }
 
+"Response for markTopicVisited mutation"
+type MarkTopicVisitedResponse {
+    successful: Boolean!
+}
+
 "A publisher"
 type Publisher {
     "The publisher logo (dark version)"
@@ -412,6 +437,8 @@ type RootMutationType {
         "The topic's slug"
         slug: String!
     ): BookmarkMutationPayload
+    "Mark topic as visited by user"
+    markTopicVisited(slug: String!): MarkTopicVisitedResponse
     "Exchange the refresh token for a new access token"
     refresh(refreshToken: String!): RefreshPayload
     "Remove a bookmark"
@@ -427,6 +454,20 @@ type RootMutationType {
     setNotificationChannelPreferences(emailEnabled: Boolean, id: String!, pushEnabled: Boolean): ChannelPreferences
     "Login via OAuth provider provided identity token"
     signIn(idToken: String, information: UserMeta, provider: String!, token: String): SignInPayload
+    "Update position in seconds of article audio for the current user"
+    updateArticleAudioPosition(
+        "Position in article's audio in seconds"
+        position: Int!,
+        "The article's slug"
+        slug: String!
+    ): UpdateArticleProgressResponse
+    "Update text content progress in given article for the current user"
+    updateArticleContentProgress(
+        "Progress percentage 0-100"
+        progress: Int!,
+        "The article's slug"
+        slug: String!
+    ): UpdateArticleProgressResponse
     "Update preferred categories for the current user"
     updatePreferredCategories(categoryIds: [UUID!]): UpdatePreferredCategoriesResponse
     "Store meta information about the current user"
@@ -443,12 +484,20 @@ type RootQueryType {
     getArticleAudioFile(slug: String!): AudioFile
     "Get article bookmark"
     getArticleBookmark(slug: String!): Bookmark
+    "Get user's progress in article with given slug"
+    getArticleProgress(slug: String!): ArticleProgress
+    "Get user's history of article views"
+    getArticlesHistory(pagination: PaginationInput = {limit: 10, offset: 0}, progressState: ArticleProgressState): [Article]
     "Request all user's bookmarks"
     getBookmarks(filter: BookmarksFilterOptions = ALL, order: BookmarksOrderOptions = DESC, pagination: PaginationInput = {limit: 10, offset: 0}, sortBy: BookmarksSortOptions = ADDED): [Bookmark]
+    "A category"
+    getCategory(id: String, slug: String): Category
     "Retrieve one area in the explore section"
     getExploreArea(id: String!): ExploreArea
     "The content of the explore section"
     getExploreSection(isHighlighted: Boolean): [ExploreArea]
+    "The featured categories in the pills section"
+    getFeaturedCategories: [Category]
     "Retrieve the user's notification preferences"
     getNotificationPreferences: [ChannelCategory]
     "Categories that can be selected as preferred"
@@ -561,6 +610,8 @@ type Topic {
     title: String!
     "The topic's URL used for sharing"
     url: String!
+    "Was the topic visited by user"
+    visited: Boolean!
 }
 
 "An entry in the topic"
@@ -597,9 +648,21 @@ type TopicsExploreArea implements ExploreArea {
     topics(pagination: PaginationInput): [Topic]!
 }
 
+"Response for article progress mutation"
+type UpdateArticleProgressResponse {
+    successful: Boolean!
+}
+
 "Response for updatePreferredCategories mutation"
 type UpdatePreferredCategoriesResponse {
     successful: Boolean!
+}
+
+"Article Progress"
+enum ArticleProgressState {
+    FINISHED
+    IN_PROGRESS
+    UNREAD
 }
 
 "Type of the article"

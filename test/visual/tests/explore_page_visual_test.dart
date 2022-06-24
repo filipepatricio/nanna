@@ -30,7 +30,7 @@ void main() {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
       await tester.matchGoldenFile();
     },
-    testConfig: TestConfig.unitTesting.withDevices([veryHighDevice]),
+    testConfig: TestConfig.withDevices([veryHighDevice]),
   );
 
   visualTest(

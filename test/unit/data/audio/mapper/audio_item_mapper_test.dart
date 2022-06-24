@@ -27,6 +27,7 @@ void main() {
         title: 'Should you test it',
         author: 'NYT',
         imageUrl: 'www.image.com/test',
+        duration: null,
       );
 
       final actual = mapper.to(mediaItem);
@@ -50,6 +51,7 @@ void main() {
         title: 'Should you test it',
         author: 'NYT',
         imageUrl: null,
+        duration: null,
       );
 
       final actual = mapper.to(mediaItem);
@@ -66,6 +68,7 @@ void main() {
         title: 'Should you test it',
         author: 'NYT',
         imageUrl: 'www.image.com/test',
+        duration: null,
       );
       final expected = MediaItem(
         id: '0000',
@@ -89,6 +92,7 @@ void main() {
         title: 'Should you test it',
         author: 'NYT',
         imageUrl: null,
+        duration: null,
       );
       const expected = MediaItem(
         id: '0000',

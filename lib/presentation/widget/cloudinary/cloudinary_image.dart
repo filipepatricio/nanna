@@ -12,6 +12,8 @@ export 'cloudinary_config.dart';
 
 const _fadeDuration = Duration(milliseconds: 200);
 
+enum DarkeningMode { none, solid, gradient }
+
 class CloudinaryImage extends HookWidget {
   final String publicId;
   final double width;
@@ -21,7 +23,7 @@ class CloudinaryImage extends HookWidget {
   final String testImage;
   final CloudinaryConfig config;
   final bool showLoadingShimmer;
-  final bool showDarkened;
+  final DarkeningMode darkeningMode;
 
   const CloudinaryImage({
     required this.publicId,
@@ -32,14 +34,21 @@ class CloudinaryImage extends HookWidget {
     this.testImage = AppRasterGraphics.testReadingListCoverImage,
     this.config = const CloudinaryConfig(),
     this.showLoadingShimmer = true,
-    this.showDarkened = false,
+    this.darkeningMode = DarkeningMode.none,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final darkeningDecoration = BoxDecoration(
-      color: showDarkened ? AppColors.black40 : null,
+      color: darkeningMode == DarkeningMode.solid ? AppColors.black40 : null,
+      gradient: darkeningMode == DarkeningMode.gradient
+          ? const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [AppColors.black10, AppColors.black40, AppColors.black40],
+            )
+          : null,
     );
 
     if (kIsTest) {

@@ -33,6 +33,7 @@ class AudioItemMapper implements BidirectionalMapper<MediaItem, AudioItem> {
       title: data.title,
       author: data.artist ?? '',
       imageUrl: data.artUri?.toString(),
+      duration: data.duration,
     );
   }
 }

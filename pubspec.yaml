@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Version handled in CD workflows - check out .github/workflows/cd_prod.yml and .github/workflows/cd_staging.yml
-version: 1.14.0+0
+version: 1.15.0+0
 
 environment:
   sdk: '>=2.17.0 <3.0.0'
@@ -101,6 +101,7 @@ dependencies:
       url: https://github.com/gql-dart/gql.git
       path: codegen/gql_build
       ref: c6644dab44234468bfe134cf6316a965912a2bce
+  neat_periodic_task: ^2.0.0
 
 dev_dependencies:
   flutter_test:

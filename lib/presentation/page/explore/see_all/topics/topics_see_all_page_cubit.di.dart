@@ -14,7 +14,7 @@ const _paginationLimit = 10;
 class TopicsSeeAllPageCubit extends Cubit<TopicsSeeAllPageState> {
   final GetExplorePaginatedTopicsUseCase _getExplorePaginatedTopicsUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
-  late NextTopicPageLoader _nextArticlePageLoader;
+  late NextTopicPageLoader _nextTopicPageLoader;
   late PaginationEngine<TopicPreview> _paginationEngine;
   late String _areaId;
 
@@ -28,8 +28,8 @@ class TopicsSeeAllPageCubit extends Cubit<TopicsSeeAllPageState> {
 
   Future<void> initialize(String areaId, List<TopicPreview>? topics) async {
     _areaId = areaId;
-    _nextArticlePageLoader = NextTopicPageLoader(_getExplorePaginatedTopicsUseCase, areaId);
-    _paginationEngine = PaginationEngine(_nextArticlePageLoader);
+    _nextTopicPageLoader = NextTopicPageLoader(_getExplorePaginatedTopicsUseCase, areaId);
+    _paginationEngine = PaginationEngine(_nextTopicPageLoader);
     if (topics != null) {
       _topics = topics;
       _paginationEngine.initialize(topics);

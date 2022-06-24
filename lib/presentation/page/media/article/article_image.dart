@@ -12,14 +12,14 @@ class ArticleImage extends HookWidget {
     required this.image,
     this.fit = BoxFit.cover,
     this.cardColor,
-    this.showDarkened = false,
+    this.darkeningMode = DarkeningMode.none,
     Key? key,
   }) : super(key: key);
 
   final d.ArticleImage image;
   final BoxFit fit;
   final Color? cardColor;
-  final bool showDarkened;
+  final DarkeningMode darkeningMode;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class ArticleImage extends HookWidget {
             width: width,
             height: height,
             fit: fit,
-            showDarkened: showDarkened,
+            darkeningMode: darkeningMode,
             testImage: AppRasterGraphics.testArticleHeroImage,
           );
         }
@@ -59,7 +59,7 @@ class ArticleImage extends HookWidget {
                 ),
               ),
               foregroundDecoration: BoxDecoration(
-                color: showDarkened ? AppColors.black40 : null,
+                color: darkeningMode == DarkeningMode.solid ? AppColors.black40 : null,
               ),
             ),
             errorWidget: (_, __, ___) => Container(

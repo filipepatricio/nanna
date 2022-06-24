@@ -32,7 +32,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                 Positioned.fill(
                   child: ArticleImage(
                     image: article.image!,
-                    showDarkened: true,
+                    darkeningMode: DarkeningMode.gradient,
                   ),
                 ),
               ],

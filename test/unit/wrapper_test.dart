@@ -73,7 +73,6 @@ void main() {
   group('main_page_test', main_page_test.main);
   group('media_item_page_test', media_item_page_test.main);
   group('sign_in_page_test', sign_in_page_test.main);
-
   group('topic_owner_page_test', topic_owner_page_test.main);
   group('date_format_util_test', date_format_util_test.main);
 }

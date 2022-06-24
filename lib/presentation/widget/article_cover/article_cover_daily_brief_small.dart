@@ -75,7 +75,7 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                     clipBehavior: Clip.hardEdge,
                                     child: ArticleImage(
                                       image: article.image!,
-                                      showDarkened: false,
+                                      darkeningMode: DarkeningMode.none,
                                       fit: BoxFit.cover,
                                     ),
                                   ),

@@ -92,6 +92,11 @@ class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource 
       final rawJson = exception.message.split('\n\n').last;
       final json = jsonDecode(rawJson);
       return json['access_token'] as String;
+    } on AuthorizationException catch (exception) {
+      if (exception.error == 'user_cancelled_login') {
+        throw SignInAbortedException();
+      }
+      rethrow;
     }
   }
 }

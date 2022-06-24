@@ -21,6 +21,7 @@ class Topic {
   final TopicCategory? category;
   final Image heroImage;
   final List<Entry> entries;
+  final bool visited;
 
   Topic({
     required this.id,
@@ -35,6 +36,7 @@ class Topic {
     required this.highlightedPublishers,
     required this.heroImage,
     required this.entries,
+    required this.visited,
     this.category,
   });
 

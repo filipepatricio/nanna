@@ -14,6 +14,8 @@ class MainNavigationObserver extends AutoRouterObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
     switch (route.settings.name) {
+      case CategoryPageRoute.name:
+        return;
       case MediaItemPageRoute.name:
         // Handled in MediaItemPageCubit
         return;

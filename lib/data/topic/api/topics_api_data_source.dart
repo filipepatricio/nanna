@@ -10,4 +10,6 @@ abstract class TopicsApiDataSource {
   Future<TopicDTO> getTopicBySlug(String slug);
 
   Future<String> getTopicId(String slug);
+
+  Future<void> markTopicAsVisited(String slug);
 }

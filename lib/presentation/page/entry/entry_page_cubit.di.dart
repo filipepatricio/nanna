@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/use_case/get_onboarding_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
@@ -9,6 +10,7 @@ import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -20,6 +22,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     this._isOnboardingSeenUseCase,
     this._saveReleaseNoteIfFirstRunUseCase,
     this._isInternetConnectionAvailableUseCase,
+    this._getOnboardingCategoriesUseCase,
   ) : super(EntryPageState.idle());
 
   final IsSignedInUseCase _isSignedInUseCase;
@@ -28,6 +31,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
   final SaveReleaseNoteIfFirstRunUseCase _saveReleaseNoteIfFirstRunUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
+  final GetOnboardingCategoriesUseCase _getOnboardingCategoriesUseCase;
 
   bool? _isConnectionAvailable;
 
@@ -74,10 +78,19 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     if (onboardingSeen) {
       await _initializeAttributionUseCase();
     } else {
+      await _preFetchCategories();
       emit(EntryPageState.onboarding());
       return;
     }
 
     emit(EntryPageState.alreadySignedIn());
+  }
+
+  Future<void> _preFetchCategories() async {
+    try {
+      await _getOnboardingCategoriesUseCase();
+    } catch (e, s) {
+      Fimber.e('Pre-fetching onboarding categories failed', ex: e, stacktrace: s);
+    }
   }
 }

@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../finders.dart';
 import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
@@ -27,9 +28,8 @@ void main() {
           ],
         ),
       );
-      await tester.pumpAndSettle();
       expect(find.byType(PremiumArticleView), findsOneWidget);
-      expect(find.byType(AudioButton), findsNothing);
+      expect(find.byType(ArticleOutputModeToggleButton), findsNothing);
       expect(find.byType(PremiumArticleAudioView), findsNothing);
     },
   );
@@ -44,10 +44,9 @@ void main() {
           ],
         ),
       );
-      await tester.pumpAndSettle();
       expect(find.byType(PremiumArticleView), findsOneWidget);
-      expect(find.byType(AudioButton), findsOneWidget);
-      await tester.tap(find.byType(AudioButton));
+      expect(find.byType(ArticleOutputModeToggleButton), findsOneWidget);
+      await tester.tap(find.byType(ArticleOutputModeToggleButton));
       await tester.pumpAndSettle();
       expect(find.byType(PremiumArticleAudioView), findsOneWidget);
     },
@@ -63,10 +62,9 @@ void main() {
           ],
         ),
       );
-      await tester.pumpAndSettle();
 
-      expect(find.byType(AudioButton), findsOneWidget);
-      await tester.tap(find.byType(AudioButton));
+      expect(find.byType(ArticleOutputModeToggleButton), findsOneWidget);
+      await tester.tap(find.byType(ArticleOutputModeToggleButton));
       await tester.pumpAndSettle();
 
       final playButton = find.byType(AudioControlButton);
@@ -167,6 +165,37 @@ void main() {
             .assetName,
         AppVectorGraphics.heartSelectedNoBorder,
       );
+    },
+  );
+
+  testWidgets(
+    'media item page has topic overview label if opened from a topic',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(
+              topicId: TestData.topic.id,
+              slug: TestData.premiumArticleWithAudio.slug,
+            ),
+          ],
+        ),
+      );
+      expect(find.byText(LocaleKeys.article_topicOverview.tr()), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'media item page does not have topic overview label if not opened from a topic',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
+          ],
+        ),
+      );
+      expect(find.byText(LocaleKeys.article_topicOverview.tr()), findsNothing);
     },
   );
 }

@@ -6,12 +6,15 @@ import 'package:better_informed_mobile/data/topic/api/documents/__generated__/ge
     as get_topics_from_editor;
 import 'package:better_informed_mobile/data/topic/api/documents/__generated__/get_topics_from_expert.ast.gql.dart'
     as get_topics_from_expert;
+import 'package:better_informed_mobile/data/topic/api/documents/__generated__/mark_topic_as_visited.ast.gql.dart'
+    as mark_topic_as_visited;
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_editor_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/topics_api_data_source.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:fimber/fimber.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -107,4 +110,16 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
 
     return id ?? (throw Exception('Topic id is null'));
   }
+
+  @override
+  Future<void> markTopicAsVisited(String slug) => _client.mutate(
+        MutationOptions(
+          document: mark_topic_as_visited.document,
+          operationName: mark_topic_as_visited.markTopicAsVisited.name?.value,
+          variables: {
+            'slug': slug,
+          },
+          onError: (error) => Fimber.e('Could not mark topic as visited', ex: error),
+        ),
+      );
 }

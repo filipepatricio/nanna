@@ -1,10 +1,13 @@
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/query_user.ast.gql.dart' as query_user;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_preferred_categories.ast.gql.dart'
+    as update_preferred_categories;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_user.ast.gql.dart' as update_user;
 import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:fimber/fimber.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -21,7 +24,7 @@ class UserGraphqlDataSource implements UserDataSource {
       QueryOptions(
         document: query_user.document,
         operationName: query_user.queryUser.name?.value,
-        fetchPolicy: FetchPolicy.noCache,
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
@@ -56,4 +59,16 @@ class UserGraphqlDataSource implements UserDataSource {
 
     return dto ?? (throw Exception('User can not be null'));
   }
+
+  @override
+  Future<void> updatePreferredCategories(List<String> categoryIds) => _client.mutate(
+        MutationOptions(
+          document: update_preferred_categories.document,
+          operationName: update_preferred_categories.updatePreferredCategories.name?.value,
+          variables: {
+            'categoryIDs': categoryIds,
+          },
+          onError: (error) => Fimber.e('Could not update preferred categories', ex: error),
+        ),
+      );
 }

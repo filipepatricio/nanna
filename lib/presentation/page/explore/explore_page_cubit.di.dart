@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/get_search_history_use_case.di.dart';
@@ -18,6 +19,7 @@ import 'package:injectable/injectable.dart';
 class ExplorePageCubit extends Cubit<ExplorePageState> {
   ExplorePageCubit(
     this._getExploreContentUseCase,
+    this._getFeaturedCategoriesUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._getSearchHistoryUseCase,
@@ -25,6 +27,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   ) : super(ExplorePageState.initialLoading());
 
   final GetExploreContentUseCase _getExploreContentUseCase;
+  final GetFeaturedCategoriesUseCase _getFeaturedCategoriesUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
 
@@ -67,14 +70,14 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   Future<void> _fetchExploreContent() async {
     final exploreContent = await _getExploreContentUseCase();
-    _processAndEmitExploreContent(exploreContent);
+    await _processAndEmitExploreContent(exploreContent);
   }
 
-  void _processAndEmitExploreContent(ExploreContent exploreContent) {
-    final pills = exploreContent.pills;
+  Future<void> _processAndEmitExploreContent(ExploreContent exploreContent) async {
+    final categories = await _getFeaturedCategoriesUseCase();
     _latestIdleState = ExplorePageState.idle(
       [
-        if (pills != null) ExploreItem.pills(pills),
+        ExploreItem.pills(categories),
         ...exploreContent.areas.map(ExploreItem.stream).toList(),
       ],
     );

@@ -19,6 +19,6 @@ class MagicLinkParser {
       if (token != null) return token;
     }
 
-    throw Exception('Provided uri is not magic link.');
+    throw Exception('Provided uri is not magic link. - $uri');
   }
 }
