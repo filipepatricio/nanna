@@ -117,36 +117,28 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  Future<void> trackAudioPosition(String slug, int position) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: update_article_audio_position.document,
-        operationName: update_article_audio_position.updateArticleAudioPosition.name?.value,
-        variables: {
-          'slug': slug,
-          'position': position,
-        },
-      ),
-    );
-
-    if (result.hasException) Fimber.e('Could not track audio position - GraphQL Exception', ex: result.exception);
-    return;
-  }
+  void trackAudioPosition(String slug, int position) => _client.mutate(
+        MutationOptions(
+          document: update_article_audio_position.document,
+          operationName: update_article_audio_position.updateArticleAudioPosition.name?.value,
+          variables: {
+            'slug': slug,
+            'position': position,
+          },
+          onError: (error) => Fimber.e('Could not track audio position', ex: error),
+        ),
+      );
 
   @override
-  Future<void> trackReadingProgress(String slug, int progress) async {
-    final result = await _client.mutate(
-      MutationOptions(
-        document: update_article_content_progress.document,
-        operationName: update_article_content_progress.updateArticleContentProgress.name?.value,
-        variables: {
-          'slug': slug,
-          'progress': progress,
-        },
-      ),
-    );
-
-    if (result.hasException) Fimber.e('Could not track reading progress - GraphQL Exception', ex: result.exception);
-    return;
-  }
+  void trackReadingProgress(String slug, int progress) => _client.mutate(
+        MutationOptions(
+          document: update_article_content_progress.document,
+          operationName: update_article_content_progress.updateArticleContentProgress.name?.value,
+          variables: {
+            'slug': slug,
+            'progress': progress,
+          },
+          onError: (error) => Fimber.e('Could not track reading progress', ex: error),
+        ),
+      );
 }

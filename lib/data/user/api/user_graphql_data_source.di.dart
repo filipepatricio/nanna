@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:fimber/fimber.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -67,6 +68,7 @@ class UserGraphqlDataSource implements UserDataSource {
           variables: {
             'categoryIDs': categoryIds,
           },
+          onError: (error) => Fimber.e('Could not update preferred categories', ex: error),
         ),
       );
 }
