@@ -24,7 +24,7 @@ class UserGraphqlDataSource implements UserDataSource {
       QueryOptions(
         document: query_user.document,
         operationName: query_user.queryUser.name?.value,
-        fetchPolicy: FetchPolicy.noCache,
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
