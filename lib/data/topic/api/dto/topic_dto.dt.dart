@@ -21,6 +21,7 @@ class TopicDTO {
   final ImageDTO heroImage;
   final List<EntryDTO> entries;
   final List<SummaryCardDTO> summaryCards;
+  final bool visited;
 
   TopicDTO(
     this.id,
@@ -35,6 +36,7 @@ class TopicDTO {
     this.heroImage,
     this.entries,
     this.summaryCards,
+    this.visited,
   );
 
   factory TopicDTO.fromJson(Map<String, dynamic> json) => _$TopicDTOFromJson(json);

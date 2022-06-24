@@ -34,8 +34,8 @@
     "descriptionSlideOne": "Behind the tech, our editorial team selects the must know topics, sourcing the very best articles so they can carefully create your Daily Brief.",
     "descriptionSlideTwo": "Providing an array of perspectives, as we strive to repair the divided media landscape, presenting you the context to understand this complex world.",
     "descriptionSlideCategories": "This will be used to get personalized results and stories for you",
-    "categories" : {
-      "everything" : "Show me everything"
+    "categories": {
+      "everything": "Show me everything"
     },
     "notificationBulletPoints": {
       "headerOne": "Daily News Brief",
@@ -86,6 +86,7 @@
     "notifications": "Notifications",
     "email": "Email",
     "push": "Push",
+    "manageMyInterests": "Manage My Interests",
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of service",

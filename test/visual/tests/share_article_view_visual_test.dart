@@ -17,6 +17,6 @@ void main() {
       );
       await tester.matchGoldenFile();
     },
-    testConfig: TestConfig.unitTesting.withDevices([shareImage]),
+    testConfig: TestConfig.withDevices([shareImage]),
   );
 }

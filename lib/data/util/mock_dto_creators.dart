@@ -6,6 +6,11 @@ import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dar
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_preferences_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
@@ -50,18 +55,22 @@ class MockDTO {
   /// Release notes
   ///
   static final noMediaReleaseNote = ReleaseNoteDTO(
-    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    headline: 'Lorem ipsum dolor sit amet, consectetur',
+    // max 40 chars
     content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali',
+    // max 120 chars
     date: '2022-05-20',
     media: [],
     version: '1.0.0',
   );
 
   static final singleMediaReleaseNote = ReleaseNoteDTO(
-    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    headline: 'Lorem ipsum dolor sit amet, consectetur',
+    // max 40 chars
     content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali',
+    // max 120 chars
     date: '2022-05-20',
     media: [
       ReleaseNoteMediaDTO.png('png', 'www.image.com'),
@@ -70,9 +79,11 @@ class MockDTO {
   );
 
   static final multipleMediaReleaseNote = ReleaseNoteDTO(
-    headline: 'Lorem ipsum dolor sit amet, consectetur', // max 40 chars
+    headline: 'Lorem ipsum dolor sit amet, consectetur',
+    // max 40 chars
     content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali', // max 120 chars
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ali',
+    // max 120 chars
     date: '2022-05-20',
     media: [
       ReleaseNoteMediaDTO.png('png', 'www.image.com'),
@@ -225,6 +236,7 @@ class MockDTO {
       _summaryCardLong,
       _summaryCardShort,
     ],
+    false,
   );
 
   static final topicWithEditorOwner = topic.copyWith(
@@ -236,6 +248,8 @@ class MockDTO {
     slug: 'topic-with-unknown-owner',
     owner: TopicOwnerDTO.unknown(),
   );
+
+  static final topicVisited = topic.copyWith(visited: true);
 
   static final topicPreview = topic.asPreview;
 
@@ -316,6 +330,54 @@ class MockDTO {
   static final audioFile = AudioFileDTO(
     'audio-file-url',
     'Created by informed under the license of the Financial Times.',
+  );
+
+  // CategoryDTO
+  static final category = CategoryDTO(
+    name: 'Politics',
+    id: 'id',
+    slug: 'politics',
+    icon: _mockedPillIcon,
+    items: [
+      CategoryItemDTO.topic(topicPreview),
+      CategoryItemDTO.article(_freeArticle),
+      CategoryItemDTO.article(_freeArticle),
+      CategoryItemDTO.topic(topicPreview),
+    ],
+  );
+
+  // CategoriesDTO
+
+  static final categories = CategoriesDTO(
+    [
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+      MockDTO.category,
+    ],
+  );
+
+  // CategoryPreference
+
+  static final categoryPreference = CategoryPreferenceDTO(
+    isPreferred: true,
+    category: MockDTO.category,
+  );
+
+  // CategoryPreferencesResponseDTO
+
+  static final categoryPreferencesResponse = CategoryPreferencesResponseDTO(
+    [
+      MockDTO.categoryPreference,
+    ],
   );
 
   /// Internal
@@ -550,6 +612,7 @@ extension on TopicDTO {
     ImageDTO? heroImage,
     List<EntryDTO>? entries,
     List<SummaryCardDTO>? summaryCards,
+    bool? visited,
   }) {
     return TopicDTO(
       id ?? this.id,
@@ -564,6 +627,7 @@ extension on TopicDTO {
       heroImage ?? this.heroImage,
       entries ?? this.entries,
       summaryCards ?? this.summaryCards,
+      visited ?? this.visited,
     );
   }
 

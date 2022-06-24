@@ -40,4 +40,7 @@ class TopicsMockDataSource implements TopicsApiDataSource {
   Future<String> getTopicId(String slug) async {
     return MockDTO.topic.id;
   }
+
+  @override
+  Future<void> markTopicAsVisited(String slug) async {}
 }

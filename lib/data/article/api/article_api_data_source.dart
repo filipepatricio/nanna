@@ -8,4 +8,8 @@ abstract class ArticleApiDataSource {
   Future<ArticleContentDTO> getArticleContent(String slug);
 
   Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh);
+
+  void trackReadingProgress(String articleSlug, int progress);
+
+  void trackAudioPosition(String articleSlug, int position);
 }

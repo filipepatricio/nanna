@@ -22,14 +22,14 @@ class AudioPositionStreamUseCase {
       _audioRepository.playbackState.where((state) => state.hasDuration),
       (position, playbackState) {
         _audioProgressTracker.track(
-          playbackState.requireAudioItem.id,
+          playbackState.audioItem.id,
           position,
-          playbackState.requireDuration,
+          playbackState.duration,
         );
         return AudioPosition(
-          audioItemID: playbackState.requireAudioItem.id,
+          audioItemID: playbackState.audioItem.id,
           position: position,
-          totalDuration: playbackState.requireDuration,
+          totalDuration: playbackState.duration,
         );
       },
     );
@@ -46,16 +46,16 @@ extension on AudioPlaybackState {
     );
   }
 
-  Duration get requireDuration {
+  Duration get duration {
     return maybeMap(
-      playing: (state) => state.duration,
-      paused: (state) => state.duration,
-      completed: (state) => state.duration,
+      playing: (state) => state.audioItem.duration ?? Duration.zero,
+      paused: (state) => state.audioItem.duration ?? Duration.zero,
+      completed: (state) => state.audioItem.duration ?? Duration.zero,
       orElse: () => throw Exception('This state does not have duration'),
     );
   }
 
-  AudioItem get requireAudioItem {
+  AudioItem get audioItem {
     return maybeMap(
       playing: (state) => state.audioItem,
       paused: (state) => state.audioItem,

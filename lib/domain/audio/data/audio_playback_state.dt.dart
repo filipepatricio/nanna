@@ -12,19 +12,16 @@ class AudioPlaybackState with _$AudioPlaybackState {
   }) = _AudioPlaybackStateLoading;
 
   const factory AudioPlaybackState.playing({
-    required Duration duration,
     required double speed,
     required AudioItem audioItem,
   }) = _AudioPlaybackStatePlaying;
 
   const factory AudioPlaybackState.paused({
-    required Duration duration,
     required double speed,
     required AudioItem audioItem,
   }) = _AudioPlaybackStatePaused;
 
   const factory AudioPlaybackState.completed({
-    required Duration duration,
     required double speed,
     required AudioItem audioItem,
   }) = _AudioPlaybackStateCompleted;

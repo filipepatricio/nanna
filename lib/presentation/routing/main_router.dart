@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
+import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page.dart';
@@ -11,6 +12,7 @@ import 'package:better_informed_mobile/presentation/page/photo_caption/photo_cap
 import 'package:better_informed_mobile/presentation/page/profile/profile_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
@@ -37,6 +39,7 @@ final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRoute
     AutoRoute(page: SettingsMainPage),
     AutoRoute(page: SettingsNotificationsPage),
     AutoRoute(page: SettingsAccountPage),
+    AutoRoute(page: SettingsManageMyInterestsPage),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
   ],
@@ -78,6 +81,7 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(path: '', page: ExplorePage, initial: true),
         AutoRoute(page: ArticleSeeAllPage),
         AutoRoute(page: TopicsSeeAllPage),
+        AutoRoute(page: CategoryPage),
       ],
     ),
     AutoRoute(

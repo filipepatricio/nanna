@@ -44,6 +44,7 @@ class AppVectorGraphics {
   static const String gift = 'assets/vector_graphics/gift.svg';
   static const String bigGift = 'assets/vector_graphics/gift_big.svg';
   static const String copy = 'assets/vector_graphics/copy.svg';
+  static const String star = 'assets/vector_graphics/star.svg';
 
   static const String mail = 'assets/vector_graphics/mail_ic.svg';
   static const String googleSignIn = 'assets/vector_graphics/google_sign_in.svg';

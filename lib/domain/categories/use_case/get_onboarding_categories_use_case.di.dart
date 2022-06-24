@@ -4,11 +4,11 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetOnboardingCategoriesUseCase {
-  const GetOnboardingCategoriesUseCase(this._onboardingRepository);
+  const GetOnboardingCategoriesUseCase(this._categoriesRepository);
 
-  final CategoriesRepository _onboardingRepository;
+  final CategoriesRepository _categoriesRepository;
 
-  Future<List<Category>> call() => _onboardingRepository.getOnboardingCategories();
+  Future<List<Category>> call() => _categoriesRepository.getOnboardingCategories();
 
-  Stream<List<Category>> get stream => _onboardingRepository.categoriesStream;
+  Stream<List<Category>> get stream => _categoriesRepository.categoriesStream;
 }
