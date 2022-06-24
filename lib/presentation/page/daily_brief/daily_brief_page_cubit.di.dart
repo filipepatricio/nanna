@@ -99,7 +99,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
   void _emitItemPreviewedEvent(String id, AnalyticsEvent event, double visibility) {
     final visibilityEvent = _ItemVisibilityEvent(id, visibility > _minVisibilityToTrack, event);
-    _trackItemController.add(visibilityEvent);
+    if (!isClosed) _trackItemController.add(visibilityEvent);
   }
 
   void _initializeItemPreviewTracker() {
