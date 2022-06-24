@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,11 +10,11 @@ class CategoryPageState with _$CategoryPageState {
   factory CategoryPageState.loading() = _CategoryPageStateLoading;
 
   @Implements<BuildState>()
-  factory CategoryPageState.withPagination(List<ResultItem> items) = _CategoryPageStateWithPagination;
+  factory CategoryPageState.withPagination(List<CategoryItem> items) = _CategoryPageStateWithPagination;
 
   @Implements<BuildState>()
-  factory CategoryPageState.loadingMore(List<ResultItem> items) = _CategoryPageStateLoadingMore;
+  factory CategoryPageState.loadingMore(List<CategoryItem> items) = _CategoryPageStateLoadingMore;
 
   @Implements<BuildState>()
-  factory CategoryPageState.allLoaded(List<ResultItem> items) = _CategoryPageStateAllLoaded;
+  factory CategoryPageState.allLoaded(List<CategoryItem> items) = _CategoryPageStateAllLoaded;
 }

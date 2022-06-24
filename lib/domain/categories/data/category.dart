@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 
 class Category {
   const Category({
@@ -13,5 +13,5 @@ class Category {
   final String id;
   final String name;
   final String slug;
-  final List<ResultItem> items;
+  final List<CategoryItem> items;
 }

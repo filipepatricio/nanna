@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_category_use_case.di.dart';
-import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/next_category_item_page_loader.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
@@ -15,10 +15,10 @@ class CategoryPageCubit extends Cubit<CategoryPageState> {
   final GetCategoryItemsUseCase _getCategoryItemsUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   late NextCategoryItemPageLoader _nextCategoryItemPageLoader;
-  late PaginationEngine<ResultItem> _paginationEngine;
+  late PaginationEngine<CategoryItem> _paginationEngine;
   late String _categorySlug;
 
-  List<ResultItem> _items = [];
+  List<CategoryItem> _items = [];
   bool _allLoaded = false;
 
   CategoryPageCubit(
@@ -26,7 +26,7 @@ class CategoryPageCubit extends Cubit<CategoryPageState> {
     this._trackActivityUseCase,
   ) : super(CategoryPageState.loading());
 
-  Future<void> initialize(String categorySlug, List<ResultItem> items) async {
+  Future<void> initialize(String categorySlug, List<CategoryItem> items) async {
     _categorySlug = categorySlug;
     _nextCategoryItemPageLoader = NextCategoryItemPageLoader(_getCategoryItemsUseCase, _categorySlug);
     _paginationEngine = PaginationEngine(_nextCategoryItemPageLoader);

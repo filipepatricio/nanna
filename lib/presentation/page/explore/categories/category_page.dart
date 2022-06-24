@@ -1,14 +1,21 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/explore/results/results_idle_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/items_grid_view/items_grid_view.dart';
+import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -52,17 +59,20 @@ class CategoryPage extends HookWidget {
               scrollController: scrollController,
               child: state.maybeMap(
                 loading: (_) => const SliverToBoxAdapter(child: Loader()),
-                withPagination: (state) => ResultsIdleView(
-                  items: state.items,
+                withPagination: (state) => ItemsGridView(
+                  itemCount: state.items.length,
+                  itemBuilder: (context, index) => itemBuilder(context, index, state.items),
                   scrollController: scrollController,
                 ),
-                loadingMore: (state) => ResultsIdleView(
-                  items: state.items,
+                loadingMore: (state) => ItemsGridView(
+                  itemCount: state.items.length,
+                  itemBuilder: (context, index) => itemBuilder(context, index, state.items),
                   scrollController: scrollController,
                   withLoader: true,
                 ),
-                allLoaded: (state) => ResultsIdleView(
-                  items: state.items,
+                allLoaded: (state) => ItemsGridView(
+                  itemCount: state.items.length,
+                  itemBuilder: (context, index) => itemBuilder(context, index, state.items),
                   scrollController: scrollController,
                 ),
                 orElse: () => const SliverToBoxAdapter(),
@@ -73,6 +83,40 @@ class CategoryPage extends HookWidget {
             child: AudioPlayerBannerPlaceholder(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget? itemBuilder(
+    BuildContext context,
+    int index,
+    List<CategoryItem> items,
+  ) =>
+      items[index].mapOrNull(
+        article: (data) => ArticleCover.exploreCarousel(
+          article: data.article,
+          onTap: () => context.navigateToArticle(data.article),
+          coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+        ),
+        topic: (data) => TopicCover.exploreSmall(
+          topic: data.topicPreview,
+          onTap: () => context.navigateToTopic(data.topicPreview),
+          hasBackgroundColor: false,
+        ),
+      );
+}
+
+extension on BuildContext {
+  void navigateToArticle(MediaItemArticle article) {
+    pushRoute(
+      MediaItemPageRoute(article: article),
+    );
+  }
+
+  void navigateToTopic(TopicPreview topicPreview) {
+    pushRoute(
+      TopicPage(
+        topicSlug: topicPreview.slug,
       ),
     );
   }

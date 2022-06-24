@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_media_item_dto_mapper.di.dart';
@@ -19,7 +20,6 @@ import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_p
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_highlighted_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/result_item/mapper/result_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
@@ -121,12 +121,12 @@ class TestData {
     ArticleKindDTOMapper(),
   );
 
-  static final _resultItemMapper = ResultItemDTOMapper(
+  static final _categoryItemMapper = CategoryItemDTOMapper(
     _topicPreviewMapper,
     _articleToMediaItemMapper,
   );
 
-  static final _categoryMapper = CategoryDTOMapper(_resultItemMapper);
+  static final _categoryMapper = CategoryDTOMapper(_categoryItemMapper);
 
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;
 

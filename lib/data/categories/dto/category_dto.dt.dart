@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/result_item/dto/result_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'category_dto.dt.g.dart';
@@ -18,7 +18,7 @@ class CategoryDTO {
   final String name;
   final String slug;
   @JsonKey(defaultValue: [])
-  final List<ResultItemDTO> items;
+  final List<CategoryItemDTO> items;
 
   factory CategoryDTO.fromJson(Map<String, dynamic> json) => _$CategoryDTOFromJson(json);
 }

@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -16,13 +16,13 @@ class SearchViewState with _$SearchViewState {
   factory SearchViewState.empty(String query) = _SearchViewStateEmpty;
 
   @Implements<BuildState>()
-  factory SearchViewState.idle(List<ResultItem> results) = _SearchViewStateIdle;
+  factory SearchViewState.idle(List<SearchResult> results) = _SearchViewStateIdle;
 
   @Implements<BuildState>()
-  factory SearchViewState.loadMore(List<ResultItem> results) = _SearchViewStateLoadMore;
+  factory SearchViewState.loadMore(List<SearchResult> results) = _SearchViewStateLoadMore;
 
   @Implements<BuildState>()
-  factory SearchViewState.allLoaded(List<ResultItem> results) = _SearchViewStateAllLoaded;
+  factory SearchViewState.allLoaded(List<SearchResult> results) = _SearchViewStateAllLoaded;
 
   factory SearchViewState.queryChanged() = _SearchViewStateQueryChanged;
 }

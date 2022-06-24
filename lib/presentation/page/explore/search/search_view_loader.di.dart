@@ -1,9 +1,9 @@
-import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/domain/search/use_case/search_content_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:injectable/injectable.dart';
 
-class SearchViewLoader implements NextPageLoader<ResultItem> {
+class SearchViewLoader implements NextPageLoader<SearchResult> {
   SearchViewLoader(
     this._searchContentUseCase, {
     required this.query,
@@ -13,7 +13,7 @@ class SearchViewLoader implements NextPageLoader<ResultItem> {
   final String query;
 
   @override
-  Future<List<ResultItem>> call(NextPageConfig config) {
+  Future<List<SearchResult>> call(NextPageConfig config) {
     return _searchContentUseCase(
       query: query,
       limit: config.limit,
@@ -28,7 +28,7 @@ class SearchPaginationEngineProvider {
 
   final GetPaginatedSearchContentUseCase _searchContentUseCase;
 
-  PaginationEngine<ResultItem> get({required String query}) {
+  PaginationEngine<SearchResult> get({required String query}) {
     final nextPageLoader = SearchViewLoader(
       _searchContentUseCase,
       query: query,

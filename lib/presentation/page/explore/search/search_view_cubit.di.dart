@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/result_item/result_item.dt.dart';
+import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/domain/search/use_case/add_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_loader.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_state.dt.dart';
@@ -22,7 +22,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   final AddSearchHistoryQueryUseCase _addSearchHistoryQueryUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
-  late PaginationEngine<ResultItem> _paginationEngine;
+  late PaginationEngine<SearchResult> _paginationEngine;
   late String _query;
 
   StreamController<String>? _queryStreamController;
@@ -70,7 +70,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
         .listen((event) => _onQueryChange(event));
   }
 
-  Future<PaginationEngineState<ResultItem>> _initializePaginationEngine(
+  Future<PaginationEngineState<SearchResult>> _initializePaginationEngine(
     String query,
   ) async {
     emit(SearchViewState.loading());
@@ -82,7 +82,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     return _paginationEngine.loadMore();
   }
 
-  void _onQueryChange(PaginationEngineState<ResultItem> event) {
+  void _onQueryChange(PaginationEngineState<SearchResult> event) {
     _nextPageSubscription?.cancel();
     _nextPageStreamController?.close();
     _nextPageStreamController = StreamController.broadcast();
@@ -93,7 +93,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     _handlePaginationState(event);
   }
 
-  Future<PaginationEngineState<ResultItem>?> _loadNextPage() async {
+  Future<PaginationEngineState<SearchResult>?> _loadNextPage() async {
     return state.maybeMap(
       idle: (state) async {
         final results = state.results;
@@ -106,7 +106,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     );
   }
 
-  void _handlePaginationState(PaginationEngineState<ResultItem>? paginationState) {
+  void _handlePaginationState(PaginationEngineState<SearchResult>? paginationState) {
     if (paginationState == null || isClosed) return;
 
     final results = paginationState.data;
