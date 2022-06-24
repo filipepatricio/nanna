@@ -73,8 +73,17 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   }
 
   Future<void> signInWithLinkedin() async {
-    emit(SignInPageState.processingLinkedIn());
-    await _signInWithOAuthProvider(_signInWithLinkedinUseCase);
+    try {
+      emit(SignInPageState.processingLinkedIn());
+      await _signInWithOAuthProvider(_signInWithLinkedinUseCase);
+    } on SignInAbortedException {
+      // Do nothing
+    } catch (e, s) {
+      Fimber.e('Signing in with linkedin failed', ex: e, stacktrace: s);
+      emit(SignInPageState.generalError());
+    } finally {
+      emit(SignInPageState.idle(false));
+    }
   }
 
   Future<void> signInWithPlatformProvider() async {
