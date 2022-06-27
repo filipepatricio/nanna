@@ -173,7 +173,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   }
 
   Future<void> _trackReadingProgress() async {
-    final progress = (scrollData.progress * 100).ceil();
+    final progress = (scrollData.progress * 100).toInt().clamp(0, 100);
     _trackArticleReadingProgressUseCase.call(_currentArticle.slug, progress);
     return;
   }
