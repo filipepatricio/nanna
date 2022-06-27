@@ -36,7 +36,7 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
   @override
   Future<List<CategoryPreference>> getCategoryPreferences() async {
     final dto = await _categoriesDataSource.getCategoryPreferences();
-    return dto.getCategoryPreferences?.map<CategoryPreference>(_categoryPreferenceDTOMapper).toList() ?? [];
+    return dto.map<CategoryPreference>(_categoryPreferenceDTOMapper).toList();
   }
 
   @override

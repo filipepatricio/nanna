@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dar
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
-import 'package:better_informed_mobile/data/categories/dto/category_preferences_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
@@ -374,11 +373,9 @@ class MockDTO {
 
   // CategoryPreferencesResponseDTO
 
-  static final categoryPreferencesResponse = CategoryPreferencesResponseDTO(
-    [
-      MockDTO.categoryPreference,
-    ],
-  );
+  static final categoryPreferences = <CategoryPreferenceDTO>[
+    MockDTO.categoryPreference,
+  ];
 
   /// Internal
 

@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../../util/cubit_hooks.dart';
 
 part 'settings_manage_my_interests_state.dt.freezed.dart';
 

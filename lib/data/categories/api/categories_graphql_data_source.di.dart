@@ -9,7 +9,7 @@ import 'package:better_informed_mobile/data/categories/api/documents/__generated
     as get_onboarding_categories;
 import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
-import 'package:better_informed_mobile/data/categories/dto/category_preferences_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -49,7 +49,7 @@ class CategoriesGraphqlDataSource implements CategoriesDataSource {
   }
 
   @override
-  Future<CategoryPreferencesResponseDTO> getCategoryPreferences() async {
+  Future<List<CategoryPreferenceDTO>> getCategoryPreferences() async {
     final result = await _client.query(
       QueryOptions(
         document: get_category_preferences.document,
@@ -60,7 +60,14 @@ class CategoriesGraphqlDataSource implements CategoriesDataSource {
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) => CategoryPreferencesResponseDTO.fromJson(raw),
+      (raw) {
+        final categoriesPreferenceRaw = raw['getCategoryPreferences'] as List<dynamic>;
+        final categoriesPreference = categoriesPreferenceRaw
+            .map((json) => CategoryPreferenceDTO.fromJson(json as Map<String, dynamic>))
+            .toList(growable: false);
+
+        return categoriesPreference;
+      },
     );
 
     if (dto == null) throw Exception('Response for category preferences is null');

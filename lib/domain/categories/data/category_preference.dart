@@ -18,17 +18,4 @@ class CategoryPreference {
       category: category ?? this.category,
     );
   }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is CategoryPreference && other.isPreferred == isPreferred && other.category == category;
-  }
-
-  @override
-  int get hashCode => isPreferred.hashCode ^ category.hashCode;
-
-  @override
-  String toString() => 'CategoryPreference(isPreferred: $isPreferred, category: $category)';
 }

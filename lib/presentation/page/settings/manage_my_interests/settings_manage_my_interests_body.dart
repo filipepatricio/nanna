@@ -1,27 +1,26 @@
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../exports.dart';
-import '../../../style/app_dimens.dart';
-import '../../../style/typography.dart';
-import '../../../widget/physics/platform_scroll_physics.dart';
-import '../../../widget/snackbar/snackbar_parent_view.dart';
-
 class SettingsManageMyInterestsBody extends HookWidget {
-  final List<CategoryPreference> categoryPreferences;
-  final SnackbarController snackbarController;
-  final SettingsManageMyInterestsCubit cubit;
-
   const SettingsManageMyInterestsBody({
     required this.categoryPreferences,
     required this.snackbarController,
     required this.cubit,
     Key? key,
   }) : super(key: key);
+
+  final List<CategoryPreference> categoryPreferences;
+  final SnackbarController snackbarController;
+  final SettingsManageMyInterestsCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +63,6 @@ class SettingsManageMyInterestsBody extends HookWidget {
 }
 
 class _CategoryItem extends StatelessWidget {
-  final CategoryPreference categoryPreference;
-  final SnackbarController snackbarController;
-  final SettingsManageMyInterestsCubit cubit;
-  final Function(bool) onSwitch;
-
   const _CategoryItem({
     required this.categoryPreference,
     required this.snackbarController,
@@ -76,6 +70,11 @@ class _CategoryItem extends StatelessWidget {
     required this.onSwitch,
     Key? key,
   }) : super(key: key);
+
+  final CategoryPreference categoryPreference;
+  final SnackbarController snackbarController;
+  final SettingsManageMyInterestsCubit cubit;
+  final Function(bool) onSwitch;
 
   @override
   Widget build(BuildContext context) {

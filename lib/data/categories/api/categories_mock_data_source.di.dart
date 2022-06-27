@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/categories/api/categories_data_source.dart';
 import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
-import 'package:better_informed_mobile/data/categories/dto/category_preferences_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:injectable/injectable.dart';
@@ -18,5 +18,5 @@ class CategoriesMockDataSource implements CategoriesDataSource {
   Future<CategoryDTO> getPaginatedCategory(String slug, int limit, int offset) async => MockDTO.category;
 
   @override
-  Future<CategoryPreferencesResponseDTO> getCategoryPreferences() async => MockDTO.categoryPreferencesResponse;
+  Future<List<CategoryPreferenceDTO>> getCategoryPreferences() async => MockDTO.categoryPreferences;
 }
