@@ -30,7 +30,10 @@ class MediaItem with _$MediaItem {
   const factory MediaItem.unknown() = _MediaItemUnknown;
 }
 
-extension HasImage on MediaItemArticle {
+extension Flags on MediaItemArticle {
   /// Wether the [MediaItemArticle] has a non-null [image] and this [image] is not [ArticleImageUnknown]
   bool get hasImage => image != null && image is! ArticleImageUnknown;
+
+  /// Wether the article cover should show the note section
+  bool get shouldShowArticleCoverNote => note != null || kind != null || hasAudioVersion;
 }

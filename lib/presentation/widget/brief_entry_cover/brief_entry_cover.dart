@@ -31,14 +31,9 @@ class BriefEntryCover extends HookWidget {
       case BriefEntryStyleType.articleCardWithLargeImage:
         return item.maybeMap(
           article: (data) => data.article.map(
-            article: (article) => LimitedBox(
-              maxWidth: width,
-              maxHeight: height,
-              child: ArticleCover.dailyBriefLarge(
-                article: article,
-                editorsNote: article.note,
-                onTap: () => context.navigateToArticle(article),
-              ),
+            article: (article) => ArticleCover.dailyBriefLarge(
+              article: article,
+              onTap: () => context.navigateToArticle(article),
             ),
             unknown: (_) => const SizedBox(),
           ),
@@ -50,7 +45,6 @@ class BriefEntryCover extends HookWidget {
             article: (article) => ArticleCover.dailyBriefSmall(
               article: article,
               coverColor: style.backgroundColor,
-              editorsNote: article.note,
               onTap: () => context.navigateToArticle(article),
             ),
             unknown: (_) => const SizedBox(),
@@ -70,7 +64,7 @@ class BriefEntryCover extends HookWidget {
               ),
             ),
           ),
-          orElse: () => const SizedBox(),
+          orElse: () => const SizedBox.shrink(),
         );
     }
   }
