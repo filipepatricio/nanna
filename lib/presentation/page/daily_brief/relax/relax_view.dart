@@ -16,12 +16,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 class RelaxView extends HookWidget {
-  final Headline goodbyeHeadline;
-
   const RelaxView({
     required this.goodbyeHeadline,
     Key? key,
   }) : super(key: key);
+  final Headline goodbyeHeadline;
 
   @override
   Widget build(BuildContext context) {

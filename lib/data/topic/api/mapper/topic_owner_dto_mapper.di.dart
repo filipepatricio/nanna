@@ -6,9 +6,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TopicOwnerDTOMapper implements Mapper<TopicOwnerDTO, TopicOwner> {
-  final ImageDTOMapper _imageDTOMapper;
-
   TopicOwnerDTOMapper(this._imageDTOMapper);
+  final ImageDTOMapper _imageDTOMapper;
 
   @override
   TopicOwner call(TopicOwnerDTO data) {

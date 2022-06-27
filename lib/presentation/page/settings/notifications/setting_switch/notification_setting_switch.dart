@@ -13,16 +13,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class NotificationSettingSwitch extends HookWidget {
-  final NotificationChannel channel;
-  final NotificationType notificationType;
-  final SnackbarController snackbarController;
-
   const NotificationSettingSwitch({
     required this.channel,
     required this.notificationType,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
+  final NotificationChannel channel;
+  final NotificationType notificationType;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +94,6 @@ class _Processing extends StatelessWidget {
 }
 
 class _Idle extends StatelessWidget {
-  final String name;
-  final bool value;
-  final Key switchKey;
-  final Function(bool) onChange;
-
   const _Idle({
     required this.name,
     required this.value,
@@ -107,6 +101,10 @@ class _Idle extends StatelessWidget {
     required this.onChange,
     Key? key,
   }) : super(key: key);
+  final String name;
+  final bool value;
+  final Key switchKey;
+  final Function(bool) onChange;
 
   @override
   Widget build(BuildContext context) {

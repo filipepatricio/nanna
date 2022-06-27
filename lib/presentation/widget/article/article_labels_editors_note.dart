@@ -8,14 +8,13 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:flutter/material.dart';
 
 class ArticleLabelsEditorsNote extends StatelessWidget {
-  final MediaItemArticle article;
-  final String? note;
-
   const ArticleLabelsEditorsNote({
     required this.article,
     this.note,
     Key? key,
   }) : super(key: key);
+  final MediaItemArticle article;
+  final String? note;
 
   @override
   Widget build(BuildContext context) {

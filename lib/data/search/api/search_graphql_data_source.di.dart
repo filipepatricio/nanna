@@ -8,10 +8,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: SearchApiDataSource, env: liveEnvs)
 class SearchGraphqlDataSource implements SearchApiDataSource {
+  SearchGraphqlDataSource(this._client, this._responseResolver);
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
-
-  SearchGraphqlDataSource(this._client, this._responseResolver);
 
   @override
   Future<SearchContentDTO> searchContent(String query, int limit, int offset) async {

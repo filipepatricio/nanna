@@ -14,9 +14,8 @@ const String jpgExtension = '.jpg';
 const String webpExtension = '.webp';
 
 class CloudinaryImageProvider {
-  final String _cloudName;
-
   CloudinaryImageProvider._(this._cloudName);
+  final String _cloudName;
 
   CloudinaryImage withPublicId(String publicId) => _fromPublicId(publicId);
 

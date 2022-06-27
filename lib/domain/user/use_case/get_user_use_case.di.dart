@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetUserUseCase {
-  final UserRepository _userRepository;
-
   GetUserUseCase(this._userRepository);
+  final UserRepository _userRepository;
 
   Future<User> call() => _userRepository.getUser();
 }

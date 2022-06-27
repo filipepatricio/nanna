@@ -5,11 +5,10 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetArticleUseCase {
-  final ArticleRepository _articleRepository;
-
   GetArticleUseCase(
     this._articleRepository,
   );
+  final ArticleRepository _articleRepository;
 
   Future<Article> call(MediaItemArticle article) async {
     final content = await _articleRepository.getArticleContent(article.slug);

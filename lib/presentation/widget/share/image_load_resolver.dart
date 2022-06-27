@@ -5,16 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ImageLoadResolver extends HookWidget {
-  final Widget child;
-  final List<Image?> images;
-  final Completer completer;
-
   const ImageLoadResolver({
     required this.child,
     required this.images,
     required this.completer,
     Key? key,
   }) : super(key: key);
+  final Widget child;
+  final List<Image?> images;
+  final Completer completer;
 
   @override
   Widget build(BuildContext context) {

@@ -8,9 +8,8 @@ enum TopicSummaryTrackerState { enabled, disabled }
 
 @injectable
 class TopicSummaryTrackerCubit extends Cubit<TopicSummaryTrackerState> {
-  final TrackActivityUseCase _trackActivityUseCase;
-
   TopicSummaryTrackerCubit(this._trackActivityUseCase) : super(TopicSummaryTrackerState.enabled);
+  final TrackActivityUseCase _trackActivityUseCase;
 
   void track(Topic topic, double? position) {
     if (position == topic.topicSummaryList.length - 1) {

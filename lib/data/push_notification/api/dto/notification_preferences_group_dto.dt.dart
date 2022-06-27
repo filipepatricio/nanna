@@ -5,13 +5,12 @@ part 'notification_preferences_group_dto.dt.g.dart';
 
 @JsonSerializable()
 class NotificationPreferencesGroupDTO {
-  final String name;
-  final List<NotificationChannelDTO> channels;
-
   NotificationPreferencesGroupDTO(this.name, this.channels);
 
   factory NotificationPreferencesGroupDTO.fromJson(Map<String, dynamic> json) =>
       _$NotificationPreferencesGroupDTOFromJson(json);
+  final String name;
+  final List<NotificationChannelDTO> channels;
 
   Map<String, dynamic> toJson() => _$NotificationPreferencesGroupDTOToJson(this);
 }

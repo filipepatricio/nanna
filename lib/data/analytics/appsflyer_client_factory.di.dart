@@ -5,11 +5,10 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class AppsflyerClientFactory {
-  final AppConfig _appConfig;
-
   AppsflyerClientFactory(
     this._appConfig,
   );
+  final AppConfig _appConfig;
 
   AppsflyerSdk create() {
     final key = _appConfig.appsFlyerKey;

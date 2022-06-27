@@ -6,12 +6,12 @@ part 'snackbar_message.dt.freezed.dart';
 enum SnackbarMessageType { positive, negative }
 
 class SnackbarAction {
-  String label;
-  VoidCallback callback;
   SnackbarAction({
     required this.label,
     required this.callback,
   });
+  String label;
+  VoidCallback callback;
 }
 
 @freezed

@@ -9,9 +9,8 @@ const _key = 'authTokens';
 
 @lazySingleton
 class AuthTokenDatabase {
-  final FlutterSecureStorage _storage;
-
   AuthTokenDatabase(this._storage);
+  final FlutterSecureStorage _storage;
 
   Future<void> save(AuthTokenEntity token) async {
     final json = jsonEncode(token.toJson());

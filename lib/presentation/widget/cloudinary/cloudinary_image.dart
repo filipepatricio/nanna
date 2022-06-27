@@ -15,16 +15,6 @@ const _fadeDuration = Duration(milliseconds: 200);
 enum DarkeningMode { none, solid, gradient }
 
 class CloudinaryImage extends HookWidget {
-  final String publicId;
-  final double width;
-  final double height;
-  final BoxFit fit;
-  final Alignment alignment;
-  final String testImage;
-  final CloudinaryConfig config;
-  final bool showLoadingShimmer;
-  final DarkeningMode darkeningMode;
-
   const CloudinaryImage({
     required this.publicId,
     required this.width,
@@ -37,6 +27,15 @@ class CloudinaryImage extends HookWidget {
     this.darkeningMode = DarkeningMode.none,
     Key? key,
   }) : super(key: key);
+  final String publicId;
+  final double width;
+  final double height;
+  final BoxFit fit;
+  final Alignment alignment;
+  final String testImage;
+  final CloudinaryConfig config;
+  final bool showLoadingShimmer;
+  final DarkeningMode darkeningMode;
 
   @override
   Widget build(BuildContext context) {

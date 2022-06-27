@@ -150,12 +150,11 @@ class ExplorePage extends HookWidget {
 }
 
 class _ErrorView extends StatelessWidget {
-  final VoidCallback refreshCallback;
-
   const _ErrorView({
     required this.refreshCallback,
     Key? key,
   }) : super(key: key);
+  final VoidCallback refreshCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -247,16 +246,15 @@ class _ItemList extends StatelessWidget {
 }
 
 class _Area extends HookWidget {
-  final ExploreContentArea area;
-  final int orderIndex;
-  final bool isHighlighted;
-
   const _Area({
     required this.area,
     required this.orderIndex,
     required this.isHighlighted,
     Key? key,
   }) : super(key: key);
+  final ExploreContentArea area;
+  final int orderIndex;
+  final bool isHighlighted;
 
   @override
   Widget build(BuildContext context) {

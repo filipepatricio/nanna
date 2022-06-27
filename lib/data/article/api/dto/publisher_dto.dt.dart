@@ -5,10 +5,6 @@ part 'publisher_dto.dt.g.dart';
 
 @JsonSerializable()
 class PublisherDTO {
-  final String name;
-  final ImageDTO? darkLogo;
-  final ImageDTO? lightLogo;
-
   PublisherDTO(
     this.name,
     this.darkLogo,
@@ -16,6 +12,9 @@ class PublisherDTO {
   );
 
   factory PublisherDTO.fromJson(Map<String, dynamic> json) => _$PublisherDTOFromJson(json);
+  final String name;
+  final ImageDTO? darkLogo;
+  final ImageDTO? lightLogo;
 
   Map<String, dynamic> toJson() => _$PublisherDTOToJson(this);
 }

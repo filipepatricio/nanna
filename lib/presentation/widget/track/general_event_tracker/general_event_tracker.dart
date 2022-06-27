@@ -11,9 +11,8 @@ GeneralEventTrackerController useEventTrackController() {
 }
 
 class GeneralEventTrackerController {
-  EventCallback? _onEvent;
-
   GeneralEventTrackerController();
+  EventCallback? _onEvent;
 
   void track(AnalyticsEvent event) {
     _onEvent?.call(event);
@@ -21,14 +20,13 @@ class GeneralEventTrackerController {
 }
 
 class GeneralEventTracker extends HookWidget {
-  final GeneralEventTrackerController controller;
-  final Widget child;
-
   const GeneralEventTracker({
     required this.controller,
     required this.child,
     Key? key,
   }) : super(key: key);
+  final GeneralEventTrackerController controller;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

@@ -11,9 +11,8 @@ const appVersionHeaderKey = 'X-App-Version';
 /// Example: {'X-App-Version': 'informed dev:0.0.1'}
 @injectable
 class AppVersionLinkTransformer {
-  final AppInfoDataSource _appInfoDataSource;
-
   AppVersionLinkTransformer(this._appInfoDataSource);
+  final AppInfoDataSource _appInfoDataSource;
 
   Future<Request> call(Request request) async {
     final appVersionHeaderValue = await _createAppVersionHeaderValue();

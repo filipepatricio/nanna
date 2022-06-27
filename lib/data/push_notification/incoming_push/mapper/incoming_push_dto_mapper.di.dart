@@ -7,9 +7,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class IncomingPushDTOMapper implements Mapper<IncomingPushDTO, IncomingPush> {
-  final IncomingPushActionDTOMapper _actionDTOMapper;
-
   IncomingPushDTOMapper(this._actionDTOMapper);
+  final IncomingPushActionDTOMapper _actionDTOMapper;
 
   @override
   IncomingPush call(IncomingPushDTO data) {

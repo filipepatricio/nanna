@@ -5,9 +5,8 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: SearchStore, env: liveEnvs)
 class SearchStoreImpl extends SearchStore {
-  final SearchDatabase _database;
-
   SearchStoreImpl(this._database);
+  final SearchDatabase _database;
 
   @override
   Future<List<String>> getSearchHistory({required String userUuid}) async {

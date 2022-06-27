@@ -248,14 +248,13 @@ class _ActionsBar extends HookWidget {
 }
 
 class _SocialMediaLinks extends StatelessWidget {
-  final TopicOwnerPageCubit cubit;
-  final Expert owner;
-
   const _SocialMediaLinks({
     required this.cubit,
     required this.owner,
     Key? key,
   }) : super(key: key);
+  final TopicOwnerPageCubit cubit;
+  final Expert owner;
 
   @override
   Widget build(BuildContext context) {
@@ -330,9 +329,8 @@ class _SocialMediaIcon extends StatelessWidget {
 }
 
 class _AnimatedSwitcher extends StatelessWidget {
-  final Widget child;
-
   const _AnimatedSwitcher({required this.child, Key? key}) : super(key: key);
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

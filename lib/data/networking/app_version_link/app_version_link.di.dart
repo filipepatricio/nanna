@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class AppVersionLink extends Link {
-  final AppVersionLinkTransformer _appVersionLinkTransformer;
-
   AppVersionLink(this._appVersionLinkTransformer);
+  final AppVersionLinkTransformer _appVersionLinkTransformer;
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) async* {

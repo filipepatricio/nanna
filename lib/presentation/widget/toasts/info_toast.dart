@@ -9,14 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 class InfoToast extends StatelessWidget {
-  final String text;
-  final VoidCallback? onDismiss;
-
   const InfoToast({
     required this.text,
     this.onDismiss,
     Key? key,
   }) : super(key: key);
+  final String text;
+  final VoidCallback? onDismiss;
 
   @override
   Widget build(BuildContext context) {

@@ -4,11 +4,10 @@ part 'summary_card_dto.dt.g.dart';
 
 @JsonSerializable()
 class SummaryCardDTO {
-  final String text;
-
   SummaryCardDTO(this.text);
 
   factory SummaryCardDTO.fromJson(Map<String, dynamic> json) => _$SummaryCardDTOFromJson(json);
+  final String text;
 
   Map<String, dynamic> toJson() => _$SummaryCardDTOToJson(this);
 }

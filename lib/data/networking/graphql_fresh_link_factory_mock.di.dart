@@ -8,12 +8,11 @@ const oAuth2Token = OAuth2Token(accessToken: 'accessToken', refreshToken: 'refre
 
 @LazySingleton(as: GraphQLFreshLinkFactory, env: mockEnvs)
 class GraphQLFreshLinkFactoryMock implements GraphQLFreshLinkFactory {
-  // ignore: unused_field
-  final RefreshTokenService _refreshTokenService;
-
   // Need this dependency to force get_it to register this mock impl further down,
   // and make sure its dependent gets registered only after all implementations of this class are registered
   GraphQLFreshLinkFactoryMock(this._refreshTokenService);
+  // ignore: unused_field
+  final RefreshTokenService _refreshTokenService;
 
   @override
   Future<FreshLink<OAuth2Token>> create() async {

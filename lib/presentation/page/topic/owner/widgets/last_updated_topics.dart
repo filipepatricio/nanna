@@ -12,14 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class LastUpdatedTopics extends HookWidget {
-  final List<TopicPreview> topics;
-  final double cardStackHeight;
-
   const LastUpdatedTopics({
     required this.topics,
     required this.cardStackHeight,
     Key? key,
   }) : super(key: key);
+  final List<TopicPreview> topics;
+  final double cardStackHeight;
 
   @override
   Widget build(BuildContext context) {

@@ -6,9 +6,8 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthGraphQLClientFactory, env: mockEnvs)
 class AuthGraphQLClientFactoryMock implements AuthGraphQLClientFactory {
-  final AppVersionLink _appVersionLink;
-
   AuthGraphQLClientFactoryMock(this._appVersionLink);
+  final AppVersionLink _appVersionLink;
 
   @override
   GraphQLClient create() {

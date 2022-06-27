@@ -7,13 +7,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class BriefEntryItemDTOMapper implements Mapper<BriefEntryItemDTO, BriefEntryItem> {
-  final BriefEntryMediaItemDTOMapper _briefEntryMediaItemDTOMapper;
-  final BriefEntryTopicPreviewDTOMapper _briefEntryTopicPreviewDTOMapper;
-
   BriefEntryItemDTOMapper(
     this._briefEntryMediaItemDTOMapper,
     this._briefEntryTopicPreviewDTOMapper,
   );
+  final BriefEntryMediaItemDTOMapper _briefEntryMediaItemDTOMapper;
+  final BriefEntryTopicPreviewDTOMapper _briefEntryTopicPreviewDTOMapper;
 
   @override
   BriefEntryItem call(BriefEntryItemDTO data) {

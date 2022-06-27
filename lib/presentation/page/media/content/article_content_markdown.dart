@@ -8,16 +8,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ArticleContentMarkdown extends HookWidget {
-  final String markdown;
-  final ShareTextCallback shareTextCallback;
-  final Function() scrollToPosition;
-
   const ArticleContentMarkdown({
     required this.markdown,
     required this.shareTextCallback,
     required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
+  final String markdown;
+  final ShareTextCallback shareTextCallback;
+  final Function() scrollToPosition;
 
   @override
   Widget build(BuildContext context) {

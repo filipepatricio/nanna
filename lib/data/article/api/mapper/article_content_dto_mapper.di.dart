@@ -6,9 +6,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ArticleContentDTOMapper implements Mapper<ArticleContentDTO, ArticleContent> {
-  final ArticleContentTypeDTOMapper _articleContentTypeDTOMapper;
-
   ArticleContentDTOMapper(this._articleContentTypeDTOMapper);
+  final ArticleContentTypeDTOMapper _articleContentTypeDTOMapper;
 
   @override
   ArticleContent call(ArticleContentDTO data) {

@@ -8,21 +8,6 @@ import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
 
 class Topic {
-  final String id;
-  final String slug;
-  final String title;
-  final String strippedTitle;
-  final String introduction;
-  final String url;
-  final TopicOwner owner;
-  final List<TopicSummary> topicSummaryList;
-  final DateTime lastUpdatedAt;
-  final List<Publisher> highlightedPublishers;
-  final TopicCategory? category;
-  final Image heroImage;
-  final List<Entry> entries;
-  final bool visited;
-
   Topic({
     required this.id,
     required this.slug,
@@ -39,6 +24,20 @@ class Topic {
     required this.visited,
     this.category,
   });
+  final String id;
+  final String slug;
+  final String title;
+  final String strippedTitle;
+  final String introduction;
+  final String url;
+  final TopicOwner owner;
+  final List<TopicSummary> topicSummaryList;
+  final DateTime lastUpdatedAt;
+  final List<Publisher> highlightedPublishers;
+  final TopicCategory? category;
+  final Image heroImage;
+  final List<Entry> entries;
+  final bool visited;
 
   bool get hasSummary => topicSummaryList.isNotEmpty;
 

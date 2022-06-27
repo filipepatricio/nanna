@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TimezoneLink extends Link {
-  final TimezoneLinkTransformer _timezoneLinkTransformer;
-
   TimezoneLink(this._timezoneLinkTransformer);
+  final TimezoneLinkTransformer _timezoneLinkTransformer;
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) async* {

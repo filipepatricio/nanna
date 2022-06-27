@@ -5,9 +5,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TrackActivityUseCase {
-  final AnalyticsRepository _analyticsRepository;
-
   TrackActivityUseCase(this._analyticsRepository);
+  final AnalyticsRepository _analyticsRepository;
 
   void trackPage(AnalyticsPage page) {
     _analyticsRepository.page(page);

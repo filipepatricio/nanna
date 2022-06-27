@@ -9,10 +9,10 @@ class LinkedinUserDTO {
     this.lastName,
   );
 
+  factory LinkedinUserDTO.fromJson(Map<String, dynamic> json) => _$LinkedinUserDTOFromJson(json);
+
   @JsonKey(name: 'localizedFirstName')
   final String firstName;
   @JsonKey(name: 'localizedLastName')
   final String lastName;
-
-  factory LinkedinUserDTO.fromJson(Map<String, dynamic> json) => _$LinkedinUserDTOFromJson(json);
 }

@@ -35,9 +35,8 @@ class ReadingBannerView extends HookWidget {
 }
 
 class _ReadingBannerBody extends StatelessWidget {
-  final ReadingBanner readingBanner;
-
   const _ReadingBannerBody(this.readingBanner);
+  final ReadingBanner readingBanner;
 
   @override
   Widget build(BuildContext context) {

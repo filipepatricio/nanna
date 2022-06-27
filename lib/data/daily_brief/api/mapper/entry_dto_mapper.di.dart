@@ -7,13 +7,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class EntryDTOMapper implements Mapper<EntryDTO, Entry> {
-  final MediaItemDTOMapper _mediaItemDTOMapper;
-  final EntryStyleDTOMapper _entryStyleDTOMapper;
-
   EntryDTOMapper(
     this._mediaItemDTOMapper,
     this._entryStyleDTOMapper,
   );
+  final MediaItemDTOMapper _mediaItemDTOMapper;
+  final EntryStyleDTOMapper _entryStyleDTOMapper;
 
   @override
   Entry call(EntryDTO data) {

@@ -53,11 +53,6 @@ class _ArticleCoverBookmarkList extends StatelessWidget {
 }
 
 class _ArticleImageOverlay extends StatelessWidget {
-  final MediaItemArticle article;
-  final double? height;
-  final double? width;
-  final bool shouldShowAudioIcon;
-
   const _ArticleImageOverlay({
     required this.article,
     required this.height,
@@ -65,6 +60,10 @@ class _ArticleImageOverlay extends StatelessWidget {
     required this.shouldShowAudioIcon,
     Key? key,
   }) : super(key: key);
+  final MediaItemArticle article;
+  final double? height;
+  final double? width;
+  final bool shouldShowAudioIcon;
 
   @override
   Widget build(BuildContext context) {

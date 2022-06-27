@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetExplorePaginatedArticlesUseCase {
-  final ExploreContentRepository _exploreContentRepository;
-
   GetExplorePaginatedArticlesUseCase(this._exploreContentRepository);
+  final ExploreContentRepository _exploreContentRepository;
 
   Future<List<MediaItemArticle>> call(String areaId, int limit, int offset) {
     return _exploreContentRepository.getPaginatedArticles(areaId, limit, offset);

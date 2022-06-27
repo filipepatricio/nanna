@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SetChannelPushSettingUseCase {
-  final PushNotificationRepository _pushNotificationRepository;
-
   SetChannelPushSettingUseCase(this._pushNotificationRepository);
+  final PushNotificationRepository _pushNotificationRepository;
 
   Future<NotificationChannel> call(NotificationChannel channel, bool enabled) async {
     return _pushNotificationRepository.setNotificationChannel(

@@ -7,8 +7,8 @@ part 'update_bookmark_response_dto.dt.g.dart';
 class UpdateBookmarkResponseDTO {
   UpdateBookmarkResponseDTO(this.successful, this.bookmark);
 
+  factory UpdateBookmarkResponseDTO.fromJson(Map<String, dynamic> json) => _$UpdateBookmarkResponseDTOFromJson(json);
+
   final bool successful;
   final BookmarkIdDTO bookmark;
-
-  factory UpdateBookmarkResponseDTO.fromJson(Map<String, dynamic> json) => _$UpdateBookmarkResponseDTOFromJson(json);
 }

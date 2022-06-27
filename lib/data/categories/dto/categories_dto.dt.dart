@@ -7,7 +7,7 @@ part 'categories_dto.dt.g.dart';
 class CategoriesDTO {
   const CategoriesDTO(this.categories);
 
-  final List<CategoryDTO> categories;
-
   factory CategoriesDTO.fromJson(Map<String, dynamic> json) => _$CategoriesDTOFromJson(json);
+
+  final List<CategoryDTO> categories;
 }

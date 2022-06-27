@@ -14,14 +14,13 @@ const _dotMaxAlpha = 1.0;
 const _dotMinAlpha = 0.1;
 
 class PageDotIndicator extends HookWidget {
-  final PageController controller;
-  final int pageCount;
-
   const PageDotIndicator({
     required this.controller,
     required this.pageCount,
     Key? key,
   }) : super(key: key);
+  final PageController controller;
+  final int pageCount;
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +113,11 @@ class PageDotIndicator extends HookWidget {
 }
 
 class _Dot extends StatelessWidget {
-  final double progress;
-
   const _Dot({
     required this.progress,
     Key? key,
   }) : super(key: key);
+  final double progress;
 
   @override
   Widget build(BuildContext context) {

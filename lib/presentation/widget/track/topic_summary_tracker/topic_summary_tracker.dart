@@ -5,16 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicSummaryTracker extends HookWidget {
-  final Topic topic;
-  final PageController summaryPageController;
-  final Widget child;
-
   const TopicSummaryTracker({
     required this.topic,
     required this.summaryPageController,
     required this.child,
     Key? key,
   }) : super(key: key);
+  final Topic topic;
+  final PageController summaryPageController;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

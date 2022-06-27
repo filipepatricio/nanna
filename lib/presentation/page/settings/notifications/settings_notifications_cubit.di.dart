@@ -6,11 +6,10 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SettingsNotificationCubit extends Cubit<SettingsNotificationsState> {
-  final GetNotificationPreferencesUseCase _getNotificationPreferencesUseCase;
-
   SettingsNotificationCubit(
     this._getNotificationPreferencesUseCase,
   ) : super(SettingsNotificationsState.loading());
+  final GetNotificationPreferencesUseCase _getNotificationPreferencesUseCase;
 
   Future<void> initialize() async {
     emit(SettingsNotificationsState.loading());

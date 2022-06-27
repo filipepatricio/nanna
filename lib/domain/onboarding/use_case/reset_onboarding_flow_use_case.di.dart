@@ -4,13 +4,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ResetOnboardingFlowUseCase {
-  final OnboardingStore _onboardingStore;
-  final UserStore _userStore;
-
   ResetOnboardingFlowUseCase(
     this._onboardingStore,
     this._userStore,
   );
+  final OnboardingStore _onboardingStore;
+  final UserStore _userStore;
 
   Future<void> call() async {
     final currentUserUuid = await _userStore.getCurrentUserUuid();

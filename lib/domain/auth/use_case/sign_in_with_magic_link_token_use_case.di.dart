@@ -6,17 +6,16 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SignInWithMagicLinkTokenUseCase {
-  final AuthRepository _authRepository;
-  final AuthStore _authStore;
-  final AnalyticsRepository _analyticsRepository;
-  final UserStore _userStore;
-
   SignInWithMagicLinkTokenUseCase(
     this._authRepository,
     this._authStore,
     this._analyticsRepository,
     this._userStore,
   );
+  final AuthRepository _authRepository;
+  final AuthStore _authStore;
+  final AnalyticsRepository _analyticsRepository;
+  final UserStore _userStore;
 
   Future<void> call(String token) async {
     final authResult = await _authRepository.signInWithMagicLinkToken(token);

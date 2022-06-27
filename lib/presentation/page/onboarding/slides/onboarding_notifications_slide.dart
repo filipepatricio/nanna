@@ -60,16 +60,15 @@ class OnboardingNotificationsSlide extends StatelessWidget {
 }
 
 class _BulletPointRow extends StatelessWidget {
-  final String header;
-  final String description;
-  final String icon;
-
   const _BulletPointRow({
     required this.header,
     required this.description,
     required this.icon,
     Key? key,
   }) : super(key: key);
+  final String header;
+  final String description;
+  final String icon;
 
   @override
   Widget build(BuildContext context) {

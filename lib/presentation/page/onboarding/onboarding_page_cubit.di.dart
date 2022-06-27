@@ -19,6 +19,16 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class OnboardingPageCubit extends Cubit<OnboardingPageState> {
+  OnboardingPageCubit(
+    this._requestNotificationPermissionUseCase,
+    this._trackActivityUseCase,
+    this._setOnboardingSeenUseCase,
+    this._initializeAttributionUseCase,
+    this._requestTrackingPermissionUseCase,
+    this._getSeenOnboardingVersionUseCase,
+    this._getCurrentOnboardingCategoriesUseCase,
+    this._updatePreferredCategoriesUseCase,
+  ) : super(OnboardingPageState.idle());
   final RequestNotificationPermissionUseCase _requestNotificationPermissionUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final SetOnboardingSeenUseCase _setOnboardingSeenUseCase;
@@ -31,17 +41,6 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   late final StreamSubscription _onboardingCategoriesStreamSubscription;
 
   List<Category> _categories = [];
-
-  OnboardingPageCubit(
-    this._requestNotificationPermissionUseCase,
-    this._trackActivityUseCase,
-    this._setOnboardingSeenUseCase,
-    this._initializeAttributionUseCase,
-    this._requestTrackingPermissionUseCase,
-    this._getSeenOnboardingVersionUseCase,
-    this._getCurrentOnboardingCategoriesUseCase,
-    this._updatePreferredCategoriesUseCase,
-  ) : super(OnboardingPageState.idle());
 
   Future<void> initialize() async {
     _onboardingCategoriesStreamSubscription =

@@ -13,10 +13,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: UserDataSource, env: liveEnvs)
 class UserGraphqlDataSource implements UserDataSource {
+  UserGraphqlDataSource(this._client, this._responseResolver);
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
-
-  UserGraphqlDataSource(this._client, this._responseResolver);
 
   @override
   Future<UserDTO> getUser() async {

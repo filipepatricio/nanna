@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetTopicsFromEditorUseCase {
-  final TopicsRepository _topicsRepository;
-
   GetTopicsFromEditorUseCase(this._topicsRepository);
+  final TopicsRepository _topicsRepository;
 
   Future<List<TopicPreview>> call(
     String editorId, [

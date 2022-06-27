@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsSwitchItem extends HookWidget {
-  final String label;
-  final Function(bool value) onSwitch;
-  final bool switchValue;
-
   const SettingsSwitchItem({
     required this.label,
     required this.switchValue,
     required this.onSwitch,
   });
+  final String label;
+  final Function(bool value) onSwitch;
+  final bool switchValue;
 
   @override
   Widget build(BuildContext context) {

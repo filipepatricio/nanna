@@ -7,10 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class CardsErrorView extends HookWidget {
-  final Size size;
-  final EdgeInsets padding;
-  final VoidCallback? retryAction;
-
   const CardsErrorView({
     required this.size,
     this.retryAction,
@@ -20,6 +16,9 @@ class CardsErrorView extends HookWidget {
     ),
     Key? key,
   }) : super(key: key);
+  final Size size;
+  final EdgeInsets padding;
+  final VoidCallback? retryAction;
 
   @override
   Widget build(BuildContext context) {

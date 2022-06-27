@@ -10,8 +10,8 @@ class CategoryPreferenceDTO {
     required this.category,
   });
 
+  factory CategoryPreferenceDTO.fromJson(Map<String, dynamic> json) => _$CategoryPreferenceDTOFromJson(json);
+
   final bool isPreferred;
   final CategoryDTO category;
-
-  factory CategoryPreferenceDTO.fromJson(Map<String, dynamic> json) => _$CategoryPreferenceDTOFromJson(json);
 }

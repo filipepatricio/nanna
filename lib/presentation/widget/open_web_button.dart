@@ -8,12 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OpenWebButton extends StatelessWidget {
-  final String url;
-  final bool withIcon;
-  final String buttonLabel;
-  final EdgeInsets padding;
-  final bool launchExternalApp;
-
   const OpenWebButton({
     required this.url,
     required this.buttonLabel,
@@ -22,6 +16,11 @@ class OpenWebButton extends StatelessWidget {
     this.launchExternalApp = false,
     Key? key,
   }) : super(key: key);
+  final String url;
+  final bool withIcon;
+  final String buttonLabel;
+  final EdgeInsets padding;
+  final bool launchExternalApp;
 
   @override
   Widget build(BuildContext context) {

@@ -6,13 +6,12 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: SearchRepository)
 class SearchApiRepository implements SearchRepository {
-  final SearchApiDataSource _dataSource;
-  final SearchContentDTOMapper _searchContentDTOMapper;
-
   SearchApiRepository(
     this._dataSource,
     this._searchContentDTOMapper,
   );
+  final SearchApiDataSource _dataSource;
+  final SearchContentDTOMapper _searchContentDTOMapper;
 
   @override
   Future<SearchContent> searchContent(String query, int limit, int offset) async {

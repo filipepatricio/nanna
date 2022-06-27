@@ -9,13 +9,12 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthStore, env: mockEnvs)
 class AuthStoreMock implements AuthStore {
-  final AuthTokenEntityMapper _authTokenEntityMapper;
-  final AuthTokenEntityToOAuthMapper _authTokenEntityToOAuthMapper;
-
   AuthStoreMock(
     this._authTokenEntityMapper,
     this._authTokenEntityToOAuthMapper,
   );
+  final AuthTokenEntityMapper _authTokenEntityMapper;
+  final AuthTokenEntityToOAuthMapper _authTokenEntityToOAuthMapper;
 
   @override
   Future<void> delete() async {

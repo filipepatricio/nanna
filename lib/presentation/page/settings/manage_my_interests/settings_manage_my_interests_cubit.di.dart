@@ -8,13 +8,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsState> {
-  final GetCategoryPreferencesUseCase _getCategoryPreferencesUseCase;
-  final UpdatePreferredCategoriesUseCase _updatePreferredCategoriesUseCase;
-
   SettingsManageMyInterestsCubit(
     this._getCategoryPreferencesUseCase,
     this._updatePreferredCategoriesUseCase,
   ) : super(const SettingsManageMyInterestsState.loading());
+  final GetCategoryPreferencesUseCase _getCategoryPreferencesUseCase;
+  final UpdatePreferredCategoriesUseCase _updatePreferredCategoriesUseCase;
 
   Future<void> initialize() async {
     emit(const SettingsManageMyInterestsState.loading());

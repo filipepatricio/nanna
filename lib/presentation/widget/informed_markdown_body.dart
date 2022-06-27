@@ -8,19 +8,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 
 class InformedMarkdownBody extends StatelessWidget {
-  final String markdown;
-  final TextStyle baseTextStyle;
-  final TextStyle? strongTextStyle;
-  final EdgeInsets? pPadding;
-  final bool selectable;
-  final Color highlightColor;
-  final int? maxLines;
-  final TextAlign textAlignment;
-  final Map<String, MarkdownPaddingBuilder>? paddingBuilders;
-  final ShareTextCallback? shareTextCallback;
-  final SelectionControllerBundle? selectionControllers;
-  final MarkdownImageBuilder? markdownImageBuilder;
-
   const InformedMarkdownBody({
     required this.markdown,
     required this.baseTextStyle,
@@ -52,6 +39,18 @@ class InformedMarkdownBody extends StatelessWidget {
     Key? key,
   })  : selectable = true,
         super(key: key);
+  final String markdown;
+  final TextStyle baseTextStyle;
+  final TextStyle? strongTextStyle;
+  final EdgeInsets? pPadding;
+  final bool selectable;
+  final Color highlightColor;
+  final int? maxLines;
+  final TextAlign textAlignment;
+  final Map<String, MarkdownPaddingBuilder>? paddingBuilders;
+  final ShareTextCallback? shareTextCallback;
+  final SelectionControllerBundle? selectionControllers;
+  final MarkdownImageBuilder? markdownImageBuilder;
 
   @override
   Widget build(BuildContext context) {

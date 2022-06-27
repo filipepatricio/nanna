@@ -5,12 +5,11 @@ import 'package:fimber/fimber.dart';
 import 'package:uni_links/uni_links.dart';
 
 class AppLinkDataSourceImpl implements AppLinkDataSource {
+  AppLinkDataSourceImpl._();
   final StreamController<Uri> _appLinkStream = StreamController.broadcast();
 
   Uri? _initialRoute;
   StreamSubscription? _appLinkStreamSubscription;
-
-  AppLinkDataSourceImpl._();
 
   static Future<AppLinkDataSourceImpl> create() async {
     final dataSource = AppLinkDataSourceImpl._();

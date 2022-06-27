@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetCurrentBriefUseCase {
-  final DailyBriefRepository _dailyBriefRepository;
-
   GetCurrentBriefUseCase(this._dailyBriefRepository);
+  final DailyBriefRepository _dailyBriefRepository;
 
   Future<CurrentBrief> call() => _dailyBriefRepository.getCurrentBrief();
 

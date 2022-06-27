@@ -4,14 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LoadingShimmer extends StatelessWidget {
-  final Color mainColor;
-  final Color baseColor;
-  final bool enabled;
-  final EdgeInsets padding;
-  final double height;
-  final double width;
-  final double radius;
-
   const LoadingShimmer({
     required this.mainColor,
     this.baseColor = AppColors.background,
@@ -43,6 +35,13 @@ class LoadingShimmer extends StatelessWidget {
           radius: radius,
           key: key,
         );
+  final Color mainColor;
+  final Color baseColor;
+  final bool enabled;
+  final EdgeInsets padding;
+  final double height;
+  final double width;
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
