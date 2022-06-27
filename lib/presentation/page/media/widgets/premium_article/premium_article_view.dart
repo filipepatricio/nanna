@@ -34,6 +34,7 @@ class PremiumArticleView extends HookWidget {
     final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
     final articleOutputModeNotifier = useMemoized(() => ValueNotifier(articleOutputMode));
     final controller = useMemoized(() => ScrollController(keepScrollOffset: true));
+    final mainController = useScrollController(keepScrollOffset: true);
 
     useEffect(
       () {
@@ -90,10 +91,11 @@ class PremiumArticleView extends HookWidget {
                     children: [
                       PremiumArticleReadView(
                         article: article,
-                        controller: controller,
+                        articleController: controller,
                         pageController: pageController,
                         cubit: cubit,
                         readArticleProgress: readArticleProgress,
+                        mainController: mainController,
                       ),
                       if (metadata.hasAudioVersion)
                         PremiumArticleAudioView(
