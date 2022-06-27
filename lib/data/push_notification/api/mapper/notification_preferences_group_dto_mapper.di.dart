@@ -7,9 +7,8 @@ import 'package:injectable/injectable.dart';
 @injectable
 class NotificationPreferencesGroupDTOMapper
     implements Mapper<NotificationPreferencesGroupDTO, NotificationPreferencesGroup> {
-  final NotificationChannelDTOMapper _notificationChannelDTOMapper;
-
   NotificationPreferencesGroupDTOMapper(this._notificationChannelDTOMapper);
+  final NotificationChannelDTOMapper _notificationChannelDTOMapper;
 
   @override
   NotificationPreferencesGroup call(NotificationPreferencesGroupDTO data) {

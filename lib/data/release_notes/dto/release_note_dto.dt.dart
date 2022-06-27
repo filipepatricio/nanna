@@ -13,11 +13,11 @@ class ReleaseNoteDTO {
     required this.version,
   });
 
+  factory ReleaseNoteDTO.fromJson(Map<String, dynamic> json) => _$ReleaseNoteDTOFromJson(json);
+
   final String headline;
   final String content;
   final String date;
   final List<ReleaseNoteMediaDTO> media;
   final String version;
-
-  factory ReleaseNoteDTO.fromJson(Map<String, dynamic> json) => _$ReleaseNoteDTOFromJson(json);
 }

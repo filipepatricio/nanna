@@ -6,12 +6,11 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:flutter/material.dart';
 
 class ArticleEditorsNote extends StatelessWidget {
-  final String note;
-
   const ArticleEditorsNote({
     required this.note,
     Key? key,
   }) : super(key: key);
+  final String note;
 
   @override
   Widget build(BuildContext context) {

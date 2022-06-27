@@ -6,15 +6,14 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class PushNotificationMessenger {
-  final FirebaseMessaging _firebaseMessaging;
-  final RemoteMessageToIncomingPushDTOMapper _remoteMessageToIncomingPushDTOMapper;
-  final IncomingPushAnalyticsService _analyticsService;
-
   PushNotificationMessenger(
     this._firebaseMessaging,
     this._remoteMessageToIncomingPushDTOMapper,
     this._analyticsService,
   );
+  final FirebaseMessaging _firebaseMessaging;
+  final RemoteMessageToIncomingPushDTOMapper _remoteMessageToIncomingPushDTOMapper;
+  final IncomingPushAnalyticsService _analyticsService;
 
   Stream<IncomingPushDTO> onMessageOpenedApp() {
     return FirebaseMessaging.onMessageOpenedApp.map<IncomingPushDTO>(_remoteMessageToIncomingPushDTOMapper).map(_track);

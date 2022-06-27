@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class Marquee extends HookWidget {
-  final Widget child;
-  final Axis direction;
-  final Duration animationDuration, pauseDuration, backDuration;
-  final Function? onDone;
-
   const Marquee({
     required this.child,
     Key? key,
@@ -17,6 +12,10 @@ class Marquee extends HookWidget {
     this.backDuration = const Duration(milliseconds: 800),
     this.pauseDuration = const Duration(milliseconds: 800),
   }) : super(key: key);
+  final Widget child;
+  final Axis direction;
+  final Duration animationDuration, pauseDuration, backDuration;
+  final Function? onDone;
 
   @override
   Widget build(BuildContext context) {

@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SignInWithProviderView extends HookWidget {
-  final VoidCallback onSignInTap;
-
   const SignInWithProviderView({
     required this.onSignInTap,
     Key? key,
   }) : super(key: key);
+  final VoidCallback onSignInTap;
 
   @override
   Widget build(BuildContext context) {

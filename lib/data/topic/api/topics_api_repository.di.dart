@@ -9,17 +9,16 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: TopicsRepository)
 class TopicsApiRepository implements TopicsRepository {
-  final TopicsApiDataSource _topicsApiDataSource;
-  final TopicsFromExpertDTOMapper _topicsFromExpertDTOMapper;
-  final TopicsFromEditorDTOMapper _topicsFromEditorDTOMapper;
-  final TopicDTOMapper _topicDTOMapper;
-
   TopicsApiRepository(
     this._topicsApiDataSource,
     this._topicsFromExpertDTOMapper,
     this._topicsFromEditorDTOMapper,
     this._topicDTOMapper,
   );
+  final TopicsApiDataSource _topicsApiDataSource;
+  final TopicsFromExpertDTOMapper _topicsFromExpertDTOMapper;
+  final TopicsFromEditorDTOMapper _topicsFromEditorDTOMapper;
+  final TopicDTOMapper _topicDTOMapper;
 
   @override
   Future<List<TopicPreview>> getTopicPreviewsFromExpert(String expertId, [String? excludedTopicSlug]) async {

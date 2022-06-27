@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 typedef InteractionCallback = void Function(int lastVisibleItemIndex);
 
 class HorizontalListInteractionListener extends StatelessWidget {
-  final Widget child;
-  final InteractionCallback callback;
-  final int itemsCount;
-
   const HorizontalListInteractionListener({
     required this.child,
     required this.callback,
     required this.itemsCount,
     Key? key,
   }) : super(key: key);
+  final Widget child;
+  final InteractionCallback callback;
+  final int itemsCount;
 
   @override
   Widget build(BuildContext context) {

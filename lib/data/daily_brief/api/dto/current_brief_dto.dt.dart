@@ -16,12 +16,12 @@ class CurrentBriefDTO {
     this.entries,
   );
 
+  factory CurrentBriefDTO.fromJson(Map<String, dynamic> json) => _$CurrentBriefDTOFromJson(json);
+
   final String id;
   final HeadlineDTO greeting;
   final CurrentBriefIntroductionDTO? introduction;
   final HeadlineDTO goodbye;
   final String date;
   final List<BriefEntryDTO> entries;
-
-  factory CurrentBriefDTO.fromJson(Map<String, dynamic> json) => _$CurrentBriefDTOFromJson(json);
 }

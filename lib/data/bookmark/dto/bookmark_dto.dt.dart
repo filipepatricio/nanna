@@ -7,8 +7,8 @@ part 'bookmark_dto.dt.g.dart';
 class BookmarkDTO {
   BookmarkDTO(this.id, this.entity);
 
+  factory BookmarkDTO.fromJson(Map<String, dynamic> json) => _$BookmarkDTOFromJson(json);
+
   final String id;
   final BookmarkDataDTO entity;
-
-  factory BookmarkDTO.fromJson(Map<String, dynamic> json) => _$BookmarkDTOFromJson(json);
 }

@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetPaginatedSearchContentUseCase {
-  final SearchRepository _searchRepository;
-
   GetPaginatedSearchContentUseCase(this._searchRepository);
+  final SearchRepository _searchRepository;
 
   Future<List<SearchResult>> call({required String query, required int limit, required int offset}) async {
     final searchContent = await _searchRepository.searchContent(

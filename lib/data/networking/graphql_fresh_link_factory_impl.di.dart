@@ -8,15 +8,14 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: GraphQLFreshLinkFactory, env: liveEnvs)
 class GraphQLFreshLinkFactoryImpl implements GraphQLFreshLinkFactory {
-  final RefreshTokenService _refreshTokenService;
-  final GraphQLTokenStorage _storage;
-  final ShouldRefreshValidator _shouldRefreshValidator;
-
   GraphQLFreshLinkFactoryImpl(
     this._refreshTokenService,
     this._storage,
     this._shouldRefreshValidator,
   );
+  final RefreshTokenService _refreshTokenService;
+  final GraphQLTokenStorage _storage;
+  final ShouldRefreshValidator _shouldRefreshValidator;
 
   @override
   Future<FreshLink<OAuth2Token>> create() async {

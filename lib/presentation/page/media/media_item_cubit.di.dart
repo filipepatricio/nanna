@@ -13,13 +13,12 @@ import 'package:better_informed_mobile/domain/article/use_case/track_article_rea
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/trade_topid_id_for_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_cubit.di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 import 'package:neat_periodic_task/neat_periodic_task.dart';
-
-import 'media_item_state.dt.dart';
 
 @injectable
 class MediaItemCubit extends Cubit<MediaItemState> {

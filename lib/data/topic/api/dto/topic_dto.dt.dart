@@ -9,20 +9,6 @@ part 'topic_dto.dt.g.dart';
 
 @JsonSerializable()
 class TopicDTO {
-  final String id;
-  final String slug;
-  final String title;
-  final String strippedTitle;
-  final String introduction;
-  final String url;
-  final TopicOwnerDTO owner;
-  final String lastUpdatedAt;
-  final List<PublisherDTO> highlightedPublishers;
-  final ImageDTO heroImage;
-  final List<EntryDTO> entries;
-  final List<SummaryCardDTO> summaryCards;
-  final bool visited;
-
   TopicDTO(
     this.id,
     this.slug,
@@ -40,6 +26,19 @@ class TopicDTO {
   );
 
   factory TopicDTO.fromJson(Map<String, dynamic> json) => _$TopicDTOFromJson(json);
+  final String id;
+  final String slug;
+  final String title;
+  final String strippedTitle;
+  final String introduction;
+  final String url;
+  final TopicOwnerDTO owner;
+  final String lastUpdatedAt;
+  final List<PublisherDTO> highlightedPublishers;
+  final ImageDTO heroImage;
+  final List<EntryDTO> entries;
+  final List<SummaryCardDTO> summaryCards;
+  final bool visited;
 
   Map<String, dynamic> toJson() => _$TopicDTOToJson(this);
 }

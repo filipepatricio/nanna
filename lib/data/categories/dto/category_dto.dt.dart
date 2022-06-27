@@ -13,12 +13,12 @@ class CategoryDTO {
     required this.items,
   });
 
+  factory CategoryDTO.fromJson(Map<String, dynamic> json) => _$CategoryDTOFromJson(json);
+
   final String icon;
   final String id;
   final String name;
   final String slug;
   @JsonKey(defaultValue: [])
   final List<CategoryItemDTO> items;
-
-  factory CategoryDTO.fromJson(Map<String, dynamic> json) => _$CategoryDTOFromJson(json);
 }

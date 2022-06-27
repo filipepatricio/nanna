@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetNotificationPreferencesUseCase {
-  final PushNotificationRepository _pushNotificationRepository;
-
   GetNotificationPreferencesUseCase(this._pushNotificationRepository);
+  final PushNotificationRepository _pushNotificationRepository;
 
   Future<NotificationPreferences> call() => _pushNotificationRepository.getNotificationPreferences();
 }

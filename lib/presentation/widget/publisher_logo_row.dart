@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class PublisherLogoRow extends HookWidget {
-  final TopicPreview topic;
-  final Brightness mode;
-
   const PublisherLogoRow({
     required this.topic,
     this.mode = Brightness.dark,
     Key? key,
   }) : super(key: key);
+  final TopicPreview topic;
+  final Brightness mode;
 
   @override
   Widget build(BuildContext context) {

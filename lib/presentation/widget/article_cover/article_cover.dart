@@ -25,29 +25,6 @@ const _coverSizeToScreenWidthFactor = 0.26;
 enum ArticleCoverType { exploreCarousel, exploreList, dailyBriefLarge, dailyBriefSmall, bookmarkList }
 
 class ArticleCover extends StatelessWidget {
-  const ArticleCover._(
-    this._type, {
-    required this.article,
-    this.coverColor,
-    this.onTap,
-    this.editorsNote,
-    this.height,
-    this.width,
-    this.shouldShowAudioIcon,
-    this.shouldShowTextOverlay,
-    Key? key,
-  }) : super(key: key);
-
-  final ArticleCoverType _type;
-  final MediaItemArticle article;
-  final VoidCallback? onTap;
-  final Color? coverColor;
-  final String? editorsNote;
-  final double? height;
-  final double? width;
-  final bool? shouldShowTextOverlay;
-  final bool? shouldShowAudioIcon;
-
   factory ArticleCover.exploreCarousel({
     required MediaItemArticle article,
     Color? coverColor,
@@ -117,6 +94,28 @@ class ArticleCover extends StatelessWidget {
         shouldShowAudioIcon: shouldShowAudioIcon,
         shouldShowTextOverlay: shouldShowTextOverlay,
       );
+  const ArticleCover._(
+    this._type, {
+    required this.article,
+    this.coverColor,
+    this.onTap,
+    this.editorsNote,
+    this.height,
+    this.width,
+    this.shouldShowAudioIcon,
+    this.shouldShowTextOverlay,
+    Key? key,
+  }) : super(key: key);
+
+  final ArticleCoverType _type;
+  final MediaItemArticle article;
+  final VoidCallback? onTap;
+  final Color? coverColor;
+  final String? editorsNote;
+  final double? height;
+  final double? width;
+  final bool? shouldShowTextOverlay;
+  final bool? shouldShowAudioIcon;
 
   @override
   Widget build(BuildContext context) {

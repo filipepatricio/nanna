@@ -6,9 +6,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class PublisherDTOMapper implements Mapper<PublisherDTO, Publisher> {
-  final ImageDTOMapper _imageDTOMapper;
-
   PublisherDTOMapper(this._imageDTOMapper);
+  final ImageDTOMapper _imageDTOMapper;
 
   @override
   Publisher call(PublisherDTO data) {

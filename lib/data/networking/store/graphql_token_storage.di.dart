@@ -5,13 +5,12 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class GraphQLTokenStorage implements TokenStorage<OAuth2Token> {
-  final AuthTokenDatabase _authTokenDatabase;
-  final AuthTokenEntityToOAuthMapper _authTokenEntityToOAuthMapper;
-
   GraphQLTokenStorage(
     this._authTokenDatabase,
     this._authTokenEntityToOAuthMapper,
   );
+  final AuthTokenDatabase _authTokenDatabase;
+  final AuthTokenEntityToOAuthMapper _authTokenEntityToOAuthMapper;
 
   @override
   Future<void> delete() async {

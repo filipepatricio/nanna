@@ -16,10 +16,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: PushNotificationApiDataSource, env: liveEnvs)
 class PushNotificationGraphqlDataSource implements PushNotificationApiDataSource {
+  PushNotificationGraphqlDataSource(this._client, this._responseResolver);
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
-
-  PushNotificationGraphqlDataSource(this._client, this._responseResolver);
 
   @override
   Future<RegisteredPushTokenDTO> registerToken(String token) async {

@@ -7,10 +7,9 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class LoginResponseDTOMapper implements Mapper<LoginResponseDTO, LoginResponse> {
+  LoginResponseDTOMapper(this._authTokenDTOMapper, this._userDTOMapper);
   final AuthTokenDTOMapper _authTokenDTOMapper;
   final UserDTOMapper _userDTOMapper;
-
-  LoginResponseDTOMapper(this._authTokenDTOMapper, this._userDTOMapper);
 
   @override
   LoginResponse call(LoginResponseDTO data) {

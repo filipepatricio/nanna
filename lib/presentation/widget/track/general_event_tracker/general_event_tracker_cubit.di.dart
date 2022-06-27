@@ -5,9 +5,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GeneralEventTrackerCubit extends Cubit {
-  final TrackActivityUseCase _trackActivityUseCase;
-
   GeneralEventTrackerCubit(this._trackActivityUseCase) : super(null);
+  final TrackActivityUseCase _trackActivityUseCase;
 
   void trackEvent(AnalyticsEvent event) {
     _trackActivityUseCase.trackEvent(event);

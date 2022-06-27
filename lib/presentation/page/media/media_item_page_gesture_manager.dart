@@ -2,6 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
 class MediaItemPageGestureManager {
+  MediaItemPageGestureManager({
+    required this.context,
+    required this.generalViewController,
+    required this.pageViewController,
+    required this.articleHasImage,
+  });
   final BuildContext context;
   final ScrollController generalViewController;
   final PageController pageViewController;
@@ -9,13 +15,6 @@ class MediaItemPageGestureManager {
 
   Drag? _drag;
   ScrollController? _activeController;
-
-  MediaItemPageGestureManager({
-    required this.context,
-    required this.generalViewController,
-    required this.pageViewController,
-    required this.articleHasImage,
-  });
 
   MapEntry<Type, GestureRecognizerFactory<GestureRecognizer>> get tapGestureRecognizer => MapEntry(
         TapGestureRecognizer,

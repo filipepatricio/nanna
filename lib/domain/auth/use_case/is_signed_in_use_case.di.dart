@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class IsSignedInUseCase {
-  final AuthStore _authStore;
-
   IsSignedInUseCase(this._authStore);
+  final AuthStore _authStore;
 
   Future<bool> call() async {
     try {

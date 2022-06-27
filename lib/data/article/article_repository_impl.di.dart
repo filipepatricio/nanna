@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/audio_file_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
@@ -8,8 +9,6 @@ import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'api/mapper/audio_file_dto_mapper.di.dart';
 
 @LazySingleton(as: ArticleRepository)
 class ArticleRepositoryImpl implements ArticleRepository {

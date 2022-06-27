@@ -5,12 +5,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:flutter/material.dart';
 
 class InformedTooltip extends StatelessWidget {
-  final String text;
-  final String? actionButtonText;
-  final VoidCallback? onActionButtonTap;
-  final VoidCallback? onDismiss;
-  final TextStyle style;
-
   const InformedTooltip({
     required this.text,
     this.actionButtonText,
@@ -19,6 +13,11 @@ class InformedTooltip extends StatelessWidget {
     this.style = AppTypography.b2Regular,
     Key? key,
   }) : super(key: key);
+  final String text;
+  final String? actionButtonText;
+  final VoidCallback? onActionButtonTap;
+  final VoidCallback? onDismiss;
+  final TextStyle style;
 
   @override
   Widget build(BuildContext context) {

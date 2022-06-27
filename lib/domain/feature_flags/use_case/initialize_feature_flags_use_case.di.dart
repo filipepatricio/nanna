@@ -6,17 +6,16 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class InitializeFeatureFlagsUseCase {
-  final AuthStore _authStore;
-  final UserRepository _userRepository;
-  final FeaturesFlagsRepository _featuresFlagsRepository;
-  final AppInfoRepository _appInfoRepository;
-
   InitializeFeatureFlagsUseCase(
     this._authStore,
     this._userRepository,
     this._featuresFlagsRepository,
     this._appInfoRepository,
   );
+  final AuthStore _authStore;
+  final UserRepository _userRepository;
+  final FeaturesFlagsRepository _featuresFlagsRepository;
+  final AppInfoRepository _appInfoRepository;
 
   Future<void> call() async {
     final tokenData = await _authStore.accessTokenData();

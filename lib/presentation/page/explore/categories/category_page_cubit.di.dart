@@ -12,6 +12,10 @@ const _paginationLimit = 10;
 
 @injectable
 class CategoryPageCubit extends Cubit<CategoryPageState> {
+  CategoryPageCubit(
+    this._getCategoryItemsUseCase,
+    this._trackActivityUseCase,
+  ) : super(CategoryPageState.loading());
   final GetCategoryItemsUseCase _getCategoryItemsUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   late NextCategoryItemPageLoader _nextCategoryItemPageLoader;
@@ -20,11 +24,6 @@ class CategoryPageCubit extends Cubit<CategoryPageState> {
 
   List<CategoryItem> _items = [];
   bool _allLoaded = false;
-
-  CategoryPageCubit(
-    this._getCategoryItemsUseCase,
-    this._trackActivityUseCase,
-  ) : super(CategoryPageState.loading());
 
   Future<void> initialize(String categorySlug, List<CategoryItem> items) async {
     _categorySlug = categorySlug;

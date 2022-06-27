@@ -13,12 +13,6 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
-  final ImageDTOMapper _imageDTOMapper;
-  final EntryDTOMapper _entryDTOMapper;
-  final SummaryCardDTOMapper _summaryCardDTOMapper;
-  final PublisherDTOMapper _publisherDTOMapper;
-  final TopicOwnerDTOMapper _topicOwnerDTOMapper;
-
   TopicDTOMapper(
     this._imageDTOMapper,
     this._entryDTOMapper,
@@ -26,6 +20,11 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
     this._publisherDTOMapper,
     this._topicOwnerDTOMapper,
   );
+  final ImageDTOMapper _imageDTOMapper;
+  final EntryDTOMapper _entryDTOMapper;
+  final SummaryCardDTOMapper _summaryCardDTOMapper;
+  final PublisherDTOMapper _publisherDTOMapper;
+  final TopicOwnerDTOMapper _topicOwnerDTOMapper;
 
   @override
   Topic call(TopicDTO data) {

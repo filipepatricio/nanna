@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class IncomingPushDataRefreshStreamUseCase {
-  final PushNotificationRepository _repository;
-
   IncomingPushDataRefreshStreamUseCase(this._repository);
+  final PushNotificationRepository _repository;
 
   Stream<void> call() {
     return _repository

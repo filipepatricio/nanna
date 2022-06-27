@@ -3,9 +3,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SubscribeForDeepLinkUseCase {
-  final DeepLinkRepository _deepLinkRepository;
-
   SubscribeForDeepLinkUseCase(this._deepLinkRepository);
+  final DeepLinkRepository _deepLinkRepository;
 
   Stream<String> call() {
     return _deepLinkRepository.subscribeForDeepLink();

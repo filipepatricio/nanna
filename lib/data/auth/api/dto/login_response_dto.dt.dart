@@ -6,12 +6,6 @@ part 'login_response_dto.dt.g.dart';
 
 @JsonSerializable()
 class LoginResponseDTO {
-  final bool successful;
-  final String? errorCode;
-  final String? errorMessage;
-  final AuthTokenDTO? tokens;
-  final UserDTO? account;
-
   LoginResponseDTO(
     this.successful,
     this.errorCode,
@@ -21,6 +15,11 @@ class LoginResponseDTO {
   );
 
   factory LoginResponseDTO.fromJson(Map<String, dynamic> json) => _$LoginResponseDTOFromJson(json);
+  final bool successful;
+  final String? errorCode;
+  final String? errorMessage;
+  final AuthTokenDTO? tokens;
+  final UserDTO? account;
 
   Map<String, dynamic> toJson() => _$LoginResponseDTOToJson(this);
 }

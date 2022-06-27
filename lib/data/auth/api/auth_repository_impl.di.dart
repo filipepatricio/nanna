@@ -11,12 +11,6 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthApiDataSource _apiDataSource;
-  final OAuthCredentialProviderDataSource _oAuthPlatformSignInDataSource;
-  final FreshLink<OAuth2Token> _freshLink;
-  final LoginResponseDTOMapper _loginResponseDTOMapper;
-  final LinkedinCredentialDataSource _linkedinCredentialDataSource;
-
   AuthRepositoryImpl(
     this._apiDataSource,
     this._oAuthPlatformSignInDataSource,
@@ -24,6 +18,11 @@ class AuthRepositoryImpl implements AuthRepository {
     this._loginResponseDTOMapper,
     this._linkedinCredentialDataSource,
   );
+  final AuthApiDataSource _apiDataSource;
+  final OAuthCredentialProviderDataSource _oAuthPlatformSignInDataSource;
+  final FreshLink<OAuth2Token> _freshLink;
+  final LoginResponseDTOMapper _loginResponseDTOMapper;
+  final LinkedinCredentialDataSource _linkedinCredentialDataSource;
 
   @override
   Future<void> requestMagicLink(String email) async {

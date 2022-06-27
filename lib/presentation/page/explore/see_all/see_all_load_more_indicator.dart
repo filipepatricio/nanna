@@ -4,12 +4,11 @@ import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/material.dart';
 
 class SeeAllLoadMoreIndicator extends StatelessWidget {
-  final bool show;
-
   const SeeAllLoadMoreIndicator({
     required this.show,
     Key? key,
   }) : super(key: key);
+  final bool show;
 
   @override
   Widget build(BuildContext context) {

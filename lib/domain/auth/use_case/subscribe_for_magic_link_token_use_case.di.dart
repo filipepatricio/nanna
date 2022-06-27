@@ -3,9 +3,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SubscribeForMagicLinkTokenUseCase {
-  final AuthAppLinkRepository _authAppLinkRepository;
-
   SubscribeForMagicLinkTokenUseCase(this._authAppLinkRepository);
+  final AuthAppLinkRepository _authAppLinkRepository;
 
   Stream<String> call() {
     return _authAppLinkRepository.subscribeForMagicLinkToken();

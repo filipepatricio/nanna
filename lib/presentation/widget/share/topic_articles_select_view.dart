@@ -115,12 +115,11 @@ class TopicArticlesSelectView extends HookWidget {
 }
 
 class _ContainerIOS extends StatelessWidget {
-  final Widget child;
-
   const _ContainerIOS({
     required this.child,
     Key? key,
   }) : super(key: key);
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -145,16 +144,15 @@ class _ContainerIOS extends StatelessWidget {
 }
 
 class _ContainerAndroid extends StatelessWidget {
-  final int? selectedArticles;
-  final int? maxArticles;
-  final Widget child;
-
   const _ContainerAndroid({
     required this.selectedArticles,
     required this.maxArticles,
     required this.child,
     Key? key,
   }) : super(key: key);
+  final int? selectedArticles;
+  final int? maxArticles;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -188,12 +186,6 @@ class _ProcessingView extends StatelessWidget {
 }
 
 class _IdleView extends HookWidget {
-  final TopicArticlesSelectViewCubit cubit;
-  final List<MediaItemArticle> articles;
-  final Set<int> selectedIndexes;
-  final bool canSelectMore;
-  final int maxArticles;
-
   const _IdleView({
     required this.cubit,
     required this.articles,
@@ -202,6 +194,11 @@ class _IdleView extends HookWidget {
     required this.maxArticles,
     Key? key,
   }) : super(key: key);
+  final TopicArticlesSelectViewCubit cubit;
+  final List<MediaItemArticle> articles;
+  final Set<int> selectedIndexes;
+  final bool canSelectMore;
+  final int maxArticles;
 
   @override
   Widget build(BuildContext context) {
@@ -245,14 +242,13 @@ class _IdleView extends HookWidget {
 }
 
 class _AndroidHeader extends StatelessWidget {
-  final int? selectedArticles;
-  final int? maxArticles;
-
   const _AndroidHeader({
     required this.selectedArticles,
     required this.maxArticles,
     Key? key,
   }) : super(key: key);
+  final int? selectedArticles;
+  final int? maxArticles;
 
   @override
   Widget build(BuildContext context) {
@@ -337,11 +333,6 @@ class _IOSHeader extends StatelessWidget {
 }
 
 class _ArticlesGridView extends StatelessWidget {
-  final TopicArticlesSelectViewCubit cubit;
-  final List<MediaItemArticle> articles;
-  final Set<int> selectedIndexes;
-  final bool canSelectMore;
-
   const _ArticlesGridView({
     required this.cubit,
     required this.articles,
@@ -349,6 +340,10 @@ class _ArticlesGridView extends StatelessWidget {
     required this.canSelectMore,
     Key? key,
   }) : super(key: key);
+  final TopicArticlesSelectViewCubit cubit;
+  final List<MediaItemArticle> articles;
+  final Set<int> selectedIndexes;
+  final bool canSelectMore;
 
   @override
   Widget build(BuildContext context) {
@@ -376,12 +371,6 @@ class _ArticlesGridView extends StatelessWidget {
 }
 
 class _ArticleItemView extends StatelessWidget {
-  final TopicArticlesSelectViewCubit cubit;
-  final int index;
-  final MediaItemArticle header;
-  final bool selected;
-  final bool canSelectMore;
-
   const _ArticleItemView({
     required this.cubit,
     required this.index,
@@ -390,6 +379,11 @@ class _ArticleItemView extends StatelessWidget {
     required this.canSelectMore,
     Key? key,
   }) : super(key: key);
+  final TopicArticlesSelectViewCubit cubit;
+  final int index;
+  final MediaItemArticle header;
+  final bool selected;
+  final bool canSelectMore;
 
   @override
   Widget build(BuildContext context) {
@@ -429,12 +423,11 @@ class _ArticleItemView extends StatelessWidget {
 }
 
 class _ArticleItemBody extends HookWidget {
-  final MediaItemArticle header;
-
   const _ArticleItemBody({
     required this.header,
     Key? key,
   }) : super(key: key);
+  final MediaItemArticle header;
 
   @override
   Widget build(BuildContext context) {
@@ -483,9 +476,8 @@ class _ArticleItemBody extends HookWidget {
 }
 
 class _SelectionCircle extends StatelessWidget {
-  final bool selected;
-
   const _SelectionCircle({required this.selected, Key? key}) : super(key: key);
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {

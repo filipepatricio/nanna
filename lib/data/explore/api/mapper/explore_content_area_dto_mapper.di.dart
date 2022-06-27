@@ -11,15 +11,14 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ExploreContentAreaDTOMapper implements Mapper<ExploreContentAreaDTO, ExploreContentArea> {
-  final ArticleDTOToMediaItemMapper _articleDTOToMediaItemMapper;
-  final TopicPreviewDTOMapper _topicPreviewDTOMapper;
-  final ColorDTOMapper _colorDTOMapper;
-
   ExploreContentAreaDTOMapper(
     this._articleDTOToMediaItemMapper,
     this._topicPreviewDTOMapper,
     this._colorDTOMapper,
   );
+  final ArticleDTOToMediaItemMapper _articleDTOToMediaItemMapper;
+  final TopicPreviewDTOMapper _topicPreviewDTOMapper;
+  final ColorDTOMapper _colorDTOMapper;
 
   @override
   ExploreContentArea call(ExploreContentAreaDTO data) {

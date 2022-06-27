@@ -5,9 +5,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class UpdateUserUseCase {
-  final UserRepository _userRepository;
-
   UpdateUserUseCase(this._userRepository);
+  final UserRepository _userRepository;
 
   Future<User> call(SettingsAccountData settingsAccountData) => _userRepository.updateUser(settingsAccountData);
 }

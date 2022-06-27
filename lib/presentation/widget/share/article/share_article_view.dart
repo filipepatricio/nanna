@@ -30,14 +30,13 @@ const _headerHeight = 878.0;
 const _logoSize = 40.0;
 
 class ShareArticleView extends HookWidget implements BaseShareCompletable {
-  final MediaItemArticle article;
-  final Completer _baseViewCompleter;
-
   ShareArticleView({
     required this.article,
     Key? key,
   })  : _baseViewCompleter = Completer(),
         super(key: key);
+  final MediaItemArticle article;
+  final Completer _baseViewCompleter;
 
   @override
   Size get size => const Size(_viewWidth, _viewHeight);
@@ -110,12 +109,11 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
 }
 
 class _Background extends StatelessWidget {
-  final Widget child;
-
   const _Background({
     required this.child,
     Key? key,
   }) : super(key: key);
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -138,16 +136,15 @@ class _Background extends StatelessWidget {
 }
 
 class _Sticker extends StatelessWidget {
-  final MediaItemArticle article;
-  final Image? headerImage;
-  final Image? logoImage;
-
   const _Sticker({
     required this.article,
     required this.headerImage,
     required this.logoImage,
     Key? key,
   }) : super(key: key);
+  final MediaItemArticle article;
+  final Image? headerImage;
+  final Image? logoImage;
 
   @override
   Widget build(BuildContext context) {

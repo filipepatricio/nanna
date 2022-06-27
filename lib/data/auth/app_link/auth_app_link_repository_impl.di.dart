@@ -5,15 +5,14 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthAppLinkRepository)
 class AuthAppLinkRepositoryImpl implements AuthAppLinkRepository {
-  final AppLinkDataSource _appLinkDataSource;
-  final MagicLinkParser _magicLinkParser;
-
-  bool _initialLinkHandled = false;
-
   AuthAppLinkRepositoryImpl(
     this._appLinkDataSource,
     this._magicLinkParser,
   );
+  final AppLinkDataSource _appLinkDataSource;
+  final MagicLinkParser _magicLinkParser;
+
+  bool _initialLinkHandled = false;
 
   @override
   Stream<String> subscribeForMagicLinkToken() async* {

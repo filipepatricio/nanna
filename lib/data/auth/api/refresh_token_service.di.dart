@@ -9,17 +9,16 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class RefreshTokenService {
-  final GraphQLClient _unauthorizedClient;
-  final GraphQLResponseResolver _responseResolver;
-  final RefreshTokenServiceCache _refreshTokenServiceCache;
-
-  Completer<OAuth2Token>? _lockCompleter;
-
   RefreshTokenService(
     @Named('unauthorized') this._unauthorizedClient,
     this._responseResolver,
     this._refreshTokenServiceCache,
   );
+  final GraphQLClient _unauthorizedClient;
+  final GraphQLResponseResolver _responseResolver;
+  final RefreshTokenServiceCache _refreshTokenServiceCache;
+
+  Completer<OAuth2Token>? _lockCompleter;
 
   Future<OAuth2Token> refreshToken(String refreshToken) async {
     final lock = _lockCompleter;

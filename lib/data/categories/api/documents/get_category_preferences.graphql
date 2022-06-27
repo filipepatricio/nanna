@@ -1,0 +1,10 @@
+# import 'package:better_informed_mobile/data/gql/common/category_fragment.graphql';
+
+query getCategoryPreferences {
+    getCategoryPreferences {
+        isPreferred
+        category {
+            ...categoryFragment
+        }
+    }
+}

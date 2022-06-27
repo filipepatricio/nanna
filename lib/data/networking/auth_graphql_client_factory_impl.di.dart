@@ -9,10 +9,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthGraphQLClientFactory, env: liveEnvs)
 class AuthGraphQLClientFactoryImpl implements AuthGraphQLClientFactory {
+  AuthGraphQLClientFactoryImpl(this._config, this._appVersionLink);
   final AppConfig _config;
   final AppVersionLink _appVersionLink;
-
-  AuthGraphQLClientFactoryImpl(this._config, this._appVersionLink);
 
   @override
   GraphQLClient create() {

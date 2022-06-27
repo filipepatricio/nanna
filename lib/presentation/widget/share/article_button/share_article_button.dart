@@ -9,16 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ShareArticleButton extends HookWidget {
-  final MediaItemArticle article;
-  final WidgetBuilder? buttonBuilder;
-  final Color? backgroundColor;
-
   const ShareArticleButton({
     required this.article,
     this.buttonBuilder,
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
+  final MediaItemArticle article;
+  final WidgetBuilder? buttonBuilder;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {

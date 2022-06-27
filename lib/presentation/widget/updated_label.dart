@@ -6,12 +6,6 @@ import 'package:better_informed_mobile/presentation/util/string_util.dart';
 import 'package:flutter/material.dart';
 
 class UpdatedLabel extends StatelessWidget {
-  final DateTime dateTime;
-  final Brightness mode;
-  final double? fontSize;
-  final TextStyle textStyle;
-  final bool withPrefix;
-
   const UpdatedLabel({
     required this.dateTime,
     this.mode = Brightness.dark,
@@ -20,6 +14,11 @@ class UpdatedLabel extends StatelessWidget {
     this.withPrefix = true,
     Key? key,
   }) : super(key: key);
+  final DateTime dateTime;
+  final Brightness mode;
+  final double? fontSize;
+  final TextStyle textStyle;
+  final bool withPrefix;
 
   @override
   Widget build(BuildContext context) {

@@ -3,9 +3,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SendMagicLinkUseCase {
-  final AuthRepository _authRepository;
-
   SendMagicLinkUseCase(this._authRepository);
+  final AuthRepository _authRepository;
 
   Future<void> call(String email) async {
     await _authRepository.requestMagicLink(email);

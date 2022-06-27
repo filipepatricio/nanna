@@ -19,11 +19,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TopicsSeeAllPage extends HookWidget {
-  final String areaId;
-  final String title;
-  final List<TopicPreview>? topics;
-  final ExploreAreaReferred referred;
-
   const TopicsSeeAllPage({
     required this.areaId,
     required this.title,
@@ -31,6 +26,10 @@ class TopicsSeeAllPage extends HookWidget {
     this.topics,
     Key? key,
   }) : super(key: key);
+  final String areaId;
+  final String title;
+  final List<TopicPreview>? topics;
+  final ExploreAreaReferred referred;
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +75,6 @@ class TopicsSeeAllPage extends HookWidget {
 }
 
 class _Body extends StatelessWidget {
-  final String title;
-  final TopicsSeeAllPageState state;
-  final ScrollController scrollController;
-  final PageStorageKey pageStorageKey;
-
   const _Body({
     required this.title,
     required this.state,
@@ -88,6 +82,10 @@ class _Body extends StatelessWidget {
     required this.pageStorageKey,
     Key? key,
   }) : super(key: key);
+  final String title;
+  final TopicsSeeAllPageState state;
+  final ScrollController scrollController;
+  final PageStorageKey pageStorageKey;
 
   @override
   Widget build(BuildContext context) {
@@ -120,12 +118,6 @@ class _Body extends StatelessWidget {
 }
 
 class _TopicGrid extends StatelessWidget {
-  final String title;
-  final PageStorageKey pageStorageKey;
-  final List<TopicPreview> topics;
-  final ScrollController scrollController;
-  final bool withLoader;
-
   const _TopicGrid({
     required this.title,
     required this.pageStorageKey,
@@ -134,6 +126,11 @@ class _TopicGrid extends StatelessWidget {
     required this.withLoader,
     Key? key,
   }) : super(key: key);
+  final String title;
+  final PageStorageKey pageStorageKey;
+  final List<TopicPreview> topics;
+  final ScrollController scrollController;
+  final bool withLoader;
 
   @override
   Widget build(BuildContext context) {
@@ -166,12 +163,11 @@ class _TopicGrid extends StatelessWidget {
 }
 
 class _GridItem extends StatelessWidget {
-  final TopicPreview topic;
-
   const _GridItem({
     required this.topic,
     Key? key,
   }) : super(key: key);
+  final TopicPreview topic;
 
   @override
   Widget build(BuildContext context) {

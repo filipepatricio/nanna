@@ -12,14 +12,13 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:flutter/material.dart';
 
 class PhotoStackedCover extends StatelessWidget {
-  final MediaItemArticle article;
-  final String? editorsNote;
-
   const PhotoStackedCover({
     required this.article,
     this.editorsNote,
     Key? key,
   }) : super(key: key);
+  final MediaItemArticle article;
+  final String? editorsNote;
 
   @override
   Widget build(BuildContext context) {

@@ -5,15 +5,14 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 enum ArticleType { free, premium }
 
 class Article {
-  final MediaItemArticle metadata;
-  final ArticleContent content;
-  final AudioFile? audioFile;
-
   Article({
     required this.metadata,
     required this.content,
     this.audioFile,
   });
+  final MediaItemArticle metadata;
+  final ArticleContent content;
+  final AudioFile? audioFile;
 
   bool get hasImage => metadata.hasImage;
 }

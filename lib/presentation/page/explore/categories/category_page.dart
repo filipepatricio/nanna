@@ -20,12 +20,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class CategoryPage extends HookWidget {
-  final Category category;
-
   const CategoryPage({
     required this.category,
     Key? key,
   }) : super(key: key);
+  final Category category;
 
   @override
   Widget build(BuildContext context) {

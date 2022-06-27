@@ -65,15 +65,6 @@ class InformedRichText extends HookWidget implements RichTextBase {
 }
 
 class _CustomTextPainter extends HookWidget {
-  final BoxConstraints size;
-  final List<InlineSpan> spans;
-  final bool selectable;
-  final Color highlightColor;
-  final TextAlign textAlign;
-  final int? maxLines;
-  final ShareTextCallback? shareCallback;
-  final SelectionControllerBundle? selectionControllers;
-
   const _CustomTextPainter({
     required this.size,
     required this.spans,
@@ -86,6 +77,14 @@ class _CustomTextPainter extends HookWidget {
     Key? key,
   })  : assert(selectable && selectionControllers != null || !selectable),
         super(key: key);
+  final BoxConstraints size;
+  final List<InlineSpan> spans;
+  final bool selectable;
+  final Color highlightColor;
+  final TextAlign textAlign;
+  final int? maxLines;
+  final ShareTextCallback? shareCallback;
+  final SelectionControllerBundle? selectionControllers;
 
   @override
   Widget build(BuildContext context) {
@@ -211,11 +210,10 @@ class _CustomTextPainter extends HookWidget {
 }
 
 class _CustomHighlightTextPainter extends CustomPainter {
+  _CustomHighlightTextPainter(this.textPainter, this.offsets, this.highlightColor);
   final TextPainter textPainter;
   final List<Offset> offsets;
   final Color highlightColor;
-
-  _CustomHighlightTextPainter(this.textPainter, this.offsets, this.highlightColor);
 
   @override
   void paint(Canvas canvas, Size size) {

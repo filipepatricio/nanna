@@ -7,12 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GeneralErrorView extends StatelessWidget {
-  final String title;
-  final String content;
-  final String action;
-  final String? svgPath;
-  final VoidCallback? retryCallback;
-
   GeneralErrorView({
     required this.title,
     required this.content,
@@ -22,6 +16,11 @@ class GeneralErrorView extends StatelessWidget {
     Key? key,
   })  : action = action ?? LocaleKeys.common_tryAgain.tr(),
         super(key: key);
+  final String title;
+  final String content;
+  final String action;
+  final String? svgPath;
+  final VoidCallback? retryCallback;
 
   @override
   Widget build(BuildContext context) {

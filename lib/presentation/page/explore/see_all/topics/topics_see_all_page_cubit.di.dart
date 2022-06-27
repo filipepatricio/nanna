@@ -12,6 +12,10 @@ const _paginationLimit = 10;
 
 @injectable
 class TopicsSeeAllPageCubit extends Cubit<TopicsSeeAllPageState> {
+  TopicsSeeAllPageCubit(
+    this._getExplorePaginatedTopicsUseCase,
+    this._trackActivityUseCase,
+  ) : super(TopicsSeeAllPageState.loading());
   final GetExplorePaginatedTopicsUseCase _getExplorePaginatedTopicsUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   late NextTopicPageLoader _nextTopicPageLoader;
@@ -20,11 +24,6 @@ class TopicsSeeAllPageCubit extends Cubit<TopicsSeeAllPageState> {
 
   List<TopicPreview> _topics = [];
   bool _allLoaded = false;
-
-  TopicsSeeAllPageCubit(
-    this._getExplorePaginatedTopicsUseCase,
-    this._trackActivityUseCase,
-  ) : super(TopicsSeeAllPageState.loading());
 
   Future<void> initialize(String areaId, List<TopicPreview>? topics) async {
     _areaId = areaId;

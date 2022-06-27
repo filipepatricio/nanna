@@ -9,10 +9,10 @@ class CurrentBriefIntroductionDTO {
     required this.icon,
   });
 
-  final String text;
-  final String icon;
-
   factory CurrentBriefIntroductionDTO.fromJson(Map<String, dynamic> json) {
     return _$CurrentBriefIntroductionDTOFromJson(json);
   }
+
+  final String text;
+  final String icon;
 }

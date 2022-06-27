@@ -9,17 +9,16 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
-  final ArticleImageDTOMapper _articleImageDTOMapper;
-  final PublisherDTOMapper _publisherDTOMapper;
-  final ArticleTypeDTOMapper _articleTypeDTOMapper;
-  final ArticleKindDTOMapper _articleKindDTOMapper;
-
   MediaItemDTOMapper(
     this._articleImageDTOMapper,
     this._publisherDTOMapper,
     this._articleTypeDTOMapper,
     this._articleKindDTOMapper,
   );
+  final ArticleImageDTOMapper _articleImageDTOMapper;
+  final PublisherDTOMapper _publisherDTOMapper;
+  final ArticleTypeDTOMapper _articleTypeDTOMapper;
+  final ArticleKindDTOMapper _articleKindDTOMapper;
 
   @override
   MediaItem call(MediaItemDTO data) {

@@ -8,13 +8,12 @@ const daysToExpire = 7;
 
 @injectable
 class MaybeRegisterPushNotificationTokenUseCase {
-  final PushNotificationStore _pushNotificationStore;
-  final PushNotificationRepository _pushNotificationRepository;
-
   MaybeRegisterPushNotificationTokenUseCase(
     this._pushNotificationStore,
     this._pushNotificationRepository,
   );
+  final PushNotificationStore _pushNotificationStore;
+  final PushNotificationRepository _pushNotificationRepository;
 
   Future<void> call() async {
     final storedToken = await _pushNotificationStore.load();

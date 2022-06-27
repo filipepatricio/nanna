@@ -10,19 +10,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 enum TopicCoverType { small, large, exploreLarge, exploreSmall }
 
 class TopicCover extends HookWidget {
-  const TopicCover._({
-    required this.topic,
-    required this.type,
-    this.hasBackgroundColor = false,
-    this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-  final TopicCoverType type;
-  final bool hasBackgroundColor;
-  final Function()? onTap;
-
   factory TopicCover.large({required TopicPreview topic, Function()? onTap}) => TopicCover._(
         type: TopicCoverType.large,
         topic: topic,
@@ -48,6 +35,18 @@ class TopicCover extends HookWidget {
         onTap: onTap,
         hasBackgroundColor: hasBackgroundColor,
       );
+  const TopicCover._({
+    required this.topic,
+    required this.type,
+    this.hasBackgroundColor = false,
+    this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+  final TopicCoverType type;
+  final bool hasBackgroundColor;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

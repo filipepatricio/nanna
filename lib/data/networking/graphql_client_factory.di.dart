@@ -7,17 +7,16 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class GraphQLClientFactory {
-  final AppConfig _appConfig;
-  final FreshLink<OAuth2Token> _freshLink;
-  final AppVersionLink _appVersionLink;
-  final TimezoneLink _timezoneLink;
-
   GraphQLClientFactory(
     this._appConfig,
     this._freshLink,
     this._appVersionLink,
     this._timezoneLink,
   );
+  final AppConfig _appConfig;
+  final FreshLink<OAuth2Token> _freshLink;
+  final AppVersionLink _appVersionLink;
+  final TimezoneLink _timezoneLink;
 
   GraphQLClient create() {
     final cache = GraphQLCache(store: InMemoryStore());

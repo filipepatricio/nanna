@@ -7,12 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SignInWithAppleButton extends StatelessWidget {
-  final VoidCallback onTap;
-
   const SignInWithAppleButton({
     required this.onTap,
     Key? key,
   }) : super(key: key);
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

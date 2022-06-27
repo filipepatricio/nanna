@@ -8,9 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 @injectable
 class SettingsMainCubit extends Cubit<SettingsMainState> {
-  final SignOutUseCase _signOutUseCase;
-
   SettingsMainCubit(this._signOutUseCase) : super(const SettingsMainState.init());
+  final SignOutUseCase _signOutUseCase;
 
   Future<void> signOut() async {
     emit(const SettingsMainState.loading());

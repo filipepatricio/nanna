@@ -11,10 +11,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AnalyticsRepository, env: liveEnvs)
 class AnalyticsRepositoryImpl implements AnalyticsRepository {
+  AnalyticsRepositoryImpl(this._config, this._analyticsFacade);
   final AppConfig _config;
   final AnalyticsFacade _analyticsFacade;
-
-  AnalyticsRepositoryImpl(this._config, this._analyticsFacade);
 
   @override
   Future<void> initialize() async {

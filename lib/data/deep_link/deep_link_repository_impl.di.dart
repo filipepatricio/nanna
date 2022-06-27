@@ -4,11 +4,10 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: DeepLinkRepository)
 class DeepLinkRepositoryImpl implements DeepLinkRepository {
+  DeepLinkRepositoryImpl(this._appLinkDataSource);
   final AppLinkDataSource _appLinkDataSource;
 
   bool _initialLinkHandled = false;
-
-  DeepLinkRepositoryImpl(this._appLinkDataSource);
 
   @override
   Stream<String> subscribeForDeepLink() async* {

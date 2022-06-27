@@ -7,12 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ArticleItemView extends HookWidget {
-  final Function() onTap;
-  final MediaItemArticle article;
-  final EntryStyle entryStyle;
-  final String? editorsNote;
-  final GlobalKey? mediaItemKey;
-
   const ArticleItemView({
     required this.onTap,
     required this.article,
@@ -21,6 +15,11 @@ class ArticleItemView extends HookWidget {
     this.mediaItemKey,
     Key? key,
   }) : super(key: key);
+  final Function() onTap;
+  final MediaItemArticle article;
+  final EntryStyle entryStyle;
+  final String? editorsNote;
+  final GlobalKey? mediaItemKey;
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +46,16 @@ class ArticleItemView extends HookWidget {
 }
 
 class _ArticleCover extends StatelessWidget {
-  final EntryStyle entryStyle;
-  final MediaItemArticle article;
-  final GlobalKey? mediaItemKey;
-  final String? editorsNote;
-
   const _ArticleCover({
     required this.entryStyle,
     required this.article,
     required this.mediaItemKey,
     this.editorsNote,
   });
+  final EntryStyle entryStyle;
+  final MediaItemArticle article;
+  final GlobalKey? mediaItemKey;
+  final String? editorsNote;
 
   @override
   Widget build(BuildContext context) {

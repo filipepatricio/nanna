@@ -51,15 +51,14 @@ extension MainTabExtension on MainTab {
 }
 
 class _TabBarIcon extends HookWidget {
-  final String iconName;
-  final String title;
-  final bool isActive;
-
   const _TabBarIcon(
     this.iconName,
     this.title, {
     this.isActive = true,
   });
+  final String iconName;
+  final String title;
+  final bool isActive;
 
   @override
   Widget build(BuildContext context) {

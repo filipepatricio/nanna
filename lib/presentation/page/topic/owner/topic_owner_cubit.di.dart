@@ -9,13 +9,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TopicOwnerPageCubit extends Cubit<TopicOwnerPageState> {
-  final GetTopicsFromExpertUseCase _getTopicsFromExpertUseCase;
-  final GetTopicsFromEditorUseCase _getTopicsFromEditorUseCase;
-
   TopicOwnerPageCubit(
     this._getTopicsFromExpertUseCase,
     this._getTopicsFromEditorUseCase,
   ) : super(TopicOwnerPageState.loading());
+  final GetTopicsFromExpertUseCase _getTopicsFromExpertUseCase;
+  final GetTopicsFromEditorUseCase _getTopicsFromEditorUseCase;
 
   Future<void> initialize(TopicOwner owner, [String? fromTopicSlug]) async {
     if (owner is EditorialTeam) {

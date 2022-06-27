@@ -12,14 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TopicSummarySection extends HookWidget {
-  final Topic topic;
-  final GlobalKey? summaryCardKey;
-
   const TopicSummarySection({
     required this.topic,
     this.summaryCardKey,
     Key? key,
   }) : super(key: key);
+  final Topic topic;
+  final GlobalKey? summaryCardKey;
 
   @override
   Widget build(BuildContext context) {
@@ -70,16 +69,15 @@ class TopicSummarySection extends HookWidget {
 }
 
 class _SummaryCardPageView extends HookWidget {
-  final List<TopicSummary> topicSummaryList;
-  final PageController controller;
-  final GlobalKey? summaryCardKey;
-
   const _SummaryCardPageView({
     required this.topicSummaryList,
     required this.controller,
     this.summaryCardKey,
     Key? key,
   }) : super(key: key);
+  final List<TopicSummary> topicSummaryList;
+  final PageController controller;
+  final GlobalKey? summaryCardKey;
 
   @override
   Widget build(BuildContext context) {
@@ -104,14 +102,13 @@ class _SummaryCardPageView extends HookWidget {
 }
 
 class _SummaryCard extends StatelessWidget {
-  final String markdownText;
-  final GlobalKey? summaryCardKey;
-
   const _SummaryCard({
     required this.markdownText,
     required this.summaryCardKey,
     Key? key,
   }) : super(key: key);
+  final String markdownText;
+  final GlobalKey? summaryCardKey;
 
   @override
   Widget build(BuildContext context) {

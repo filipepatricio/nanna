@@ -9,13 +9,6 @@ import 'package:flutter_svg/svg.dart';
 enum TutorialTooltipPosition { top, bottom }
 
 class TutorialTooltip extends StatelessWidget {
-  final String text;
-  final int tutorialIndex;
-  final int tutorialLength;
-  final String dismissButtonText;
-  final TutorialTooltipPosition tutorialTooltipPosition;
-  final VoidCallback? onDismiss;
-
   const TutorialTooltip({
     required this.text,
     required this.tutorialIndex,
@@ -25,6 +18,12 @@ class TutorialTooltip extends StatelessWidget {
     this.onDismiss,
     Key? key,
   }) : super(key: key);
+  final String text;
+  final int tutorialIndex;
+  final int tutorialLength;
+  final String dismissButtonText;
+  final TutorialTooltipPosition tutorialTooltipPosition;
+  final VoidCallback? onDismiss;
 
   @override
   Widget build(BuildContext context) {

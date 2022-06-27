@@ -5,9 +5,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class IncomingPushAnalyticsService {
-  final AnalyticsRepository _analyticsRepository;
-
   IncomingPushAnalyticsService(this._analyticsRepository);
+  final AnalyticsRepository _analyticsRepository;
 
   void trackPressedPushNotification(IncomingPushDTO push) {
     _analyticsRepository.event(AnalyticsEvent.pushNotificationTapped(push.meta));

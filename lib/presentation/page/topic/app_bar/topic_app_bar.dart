@@ -16,14 +16,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 class TopicAppBar extends HookWidget {
-  final Topic topic;
-  final TopicPageCubit cubit;
-  final ValueNotifier<double> scrollPositionNotifier;
-  final VoidCallback onArticlesLabelTap;
-  final VoidCallback onArrowTap;
-  final ValueNotifier<bool> isShowingTutorialToast;
-  final SnackbarController snackbarController;
-
   const TopicAppBar({
     required this.topic,
     required this.cubit,
@@ -34,6 +26,13 @@ class TopicAppBar extends HookWidget {
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
+  final Topic topic;
+  final TopicPageCubit cubit;
+  final ValueNotifier<double> scrollPositionNotifier;
+  final VoidCallback onArticlesLabelTap;
+  final VoidCallback onArrowTap;
+  final ValueNotifier<bool> isShowingTutorialToast;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {

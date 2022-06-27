@@ -21,6 +21,15 @@ import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: PushNotificationRepository, env: liveEnvs)
 class PushNotificationRepositoryImpl implements PushNotificationRepository {
+  PushNotificationRepositoryImpl(
+    this._firebaseMessaging,
+    this._pushNotificationApiDataSource,
+    this._incomingPushDTOMapper,
+    this._pushNotificationMessenger,
+    this._registeredPushTokenDTOMapper,
+    this._notificationPreferencesDTOMapper,
+    this._notificationChannelDTOMapper,
+  );
   final FirebaseMessaging _firebaseMessaging;
   final PushNotificationApiDataSource _pushNotificationApiDataSource;
   final IncomingPushDTOMapper _incomingPushDTOMapper;
@@ -31,16 +40,6 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
 
   StreamController<IncomingPush>? _incomingPushNotificationStream;
   StreamSubscription? _incomingPushSubscription;
-
-  PushNotificationRepositoryImpl(
-    this._firebaseMessaging,
-    this._pushNotificationApiDataSource,
-    this._incomingPushDTOMapper,
-    this._pushNotificationMessenger,
-    this._registeredPushTokenDTOMapper,
-    this._notificationPreferencesDTOMapper,
-    this._notificationChannelDTOMapper,
-  );
 
   @override
   Future<RegisteredPushToken> registerToken() async {

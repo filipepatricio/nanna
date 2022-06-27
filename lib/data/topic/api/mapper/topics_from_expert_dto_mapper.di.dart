@@ -6,9 +6,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TopicsFromExpertDTOMapper implements Mapper<TopicsFromExpertDTO, List<TopicPreview>> {
-  final TopicPreviewDTOMapper _topicPreviewDTOMapper;
-
   TopicsFromExpertDTOMapper(this._topicPreviewDTOMapper);
+  final TopicPreviewDTOMapper _topicPreviewDTOMapper;
 
   @override
   List<TopicPreview> call(TopicsFromExpertDTO data) {
