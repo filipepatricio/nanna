@@ -1,15 +1,15 @@
 part of 'article_cover.dart';
 
+const _articleLargeImageCoverHeight = 256.0;
+
 class _ArticleCoverDailyBriefLarge extends StatelessWidget {
   const _ArticleCoverDailyBriefLarge({
     required this.article,
-    this.editorsNote,
     this.onTap,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final String? editorsNote;
   final VoidCallback? onTap;
 
   @override
@@ -20,75 +20,93 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: AppDimens.articleLargeImageCoverHeight,
+      child: DecoratedBox(
         decoration: BoxDecoration(borderRadius: borderRadius),
         child: ClipRRect(
           borderRadius: borderRadius,
-          child: Stack(
+          child: Column(
             children: [
-              if (hasImage) ...[
-                Positioned.fill(
-                  child: ArticleImage(
-                    image: article.image!,
-                    darkeningMode: DarkeningMode.gradient,
-                  ),
-                ),
-              ],
-              Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+              SizedBox(
+                height: _articleLargeImageCoverHeight,
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          AppDimens.m,
-                          AppDimens.m,
-                          AppDimens.m,
-                          AppDimens.ml,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: DottedArticleInfo(
-                                    article: article,
-                                    isLight: true,
-                                    showDate: false,
-                                    showReadTime: false,
-                                    textStyle: AppTypography.metadata1Medium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              article.strippedTitle,
-                              style: AppTypography.h4ExtraBold.copyWith(
-                                color: AppColors.white,
-                                overflow: TextOverflow.ellipsis,
-                                height: 1.7,
-                              ),
-                              maxLines: 4,
-                            ),
-                          ],
+                    if (hasImage) ...[
+                      Positioned.fill(
+                        child: ArticleImage(
+                          image: article.image!,
+                          darkeningMode: DarkeningMode.gradient,
                         ),
                       ),
-                    ),
-                    ArticleLabelsEditorsNote(
-                      note: editorsNote,
-                      article: article,
+                    ],
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                AppDimens.m,
+                                AppDimens.m,
+                                AppDimens.m,
+                                AppDimens.ml,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: DottedArticleInfo(
+                                          article: article,
+                                          isLight: true,
+                                          showDate: false,
+                                          showReadTime: false,
+                                          textStyle: AppTypography.metadata1Medium,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    article.strippedTitle,
+                                    style: AppTypography.h4ExtraBold.copyWith(
+                                      color: AppColors.white,
+                                      overflow: TextOverflow.ellipsis,
+                                      height: 1.7,
+                                    ),
+                                    maxLines: 4,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // Overlapping top border for editor's note
+                          if (article.shouldShowArticleCoverNote)
+                            Container(
+                              height: AppDimens.m,
+                              decoration: const BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(AppDimens.m),
+                                  topRight: Radius.circular(AppDimens.m),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
+              if (article.shouldShowArticleCoverNote)
+                ArticleLabelsEditorsNote(
+                  article: article,
+                  coverType: ArticleCoverType.dailyBriefLarge,
+                ),
             ],
           ),
         ),

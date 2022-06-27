@@ -120,9 +120,6 @@ class AppDimens {
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);
 
   /// 410
-  static double articleLargeImageCoverHeight = 410;
-
-  /// 410
   static double articleSmallImageCoverHeight = 322;
 
   /// 0 / 45
