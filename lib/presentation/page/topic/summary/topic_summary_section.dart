@@ -16,8 +16,6 @@ class TopicSummarySection extends HookWidget {
     required this.topic,
     Key? key,
   }) : super(key: key);
-  final Topic topic;
-  final GlobalKey? summaryCardKey;
 
   final Topic topic;
 
@@ -74,9 +72,6 @@ class _SummaryCardPageView extends HookWidget {
     required this.controller,
     Key? key,
   }) : super(key: key);
-  final List<TopicSummary> topicSummaryList;
-  final PageController controller;
-  final GlobalKey? summaryCardKey;
 
   final List<TopicSummary> topicSummaryList;
   final PageController controller;
@@ -107,8 +102,6 @@ class _SummaryCard extends StatelessWidget {
     required this.markdownText,
     Key? key,
   }) : super(key: key);
-  final String markdownText;
-  final GlobalKey? summaryCardKey;
 
   final String markdownText;
 
