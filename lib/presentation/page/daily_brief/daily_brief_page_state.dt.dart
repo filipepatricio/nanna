@@ -16,4 +16,15 @@ class DailyBriefPageState with _$DailyBriefPageState {
   factory DailyBriefPageState.error() = _DailyBriefPageStateError;
 
   factory DailyBriefPageState.showTutorialToast(String text) = _DailyBriefPageStateShowTutorialToast;
+
+  factory DailyBriefPageState.shouldShowTopicCardTutorialCoachMark() =
+      _DailyBriefPageStateShouldShowTopicCardTutorialCoachMark;
+
+  factory DailyBriefPageState.showTopicCardTutorialCoachMark() = _DailyBriefPageStateShowTopicCardTutorialCoachMark;
+
+  factory DailyBriefPageState.skipTutorialCoachMark({
+    required bool jumpToNextCoachMark,
+  }) = _DailyBriefPageStateSkipTutorialCoachMark;
+
+  factory DailyBriefPageState.finishTutorialCoachMark() = _DailyBriefPageStateFinishTutorialCoachMark;
 }

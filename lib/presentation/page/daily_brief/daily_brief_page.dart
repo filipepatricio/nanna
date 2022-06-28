@@ -24,7 +24,10 @@ import 'package:better_informed_mobile/presentation/widget/track/view_visibility
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+const _topicCardTutorialOffsetFromBottomFraction = 1.4;
 
 class DailyBriefPage extends HookWidget {
   const DailyBriefPage({Key? key}) : super(key: key);
@@ -37,17 +40,7 @@ class DailyBriefPage extends HookWidget {
     final cardStackWidth = MediaQuery.of(context).size.width;
     const cardStackHeight = AppDimens.briefEntryCardStackHeight;
     final topPadding = AppDimens.safeTopPadding(context);
-
-    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(
-        showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
-          showInfoToast(
-            context: context,
-            text: text,
-          );
-        }),
-      );
-    });
+    final tutorialCoachMark = cubit.tutorialCoachMark(context);
 
     useEffect(
       () {
@@ -90,10 +83,12 @@ class DailyBriefPage extends HookWidget {
                     ),
                     sliver: state.maybeMap(
                       idle: (state) => _IdleContent(
-                        dailyBriefCubit: cubit,
+                        cubit: cubit,
                         currentBrief: state.currentBrief,
                         cardStackWidth: cardStackWidth,
                         cardStackHeight: cardStackHeight,
+                        tutorialCoachMark: tutorialCoachMark,
+                        scrollController: scrollController,
                       ),
                       error: (_) => SliverPadding(
                         padding: EdgeInsets.only(top: topPadding),
@@ -135,20 +130,57 @@ class DailyBriefPage extends HookWidget {
 
 class _IdleContent extends HookWidget {
   const _IdleContent({
-    required this.dailyBriefCubit,
+    required this.cubit,
     required this.currentBrief,
     required this.cardStackWidth,
     required this.cardStackHeight,
+    required this.tutorialCoachMark,
+    required this.scrollController,
     Key? key,
   }) : super(key: key);
 
-  final DailyBriefPageCubit dailyBriefCubit;
+  final DailyBriefPageCubit cubit;
   final CurrentBrief currentBrief;
   final double cardStackWidth;
   final double cardStackHeight;
+  final TutorialCoachMark tutorialCoachMark;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
+    final isShowingTutorialToast = useState(false);
+
+    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+        showTutorialToast: (text) {
+          isShowingTutorialToast.value = true;
+          showInfoToast(
+            context: context,
+            text: text,
+            onDismiss: () {
+              isShowingTutorialToast.value = false;
+            },
+          );
+        },
+        showTopicCardTutorialCoachMark: tutorialCoachMark.show,
+        skipTutorialCoachMark: (jumpToNextCoachMark) {
+          tutorialCoachMark.skip();
+        },
+        finishTutorialCoachMark: tutorialCoachMark.finish,
+      );
+    });
+
+    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+        shouldShowTopicCardTutorialCoachMark: () {
+          final topicCardTriggerPoint = scrollController.offset +
+              AppDimens.briefEntryCardStackHeight * _topicCardTutorialOffsetFromBottomFraction;
+          final listener = topicCardTutorialListener(scrollController, topicCardTriggerPoint);
+          scrollController.addListener(listener);
+        },
+      );
+    });
+
     return MultiSliver(
       children: [
         _Greeting(
@@ -159,16 +191,23 @@ class _IdleContent extends HookWidget {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               final currentEntry = currentBrief.entries[index];
+              final firstTopic = currentBrief.entries
+                  .firstWhere((element) => element.item.maybeMap(topicPreview: (_) => true, orElse: () => false));
 
               return VisibilityDetector(
                 key: Key(currentEntry.id),
                 onVisibilityChanged: kIsTest
                     ? null
-                    : (visibility) => dailyBriefCubit.trackBriefEntryPreviewed(
+                    : (visibility) {
+                        if (currentEntry == firstTopic) {
+                          cubit.initializeTutorialCoachMark();
+                        }
+                        cubit.trackBriefEntryPreviewed(
                           currentEntry,
                           index,
                           visibility.visibleFraction,
-                        ),
+                        );
+                      },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -177,6 +216,7 @@ class _IdleContent extends HookWidget {
                       briefId: currentBrief.id,
                       width: cardStackWidth,
                       height: cardStackHeight,
+                      topicCardKey: currentEntry == firstTopic ? cubit.topicCardKey : null,
                     ),
                     const SizedBox(height: AppDimens.l),
                   ],
@@ -188,11 +228,32 @@ class _IdleContent extends HookWidget {
           ),
         ),
         _RelaxSection(
-          onVisible: dailyBriefCubit.trackRelaxPage,
+          onVisible: cubit.trackRelaxPage,
           goodbyeHeadline: currentBrief.goodbye,
         ),
       ],
     );
+  }
+
+  bool didListScrollReachTopicCard(ScrollController listScrollController, double topicCardTriggerPoint) {
+    return listScrollController.offset >= topicCardTriggerPoint && !listScrollController.position.outOfRange;
+  }
+
+  VoidCallback topicCardTutorialListener(ScrollController listScrollController, double topicCardTriggerPoint) {
+    var isToShowMediaItemTutorialCoachMark = true;
+    void topicCardListener() {
+      if (isToShowMediaItemTutorialCoachMark &&
+          didListScrollReachTopicCard(listScrollController, topicCardTriggerPoint)) {
+        listScrollController.jumpTo(
+          topicCardTriggerPoint,
+        );
+        cubit.showTopicCardTutorialCoachMark();
+        isToShowMediaItemTutorialCoachMark = false;
+        scrollController.removeListener(topicCardListener);
+      }
+    }
+
+    return topicCardListener;
   }
 }
 
