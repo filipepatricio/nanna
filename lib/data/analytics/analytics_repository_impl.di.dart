@@ -36,7 +36,7 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   }
 
   @override
-  Future<void> login(String userId, String method) async {
+  Future<void> identify(String userId, [String? method]) async {
     await _analyticsFacade.identify(userId, method);
   }
 

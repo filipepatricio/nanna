@@ -23,7 +23,7 @@ class SignInWithMagicLinkTokenUseCase {
     await _authStore.save(authResult.authToken);
     await _userStore.setCurrentUserUuid(authResult.userUuid);
 
-    await _analyticsRepository.login(
+    await _analyticsRepository.identify(
       authResult.userUuid,
       authResult.method,
     );

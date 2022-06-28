@@ -8,7 +8,7 @@ abstract class AnalyticsRepository {
 
   Future<void> requestTrackingPermission();
 
-  Future<void> login(String userId, String method);
+  Future<void> identify(String userId, [String? method]);
 
   Future<void> logout();
 
