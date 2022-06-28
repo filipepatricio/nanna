@@ -72,6 +72,7 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
       QueryOptions(
         document: get_topic_by_slug.document,
         operationName: get_topic_by_slug.getTopicBySlug.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
         variables: {
           'slug': slug,
         },

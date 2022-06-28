@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/use_case/identify_analytics_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_onboarding_categories_use_case.di.dart';
@@ -23,6 +24,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     this._saveReleaseNoteIfFirstRunUseCase,
     this._isInternetConnectionAvailableUseCase,
     this._getOnboardingCategoriesUseCase,
+    this._identifyAnalyticsUserUseCase,
   ) : super(EntryPageState.idle());
 
   final IsSignedInUseCase _isSignedInUseCase;
@@ -32,6 +34,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   final SaveReleaseNoteIfFirstRunUseCase _saveReleaseNoteIfFirstRunUseCase;
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
   final GetOnboardingCategoriesUseCase _getOnboardingCategoriesUseCase;
+  final IdentifyAnalyticsUserUseCase _identifyAnalyticsUserUseCase;
 
   bool? _isConnectionAvailable;
 
@@ -69,6 +72,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
 
     try {
       await _initializeFeatureFlagsUseCase();
+      await _identifyAnalyticsUserUseCase();
     } on UnauthorizedException {
       emit(EntryPageState.notSignedIn());
       return;

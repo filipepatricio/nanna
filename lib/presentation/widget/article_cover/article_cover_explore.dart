@@ -41,7 +41,7 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
   }
 }
 
-class _ArticleCoverExploreList extends StatelessWidget {
+class _ArticleCoverExploreList extends HookWidget {
   const _ArticleCoverExploreList({
     required this.onTap,
     required this.article,
