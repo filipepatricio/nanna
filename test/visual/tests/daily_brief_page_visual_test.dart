@@ -3,7 +3,9 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../fakes.dart';
 import '../visual_test_utils.dart';
@@ -65,4 +67,7 @@ class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
   Future<void> initialize() async {}
   @override
   Future<void> close() async {}
+
+  @override
+  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(context, targets: <TargetFocus>[]);
 }
