@@ -225,21 +225,18 @@ class _ItemList extends StatelessWidget {
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final item = items[index];
-
-          return item.map(
-            pills: (item) => ExplorePillsAreaView(
-              categories: item.categories,
-            ),
-            stream: (item) => _Area(
-              area: item.area,
-              orderIndex: index,
-              isHighlighted: isHighlighted,
-            ),
-          );
-        },
+        (context, index) => items[index].map(
+          pills: (item) => ExplorePillsAreaView(
+            categories: item.categories,
+          ),
+          stream: (item) => _Area(
+            area: item.area,
+            orderIndex: index,
+            isHighlighted: isHighlighted,
+          ),
+        ),
         childCount: items.length,
+        addAutomaticKeepAlives: false,
       ),
     );
   }

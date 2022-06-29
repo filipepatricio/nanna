@@ -182,16 +182,15 @@ class _Idle extends StatelessWidget {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return BookmarkListTile(
-                bookmarkCover: bookmarks[index],
-                onRemoveBookmarkPressed: (bookmark) {
-                  cubit.removeBookmark(bookmark);
-                },
-                isLast: index == bookmarks.length - 1,
-              );
-            },
+            (context, index) => BookmarkListTile(
+              bookmarkCover: bookmarks[index],
+              onRemoveBookmarkPressed: (bookmark) {
+                cubit.removeBookmark(bookmark);
+              },
+              isLast: index == bookmarks.length - 1,
+            ),
             childCount: bookmarks.length,
+            addAutomaticKeepAlives: false,
           ),
         ),
         if (withLoader)
