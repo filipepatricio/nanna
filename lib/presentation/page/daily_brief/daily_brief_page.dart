@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
@@ -37,11 +39,41 @@ class DailyBriefPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<DailyBriefPageCubit>();
     final state = useCubitBuilder(cubit);
+    final tutorialCoachMark = cubit.tutorialCoachMark(context);
+
+    final body = _DailyBriefPage(
+      state: state,
+      cubit: cubit,
+      tutorialCoachMark: tutorialCoachMark,
+    );
+
+    return Platform.isAndroid
+        ? WillPopScope(
+            onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
+            child: body,
+          )
+        : body;
+  }
+}
+
+class _DailyBriefPage extends HookWidget {
+  const _DailyBriefPage({
+    required this.state,
+    required this.cubit,
+    required this.tutorialCoachMark,
+    Key? key,
+  }) : super(key: key);
+
+  final DailyBriefPageState state;
+  final DailyBriefPageCubit cubit;
+  final TutorialCoachMark tutorialCoachMark;
+
+  @override
+  Widget build(BuildContext context) {
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width;
     const cardStackHeight = AppDimens.briefEntryCardStackHeight;
     final topPadding = AppDimens.safeTopPadding(context);
-    final tutorialCoachMark = cubit.tutorialCoachMark(context);
 
     useEffect(
       () {
