@@ -157,7 +157,7 @@ class _IdleContent extends HookWidget {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
+            (context, index) {
               final currentEntry = currentBrief.entries[index];
 
               return VisibilityDetector(
@@ -184,6 +184,7 @@ class _IdleContent extends HookWidget {
               );
             },
             childCount: currentBrief.entries.length,
+            addAutomaticKeepAlives: false,
           ),
         ),
         _RelaxSection(
