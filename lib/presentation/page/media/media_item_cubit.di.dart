@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/domain/article/use_case/get_article_use_c
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_article_related_content_section_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/trade_topid_id_for_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dt.dart';
@@ -29,6 +30,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     this._getArticleHeaderUseCase,
     this._tradeTopicIdForSlugUseCase,
     this._trackArticleReadingProgressUseCase,
+    this._getShowArticleRelatedContentSectionUseCase,
   ) : super(const MediaItemState.initializing());
 
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
@@ -37,6 +39,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final GetArticleHeaderUseCase _getArticleHeaderUseCase;
   final TradeTopicIdForSlugUseCase _tradeTopicIdForSlugUseCase;
   final TrackArticleReadingProgressUseCase _trackArticleReadingProgressUseCase;
+  final GetShowArticleRelatedContentSectionUseCase _getShowArticleRelatedContentSectionUseCase;
 
   late MediaItemArticle _currentArticle;
   late String? _topicId;
@@ -44,6 +47,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   late NeatPeriodicTaskScheduler? readingProgressTrackingScheduler;
 
   String? get topicId => _topicId;
+
   String? get briefId => _briefId;
 
   Article? _currentFullArticle;
@@ -132,7 +136,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   Future<void> _loadPremiumArticle(MediaItemArticle article) async {
     try {
       _currentFullArticle = await _getArticleUseCase(article);
-      _showIdlePremiumOrErrorState();
+      await _showIdlePremiumOrErrorState();
     } on ArticleGeoblockedException {
       emit(const MediaItemState.geoblocked());
     } catch (e, s) {
@@ -183,12 +187,19 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     _setStartedArticleStreamUseCase(readingBanner);
   }
 
-  void _showIdlePremiumOrErrorState() {
+  Future<void> _showIdlePremiumOrErrorState() async {
     final article = _currentFullArticle;
     if (article == null) {
       emit(MediaItemState.error(_currentArticle));
     } else {
-      emit(MediaItemState.idlePremium(article));
+      final showArticleRelatedContentSection = await _getShowArticleRelatedContentSectionUseCase();
+
+      emit(
+        MediaItemState.idlePremium(
+          article,
+          showArticleRelatedContentSection,
+        ),
+      );
     }
   }
 

@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.pageController,
     required this.cubit,
     required this.mainController,
+    required this.showArticleRelatedContentSection,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -32,6 +34,7 @@ class PremiumArticleReadView extends HookWidget {
   final ScrollController mainController;
   final MediaItemCubit cubit;
   final double? readArticleProgress;
+  final bool showArticleRelatedContentSection;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -186,32 +189,40 @@ class PremiumArticleReadView extends HookWidget {
                       controller: pageController,
                       fullHeight: constraints.maxHeight,
                     ),
-                  CustomScrollView(
-                    controller: mainController,
-                    physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                    slivers: [
-                      SliverFillViewport(
-                        delegate: SliverChildListDelegate(
-                          [
-                            _ArticleContentView(
-                              article: article,
-                              articleContentKey: _articleContentKey,
-                              articleController: articleController,
-                              cubit: cubit,
-                              dynamicPosition: dynamicListenPosition,
-                              readProgress: readProgress,
+                  NoScrollGlow(
+                    child: CustomScrollView(
+                      controller: mainController,
+                      physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                      slivers: [
+                        SliverFillViewport(
+                          delegate: SliverChildListDelegate(
+                            [
+                              _ArticleContentView(
+                                article: article,
+                                articleContentKey: _articleContentKey,
+                                articleController: articleController,
+                                cubit: cubit,
+                                dynamicPosition: dynamicListenPosition,
+                                readProgress: readProgress,
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (showArticleRelatedContentSection)
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                Container(
+                                  height: 500,
+                                  color: AppColors.grey,
+
+                                  ///Swap this one for related content
+                                )
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            ///Add additional content here
-                          ],
-                        ),
-                      ),
-                    ],
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -23,4 +23,9 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
   Future<String> initialTab() {
     return Future.value('');
   }
+
+  @override
+  Future<bool> showArticleRelatedContentSection() {
+    return Future.value(true);
+  }
 }
