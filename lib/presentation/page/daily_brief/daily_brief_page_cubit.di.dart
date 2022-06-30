@@ -7,15 +7,22 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart'
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 const _minVisibilityToTrack = 0.9;
 const _trackEventTotalBufferTime = Duration(seconds: 1);
@@ -40,11 +47,15 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
-  late bool _isDailyBriefTutorialStepSeen;
   late CurrentBrief _currentBrief;
 
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
+
+  List<TargetFocus> targets = <TargetFocus>[];
+  final topicCardKey = GlobalKey();
+
+  bool _shouldShowTutorialCoachMark = true;
 
   @override
   Future<void> close() async {
@@ -67,13 +78,15 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       loadDailyBrief();
     });
 
-    _isDailyBriefTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
-    if (!_isDailyBriefTutorialStepSeen) {
+    _initializeItemPreviewTracker();
+  }
+
+  Future<void> initializeTutorialSnackBar() async {
+    final isDailyBriefTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
+    if (!isDailyBriefTutorialStepSeen) {
       emit(DailyBriefPageState.showTutorialToast(LocaleKeys.tutorial_dailyBriefSnackBarText.tr()));
       await _setTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     }
-
-    _initializeItemPreviewTracker();
   }
 
   Future<void> loadDailyBrief() async {
@@ -131,6 +144,75 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
         )
         .distinct()
         .listen((event) => _trackActivityUseCase.trackEvent(event));
+  }
+
+  Future<void> initializeTutorialCoachMark() async {
+    final isTopicCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBriefTopicCard);
+
+    if (!isTopicCardTutorialStepSeen && _shouldShowTutorialCoachMark) {
+      targets.clear();
+      emit(DailyBriefPageState.shouldShowTopicCardTutorialCoachMark());
+      _initializeTopicCardTutorialCoachMarkTarget();
+      _shouldShowTutorialCoachMark = false;
+    }
+  }
+
+  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(
+        context,
+        targets: targets,
+        paddingFocus: 0,
+        opacityShadow: 0.5,
+        hideSkip: true,
+        onSkip: onSkipTutorialCoachMark,
+      );
+
+  void _initializeTopicCardTutorialCoachMarkTarget() {
+    targets.add(
+      TargetFocus(
+        identify: DailyBriefPageTutorialCoachMarkStep.topicCard.key,
+        keyTarget: topicCardKey,
+        color: AppColors.shadowColor,
+        enableTargetTab: false,
+        pulseVariation: Tween(begin: 1.0, end: 1.0),
+        contents: [
+          TargetContent(
+            align: ContentAlign.custom,
+            customPosition: CustomTargetContentPosition(bottom: AppDimens.xl),
+            builder: (context, controller) {
+              return TutorialTooltip(
+                text: LocaleKeys.tutorial_topicTooltipText.tr(),
+                dismissButtonText: LocaleKeys.common_gotIt.tr(),
+                onDismiss: () => emit(DailyBriefPageState.finishTutorialCoachMark()),
+              );
+            },
+          )
+        ],
+        shape: ShapeLightFocus.RRect,
+        radius: AppDimens.m,
+        paddingFocus: 0,
+      ),
+    );
+  }
+
+  Future<void> showTopicCardTutorialCoachMark() async {
+    bool isTopicCardTutorialStepSeen = await _isTutorialStepSeenUseCase.call(TutorialStep.dailyBriefTopicCard);
+    if (!isTopicCardTutorialStepSeen) {
+      emit(DailyBriefPageState.showTopicCardTutorialCoachMark());
+      await _setTutorialStepSeenUseCase.call(TutorialStep.dailyBriefTopicCard);
+      isTopicCardTutorialStepSeen = true;
+    }
+  }
+
+  void onSkipTutorialCoachMark() {
+    targets.removeAt(0);
+  }
+
+  Future<bool> onAndroidBackButtonPress(bool isShowingTutorialCoachMark) async {
+    if (isShowingTutorialCoachMark) {
+      emit(DailyBriefPageState.skipTutorialCoachMark(jumpToNextCoachMark: false));
+      return Future<bool>.value(false);
+    }
+    return Future<bool>.value(true);
   }
 }
 

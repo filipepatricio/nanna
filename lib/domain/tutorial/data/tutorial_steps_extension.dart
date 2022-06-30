@@ -7,12 +7,14 @@ extension TutorialStepExtention on TutorialStep {
         return 'TutorialStep_dailyBrief';
       case TutorialStep.topic:
         return 'TutorialStep_topic';
-      case TutorialStep.topicSummaryCard:
-        return 'TutorialStep_topicSummaryCard';
+      case TutorialStep.dailyBriefTopicCard:
+        return 'TutorialStep_dailyBriefTopicCard';
       case TutorialStep.topicMediaItem:
         return 'TutorialStep_topicMediaItem';
       case TutorialStep.explore:
         return 'TutorialStep_explore';
+      case TutorialStep.profile:
+        return 'TutorialStep_profile';
     }
   }
 }

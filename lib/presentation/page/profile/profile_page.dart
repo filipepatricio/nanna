@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_filter_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/profile/profile_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -11,6 +12,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,6 +25,17 @@ class ProfilePage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final tabController = useTabController(initialLength: 3);
     final scrollController = useScrollController();
+
+    useCubitListener<ProfilePageCubit, ProfilePageState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+        showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
+          showInfoToast(
+            context: context,
+            text: text,
+          );
+        }),
+      );
+    });
 
     useEffect(
       () {

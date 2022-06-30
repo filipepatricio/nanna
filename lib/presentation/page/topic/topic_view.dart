@@ -18,14 +18,12 @@ class TopicView extends HookWidget {
     required this.topic,
     required this.cubit,
     required this.scrollController,
-    this.summaryCardKey,
     this.mediaItemKey,
     Key? key,
   }) : super(key: key);
 
   final Topic topic;
   final TopicPageCubit cubit;
-  final GlobalKey? summaryCardKey;
   final GlobalKey? mediaItemKey;
   final ScrollController scrollController;
 
@@ -45,11 +43,6 @@ class TopicView extends HookWidget {
 
     useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        shouldShowSummaryCardTutorialCoachMark: () {
-          final summaryCardTutorialTriggerPoint = AppDimens.topicViewHeaderImageHeight(context);
-          final listener = summaryCardTutorialListener(scrollController, summaryCardTutorialTriggerPoint);
-          scrollController.addListener(listener);
-        },
         shouldShowMediaItemTutorialCoachMark: () {
           final topicArticleSectionTriggerPoint = topic.hasSummary
               ? AppDimens.topicArticleSectionTriggerPoint(context)
@@ -67,7 +60,6 @@ class TopicView extends HookWidget {
             [
               TopicSummarySection(
                 topic: topic,
-                summaryCardKey: summaryCardKey,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l, vertical: AppDimens.xl),
@@ -99,29 +91,6 @@ class TopicView extends HookWidget {
 
   bool didListScrollReachMediaItem(ScrollController listScrollController, double articleTriggerPosition) {
     return listScrollController.offset >= articleTriggerPosition && !listScrollController.position.outOfRange;
-  }
-
-  bool didListScrollReachSummaryCard(ScrollController listScrollController, double summaryCardTriggerPosition) {
-    return listScrollController.offset >= summaryCardTriggerPosition && !listScrollController.position.outOfRange;
-  }
-
-  VoidCallback summaryCardTutorialListener(ScrollController listScrollController, double topicHeaderImageHeight) {
-    var isToShowSummaryCardTutorialCoachMark = true;
-    void summaryCardTutorialListener() {
-      final summaryCardTriggerPosition = topicHeaderImageHeight - AppDimens.topicViewTopicHeaderPadding;
-      if (didListScrollReachSummaryCard(listScrollController, summaryCardTriggerPosition) &&
-          isToShowSummaryCardTutorialCoachMark) {
-        listScrollController.animateTo(
-          summaryCardTriggerPosition,
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.decelerate,
-        );
-        cubit.showSummaryCardTutorialCoachMark();
-        isToShowSummaryCardTutorialCoachMark = false;
-      }
-    }
-
-    return summaryCardTutorialListener;
   }
 
   VoidCallback mediaItemTutorialListener(ScrollController listScrollController, double articleTriggerPosition) {

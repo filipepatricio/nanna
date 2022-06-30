@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
@@ -5,6 +6,7 @@ import 'package:better_informed_mobile/presentation/page/explore/explore_page_st
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../fakes.dart';
 import '../visual_test_utils.dart';
 
 void main() {
@@ -45,6 +47,22 @@ void main() {
         },
       );
       await tester.matchGoldenFile();
+    },
+  );
+
+  visualTest(
+    '${ExplorePage}_(tutorial_snack_bar)',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: const ExploreTabGroupRouter(),
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<IsTutorialStepSeenUseCase>(
+            () => FakeIsTutorialStepSeenUseCase(isStepSeen: false),
+          );
+        },
+      );
+      await tester.matchGoldenFile();
+      await tester.pumpAndSettle(const Duration(seconds: 5));
     },
   );
 }
