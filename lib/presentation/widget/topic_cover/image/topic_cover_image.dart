@@ -29,8 +29,6 @@ class TopicCoverImage extends HookWidget {
           child: CloudinaryImage(
             publicId: topic.heroImage.publicId,
             config: CloudinaryConfig(
-              platformBasedExtension: true,
-              autoGravity: true,
               height: height,
               width: width,
             ),

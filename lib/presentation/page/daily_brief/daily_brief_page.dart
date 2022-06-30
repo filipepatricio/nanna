@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
@@ -15,15 +18,18 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/markdown_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -74,6 +80,10 @@ class _DailyBriefPage extends HookWidget {
     final cardStackWidth = MediaQuery.of(context).size.width;
     const cardStackHeight = AppDimens.briefEntryCardStackHeight;
     final topPadding = AppDimens.safeTopPadding(context);
+
+    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
+      state.whenOrNull();
+    });
 
     useEffect(
       () {
@@ -182,6 +192,7 @@ class _IdleContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isShowingTutorialToast = useState(false);
+    final cloudinaryProvider = useCloudinaryProvider();
 
     useEffect(
       () {
@@ -192,6 +203,7 @@ class _IdleContent extends HookWidget {
 
     useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
+        idle: (state) => _precacheFullSizeImages(context, cloudinaryProvider, state.entries),
         shouldShowTopicCardTutorialCoachMark: () {
           final topicCardTriggerPoint = scrollController.offset +
               AppDimens.briefEntryCardStackHeight *
@@ -210,9 +222,7 @@ class _IdleContent extends HookWidget {
           );
         },
         showTopicCardTutorialCoachMark: tutorialCoachMark.show,
-        skipTutorialCoachMark: (jumpToNextCoachMark) {
-          tutorialCoachMark.skip();
-        },
+        skipTutorialCoachMark: (_) => tutorialCoachMark.skip(),
         finishTutorialCoachMark: tutorialCoachMark.finish,
       );
     });
@@ -365,6 +375,42 @@ class _Greeting extends StatelessWidget {
         ],
         const SizedBox(height: AppDimens.m),
       ],
+    );
+  }
+}
+
+void _precacheFullSizeImages(
+  BuildContext context,
+  CloudinaryImageProvider cloudinaryProvider,
+  List<BriefEntry> entries,
+) {
+  for (final entry in entries) {
+    entry.item.mapOrNull(
+      article: (article) {
+        final articleImageHeight = AppDimens.articleHeaderImageHeight(context);
+        final articleImageWidth = AppDimens.articleHeaderImageWidth(context);
+
+        final config = CloudinaryConfig(width: articleImageWidth, height: articleImageHeight);
+
+        article.article.mapOrNull(
+          article: (article) {
+            if (article.type == ArticleType.premium) {
+              final articleImageUrl = article.imageUrl;
+              if (articleImageUrl.isNotEmpty) {
+                final url = config.apply(context, articleImageUrl, cloudinaryProvider).generateNotNull();
+                precacheImage(CachedNetworkImageProvider(url), context);
+              }
+            }
+          },
+        );
+      },
+      topicPreview: (topic) {
+        final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
+        final topicHeaderImageWidth = AppDimens.topicViewHeaderImageWidth(context);
+        final config = CloudinaryConfig(width: topicHeaderImageWidth, height: topicHeaderImageHeight);
+        final url = config.apply(context, topic.topicPreview.heroImage.publicId, cloudinaryProvider).generateNotNull();
+        precacheImage(CachedNetworkImageProvider(url), context);
+      },
     );
   }
 }

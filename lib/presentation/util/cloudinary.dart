@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/di_util.dart';
 import 'package:better_informed_mobile/presentation/util/dimension_util.dart';
@@ -134,7 +135,7 @@ Image cloudinaryImage({
   );
 }
 
-String? useCloudinaryImageUrl(MediaItemArticle? article, int width, int height) {
+String? useArticleImageUrl(MediaItemArticle? article, int width, int height) {
   if (article == null) return null;
 
   final cloudinaryProvider = useCloudinaryProvider();
@@ -157,5 +158,22 @@ String? useCloudinaryImageUrl(MediaItemArticle? article, int width, int height) 
       }
     },
     [article],
+  );
+}
+
+String useTopicImageUrl(TopicPreview topic, int width, int height) {
+  final cloudinaryProvider = useCloudinaryProvider();
+  return useMemoized(
+    () {
+      return cloudinaryProvider
+          .withPublicIdAsPlatform(topic.heroImage.publicId)
+          .transform()
+          .autoQuality()
+          .autoGravity()
+          .width(width)
+          .height(height)
+          .generateNotNull();
+    },
+    [topic],
   );
 }

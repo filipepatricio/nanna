@@ -133,6 +133,10 @@ class PremiumArticleReadView extends HookWidget {
         ),
       ),
     );
+    final maxHeight = useMemoized(
+      () => MediaQuery.of(context).size.height,
+      [MediaQuery.of(context).size.height],
+    );
 
     useEffect(
       () {
@@ -161,74 +165,71 @@ class PremiumArticleReadView extends HookWidget {
         [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
       ),
       behavior: HitTestBehavior.opaque,
-      child: LayoutBuilder(
-        builder: (context, constraints) => NotificationListener<ScrollNotification>(
-          onNotification: (scrollInfo) => _updateScrollPosition(
-            scrollInfo,
-            showTabBar,
-            readProgress,
-            dynamicListenPosition,
-            constraints.maxHeight,
-            showAudioFloatingButton.value,
-            context,
-          ),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              PageView(
-                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: pageController,
-                scrollDirection: Axis.vertical,
-                onPageChanged: (page) {
-                  showTabBar.value = false;
-                },
-                children: [
-                  if (articleWithImage)
-                    ArticleImageView(
-                      article: article.metadata,
-                      controller: pageController,
-                      fullHeight: constraints.maxHeight,
-                    ),
-                  NoScrollGlow(
-                    child: CustomScrollView(
-                      controller: mainController,
-                      physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                      slivers: [
-                        SliverFillViewport(
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (scrollInfo) => _updateScrollPosition(
+          scrollInfo,
+          showTabBar,
+          readProgress,
+          dynamicListenPosition,
+          maxHeight,
+          showAudioFloatingButton.value,
+          context,
+        ),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+              controller: pageController,
+              scrollDirection: Axis.vertical,
+              onPageChanged: (page) {
+                showTabBar.value = false;
+              },
+              children: [
+                if (articleWithImage)
+                  ArticleImageView(
+                    article: article.metadata,
+                    controller: pageController,
+                  ),
+                NoScrollGlow(
+                  child: CustomScrollView(
+                    controller: mainController,
+                    physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                    slivers: [
+                      SliverFillViewport(
+                        delegate: SliverChildListDelegate(
+                          [
+                            _ArticleContentView(
+                              article: article,
+                              articleContentKey: _articleContentKey,
+                              articleController: articleController,
+                              cubit: cubit,
+                              dynamicPosition: dynamicListenPosition,
+                              readProgress: readProgress,
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (showArticleRelatedContentSection)
+                        SliverList(
                           delegate: SliverChildListDelegate(
                             [
-                              _ArticleContentView(
-                                article: article,
-                                articleContentKey: _articleContentKey,
-                                articleController: articleController,
-                                cubit: cubit,
-                                dynamicPosition: dynamicListenPosition,
-                                readProgress: readProgress,
-                              ),
+                              Container(
+                                height: 500,
+                                color: AppColors.grey,
+
+                                ///Swap this one for related content
+                              )
                             ],
                           ),
                         ),
-                        if (showArticleRelatedContentSection)
-                          SliverList(
-                            delegate: SliverChildListDelegate(
-                              [
-                                Container(
-                                  height: 500,
-                                  color: AppColors.grey,
-
-                                  ///Swap this one for related content
-                                )
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              InformedTabBar.floating(show: showTabBar.value),
-            ],
-          ),
+                ),
+              ],
+            ),
+            InformedTabBar.floating(show: showTabBar.value),
+          ],
         ),
       ),
     );
