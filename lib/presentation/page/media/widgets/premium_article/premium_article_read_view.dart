@@ -179,7 +179,9 @@ class PremiumArticleReadView extends HookWidget {
           alignment: Alignment.bottomCenter,
           children: [
             PageView(
-              physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+              physics: const NeverScrollableScrollPhysics(
+                parent: ClampingScrollPhysics(),
+              ),
               controller: pageController,
               scrollDirection: Axis.vertical,
               onPageChanged: (page) {
@@ -194,7 +196,9 @@ class PremiumArticleReadView extends HookWidget {
                 NoScrollGlow(
                   child: CustomScrollView(
                     controller: mainController,
-                    physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                    physics: const NeverScrollableScrollPhysics(
+                      parent: ClampingScrollPhysics(),
+                    ),
                     slivers: [
                       SliverFillViewport(
                         delegate: SliverChildListDelegate(
@@ -206,6 +210,7 @@ class PremiumArticleReadView extends HookWidget {
                               cubit: cubit,
                               dynamicPosition: dynamicListenPosition,
                               readProgress: readProgress,
+                              showArticleRelatedContentSection: showArticleRelatedContentSection,
                             ),
                           ],
                         ),
@@ -281,6 +286,7 @@ class _ArticleContentView extends HookWidget {
     required this.articleController,
     required this.cubit,
     required this.articleContentKey,
+    required this.showArticleRelatedContentSection,
     Key? key,
   }) : super(key: key);
 
@@ -290,6 +296,7 @@ class _ArticleContentView extends HookWidget {
   final Article article;
   final MediaItemCubit cubit;
   final Key articleContentKey;
+  final bool showArticleRelatedContentSection;
 
   @override
   Widget build(BuildContext context) {
@@ -333,6 +340,10 @@ class _ArticleContentView extends HookWidget {
                       ],
                     ),
                   ),
+                  if (!showArticleRelatedContentSection)
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: footerHeight),
+                    ),
                 ],
               ),
             ),

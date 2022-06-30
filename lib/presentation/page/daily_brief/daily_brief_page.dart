@@ -81,10 +81,6 @@ class _DailyBriefPage extends HookWidget {
     const cardStackHeight = AppDimens.briefEntryCardStackHeight;
     final topPadding = AppDimens.safeTopPadding(context);
 
-    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
-      state.whenOrNull();
-    });
-
     useEffect(
       () {
         cubit.initialize();
