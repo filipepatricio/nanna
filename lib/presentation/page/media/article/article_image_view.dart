@@ -14,13 +14,11 @@ class ArticleImageView extends StatelessWidget {
   const ArticleImageView({
     required this.article,
     required this.controller,
-    required this.fullHeight,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final PageController controller;
-  final double fullHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +30,8 @@ class ArticleImageView extends StatelessWidget {
       children: [
         if (hasImage)
           SizedBox(
-            width: double.infinity,
-            height: fullHeight,
+            width: AppDimens.articleHeaderImageWidth(context),
+            height: AppDimens.articleHeaderImageHeight(context),
             child: ArticleImage(
               image: articleImage!,
               cardColor: AppColors.background,

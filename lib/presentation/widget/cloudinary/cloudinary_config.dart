@@ -7,9 +7,9 @@ class CloudinaryConfig {
   const CloudinaryConfig({
     this.height,
     this.width,
-    this.platformBasedExtension = false,
-    this.autoGravity = false,
-    this.autoQuality = false,
+    this.platformBasedExtension = true,
+    this.autoGravity = true,
+    this.autoQuality = true,
     this.sizeRoundUp = true,
   });
 
