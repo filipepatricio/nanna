@@ -1,1 +1,3 @@
-enum TutorialCoachMarkStep { summaryCard, mediaItem }
+enum TopicPageTutorialCoachMarkStep { mediaItem }
+
+enum DailyBriefPageTutorialCoachMarkStep { topicCard }

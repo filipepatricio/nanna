@@ -251,13 +251,9 @@ class _TopicIdleView extends HookWidget {
             },
           );
         },
-        showSummaryCardTutorialCoachMark: tutorialCoachMark.show,
         showMediaItemTutorialCoachMark: tutorialCoachMark.show,
         skipTutorialCoachMark: (jumpToNextCoachMark) {
           tutorialCoachMark.skip();
-          if (jumpToNextCoachMark) {
-            _scrollToArticles(context, scrollController);
-          }
         },
         finishTutorialCoachMark: tutorialCoachMark.finish,
       );
@@ -305,7 +301,6 @@ class _TopicIdleView extends HookWidget {
                       TopicView(
                         topic: topic,
                         cubit: cubit,
-                        summaryCardKey: cubit.summaryCardKey,
                         mediaItemKey: cubit.mediaItemKey,
                         scrollController: scrollController,
                       ),

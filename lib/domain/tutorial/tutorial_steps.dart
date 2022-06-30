@@ -1,1 +1,1 @@
-enum TutorialStep { dailyBrief, topic, topicSummaryCard, topicMediaItem, explore }
+enum TutorialStep { dailyBrief, topic, dailyBriefTopicCard, topicMediaItem, explore, profile }

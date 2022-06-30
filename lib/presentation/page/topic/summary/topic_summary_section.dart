@@ -14,11 +14,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class TopicSummarySection extends HookWidget {
   const TopicSummarySection({
     required this.topic,
-    this.summaryCardKey,
     Key? key,
   }) : super(key: key);
+
   final Topic topic;
-  final GlobalKey? summaryCardKey;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,6 @@ class TopicSummarySection extends HookWidget {
       child: _SummaryCardPageView(
         topicSummaryList: topic.topicSummaryList,
         controller: controller,
-        summaryCardKey: summaryCardKey,
       ),
     );
 
@@ -72,12 +70,11 @@ class _SummaryCardPageView extends HookWidget {
   const _SummaryCardPageView({
     required this.topicSummaryList,
     required this.controller,
-    this.summaryCardKey,
     Key? key,
   }) : super(key: key);
+
   final List<TopicSummary> topicSummaryList;
   final PageController controller;
-  final GlobalKey? summaryCardKey;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +89,6 @@ class _SummaryCardPageView extends HookWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: _SummaryCard(
               markdownText: topicSummaryList[index].content,
-              summaryCardKey: index == 0 ? summaryCardKey : null,
             ),
           );
         },
@@ -104,29 +100,25 @@ class _SummaryCardPageView extends HookWidget {
 class _SummaryCard extends StatelessWidget {
   const _SummaryCard({
     required this.markdownText,
-    required this.summaryCardKey,
     Key? key,
   }) : super(key: key);
+
   final String markdownText;
-  final GlobalKey? summaryCardKey;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      key: summaryCardKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: InformedMarkdownBody(
-              markdown: markdownText,
-              baseTextStyle:
-                  context.isSmallDevice ? AppTypography.b3Regular.copyWith(height: 1.5) : AppTypography.b2Regular,
-              pPadding: const EdgeInsets.only(bottom: AppDimens.xs),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: InformedMarkdownBody(
+            markdown: markdownText,
+            baseTextStyle:
+                context.isSmallDevice ? AppTypography.b3Regular.copyWith(height: 1.5) : AppTypography.b2Regular,
+            pPadding: const EdgeInsets.only(bottom: AppDimens.xs),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

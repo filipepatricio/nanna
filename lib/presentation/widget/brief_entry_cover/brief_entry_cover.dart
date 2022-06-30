@@ -15,6 +15,7 @@ class BriefEntryCover extends HookWidget {
     required this.briefId,
     required this.width,
     required this.height,
+    this.topicCardKey,
     Key? key,
   }) : super(key: key);
 
@@ -22,6 +23,7 @@ class BriefEntryCover extends HookWidget {
   final String briefId;
   final double width;
   final double height;
+  final GlobalKey? topicCardKey;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class BriefEntryCover extends HookWidget {
       case BriefEntryStyleType.topicCard:
         return item.maybeMap(
           topicPreview: (data) => LimitedBox(
+            key: topicCardKey,
             maxWidth: width,
             maxHeight: height,
             child: TopicCover.large(
