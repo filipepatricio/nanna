@@ -49,8 +49,6 @@ class PhotoCaptionPage extends HookWidget {
               child: CloudinaryImage(
                 publicId: cloudinaryImage.publicId,
                 config: CloudinaryConfig(
-                  platformBasedExtension: true,
-                  autoGravity: true,
                   width: imageWidth,
                 ),
                 width: imageWidth,

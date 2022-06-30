@@ -35,10 +35,6 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   final TrackActivityUseCase _trackActivityUseCase;
   final MarkTopicAsVisitedUseCase _markTopicAsVisitedUseCase;
 
-  late bool _isTopicTutorialStepSeen;
-  late bool _isTopicSummaryCardTutorialStepSeen;
-  late bool _isTopicMediaItemTutorialStepSeen;
-
   late Topic _topic;
   late String? _briefId;
 
@@ -77,23 +73,18 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   }
 
   Future<void> initializeTutorialStep() async {
-    _isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
-    if (!_isTopicTutorialStepSeen) {
+    final isTopicTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topic);
+    if (!isTopicTutorialStepSeen) {
       emit(TopicPageState.showTutorialToast(LocaleKeys.tutorial_topicSnackBarText.tr()));
       await _setTutorialStepSeenUseCase.call(TutorialStep.topic);
     }
   }
 
   Future<void> initializeTutorialCoachMark() async {
-    _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicSummaryCard);
-    _isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicMediaItem);
+    final isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicMediaItem);
 
     targets.clear();
-    if (!_isTopicSummaryCardTutorialStepSeen && _topic.hasSummary) {
-      emit(TopicPageState.shouldShowSummaryCardTutorialCoachMark());
-      _initializeSummaryCardTutorialCoachMarkTarget(!_isTopicMediaItemTutorialStepSeen);
-    }
-    if (!_isTopicMediaItemTutorialStepSeen) {
+    if (!isTopicMediaItemTutorialStepSeen) {
       emit(TopicPageState.shouldShowMediaItemTutorialCoachMark());
       _initializeMediaTypeTutorialCoachMarkTarget();
     }
@@ -108,43 +99,10 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         onSkip: onSkipTutorialCoachMark,
       );
 
-  void _initializeSummaryCardTutorialCoachMarkTarget(bool isNextCoachMarkNotSeen) {
-    targets.add(
-      TargetFocus(
-        identify: TutorialCoachMarkStep.summaryCard.key,
-        keyTarget: summaryCardKey,
-        color: AppColors.shadowColor,
-        enableTargetTab: false,
-        pulseVariation: Tween(begin: 1.0, end: 1.0),
-        contents: [
-          TargetContent(
-            align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(bottom: 100),
-            builder: (context, controller) {
-              return TutorialTooltip(
-                text: LocaleKeys.tutorial_topicTooltipText.tr(),
-                tutorialIndex: TutorialCoachMarkStep.values.indexOf(TutorialCoachMarkStep.summaryCard),
-                tutorialLength: TutorialCoachMarkStep.values.length,
-                dismissButtonText: LocaleKeys.common_continue.tr(),
-                tutorialTooltipPosition: TutorialTooltipPosition.bottom,
-                onDismiss: () => emit(
-                  TopicPageState.skipTutorialCoachMark(jumpToNextCoachMark: isNextCoachMarkNotSeen),
-                ),
-              );
-            },
-          )
-        ],
-        shape: ShapeLightFocus.RRect,
-        radius: AppDimens.m,
-        paddingFocus: AppDimens.m,
-      ),
-    );
-  }
-
   void _initializeMediaTypeTutorialCoachMarkTarget() {
     targets.add(
       TargetFocus(
-        identify: TutorialCoachMarkStep.mediaItem.key,
+        identify: TopicPageTutorialCoachMarkStep.mediaItem.key,
         keyTarget: mediaItemKey,
         color: AppColors.shadowColor,
         enableTargetTab: false,
@@ -152,14 +110,11 @@ class TopicPageCubit extends Cubit<TopicPageState> {
         contents: [
           TargetContent(
             align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(bottom: 50),
+            customPosition: CustomTargetContentPosition(bottom: AppDimens.xl),
             builder: (context, controller) {
               return TutorialTooltip(
                 text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
-                tutorialIndex: TutorialCoachMarkStep.values.indexOf(TutorialCoachMarkStep.mediaItem),
-                tutorialLength: TutorialCoachMarkStep.values.length,
-                dismissButtonText: LocaleKeys.common_done.tr(),
-                tutorialTooltipPosition: TutorialTooltipPosition.bottom,
+                dismissButtonText: LocaleKeys.common_gotIt.tr(),
                 onDismiss: () => emit(TopicPageState.finishTutorialCoachMark()),
               );
             },
@@ -171,21 +126,12 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     );
   }
 
-  Future<void> showSummaryCardTutorialCoachMark() async {
-    _isTopicSummaryCardTutorialStepSeen = await _isTutorialStepSeenUseCase.call(TutorialStep.topicSummaryCard);
-    if (!_isTopicSummaryCardTutorialStepSeen) {
-      emit(TopicPageState.showSummaryCardTutorialCoachMark());
-      await _setTutorialStepSeenUseCase.call(TutorialStep.topicSummaryCard);
-      _isTopicSummaryCardTutorialStepSeen = true;
-    }
-  }
-
   Future<void> showMediaItemTutorialCoachMark() async {
-    _isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase.call(TutorialStep.topicMediaItem);
-    if (!_isTopicMediaItemTutorialStepSeen) {
+    bool isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase.call(TutorialStep.topicMediaItem);
+    if (!isTopicMediaItemTutorialStepSeen) {
       emit(TopicPageState.showMediaItemTutorialCoachMark());
       await _setTutorialStepSeenUseCase.call(TutorialStep.topicMediaItem);
-      _isTopicMediaItemTutorialStepSeen = true;
+      isTopicMediaItemTutorialStepSeen = true;
     }
   }
 

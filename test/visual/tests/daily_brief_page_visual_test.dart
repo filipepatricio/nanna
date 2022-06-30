@@ -1,9 +1,12 @@
+import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../fakes.dart';
 import '../visual_test_utils.dart';
@@ -52,6 +55,21 @@ void main() {
       await tester.matchGoldenFile();
     },
   );
+
+  visualTest(
+    '${DailyBriefPage}_(tutorial_snack_bar)',
+    (tester) async {
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<IsTutorialStepSeenUseCase>(
+            () => FakeIsTutorialStepSeenUseCase(isStepSeen: false),
+          );
+        },
+      );
+      await tester.matchGoldenFile();
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+    },
+  );
 }
 
 class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
@@ -65,4 +83,7 @@ class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
   Future<void> initialize() async {}
   @override
   Future<void> close() async {}
+
+  @override
+  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(context, targets: <TargetFocus>[]);
 }

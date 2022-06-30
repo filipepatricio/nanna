@@ -32,7 +32,7 @@ class TopicHeader extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
-    final topicHeaderImageWidth = MediaQuery.of(context).size.width;
+    final topicHeaderImageWidth = AppDimens.topicViewHeaderImageWidth(context);
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -45,8 +45,6 @@ class TopicHeader extends HookWidget {
             child: CloudinaryImage(
               publicId: topic.heroImage.publicId,
               config: CloudinaryConfig(
-                platformBasedExtension: true,
-                autoGravity: true,
                 width: topicHeaderImageWidth,
                 height: topicHeaderImageHeight,
               ),

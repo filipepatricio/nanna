@@ -32,8 +32,6 @@ class ArticleImage extends HookWidget {
           return CloudinaryImage(
             publicId: (image as d.ArticleImageCloudinary).cloudinaryImage.publicId,
             config: CloudinaryConfig(
-              platformBasedExtension: true,
-              autoGravity: true,
               width: width,
               height: height,
             ),

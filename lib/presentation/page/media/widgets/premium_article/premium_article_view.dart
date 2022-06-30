@@ -17,6 +17,7 @@ class PremiumArticleView extends HookWidget {
     required this.cubit,
     required this.snackbarController,
     required this.articleOutputMode,
+    required this.showArticleRelatedContentSection,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -26,6 +27,7 @@ class PremiumArticleView extends HookWidget {
   final double? readArticleProgress;
   final SnackbarController snackbarController;
   final ArticleOutputMode articleOutputMode;
+  final bool showArticleRelatedContentSection;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +92,7 @@ class PremiumArticleView extends HookWidget {
                     },
                     children: [
                       PremiumArticleReadView(
+                        showArticleRelatedContentSection: showArticleRelatedContentSection,
                         article: article,
                         articleController: controller,
                         pageController: pageController,

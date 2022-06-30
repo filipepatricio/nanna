@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
+import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.pageController,
     required this.cubit,
     required this.mainController,
+    required this.showArticleRelatedContentSection,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -32,6 +34,7 @@ class PremiumArticleReadView extends HookWidget {
   final ScrollController mainController;
   final MediaItemCubit cubit;
   final double? readArticleProgress;
+  final bool showArticleRelatedContentSection;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -130,6 +133,10 @@ class PremiumArticleReadView extends HookWidget {
         ),
       ),
     );
+    final maxHeight = useMemoized(
+      () => MediaQuery.of(context).size.height,
+      [MediaQuery.of(context).size.height],
+    );
 
     useEffect(
       () {
@@ -158,37 +165,40 @@ class PremiumArticleReadView extends HookWidget {
         [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
       ),
       behavior: HitTestBehavior.opaque,
-      child: LayoutBuilder(
-        builder: (context, constraints) => NotificationListener<ScrollNotification>(
-          onNotification: (scrollInfo) => _updateScrollPosition(
-            scrollInfo,
-            showTabBar,
-            readProgress,
-            dynamicListenPosition,
-            constraints.maxHeight,
-            showAudioFloatingButton.value,
-            context,
-          ),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              PageView(
-                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: pageController,
-                scrollDirection: Axis.vertical,
-                onPageChanged: (page) {
-                  showTabBar.value = false;
-                },
-                children: [
-                  if (articleWithImage)
-                    ArticleImageView(
-                      article: article.metadata,
-                      controller: pageController,
-                      fullHeight: constraints.maxHeight,
-                    ),
-                  CustomScrollView(
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (scrollInfo) => _updateScrollPosition(
+          scrollInfo,
+          showTabBar,
+          readProgress,
+          dynamicListenPosition,
+          maxHeight,
+          showAudioFloatingButton.value,
+          context,
+        ),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(
+                parent: ClampingScrollPhysics(),
+              ),
+              controller: pageController,
+              scrollDirection: Axis.vertical,
+              onPageChanged: (page) {
+                showTabBar.value = false;
+              },
+              children: [
+                if (articleWithImage)
+                  ArticleImageView(
+                    article: article.metadata,
+                    controller: pageController,
+                  ),
+                NoScrollGlow(
+                  child: CustomScrollView(
                     controller: mainController,
-                    physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                    physics: const NeverScrollableScrollPhysics(
+                      parent: ClampingScrollPhysics(),
+                    ),
                     slivers: [
                       SliverFillViewport(
                         delegate: SliverChildListDelegate(
@@ -200,24 +210,31 @@ class PremiumArticleReadView extends HookWidget {
                               cubit: cubit,
                               dynamicPosition: dynamicListenPosition,
                               readProgress: readProgress,
+                              showArticleRelatedContentSection: showArticleRelatedContentSection,
                             ),
                           ],
                         ),
                       ),
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            ///Add additional content here
-                          ],
+                      if (showArticleRelatedContentSection)
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              Container(
+                                height: 500,
+                                color: AppColors.grey,
+
+                                ///Swap this one for related content
+                              )
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
-                ],
-              ),
-              InformedTabBar.floating(show: showTabBar.value),
-            ],
-          ),
+                ),
+              ],
+            ),
+            InformedTabBar.floating(show: showTabBar.value),
+          ],
         ),
       ),
     );
@@ -269,6 +286,7 @@ class _ArticleContentView extends HookWidget {
     required this.articleController,
     required this.cubit,
     required this.articleContentKey,
+    required this.showArticleRelatedContentSection,
     Key? key,
   }) : super(key: key);
 
@@ -278,6 +296,7 @@ class _ArticleContentView extends HookWidget {
   final Article article;
   final MediaItemCubit cubit;
   final Key articleContentKey;
+  final bool showArticleRelatedContentSection;
 
   @override
   Widget build(BuildContext context) {
@@ -321,6 +340,10 @@ class _ArticleContentView extends HookWidget {
                       ],
                     ),
                   ),
+                  if (!showArticleRelatedContentSection)
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: footerHeight),
+                    ),
                 ],
               ),
             ),
