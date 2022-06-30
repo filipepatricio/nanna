@@ -1,4 +1,6 @@
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
+import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
+import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
@@ -66,4 +68,13 @@ class FakeAudioPlayerBannerCubit extends Fake implements AudioPlayerBannerCubit 
 
   @override
   Future<void> close() async {}
+}
+
+class FakeIsTutorialStepSeenUseCase extends Fake implements IsTutorialStepSeenUseCase {
+  FakeIsTutorialStepSeenUseCase({required this.isStepSeen});
+
+  final bool isStepSeen;
+
+  @override
+  Future<bool> call(TutorialStep tutorialStep) async => isStepSeen;
 }

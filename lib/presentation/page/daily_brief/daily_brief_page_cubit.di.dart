@@ -78,13 +78,15 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       loadDailyBrief();
     });
 
+    _initializeItemPreviewTracker();
+  }
+
+  Future<void> initializeTutorialSnackBar() async {
     final isDailyBriefTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     if (!isDailyBriefTutorialStepSeen) {
       emit(DailyBriefPageState.showTutorialToast(LocaleKeys.tutorial_dailyBriefSnackBarText.tr()));
       await _setTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     }
-
-    _initializeItemPreviewTracker();
   }
 
   Future<void> loadDailyBrief() async {

@@ -183,8 +183,22 @@ class _IdleContent extends HookWidget {
   Widget build(BuildContext context) {
     final isShowingTutorialToast = useState(false);
 
+    useEffect(
+      () {
+        cubit.initializeTutorialSnackBar();
+      },
+      [cubit],
+    );
+
     useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
+        shouldShowTopicCardTutorialCoachMark: () {
+          final topicCardTriggerPoint = scrollController.offset +
+              AppDimens.briefEntryCardStackHeight *
+                  (context.isSmallDevice ? 1.0 : _topicCardTutorialOffsetFromBottomFraction);
+          final listener = topicCardTutorialListener(scrollController, topicCardTriggerPoint);
+          scrollController.addListener(listener);
+        },
         showTutorialToast: (text) {
           isShowingTutorialToast.value = true;
           showInfoToast(
@@ -203,18 +217,6 @@ class _IdleContent extends HookWidget {
       );
     });
 
-    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(
-        shouldShowTopicCardTutorialCoachMark: () {
-          final topicCardTriggerPoint = scrollController.offset +
-              AppDimens.briefEntryCardStackHeight *
-                  (context.isSmallDevice ? 1.0 : _topicCardTutorialOffsetFromBottomFraction);
-          final listener = topicCardTutorialListener(scrollController, topicCardTriggerPoint);
-          scrollController.addListener(listener);
-        },
-      );
-    });
-
     return MultiSliver(
       children: [
         _Greeting(
@@ -230,18 +232,18 @@ class _IdleContent extends HookWidget {
 
               return VisibilityDetector(
                 key: Key(currentEntry.id),
-                onVisibilityChanged: kIsTest
-                    ? null
-                    : (visibility) {
-                        if (currentEntry == firstTopic) {
-                          cubit.initializeTutorialCoachMark();
-                        }
-                        cubit.trackBriefEntryPreviewed(
-                          currentEntry,
-                          index,
-                          visibility.visibleFraction,
-                        );
-                      },
+                onVisibilityChanged: (visibility) {
+                  if (currentEntry == firstTopic) {
+                    cubit.initializeTutorialCoachMark();
+                  }
+                  if (!kIsTest) {
+                    cubit.trackBriefEntryPreviewed(
+                      currentEntry,
+                      index,
+                      visibility.visibleFraction,
+                    );
+                  }
+                },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
