@@ -294,7 +294,7 @@ class PremiumArticleReadView extends HookWidget {
 double _bottomBarShownAudioButtonBottomPosition(BuildContext context) =>
     AppDimens.l + (kBottomNavigationBarHeight + MediaQuery.of(context).viewPadding.bottom);
 
-class _ArticleContentView extends HookWidget {
+class _ArticleContentView extends StatefulHookWidget {
   const _ArticleContentView({
     required this.article,
     required this.readProgress,
@@ -315,7 +315,14 @@ class _ArticleContentView extends HookWidget {
   final bool showArticleRelatedContentSection;
 
   @override
+  State<_ArticleContentView> createState() => _ArticleContentViewState();
+}
+
+class _ArticleContentViewState extends State<_ArticleContentView> with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final footerHeight = useMemoized(
       () => MediaQuery.of(context).size.height / 3,
       [MediaQuery.of(context).size.height],
@@ -329,18 +336,18 @@ class _ArticleContentView extends HookWidget {
               child: CustomScrollView(
                 primary: false,
                 physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: articleController,
+                controller: widget.articleController,
                 slivers: [
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
                         ArticleContentView(
-                          article: article,
-                          cubit: cubit,
-                          articleContentKey: articleContentKey,
-                          scrollToPosition: () => _scrollToPosition(readProgress.value),
+                          article: widget.article,
+                          cubit: widget.cubit,
+                          articleContentKey: widget.articleContentKey,
+                          scrollToPosition: () => _scrollToPosition(widget.readProgress.value),
                         ),
-                        if (article.metadata.credits.isNotEmpty) ...[
+                        if (widget.article.metadata.credits.isNotEmpty) ...[
                           Padding(
                             padding: const EdgeInsets.only(
                               top: AppDimens.xl,
@@ -348,7 +355,7 @@ class _ArticleContentView extends HookWidget {
                               right: AppDimens.l,
                             ),
                             child: _Credits(
-                              credits: article.metadata.credits,
+                              credits: widget.article.metadata.credits,
                             ),
                           ),
                           SizedBox(height: footerHeight),
@@ -356,21 +363,21 @@ class _ArticleContentView extends HookWidget {
                       ],
                     ),
                   ),
-                  if (!showArticleRelatedContentSection)
+                  if (!widget.showArticleRelatedContentSection)
                     SliverToBoxAdapter(
                       child: SizedBox(height: footerHeight),
                     ),
                 ],
               ),
             ),
-            _ArticleProgressBar(readProgress: readProgress),
+            _ArticleProgressBar(readProgress: widget.readProgress),
           ],
         ),
-        if (article.metadata.hasAudioVersion)
+        if (widget.article.metadata.hasAudioVersion)
           _AnimatedAudioButton(
-            dynamicPosition: dynamicPosition,
-            readProgress: readProgress,
-            article: article.metadata,
+            dynamicPosition: widget.dynamicPosition,
+            readProgress: widget.readProgress,
+            article: widget.article.metadata,
           ),
       ],
     );
@@ -378,15 +385,19 @@ class _ArticleContentView extends HookWidget {
 
   void _scrollToPosition(double? readArticleProgress) {
     if (readArticleProgress != null && readArticleProgress != 1.0) {
-      final scrollPosition = cubit.scrollData.contentOffset +
-          ((articleController.position.maxScrollExtent - cubit.scrollData.contentOffset) * readArticleProgress);
-      articleController.animateTo(
+      final scrollPosition = widget.cubit.scrollData.contentOffset +
+          ((widget.articleController.position.maxScrollExtent - widget.cubit.scrollData.contentOffset) *
+              readArticleProgress);
+      widget.articleController.animateTo(
         scrollPosition,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _AnimatedAudioButton extends StatelessWidget {
