@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
+import 'package:better_informed_mobile/domain/article/data/other_brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit_provider.dart';
@@ -18,6 +19,8 @@ class PremiumArticleView extends HookWidget {
     required this.snackbarController,
     required this.articleOutputMode,
     required this.showArticleRelatedContentSection,
+    required this.showArticleMoreFromBriefSection,
+    required this.otherBrief,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -28,6 +31,8 @@ class PremiumArticleView extends HookWidget {
   final SnackbarController snackbarController;
   final ArticleOutputMode articleOutputMode;
   final bool showArticleRelatedContentSection;
+  final bool showArticleMoreFromBriefSection;
+  final List<OtherBriefEntryItem> otherBrief;
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +98,14 @@ class PremiumArticleView extends HookWidget {
                     children: [
                       PremiumArticleReadView(
                         showArticleRelatedContentSection: showArticleRelatedContentSection,
+                        showArticleMoreFromBriefSection: showArticleMoreFromBriefSection,
                         article: article,
                         articleController: controller,
                         pageController: pageController,
                         cubit: cubit,
                         readArticleProgress: readArticleProgress,
                         mainController: mainController,
+                        otherBrief: otherBrief,
                       ),
                       if (metadata.hasAudioVersion)
                         PremiumArticleAudioView(

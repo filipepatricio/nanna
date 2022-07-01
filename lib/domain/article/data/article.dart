@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 
 enum ArticleType { free, premium }
 
+enum ArticleProgressState { finished, inProgress, unread }
+
 class Article {
   Article({
     required this.metadata,

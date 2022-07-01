@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/other_brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,7 +17,9 @@ class MediaItemState with _$MediaItemState {
   @Implements<BuildState>()
   const factory MediaItemState.idlePremium(
     Article article,
+    List<OtherBriefEntryItem> otherBrief,
     bool showArticleRelatedContentSection,
+    bool showArticleMoreFromBriefSection,
   ) = _MediaItemStateIdlePremium;
 
   @Implements<BuildState>()

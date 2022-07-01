@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
@@ -17,6 +18,7 @@ class TopicCoverContent extends StatelessWidget {
     required this.type,
     this.mode = Brightness.dark,
     this.hasBackgroundColor = false,
+    this.coverSize,
     Key? key,
   }) : super(key: key);
 
@@ -24,6 +26,7 @@ class TopicCoverContent extends StatelessWidget {
   final TopicCoverType type;
   final Brightness mode;
   final bool hasBackgroundColor;
+  final double? coverSize;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,8 @@ class TopicCoverContent extends StatelessWidget {
         return _CoverContentExploreLarge(topic: topic);
       case TopicCoverType.exploreSmall:
         return _CoverContentExploreSmall(topic: topic, hasBackgroundColor: hasBackgroundColor);
+      case TopicCoverType.otherBrief:
+        return _CoverContentOtherBriefList(topic: topic, coverSize: coverSize);
     }
   }
 }
@@ -245,6 +250,61 @@ class _CoverContentExploreSmall extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _CoverContentOtherBriefList extends StatelessWidget {
+  const _CoverContentOtherBriefList({
+    required this.topic,
+    this.coverSize,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+  final double? coverSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: SizedBox(
+        height: coverSize,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            CoverLabel.topic(
+              topic: topic,
+              color: AppColors.white,
+              borderColor: AppColors.dividerGrey,
+            ),
+            const Spacer(),
+            Text(
+              topic.strippedTitle,
+              maxLines: 2,
+              style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+              overflow: TextOverflow.ellipsis,
+            ),
+            const Spacer(),
+            Row(
+              children: [
+                if (topic.highlightedPublishers.first.darkLogo != null)
+                  PublisherLogo.dark(
+                    publisher: topic.highlightedPublishers.first,
+                  ),
+                Flexible(
+                  child: Text(
+                    topic.highlightedPublishers.first.name,
+                    maxLines: 1,
+                    style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

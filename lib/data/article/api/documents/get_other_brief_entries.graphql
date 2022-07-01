@@ -1,0 +1,16 @@
+query getOtherBriefEntries($articleSlug: String!) {
+	getOtherBriefEntries(articleSlug: $articleSlug) {
+		__typename
+		... on Article {
+			id
+			progressState
+			slug
+		}
+
+		... on Topic {
+			id
+			visited
+			slug
+		}
+	}
+}

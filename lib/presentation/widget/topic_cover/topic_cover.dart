@@ -7,7 +7,9 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/image/top
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-enum TopicCoverType { small, large, exploreLarge, exploreSmall }
+const _coverSizeToScreenWidthFactor = 0.26;
+
+enum TopicCoverType { small, large, exploreLarge, exploreSmall, otherBrief }
 
 class TopicCover extends HookWidget {
   factory TopicCover.large({required TopicPreview topic, Function()? onTap}) => TopicCover._(
@@ -35,6 +37,13 @@ class TopicCover extends HookWidget {
         onTap: onTap,
         hasBackgroundColor: hasBackgroundColor,
       );
+
+  factory TopicCover.otherBrief({required TopicPreview topic, Function()? onTap}) => TopicCover._(
+        type: TopicCoverType.otherBrief,
+        topic: topic,
+        onTap: onTap,
+      );
+
   const TopicCover._({
     required this.topic,
     required this.type,
@@ -100,6 +109,12 @@ class TopicCover extends HookWidget {
               ],
             ),
           ),
+        );
+
+      case TopicCoverType.otherBrief:
+        return GestureDetector(
+          onTap: onTap,
+          child: _TopicCoverOtherBriefList(onTap: onTap, topic: topic),
         );
     }
   }
@@ -172,6 +187,47 @@ class _TopicCoverExploreSmall extends StatelessWidget {
             type: TopicCoverType.exploreSmall,
             mode: Brightness.light,
             hasBackgroundColor: hasBackgroundColor,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TopicCoverOtherBriefList extends HookWidget {
+  const _TopicCoverOtherBriefList({
+    required this.onTap,
+    required this.topic,
+    Key? key,
+  }) : super(key: key);
+
+  final VoidCallback? onTap;
+  final TopicPreview topic;
+
+  @override
+  Widget build(BuildContext context) {
+    final coverSize = useMemoized(
+      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      [MediaQuery.of(context).size],
+    );
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Row(
+        children: [
+          SizedBox.square(
+            dimension: coverSize,
+            child: TopicCoverImage(
+              topic: topic,
+              borderRadius: AppDimens.xs,
+            ),
+          ),
+          const SizedBox(width: AppDimens.m),
+          TopicCoverContent(
+            topic: topic,
+            type: TopicCoverType.otherBrief,
+            coverSize: coverSize,
           ),
         ],
       ),

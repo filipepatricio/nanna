@@ -15,6 +15,7 @@ class CoverLabel extends StatelessWidget {
     this.icon,
     this.label,
     this.color,
+    this.borderColor,
     this.child,
     Key? key,
   })  : assert(
@@ -23,19 +24,30 @@ class CoverLabel extends StatelessWidget {
         ),
         super(key: key);
 
-  factory CoverLabel.topic({required TopicPreview topic}) => topic.owner is Expert
-      ? CoverLabel._(
-          icon: AppVectorGraphics.expertTopicLabel,
-          label: '${LocaleKeys.topic_expert.tr()} ${LocaleKeys.topic_label.tr()}',
-        )
-      : CoverLabel._(
-          icon: AppVectorGraphics.topicLabel,
-          label: LocaleKeys.topic_label.tr(),
-        );
+  factory CoverLabel.topic({
+    required TopicPreview topic,
+    Color? color,
+    Color? borderColor,
+  }) =>
+      topic.owner is Expert
+          ? CoverLabel._(
+              icon: AppVectorGraphics.expertTopicLabel,
+              label: '${LocaleKeys.topic_expert.tr()} ${LocaleKeys.topic_label.tr()}',
+              color: color,
+              borderColor: borderColor,
+            )
+          : CoverLabel._(
+              icon: AppVectorGraphics.topicLabel,
+              label: LocaleKeys.topic_label.tr(),
+              color: color,
+              borderColor: borderColor,
+            );
 
-  factory CoverLabel.article() => CoverLabel._(
+  factory CoverLabel.article({Color? color, Color? borderColor}) => CoverLabel._(
         icon: AppVectorGraphics.articleLabel,
         label: LocaleKeys.article_label.tr(),
+        color: color,
+        borderColor: borderColor,
       );
 
   factory CoverLabel.articleKind(ArticleKind kind) => CoverLabel._(
@@ -50,6 +62,7 @@ class CoverLabel extends StatelessWidget {
   final String? icon;
   final String? label;
   final Color? color;
+  final Color? borderColor;
   final Widget? child;
 
   @override
@@ -62,6 +75,11 @@ class CoverLabel extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.xs),
         color: color ?? AppColors.background,
+        border: borderColor != null
+            ? Border.all(
+                color: borderColor!,
+              )
+            : null,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

@@ -4,14 +4,18 @@ import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/other_brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/domain/article/exception/article_geoblocked_exception.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_header_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_article_more_from_brief_section_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_article_related_content_section_use_case.di.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/trade_topid_id_for_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dt.dart';
@@ -31,6 +35,9 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     this._tradeTopicIdForSlugUseCase,
     this._trackArticleReadingProgressUseCase,
     this._getShowArticleRelatedContentSectionUseCase,
+    this._getShowArticleMoreFromBriefSectionUseCase,
+    this._getOtherBriefEntriesUseCase,
+    this._getTopicBySlugUseCase,
   ) : super(const MediaItemState.initializing());
 
   final SetReadingBannerStreamUseCase _setStartedArticleStreamUseCase;
@@ -40,6 +47,9 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   final TradeTopicIdForSlugUseCase _tradeTopicIdForSlugUseCase;
   final TrackArticleReadingProgressUseCase _trackArticleReadingProgressUseCase;
   final GetShowArticleRelatedContentSectionUseCase _getShowArticleRelatedContentSectionUseCase;
+  final GetShowArticleMoreFromBriefSectionUseCase _getShowArticleMoreFromBriefSectionUseCase;
+  final GetOtherBriefEntriesUseCase _getOtherBriefEntriesUseCase;
+  final GetTopicBySlugUseCase _getTopicBySlugUseCase;
 
   late MediaItemArticle _currentArticle;
   late String? _topicId;
@@ -47,10 +57,10 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   late NeatPeriodicTaskScheduler? readingProgressTrackingScheduler;
 
   String? get topicId => _topicId;
-
   String? get briefId => _briefId;
 
   Article? _currentFullArticle;
+  final List<OtherBriefEntryItem> _otherBrief = [];
 
   var scrollData = MediaItemScrollData.initial();
 
@@ -136,12 +146,31 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   Future<void> _loadPremiumArticle(MediaItemArticle article) async {
     try {
       _currentFullArticle = await _getArticleUseCase(article);
+
       await _showIdlePremiumOrErrorState();
     } on ArticleGeoblockedException {
       emit(const MediaItemState.geoblocked());
     } catch (e, s) {
       Fimber.e('Fetching full article failed', ex: e, stacktrace: s);
       emit(MediaItemState.error(_currentArticle));
+    }
+  }
+
+  Future<void> _loadOtherBrief(String articleSlug) async {
+    final brief = await _getOtherBriefEntriesUseCase(articleSlug);
+
+    for (final b in brief) {
+      if (b is OtherBriefEntryItemArticle) {
+        final article = await _getArticleHeaderUseCase(b.slug);
+        _otherBrief.add(b.copyWith(article: article));
+        continue;
+      }
+
+      if (b is OtherBriefEntryItemTopic) {
+        final topic = await _getTopicBySlugUseCase(b.slug);
+        _otherBrief.add(b.copyWith(topic: topic));
+        continue;
+      }
     }
   }
 
@@ -193,11 +222,18 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       emit(MediaItemState.error(_currentArticle));
     } else {
       final showArticleRelatedContentSection = await _getShowArticleRelatedContentSectionUseCase();
+      final showArticleMoreFromBriefSection = await _getShowArticleMoreFromBriefSectionUseCase();
+
+      if (showArticleMoreFromBriefSection) {
+        await _loadOtherBrief(article.metadata.slug);
+      }
 
       emit(
         MediaItemState.idlePremium(
           article,
+          _otherBrief,
           showArticleRelatedContentSection,
+          showArticleMoreFromBriefSection,
         ),
       );
     }

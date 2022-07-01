@@ -75,6 +75,8 @@ class MediaItemPage extends HookWidget {
                   readArticleProgress: readArticleProgress,
                   articleOutputMode: articleOutputMode,
                   showArticleRelatedContentSection: state.showArticleRelatedContentSection,
+                  showArticleMoreFromBriefSection: state.showArticleMoreFromBriefSection,
+                  otherBrief: state.otherBrief,
                 ),
                 error: (state) => _ErrorContent(article: state.article),
                 emptyError: (_) => _ErrorContent(
