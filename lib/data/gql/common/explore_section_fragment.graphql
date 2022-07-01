@@ -5,6 +5,10 @@ fragment exploreSectionFragment on ExploreArea {
   __typename
   id
   name
+  icon
+  isHighlighted
+  isPreferred
+
   ... on ArticlesExploreArea {
     description
     articles {

@@ -12,10 +12,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthApiDataSource, env: liveEnvs)
 class AuthGraphqlDataSource implements AuthApiDataSource {
+  AuthGraphqlDataSource(@Named('unauthorized') this._client, this._responseResolver);
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
-
-  AuthGraphqlDataSource(@Named('unauthorized') this._client, this._responseResolver);
 
   @override
   Future<LoginResponseDTO> signInWithProvider(String token, String provider, [UserMetaDTO? userMeta]) async {

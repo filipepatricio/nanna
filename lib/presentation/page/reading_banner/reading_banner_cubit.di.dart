@@ -9,9 +9,8 @@ const double scrollEnd = 1.0;
 
 @injectable
 class ReadingBannerCubit extends Cubit<ReadingBannerState> {
-  final GetReadingBannerStreamUseCase _getReadingBannerStreamUseCase;
-
   ReadingBannerCubit(this._getReadingBannerStreamUseCase) : super(ReadingBannerState.notVisible());
+  final GetReadingBannerStreamUseCase _getReadingBannerStreamUseCase;
 
   StreamSubscription? readingBannerStream;
 

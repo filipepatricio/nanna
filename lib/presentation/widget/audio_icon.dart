@@ -6,15 +6,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AudioIcon extends HookWidget {
-  const AudioIcon._({
-    required this.color,
-    this.height = AppDimens.ml,
-    Key? key,
-  }) : super(key: key);
-
-  final Color color;
-  final double? height;
-
   factory AudioIcon.dark({Color color = AppColors.textPrimary, double? height, Key? key}) => AudioIcon._(
         color: color,
         height: height,
@@ -26,6 +17,14 @@ class AudioIcon extends HookWidget {
         height: height,
         key: key,
       );
+  const AudioIcon._({
+    required this.color,
+    this.height = AppDimens.ml,
+    Key? key,
+  }) : super(key: key);
+
+  final Color color;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {

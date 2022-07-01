@@ -6,15 +6,14 @@ part 'explore_highlighted_content_dto.dt.g.dart';
 
 @JsonSerializable()
 class ExploreHighlightedContentDTO {
-  @JsonKey(name: 'pillSection')
-  final List<ExploreContentPillDTO> pillSection;
-  @JsonKey(name: 'highlightedSection')
-  final List<ExploreContentAreaDTO> highlightedSection;
-
   ExploreHighlightedContentDTO(this.pillSection, this.highlightedSection);
 
   factory ExploreHighlightedContentDTO.fromJson(Map<String, dynamic> json) =>
       _$ExploreHighlightedContentDTOFromJson(json);
+  @JsonKey(name: 'pillSection')
+  final List<ExploreContentPillDTO> pillSection;
+  @JsonKey(name: 'highlightedSection')
+  final List<ExploreContentAreaDTO> highlightedSection;
 
   Map<String, dynamic> toJson() => _$ExploreHighlightedContentDTOToJson(this);
 }

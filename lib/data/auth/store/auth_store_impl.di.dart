@@ -12,17 +12,16 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 @LazySingleton(as: AuthStore, env: liveEnvs)
 class AuthStoreImpl implements AuthStore {
-  final FreshLink<OAuth2Token> _freshLink;
-  final AuthTokenEntityMapper _authTokenEntityMapper;
-  final AuthTokenEntityToOAuthMapper _authTokenEntityToOAuthMapper;
-  final TokenDataDTOMapper _tokenContentDTOMapper;
-
   AuthStoreImpl(
     this._freshLink,
     this._authTokenEntityMapper,
     this._authTokenEntityToOAuthMapper,
     this._tokenContentDTOMapper,
   );
+  final FreshLink<OAuth2Token> _freshLink;
+  final AuthTokenEntityMapper _authTokenEntityMapper;
+  final AuthTokenEntityToOAuthMapper _authTokenEntityToOAuthMapper;
+  final TokenDataDTOMapper _tokenContentDTOMapper;
 
   @override
   Future<void> delete() async {

@@ -17,6 +17,7 @@ class PremiumArticleView extends HookWidget {
     required this.cubit,
     required this.snackbarController,
     required this.articleOutputMode,
+    required this.showArticleRelatedContentSection,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -26,6 +27,7 @@ class PremiumArticleView extends HookWidget {
   final double? readArticleProgress;
   final SnackbarController snackbarController;
   final ArticleOutputMode articleOutputMode;
+  final bool showArticleRelatedContentSection;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class PremiumArticleView extends HookWidget {
     final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
     final articleOutputModeNotifier = useMemoized(() => ValueNotifier(articleOutputMode));
     final controller = useMemoized(() => ScrollController(keepScrollOffset: true));
+    final mainController = useScrollController(keepScrollOffset: true);
 
     useEffect(
       () {
@@ -89,11 +92,13 @@ class PremiumArticleView extends HookWidget {
                     },
                     children: [
                       PremiumArticleReadView(
+                        showArticleRelatedContentSection: showArticleRelatedContentSection,
                         article: article,
-                        controller: controller,
+                        articleController: controller,
                         pageController: pageController,
                         cubit: cubit,
                         readArticleProgress: readArticleProgress,
+                        mainController: mainController,
                       ),
                       if (metadata.hasAudioVersion)
                         PremiumArticleAudioView(

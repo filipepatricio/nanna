@@ -7,24 +7,6 @@ part 'article_header_dto.dt.g.dart';
 
 @JsonSerializable()
 class ArticleHeaderDTO {
-  final String id;
-  final String slug;
-  final String url;
-  final String title;
-  final String strippedTitle;
-  final String credits;
-  final String? note;
-  final String type;
-  final ArticleKindDTO? kind;
-  final String? publicationDate;
-  final int timeToRead;
-  final PublisherDTO publisher;
-  @JsonKey(name: 'articleImage')
-  final ArticleImageDTO? image;
-  final String sourceUrl;
-  final String? author;
-  final bool hasAudioVersion;
-
   ArticleHeaderDTO(
     this.id,
     this.slug,
@@ -45,6 +27,23 @@ class ArticleHeaderDTO {
   );
 
   factory ArticleHeaderDTO.fromJson(Map<String, dynamic> json) => _$ArticleHeaderDTOFromJson(json);
+  final String id;
+  final String slug;
+  final String url;
+  final String title;
+  final String strippedTitle;
+  final String credits;
+  final String? note;
+  final String type;
+  final ArticleKindDTO? kind;
+  final String? publicationDate;
+  final int timeToRead;
+  final PublisherDTO publisher;
+  @JsonKey(name: 'articleImage')
+  final ArticleImageDTO? image;
+  final String sourceUrl;
+  final String? author;
+  final bool hasAudioVersion;
 
   Map<String, dynamic> toJson() => _$ArticleHeaderDTOToJson(this);
 }

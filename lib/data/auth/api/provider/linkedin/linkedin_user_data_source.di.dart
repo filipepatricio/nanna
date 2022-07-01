@@ -22,7 +22,7 @@ class LinkedinUserDataSource {
     }
 
     throw HttpException(
-      'Querying linkedin user failed with code: ${response.statusCode}',
+      'Querying linkedin user failed with code: ${response.statusCode} accessToken $accessToken',
       uri: url,
     );
   }

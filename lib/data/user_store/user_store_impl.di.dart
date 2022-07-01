@@ -5,9 +5,8 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: UserStore, env: liveEnvs)
 class UserStoreImpl implements UserStore {
-  final UserDatabase _database;
-
   UserStoreImpl(this._database);
+  final UserDatabase _database;
 
   @override
   Future<String> getCurrentUserUuid() async {

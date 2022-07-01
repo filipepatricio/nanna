@@ -9,11 +9,6 @@ typedef IndicatorBuilder = Widget Function(BuildContext context, double factor);
 typedef TriggerFunction = void Function(Completer completer);
 
 class SliverPullUpIndicatorAction extends HookWidget {
-  final IndicatorBuilder builder;
-  final double fullExtentHeight;
-  final double triggerExtent;
-  final TriggerFunction triggerFunction;
-
   const SliverPullUpIndicatorAction({
     required this.builder,
     required this.triggerFunction,
@@ -21,6 +16,10 @@ class SliverPullUpIndicatorAction extends HookWidget {
     this.triggerExtent = 120.0,
     Key? key,
   }) : super(key: key);
+  final IndicatorBuilder builder;
+  final double fullExtentHeight;
+  final double triggerExtent;
+  final TriggerFunction triggerFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -58,15 +57,14 @@ class SliverPullUpIndicatorAction extends HookWidget {
 }
 
 class _PullUpIndicatorActionSliverObject extends SingleChildRenderObjectWidget {
-  final double fullExtentHeight;
-  final bool keepExtent;
-
   const _PullUpIndicatorActionSliverObject({
     required this.fullExtentHeight,
     required this.keepExtent,
     required Widget child,
     Key? key,
   }) : super(key: key, child: child);
+  final double fullExtentHeight;
+  final bool keepExtent;
 
   @override
   RenderObject createRenderObject(BuildContext context) {

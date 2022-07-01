@@ -1,10 +1,9 @@
 const _defaultLimit = 10;
 
 class NextPageConfig {
+  NextPageConfig(this.limit, this.offset);
   final int limit;
   final int offset;
-
-  NextPageConfig(this.limit, this.offset);
 }
 
 abstract class NextPageLoader<T> {
@@ -12,11 +11,10 @@ abstract class NextPageLoader<T> {
 }
 
 class PaginationEngine<T> {
+  PaginationEngine(this._nextPageLoader);
   final NextPageLoader<T> _nextPageLoader;
   final List<T> _data = [];
   int _limit = _defaultLimit;
-
-  PaginationEngine(this._nextPageLoader);
 
   void initialize(List<T> initialData, {int limit = _defaultLimit}) {
     _data.addAll(initialData);
@@ -52,11 +50,10 @@ class PaginationEngine<T> {
 }
 
 class PaginationEngineState<T> {
-  final List<T> data;
-  final bool allLoaded;
-
   PaginationEngineState({
     required this.data,
     required this.allLoaded,
   });
+  final List<T> data;
+  final bool allLoaded;
 }

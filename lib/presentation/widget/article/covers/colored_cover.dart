@@ -11,16 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ColoredCover extends StatelessWidget {
-  final MediaItemArticle article;
-  final Color backgroundColor;
-  final String? editorsNote;
-
   const ColoredCover({
     required this.article,
     required this.backgroundColor,
     this.editorsNote,
     Key? key,
   }) : super(key: key);
+  final MediaItemArticle article;
+  final Color backgroundColor;
+  final String? editorsNote;
 
   @override
   Widget build(BuildContext context) {

@@ -5,18 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsInputItem extends HookWidget {
-  final TextEditingController controller;
-  final String label;
-  final String? initialInput;
-  final bool isEditable;
-  final bool isFormFocused;
-  final Function(String inputText) onChanged;
-  final VoidCallback onClear;
-  final VoidCallback onTap;
-  final VoidCallback? onSubmitted;
-  final FormFieldValidator<String> validator;
-  final TextCapitalization? textCapitalization;
-
   const SettingsInputItem({
     required this.controller,
     required this.label,
@@ -30,6 +18,17 @@ class SettingsInputItem extends HookWidget {
     this.initialInput,
     this.textCapitalization,
   });
+  final TextEditingController controller;
+  final String label;
+  final String? initialInput;
+  final bool isEditable;
+  final bool isFormFocused;
+  final Function(String inputText) onChanged;
+  final VoidCallback onClear;
+  final VoidCallback onTap;
+  final VoidCallback? onSubmitted;
+  final FormFieldValidator<String> validator;
+  final TextCapitalization? textCapitalization;
 
   @override
   Widget build(BuildContext context) {

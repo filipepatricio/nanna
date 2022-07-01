@@ -15,6 +15,21 @@ const _fadeDuration = Duration(milliseconds: 200);
 enum DarkeningMode { none, solid, gradient }
 
 class CloudinaryImage extends HookWidget {
+  const CloudinaryImage({
+    required this.publicId,
+    required this.width,
+    required this.height,
+    this.fit = BoxFit.fill,
+    this.alignment = Alignment.center,
+    this.testImage = AppRasterGraphics.testReadingListCoverImage,
+    this.config = const CloudinaryConfig(
+      platformBasedExtension: false,
+      autoGravity: false,
+    ),
+    this.showLoadingShimmer = true,
+    this.darkeningMode = DarkeningMode.none,
+    Key? key,
+  }) : super(key: key);
   final String publicId;
   final double width;
   final double height;
@@ -24,19 +39,6 @@ class CloudinaryImage extends HookWidget {
   final CloudinaryConfig config;
   final bool showLoadingShimmer;
   final DarkeningMode darkeningMode;
-
-  const CloudinaryImage({
-    required this.publicId,
-    required this.width,
-    required this.height,
-    this.fit = BoxFit.fill,
-    this.alignment = Alignment.center,
-    this.testImage = AppRasterGraphics.testReadingListCoverImage,
-    this.config = const CloudinaryConfig(),
-    this.showLoadingShimmer = true,
-    this.darkeningMode = DarkeningMode.none,
-    Key? key,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class CloudinaryImage extends HookWidget {
     }
 
     final imageProvider = useCloudinaryProvider();
-    final imageUrl = config.apply(context, publicId, imageProvider).autoQuality().generateNotNull();
+    final imageUrl = config.apply(context, publicId, imageProvider).generateNotNull();
 
     return CachedNetworkImage(
       imageUrl: imageUrl,

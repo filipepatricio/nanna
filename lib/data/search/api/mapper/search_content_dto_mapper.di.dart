@@ -7,11 +7,10 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SearchContentDTOMapper implements Mapper<SearchContentDTO, SearchContent> {
-  final SearchResultDTOMapper _searchResultDTOMapper;
-
   SearchContentDTOMapper(
     this._searchResultDTOMapper,
   );
+  final SearchResultDTOMapper _searchResultDTOMapper;
 
   @override
   SearchContent call(SearchContentDTO data) {

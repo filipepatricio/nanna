@@ -48,6 +48,7 @@ Future<void> main() async {
   final filterController = getIt<ReportingTreeErrorFilterController>();
   await SentryFlutter.init(
     (options) => options
+      ..enableBreadcrumbTrackingForCurrentPlatform()
       ..beforeSend = (event, {hint}) {
         if (filterController.shouldFilterOut(event.throwable)) return null;
         return event;

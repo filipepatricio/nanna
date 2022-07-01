@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.da
 import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
@@ -363,6 +364,19 @@ class MockDTO {
     ],
   );
 
+  // CategoryPreference
+
+  static final categoryPreference = CategoryPreferenceDTO(
+    isPreferred: true,
+    category: MockDTO.category,
+  );
+
+  // CategoryPreferencesResponseDTO
+
+  static final categoryPreferences = <CategoryPreferenceDTO>[
+    MockDTO.categoryPreference,
+  ];
+
   /// Internal
 
   static final _expert = TopicOwnerDTO.expert(
@@ -394,6 +408,9 @@ class MockDTO {
     'explore-articles-id',
     'By Publisher',
     'This is description',
+    _mockedPillIcon,
+    false,
+    true,
     [
       premiumArticle,
       _freeArticle,
@@ -406,6 +423,9 @@ class MockDTO {
   static final _exploreTopicsArea = ExploreContentAreaDTO.topics(
     'explore-topics-id',
     'Hot topics',
+    _mockedPillIcon,
+    false,
+    true,
     [
       topicPreview,
       topicPreview,
@@ -420,6 +440,9 @@ class MockDTO {
     'Trending news',
     'Discover other topics of interest',
     'DFBFFF',
+    _mockedPillIcon,
+    false,
+    false,
     [
       topicPreview,
       topicPreview,
@@ -433,6 +456,9 @@ class MockDTO {
     'explore-small-topics-id',
     'More topics',
     'Discover other topics of interest',
+    _mockedPillIcon,
+    false,
+    false,
     [
       topicPreview,
       topicPreview,
@@ -446,6 +472,9 @@ class MockDTO {
     'explore-articles-list-id',
     'Some more articles',
     'Those are articles in the list',
+    _mockedPillIcon,
+    false,
+    false,
     [
       premiumArticle,
       _freeArticle,

@@ -8,13 +8,6 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SignOutUseCase {
-  final AuthStore _authStore;
-  final AnalyticsRepository _analyticsRepository;
-  final PushNotificationStore _pushNotificationStore;
-  final PushNotificationRepository _pushNotificationRepository;
-  final RefreshTokenServiceCache _refreshTokenServiceCache;
-  final UserStore _userStore;
-
   SignOutUseCase(
     this._authStore,
     this._analyticsRepository,
@@ -23,6 +16,12 @@ class SignOutUseCase {
     this._refreshTokenServiceCache,
     this._userStore,
   );
+  final AuthStore _authStore;
+  final AnalyticsRepository _analyticsRepository;
+  final PushNotificationStore _pushNotificationStore;
+  final PushNotificationRepository _pushNotificationRepository;
+  final RefreshTokenServiceCache _refreshTokenServiceCache;
+  final UserStore _userStore;
 
   Future<void> call() async {
     _refreshTokenServiceCache.clear();

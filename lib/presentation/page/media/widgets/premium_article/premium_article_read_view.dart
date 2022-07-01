@@ -11,7 +11,6 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
-import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,18 +19,22 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.article,
-    required this.controller,
+    required this.articleController,
     required this.pageController,
     required this.cubit,
+    required this.mainController,
+    required this.showArticleRelatedContentSection,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
 
   final Article article;
-  final ScrollController controller;
+  final ScrollController articleController;
   final PageController pageController;
+  final ScrollController mainController;
   final MediaItemCubit cubit;
   final double? readArticleProgress;
+  final bool showArticleRelatedContentSection;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -44,18 +47,6 @@ class PremiumArticleReadView extends HookWidget {
     cubit.setupScrollData(globalContentOffset, globalPageOffset);
   }
 
-  void _scrollToPosition(double? readArticleProgress) {
-    if (readArticleProgress != null && readArticleProgress != 1.0) {
-      final scrollPosition = cubit.scrollData.contentOffset +
-          ((controller.position.maxScrollExtent - cubit.scrollData.contentOffset) * readArticleProgress);
-      controller.animateTo(
-        scrollPosition,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
   double? _calculateGlobalOffset(GlobalKey key) {
     final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     final position = renderBox?.localToGlobal(Offset.zero);
@@ -64,25 +55,53 @@ class PremiumArticleReadView extends HookWidget {
 
   bool _updateScrollPosition(
     ScrollNotification scrollInfo,
-    ValueNotifier<bool> showBackToTopicButton,
+    ValueNotifier<bool> showTabBar,
     ValueNotifier<double> readProgress,
+    ValueNotifier<double> dynamicListenButtonPosition,
     double fullHeight,
+    bool showAudioButton,
+    BuildContext context,
   ) {
-    if (controller.hasClients) {
+    if (articleController.hasClients) {
       if (scrollInfo is ScrollUpdateNotification) {
-        final newProgress = controller.offset / controller.position.maxScrollExtent;
-        showBackToTopicButton.value = newProgress < readProgress.value;
+        final newProgress = articleController.offset / articleController.position.maxScrollExtent;
+
+        if ((scrollInfo.dragDetails?.primaryDelta ?? 0).abs() > 1 &&
+            scrollInfo is! ScrollEndNotification &&
+            (pageController.page ?? 0) >= 1) {
+          showTabBar.value = (scrollInfo.dragDetails?.primaryDelta ?? 0) > 0;
+        }
+
         readProgress.value = newProgress.isFinite ? newProgress : 0;
+
+        dynamicListenButtonPosition.value = calculateAudioPlayButtonPositionOnSectionTransition(
+          showAudioButton,
+          showTabBar.value,
+          readProgress.value,
+          context,
+        );
       }
       if (scrollInfo is ScrollEndNotification) {
-        var readScrollOffset = controller.offset - cubit.scrollData.contentOffset;
+        var readScrollOffset = articleController.offset - cubit.scrollData.contentOffset;
         if (readScrollOffset < 0) {
-          readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - controller.offset);
+          readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - articleController.offset);
+        }
+        if (scrollInfo.metrics.pixels == mainController.position.maxScrollExtent) {
+          if ((pageController.page ?? 0) >= 1) {
+            showTabBar.value = true;
+          }
+
+          dynamicListenButtonPosition.value = calculateAudioPlayButtonPositionOnSectionTransition(
+            showAudioButton,
+            showTabBar.value,
+            readProgress.value,
+            context,
+          );
         }
 
         cubit.updateScrollData(
           readScrollOffset,
-          controller.position.maxScrollExtent,
+          articleController.position.maxScrollExtent,
         );
       }
     }
@@ -92,19 +111,34 @@ class PremiumArticleReadView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useAutomaticKeepAlive(wantKeepAlive: true);
-    final footerHeight = MediaQuery.of(context).size.height / 3;
+
     final gestureManager = useMemoized(
       () => MediaItemPageGestureManager(
         context: context,
-        generalViewController: controller,
+        articleViewController: articleController,
         pageViewController: pageController,
         articleHasImage: articleWithImage,
+        mainViewController: mainController,
       ),
       [articleWithImage],
     );
     final readProgress = useMemoized(() => ValueNotifier(0.0));
     final showTabBar = useState(false);
     final showAudioFloatingButton = useState(false);
+    final dynamicListenPosition = useMemoized(
+      () => ValueNotifier(
+        calculateAudioPlayButtonPositionOnSectionTransition(
+          showAudioFloatingButton.value,
+          showTabBar.value,
+          readProgress.value,
+          context,
+        ),
+      ),
+    );
+    final maxHeight = useMemoized(
+      () => MediaQuery.of(context).size.height,
+      [MediaQuery.of(context).size.height],
+    );
 
     useEffect(
       () {
@@ -133,121 +167,242 @@ class PremiumArticleReadView extends HookWidget {
         [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
       ),
       behavior: HitTestBehavior.opaque,
-      child: LayoutBuilder(
-        builder: (context, constraints) => NotificationListener<ScrollNotification>(
-          onNotification: (scrollInfo) => _updateScrollPosition(
-            scrollInfo,
-            showTabBar,
-            readProgress,
-            constraints.maxHeight,
-          ),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              PageView(
-                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: pageController,
-                scrollDirection: Axis.vertical,
-                onPageChanged: (page) {
-                  showTabBar.value = false;
-                },
-                children: [
-                  if (articleWithImage)
-                    ArticleImageView(
-                      article: article.metadata,
-                      controller: pageController,
-                      fullHeight: constraints.maxHeight,
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (scrollInfo) => _updateScrollPosition(
+          scrollInfo,
+          showTabBar,
+          readProgress,
+          dynamicListenPosition,
+          maxHeight,
+          showAudioFloatingButton.value,
+          context,
+        ),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(
+                parent: ClampingScrollPhysics(),
+              ),
+              controller: pageController,
+              scrollDirection: Axis.vertical,
+              onPageChanged: (page) {
+                showTabBar.value = false;
+              },
+              children: [
+                if (articleWithImage)
+                  ArticleImageView(
+                    article: article.metadata,
+                    controller: pageController,
+                  ),
+                NoScrollGlow(
+                  child: CustomScrollView(
+                    controller: mainController,
+                    physics: const NeverScrollableScrollPhysics(
+                      parent: ClampingScrollPhysics(),
                     ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: NoScrollGlow(
-                          child: CustomScrollView(
-                            physics: const NeverScrollableScrollPhysics(
-                              parent: BottomBouncingScrollPhysics(
-                                parent: AlwaysScrollableScrollPhysics(),
-                              ),
+                    slivers: [
+                      SliverFillViewport(
+                        delegate: SliverChildListDelegate(
+                          [
+                            _ArticleContentView(
+                              article: article,
+                              articleContentKey: _articleContentKey,
+                              articleController: articleController,
+                              cubit: cubit,
+                              dynamicPosition: dynamicListenPosition,
+                              readProgress: readProgress,
+                              showArticleRelatedContentSection: showArticleRelatedContentSection,
                             ),
-                            controller: controller,
-                            slivers: [
-                              SliverList(
-                                delegate: SliverChildListDelegate(
-                                  [
-                                    ArticleContentView(
-                                      article: article,
-                                      cubit: cubit,
-                                      articleContentKey: _articleContentKey,
-                                      scrollToPosition: () => _scrollToPosition(readArticleProgress),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (article.metadata.credits.isNotEmpty) ...[
-                                SliverPadding(
-                                  padding: const EdgeInsets.only(
-                                    top: AppDimens.xl,
-                                    left: AppDimens.l,
-                                    right: AppDimens.l,
-                                  ),
-                                  sliver: SliverToBoxAdapter(
-                                    child: _Credits(
-                                      credits: article.metadata.credits,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              SliverToBoxAdapter(
-                                child: SizedBox(height: footerHeight),
-                              ),
+                          ],
+                        ),
+                      ),
+                      if (showArticleRelatedContentSection)
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              Container(
+                                height: 500,
+                                color: AppColors.grey,
+
+                                ///Swap this one for related content
+                              )
                             ],
                           ),
                         ),
-                      ),
-                      _ArticleProgressBar(readProgress: readProgress),
                     ],
                   ),
-                ],
-              ),
-              InformedTabBar.floating(show: showTabBar.value),
-              if (article.metadata.hasAudioVersion)
-                _AnimatedAudioButton(
-                  article: article.metadata,
-                  showButton: showAudioFloatingButton,
-                  showingTabBar: showTabBar,
                 ),
-            ],
-          ),
+              ],
+            ),
+            InformedTabBar.floating(show: showTabBar.value),
+          ],
         ),
       ),
     );
+  }
+
+  double calculateAudioPlayButtonPositionOnSectionTransition(
+    bool showButton,
+    bool showTabBar,
+    double readProgress,
+    BuildContext context,
+  ) {
+    if (showButton) {
+      if (showTabBar) {
+        if (readProgress == 1.0) {
+          final positionLogicalPixels = mainController.position.pixels / MediaQuery.of(context).devicePixelRatio;
+          final threshold = MediaQuery.of(context).viewPadding.bottom == 0
+              ? (kBottomNavigationBarHeight / MediaQuery.of(context).devicePixelRatio)
+              : MediaQuery.of(context).padding.bottom;
+
+          if (positionLogicalPixels <= threshold) {
+            final percentageValueOfPosition = positionLogicalPixels / threshold;
+            final requiredPercentage = 1 - percentageValueOfPosition;
+            final position = AppDimens.l +
+                requiredPercentage * (kBottomNavigationBarHeight + MediaQuery.of(context).viewPadding.bottom);
+            return position;
+          } else {
+            return AppDimens.l;
+          }
+        } else {
+          return _bottomBarShownAudioButtonBottomPosition(context);
+        }
+      } else {
+        return AppDimens.l;
+      }
+    } else {
+      return -AppDimens.xxxc;
+    }
+  }
+}
+
+double _bottomBarShownAudioButtonBottomPosition(BuildContext context) =>
+    AppDimens.l + (kBottomNavigationBarHeight + MediaQuery.of(context).viewPadding.bottom);
+
+class _ArticleContentView extends HookWidget {
+  const _ArticleContentView({
+    required this.article,
+    required this.readProgress,
+    required this.dynamicPosition,
+    required this.articleController,
+    required this.cubit,
+    required this.articleContentKey,
+    required this.showArticleRelatedContentSection,
+    Key? key,
+  }) : super(key: key);
+
+  final ValueNotifier<double> readProgress;
+  final ValueNotifier<double> dynamicPosition;
+  final ScrollController articleController;
+  final Article article;
+  final MediaItemCubit cubit;
+  final Key articleContentKey;
+  final bool showArticleRelatedContentSection;
+
+  @override
+  Widget build(BuildContext context) {
+    final footerHeight = useMemoized(
+      () => MediaQuery.of(context).size.height / 3,
+      [MediaQuery.of(context).size.height],
+    );
+
+    return Stack(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: CustomScrollView(
+                primary: false,
+                physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                controller: articleController,
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        ArticleContentView(
+                          article: article,
+                          cubit: cubit,
+                          articleContentKey: articleContentKey,
+                          scrollToPosition: () => _scrollToPosition(readProgress.value),
+                        ),
+                        if (article.metadata.credits.isNotEmpty) ...[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: AppDimens.xl,
+                              left: AppDimens.l,
+                              right: AppDimens.l,
+                            ),
+                            child: _Credits(
+                              credits: article.metadata.credits,
+                            ),
+                          ),
+                          SizedBox(height: footerHeight),
+                        ],
+                      ],
+                    ),
+                  ),
+                  if (!showArticleRelatedContentSection)
+                    SliverToBoxAdapter(
+                      child: SizedBox(height: footerHeight),
+                    ),
+                ],
+              ),
+            ),
+            _ArticleProgressBar(readProgress: readProgress),
+          ],
+        ),
+        if (article.metadata.hasAudioVersion)
+          _AnimatedAudioButton(
+            dynamicPosition: dynamicPosition,
+            readProgress: readProgress,
+            article: article.metadata,
+          ),
+      ],
+    );
+  }
+
+  void _scrollToPosition(double? readArticleProgress) {
+    if (readArticleProgress != null && readArticleProgress != 1.0) {
+      final scrollPosition = cubit.scrollData.contentOffset +
+          ((articleController.position.maxScrollExtent - cubit.scrollData.contentOffset) * readArticleProgress);
+      articleController.animateTo(
+        scrollPosition,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    }
   }
 }
 
 class _AnimatedAudioButton extends StatelessWidget {
   const _AnimatedAudioButton({
     required this.article,
-    required this.showButton,
-    required this.showingTabBar,
+    required this.readProgress,
+    required this.dynamicPosition,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final ValueNotifier<bool> showButton;
-  final ValueNotifier<bool> showingTabBar;
+  final ValueNotifier<double> readProgress;
+  final ValueNotifier<double> dynamicPosition;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedPositioned(
-      right: AppDimens.l,
-      bottom: showButton.value
-          ? AppDimens.l +
-              (showingTabBar.value
-                  ? (kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom)
-                  : AppDimens.zero)
-          : -AppDimens.xxxc,
-      curve: Curves.easeIn,
-      duration: const Duration(milliseconds: 200),
-      child: AudioFloatingControlButton(article: article),
+    return ValueListenableBuilder(
+      valueListenable: dynamicPosition,
+      builder: (BuildContext context, double value, Widget? child) {
+        return AnimatedPositioned(
+          right: AppDimens.l,
+          bottom: value,
+          curve: Curves.easeIn,
+          duration: Duration(
+            milliseconds:
+                (value == _bottomBarShownAudioButtonBottomPosition(context) || value == AppDimens.l) ? 200 : 0,
+          ),
+          child: AudioFloatingControlButton(article: article),
+        );
+      },
     );
   }
 }

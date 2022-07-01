@@ -9,13 +9,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ExploreHighlightedContentDTOMapper implements Mapper<ExploreHighlightedContentDTO, ExploreContent> {
-  final ExploreContentPillDTOMapper _exploreContentPillDTOMapper;
-  final ExploreContentAreaDTOMapper _exploreContentAreaDTOMapper;
-
   ExploreHighlightedContentDTOMapper(
     this._exploreContentPillDTOMapper,
     this._exploreContentAreaDTOMapper,
   );
+  final ExploreContentPillDTOMapper _exploreContentPillDTOMapper;
+  final ExploreContentAreaDTOMapper _exploreContentAreaDTOMapper;
 
   @override
   ExploreContent call(ExploreHighlightedContentDTO data) {

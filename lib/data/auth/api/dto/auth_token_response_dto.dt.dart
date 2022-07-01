@@ -5,10 +5,6 @@ part 'auth_token_response_dto.dt.g.dart';
 
 @JsonSerializable()
 class AuthTokenResponseDTO {
-  final bool successful;
-  final String? errorMessage;
-  final AuthTokenDTO? tokens;
-
   AuthTokenResponseDTO(
     this.successful,
     this.errorMessage,
@@ -16,6 +12,9 @@ class AuthTokenResponseDTO {
   );
 
   factory AuthTokenResponseDTO.fromJson(Map<String, dynamic> json) => _$AuthTokenResponseDTOFromJson(json);
+  final bool successful;
+  final String? errorMessage;
+  final AuthTokenDTO? tokens;
 
   Map<String, dynamic> toJson() => _$AuthTokenResponseDTOToJson(this);
 }

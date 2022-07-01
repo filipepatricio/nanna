@@ -4,9 +4,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetTopicsFromExpertUseCase {
-  final TopicsRepository _topicsRepository;
-
   GetTopicsFromExpertUseCase(this._topicsRepository);
+  final TopicsRepository _topicsRepository;
 
   Future<List<TopicPreview>> call(
     String expertId, [

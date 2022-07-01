@@ -115,12 +115,6 @@ class SignInPage extends HookWidget {
 }
 
 class _IdleContent extends HookWidget {
-  final bool isEmailValid;
-  final bool keyboardVisible;
-  final TextEditingController emailController;
-  final SignInPageCubit cubit;
-  final SnackbarController snackbarController;
-
   const _IdleContent({
     required this.isEmailValid,
     required this.keyboardVisible,
@@ -129,6 +123,11 @@ class _IdleContent extends HookWidget {
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
+  final bool isEmailValid;
+  final bool keyboardVisible;
+  final TextEditingController emailController;
+  final SignInPageCubit cubit;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -222,16 +221,15 @@ class _IdleContent extends HookWidget {
 }
 
 class EmailInput extends StatelessWidget {
-  final TextEditingController controller;
-  final SignInPageCubit cubit;
-  final bool validEmail;
-
   const EmailInput({
     required this.controller,
     required this.cubit,
     required this.validEmail,
     Key? key,
   }) : super(key: key);
+  final TextEditingController controller;
+  final SignInPageCubit cubit;
+  final bool validEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -271,14 +269,13 @@ class EmailInput extends StatelessWidget {
 }
 
 class _SignInButton extends StatelessWidget {
-  final SignInPageCubit cubit;
-  final bool isEmailValid;
-
   const _SignInButton({
     required this.cubit,
     required this.isEmailValid,
     Key? key,
   }) : super(key: key);
+  final SignInPageCubit cubit;
+  final bool isEmailValid;
 
   @override
   Widget build(BuildContext context) {

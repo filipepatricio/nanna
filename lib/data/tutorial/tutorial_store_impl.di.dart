@@ -5,9 +5,8 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: TutorialStore)
 class TutorialStoreImpl extends TutorialStore {
-  final TutorialDatabase _database;
-
   TutorialStoreImpl(this._database);
+  final TutorialDatabase _database;
 
   @override
   Future<bool> isUserTutorialStepSeen(String userUuid, TutorialStep tutorialStep) async {

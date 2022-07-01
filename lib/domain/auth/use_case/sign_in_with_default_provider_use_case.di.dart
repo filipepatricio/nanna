@@ -6,17 +6,16 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SignInWithDefaultProviderUseCase {
-  final AuthRepository _authRepository;
-  final AuthStore _authStore;
-  final AnalyticsRepository _analyticsRepository;
-  final UserStore _userStore;
-
   SignInWithDefaultProviderUseCase(
     this._authRepository,
     this._authStore,
     this._analyticsRepository,
     this._userStore,
   );
+  final AuthRepository _authRepository;
+  final AuthStore _authStore;
+  final AnalyticsRepository _analyticsRepository;
+  final UserStore _userStore;
 
   Future<void> call() async {
     final authResult = await _authRepository.signInWithDefaultProvider();
@@ -24,7 +23,7 @@ class SignInWithDefaultProviderUseCase {
     await _authStore.save(authResult.authToken);
     await _userStore.setCurrentUserUuid(authResult.userUuid);
 
-    await _analyticsRepository.login(
+    await _analyticsRepository.identify(
       authResult.userUuid,
       authResult.method,
     );

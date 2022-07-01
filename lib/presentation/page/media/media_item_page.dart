@@ -74,6 +74,7 @@ class MediaItemPage extends HookWidget {
                   snackbarController: snackbarController,
                   readArticleProgress: readArticleProgress,
                   articleOutputMode: articleOutputMode,
+                  showArticleRelatedContentSection: state.showArticleRelatedContentSection,
                 ),
                 error: (state) => _ErrorContent(article: state.article),
                 emptyError: (_) => _ErrorContent(

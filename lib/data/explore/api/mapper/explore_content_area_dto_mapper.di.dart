@@ -11,15 +11,14 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ExploreContentAreaDTOMapper implements Mapper<ExploreContentAreaDTO, ExploreContentArea> {
-  final ArticleDTOToMediaItemMapper _articleDTOToMediaItemMapper;
-  final TopicPreviewDTOMapper _topicPreviewDTOMapper;
-  final ColorDTOMapper _colorDTOMapper;
-
   ExploreContentAreaDTOMapper(
     this._articleDTOToMediaItemMapper,
     this._topicPreviewDTOMapper,
     this._colorDTOMapper,
   );
+  final ArticleDTOToMediaItemMapper _articleDTOToMediaItemMapper;
+  final TopicPreviewDTOMapper _topicPreviewDTOMapper;
+  final ColorDTOMapper _colorDTOMapper;
 
   @override
   ExploreContentArea call(ExploreContentAreaDTO data) {
@@ -28,23 +27,35 @@ class ExploreContentAreaDTOMapper implements Mapper<ExploreContentAreaDTO, Explo
         id: area.id,
         title: area.name,
         description: area.description,
+        icon: area.icon,
+        isHighlighted: area.isHighlighted,
+        isPreferred: area.isPreferred,
         articles: area.articles.map<MediaItemArticle>(_articleDTOToMediaItemMapper).toList(),
       ),
       articlesList: (area) => ExploreContentArea.articlesList(
         id: area.id,
         title: area.name,
         description: area.description,
+        icon: area.icon,
+        isHighlighted: area.isHighlighted,
+        isPreferred: area.isPreferred,
         articles: area.articles.map<MediaItemArticle>(_articleDTOToMediaItemMapper).toList(),
       ),
       topics: (area) => ExploreContentArea.topics(
         id: area.id,
         title: area.name,
+        icon: area.icon,
+        isHighlighted: area.isHighlighted,
+        isPreferred: area.isPreferred,
         topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
       ),
       smallTopics: (area) => ExploreContentArea.smallTopics(
         id: area.id,
         title: area.name,
         description: area.description,
+        icon: area.icon,
+        isHighlighted: area.isHighlighted,
+        isPreferred: area.isPreferred,
         topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
       ),
       highlightedTopics: (area) {
@@ -54,6 +65,9 @@ class ExploreContentAreaDTOMapper implements Mapper<ExploreContentAreaDTO, Explo
           title: area.name,
           description: area.description,
           backgroundColor: backgroundColor != null ? _colorDTOMapper(backgroundColor) : null,
+          icon: area.icon,
+          isHighlighted: area.isHighlighted,
+          isPreferred: area.isPreferred,
           topics: area.topics.map<TopicPreview>(_topicPreviewDTOMapper).toList(),
         );
       },

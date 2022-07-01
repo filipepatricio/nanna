@@ -150,12 +150,11 @@ class ExplorePage extends HookWidget {
 }
 
 class _ErrorView extends StatelessWidget {
-  final VoidCallback refreshCallback;
-
   const _ErrorView({
     required this.refreshCallback,
     Key? key,
   }) : super(key: key);
+  final VoidCallback refreshCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -217,47 +216,32 @@ class _ItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isHighlighted = items.any(
-      (item) => item.maybeMap(
-        pills: (_) => true,
-        orElse: () => false,
-      ),
-    );
-
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final item = items[index];
-
-          return item.map(
-            pills: (item) => ExplorePillsAreaView(
-              categories: item.categories,
-            ),
-            stream: (item) => _Area(
-              area: item.area,
-              orderIndex: index,
-              isHighlighted: isHighlighted,
-            ),
-          );
-        },
+        (context, index) => items[index].map(
+          pills: (item) => ExplorePillsAreaView(
+            categories: item.categories,
+          ),
+          stream: (item) => _Area(
+            area: item.area,
+            orderIndex: index,
+          ),
+        ),
         childCount: items.length,
+        addAutomaticKeepAlives: false,
       ),
     );
   }
 }
 
 class _Area extends HookWidget {
-  final ExploreContentArea area;
-  final int orderIndex;
-  final bool isHighlighted;
-
   const _Area({
     required this.area,
     required this.orderIndex,
-    required this.isHighlighted,
     Key? key,
   }) : super(key: key);
-
+  final ExploreContentArea area;
+  final int orderIndex;
   @override
   Widget build(BuildContext context) {
     final eventController = useEventTrackController();
@@ -274,9 +258,9 @@ class _Area extends HookWidget {
         ),
         borderFraction: 0.6,
         child: area.map(
-          articles: (area) => ArticleAreaView(area: area, isHighlighted: isHighlighted),
+          articles: (area) => ArticleAreaView(area: area, isHighlighted: area.isHighlighted),
           articlesList: (area) => ArticleListAreaView(area: area),
-          topics: (area) => TopicsAreaView(area: area, isHighlighted: isHighlighted),
+          topics: (area) => TopicsAreaView(area: area, isHighlighted: area.isHighlighted),
           smallTopics: (area) => SmallTopicsAreaView(area: area),
           highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),
           unknown: (_) => const SizedBox.shrink(),

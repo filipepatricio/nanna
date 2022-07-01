@@ -4,13 +4,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetSearchHistoryUseCase {
-  final SearchStore _searchStore;
-  final UserStore _userStore;
-
   GetSearchHistoryUseCase(
     this._searchStore,
     this._userStore,
   );
+  final SearchStore _searchStore;
+  final UserStore _userStore;
 
   Future<List<String>> call() async {
     final currentUserUuid = await _userStore.getCurrentUserUuid();

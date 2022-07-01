@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class BriefEntryStyle {
-  final Color? backgroundColor;
-  final BriefEntryStyleType type;
-
   const BriefEntryStyle({
     required this.backgroundColor,
     required this.type,
   });
+  final Color? backgroundColor;
+  final BriefEntryStyleType type;
 }
 
 enum BriefEntryStyleType {

@@ -3,9 +3,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class InitializeAnalyticsUseCase {
-  final AnalyticsRepository _analyticsRepository;
-
   InitializeAnalyticsUseCase(this._analyticsRepository);
+  final AnalyticsRepository _analyticsRepository;
 
   Future<void> call() => _analyticsRepository.initialize();
 }

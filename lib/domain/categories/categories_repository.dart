@@ -1,7 +1,10 @@
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
 
 abstract class CategoriesRepository {
   Future<List<Category>> getOnboardingCategories();
+
+  Future<List<CategoryPreference>> getCategoryPreferences();
 
   Future<List<Category>> getFeaturedCategories();
 

@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingPictureSlide extends StatelessWidget {
-  final String title, descriptionHeader, description, imageAsset;
-
   const OnboardingPictureSlide({
     required this.title,
     required this.descriptionHeader,
@@ -15,6 +13,7 @@ class OnboardingPictureSlide extends StatelessWidget {
     required this.imageAsset,
     Key? key,
   }) : super(key: key);
+  final String title, descriptionHeader, description, imageAsset;
 
   @override
   Widget build(BuildContext context) {

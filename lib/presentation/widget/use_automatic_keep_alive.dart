@@ -11,9 +11,8 @@ void useAutomaticKeepAlive({
     );
 
 class _AutomaticKeepAliveHook extends Hook<void> {
-  final bool wantKeepAlive;
-
   const _AutomaticKeepAliveHook({required this.wantKeepAlive});
+  final bool wantKeepAlive;
 
   @override
   HookState<void, _AutomaticKeepAliveHook> createState() => _AutomaticKeepAliveHookState();

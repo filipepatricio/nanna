@@ -107,12 +107,11 @@ class ShareTopicView extends HookWidget implements BaseShareCompletable {
 }
 
 class _Background extends StatelessWidget {
-  final Widget child;
-
   const _Background({
     required this.child,
     Key? key,
   }) : super(key: key);
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -135,11 +134,6 @@ class _Background extends StatelessWidget {
 }
 
 class _Sticker extends StatelessWidget {
-  final Topic topic;
-  final List<MediaItemArticle> articles;
-  final Image image;
-  final Map<String, Image> articleLogos;
-
   const _Sticker({
     required this.topic,
     required this.articles,
@@ -147,6 +141,10 @@ class _Sticker extends StatelessWidget {
     required this.articleLogos,
     Key? key,
   }) : super(key: key);
+  final Topic topic;
+  final List<MediaItemArticle> articles;
+  final Image image;
+  final Map<String, Image> articleLogos;
 
   @override
   Widget build(BuildContext context) {
@@ -184,16 +182,15 @@ class _Sticker extends StatelessWidget {
 }
 
 class _TopicHeader extends StatelessWidget {
-  final Topic topic;
-  final Image image;
-  final int articlesLength;
-
   const _TopicHeader({
     required this.topic,
     required this.image,
     required this.articlesLength,
     Key? key,
   }) : super(key: key);
+  final Topic topic;
+  final Image image;
+  final int articlesLength;
 
   @override
   Widget build(BuildContext context) {
@@ -246,14 +243,13 @@ class _TopicHeader extends StatelessWidget {
 }
 
 class _ArticleRow extends StatelessWidget {
-  final List<MediaItemArticle> articles;
-  final Map<String, Image> articleLogos;
-
   const _ArticleRow({
     required this.articles,
     required this.articleLogos,
     Key? key,
   }) : super(key: key);
+  final List<MediaItemArticle> articles;
+  final Map<String, Image> articleLogos;
 
   @override
   Widget build(BuildContext context) {
@@ -282,16 +278,15 @@ class _ArticleRow extends StatelessWidget {
 }
 
 class _ArticleItem extends StatelessWidget {
-  final MediaItemArticle article;
-  final Color backgroundColor;
-  final Image? logo;
-
   const _ArticleItem({
     required this.article,
     required this.backgroundColor,
     required this.logo,
     Key? key,
   }) : super(key: key);
+  final MediaItemArticle article;
+  final Color backgroundColor;
+  final Image? logo;
 
   @override
   Widget build(BuildContext context) {

@@ -5,12 +5,11 @@ part 'entry_style_dto.dt.g.dart';
 
 @JsonSerializable()
 class EntryStyleDTO {
-  final String color;
-  final EntryStyleType type;
-
   EntryStyleDTO(this.color, this.type);
 
   factory EntryStyleDTO.fromJson(Map<String, dynamic> json) => _$EntryStyleDTOFromJson(json);
+  final String color;
+  final EntryStyleType type;
 
   Map<String, dynamic> toJson() => _$EntryStyleDTOToJson(this);
 }

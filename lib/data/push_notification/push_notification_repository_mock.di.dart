@@ -12,17 +12,16 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: PushNotificationRepository, env: mockEnvs)
 class PushNotificationRepositoryMock implements PushNotificationRepository {
-  final PushNotificationApiDataSource _pushNotificationApiDataSource;
-  final NotificationPreferencesDTOMapper _notificationPreferencesDTOMapper;
-  final NotificationChannelDTOMapper _notificationChannelDTOMapper;
-
-  final pushToken = 'pushToken';
-
   PushNotificationRepositoryMock(
     this._pushNotificationApiDataSource,
     this._notificationPreferencesDTOMapper,
     this._notificationChannelDTOMapper,
   );
+  final PushNotificationApiDataSource _pushNotificationApiDataSource;
+  final NotificationPreferencesDTOMapper _notificationPreferencesDTOMapper;
+  final NotificationChannelDTOMapper _notificationChannelDTOMapper;
+
+  final pushToken = 'pushToken';
 
   @override
   Future<RegisteredPushToken> registerToken() async {

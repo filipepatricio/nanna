@@ -10,11 +10,10 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TabsNavigationObserver extends AutoRouterObserver {
+  TabsNavigationObserver(this._trackActivityUseCase, this._getCurrentBriefUseCase);
   final TrackActivityUseCase _trackActivityUseCase;
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
   CurrentBrief? _currentBrief;
-
-  TabsNavigationObserver(this._trackActivityUseCase, this._getCurrentBriefUseCase);
 
   @override
   void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) => _trackTabView(route.name);

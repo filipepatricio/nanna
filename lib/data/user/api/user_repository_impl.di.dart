@@ -9,10 +9,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
+  UserRepositoryImpl(this._dataSource, this._userDTOMapper);
   final UserDataSource _dataSource;
   final UserDTOMapper _userDTOMapper;
-
-  UserRepositoryImpl(this._dataSource, this._userDTOMapper);
 
   @override
   Future<User> getUser() async {

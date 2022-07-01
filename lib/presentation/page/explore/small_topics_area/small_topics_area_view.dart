@@ -36,6 +36,7 @@ class SmallTopicsAreaView extends HookWidget {
         const SizedBox(height: AppDimens.ml),
         ExploreAreaHeader(
           title: area.title,
+          isPreferred: area.isPreferred,
           description: area.description,
         ),
         const SizedBox(height: AppDimens.m),

@@ -4,15 +4,6 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
 class FilledButton extends StatelessWidget {
-  final String text;
-  final bool isEnabled;
-  final VoidCallback? onTap;
-  final Color fillColor;
-  final Color disableColor;
-  final Color textColor;
-  final bool isLoading;
-  final Widget? leading;
-
   const FilledButton({
     required this.text,
     this.isEnabled = true,
@@ -24,6 +15,14 @@ class FilledButton extends StatelessWidget {
     this.leading,
     Key? key,
   }) : super(key: key);
+  final String text;
+  final bool isEnabled;
+  final VoidCallback? onTap;
+  final Color fillColor;
+  final Color disableColor;
+  final Color textColor;
+  final bool isLoading;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {

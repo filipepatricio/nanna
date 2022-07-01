@@ -4,11 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class ViewVisibilityNotifier extends HookWidget {
-  final Key detectorKey;
-  final double borderFraction;
-  final VoidCallback onVisible;
-  final Widget child;
-
   const ViewVisibilityNotifier({
     required this.detectorKey,
     required this.borderFraction,
@@ -16,6 +11,10 @@ class ViewVisibilityNotifier extends HookWidget {
     required this.child,
     Key? key,
   }) : super(key: key);
+  final Key detectorKey;
+  final double borderFraction;
+  final VoidCallback onVisible;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

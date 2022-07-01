@@ -12,10 +12,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 const _publisherLogoSize = 24.0;
 
 class PublisherLogo extends HookWidget {
-  final Publisher publisher;
-  final informed.Image? image;
-  final double size;
-
   const PublisherLogo._({
     required this.publisher,
     required this.image,
@@ -38,6 +34,9 @@ class PublisherLogo extends HookWidget {
         size: size,
         key: key,
       );
+  final Publisher publisher;
+  final informed.Image? image;
+  final double size;
 
   @override
   Widget build(BuildContext context) {

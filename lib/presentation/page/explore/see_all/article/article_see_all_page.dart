@@ -21,11 +21,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ArticleSeeAllPage extends HookWidget {
-  final String areaId;
-  final String title;
-  final List<MediaItemArticle>? entries;
-  final ExploreAreaReferred referred;
-
   const ArticleSeeAllPage({
     required this.areaId,
     required this.title,
@@ -33,6 +28,10 @@ class ArticleSeeAllPage extends HookWidget {
     this.entries,
     Key? key,
   }) : super(key: key);
+  final String areaId;
+  final String title;
+  final List<MediaItemArticle>? entries;
+  final ExploreAreaReferred referred;
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +77,6 @@ class ArticleSeeAllPage extends HookWidget {
 }
 
 class _Body extends StatelessWidget {
-  final String title;
-  final ArticleSeeAllPageState state;
-  final ScrollController scrollController;
-  final PageStorageKey pageStorageKey;
-
   const _Body({
     required this.title,
     required this.state,
@@ -90,6 +84,10 @@ class _Body extends StatelessWidget {
     required this.pageStorageKey,
     Key? key,
   }) : super(key: key);
+  final String title;
+  final ArticleSeeAllPageState state;
+  final ScrollController scrollController;
+  final PageStorageKey pageStorageKey;
 
   @override
   Widget build(BuildContext context) {
@@ -122,12 +120,6 @@ class _Body extends StatelessWidget {
 }
 
 class _ArticleGrid extends StatelessWidget {
-  final String title;
-  final PageStorageKey pageStorageKey;
-  final List<ArticleWithBackground> articles;
-  final ScrollController scrollController;
-  final bool withLoader;
-
   const _ArticleGrid({
     required this.title,
     required this.pageStorageKey,
@@ -136,6 +128,11 @@ class _ArticleGrid extends StatelessWidget {
     required this.withLoader,
     Key? key,
   }) : super(key: key);
+  final String title;
+  final PageStorageKey pageStorageKey;
+  final List<ArticleWithBackground> articles;
+  final ScrollController scrollController;
+  final bool withLoader;
 
   @override
   Widget build(BuildContext context) {
@@ -169,14 +166,13 @@ class _ArticleGrid extends StatelessWidget {
 }
 
 class _GridItem extends StatelessWidget {
-  final ArticleWithBackground article;
-  final int index;
-
   const _GridItem({
     required this.article,
     required this.index,
     Key? key,
   }) : super(key: key);
+  final ArticleWithBackground article;
+  final int index;
 
   @override
   Widget build(BuildContext context) {

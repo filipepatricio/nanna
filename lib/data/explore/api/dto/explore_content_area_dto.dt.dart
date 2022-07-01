@@ -13,6 +13,9 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
     String id,
     String name,
     String? description,
+    String? icon,
+    bool isHighlighted,
+    bool isPreferred,
     List<ArticleHeaderDTO> articles,
   ) = _ExploreContentAreaDTOArticles;
 
@@ -21,6 +24,9 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
     String id,
     String name,
     String? description,
+    String? icon,
+    bool isHighlighted,
+    bool isPreferred,
     List<ArticleHeaderDTO> articles,
   ) = _ExploreContentAreaDTOArticlesList;
 
@@ -28,6 +34,9 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   factory ExploreContentAreaDTO.topics(
     String id,
     String name,
+    String? icon,
+    bool isHighlighted,
+    bool isPreferred,
     List<TopicPreviewDTO> topics,
   ) = _ExploreContentAreaDTOTopics;
 
@@ -36,6 +45,9 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
     String id,
     String name,
     String? description,
+    String? icon,
+    bool isHighlighted,
+    bool isPreferred,
     List<TopicPreviewDTO> topics,
   ) = _ExploreContentAreaDTOSmallTopics;
 
@@ -45,6 +57,9 @@ class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
     String name,
     String? description,
     String? backgroundColor,
+    String? icon,
+    bool isHighlighted,
+    bool isPreferred,
     List<TopicPreviewDTO> topics,
   ) = _ExploreContentAreaDTOHighlightedTopics;
 

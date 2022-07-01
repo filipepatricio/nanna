@@ -16,18 +16,6 @@ bool kIsAppleDevice = Platform.isIOS;
 final kIsTest = Platform.environment.containsKey('FLUTTER_TEST');
 
 class AppConfig {
-  final String name;
-  final String apiUrl;
-  final String cloudinaryCloudName;
-  final String sentryEventDns;
-  final String appId;
-  final String appleStoreId;
-  final String datoCMSKey;
-  final LinkedinConfig linkedinConfig;
-  final String? segmentWriteKey;
-  final String? launchDarklyKey;
-  final String? appsFlyerKey;
-
   const AppConfig._({
     required this.name,
     required this.apiUrl,
@@ -41,6 +29,17 @@ class AppConfig {
     this.launchDarklyKey,
     this.appsFlyerKey,
   });
+  final String name;
+  final String apiUrl;
+  final String cloudinaryCloudName;
+  final String sentryEventDns;
+  final String appId;
+  final String appleStoreId;
+  final String datoCMSKey;
+  final LinkedinConfig linkedinConfig;
+  final String? segmentWriteKey;
+  final String? launchDarklyKey;
+  final String? appsFlyerKey;
 
   static const dev = AppConfig._(
     name: Environment.dev,

@@ -5,13 +5,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class SetTutorialStepSeenUseCase {
-  final TutorialStore _tutorialStore;
-  final UserStore _userStore;
-
   SetTutorialStepSeenUseCase(
     this._tutorialStore,
     this._userStore,
   );
+  final TutorialStore _tutorialStore;
+  final UserStore _userStore;
 
   Future<void> call(TutorialStep tutorialStep) async {
     final currentUserUuid = await _userStore.getCurrentUserUuid();

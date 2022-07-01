@@ -15,6 +15,7 @@ class BriefEntryCover extends HookWidget {
     required this.briefId,
     required this.width,
     required this.height,
+    this.topicCardKey,
     Key? key,
   }) : super(key: key);
 
@@ -22,6 +23,7 @@ class BriefEntryCover extends HookWidget {
   final String briefId;
   final double width;
   final double height;
+  final GlobalKey? topicCardKey;
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +33,9 @@ class BriefEntryCover extends HookWidget {
       case BriefEntryStyleType.articleCardWithLargeImage:
         return item.maybeMap(
           article: (data) => data.article.map(
-            article: (article) => LimitedBox(
-              maxWidth: width,
-              maxHeight: height,
-              child: ArticleCover.dailyBriefLarge(
-                article: article,
-                editorsNote: article.note,
-                onTap: () => context.navigateToArticle(article),
-              ),
+            article: (article) => ArticleCover.dailyBriefLarge(
+              article: article,
+              onTap: () => context.navigateToArticle(article),
             ),
             unknown: (_) => const SizedBox(),
           ),
@@ -50,7 +47,6 @@ class BriefEntryCover extends HookWidget {
             article: (article) => ArticleCover.dailyBriefSmall(
               article: article,
               coverColor: style.backgroundColor,
-              editorsNote: article.note,
               onTap: () => context.navigateToArticle(article),
             ),
             unknown: (_) => const SizedBox(),
@@ -60,6 +56,7 @@ class BriefEntryCover extends HookWidget {
       case BriefEntryStyleType.topicCard:
         return item.maybeMap(
           topicPreview: (data) => LimitedBox(
+            key: topicCardKey,
             maxWidth: width,
             maxHeight: height,
             child: TopicCover.large(
@@ -70,7 +67,7 @@ class BriefEntryCover extends HookWidget {
               ),
             ),
           ),
-          orElse: () => const SizedBox(),
+          orElse: () => const SizedBox.shrink(),
         );
     }
   }

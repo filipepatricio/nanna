@@ -4,26 +4,24 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
   const _ArticleCoverDailyBriefSmall({
     required this.article,
     this.coverColor,
-    this.editorsNote,
     this.onTap,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final String? editorsNote;
   final Color? coverColor;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(AppDimens.m);
+    const borderRadius = BorderRadius.all(Radius.circular(AppDimens.m));
     final hasImage = article.hasImage;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: DecoratedBox(
-        decoration: BoxDecoration(borderRadius: borderRadius),
+        decoration: const BoxDecoration(borderRadius: borderRadius),
         child: ClipRRect(
           borderRadius: borderRadius,
           child: Stack(
@@ -100,10 +98,7 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ArticleLabelsEditorsNote(
-                      note: editorsNote,
-                      article: article,
-                    ),
+                    if (article.shouldShowArticleCoverNote) ArticleLabelsEditorsNote(article: article),
                   ],
                 ),
               ),

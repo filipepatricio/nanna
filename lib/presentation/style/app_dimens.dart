@@ -113,14 +113,20 @@ class AppDimens {
       kToolbarHeight +
       MediaQuery.of(context).viewPadding.bottom;
 
-  /// Full screen
+  /// Full screen topic image height
   static double topicViewHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
+
+  /// Full screen topic image width
+  static double topicViewHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width;
+
+  /// Full screen article image height
+  static double articleHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
+
+  /// Full screen article image width
+  static double articleHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   /// The smallest value from 75% of screen height and 500
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);
-
-  /// 410
-  static double articleLargeImageCoverHeight = 410;
 
   /// 410
   static double articleSmallImageCoverHeight = 322;

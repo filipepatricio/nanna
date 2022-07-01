@@ -6,13 +6,12 @@ const maxElements = 10;
 
 @injectable
 class AddSearchHistoryQueryUseCase {
-  final SearchStore _searchStore;
-  final UserStore _userStore;
-
   AddSearchHistoryQueryUseCase(
     this._searchStore,
     this._userStore,
   );
+  final SearchStore _searchStore;
+  final UserStore _userStore;
 
   Future<void> call(String query) async {
     final currentUserUuid = await _userStore.getCurrentUserUuid();

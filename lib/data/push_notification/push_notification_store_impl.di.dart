@@ -7,10 +7,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: PushNotificationStore, env: liveEnvs)
 class PushNotificationStoreImpl implements PushNotificationStore {
+  PushNotificationStoreImpl(this._database, this._entityMapper);
   final PushNotificationDatabase _database;
   final RegisteredPushTokenEntityMapper _entityMapper;
-
-  PushNotificationStoreImpl(this._database, this._entityMapper);
 
   @override
   Future<void> save(RegisteredPushToken registeredPushToken) async {

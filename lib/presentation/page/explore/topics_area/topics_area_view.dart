@@ -35,7 +35,10 @@ class TopicsAreaView extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: AppDimens.ml),
-        ExploreAreaHeader(title: area.title),
+        ExploreAreaHeader(
+          title: area.title,
+          isPreferred: area.isPreferred,
+        ),
         const SizedBox(height: AppDimens.m),
         ExploreAreaItemCarouselView<TopicPreview>(
           areaId: area.id,

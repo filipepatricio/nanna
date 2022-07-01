@@ -8,7 +8,7 @@ abstract class AnalyticsFacade {
 
   Future<void> config(String writeKey);
 
-  Future<void> identify(String userId, String method);
+  Future<void> identify(String userId, [String? method]);
 
   Future<void> reset();
 

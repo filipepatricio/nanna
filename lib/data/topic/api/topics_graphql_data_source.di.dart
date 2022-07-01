@@ -20,10 +20,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: TopicsApiDataSource, env: liveEnvs)
 class TopicsGraphqlDataSource implements TopicsApiDataSource {
+  TopicsGraphqlDataSource(this._client, this._responseResolver);
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
-
-  TopicsGraphqlDataSource(this._client, this._responseResolver);
 
   @override
   Future<TopicsFromExpertDTO> getTopicsFromExpert(String expertId, [String? excludedTopicSlug]) async {
@@ -73,6 +72,7 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
       QueryOptions(
         document: get_topic_by_slug.document,
         operationName: get_topic_by_slug.getTopicBySlug.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
         variables: {
           'slug': slug,
         },

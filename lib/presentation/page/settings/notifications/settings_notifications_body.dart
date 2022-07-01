@@ -13,14 +13,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsNotificationsBody extends HookWidget {
-  final List<NotificationPreferencesGroup> groups;
-  final SnackbarController snackbarController;
-
   const SettingsNotificationsBody({
     required this.groups,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
+  final List<NotificationPreferencesGroup> groups;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +69,13 @@ class SettingsNotificationsBody extends HookWidget {
 }
 
 class _NotificationGroup extends StatelessWidget {
-  final NotificationPreferencesGroup group;
-  final SnackbarController snackbarController;
-
   const _NotificationGroup({
     required this.group,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
+  final NotificationPreferencesGroup group;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -104,14 +102,13 @@ class _NotificationGroup extends StatelessWidget {
 }
 
 class _NotificationChannel extends StatelessWidget {
-  final NotificationChannel channel;
-  final SnackbarController snackbarController;
-
   const _NotificationChannel({
     required this.channel,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
+  final NotificationChannel channel;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {

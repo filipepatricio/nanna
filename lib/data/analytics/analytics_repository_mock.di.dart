@@ -15,7 +15,7 @@ class AnalyticsRepositoryMock implements AnalyticsRepository {
   Future<void> initializeAttribution() async {}
 
   @override
-  Future<void> login(String userId, String method) async {
+  Future<void> identify(String userId, [String? method]) async {
     return;
   }
 

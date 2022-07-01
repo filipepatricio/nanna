@@ -5,9 +5,8 @@ import 'package:rxdart/rxdart.dart';
 
 @injectable
 class IncomingPushNavigationStreamUseCase {
-  final PushNotificationRepository _repository;
-
   IncomingPushNavigationStreamUseCase(this._repository);
+  final PushNotificationRepository _repository;
 
   Stream<IncomingPushActionNavigateTo> call() {
     return _repository

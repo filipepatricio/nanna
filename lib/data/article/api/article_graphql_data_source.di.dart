@@ -15,6 +15,7 @@ import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
+import 'package:better_informed_mobile/data/networking/gql_customs/query_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:fimber/fimber.dart';
@@ -38,10 +39,11 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   @override
   Future<ArticleContentDTO> getArticleContent(String slug) async {
     final result = await _client.query(
-      QueryOptions(
+      QueryOptionsWithCustomExceptionMapper(
         document: article_content.document,
         operationName: article_content.articleContent.name?.value,
         cacheRereadPolicy: CacheRereadPolicy.ignoreOptimisitic,
+        exceptionMapper: _articleExceptionMapperFacade,
         variables: {
           'slug': slug,
         },
@@ -55,7 +57,6 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
         return ArticleContentDTO.fromJson(content);
       },
       rootKey: 'article',
-      customMapper: _articleExceptionMapperFacade,
     );
 
     if (dto == null) throw Exception('ArticleContent is null');
@@ -65,10 +66,11 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   @override
   Future<ArticleHeaderDTO> getArticleHeader(String slug) async {
     final result = await _client.query(
-      QueryOptions(
+      QueryOptionsWithCustomExceptionMapper(
         document: article_header.document,
         operationName: article_header.articleHeader.name?.value,
         fetchPolicy: FetchPolicy.networkOnly,
+        exceptionMapper: _articleExceptionMapperFacade,
         variables: {
           'slug': slug,
         },
@@ -79,7 +81,6 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       result,
       (raw) => ArticleHeaderDTO.fromJson(raw),
       rootKey: 'article',
-      customMapper: _articleExceptionMapperFacade,
     );
 
     if (dto == null) {
@@ -92,10 +93,11 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   @override
   Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh) async {
     final result = await _client.query(
-      QueryOptions(
+      QueryOptionsWithCustomExceptionMapper(
         document: article_audio_file.document,
         operationName: article_audio_file.getArticleAudioFile.name?.value,
         fetchPolicy: forceFresh ? FetchPolicy.networkOnly : FetchPolicy.cacheAndNetwork,
+        exceptionMapper: _articleExceptionMapperFacade,
         variables: {
           'slug': slug,
         },
@@ -108,7 +110,6 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
         return AudioFileDTO.fromJson(raw);
       },
       rootKey: 'getArticleAudioFile',
-      customMapper: _articleExceptionMapperFacade,
     );
 
     if (dto == null) throw Exception('AudioFile is null');

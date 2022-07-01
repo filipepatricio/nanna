@@ -7,6 +7,9 @@ query getExploreArea($id: String!, $limit: Int!, $offset: Int!) {
 
     id
     name
+    icon
+    isHighlighted
+    isPreferred
 
     ... on ArticlesExploreArea {
       articles(pagination: { limit: $limit, offset: $offset }) {

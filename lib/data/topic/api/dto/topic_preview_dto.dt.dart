@@ -7,18 +7,6 @@ part 'topic_preview_dto.dt.g.dart';
 
 @JsonSerializable()
 class TopicPreviewDTO {
-  final String id;
-  final String slug;
-  final String title;
-  final String strippedTitle;
-  final String introduction;
-  final String url;
-  final TopicOwnerDTO owner;
-  final String lastUpdatedAt;
-  final List<PublisherDTO> highlightedPublishers;
-  final ImageDTO heroImage;
-  final int entryCount;
-
   TopicPreviewDTO(
     this.id,
     this.slug,
@@ -34,6 +22,17 @@ class TopicPreviewDTO {
   );
 
   factory TopicPreviewDTO.fromJson(Map<String, dynamic> json) => _$TopicPreviewDTOFromJson(json);
+  final String id;
+  final String slug;
+  final String title;
+  final String strippedTitle;
+  final String introduction;
+  final String url;
+  final TopicOwnerDTO owner;
+  final String lastUpdatedAt;
+  final List<PublisherDTO> highlightedPublishers;
+  final ImageDTO heroImage;
+  final int entryCount;
 
   Map<String, dynamic> toJson() => _$TopicPreviewDTOToJson(this);
 }

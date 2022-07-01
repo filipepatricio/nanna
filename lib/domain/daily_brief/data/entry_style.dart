@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class EntryStyle {
-  final Color color;
-  final EntryStyleType type;
-
   const EntryStyle({
     required this.color,
     required this.type,
   });
+  final Color color;
+  final EntryStyleType type;
 }
 
 enum EntryStyleType {

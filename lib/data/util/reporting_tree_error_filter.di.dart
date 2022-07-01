@@ -31,7 +31,18 @@ class _CubitClosedErrorFilter implements ReportingTreeErrorFilter {
 class _FirebaseConnectionErrorFilter implements ReportingTreeErrorFilter {
   @override
   bool filterOut(error) {
-    return error is FirebaseException && error.message == 'Could not connect to the server';
+    if (error is FirebaseException) {
+      final message = error.message;
+      if (message == null) return true;
+
+      return message.contains('Could not connect to the server') ||
+          message.contains('The Internet connection appears to be offline') ||
+          message.contains('The network connection was lost') ||
+          message.contains('International roaming is currently off') ||
+          message.contains('The request timed out') ||
+          message.contains('A data connection is not currently allowed');
+    }
+    return false;
   }
 }
 

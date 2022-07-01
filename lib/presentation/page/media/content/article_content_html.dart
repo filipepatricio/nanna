@@ -10,16 +10,15 @@ import 'package:url_launcher/url_launcher.dart';
 const _listElementTag = 'li';
 
 class ArticleContentHtml extends HookWidget {
-  final String html;
-  final MediaItemCubit cubit;
-  final Function() scrollToPosition;
-
   const ArticleContentHtml({
     required this.html,
     required this.cubit,
     required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
+  final String html;
+  final MediaItemCubit cubit;
+  final Function() scrollToPosition;
 
   @override
   Widget build(BuildContext context) {

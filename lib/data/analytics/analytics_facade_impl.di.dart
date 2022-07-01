@@ -31,7 +31,11 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
   }
 
   @override
-  Future<void> identify(String userId, String method) async {
+  Future<void> identify(String userId, [String? method]) async {
+    Sentry.configureScope((scope) => scope.user = SentryUser(id: userId));
+
+    if (method == null) return;
+
     return await Segment.identify(
       userId: userId,
       traits: {
