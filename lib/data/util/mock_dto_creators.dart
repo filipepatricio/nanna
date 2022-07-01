@@ -408,6 +408,9 @@ class MockDTO {
     'explore-articles-id',
     'By Publisher',
     'This is description',
+    _mockedPillIcon,
+    false,
+    true,
     [
       premiumArticle,
       _freeArticle,
@@ -420,6 +423,9 @@ class MockDTO {
   static final _exploreTopicsArea = ExploreContentAreaDTO.topics(
     'explore-topics-id',
     'Hot topics',
+    _mockedPillIcon,
+    false,
+    true,
     [
       topicPreview,
       topicPreview,
@@ -434,6 +440,9 @@ class MockDTO {
     'Trending news',
     'Discover other topics of interest',
     'DFBFFF',
+    _mockedPillIcon,
+    false,
+    false,
     [
       topicPreview,
       topicPreview,
@@ -447,6 +456,9 @@ class MockDTO {
     'explore-small-topics-id',
     'More topics',
     'Discover other topics of interest',
+    _mockedPillIcon,
+    false,
+    false,
     [
       topicPreview,
       topicPreview,
@@ -460,6 +472,9 @@ class MockDTO {
     'explore-articles-list-id',
     'Some more articles',
     'Those are articles in the list',
+    _mockedPillIcon,
+    false,
+    false,
     [
       premiumArticle,
       _freeArticle,
