@@ -10,6 +10,9 @@ class ExploreContentArea with _$ExploreContentArea {
     required String id,
     required String title,
     required String? description,
+    required String? icon,
+    required bool isHighlighted,
+    required bool isPreferred,
     required List<MediaItemArticle> articles,
   }) = ExploreContentAreaArticles;
 
@@ -17,12 +20,18 @@ class ExploreContentArea with _$ExploreContentArea {
     required String id,
     required String title,
     required String? description,
+    required String? icon,
+    required bool isHighlighted,
+    required bool isPreferred,
     required List<MediaItemArticle> articles,
   }) = ExploreContentAreaArticlesList;
 
   factory ExploreContentArea.topics({
     required String id,
     required String title,
+    required String? icon,
+    required bool isHighlighted,
+    required bool isPreferred,
     required List<TopicPreview> topics,
   }) = ExploreContentAreaTopics;
 
@@ -30,6 +39,9 @@ class ExploreContentArea with _$ExploreContentArea {
     required String id,
     required String title,
     required String? description,
+    required String? icon,
+    required bool isHighlighted,
+    required bool isPreferred,
     required List<TopicPreview> topics,
   }) = ExploreContentAreaSmallTopics;
 
@@ -38,6 +50,9 @@ class ExploreContentArea with _$ExploreContentArea {
     required String title,
     required String? description,
     required int? backgroundColor,
+    required String? icon,
+    required bool isHighlighted,
+    required bool isPreferred,
     required List<TopicPreview> topics,
   }) = ExploreContentAreaHighlightedTopics;
 

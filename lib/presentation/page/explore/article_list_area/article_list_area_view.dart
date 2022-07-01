@@ -26,6 +26,7 @@ class ArticleListAreaView extends StatelessWidget {
         ExploreAreaHeader(
           title: area.title,
           description: area.description,
+          isPreferred: area.isPreferred,
         ),
         const SizedBox(height: AppDimens.m),
         Padding(

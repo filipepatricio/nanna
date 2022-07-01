@@ -93,7 +93,9 @@ class PremiumArticleReadView extends HookWidget {
           readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - articleController.offset);
         }
         if (scrollInfo.metrics.pixels == mainController.position.maxScrollExtent) {
-          showTabBar.value = true;
+          if ((pageController.page ?? 0) >= 1) {
+            showTabBar.value = true;
+          }
 
           dynamicListenButtonPosition.value = calculateAudioPlayButtonPositionOnSectionTransition(
             showAudioButton,
