@@ -2,28 +2,27 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 
 class BriefEntry {
-  BriefEntry({
+  const BriefEntry({
     required this.item,
     required this.style,
   });
+
   final BriefEntryItem item;
   final BriefEntryStyle style;
 
-  String get id {
-    return item.mapOrNull(
-          article: (data) => data.article.mapOrNull(article: (data) => data.id) ?? '',
-          topicPreview: (data) => data.topicPreview.id,
-        ) ??
-        '';
-  }
+  String get id => item.maybeMap(
+        article: (data) => data.article.maybeMap(article: (data) => data.id, orElse: () => ''),
+        topicPreview: (data) => data.topicPreview.id,
+        orElse: () => '',
+      );
 
-  BriefEntryType get type {
-    return item.mapOrNull(
-          article: (data) => BriefEntryType.article,
-          topicPreview: (data) => BriefEntryType.topic,
-        ) ??
-        BriefEntryType.unknown;
-  }
+  BriefEntryType get type => item.maybeMap(
+        article: (data) => BriefEntryType.article,
+        topicPreview: (data) => BriefEntryType.topic,
+        orElse: () => BriefEntryType.unknown,
+      );
+
+  bool get isTopic => type == BriefEntryType.topic;
 }
 
 enum BriefEntryType {
