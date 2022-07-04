@@ -202,8 +202,7 @@ class _IdleContent extends HookWidget {
         idle: (state) => _precacheFullSizeImages(context, cloudinaryProvider, state.entries),
         shouldShowTopicCardTutorialCoachMark: () {
           final topicCardTriggerPoint = scrollController.offset +
-              AppDimens.briefEntryCardStackHeight *
-                  (context.isSmallDevice ? 1.0 : _topicCardTutorialOffsetFromBottomFraction);
+              AppDimens.appBarHeight * (context.isSmallDevice ? 1.0 : _topicCardTutorialOffsetFromBottomFraction);
           final listener = topicCardTutorialListener(scrollController, topicCardTriggerPoint);
           scrollController.addListener(listener);
         },

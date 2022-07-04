@@ -227,7 +227,10 @@ class PremiumArticleReadView extends HookWidget {
                         SliverList(
                           delegate: SliverChildListDelegate(
                             [
-                              PremiumArticleOtherBriefSection(otherBrief),
+                              PremiumArticleOtherBriefSection(
+                                otherBrief: otherBrief,
+                                cubit: cubit,
+                              ),
                             ],
                           ),
                         ),

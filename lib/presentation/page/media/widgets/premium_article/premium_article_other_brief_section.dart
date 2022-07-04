@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/other_brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
@@ -10,9 +12,14 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cov
 import 'package:flutter/material.dart';
 
 class PremiumArticleOtherBriefSection extends StatelessWidget {
-  const PremiumArticleOtherBriefSection(this.otherBrief, {Key? key}) : super(key: key);
+  const PremiumArticleOtherBriefSection({
+    required this.otherBrief,
+    required this.cubit,
+    Key? key,
+  }) : super(key: key);
 
   final List<OtherBriefEntryItem> otherBrief;
+  final MediaItemCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +43,14 @@ class PremiumArticleOtherBriefSection extends StatelessWidget {
             padding: EdgeInsets.zero,
             separatorBuilder: (context, _) => const Divider(height: AppDimens.xl),
             itemBuilder: (context, index) => otherBrief[index].map(
-              article: (data) => _Article(data),
-              topicPreview: (data) => _Topic(data),
+              article: (data) => _Article(
+                briefArticle: data,
+                cubit: cubit,
+              ),
+              topicPreview: (data) => _Topic(
+                briefTopic: data,
+                cubit: cubit,
+              ),
               unknown: (_) => const SizedBox.shrink(),
             ),
           ),
@@ -51,9 +64,10 @@ class PremiumArticleOtherBriefSection extends StatelessWidget {
 }
 
 class _Article extends StatelessWidget {
-  const _Article(this.briefArticle, {Key? key}) : super(key: key);
+  const _Article({required this.briefArticle, required this.cubit, Key? key}) : super(key: key);
 
   final OtherBriefEntryItemArticle briefArticle;
+  final MediaItemCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +78,9 @@ class _Article extends StatelessWidget {
             child: ArticleCover.otherBrief(
               article: briefArticle.article!,
               onTap: () => _navigateToArticle(
-                context,
-                briefArticle.article!,
+                context: context,
+                article: briefArticle.article!,
+                cubit: cubit,
               ),
             ),
           );
@@ -73,9 +88,10 @@ class _Article extends StatelessWidget {
 }
 
 class _Topic extends StatelessWidget {
-  const _Topic(this.briefTopic, {Key? key}) : super(key: key);
+  const _Topic({required this.briefTopic, required this.cubit, Key? key}) : super(key: key);
 
   final OtherBriefEntryItemTopic briefTopic;
+  final MediaItemCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -86,18 +102,40 @@ class _Topic extends StatelessWidget {
             child: TopicCover.otherBrief(
               topic: briefTopic.topic!.asPreview,
               onTap: () => _navigateToTopic(
-                context,
-                briefTopic.topic!.slug,
+                context: context,
+                topic: briefTopic.topic!,
+                cubit: cubit,
               ),
             ),
           );
   }
 }
 
-void _navigateToArticle(BuildContext context, MediaItemArticle article) {
-  AutoRouter.of(context).push(MediaItemPageRoute(article: article));
+void _navigateToArticle({
+  required BuildContext context,
+  required MediaItemArticle article,
+  required MediaItemCubit cubit,
+}) {
+  AutoRouter.of(context).push(
+    MediaItemPageRoute(
+      article: article,
+      briefId: cubit.briefId,
+      topicId: cubit.topicId,
+      slug: article.slug,
+    ),
+  );
 }
 
-void _navigateToTopic(BuildContext context, String topicSlug) {
-  AutoRouter.of(context).push(TopicPage(topicSlug: topicSlug));
+void _navigateToTopic({
+  required BuildContext context,
+  required Topic topic,
+  required MediaItemCubit cubit,
+}) {
+  AutoRouter.of(context).push(
+    TopicPage(
+      topicSlug: topic.slug,
+      briefId: cubit.briefId,
+      topic: topic,
+    ),
+  );
 }
