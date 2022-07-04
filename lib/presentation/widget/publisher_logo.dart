@@ -58,11 +58,11 @@ class PublisherLogo extends HookWidget {
                     )
                   : CachedNetworkImage(
                       imageUrl: cloudinaryProvider
-                          .withPublicIdAsPng(publisherLogoId)
+                          .withPublicId(publisherLogoId)
                           .transform()
                           .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                           .fit()
-                          .generateNotNull(),
+                          .generateNotNull(imageType: ImageType.png),
                       width: size,
                       height: size,
                       fit: BoxFit.contain,

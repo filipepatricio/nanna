@@ -47,7 +47,7 @@ dependencies:
       url: https://github.com/dawidkiteo/packages.git
       ref: version/0-7-0
       path: packages/flutter_markdown
-  cloudinary_sdk: 3.0.1+7
+  cloudinary_sdk: 4.0.1+9
   rxdart: 0.27.3
   hive: 2.2.1
   hive_flutter: 1.1.0

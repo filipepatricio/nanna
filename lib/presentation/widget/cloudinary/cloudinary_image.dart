@@ -23,7 +23,6 @@ class CloudinaryImage extends HookWidget {
     this.alignment = Alignment.center,
     this.testImage = AppRasterGraphics.testReadingListCoverImage,
     this.config = const CloudinaryConfig(
-      platformBasedExtension: false,
       autoGravity: false,
     ),
     this.showLoadingShimmer = true,
