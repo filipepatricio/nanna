@@ -20,4 +20,6 @@ abstract class ArticleRepository {
   void trackReadingProgress(String articleSlug, int progress);
 
   void trackAudioPosition(String articleSlug, int position);
+
+  Future<List<MediaItem>> getOtherTopicEntries(String articleSlug, String topicSlug);
 }

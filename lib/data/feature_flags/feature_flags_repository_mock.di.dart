@@ -33,4 +33,7 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
   Future<bool> showArticleMoreFromBriefSection() {
     return Future.value(true);
   }
+
+  @override
+  Future<bool> showArticleMoreFromTopic() => Future.value(true);
 }

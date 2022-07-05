@@ -14,6 +14,6 @@ class PremiumArticleViewState with _$PremiumArticleViewState {
     required List<BriefEntryItem> otherBriefItems,
     required List<Category> featuredCategories,
     required bool showArticleRelatedContentSection,
-    required bool showArticleMoreFromBriefSection,
+    required bool showArticleMoreSection,
   }) = _PremiumArticleViewStateIdle;
 }

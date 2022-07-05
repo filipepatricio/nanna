@@ -14,4 +14,6 @@ abstract class FeaturesFlagsRepository {
   Future<bool> showArticleRelatedContentSection();
 
   Future<bool> showArticleMoreFromBriefSection();
+
+  Future<bool> showArticleMoreFromTopic();
 }

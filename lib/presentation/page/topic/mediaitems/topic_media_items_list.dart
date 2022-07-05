@@ -82,6 +82,8 @@ class TopicMediaItemsList extends HookWidget {
       MediaItemPageRoute(
         article: topic.articleAt(index),
         topicId: topic.id,
+        topicSlug: topic.slug,
+        topicTitle: topic.strippedTitle,
         briefId: cubit.briefId,
       ),
     );

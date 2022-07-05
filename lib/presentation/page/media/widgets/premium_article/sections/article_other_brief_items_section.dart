@@ -15,12 +15,14 @@ class ArticleOtherBriefItemsSection extends StatelessWidget {
     required this.otherBriefItems,
     this.briefId,
     this.topicId,
+    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
   final List<BriefEntryItem> otherBriefItems;
   final String? briefId;
   final String? topicId;
+  final String? topicTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,9 @@ class ArticleOtherBriefItemsSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(AppDimens.l),
           child: Text(
-            LocaleKeys.article_otherBriefs.tr(),
+            topicTitle != null
+                ? LocaleKeys.article_moreFromTopic.tr(args: [topicTitle!])
+                : LocaleKeys.article_otherBriefs.tr(),
             style: AppTypography.h1ExtraBold,
           ),
         ),

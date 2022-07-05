@@ -20,6 +20,8 @@ class PremiumArticleView extends HookWidget {
     required this.snackbarController,
     required this.articleOutputMode,
     this.readArticleProgress,
+    this.topicSlug,
+    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
@@ -28,6 +30,8 @@ class PremiumArticleView extends HookWidget {
   final double? readArticleProgress;
   final SnackbarController snackbarController;
   final ArticleOutputMode articleOutputMode;
+  final String? topicSlug;
+  final String? topicTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +49,7 @@ class PremiumArticleView extends HookWidget {
         cubit.initialize(
           metadata.slug,
           mediaItemCubit.briefId,
+          topicSlug,
         );
 
         void listener() {
@@ -110,7 +115,8 @@ class PremiumArticleView extends HookWidget {
                           otherBriefItems: data.otherBriefItems,
                           featuredCategories: data.featuredCategories,
                           showArticleRelatedContentSection: data.showArticleRelatedContentSection,
-                          showArticleMoreFromBriefSection: data.showArticleMoreFromBriefSection,
+                          showArticleMoreSection: data.showArticleMoreSection,
+                          topicTitle: topicTitle,
                         ),
                       ),
                       if (metadata.hasAudioVersion)
