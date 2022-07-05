@@ -232,8 +232,16 @@ class _IdleContent extends HookWidget {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               final currentEntry = currentBrief.entries[index];
-              final firstTopic = currentBrief.entries
-                  .firstWhere((element) => element.item.maybeMap(topicPreview: (_) => true, orElse: () => false));
+
+              BriefEntry? firstTopic;
+              if (currentBrief.entries.any((entry) => entry.isTopic)) {
+                firstTopic = currentBrief.entries.firstWhere(
+                  (element) => element.item.maybeMap(
+                    topicPreview: (_) => true,
+                    orElse: () => false,
+                  ),
+                );
+              }
 
               return VisibilityDetector(
                 key: Key(currentEntry.id),

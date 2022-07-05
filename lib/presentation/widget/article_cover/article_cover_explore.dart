@@ -83,7 +83,7 @@ class _ArticleCoverExploreList extends HookWidget {
                 children: [
                   Row(
                     children: [
-                      if (article.publisher.darkLogo != null) PublisherLogo.dark(publisher: article.publisher),
+                      PublisherLogo.dark(publisher: article.publisher),
                       Flexible(
                         child: Text(
                           article.publisher.name,

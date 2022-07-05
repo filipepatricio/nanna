@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
@@ -25,7 +26,14 @@ part 'article_cover_explore.dart';
 
 const _coverSizeToScreenWidthFactor = 0.26;
 
-enum ArticleCoverType { exploreCarousel, exploreList, dailyBriefLarge, dailyBriefSmall, otherBrief, bookmarkList }
+enum ArticleCoverType {
+  exploreCarousel,
+  exploreList,
+  dailyBriefLarge,
+  dailyBriefSmall,
+  otherBriefItemsList,
+  bookmarkList
+}
 
 class ArticleCover extends StatelessWidget {
   const ArticleCover._(
@@ -86,13 +94,13 @@ class ArticleCover extends StatelessWidget {
         onTap: onTap,
       );
 
-  factory ArticleCover.otherBrief({
+  factory ArticleCover.otherBriefItemsList({
     required MediaItemArticle article,
     Color? coverColor,
     VoidCallback? onTap,
   }) =>
       ArticleCover._(
-        ArticleCoverType.otherBrief,
+        ArticleCoverType.otherBriefItemsList,
         article: article,
         coverColor: coverColor,
         onTap: onTap,
@@ -153,8 +161,8 @@ class ArticleCover extends StatelessWidget {
           article: article,
           coverColor: coverColor,
         );
-      case ArticleCoverType.otherBrief:
-        return _ArticleCoverOtherBriefList(
+      case ArticleCoverType.otherBriefItemsList:
+        return _ArticleCoverOtherBriefItemsList(
           onTap: onTap,
           article: article,
           coverColor: coverColor,

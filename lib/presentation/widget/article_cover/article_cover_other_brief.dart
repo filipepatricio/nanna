@@ -1,7 +1,7 @@
 part of 'article_cover.dart';
 
-class _ArticleCoverOtherBriefList extends HookWidget {
-  const _ArticleCoverOtherBriefList({
+class _ArticleCoverOtherBriefItemsList extends HookWidget {
+  const _ArticleCoverOtherBriefItemsList({
     required this.onTap,
     required this.article,
     required this.coverColor,
@@ -46,16 +46,21 @@ class _ArticleCoverOtherBriefList extends HookWidget {
                     borderColor: AppColors.dividerGrey,
                   ),
                   const Spacer(),
-                  Text(
-                    article.strippedTitle,
-                    maxLines: 2,
-                    style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
-                    overflow: TextOverflow.ellipsis,
+                  Padding(
+                    padding: const EdgeInsets.all(AppDimens.xxs),
+                    child: AutoSizeText(
+                      article.strippedTitle,
+                      maxLines: 2,
+                      style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+                      overflow: TextOverflow.ellipsis,
+                      maxFontSize: 14,
+                      minFontSize: 12,
+                    ),
                   ),
                   const Spacer(),
                   Row(
                     children: [
-                      if (article.publisher.darkLogo != null) PublisherLogo.dark(publisher: article.publisher),
+                      PublisherLogo.dark(publisher: article.publisher),
                       Flexible(
                         child: Text(
                           article.publisher.name,

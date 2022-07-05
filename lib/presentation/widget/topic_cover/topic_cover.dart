@@ -9,7 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _coverSizeToScreenWidthFactor = 0.26;
 
-enum TopicCoverType { small, large, exploreLarge, exploreSmall, otherBrief }
+enum TopicCoverType { small, large, exploreLarge, exploreSmall, otherBriefItemsList }
 
 class TopicCover extends HookWidget {
   factory TopicCover.large({required TopicPreview topic, Function()? onTap}) => TopicCover._(
@@ -38,8 +38,8 @@ class TopicCover extends HookWidget {
         hasBackgroundColor: hasBackgroundColor,
       );
 
-  factory TopicCover.otherBrief({required TopicPreview topic, Function()? onTap}) => TopicCover._(
-        type: TopicCoverType.otherBrief,
+  factory TopicCover.otherBriefItemsList({required TopicPreview topic, Function()? onTap}) => TopicCover._(
+        type: TopicCoverType.otherBriefItemsList,
         topic: topic,
         onTap: onTap,
       );
@@ -111,10 +111,10 @@ class TopicCover extends HookWidget {
           ),
         );
 
-      case TopicCoverType.otherBrief:
+      case TopicCoverType.otherBriefItemsList:
         return GestureDetector(
           onTap: onTap,
-          child: _TopicCoverOtherBriefList(onTap: onTap, topic: topic),
+          child: _TopicCoverOtherBriefItemsList(onTap: onTap, topic: topic),
         );
     }
   }
@@ -194,8 +194,8 @@ class _TopicCoverExploreSmall extends StatelessWidget {
   }
 }
 
-class _TopicCoverOtherBriefList extends HookWidget {
-  const _TopicCoverOtherBriefList({
+class _TopicCoverOtherBriefItemsList extends HookWidget {
+  const _TopicCoverOtherBriefItemsList({
     required this.onTap,
     required this.topic,
     Key? key,
@@ -226,7 +226,7 @@ class _TopicCoverOtherBriefList extends HookWidget {
           const SizedBox(width: AppDimens.m),
           TopicCoverContent(
             topic: topic,
-            type: TopicCoverType.otherBrief,
+            type: TopicCoverType.otherBriefItemsList,
             coverSize: coverSize,
           ),
         ],

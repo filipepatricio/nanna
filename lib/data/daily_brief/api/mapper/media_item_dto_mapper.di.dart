@@ -45,6 +45,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
           sourceUrl: data.sourceUrl,
           author: data.author,
           hasAudioVersion: data.hasAudioVersion,
+          progressState: data.progressState,
         );
       },
       unknown: (_) => const MediaItem.unknown(),

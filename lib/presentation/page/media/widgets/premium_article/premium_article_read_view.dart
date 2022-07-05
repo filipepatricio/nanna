@@ -1,11 +1,11 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/article/data/other_brief_entry_item.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_other_brief_section.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -27,7 +27,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.mainController,
     required this.showArticleRelatedContentSection,
     required this.showArticleMoreFromBriefSection,
-    required this.otherBrief,
+    required this.otherBriefItems,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -40,7 +40,7 @@ class PremiumArticleReadView extends HookWidget {
   final double? readArticleProgress;
   final bool showArticleRelatedContentSection;
   final bool showArticleMoreFromBriefSection;
-  final List<OtherBriefEntryItem> otherBrief;
+  final List<BriefEntryItem> otherBriefItems;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -219,17 +219,19 @@ class PremiumArticleReadView extends HookWidget {
                               dynamicPosition: dynamicListenPosition,
                               readProgress: readProgress,
                               showArticleRelatedContentSection: showArticleRelatedContentSection,
+                              showArticleMoreFromBriefSection: showArticleMoreFromBriefSection,
                             ),
                           ],
                         ),
                       ),
-                      if (showArticleMoreFromBriefSection)
+                      if (showArticleMoreFromBriefSection && otherBriefItems.isNotEmpty)
                         SliverList(
                           delegate: SliverChildListDelegate(
                             [
-                              PremiumArticleOtherBriefSection(
-                                otherBrief: otherBrief,
-                                cubit: cubit,
+                              ArticleOtherBriefItemsSection(
+                                otherBriefItems: otherBriefItems,
+                                briefId: cubit.briefId,
+                                topicId: cubit.topicId,
                               ),
                             ],
                           ),
@@ -306,6 +308,7 @@ class _ArticleContentView extends StatefulHookWidget {
     required this.cubit,
     required this.articleContentKey,
     required this.showArticleRelatedContentSection,
+    required this.showArticleMoreFromBriefSection,
     Key? key,
   }) : super(key: key);
 
@@ -316,6 +319,7 @@ class _ArticleContentView extends StatefulHookWidget {
   final MediaItemCubit cubit;
   final Key articleContentKey;
   final bool showArticleRelatedContentSection;
+  final bool showArticleMoreFromBriefSection;
 
   @override
   State<_ArticleContentView> createState() => _ArticleContentViewState();

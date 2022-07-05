@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
-import 'package:better_informed_mobile/data/article/api/dto/other_brief_entry_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 
 abstract class ArticleApiDataSource {
   Future<ArticleHeaderDTO> getArticleHeader(String slug);
@@ -10,7 +10,7 @@ abstract class ArticleApiDataSource {
 
   Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh);
 
-  Future<List<OtherBriefEntryItemDTO>> getOtherBriefEntries(String articleSlug);
+  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug);
 
   void trackReadingProgress(String articleSlug, int progress);
 

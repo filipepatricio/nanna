@@ -35,6 +35,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.da
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
 
@@ -291,6 +292,8 @@ class MockDTO {
     'Cassandre Lueilwitz',
     // hasAudioVersion
     false,
+    // progressState
+    ArticleProgressState.unread,
   );
 
   static final premiumArticle = _freeArticle.copyWith(
@@ -546,6 +549,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     String? sourceUrl,
     String? author,
     bool? hasAudioVersion,
+    ArticleProgressState? progressState,
   }) {
     return ArticleHeaderDTO(
       id ?? this.id,
@@ -564,6 +568,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl ?? this.sourceUrl,
       author ?? this.author,
       hasAudioVersion ?? this.hasAudioVersion,
+      progressState ?? this.progressState,
     );
   }
 
@@ -585,6 +590,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl,
       author,
       hasAudioVersion,
+      progressState,
     );
   }
 
@@ -606,6 +612,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl,
       author,
       hasAudioVersion,
+      progressState,
     );
   }
 }
@@ -656,6 +663,7 @@ extension on TopicDTO {
       highlightedPublishers,
       heroImage,
       entries.length,
+      visited,
     );
   }
 
@@ -672,6 +680,7 @@ extension on TopicDTO {
       highlightedPublishers,
       heroImage,
       entries.length,
+      visited,
     );
   }
 }

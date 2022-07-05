@@ -14,8 +14,8 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
-import 'package:better_informed_mobile/data/article/api/dto/other_brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/networking/gql_customs/query_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -118,12 +118,12 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  Future<List<OtherBriefEntryItemDTO>> getOtherBriefEntries(String articleSlug) async {
+  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug) async {
     final result = await _client.query(
       QueryOptions(
         document: get_other_brief_entries.document,
         operationName: get_other_brief_entries.getOtherBriefEntries.name?.value,
-        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        fetchPolicy: FetchPolicy.networkOnly,
         variables: {'articleSlug': articleSlug},
       ),
     );
@@ -133,7 +133,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       (raw) {
         final briefEntriesRaw = raw['getOtherBriefEntries'] as List<dynamic>;
         final briefEntries = briefEntriesRaw
-            .map((json) => OtherBriefEntryItemDTO.fromJson(json as Map<String, dynamic>))
+            .map((json) => BriefEntryItemDTO.fromJson(json as Map<String, dynamic>))
             .toList(growable: false);
 
         return briefEntries;
