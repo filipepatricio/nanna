@@ -47,8 +47,14 @@ fvm_update_goldens:
 screens_report:
 	dart scripts/screens_report.dart
 
+fvm_screens_report:
+	-fvm dart scripts/screens_report.dart
+
 ui_changes_report:
 	dart scripts/ui_changes_report.dart
+
+fvm_ui_changes_report:
+	-fvm dart scripts/ui_changes_report.dart
 
 $(MAKE_CACHE_DIR):
 	mkdir -p $@
