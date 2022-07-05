@@ -67,7 +67,7 @@ class PhotoStackedCover extends StatelessWidget {
                                   showReadTime: false,
                                 ),
                               ),
-                              if (article.hasAudioVersion) AudioIcon.light(),
+                              if (article.hasAudioVersion) AudioIconButton(article: article),
                             ],
                           ),
                           const SizedBox(height: AppDimens.m),

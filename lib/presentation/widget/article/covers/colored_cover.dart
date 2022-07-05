@@ -52,7 +52,7 @@ class ColoredCover extends StatelessWidget {
                           showReadTime: false,
                         ),
                       ),
-                      if (article.hasAudioVersion) AudioIcon.dark(),
+                      if (article.hasAudioVersion) AudioIconButton(article: article),
                     ],
                   ),
                   const SizedBox(height: AppDimens.m),

@@ -164,7 +164,7 @@ class _CoverImage extends StatelessWidget {
           Positioned(
             bottom: AppDimens.s,
             right: AppDimens.s,
-            child: CoverLabel.audio(),
+            child: AudioIconButton(article: article),
           ),
       ],
     );
