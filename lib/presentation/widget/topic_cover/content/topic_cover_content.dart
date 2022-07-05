@@ -292,7 +292,7 @@ class _CoverContentOtherBriefItemsList extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              topic.highlightedPublishers.first.name,
+              topic.owner.name,
               maxLines: 1,
               style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
               overflow: TextOverflow.ellipsis,

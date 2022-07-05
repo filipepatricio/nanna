@@ -41,11 +41,11 @@ class RelaxView extends HookWidget {
           if (goodbyeHeadline.icon != null && !kIsTest)
             CachedNetworkImage(
               imageUrl: cloudinaryProvider
-                  .withPublicIdAsPng(goodbyeHeadline.icon!)
+                  .withPublicId(goodbyeHeadline.icon!)
                   .transform()
                   .width(DimensionUtil.getPhysicalPixelsAsInt(168.0, context))
                   .fit()
-                  .generateNotNull(),
+                  .generateNotNull(imageType: ImageType.png),
             )
           else
             SvgPicture.asset(AppVectorGraphics.relaxCoffee),
