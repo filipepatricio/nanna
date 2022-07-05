@@ -68,13 +68,13 @@ class TopicOwnerAvatar extends HookWidget {
                       width: imageWidth,
                       height: imageHeight,
                       imageUrl: cloudinaryProvider
-                          .withPublicIdAsPlatform(imageId)
+                          .withPublicId(imageId)
                           .transform()
                           .width(avatarResolutionWidth)
                           .height(avatarResolutionHeight)
                           .autoQuality()
                           .autoGravity()
-                          .generateNotNull(),
+                          .generateAsPlatform(),
                       placeholder: (context, _) => LoadingShimmer(
                         width: imageWidth,
                         height: imageHeight,
