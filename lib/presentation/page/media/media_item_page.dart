@@ -69,12 +69,11 @@ class MediaItemPage extends HookWidget {
                   snackbarController: snackbarController,
                 ),
                 idlePremium: (state) => PremiumArticleView(
-                  cubit: cubit,
+                  mediaItemCubit: cubit,
                   article: state.article,
                   snackbarController: snackbarController,
                   readArticleProgress: readArticleProgress,
                   articleOutputMode: articleOutputMode,
-                  showArticleRelatedContentSection: state.showArticleRelatedContentSection,
                 ),
                 error: (state) => _ErrorContent(article: state.article),
                 emptyError: (_) => _ErrorContent(

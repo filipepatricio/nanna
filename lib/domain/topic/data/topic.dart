@@ -56,6 +56,7 @@ class Topic {
       highlightedPublishers,
       heroImage,
       entries.length,
+      visited,
     );
   }
 }

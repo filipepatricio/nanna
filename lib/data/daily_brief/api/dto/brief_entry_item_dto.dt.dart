@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.d
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'brief_entry_item_dto.dt.freezed.dart';
@@ -31,6 +32,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String sourceUrl,
     String? author,
     bool hasAudioVersion,
+    ArticleProgressState progressState,
   ) = BriefEntryItemDTOArticle;
 
   @FreezedUnionValue('Topic')
@@ -46,6 +48,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     List<PublisherDTO> highlightedPublishers,
     ImageDTO heroImage,
     int entryCount,
+    bool visited,
   ) = BriefEntryItemDTOTopic;
 
   @FreezedUnionValue(unknownKey)

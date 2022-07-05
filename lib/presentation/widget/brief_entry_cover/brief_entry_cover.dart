@@ -35,7 +35,10 @@ class BriefEntryCover extends HookWidget {
           article: (data) => data.article.map(
             article: (article) => ArticleCover.dailyBriefLarge(
               article: article,
-              onTap: () => context.navigateToArticle(article),
+              onTap: () => context.navigateToArticle(
+                article: article,
+                briefId: briefId,
+              ),
             ),
             unknown: (_) => const SizedBox(),
           ),
@@ -47,7 +50,10 @@ class BriefEntryCover extends HookWidget {
             article: (article) => ArticleCover.dailyBriefSmall(
               article: article,
               coverColor: style.backgroundColor,
-              onTap: () => context.navigateToArticle(article),
+              onTap: () => context.navigateToArticle(
+                article: article,
+                briefId: briefId,
+              ),
             ),
             unknown: (_) => const SizedBox(),
           ),
@@ -74,9 +80,15 @@ class BriefEntryCover extends HookWidget {
 }
 
 extension on BuildContext {
-  void navigateToArticle(MediaItemArticle article) {
+  void navigateToArticle({
+    required MediaItemArticle article,
+    required String briefId,
+  }) {
     pushRoute(
-      MediaItemPageRoute(article: article),
+      MediaItemPageRoute(
+        article: article,
+        briefId: briefId,
+      ),
     );
   }
 

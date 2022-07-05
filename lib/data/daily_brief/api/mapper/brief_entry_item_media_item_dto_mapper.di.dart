@@ -45,6 +45,7 @@ class BriefEntryMediaItemDTOMapper implements Mapper<BriefEntryItemDTO, MediaIte
           sourceUrl: data.sourceUrl,
           author: data.author,
           hasAudioVersion: data.hasAudioVersion,
+          progressState: data.progressState,
         );
       },
       topicPreview: (_) => null,

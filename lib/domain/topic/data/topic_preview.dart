@@ -15,6 +15,7 @@ class TopicPreview {
     this.highlightedPublishers,
     this.heroImage,
     this.entryCount,
+    this.visited,
   );
 
   final String id;
@@ -28,4 +29,5 @@ class TopicPreview {
   final List<Publisher> highlightedPublishers;
   final Image heroImage;
   final int entryCount;
+  final bool visited;
 }

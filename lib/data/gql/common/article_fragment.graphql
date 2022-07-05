@@ -17,8 +17,7 @@ fragment articleFragment on Article {
     kind {
         ...kindFragment
     }
-
-
+    progressState
     publicationDate
     timeToRead
     hasAudioVersion

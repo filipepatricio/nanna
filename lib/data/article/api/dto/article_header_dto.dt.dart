@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'article_header_dto.dt.g.dart';
@@ -24,6 +25,7 @@ class ArticleHeaderDTO {
     this.sourceUrl,
     this.author,
     this.hasAudioVersion,
+    this.progressState,
   );
 
   factory ArticleHeaderDTO.fromJson(Map<String, dynamic> json) => _$ArticleHeaderDTOFromJson(json);
@@ -44,6 +46,7 @@ class ArticleHeaderDTO {
   final String sourceUrl;
   final String? author;
   final bool hasAudioVersion;
+  final ArticleProgressState progressState;
 
   Map<String, dynamic> toJson() => _$ArticleHeaderDTOToJson(this);
 }

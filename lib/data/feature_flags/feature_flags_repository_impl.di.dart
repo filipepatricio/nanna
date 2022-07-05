@@ -55,4 +55,9 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   Future<bool> showArticleRelatedContentSection() async {
     return await LDClient.boolVariation('show-article-related-content-section', false);
   }
+
+  @override
+  Future<bool> showArticleMoreFromBriefSection() async {
+    return await LDClient.boolVariation('show-article-more-from-brief', true);
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
@@ -20,11 +21,19 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 part 'article_cover_bookmark_list.dart';
 part 'article_cover_daily_brief_large.dart';
 part 'article_cover_daily_brief_small.dart';
+part 'article_cover_other_brief.dart';
 part 'article_cover_explore.dart';
 
 const _coverSizeToScreenWidthFactor = 0.26;
 
-enum ArticleCoverType { exploreCarousel, exploreList, dailyBriefLarge, dailyBriefSmall, bookmarkList }
+enum ArticleCoverType {
+  exploreCarousel,
+  exploreList,
+  dailyBriefLarge,
+  dailyBriefSmall,
+  otherBriefItemsList,
+  bookmarkList
+}
 
 class ArticleCover extends StatelessWidget {
   const ArticleCover._(
@@ -85,6 +94,18 @@ class ArticleCover extends StatelessWidget {
         onTap: onTap,
       );
 
+  factory ArticleCover.otherBriefItemsList({
+    required MediaItemArticle article,
+    Color? coverColor,
+    VoidCallback? onTap,
+  }) =>
+      ArticleCover._(
+        ArticleCoverType.otherBriefItemsList,
+        article: article,
+        coverColor: coverColor,
+        onTap: onTap,
+      );
+
   factory ArticleCover.bookmarkList({
     required MediaItemArticle article,
     required double height,
@@ -136,6 +157,12 @@ class ArticleCover extends StatelessWidget {
         );
       case ArticleCoverType.dailyBriefSmall:
         return _ArticleCoverDailyBriefSmall(
+          onTap: onTap,
+          article: article,
+          coverColor: coverColor,
+        );
+      case ArticleCoverType.otherBriefItemsList:
+        return _ArticleCoverOtherBriefItemsList(
           onTap: onTap,
           article: article,
           coverColor: coverColor,

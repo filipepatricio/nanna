@@ -1,9 +1,11 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -24,6 +26,8 @@ class PremiumArticleReadView extends HookWidget {
     required this.cubit,
     required this.mainController,
     required this.showArticleRelatedContentSection,
+    required this.showArticleMoreFromBriefSection,
+    required this.otherBriefItems,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -35,6 +39,8 @@ class PremiumArticleReadView extends HookWidget {
   final MediaItemCubit cubit;
   final double? readArticleProgress;
   final bool showArticleRelatedContentSection;
+  final bool showArticleMoreFromBriefSection;
+  final List<BriefEntryItem> otherBriefItems;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -213,10 +219,23 @@ class PremiumArticleReadView extends HookWidget {
                               dynamicPosition: dynamicListenPosition,
                               readProgress: readProgress,
                               showArticleRelatedContentSection: showArticleRelatedContentSection,
+                              showArticleMoreFromBriefSection: showArticleMoreFromBriefSection,
                             ),
                           ],
                         ),
                       ),
+                      if (showArticleMoreFromBriefSection && otherBriefItems.isNotEmpty)
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              ArticleOtherBriefItemsSection(
+                                otherBriefItems: otherBriefItems,
+                                briefId: cubit.briefId,
+                                topicId: cubit.topicId,
+                              ),
+                            ],
+                          ),
+                        ),
                       if (showArticleRelatedContentSection)
                         SliverList(
                           delegate: SliverChildListDelegate(
@@ -280,7 +299,7 @@ class PremiumArticleReadView extends HookWidget {
 double _bottomBarShownAudioButtonBottomPosition(BuildContext context) =>
     AppDimens.l + (kBottomNavigationBarHeight + MediaQuery.of(context).viewPadding.bottom);
 
-class _ArticleContentView extends HookWidget {
+class _ArticleContentView extends StatefulHookWidget {
   const _ArticleContentView({
     required this.article,
     required this.readProgress,
@@ -289,6 +308,7 @@ class _ArticleContentView extends HookWidget {
     required this.cubit,
     required this.articleContentKey,
     required this.showArticleRelatedContentSection,
+    required this.showArticleMoreFromBriefSection,
     Key? key,
   }) : super(key: key);
 
@@ -299,9 +319,17 @@ class _ArticleContentView extends HookWidget {
   final MediaItemCubit cubit;
   final Key articleContentKey;
   final bool showArticleRelatedContentSection;
+  final bool showArticleMoreFromBriefSection;
 
   @override
+  State<_ArticleContentView> createState() => _ArticleContentViewState();
+}
+
+class _ArticleContentViewState extends State<_ArticleContentView> with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final footerHeight = useMemoized(
       () => MediaQuery.of(context).size.height / 3,
       [MediaQuery.of(context).size.height],
@@ -315,18 +343,18 @@ class _ArticleContentView extends HookWidget {
               child: CustomScrollView(
                 primary: false,
                 physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: articleController,
+                controller: widget.articleController,
                 slivers: [
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
                         ArticleContentView(
-                          article: article,
-                          cubit: cubit,
-                          articleContentKey: articleContentKey,
-                          scrollToPosition: () => _scrollToPosition(readProgress.value),
+                          article: widget.article,
+                          cubit: widget.cubit,
+                          articleContentKey: widget.articleContentKey,
+                          scrollToPosition: () => _scrollToPosition(widget.readProgress.value),
                         ),
-                        if (article.metadata.credits.isNotEmpty) ...[
+                        if (widget.article.metadata.credits.isNotEmpty) ...[
                           Padding(
                             padding: const EdgeInsets.only(
                               top: AppDimens.xl,
@@ -334,7 +362,7 @@ class _ArticleContentView extends HookWidget {
                               right: AppDimens.l,
                             ),
                             child: _Credits(
-                              credits: article.metadata.credits,
+                              credits: widget.article.metadata.credits,
                             ),
                           ),
                           SizedBox(height: footerHeight),
@@ -342,21 +370,21 @@ class _ArticleContentView extends HookWidget {
                       ],
                     ),
                   ),
-                  if (!showArticleRelatedContentSection)
+                  if (!widget.showArticleRelatedContentSection)
                     SliverToBoxAdapter(
                       child: SizedBox(height: footerHeight),
                     ),
                 ],
               ),
             ),
-            _ArticleProgressBar(readProgress: readProgress),
+            _ArticleProgressBar(readProgress: widget.readProgress),
           ],
         ),
-        if (article.metadata.hasAudioVersion)
+        if (widget.article.metadata.hasAudioVersion)
           _AnimatedAudioButton(
-            dynamicPosition: dynamicPosition,
-            readProgress: readProgress,
-            article: article.metadata,
+            dynamicPosition: widget.dynamicPosition,
+            readProgress: widget.readProgress,
+            article: widget.article.metadata,
           ),
       ],
     );
@@ -364,15 +392,19 @@ class _ArticleContentView extends HookWidget {
 
   void _scrollToPosition(double? readArticleProgress) {
     if (readArticleProgress != null && readArticleProgress != 1.0) {
-      final scrollPosition = cubit.scrollData.contentOffset +
-          ((articleController.position.maxScrollExtent - cubit.scrollData.contentOffset) * readArticleProgress);
-      articleController.animateTo(
+      final scrollPosition = widget.cubit.scrollData.contentOffset +
+          ((widget.articleController.position.maxScrollExtent - widget.cubit.scrollData.contentOffset) *
+              readArticleProgress);
+      widget.articleController.animateTo(
         scrollPosition,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _AnimatedAudioButton extends StatelessWidget {

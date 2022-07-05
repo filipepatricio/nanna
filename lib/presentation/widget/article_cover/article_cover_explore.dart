@@ -83,7 +83,7 @@ class _ArticleCoverExploreList extends HookWidget {
                 children: [
                   Row(
                     children: [
-                      if (article.publisher.darkLogo != null) PublisherLogo.dark(publisher: article.publisher),
+                      PublisherLogo.dark(publisher: article.publisher),
                       Flexible(
                         child: Text(
                           article.publisher.name,
@@ -128,12 +128,14 @@ class _CoverImage extends StatelessWidget {
     required this.article,
     required this.coverColor,
     required this.showArticleIndicator,
+    this.borderRadius,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final Color? coverColor;
   final bool showArticleIndicator;
+  final double? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +143,7 @@ class _CoverImage extends StatelessWidget {
       children: [
         Positioned.fill(
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppDimens.s),
+            borderRadius: BorderRadius.circular(borderRadius ?? AppDimens.s),
             child: article.hasImage
                 ? ArticleImage(
                     image: article.image!,

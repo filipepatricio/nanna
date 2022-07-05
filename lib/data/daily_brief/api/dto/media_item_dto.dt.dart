@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'media_item_dto.dt.freezed.dart';
@@ -29,6 +30,7 @@ class MediaItemDTO with _$MediaItemDTO {
     String sourceUrl,
     String? author,
     bool hasAudioVersion,
+    ArticleProgressState progressState,
   ) = MediaItemDTOArticle;
 
   @FreezedUnionValue(unknownKey)

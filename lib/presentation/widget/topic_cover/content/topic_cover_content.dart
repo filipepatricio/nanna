@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -17,6 +18,7 @@ class TopicCoverContent extends StatelessWidget {
     required this.type,
     this.mode = Brightness.dark,
     this.hasBackgroundColor = false,
+    this.coverSize,
     Key? key,
   }) : super(key: key);
 
@@ -24,6 +26,7 @@ class TopicCoverContent extends StatelessWidget {
   final TopicCoverType type;
   final Brightness mode;
   final bool hasBackgroundColor;
+  final double? coverSize;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,8 @@ class TopicCoverContent extends StatelessWidget {
         return _CoverContentExploreLarge(topic: topic);
       case TopicCoverType.exploreSmall:
         return _CoverContentExploreSmall(topic: topic, hasBackgroundColor: hasBackgroundColor);
+      case TopicCoverType.otherBriefItemsList:
+        return _CoverContentOtherBriefItemsList(topic: topic, coverSize: coverSize);
     }
   }
 }
@@ -245,6 +250,56 @@ class _CoverContentExploreSmall extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _CoverContentOtherBriefItemsList extends StatelessWidget {
+  const _CoverContentOtherBriefItemsList({
+    required this.topic,
+    this.coverSize,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+  final double? coverSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: SizedBox(
+        height: coverSize,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            CoverLabel.topic(
+              topic: topic,
+              color: AppColors.white,
+              borderColor: AppColors.dividerGrey,
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(AppDimens.xxs),
+              child: AutoSizeText(
+                topic.strippedTitle,
+                maxLines: 2,
+                style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+                overflow: TextOverflow.ellipsis,
+                maxFontSize: 14,
+                minFontSize: 12,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              topic.owner.name,
+              maxLines: 1,
+              style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

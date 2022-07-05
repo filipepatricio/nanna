@@ -14,10 +14,7 @@ class MediaItemState with _$MediaItemState {
   const factory MediaItemState.loading() = _MediaItemStateLoading;
 
   @Implements<BuildState>()
-  const factory MediaItemState.idlePremium(
-    Article article,
-    bool showArticleRelatedContentSection,
-  ) = _MediaItemStateIdlePremium;
+  const factory MediaItemState.idlePremium(Article article) = _MediaItemStateIdlePremium;
 
   @Implements<BuildState>()
   const factory MediaItemState.idleFree(MediaItemArticle header) = _MediaItemStateIdleFree;

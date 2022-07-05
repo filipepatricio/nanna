@@ -22,6 +22,7 @@ class MediaItem with _$MediaItem {
     required Publisher publisher,
     required bool hasAudioVersion,
     required String sourceUrl,
+    required ArticleProgressState progressState,
     DateTime? publicationDate,
     ArticleImage? image,
     String? author,

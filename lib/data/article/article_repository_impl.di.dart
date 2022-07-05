@@ -2,10 +2,12 @@ import 'package:better_informed_mobile/data/article/api/article_api_data_source.
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/audio_file_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,12 +19,14 @@ class ArticleRepositoryImpl implements ArticleRepository {
     this._articleDTOToMediaItemMapper,
     this._articleContentDTOMapper,
     this._audioFileDTOMapper,
+    this._briefEntryItemDTOMapper,
   );
 
   final ArticleApiDataSource _articleDataSource;
   final ArticleDTOToMediaItemMapper _articleDTOToMediaItemMapper;
   final ArticleContentDTOMapper _articleContentDTOMapper;
   final AudioFileDTOMapper _audioFileDTOMapper;
+  final BriefEntryItemDTOMapper _briefEntryItemDTOMapper;
 
   final BehaviorSubject<ReadingBanner> _broadcaster = BehaviorSubject();
 
@@ -48,6 +52,12 @@ class ArticleRepositoryImpl implements ArticleRepository {
   Future<AudioFile> getArticleAudioFile(String slug, [bool forceFresh = false]) async {
     final dto = await _articleDataSource.getArticleAudioFile(slug, forceFresh);
     return _audioFileDTOMapper(dto);
+  }
+
+  @override
+  Future<List<BriefEntryItem>> getOtherBriefEntries(String articleSlug) async {
+    final dto = await _articleDataSource.getOtherBriefEntries(articleSlug);
+    return dto.map<BriefEntryItem>(_briefEntryItemDTOMapper).toList();
   }
 
   @override
