@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
@@ -6,6 +7,7 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_i
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content_section.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -25,6 +27,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.showArticleRelatedContentSection,
     required this.showArticleMoreFromBriefSection,
     required this.otherBriefItems,
+    required this.featuredCategories,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -38,6 +41,7 @@ class PremiumArticleReadView extends HookWidget {
   final bool showArticleRelatedContentSection;
   final bool showArticleMoreFromBriefSection;
   final List<BriefEntryItem> otherBriefItems;
+  final List<Category> featuredCategories;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -234,16 +238,9 @@ class PremiumArticleReadView extends HookWidget {
                           ),
                         ),
                       if (showArticleRelatedContentSection)
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            [
-                              Container(
-                                height: 500,
-                                color: AppColors.grey,
-
-                                ///Swap this one for related content
-                              )
-                            ],
+                        SliverToBoxAdapter(
+                          child: RelatedContentSection(
+                            featuredCategories: featuredCategories,
                           ),
                         ),
                     ],

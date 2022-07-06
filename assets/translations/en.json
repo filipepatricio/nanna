@@ -160,7 +160,10 @@
       "action": "Okay"
     },
     "topicOverview": "Topic Overview",
-    "otherBriefs": "More Articles and Deep Dives from Today"
+    "otherBriefs": "More Articles and Deep Dives from Today",
+    "relatedContent": {
+      "exploreMoreCategories": "Explore More in These Categories"
+    }
   },
   "readingList": {
     "title": "Reading list",

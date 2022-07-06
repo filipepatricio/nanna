@@ -108,6 +108,7 @@ class PremiumArticleView extends HookWidget {
                           readArticleProgress: readArticleProgress,
                           mainController: mainController,
                           otherBriefItems: data.otherBriefItems,
+                          featuredCategories: data.featuredCategories,
                           showArticleRelatedContentSection: data.showArticleRelatedContentSection,
                           showArticleMoreFromBriefSection: data.showArticleMoreFromBriefSection,
                         ),

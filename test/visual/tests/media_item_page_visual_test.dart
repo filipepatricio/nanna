@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -101,6 +102,30 @@ void main() {
     await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
+
+  visualTest('${MediaItemPage}_(related_content_categories)', (tester) async {
+    await tester.startApp(
+      initialRoute: MainPageRoute(
+        children: [
+          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
+        ],
+      ),
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubit());
+      },
+    );
+
+    await tester.dragUntilVisible(
+      find.byType(RelatedCategories, skipOffstage: false),
+      find.byType(MediaItemPage),
+      const Offset(0, -100),
+    );
+
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(MediaItemPage), const Offset(0, -200));
+    await tester.pumpAndSettle();
+    await tester.matchGoldenFile();
+  });
 }
 
 class FakeGetArticleUseCase extends Fake implements GetArticleUseCase {
@@ -125,6 +150,7 @@ class FakeMediaItemPageCubit extends Fake implements MediaItemCubit {
 class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubit {
   final idleState = PremiumArticleViewState.idle(
     otherBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    featuredCategories: List.generate(4, (index) => TestData.category),
     showArticleRelatedContentSection: true,
     showArticleMoreFromBriefSection: true,
   );
