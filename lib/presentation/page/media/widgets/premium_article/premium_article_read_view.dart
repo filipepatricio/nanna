@@ -9,14 +9,11 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
 class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
@@ -354,26 +351,16 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
                           articleContentKey: widget.articleContentKey,
                           scrollToPosition: () => _scrollToPosition(widget.readProgress.value),
                         ),
-                        if (widget.article.metadata.credits.isNotEmpty) ...[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: AppDimens.xl,
-                              left: AppDimens.l,
-                              right: AppDimens.l,
-                            ),
-                            child: _Credits(
-                              credits: widget.article.metadata.credits,
-                            ),
-                          ),
-                          SizedBox(height: footerHeight),
-                        ],
                       ],
                     ),
                   ),
-                  if (!widget.showArticleRelatedContentSection)
-                    SliverToBoxAdapter(
-                      child: SizedBox(height: footerHeight),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: widget.showArticleRelatedContentSection || widget.showArticleMoreFromBriefSection
+                          ? AppDimens.xxc
+                          : footerHeight,
                     ),
+                  ),
                 ],
               ),
             ),
@@ -465,33 +452,6 @@ class _ArticleProgressBar extends HookWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-class _Credits extends StatelessWidget {
-  const _Credits({
-    required this.credits,
-    Key? key,
-  }) : super(key: key);
-
-  final String credits;
-
-  @override
-  Widget build(BuildContext context) {
-    return MarkdownBody(
-      data: credits,
-      styleSheet: MarkdownStyleSheet(
-        p: AppTypography.articleTextRegular.copyWith(
-          color: AppColors.textGrey,
-          fontStyle: FontStyle.italic,
-        ),
-      ),
-      onTapLink: (text, href, title) {
-        if (href != null) {
-          openInAppBrowser(href);
-        }
-      },
     );
   }
 }
