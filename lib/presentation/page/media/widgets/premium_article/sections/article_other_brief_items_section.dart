@@ -92,8 +92,7 @@ class _Article extends StatelessWidget {
       opacity: article.progressState == ArticleProgressState.finished ? 0.30 : 1,
       child: ArticleCover.otherBriefItemsList(
         article: article,
-        onTap: () => _navigateToArticle(
-          context: context,
+        onTap: () => context.navigateToArticle(
           article: article,
           briefId: briefId,
           topicId: topicId,
@@ -119,8 +118,7 @@ class _Topic extends StatelessWidget {
       opacity: topic.visited ? 0.30 : 1,
       child: TopicCover.otherBriefItemsList(
         topic: topic,
-        onTap: () => _navigateToTopic(
-          context: context,
+        onTap: () => context.navigateToTopic(
           topic: topic,
           briefId: briefId,
         ),
@@ -129,31 +127,31 @@ class _Topic extends StatelessWidget {
   }
 }
 
-void _navigateToArticle({
-  required BuildContext context,
-  required MediaItemArticle article,
-  String? briefId,
-  String? topicId,
-}) {
-  AutoRouter.of(context).push(
-    MediaItemPageRoute(
-      article: article,
-      briefId: briefId,
-      topicId: topicId,
-      slug: article.slug,
-    ),
-  );
-}
+extension on BuildContext {
+  void navigateToArticle({
+    required MediaItemArticle article,
+    String? briefId,
+    String? topicId,
+  }) {
+    router.popAndPush(
+      MediaItemPageRoute(
+        article: article,
+        briefId: briefId,
+        topicId: topicId,
+        slug: article.slug,
+      ),
+    );
+  }
 
-void _navigateToTopic({
-  required BuildContext context,
-  required TopicPreview topic,
-  String? briefId,
-}) {
-  AutoRouter.of(context).push(
-    TopicPage(
-      topicSlug: topic.slug,
-      briefId: briefId,
-    ),
-  );
+  void navigateToTopic({
+    required TopicPreview topic,
+    String? briefId,
+  }) {
+    router.popAndPush(
+      TopicPage(
+        topicSlug: topic.slug,
+        briefId: briefId,
+      ),
+    );
+  }
 }
