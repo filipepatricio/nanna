@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -53,10 +52,6 @@ class CoverLabel extends StatelessWidget {
   factory CoverLabel.articleKind(ArticleKind kind) => CoverLabel._(
         label: kind.name,
         color: AppColors.darkLinen,
-      );
-
-  factory CoverLabel.audio() => CoverLabel._(
-        child: AudioIcon.dark(height: AppDimens.backArrowSize),
       );
 
   final String? icon;
