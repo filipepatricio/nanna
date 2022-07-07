@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/article/covers/dotted_article_info.dart';
+import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar.dart';
@@ -79,7 +79,7 @@ class PremiumArticleAudioView extends HookWidget {
             style: AppTypography.h4Bold,
           ),
           const Spacer(),
-          DottedArticleInfo(
+          ArticleDottedInfo(
             article: article.metadata,
             isLight: false,
             showLogo: false,

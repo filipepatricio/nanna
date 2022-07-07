@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/widget/article/article_item_view.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,7 @@ class TopicMediaItemsList extends HookWidget {
                       _trackReadingListBrowse(index);
                     },
                     borderFraction: 0.6,
-                    child: ArticleItemView(
+                    child: _ArticleItemView(
                       mediaItemKey: index == 0 ? mediaItemKey : null,
                       entryStyle: entry.style,
                       article: item,
@@ -87,5 +89,71 @@ class TopicMediaItemsList extends HookWidget {
         briefId: cubit.briefId,
       ),
     );
+  }
+}
+
+class _ArticleItemView extends HookWidget {
+  const _ArticleItemView({
+    required this.onTap,
+    required this.article,
+    required this.entryStyle,
+    this.editorsNote,
+    this.mediaItemKey,
+    Key? key,
+  }) : super(key: key);
+  final VoidCallback? onTap;
+  final MediaItemArticle article;
+  final EntryStyle entryStyle;
+  final String? editorsNote;
+  final GlobalKey? mediaItemKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: AppDimens.topicViewMediaItemMaxHeight(context),
+      child: _ArticleCover(
+        entryStyle: entryStyle,
+        article: article,
+        mediaItemKey: mediaItemKey,
+        editorsNote: editorsNote,
+        onTap: onTap,
+      ),
+    );
+  }
+}
+
+class _ArticleCover extends StatelessWidget {
+  const _ArticleCover({
+    required this.entryStyle,
+    required this.article,
+    required this.mediaItemKey,
+    required this.onTap,
+    this.editorsNote,
+  });
+  final EntryStyle entryStyle;
+  final MediaItemArticle article;
+  final GlobalKey? mediaItemKey;
+  final String? editorsNote;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (entryStyle.type) {
+      case EntryStyleType.articleCoverWithBigImage:
+        return ArticleCover.topicBigImage(
+          mediaItemKey: mediaItemKey,
+          article: article,
+          editorsNote: editorsNote,
+          onTap: onTap,
+        );
+      case EntryStyleType.articleCoverWithoutImage:
+        return ArticleCover.topicWithoutImage(
+          mediaItemKey: mediaItemKey,
+          article: article,
+          editorsNote: editorsNote,
+          backgroundColor: entryStyle.color,
+          onTap: onTap,
+        );
+    }
   }
 }

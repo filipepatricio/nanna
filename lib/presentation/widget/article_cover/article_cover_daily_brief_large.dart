@@ -61,7 +61,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Flexible(
-                                        child: DottedArticleInfo(
+                                        child: ArticleDottedInfo(
                                           article: article,
                                           isLight: true,
                                           showDate: false,
