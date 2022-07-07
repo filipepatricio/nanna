@@ -7,9 +7,9 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/article/article_labels_editors_note.dart';
-import 'package:better_informed_mobile/presentation/widget/article/covers/dotted_article_info.dart';
-import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_cover_content.dart';
+import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_editors_note.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_labels_editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
@@ -21,10 +21,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 part 'article_cover_bookmark_list.dart';
 part 'article_cover_daily_brief_large.dart';
 part 'article_cover_daily_brief_small.dart';
-part 'article_cover_other_brief.dart';
 part 'article_cover_explore.dart';
+part 'article_cover_other_brief.dart';
+part 'article_cover_topic_big_image.dart';
+part 'article_cover_topic_without_image.dart';
 
 const _coverSizeToScreenWidthFactor = 0.26;
+
+const articleCoverShadows = [
+  BoxShadow(offset: Offset(0, 10), blurRadius: 80, spreadRadius: -4, color: AppColors.shadowLinenColor),
+  BoxShadow(offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0, color: AppColors.shadowLinenColor),
+];
 
 enum ArticleCoverType {
   exploreCarousel,
@@ -32,7 +39,9 @@ enum ArticleCoverType {
   dailyBriefLarge,
   dailyBriefSmall,
   otherBriefItemsList,
-  bookmarkList
+  bookmarkList,
+  topicBigImage,
+  topicWithoutImage
 }
 
 class ArticleCover extends StatelessWidget {
@@ -45,6 +54,9 @@ class ArticleCover extends StatelessWidget {
     this.width,
     this.shouldShowAudioIcon,
     this.shouldShowTextOverlay,
+    this.editorsNote,
+    this.backgroundColor,
+    this.mediaItemKey,
     Key? key,
   }) : super(key: key);
 
@@ -126,6 +138,36 @@ class ArticleCover extends StatelessWidget {
         shouldShowTextOverlay: shouldShowTextOverlay,
       );
 
+  factory ArticleCover.topicBigImage({
+    required MediaItemArticle article,
+    String? editorsNote,
+    VoidCallback? onTap,
+    GlobalKey? mediaItemKey,
+  }) =>
+      ArticleCover._(
+        ArticleCoverType.topicBigImage,
+        article: article,
+        editorsNote: editorsNote,
+        onTap: onTap,
+        mediaItemKey: mediaItemKey,
+      );
+
+  factory ArticleCover.topicWithoutImage({
+    required MediaItemArticle article,
+    required Color backgroundColor,
+    String? editorsNote,
+    VoidCallback? onTap,
+    GlobalKey? mediaItemKey,
+  }) =>
+      ArticleCover._(
+        ArticleCoverType.topicWithoutImage,
+        article: article,
+        editorsNote: editorsNote,
+        backgroundColor: backgroundColor,
+        onTap: onTap,
+        mediaItemKey: mediaItemKey,
+      );
+
   final ArticleCoverType _type;
   final MediaItemArticle article;
   final VoidCallback? onTap;
@@ -134,6 +176,9 @@ class ArticleCover extends StatelessWidget {
   final double? width;
   final bool? shouldShowTextOverlay;
   final bool? shouldShowAudioIcon;
+  final String? editorsNote;
+  final Color? backgroundColor;
+  final GlobalKey? mediaItemKey;
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +223,21 @@ class ArticleCover extends StatelessWidget {
           onTap: () => AutoRouter.of(context).push(
             MediaItemPageRoute(article: article),
           ),
+        );
+      case ArticleCoverType.topicBigImage:
+        return _ArticleCoverTopicBigImage(
+          key: mediaItemKey,
+          article: article,
+          editorsNote: editorsNote,
+          onTap: onTap,
+        );
+      case ArticleCoverType.topicWithoutImage:
+        return _ArticleCoverTopicWithoutImage(
+          key: mediaItemKey,
+          article: article,
+          editorsNote: editorsNote,
+          backgroundColor: backgroundColor!,
+          onTap: onTap,
         );
     }
   }

@@ -33,7 +33,7 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
                 ),
               ),
             ),
-            ArticleCoverContent(article: article),
+            _ArticleCoverContent(article: article),
           ],
         ),
       ),
@@ -103,7 +103,7 @@ class _ArticleCoverExploreList extends HookWidget {
                   ),
                   const Spacer(),
                   Flexible(
-                    child: DottedArticleInfo(
+                    child: ArticleDottedInfo(
                       article: article,
                       isLight: false,
                       showLogo: false,
@@ -166,6 +166,60 @@ class _CoverImage extends StatelessWidget {
             right: AppDimens.s,
             child: AudioIconButton(article: article),
           ),
+      ],
+    );
+  }
+}
+
+class _ArticleCoverContent extends StatelessWidget {
+  const _ArticleCoverContent({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+
+  @override
+  Widget build(BuildContext context) {
+    final timeToRead = article.timeToRead;
+    const titleMaxLines = 2;
+    const titleStyle = AppTypography.metadata1ExtraBold;
+    final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: AppDimens.s),
+        ArticleDottedInfo(
+          article: article,
+          isLight: false,
+          showLogo: false,
+          showDate: false,
+          showReadTime: false,
+          color: AppColors.textGrey,
+          textStyle: AppTypography.caption1Medium.copyWith(height: 1.1),
+        ),
+        const SizedBox(height: AppDimens.s),
+        SizedBox(
+          height: titleHeight,
+          child: InformedMarkdownBody(
+            maxLines: titleMaxLines,
+            markdown: article.title,
+            highlightColor: AppColors.transparent,
+            baseTextStyle: titleStyle,
+          ),
+        ),
+        if (timeToRead != null) ...[
+          const SizedBox(height: AppDimens.s),
+          Text(
+            LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
+            style: AppTypography.caption1Medium.copyWith(
+              height: 1.2,
+              color: AppColors.textGrey,
+            ),
+          ),
+        ]
       ],
     );
   }
