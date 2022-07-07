@@ -3,13 +3,16 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.d
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
+import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
@@ -234,6 +237,37 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ExplorePage), findsOneWidget);
+    },
+  );
+  testWidgets(
+    'can navigate from related content to category',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
+          ],
+        ),
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubit());
+        },
+      );
+
+      final categoryPillFinder = find
+          .descendant(
+            of: find.byType(RelatedCategories),
+            matching: find.byType(ExplorePill),
+          )
+          .first;
+
+      await tester.fling(find.byType(MediaItemPage), const Offset(0, -20000), 100);
+
+      await tester.pumpAndSettle();
+      expect(categoryPillFinder, findsOneWidget);
+      await tester.tap(categoryPillFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CategoryPage), findsOneWidget);
     },
   );
 }

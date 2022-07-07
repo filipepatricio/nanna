@@ -35,27 +35,28 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   ) async {
     emit(const PremiumArticleViewState.initial());
 
-    final otherBriefItems = <BriefEntryItem>[];
     var showArticleMoreSection = false;
-    final featuredCategories = <Category>[];
+    final otherBriefItems = <BriefEntryItem>[];
 
-    if (topicSlug != null || briefId != null) {
-      final showArticleMoreFromBriefSection = await _getShowArticleMoreFromBriefSectionUseCase();
+    if (topicSlug != null) {
       final showArticleMoreFromTopic = await _getShowMoreFromTopicUseCase();
-
-      if (showArticleMoreFromBriefSection && briefId != null) {
-        showArticleMoreSection = true;
-        otherBriefItems.addAll(await _getOtherBriefEntriesUseCase(slug));
-      } else if (showArticleMoreFromTopic && topicSlug != null) {
+      if (showArticleMoreFromTopic) {
         showArticleMoreSection = true;
         final mediaItemList = await _getOtherTopicEntriesUseCase(slug, topicSlug);
         final briefEntryArticleItemList =
             mediaItemList.map((article) => BriefEntryItemArticle(article: article)).toList();
         otherBriefItems.addAll(briefEntryArticleItemList);
       }
+    } else if (briefId != null) {
+      final showArticleMoreFromBriefSection = await _getShowArticleMoreFromBriefSectionUseCase();
+      if (showArticleMoreFromBriefSection) {
+        showArticleMoreSection = true;
+        otherBriefItems.addAll(await _getOtherBriefEntriesUseCase(slug));
+      }
     }
 
     final showArticleRelatedContentSection = await _getShowArticleRelatedContentSectionUseCase();
+    final featuredCategories = <Category>[];
 
     if (showArticleRelatedContentSection) {
       featuredCategories.addAll(await _getFeaturedCategoriesUseCase());
