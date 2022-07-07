@@ -80,8 +80,10 @@ extension CloudinaryTransformationExtension on CloudinaryTransformation {
     final generatedPublicId = segments.last;
 
     if (realPublicId != generatedPublicId) {
-      segments.removeLast();
-      segments.add(realPublicId);
+      while (publicId.contains(segments.last)) {
+        segments.removeLast();
+      }
+      segments.add(publicId);
       url = segments.join('/');
     }
     return '$url${imageType?.ext ?? ''}';
