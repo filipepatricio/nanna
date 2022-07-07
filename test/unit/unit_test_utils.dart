@@ -14,6 +14,11 @@ import '../flutter_test_config.dart';
 
 typedef DependencyOverrideCallback = Future<void> Function(GetIt getIt);
 
+const informedPlatformsVariant = TargetPlatformVariant({
+  TargetPlatform.android,
+  TargetPlatform.iOS,
+});
+
 extension WidgetTesterExtension on WidgetTester {
   Future<void> startApp({
     PageRouteInfo initialRoute = defaultInitialRoute,
