@@ -278,7 +278,7 @@ class _IdleContent extends HookWidget {
         ),
         _RelaxSection(
           onVisible: cubit.trackRelaxPage,
-          goodbyeHeadline: currentBrief.goodbye,
+          headline: currentBrief.goodbye,
         ),
       ],
     );
@@ -309,13 +309,13 @@ class _IdleContent extends HookWidget {
 class _RelaxSection extends StatelessWidget {
   const _RelaxSection({
     required this.onVisible,
-    required this.goodbyeHeadline,
+    required this.headline,
     Key? key,
   }) : super(key: key);
 
   static const String relaxSectionKey = 'kRelaxSectionKey';
   final VoidCallback onVisible;
-  final Headline goodbyeHeadline;
+  final Headline headline;
 
   @override
   Widget build(BuildContext context) {
@@ -323,8 +323,8 @@ class _RelaxSection extends StatelessWidget {
       detectorKey: const Key(relaxSectionKey),
       onVisible: onVisible,
       borderFraction: 0.6,
-      child: RelaxView.goodbyeHeadline(
-        headline: goodbyeHeadline,
+      child: RelaxView.dailyBrief(
+        headline: headline,
       ),
     );
   }

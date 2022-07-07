@@ -15,10 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-enum RelaxType {
-  goodbyeHeadline,
-  relatedContent,
-}
+enum RelaxViewType { dailyBrief, article }
 
 class RelaxView extends StatelessWidget {
   const RelaxView._({
@@ -28,23 +25,23 @@ class RelaxView extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  factory RelaxView.goodbyeHeadline({
+  factory RelaxView.dailyBrief({
     required Headline headline,
   }) =>
       RelaxView._(
-        type: RelaxType.goodbyeHeadline,
+        type: RelaxViewType.dailyBrief,
         headline: headline,
       );
 
-  factory RelaxView.relatedContent(
+  factory RelaxView.article(
     String? briefId,
   ) =>
       RelaxView._(
-        type: RelaxType.relatedContent,
+        type: RelaxViewType.article,
         briefId: briefId,
       );
 
-  final RelaxType type;
+  final RelaxViewType type;
   final Headline? headline;
   final String? briefId;
 
@@ -55,9 +52,9 @@ class RelaxView extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppDimens.m),
         color: () {
           switch (type) {
-            case RelaxType.goodbyeHeadline:
+            case RelaxViewType.dailyBrief:
               return AppColors.darkLinen;
-            case RelaxType.relatedContent:
+            case RelaxViewType.article:
               return AppColors.linen;
           }
         }(),
@@ -71,19 +68,19 @@ class RelaxView extends StatelessWidget {
           const Spacer(flex: 1),
           () {
             switch (type) {
-              case RelaxType.goodbyeHeadline:
-                return _GoodbyeHeadlineContent(headline!);
-              case RelaxType.relatedContent:
-                return const _RelatedContentContent();
+              case RelaxViewType.dailyBrief:
+                return _DailyBriefContent(headline!);
+              case RelaxViewType.article:
+                return const _ArticleContent();
             }
           }(),
           const Spacer(flex: 1),
           () {
             switch (type) {
-              case RelaxType.goodbyeHeadline:
-                return _GoodbyeHeadlineFooter(headline!.message);
-              case RelaxType.relatedContent:
-                return _RelatedContentFooter(briefId);
+              case RelaxViewType.dailyBrief:
+                return _DailyBriefFooter(headline!.message);
+              case RelaxViewType.article:
+                return _ArticleFooter(briefId);
             }
           }(),
           const SizedBox(height: AppDimens.l),
@@ -93,13 +90,14 @@ class RelaxView extends StatelessWidget {
   }
 }
 
-class _GoodbyeHeadlineContent extends HookWidget {
-  const _GoodbyeHeadlineContent(this.headline, {Key? key}) : super(key: key);
+class _DailyBriefContent extends HookWidget {
+  const _DailyBriefContent(this.headline, {Key? key}) : super(key: key);
 
   final Headline headline;
 
   @override
   Widget build(BuildContext context) {
+    const headlineIconWidth = 168.0;
     final cloudinaryProvider = useCloudinaryProvider();
 
     return Padding(
@@ -112,7 +110,7 @@ class _GoodbyeHeadlineContent extends HookWidget {
               imageUrl: cloudinaryProvider
                   .withPublicId(headline.icon!)
                   .transform()
-                  .width(DimensionUtil.getPhysicalPixelsAsInt(168.0, context))
+                  .width(DimensionUtil.getPhysicalPixelsAsInt(headlineIconWidth, context))
                   .fit()
                   .generateNotNull(imageType: ImageType.png),
             )
@@ -131,16 +129,15 @@ class _GoodbyeHeadlineContent extends HookWidget {
   }
 }
 
-class _GoodbyeHeadlineFooter extends StatelessWidget {
-  const _GoodbyeHeadlineFooter(this.message, {Key? key}) : super(key: key);
+class _DailyBriefFooter extends StatelessWidget {
+  const _DailyBriefFooter(this.message, {Key? key}) : super(key: key);
 
   final String? message;
 
   @override
   Widget build(BuildContext context) {
-    return message == null || message!.isEmpty
-        ? const SizedBox.shrink()
-        : Column(
+    return message?.isNotEmpty ?? false
+        ? Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               RichText(
@@ -155,22 +152,19 @@ class _GoodbyeHeadlineFooter extends StatelessWidget {
                     TextSpan(
                       text: LocaleKeys.dailyBrief_goToExplore.tr(),
                       style: AppTypography.b2Bold.copyWith(decoration: TextDecoration.underline),
-                      recognizer: TapGestureRecognizer()..onTap = () => _goToExplore(context),
+                      recognizer: TapGestureRecognizer()..onTap = context.goToExplore,
                     ),
                   ],
                 ),
               ),
             ],
-          );
-  }
-
-  void _goToExplore(BuildContext context) {
-    context.navigateTo(const ExploreTabGroupRouter(children: [ExplorePageRoute()]));
+          )
+        : const SizedBox.shrink();
   }
 }
 
-class _RelatedContentContent extends StatelessWidget {
-  const _RelatedContentContent({Key? key}) : super(key: key);
+class _ArticleContent extends StatelessWidget {
+  const _ArticleContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -198,15 +192,18 @@ class _RelatedContentContent extends StatelessWidget {
   }
 }
 
-class _RelatedContentFooter extends StatelessWidget {
-  const _RelatedContentFooter(this.briefId, {Key? key}) : super(key: key);
+class _ArticleFooter extends StatelessWidget {
+  const _ArticleFooter(
+    this.briefId, {
+    Key? key,
+  }) : super(key: key);
 
   final String? briefId;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _goToExplore(context),
+      onTap: context.goToExplore,
       child: Text(
         (briefId != null ? LocaleKeys.article_relatedContent_goToExplore : LocaleKeys.article_goBackToExplore).tr(),
         style: AppTypography.b2Bold.copyWith(decoration: TextDecoration.underline),
@@ -214,9 +211,11 @@ class _RelatedContentFooter extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _goToExplore(BuildContext context) {
-    context.navigateTo(
+extension on BuildContext {
+  void goToExplore() {
+    navigateTo(
       const TabBarPageRoute(
         children: [
           ExploreTabGroupRouter(
