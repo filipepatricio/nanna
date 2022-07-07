@@ -111,19 +111,12 @@ class _ArticleItemView extends HookWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: AppDimens.topicViewMediaItemMaxHeight(context),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: _ArticleCover(
-              entryStyle: entryStyle,
-              article: article,
-              mediaItemKey: mediaItemKey,
-              editorsNote: editorsNote,
-              onTap: onTap,
-            ),
-          ),
-        ],
+      child: _ArticleCover(
+        entryStyle: entryStyle,
+        article: article,
+        mediaItemKey: mediaItemKey,
+        editorsNote: editorsNote,
+        onTap: onTap,
       ),
     );
   }

@@ -28,14 +28,13 @@ class _ArticleCoverTopicBigImage extends StatelessWidget {
           borderRadius: borderRadius,
           child: Stack(
             children: [
-              if (hasImage) ...[
+              if (hasImage)
                 Positioned.fill(
                   child: ArticleImage(
                     image: article.image!,
                     darkeningMode: DarkeningMode.solid,
                   ),
                 ),
-              ],
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
