@@ -112,7 +112,7 @@ class _DailyBriefContent extends HookWidget {
                   .transform()
                   .width(DimensionUtil.getPhysicalPixelsAsInt(headlineIconWidth, context))
                   .fit()
-                  .generateNotNull(imageType: ImageType.png),
+                  .generateNotNull(headline.icon!, imageType: ImageType.png),
             )
           else
             SvgPicture.asset(AppVectorGraphics.relaxCoffee),
