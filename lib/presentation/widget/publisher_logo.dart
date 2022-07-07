@@ -62,7 +62,7 @@ class PublisherLogo extends HookWidget {
                           .transform()
                           .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
                           .fit()
-                          .generateNotNull(imageType: ImageType.png),
+                          .generateNotNull(publisherLogoId, imageType: ImageType.png),
                       width: size,
                       height: size,
                       fit: BoxFit.contain,

@@ -74,7 +74,7 @@ class TopicOwnerAvatar extends HookWidget {
                           .height(avatarResolutionHeight)
                           .autoQuality()
                           .autoGravity()
-                          .generateAsPlatform(),
+                          .generateAsPlatform(imageId),
                       placeholder: (context, _) => LoadingShimmer(
                         width: imageWidth,
                         height: imageHeight,

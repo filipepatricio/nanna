@@ -22,7 +22,7 @@ class RelatedContentSection extends StatelessWidget {
           if (featuredCategories.isNotEmpty) RelatedCategories(featuredCategories),
           Padding(
             padding: const EdgeInsets.all(AppDimens.l),
-            child: RelaxView.relatedContent(briefId),
+            child: RelaxView.article(briefId),
           ),
           SizedBox(
             height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,
