@@ -264,7 +264,7 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
     otherBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
     featuredCategories: List.generate(4, (index) => TestData.category),
     showArticleRelatedContentSection: true,
-    showArticleMoreFromBriefSection: true,
+    showArticleMoreSection: true,
   );
 
   @override
@@ -274,7 +274,7 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
   Stream<PremiumArticleViewState> get stream => Stream.value(idleState);
 
   @override
-  Future<void> initialize(_, __) async {}
+  Future<void> initialize(_, __, ___) async {}
 
   @override
   Future<void> close() async {}

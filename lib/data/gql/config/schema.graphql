@@ -263,6 +263,12 @@ type Category {
     slug: String!
 }
 
+"Category preference of user"
+type CategoryPreference {
+    category: Category!
+    isPreferred: Boolean!
+}
+
 "A grouping of channels"
 type ChannelCategory {
     "The channels within this category"
@@ -492,6 +498,8 @@ type RootQueryType {
     getBookmarks(filter: BookmarksFilterOptions = ALL, order: BookmarksOrderOptions = DESC, pagination: PaginationInput = {limit: 10, offset: 0}, sortBy: BookmarksSortOptions = ADDED): [Bookmark]
     "A category"
     getCategory(id: String, slug: String): Category
+    "Returns Category preferences of user"
+    getCategoryPreferences: [CategoryPreference]
     "Retrieve one area in the explore section"
     getExploreArea(id: String!): ExploreArea
     "The content of the explore section"
@@ -502,8 +510,12 @@ type RootQueryType {
     getNotificationPreferences: [ChannelCategory]
     "Categories that can be selected as preferred"
     getOnboardingCategories: [Category]
-    "Get articles related to given one"
-    getRelatedArticles(limit: Int = 10, slug: String!): [Article]
+    "Returns other entries in current Brief minus given Article"
+    getOtherBriefEntries(articleSlug: String!): [BriefEntryItem]
+    "Returns other entries in given Topic minus given Article"
+    getOtherTopicEntries(articleSlug: String!, topicSlug: String!): [TopicMediaItem]
+    "Get content related to given article"
+    getRelatedContent(pagination: PaginationInput = {limit: 10, offset: 0}, slug: String!): [CategoryItem]
     "Get topic bookmark"
     getTopicBookmark(slug: String!): Bookmark
     "Get all topics created by the editor"

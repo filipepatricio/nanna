@@ -25,10 +25,11 @@ class PremiumArticleReadView extends HookWidget {
     required this.cubit,
     required this.mainController,
     required this.showArticleRelatedContentSection,
-    required this.showArticleMoreFromBriefSection,
+    required this.showArticleMoreSection,
     required this.otherBriefItems,
     required this.featuredCategories,
     this.readArticleProgress,
+    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
@@ -39,8 +40,9 @@ class PremiumArticleReadView extends HookWidget {
   final MediaItemCubit cubit;
   final double? readArticleProgress;
   final bool showArticleRelatedContentSection;
-  final bool showArticleMoreFromBriefSection;
+  final bool showArticleMoreSection;
   final List<BriefEntryItem> otherBriefItems;
+  final String? topicTitle;
   final List<Category> featuredCategories;
 
   final GlobalKey _articleContentKey = GlobalKey();
@@ -220,12 +222,12 @@ class PremiumArticleReadView extends HookWidget {
                               dynamicPosition: dynamicListenPosition,
                               readProgress: readProgress,
                               showArticleRelatedContentSection: showArticleRelatedContentSection,
-                              showArticleMoreFromBriefSection: showArticleMoreFromBriefSection,
+                              showArticleMoreFromBriefSection: showArticleMoreSection,
                             ),
                           ],
                         ),
                       ),
-                      if (showArticleMoreFromBriefSection && otherBriefItems.isNotEmpty)
+                      if (showArticleMoreSection && otherBriefItems.isNotEmpty)
                         SliverList(
                           delegate: SliverChildListDelegate(
                             [
@@ -233,6 +235,7 @@ class PremiumArticleReadView extends HookWidget {
                                 otherBriefItems: otherBriefItems,
                                 briefId: cubit.briefId,
                                 topicId: cubit.topicId,
+                                topicTitle: topicTitle,
                               ),
                             ],
                           ),

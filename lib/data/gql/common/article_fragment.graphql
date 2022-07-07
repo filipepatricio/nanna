@@ -4,6 +4,7 @@
 
 fragment articleFragment on Article {
     __typename
+    progressState
     sourceUrl
     slug
     id

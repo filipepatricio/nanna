@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_content_d
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/audio_file_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
@@ -20,6 +21,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
     this._articleContentDTOMapper,
     this._audioFileDTOMapper,
     this._briefEntryItemDTOMapper,
+    this._mediaItemDTOMapper,
   );
 
   final ArticleApiDataSource _articleDataSource;
@@ -27,6 +29,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
   final ArticleContentDTOMapper _articleContentDTOMapper;
   final AudioFileDTOMapper _audioFileDTOMapper;
   final BriefEntryItemDTOMapper _briefEntryItemDTOMapper;
+  final MediaItemDTOMapper _mediaItemDTOMapper;
 
   final BehaviorSubject<ReadingBanner> _broadcaster = BehaviorSubject();
 
@@ -67,4 +70,10 @@ class ArticleRepositoryImpl implements ArticleRepository {
   @override
   void trackReadingProgress(String articleSlug, int progress) =>
       _articleDataSource.trackReadingProgress(articleSlug, progress);
+
+  @override
+  Future<List<MediaItem>> getOtherTopicEntries(String articleSlug, String topicSlug) async {
+    final dto = await _articleDataSource.getOtherTopicEntries(articleSlug, topicSlug);
+    return dto.getOtherTopicEntries.map<MediaItem>(_mediaItemDTOMapper).toList();
+  }
 }

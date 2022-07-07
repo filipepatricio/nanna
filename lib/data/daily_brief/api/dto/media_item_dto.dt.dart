@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'media_item_dto.dt.freezed.dart';
+
 part 'media_item_dto.dt.g.dart';
 
 @Freezed(unionKey: '__typename', unionValueCase: FreezedUnionCase.pascal, fallbackUnion: unknownKey)

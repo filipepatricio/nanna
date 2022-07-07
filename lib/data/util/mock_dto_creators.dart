@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.d
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
@@ -379,6 +380,14 @@ class MockDTO {
   static final categoryPreferences = <CategoryPreferenceDTO>[
     MockDTO.categoryPreference,
   ];
+
+  static final otherTopicEntries = TopicMediaItemsDTO(
+    [
+      premiumArticle.asMediaItem,
+      premiumArticleWithAudio.asMediaItem,
+      _freeArticle.asMediaItem,
+    ],
+  );
 
   /// Internal
 
