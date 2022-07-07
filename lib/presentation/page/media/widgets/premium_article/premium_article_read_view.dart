@@ -241,6 +241,7 @@ class PremiumArticleReadView extends HookWidget {
                         SliverToBoxAdapter(
                           child: RelatedContentSection(
                             featuredCategories: featuredCategories,
+                            briefId: cubit.briefId,
                           ),
                         ),
                     ],

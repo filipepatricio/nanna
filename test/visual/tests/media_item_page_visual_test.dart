@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/article/use_case/get_article_use_c
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dt.dart';
@@ -117,6 +118,30 @@ void main() {
 
     await tester.dragUntilVisible(
       find.byType(RelatedCategories, skipOffstage: false),
+      find.byType(MediaItemPage),
+      const Offset(0, -100),
+    );
+
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(MediaItemPage), const Offset(0, -200));
+    await tester.pumpAndSettle();
+    await tester.matchGoldenFile();
+  });
+
+  visualTest('${MediaItemPage}_(related_content_go_to_explore)', (tester) async {
+    await tester.startApp(
+      initialRoute: MainPageRoute(
+        children: [
+          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
+        ],
+      ),
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubit());
+      },
+    );
+
+    await tester.dragUntilVisible(
+      find.byType(RelaxView, skipOffstage: false),
       find.byType(MediaItemPage),
       const Offset(0, -100),
     );

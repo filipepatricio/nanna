@@ -323,8 +323,8 @@ class _RelaxSection extends StatelessWidget {
       detectorKey: const Key(relaxSectionKey),
       onVisible: onVisible,
       borderFraction: 0.6,
-      child: RelaxView(
-        goodbyeHeadline: goodbyeHeadline,
+      child: RelaxView.goodbyeHeadline(
+        headline: goodbyeHeadline,
       ),
     );
   }

@@ -1,9 +1,15 @@
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
+import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
@@ -198,6 +204,38 @@ void main() {
       expect(find.byText(LocaleKeys.article_topicOverview.tr()), findsNothing);
     },
   );
+
+  testWidgets(
+    'can navigate from related content to explore',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
+          ],
+        ),
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubit());
+        },
+      );
+
+      expect(find.byType(ExplorePage), findsNothing);
+
+      final goToExploreFinder = find.descendant(
+        of: find.byType(RelaxView),
+        matching: find.byType(GestureDetector),
+      );
+
+      await tester.fling(find.byType(MediaItemPage), const Offset(0, -20000), 100);
+
+      await tester.pumpAndSettle();
+      expect(goToExploreFinder, findsOneWidget);
+      await tester.tap(goToExploreFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ExplorePage), findsOneWidget);
+    },
+  );
 }
 
 class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
@@ -216,6 +254,27 @@ class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
 
   @override
   Future<void> initialize(BookmarkTypeData data) async {}
+
+  @override
+  Future<void> close() async {}
+}
+
+class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubit {
+  final idleState = PremiumArticleViewState.idle(
+    otherBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    featuredCategories: List.generate(4, (index) => TestData.category),
+    showArticleRelatedContentSection: true,
+    showArticleMoreFromBriefSection: true,
+  );
+
+  @override
+  PremiumArticleViewState get state => idleState;
+
+  @override
+  Stream<PremiumArticleViewState> get stream => Stream.value(idleState);
+
+  @override
+  Future<void> initialize(_, __) async {}
 
   @override
   Future<void> close() async {}
