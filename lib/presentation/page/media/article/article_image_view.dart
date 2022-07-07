@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
-import 'package:better_informed_mobile/presentation/widget/article/covers/dotted_article_info.dart';
+import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/photo_caption/photo_caption_button.dart';
@@ -51,7 +51,7 @@ class ArticleImageView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                DottedArticleInfo(
+                ArticleDottedInfo(
                   article: article,
                   isLight: true,
                   showDate: false,

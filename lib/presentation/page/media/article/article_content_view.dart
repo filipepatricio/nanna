@@ -9,7 +9,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
-import 'package:better_informed_mobile/presentation/widget/article/covers/dotted_article_info.dart';
+import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +116,7 @@ class _ArticleHeader extends StatelessWidget {
           },
         ),
         const SizedBox(height: AppDimens.m),
-        DottedArticleInfo(
+        ArticleDottedInfo(
           article: article,
           isLight: false,
           showLogo: false,
