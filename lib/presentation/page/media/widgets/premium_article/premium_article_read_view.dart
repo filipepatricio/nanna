@@ -240,6 +240,12 @@ class PremiumArticleReadView extends HookWidget {
                             ],
                           ),
                         ),
+                      if (showArticleMoreSection && !showArticleRelatedContentSection)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,
+                          ),
+                        ),
                       if (showArticleRelatedContentSection)
                         SliverToBoxAdapter(
                           child: RelatedContentSection(
