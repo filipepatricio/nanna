@@ -341,13 +341,15 @@ class MockDTO {
     id: 'id',
     slug: 'politics',
     icon: _mockedPillIcon,
-    items: [
-      CategoryItemDTO.topic(topicPreview),
-      CategoryItemDTO.article(_freeArticle),
-      CategoryItemDTO.article(_freeArticle),
-      CategoryItemDTO.topic(topicPreview),
-    ],
+    items: categoryItemList,
   );
+
+  static final categoryItemList = [
+    CategoryItemDTO.topic(topicPreview),
+    CategoryItemDTO.article(_freeArticle),
+    CategoryItemDTO.article(_freeArticle),
+    CategoryItemDTO.topic(topicPreview),
+  ];
 
   // CategoriesDTO
 

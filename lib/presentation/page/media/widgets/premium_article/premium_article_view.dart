@@ -117,6 +117,7 @@ class PremiumArticleView extends HookWidget {
                           showArticleRelatedContentSection: data.showArticleRelatedContentSection,
                           showArticleMoreSection: data.showArticleMoreSection,
                           topicTitle: topicTitle,
+                          relatedContentItems: data.relatedContentItems,
                         ),
                       ),
                       if (metadata.hasAudioVersion)
