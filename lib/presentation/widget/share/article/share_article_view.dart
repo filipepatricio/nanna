@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/presentation/style/app_raster_graphics.da
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/images.dart';
-import 'package:better_informed_mobile/presentation/widget/article/covers/dotted_article_info.dart';
+import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
@@ -197,7 +197,7 @@ class _Sticker extends StatelessWidget {
                   maxLines: 6,
                 ),
                 const SizedBox(height: AppDimens.xxxc),
-                DottedArticleInfo(
+                ArticleDottedInfo(
                   article: article,
                   isLight: mainImage != null,
                   fullDate: true,

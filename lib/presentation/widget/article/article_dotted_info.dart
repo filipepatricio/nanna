@@ -10,8 +10,8 @@ import 'package:flutter/widgets.dart';
 
 const _publisherMaxWidthRatio = 0.5;
 
-class DottedArticleInfo extends StatelessWidget {
-  const DottedArticleInfo({
+class ArticleDottedInfo extends StatelessWidget {
+  const ArticleDottedInfo({
     required this.article,
     required this.isLight,
     this.showPublisher = true,

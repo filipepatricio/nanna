@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Version handled in CD workflows - check out .github/workflows/cd_prod.yml and .github/workflows/cd_staging.yml
-version: 1.16.1+0
+version: 1.17.0+0
 
 environment:
   sdk: '>=2.17.0 <3.0.0'
@@ -47,7 +47,7 @@ dependencies:
       url: https://github.com/dawidkiteo/packages.git
       ref: version/0-7-0
       path: packages/flutter_markdown
-  cloudinary_sdk: 3.0.1+7
+  cloudinary_sdk: 4.0.1+9
   rxdart: 0.27.3
   hive: 2.2.1
   hive_flutter: 1.1.0

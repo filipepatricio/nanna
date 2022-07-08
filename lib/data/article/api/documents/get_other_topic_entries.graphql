@@ -1,0 +1,10 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+
+query getOtherTopicEntries($articleSlug: String!, $topicSlug: String!){
+    getOtherTopicEntries(articleSlug: $articleSlug, topicSlug: $topicSlug){
+        __typename
+        ... on Article {
+            ...articleFragment
+        }
+    }
+}

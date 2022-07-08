@@ -5,16 +5,20 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
     as article_content;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/article_header.ast.gql.dart'
     as article_header;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_other_brief_entries.ast.gql.dart'
+    as get_other_brief_entries;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_other_topic_entries.ast.gql.dart'
+    as get_other_topic_entries;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/update_article_audio_position.ast.gql.dart'
     as update_article_audio_position;
-
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/update_article_content_progress.ast.gql.dart'
     as update_article_content_progress;
-
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/networking/gql_customs/query_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -117,6 +121,33 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
+  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug) async {
+    final result = await _client.query(
+      QueryOptions(
+        document: get_other_brief_entries.document,
+        operationName: get_other_brief_entries.getOtherBriefEntries.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+        variables: {'articleSlug': articleSlug},
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        final briefEntriesRaw = raw['getOtherBriefEntries'] as List<dynamic>;
+        final briefEntries = briefEntriesRaw
+            .map((json) => BriefEntryItemDTO.fromJson(json as Map<String, dynamic>))
+            .toList(growable: false);
+
+        return briefEntries;
+      },
+    );
+
+    if (dto == null) throw Exception('Response for other brief entries is null');
+    return dto;
+  }
+
+  @override
   void trackAudioPosition(String slug, int position) => _client.mutate(
         MutationOptions(
           document: update_article_audio_position.document,
@@ -141,4 +172,26 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
           onError: (error) => Fimber.e('Could not track reading progress', ex: error),
         ),
       );
+
+  @override
+  Future<TopicMediaItemsDTO> getOtherTopicEntries(String articleSlug, String topicSlug) async {
+    final result = await _client.query(
+      QueryOptions(
+        document: get_other_topic_entries.document,
+        operationName: get_other_topic_entries.getOtherTopicEntries.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+        variables: {
+          'articleSlug': articleSlug,
+          'topicSlug': topicSlug,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      TopicMediaItemsDTO.fromJson,
+    );
+    if (dto == null) throw Exception('Other topic entries response is null');
+    return dto;
+  }
 }

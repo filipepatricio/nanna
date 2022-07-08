@@ -7,7 +7,6 @@ class CloudinaryConfig {
   const CloudinaryConfig({
     this.height,
     this.width,
-    this.platformBasedExtension = true,
     this.autoGravity = true,
     this.autoQuality = true,
     this.sizeRoundUp = true,
@@ -15,13 +14,12 @@ class CloudinaryConfig {
 
   final double? height;
   final double? width;
-  final bool platformBasedExtension;
   final bool autoGravity;
   final bool autoQuality;
   final bool sizeRoundUp;
 
   CloudinaryTransformation apply(BuildContext context, String publicId, CloudinaryImageProvider provider) {
-    final image = platformBasedExtension ? provider.withPublicIdAsPlatform(publicId) : provider.withPublicId(publicId);
+    final image = provider.withPublicId(publicId);
 
     final transformation = image.transform();
 

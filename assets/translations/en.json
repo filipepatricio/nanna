@@ -159,7 +159,15 @@
       "content": "Bummer. The content you requested is not available in your country.",
       "action": "Okay"
     },
-    "topicOverview": "Topic Overview"
+    "topicOverview": "Topic Overview",
+    "relatedContent": {
+      "exploreMoreCategories": "Explore More in These Categories",
+      "cantGetEnough": "Can't get enough?",
+      "thereAreManyMore": "There are many more stories you migh like",
+      "goToExplore": "Go to Explore"
+    },
+    "otherBriefs": "More Articles and Deep Dives from Today",
+    "moreFromTopic": "More from ‘{}’"
   },
   "readingList": {
     "title": "Reading list",

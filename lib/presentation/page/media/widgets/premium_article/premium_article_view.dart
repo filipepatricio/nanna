@@ -5,6 +5,8 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit_provider.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -14,23 +16,27 @@ import 'package:scrolls_to_top/scrolls_to_top.dart';
 class PremiumArticleView extends HookWidget {
   const PremiumArticleView({
     required this.article,
-    required this.cubit,
+    required this.mediaItemCubit,
     required this.snackbarController,
     required this.articleOutputMode,
-    required this.showArticleRelatedContentSection,
     this.readArticleProgress,
+    this.topicSlug,
+    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
   final Article article;
-  final MediaItemCubit cubit;
+  final MediaItemCubit mediaItemCubit;
   final double? readArticleProgress;
   final SnackbarController snackbarController;
   final ArticleOutputMode articleOutputMode;
-  final bool showArticleRelatedContentSection;
+  final String? topicSlug;
+  final String? topicTitle;
 
   @override
   Widget build(BuildContext context) {
+    final cubit = useCubit<PremiumArticleViewCubit>();
+    final state = useCubitBuilder(cubit);
     final metadata = article.metadata;
     final pageController = usePageController();
     final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
@@ -40,6 +46,12 @@ class PremiumArticleView extends HookWidget {
 
     useEffect(
       () {
+        cubit.initialize(
+          metadata.slug,
+          mediaItemCubit.briefId,
+          topicSlug,
+        );
+
         void listener() {
           switch (articleOutputModeNotifier.value) {
             case ArticleOutputMode.read:
@@ -91,14 +103,21 @@ class PremiumArticleView extends HookWidget {
                       }
                     },
                     children: [
-                      PremiumArticleReadView(
-                        showArticleRelatedContentSection: showArticleRelatedContentSection,
-                        article: article,
-                        articleController: controller,
-                        pageController: pageController,
-                        cubit: cubit,
-                        readArticleProgress: readArticleProgress,
-                        mainController: mainController,
+                      state.maybeMap(
+                        orElse: () => const SizedBox.shrink(),
+                        idle: (data) => PremiumArticleReadView(
+                          article: article,
+                          articleController: controller,
+                          pageController: pageController,
+                          cubit: mediaItemCubit,
+                          readArticleProgress: readArticleProgress,
+                          mainController: mainController,
+                          otherBriefItems: data.otherBriefItems,
+                          featuredCategories: data.featuredCategories,
+                          showArticleRelatedContentSection: data.showArticleRelatedContentSection,
+                          showArticleMoreSection: data.showArticleMoreSection,
+                          topicTitle: topicTitle,
+                        ),
                       ),
                       if (metadata.hasAudioVersion)
                         PremiumArticleAudioView(
@@ -116,7 +135,7 @@ class PremiumArticleView extends HookWidget {
                     article: article,
                     pageController: pageController,
                     snackbarController: snackbarController,
-                    cubit: cubit,
+                    cubit: mediaItemCubit,
                     articleOutputModeNotifier: articleOutputModeNotifier,
                   ),
                 ),

@@ -83,10 +83,10 @@ class _ArticleImageOverlay extends StatelessWidget {
             children: [
               if (hasImage) ...[
                 PublisherLogo.light(publisher: article.publisher),
-                if (article.hasAudioVersion && shouldShowAudioIcon) AudioIcon.light()
+                if (article.hasAudioVersion && shouldShowAudioIcon) AudioIconButton(article: article)
               ] else ...[
                 PublisherLogo.dark(publisher: article.publisher),
-                if (article.hasAudioVersion && shouldShowAudioIcon) AudioIcon.dark()
+                if (article.hasAudioVersion && shouldShowAudioIcon) AudioIconButton(article: article)
               ]
             ],
           ),

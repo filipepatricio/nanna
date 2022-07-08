@@ -10,20 +10,26 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const String pngExtension = '.png';
-const String jpgExtension = '.jpg';
-const String webpExtension = '.webp';
+enum ImageType { png, jpg, webp }
+
+extension ImageTypeExtention on ImageType {
+  String get ext {
+    switch (this) {
+      case ImageType.png:
+        return '.png';
+      case ImageType.jpg:
+        return '.jpg';
+      case ImageType.webp:
+        return '.webp';
+    }
+  }
+}
 
 class CloudinaryImageProvider {
   CloudinaryImageProvider._(this._cloudName);
   final String _cloudName;
 
   CloudinaryImage withPublicId(String publicId) => _fromPublicId(publicId);
-
-  CloudinaryImage withPublicIdAsPng(String publicId) => _fromPublicId(publicId + pngExtension);
-
-  CloudinaryImage withPublicIdAsPlatform(String publicId) =>
-      _fromPublicId(publicId + (kIsAppleDevice ? jpgExtension : webpExtension));
 
   CloudinaryImage _fromPublicId(String publicId) {
     final encodedPublicId = Uri.encodeComponent(publicId);
@@ -59,8 +65,28 @@ extension CloudinaryTransformationExtension on CloudinaryTransformation {
     return quality('auto');
   }
 
-  String generateNotNull() {
-    return generate()!;
+  String generateAsPlatform(String publicId) {
+    return generateNotNull(publicId, imageType: kIsAppleDevice ? ImageType.jpg : ImageType.webp);
+  }
+
+  String generateNotNull(String publicId, {ImageType? imageType}) {
+    final generatedUrl = generate()!;
+    final segments = generatedUrl.split('/');
+    var url = generatedUrl;
+
+    // Need this fix to work around a bug in new cloudinary sdk package - it removes the last part of the publicId if it ends with '.something'
+    final realPublicId = publicId.split('/').last;
+
+    final generatedPublicId = segments.last;
+
+    if (realPublicId != generatedPublicId) {
+      while (publicId.contains(segments.last)) {
+        segments.removeLast();
+      }
+      segments.add(publicId);
+      url = segments.join('/');
+    }
+    return '$url${imageType?.ext ?? ''}';
   }
 }
 
@@ -72,7 +98,8 @@ Image cloudinaryImageAuto({
   BoxFit? fit,
   String? testImage,
 }) =>
-    cloudinaryImage(
+    _cloudinaryImage(
+      publicId: publicId,
       transformation: cloudinary
           .withPublicId(publicId)
           .transform()
@@ -94,9 +121,10 @@ Image cloudinaryImageFit({
   BoxFit? fit,
   String? testImage,
 }) =>
-    cloudinaryImage(
+    _cloudinaryImage(
+      publicId: publicId,
       transformation: cloudinary
-          .withPublicIdAsPng(publicId)
+          .withPublicId(publicId)
           .transform()
           .width(
             width.toInt(),
@@ -109,14 +137,17 @@ Image cloudinaryImageFit({
       height: height,
       fit: fit,
       testImage: testImage,
+      imageType: ImageType.png,
     );
 
-Image cloudinaryImage({
+Image _cloudinaryImage({
+  required String publicId,
   required CloudinaryTransformation transformation,
   required double width,
   required double height,
   BoxFit? fit,
   String? testImage,
+  ImageType? imageType,
 }) {
   if (kIsTest) {
     return Image.asset(
@@ -128,7 +159,7 @@ Image cloudinaryImage({
   }
 
   return Image(
-    image: CachedNetworkImageProvider(transformation.generateNotNull()),
+    image: CachedNetworkImageProvider(transformation.generateNotNull(publicId, imageType: imageType)),
     width: width,
     height: height,
     fit: fit,
@@ -147,13 +178,14 @@ String? useArticleImageUrl(MediaItemArticle? article, int width, int height) {
         }
 
         if (article.image is ArticleImageCloudinary) {
+          final publicId = (article.image as ArticleImageCloudinary).cloudinaryImage.publicId;
           return cloudinaryProvider
-              .withPublicIdAsPng((article.image as ArticleImageCloudinary).cloudinaryImage.publicId)
+              .withPublicId(publicId)
               .transform()
               .autoGravity()
               .width(width)
               .height(height)
-              .generateNotNull();
+              .generateNotNull(publicId, imageType: ImageType.png);
         }
       }
     },
@@ -166,13 +198,13 @@ String useTopicImageUrl(TopicPreview topic, int width, int height) {
   return useMemoized(
     () {
       return cloudinaryProvider
-          .withPublicIdAsPlatform(topic.heroImage.publicId)
+          .withPublicId(topic.heroImage.publicId)
           .transform()
           .autoQuality()
           .autoGravity()
           .width(width)
           .height(height)
-          .generateNotNull();
+          .generateAsPlatform(topic.heroImage.publicId);
     },
     [topic],
   );

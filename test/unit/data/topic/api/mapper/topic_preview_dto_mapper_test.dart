@@ -48,6 +48,7 @@ void main() {
       publishers,
       heroImage,
       3,
+      false,
     );
 
     when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);

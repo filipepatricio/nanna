@@ -22,7 +22,7 @@ class AudioFloatingControlButton extends HookWidget {
 
   const AudioFloatingControlButton.forCurrentAudio({
     this.elevation,
-    this.imageHeight = AppDimens.sl + AppDimens.xxs,
+    this.imageHeight = AppDimens.m + AppDimens.xxs,
     this.color = AppColors.background,
     Key? key,
   })  : article = null,

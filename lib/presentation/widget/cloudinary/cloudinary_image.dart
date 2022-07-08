@@ -23,7 +23,6 @@ class CloudinaryImage extends HookWidget {
     this.alignment = Alignment.center,
     this.testImage = AppRasterGraphics.testReadingListCoverImage,
     this.config = const CloudinaryConfig(
-      platformBasedExtension: false,
       autoGravity: false,
     ),
     this.showLoadingShimmer = true,
@@ -66,7 +65,7 @@ class CloudinaryImage extends HookWidget {
     }
 
     final imageProvider = useCloudinaryProvider();
-    final imageUrl = config.apply(context, publicId, imageProvider).generateNotNull();
+    final imageUrl = config.apply(context, publicId, imageProvider).generateNotNull(publicId);
 
     return CachedNetworkImage(
       imageUrl: imageUrl,

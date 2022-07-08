@@ -19,6 +19,7 @@ class TopicPreviewDTO {
     this.highlightedPublishers,
     this.heroImage,
     this.entryCount,
+    this.visited,
   );
 
   factory TopicPreviewDTO.fromJson(Map<String, dynamic> json) => _$TopicPreviewDTOFromJson(json);
@@ -33,6 +34,7 @@ class TopicPreviewDTO {
   final List<PublisherDTO> highlightedPublishers;
   final ImageDTO heroImage;
   final int entryCount;
+  final bool visited;
 
   Map<String, dynamic> toJson() => _$TopicPreviewDTOToJson(this);
 }

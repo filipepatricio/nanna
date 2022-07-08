@@ -4,6 +4,7 @@
 
 fragment articleFragment on Article {
     __typename
+    progressState
     sourceUrl
     slug
     id
@@ -17,8 +18,7 @@ fragment articleFragment on Article {
     kind {
         ...kindFragment
     }
-
-
+    progressState
     publicationDate
     timeToRead
     hasAudioVersion

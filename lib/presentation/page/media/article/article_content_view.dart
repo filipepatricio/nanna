@@ -8,10 +8,12 @@ import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/article/covers/dotted_article_info.dart';
+import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
+import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ArticleContentView extends StatelessWidget {
   const ArticleContentView({
@@ -44,6 +46,11 @@ class ArticleContentView extends StatelessWidget {
               key: articleContentKey,
               child: _articleContent(context),
             ),
+            if (article.metadata.credits.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                child: _Credits(credits: article.metadata.credits),
+              ),
           ],
         ),
       ],
@@ -82,6 +89,7 @@ class _ArticleHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final author = article.author;
+
     final metadataStyle = AppTypography.systemText.copyWith(color: AppColors.textGrey, height: 1.5);
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -108,7 +116,7 @@ class _ArticleHeader extends StatelessWidget {
           },
         ),
         const SizedBox(height: AppDimens.m),
-        DottedArticleInfo(
+        ArticleDottedInfo(
           article: article,
           isLight: false,
           showLogo: false,
@@ -125,6 +133,33 @@ class _ArticleHeader extends StatelessWidget {
         ),
         const SizedBox(height: AppDimens.xl),
       ],
+    );
+  }
+}
+
+class _Credits extends StatelessWidget {
+  const _Credits({
+    required this.credits,
+    Key? key,
+  }) : super(key: key);
+
+  final String credits;
+
+  @override
+  Widget build(BuildContext context) {
+    return MarkdownBody(
+      data: credits,
+      styleSheet: MarkdownStyleSheet(
+        p: AppTypography.articleTextRegular.copyWith(
+          color: AppColors.textGrey,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+      onTapLink: (text, href, title) {
+        if (href != null) {
+          openInAppBrowser(href);
+        }
+      },
     );
   }
 }

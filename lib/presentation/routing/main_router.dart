@@ -57,6 +57,7 @@ const mainPageRoute = CustomRoute(
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
     AutoRoute(path: '$articlePathSegment/:articleSlug', page: MediaItemPage),
+    AutoRoute(page: CategoryPage),
   ],
 );
 

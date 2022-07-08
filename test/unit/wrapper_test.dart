@@ -6,6 +6,7 @@ import 'data/auth/api/auth_repository_impl_test.dart' as auth_repository_impl_te
 import 'data/auth/api/refresh_token_service_test.dart' as refresh_token_service_test;
 import 'data/auth/app_link/auth_app_link_repository_impl_test.dart' as auth_app_link_repository_impl_test;
 import 'data/auth/app_link/magic_link_parser_test.dart' as magic_link_parser_test;
+import 'data/images/cloudinary_test.dart' as cloudinary_test;
 import 'data/networking/app_version_link/app_version_link_transformer_test.dart' as app_version_link_transformer_test;
 import 'data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
 import 'data/onboarding/onboarding_store_impl_test.dart' as onboarding_store_impl_test;
@@ -51,6 +52,7 @@ void main() {
   group('magic_link_parser_test', magic_link_parser_test.main);
   group('app_version_link_transformer_test', app_version_link_transformer_test.main);
   group('should_refresh_validator_test', should_refresh_validator_test.main);
+  group('cloudinary_test', cloudinary_test.main);
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);

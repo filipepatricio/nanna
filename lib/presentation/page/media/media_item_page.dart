@@ -28,6 +28,7 @@ class MediaItemPage extends HookWidget {
     @QueryParam('topicSlug') this.topicSlug,
     this.article,
     this.topicId,
+    this.topicTitle,
     this.briefId,
     this.readArticleProgress,
     this.articleOutputMode = ArticleOutputMode.read,
@@ -38,6 +39,7 @@ class MediaItemPage extends HookWidget {
   final String? topicSlug;
   final MediaItemArticle? article;
   final String? topicId;
+  final String? topicTitle;
   final String? briefId;
   final double? readArticleProgress;
   final ArticleOutputMode articleOutputMode;
@@ -69,12 +71,13 @@ class MediaItemPage extends HookWidget {
                   snackbarController: snackbarController,
                 ),
                 idlePremium: (state) => PremiumArticleView(
-                  cubit: cubit,
+                  mediaItemCubit: cubit,
                   article: state.article,
                   snackbarController: snackbarController,
                   readArticleProgress: readArticleProgress,
                   articleOutputMode: articleOutputMode,
-                  showArticleRelatedContentSection: state.showArticleRelatedContentSection,
+                  topicSlug: topicSlug,
+                  topicTitle: topicTitle,
                 ),
                 error: (state) => _ErrorContent(article: state.article),
                 emptyError: (_) => _ErrorContent(

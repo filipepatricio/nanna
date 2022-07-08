@@ -33,6 +33,7 @@ class BriefEntryTopicPreviewDTOMapper implements Mapper<BriefEntryItemDTO, Topic
         data.highlightedPublishers.map((publisher) => _publisherDTOMapper(publisher)).toList(),
         _imageDTOMapper(data.heroImage),
         data.entryCount,
+        data.visited,
       ),
       article: (_) => null,
       unknown: (_) => null,

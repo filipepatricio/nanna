@@ -1,20 +1,21 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content_section.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
 class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
@@ -24,7 +25,11 @@ class PremiumArticleReadView extends HookWidget {
     required this.cubit,
     required this.mainController,
     required this.showArticleRelatedContentSection,
+    required this.showArticleMoreSection,
+    required this.otherBriefItems,
+    required this.featuredCategories,
     this.readArticleProgress,
+    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
@@ -35,6 +40,10 @@ class PremiumArticleReadView extends HookWidget {
   final MediaItemCubit cubit;
   final double? readArticleProgress;
   final bool showArticleRelatedContentSection;
+  final bool showArticleMoreSection;
+  final List<BriefEntryItem> otherBriefItems;
+  final String? topicTitle;
+  final List<Category> featuredCategories;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -213,21 +222,35 @@ class PremiumArticleReadView extends HookWidget {
                               dynamicPosition: dynamicListenPosition,
                               readProgress: readProgress,
                               showArticleRelatedContentSection: showArticleRelatedContentSection,
+                              showArticleMoreFromBriefSection: showArticleMoreSection,
                             ),
                           ],
                         ),
                       ),
-                      if (showArticleRelatedContentSection)
+                      if (showArticleMoreSection && otherBriefItems.isNotEmpty)
                         SliverList(
                           delegate: SliverChildListDelegate(
                             [
-                              Container(
-                                height: 500,
-                                color: AppColors.grey,
-
-                                ///Swap this one for related content
-                              )
+                              ArticleOtherBriefItemsSection(
+                                otherBriefItems: otherBriefItems,
+                                briefId: cubit.briefId,
+                                topicId: cubit.topicId,
+                                topicTitle: topicTitle,
+                              ),
                             ],
+                          ),
+                        ),
+                      if (showArticleMoreSection && !showArticleRelatedContentSection)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,
+                          ),
+                        ),
+                      if (showArticleRelatedContentSection)
+                        SliverToBoxAdapter(
+                          child: RelatedContentSection(
+                            featuredCategories: featuredCategories,
+                            briefId: cubit.briefId,
                           ),
                         ),
                     ],
@@ -280,7 +303,7 @@ class PremiumArticleReadView extends HookWidget {
 double _bottomBarShownAudioButtonBottomPosition(BuildContext context) =>
     AppDimens.l + (kBottomNavigationBarHeight + MediaQuery.of(context).viewPadding.bottom);
 
-class _ArticleContentView extends HookWidget {
+class _ArticleContentView extends StatefulHookWidget {
   const _ArticleContentView({
     required this.article,
     required this.readProgress,
@@ -289,6 +312,7 @@ class _ArticleContentView extends HookWidget {
     required this.cubit,
     required this.articleContentKey,
     required this.showArticleRelatedContentSection,
+    required this.showArticleMoreFromBriefSection,
     Key? key,
   }) : super(key: key);
 
@@ -299,9 +323,17 @@ class _ArticleContentView extends HookWidget {
   final MediaItemCubit cubit;
   final Key articleContentKey;
   final bool showArticleRelatedContentSection;
+  final bool showArticleMoreFromBriefSection;
 
   @override
+  State<_ArticleContentView> createState() => _ArticleContentViewState();
+}
+
+class _ArticleContentViewState extends State<_ArticleContentView> with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final footerHeight = useMemoized(
       () => MediaQuery.of(context).size.height / 3,
       [MediaQuery.of(context).size.height],
@@ -315,48 +347,38 @@ class _ArticleContentView extends HookWidget {
               child: CustomScrollView(
                 primary: false,
                 physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
-                controller: articleController,
+                controller: widget.articleController,
                 slivers: [
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
                         ArticleContentView(
-                          article: article,
-                          cubit: cubit,
-                          articleContentKey: articleContentKey,
-                          scrollToPosition: () => _scrollToPosition(readProgress.value),
+                          article: widget.article,
+                          cubit: widget.cubit,
+                          articleContentKey: widget.articleContentKey,
+                          scrollToPosition: () => _scrollToPosition(widget.readProgress.value),
                         ),
-                        if (article.metadata.credits.isNotEmpty) ...[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: AppDimens.xl,
-                              left: AppDimens.l,
-                              right: AppDimens.l,
-                            ),
-                            child: _Credits(
-                              credits: article.metadata.credits,
-                            ),
-                          ),
-                          SizedBox(height: footerHeight),
-                        ],
                       ],
                     ),
                   ),
-                  if (!showArticleRelatedContentSection)
-                    SliverToBoxAdapter(
-                      child: SizedBox(height: footerHeight),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: widget.showArticleRelatedContentSection || widget.showArticleMoreFromBriefSection
+                          ? AppDimens.xxc
+                          : footerHeight,
                     ),
+                  ),
                 ],
               ),
             ),
-            _ArticleProgressBar(readProgress: readProgress),
+            _ArticleProgressBar(readProgress: widget.readProgress),
           ],
         ),
-        if (article.metadata.hasAudioVersion)
+        if (widget.article.metadata.hasAudioVersion)
           _AnimatedAudioButton(
-            dynamicPosition: dynamicPosition,
-            readProgress: readProgress,
-            article: article.metadata,
+            dynamicPosition: widget.dynamicPosition,
+            readProgress: widget.readProgress,
+            article: widget.article.metadata,
           ),
       ],
     );
@@ -364,15 +386,19 @@ class _ArticleContentView extends HookWidget {
 
   void _scrollToPosition(double? readArticleProgress) {
     if (readArticleProgress != null && readArticleProgress != 1.0) {
-      final scrollPosition = cubit.scrollData.contentOffset +
-          ((articleController.position.maxScrollExtent - cubit.scrollData.contentOffset) * readArticleProgress);
-      articleController.animateTo(
+      final scrollPosition = widget.cubit.scrollData.contentOffset +
+          ((widget.articleController.position.maxScrollExtent - widget.cubit.scrollData.contentOffset) *
+              readArticleProgress);
+      widget.articleController.animateTo(
         scrollPosition,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _AnimatedAudioButton extends StatelessWidget {
@@ -433,33 +459,6 @@ class _ArticleProgressBar extends HookWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-class _Credits extends StatelessWidget {
-  const _Credits({
-    required this.credits,
-    Key? key,
-  }) : super(key: key);
-
-  final String credits;
-
-  @override
-  Widget build(BuildContext context) {
-    return MarkdownBody(
-      data: credits,
-      styleSheet: MarkdownStyleSheet(
-        p: AppTypography.articleTextRegular.copyWith(
-          color: AppColors.textGrey,
-          fontStyle: FontStyle.italic,
-        ),
-      ),
-      onTapLink: (text, href, title) {
-        if (href != null) {
-          openInAppBrowser(href);
-        }
-      },
     );
   }
 }
