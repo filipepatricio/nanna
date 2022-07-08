@@ -70,6 +70,7 @@ class PremiumArticleReadView extends HookWidget {
     double fullHeight,
     bool showAudioButton,
     BuildContext context,
+    Function() onScrollEnd,
   ) {
     if (articleController.hasClients) {
       if (scrollInfo is ScrollUpdateNotification) {
@@ -89,6 +90,11 @@ class PremiumArticleReadView extends HookWidget {
           readProgress.value,
           context,
         );
+        if (articleController.position.pixels == articleController.position.maxScrollExtent &&
+            mainController.position.pixels == mainController.position.minScrollExtent &&
+            scrollInfo.dragDetails?.primaryDelta == null) {
+          onScrollEnd();
+        }
       }
       if (scrollInfo is ScrollEndNotification) {
         var readScrollOffset = articleController.offset - cubit.scrollData.contentOffset;
@@ -185,6 +191,12 @@ class PremiumArticleReadView extends HookWidget {
           maxHeight,
           showAudioFloatingButton.value,
           context,
+          () {
+            final nexController = gestureManager.getNextController();
+            if (nexController != null) {
+              gestureManager.switchControllers(nexController);
+            }
+          },
         ),
         child: Stack(
           alignment: Alignment.bottomCenter,
