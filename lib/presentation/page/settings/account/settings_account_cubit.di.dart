@@ -1,5 +1,7 @@
+import 'package:better_informed_mobile/domain/auth/use_case/sign_out_use_case.di.dart';
 import 'package:better_informed_mobile/domain/general/is_email_valid_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/data/user.dart';
+import 'package:better_informed_mobile/domain/user/use_case/delete_account_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/update_user_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -15,11 +17,15 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
     this._getUserUseCase,
     this._updateUserUseCase,
     this._isEmailValidUseCase,
+    this._signOutUseCase,
+    this._deleteAccountUseCase,
   ) : super(const SettingsAccountState.loading());
 
   final IsEmailValidUseCase _isEmailValidUseCase;
   final GetUserUseCase _getUserUseCase;
   final UpdateUserUseCase _updateUserUseCase;
+  final SignOutUseCase _signOutUseCase;
+  final DeleteAccountUseCase _deleteAccountUseCase;
 
   late SettingsAccountData _originalData;
   SettingsAccountData _modifiedData = SettingsAccountData.empty();
@@ -46,6 +52,20 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
       final user = await _updateUserUseCase(_modifiedData);
       await _setAccountData(user);
       emit(SettingsAccountState.showMessage(LocaleKeys.settings_accountInfoSavedSuccessfully.tr()));
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      if (await _deleteAccountUseCase()) {
+        return await _signOutUseCase();
+      }
+
+      emit(SettingsAccountState.showMessage(LocaleKeys.common_error_tryAgainLater.tr()));
+    } catch (e, s) {
+      Fimber.e('Deleting account failed', ex: e, stacktrace: s);
+    } finally {
+      emit(SettingsAccountState.idle(_originalData, _modifiedData));
     }
   }
 

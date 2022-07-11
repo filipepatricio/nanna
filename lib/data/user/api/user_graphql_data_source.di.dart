@@ -1,3 +1,6 @@
+import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/delete_account.ast.gql.dart'
+    as delete_account;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/query_user.ast.gql.dart' as query_user;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_preferred_categories.ast.gql.dart'
     as update_preferred_categories;
@@ -70,4 +73,24 @@ class UserGraphqlDataSource implements UserDataSource {
           onError: (error) => Fimber.e('Could not update preferred categories', ex: error),
         ),
       );
+
+  @override
+  Future<SuccessfulResponseDTO> deleteAccount() async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: delete_account.document,
+        operationName: delete_account.deleteAccount.name?.value,
+        onError: (error) => Fimber.e('Could not delete account', ex: error),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => SuccessfulResponseDTO.fromJson(raw),
+      rootKey: 'deleteAccount',
+    );
+
+    return dto ?? SuccessfulResponseDTO(false);
+  }
 }

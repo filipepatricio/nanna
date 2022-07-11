@@ -9,9 +9,11 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class SettingsAccountBody extends HookWidget {
   const SettingsAccountBody({
@@ -19,6 +21,7 @@ class SettingsAccountBody extends HookWidget {
     required this.state,
     required this.originalData,
     required this.modifiedData,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
@@ -26,6 +29,7 @@ class SettingsAccountBody extends HookWidget {
   final SettingsAccountState state;
   final SettingsAccountData originalData;
   final SettingsAccountData modifiedData;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +38,11 @@ class SettingsAccountBody extends HookWidget {
     useCubitListener<SettingsAccountCubit, SettingsAccountState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showMessage: (message) {
-          Fluttertoast.showToast(
-            msg: message,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            fontSize: 16.0,
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: message,
+              type: SnackbarMessageType.negative,
+            ),
           );
         },
       );
@@ -141,11 +144,21 @@ class SettingsAccountBody extends HookWidget {
                 ),
               ),
             ),
-            const SizedBox(height: AppDimens.xxl),
+            const SizedBox(height: AppDimens.s),
+            DeleteAccountLink(
+              onTap: () => _onDeleteAccountLinkTap(context),
+            ),
+            const SizedBox(height: AppDimens.l),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _onDeleteAccountLinkTap(BuildContext context) async {
+    if (await InformedDialog.showDeleteAccount(context) == true) {
+      await cubit.deleteAccount();
+    }
   }
 
   void _onDismissTextFormFocus(ValueNotifier<bool> isFormFocused) {
@@ -156,5 +169,29 @@ class SettingsAccountBody extends HookWidget {
   void _onSaveButtonTap(ValueNotifier<bool> isFormFocused) {
     _onDismissTextFormFocus(isFormFocused);
     cubit.saveAccountData();
+  }
+}
+
+class DeleteAccountLink extends StatelessWidget {
+  const DeleteAccountLink({
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Text(
+        LocaleKeys.settings_deleteAccount_button.tr(),
+        style: AppTypography.systemText.copyWith(
+          color: AppColors.black,
+          decoration: TextDecoration.underline,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 }

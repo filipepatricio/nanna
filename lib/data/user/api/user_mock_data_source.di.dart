@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
@@ -35,4 +36,7 @@ class UserMockDataSource implements UserDataSource {
 
   @override
   Future<void> updatePreferredCategories(List<String> categoryIds) async {}
+
+  @override
+  Future<SuccessfulResponseDTO> deleteAccount() async => SuccessfulResponseDTO(true);
 }

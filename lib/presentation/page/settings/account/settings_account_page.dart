@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,6 +17,7 @@ class SettingsAccountPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsAccountCubit>();
     final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -35,23 +37,28 @@ class SettingsAccountPage extends HookWidget {
           style: AppTypography.subH1Medium.copyWith(height: 1),
         ),
       ),
-      body: AudioPlayerBannerWrapper(
-        layout: AudioPlayerBannerLayout.column,
-        child: state.maybeMap(
-          loading: (_) => const Loader(),
-          idle: (data) => SettingsAccountBody(
-            cubit: cubit,
-            state: state,
-            modifiedData: data.data,
-            originalData: data.original,
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: AudioPlayerBannerWrapper(
+          layout: AudioPlayerBannerLayout.column,
+          child: state.maybeMap(
+            loading: (_) => const Loader(),
+            idle: (data) => SettingsAccountBody(
+              cubit: cubit,
+              state: state,
+              modifiedData: data.data,
+              originalData: data.original,
+              snackbarController: snackbarController,
+            ),
+            updating: (data) => SettingsAccountBody(
+              cubit: cubit,
+              state: state,
+              modifiedData: data.data,
+              originalData: data.original,
+              snackbarController: snackbarController,
+            ),
+            orElse: () => const SizedBox.shrink(),
           ),
-          updating: (data) => SettingsAccountBody(
-            cubit: cubit,
-            state: state,
-            modifiedData: data.data,
-            originalData: data.original,
-          ),
-          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );

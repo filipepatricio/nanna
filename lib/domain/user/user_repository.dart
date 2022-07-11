@@ -8,4 +8,6 @@ abstract class UserRepository {
   Future<User> updateUser(SettingsAccountData settingsAccountData);
 
   Future<void> updatePreferredCategories(List<Category> categories);
+
+  Future<bool> deleteAccount();
 }
