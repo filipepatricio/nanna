@@ -19,7 +19,7 @@ import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.da
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
-import 'package:better_informed_mobile/data/networking/gql_customs/query_options_with_custom_exception_mapper.dart';
+import 'package:better_informed_mobile/data/networking/gql_customs/gql_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:fimber/fimber.dart';

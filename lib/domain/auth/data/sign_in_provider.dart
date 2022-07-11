@@ -1,1 +1,0 @@
-enum SignInProvider { google, apple }
