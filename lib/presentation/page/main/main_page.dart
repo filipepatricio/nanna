@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final mainPageKey = GlobalKey();
-
 class MainPage extends HookWidget {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
 
