@@ -297,6 +297,17 @@ type CloudinaryImage {
     publicId: String!
 }
 
+"Date and its optional brief"
+type DatedBrief {
+    brief: Brief
+    date: Date!
+}
+
+"Response for account deletion"
+type DeleteAccountResponse {
+    successful: Boolean!
+}
+
 "A push notification token for a user's device"
 type DeviceRegistrationToken {
     "The token itself"
@@ -443,6 +454,8 @@ type RootMutationType {
         "The topic's slug"
         slug: String!
     ): BookmarkMutationPayload
+    "Soft delete user account (GDPR сompliant)"
+    deleteAccount: DeleteAccountResponse
     "Mark topic as visited by user"
     markTopicVisited(slug: String!): MarkTopicVisitedResponse
     "Exchange the refresh token for a new access token"
@@ -454,6 +467,11 @@ type RootMutationType {
     ): BookmarkMutationPayload
     "Store a device registration token to receive push notifications"
     savePushDeviceToken(token: String!): DeviceRegistrationToken
+    "Send link to App Store informed page to abonent's mobile number"
+    sendLinkToAppStore(
+        "User's number"
+        mobileNumber: String!
+    ): SendLinkToAppStoreResponse
     "Send a magic login link to an email address"
     sendMagicLink(callbackUrl: String, email: String!): String
     "Set subscription preferences for a channel"
@@ -514,6 +532,8 @@ type RootQueryType {
     getOtherBriefEntries(articleSlug: String!): [BriefEntryItem]
     "Returns other entries in given Topic minus given Article"
     getOtherTopicEntries(articleSlug: String!, topicSlug: String!): [TopicMediaItem]
+    "Get last dates with their briefs (if available)"
+    getPastDaysBriefs: [DatedBrief]
     "Get content related to given article"
     getRelatedContent(pagination: PaginationInput = {limit: 10, offset: 0}, slug: String!): [CategoryItem]
     "Get topic bookmark"
@@ -532,6 +552,11 @@ type RootQueryType {
     searchTopics(pagination: PaginationInput = {limit: 10, offset: 0}, query: String): [Topic]
     "Get a topic by slug"
     topic(slug: String!): Topic
+}
+
+"Response for send_link_to_app_store mutation"
+type SendLinkToAppStoreResponse {
+    successful: Boolean!
 }
 
 "Payload returned from the sign in mutation"

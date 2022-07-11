@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -33,8 +34,10 @@ class InformedDialog extends HookWidget {
 
   static String get appUpdateDialogRouteName => 'AppUpdateDialog';
 
+  static String get deleteAccountDialogRouteName => 'DeleteAccountDialog';
+
   static Future<void> showNoConnection(BuildContext context, {required OnWillPopFunction onWillPop}) {
-    return show(
+    return show<void>(
       context,
       routeName: noConnectionDialogRouteName,
       icon: SvgPicture.asset(
@@ -50,7 +53,7 @@ class InformedDialog extends HookWidget {
   }
 
   static Future<void> showAppUpdate(BuildContext context, {OnWillPopFunction? onWillPop, String? availableVersion}) {
-    return show(
+    return show<void>(
       context,
       routeName: appUpdateDialogRouteName,
       icon: SvgPicture.asset(
@@ -73,20 +76,52 @@ class InformedDialog extends HookWidget {
     );
   }
 
-  static Future<void> show(
+  static Future<bool?> showDeleteAccount(BuildContext context) async => show<bool>(
+        context,
+        routeName: appUpdateDialogRouteName,
+        title: LocaleKeys.settings_deleteAccount_dialogTitle.tr(),
+        text: LocaleKeys.settings_deleteAccount_dialogBody.tr(),
+        dismissible: true,
+        action: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 6,
+              child: FilledButton(
+                text: LocaleKeys.common_cancel.tr(),
+                fillColor: AppColors.black05,
+                onTap: () => Navigator.pop(context, false),
+              ),
+            ),
+            const Spacer(),
+            Expanded(
+              flex: 6,
+              child: FilledButton(
+                text: LocaleKeys.settings_deleteAccount_delete.tr(),
+                fillColor: AppColors.carrotRed,
+                textColor: AppColors.white,
+                onTap: () => Navigator.pop(context, true),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  static Future<T?> show<T>(
     BuildContext context, {
     required String title,
     required String text,
     required String routeName,
+    bool dismissible = false,
     Widget? icon,
     String? secondaryText,
     Widget? action,
     OnWillPopFunction? onWillPop,
   }) =>
-      showDialog(
+      showDialog<T>(
         context: context,
         useRootNavigator: true,
-        barrierDismissible: false,
+        barrierDismissible: dismissible,
         barrierColor: AppColors.black40,
         routeSettings: RouteSettings(name: routeName),
         builder: (context) => InformedDialog._(
