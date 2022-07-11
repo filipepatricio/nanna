@@ -161,24 +161,21 @@ example:
 - Hint, you can spend some time and read cubit_hooks.dart file in our project. Because in there we have our own custom hooks for cubits.
   When we create public widgets we use named parameters.
 
-
 - [ ] How to use [gql_build](https://pub.dev/packages/gql_build)?
 
-
-- Create `.graphql` file with [operation](https://graphql.org/learn/queries/) 
+- Create `.graphql` file with [operation](https://graphql.org/learn/queries/)
 - Run `build_runner`
 - `ast.gql.dart` file will be generated under `__generated__` folder
 - Import generated file with specified prefix (so there will be no conflicts between generated documents)
 - Access document, name etc. through prefix f.e. `generated_file.document`
 
-
-- [ ] Working with  [intelliJ GraphQL plugin](https://plugins.jetbrains.com/plugin/8097-graphql)
-
+- [ ] Working with [intelliJ GraphQL plugin](https://plugins.jetbrains.com/plugin/8097-graphql)
 
 - Generate `schema.graphql` with `.graphqlconfig` (see xample below) by running graphql endpoint
-- `.graphql` files will use last schema under folder tree 
+- `.graphql` files will use last schema under folder tree
 
-Graphqlconfig example: 
+Graphqlconfig example:
+
 ```
 {
   "name": "Some GraphQL Schema",
@@ -199,13 +196,11 @@ Graphqlconfig example:
 
 - [ ] While creating `.graphql` files
 
-
 - Add `__typename` in [fragment](https://graphql.org/learn/queries/#fragments) and before object reference if it is [union type](https://graphql.org/learn/schema/#union-types)
 
 But why I need to include `__typename` in fragment?
 
 It's due to [flutter_graphql](https://pub.dev/packages/graphql_flutter) cache, [normalize](https://pub.dev/packages/normalize) cache based on `__typename` without it, null would come in response at place when fragment should be.
-
 
 - If `fragment` is from another file, add import to this file under comment (see example below)
 
@@ -239,6 +234,7 @@ fragment signInFragment on SignInPayload {
     }
 }
 ```
+
 ```
 import 'package:better_informed_mobile/data/auth/api/documents/__generated__/sign_in.ast.gql.dart' as sign_in;
 
@@ -254,9 +250,6 @@ import 'package:better_informed_mobile/data/auth/api/documents/__generated__/sig
         fetchPolicy: FetchPolicy.noCache,
       ),
 ```
-
-
-
 
 ## Fastlane
 
@@ -396,3 +389,15 @@ We are using Sentry to monitor app's performance online. 2 fronts:
 
 The `tracesSampleRate` property in `SentryFlutterOptions` sets the % of transactions that will be saved and sent back to Sentry. Sending 100% of them is not sensible because such traffic volume impacts performance, the recommended rate is 0.2.
 Check out https://docs.sentry.io/platforms/flutter/performance/#configure-the-sample-rate
+
+## Codebase cleanup
+
+Some steps we can take to check codebase health and cleanliness:
+
+Run `[fvm] flutter pub run dart_code_metrics:metrics check-unused-files lib` to check if there are any unused dart files in the repo (replace `lib` with `test` to check in tests folder)
+
+Run `[fvm] flutter pub run dart_code_metrics:metrics check-unused-code lib` to check if there is any unused code in the repo (replace `lib` with `test` to check in tests folder) - still incomplete, does not check for unreferenced class methods
+
+Run `[fvm] flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib` to chek for unnecessary nullable parameters. This one makes some noise from our DTOs, but can highlight some other fixable situations
+
+This can be done thank to the `dart_code_metrics` package dev integration in `pubspec.yaml`
