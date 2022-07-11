@@ -1,20 +1,13 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:better_informed_mobile/data/audio/handler/current_audio_item_dto.dt.dart';
-import 'package:better_informed_mobile/data/audio/mapper/audio_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/audio/mapper/audio_playback_state_mapper.di.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'audio_playback_state_mapper_test.mocks.dart';
+import '../../../../generated_mocks.mocks.dart';
 
-@GenerateMocks(
-  [
-    AudioItemMapper,
-  ],
-)
 void main() {
   late MockAudioItemMapper audioItemMapper;
   late AudioPlaybackStateMapper mapper;

@@ -30,9 +30,9 @@ targets:
       mockito:mockBuilder:
         generate_for:
           include:
-            - test/**
+            - test/generated_mocks.dart
       gql_build|ast_builder:
         enabled: true
         generate_for:
           include:
-            - lib/**.graphql
+            - lib/data/**.graphql
