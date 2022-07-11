@@ -31,4 +31,9 @@ class UserRepositoryImpl implements UserRepository {
     final categoryIds = categories.map<String>((category) => category.id).toList();
     return _dataSource.updatePreferredCategories(categoryIds);
   }
+
+  @override
+  Future<bool> deleteAccount() async {
+    return (await _dataSource.deleteAccount()).successful;
+  }
 }

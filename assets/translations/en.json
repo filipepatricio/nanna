@@ -109,7 +109,13 @@
     "feedbackButton": "Give feedback",
     "feedbackSubject": "Feedback on Informed App",
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
-    "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to "
+    "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
+    "deleteAccount": {
+      "button": "Delete account",
+      "dialogTitle": "Are you sure?",
+      "dialogBody": "If you delete your account you will lose all your saved data and preferences",
+      "delete": "Delete"
+    }
   },
   "signIn": {
     "header": {
