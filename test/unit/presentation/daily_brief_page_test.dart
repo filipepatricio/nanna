@@ -1,9 +1,4 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
-import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
-import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
-import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
-import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
@@ -14,23 +9,13 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../finders.dart';
+import '../../generated_mocks.mocks.dart';
 import '../../test_data.dart';
 import '../unit_test_utils.dart';
-import 'daily_brief_page_test.mocks.dart';
 
-@GenerateMocks(
-  [
-    GetCurrentBriefUseCase,
-    IsTutorialStepSeenUseCase,
-    SetTutorialStepSeenUseCase,
-    TrackActivityUseCase,
-    IncomingPushDataRefreshStreamUseCase,
-  ],
-)
 void main() {
   test('brief entry preview is being tracked correctly', () async {
     final trackActivityUseCase = MockTrackActivityUseCase();

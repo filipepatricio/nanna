@@ -16,12 +16,6 @@ DeviceType getDeviceType(BuildContext context) {
   }
 }
 
-extension DeviceTypeExtension on DeviceType {
-  bool get isSmallDevice => _isSmallDevice(this);
-
-  bool get isNotSmallDevice => _isNotSmallDevice(this);
-}
-
 extension BuildContextDeviceTypExtension on BuildContext {
   DeviceType get deviceType => getDeviceType(this);
 

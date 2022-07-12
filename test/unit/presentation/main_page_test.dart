@@ -4,17 +4,11 @@ import 'package:better_informed_mobile/presentation/page/media/media_item_page.d
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../generated_mocks.mocks.dart';
 import '../unit_test_utils.dart';
-import 'main_page_test.mocks.dart';
 
-@GenerateMocks(
-  [
-    AppLinkDataSource,
-  ],
-)
 void main() {
   late MockAppLinkDataSource appLinkDataSource;
 

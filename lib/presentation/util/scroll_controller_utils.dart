@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_state.dt.dart';
@@ -7,23 +5,6 @@ import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-double calculateLastPageShownFactor(
-  ScrollController controller,
-  double relaxPageHeight,
-) {
-  final viewportSize = controller.position.viewportDimension;
-  final position = controller.position.pixels + viewportSize;
-  final maxExtent = controller.position.maxScrollExtent + viewportSize;
-  final minExtent = maxExtent - relaxPageHeight;
-
-  if (position > minExtent) {
-    final factor = (position - minExtent) / (maxExtent - minExtent);
-    return min(factor, 1.0);
-  } else {
-    return 0.0;
-  }
-}
 
 void hideKeyboard() {
   FocusManager.instance.primaryFocus?.unfocus();
