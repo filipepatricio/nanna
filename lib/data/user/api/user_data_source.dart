@@ -8,7 +8,7 @@ abstract class UserDataSource {
 
   Future<UserDTO> updateUser(UserMetaDTO userMetaDTO);
 
-  Future<void> updatePreferredCategories(List<String> categoryIds);
+  Future<SuccessfulResponseDTO> updatePreferredCategories(List<String> categoryIds);
 
   Future<SuccessfulResponseDTO> deleteAccount();
 }
