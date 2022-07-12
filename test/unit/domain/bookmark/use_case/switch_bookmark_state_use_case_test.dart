@@ -1,22 +1,11 @@
-import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
-import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.di.dart';
-import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/switch_bookmark_state_use_case.di.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'switch_bookmark_state_use_case_test.mocks.dart';
+import '../../../../generated_mocks.mocks.dart';
 
-@GenerateMocks(
-  [
-    BookmarkRepository,
-    AnalyticsRepository,
-    BookmarkChangeNotifier,
-  ],
-)
 void main() {
   late MockBookmarkRepository repository;
   late MockAnalyticsRepository analyticsRepository;

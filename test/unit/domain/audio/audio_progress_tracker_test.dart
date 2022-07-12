@@ -1,17 +1,10 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
-import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/audio/audio_progress_tracker.di.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'audio_progress_tracker_test.mocks.dart';
+import '../../../generated_mocks.mocks.dart';
 
-@GenerateMocks(
-  [
-    AnalyticsRepository,
-  ],
-)
 void main() {
   late MockAnalyticsRepository analyticsRepository;
   late AudioProgressTracker tracker;
