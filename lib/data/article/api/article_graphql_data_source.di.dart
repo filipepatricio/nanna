@@ -22,7 +22,6 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item
 import 'package:better_informed_mobile/data/networking/gql_customs/query_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:fimber/fimber.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -64,6 +63,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     );
 
     if (dto == null) throw Exception('ArticleContent is null');
+
     return dto;
   }
 
@@ -117,6 +117,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     );
 
     if (dto == null) throw Exception('AudioFile is null');
+
     return dto;
   }
 
@@ -144,6 +145,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     );
 
     if (dto == null) throw Exception('Response for other brief entries is null');
+
     return dto;
   }
 
@@ -156,7 +158,6 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
             'slug': slug,
             'position': position,
           },
-          onError: (error) => Fimber.e('Could not track audio position', ex: error),
         ),
       );
 
@@ -169,7 +170,6 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
             'slug': slug,
             'progress': progress,
           },
-          onError: (error) => Fimber.e('Could not track reading progress', ex: error),
         ),
       );
 
@@ -191,7 +191,9 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       result,
       TopicMediaItemsDTO.fromJson,
     );
+
     if (dto == null) throw Exception('Other topic entries response is null');
+
     return dto;
   }
 }
