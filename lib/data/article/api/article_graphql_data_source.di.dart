@@ -9,6 +9,8 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
     as get_other_brief_entries;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_other_topic_entries.ast.gql.dart'
     as get_other_topic_entries;
+import 'package:better_informed_mobile/data/article/api/documents/__generated__/get_related_content.ast.gql.dart'
+    as get_related_content;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/update_article_audio_position.ast.gql.dart'
     as update_article_audio_position;
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/update_article_content_progress.ast.gql.dart'
@@ -18,6 +20,7 @@ import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.d
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/networking/gql_customs/gql_options_with_custom_exception_mapper.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
@@ -194,6 +197,31 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
 
     if (dto == null) throw Exception('Other topic entries response is null');
 
+    return dto;
+  }
+
+  @override
+  Future<List<CategoryItemDTO>> getRelatedContent(String slug) async {
+    final result = await _client.query(
+      QueryOptions(
+        document: get_related_content.document,
+        fetchPolicy: FetchPolicy.networkOnly,
+        operationName: get_related_content.getRelatedContent.name?.value,
+        variables: {
+          'slug': slug,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        final briefEntriesRaw = raw['getRelatedContent'] as List<dynamic>;
+        return briefEntriesRaw.map((json) => CategoryItemDTO.fromJson(json as Map<String, dynamic>)).toList();
+      },
+    );
+
+    if (dto == null) throw Exception('Response for related content s is null');
     return dto;
   }
 }

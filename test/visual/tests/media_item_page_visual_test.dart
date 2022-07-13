@@ -178,6 +178,7 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
     featuredCategories: List.generate(4, (index) => TestData.category),
     showArticleRelatedContentSection: true,
     showArticleMoreSection: true,
+    relatedContentItems: TestData.categoryItemList,
   );
 
   @override
