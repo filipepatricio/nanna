@@ -11,6 +11,8 @@ class InformedAudioHandler extends InformedBaseAudioHandler with SeekHandler {
   InformedAudioHandler(this._audioPlayer);
 
   final AudioPlayer _audioPlayer;
+  // Ignoring warning required by AudioHandler
+  // ignore: close_sinks
   final BehaviorSubject<CurrentAudioItemDTO> _currentAudioItemSubject = BehaviorSubject();
 
   StreamSubscription? _audioEventSubscription;

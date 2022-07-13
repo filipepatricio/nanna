@@ -142,7 +142,7 @@ class MockDTO {
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
     ),
     // goodbye
-    HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
+    HeadlineDTO('You’re all _informed_', "Can't get enough?", null),
     DateTime(2022, 05, 10).toIso8601String(),
     //entries
     [

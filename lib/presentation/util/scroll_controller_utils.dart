@@ -40,7 +40,7 @@ class TabBarListener extends HookWidget {
   ///
   /// Used to implement scrolling to top on [MainTab] icon tap or status bar tap (iOS's scroll to top)
   ///
-  /// Set [activeTab] to implement scrolling to top when on a tab's base page
+  /// Set activeTab to implement scrolling to top when on a tab's base page
   const TabBarListener({
     required this.scrollController,
     required this.currentPage,
