@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:flutter/material.dart';
 
 class AppDimens {
@@ -131,8 +130,8 @@ class AppDimens {
   /// 410
   static double articleSmallImageCoverHeight = 322;
 
-  /// 0 / 45
-  static double topicViewStackedCardsDividerHeight(BuildContext context) => context.isSmallDevice ? 0.0 : 45.0;
+  /// 45
+  static const double topicViewStackedCardsDividerHeight = 45.0;
 
   /// Full screen width
   static double photoCaptionImageContainerWidth(BuildContext context) => MediaQuery.of(context).size.width;

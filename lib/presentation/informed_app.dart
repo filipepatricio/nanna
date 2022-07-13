@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class InformedApp extends HookWidget {
@@ -59,15 +60,18 @@ class InformedApp extends HookWidget {
         ),
         theme: AppTheme.mainTheme,
         builder: (context, child) {
-          final mediaQueryData = MediaQuery.of(context);
-          // Take the textScaleFactor from system and make
-          // sure that it's no less than 1.0, but no more
-          // than 1.5.
-          final constrainedTextScaleFactor = mediaQueryData.textScaleFactor.clamp(1.0, 1.5);
-
-          return MediaQuery(
-            data: mediaQueryData.copyWith(textScaleFactor: constrainedTextScaleFactor),
-            child: child!,
+          return ResponsiveWrapper.builder(
+            child!,
+            maxWidth: 1200,
+            minWidth: 480,
+            defaultScale: true,
+            breakpoints: [
+              const ResponsiveBreakpoint.resize(360, name: 'SMALL_DEVICE', scaleFactor: 0.9),
+              const ResponsiveBreakpoint.resize(390, name: 'REGULAR_DEVICE'),
+              const ResponsiveBreakpoint.resize(428, name: 'LARGE_DEVICE', scaleFactor: 1.1),
+              const ResponsiveBreakpoint.autoScale(768, name: TABLET),
+              const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+            ],
           );
         },
       ),

@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_editors_note.dart';

@@ -98,7 +98,6 @@ class _ArticleImageOverlay extends StatelessWidget {
             baseTextStyle: AppTypography.h5BoldSmall.copyWith(
               height: hasImage ? 1.71 : 1.5,
               color: hasImage ? AppColors.white : AppColors.textPrimary,
-              fontSize: context.isSmallDevice ? 12 : null,
             ),
           ),
           const Spacer(),

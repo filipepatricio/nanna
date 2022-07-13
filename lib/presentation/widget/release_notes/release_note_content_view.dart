@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/domain/release_notes/data/release_note.da
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
@@ -54,11 +53,10 @@ class ReleaseNoteContentView extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              if (context.isNotSmallDevice)
-                Text(
-                  DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
-                  style: AppTypography.b2MediumLora.copyWith(color: AppColors.textGrey),
-                ),
+              Text(
+                DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
+                style: AppTypography.b2MediumLora.copyWith(color: AppColors.textGrey),
+              ),
               if (showCloseButton) ...[
                 const SizedBox(width: AppDimens.m),
                 IconButton(
@@ -74,19 +72,12 @@ class ReleaseNoteContentView extends StatelessWidget {
               ],
             ],
           ),
-          if (context.isSmallDevice) ...[
-            const SizedBox(height: AppDimens.m),
-            Text(
-              DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
-              style: AppTypography.b2MediumLora.copyWith(color: AppColors.textGrey),
-            ),
-          ],
-          if (context.isSmallDevice) const SizedBox(height: AppDimens.s) else const SizedBox(height: AppDimens.m),
+          const SizedBox(height: AppDimens.m),
           Text(
             releaseNote.headline,
-            style: context.isSmallDevice ? AppTypography.subtitle1Bold : AppTypography.h5Bold,
+            style: AppTypography.h5Bold,
           ),
-          if (context.isSmallDevice) const SizedBox(height: AppDimens.zero) else const SizedBox(height: AppDimens.s),
+          const SizedBox(height: AppDimens.s),
           Text(
             releaseNote.content,
             style: AppTypography.b1Medium,
