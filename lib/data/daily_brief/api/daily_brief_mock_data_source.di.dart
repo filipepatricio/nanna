@@ -9,12 +9,12 @@ import 'package:injectable/injectable.dart';
 class DailyBriefMockDataSource implements DailyBriefApiDataSource {
   @override
   Future<CurrentBriefDTO> currentBrief() async {
-    return MockDTO.currentBrief;
+    return MockDTO.currentBrief();
   }
 
   @override
   Stream<CurrentBriefDTO?> currentBriefStream() async* {
-    yield MockDTO.currentBrief;
+    yield MockDTO.currentBrief();
   }
 
   @override

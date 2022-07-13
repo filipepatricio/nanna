@@ -77,8 +77,8 @@ void main() {
       await tester.startApp();
 
       await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
-
       await tester.pumpAndSettle();
+
       await tester.matchGoldenFile();
       await tester.pumpAndSettle(const Duration(seconds: 5));
     },
@@ -93,8 +93,8 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).last));
-
       await tester.pumpAndSettle();
+
       await tester.matchGoldenFile();
       await tester.pumpAndSettle(const Duration(seconds: 5));
     },
@@ -110,6 +110,7 @@ class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
 
   @override
   Future<void> initialize() async {}
+
   @override
   Future<void> close() async {}
 

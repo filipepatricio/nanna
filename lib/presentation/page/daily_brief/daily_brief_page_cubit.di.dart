@@ -20,6 +20,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
+import 'package:clock/clock.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
@@ -78,14 +79,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
     _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((newCurrentBrief) {
       _currentBrief = newCurrentBrief;
-      emit(
-        DailyBriefPageState.idle(
-          currentBrief: _currentBrief,
-          pastDaysBriefs: _pastDaysBriefs,
-          showCalendar: _shouldShowCalendar,
-          showAppBarTitle: _shouldShowAppBarTitle,
-        ),
-      );
+      _updateIdleState();
     });
 
     _dataRefreshSubscription = _incomingPushDataRefreshStreamUseCase().listen((event) {
@@ -111,23 +105,14 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       _currentBrief = await _getCurrentBriefUseCase();
       _pastDaysBriefs = await _getPastDaysBriesfUseCase();
 
-      emit(
-        DailyBriefPageState.idle(
-          currentBrief: _currentBrief,
-          pastDaysBriefs: _pastDaysBriefs,
-          showCalendar: _shouldShowCalendar,
-          showAppBarTitle: _shouldShowAppBarTitle,
-        ),
-      );
+      _updateIdleState();
     } catch (e, s) {
       Fimber.e('Loading briefs failed', ex: e, stacktrace: s);
       emit(DailyBriefPageState.error());
     }
   }
 
-  void toggleCalendar(bool showCalendar) {
-    _shouldShowCalendar = showCalendar;
-
+  void _updateIdleState() {
     emit(
       DailyBriefPageState.idle(
         currentBrief: _currentBrief,
@@ -138,17 +123,14 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     );
   }
 
+  void toggleCalendar(bool showCalendar) {
+    _shouldShowCalendar = showCalendar;
+    _updateIdleState();
+  }
+
   void toggleAppBarTitle(bool showTitle) {
     _shouldShowAppBarTitle = showTitle;
-
-    emit(
-      DailyBriefPageState.idle(
-        currentBrief: _currentBrief,
-        pastDaysBriefs: _pastDaysBriefs,
-        showCalendar: _shouldShowCalendar,
-        showAppBarTitle: _shouldShowAppBarTitle,
-      ),
-    );
+    _updateIdleState();
   }
 
   void selectCurrentBrief(CurrentBrief? currentBrief) {
@@ -156,20 +138,13 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
     _currentBrief = currentBrief;
 
-    if (_currentBrief.date == DateTime.now() && (_currentBriefSubscription?.isPaused ?? false)) {
+    if (_currentBrief.date == clock.now() && (_currentBriefSubscription?.isPaused ?? false)) {
       _currentBriefSubscription?.resume();
     } else if (!(_currentBriefSubscription?.isPaused ?? true)) {
       _currentBriefSubscription?.pause();
     }
 
-    emit(
-      DailyBriefPageState.idle(
-        currentBrief: _currentBrief,
-        pastDaysBriefs: _pastDaysBriefs,
-        showCalendar: _shouldShowCalendar,
-        showAppBarTitle: _shouldShowAppBarTitle,
-      ),
-    );
+    _updateIdleState();
   }
 
   void trackRelaxPage() =>

@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -36,19 +37,19 @@ class DailyBriefCalendar extends StatelessWidget {
       elevation: isFloating ? 3 : 0,
       color: AppColors.background,
       child: AnimatedContainer(
-        height: isVisible ? AppDimens.calendarAppBar : 0,
+        height: isVisible ? AppDimens.calendarAppBar : AppDimens.zero,
         width: double.infinity,
-        duration: const Duration(milliseconds: 175),
+        duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
         alignment: Alignment.topCenter,
         padding: const EdgeInsets.fromLTRB(
           AppDimens.l,
           AppDimens.sl,
           AppDimens.l,
-          0,
+          AppDimens.zero,
         ),
         child: AnimatedOpacity(
           opacity: isVisible ? 1 : 0,
-          duration: const Duration(milliseconds: 175),
+          duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -149,10 +150,10 @@ class _CalendarItem extends HookWidget {
                   style: type.value == _CalendarItemType.selected
                       ? AppTypography.h4Bold.copyWith(
                           color: AppColors.white,
-                          height: 0,
+                          height: AppDimens.zero,
                         )
                       : AppTypography.h4Medium.copyWith(
-                          height: 0,
+                          height: AppDimens.zero,
                         ),
                 ),
               ),

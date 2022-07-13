@@ -132,77 +132,85 @@ class MockDTO {
 
   /// Today's topics
 
-  static final currentBrief = CurrentBriefDTO(
-    'brief-id',
-    // greeting
-    HeadlineDTO('**👋 Moritz**, here are the topics of the day', null, null),
-    // introduction - text max length: 150 chars
-    CurrentBriefIntroductionDTO(
-      icon: _mockedPillIcon,
-      text:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
-    ),
-    // goodbye
-    HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
-    DateTime(2022, 07, 8).toIso8601String(),
-    //entries
-    [
-      BriefEntryDTO(
-        topic.asBriefEntryItem,
-        _briefEntryStyleTopic,
-      ),
-      BriefEntryDTO(
-        topicWithEditorOwner.asBriefEntryItem,
-        _briefEntryStyleTopic,
-      ),
-      BriefEntryDTO(
-        _freeArticle.asBriefEntryItem,
-        _briefEntryStyleArticleLarge,
-      ),
-      BriefEntryDTO(
-        premiumArticle.asBriefEntryItem,
-        _briefEntryStyleArticleSmall,
-      ),
-      BriefEntryDTO(
-        premiumArticleWithAudio.asBriefEntryItem,
-        _briefEntryStyleArticleLarge,
-      ),
-      BriefEntryDTO(
-        topicWithUnknownOwner.asBriefEntryItem,
-        _briefEntryStyleTopic,
-      ),
-    ],
-  );
+  static CurrentBriefDTO currentBrief({DateTime? date}) => CurrentBriefDTO(
+        'brief-id',
+        // greeting
+        HeadlineDTO('**👋 Moritz**, here are the topics of the day', null, null),
+        // introduction - text max length: 150 chars
+        CurrentBriefIntroductionDTO(
+          icon: _mockedPillIcon,
+          text:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
+        ),
+        // goodbye
+        HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
+        (date ?? DateTime(2022, 07, 8)).toIso8601String(),
+        //entries
+        [
+          BriefEntryDTO(
+            topic.asBriefEntryItem,
+            _briefEntryStyleTopic,
+          ),
+          BriefEntryDTO(
+            topicWithEditorOwner.asBriefEntryItem,
+            _briefEntryStyleTopic,
+          ),
+          BriefEntryDTO(
+            _freeArticle.asBriefEntryItem,
+            _briefEntryStyleArticleLarge,
+          ),
+          BriefEntryDTO(
+            premiumArticle.asBriefEntryItem,
+            _briefEntryStyleArticleSmall,
+          ),
+          BriefEntryDTO(
+            premiumArticleWithAudio.asBriefEntryItem,
+            _briefEntryStyleArticleLarge,
+          ),
+          BriefEntryDTO(
+            topicWithUnknownOwner.asBriefEntryItem,
+            _briefEntryStyleTopic,
+          ),
+        ],
+      );
 
   // Past days briefs
   static final pastDaysBriefs = [
     PastDaysBriefDTO(
-      currentBrief,
-      DateTime.now(),
+      currentBrief(),
+      DateTime(2022, 07, 8),
     ),
     PastDaysBriefDTO(
-      currentBrief,
-      DateTime.now().subtract(const Duration(days: 1)),
-    ),
-    PastDaysBriefDTO(
-      currentBrief,
-      DateTime.now().subtract(const Duration(days: 2)),
-    ),
-    PastDaysBriefDTO(
-      null,
-      DateTime.now().subtract(const Duration(days: 3)),
+      currentBrief(
+        date: DateTime(2022, 07, 8).add(const Duration(days: 1)),
+      ),
+      DateTime(2022, 07, 8).add(const Duration(days: 1)),
     ),
     PastDaysBriefDTO(
       null,
-      DateTime.now().subtract(const Duration(days: 4)),
+      DateTime(2022, 07, 8).add(const Duration(days: 2)),
     ),
     PastDaysBriefDTO(
-      currentBrief,
-      DateTime.now().subtract(const Duration(days: 5)),
+      null,
+      DateTime(2022, 07, 8).add(const Duration(days: 3)),
     ),
     PastDaysBriefDTO(
-      currentBrief,
-      DateTime.now().subtract(const Duration(days: 6)),
+      currentBrief(
+        date: DateTime(2022, 07, 8).add(const Duration(days: 4)),
+      ),
+      DateTime(2022, 07, 8).add(const Duration(days: 4)),
+    ),
+    PastDaysBriefDTO(
+      currentBrief(
+        date: DateTime(2022, 07, 8).add(const Duration(days: 5)),
+      ),
+      DateTime(2022, 07, 8).add(const Duration(days: 5)),
+    ),
+    PastDaysBriefDTO(
+      currentBrief(
+        date: DateTime(2022, 07, 8).add(const Duration(days: 6)),
+      ),
+      DateTime(2022, 07, 8).add(const Duration(days: 6)),
     ),
   ];
 

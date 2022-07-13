@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -60,7 +61,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
       elevation: showCalendar ? 0 : 3.0,
       expandedHeight: AppDimens.appBarHeight,
       title: AnimatedOpacity(
-        duration: const Duration(milliseconds: 50),
+        duration: const Duration(milliseconds: AppAnimation.opacityDuration),
         opacity: showAppBarTitle ? 1 : 0,
         child: BriefDate(
           briefDate: briefDate,
@@ -122,7 +123,7 @@ class BriefDate extends StatelessWidget {
             ),
             child: AnimatedRotation(
               turns: showCalendar ? 0.25 : 0.75,
-              duration: const Duration(milliseconds: 175),
+              duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
               child: Icon(
                 Icons.chevron_left_rounded,
                 color: AppColors.black,

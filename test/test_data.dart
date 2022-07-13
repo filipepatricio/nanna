@@ -147,7 +147,7 @@ class TestData {
   static ExploreContent get exploreHighlightedContent =>
       _exploreHighlightedContentMapper(MockDTO.exploreHighlightedContent);
 
-  static CurrentBrief get currentBrief => _currentBriefMapper(MockDTO.currentBrief);
+  static CurrentBrief get currentBrief => _currentBriefMapper(MockDTO.currentBrief());
 
   static List<PastDaysBrief> get pastDaysBriefs =>
       MockDTO.pastDaysBriefs.map<PastDaysBrief>(_pastDaysBriefMapper).toList();
