@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:fimber/fimber.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -63,16 +62,25 @@ class UserGraphqlDataSource implements UserDataSource {
   }
 
   @override
-  Future<void> updatePreferredCategories(List<String> categoryIds) => _client.mutate(
-        MutationOptions(
-          document: update_preferred_categories.document,
-          operationName: update_preferred_categories.updatePreferredCategories.name?.value,
-          variables: {
-            'categoryIDs': categoryIds,
-          },
-          onError: (error) => Fimber.e('Could not update preferred categories', ex: error),
-        ),
-      );
+  Future<SuccessfulResponseDTO> updatePreferredCategories(List<String> categoryIds) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: update_preferred_categories.document,
+        operationName: update_preferred_categories.updatePreferredCategories.name?.value,
+        variables: {
+          'categoryIDs': categoryIds,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => SuccessfulResponseDTO.fromJson(raw),
+      rootKey: 'updatePreferredCategories',
+    );
+
+    return dto ?? SuccessfulResponseDTO(false);
+  }
 
   @override
   Future<SuccessfulResponseDTO> deleteAccount() async {
@@ -80,7 +88,6 @@ class UserGraphqlDataSource implements UserDataSource {
       MutationOptions(
         document: delete_account.document,
         operationName: delete_account.deleteAccount.name?.value,
-        onError: (error) => Fimber.e('Could not delete account', ex: error),
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_category_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/update_preferred_categories_use_case.di.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -12,6 +13,7 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
     this._getCategoryPreferencesUseCase,
     this._updatePreferredCategoriesUseCase,
   ) : super(const SettingsManageMyInterestsState.loading());
+
   final GetCategoryPreferencesUseCase _getCategoryPreferencesUseCase;
   final UpdatePreferredCategoriesUseCase _updatePreferredCategoriesUseCase;
 
@@ -28,9 +30,17 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
 
   Future<void> updatePreferredCategories(List<CategoryPreference> categoryPreferences) async {
     try {
-      await _updatePreferredCategoriesUseCase(
+      final didUpdate = await _updatePreferredCategoriesUseCase(
         categoryPreferences.where((e) => e.isPreferred).map((e) => e.category).toList(),
       );
+
+      if (!didUpdate) {
+        emit(SettingsManageMyInterestsState.showMessage(LocaleKeys.common_error_tryAgainLater.tr()));
+
+        final categoryPreferences = await _getCategoryPreferencesUseCase();
+        emit(SettingsManageMyInterestsState.myInterestsSettingsLoaded(categoryPreferences));
+        return;
+      }
 
       emit(SettingsManageMyInterestsState.myInterestsSettingsLoaded(categoryPreferences));
     } catch (e, s) {

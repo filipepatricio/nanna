@@ -27,9 +27,9 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<void> updatePreferredCategories(List<Category> categories) {
+  Future<bool> updatePreferredCategories(List<Category> categories) async {
     final categoryIds = categories.map<String>((category) => category.id).toList();
-    return _dataSource.updatePreferredCategories(categoryIds);
+    return (await _dataSource.updatePreferredCategories(categoryIds)).successful;
   }
 
   @override

@@ -35,7 +35,8 @@ class UserMockDataSource implements UserDataSource {
   }
 
   @override
-  Future<void> updatePreferredCategories(List<String> categoryIds) async {}
+  Future<SuccessfulResponseDTO> updatePreferredCategories(List<String> categoryIds) async =>
+      SuccessfulResponseDTO(true);
 
   @override
   Future<SuccessfulResponseDTO> deleteAccount() async => SuccessfulResponseDTO(true);

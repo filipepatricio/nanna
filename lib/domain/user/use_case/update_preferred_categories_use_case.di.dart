@@ -8,5 +8,5 @@ class UpdatePreferredCategoriesUseCase {
 
   final UserRepository _userRepository;
 
-  Future<void> call(List<Category> categories) => _userRepository.updatePreferredCategories(categories);
+  Future<bool> call(List<Category> categories) => _userRepository.updatePreferredCategories(categories);
 }

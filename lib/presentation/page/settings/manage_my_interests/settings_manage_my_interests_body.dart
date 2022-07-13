@@ -1,10 +1,13 @@
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,6 +27,19 @@ class SettingsManageMyInterestsBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    useCubitListener<SettingsManageMyInterestsCubit, SettingsManageMyInterestsState>(cubit, (cubit, state, context) {
+      state.whenOrNull(
+        showMessage: (message) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: message,
+              type: SnackbarMessageType.negative,
+            ),
+          );
+        },
+      );
+    });
+
     return CustomScrollView(
       physics: getPlatformScrollPhysics(),
       slivers: [
