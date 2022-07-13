@@ -20,12 +20,16 @@ void main() {
   test('brief entry preview is being tracked correctly', () async {
     final trackActivityUseCase = MockTrackActivityUseCase();
     final getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
+    final getPastDaysBriesfUseCase = MockGetPastDaysBriesfUseCase();
     final incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
     final isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
+    final setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
+
     final dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
+      getPastDaysBriesfUseCase,
       isTutorialStepSeenUseCase,
-      MockSetTutorialStepSeenUseCase(),
+      setTutorialStepSeenUseCase,
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
     );
@@ -41,6 +45,8 @@ void main() {
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
 
     when(getCurrentBriefUseCase.call()).thenAnswer((_) async => TestData.currentBrief);
+
+    when(getPastDaysBriesfUseCase.call()).thenAnswer((_) async => TestData.pastDaysBriefs);
 
     when(getCurrentBriefUseCase.stream).thenAnswer((_) async* {
       yield TestData.currentBrief;

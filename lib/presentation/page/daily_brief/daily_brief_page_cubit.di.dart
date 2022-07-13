@@ -5,7 +5,9 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
@@ -33,6 +35,7 @@ final _requiredEventsCount = _trackEventTotalBufferTime.inMilliseconds / _trackE
 class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   DailyBriefPageCubit(
     this._getCurrentBriefUseCase,
+    this._getPastDaysBriesfUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._trackActivityUseCase,
@@ -40,6 +43,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
+  final GetPastDaysBriesfUseCase _getPastDaysBriesfUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
@@ -48,6 +52,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
   late CurrentBrief _currentBrief;
+  late List<PastDaysBrief> _pastDaysBriefs;
 
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
@@ -56,6 +61,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final topicCardKey = GlobalKey();
 
   bool _shouldShowTutorialCoachMark = true;
+
+  bool _shouldShowAppBarTitle = false;
+  bool _shouldShowCalendar = false;
 
   @override
   Future<void> close() async {
@@ -66,16 +74,23 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   Future<void> initialize() async {
-    await loadDailyBrief();
+    await loadBriefs();
 
     _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((newCurrentBrief) {
       _currentBrief = newCurrentBrief;
-      emit(DailyBriefPageState.idle(_currentBrief));
+      emit(
+        DailyBriefPageState.idle(
+          currentBrief: _currentBrief,
+          pastDaysBriefs: _pastDaysBriefs,
+          showCalendar: _shouldShowCalendar,
+          showAppBarTitle: _shouldShowAppBarTitle,
+        ),
+      );
     });
 
     _dataRefreshSubscription = _incomingPushDataRefreshStreamUseCase().listen((event) {
       Fimber.d('Incoming push - refreshing daily brief');
-      loadDailyBrief();
+      loadBriefs();
     });
 
     _initializeItemPreviewTracker();
@@ -89,16 +104,72 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  Future<void> loadDailyBrief() async {
+  Future<void> loadBriefs() async {
     emit(DailyBriefPageState.loading());
 
     try {
       _currentBrief = await _getCurrentBriefUseCase();
-      emit(DailyBriefPageState.idle(_currentBrief));
+      _pastDaysBriefs = await _getPastDaysBriesfUseCase();
+
+      emit(
+        DailyBriefPageState.idle(
+          currentBrief: _currentBrief,
+          pastDaysBriefs: _pastDaysBriefs,
+          showCalendar: _shouldShowCalendar,
+          showAppBarTitle: _shouldShowAppBarTitle,
+        ),
+      );
     } catch (e, s) {
-      Fimber.e('Loading current brief failed', ex: e, stacktrace: s);
+      Fimber.e('Loading briefs failed', ex: e, stacktrace: s);
       emit(DailyBriefPageState.error());
     }
+  }
+
+  void toggleCalendar(bool showCalendar) {
+    _shouldShowCalendar = showCalendar;
+
+    emit(
+      DailyBriefPageState.idle(
+        currentBrief: _currentBrief,
+        pastDaysBriefs: _pastDaysBriefs,
+        showCalendar: _shouldShowCalendar,
+        showAppBarTitle: _shouldShowAppBarTitle,
+      ),
+    );
+  }
+
+  void toggleAppBarTitle(bool showTitle) {
+    _shouldShowAppBarTitle = showTitle;
+
+    emit(
+      DailyBriefPageState.idle(
+        currentBrief: _currentBrief,
+        pastDaysBriefs: _pastDaysBriefs,
+        showCalendar: _shouldShowCalendar,
+        showAppBarTitle: _shouldShowAppBarTitle,
+      ),
+    );
+  }
+
+  void selectCurrentBrief(CurrentBrief? currentBrief) {
+    if (currentBrief == null) return;
+
+    _currentBrief = currentBrief;
+
+    if (_currentBrief.date == DateTime.now() && (_currentBriefSubscription?.isPaused ?? false)) {
+      _currentBriefSubscription?.resume();
+    } else if (!(_currentBriefSubscription?.isPaused ?? true)) {
+      _currentBriefSubscription?.pause();
+    }
+
+    emit(
+      DailyBriefPageState.idle(
+        currentBrief: _currentBrief,
+        pastDaysBriefs: _pastDaysBriefs,
+        showCalendar: _shouldShowCalendar,
+        showAppBarTitle: _shouldShowAppBarTitle,
+      ),
+    );
   }
 
   void trackRelaxPage() =>

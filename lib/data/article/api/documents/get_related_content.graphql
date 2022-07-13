@@ -1,0 +1,14 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/topic_fragment.graphql';
+
+query getRelatedContent($slug: String!){
+    getRelatedContent(slug: $slug){
+        __typename
+        ... on Article {
+            ...articleFragment
+        }
+        ... on Topic {
+            ... topicFragment
+        }
+    }
+}

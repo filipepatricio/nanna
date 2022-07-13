@@ -20,6 +20,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dar
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
@@ -143,7 +144,7 @@ class MockDTO {
     ),
     // goodbye
     HeadlineDTO('You’re all _informed_', 'Can\'t get enough?', null),
-    DateTime(2022, 05, 10).toIso8601String(),
+    DateTime(2022, 07, 8).toIso8601String(),
     //entries
     [
       BriefEntryDTO(
@@ -173,13 +174,44 @@ class MockDTO {
     ],
   );
 
+  // Past days briefs
+  static final pastDaysBriefs = [
+    PastDaysBriefDTO(
+      currentBrief,
+      DateTime.now(),
+    ),
+    PastDaysBriefDTO(
+      currentBrief,
+      DateTime.now().subtract(const Duration(days: 1)),
+    ),
+    PastDaysBriefDTO(
+      currentBrief,
+      DateTime.now().subtract(const Duration(days: 2)),
+    ),
+    PastDaysBriefDTO(
+      null,
+      DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    PastDaysBriefDTO(
+      null,
+      DateTime.now().subtract(const Duration(days: 4)),
+    ),
+    PastDaysBriefDTO(
+      currentBrief,
+      DateTime.now().subtract(const Duration(days: 5)),
+    ),
+    PastDaysBriefDTO(
+      currentBrief,
+      DateTime.now().subtract(const Duration(days: 6)),
+    ),
+  ];
+
   static final _briefEntryStyleTopic = BriefEntryStyleDTO(null, BriefEntryStyleType.topicCard);
   static final _briefEntryStyleArticleSmall =
       BriefEntryStyleDTO('#F2E8E7', BriefEntryStyleType.articleCardWithSmallImage);
   static final _briefEntryStyleArticleLarge = BriefEntryStyleDTO(null, BriefEntryStyleType.articleCardWithLargeImage);
 
   /// Explore
-  ///
   static final exploreHighlightedContent = ExploreHighlightedContentDTO(
     [
       ExploreContentPillDTO.articles('articles', 'Articles', _mockedPillIcon),
@@ -341,13 +373,15 @@ class MockDTO {
     id: 'id',
     slug: 'politics',
     icon: _mockedPillIcon,
-    items: [
-      CategoryItemDTO.topic(topicPreview),
-      CategoryItemDTO.article(_freeArticle),
-      CategoryItemDTO.article(_freeArticle),
-      CategoryItemDTO.topic(topicPreview),
-    ],
+    items: categoryItemList,
   );
+
+  static final categoryItemList = [
+    CategoryItemDTO.topic(topicPreview),
+    CategoryItemDTO.article(_freeArticle),
+    CategoryItemDTO.article(_freeArticle),
+    CategoryItemDTO.topic(topicPreview),
+  ];
 
   // CategoriesDTO
 

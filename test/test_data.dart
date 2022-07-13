@@ -15,6 +15,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_map
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_style_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/headline_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/past_days_brief_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_area_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_pill_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_highlighted_content_dto_mapper.di.dart';
@@ -27,8 +28,10 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_m
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 
@@ -112,6 +115,8 @@ class TestData {
     ),
   );
 
+  static final _pastDaysBriefMapper = PastDaysBriefDTOMapper(_currentBriefMapper);
+
   static final _articleToMediaItemMapper = ArticleDTOToMediaItemMapper(
     ArticleImageDTOMapper(),
     PublisherDTOMapper(
@@ -144,5 +149,11 @@ class TestData {
 
   static CurrentBrief get currentBrief => _currentBriefMapper(MockDTO.currentBrief);
 
+  static List<PastDaysBrief> get pastDaysBriefs =>
+      MockDTO.pastDaysBriefs.map<PastDaysBrief>(_pastDaysBriefMapper).toList();
+
   static Category get category => _categoryMapper(MockDTO.category);
+
+  static List<CategoryItem> get categoryItemList =>
+      MockDTO.categoryItemList.map<CategoryItem>(_categoryItemMapper).toList();
 }

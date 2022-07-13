@@ -1,0 +1,41 @@
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/topic_preview_fragment.graphql';
+
+query getPastDaysBriefs {
+    getPastDaysBriefs {
+        date
+        brief {
+            id
+            greeting {
+                headline
+                message
+                icon
+            }
+            goodbye {
+                headline
+                message
+                icon
+            }
+            introduction {
+                icon
+                text
+            }
+            date
+            entries {
+                style {
+                    backgroundColor
+                    type
+                }
+                item {
+                    __typename
+                    ... on Article {
+                        ...articleFragment
+                    }
+                    ... on Topic {
+                        ...topicPreviewFragment
+                    }
+                }
+            }
+        }
+    }
+}

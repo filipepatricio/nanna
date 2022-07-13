@@ -78,6 +78,9 @@ class AppDimens {
   /// 20
   static const shareBottomSheetRadius = 20.0;
 
+  /// 90
+  static const calendarAppBar = 90.0;
+
   /// [kToolbarHeight] + 8
   static const appBarHeight = kToolbarHeight + s;
 

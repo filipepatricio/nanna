@@ -14,6 +14,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_scrollable_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/widgets/daily_brief_calendar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/device_type.dart';
@@ -95,7 +96,7 @@ class _DailyBriefPage extends HookWidget {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
           child: RefreshIndicator(
-            onRefresh: cubit.loadDailyBrief,
+            onRefresh: cubit.loadBriefs,
             color: AppColors.darkGrey,
             child: NoScrollGlow(
               child: CustomScrollView(
@@ -108,8 +109,24 @@ class _DailyBriefPage extends HookWidget {
                 slivers: [
                   state.maybeMap(
                     idle: (state) => DailyBriefScrollableAppBar(
+                      showCalendar: state.showCalendar,
                       scrollController: scrollController,
                       briefDate: state.currentBrief.date,
+                      pastDaysBriefs: state.pastDaysBriefs,
+                      showAppBarTitle: state.showAppBarTitle,
+                      cubit: cubit,
+                    ),
+                    orElse: () => const SliverToBoxAdapter(),
+                  ),
+                  state.maybeMap(
+                    idle: (state) => SliverPinnedHeader(
+                      child: DailyBriefCalendar(
+                        isVisible: state.showCalendar,
+                        currentBriefDate: state.currentBrief.date,
+                        pastDaysBriefs: state.pastDaysBriefs,
+                        isFloating: state.showAppBarTitle,
+                        cubit: cubit,
+                      ),
                     ),
                     orElse: () => const SliverToBoxAdapter(),
                   ),
@@ -134,7 +151,7 @@ class _DailyBriefPage extends HookWidget {
                         sliver: SliverToBoxAdapter(
                           child: Center(
                             child: CardsErrorView(
-                              retryAction: cubit.loadDailyBrief,
+                              retryAction: cubit.loadBriefs,
                               size: Size(cardStackWidth, cardStackHeight),
                             ),
                           ),
@@ -199,7 +216,11 @@ class _IdleContent extends HookWidget {
 
     useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        idle: (state) => _precacheFullSizeImages(context, cloudinaryProvider, state.entries),
+        idle: (currentBrief, _, __, ___) => _precacheFullSizeImages(
+          context,
+          cloudinaryProvider,
+          currentBrief.entries,
+        ),
         shouldShowTopicCardTutorialCoachMark: () {
           final topicCardTriggerPoint = scrollController.offset +
               AppDimens.appBarHeight * (context.isSmallDevice ? 1.0 : _topicCardTutorialOffsetFromBottomFraction);

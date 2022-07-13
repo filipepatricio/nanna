@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
@@ -66,6 +66,35 @@ void main() {
           );
         },
       );
+      await tester.matchGoldenFile();
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+    },
+  );
+
+  visualTest(
+    '${DailyBriefPage}_(calendar)',
+    (tester) async {
+      await tester.startApp();
+
+      await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile();
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+    },
+  );
+
+  visualTest(
+    '${DailyBriefPage}_(calendar_with_title)',
+    (tester) async {
+      await tester.startApp();
+
+      await tester.fling(find.byType(TopicCover).first, const Offset(0, -20000), 100);
+      await tester.pumpAndSettle();
+
+      await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).last));
+
+      await tester.pumpAndSettle();
       await tester.matchGoldenFile();
       await tester.pumpAndSettle(const Duration(seconds: 5));
     },
