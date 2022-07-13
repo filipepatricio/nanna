@@ -13,4 +13,6 @@ class SettingsManageMyInterestsState with _$SettingsManageMyInterestsState {
   factory SettingsManageMyInterestsState.myInterestsSettingsLoaded(
     List<CategoryPreference> categoryPreferences,
   ) = SettingsManageMyInterestsStateLoaded;
+
+  const factory SettingsManageMyInterestsState.showMessage(String message) = SettingsManageMyInterestsStateShowMessage;
 }
