@@ -42,5 +42,6 @@ class AppLinkDataSourceImpl implements AppLinkDataSource {
   @override
   Future<void> clear() async {
     await _appLinkStreamSubscription?.cancel();
+    await _appLinkStream.close();
   }
 }

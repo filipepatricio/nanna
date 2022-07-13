@@ -84,8 +84,9 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
 
     _incomingPushSubscription = incomingPushStream.listen(newController.sink.add);
     _incomingPushNotificationStream = newController;
+    unawaited(newController.close());
 
-    return newController.stream;
+    return _incomingPushNotificationStream!.stream;
   }
 
   bool _isAuthorized(NotificationSettings result) => result.authorizationStatus == AuthorizationStatus.authorized;

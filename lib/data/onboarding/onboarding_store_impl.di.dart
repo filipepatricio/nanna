@@ -40,11 +40,6 @@ class OnboardingStoreImpl extends OnboardingStore {
       return _onboardingVersionEntityMapper.to(version);
     }
 
-    final seen = await _database.isOnboardingSeen(userUuid);
-    if (seen == true) {
-      return deprecatedVersion;
-    }
-
     return null;
   }
 
