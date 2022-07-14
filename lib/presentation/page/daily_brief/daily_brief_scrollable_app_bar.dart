@@ -67,6 +67,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
           briefDate: briefDate,
           isTitle: true,
           showCalendar: showCalendar,
+          showCalendarButton: pastDaysBriefs.isNotEmpty,
           onTap: () => cubit.toggleCalendar(!showCalendar),
         ),
       ),
@@ -83,6 +84,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
             briefDate: briefDate,
             isTitle: false,
             showCalendar: showCalendar,
+            showCalendarButton: pastDaysBriefs.isNotEmpty,
             onTap: () => cubit.toggleCalendar(!showCalendar),
           ),
         ),
@@ -96,6 +98,7 @@ class BriefDate extends StatelessWidget {
     required this.briefDate,
     required this.isTitle,
     required this.showCalendar,
+    required this.showCalendarButton,
     required this.onTap,
     Key? key,
   }) : super(key: key);
@@ -103,6 +106,7 @@ class BriefDate extends StatelessWidget {
   final DateTime briefDate;
   final bool isTitle;
   final bool showCalendar;
+  final bool showCalendarButton;
   final Function() onTap;
 
   @override
@@ -116,18 +120,21 @@ class BriefDate extends StatelessWidget {
             DateFormatUtil.currentBriefDate(briefDate),
             style: isTitle ? AppTypography.h4Bold.copyWith(height: 2.25) : AppTypography.dailyBriefTitle,
           ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: AppDimens.xs,
-              top: isTitle ? AppDimens.s : AppDimens.zero,
-            ),
-            child: AnimatedRotation(
-              turns: showCalendar ? 0.25 : 0.75,
-              duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
-              child: Icon(
-                Icons.chevron_left_rounded,
-                color: AppColors.black,
-                size: isTitle ? AppDimens.m : AppDimens.l,
+          Visibility(
+            visible: showCalendarButton,
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: AppDimens.xs,
+                top: isTitle ? AppDimens.s : AppDimens.zero,
+              ),
+              child: AnimatedRotation(
+                turns: showCalendar ? 0.25 : 0.75,
+                duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
+                child: Icon(
+                  Icons.chevron_left_rounded,
+                  color: AppColors.black,
+                  size: isTitle ? AppDimens.m : AppDimens.l,
+                ),
               ),
             ),
           ),

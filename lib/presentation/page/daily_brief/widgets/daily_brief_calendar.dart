@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -85,22 +86,44 @@ class _CalendarItem extends HookWidget {
   Widget build(BuildContext context) {
     final type = useState(_CalendarItemType.normal);
 
+    BoxDecoration? itemDecoration() {
+      if (type.value == _CalendarItemType.selected) {
+        return BoxDecoration(
+          color: AppColors.darkGreyBackground,
+          borderRadius: BorderRadius.circular(AppDimens.s),
+        );
+      }
+
+      if (type.value == _CalendarItemType.current) {
+        return BoxDecoration(
+          border: Border.all(color: AppColors.darkGreyBackground),
+          borderRadius: BorderRadius.circular(AppDimens.s),
+        );
+      }
+
+      return null;
+    }
+
     useEffect(
       () {
         if (pastDaysBrief.brief?.date == currentBriefDate) {
           type.value = _CalendarItemType.selected;
-        } else if (pastDaysBrief.date.weekday == DateTime.now().weekday) {
-          type.value = _CalendarItemType.current;
-        } else if (pastDaysBrief.brief == null) {
-          type.value = _CalendarItemType.disable;
-        } else {
-          type.value = _CalendarItemType.normal;
+          return;
         }
+
+        if (pastDaysBrief.date.weekday == clock.now().weekday) {
+          type.value = _CalendarItemType.current;
+          return;
+        }
+
+        if (pastDaysBrief.brief == null) {
+          type.value = _CalendarItemType.disable;
+          return;
+        }
+
+        type.value = _CalendarItemType.normal;
       },
-      [
-        currentBriefDate,
-        pastDaysBrief,
-      ],
+      [currentBriefDate, pastDaysBrief],
     );
 
     return GestureDetector(
@@ -128,23 +151,7 @@ class _CalendarItem extends HookWidget {
                 width: AppDimens.xl,
                 height: AppDimens.xl,
                 alignment: Alignment.center,
-                decoration: () {
-                  if (type.value == _CalendarItemType.selected) {
-                    return BoxDecoration(
-                      color: AppColors.darkGreyBackground,
-                      borderRadius: BorderRadius.circular(AppDimens.s),
-                    );
-                  }
-
-                  if (type.value == _CalendarItemType.current) {
-                    return BoxDecoration(
-                      border: Border.all(color: AppColors.darkGreyBackground),
-                      borderRadius: BorderRadius.circular(AppDimens.s),
-                    );
-                  }
-
-                  return null;
-                }(),
+                decoration: itemDecoration(),
                 child: Text(
                   DateFormat(DateFormat.DAY).format(pastDaysBrief.date),
                   style: type.value == _CalendarItemType.selected

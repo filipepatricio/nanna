@@ -53,7 +53,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
   late CurrentBrief _currentBrief;
-  late List<PastDaysBrief> _pastDaysBriefs;
+  List<PastDaysBrief> _pastDaysBriefs = [];
 
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
@@ -88,6 +88,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     });
 
     _initializeItemPreviewTracker();
+
+    await loadPastDaysBriefs();
   }
 
   Future<void> initializeTutorialSnackBar() async {
@@ -98,13 +100,20 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
+  Future<void> loadPastDaysBriefs() async {
+    try {
+      _pastDaysBriefs = await _getPastDaysBriesfUseCase();
+      _updateIdleState();
+    } catch (e, s) {
+      Fimber.e('Loading past days briefs failed', ex: e, stacktrace: s);
+    }
+  }
+
   Future<void> loadBriefs() async {
     emit(DailyBriefPageState.loading());
 
     try {
       _currentBrief = await _getCurrentBriefUseCase();
-      _pastDaysBriefs = await _getPastDaysBriesfUseCase();
-
       _updateIdleState();
     } catch (e, s) {
       Fimber.e('Loading briefs failed', ex: e, stacktrace: s);
