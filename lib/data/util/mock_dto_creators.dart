@@ -22,6 +22,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dar
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
@@ -133,47 +134,87 @@ class MockDTO {
 
   /// Today's topics
 
-  static final currentBrief = CurrentBriefDTO(
-    'brief-id',
-    // greeting
-    HeadlineDTO('**👋 Moritz**, here are the topics of the day', null, null),
-    // introduction - text max length: 150 chars
-    CurrentBriefIntroductionDTO(
-      icon: _mockedPillIcon,
-      text:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
+  static CurrentBriefDTO currentBrief({DateTime? date}) => CurrentBriefDTO(
+        'brief-id',
+        // greeting
+        HeadlineDTO('**👋 Moritz**, here are the topics of the day', null, null),
+        // introduction - text max length: 150 chars
+        CurrentBriefIntroductionDTO(
+          icon: _mockedPillIcon,
+          text:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
+        ),
+        // goodbye
+        HeadlineDTO('You’re all _informed_', "Can't get enough?", null),
+        (date ?? DateTime(2022, 07, 8)).toIso8601String(),
+        //entries
+        [
+          BriefEntryDTO(
+            topic.asBriefEntryItem,
+            _briefEntryStyleTopic,
+          ),
+          BriefEntryDTO(
+            topicWithEditorOwner.asBriefEntryItem,
+            _briefEntryStyleTopic,
+          ),
+          BriefEntryDTO(
+            _freeArticle.asBriefEntryItem,
+            _briefEntryStyleArticleLarge,
+          ),
+          BriefEntryDTO(
+            premiumArticle.asBriefEntryItem,
+            _briefEntryStyleArticleSmall,
+          ),
+          BriefEntryDTO(
+            premiumArticleWithAudio.asBriefEntryItem,
+            _briefEntryStyleArticleLarge,
+          ),
+          BriefEntryDTO(
+            topicWithUnknownOwner.asBriefEntryItem,
+            _briefEntryStyleTopic,
+          ),
+        ],
+      );
+
+  // Past days briefs
+  static final pastDaysBriefs = [
+    PastDaysBriefDTO(
+      currentBrief(),
+      DateTime(2022, 07, 8),
     ),
-    // goodbye
-    HeadlineDTO('You’re all _informed_', "Can't get enough?", null),
-    DateTime(2022, 05, 10).toIso8601String(),
-    //entries
-    [
-      BriefEntryDTO(
-        topic.asBriefEntryItem,
-        _briefEntryStyleTopic,
+    PastDaysBriefDTO(
+      currentBrief(
+        date: DateTime(2022, 07, 8).add(const Duration(days: 1)),
       ),
-      BriefEntryDTO(
-        topicWithEditorOwner.asBriefEntryItem,
-        _briefEntryStyleTopic,
+      DateTime(2022, 07, 8).add(const Duration(days: 1)),
+    ),
+    PastDaysBriefDTO(
+      null,
+      DateTime(2022, 07, 8).add(const Duration(days: 2)),
+    ),
+    PastDaysBriefDTO(
+      null,
+      DateTime(2022, 07, 8).add(const Duration(days: 3)),
+    ),
+    PastDaysBriefDTO(
+      currentBrief(
+        date: DateTime(2022, 07, 8).add(const Duration(days: 4)),
       ),
-      BriefEntryDTO(
-        _freeArticle.asBriefEntryItem,
-        _briefEntryStyleArticleLarge,
+      DateTime(2022, 07, 8).add(const Duration(days: 4)),
+    ),
+    PastDaysBriefDTO(
+      currentBrief(
+        date: DateTime(2022, 07, 8).add(const Duration(days: 5)),
       ),
-      BriefEntryDTO(
-        premiumArticle.asBriefEntryItem,
-        _briefEntryStyleArticleSmall,
+      DateTime(2022, 07, 8).add(const Duration(days: 5)),
+    ),
+    PastDaysBriefDTO(
+      currentBrief(
+        date: DateTime(2022, 07, 8).add(const Duration(days: 6)),
       ),
-      BriefEntryDTO(
-        premiumArticleWithAudio.asBriefEntryItem,
-        _briefEntryStyleArticleLarge,
-      ),
-      BriefEntryDTO(
-        topicWithUnknownOwner.asBriefEntryItem,
-        _briefEntryStyleTopic,
-      ),
-    ],
-  );
+      DateTime(2022, 07, 8).add(const Duration(days: 6)),
+    ),
+  ];
 
   static final _briefEntryStyleTopic = BriefEntryStyleDTO(null, BriefEntryStyleType.topicCard);
   static final _briefEntryStyleArticleSmall =
@@ -181,7 +222,6 @@ class MockDTO {
   static final _briefEntryStyleArticleLarge = BriefEntryStyleDTO(null, BriefEntryStyleType.articleCardWithLargeImage);
 
   /// Explore
-  ///
   static final exploreHighlightedContent = ExploreHighlightedContentDTO(
     [
       ExploreContentPillDTO.articles('articles', 'Articles', _mockedPillIcon),

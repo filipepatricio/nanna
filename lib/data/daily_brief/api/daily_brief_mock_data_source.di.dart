@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/daily_brief/api/daily_brief_api_data_source.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:injectable/injectable.dart';
@@ -8,11 +9,16 @@ import 'package:injectable/injectable.dart';
 class DailyBriefMockDataSource implements DailyBriefApiDataSource {
   @override
   Future<CurrentBriefDTO> currentBrief() async {
-    return MockDTO.currentBrief;
+    return MockDTO.currentBrief();
   }
 
   @override
   Stream<CurrentBriefDTO?> currentBriefStream() async* {
-    yield MockDTO.currentBrief;
+    yield MockDTO.currentBrief();
+  }
+
+  @override
+  Future<List<PastDaysBriefDTO>> pastDaysBriefs() async {
+    return MockDTO.pastDaysBriefs;
   }
 }
