@@ -12,3 +12,17 @@ class CategoryItem with _$CategoryItem {
 
   factory CategoryItem.unknown() = _CategoryItemUnknown;
 }
+
+extension CategoryItemExtension on CategoryItem {
+  String get typeName => maybeMap(
+        article: (_) => 'article',
+        topic: (_) => 'topic',
+        orElse: () => 'unknown',
+      );
+
+  String get typeId => map(
+        article: (item) => item.article.id,
+        topic: (topic) => topic.topicPreview.id,
+        unknown: (_) => 'unknown',
+      );
+}

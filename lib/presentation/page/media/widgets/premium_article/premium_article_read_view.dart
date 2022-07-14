@@ -269,6 +269,7 @@ class PremiumArticleReadView extends HookWidget {
                             briefId: cubit.briefId,
                             topicId: cubit.topicId,
                             relatedContentItems: relatedContentItems,
+                            onRelatedContentItemTap: cubit.onRelatedContentItemTap,
                           ),
                         ),
                     ],
