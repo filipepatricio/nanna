@@ -252,6 +252,7 @@ class PremiumArticleReadView extends HookWidget {
                                 briefId: cubit.briefId,
                                 topicId: cubit.topicId,
                                 topicTitle: topicTitle,
+                                onItemTap: cubit.onMoreFromSectionItemTap,
                               ),
                             ],
                           ),
@@ -265,11 +266,13 @@ class PremiumArticleReadView extends HookWidget {
                       if (showArticleRelatedContentSection)
                         SliverToBoxAdapter(
                           child: RelatedContentSection(
+                            articleId: article.metadata.id,
                             featuredCategories: featuredCategories,
                             briefId: cubit.briefId,
                             topicId: cubit.topicId,
                             relatedContentItems: relatedContentItems,
                             onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                            onRelatedCategoryTap: cubit.onRelatedCategoryTap,
                           ),
                         ),
                     ],

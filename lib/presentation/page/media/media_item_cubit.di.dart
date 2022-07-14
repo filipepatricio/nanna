@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
@@ -11,7 +12,9 @@ import 'package:better_informed_mobile/domain/article/use_case/get_article_heade
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/trade_topid_id_for_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
@@ -211,6 +214,19 @@ class MediaItemCubit extends Cubit<MediaItemState> {
 
   void onRelatedContentItemTap(CategoryItem item) {
     _trackActivityUseCase.trackEvent(AnalyticsEvent.articleRelatedContentItemTapped(_currentArticle.id, item));
+  }
+
+  void onRelatedCategoryTap(Category category) {
+    log('${AnalyticsEvent.articleRelatedCategoryTapped(_currentArticle.id, category.name)}');
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.articleRelatedCategoryTapped(_currentArticle.id, category.name));
+  }
+
+  void onMoreFromSectionItemTap(BriefEntryItem item) {
+    final event = topicId != null
+        ? AnalyticsEvent.articleMoreFromTopicItemTapped(_currentArticle.id, item)
+        : AnalyticsEvent.articleMoreFromBriefItemTapped(_currentArticle.id, item);
+    log('$event');
+    _trackActivityUseCase.trackEvent(event);
   }
 }
 
