@@ -3,11 +3,13 @@ import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/widgets/daily_brief_calendar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -20,12 +22,16 @@ void main() {
   test('brief entry preview is being tracked correctly', () async {
     final trackActivityUseCase = MockTrackActivityUseCase();
     final getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
+    final getPastDaysBriesfUseCase = MockGetPastDaysBriesfUseCase();
     final incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
     final isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
+    final setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
+
     final dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
+      getPastDaysBriesfUseCase,
       isTutorialStepSeenUseCase,
-      MockSetTutorialStepSeenUseCase(),
+      setTutorialStepSeenUseCase,
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
     );
@@ -41,6 +47,8 @@ void main() {
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
 
     when(getCurrentBriefUseCase.call()).thenAnswer((_) async => TestData.currentBrief);
+
+    when(getPastDaysBriesfUseCase.call()).thenAnswer((_) async => TestData.pastDaysBriefs);
 
     when(getCurrentBriefUseCase.stream).thenAnswer((_) async* {
       yield TestData.currentBrief;
@@ -117,6 +125,87 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ExplorePage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'can open and close calendar',
+    (tester) async {
+      await tester.startApp();
+
+      expect(find.byType(DailyBriefCalendar), findsNothing);
+
+      await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DailyBriefCalendar), findsOneWidget);
+
+      await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DailyBriefCalendar), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'can change date in calendar',
+    (tester) async {
+      await tester.startApp();
+
+      await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+      await tester.pumpAndSettle();
+
+      final appBarTitle = find.descendant(
+        of: find.byType(FlexibleSpaceBar),
+        matching: find.byText("Yesterday"),
+      );
+
+      final calendarItem = find.descendant(
+        of: find.byType(DailyBriefCalendar),
+        matching: find.byText("13"),
+      );
+
+      expect(appBarTitle, findsNothing);
+
+      await tester.tap(calendarItem);
+      await tester.pumpAndSettle();
+
+      expect(appBarTitle, findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    "can't change date in calendar if brief is null",
+    (tester) async {
+      await tester.startApp();
+
+      await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+      await tester.pumpAndSettle();
+
+      final appBarTitle = find.descendant(
+        of: find.byType(FlexibleSpaceBar),
+        matching: find.byText("Yesterday"),
+      );
+
+      final calendarItem = find.descendant(
+        of: find.byType(DailyBriefCalendar),
+        matching: find.byText("13"),
+      );
+
+      final calendarItemNull = find.descendant(
+        of: find.byType(DailyBriefCalendar),
+        matching: find.byText("11"),
+      );
+
+      await tester.tap(calendarItem);
+      await tester.pumpAndSettle();
+
+      expect(appBarTitle, findsOneWidget);
+
+      await tester.tap(calendarItemNull);
+      await tester.pumpAndSettle();
+
+      expect(appBarTitle, findsOneWidget);
     },
   );
 }

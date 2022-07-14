@@ -25,6 +25,7 @@ import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
@@ -75,6 +76,7 @@ const _classes = [
   SetTutorialStepSeenUseCase,
   TrackActivityUseCase,
   IncomingPushDataRefreshStreamUseCase,
+  GetPastDaysBriesfUseCase,
 ];
 
 @GenerateMocks(_classes)

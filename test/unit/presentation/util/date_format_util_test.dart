@@ -53,7 +53,7 @@ void main() {
         for (final date in datesToCheck) {
           withClock(Clock.fixed(date), () {
             final title = DateFormatUtil.currentBriefDate(briefDate);
-            expect(title, 'Friday');
+            expect(title, 'Friday 27th');
           });
         }
       },

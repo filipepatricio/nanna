@@ -4,7 +4,10 @@ import 'dart:convert';
 import 'package:better_informed_mobile/data/daily_brief/api/daily_brief_api_data_source.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/documents/__generated__/current_brief.ast.gql.dart'
     as current_brief;
+import 'package:better_informed_mobile/data/daily_brief/api/documents/__generated__/past_days_briefs.ast.gql.dart'
+    as past_days_briefs;
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -36,6 +39,31 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
     );
 
     return dto ?? (throw Exception('Current brief is null'));
+  }
+
+  @override
+  Future<List<PastDaysBriefDTO>> pastDaysBriefs() async {
+    final result = await _client.query(
+      QueryOptions(
+        document: past_days_briefs.document,
+        operationName: past_days_briefs.getPastDaysBriefs.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        final pastDaysbriefsRaw = raw['getPastDaysBriefs'] as List<dynamic>;
+        final pastDaysbriefs = pastDaysbriefsRaw
+            .map((json) => PastDaysBriefDTO.fromJson(json as Map<String, dynamic>))
+            .toList(growable: false);
+
+        return pastDaysbriefs;
+      },
+    );
+
+    return dto ?? (throw Exception('Past days briefs is null'));
   }
 
   @override
