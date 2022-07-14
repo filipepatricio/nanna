@@ -221,6 +221,14 @@ class AnalyticsEvent with _$AnalyticsEvent {
         },
       );
 
+  factory AnalyticsEvent.articleRelatedCategoryTapped(String articleId, String categoryName) => AnalyticsEvent._(
+        'ArticleRelatedCategoryTapped',
+        {
+          'article_id': articleId,
+          'category_name': categoryName,
+        },
+      );
+
   factory AnalyticsEvent.logout() => AnalyticsEvent._('Logout');
 
   factory AnalyticsEvent.searched({required String query}) => AnalyticsEvent._(

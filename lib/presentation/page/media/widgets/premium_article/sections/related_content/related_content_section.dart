@@ -9,19 +9,23 @@ import 'package:flutter/material.dart';
 
 class RelatedContentSection extends StatelessWidget {
   const RelatedContentSection({
+    required this.articleId,
     required this.featuredCategories,
     required this.briefId,
     required this.relatedContentItems,
     required this.topicId,
     this.onRelatedContentItemTap,
+    this.onRelatedCategoryTap,
     Key? key,
   }) : super(key: key);
 
+  final String articleId;
   final List<Category> featuredCategories;
   final String? briefId;
   final List<CategoryItem> relatedContentItems;
   final String? topicId;
-  final Function(CategoryItem)? onRelatedContentItemTap;
+  final void Function(CategoryItem)? onRelatedContentItemTap;
+  final void Function(Category)? onRelatedCategoryTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,11 @@ class RelatedContentSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (featuredCategories.isNotEmpty || relatedContentItems.isNotEmpty) const SizedBox(height: AppDimens.l),
-          if (featuredCategories.isNotEmpty) RelatedCategories(featuredCategories),
+          if (featuredCategories.isNotEmpty)
+            RelatedCategories(
+              featuredCategories,
+              onItemTap: onRelatedCategoryTap,
+            ),
           if (relatedContentItems.isNotEmpty)
             RelatedContent(
               onItemTap: onRelatedContentItemTap,

@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
@@ -10,14 +9,15 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class ArticleMoreFromSection extends HookWidget {
+typedef ItemTapCallback = Function(BriefEntryItem);
+
+class ArticleMoreFromSection extends StatelessWidget {
   const ArticleMoreFromSection({
     required this.articleId,
     required this.items,
+    required this.onItemTap,
     this.briefId,
     this.topicId,
     this.topicTitle,
@@ -29,11 +29,10 @@ class ArticleMoreFromSection extends HookWidget {
   final String? briefId;
   final String? topicId;
   final String? topicTitle;
+  final ItemTapCallback onItemTap;
 
   @override
   Widget build(BuildContext context) {
-    final eventController = useEventTrackController();
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -58,13 +57,13 @@ class ArticleMoreFromSection extends HookWidget {
                           article: mediaItemArticle,
                           briefId: briefId,
                           topicId: topicId,
-                          customOnTap: () => trackArticleTap(eventController, briefEntryItem),
+                          onItemTap: () => onItemTap(briefEntryItem),
                         ),
                       ),
                       topicPreview: (briefItemTopic) => _Topic(
                         topic: briefItemTopic.topicPreview,
                         briefId: briefId,
-                        customOnTap: () => trackArticleTap(eventController, briefEntryItem),
+                        onItemTap: () => onItemTap(briefEntryItem),
                       ),
                     ) ??
                     const SizedBox.shrink(),
@@ -86,28 +85,21 @@ class ArticleMoreFromSection extends HookWidget {
       ],
     );
   }
-
-  void trackArticleTap(GeneralEventTrackerController eventController, BriefEntryItem item) {
-    final event = topicId != null
-        ? AnalyticsEvent.articleMoreFromTopicItemTapped(articleId, item)
-        : AnalyticsEvent.articleMoreFromBriefItemTapped(articleId, item);
-    eventController.track(event);
-  }
 }
 
 class _Article extends StatelessWidget {
   const _Article({
     required this.article,
+    required this.onItemTap,
     this.briefId,
     this.topicId,
-    this.customOnTap,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final String? briefId;
   final String? topicId;
-  final VoidCallback? customOnTap;
+  final VoidCallback onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +108,7 @@ class _Article extends StatelessWidget {
       child: ArticleCover.otherBriefItemsList(
         article: article,
         onTap: () {
-          customOnTap?.call();
+          onItemTap.call();
           context.navigateToArticle(
             article: article,
             briefId: briefId,
@@ -131,14 +123,14 @@ class _Article extends StatelessWidget {
 class _Topic extends StatelessWidget {
   const _Topic({
     required this.topic,
+    required this.onItemTap,
     this.briefId,
-    this.customOnTap,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final String? briefId;
-  final VoidCallback? customOnTap;
+  final VoidCallback onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +139,7 @@ class _Topic extends StatelessWidget {
       child: TopicCover.otherBriefItemsList(
         topic: topic,
         onTap: () {
-          customOnTap?.call();
+          onItemTap.call();
           context.navigateToTopic(
             topic: topic,
             briefId: briefId,
