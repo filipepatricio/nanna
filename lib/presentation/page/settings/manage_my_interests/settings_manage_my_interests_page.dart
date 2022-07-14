@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/presentation/page/settings/manage_my_inte
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class SettingsManageMyInterestsPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsManageMyInterestsCubit>();
     final state = useCubitBuilder<SettingsManageMyInterestsCubit, SettingsManageMyInterestsState>(cubit);
-    final snackbarController = useMemoized(() => SnackbarController());
+    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     useEffect(
       () {
@@ -39,19 +38,16 @@ class SettingsManageMyInterestsPage extends HookWidget {
           style: AppTypography.subH1Medium.copyWith(height: 1),
         ),
       ),
-      body: AudioPlayerBannerWrapper(
-        layout: AudioPlayerBannerLayout.column,
-        child: SnackbarParentView(
-          controller: snackbarController,
-          child: state.maybeWhen(
-            loading: () => const Loader(),
-            myInterestsSettingsLoaded: (categoryPreferences) => SettingsManageMyInterestsBody(
-              snackbarController: snackbarController,
-              categoryPreferences: categoryPreferences,
-              cubit: cubit,
-            ),
-            orElse: () => const SizedBox.shrink(),
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: state.maybeWhen(
+          loading: () => const Loader(),
+          myInterestsSettingsLoaded: (categoryPreferences) => SettingsManageMyInterestsBody(
+            snackbarController: snackbarController,
+            categoryPreferences: categoryPreferences,
+            cubit: cubit,
           ),
+          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );

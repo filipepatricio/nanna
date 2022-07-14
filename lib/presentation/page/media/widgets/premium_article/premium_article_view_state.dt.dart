@@ -12,7 +12,7 @@ class PremiumArticleViewState with _$PremiumArticleViewState {
 
   @Implements<BuildState>()
   const factory PremiumArticleViewState.idle({
-    required List<BriefEntryItem> otherBriefItems,
+    required List<BriefEntryItem> moreFromSectionItems,
     required List<Category> featuredCategories,
     required bool showArticleRelatedContentSection,
     required bool showArticleMoreSection,

@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
@@ -36,7 +37,7 @@ class ArticleHeaderDTO {
   final String strippedTitle;
   final String credits;
   final String? note;
-  final String type;
+  final ArticleTypeDTO type;
   final ArticleKindDTO? kind;
   final String? publicationDate;
   final int timeToRead;

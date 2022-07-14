@@ -8,8 +8,10 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -60,24 +62,20 @@ class SettingsAccountBody extends HookWidget {
           children: [
             Expanded(
               child: SingleChildScrollView(
+                physics: getPlatformScrollPhysics(),
                 padding: const EdgeInsets.all(AppDimens.l),
                 child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: AppDimens.l),
-                        SizedBox(
-                          height: AppDimens.settingsItemHeight,
-                          child: Row(
-                            children: [
-                              Text(
-                                LocaleKeys.settings_account.tr(),
-                                style: AppTypography.h4Bold,
-                              ),
-                            ],
-                          ),
+                        Text(
+                          LocaleKeys.settings_account.tr(),
+                          style: AppTypography.h4Bold,
                         ),
                         const SizedBox(height: AppDimens.l),
                         SettingsInputItem(
@@ -123,11 +121,17 @@ class SettingsAccountBody extends HookWidget {
                         const SizedBox(height: AppDimens.l),
                       ],
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: AppDimens.m),
+                      child: DeleteAccountLink(
+                        onTap: () => _onDeleteAccountLinkTap(context),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: AppDimens.l),
+            const SizedBox(height: AppDimens.m),
             AnimatedOpacity(
               opacity: 1.0,
               duration: const Duration(milliseconds: 250),
@@ -144,11 +148,8 @@ class SettingsAccountBody extends HookWidget {
                 ),
               ),
             ),
-            const SizedBox(height: AppDimens.s),
-            DeleteAccountLink(
-              onTap: () => _onDeleteAccountLinkTap(context),
-            ),
-            const SizedBox(height: AppDimens.l),
+            const SizedBox(height: AppDimens.m),
+            const AudioPlayerBannerPlaceholder(),
           ],
         ),
       ),

@@ -17,12 +17,14 @@ class RelatedContent extends HookWidget {
     required this.relatedContentItems,
     this.topicId,
     this.briefId,
+    this.onItemTap,
     Key? key,
   }) : super(key: key);
 
   final List<CategoryItem> relatedContentItems;
   final String? briefId;
   final String? topicId;
+  final Function(CategoryItem)? onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +67,9 @@ class RelatedContent extends HookWidget {
                   return relatedContentItems[index].mapOrNull(
                         article: (data) =>
                             data.article.mapOrNull(
-                              article: (data) => _Article(
-                                article: data,
+                              article: (article) => _Article(
+                                onItemTap: () => onItemTap?.call(data),
+                                article: article,
                                 briefId: briefId,
                                 topicId: topicId,
                                 width: tileWidth,
@@ -74,6 +77,7 @@ class RelatedContent extends HookWidget {
                             ) ??
                             const SizedBox.shrink(),
                         topic: (topic) => _Topic(
+                          onItemTap: () => onItemTap?.call(topic),
                           topic: topic.topicPreview,
                           width: tileWidth,
                           briefId: briefId,
@@ -96,6 +100,7 @@ class _Article extends StatelessWidget {
   const _Article({
     required this.article,
     required this.width,
+    required this.onItemTap,
     this.briefId,
     this.topicId,
     Key? key,
@@ -105,6 +110,7 @@ class _Article extends StatelessWidget {
   final String? briefId;
   final String? topicId;
   final double width;
+  final VoidCallback onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -114,11 +120,14 @@ class _Article extends StatelessWidget {
         visited: article.progressState == ArticleProgressState.finished,
         child: ArticleCover.exploreCarousel(
           article: article,
-          onTap: () => context.navigateToArticle(
-            article: article,
-            briefId: briefId,
-            topicId: topicId,
-          ),
+          onTap: () {
+            onItemTap();
+            context.navigateToArticle(
+              article: article,
+              briefId: briefId,
+              topicId: topicId,
+            );
+          },
         ),
       ),
     );
@@ -129,6 +138,7 @@ class _Topic extends StatelessWidget {
   const _Topic({
     required this.topic,
     required this.width,
+    required this.onItemTap,
     this.briefId,
     Key? key,
   }) : super(key: key);
@@ -136,6 +146,7 @@ class _Topic extends StatelessWidget {
   final TopicPreview topic;
   final String? briefId;
   final double width;
+  final VoidCallback onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -145,10 +156,13 @@ class _Topic extends StatelessWidget {
         visited: topic.visited,
         child: TopicCover.exploreSmall(
           topic: topic,
-          onTap: () => context.navigateToTopic(
-            topic: topic,
-            briefId: briefId,
-          ),
+          onTap: () {
+            onItemTap();
+            context.navigateToTopic(
+              topic: topic,
+              briefId: briefId,
+            );
+          },
         ),
       ),
     );

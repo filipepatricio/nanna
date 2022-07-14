@@ -14,13 +14,6 @@ class OnboardingHiveDatabase implements OnboardingDatabase {
   }
 
   @override
-  Future<bool> isOnboardingSeen(String userUuid) async {
-    final box = await _openUserBox(userUuid, _hiveBoxName);
-    final onboardingValue = box.get(_onboardingKey) as bool?;
-    return onboardingValue ?? false;
-  }
-
-  @override
   Future<void> setOnboardingVersion(String userUuid, int version) async {
     final box = await _openUserBox(userUuid, _hiveBoxName);
     await box.put(_onboardingKey, version);
