@@ -1,18 +1,17 @@
+import 'package:better_informed_mobile/data/article/api/dto/article_content_type_dto.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class ArticleContentTypeDTOMapper implements Mapper<String, ArticleContentType> {
+class ArticleContentTypeDTOMapper implements Mapper<ArticleContentTypeDTO, ArticleContentType> {
   @override
-  ArticleContentType call(String data) {
+  ArticleContentType call(ArticleContentTypeDTO data) {
     switch (data) {
-      case 'HTML':
+      case ArticleContentTypeDTO.html:
         return ArticleContentType.html;
-      case 'MARKDOWN':
+      case ArticleContentTypeDTO.markdown:
         return ArticleContentType.markdown;
-      default:
-        throw Exception('Unknown article content type: $data');
     }
   }
 }
