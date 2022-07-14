@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -114,7 +115,7 @@ class SettingsMainBody extends HookWidget {
         SliverFillRemaining(
           hasScrollBody: false,
           child: Container(
-            padding: const EdgeInsets.all(AppDimens.l),
+            padding: const EdgeInsets.fromLTRB(AppDimens.l, AppDimens.l, AppDimens.l, AppDimens.s),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: UnconstrainedBox(
@@ -135,6 +136,9 @@ class SettingsMainBody extends HookWidget {
               ),
             ),
           ),
+        ),
+        const SliverToBoxAdapter(
+          child: AudioPlayerBannerPlaceholder(),
         ),
       ],
     );
