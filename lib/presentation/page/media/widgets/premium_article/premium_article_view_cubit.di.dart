@@ -40,7 +40,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     emit(const PremiumArticleViewState.initial());
 
     var showArticleMoreSection = false;
-    final otherBriefItems = <BriefEntryItem>[];
+    final moreFromSectionItems = <BriefEntryItem>[];
     final relatedContentItems = <CategoryItem>[];
 
     if (topicSlug != null) {
@@ -50,13 +50,13 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
         final mediaItemList = await _getOtherTopicEntriesUseCase(slug, topicSlug);
         final briefEntryArticleItemList =
             mediaItemList.map((article) => BriefEntryItemArticle(article: article)).toList();
-        otherBriefItems.addAll(briefEntryArticleItemList);
+        moreFromSectionItems.addAll(briefEntryArticleItemList);
       }
     } else if (briefId != null) {
       final showArticleMoreFromBriefSection = await _getShowArticleMoreFromBriefSectionUseCase();
       if (showArticleMoreFromBriefSection) {
         showArticleMoreSection = true;
-        otherBriefItems.addAll(await _getOtherBriefEntriesUseCase(slug));
+        moreFromSectionItems.addAll(await _getOtherBriefEntriesUseCase(slug));
       }
     }
 
@@ -70,7 +70,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
 
     emit(
       PremiumArticleViewState.idle(
-        otherBriefItems: otherBriefItems,
+        moreFromSectionItems: moreFromSectionItems,
         featuredCategories: featuredCategories,
         showArticleRelatedContentSection: showArticleRelatedContentSection,
         showArticleMoreSection: showArticleMoreSection,

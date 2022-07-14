@@ -27,7 +27,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.mainController,
     required this.showArticleRelatedContentSection,
     required this.showArticleMoreSection,
-    required this.otherBriefItems,
+    required this.moreFromSectionItems,
     required this.featuredCategories,
     required this.relatedContentItems,
     this.readArticleProgress,
@@ -43,7 +43,7 @@ class PremiumArticleReadView extends HookWidget {
   final double? readArticleProgress;
   final bool showArticleRelatedContentSection;
   final bool showArticleMoreSection;
-  final List<BriefEntryItem> otherBriefItems;
+  final List<BriefEntryItem> moreFromSectionItems;
   final String? topicTitle;
   final List<Category> featuredCategories;
   final List<CategoryItem> relatedContentItems;
@@ -242,12 +242,13 @@ class PremiumArticleReadView extends HookWidget {
                           ],
                         ),
                       ),
-                      if (showArticleMoreSection && otherBriefItems.isNotEmpty)
+                      if (showArticleMoreSection && moreFromSectionItems.isNotEmpty)
                         SliverList(
                           delegate: SliverChildListDelegate(
                             [
-                              ArticleOtherBriefItemsSection(
-                                otherBriefItems: otherBriefItems,
+                              ArticleMoreFromSection(
+                                articleId: article.metadata.id,
+                                items: moreFromSectionItems,
                                 briefId: cubit.briefId,
                                 topicId: cubit.topicId,
                                 topicTitle: topicTitle,
