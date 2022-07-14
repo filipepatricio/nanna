@@ -8,14 +8,24 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(SettingsNotificationsPage, (tester) async {
-    await tester.startApp(initialRoute: const SettingsNotificationsPageRoute());
+    await tester.startApp(
+      initialRoute: const ProfileTabGroupRouter(
+        children: [
+          SettingsNotificationsPageRoute(),
+        ],
+      ),
+    );
     await tester.matchGoldenFile();
   });
 
   visualTest('${SettingsNotificationsPage}_(error)', (tester) async {
     final cubit = FakeNotificationSettingSwitchCubit();
     await tester.startApp(
-      initialRoute: const SettingsNotificationsPageRoute(),
+      initialRoute: const ProfileTabGroupRouter(
+        children: [
+          SettingsNotificationsPageRoute(),
+        ],
+      ),
       dependencyOverride: (getIt) async {
         getIt.registerFactory<NotificationSettingSwitchCubit>(() => cubit);
       },
