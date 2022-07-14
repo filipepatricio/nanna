@@ -18,4 +18,9 @@ class BookmarkChangeNotifier {
         );
     _changeStream.sink.add(filters);
   }
+
+  @disposeMethod
+  void dispose() {
+    _changeStream.close();
+  }
 }

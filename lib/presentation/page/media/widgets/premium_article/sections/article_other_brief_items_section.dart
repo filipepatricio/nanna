@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/cover_opacity.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
@@ -92,8 +93,8 @@ class _Article extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: article.progressState == ArticleProgressState.finished ? 0.30 : 1,
+    return CoverOpacity(
+      visited: article.progressState == ArticleProgressState.finished,
       child: ArticleCover.otherBriefItemsList(
         article: article,
         onTap: () => context.navigateToArticle(
@@ -118,8 +119,8 @@ class _Topic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: topic.visited ? 0.30 : 1,
+    return CoverOpacity(
+      visited: topic.visited,
       child: TopicCover.otherBriefItemsList(
         topic: topic,
         onTap: () => context.navigateToTopic(

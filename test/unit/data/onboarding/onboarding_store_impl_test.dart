@@ -98,7 +98,6 @@ void main() {
       const userUuid = '0000';
 
       when(onboardingDatabase.getOnboardingVersion(userUuid)).thenAnswer((realInvocation) async => null);
-      when(onboardingDatabase.isOnboardingSeen(userUuid)).thenAnswer((realInvocation) async => false);
       when(onboardingVersionEntityMapper.from(currentVersion)).thenAnswer((realInvocation) => currentVersionCode);
       when(onboardingVersionEntityMapper.to(currentVersionCode)).thenAnswer((realInvocation) => OnboardingVersion.v2);
 
@@ -112,7 +111,6 @@ void main() {
       const userUuid = '0000';
 
       when(onboardingDatabase.getOnboardingVersion(userUuid)).thenAnswer((realInvocation) async => null);
-      when(onboardingDatabase.isOnboardingSeen(userUuid)).thenAnswer((realInvocation) async => true);
       when(onboardingVersionEntityMapper.from(currentVersion)).thenAnswer((realInvocation) => currentVersionCode);
       when(onboardingVersionEntityMapper.from(OnboardingStoreImpl.deprecatedVersion)).thenAnswer((realInvocation) => 0);
 
@@ -136,23 +134,10 @@ void main() {
       expect(actual, expected);
     });
 
-    test('returns deprecated version when stored version does not exist', () async {
-      const userUuid = '0000';
-      const expected = OnboardingStoreImpl.deprecatedVersion;
-
-      when(onboardingDatabase.getOnboardingVersion(userUuid)).thenAnswer((realInvocation) async => null);
-      when(onboardingDatabase.isOnboardingSeen(userUuid)).thenAnswer((realInvocation) async => true);
-
-      final actual = await onboardingStore.getSeenOnboardingVersion(userUuid);
-
-      expect(actual, expected);
-    });
-
     test('returns null when none version is stored', () async {
       const userUuid = '0000';
 
       when(onboardingDatabase.getOnboardingVersion(userUuid)).thenAnswer((realInvocation) async => null);
-      when(onboardingDatabase.isOnboardingSeen(userUuid)).thenAnswer((realInvocation) async => false);
 
       final actual = await onboardingStore.getSeenOnboardingVersion(userUuid);
 

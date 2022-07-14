@@ -27,6 +27,7 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_m
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
@@ -145,4 +146,7 @@ class TestData {
   static CurrentBrief get currentBrief => _currentBriefMapper(MockDTO.currentBrief);
 
   static Category get category => _categoryMapper(MockDTO.category);
+
+  static List<CategoryItem> get categoryItemList =>
+      MockDTO.categoryItemList.map<CategoryItem>(_categoryItemMapper).toList();
 }

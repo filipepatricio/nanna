@@ -14,7 +14,6 @@ import 'package:better_informed_mobile/data/topic/api/dto/topics_from_expert_dto
 import 'package:better_informed_mobile/data/topic/api/topics_api_data_source.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:fimber/fimber.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -119,7 +118,6 @@ class TopicsGraphqlDataSource implements TopicsApiDataSource {
           variables: {
             'slug': slug,
           },
-          onError: (error) => Fimber.e('Could not mark topic as visited', ex: error),
         ),
       );
 }

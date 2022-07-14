@@ -260,7 +260,11 @@ void main() {
           )
           .first;
 
-      await tester.fling(find.byType(MediaItemPage), const Offset(0, -20000), 100);
+      await tester.dragUntilVisible(
+        find.byType(RelatedCategories, skipOffstage: false),
+        find.byType(MediaItemPage),
+        const Offset(0, -100),
+      );
 
       await tester.pumpAndSettle();
       expect(categoryPillFinder, findsOneWidget);
@@ -278,6 +282,7 @@ class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
         const BookmarkTypeData.article('', ''),
         BookmarkState.notBookmarked(),
       );
+
   @override
   Stream<BookmarkButtonState> get stream => Stream.value(
         BookmarkButtonState.idle(
@@ -299,6 +304,7 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
     featuredCategories: List.generate(4, (index) => TestData.category),
     showArticleRelatedContentSection: true,
     showArticleMoreSection: true,
+    relatedContentItems: TestData.categoryItemList,
   );
 
   @override
