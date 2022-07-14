@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'analytics_event.dt.freezed.dart';
@@ -7,12 +8,7 @@ part 'analytics_event.dt.freezed.dart';
 class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent._(String name, [Map<String, dynamic>? properties]) = _AnalyticsEvent;
 
-  factory AnalyticsEvent.dailyBriefEntryPreviewed(
-    String briefId,
-    String topicId,
-    int position,
-    String type,
-  ) =>
+  factory AnalyticsEvent.dailyBriefEntryPreviewed(String briefId, String topicId, int position, String type) =>
       AnalyticsEvent._(
         'DailyBriefItemPreviewed',
         {
@@ -23,14 +19,27 @@ class AnalyticsEvent with _$AnalyticsEvent {
         },
       );
 
-  factory AnalyticsEvent.dailyBriefRelaxMessageViewed(String briefId) =>
-      AnalyticsEvent._('DailyBriefRelaxMessageViewed', {'brief_id': briefId});
+  factory AnalyticsEvent.dailyBriefRelaxMessageViewed(String briefId) => AnalyticsEvent._(
+        'DailyBriefRelaxMessageViewed',
+        {
+          'brief_id': briefId,
+        },
+      );
 
-  factory AnalyticsEvent.topicSummaryRead(String topicId) =>
-      AnalyticsEvent._('TopicSummaryRead', {'topic_id': topicId});
+  factory AnalyticsEvent.topicSummaryRead(String topicId) => AnalyticsEvent._(
+        'TopicSummaryRead',
+        {
+          'topic_id': topicId,
+        },
+      );
 
-  factory AnalyticsEvent.readingListBrowsed(String topicId, int position) =>
-      AnalyticsEvent._('ReadingListBrowsed', {'topic_id': topicId, 'reading_list_position': position});
+  factory AnalyticsEvent.readingListBrowsed(String topicId, int position) => AnalyticsEvent._(
+        'ReadingListBrowsed',
+        {
+          'topic_id': topicId,
+          'reading_list_position': position,
+        },
+      );
 
   factory AnalyticsEvent.onboardingStarted() => AnalyticsEvent._('OnboardingStarted');
 
@@ -40,20 +49,42 @@ class AnalyticsEvent with _$AnalyticsEvent {
 
   factory AnalyticsEvent.pushNotificationConsentGiven() => AnalyticsEvent._('PushNotificationConsentGiven');
 
-  factory AnalyticsEvent.exploreAreaPreviewed(String id, int position) =>
-      AnalyticsEvent._('ExploreAreaPreviewed', {'explore_area_id': id, 'position': position});
+  factory AnalyticsEvent.exploreAreaPreviewed(String id, int position) => AnalyticsEvent._(
+        'ExploreAreaPreviewed',
+        {
+          'explore_area_id': id,
+          'position': position,
+        },
+      );
 
-  factory AnalyticsEvent.exploreAreaCarouselBrowsed(String id, int position) =>
-      AnalyticsEvent._('ExploreAreaCarouselBrowsed', {'explore_area_id': id, 'position': position});
+  factory AnalyticsEvent.exploreAreaCarouselBrowsed(String id, int position) => AnalyticsEvent._(
+        'ExploreAreaCarouselBrowsed',
+        {
+          'explore_area_id': id,
+          'position': position,
+        },
+      );
 
-  factory AnalyticsEvent.exploreAreaScrolled(String id, int offset) =>
-      AnalyticsEvent._('ExploreAreaScrolled', {'explore_area_id': id, 'offset': offset});
+  factory AnalyticsEvent.exploreAreaScrolled(String id, int offset) => AnalyticsEvent._(
+        'ExploreAreaScrolled',
+        {
+          'explore_area_id': id,
+          'offset': offset,
+        },
+      );
 
-  factory AnalyticsEvent.categoryPageScrolled(String slug, int offset) =>
-      AnalyticsEvent._('CategoryPageScrolled', {'category_slug': slug, 'offset': offset});
+  factory AnalyticsEvent.categoryPageScrolled(String slug, int offset) => AnalyticsEvent._(
+        'CategoryPageScrolled',
+        {
+          'category_slug': slug,
+          'offset': offset,
+        },
+      );
 
-  factory AnalyticsEvent.pushNotificationTapped(Map<String, dynamic> meta) =>
-      AnalyticsEvent._('PushNotificationTapped', meta);
+  factory AnalyticsEvent.pushNotificationTapped(Map<String, dynamic> meta) => AnalyticsEvent._(
+        'PushNotificationTapped',
+        meta,
+      );
 
   factory AnalyticsEvent.imageArticleQuoteShared(String articleId, String quote) => AnalyticsEvent._(
         'ArticleQuoteShared',
@@ -171,6 +202,24 @@ class AnalyticsEvent with _$AnalyticsEvent {
         },
       );
 
+  factory AnalyticsEvent.articleMoreFromTopicItemTapped(String articleId, BriefEntryItem item) => AnalyticsEvent._(
+        'ArticleMoreFromTopicItemTapped',
+        {
+          'article_id': articleId,
+          'item_type': item.typeName,
+          'item_id': item.typeId,
+        },
+      );
+
+  factory AnalyticsEvent.articleMoreFromBriefItemTapped(String articleId, BriefEntryItem item) => AnalyticsEvent._(
+        'ArticleMoreFromBriefItemTapped',
+        {
+          'article_id': articleId,
+          'item_type': item.typeName,
+          'item_id': item.typeId,
+        },
+      );
+
   factory AnalyticsEvent.logout() => AnalyticsEvent._('Logout');
 
   factory AnalyticsEvent.searched({required String query}) => AnalyticsEvent._(
@@ -194,4 +243,21 @@ extension on BookmarkSortConfigName {
         return 'a_z_reversed';
     }
   }
+}
+
+extension on BriefEntryItem {
+  String get typeName => maybeMap(
+        article: (_) => 'article',
+        topicPreview: (_) => 'topic',
+        orElse: () => 'unknown',
+      );
+
+  String get typeId => map(
+        article: (item) => item.article.map(
+          article: (article) => article.id,
+          unknown: (_) => 'unknown',
+        ),
+        topicPreview: (item) => item.topicPreview.id,
+        unknown: (_) => 'unknown',
+      );
 }

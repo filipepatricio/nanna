@@ -300,7 +300,7 @@ class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
 
 class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubit {
   final idleState = PremiumArticleViewState.idle(
-    otherBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    moreFromSectionItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
     featuredCategories: List.generate(4, (index) => TestData.category),
     showArticleRelatedContentSection: true,
     showArticleMoreSection: true,
