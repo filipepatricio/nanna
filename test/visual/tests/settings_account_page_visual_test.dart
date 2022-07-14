@@ -7,7 +7,13 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(SettingsAccountPage, (tester) async {
-    await tester.startApp(initialRoute: const SettingsAccountPageRoute());
+    await tester.startApp(
+      initialRoute: const ProfileTabGroupRouter(
+        children: [
+          SettingsAccountPageRoute(),
+        ],
+      ),
+    );
     await tester.matchGoldenFile();
     await tester.tap(find.byType(DeleteAccountLink));
     await tester.pumpAndSettle();

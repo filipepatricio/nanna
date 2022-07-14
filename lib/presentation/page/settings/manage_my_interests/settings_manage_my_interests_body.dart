@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -68,10 +69,15 @@ class SettingsManageMyInterestsBody extends HookWidget {
                         },
                       ),
                     )
-                    .expand((element) => [element, const Divider()]),
+                    .expand(
+                      (element) => [element, const Divider()],
+                    ),
               ],
             ),
           ),
+        ),
+        const SliverToBoxAdapter(
+          child: AudioPlayerBannerPlaceholder(),
         ),
       ],
     );

@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/page/settings/main/settings_
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ class SettingsMainPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsMainCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController());
+    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -31,16 +30,13 @@ class SettingsMainPage extends HookWidget {
       ),
       body: SnackbarParentView(
         controller: snackbarController,
-        child: AudioPlayerBannerWrapper(
-          layout: AudioPlayerBannerLayout.column,
-          child: state.maybeWhen(
-            init: () => SettingsMainBody(
-              cubit: cubit,
-              snackbarController: snackbarController,
-            ),
-            loading: () => const Loader(),
-            orElse: () => const SizedBox.shrink(),
+        child: state.maybeWhen(
+          init: () => SettingsMainBody(
+            cubit: cubit,
+            snackbarController: snackbarController,
           ),
+          loading: () => const Loader(),
+          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );

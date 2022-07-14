@@ -90,7 +90,7 @@ class InformedDialog extends HookWidget {
               child: FilledButton(
                 text: LocaleKeys.common_cancel.tr(),
                 fillColor: AppColors.black05,
-                onTap: () => Navigator.pop(context, false),
+                onTap: () => Navigator.of(context, rootNavigator: true).pop(false),
               ),
             ),
             const Spacer(),
@@ -100,7 +100,7 @@ class InformedDialog extends HookWidget {
                 text: LocaleKeys.settings_deleteAccount_delete.tr(),
                 fillColor: AppColors.carrotRed,
                 textColor: AppColors.white,
-                onTap: () => Navigator.pop(context, true),
+                onTap: () => Navigator.of(context, rootNavigator: true).pop(true),
               ),
             ),
           ],
