@@ -20,6 +20,19 @@ class InformedApp extends HookWidget {
   final MainRouter mainRouter;
   final GetIt getIt;
 
+  Widget responsiveBuilder(Widget? child) => ResponsiveWrapper.builder(
+        child,
+        maxWidth: 768,
+        minWidth: 320,
+        defaultScale: true,
+        breakpoints: [
+          const ResponsiveBreakpoint.resize(320, name: 'SMALL_DEVICE', scaleFactor: 0.9),
+          const ResponsiveBreakpoint.resize(375, name: 'REGULAR_DEVICE'),
+          const ResponsiveBreakpoint.resize(428, name: 'LARGER_DEVICE', scaleFactor: 1.1),
+          const ResponsiveBreakpoint.autoScale(768, name: TABLET),
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     if (kIsTest) {
@@ -30,6 +43,9 @@ class InformedApp extends HookWidget {
           routeInformationParser: mainRouter.defaultRouteParser(),
           routerDelegate: mainRouter.delegate(),
           theme: AppTheme.mainTheme,
+          builder: (context, child) {
+            return responsiveBuilder(child!);
+          },
         ),
       );
     }
@@ -60,19 +76,7 @@ class InformedApp extends HookWidget {
         ),
         theme: AppTheme.mainTheme,
         builder: (context, child) {
-          return ResponsiveWrapper.builder(
-            child!,
-            maxWidth: 1200,
-            minWidth: 480,
-            defaultScale: true,
-            breakpoints: [
-              const ResponsiveBreakpoint.resize(360, name: 'SMALL_DEVICE', scaleFactor: 0.9),
-              const ResponsiveBreakpoint.resize(390, name: 'REGULAR_DEVICE'),
-              const ResponsiveBreakpoint.resize(428, name: 'LARGE_DEVICE', scaleFactor: 1.1),
-              const ResponsiveBreakpoint.autoScale(768, name: TABLET),
-              const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-            ],
-          );
+          return responsiveBuilder(child!);
         },
       ),
     );
