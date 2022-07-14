@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
@@ -93,7 +91,6 @@ class ArticleMoreFromSection extends HookWidget {
     final event = topicId != null
         ? AnalyticsEvent.articleMoreFromTopicItemTapped(articleId, item)
         : AnalyticsEvent.articleMoreFromBriefItemTapped(articleId, item);
-    log('$event');
     eventController.track(event);
   }
 }

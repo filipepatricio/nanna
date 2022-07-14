@@ -246,11 +246,11 @@ extension on BookmarkSortConfigName {
 }
 
 extension on BriefEntryItem {
-  String get typeName {
-    if (this is BriefEntryItemArticle) return 'article';
-    if (this is BriefEntryItemTopic) return 'topic';
-    return 'unknown';
-  }
+  String get typeName => maybeMap(
+        article: (_) => 'article',
+        topicPreview: (_) => 'topic',
+        orElse: () => 'unknown',
+      );
 
   String get typeId => map(
         article: (item) => item.article.map(
