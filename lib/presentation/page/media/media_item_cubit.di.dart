@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -10,6 +11,7 @@ import 'package:better_informed_mobile/domain/article/use_case/get_article_heade
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/set_reading_banner_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/trade_topid_id_for_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
@@ -44,6 +46,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
   late NeatPeriodicTaskScheduler? readingProgressTrackingScheduler;
 
   String? get topicId => _topicId;
+
   String? get briefId => _briefId;
 
   Article? _currentFullArticle;
@@ -204,6 +207,10 @@ class MediaItemCubit extends Cubit<MediaItemState> {
       final readingBanner = ReadingBanner(article: _currentArticle, scrollProgress: progress);
       _setStartedArticleStreamUseCase.call(readingBanner);
     }
+  }
+
+  void onRelatedContentItemTap(CategoryItem item) {
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.articleRelatedContentItemTapped(_currentArticle.id, item));
   }
 }
 

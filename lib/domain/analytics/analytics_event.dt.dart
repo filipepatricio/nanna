@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -226,6 +227,15 @@ class AnalyticsEvent with _$AnalyticsEvent {
         'Searched',
         {
           'query': query,
+        },
+      );
+
+  factory AnalyticsEvent.articleRelatedContentItemTapped(String articleId, CategoryItem item) => AnalyticsEvent._(
+        'ArticleRelatedContentItemTapped',
+        {
+          'article_id': articleId,
+          'item_type': item.typeName,
+          'item_id': item.typeId,
         },
       );
 }
