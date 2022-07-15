@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/page/settings/notifications/
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class SettingsNotificationsBody extends HookWidget {
       physics: getPlatformScrollPhysics(),
       slivers: [
         SliverPadding(
-          padding: const EdgeInsets.all(AppDimens.l),
+          padding: const EdgeInsets.fromLTRB(AppDimens.l, AppDimens.l, AppDimens.l, AppDimens.s),
           sliver: SliverList(
             delegate: SliverChildListDelegate(
               [
@@ -58,10 +59,15 @@ class SettingsNotificationsBody extends HookWidget {
                         snackbarController: snackbarController,
                       ),
                     )
-                    .expand((element) => [element, const SizedBox(height: AppDimens.l)]),
+                    .expand(
+                      (element) => [element, const SizedBox(height: AppDimens.l)],
+                    ),
               ],
             ),
           ),
+        ),
+        const SliverToBoxAdapter(
+          child: AudioPlayerBannerPlaceholder(),
         ),
       ],
     );

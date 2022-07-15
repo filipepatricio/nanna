@@ -1,18 +1,9 @@
-import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:better_informed_mobile/data/auth/app_link/auth_app_link_repository_impl.di.dart';
-import 'package:better_informed_mobile/data/auth/app_link/magic_link_parser.di.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'auth_app_link_repository_impl_test.mocks.dart';
+import '../../../../generated_mocks.mocks.dart';
 
-@GenerateMocks(
-  [
-    AppLinkDataSource,
-    MagicLinkParser,
-  ],
-)
 void main() {
   late MockAppLinkDataSource appLinkDataSource;
   late MockMagicLinkParser magicLinkParser;

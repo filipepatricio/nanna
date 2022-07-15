@@ -93,7 +93,7 @@ void main() {
     );
 
     await tester.dragUntilVisible(
-      find.byType(ArticleOtherBriefItemsSection, skipOffstage: false),
+      find.byType(ArticleMoreFromSection, skipOffstage: false),
       find.byType(MediaItemPage),
       const Offset(0, -100),
     );
@@ -174,10 +174,11 @@ class FakeMediaItemPageCubit extends Fake implements MediaItemCubit {
 
 class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubit {
   final idleState = PremiumArticleViewState.idle(
-    otherBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    moreFromSectionItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
     featuredCategories: List.generate(4, (index) => TestData.category),
     showArticleRelatedContentSection: true,
     showArticleMoreSection: true,
+    relatedContentItems: TestData.categoryItemList,
   );
 
   @override

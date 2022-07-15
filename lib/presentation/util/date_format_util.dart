@@ -49,6 +49,23 @@ class DateFormatUtil {
       return LocaleKeys.dailyBrief_title_yesterday.tr();
     }
 
-    return DateFormat('EEEE').format(briefDate);
+    return DateFormat('EEEE d').format(briefDate) + getDayOfMonthSuffix(briefDate).tr();
+  }
+
+  static String getDayOfMonthSuffix(DateTime dateTime) {
+    if (dateTime.day >= 11 && dateTime.day <= 13) {
+      return LocaleKeys.dailyBrief_title_dateTh;
+    }
+
+    switch (dateTime.day % 10) {
+      case 1:
+        return LocaleKeys.dailyBrief_title_dateSt;
+      case 2:
+        return LocaleKeys.dailyBrief_title_dateNd;
+      case 3:
+        return LocaleKeys.dailyBrief_title_dateRd;
+      default:
+        return LocaleKeys.dailyBrief_title_dateTh;
+    }
   }
 }

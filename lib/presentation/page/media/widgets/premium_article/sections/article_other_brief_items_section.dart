@@ -4,25 +4,32 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/cover_opacity.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 
-class ArticleOtherBriefItemsSection extends StatelessWidget {
-  const ArticleOtherBriefItemsSection({
-    required this.otherBriefItems,
+typedef ItemTapCallback = Function(BriefEntryItem);
+
+class ArticleMoreFromSection extends StatelessWidget {
+  const ArticleMoreFromSection({
+    required this.articleId,
+    required this.items,
+    required this.onItemTap,
     this.briefId,
     this.topicId,
     this.topicTitle,
     Key? key,
   }) : super(key: key);
 
-  final List<BriefEntryItem> otherBriefItems;
+  final String articleId;
+  final List<BriefEntryItem> items;
   final String? briefId;
   final String? topicId;
   final String? topicTitle;
+  final ItemTapCallback onItemTap;
 
   @override
   Widget build(BuildContext context) {
@@ -41,20 +48,22 @@ class ArticleOtherBriefItemsSection extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: otherBriefItems
+          child: items
               .map(
-                (e) =>
-                    e.mapOrNull(
-                      article: (data) => data.article.mapOrNull(
-                        article: (data) => _Article(
-                          article: data,
+                (briefEntryItem) =>
+                    briefEntryItem.mapOrNull(
+                      article: (briefItemArticle) => briefItemArticle.article.mapOrNull(
+                        article: (mediaItemArticle) => _Article(
+                          article: mediaItemArticle,
                           briefId: briefId,
                           topicId: topicId,
+                          onItemTap: () => onItemTap(briefEntryItem),
                         ),
                       ),
-                      topicPreview: (data) => _Topic(
-                        topic: data.topicPreview,
+                      topicPreview: (briefItemTopic) => _Topic(
+                        topic: briefItemTopic.topicPreview,
                         briefId: briefId,
+                        onItemTap: () => onItemTap(briefEntryItem),
                       ),
                     ) ??
                     const SizedBox.shrink(),
@@ -81,6 +90,7 @@ class ArticleOtherBriefItemsSection extends StatelessWidget {
 class _Article extends StatelessWidget {
   const _Article({
     required this.article,
+    required this.onItemTap,
     this.briefId,
     this.topicId,
     Key? key,
@@ -89,18 +99,22 @@ class _Article extends StatelessWidget {
   final MediaItemArticle article;
   final String? briefId;
   final String? topicId;
+  final VoidCallback onItemTap;
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: article.progressState == ArticleProgressState.finished ? 0.30 : 1,
+    return CoverOpacity(
+      visited: article.progressState == ArticleProgressState.finished,
       child: ArticleCover.otherBriefItemsList(
         article: article,
-        onTap: () => context.navigateToArticle(
-          article: article,
-          briefId: briefId,
-          topicId: topicId,
-        ),
+        onTap: () {
+          onItemTap.call();
+          context.navigateToArticle(
+            article: article,
+            briefId: briefId,
+            topicId: topicId,
+          );
+        },
       ),
     );
   }
@@ -109,23 +123,28 @@ class _Article extends StatelessWidget {
 class _Topic extends StatelessWidget {
   const _Topic({
     required this.topic,
+    required this.onItemTap,
     this.briefId,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final String? briefId;
+  final VoidCallback onItemTap;
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: topic.visited ? 0.30 : 1,
+    return CoverOpacity(
+      visited: topic.visited,
       child: TopicCover.otherBriefItemsList(
         topic: topic,
-        onTap: () => context.navigateToTopic(
-          topic: topic,
-          briefId: briefId,
-        ),
+        onTap: () {
+          onItemTap.call();
+          context.navigateToTopic(
+            topic: topic,
+            briefId: briefId,
+          );
+        },
       ),
     );
   }

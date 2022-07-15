@@ -1,18 +1,11 @@
-import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'get_bookmark_state_use_case_test.mocks.dart';
+import '../../../../generated_mocks.mocks.dart';
 
-@GenerateMocks(
-  [
-    BookmarkRepository,
-  ],
-)
 void main() {
   late MockBookmarkRepository repository;
   late GetBookmarkStateUseCase useCase;

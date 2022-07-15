@@ -7,8 +7,13 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
 class RelatedCategories extends StatelessWidget {
-  const RelatedCategories(this.featuredCategories, {Key? key}) : super(key: key);
+  const RelatedCategories(
+    this.featuredCategories, {
+    required this.onItemTap,
+    Key? key,
+  }) : super(key: key);
 
+  final void Function(Category)? onItemTap;
   final List<Category> featuredCategories;
 
   @override
@@ -33,11 +38,15 @@ class RelatedCategories extends StatelessWidget {
               title: featuredCategories[index].name,
               icon: featuredCategories[index].icon,
               index: index,
-              onTap: () => context.navigateTo(
-                CategoryPageRoute(
-                  category: featuredCategories[index],
-                ),
-              ),
+              onTap: () {
+                onItemTap?.call(featuredCategories[index]);
+
+                context.navigateTo(
+                  CategoryPageRoute(
+                    category: featuredCategories[index],
+                  ),
+                );
+              },
             ),
             separatorBuilder: (context, _) => const SizedBox(width: AppDimens.m),
             itemCount: featuredCategories.length,

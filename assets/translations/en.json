@@ -66,7 +66,11 @@
   "dailyBrief": {
     "title": {
       "today": "Today",
-      "yesterday": "Yesterday"
+      "yesterday": "Yesterday",
+      "dateSt": "st",
+      "dateNd": "nd",
+      "dateRd": "rd",
+      "dateTh": "th"
     },
     "justSec": "Just a sec...",
     "loading": "We’re loading your brief",
@@ -170,7 +174,9 @@
       "exploreMoreCategories": "Explore More in These Categories",
       "cantGetEnough": "Can't get enough?",
       "thereAreManyMore": "There are many more stories you migh like",
-      "goToExplore": "Go to Explore"
+      "goToExplore": "Go to Explore",
+      "similarStories": "Similar stories",
+      "relatedReads": "Related reads you might enjoy"
     },
     "otherBriefs": "More Articles and Deep Dives from Today",
     "moreFromTopic": "More from ‘{}’"

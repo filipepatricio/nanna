@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,9 +12,10 @@ class PremiumArticleViewState with _$PremiumArticleViewState {
 
   @Implements<BuildState>()
   const factory PremiumArticleViewState.idle({
-    required List<BriefEntryItem> otherBriefItems,
+    required List<BriefEntryItem> moreFromSectionItems,
     required List<Category> featuredCategories,
     required bool showArticleRelatedContentSection,
     required bool showArticleMoreSection,
+    required List<CategoryItem> relatedContentItems,
   }) = _PremiumArticleViewStateIdle;
 }

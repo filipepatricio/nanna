@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
@@ -26,8 +27,9 @@ class PremiumArticleReadView extends HookWidget {
     required this.mainController,
     required this.showArticleRelatedContentSection,
     required this.showArticleMoreSection,
-    required this.otherBriefItems,
+    required this.moreFromSectionItems,
     required this.featuredCategories,
+    required this.relatedContentItems,
     this.readArticleProgress,
     this.topicTitle,
     Key? key,
@@ -41,9 +43,10 @@ class PremiumArticleReadView extends HookWidget {
   final double? readArticleProgress;
   final bool showArticleRelatedContentSection;
   final bool showArticleMoreSection;
-  final List<BriefEntryItem> otherBriefItems;
+  final List<BriefEntryItem> moreFromSectionItems;
   final String? topicTitle;
   final List<Category> featuredCategories;
+  final List<CategoryItem> relatedContentItems;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -239,15 +242,17 @@ class PremiumArticleReadView extends HookWidget {
                           ],
                         ),
                       ),
-                      if (showArticleMoreSection && otherBriefItems.isNotEmpty)
+                      if (showArticleMoreSection && moreFromSectionItems.isNotEmpty)
                         SliverList(
                           delegate: SliverChildListDelegate(
                             [
-                              ArticleOtherBriefItemsSection(
-                                otherBriefItems: otherBriefItems,
+                              ArticleMoreFromSection(
+                                articleId: article.metadata.id,
+                                items: moreFromSectionItems,
                                 briefId: cubit.briefId,
                                 topicId: cubit.topicId,
                                 topicTitle: topicTitle,
+                                onItemTap: cubit.onMoreFromSectionItemTap,
                               ),
                             ],
                           ),
@@ -261,8 +266,13 @@ class PremiumArticleReadView extends HookWidget {
                       if (showArticleRelatedContentSection)
                         SliverToBoxAdapter(
                           child: RelatedContentSection(
+                            articleId: article.metadata.id,
                             featuredCategories: featuredCategories,
                             briefId: cubit.briefId,
+                            topicId: cubit.topicId,
+                            relatedContentItems: relatedContentItems,
+                            onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                            onRelatedCategoryTap: cubit.onRelatedCategoryTap,
                           ),
                         ),
                     ],

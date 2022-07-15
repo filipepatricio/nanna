@@ -1,26 +1,15 @@
 import 'dart:async';
 import 'package:better_informed_mobile/data/auth/api/documents/__generated__/refresh.ast.gql.dart' as refresh;
-
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_dto.dt.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
-import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'refresh_token_service_test.mocks.dart';
+import '../../../../generated_mocks.mocks.dart';
 
-@GenerateMocks(
-  [
-    GraphQLClient,
-    GraphQLResponseResolver,
-    RefreshTokenServiceCache,
-    AuthTokenResponseDTO,
-  ],
-)
 void main() {
   late MockGraphQLClient graphQLClient;
   late MockGraphQLResponseResolver resolver;
