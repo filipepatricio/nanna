@@ -53,6 +53,10 @@ class DateFormatUtil {
   }
 
   static String getDayOfMonthSuffix(DateTime dateTime) {
+    if (dateTime.day >= 11 && dateTime.day <= 13) {
+      return LocaleKeys.dailyBrief_title_dateTh;
+    }
+
     switch (dateTime.day % 10) {
       case 1:
         return LocaleKeys.dailyBrief_title_dateSt;

@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/page/media/media_item_page.d
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -150,62 +151,72 @@ void main() {
   testWidgets(
     'can change date in calendar',
     (tester) async {
-      await tester.startApp();
+      await withClock(
+        Clock(() => DateTime(2022, 07, 14)),
+        () async {
+          await tester.startApp();
 
-      await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
-      await tester.pumpAndSettle();
+          await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+          await tester.pumpAndSettle();
 
-      final appBarTitle = find.descendant(
-        of: find.byType(FlexibleSpaceBar),
-        matching: find.byText("Yesterday"),
+          final appBarTitle = find.descendant(
+            of: find.byType(FlexibleSpaceBar),
+            matching: find.byText("Yesterday"),
+          );
+
+          final calendarItem = find.descendant(
+            of: find.byType(DailyBriefCalendar),
+            matching: find.byText("13"),
+          );
+
+          expect(appBarTitle, findsNothing);
+
+          await tester.tap(calendarItem);
+          await tester.pumpAndSettle();
+
+          expect(appBarTitle, findsOneWidget);
+        },
       );
-
-      final calendarItem = find.descendant(
-        of: find.byType(DailyBriefCalendar),
-        matching: find.byText("13"),
-      );
-
-      expect(appBarTitle, findsNothing);
-
-      await tester.tap(calendarItem);
-      await tester.pumpAndSettle();
-
-      expect(appBarTitle, findsOneWidget);
     },
   );
 
   testWidgets(
     "can't change date in calendar if brief is null",
     (tester) async {
-      await tester.startApp();
+      await withClock(
+        Clock(() => DateTime(2022, 07, 14)),
+        () async {
+          await tester.startApp();
 
-      await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
-      await tester.pumpAndSettle();
+          await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).first));
+          await tester.pumpAndSettle();
 
-      final appBarTitle = find.descendant(
-        of: find.byType(FlexibleSpaceBar),
-        matching: find.byText("Yesterday"),
+          final appBarTitle = find.descendant(
+            of: find.byType(FlexibleSpaceBar),
+            matching: find.byText("Yesterday"),
+          );
+
+          final calendarItem = find.descendant(
+            of: find.byType(DailyBriefCalendar),
+            matching: find.byText("13"),
+          );
+
+          final calendarItemNull = find.descendant(
+            of: find.byType(DailyBriefCalendar),
+            matching: find.byText("11"),
+          );
+
+          await tester.tap(calendarItem);
+          await tester.pumpAndSettle();
+
+          expect(appBarTitle, findsOneWidget);
+
+          await tester.tap(calendarItemNull);
+          await tester.pumpAndSettle();
+
+          expect(appBarTitle, findsOneWidget);
+        },
       );
-
-      final calendarItem = find.descendant(
-        of: find.byType(DailyBriefCalendar),
-        matching: find.byText("13"),
-      );
-
-      final calendarItemNull = find.descendant(
-        of: find.byType(DailyBriefCalendar),
-        matching: find.byText("11"),
-      );
-
-      await tester.tap(calendarItem);
-      await tester.pumpAndSettle();
-
-      expect(appBarTitle, findsOneWidget);
-
-      await tester.tap(calendarItemNull);
-      await tester.pumpAndSettle();
-
-      expect(appBarTitle, findsOneWidget);
     },
   );
 }
