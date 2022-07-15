@@ -23,6 +23,7 @@ class DailyBriefCalendar extends StatelessWidget {
     required this.currentBriefDate,
     required this.pastDaysBriefs,
     required this.cubit,
+    required this.scrollController,
     Key? key,
   }) : super(key: key);
 
@@ -31,6 +32,7 @@ class DailyBriefCalendar extends StatelessWidget {
   final DateTime currentBriefDate;
   final List<PastDaysBrief> pastDaysBriefs;
   final DailyBriefPageCubit cubit;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,17 @@ class DailyBriefCalendar extends StatelessWidget {
                   (e) => _CalendarItem(
                     pastDaysBrief: e,
                     currentBriefDate: currentBriefDate,
-                    onTap: () => cubit.selectCurrentBrief(e.brief),
+                    onTap: () {
+                      scrollController.animateTo(
+                        0,
+                        duration: const Duration(
+                          milliseconds: AppAnimation.scrollBriefDuration,
+                        ),
+                        curve: Curves.easeInOut,
+                      );
+
+                      cubit.selectCurrentBrief(e.brief);
+                    },
                   ),
                 )
                 .toList(),

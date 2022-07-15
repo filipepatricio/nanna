@@ -80,12 +80,16 @@ class DailyBriefScrollableAppBar extends HookWidget {
             left: AppDimens.l,
             right: AppDimens.l,
           ),
-          child: BriefDate(
-            briefDate: briefDate,
-            isTitle: false,
-            showCalendar: showCalendar,
-            showCalendarButton: pastDaysBriefs.isNotEmpty,
-            onTap: () => cubit.toggleCalendar(!showCalendar),
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: AppAnimation.opacityDuration),
+            opacity: !showAppBarTitle ? 1 : 0,
+            child: BriefDate(
+              briefDate: briefDate,
+              isTitle: false,
+              showCalendar: showCalendar,
+              showCalendarButton: pastDaysBriefs.isNotEmpty,
+              onTap: () => cubit.toggleCalendar(!showCalendar),
+            ),
           ),
         ),
       ),
