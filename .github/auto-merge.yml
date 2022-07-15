@@ -13,14 +13,21 @@ updateBranch: true
 #       the pull request itself.
 deleteBranchAfterMerge: false
 
+# The status of the auto-merge process will be shown in each PR as a check.
+# This can be especially useful to find out why a PR is not being merged automatically.
+reportStatus: true
+
 # Whenever required base branches are configured,
 # pull requests will only be automatically merged whenever their base branch (into which the PR would be merged)
 # is matching any of the patterns listed.
 requiredBaseBranches:
   - main
+  - develop
 
 blockingBaseBranches:
-  - develop
+  - regex: ^feature/
+  - regex: ^hotfix/
+  - regex: ^bug/
 
 # In what way a pull request needs to be merged. This can be:
 # * merge: creates a merge commit, combining the commits from the pull request on top of
@@ -38,5 +45,8 @@ blockingLabels:
   - wip
   - dependencies
 
-# Automatic merges will be performed only if there is a match between the regular expression and title
-requiredTitleRegex: '\brelease\b'
+# Whenever required labels are configured, pull requests will only be automatically merged whenever
+# all of these labels are attached to a pull request.
+requiredLabels:
+  - release
+  - merge
