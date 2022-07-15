@@ -126,6 +126,7 @@ class _DailyBriefPage extends HookWidget {
                         pastDaysBriefs: state.pastDaysBriefs,
                         isFloating: state.showAppBarTitle,
                         cubit: cubit,
+                        scrollController: scrollController,
                       ),
                     ),
                     orElse: () => const SliverToBoxAdapter(),
