@@ -44,7 +44,7 @@ class InformedApp extends HookWidget {
           routerDelegate: mainRouter.delegate(),
           theme: AppTheme.mainTheme,
           builder: (context, child) {
-            return responsiveBuilder(child!);
+            return responsiveBuilder(child);
           },
         ),
       );
@@ -76,7 +76,7 @@ class InformedApp extends HookWidget {
         ),
         theme: AppTheme.mainTheme,
         builder: (context, child) {
-          return responsiveBuilder(child!);
+          return responsiveBuilder(child);
         },
       ),
     );

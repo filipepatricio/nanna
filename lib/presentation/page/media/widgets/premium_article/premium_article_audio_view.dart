@@ -63,6 +63,7 @@ class PremiumArticleAudioView extends HookWidget {
                       coverColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
                       height: constraints.maxHeight,
                       width: constraints.maxWidth,
+                      shouldShowTimeToRead: false,
                       shouldShowAudioIcon: false,
                     );
                   },

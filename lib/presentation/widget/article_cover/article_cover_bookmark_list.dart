@@ -6,7 +6,7 @@ class _ArticleCoverBookmarkList extends StatelessWidget {
     required this.width,
     required this.height,
     this.cardColor = AppColors.transparent,
-    this.shouldShowTextOverlay = true,
+    this.shouldShowTimeToRead = true,
     this.shouldShowAudioIcon = true,
     this.onTap,
     Key? key,
@@ -16,7 +16,7 @@ class _ArticleCoverBookmarkList extends StatelessWidget {
   final double width;
   final double height;
   final Color cardColor;
-  final bool shouldShowTextOverlay;
+  final bool shouldShowTimeToRead;
   final bool shouldShowAudioIcon;
   final VoidCallback? onTap;
 
@@ -39,13 +39,13 @@ class _ArticleCoverBookmarkList extends StatelessWidget {
               width: width,
               height: height,
             ),
-          if (shouldShowTextOverlay)
-            _ArticleImageOverlay(
-              article: article,
-              height: height,
-              width: width,
-              shouldShowAudioIcon: shouldShowAudioIcon,
-            )
+          _ArticleImageOverlay(
+            article: article,
+            height: height,
+            width: width,
+            shouldShowTimeToRead: shouldShowTimeToRead,
+            shouldShowAudioIcon: shouldShowAudioIcon,
+          )
         ],
       ),
     );
@@ -57,12 +57,14 @@ class _ArticleImageOverlay extends StatelessWidget {
     required this.article,
     required this.height,
     required this.width,
+    required this.shouldShowTimeToRead,
     required this.shouldShowAudioIcon,
     Key? key,
   }) : super(key: key);
   final MediaItemArticle article;
   final double? height;
   final double? width;
+  final bool shouldShowTimeToRead;
   final bool shouldShowAudioIcon;
 
   @override
@@ -101,7 +103,7 @@ class _ArticleImageOverlay extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          if (timeToRead != null)
+          if (timeToRead != null && shouldShowTimeToRead)
             Text(
               LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
               style: AppTypography.systemText.copyWith(
