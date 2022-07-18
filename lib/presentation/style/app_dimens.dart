@@ -164,4 +164,10 @@ class AppDimens {
       (style.fontSize! * 1.05 * (style.height ?? 1)) * maxLines;
 
   static double safeTopPadding(BuildContext context) => MediaQuery.of(context).padding.top;
+
+  // 320
+  static const minWidth = 320.0;
+
+  // 768
+  static const maxWidth = 768.0;
 }

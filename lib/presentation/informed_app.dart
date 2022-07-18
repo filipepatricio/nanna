@@ -1,8 +1,10 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.di.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
+import 'package:better_informed_mobile/presentation/util/device_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
@@ -22,14 +24,25 @@ class InformedApp extends HookWidget {
 
   Widget responsiveBuilder(Widget? child) => ResponsiveWrapper.builder(
         child,
-        maxWidth: 768,
-        minWidth: 320,
+        maxWidth: AppDimens.maxWidth,
+        minWidth: AppDimens.minWidth,
         defaultScale: true,
         breakpoints: [
-          const ResponsiveBreakpoint.resize(320, name: 'SMALL_DEVICE', scaleFactor: 0.9),
-          const ResponsiveBreakpoint.resize(375, name: 'REGULAR_DEVICE'),
-          const ResponsiveBreakpoint.resize(428, name: 'LARGER_DEVICE', scaleFactor: 1.1),
-          const ResponsiveBreakpoint.autoScale(768, name: TABLET),
+          ResponsiveBreakpoint.resize(
+            DeviceType.small.widthBreakPoint,
+            name: DeviceType.small.name,
+            scaleFactor: DeviceType.small.scaleFactor,
+          ),
+          ResponsiveBreakpoint.resize(
+            DeviceType.regular.widthBreakPoint,
+            name: DeviceType.regular.name,
+            scaleFactor: DeviceType.regular.scaleFactor,
+          ),
+          ResponsiveBreakpoint.autoScale(
+            DeviceType.tablet.widthBreakPoint,
+            name: DeviceType.tablet.name,
+            scaleFactor: DeviceType.tablet.scaleFactor,
+          ),
         ],
       );
 
