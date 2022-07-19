@@ -65,7 +65,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     _querySubscription = _queryStreamController?.stream
         .debounceTime(const Duration(milliseconds: 500))
         .distinct()
-        .where((event) => event.isNotEmpty)
+        .where((event) => event.isNotEmpty && event.length >= 3)
         .switchMap((value) => Stream.fromFuture(_initializePaginationEngine(value)))
         .listen((event) => _onQueryChange(event));
   }
