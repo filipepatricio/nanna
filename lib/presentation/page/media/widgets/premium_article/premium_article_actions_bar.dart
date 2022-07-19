@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -23,18 +22,20 @@ class PremiumArticleActionsBar extends HookWidget {
     required this.article,
     required this.pageController,
     required this.snackbarController,
-    required this.cubit,
     required this.articleOutputModeNotifier,
+    this.briefId,
+    this.topicId,
     Key? key,
   }) : super(key: key);
 
   final Article article;
   final PageController pageController;
   final SnackbarController snackbarController;
-  final MediaItemCubit cubit;
+  final String? topicId;
+  final String? briefId;
   final ValueNotifier<ArticleOutputMode> articleOutputModeNotifier;
 
-  bool get fromTopic => cubit.topicId != null;
+  bool get fromTopic => topicId != null;
 
   @override
   Widget build(BuildContext context) {
@@ -189,8 +190,8 @@ class PremiumArticleActionsBar extends HookWidget {
                         valueListenable: bookmarkMode,
                         builder: (context, mode, child) => BookmarkButton.article(
                           article: article.metadata,
-                          topicId: cubit.topicId,
-                          briefId: cubit.briefId,
+                          topicId: topicId,
+                          briefId: briefId,
                           mode: mode,
                           snackbarController: snackbarController,
                         ),

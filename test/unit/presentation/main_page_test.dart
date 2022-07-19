@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../generated_mocks.mocks.dart';
+import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
 void main() {
@@ -60,8 +61,11 @@ void main() {
   });
 
   testWidgets('combined link navigates to topic and article pages', (tester) async {
-    when(appLinkDataSource.getInitialAction())
-        .thenAnswer((_) async => Uri.parse('http://informed/topics/slug/articles/slug'));
+    when(appLinkDataSource.getInitialAction()).thenAnswer(
+      (_) async => Uri.parse(
+        'http://informed/topics/${TestData.topicWithEditorOwner.slug}/articles/${TestData.premiumArticleWithAudio.slug}',
+      ),
+    );
 
     await tester.startApp(
       dependencyOverride: (getIt) async {

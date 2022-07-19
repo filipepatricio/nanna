@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'analytics_event.dt.freezed.dart';
@@ -203,7 +204,7 @@ class AnalyticsEvent with _$AnalyticsEvent {
         },
       );
 
-  factory AnalyticsEvent.articleMoreFromTopicItemTapped(String articleId, BriefEntryItem item) => AnalyticsEvent._(
+  factory AnalyticsEvent.articleMoreFromTopicItemTapped(String articleId, MediaItem item) => AnalyticsEvent._(
         'ArticleMoreFromTopicItemTapped',
         {
           'article_id': articleId,
@@ -276,6 +277,18 @@ extension on BriefEntryItem {
           unknown: (_) => 'unknown',
         ),
         topicPreview: (item) => item.topicPreview.id,
+        unknown: (_) => 'unknown',
+      );
+}
+
+extension on MediaItem {
+  String get typeName => maybeMap(
+        article: (_) => 'article',
+        orElse: () => 'unknown',
+      );
+
+  String get typeId => map(
+        article: (item) => item.id,
         unknown: (_) => 'unknown',
       );
 }
