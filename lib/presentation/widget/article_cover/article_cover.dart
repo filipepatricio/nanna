@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_editors_note.dart';
@@ -52,8 +51,8 @@ class ArticleCover extends StatelessWidget {
     this.onTap,
     this.height,
     this.width,
+    this.shouldShowTimeToRead,
     this.shouldShowAudioIcon,
-    this.shouldShowTextOverlay,
     this.editorsNote,
     this.backgroundColor,
     this.mediaItemKey,
@@ -123,7 +122,7 @@ class ArticleCover extends StatelessWidget {
     required double height,
     required double width,
     Color coverColor = AppColors.transparent,
-    bool shouldShowTextOverlay = true,
+    bool shouldShowTimeToRead = true,
     bool shouldShowAudioIcon = true,
     VoidCallback? onTap,
   }) =>
@@ -134,8 +133,8 @@ class ArticleCover extends StatelessWidget {
         width: width,
         coverColor: coverColor,
         onTap: onTap,
+        shouldShowTimeToRead: shouldShowTimeToRead,
         shouldShowAudioIcon: shouldShowAudioIcon,
-        shouldShowTextOverlay: shouldShowTextOverlay,
       );
 
   factory ArticleCover.topicBigImage({
@@ -174,7 +173,7 @@ class ArticleCover extends StatelessWidget {
   final Color? coverColor;
   final double? height;
   final double? width;
-  final bool? shouldShowTextOverlay;
+  final bool? shouldShowTimeToRead;
   final bool? shouldShowAudioIcon;
   final String? editorsNote;
   final Color? backgroundColor;
@@ -218,8 +217,8 @@ class ArticleCover extends StatelessWidget {
           cardColor: coverColor!,
           height: height!,
           width: width!,
+          shouldShowTimeToRead: shouldShowTimeToRead!,
           shouldShowAudioIcon: shouldShowAudioIcon!,
-          shouldShowTextOverlay: shouldShowTextOverlay!,
           onTap: () => AutoRouter.of(context).push(
             MediaItemPageRoute(article: article),
           ),

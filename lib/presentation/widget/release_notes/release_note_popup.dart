@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/release_notes/data/release_note.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/widget/release_notes/release_note_content_view.dart';
 import 'package:better_informed_mobile/presentation/widget/release_notes/release_note_media_container.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +26,8 @@ class ReleaseNotePopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: context.isSmallDevice ? AppDimens.m : AppDimens.l,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimens.l,
           vertical: AppDimens.l,
         ),
         child: ClipRRect(
