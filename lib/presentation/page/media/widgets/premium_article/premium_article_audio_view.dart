@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
@@ -52,11 +51,11 @@ class PremiumArticleAudioView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: AppDimens.appBarHeight + MediaQuery.of(context).padding.top),
-          if (context.isNotSmallDevice || article.hasImage) ...[
+          if (article.hasImage)
             Flexible(
               flex: 15,
               child: AspectRatio(
-                aspectRatio: context.isNotSmallDevice ? 0.65 : 1,
+                aspectRatio: 0.65,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return ArticleCover.bookmarkList(
@@ -64,14 +63,13 @@ class PremiumArticleAudioView extends HookWidget {
                       coverColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
                       height: constraints.maxHeight,
                       width: constraints.maxWidth,
-                      shouldShowTextOverlay: context.isNotSmallDevice,
+                      shouldShowTimeToRead: false,
                       shouldShowAudioIcon: false,
                     );
                   },
                 ),
               ),
             ),
-          ],
           const Spacer(),
           Text(
             article.metadata.strippedTitle,
@@ -84,7 +82,7 @@ class PremiumArticleAudioView extends HookWidget {
             isLight: false,
             showLogo: false,
             showReadTime: false,
-            fullDate: context.isNotSmallDevice,
+            fullDate: true,
             textStyle: metadataStyle,
             color: metadataStyle.color,
             centerContent: true,

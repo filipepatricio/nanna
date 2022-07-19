@@ -1,18 +1,17 @@
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:flutter/material.dart';
 
 const fontFamilyLora = 'Lora';
 const fontFamilyPlusJakartaSans = 'PlusJakartaSans';
 
 class AppTypography {
-  static TextStyle h1Headline(BuildContext context) => TextStyle(
-        fontWeight: FontWeight.w800,
-        fontFamily: fontFamilyPlusJakartaSans,
-        fontSize: context.isSmallDevice ? 28 : 36,
-        height: 1.25,
-        color: AppColors.textPrimary,
-      );
+  static const TextStyle h1Headline = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 36,
+    height: 1.25,
+    color: AppColors.textPrimary,
+  );
 
   static const TextStyle h0SemiBold = TextStyle(
     fontWeight: FontWeight.w600,
@@ -44,13 +43,13 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static TextStyle h0Beta(BuildContext context) => TextStyle(
-        fontWeight: FontWeight.w700,
-        fontFamily: fontFamilyPlusJakartaSans,
-        fontSize: context.isSmallDevice ? 24 : 34,
-        height: 1.25,
-        color: AppColors.textPrimary,
-      );
+  static const TextStyle h0Beta = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: fontFamilyPlusJakartaSans,
+    fontSize: 34,
+    height: 1.25,
+    color: AppColors.textPrimary,
+  );
 
   static const TextStyle h1ExtraBold = TextStyle(
     fontWeight: FontWeight.w800,
