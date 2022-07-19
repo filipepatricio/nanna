@@ -202,6 +202,9 @@ But why I need to include `__typename` in fragment?
 
 It's due to [flutter_graphql](https://pub.dev/packages/graphql_flutter) cache, [normalize](https://pub.dev/packages/normalize) cache based on `__typename` without it, null would come in response at place when fragment should be.
 
+- Do not create fragment if fragment is being used in only one place
+- If queries can use cached result of each other, make sure that those uses same fragments or either uses none or set [CacheRereadPolicy](https://pub.dev/documentation/graphql/latest/graphql/CacheRereadPolicy.html) to `ignoreOptimistic`/`ignoreAll` ([issue](https://github.com/zino-hofmann/graphql-flutter/issues/1118))
+
 - If `fragment` is from another file, add import to this file under comment (see example below)
 
 Example:
