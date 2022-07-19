@@ -56,5 +56,8 @@ ui_changes_report:
 fvm_ui_changes_report:
 	-fvm dart scripts/ui_changes_report.dart
 
+graphql_schema:
+	get-graphql-schema https://api.staging.informed.so/graphql > lib/data/gql/config/schema.graphql
+
 $(MAKE_CACHE_DIR):
 	mkdir -p $@
