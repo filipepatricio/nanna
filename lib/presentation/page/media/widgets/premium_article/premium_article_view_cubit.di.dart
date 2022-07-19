@@ -14,9 +14,11 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_article_more_from_brief_section_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_article_related_content_section_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_more_from_topic_use_case.di.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 import 'package:neat_periodic_task/neat_periodic_task.dart';
 
@@ -24,6 +26,7 @@ import 'package:neat_periodic_task/neat_periodic_task.dart';
 class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   PremiumArticleViewCubit(
     this._trackActivityUseCase,
+    this._getTopicBySlugUseCase,
     this._trackArticleReadingProgressUseCase,
     this._getOtherBriefEntriesUseCase,
     this._getShowArticleMoreFromBriefSectionUseCase,
@@ -35,6 +38,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
+  final GetTopicBySlugUseCase _getTopicBySlugUseCase;
   final TrackArticleReadingProgressUseCase _trackArticleReadingProgressUseCase;
   final GetOtherBriefEntriesUseCase _getOtherBriefEntriesUseCase;
   final GetShowArticleMoreFromBriefSectionUseCase _getShowArticleMoreFromBriefSectionUseCase;
@@ -47,10 +51,19 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   late Article _currentFullArticle;
   late String? _topicId;
   late String? _briefId;
+  late String? _topicTitle;
   late NeatPeriodicTaskScheduler? _readingProgressTrackingScheduler;
 
   String? get topicId => _topicId;
   String? get briefId => _briefId;
+  String get topicTitle {
+    if (_topicTitle != null) {
+      return _topicTitle!;
+    }
+    Fimber.e('_topicTitle was requested and is null');
+    return '';
+  }
+
   Article get article => _currentFullArticle;
 
   var scrollData = MediaItemScrollData.initial();
@@ -68,6 +81,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     String? topicId,
   ) async {
     emit(const PremiumArticleViewState.initial());
+
     var showArticleMoreFromSection = false;
     var showArticleRelatedContentSection = false;
     final moreFromBriefItems = <BriefEntryItem>[];
@@ -97,6 +111,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     if (topicSlug != null) {
       showArticleMoreFromSection = await _getShowMoreFromTopicUseCase();
       if (showArticleMoreFromSection) {
+        _topicTitle = (await _getTopicBySlugUseCase.call(topicSlug)).strippedTitle;
         otherTopicItems.addAll(await _getOtherTopicEntriesUseCase(_currentFullArticle.metadata.slug, topicSlug));
       }
     } else if (briefId != null) {

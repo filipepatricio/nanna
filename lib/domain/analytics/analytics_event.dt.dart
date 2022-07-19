@@ -265,10 +265,10 @@ extension on BookmarkSortConfigName {
 }
 
 extension on BriefEntryItem {
-  String get typeName => maybeMap(
+  String get typeName => map(
         article: (_) => 'article',
         topicPreview: (_) => 'topic',
-        orElse: () => 'unknown',
+        unknown: (_) => 'unknown',
       );
 
   String get typeId => map(
@@ -282,9 +282,9 @@ extension on BriefEntryItem {
 }
 
 extension on MediaItem {
-  String get typeName => maybeMap(
+  String get typeName => map(
         article: (_) => 'article',
-        orElse: () => 'unknown',
+        unknown: (_) => 'unknown',
       );
 
   String get typeId => map(

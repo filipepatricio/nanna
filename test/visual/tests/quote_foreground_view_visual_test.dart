@@ -1,11 +1,8 @@
 import 'dart:async';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_foreground_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_variant_data.dart';
-import 'package:flutter/material.dart' hide Image;
-import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_data.dart';
 import '../visual_test_utils.dart';
@@ -18,7 +15,7 @@ void main() {
   visualTest(
     QuoteForegroundView,
     (tester) async {
-      await tester.startApp(
+      final router = await tester.startApp(
         initialRoute: PlaceholderPageRoute(
           child: QuoteForegroundView(
             quote: quote,
@@ -30,8 +27,8 @@ void main() {
       // By specifying the variant with a dot (.linen), the screens_report command will group all of them in a single image
       await tester.matchGoldenFile('quote_foreground_view.linen');
 
-      final context = tester.element(find.byType(Container).first);
-      final router = AutoRouter.of(context);
+      // final context = tester.element(find.byType(Container).first);
+      // final router = mainRouterKey.currentWidget as Navigator; //AutoRouter.of(context);
 
       unawaited(
         router.replace(

@@ -36,17 +36,15 @@ class ArticleMoreFromSection extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: items.reduce(
-            (value, element) => Column(
-              children: [
-                value,
-                if (element is SizedBox || value is SizedBox)
-                  const SizedBox.shrink()
-                else
-                  const Divider(height: AppDimens.xl),
-                element,
-              ],
-            ),
+          child: Column(
+            children: items
+                .expand(
+                  (element) => [
+                    element,
+                    if (items.last != element) const Divider(height: AppDimens.xl),
+                  ],
+                )
+                .toList(),
           ),
         ),
         const SizedBox(height: AppDimens.l),

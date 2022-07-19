@@ -21,7 +21,6 @@ class PremiumArticleView extends HookWidget {
     this.topicSlug,
     this.topicId,
     this.briefId,
-    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
@@ -32,7 +31,6 @@ class PremiumArticleView extends HookWidget {
   final String? topicSlug;
   final String? topicId;
   final String? briefId;
-  final String? topicTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +104,6 @@ class PremiumArticleView extends HookWidget {
                           cubit: cubit,
                           readArticleProgress: readArticleProgress,
                           mainController: mainController,
-                          topicTitle: topicTitle,
                         ),
                         orElse: () => const SizedBox.shrink(),
                       ),

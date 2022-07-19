@@ -27,7 +27,6 @@ class PremiumArticleReadView extends HookWidget {
     required this.pageController,
     required this.mainController,
     this.readArticleProgress,
-    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
@@ -36,7 +35,6 @@ class PremiumArticleReadView extends HookWidget {
   final ScrollController mainController;
   final PremiumArticleViewCubit cubit;
   final double? readArticleProgress;
-  final String? topicTitle;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
@@ -240,7 +238,7 @@ class PremiumArticleReadView extends HookWidget {
                               [
                                 if (data.otherTopicItems.isNotEmpty)
                                   ArticleMoreFromSection(
-                                    title: LocaleKeys.article_moreFromTopic.tr(args: [topicTitle!]),
+                                    title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
                                     items: data.otherTopicItems.buildWidgets(context, cubit),
                                   )
                                 else if (data.moreFromBriefItems.isNotEmpty)

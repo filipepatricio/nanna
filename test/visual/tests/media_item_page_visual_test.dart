@@ -109,7 +109,6 @@ void main() {
               slug: TestData.premiumArticleWithAudio.slug,
               topicId: TestData.topic.id,
               topicSlug: TestData.topic.slug,
-              topicTitle: TestData.topic.strippedTitle,
             ),
           ],
         ),
@@ -186,18 +185,6 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
   void updateScrollData(_, __) {}
 
   @override
-  void onRelatedContentItemTap(_) {}
-
-  @override
-  void onRelatedCategoryTap(_) {}
-
-  @override
-  void onMoreFromBriefItemTap(_) {}
-
-  @override
-  void onOtherTopicItemTap(_) {}
-
-  @override
   Future<void> close() async {}
 }
 
@@ -216,8 +203,8 @@ class FakePremiumArticleViewCubitFromTopic extends FakePremiumArticleViewCubitFr
   PremiumArticleViewState get idleState => _idleStateFromTopic;
 
   @override
-  String? get briefId => null;
+  String? get topicId => TestData.topic.id;
 
   @override
-  String? get topicId => TestData.topic.id;
+  String get topicTitle => TestData.topic.strippedTitle;
 }
