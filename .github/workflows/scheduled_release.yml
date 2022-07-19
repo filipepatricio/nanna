@@ -21,3 +21,4 @@ jobs:
           source_branch: 'develop'
           destination_branch: 'main'
           pr_title: 'Scheduled release'
+          pr_label: 'merge'
