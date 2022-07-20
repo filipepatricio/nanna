@@ -1,19 +1,16 @@
-import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/exception/article_geoblocked_exception.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -25,10 +22,11 @@ void main() {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
-          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
+          MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
         ],
       ),
     );
+    await tester.pumpAndSettle();
     await tester.matchGoldenFile('media_item_page_(image)');
     await tester.tap(find.byType(AnimatedPointerDown).last);
     await tester.pumpAndSettle();
@@ -42,7 +40,7 @@ void main() {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
-          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
+          MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
         ],
       ),
     );
@@ -61,96 +59,70 @@ void main() {
     await tester.matchGoldenFile();
   });
 
-  visualTest(
-    '${MediaItemPage}_(error)',
-    (tester) async {
-      final cubit = FakeMediaItemPageCubit();
+  visualTest('${MediaItemPage}_(error)', (tester) async {
+    final cubit = FakeMediaItemPageCubit();
 
+    await tester.startApp(
+      initialRoute: MainPageRoute(
+        children: [
+          MediaItemPageRoute(slug: TestData.article.slug),
+        ],
+      ),
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<MediaItemCubit>(() => cubit);
+      },
+    );
+    await tester.matchGoldenFile();
+  });
+
+  visualTest(
+    '${MediaItemPage}_(more_from_brief)',
+    (tester) async {
       await tester.startApp(
         initialRoute: MainPageRoute(
           children: [
-            MediaItemPageRoute(slug: TestData.article.slug),
+            MediaItemPageRoute(
+              slug: TestData.premiumArticleWithAudio.slug,
+              briefId: TestData.currentBrief.id,
+            ),
           ],
         ),
         dependencyOverride: (getIt) async {
-          getIt.registerFactory<MediaItemCubit>(() => cubit);
+          getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubitFromBrief());
         },
       );
+
+      await tester.fling(find.byType(MediaItemPage), const Offset(0, -10000), 100);
+      await tester.pumpAndSettle();
       await tester.matchGoldenFile();
     },
+    testConfig: TestConfig.withDevices([veryHighDevice]),
   );
 
-  visualTest('${MediaItemPage}_(more_from_brief)', (tester) async {
-    await tester.startApp(
-      initialRoute: MainPageRoute(
-        children: [
-          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
-        ],
-      ),
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubit());
-      },
-    );
+  visualTest(
+    '${MediaItemPage}_(more_from_topic)',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(
+              slug: TestData.premiumArticleWithAudio.slug,
+              topicId: TestData.topic.id,
+              topicSlug: TestData.topic.slug,
+            ),
+          ],
+        ),
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubitFromTopic());
+        },
+      );
 
-    await tester.dragUntilVisible(
-      find.byType(ArticleMoreFromSection, skipOffstage: false),
-      find.byType(MediaItemPage),
-      const Offset(0, -100),
-    );
-
-    await tester.pumpAndSettle();
-    await tester.drag(find.byType(MediaItemPage), const Offset(0, -200));
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile();
-  });
-
-  visualTest('${MediaItemPage}_(related_content_categories)', (tester) async {
-    await tester.startApp(
-      initialRoute: MainPageRoute(
-        children: [
-          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
-        ],
-      ),
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubit());
-      },
-    );
-
-    await tester.dragUntilVisible(
-      find.byType(RelatedCategories, skipOffstage: false),
-      find.byType(MediaItemPage),
-      const Offset(0, -100),
-    );
-
-    await tester.pumpAndSettle();
-    await tester.drag(find.byType(MediaItemPage), const Offset(0, -200));
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile();
-  });
-
-  visualTest('${MediaItemPage}_(related_content_go_to_explore)', (tester) async {
-    await tester.startApp(
-      initialRoute: MainPageRoute(
-        children: [
-          MediaItemPageRoute(slug: MockDTO.premiumArticleWithAudio.slug),
-        ],
-      ),
-      dependencyOverride: (getIt) async {
-        getIt.registerFactory<PremiumArticleViewCubit>(() => FakePremiumArticleViewCubit());
-      },
-    );
-
-    await tester.dragUntilVisible(
-      find.byType(RelaxView, skipOffstage: false),
-      find.byType(MediaItemPage),
-      const Offset(0, -100),
-    );
-
-    await tester.pumpAndSettle();
-    await tester.drag(find.byType(MediaItemPage), const Offset(0, -200));
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile();
-  });
+      await tester.fling(find.byType(MediaItemPage), const Offset(0, -10000), 100);
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile();
+    },
+    testConfig: TestConfig.withDevices([veryHighDevice]),
+  );
 }
 
 class FakeGetArticleUseCase extends Fake implements GetArticleUseCase {
@@ -172,14 +144,30 @@ class FakeMediaItemPageCubit extends Fake implements MediaItemCubit {
   Future<void> close() async {}
 }
 
-class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubit {
-  final idleState = PremiumArticleViewState.idle(
-    moreFromSectionItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticleViewCubit {
+  final _idleState = PremiumArticleViewState.idle(
+    article: TestData.fullArticle,
+    moreFromBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
     showArticleRelatedContentSection: true,
-    showArticleMoreSection: true,
+    showArticleMoreFromSection: true,
     relatedContentItems: TestData.categoryItemList,
   );
+
+  PremiumArticleViewState get idleState => _idleState;
+
+  @override
+  Article get article => TestData.fullArticle;
+
+  @override
+  String? get briefId => TestData.currentBrief.id;
+
+  @override
+  String? get topicId => null;
+
+  @override
+  MediaItemScrollData scrollData = MediaItemScrollData.initial();
 
   @override
   PremiumArticleViewState get state => idleState;
@@ -188,8 +176,35 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
   Stream<PremiumArticleViewState> get stream => Stream.value(idleState);
 
   @override
-  Future<void> initialize(_, __, ___) async {}
+  Future<void> initialize(_, __, ___, ____) async {}
+
+  @override
+  void setupScrollData(_, __) {}
+
+  @override
+  void updateScrollData(_, __) {}
 
   @override
   Future<void> close() async {}
+}
+
+class FakePremiumArticleViewCubitFromTopic extends FakePremiumArticleViewCubitFromBrief {
+  final _idleStateFromTopic = PremiumArticleViewState.idle(
+    article: TestData.fullArticle,
+    moreFromBriefItems: [],
+    otherTopicItems: TestData.topic.entries.map<MediaItem>((entry) => entry.item).toList(),
+    featuredCategories: List.generate(4, (index) => TestData.category),
+    showArticleRelatedContentSection: true,
+    showArticleMoreFromSection: true,
+    relatedContentItems: TestData.categoryItemList,
+  );
+
+  @override
+  PremiumArticleViewState get idleState => _idleStateFromTopic;
+
+  @override
+  String? get topicId => TestData.topic.id;
+
+  @override
+  String get topicTitle => TestData.topic.strippedTitle;
 }

@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/markdown_bullet.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +11,10 @@ const _listElementTag = 'li';
 class ArticleContentHtml extends HookWidget {
   const ArticleContentHtml({
     required this.html,
-    required this.cubit,
     required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
   final String html;
-  final MediaItemCubit cubit;
   final Function() scrollToPosition;
 
   @override
