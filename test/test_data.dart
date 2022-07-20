@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_content_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
@@ -27,6 +29,7 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_map
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
@@ -132,6 +135,15 @@ class TestData {
   );
 
   static final _categoryMapper = CategoryDTOMapper(_categoryItemMapper);
+
+  static final _articleContentMapper = ArticleContentDTOMapper(
+    ArticleContentTypeDTOMapper(),
+  );
+
+  static Article get fullArticle => Article(
+        metadata: article,
+        content: _articleContentMapper(MockDTO.articleContentMarkdown),
+      );
 
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;
 

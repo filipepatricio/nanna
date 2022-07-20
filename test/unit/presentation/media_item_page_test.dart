@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
@@ -6,6 +7,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
@@ -300,12 +302,26 @@ class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
 
 class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubit {
   final idleState = PremiumArticleViewState.idle(
-    moreFromSectionItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    article: TestData.fullArticle,
+    moreFromBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
     showArticleRelatedContentSection: true,
-    showArticleMoreSection: true,
+    showArticleMoreFromSection: true,
     relatedContentItems: TestData.categoryItemList,
   );
+
+  @override
+  Article get article => TestData.fullArticle;
+
+  @override
+  String? get briefId => TestData.currentBrief.id;
+
+  @override
+  String? get topicId => TestData.topic.id;
+
+  @override
+  MediaItemScrollData scrollData = MediaItemScrollData.initial();
 
   @override
   PremiumArticleViewState get state => idleState;
@@ -314,7 +330,25 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
   Stream<PremiumArticleViewState> get stream => Stream.value(idleState);
 
   @override
-  Future<void> initialize(_, __, ___) async {}
+  Future<void> initialize(_, __, ___, ____) async {}
+
+  @override
+  void setupScrollData(_, __) {}
+
+  @override
+  void updateScrollData(_, __) {}
+
+  @override
+  void onRelatedContentItemTap(_) {}
+
+  @override
+  void onRelatedCategoryTap(_) {}
+
+  @override
+  void onMoreFromBriefItemTap(_) {}
+
+  @override
+  void onOtherTopicItemTap(_) {}
 
   @override
   Future<void> close() async {}

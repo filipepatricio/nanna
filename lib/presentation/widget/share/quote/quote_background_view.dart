@@ -158,7 +158,7 @@ class _ArticleBanner extends StatelessWidget {
                 children: [
                   Text(
                     article.strippedTitle,
-                    style: AppTypography.h1Headline(context).copyWith(fontSize: 32),
+                    style: AppTypography.h1Headline.copyWith(fontSize: 32),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

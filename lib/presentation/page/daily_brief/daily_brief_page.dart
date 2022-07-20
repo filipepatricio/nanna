@@ -17,7 +17,6 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax
 import 'package:better_informed_mobile/presentation/page/daily_brief/widgets/daily_brief_calendar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -223,8 +222,8 @@ class _IdleContent extends HookWidget {
           currentBrief.entries,
         ),
         shouldShowTopicCardTutorialCoachMark: () {
-          final topicCardTriggerPoint = scrollController.offset +
-              AppDimens.appBarHeight * (context.isSmallDevice ? 1.0 : _topicCardTutorialOffsetFromBottomFraction);
+          final topicCardTriggerPoint =
+              scrollController.offset + AppDimens.appBarHeight * _topicCardTutorialOffsetFromBottomFraction;
           final listener = topicCardTutorialListener(scrollController, topicCardTriggerPoint);
           scrollController.addListener(listener);
         },

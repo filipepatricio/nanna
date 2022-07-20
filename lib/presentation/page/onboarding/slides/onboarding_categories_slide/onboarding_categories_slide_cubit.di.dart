@@ -7,8 +7,6 @@ import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
-const _maxSelectedCategoryQuantity = 3;
-
 @injectable
 class OnboardingCategoriesSlideCubit extends Cubit<OnboardingCategoriesSlideState> {
   OnboardingCategoriesSlideCubit(
@@ -53,10 +51,8 @@ class OnboardingCategoriesSlideCubit extends Cubit<OnboardingCategoriesSlideStat
       _data = _data.copyWith(selectedCategories: newSelectedCategories);
       _updateState(selectedCategoriesChanged: true);
     } else {
-      if (_data.selectedCategories.length < _maxSelectedCategoryQuantity) {
-        _data = _data.copyWith(selectedCategories: [..._data.selectedCategories, category]);
-        _updateState(selectedCategoriesChanged: true);
-      }
+      _data = _data.copyWith(selectedCategories: [..._data.selectedCategories, category]);
+      _updateState(selectedCategoriesChanged: true);
     }
   }
 }
