@@ -96,7 +96,7 @@ jobs:
 
       - name: Analyze & Test
         run: |
-          flutter analyze .
+          flutter analyze --no-pub
           flutter test test/unit/wrapper_test.dart
 
       - name: Result
