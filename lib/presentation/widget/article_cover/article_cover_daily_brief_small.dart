@@ -58,9 +58,15 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                     color: AppColors.textGrey,
                                   ),
                                 ),
+                                if (!article.shouldShowArticleCoverNote && article.hasAudioVersion)
+                                  AudioIconButton(article: article)
                               ],
                             ),
-                            const SizedBox(height: AppDimens.m),
+                            SizedBox(
+                              height: (!article.shouldShowArticleCoverNote && article.hasAudioVersion)
+                                  ? AppDimens.s
+                                  : AppDimens.m,
+                            ),
                             Row(
                               children: [
                                 if (hasImage) ...[

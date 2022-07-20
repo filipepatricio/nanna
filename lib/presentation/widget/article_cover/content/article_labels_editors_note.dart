@@ -80,27 +80,40 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
               children: [
                 if (kind != null) CoverLabel.articleKind(kind),
                 const Spacer(),
-                if (article.hasAudioVersion)
-                  Container(
-                    width: AppDimens.xxl + AppDimens.xxs,
-                    height: AppDimens.xxl + AppDimens.xxs,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(color: AppColors.black05, blurRadius: 5.0),
-                      ],
-                    ),
-                    child: AudioFloatingControlButton(
-                      article: article,
-                      elevation: 0,
-                      color: AppColors.white,
-                      imageHeight: AppDimens.sl + AppDimens.xxs,
-                    ),
-                  ),
+                if (article.hasAudioVersion) ArticleCoverAudioButton(article: article),
               ],
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ArticleCoverAudioButton extends StatelessWidget {
+  const ArticleCoverAudioButton({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: AppDimens.xxl + AppDimens.xxs,
+      height: AppDimens.xxl + AppDimens.xxs,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(color: AppColors.black05, blurRadius: 5.0),
+        ],
+      ),
+      child: AudioFloatingControlButton(
+        article: article,
+        elevation: 0,
+        color: AppColors.white,
+        imageHeight: AppDimens.sl + AppDimens.xxs,
       ),
     );
   }
