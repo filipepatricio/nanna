@@ -7,6 +7,12 @@ red=`tput setaf 1`
 green=`tput setaf 2`
 reset=`tput sgr0`
 
+GIT_DIFF="$(git diff --cached)"
+if [ -z "$GIT_DIFF" ]; then
+  echo "No changes staged for commit"
+  exit 1
+fi
+
 # Temporary commit of staged changes ...
 git commit --no-verify --message "changes to be verified by pre-commit hook"
 
