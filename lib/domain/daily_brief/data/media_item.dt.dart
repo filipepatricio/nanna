@@ -36,7 +36,7 @@ extension Getters on MediaItemArticle {
   bool get hasImage => image != null && image is! ArticleImageUnknown;
 
   /// Wether the article cover should show the note section
-  bool get shouldShowArticleCoverNote => note != null || kind != null || hasAudioVersion;
+  bool get shouldShowArticleCoverNote => note != null;
 
   String get imageUrl {
     if (image == null) return '';

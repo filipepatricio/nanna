@@ -45,7 +45,7 @@ class ArticleDottedInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainColor = color ?? (isLight ? AppColors.white : AppColors.black);
-    final finalTextStyle = textStyle.copyWith(color: mainColor);
+    final finalTextStyle = textStyle.copyWith(color: mainColor, height: 1.0);
     final timeToRead = article.timeToRead;
     final publicationDate = article.publicationDate;
 
