@@ -1,19 +1,7 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
-import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
-import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
-import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+part of 'article_cover.dart';
 
-const _coverSizeToScreenWidthFactor = 0.30;
-
-class ArticleCoverDailyBriefListItem extends HookWidget {
-  const ArticleCoverDailyBriefListItem({
+class _ArticleCoverDailyBriefListItem extends HookWidget {
+  const _ArticleCoverDailyBriefListItem({
     required this.onTap,
     required this.article,
     required this.coverColor,
@@ -90,52 +78,6 @@ class ArticleCoverDailyBriefListItem extends HookWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _CoverImage extends StatelessWidget {
-  const _CoverImage({
-    required this.article,
-    required this.coverColor,
-    required this.showArticleIndicator,
-    Key? key,
-  }) : super(key: key);
-
-  final MediaItemArticle article;
-  final Color? coverColor;
-  final bool showArticleIndicator;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppDimens.s),
-            child: article.hasImage
-                ? ArticleImage(
-                    image: article.image!,
-                    cardColor: coverColor,
-                  )
-                : SizedBox.expand(
-                    child: Container(color: coverColor),
-                  ),
-          ),
-        ),
-        if (showArticleIndicator)
-          Positioned(
-            top: AppDimens.s,
-            left: AppDimens.s,
-            child: CoverLabel.article(),
-          ),
-        if (article.hasAudioVersion)
-          Positioned(
-            bottom: AppDimens.s,
-            right: AppDimens.s,
-            child: AudioIconButton(article: article),
-          ),
-      ],
     );
   }
 }
