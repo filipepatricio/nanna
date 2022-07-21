@@ -31,10 +31,10 @@ class TopicCoverContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case TopicCoverType.large:
-        return _CoverContentLarge(topic: topic, mode: mode);
-      case TopicCoverType.small:
-        return _CoverContentSmall(topic: topic, mode: mode);
+      case TopicCoverType.dailyBrief:
+        return _CoverContentDailyBrief(topic: topic, mode: mode);
+      case TopicCoverType.bookmarkList:
+        return _CoverContentBookmarkList(topic: topic, mode: mode);
       case TopicCoverType.exploreLarge:
         return _CoverContentExploreLarge(topic: topic);
       case TopicCoverType.exploreSmall:
@@ -45,8 +45,8 @@ class TopicCoverContent extends StatelessWidget {
   }
 }
 
-class _CoverContentLarge extends StatelessWidget {
-  const _CoverContentLarge({
+class _CoverContentDailyBrief extends StatelessWidget {
+  const _CoverContentDailyBrief({
     required this.topic,
     required this.mode,
     Key? key,
@@ -146,8 +146,8 @@ class _CoverContentExploreLarge extends StatelessWidget {
   }
 }
 
-class _CoverContentSmall extends StatelessWidget {
-  const _CoverContentSmall({
+class _CoverContentBookmarkList extends StatelessWidget {
+  const _CoverContentBookmarkList({
     required this.topic,
     required this.mode,
     Key? key,
