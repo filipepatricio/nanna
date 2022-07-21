@@ -58,7 +58,7 @@ class LastUpdatedTopics extends HookWidget {
                         child: StackedCards.variant(
                           variant: variants[index],
                           coverSize: Size(cardStackWidth, cardStackHeight),
-                          child: TopicCover.large(
+                          child: TopicCover.dailyBrief(
                             topic: topics[index],
                           ),
                         ),
