@@ -11,9 +11,43 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cov
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+
+const _coverSizeToScreenWidthFactor = 0.26;
 
 class TopicCoverContent extends StatelessWidget {
-  const TopicCoverContent({
+  factory TopicCoverContent.dailyBrief({required TopicPreview topic, Brightness mode = Brightness.dark}) =>
+      TopicCoverContent._(
+        type: TopicCoverType.dailyBrief,
+        topic: topic,
+        mode: mode,
+      );
+
+  factory TopicCoverContent.bookmark({required TopicPreview topic}) => TopicCoverContent._(
+        type: TopicCoverType.bookmark,
+        topic: topic,
+      );
+
+  factory TopicCoverContent.exploreLarge({required TopicPreview topic}) => TopicCoverContent._(
+        type: TopicCoverType.exploreLarge,
+        topic: topic,
+      );
+
+  factory TopicCoverContent.exploreSmall({required TopicPreview topic, bool hasBackgroundColor = false}) =>
+      TopicCoverContent._(
+        type: TopicCoverType.exploreSmall,
+        topic: topic,
+        hasBackgroundColor: hasBackgroundColor,
+      );
+
+  factory TopicCoverContent.otherBriefItemsList({required TopicPreview topic, required double coverSize}) =>
+      TopicCoverContent._(
+        type: TopicCoverType.otherBriefItemsList,
+        topic: topic,
+        coverSize: coverSize,
+      );
+
+  const TopicCoverContent._({
     required this.topic,
     required this.type,
     this.mode = Brightness.dark,
@@ -33,8 +67,8 @@ class TopicCoverContent extends StatelessWidget {
     switch (type) {
       case TopicCoverType.dailyBrief:
         return _CoverContentDailyBrief(topic: topic, mode: mode);
-      case TopicCoverType.bookmarkList:
-        return _CoverContentBookmarkList(topic: topic, mode: mode);
+      case TopicCoverType.bookmark:
+        return _CoverContentBookmark(topic: topic);
       case TopicCoverType.exploreLarge:
         return _CoverContentExploreLarge(topic: topic);
       case TopicCoverType.exploreSmall:
@@ -108,6 +142,63 @@ class _CoverContentDailyBrief extends StatelessWidget {
   }
 }
 
+class _CoverContentBookmark extends HookWidget {
+  const _CoverContentBookmark({
+    required this.topic,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+
+  @override
+  Widget build(BuildContext context) {
+    const titleMaxLines = 2;
+    final titleStyle = AppTypography.h5BoldSmall.copyWith(height: 1.25);
+
+    final coverSize = useMemoized(
+      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      [MediaQuery.of(context).size],
+    );
+
+    return SizedBox(
+      height: coverSize,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          TopicOwnerAvatar(
+            owner: topic.owner,
+            withImage: false,
+            imageSize: AppDimens.zero,
+            textStyle: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
+            mode: Brightness.dark,
+          ),
+          const Spacer(),
+          InformedMarkdownBody(
+            markdown: topic.title,
+            maxLines: titleMaxLines,
+            baseTextStyle: titleStyle,
+          ),
+          const Spacer(),
+          Wrap(
+            children: [
+              UpdatedLabel(
+                withPrefix: false,
+                dateTime: topic.lastUpdatedAt,
+                mode: Brightness.dark,
+                textStyle: AppTypography.caption1Medium.copyWith(
+                  height: 1.2,
+                  color: AppColors.textGrey,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _CoverContentExploreLarge extends StatelessWidget {
   const _CoverContentExploreLarge({
     required this.topic,
@@ -139,59 +230,6 @@ class _CoverContentExploreLarge extends StatelessWidget {
           UpdatedLabel(
             mode: Brightness.light,
             dateTime: topic.lastUpdatedAt,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CoverContentBookmarkList extends StatelessWidget {
-  const _CoverContentBookmarkList({
-    required this.topic,
-    required this.mode,
-    Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-  final Brightness mode;
-
-  bool get darkMode => mode == Brightness.dark;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: AppDimens.m,
-      bottom: AppDimens.m,
-      right: AppDimens.m,
-      left: AppDimens.m,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          InformedMarkdownBody(
-            markdown: topic.title,
-            baseTextStyle: AppTypography.h4ExtraBold.copyWith(
-              color: darkMode ? null : AppColors.white,
-            ),
-            maxLines: 4,
-          ),
-          const Spacer(),
-          TopicOwnerAvatar(
-            owner: topic.owner,
-            withPrefix: true,
-            imageSize: AppDimens.l,
-            fontSize: 14,
-            mode: mode,
-          ),
-          const SizedBox(height: AppDimens.s),
-          Text(
-            LocaleKeys.readingList_articleCount.tr(
-              args: [topic.entryCount.toString()],
-            ),
-            style: AppTypography.b3Regular.copyWith(
-              height: 1.5,
-              color: darkMode ? null : AppColors.white,
-            ),
           ),
         ],
       ),

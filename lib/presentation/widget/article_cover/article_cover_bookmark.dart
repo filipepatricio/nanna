@@ -1,7 +1,7 @@
 part of 'article_cover.dart';
 
-class _ArticleCoverDailyBriefListItem extends HookWidget {
-  const _ArticleCoverDailyBriefListItem({
+class _ArticleCoverBookmark extends HookWidget {
+  const _ArticleCoverBookmark({
     required this.onTap,
     required this.article,
     required this.coverColor,
@@ -65,7 +65,7 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                       isLight: false,
                       showLogo: false,
                       showPublisher: false,
-                      showDate: false,
+                      fullDate: true,
                       textStyle: AppTypography.caption1Medium,
                       color: AppColors.textGrey,
                     ),

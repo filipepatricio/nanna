@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_labels_editors_note.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_square_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
@@ -17,8 +18,8 @@ import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-part 'article_cover_bookmark_list.dart';
-
+part 'article_audio_view_cover.dart';
+part 'article_cover_bookmark.dart';
 part 'article_cover_daily_brief_large.dart';
 
 part 'article_cover_daily_brief_small.dart';
@@ -47,7 +48,8 @@ enum ArticleCoverType {
   dailyBriefSmall,
   dailyBriefList,
   otherBriefItemsList,
-  bookmarkList,
+  bookmark,
+  audioView,
   topicBigImage,
   topicWithoutImage,
 }
@@ -126,22 +128,32 @@ class ArticleCover extends StatelessWidget {
         onTap: onTap,
       );
 
-  factory ArticleCover.bookmarkList({
+  factory ArticleCover.bookmark({
+    required MediaItemArticle article,
+    Color? coverColor,
+    VoidCallback? onTap,
+  }) =>
+      ArticleCover._(
+        ArticleCoverType.bookmark,
+        article: article,
+        coverColor: coverColor,
+        onTap: onTap,
+      );
+
+  factory ArticleCover.audioView({
     required MediaItemArticle article,
     required double height,
     required double width,
     Color coverColor = AppColors.transparent,
     bool shouldShowTimeToRead = true,
     bool shouldShowAudioIcon = true,
-    VoidCallback? onTap,
   }) =>
       ArticleCover._(
-        ArticleCoverType.bookmarkList,
+        ArticleCoverType.audioView,
         article: article,
         height: height,
         width: width,
         coverColor: coverColor,
-        onTap: onTap,
         shouldShowTimeToRead: shouldShowTimeToRead,
         shouldShowAudioIcon: shouldShowAudioIcon,
       );
@@ -231,14 +243,19 @@ class ArticleCover extends StatelessWidget {
           article: article,
           coverColor: coverColor,
         );
-      case ArticleCoverType.bookmarkList:
-        return _ArticleCoverBookmarkList(
+      case ArticleCoverType.audioView:
+        return _ArticleAudioViewCover(
           article: article,
           cardColor: coverColor!,
           height: height!,
           width: width!,
           shouldShowTimeToRead: shouldShowTimeToRead!,
           shouldShowAudioIcon: shouldShowAudioIcon!,
+        );
+      case ArticleCoverType.bookmark:
+        return _ArticleCoverBookmark(
+          article: article,
+          coverColor: coverColor,
           onTap: () => AutoRouter.of(context).push(
             MediaItemPageRoute(article: article),
           ),

@@ -24,14 +24,12 @@ class _ArticleCoverOtherBriefItemsList extends HookWidget {
       onTap: onTap,
       child: Row(
         children: [
-          SizedBox.square(
+          ArticleSquareCover(
+            article: article,
+            coverColor: coverColor,
+            showArticleIndicator: false,
+            borderRadius: AppDimens.xs,
             dimension: coverSize,
-            child: _CoverImage(
-              article: article,
-              coverColor: coverColor,
-              showArticleIndicator: false,
-              borderRadius: AppDimens.xs,
-            ),
           ),
           const SizedBox(width: AppDimens.m),
           Expanded(
