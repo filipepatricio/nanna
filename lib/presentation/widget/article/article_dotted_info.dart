@@ -87,7 +87,7 @@ class ArticleDottedInfo extends StatelessWidget {
                   Flexible(
                     child: Text(
                       publisherName,
-                      style: finalTextStyle,
+                      style: finalTextStyle.copyWith(height: showLogo ? 1.0 : null),
                       maxLines: publisherMaxLines,
                       overflow: TextOverflow.ellipsis,
                     ),

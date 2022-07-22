@@ -58,6 +58,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Flexible(
@@ -69,6 +70,8 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                           textStyle: AppTypography.metadata1Medium,
                                         ),
                                       ),
+                                      if (!article.shouldShowArticleCoverNote && article.hasAudioVersion)
+                                        ArticleCoverAudioButton(article: article),
                                     ],
                                   ),
                                   Text(
