@@ -11,7 +11,7 @@ import 'package:better_informed_mobile/presentation/widget/share/share_view_imag
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-enum ShareArticleButtonState { idle, processing }
+enum ShareArticleButtonState { idle, processing, showMessage }
 
 @injectable
 class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
@@ -48,6 +48,10 @@ class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
         break;
       case ShareApp.facebook:
         await _shareUsingFacebookUseCasel(image, article.url);
+        break;
+      case ShareApp.copyLink:
+        await _shareTextUseCase(shareApp, article.url, article.strippedTitle);
+        emit(ShareArticleButtonState.showMessage);
         break;
       default:
         await _shareTextUseCase(shareApp, article.url, article.strippedTitle);

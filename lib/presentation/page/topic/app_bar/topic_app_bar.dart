@@ -6,15 +6,13 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/marquee.dart';
-import 'package:better_informed_mobile/presentation/widget/share/shareable_app/shareable_app_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 class TopicAppBar extends HookWidget {
   const TopicAppBar({
@@ -115,18 +113,16 @@ class TopicAppBar extends HookWidget {
           snackbarController: snackbarController,
         ),
         const SizedBox(width: AppDimens.s),
-        IconButton(
+        ShareButton(
           key: const Key('share-topic-button'),
-          onPressed: () {
-            showShareableApp(context).then((value) {
-              shareTopicArticlesList(context, topic, value);
-            });
-          },
-          iconSize: AppDimens.xxl,
-          icon: SvgPicture.asset(
-            AppVectorGraphics.share,
-            color: isExpanded.value ? AppColors.white : AppColors.black,
+          onTap: (shareApp) => shareTopicArticlesList(
+            context,
+            topic,
+            shareApp,
+            snackbarController,
           ),
+          backgroundColor: AppColors.transparent,
+          iconColor: isExpanded.value ? AppColors.white : AppColors.black,
         ),
       ],
     );

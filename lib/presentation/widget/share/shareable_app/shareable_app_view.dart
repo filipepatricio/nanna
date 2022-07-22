@@ -30,6 +30,7 @@ Future<ShareApp?> showShareableApp(BuildContext context) {
         ),
       ),
     ),
+    isScrollControlled: true,
     builder: (context) {
       return const ShareableAppView();
     },
@@ -110,15 +111,33 @@ class ShareableAppView extends HookWidget {
             ),
           ],
           idle: (data) => [
+            Text(
+              LocaleKeys.common_shareVia.tr(),
+              style: AppTypography.h4ExtraBold,
+            ),
+            const SizedBox(height: AppDimens.s),
             ...data.shareApps
+                .where((element) => element != ShareApp.copyLink && element != ShareApp.more)
                 .map(
                   (e) => _Button(
                     svg: _getIcon(e),
                     text: _getText(e),
+                    showIcon: e == ShareApp.copyLink || e == ShareApp.more,
                     onTap: () => AutoRouter.of(context).pop(e),
                   ),
                 )
-                .expand((element) => [element, const SizedBox(height: AppDimens.sl)])
+                .toList(),
+            const Divider(),
+            ...data.shareApps
+                .where((element) => element == ShareApp.copyLink || element == ShareApp.more)
+                .map(
+                  (e) => _Button(
+                    svg: _getIcon(e),
+                    text: _getText(e),
+                    showIcon: e == ShareApp.copyLink || e == ShareApp.more,
+                    onTap: () => AutoRouter.of(context).pop(e),
+                  ),
+                )
                 .toList(),
           ],
         ),
@@ -132,34 +151,44 @@ class _Button extends StatelessWidget {
     required this.svg,
     required this.text,
     required this.onTap,
+    this.showIcon = false,
     Key? key,
   }) : super(key: key);
 
   final String svg;
   final String text;
+  final bool showIcon;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            svg,
-            width: AppDimens.xl,
-            height: AppDimens.xl,
-            fit: BoxFit.scaleDown,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
+        child: SizedBox(
+          height: 32,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (showIcon) ...[
+                SvgPicture.asset(
+                  svg,
+                  width: AppDimens.xl,
+                  height: AppDimens.xl,
+                  fit: BoxFit.scaleDown,
+                ),
+                const SizedBox(width: AppDimens.s),
+              ],
+              Expanded(
+                child: Text(
+                  text,
+                  style: AppTypography.h4Medium.copyWith(height: 1.0),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: AppDimens.s),
-          Expanded(
-            child: Text(
-              text,
-              style: AppTypography.h4Medium.copyWith(height: 1.0),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

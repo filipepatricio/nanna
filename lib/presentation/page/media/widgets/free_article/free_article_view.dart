@@ -71,6 +71,7 @@ class FreeArticleView extends HookWidget {
           Padding(
             padding: const EdgeInsets.only(right: AppDimens.s, top: AppDimens.s),
             child: ShareArticleButton(
+              snackbarController: snackbarController,
               article: article,
               buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
             ),

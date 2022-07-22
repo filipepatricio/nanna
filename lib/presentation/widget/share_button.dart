@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 class ShareButton extends StatelessWidget {
   const ShareButton({
     required this.onTap,
+    this.iconColor,
     Color? backgroundColor,
     Key? key,
   })  : backgroundColor = backgroundColor ?? AppColors.white,
@@ -16,19 +17,21 @@ class ShareButton extends StatelessWidget {
 
   final Function(ShareApp?) onTap;
   final Color backgroundColor;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async => onTap(await showShareableApp(context)),
       child: Container(
-        padding: const EdgeInsets.all(AppDimens.xs),
+        padding: const EdgeInsets.all(AppDimens.s),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: backgroundColor,
         ),
         child: SvgPicture.asset(
           AppVectorGraphics.share,
+          color: iconColor,
         ),
       ),
     );

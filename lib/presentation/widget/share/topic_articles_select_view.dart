@@ -15,6 +15,8 @@ import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,12 +34,21 @@ const _labelTextStyle = TextStyle(
   height: 1.4,
 );
 
-Future<void> shareTopicArticlesList(BuildContext context, Topic topic, ShareApp? shareApp) async {
+Future<void> shareTopicArticlesList(
+  BuildContext context,
+  Topic topic,
+  ShareApp? shareApp,
+  SnackbarController snackbarController,
+) async {
   if (shareApp == null) return;
 
   return _showBottomSheet(
     context,
-    (context) => TopicArticlesSelectView(topic: topic, shareApp: shareApp),
+    (context) => TopicArticlesSelectView(
+      topic: topic,
+      shareApp: shareApp,
+      snackbarController: snackbarController,
+    ),
   );
 }
 
@@ -58,11 +69,13 @@ class TopicArticlesSelectView extends HookWidget {
   const TopicArticlesSelectView({
     required this.topic,
     required this.shareApp,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final Topic topic;
   final ShareApp shareApp;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +88,15 @@ class TopicArticlesSelectView extends HookWidget {
         state.maybeMap(
           shared: (_) {
             AutoRouter.of(context).pop();
+
+            if (shareApp == ShareApp.copyLink) {
+              snackbarController.showMessage(
+                SnackbarMessage.simple(
+                  message: LocaleKeys.common_linkCopied.tr(),
+                  type: SnackbarMessageType.positive,
+                ),
+              );
+            }
           },
           orElse: () {},
         );

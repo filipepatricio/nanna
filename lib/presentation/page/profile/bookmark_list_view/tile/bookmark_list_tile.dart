@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_divider.dart
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
@@ -27,12 +28,14 @@ class BookmarkListTile extends StatelessWidget {
   const BookmarkListTile({
     required this.bookmarkCover,
     required this.onRemoveBookmarkPressed,
+    required this.snackbarController,
     this.isLast = false,
     Key? key,
   }) : super(key: key);
 
   final BookmarkTileCover bookmarkCover;
   final OnRemoveBookmarkPressed onRemoveBookmarkPressed;
+  final SnackbarController snackbarController;
   final bool isLast;
 
   @override
@@ -91,7 +94,7 @@ class BookmarkListTile extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          bookmarkCover.bookmark.getShareButton(context),
+                          bookmarkCover.bookmark.getShareButton(context, snackbarController),
                           const SizedBox(width: AppDimens.m),
                           _BookmarkRemoveButton(
                             onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
@@ -167,17 +170,22 @@ extension on Bookmark {
         const [];
   }
 
-  Widget getShareButton(BuildContext context) {
+  Widget getShareButton(
+    BuildContext context,
+    SnackbarController snackbarController,
+  ) {
     return data.map(
       article: (data) => ShareArticleButton(
         backgroundColor: AppColors.transparent,
         article: data.article,
+        snackbarController: snackbarController,
       ),
       topic: (data) => ShareButton(
         onTap: (shareApp) => shareTopicArticlesList(
           context,
           data.topic,
           shareApp,
+          snackbarController,
         ),
         backgroundColor: AppColors.transparent,
       ),

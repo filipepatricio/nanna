@@ -5,7 +5,9 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ShareableAppCubit extends Cubit<ShareableAppState> {
-  ShareableAppCubit(this._getShareableAppListUseCase) : super(const ShareableAppState.loading());
+  ShareableAppCubit(
+    this._getShareableAppListUseCase,
+  ) : super(const ShareableAppState.loading());
 
   final GetShareableAppListUseCase _getShareableAppListUseCase;
 
