@@ -161,6 +161,7 @@ example:
 - Hint, you can spend some time and read cubit_hooks.dart file in our project. Because in there we have our own custom hooks for cubits.
   When we create public widgets we use named parameters.
 
+
 - [ ] How to use [gql_build](https://pub.dev/packages/gql_build)?
 
 - Create `.graphql` file with [operation](https://graphql.org/learn/queries/)
@@ -169,8 +170,8 @@ example:
 - Import generated file with specified prefix (so there will be no conflicts between generated documents)
 - Access document, name etc. through prefix f.e. `generated_file.document`
 
-- [ ] Working with [intelliJ GraphQL plugin](https://plugins.jetbrains.com/plugin/8097-graphql)
 
+- [ ] Working with [intelliJ GraphQL plugin](https://plugins.jetbrains.com/plugin/8097-graphql)
 - Generate `schema.graphql` with `.graphqlconfig` (see xample below) by running graphql endpoint
 - `.graphql` files will use last schema under folder tree
 
@@ -194,6 +195,11 @@ Graphqlconfig example:
 }
 ```
 
+- [ ] Generating scheme without help of [intelliJ GraphQL plugin](https://plugins.jetbrains.com/plugin/8097-graphql)
+- Install [get-graphql-schema](https://github.com/prisma-labs/get-graphql-schema)
+- Run `make graphql_schema` from project root
+
+
 - [ ] While creating `.graphql` files
 
 - Add `__typename` in [fragment](https://graphql.org/learn/queries/#fragments) and before object reference if it is [union type](https://graphql.org/learn/schema/#union-types)
@@ -201,6 +207,9 @@ Graphqlconfig example:
 But why I need to include `__typename` in fragment?
 
 It's due to [flutter_graphql](https://pub.dev/packages/graphql_flutter) cache, [normalize](https://pub.dev/packages/normalize) cache based on `__typename` without it, null would come in response at place when fragment should be.
+
+- Do not create fragment if fragment is being used in only one place
+- If queries can use cached result of each other, make sure that those uses same fragments or either uses none or set [CacheRereadPolicy](https://pub.dev/documentation/graphql/latest/graphql/CacheRereadPolicy.html) to `ignoreOptimistic`/`ignoreAll` ([issue](https://github.com/zino-hofmann/graphql-flutter/issues/1118))
 
 - If `fragment` is from another file, add import to this file under comment (see example below)
 

@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
@@ -113,8 +112,7 @@ class _SummaryCard extends StatelessWidget {
         Expanded(
           child: InformedMarkdownBody(
             markdown: markdownText,
-            baseTextStyle:
-                context.isSmallDevice ? AppTypography.b3Regular.copyWith(height: 1.5) : AppTypography.b2Regular,
+            baseTextStyle: AppTypography.b2Regular,
             pPadding: const EdgeInsets.only(bottom: AppDimens.xs),
           ),
         ),

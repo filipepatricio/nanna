@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 extension Finders on CommonFinders {
-  Finder byText(String text, {bool exactMatch = false}) => _ByTextFinder(text, exactMatch: exactMatch);
+  Finder byText(
+    String text, {
+    bool exactMatch = false,
+    bool skipOffstage = true,
+  }) =>
+      _ByTextFinder(text, exactMatch: exactMatch, skipOffstage: skipOffstage);
 }
 
 class _ByTextFinder extends MatchFinder {
-  _ByTextFinder(this.text, {this.exactMatch = false, bool skipOffstage = true}) : super(skipOffstage: skipOffstage);
+  _ByTextFinder(
+    this.text, {
+    this.exactMatch = false,
+    bool skipOffstage = true,
+  }) : super(skipOffstage: skipOffstage);
 
   final String text;
   final bool exactMatch;

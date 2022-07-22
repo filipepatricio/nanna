@@ -1,12 +1,15 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.di.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
+import 'package:better_informed_mobile/presentation/util/device_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class InformedApp extends HookWidget {
@@ -19,6 +22,30 @@ class InformedApp extends HookWidget {
   final MainRouter mainRouter;
   final GetIt getIt;
 
+  Widget responsiveBuilder(Widget? child) => ResponsiveWrapper.builder(
+        child,
+        maxWidth: AppDimens.maxWidth,
+        minWidth: AppDimens.minWidth,
+        defaultScale: true,
+        breakpoints: [
+          ResponsiveBreakpoint.resize(
+            DeviceType.small.widthBreakPoint,
+            name: DeviceType.small.name,
+            scaleFactor: DeviceType.small.scaleFactor,
+          ),
+          ResponsiveBreakpoint.resize(
+            DeviceType.regular.widthBreakPoint,
+            name: DeviceType.regular.name,
+            scaleFactor: DeviceType.regular.scaleFactor,
+          ),
+          ResponsiveBreakpoint.autoScale(
+            DeviceType.tablet.widthBreakPoint,
+            name: DeviceType.tablet.name,
+            scaleFactor: DeviceType.tablet.scaleFactor,
+          ),
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     if (kIsTest) {
@@ -29,6 +56,9 @@ class InformedApp extends HookWidget {
           routeInformationParser: mainRouter.defaultRouteParser(),
           routerDelegate: mainRouter.delegate(),
           theme: AppTheme.mainTheme,
+          builder: (context, child) {
+            return responsiveBuilder(child);
+          },
         ),
       );
     }
@@ -59,16 +89,7 @@ class InformedApp extends HookWidget {
         ),
         theme: AppTheme.mainTheme,
         builder: (context, child) {
-          final mediaQueryData = MediaQuery.of(context);
-          // Take the textScaleFactor from system and make
-          // sure that it's no less than 1.0, but no more
-          // than 1.5.
-          final constrainedTextScaleFactor = mediaQueryData.textScaleFactor.clamp(1.0, 1.5);
-
-          return MediaQuery(
-            data: mediaQueryData.copyWith(textScaleFactor: constrainedTextScaleFactor),
-            child: child!,
-          );
+          return responsiveBuilder(child);
         },
       ),
     );

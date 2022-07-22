@@ -85,7 +85,6 @@ class TopicMediaItemsList extends HookWidget {
         article: topic.articleAt(index),
         topicId: topic.id,
         topicSlug: topic.slug,
-        topicTitle: topic.strippedTitle,
         briefId: cubit.briefId,
       ),
     );

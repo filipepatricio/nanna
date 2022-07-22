@@ -1,6 +1,8 @@
+import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,10 +14,12 @@ class PremiumArticleViewState with _$PremiumArticleViewState {
 
   @Implements<BuildState>()
   const factory PremiumArticleViewState.idle({
-    required List<BriefEntryItem> moreFromSectionItems,
-    required List<Category> featuredCategories,
+    required Article article,
     required bool showArticleRelatedContentSection,
-    required bool showArticleMoreSection,
+    required bool showArticleMoreFromSection,
+    required List<BriefEntryItem> moreFromBriefItems,
+    required List<MediaItem> otherTopicItems,
+    required List<Category> featuredCategories,
     required List<CategoryItem> relatedContentItems,
   }) = _PremiumArticleViewStateIdle;
 }

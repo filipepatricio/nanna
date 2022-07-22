@@ -65,7 +65,7 @@ class BriefEntryCover extends HookWidget {
             key: topicCardKey,
             maxWidth: width,
             maxHeight: height,
-            child: TopicCover.large(
+            child: TopicCover.dailyBrief(
               topic: data.topicPreview,
               onTap: () => context.navigateToTopic(
                 topicPreview: data.topicPreview,

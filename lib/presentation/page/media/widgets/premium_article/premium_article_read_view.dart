@@ -1,17 +1,19 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dart';
-import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content_section.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
@@ -20,38 +22,24 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
-    required this.article,
+    required this.cubit,
     required this.articleController,
     required this.pageController,
-    required this.cubit,
     required this.mainController,
-    required this.showArticleRelatedContentSection,
-    required this.showArticleMoreSection,
-    required this.moreFromSectionItems,
-    required this.featuredCategories,
-    required this.relatedContentItems,
     this.readArticleProgress,
-    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
-  final Article article;
   final ScrollController articleController;
   final PageController pageController;
   final ScrollController mainController;
-  final MediaItemCubit cubit;
+  final PremiumArticleViewCubit cubit;
   final double? readArticleProgress;
-  final bool showArticleRelatedContentSection;
-  final bool showArticleMoreSection;
-  final List<BriefEntryItem> moreFromSectionItems;
-  final String? topicTitle;
-  final List<Category> featuredCategories;
-  final List<CategoryItem> relatedContentItems;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
 
-  bool get articleWithImage => article.metadata.hasImage;
+  bool get articleWithImage => cubit.article.metadata.hasImage;
 
   void calculateArticleContentOffset() {
     final globalContentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
@@ -129,7 +117,7 @@ class PremiumArticleReadView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useAutomaticKeepAlive(wantKeepAlive: true);
-
+    final state = useCubitBuilder(cubit);
     final gestureManager = useMemoized(
       () => MediaItemPageGestureManager(
         context: context,
@@ -201,87 +189,92 @@ class PremiumArticleReadView extends HookWidget {
             }
           },
         ),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            PageView(
-              physics: const NeverScrollableScrollPhysics(
-                parent: ClampingScrollPhysics(),
-              ),
-              controller: pageController,
-              scrollDirection: Axis.vertical,
-              onPageChanged: (page) {
-                showTabBar.value = false;
-              },
-              children: [
-                if (articleWithImage)
-                  ArticleImageView(
-                    article: article.metadata,
-                    controller: pageController,
-                  ),
-                NoScrollGlow(
-                  child: CustomScrollView(
-                    controller: mainController,
-                    physics: const NeverScrollableScrollPhysics(
-                      parent: ClampingScrollPhysics(),
+        child: state.maybeMap(
+          orElse: () => const SizedBox.shrink(),
+          idle: (data) => Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              PageView(
+                physics: const NeverScrollableScrollPhysics(
+                  parent: ClampingScrollPhysics(),
+                ),
+                controller: pageController,
+                scrollDirection: Axis.vertical,
+                onPageChanged: (page) {
+                  showTabBar.value = false;
+                },
+                children: [
+                  if (articleWithImage)
+                    ArticleImageView(
+                      article: cubit.article.metadata,
+                      controller: pageController,
                     ),
-                    slivers: [
-                      SliverFillViewport(
-                        delegate: SliverChildListDelegate(
-                          [
-                            _ArticleContentView(
-                              article: article,
-                              articleContentKey: _articleContentKey,
-                              articleController: articleController,
-                              cubit: cubit,
-                              dynamicPosition: dynamicListenPosition,
-                              readProgress: readProgress,
-                              showArticleRelatedContentSection: showArticleRelatedContentSection,
-                              showArticleMoreFromBriefSection: showArticleMoreSection,
-                            ),
-                          ],
-                        ),
+                  NoScrollGlow(
+                    child: CustomScrollView(
+                      controller: mainController,
+                      physics: const NeverScrollableScrollPhysics(
+                        parent: ClampingScrollPhysics(),
                       ),
-                      if (showArticleMoreSection && moreFromSectionItems.isNotEmpty)
-                        SliverList(
+                      slivers: [
+                        SliverFillViewport(
                           delegate: SliverChildListDelegate(
                             [
-                              ArticleMoreFromSection(
-                                articleId: article.metadata.id,
-                                items: moreFromSectionItems,
-                                briefId: cubit.briefId,
-                                topicId: cubit.topicId,
-                                topicTitle: topicTitle,
-                                onItemTap: cubit.onMoreFromSectionItemTap,
+                              _ArticleContentView(
+                                article: cubit.article,
+                                articleContentKey: _articleContentKey,
+                                articleController: articleController,
+                                cubit: cubit,
+                                dynamicPosition: dynamicListenPosition,
+                                readProgress: readProgress,
+                                showArticleRelatedContentSection: data.showArticleRelatedContentSection,
+                                showArticleMoreFromSection: data.showArticleMoreFromSection,
                               ),
                             ],
                           ),
                         ),
-                      if (showArticleMoreSection && !showArticleRelatedContentSection)
-                        SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,
+                        if (data.showArticleMoreFromSection)
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                if (data.otherTopicItems.isNotEmpty)
+                                  ArticleMoreFromSection(
+                                    title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
+                                    items: data.otherTopicItems.buildWidgets(context, cubit),
+                                  )
+                                else if (data.moreFromBriefItems.isNotEmpty)
+                                  ArticleMoreFromSection(
+                                    title: LocaleKeys.article_otherBriefs.tr(),
+                                    items: data.moreFromBriefItems.buildWidgets(context, cubit),
+                                  ),
+                              ],
+                            ),
                           ),
-                        ),
-                      if (showArticleRelatedContentSection)
-                        SliverToBoxAdapter(
-                          child: RelatedContentSection(
-                            articleId: article.metadata.id,
-                            featuredCategories: featuredCategories,
-                            briefId: cubit.briefId,
-                            topicId: cubit.topicId,
-                            relatedContentItems: relatedContentItems,
-                            onRelatedContentItemTap: cubit.onRelatedContentItemTap,
-                            onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                        if (data.showArticleMoreFromSection && !data.showArticleRelatedContentSection)
+                          SliverToBoxAdapter(
+                            child: SizedBox(
+                              height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,
+                            ),
                           ),
-                        ),
-                    ],
+                        if (data.showArticleRelatedContentSection)
+                          SliverToBoxAdapter(
+                            child: RelatedContentSection(
+                              articleId: cubit.article.metadata.id,
+                              featuredCategories: data.featuredCategories,
+                              briefId: cubit.briefId,
+                              topicId: cubit.topicId,
+                              relatedContentItems: data.relatedContentItems,
+                              onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                              onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            InformedTabBar.floating(show: showTabBar.value),
-          ],
+                ],
+              ),
+              InformedTabBar.floating(show: showTabBar.value),
+            ],
+          ),
         ),
       ),
     );
@@ -334,7 +327,7 @@ class _ArticleContentView extends StatefulHookWidget {
     required this.cubit,
     required this.articleContentKey,
     required this.showArticleRelatedContentSection,
-    required this.showArticleMoreFromBriefSection,
+    required this.showArticleMoreFromSection,
     Key? key,
   }) : super(key: key);
 
@@ -342,10 +335,10 @@ class _ArticleContentView extends StatefulHookWidget {
   final ValueNotifier<double> dynamicPosition;
   final ScrollController articleController;
   final Article article;
-  final MediaItemCubit cubit;
+  final PremiumArticleViewCubit cubit;
   final Key articleContentKey;
   final bool showArticleRelatedContentSection;
-  final bool showArticleMoreFromBriefSection;
+  final bool showArticleMoreFromSection;
 
   @override
   State<_ArticleContentView> createState() => _ArticleContentViewState();
@@ -376,7 +369,6 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
                       [
                         ArticleContentView(
                           article: widget.article,
-                          cubit: widget.cubit,
                           articleContentKey: widget.articleContentKey,
                           scrollToPosition: () => _scrollToPosition(widget.readProgress.value),
                         ),
@@ -385,7 +377,7 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
                   ),
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: widget.showArticleRelatedContentSection || widget.showArticleMoreFromBriefSection
+                      height: widget.showArticleRelatedContentSection || widget.showArticleMoreFromSection
                           ? AppDimens.xxc
                           : footerHeight,
                     ),
@@ -483,4 +475,84 @@ class _ArticleProgressBar extends HookWidget {
       ),
     );
   }
+}
+
+extension on BuildContext {
+  void navigateToArticle({
+    required MediaItemArticle article,
+    String? briefId,
+    String? topicId,
+  }) {
+    router.popAndPush(
+      MediaItemPageRoute(
+        article: article,
+        briefId: briefId,
+        topicId: topicId,
+        slug: article.slug,
+      ),
+    );
+  }
+
+  void navigateToTopic({
+    required TopicPreview topic,
+    String? briefId,
+  }) {
+    router.popAndPush(
+      TopicPage(
+        topicSlug: topic.slug,
+        briefId: briefId,
+      ),
+    );
+  }
+}
+
+extension on List<MediaItem> {
+  List<Widget> buildWidgets(BuildContext context, PremiumArticleViewCubit cubit) => map<Widget>(
+        (mediaItem) => mediaItem.map(
+          article: (mediaItemArticle) => MoreFromSectionListItem.article(
+            article: mediaItemArticle,
+            onItemTap: () {
+              cubit.onOtherTopicItemTap(mediaItem);
+              context.navigateToArticle(
+                article: mediaItemArticle,
+                briefId: cubit.briefId,
+                topicId: cubit.topicId,
+              );
+            },
+          ),
+          unknown: (_) => const SizedBox.shrink(),
+        ),
+      ).toList();
+}
+
+extension on List<BriefEntryItem> {
+  List<Widget> buildWidgets(BuildContext context, PremiumArticleViewCubit cubit) => map<Widget>(
+        (briefEntryItem) => briefEntryItem.map(
+          article: (briefItemArticle) => briefItemArticle.article.map(
+            article: (mediaItemArticle) => MoreFromSectionListItem.article(
+              article: mediaItemArticle,
+              onItemTap: () {
+                cubit.onMoreFromBriefItemTap(briefEntryItem);
+                context.navigateToArticle(
+                  article: mediaItemArticle,
+                  briefId: cubit.briefId,
+                  topicId: cubit.topicId,
+                );
+              },
+            ),
+            unknown: (_) => const SizedBox.shrink(),
+          ),
+          topicPreview: (briefItemTopic) => MoreFromSectionListItem.topic(
+            topic: briefItemTopic.topicPreview,
+            onItemTap: () {
+              cubit.onMoreFromBriefItemTap(briefEntryItem);
+              context.navigateToTopic(
+                topic: briefItemTopic.topicPreview,
+                briefId: cubit.briefId,
+              );
+            },
+          ),
+          unknown: (_) => const SizedBox.shrink(),
+        ),
+      ).toList();
 }
