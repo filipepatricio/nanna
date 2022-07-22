@@ -1659,9 +1659,11 @@ packages:
   social_share:
     dependency: "direct main"
     description:
-      name: social_share
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: e1712d114a441a63be7dec648b55fa053753784b
+      url: "https://github.com/woosttech/social_share.git"
+    source: git
     version: "2.2.1"
   source_gen:
     dependency: transitive

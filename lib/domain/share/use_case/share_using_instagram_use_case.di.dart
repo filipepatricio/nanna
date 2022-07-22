@@ -9,7 +9,7 @@ class ShareUsingInstagramUseCase {
 
   final ShareRepository _shareRepository;
 
-  Future<void> call(File foregroundFile, File backgroundFile, String url) async {
+  Future<void> call(File foregroundFile, File? backgroundFile, String url) async {
     return _shareRepository.shareUsingInstagram(foregroundFile, backgroundFile, url);
   }
 }

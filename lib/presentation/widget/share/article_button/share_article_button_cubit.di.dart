@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/share/use_case/share_image_use_case.di.dart';
+import 'package:better_informed_mobile/domain/share/data/share_app.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_text_use_case.di.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_using_facebook_use_case.di.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_using_instagram_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.di.dart';
@@ -11,28 +16,43 @@ enum ShareArticleButtonState { idle, processing }
 @injectable
 class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
   ShareArticleButtonCubit(
-    this._shareImageUseCase,
     this._shareViewImageGenerator,
+    this._shareTextUseCase,
+    this._shareUsingInstagramUseCase,
+    this._shareUsingFacebookUseCasel,
   ) : super(ShareArticleButtonState.idle);
 
-  final ShareImageUseCase _shareImageUseCase;
+  final ShareTextUseCase _shareTextUseCase;
   final ShareViewImageGenerator _shareViewImageGenerator;
+  final ShareUsingInstagramUseCase _shareUsingInstagramUseCase;
+  final ShareUsingFacebookUseCase _shareUsingFacebookUseCasel;
 
-  Future<void> share(MediaItemArticle article) async {
+  Future<void> share(ShareApp shareApp, MediaItemArticle article) async {
     emit(ShareArticleButtonState.processing);
 
-    ShareArticleView factory() => ShareArticleView(article: article);
+    late File image;
 
-    final image = await generateShareImage(
-      _shareViewImageGenerator,
-      factory,
-      '${article.id}_share_article.png',
-    );
-    await _shareImageUseCase(
-      image,
-      article.url,
-      article.strippedTitle,
-    );
+    if (shareApp == ShareApp.instagram || shareApp == ShareApp.twitter || shareApp == ShareApp.facebook) {
+      ShareArticleView factory() => ShareArticleView(article: article);
+
+      image = await generateShareImage(
+        _shareViewImageGenerator,
+        factory,
+        '${article.id}_share_article.png',
+      );
+    }
+
+    switch (shareApp) {
+      case ShareApp.instagram:
+        await _shareUsingInstagramUseCase(image, null, article.url);
+        break;
+      case ShareApp.facebook:
+        await _shareUsingFacebookUseCasel(image, article.url);
+        break;
+      default:
+        await _shareTextUseCase(shareApp, article.url, article.strippedTitle);
+        break;
+    }
 
     emit(ShareArticleButtonState.idle);
   }

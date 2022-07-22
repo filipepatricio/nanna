@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/share/data/share_app.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -31,10 +32,12 @@ const _labelTextStyle = TextStyle(
   height: 1.4,
 );
 
-Future<void> shareTopicArticlesList(BuildContext context, Topic topic) async {
+Future<void> shareTopicArticlesList(BuildContext context, Topic topic, ShareApp? shareApp) async {
+  if (shareApp == null) return;
+
   return _showBottomSheet(
     context,
-    (context) => TopicArticlesSelectView(topic: topic),
+    (context) => TopicArticlesSelectView(topic: topic, shareApp: shareApp),
   );
 }
 
@@ -54,10 +57,12 @@ Future<void> _showBottomSheet(BuildContext context, WidgetBuilder builder) {
 class TopicArticlesSelectView extends HookWidget {
   const TopicArticlesSelectView({
     required this.topic,
+    required this.shareApp,
     Key? key,
   }) : super(key: key);
 
   final Topic topic;
+  final ShareApp shareApp;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +84,10 @@ class TopicArticlesSelectView extends HookWidget {
     useEffect(
       () {
         cubit.initialize(topic);
+
+        if (shareApp != ShareApp.instagram && shareApp != ShareApp.facebook) {
+          cubit.shareImage(shareApp);
+        }
       },
       [cubit],
     );
@@ -92,12 +101,15 @@ class TopicArticlesSelectView extends HookWidget {
         selectedIndexes: state.selectedIndexes,
         canSelectMore: state.canSelectMore,
         maxArticles: state.articlesSelectionLimit,
+        shareApp: shareApp,
       ),
       orElse: () => const SizedBox.shrink(),
     );
 
     if (kIsAppleDevice) {
-      return _ContainerIOS(child: contentView);
+      return _ContainerIOS(
+        child: contentView,
+      );
     } else {
       return _ContainerAndroid(
         selectedArticles: state.maybeMap(
@@ -119,6 +131,7 @@ class _ContainerIOS extends StatelessWidget {
     required this.child,
     Key? key,
   }) : super(key: key);
+
   final Widget child;
 
   @override
@@ -192,6 +205,7 @@ class _IdleView extends HookWidget {
     required this.selectedIndexes,
     required this.canSelectMore,
     required this.maxArticles,
+    required this.shareApp,
     Key? key,
   }) : super(key: key);
   final TopicArticlesSelectViewCubit cubit;
@@ -199,6 +213,7 @@ class _IdleView extends HookWidget {
   final Set<int> selectedIndexes;
   final bool canSelectMore;
   final int maxArticles;
+  final ShareApp shareApp;
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +244,7 @@ class _IdleView extends HookWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
             child: FilledButton(
-              onTap: () => cubit.shareImage(),
+              onTap: () => cubit.shareImage(shareApp),
               text: LocaleKeys.common_next.tr(),
               fillColor: AppColors.darkGreyBackground,
               textColor: AppColors.white,

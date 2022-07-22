@@ -9,15 +9,27 @@ import 'package:injectable/injectable.dart';
 class ShareRepositoryMock implements ShareRepository {
   @override
   Future<List<ShareApp>> getShareableApps() async {
-    return [ShareApp.instagram];
+    return [
+      ShareApp.instagram,
+      ShareApp.facebook,
+      ShareApp.copyLink,
+      ShareApp.message,
+      ShareApp.more,
+      ShareApp.telegram,
+      ShareApp.twitter,
+      ShareApp.whatsapp,
+    ];
   }
 
   @override
-  Future<void> shareImage(File image, [String? text, String? subject]) async {}
+  Future<void> shareImage(ShareApp shareApp, File image, [String? text, String? subject]) async {}
 
   @override
-  Future<void> shareText(String text, [String? subject]) async {}
+  Future<void> shareText(ShareApp shareApp, String text, [String? subject]) async {}
 
   @override
-  Future<void> shareUsingInstagram(File foregroundFile, File backgroundFile, String url) async {}
+  Future<void> shareUsingInstagram(File foregroundFile, File? backgroundFile, String url) async {}
+
+  @override
+  Future<void> shareFacebookStory(File foregroundFile, String url) async {}
 }

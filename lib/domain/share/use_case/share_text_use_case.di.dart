@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/share/data/share_app.dart';
 import 'package:better_informed_mobile/domain/share/share_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -7,7 +8,7 @@ class ShareTextUseCase {
 
   final ShareRepository _shareRepository;
 
-  Future<void> call(String text, [String? subject]) async {
-    return _shareRepository.shareText(text, subject);
+  Future<void> call(ShareApp shareApp, String text, [String? subject]) async {
+    return _shareRepository.shareText(shareApp, text, subject);
   }
 }

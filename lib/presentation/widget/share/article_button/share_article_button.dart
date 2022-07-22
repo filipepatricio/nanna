@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/widget/share/shareable_app/shareable_app_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -75,11 +76,21 @@ class _Button extends StatelessWidget {
     if (builder == null) {
       return ShareButton(
         backgroundColor: backgroundColor,
-        onTap: () => cubit.share(article),
+        onTap: (shareApp) {
+          if (shareApp == null) return;
+
+          cubit.share(shareApp, article);
+        },
       );
     } else {
       return GestureDetector(
-        onTap: () => cubit.share(article),
+        onTap: () {
+          showShareableApp(context).then((value) {
+            if (value == null) return;
+
+            cubit.share(value, article);
+          });
+        },
         child: builder(context),
       );
     }

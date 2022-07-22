@@ -64,7 +64,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
       'quote_${clock.now().millisecondsSinceEpoch}.png',
     );
 
-    await _shareImageUseCase(image, shareText);
+    await _shareImageUseCase(ShareApp.more, image, shareText);
 
     _trackActivityUseCase.trackEvent(
       AnalyticsEvent.imageArticleQuoteShared(
@@ -77,7 +77,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   Future<void> shareText(MediaItemArticle article, String quote) async {
     final fixedQuote = _getFixedQuote(quote);
 
-    await _shareTextUseCase('‘‘$fixedQuote’’\n\n${article.url}');
+    await _shareTextUseCase(ShareApp.more, '‘‘$fixedQuote’’\n\n${article.url}');
 
     _trackActivityUseCase.trackEvent(
       AnalyticsEvent.textArticleQuoteShared(
@@ -93,6 +93,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
     QuoteBackgroundView backgroundFactory() => QuoteBackgroundView(
           article: article,
         );
+
     final backgroundImage = await generateShareImage(
       _shareViewImageGenerator,
       backgroundFactory,

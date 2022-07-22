@@ -174,7 +174,11 @@ extension on Bookmark {
         article: data.article,
       ),
       topic: (data) => ShareButton(
-        onTap: () => shareTopicArticlesList(context, data.topic),
+        onTap: (shareApp) => shareTopicArticlesList(
+          context,
+          data.topic,
+          shareApp,
+        ),
         backgroundColor: AppColors.transparent,
       ),
       unknown: (_) => const SizedBox.shrink(),
