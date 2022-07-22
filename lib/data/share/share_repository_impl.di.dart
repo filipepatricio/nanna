@@ -10,10 +10,12 @@ import 'package:social_share/social_share.dart';
 const _socialShareApps = {
   'instagram': ShareApp.instagram,
   'twitter': ShareApp.twitter,
-  'facebook': ShareApp.facebook,
   'telegram': ShareApp.telegram,
   'whatsapp': ShareApp.whatsapp,
   'sms': ShareApp.message,
+  // At the moment the application crashes if I want to share on Facebook story,
+  // so for the moment this option is commented :D
+  // 'facebook': ShareApp.facebook,
 };
 
 @LazySingleton(as: ShareRepository, env: liveEnvs)

@@ -82,4 +82,13 @@ class AppVectorGraphics {
   static const String pause = 'assets/vector_graphics/pause.svg';
   static const String skipBack10Seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
   static const String skipForward10Seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
+
+  static const String shareFacebook = 'assets/vector_graphics/facebook_ic.svg';
+  static const String shareWhatsapp = 'assets/vector_graphics/whatsapp_ic.svg';
+  static const String shareTwitter = 'assets/vector_graphics/twitter_ic.svg';
+  static const String shareInstagram = 'assets/vector_graphics/instagram_ic.svg';
+  static const String shareTelegram = 'assets/vector_graphics/telegram_ic.svg';
+  static const String shareMessage = 'assets/vector_graphics/message_ic.svg';
+  static const String shareCopy = 'assets/vector_graphics/copy_ic.svg';
+  static const String shareMore = 'assets/vector_graphics/more_ic.svg';
 }

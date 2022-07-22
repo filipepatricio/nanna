@@ -40,6 +40,48 @@ Future<ShareApp?> showShareableApp(BuildContext context) {
 class ShareableAppView extends HookWidget {
   const ShareableAppView({Key? key}) : super(key: key);
 
+  String _getText(ShareApp shareApp) {
+    switch (shareApp) {
+      case ShareApp.instagram:
+        return LocaleKeys.social_instagram.tr();
+      case ShareApp.twitter:
+        return LocaleKeys.social_twitter.tr();
+      case ShareApp.facebook:
+        return LocaleKeys.social_facebook.tr();
+      case ShareApp.whatsapp:
+        return LocaleKeys.social_whatsapp.tr();
+      case ShareApp.telegram:
+        return LocaleKeys.social_telegram.tr();
+      case ShareApp.message:
+        return LocaleKeys.common_message.tr();
+      case ShareApp.copyLink:
+        return LocaleKeys.common_copyLink.tr();
+      case ShareApp.more:
+        return LocaleKeys.common_more.tr();
+    }
+  }
+
+  String _getIcon(ShareApp shareApp) {
+    switch (shareApp) {
+      case ShareApp.instagram:
+        return AppVectorGraphics.shareInstagram;
+      case ShareApp.twitter:
+        return AppVectorGraphics.shareTwitter;
+      case ShareApp.facebook:
+        return AppVectorGraphics.shareFacebook;
+      case ShareApp.whatsapp:
+        return AppVectorGraphics.shareWhatsapp;
+      case ShareApp.telegram:
+        return AppVectorGraphics.shareTelegram;
+      case ShareApp.message:
+        return AppVectorGraphics.shareMessage;
+      case ShareApp.copyLink:
+        return AppVectorGraphics.shareCopy;
+      case ShareApp.more:
+        return AppVectorGraphics.shareMore;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<ShareableAppCubit>();
@@ -71,30 +113,12 @@ class ShareableAppView extends HookWidget {
             ...data.shareApps
                 .map(
                   (e) => _Button(
-                    svg: AppVectorGraphics.shareImage,
-                    text: () {
-                      switch (e) {
-                        case ShareApp.instagram:
-                          return LocaleKeys.social_instagram.tr();
-                        case ShareApp.twitter:
-                          return LocaleKeys.social_twitter.tr();
-                        case ShareApp.facebook:
-                          return LocaleKeys.social_facebook.tr();
-                        case ShareApp.whatsapp:
-                          return LocaleKeys.social_whatsapp.tr();
-                        case ShareApp.telegram:
-                          return LocaleKeys.social_telegram.tr();
-                        case ShareApp.message:
-                          return LocaleKeys.common_message.tr();
-                        case ShareApp.copyLink:
-                          return LocaleKeys.common_copyLink.tr();
-                        case ShareApp.more:
-                          return LocaleKeys.common_more.tr();
-                      }
-                    }(),
+                    svg: _getIcon(e),
+                    text: _getText(e),
                     onTap: () => AutoRouter.of(context).pop(e),
                   ),
                 )
+                .expand((element) => [element, const SizedBox(height: AppDimens.sl)])
                 .toList(),
           ],
         ),
@@ -119,26 +143,23 @@ class _Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              svg,
-              width: AppDimens.xl,
-              height: AppDimens.xl,
-              fit: BoxFit.scaleDown,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            svg,
+            width: AppDimens.xl,
+            height: AppDimens.xl,
+            fit: BoxFit.scaleDown,
+          ),
+          const SizedBox(width: AppDimens.s),
+          Expanded(
+            child: Text(
+              text,
+              style: AppTypography.h4Medium.copyWith(height: 1.0),
             ),
-            const SizedBox(width: AppDimens.s),
-            Expanded(
-              child: Text(
-                text,
-                style: AppTypography.h4Medium.copyWith(height: 1.0),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

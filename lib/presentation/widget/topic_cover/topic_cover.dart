@@ -9,17 +9,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _coverSizeToScreenWidthFactor = 0.26;
 
-enum TopicCoverType { small, large, exploreLarge, exploreSmall, otherBriefItemsList }
+enum TopicCoverType { bookmarkList, dailyBrief, exploreLarge, exploreSmall, otherBriefItemsList }
 
 class TopicCover extends HookWidget {
-  factory TopicCover.large({required TopicPreview topic, Function()? onTap}) => TopicCover._(
-        type: TopicCoverType.large,
+  factory TopicCover.dailyBrief({required TopicPreview topic, Function()? onTap}) => TopicCover._(
+        type: TopicCoverType.dailyBrief,
         topic: topic,
         onTap: onTap,
       );
 
-  factory TopicCover.small({required TopicPreview topic, Function()? onTap}) => TopicCover._(
-        type: TopicCoverType.small,
+  factory TopicCover.bookmarkList({required TopicPreview topic, Function()? onTap}) => TopicCover._(
+        type: TopicCoverType.bookmarkList,
         topic: topic,
         onTap: onTap,
       );
@@ -75,8 +75,8 @@ class TopicCover extends HookWidget {
           ),
         );
 
-      case TopicCoverType.small:
-      case TopicCoverType.large:
+      case TopicCoverType.bookmarkList:
+      case TopicCoverType.dailyBrief:
         return GestureDetector(
           onTap: onTap,
           child: ClipRRect(
@@ -90,10 +90,11 @@ class TopicCover extends HookWidget {
                     Positioned.fill(
                       child: TopicCoverImage(
                         topic: topic,
-                        darkeningMode: type == TopicCoverType.small ? DarkeningMode.solid : DarkeningMode.gradient,
+                        darkeningMode:
+                            type == TopicCoverType.bookmarkList ? DarkeningMode.solid : DarkeningMode.gradient,
                       ),
                     ),
-                    if (type == TopicCoverType.large)
+                    if (type == TopicCoverType.dailyBrief)
                       Positioned(
                         top: AppDimens.m,
                         left: AppDimens.m,

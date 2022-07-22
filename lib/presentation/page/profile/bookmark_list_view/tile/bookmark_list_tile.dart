@@ -228,7 +228,7 @@ extension on BookmarkTileCover {
       topic: (data) => StackedCards.variant(
         variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
         coverSize: size,
-        child: TopicCover.small(
+        child: TopicCover.bookmarkList(
           topic: data.topic.asPreview,
           onTap: () => AutoRouter.of(context).push(
             TopicPage(
