@@ -2,7 +2,7 @@ name: CI Build
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
 
 env:
   JAVA_VERSION: '12.x'
@@ -35,9 +35,34 @@ jobs:
               - 'android/**'
             tests:
               - 'test/**'
+  set_slack_id:
+    name: Set slack id
+    runs-on: ubuntu-latest
+    outputs:
+      slack_id: ${{env.slack_id}}
+    steps:
+      - name: Set slack Lukasz id
+        if: github.event.pull_request.user.login == 'LukaszWojcikIteo'
+        run: |
+          echo "slack_id=U02B9DG36RZ" >> $GITHUB_ENV
+      - name: Set slack Estaban id
+        if: github.event.pull_request.user.login == 'minoesteban'
+        run: |
+          echo "slack_id=U02KFBZ3N7P" >> $GITHUB_ENV
+      - name: Set slack Jan id
+        if:  github.event.pull_request.user.login == 'jlukas99'
+        run: |
+          echo "slack_id=U03F4JSQCGP" >> $GITHUB_ENV
+      - name: Set Filipe slack id
+        if: github.event.pull_request.user.login == 'filipepatricio'
+        run: |
+          echo "slack_id=U02J1L1AX4J" >> $GITHUB_ENV
+
+
 
   commit_lint:
     name: Commit linting
+    needs: [ set_slack_id ]
     runs-on: ubuntu-latest
     outputs:
       succeeded: ${{ steps.result.outputs.result }}
@@ -53,13 +78,28 @@ jobs:
 
       - uses: wagoid/commitlint-github-action@v4
 
+      - name: Slack message commit linting failed
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          icon_emoji: ':x:'
+          job_name: Commit linting
+          status: ${{ job.status }}
+          fields: repo,author,job,took,workflow,pullRequest
+          mention: ${{needs.set_slack_id.outputs.slack_id}}
+          if_mention: 'failure'
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+
       - name: Result
         id: result
         if: success()
         run: echo "::set-output name=result::true"
 
   code_lint_test:
-    needs: [changes, commit_lint]
+    needs: [ set_slack_id, changes, commit_lint ]
     if: ${{ needs.changes.outputs.tests == 'true' || needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true' || needs.changes.outputs.ios == 'true' }}
     name: Linting & Testing
     runs-on: ubuntu-latest
@@ -96,8 +136,23 @@ jobs:
 
       - name: Analyze & Test
         run: |
-          flutter analyze .
+          flutter analyze --no-pub
           flutter test test/unit/wrapper_test.dart
+
+      - name: Slack message code linting & Testing failed
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          icon_emoji: ':x:'
+          job_name: Linting & Testing
+          status: ${{ job.status }}
+          fields: repo,author,job,took,workflow,pullRequest
+          mention: ${{needs.set_slack_id.outputs.slack_id}}
+          if_mention: 'failure'
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
       - name: Result
         id: result
@@ -105,7 +160,7 @@ jobs:
         run: echo "::set-output name=result::true"
 
   build_android:
-    needs: [changes, commit_lint, code_lint_test]
+    needs: [ set_slack_id, changes, commit_lint, code_lint_test ]
     if: ${{ needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true' }}
     name: Android build
     runs-on: ubuntu-latest
@@ -141,13 +196,28 @@ jobs:
       - name: Build Android app
         run: flutter build apk --release --dart-define=env=prod --flavor prod
 
+      - name: Slack message android app building failed
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          icon_emoji: ':x:'
+          job_name: Android build
+          status: ${{ job.status }}
+          fields: repo,author,job,took,workflow,pullRequest
+          mention: ${{needs.set_slack_id.outputs.slack_id}}
+          if_mention: 'failure'
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+
       - name: Result
         id: result
         if: success()
         run: echo "::set-output name=result::true"
 
   build_ios:
-    needs: [changes, commit_lint, code_lint_test]
+    needs: [ set_slack_id, changes, commit_lint, code_lint_test ]
     if: ${{ needs.changes.outputs.app == 'true' || needs.changes.outputs.ios == 'true' }}
     name: iOS build
     runs-on: macos-latest
@@ -187,13 +257,28 @@ jobs:
       - name: Build iOS app
         run: flutter build ios --release --no-codesign --dart-define=env=prod --flavor prod
 
+      - name: Slack message iOS app building failed
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          icon_emoji: ':x:'
+          job_name: iOS build
+          status: ${{ job.status }}
+          fields: repo,author,job,took,workflow,pullRequest
+          mention: ${{needs.set_slack_id.outputs.slack_id}}
+          if_mention: 'failure'
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+
       - name: Result
         id: result
         if: success()
         run: echo "::set-output name=result::true"
 
   all_jobs_succeeded:
-    needs: [changes, commit_lint, code_lint_test, build_android, build_ios]
+    needs: [ changes, commit_lint, code_lint_test, build_android, build_ios ]
     name: All jobs succeeded
     runs-on: ubuntu-latest
     if: always()

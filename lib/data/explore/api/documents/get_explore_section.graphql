@@ -1,4 +1,5 @@
-# import 'package:better_informed_mobile/data/gql/common/explore_section_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/topic_preview_fragment.graphql';
 
 query getExploreSection {
   pillSection: getExploreSection(isHighlighted: false) {
@@ -9,6 +10,46 @@ query getExploreSection {
   }
 
   highlightedSection: getExploreSection(isHighlighted: true) {
-    ...exploreSectionFragment
+    __typename
+    id
+    name
+    icon
+    isHighlighted
+    isPreferred
+
+    ... on ArticlesExploreArea {
+      description
+      articles {
+        ...articleFragment
+      }
+    }
+
+    ... on ArticlesListExploreArea {
+      description
+      articles {
+        ...articleFragment
+      }
+    }
+
+    ... on TopicsExploreArea {
+      topics {
+        ...topicPreviewFragment
+      }
+    }
+
+    ... on SmallTopicsExploreArea {
+      description
+      topics {
+        ...topicPreviewFragment
+      }
+    }
+
+    ... on HighlightedTopicsExploreArea {
+      backgroundColor
+      description
+      topics {
+        ...topicPreviewFragment
+      }
+    }
   }
 }

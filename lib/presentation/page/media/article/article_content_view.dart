@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -18,14 +17,12 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class ArticleContentView extends StatelessWidget {
   const ArticleContentView({
     required this.article,
-    required this.cubit,
     required this.articleContentKey,
     required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
 
   final Article article;
-  final MediaItemCubit cubit;
   final Key articleContentKey;
   final Function() scrollToPosition;
 
@@ -73,7 +70,6 @@ class ArticleContentView extends StatelessWidget {
     } else if (article.content.type == ArticleContentType.html) {
       return ArticleContentHtml(
         html: article.content.content,
-        cubit: cubit,
         scrollToPosition: scrollToPosition,
       );
     }

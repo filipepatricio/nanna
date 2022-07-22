@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/device_type.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
@@ -66,7 +65,7 @@ class TopicHeader extends HookWidget {
               const Spacer(flex: 32),
               InformedMarkdownBody(
                 markdown: topic.title,
-                baseTextStyle: AppTypography.h1Headline(context).copyWith(color: AppColors.white),
+                baseTextStyle: AppTypography.h1Headline.copyWith(color: AppColors.white),
                 maxLines: 5,
               ),
               const Spacer(flex: 16),
@@ -90,8 +89,7 @@ class TopicHeader extends HookWidget {
               InformedMarkdownBody(
                 markdown: topic.introduction,
                 maxLines: 5,
-                baseTextStyle:
-                    (context.isSmallDevice ? AppTypography.b2MediumLora : AppTypography.b1MediumLora).copyWith(
+                baseTextStyle: AppTypography.b1MediumLora.copyWith(
                   color: AppColors.white,
                 ),
               ),

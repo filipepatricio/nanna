@@ -1,9 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/cover_opacity.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -15,21 +13,13 @@ typedef ItemTapCallback = Function(BriefEntryItem);
 
 class ArticleMoreFromSection extends StatelessWidget {
   const ArticleMoreFromSection({
-    required this.articleId,
+    required this.title,
     required this.items,
-    required this.onItemTap,
-    this.briefId,
-    this.topicId,
-    this.topicTitle,
     Key? key,
   }) : super(key: key);
 
-  final String articleId;
-  final List<BriefEntryItem> items;
-  final String? briefId;
-  final String? topicId;
-  final String? topicTitle;
-  final ItemTapCallback onItemTap;
+  final String title;
+  final List<Widget> items;
 
   @override
   Widget build(BuildContext context) {
@@ -40,46 +30,22 @@ class ArticleMoreFromSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(AppDimens.l),
           child: Text(
-            topicTitle != null
-                ? LocaleKeys.article_moreFromTopic.tr(args: [topicTitle!])
-                : LocaleKeys.article_otherBriefs.tr(),
+            title,
             style: AppTypography.h1ExtraBold,
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: items
-              .map(
-                (briefEntryItem) =>
-                    briefEntryItem.mapOrNull(
-                      article: (briefItemArticle) => briefItemArticle.article.mapOrNull(
-                        article: (mediaItemArticle) => _Article(
-                          article: mediaItemArticle,
-                          briefId: briefId,
-                          topicId: topicId,
-                          onItemTap: () => onItemTap(briefEntryItem),
-                        ),
-                      ),
-                      topicPreview: (briefItemTopic) => _Topic(
-                        topic: briefItemTopic.topicPreview,
-                        briefId: briefId,
-                        onItemTap: () => onItemTap(briefEntryItem),
-                      ),
-                    ) ??
-                    const SizedBox.shrink(),
-              )
-              .reduce(
-                (value, element) => Column(
-                  children: [
-                    value,
-                    if (element is SizedBox || value is SizedBox)
-                      const SizedBox.shrink()
-                    else
-                      const Divider(height: AppDimens.xl),
+          child: Column(
+            children: items
+                .expand(
+                  (element) => [
                     element,
+                    if (items.last != element) const Divider(height: AppDimens.xl),
                   ],
-                ),
-              ),
+                )
+                .toList(),
+          ),
         ),
         const SizedBox(height: AppDimens.l),
       ],
@@ -87,94 +53,44 @@ class ArticleMoreFromSection extends StatelessWidget {
   }
 }
 
-class _Article extends StatelessWidget {
-  const _Article({
-    required this.article,
-    required this.onItemTap,
-    this.briefId,
-    this.topicId,
+enum MoreFromSectionItemType { article, topic }
+
+class MoreFromSectionListItem extends StatelessWidget {
+  const MoreFromSectionListItem._({
+    required this.child,
     Key? key,
   }) : super(key: key);
 
-  final MediaItemArticle article;
-  final String? briefId;
-  final String? topicId;
-  final VoidCallback onItemTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return CoverOpacity(
-      visited: article.progressState == ArticleProgressState.finished,
-      child: ArticleCover.otherBriefItemsList(
-        article: article,
-        onTap: () {
-          onItemTap.call();
-          context.navigateToArticle(
-            article: article,
-            briefId: briefId,
-            topicId: topicId,
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _Topic extends StatelessWidget {
-  const _Topic({
-    required this.topic,
-    required this.onItemTap,
-    this.briefId,
-    Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-  final String? briefId;
-  final VoidCallback onItemTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return CoverOpacity(
-      visited: topic.visited,
-      child: TopicCover.otherBriefItemsList(
-        topic: topic,
-        onTap: () {
-          onItemTap.call();
-          context.navigateToTopic(
-            topic: topic,
-            briefId: briefId,
-          );
-        },
-      ),
-    );
-  }
-}
-
-extension on BuildContext {
-  void navigateToArticle({
+  factory MoreFromSectionListItem.article({
     required MediaItemArticle article,
-    String? briefId,
-    String? topicId,
-  }) {
-    router.popAndPush(
-      MediaItemPageRoute(
-        article: article,
-        briefId: briefId,
-        topicId: topicId,
-        slug: article.slug,
-      ),
-    );
-  }
+    required VoidCallback onItemTap,
+  }) =>
+      MoreFromSectionListItem._(
+        child: CoverOpacity(
+          visited: article.progressState == ArticleProgressState.finished,
+          child: ArticleCover.otherBriefItemsList(
+            article: article,
+            onTap: onItemTap,
+          ),
+        ),
+      );
 
-  void navigateToTopic({
+  factory MoreFromSectionListItem.topic({
     required TopicPreview topic,
-    String? briefId,
-  }) {
-    router.popAndPush(
-      TopicPage(
-        topicSlug: topic.slug,
-        briefId: briefId,
-      ),
-    );
-  }
+    required VoidCallback onItemTap,
+  }) =>
+      MoreFromSectionListItem._(
+        child: CoverOpacity(
+          visited: topic.visited,
+          child: TopicCover.otherBriefItemsList(
+            topic: topic,
+            onTap: onItemTap,
+          ),
+        ),
+      );
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => child;
 }

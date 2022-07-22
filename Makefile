@@ -13,7 +13,7 @@ flutter_format: $(PROD_SRC_FILES) $(TEST_SRC_FILES) | $(MAKE_CACHE_DIR)
 	fvm flutter format --line-length 120 lib/ test/ > /dev/null
 	@touch $(MAKE_CACHE_DIR)/$@
 
-flutter_analyze: br l10n $(PROD_SRC_FILES) $(TEST_SRC_FILES) | $(MAKE_CACHE_DIR)
+flutter_analyze: $(PROD_SRC_FILES) $(TEST_SRC_FILES) | $(MAKE_CACHE_DIR)
 	fvm flutter analyze --no-pub --fatal-warnings
 	@touch $(MAKE_CACHE_DIR)/$@
 
@@ -55,6 +55,9 @@ ui_changes_report:
 
 fvm_ui_changes_report:
 	-fvm dart scripts/ui_changes_report.dart
+
+graphql_schema:
+	get-graphql-schema https://api.staging.informed.so/graphql > lib/data/gql/config/schema.graphql
 
 $(MAKE_CACHE_DIR):
 	mkdir -p $@
