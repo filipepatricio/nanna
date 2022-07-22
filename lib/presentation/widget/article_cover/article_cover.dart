@@ -18,12 +18,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'article_cover_bookmark_list.dart';
+
 part 'article_cover_daily_brief_large.dart';
+
 part 'article_cover_daily_brief_small.dart';
+
 part 'article_cover_explore.dart';
+
 part 'article_cover_other_brief.dart';
+
 part 'article_cover_topic_big_image.dart';
+
 part 'article_cover_topic_without_image.dart';
+
+part 'article_cover_daily_brief_list.dart';
 
 const _coverSizeToScreenWidthFactor = 0.26;
 
@@ -37,10 +45,11 @@ enum ArticleCoverType {
   exploreList,
   dailyBriefLarge,
   dailyBriefSmall,
+  dailyBriefList,
   otherBriefItemsList,
   bookmarkList,
   topicBigImage,
-  topicWithoutImage
+  topicWithoutImage,
 }
 
 class ArticleCover extends StatelessWidget {
@@ -167,6 +176,18 @@ class ArticleCover extends StatelessWidget {
         mediaItemKey: mediaItemKey,
       );
 
+  factory ArticleCover.dailyBriefList({
+    required MediaItemArticle article,
+    required Color backgroundColor,
+    VoidCallback? onTap,
+  }) =>
+      ArticleCover._(
+        ArticleCoverType.topicWithoutImage,
+        article: article,
+        backgroundColor: backgroundColor,
+        onTap: onTap,
+      );
+
   final ArticleCoverType _type;
   final MediaItemArticle article;
   final VoidCallback? onTap;
@@ -235,6 +256,12 @@ class ArticleCover extends StatelessWidget {
           article: article,
           editorsNote: editorsNote,
           backgroundColor: backgroundColor!,
+          onTap: onTap,
+        );
+      case ArticleCoverType.dailyBriefList:
+        return _ArticleCoverDailyBriefListItem(
+          coverColor: backgroundColor,
+          article: article,
           onTap: onTap,
         );
     }
