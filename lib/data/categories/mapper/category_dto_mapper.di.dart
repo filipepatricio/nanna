@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:injectable/injectable.dart';
 
