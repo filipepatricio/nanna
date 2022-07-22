@@ -224,7 +224,6 @@ class ArticleCover extends StatelessWidget {
         return _ArticleCoverDailyBriefSmall(
           onTap: onTap,
           article: article,
-          coverColor: coverColor,
         );
       case ArticleCoverType.otherBriefItemsList:
         return _ArticleCoverOtherBriefItemsList(
