@@ -10,10 +10,4 @@ abstract class FeaturesFlagsRepository {
   );
 
   Future<String> initialTab();
-
-  Future<bool> showArticleRelatedContentSection();
-
-  Future<bool> showArticleMoreFromBriefSection();
-
-  Future<bool> showArticleMoreFromTopic();
 }

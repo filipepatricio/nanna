@@ -150,8 +150,6 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
     moreFromBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
     otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
-    showArticleRelatedContentSection: true,
-    showArticleMoreFromSection: true,
     relatedContentItems: TestData.categoryItemList,
   );
 
@@ -194,8 +192,6 @@ class FakePremiumArticleViewCubitFromTopic extends FakePremiumArticleViewCubitFr
     moreFromBriefItems: [],
     otherTopicItems: TestData.topic.entries.map<MediaItem>((entry) => entry.item).toList(),
     featuredCategories: List.generate(4, (index) => TestData.category),
-    showArticleRelatedContentSection: true,
-    showArticleMoreFromSection: true,
     relatedContentItems: TestData.categoryItemList,
   );
 

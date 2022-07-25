@@ -226,47 +226,37 @@ class PremiumArticleReadView extends HookWidget {
                                 cubit: cubit,
                                 dynamicPosition: dynamicListenPosition,
                                 readProgress: readProgress,
-                                showArticleRelatedContentSection: data.showArticleRelatedContentSection,
-                                showArticleMoreFromSection: data.showArticleMoreFromSection,
                               ),
                             ],
                           ),
                         ),
-                        if (data.showArticleMoreFromSection)
-                          SliverList(
-                            delegate: SliverChildListDelegate(
-                              [
-                                if (data.otherTopicItems.isNotEmpty)
-                                  ArticleMoreFromSection(
-                                    title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
-                                    items: data.otherTopicItems.buildWidgets(context, cubit),
-                                  )
-                                else if (data.moreFromBriefItems.isNotEmpty)
-                                  ArticleMoreFromSection(
-                                    title: LocaleKeys.article_otherBriefs.tr(),
-                                    items: data.moreFromBriefItems.buildWidgets(context, cubit),
-                                  ),
-                              ],
-                            ),
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              if (data.otherTopicItems.isNotEmpty)
+                                ArticleMoreFromSection(
+                                  title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
+                                  items: data.otherTopicItems.buildWidgets(context, cubit),
+                                )
+                              else if (data.moreFromBriefItems.isNotEmpty)
+                                ArticleMoreFromSection(
+                                  title: LocaleKeys.article_otherBriefs.tr(),
+                                  items: data.moreFromBriefItems.buildWidgets(context, cubit),
+                                ),
+                            ],
                           ),
-                        if (data.showArticleMoreFromSection && !data.showArticleRelatedContentSection)
-                          SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,
-                            ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: RelatedContentSection(
+                            articleId: cubit.article.metadata.id,
+                            featuredCategories: data.featuredCategories,
+                            briefId: cubit.briefId,
+                            topicId: cubit.topicId,
+                            relatedContentItems: data.relatedContentItems,
+                            onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                            onRelatedCategoryTap: cubit.onRelatedCategoryTap,
                           ),
-                        if (data.showArticleRelatedContentSection)
-                          SliverToBoxAdapter(
-                            child: RelatedContentSection(
-                              articleId: cubit.article.metadata.id,
-                              featuredCategories: data.featuredCategories,
-                              briefId: cubit.briefId,
-                              topicId: cubit.topicId,
-                              relatedContentItems: data.relatedContentItems,
-                              onRelatedContentItemTap: cubit.onRelatedContentItemTap,
-                              onRelatedCategoryTap: cubit.onRelatedCategoryTap,
-                            ),
-                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -326,8 +316,6 @@ class _ArticleContentView extends StatefulHookWidget {
     required this.articleController,
     required this.cubit,
     required this.articleContentKey,
-    required this.showArticleRelatedContentSection,
-    required this.showArticleMoreFromSection,
     Key? key,
   }) : super(key: key);
 
@@ -337,8 +325,6 @@ class _ArticleContentView extends StatefulHookWidget {
   final Article article;
   final PremiumArticleViewCubit cubit;
   final Key articleContentKey;
-  final bool showArticleRelatedContentSection;
-  final bool showArticleMoreFromSection;
 
   @override
   State<_ArticleContentView> createState() => _ArticleContentViewState();
@@ -348,11 +334,6 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    final footerHeight = useMemoized(
-      () => MediaQuery.of(context).size.height / 3,
-      [MediaQuery.of(context).size.height],
-    );
 
     return Stack(
       children: [
@@ -375,11 +356,9 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
                       ],
                     ),
                   ),
-                  SliverToBoxAdapter(
+                  const SliverToBoxAdapter(
                     child: SizedBox(
-                      height: widget.showArticleRelatedContentSection || widget.showArticleMoreFromSection
-                          ? AppDimens.xxc
-                          : footerHeight,
+                      height: AppDimens.xxc,
                     ),
                   ),
                 ],

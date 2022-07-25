@@ -11,9 +11,6 @@ import 'package:better_informed_mobile/domain/categories/data/category_item.dt.d
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_article_more_from_brief_section_use_case.di.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_article_related_content_section_use_case.di.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/get_show_more_from_topic_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
@@ -29,10 +26,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getTopicBySlugUseCase,
     this._trackArticleReadingProgressUseCase,
     this._getOtherBriefEntriesUseCase,
-    this._getShowArticleMoreFromBriefSectionUseCase,
-    this._getShowArticleRelatedContentSectionUseCase,
     this._getOtherTopicEntriesUseCase,
-    this._getShowMoreFromTopicUseCase,
     this._getFeaturedCategoriesUseCase,
     this._getRelatedContentUseCase,
   ) : super(const PremiumArticleViewState.initial());
@@ -41,10 +35,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetTopicBySlugUseCase _getTopicBySlugUseCase;
   final TrackArticleReadingProgressUseCase _trackArticleReadingProgressUseCase;
   final GetOtherBriefEntriesUseCase _getOtherBriefEntriesUseCase;
-  final GetShowArticleMoreFromBriefSectionUseCase _getShowArticleMoreFromBriefSectionUseCase;
-  final GetShowArticleRelatedContentSectionUseCase _getShowArticleRelatedContentSectionUseCase;
   final GetOtherTopicEntriesUseCase _getOtherTopicEntriesUseCase;
-  final GetShowMoreFromTopicUseCase _getShowMoreFromTopicUseCase;
   final GetFeaturedCategoriesUseCase _getFeaturedCategoriesUseCase;
   final GetRelatedContentUseCase _getRelatedContentUseCase;
 
@@ -82,8 +73,6 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   ) async {
     emit(const PremiumArticleViewState.initial());
 
-    var showArticleMoreFromSection = false;
-    var showArticleRelatedContentSection = false;
     final moreFromBriefItems = <BriefEntryItem>[];
     final otherTopicItems = <MediaItem>[];
     final relatedContentItems = <CategoryItem>[];
@@ -97,8 +86,6 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     emit(
       PremiumArticleViewState.idle(
         article: _currentFullArticle,
-        showArticleRelatedContentSection: showArticleRelatedContentSection,
-        showArticleMoreFromSection: showArticleMoreFromSection,
         moreFromBriefItems: moreFromBriefItems,
         otherTopicItems: otherTopicItems,
         featuredCategories: featuredCategories,
@@ -109,30 +96,18 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     _setupReadingProgressTracker();
 
     if (topicSlug != null) {
-      showArticleMoreFromSection = await _getShowMoreFromTopicUseCase();
-      if (showArticleMoreFromSection) {
-        _topicTitle = (await _getTopicBySlugUseCase.call(topicSlug)).strippedTitle;
-        otherTopicItems.addAll(await _getOtherTopicEntriesUseCase(_currentFullArticle.metadata.slug, topicSlug));
-      }
+      _topicTitle = (await _getTopicBySlugUseCase.call(topicSlug)).strippedTitle;
+      otherTopicItems.addAll(await _getOtherTopicEntriesUseCase(_currentFullArticle.metadata.slug, topicSlug));
     } else if (briefId != null) {
-      showArticleMoreFromSection = await _getShowArticleMoreFromBriefSectionUseCase();
-      if (showArticleMoreFromSection) {
-        moreFromBriefItems.addAll(await _getOtherBriefEntriesUseCase(_currentFullArticle.metadata.slug));
-      }
+      moreFromBriefItems.addAll(await _getOtherBriefEntriesUseCase(_currentFullArticle.metadata.slug));
     }
 
-    showArticleRelatedContentSection = await _getShowArticleRelatedContentSectionUseCase();
-
-    if (showArticleRelatedContentSection) {
-      featuredCategories.addAll(await _getFeaturedCategoriesUseCase());
-      relatedContentItems.addAll(await _getRelatedContentUseCase(_currentFullArticle.metadata.slug));
-    }
+    featuredCategories.addAll(await _getFeaturedCategoriesUseCase());
+    relatedContentItems.addAll(await _getRelatedContentUseCase(_currentFullArticle.metadata.slug));
 
     emit(
       PremiumArticleViewState.idle(
         article: _currentFullArticle,
-        showArticleRelatedContentSection: showArticleRelatedContentSection,
-        showArticleMoreFromSection: showArticleMoreFromSection,
         moreFromBriefItems: moreFromBriefItems,
         otherTopicItems: otherTopicItems,
         featuredCategories: featuredCategories,
