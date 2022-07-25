@@ -37,16 +37,16 @@ const _labelTextStyle = TextStyle(
 Future<void> shareTopicArticlesList(
   BuildContext context,
   Topic topic,
-  ShareApp? shareApp,
+  ShareOptions? shareOption,
   SnackbarController snackbarController,
 ) async {
-  if (shareApp == null) return;
+  if (shareOption == null) return;
 
   return _showBottomSheet(
     context,
     (context) => TopicArticlesSelectView(
       topic: topic,
-      shareApp: shareApp,
+      shareOption: shareOption,
       snackbarController: snackbarController,
     ),
   );
@@ -68,13 +68,13 @@ Future<void> _showBottomSheet(BuildContext context, WidgetBuilder builder) {
 class TopicArticlesSelectView extends HookWidget {
   const TopicArticlesSelectView({
     required this.topic,
-    required this.shareApp,
+    required this.shareOption,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final Topic topic;
-  final ShareApp shareApp;
+  final ShareOptions shareOption;
   final SnackbarController snackbarController;
 
   @override
@@ -89,7 +89,7 @@ class TopicArticlesSelectView extends HookWidget {
           shared: (_) {
             AutoRouter.of(context).pop();
 
-            if (shareApp == ShareApp.copyLink) {
+            if (shareOption == ShareOptions.copyLink) {
               snackbarController.showMessage(
                 SnackbarMessage.simple(
                   message: LocaleKeys.common_linkCopied.tr(),
@@ -107,8 +107,8 @@ class TopicArticlesSelectView extends HookWidget {
       () {
         cubit.initialize(topic);
 
-        if (shareApp != ShareApp.instagram && shareApp != ShareApp.facebook) {
-          cubit.shareImage(shareApp);
+        if (shareOption != ShareOptions.instagram && shareOption != ShareOptions.facebook) {
+          cubit.shareImage(shareOption);
         }
       },
       [cubit],
@@ -123,15 +123,13 @@ class TopicArticlesSelectView extends HookWidget {
         selectedIndexes: state.selectedIndexes,
         canSelectMore: state.canSelectMore,
         maxArticles: state.articlesSelectionLimit,
-        shareApp: shareApp,
+        shareOption: shareOption,
       ),
       orElse: () => const SizedBox.shrink(),
     );
 
     if (kIsAppleDevice) {
-      return _ContainerIOS(
-        child: contentView,
-      );
+      return _ContainerIOS(child: contentView);
     } else {
       return _ContainerAndroid(
         selectedArticles: state.maybeMap(
@@ -227,7 +225,7 @@ class _IdleView extends HookWidget {
     required this.selectedIndexes,
     required this.canSelectMore,
     required this.maxArticles,
-    required this.shareApp,
+    required this.shareOption,
     Key? key,
   }) : super(key: key);
   final TopicArticlesSelectViewCubit cubit;
@@ -235,7 +233,7 @@ class _IdleView extends HookWidget {
   final Set<int> selectedIndexes;
   final bool canSelectMore;
   final int maxArticles;
-  final ShareApp shareApp;
+  final ShareOptions shareOption;
 
   @override
   Widget build(BuildContext context) {
@@ -266,7 +264,7 @@ class _IdleView extends HookWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
             child: FilledButton(
-              onTap: () => cubit.shareImage(shareApp),
+              onTap: () => cubit.shareImage(shareOption),
               text: LocaleKeys.common_next.tr(),
               fillColor: AppColors.darkGreyBackground,
               textColor: AppColors.white,

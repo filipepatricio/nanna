@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/widget/share/shareable_app/shareable_app_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_options/share_options_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -92,14 +92,14 @@ class _Button extends StatelessWidget {
     if (builder == null) {
       return ShareButton(
         backgroundColor: backgroundColor,
-        onTap: (shareApp) => cubit.share(shareApp, article),
+        onTap: (shareOption) => cubit.share(shareOption, article),
       );
     } else {
       return GestureDetector(
         onTap: () async {
-          final shareApp = await showShareableApp(context);
+          final shareOption = await showShareOptions(context);
 
-          await cubit.share(shareApp, article);
+          await cubit.share(shareOption, article);
         },
         child: builder(context),
       );

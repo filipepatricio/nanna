@@ -10,7 +10,7 @@ class ShareImageUseCase {
 
   final ShareRepository _shareRepository;
 
-  Future<void> call(ShareApp shareApp, File image, [String? text, String? subject]) async {
-    return _shareRepository.shareImage(shareApp, image, text, subject);
+  Future<void> call(ShareOptions shareOption, File image, [String? text, String? subject]) async {
+    return _shareRepository.shareImage(shareOption, image, text, subject);
   }
 }

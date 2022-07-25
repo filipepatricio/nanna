@@ -8,21 +8,21 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: ShareRepository, env: mockEnvs)
 class ShareRepositoryMock implements ShareRepository {
   @override
-  Future<List<ShareApp>> getShareableApps() async {
+  Future<List<ShareOptions>> getShareOptions() async {
     return [
-      ShareApp.instagram,
-      ShareApp.facebook,
-      ShareApp.copyLink,
-      ShareApp.more,
-      ShareApp.whatsapp,
+      ShareOptions.instagram,
+      ShareOptions.facebook,
+      ShareOptions.copyLink,
+      ShareOptions.more,
+      ShareOptions.whatsapp,
     ];
   }
 
   @override
-  Future<void> shareImage(ShareApp shareApp, File image, [String? text, String? subject]) async {}
+  Future<void> shareImage(ShareOptions shareOption, File image, [String? text, String? subject]) async {}
 
   @override
-  Future<void> shareText(ShareApp shareApp, String text, [String? subject]) async {}
+  Future<void> shareText(ShareOptions shareOption, String text, [String? subject]) async {}
 
   @override
   Future<void> shareUsingInstagram(File foregroundFile, File? backgroundFile, String url) async {}

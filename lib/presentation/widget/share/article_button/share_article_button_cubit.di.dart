@@ -27,12 +27,12 @@ class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
   final ShareUsingInstagramUseCase _shareUsingInstagramUseCase;
   final ShareUsingFacebookUseCase _shareUsingFacebookUseCasel;
 
-  Future<void> share(ShareApp? shareApp, MediaItemArticle article) async {
+  Future<void> share(ShareOptions? shareOption, MediaItemArticle article) async {
     emit(ShareArticleButtonState.processing);
 
     late File image;
 
-    if (shareApp == ShareApp.instagram || shareApp == ShareApp.facebook) {
+    if (shareOption == ShareOptions.instagram || shareOption == ShareOptions.facebook) {
       ShareArticleView factory() => ShareArticleView(article: article);
 
       image = await generateShareImage(
@@ -42,19 +42,19 @@ class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
       );
     }
 
-    switch (shareApp) {
-      case ShareApp.instagram:
+    switch (shareOption) {
+      case ShareOptions.instagram:
         await _shareUsingInstagramUseCase(image, null, article.url);
         break;
-      case ShareApp.facebook:
+      case ShareOptions.facebook:
         await _shareUsingFacebookUseCasel(image, article.url);
         break;
-      case ShareApp.copyLink:
-        await _shareTextUseCase(shareApp ?? ShareApp.copyLink, article.url, article.strippedTitle);
+      case ShareOptions.copyLink:
+        await _shareTextUseCase(shareOption ?? ShareOptions.copyLink, article.url, article.strippedTitle);
         emit(ShareArticleButtonState.showMessage);
         break;
       default:
-        await _shareTextUseCase(shareApp ?? ShareApp.more, article.url, article.strippedTitle);
+        await _shareTextUseCase(shareOption ?? ShareOptions.more, article.url, article.strippedTitle);
         break;
     }
 

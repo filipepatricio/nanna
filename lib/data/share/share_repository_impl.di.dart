@@ -3,46 +3,47 @@ import 'dart:io';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/share/data/share_app.dart';
 import 'package:better_informed_mobile/domain/share/share_repository.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:injectable/injectable.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:social_share/social_share.dart';
 
-const _socialShareApps = {
-  'instagram': ShareApp.instagram,
-  'facebook': ShareApp.facebook,
-  'whatsapp': ShareApp.whatsapp,
+const _socialShareOptions = {
+  'instagram': ShareOptions.instagram,
+  'facebook': ShareOptions.facebook,
+  'whatsapp': ShareOptions.whatsapp,
 };
 
 @LazySingleton(as: ShareRepository, env: liveEnvs)
 class ShareRepositoryImpl implements ShareRepository {
   @override
-  Future<List<ShareApp>> getShareableApps() async {
+  Future<List<ShareOptions>> getShareOptions() async {
     final apps = await SocialShare.checkInstalledAppsForShare();
     final entries = apps?.entries.map((e) => MapEntry(e.key as String, e.value as bool)).toList();
 
     if (entries == null) return [];
 
     return entries
-        .where((entry) => _socialShareApps.containsKey(entry.key))
+        .where((entry) => _socialShareOptions.containsKey(entry.key))
         .where((entry) => entry.value)
-        .map((entry) => _socialShareApps[entry.key])
-        .whereType<ShareApp>()
+        .map((entry) => _socialShareOptions[entry.key])
+        .whereType<ShareOptions>()
         .toList()
-      ..addAll([ShareApp.copyLink, ShareApp.more]);
+      ..addAll([ShareOptions.copyLink, ShareOptions.more]);
   }
 
   @override
-  Future<void> shareImage(ShareApp shareApp, File image, [String? text, String? subject]) async {
+  Future<void> shareImage(ShareOptions shareOption, File image, [String? text, String? subject]) async {
     await SocialShare.shareOptions('${subject ?? ''}\n\n${text ?? ''}\n', imagePath: image.path);
   }
 
   @override
-  Future<void> shareText(ShareApp shareApp, String text, [String? subject]) async {
-    switch (shareApp) {
-      case ShareApp.whatsapp:
+  Future<void> shareText(ShareOptions shareOption, String text, [String? subject]) async {
+    switch (shareOption) {
+      case ShareOptions.whatsapp:
         await SocialShare.shareWhatsapp(text);
         break;
-      case ShareApp.copyLink:
+      case ShareOptions.copyLink:
         await SocialShare.copyToClipboard(text);
         break;
       default:
@@ -56,8 +57,8 @@ class ShareRepositoryImpl implements ShareRepository {
       foregroundFile.path,
       backgroundImagePath: backgroundFile?.path,
       attributionURL: url,
-      backgroundBottomColor: '#FFFFFF',
-      backgroundTopColor: '#FFFFFF',
+      backgroundBottomColor: AppColors.shareBackgroundBottomColor,
+      backgroundTopColor: AppColors.shareBackgroundTopColor,
     );
   }
 
@@ -65,8 +66,8 @@ class ShareRepositoryImpl implements ShareRepository {
   Future<void> shareFacebookStory(File foregroundFile, String url) async {
     await SocialShare.shareFacebookStory(
       foregroundFile.path,
-      '#FFFFFF',
-      '#FFFFFF',
+      AppColors.shareBackgroundTopColor,
+      AppColors.shareBackgroundBottomColor,
       url,
     );
   }

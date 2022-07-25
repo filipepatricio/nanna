@@ -4,18 +4,17 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
-import 'package:better_informed_mobile/presentation/widget/share/shareable_app/shareable_app_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_options/share_options_cubit.di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 const _bottomSheetRadius = 10.0;
 
-Future<ShareApp?> showShareableApp(BuildContext context) {
-  final result = showModalBottomSheet<ShareApp?>(
+Future<ShareOptions?> showShareOptions(BuildContext context) {
+  return showModalBottomSheet<ShareOptions?>(
     context: context,
     constraints: BoxConstraints.loose(
       Size.fromHeight(
@@ -32,48 +31,17 @@ Future<ShareApp?> showShareableApp(BuildContext context) {
     ),
     isScrollControlled: true,
     builder: (context) {
-      return const ShareableAppView();
+      return const _ShareOptionsView();
     },
   );
-  return result;
 }
 
-class ShareableAppView extends HookWidget {
-  const ShareableAppView({Key? key}) : super(key: key);
-
-  String _getText(ShareApp shareApp) {
-    switch (shareApp) {
-      case ShareApp.instagram:
-        return LocaleKeys.social_instagram.tr();
-      case ShareApp.facebook:
-        return LocaleKeys.social_facebook.tr();
-      case ShareApp.whatsapp:
-        return LocaleKeys.social_whatsapp.tr();
-      case ShareApp.copyLink:
-        return LocaleKeys.common_copyLink.tr();
-      case ShareApp.more:
-        return LocaleKeys.common_more.tr();
-    }
-  }
-
-  String _getIcon(ShareApp shareApp) {
-    switch (shareApp) {
-      case ShareApp.instagram:
-        return AppVectorGraphics.shareInstagram;
-      case ShareApp.facebook:
-        return AppVectorGraphics.shareFacebook;
-      case ShareApp.whatsapp:
-        return AppVectorGraphics.shareWhatsapp;
-      case ShareApp.copyLink:
-        return AppVectorGraphics.shareCopy;
-      case ShareApp.more:
-        return AppVectorGraphics.shareMore;
-    }
-  }
+class _ShareOptionsView extends HookWidget {
+  const _ShareOptionsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<ShareableAppCubit>();
+    final cubit = useCubit<ShareOptionsCubit>();
     final state = useCubitBuilder(cubit);
 
     useEffect(
@@ -104,26 +72,30 @@ class ShareableAppView extends HookWidget {
               style: AppTypography.h4ExtraBold,
             ),
             const SizedBox(height: AppDimens.s),
-            ...data.shareApps
-                .where((element) => element != ShareApp.copyLink && element != ShareApp.more)
+            ...data.shareOptions
+                .where(
+                  (shareOption) => shareOption != ShareOptions.copyLink && shareOption != ShareOptions.more,
+                )
                 .map(
-                  (e) => _Button(
-                    svg: _getIcon(e),
-                    text: _getText(e),
-                    showIcon: e == ShareApp.copyLink || e == ShareApp.more,
-                    onTap: () => AutoRouter.of(context).pop(e),
+                  (ShareOptions shareOption) => _Button(
+                    svg: shareOption.getIcon(),
+                    text: shareOption.getText(),
+                    showIcon: shareOption == ShareOptions.copyLink || shareOption == ShareOptions.more,
+                    onTap: () => AutoRouter.of(context).pop(shareOption),
                   ),
                 )
                 .toList(),
             const Divider(),
-            ...data.shareApps
-                .where((element) => element == ShareApp.copyLink || element == ShareApp.more)
+            ...data.shareOptions
+                .where(
+                  (shareOption) => shareOption == ShareOptions.copyLink || shareOption == ShareOptions.more,
+                )
                 .map(
-                  (e) => _Button(
-                    svg: _getIcon(e),
-                    text: _getText(e),
-                    showIcon: e == ShareApp.copyLink || e == ShareApp.more,
-                    onTap: () => AutoRouter.of(context).pop(e),
+                  (ShareOptions shareOption) => _Button(
+                    svg: shareOption.getIcon(),
+                    text: shareOption.getText(),
+                    showIcon: shareOption == ShareOptions.copyLink || shareOption == ShareOptions.more,
+                    onTap: () => AutoRouter.of(context).pop(shareOption),
                   ),
                 )
                 .toList(),
@@ -143,7 +115,7 @@ class _Button extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final String svg;
+  final String? svg;
   final String text;
   final bool showIcon;
   final VoidCallback onTap;
@@ -159,9 +131,9 @@ class _Button extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (showIcon) ...[
+              if (showIcon && svg != null) ...[
                 SvgPicture.asset(
-                  svg,
+                  svg!,
                   width: AppDimens.xl,
                   height: AppDimens.xl,
                   fit: BoxFit.scaleDown,

@@ -181,10 +181,10 @@ extension on Bookmark {
         snackbarController: snackbarController,
       ),
       topic: (data) => ShareButton(
-        onTap: (shareApp) => shareTopicArticlesList(
+        onTap: (shareOption) => shareTopicArticlesList(
           context,
           data.topic,
-          shareApp,
+          shareOption,
           snackbarController,
         ),
         backgroundColor: AppColors.transparent,

@@ -3,10 +3,10 @@ import 'package:better_informed_mobile/domain/share/share_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class GetShareableAppListUseCase {
-  GetShareableAppListUseCase(this._shareRepository);
+class GetShareOptionsListUseCase {
+  GetShareOptionsListUseCase(this._shareRepository);
 
   final ShareRepository _shareRepository;
 
-  Future<List<ShareApp>> call() => _shareRepository.getShareableApps();
+  Future<List<ShareOptions>> call() => _shareRepository.getShareOptions();
 }

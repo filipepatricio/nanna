@@ -49,12 +49,12 @@ class TopicArticlesSelectViewCubit extends Cubit<TopicArticlesSelectViewState> {
     _emitIdleState();
   }
 
-  Future<void> shareImage(ShareApp shareApp) async {
+  Future<void> shareImage(ShareOptions shareOption) async {
     emit(TopicArticlesSelectViewState.generatingShareImage());
 
     late File image;
 
-    if (shareApp == ShareApp.instagram || shareApp == ShareApp.facebook) {
+    if (shareOption == ShareOptions.instagram || shareOption == ShareOptions.facebook) {
       final articles = _selectedIndexes.map((e) => _topic.entries[e]).map((e) => e.item as MediaItemArticle).toList();
 
       ShareTopicView factory() => ShareTopicView(
@@ -69,15 +69,15 @@ class TopicArticlesSelectViewCubit extends Cubit<TopicArticlesSelectViewState> {
       );
     }
 
-    switch (shareApp) {
-      case ShareApp.instagram:
+    switch (shareOption) {
+      case ShareOptions.instagram:
         await _shareUsingInstagramUseCase(image, null, _topic.url);
         break;
-      case ShareApp.facebook:
+      case ShareOptions.facebook:
         await _shareUsingFacebookUseCasel(image, _topic.url);
         break;
       default:
-        await _shareTextUseCase(shareApp, _topic.url, _topic.strippedTitle);
+        await _shareTextUseCase(shareOption, _topic.url, _topic.strippedTitle);
         break;
     }
 
