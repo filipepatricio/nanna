@@ -30,6 +30,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
     this._notificationPreferencesDTOMapper,
     this._notificationChannelDTOMapper,
   );
+
   final FirebaseMessaging _firebaseMessaging;
   final PushNotificationApiDataSource _pushNotificationApiDataSource;
   final IncomingPushDTOMapper _incomingPushDTOMapper;
@@ -70,10 +71,9 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
 
   @override
   Stream<IncomingPush> pushNotificationOpenStream() {
-    final controller = _incomingPushNotificationStream;
-    if (controller != null) return controller.stream;
+    if (_incomingPushNotificationStream != null) return _incomingPushNotificationStream!.stream;
 
-    final newController = StreamController<IncomingPush>.broadcast();
+    _incomingPushNotificationStream = StreamController<IncomingPush>.broadcast();
 
     final incomingPushStream = Rx.concat(
       [
@@ -82,9 +82,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
       ],
     ).map<IncomingPush>(_incomingPushDTOMapper).map<IncomingPush>(_logUnknownActions);
 
-    _incomingPushSubscription = incomingPushStream.listen(newController.sink.add);
-    _incomingPushNotificationStream = newController;
-    unawaited(newController.close());
+    _incomingPushSubscription = incomingPushStream.listen(_incomingPushNotificationStream!.sink.add);
 
     return _incomingPushNotificationStream!.stream;
   }

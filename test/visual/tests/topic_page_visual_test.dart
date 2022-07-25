@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
@@ -80,6 +81,24 @@ void main() {
           getIt.registerFactory<TopicPageCubit>(() => cubit);
         },
       );
+      await tester.matchGoldenFile();
+    },
+  );
+
+  visualTest(
+    '${TopicPage}_(share)',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: e.MainPageRoute(children: [e.TopicPage(topicSlug: '')]),
+        dependencyOverride: (getIt) async {
+          getIt.registerSingleton<AudioPlayerBannerCubit>(
+            FakeAudioPlayerBannerCubit(),
+          );
+        },
+      );
+
+      await tester.tap(find.byKey(const Key('share-topic-button')));
+      await tester.pumpAndSettle();
       await tester.matchGoldenFile();
     },
   );

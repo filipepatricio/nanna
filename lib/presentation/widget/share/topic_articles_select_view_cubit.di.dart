@@ -54,7 +54,7 @@ class TopicArticlesSelectViewCubit extends Cubit<TopicArticlesSelectViewState> {
 
     late File image;
 
-    if (shareApp == ShareApp.instagram || shareApp == ShareApp.twitter || shareApp == ShareApp.facebook) {
+    if (shareApp == ShareApp.instagram || shareApp == ShareApp.facebook) {
       final articles = _selectedIndexes.map((e) => _topic.entries[e]).map((e) => e.item as MediaItemArticle).toList();
 
       ShareTopicView factory() => ShareTopicView(

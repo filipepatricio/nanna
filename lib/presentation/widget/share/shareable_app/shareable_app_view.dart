@@ -45,16 +45,10 @@ class ShareableAppView extends HookWidget {
     switch (shareApp) {
       case ShareApp.instagram:
         return LocaleKeys.social_instagram.tr();
-      case ShareApp.twitter:
-        return LocaleKeys.social_twitter.tr();
       case ShareApp.facebook:
         return LocaleKeys.social_facebook.tr();
       case ShareApp.whatsapp:
         return LocaleKeys.social_whatsapp.tr();
-      case ShareApp.telegram:
-        return LocaleKeys.social_telegram.tr();
-      case ShareApp.message:
-        return LocaleKeys.common_message.tr();
       case ShareApp.copyLink:
         return LocaleKeys.common_copyLink.tr();
       case ShareApp.more:
@@ -66,16 +60,10 @@ class ShareableAppView extends HookWidget {
     switch (shareApp) {
       case ShareApp.instagram:
         return AppVectorGraphics.shareInstagram;
-      case ShareApp.twitter:
-        return AppVectorGraphics.shareTwitter;
       case ShareApp.facebook:
         return AppVectorGraphics.shareFacebook;
       case ShareApp.whatsapp:
         return AppVectorGraphics.shareWhatsapp;
-      case ShareApp.telegram:
-        return AppVectorGraphics.shareTelegram;
-      case ShareApp.message:
-        return AppVectorGraphics.shareMessage;
       case ShareApp.copyLink:
         return AppVectorGraphics.shareCopy;
       case ShareApp.more:
@@ -167,7 +155,7 @@ class _Button extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
         child: SizedBox(
-          height: 32,
+          height: AppDimens.xl,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

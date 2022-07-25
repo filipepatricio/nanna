@@ -9,13 +9,8 @@ import 'package:social_share/social_share.dart';
 
 const _socialShareApps = {
   'instagram': ShareApp.instagram,
-  'twitter': ShareApp.twitter,
-  // 'telegram': ShareApp.telegram,
+  'facebook': ShareApp.facebook,
   'whatsapp': ShareApp.whatsapp,
-  'sms': ShareApp.message,
-  // At the moment the application crashes if I want to share on Facebook story,
-  // so for the moment this option is commented :D
-  // 'facebook': ShareApp.facebook,
 };
 
 @LazySingleton(as: ShareRepository, env: liveEnvs)
@@ -38,29 +33,14 @@ class ShareRepositoryImpl implements ShareRepository {
 
   @override
   Future<void> shareImage(ShareApp shareApp, File image, [String? text, String? subject]) async {
-    switch (shareApp) {
-      default:
-        await SocialShare.shareOptions('${subject ?? ''}\n\n${text ?? ''}\n', imagePath: image.path);
-    }
+    await SocialShare.shareOptions('${subject ?? ''}\n\n${text ?? ''}\n', imagePath: image.path);
   }
 
   @override
   Future<void> shareText(ShareApp shareApp, String text, [String? subject]) async {
     switch (shareApp) {
-      case ShareApp.twitter:
-        await SocialShare.shareTwitter(
-          '${subject ?? ''}\n\n$text\n',
-          hashtags: ['informed'],
-        );
-        break;
       case ShareApp.whatsapp:
         await SocialShare.shareWhatsapp(text);
-        break;
-      case ShareApp.telegram:
-        await SocialShare.shareTelegram(text);
-        break;
-      case ShareApp.message:
-        await SocialShare.shareSms(text);
         break;
       case ShareApp.copyLink:
         await SocialShare.copyToClipboard(text);
@@ -88,7 +68,6 @@ class ShareRepositoryImpl implements ShareRepository {
       '#FFFFFF',
       '#FFFFFF',
       url,
-      appId: '249845939148351',
     );
   }
 }

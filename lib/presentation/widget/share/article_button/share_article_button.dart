@@ -92,20 +92,14 @@ class _Button extends StatelessWidget {
     if (builder == null) {
       return ShareButton(
         backgroundColor: backgroundColor,
-        onTap: (shareApp) {
-          if (shareApp == null) return;
-
-          cubit.share(shareApp, article);
-        },
+        onTap: (shareApp) => cubit.share(shareApp, article),
       );
     } else {
       return GestureDetector(
-        onTap: () {
-          showShareableApp(context).then((value) {
-            if (value == null) return;
+        onTap: () async {
+          final shareApp = await showShareableApp(context);
 
-            cubit.share(value, article);
-          });
+          await cubit.share(shareApp, article);
         },
         child: builder(context),
       );

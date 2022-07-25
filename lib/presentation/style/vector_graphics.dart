@@ -85,10 +85,7 @@ class AppVectorGraphics {
 
   static const String shareFacebook = 'assets/vector_graphics/facebook_ic.svg';
   static const String shareWhatsapp = 'assets/vector_graphics/whatsapp_ic.svg';
-  static const String shareTwitter = 'assets/vector_graphics/twitter_ic.svg';
   static const String shareInstagram = 'assets/vector_graphics/instagram_ic.svg';
-  static const String shareTelegram = 'assets/vector_graphics/telegram_ic.svg';
-  static const String shareMessage = 'assets/vector_graphics/message_ic.svg';
   static const String shareCopy = 'assets/vector_graphics/copy_ic.svg';
   static const String shareMore = 'assets/vector_graphics/more_ic.svg';
 }

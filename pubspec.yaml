@@ -68,9 +68,7 @@ dependencies:
   flutter_custom_tabs: 1.0.4
   flutter_inappwebview: 5.4.3+7
   cached_network_image: 3.2.1
-  social_share:
-    git:
-      url: https://github.com/woosttech/social_share.git
+  social_share: 2.2.1
   scrolls_to_top: 1.1.1
   dotted_border: 2.0.0+2
   audio_video_progress_bar: 0.10.0

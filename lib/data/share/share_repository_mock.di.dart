@@ -13,10 +13,7 @@ class ShareRepositoryMock implements ShareRepository {
       ShareApp.instagram,
       ShareApp.facebook,
       ShareApp.copyLink,
-      ShareApp.message,
       ShareApp.more,
-      ShareApp.telegram,
-      ShareApp.twitter,
       ShareApp.whatsapp,
     ];
   }
