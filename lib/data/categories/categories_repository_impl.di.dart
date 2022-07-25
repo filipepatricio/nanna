@@ -4,9 +4,10 @@ import 'package:better_informed_mobile/data/categories/api/categories_data_sourc
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_preference_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/categories/categories_repository.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: CategoriesRepository)
 class CategoriesRepositoryImpl implements CategoriesRepository {
@@ -19,7 +20,7 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
   final CategoriesDataSource _categoriesDataSource;
   final CategoryDTOMapper _categoryMapper;
   final CategoryPreferenceDTOMapper _categoryPreferenceDTOMapper;
-  final StreamController<List<Category>> _categoryStreamController = StreamController<List<Category>>();
+  final StreamController<List<Category>> _categoryStreamController = BehaviorSubject<List<Category>>.seeded([]);
 
   @override
   Future<List<Category>> getOnboardingCategories() async {

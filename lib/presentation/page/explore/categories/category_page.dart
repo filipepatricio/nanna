@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
