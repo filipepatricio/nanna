@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_e
 import 'package:better_informed_mobile/domain/article/use_case/get_other_topic_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_related_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
