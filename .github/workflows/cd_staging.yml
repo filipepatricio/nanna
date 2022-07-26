@@ -59,7 +59,7 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
       - name: Sets Flutter environment
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@v2.5.0
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
 
@@ -135,7 +135,7 @@ jobs:
         uses: zgosalvez/github-actions-get-flutter-version-env@v1
 
       - name: Sets up a Flutter environment for use in actions
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@v2.5.0
         with:
           flutter-version: ${{ steps.get-flutter-version.outputs.version }}
       - run: echo "Setup flutter environment with version ${{ steps.get-flutter-version.outputs.version }}"
