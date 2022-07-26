@@ -10,8 +10,8 @@ import 'package:better_informed_mobile/presentation/widget/informed_divider.dart
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -56,7 +56,7 @@ class BookmarkListTile extends StatelessWidget {
                       bookmarkCover.bookmark,
                     ),
                   ),
-                  bookmarkCover.bookmark.getShareButton(context),
+                  bookmarkCover.bookmark.getShareButton(context, snackbarController),
                 ],
               ),
             ),
