@@ -15,7 +15,7 @@ class _TopicCoverBookmark extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final coverSize = useMemoized(
-      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -26,34 +26,17 @@ class _TopicCoverBookmark extends HookWidget {
         children: [
           SizedBox.square(
             dimension: coverSize,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: TopicCoverImage(
-                    topic: topic,
-                    borderRadius: AppDimens.s,
-                  ),
-                ),
-                // Positioned(
-                //   top: AppDimens.s,
-                //   left: AppDimens.s,
-                //   child: CoverLabel.topic(topic: topic),
-                // ),
-              ],
+            child: TopicCoverImage(
+              topic: topic,
+              borderRadius: AppDimens.s,
             ),
           ),
           const SizedBox(width: AppDimens.m),
           Expanded(
             child: SizedBox(
               height: coverSize,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  TopicCoverContent.bookmark(
-                    topic: topic,
-                  ),
-                ],
+              child: _TopicCoverContent.bookmark(
+                topic: topic,
               ),
             ),
           ),

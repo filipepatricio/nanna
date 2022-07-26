@@ -15,7 +15,7 @@ class _ArticleCoverBookmark extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final coverSize = useMemoized(
-      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -24,7 +24,7 @@ class _ArticleCoverBookmark extends HookWidget {
       onTap: onTap,
       child: Row(
         children: [
-          ArticleSquareCover(
+          _ArticleSquareCover(
             article: article,
             coverColor: coverColor,
             showArticleIndicator: false,
@@ -38,9 +38,13 @@ class _ArticleCoverBookmark extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  const SizedBox(height: AppDimens.s),
                   Row(
                     children: [
-                      PublisherLogo.dark(publisher: article.publisher),
+                      PublisherLogo.dark(
+                        publisher: article.publisher,
+                        dimension: AppDimens.ml,
+                      ),
                       Flexible(
                         child: Text(
                           article.publisher.name,
@@ -51,24 +55,12 @@ class _ArticleCoverBookmark extends HookWidget {
                       ),
                     ],
                   ),
-                  const Spacer(),
+                  const SizedBox(height: AppDimens.s),
                   Text(
                     article.strippedTitle,
-                    maxLines: 2,
+                    maxLines: 3,
                     style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
                     overflow: TextOverflow.ellipsis,
-                  ),
-                  const Spacer(),
-                  Flexible(
-                    child: ArticleDottedInfo(
-                      article: article,
-                      isLight: false,
-                      showLogo: false,
-                      showPublisher: false,
-                      fullDate: true,
-                      textStyle: AppTypography.caption1Medium,
-                      color: AppColors.textGrey,
-                    ),
                   ),
                 ],
               ),

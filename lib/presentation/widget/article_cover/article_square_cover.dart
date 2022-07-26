@@ -1,12 +1,7 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
-import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
-import 'package:flutter/material.dart';
+part of 'article_cover.dart';
 
-class ArticleSquareCover extends StatelessWidget {
-  const ArticleSquareCover({
+class _ArticleSquareCover extends StatelessWidget {
+  const _ArticleSquareCover({
     required this.article,
     required this.coverColor,
     required this.showArticleIndicator,
@@ -26,7 +21,7 @@ class ArticleSquareCover extends StatelessWidget {
     return SizedBox.square(
       dimension: dimension,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppDimens.s),
+        borderRadius: BorderRadius.circular(borderRadius ?? AppDimens.s),
         child: Stack(
           children: [
             Positioned.fill(

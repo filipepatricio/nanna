@@ -1,53 +1,38 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
-import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
-import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+part of 'topic_cover.dart';
 
-const _coverSizeToScreenWidthFactor = 0.26;
-
-class TopicCoverContent extends StatelessWidget {
-  factory TopicCoverContent.dailyBrief({required TopicPreview topic, Brightness mode = Brightness.dark}) =>
-      TopicCoverContent._(
+class _TopicCoverContent extends StatelessWidget {
+  factory _TopicCoverContent.dailyBrief({required TopicPreview topic, Brightness mode = Brightness.dark}) =>
+      _TopicCoverContent._(
         type: TopicCoverType.dailyBrief,
         topic: topic,
         mode: mode,
       );
 
-  factory TopicCoverContent.bookmark({required TopicPreview topic}) => TopicCoverContent._(
+  factory _TopicCoverContent.bookmark({required TopicPreview topic}) => _TopicCoverContent._(
         type: TopicCoverType.bookmark,
         topic: topic,
       );
 
-  factory TopicCoverContent.exploreLarge({required TopicPreview topic}) => TopicCoverContent._(
+  factory _TopicCoverContent.exploreLarge({required TopicPreview topic}) => _TopicCoverContent._(
         type: TopicCoverType.exploreLarge,
         topic: topic,
       );
 
-  factory TopicCoverContent.exploreSmall({required TopicPreview topic, bool hasBackgroundColor = false}) =>
-      TopicCoverContent._(
+  factory _TopicCoverContent.exploreSmall({required TopicPreview topic, bool hasBackgroundColor = false}) =>
+      _TopicCoverContent._(
         type: TopicCoverType.exploreSmall,
         topic: topic,
         hasBackgroundColor: hasBackgroundColor,
       );
 
-  factory TopicCoverContent.otherBriefItemsList({required TopicPreview topic, required double coverSize}) =>
-      TopicCoverContent._(
+  factory _TopicCoverContent.otherBriefItemsList({required TopicPreview topic, required double coverSize}) =>
+      _TopicCoverContent._(
         type: TopicCoverType.otherBriefItemsList,
         topic: topic,
         coverSize: coverSize,
       );
 
-  const TopicCoverContent._({
+  const _TopicCoverContent._({
     required this.topic,
     required this.type,
     this.mode = Brightness.dark,
@@ -152,11 +137,8 @@ class _CoverContentBookmark extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleMaxLines = 2;
-    final titleStyle = AppTypography.h5BoldSmall.copyWith(height: 1.25);
-
     final coverSize = useMemoized(
-      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -166,6 +148,7 @@ class _CoverContentBookmark extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,
         children: [
+          const SizedBox(height: AppDimens.s),
           TopicOwnerAvatar(
             owner: topic.owner,
             withImage: false,
@@ -173,25 +156,11 @@ class _CoverContentBookmark extends HookWidget {
             textStyle: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
             mode: Brightness.dark,
           ),
-          const Spacer(),
+          const SizedBox(height: AppDimens.s),
           InformedMarkdownBody(
             markdown: topic.title,
-            maxLines: titleMaxLines,
-            baseTextStyle: titleStyle,
-          ),
-          const Spacer(),
-          Wrap(
-            children: [
-              UpdatedLabel(
-                withPrefix: false,
-                dateTime: topic.lastUpdatedAt,
-                mode: Brightness.dark,
-                textStyle: AppTypography.caption1Medium.copyWith(
-                  height: 1.2,
-                  color: AppColors.textGrey,
-                ),
-              ),
-            ],
+            maxLines: 3,
+            baseTextStyle: AppTypography.h5BoldSmall.copyWith(height: 1.25),
           ),
         ],
       ),

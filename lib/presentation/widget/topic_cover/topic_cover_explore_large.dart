@@ -26,7 +26,7 @@ class _TopicCoverExploreLarge extends StatelessWidget {
               borderRadius: AppDimens.s,
               darkeningMode: DarkeningMode.solid,
             ),
-            TopicCoverContent.exploreLarge(
+            _TopicCoverContent.exploreLarge(
               topic: topic,
             ),
           ],

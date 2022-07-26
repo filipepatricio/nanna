@@ -35,7 +35,7 @@ class _TopicCoverDailyBrief extends StatelessWidget {
                 ),
               ],
             ),
-            TopicCoverContent.dailyBrief(
+            _TopicCoverContent.dailyBrief(
               topic: topic,
               mode: Brightness.light,
             ),

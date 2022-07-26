@@ -56,6 +56,7 @@ class BookmarkListTile extends StatelessWidget {
                       bookmarkCover.bookmark,
                     ),
                   ),
+                  const SizedBox(width: AppDimens.xs),
                   bookmarkCover.bookmark.getShareButton(context, snackbarController),
                 ],
               ),

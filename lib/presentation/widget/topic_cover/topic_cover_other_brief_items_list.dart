@@ -1,7 +1,5 @@
 part of 'topic_cover.dart';
 
-const _coverSizeToScreenWidthFactor = 0.26;
-
 class _TopicCoverOtherBriefItemsList extends HookWidget {
   const _TopicCoverOtherBriefItemsList({
     required this.onTap,
@@ -15,7 +13,7 @@ class _TopicCoverOtherBriefItemsList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final coverSize = useMemoized(
-      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -32,7 +30,7 @@ class _TopicCoverOtherBriefItemsList extends HookWidget {
             ),
           ),
           const SizedBox(width: AppDimens.m),
-          TopicCoverContent.otherBriefItemsList(
+          _TopicCoverContent.otherBriefItemsList(
             topic: topic,
             coverSize: coverSize,
           ),

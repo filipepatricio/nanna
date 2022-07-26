@@ -44,7 +44,7 @@ class _TopicCoverExploreSmall extends StatelessWidget {
                   ],
                 ),
               ),
-              TopicCoverContent.exploreSmall(
+              _TopicCoverContent.exploreSmall(
                 topic: topic,
                 hasBackgroundColor: hasBackgroundColor,
               ),

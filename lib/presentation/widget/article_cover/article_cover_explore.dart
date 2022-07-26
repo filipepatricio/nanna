@@ -22,7 +22,7 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ArticleSquareCover(
+            _ArticleSquareCover(
               article: article,
               coverColor: coverColor,
               showArticleIndicator: true,
@@ -51,7 +51,7 @@ class _ArticleCoverExploreList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final coverSize = useMemoized(
-      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -60,7 +60,7 @@ class _ArticleCoverExploreList extends HookWidget {
       onTap: onTap,
       child: Row(
         children: [
-          ArticleSquareCover(
+          _ArticleSquareCover(
             article: article,
             coverColor: coverColor,
             showArticleIndicator: false,
@@ -76,7 +76,10 @@ class _ArticleCoverExploreList extends HookWidget {
                 children: [
                   Row(
                     children: [
-                      PublisherLogo.dark(publisher: article.publisher),
+                      PublisherLogo.dark(
+                        publisher: article.publisher,
+                        dimension: AppDimens.ml,
+                      ),
                       Flexible(
                         child: Text(
                           article.publisher.name,

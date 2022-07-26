@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_labels_editors_note.dart';
-import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_square_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
@@ -21,18 +20,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 part 'article_audio_view_cover.dart';
 part 'article_cover_bookmark.dart';
 part 'article_cover_daily_brief_large.dart';
-
-part 'article_cover_daily_brief_small.dart';
-
-part 'article_cover_explore.dart';
-
-part 'article_cover_other_brief.dart';
-
-part 'article_cover_topic_big_image.dart';
-
-part 'article_cover_topic_without_image.dart';
-
 part 'article_cover_daily_brief_list.dart';
+part 'article_cover_daily_brief_small.dart';
+part 'article_cover_explore.dart';
+part 'article_cover_other_brief.dart';
+part 'article_cover_topic_big_image.dart';
+part 'article_cover_topic_without_image.dart';
+part 'article_square_cover.dart';
 
 const _coverSizeToScreenWidthFactor = 0.26;
 

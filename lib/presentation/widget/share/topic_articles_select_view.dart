@@ -478,7 +478,7 @@ class _ArticleItemBody extends HookWidget {
           if (logoUrl != null)
             PublisherLogo.dark(
               publisher: header.publisher,
-              size: AppDimens.m,
+              dimension: AppDimens.m,
             )
           else
             Container(
