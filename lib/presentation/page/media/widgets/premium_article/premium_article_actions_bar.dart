@@ -201,6 +201,7 @@ class PremiumArticleActionsBar extends HookWidget {
                         padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
                         child: ShareArticleButton(
                           article: article.metadata,
+                          snackbarController: snackbarController,
                           buttonBuilder: (context) => ValueListenableBuilder<Color>(
                             valueListenable: buttonColor,
                             builder: (context, color, child) => SvgPicture.asset(

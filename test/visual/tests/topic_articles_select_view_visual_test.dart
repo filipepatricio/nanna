@@ -12,6 +12,9 @@ void main() {
     );
     await tester.tap(find.byKey(const Key('share-topic-button')));
     await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(InkWell).first);
+    await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
 }

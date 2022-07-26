@@ -82,4 +82,7 @@ class AppVectorGraphics {
   static const String pause = 'assets/vector_graphics/pause.svg';
   static const String skipBack10Seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
   static const String skipForward10Seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
+
+  static const String shareCopy = 'assets/vector_graphics/copy_ic.svg';
+  static const String shareMore = 'assets/vector_graphics/more_ic.svg';
 }
