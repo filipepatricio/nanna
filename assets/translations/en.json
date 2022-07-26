@@ -19,7 +19,6 @@
     "shareImage": "Share image",
     "shareText": "Share text",
     "copy": "Copy",
-    "message": "Message",
     "more": "More",
     "copyLink": "Copy link",
     "undo": "Undo",
@@ -31,10 +30,8 @@
   },
   "social": {
     "instagram": "Instragam",
-    "twitter": "Twitter",
     "facebook": "Facebook",
-    "whatsapp": "Whatsapp",
-    "telegram": "Telegram"
+    "whatsapp": "Whatsapp"
   },
   "onboarding": {
     "title": "How we use push notifications",
