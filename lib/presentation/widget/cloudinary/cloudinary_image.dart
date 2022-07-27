@@ -65,7 +65,7 @@ class CloudinaryImage extends HookWidget {
     }
 
     final imageProvider = useCloudinaryProvider();
-    final imageUrl = config.apply(context, publicId, imageProvider).generateNotNull(publicId);
+    final imageUrl = config.applyAndGenerateUrl(context, publicId, imageProvider);
 
     return CachedNetworkImage(
       imageUrl: imageUrl,
