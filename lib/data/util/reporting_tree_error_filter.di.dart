@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +16,7 @@ class ReportingTreeErrorFilterController {
     _CubitClosedErrorFilter(),
     _FirebaseConnectionErrorFilter(),
     _SignInWithAppleAuthorizationErrorFilter(),
+    _HttpExceptionErrorFilter(),
     _ErrorFilter<NoInternetConnectionException>(),
     _ErrorFilter<UnauthorizedException>(),
   ];
@@ -55,6 +58,18 @@ class _FirebaseConnectionErrorFilter implements ReportingTreeErrorFilter {
           message.contains('International roaming is currently off') ||
           message.contains('The request timed out') ||
           message.contains('A data connection is not currently allowed');
+    }
+    return false;
+  }
+}
+
+class _HttpExceptionErrorFilter implements ReportingTreeErrorFilter {
+  @override
+  bool filterOut(error) {
+    if (error is HttpException) {
+      final message = error.message;
+      return message.contains('Connection closed while receiving data') &&
+          message.contains('informed-audio-production');
     }
     return false;
   }
