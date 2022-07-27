@@ -18,6 +18,9 @@ class CloudinaryConfig {
   final bool autoQuality;
   final bool sizeRoundUp;
 
+  String applyAndGenerateUrl(BuildContext context, String publicId, CloudinaryImageProvider provider) =>
+      apply(context, publicId, provider).generateNotNull(publicId);
+
   CloudinaryTransformation apply(BuildContext context, String publicId, CloudinaryImageProvider provider) {
     final image = provider.withPublicId(publicId);
 

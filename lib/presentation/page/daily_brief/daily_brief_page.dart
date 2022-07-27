@@ -421,8 +421,7 @@ void _precacheFullSizeImages(
             if (article.type == ArticleType.premium) {
               final articleImageUrl = article.imageUrl;
               if (articleImageUrl.isNotEmpty) {
-                final url =
-                    config.apply(context, articleImageUrl, cloudinaryProvider).generateAsPlatform(articleImageUrl);
+                final url = config.applyAndGenerateUrl(context, articleImageUrl, cloudinaryProvider);
                 precacheImage(CachedNetworkImageProvider(url), context);
               }
             }
@@ -434,7 +433,7 @@ void _precacheFullSizeImages(
         final topicHeaderImageWidth = AppDimens.topicViewHeaderImageWidth(context);
         final config = CloudinaryConfig(width: topicHeaderImageWidth, height: topicHeaderImageHeight);
         final publicId = topic.topicPreview.heroImage.publicId;
-        final url = config.apply(context, publicId, cloudinaryProvider).generateAsPlatform(publicId);
+        final url = config.applyAndGenerateUrl(context, publicId, cloudinaryProvider);
         precacheImage(CachedNetworkImageProvider(url), context);
       },
     );
