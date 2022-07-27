@@ -42,8 +42,14 @@ class FreeArticleView extends HookWidget {
 
     final webViewOptions = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
-        useShouldOverrideUrlLoading: true,
-        mediaPlaybackRequiresUserGesture: false,
+        contentBlockers: [
+          ContentBlocker(
+            trigger: ContentBlockerTrigger(urlFilter: "http://*.*"),
+            action: ContentBlockerAction(
+              type: ContentBlockerActionType.BLOCK,
+            ),
+          ),
+        ],
       ),
       android: AndroidInAppWebViewOptions(useHybridComposition: true),
       ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true),
