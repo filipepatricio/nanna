@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/domain/share/use_case/share_text_use_case
 import 'package:better_informed_mobile/domain/share/use_case/share_using_facebook_use_case.di.dart';
 import 'package:better_informed_mobile/domain/share/use_case/share_using_instagram_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/presentation/widget/share/empty_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic/share_topic_view.dart';
@@ -53,6 +54,7 @@ class TopicArticlesSelectViewCubit extends Cubit<TopicArticlesSelectViewState> {
     emit(TopicArticlesSelectViewState.generatingShareImage());
 
     late File image;
+    late File emptyImage;
 
     if (shareOption == ShareOptions.instagram || shareOption == ShareOptions.facebook) {
       final articles = _selectedIndexes.map((e) => _topic.entries[e]).map((e) => e.item as MediaItemArticle).toList();
@@ -61,6 +63,14 @@ class TopicArticlesSelectViewCubit extends Cubit<TopicArticlesSelectViewState> {
             topic: _topic,
             articles: articles,
           );
+
+      EmptyView factoryEmptyImage() => EmptyView();
+
+      emptyImage = await generateShareImage(
+        _shareViewImageGenerator,
+        factoryEmptyImage,
+        'empty_image.png',
+      );
 
       image = await generateShareImage(
         _shareViewImageGenerator,
@@ -71,7 +81,7 @@ class TopicArticlesSelectViewCubit extends Cubit<TopicArticlesSelectViewState> {
 
     switch (shareOption) {
       case ShareOptions.instagram:
-        await _shareUsingInstagramUseCase(image, null, _topic.url);
+        await _shareUsingInstagramUseCase(emptyImage, image, _topic.url);
         break;
       case ShareOptions.facebook:
         await _shareUsingFacebookUseCasel(image, _topic.url);

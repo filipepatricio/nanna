@@ -22,8 +22,8 @@ const _cardShadow = BoxShadow(
   spreadRadius: -1.0,
 );
 
-const _viewHeight = 1280.0;
-const _viewWidth = 720.0;
+const _viewHeight = AppDimens.shareHeight;
+const _viewWidth = AppDimens.shareWidth;
 
 const _topicHeaderHeight = 878.0;
 const _topicHeaderWidth = 520.0;
@@ -74,10 +74,19 @@ class ShareTopicView extends HookWidget implements BaseShareCompletable {
 
     final logosMap = useMemoized(() => _prepareLogos(cloudinary));
 
+    final backgroundImage = useMemoized(
+      () => const Image(image: AssetImage(AppRasterGraphics.shareStickerBackgroundGreen)),
+    );
+
     return ImageLoadResolver(
-      images: [image, ...logosMap.values],
+      images: [
+        image,
+        ...logosMap.values,
+        backgroundImage,
+      ],
       completer: _baseViewCompleter,
       child: _Background(
+        backgroundImage: backgroundImage,
         child: _Sticker(
           topic: topic,
           articles: articles,
@@ -109,9 +118,12 @@ class ShareTopicView extends HookWidget implements BaseShareCompletable {
 class _Background extends StatelessWidget {
   const _Background({
     required this.child,
+    required this.backgroundImage,
     Key? key,
   }) : super(key: key);
+
   final Widget child;
+  final Image backgroundImage;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +133,7 @@ class _Background extends StatelessWidget {
         height: _viewHeight,
         child: Stack(
           children: [
-            Image.asset(AppRasterGraphics.shareStickerBackgroundGreen),
+            backgroundImage,
             Align(
               alignment: Alignment.center,
               child: child,
