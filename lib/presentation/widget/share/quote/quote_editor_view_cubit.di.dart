@@ -105,6 +105,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
           article: article,
           quoteVariantData: state.variants[state.selectedIndex],
         );
+
     final foregroundImage = await generateShareImage(
       _shareViewImageGenerator,
       foregroundFactory,
