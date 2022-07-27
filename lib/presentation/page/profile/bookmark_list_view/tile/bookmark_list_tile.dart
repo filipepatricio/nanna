@@ -36,32 +36,28 @@ class BookmarkListTile extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: AppDimens.m),
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppDimens.ml,
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.ml,
+          ),
+          child: bookmarkCover.getContent(context),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.sl,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _BookmarkRemoveButton(
+                onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
+                  bookmarkCover.bookmark,
+                ),
               ),
-              child: bookmarkCover.getContent(context),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppDimens.sl,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _BookmarkRemoveButton(
-                    onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
-                      bookmarkCover.bookmark,
-                    ),
-                  ),
-                  const SizedBox(width: AppDimens.xs),
-                  bookmarkCover.bookmark.getShareButton(context, snackbarController),
-                ],
-              ),
-            ),
-          ],
+              const SizedBox(width: AppDimens.xs + AppDimens.xxs),
+              bookmarkCover.bookmark.getShareButton(context, snackbarController),
+            ],
+          ),
         ),
         if (!isLast)
           const Padding(

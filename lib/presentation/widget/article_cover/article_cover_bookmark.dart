@@ -38,7 +38,7 @@ class _ArticleCoverBookmark extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  const SizedBox(height: AppDimens.s),
+                  const Spacer(),
                   Row(
                     children: [
                       PublisherLogo.dark(
@@ -55,12 +55,15 @@ class _ArticleCoverBookmark extends HookWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppDimens.s),
-                  Text(
-                    article.strippedTitle,
-                    maxLines: 3,
-                    style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
-                    overflow: TextOverflow.ellipsis,
+                  const Spacer(),
+                  Expanded(
+                    flex: 6,
+                    child: Text(
+                      article.strippedTitle,
+                      maxLines: 3,
+                      style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

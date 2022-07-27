@@ -20,37 +20,34 @@ class _ArticleSquareCover extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox.square(
       dimension: dimension,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(borderRadius ?? AppDimens.s),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(borderRadius ?? AppDimens.s),
-                child: article.hasImage
-                    ? ArticleImage(
-                        image: article.image!,
-                        cardColor: coverColor,
-                      )
-                    : SizedBox.expand(
-                        child: Container(color: coverColor),
-                      ),
-              ),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(borderRadius ?? AppDimens.s),
+              child: article.hasImage
+                  ? ArticleImage(
+                      image: article.image!,
+                      cardColor: coverColor,
+                    )
+                  : SizedBox.expand(
+                      child: Container(color: coverColor),
+                    ),
             ),
-            if (showArticleIndicator)
-              Positioned(
-                top: AppDimens.s,
-                left: AppDimens.s,
-                child: CoverLabel.article(),
-              ),
-            if (article.hasAudioVersion)
-              Positioned(
-                bottom: AppDimens.s,
-                right: AppDimens.s,
-                child: AudioIconButton(article: article),
-              ),
-          ],
-        ),
+          ),
+          if (showArticleIndicator)
+            Positioned(
+              top: AppDimens.s,
+              left: AppDimens.s,
+              child: CoverLabel.article(),
+            ),
+          if (article.hasAudioVersion)
+            Positioned(
+              bottom: AppDimens.s,
+              right: AppDimens.s,
+              child: AudioIconButton(article: article),
+            ),
+        ],
       ),
     );
   }
