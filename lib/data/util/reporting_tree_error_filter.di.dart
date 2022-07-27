@@ -43,8 +43,7 @@ class _FirebaseConnectionErrorFilter implements ReportingTreeErrorFilter {
           message.contains('The network connection was lost') ||
           message.contains('International roaming is currently off') ||
           message.contains('The request timed out') ||
-          message.contains('A data connection is not currently allowed') ||
-          message.contains('TOO_MANY_REGISTRATIONS');
+          message.contains('A data connection is not currently allowed');
     }
     return false;
   }
