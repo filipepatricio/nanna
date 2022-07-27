@@ -38,7 +38,7 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   final GetOnboardingCategoriesUseCase _getCurrentOnboardingCategoriesUseCase;
   final UpdatePreferredCategoriesUseCase _updatePreferredCategoriesUseCase;
 
-  late final StreamSubscription _onboardingCategoriesStreamSubscription;
+  StreamSubscription? _onboardingCategoriesStreamSubscription;
 
   List<Category> _categories = [];
 
@@ -101,6 +101,6 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   @override
   Future<void> close() async {
     await super.close();
-    await _onboardingCategoriesStreamSubscription.cancel();
+    await _onboardingCategoriesStreamSubscription?.cancel();
   }
 }
