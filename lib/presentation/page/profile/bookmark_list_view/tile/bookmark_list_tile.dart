@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
@@ -47,18 +48,26 @@ class BookmarkListTile extends StatelessWidget {
             horizontal: AppDimens.sl,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _BookmarkRemoveButton(
-                onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
-                  bookmarkCover.bookmark,
-                ),
+              bookmarkCover.bookmark.getReadProgressLabel(context),
+              Row(
+                children: [
+                  _BookmarkRemoveButton(
+                    onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
+                      bookmarkCover.bookmark,
+                    ),
+                  ),
+                  const SizedBox(width: AppDimens.xs + AppDimens.xxs),
+                  bookmarkCover.bookmark.getShareButton(context, snackbarController),
+                ],
               ),
-              const SizedBox(width: AppDimens.xs + AppDimens.xxs),
-              bookmarkCover.bookmark.getShareButton(context, snackbarController),
             ],
           ),
         ),
+        bookmarkCover.bookmark.getReadProgressBar(context),
+        const SizedBox(height: AppDimens.m),
         if (!isLast)
           const Padding(
             padding: EdgeInsets.symmetric(
@@ -119,6 +128,46 @@ extension on Bookmark {
         ),
         backgroundColor: AppColors.transparent,
       ),
+      unknown: (_) => const SizedBox.shrink(),
+    );
+  }
+
+  Widget getReadProgressBar(
+    BuildContext context,
+  ) {
+    return data.map(
+      article: (data) => Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimens.ml,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppDimens.s),
+          child: LinearProgressIndicator(
+            backgroundColor: AppColors.dividerGreyLight,
+            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.darkGreyBackground),
+            value: data.article.progress.contentProgress / 100.0,
+          ),
+        ),
+      ),
+      topic: (_) => const SizedBox.shrink(),
+      unknown: (_) => const SizedBox.shrink(),
+    );
+  }
+
+  Widget getReadProgressLabel(
+    BuildContext context,
+  ) {
+    return data.map(
+      article: (data) => Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimens.s,
+        ),
+        child: Text(
+          LocaleKeys.article_percentageRead.tr(args: ['${(data.article.progress.contentProgress).ceil()}']),
+          style: AppTypography.subH2Bold.copyWith(color: AppColors.darkerGrey),
+        ),
+      ),
+      topic: (_) => const SizedBox.shrink(),
       unknown: (_) => const SizedBox.shrink(),
     );
   }
