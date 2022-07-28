@@ -16,5 +16,5 @@ class UnauthorizedExceptionMapper extends ExceptionMapper {
   @override
   Object map(Object original) => UnauthorizedException();
 
-  bool _isUnauthenticated(GraphQLError error) => error.code == 'UNAUTHENTICATED';
+  bool _isUnauthenticated(GraphQLError error) => error.code?.contains('UNAUTHENTICATED') ?? false;
 }

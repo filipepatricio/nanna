@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Version handled in CD workflows - check out .github/workflows/cd_prod.yml and .github/workflows/cd_staging.yml
-version: 1.19.0+0
+version: 1.20.0+0
 
 environment:
   sdk: '>=2.17.0 <3.0.0'
@@ -36,7 +36,7 @@ dependencies:
   uni_links: 0.5.1
   flutter_secure_storage: 5.0.2
   firebase_core: 1.17.0
-  firebase_messaging: 12.0.1
+  firebase_messaging: 11.4.0
   firebase_auth: 3.3.18
   sign_in_with_apple: 3.3.0
   google_sign_in: 5.3.1
