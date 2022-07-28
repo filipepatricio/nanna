@@ -176,4 +176,6 @@ class AppDimens {
 
   // 1080
   static const shareHeight = 1280.0;
+
+  static double coverSize(BuildContext context, double widthFactor) => MediaQuery.of(context).size.width * widthFactor;
 }
