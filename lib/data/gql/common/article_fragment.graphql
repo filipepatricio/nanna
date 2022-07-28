@@ -18,6 +18,11 @@ fragment articleFragment on Article {
     kind {
         ...kindFragment
     }
+    progress{
+        audioPosition
+        audioProgress
+        contentProgress
+    }
     progressState
     publicationDate
     timeToRead
