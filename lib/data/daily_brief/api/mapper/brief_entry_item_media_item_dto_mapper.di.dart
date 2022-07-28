@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
@@ -14,11 +15,13 @@ class BriefEntryMediaItemDTOMapper implements Mapper<BriefEntryItemDTO, MediaIte
     this._publisherDTOMapper,
     this._articleTypeDTOMapper,
     this._articleKindDTOMapper,
+    this._articleProgressDTOMapper,
   );
   final ArticleImageDTOMapper _articleImageDTOMapper;
   final PublisherDTOMapper _publisherDTOMapper;
   final ArticleTypeDTOMapper _articleTypeDTOMapper;
   final ArticleKindDTOMapper _articleKindDTOMapper;
+  final ArticleProgressDTOMapper _articleProgressDTOMapper;
 
   @override
   MediaItem? call(BriefEntryItemDTO data) {
@@ -45,6 +48,7 @@ class BriefEntryMediaItemDTOMapper implements Mapper<BriefEntryItemDTO, MediaIte
           sourceUrl: data.sourceUrl,
           author: data.author,
           hasAudioVersion: data.hasAudioVersion,
+          progress: _articleProgressDTOMapper(data.progress),
           progressState: data.progressState,
         );
       },
