@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_kind.dart';
+import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -23,6 +24,7 @@ class MediaItem with _$MediaItem {
     required bool hasAudioVersion,
     required String sourceUrl,
     required ArticleProgressState progressState,
+    required ArticleProgress progress,
     DateTime? publicationDate,
     ArticleImage? image,
     String? author,
