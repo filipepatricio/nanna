@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
@@ -14,11 +15,13 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemA
     this._publisherDTOMapper,
     this._articleTypeDTOMapper,
     this._articleKindDTOMapper,
+    this._articleProgressDTOMapper,
   );
   final ArticleImageDTOMapper _articleImageDTOMapper;
   final PublisherDTOMapper _publisherDTOMapper;
   final ArticleTypeDTOMapper _articleTypeDTOMapper;
   final ArticleKindDTOMapper _articleKindDTOMapper;
+  final ArticleProgressDTOMapper _articleProgressDTOMapper;
 
   @override
   MediaItemArticle call(ArticleHeaderDTO data) {
@@ -43,6 +46,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemA
       image: image != null ? _articleImageDTOMapper(image) : null,
       publicationDate: publicationDate != null ? DateTime.parse(publicationDate).toLocal() : null,
       hasAudioVersion: data.hasAudioVersion,
+      progress: _articleProgressDTOMapper(data.progress),
       progressState: data.progressState,
     );
   }

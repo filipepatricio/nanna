@@ -58,7 +58,7 @@ class PremiumArticleAudioView extends HookWidget {
                 aspectRatio: 0.65,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    return ArticleCover.bookmarkList(
+                    return ArticleCover.audioView(
                       article: article.metadata,
                       coverColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
                       height: constraints.maxHeight,

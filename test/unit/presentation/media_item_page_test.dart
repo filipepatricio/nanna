@@ -306,8 +306,6 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
     moreFromBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
     otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
-    showArticleRelatedContentSection: true,
-    showArticleMoreFromSection: true,
     relatedContentItems: TestData.categoryItemList,
   );
 

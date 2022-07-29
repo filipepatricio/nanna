@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:better_informed_mobile/domain/share/data/share_app.dart';
 import 'package:better_informed_mobile/domain/share/share_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -9,7 +10,7 @@ class ShareImageUseCase {
 
   final ShareRepository _shareRepository;
 
-  Future<void> call(File image, [String? text, String? subject]) async {
-    return _shareRepository.shareImage(image, text, subject);
+  Future<void> call(ShareOptions shareOption, File image, [String? text, String? subject]) async {
+    return _shareRepository.shareImage(shareOption, image, text, subject);
   }
 }

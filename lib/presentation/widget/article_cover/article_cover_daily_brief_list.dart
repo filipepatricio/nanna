@@ -15,7 +15,7 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final coverSize = useMemoized(
-      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -24,13 +24,11 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
       onTap: onTap,
       child: Row(
         children: [
-          SizedBox.square(
+          _ArticleSquareCover(
+            article: article,
+            coverColor: coverColor,
+            showArticleIndicator: false,
             dimension: coverSize,
-            child: _CoverImage(
-              article: article,
-              coverColor: coverColor,
-              showArticleIndicator: false,
-            ),
           ),
           const SizedBox(width: AppDimens.m),
           Expanded(

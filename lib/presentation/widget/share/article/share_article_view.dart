@@ -21,8 +21,8 @@ const _cardShadow = BoxShadow(
   spreadRadius: -1.0,
 );
 
-const _viewHeight = 1280.0;
-const _viewWidth = 720.0;
+const _viewHeight = AppDimens.shareHeight;
+const _viewWidth = AppDimens.shareWidth;
 
 const _headerWidth = 520.0;
 const _headerHeight = 878.0;
@@ -94,10 +94,15 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
       [article.image],
     );
 
+    final backgroundImage = useMemoized(
+      () => const Image(image: AssetImage(AppRasterGraphics.shareStickerBackgroundPeach)),
+    );
+
     return ImageLoadResolver(
-      images: [articleImage, logoImage],
+      images: [articleImage, logoImage, backgroundImage],
       completer: _baseViewCompleter,
       child: _Background(
+        backgroundImage: backgroundImage,
         child: _Sticker(
           article: article,
           headerImage: articleImage,
@@ -111,9 +116,12 @@ class ShareArticleView extends HookWidget implements BaseShareCompletable {
 class _Background extends StatelessWidget {
   const _Background({
     required this.child,
+    required this.backgroundImage,
     Key? key,
   }) : super(key: key);
+
   final Widget child;
+  final Image backgroundImage;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +131,7 @@ class _Background extends StatelessWidget {
         width: _viewWidth,
         child: Stack(
           children: [
-            Image.asset(AppRasterGraphics.shareStickerBackgroundPeach),
+            backgroundImage,
             Align(
               alignment: Alignment.center,
               child: child,

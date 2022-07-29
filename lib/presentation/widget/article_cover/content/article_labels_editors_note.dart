@@ -57,7 +57,7 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
         : EdgeInsets.zero;
 
     return ColoredBox(
-      color: AppColors.darkLinen,
+      color: AppColors.white,
       child: Container(
         decoration: decoration,
         padding: padding,

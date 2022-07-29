@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_onboarding_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/set_selected_onboarding_categories_stream_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide_data.dt.dart';
@@ -22,7 +22,11 @@ class OnboardingCategoriesSlideCubit extends Cubit<OnboardingCategoriesSlideStat
   Future<void> init() async {
     try {
       final categories = await _getOnboardingCategoriesUseCase();
-      _data = _data.copyWith(categories: categories);
+      final selectedCategories = await _getOnboardingCategoriesUseCase.stream.first;
+      _data = _data.copyWith(
+        categories: categories,
+        selectedCategories: selectedCategories,
+      );
     } catch (e, s) {
       Fimber.e('Onboarding categories loading failed', ex: e, stacktrace: s);
       emit(const OnboardingCategoriesSlideState.error());

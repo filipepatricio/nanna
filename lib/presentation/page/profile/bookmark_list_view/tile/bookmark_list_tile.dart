@@ -4,22 +4,16 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/stacked_cards/stacked_cards_variant.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-const _aspectRatio = 0.64;
-const _contentWidthFactor = 0.4;
 
 typedef OnRemoveBookmarkPressed = void Function(Bookmark bookmark);
 
@@ -27,88 +21,52 @@ class BookmarkListTile extends StatelessWidget {
   const BookmarkListTile({
     required this.bookmarkCover,
     required this.onRemoveBookmarkPressed,
+    required this.snackbarController,
     this.isLast = false,
     Key? key,
   }) : super(key: key);
 
   final BookmarkTileCover bookmarkCover;
   final OnRemoveBookmarkPressed onRemoveBookmarkPressed;
+  final SnackbarController snackbarController;
   final bool isLast;
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.width * _contentWidthFactor / _aspectRatio;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppDimens.l,
-      ),
-      child: Column(
-        children: [
-          const SizedBox(height: AppDimens.m),
-          SizedBox(
-            height: height + AppDimens.m,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * _contentWidthFactor,
-                      child: AspectRatio(
-                        aspectRatio: _aspectRatio,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return bookmarkCover.getContent(
-                              context,
-                              Size(
-                                constraints.maxWidth,
-                                constraints.maxHeight,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: AppDimens.m),
-                  ],
-                ),
-                const SizedBox(width: AppDimens.m),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        bookmarkCover.bookmark.title,
-                        style: AppTypography.b2Bold,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      ...bookmarkCover.bookmark.updatedLabel,
-                      const Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          bookmarkCover.bookmark.getShareButton(context),
-                          const SizedBox(width: AppDimens.m),
-                          _BookmarkRemoveButton(
-                            onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
-                              bookmarkCover.bookmark,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+    return Column(
+      children: [
+        const SizedBox(height: AppDimens.m),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.ml,
           ),
-          if (!isLast) const InformedDivider(),
-        ],
-      ),
+          child: bookmarkCover.getContent(context),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.sl,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _BookmarkRemoveButton(
+                onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
+                  bookmarkCover.bookmark,
+                ),
+              ),
+              const SizedBox(width: AppDimens.xs + AppDimens.xxs),
+              bookmarkCover.bookmark.getShareButton(context, snackbarController),
+            ],
+          ),
+        ),
+        if (!isLast)
+          const Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppDimens.ml,
+            ),
+            child: InformedDivider(),
+          ),
+      ],
     );
   }
 }
@@ -142,39 +100,23 @@ class _BookmarkRemoveButton extends StatelessWidget {
 }
 
 extension on Bookmark {
-  String get title {
-    return data.map(
-      article: (data) => data.article.strippedTitle,
-      topic: (data) => data.topic.strippedTitle,
-      unknown: (_) => '',
-    );
-  }
-
-  List<Widget> get updatedLabel {
-    return data.mapOrNull(
-          topic: (data) => [
-            const SizedBox(height: AppDimens.m),
-            UpdatedLabel(
-              dateTime: data.topic.lastUpdatedAt,
-              fontSize: 10,
-              textStyle: AppTypography.subH2Bold.copyWith(
-                color: AppColors.textGrey,
-                letterSpacing: 1,
-              ),
-            ),
-          ],
-        ) ??
-        const [];
-  }
-
-  Widget getShareButton(BuildContext context) {
+  Widget getShareButton(
+    BuildContext context,
+    SnackbarController snackbarController,
+  ) {
     return data.map(
       article: (data) => ShareArticleButton(
         backgroundColor: AppColors.transparent,
         article: data.article,
+        snackbarController: snackbarController,
       ),
       topic: (data) => ShareButton(
-        onTap: () => shareTopicArticlesList(context, data.topic),
+        onTap: (shareOption) => shareTopicArticlesList(
+          context,
+          data.topic,
+          shareOption,
+          snackbarController,
+        ),
         backgroundColor: AppColors.transparent,
       ),
       unknown: (_) => const SizedBox.shrink(),
@@ -183,14 +125,12 @@ extension on Bookmark {
 }
 
 extension on BookmarkTileCover {
-  Widget getContent(BuildContext context, Size size) {
+  Widget getContent(BuildContext context) {
     return map(
       standard: (_) {
         return bookmark.data.mapOrNull(
-              article: (data) => ArticleCover.bookmarkList(
+              article: (data) => ArticleCover.bookmark(
                 article: data.article,
-                height: size.height,
-                width: size.width,
               ),
               topic: (_) => throw Exception('There should not be topic with static cover'),
             ) ??
@@ -199,7 +139,6 @@ extension on BookmarkTileCover {
       dynamic: (cover) {
         return _createDynamicCover(
               context,
-              size,
               cover.indexOfType,
               bookmark,
             ) ??
@@ -210,26 +149,19 @@ extension on BookmarkTileCover {
 
   Widget? _createDynamicCover(
     BuildContext context,
-    Size size,
     int index,
     Bookmark bookmark,
   ) {
     return bookmark.data.mapOrNull(
-      article: (data) => ArticleCover.bookmarkList(
+      article: (data) => ArticleCover.bookmark(
         article: data.article,
         coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
-        height: size.height,
-        width: size.width,
       ),
-      topic: (data) => StackedCards.variant(
-        variant: StackedCardsVariant.values[index % StackedCardsVariant.values.length],
-        coverSize: size,
-        child: TopicCover.bookmarkList(
-          topic: data.topic.asPreview,
-          onTap: () => AutoRouter.of(context).push(
-            TopicPage(
-              topicSlug: data.topic.slug,
-            ),
+      topic: (data) => TopicCover.bookmark(
+        topic: data.topic.asPreview,
+        onTap: () => AutoRouter.of(context).push(
+          TopicPage(
+            topicSlug: data.topic.slug,
           ),
         ),
       ),

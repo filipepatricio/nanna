@@ -1,10 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/free_article/free_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -21,13 +22,15 @@ class FreeArticleView extends HookWidget {
   const FreeArticleView({
     required this.article,
     required this.snackbarController,
-    required this.cubit,
+    required this.briefId,
+    required this.topicId,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final SnackbarController snackbarController;
-  final MediaItemCubit cubit;
+  final String? briefId;
+  final String? topicId;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +42,26 @@ class FreeArticleView extends HookWidget {
 
     final webViewOptions = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
-        useShouldOverrideUrlLoading: true,
-        mediaPlaybackRequiresUserGesture: false,
+        contentBlockers: [
+          ContentBlocker(
+            trigger: ContentBlockerTrigger(urlFilter: "http://*.*"),
+            action: ContentBlockerAction(
+              type: ContentBlockerActionType.BLOCK,
+            ),
+          ),
+        ],
       ),
       android: AndroidInAppWebViewOptions(useHybridComposition: true),
       ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true),
+    );
+
+    final cubit = useCubit<FreeArticleViewCubit>();
+
+    useEffect(
+      () {
+        cubit.init(article.slug);
+      },
+      [cubit],
     );
 
     return Scaffold(
@@ -62,8 +80,8 @@ class FreeArticleView extends HookWidget {
         actions: [
           BookmarkButton.article(
             article: article,
-            topicId: cubit.topicId,
-            briefId: cubit.briefId,
+            topicId: topicId,
+            briefId: briefId,
             mode: BookmarkButtonMode.color,
             snackbarController: snackbarController,
           ),
@@ -71,6 +89,7 @@ class FreeArticleView extends HookWidget {
           Padding(
             padding: const EdgeInsets.only(right: AppDimens.s, top: AppDimens.s),
             child: ShareArticleButton(
+              snackbarController: snackbarController,
               article: article,
               buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
             ),
@@ -90,13 +109,17 @@ class FreeArticleView extends HookWidget {
                   return InAppWebView(
                     initialOptions: webViewOptions,
                     initialUrlRequest: URLRequest(url: Uri.parse(article.sourceUrl)),
-                    onProgressChanged: (_, progress) {
+                    onProgressChanged: (controller, progress) async {
                       pageLoadingProgress.value = progress == 100 ? 0.0 : progress / 100;
+                      if (progress == 100) {
+                        cubit.setMaxScrollOffset(await controller.getContentHeight());
+                      }
                     },
-                    onScrollChanged: (controller, _, y) {
+                    onScrollChanged: (controller, _, y) async {
                       if (y > scrollPosition.value) {
                         scrollPosition.value = y.toDouble();
                         showTabBar.value = false;
+                        cubit.updateScrollOffset(y);
                         return;
                       }
 

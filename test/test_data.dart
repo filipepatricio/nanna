@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_content_d
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
@@ -30,7 +31,7 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_m
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
@@ -48,6 +49,7 @@ class TestData {
     ),
     ArticleTypeDTOMapper(),
     ArticleKindDTOMapper(),
+    ArticleProgressDTOMapper(),
   );
 
   static final _topicPreviewMapper = TopicPreviewDTOMapper(
@@ -85,6 +87,7 @@ class TestData {
         ),
         ArticleTypeDTOMapper(),
         ArticleKindDTOMapper(),
+        ArticleProgressDTOMapper(),
       ),
       _topicPreviewMapper,
       ColorDTOMapper(),
@@ -103,6 +106,7 @@ class TestData {
           ),
           ArticleTypeDTOMapper(),
           ArticleKindDTOMapper(),
+          ArticleProgressDTOMapper(),
         ),
         BriefEntryTopicPreviewDTOMapper(
           TopicOwnerDTOMapper(
@@ -127,6 +131,7 @@ class TestData {
     ),
     ArticleTypeDTOMapper(),
     ArticleKindDTOMapper(),
+    ArticleProgressDTOMapper(),
   );
 
   static final _categoryItemMapper = CategoryItemDTOMapper(

@@ -6,6 +6,7 @@ class AppColors {
   // How to set opacity in Hex https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
 
   static const Color white = Color(0xffffffff);
+  static const Color white70 = Color(0xB3ffffff);
   static const Color black = Color(0xff000000);
   static const Color black40 = Color(0x66000000);
   static const Color black20 = Color(0x33000000);
@@ -20,6 +21,7 @@ class AppColors {
   static const Color linen = Color(0xffFCFAF8);
   static const Color darkLinen = Color(0xffF4F1EE);
   static const Color transparent = Color(0x00000000);
+  static const Color transparentWhite = Color(0x00FFFFFF);
   static const Color blue = Color(0xff4579FF);
   static const Color grey = Color(0xffe7e7e7);
   static const Color rose = Color(0xffF3E5F4);
@@ -44,6 +46,9 @@ class AppColors {
 
   static const Color dividerGrey = Color(0xffD1D5DB);
   static const Color dividerGreyLight = Color(0xffE5E5EA);
+
+  static const String shareBackgroundTopColor = "#FFFFFF";
+  static const String shareBackgroundBottomColor = "#FFFFFF";
 
   static const mockedColors = [
     AppColors.pastelGreen,

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/share/data/share_app.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -14,6 +15,8 @@ import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,10 +34,21 @@ const _labelTextStyle = TextStyle(
   height: 1.4,
 );
 
-Future<void> shareTopicArticlesList(BuildContext context, Topic topic) async {
+Future<void> shareTopicArticlesList(
+  BuildContext context,
+  Topic topic,
+  ShareOptions? shareOption,
+  SnackbarController snackbarController,
+) async {
+  if (shareOption == null) return;
+
   return _showBottomSheet(
     context,
-    (context) => TopicArticlesSelectView(topic: topic),
+    (context) => TopicArticlesSelectView(
+      topic: topic,
+      shareOption: shareOption,
+      snackbarController: snackbarController,
+    ),
   );
 }
 
@@ -54,10 +68,14 @@ Future<void> _showBottomSheet(BuildContext context, WidgetBuilder builder) {
 class TopicArticlesSelectView extends HookWidget {
   const TopicArticlesSelectView({
     required this.topic,
+    required this.shareOption,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final Topic topic;
+  final ShareOptions shareOption;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +88,15 @@ class TopicArticlesSelectView extends HookWidget {
         state.maybeMap(
           shared: (_) {
             AutoRouter.of(context).pop();
+
+            if (shareOption == ShareOptions.copyLink) {
+              snackbarController.showMessage(
+                SnackbarMessage.simple(
+                  message: LocaleKeys.common_linkCopied.tr(),
+                  type: SnackbarMessageType.positive,
+                ),
+              );
+            }
           },
           orElse: () {},
         );
@@ -79,6 +106,10 @@ class TopicArticlesSelectView extends HookWidget {
     useEffect(
       () {
         cubit.initialize(topic);
+
+        if (shareOption != ShareOptions.instagram && shareOption != ShareOptions.facebook) {
+          cubit.shareImage(shareOption);
+        }
       },
       [cubit],
     );
@@ -92,6 +123,7 @@ class TopicArticlesSelectView extends HookWidget {
         selectedIndexes: state.selectedIndexes,
         canSelectMore: state.canSelectMore,
         maxArticles: state.articlesSelectionLimit,
+        shareOption: shareOption,
       ),
       orElse: () => const SizedBox.shrink(),
     );
@@ -119,6 +151,7 @@ class _ContainerIOS extends StatelessWidget {
     required this.child,
     Key? key,
   }) : super(key: key);
+
   final Widget child;
 
   @override
@@ -192,6 +225,7 @@ class _IdleView extends HookWidget {
     required this.selectedIndexes,
     required this.canSelectMore,
     required this.maxArticles,
+    required this.shareOption,
     Key? key,
   }) : super(key: key);
   final TopicArticlesSelectViewCubit cubit;
@@ -199,6 +233,7 @@ class _IdleView extends HookWidget {
   final Set<int> selectedIndexes;
   final bool canSelectMore;
   final int maxArticles;
+  final ShareOptions shareOption;
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +264,7 @@ class _IdleView extends HookWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
             child: FilledButton(
-              onTap: () => cubit.shareImage(),
+              onTap: () => cubit.shareImage(shareOption),
               text: LocaleKeys.common_next.tr(),
               fillColor: AppColors.darkGreyBackground,
               textColor: AppColors.white,
@@ -443,7 +478,7 @@ class _ArticleItemBody extends HookWidget {
           if (logoUrl != null)
             PublisherLogo.dark(
               publisher: header.publisher,
-              size: AppDimens.m,
+              dimension: AppDimens.m,
             )
           else
             Container(

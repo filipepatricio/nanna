@@ -15,15 +15,23 @@
     "tryAgain": "Try again",
     "linkCopied": "Successfuly copied link to your clipboard!",
     "share": "Share",
+    "shareVia": "Share via",
     "shareImage": "Share image",
     "shareText": "Share text",
     "copy": "Copy",
+    "more": "More",
+    "copyLink": "Copy link",
     "undo": "Undo",
     "error": {
       "oops": "Oops",
       "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy ",
       "tryAgainLater": "👎 Oops, looks like something went wrong, please try again later!"
     }
+  },
+  "social": {
+    "instagram": "Instragam",
+    "facebook": "Facebook",
+    "whatsapp": "Whatsapp"
   },
   "onboarding": {
     "title": "How we use push notifications",
@@ -173,7 +181,7 @@
     "relatedContent": {
       "exploreMoreCategories": "Explore More in These Categories",
       "cantGetEnough": "Can't get enough?",
-      "thereAreManyMore": "There are many more stories you migh like",
+      "thereAreManyMore": "There are many more stories you might like",
       "goToExplore": "Go to Explore",
       "similarStories": "Similar stories",
       "relatedReads": "Related reads you might enjoy"

@@ -120,6 +120,7 @@ class BookmarkListView extends HookWidget {
             sortConfig: sortConfig,
             scrollController: scrollController,
             onSortConfigChanged: onSortConfigChanged,
+            snackbarController: snackbarController,
           ),
           loadMore: (state) => _Idle(
             cubit: cubit,
@@ -127,6 +128,7 @@ class BookmarkListView extends HookWidget {
             sortConfig: sortConfig,
             scrollController: scrollController,
             onSortConfigChanged: onSortConfigChanged,
+            snackbarController: snackbarController,
             withLoader: true,
           ),
           allLoaded: (state) => _Idle(
@@ -135,6 +137,7 @@ class BookmarkListView extends HookWidget {
             sortConfig: sortConfig,
             scrollController: scrollController,
             onSortConfigChanged: onSortConfigChanged,
+            snackbarController: snackbarController,
           ),
           orElse: () => const SizedBox.shrink(),
         ),
@@ -150,6 +153,7 @@ class _Idle extends StatelessWidget {
     required this.sortConfig,
     required this.scrollController,
     required this.onSortConfigChanged,
+    required this.snackbarController,
     this.withLoader = false,
     Key? key,
   }) : super(key: key);
@@ -160,6 +164,7 @@ class _Idle extends StatelessWidget {
   final ScrollController scrollController;
   final bool withLoader;
   final OnSortConfigChanged onSortConfigChanged;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -188,6 +193,7 @@ class _Idle extends StatelessWidget {
                 cubit.removeBookmark(bookmark);
               },
               isLast: index == bookmarks.length - 1,
+              snackbarController: snackbarController,
             ),
             childCount: bookmarks.length,
             addAutomaticKeepAlives: false,

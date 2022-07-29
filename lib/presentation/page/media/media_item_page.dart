@@ -65,8 +65,9 @@ class MediaItemPage extends HookWidget {
                 loading: (state) => const _LoadingContent(),
                 idleFree: (state) => FreeArticleView(
                   article: state.header,
-                  cubit: cubit,
                   snackbarController: snackbarController,
+                  briefId: briefId,
+                  topicId: topicId,
                 ),
                 idlePremium: (state) => PremiumArticleView(
                   article: state.article,

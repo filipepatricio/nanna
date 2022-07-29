@@ -1,14 +1,13 @@
 part of 'article_cover.dart';
 
-class _ArticleCoverBookmarkList extends StatelessWidget {
-  const _ArticleCoverBookmarkList({
+class _ArticleAudioViewCover extends StatelessWidget {
+  const _ArticleAudioViewCover({
     required this.article,
     required this.width,
     required this.height,
     this.cardColor = AppColors.transparent,
     this.shouldShowTimeToRead = true,
     this.shouldShowAudioIcon = true,
-    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -18,36 +17,32 @@ class _ArticleCoverBookmarkList extends StatelessWidget {
   final Color cardColor;
   final bool shouldShowTimeToRead;
   final bool shouldShowAudioIcon;
-  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final hasImage = article.hasImage;
-    return GestureDetector(
-      onTap: onTap,
-      child: Stack(
-        children: [
-          if (hasImage)
-            ArticleImage(
-              image: article.image!,
-              cardColor: cardColor,
-              darkeningMode: DarkeningMode.solid,
-            )
-          else
-            Container(
-              color: cardColor,
-              width: width,
-              height: height,
-            ),
-          _ArticleImageOverlay(
-            article: article,
-            height: height,
-            width: width,
-            shouldShowTimeToRead: shouldShowTimeToRead,
-            shouldShowAudioIcon: shouldShowAudioIcon,
+    return Stack(
+      children: [
+        if (hasImage)
+          ArticleImage(
+            image: article.image!,
+            cardColor: cardColor,
+            darkeningMode: DarkeningMode.solid,
           )
-        ],
-      ),
+        else
+          Container(
+            color: cardColor,
+            width: width,
+            height: height,
+          ),
+        _ArticleImageOverlay(
+          article: article,
+          height: height,
+          width: width,
+          shouldShowTimeToRead: shouldShowTimeToRead,
+          shouldShowAudioIcon: shouldShowAudioIcon,
+        )
+      ],
     );
   }
 }
