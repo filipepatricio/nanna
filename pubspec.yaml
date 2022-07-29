@@ -103,6 +103,7 @@ dependencies:
       ref: c6644dab44234468bfe134cf6316a965912a2bce
   neat_periodic_task: 2.0.0
   responsive_framework: 0.2.0
+  percent_indicator: 4.2.2
 
 dev_dependencies:
   flutter_test:

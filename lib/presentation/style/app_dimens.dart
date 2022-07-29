@@ -107,6 +107,9 @@ class AppDimens {
   /// 0.72
   static const exploreTopicCellSizeFactor = 0.72;
 
+  /// 42
+  static const audioControlButtonSize = AppDimens.xxl + AppDimens.xxs;
+
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
       topicViewHeaderImageHeight(context) +

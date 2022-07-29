@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_cubit.di.dart';
@@ -14,6 +15,17 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       loading: (_) => null,
       playing: (_) => () => cubit.pause(),
       paused: (_) => () => cubit.play(),
+      orElse: () => throw Exception('Unhandled type'),
+    );
+  }
+
+  bool showProgress(MediaItemArticle? article) {
+    return maybeMap(
+      notInitilized: (_) => false,
+      inDifferentAudio: (_) => false,
+      loading: (_) => article != null,
+      playing: (_) => article != null,
+      paused: (_) => article != null,
       orElse: () => throw Exception('Unhandled type'),
     );
   }

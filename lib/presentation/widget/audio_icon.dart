@@ -27,6 +27,7 @@ class AudioIconButton extends HookWidget {
         elevation: 0,
         color: AppColors.white,
         imageHeight: height * _iconHeightImagePercentage,
+        progressSize: height,
       ),
     );
   }
