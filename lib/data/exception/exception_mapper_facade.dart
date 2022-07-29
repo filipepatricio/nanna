@@ -10,5 +10,6 @@ abstract class ExceptionMapperFacade {
       final mapped = mapper.mapIfFits(original);
       if (mapped != original) throw mapped;
     }
+    throw original;
   }
 }
