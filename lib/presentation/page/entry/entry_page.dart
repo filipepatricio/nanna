@@ -45,7 +45,9 @@ class EntryPage extends HookWidget {
       backgroundColor: AppColors.background,
       body: AppConnectivityChecker(
         closeCubitOnDispose: true,
-        child: Loader(),
+        child: SafeArea(
+          child: LoaderLogo(),
+        ),
       ),
     );
   }
