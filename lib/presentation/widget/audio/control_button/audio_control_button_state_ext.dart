@@ -1,9 +1,10 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state.dt.dart';
 import 'package:flutter/widgets.dart';
+
+enum AudioProgressType { current, other, loading }
 
 extension AudioControlButtonStateViewExtension on AudioControlButtonState {
   Function()? getAction(
@@ -19,13 +20,24 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
     );
   }
 
-  bool showProgress(MediaItemArticle? article) {
+  double get progress {
     return maybeMap(
-      notInitilized: (_) => false,
-      inDifferentAudio: (_) => false,
-      loading: (_) => article != null,
-      playing: (_) => article != null,
-      paused: (_) => article != null,
+      notInitilized: (e) => e.progress,
+      inDifferentAudio: (e) => e.progress,
+      loading: (_) => 0.0,
+      playing: (_) => 0.0,
+      paused: (_) => 0.0,
+      orElse: () => throw Exception('Unhandled type'),
+    );
+  }
+
+  AudioProgressType get audioType {
+    return maybeMap(
+      notInitilized: (_) => AudioProgressType.other,
+      inDifferentAudio: (_) => AudioProgressType.other,
+      loading: (_) => AudioProgressType.loading,
+      playing: (_) => AudioProgressType.current,
+      paused: (_) => AudioProgressType.current,
       orElse: () => throw Exception('Unhandled type'),
     );
   }

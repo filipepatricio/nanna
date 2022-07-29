@@ -1,7 +1,17 @@
-# import 'package:better_informed_mobile/data/gql/common/sign_in_fragment.graphql';
-
 mutation signIn($token: String!, $provider: String!, $meta: UserMeta!) {
     signIn(token: $token, provider: $provider, information: $meta) {
-        ...signInFragment
+        successful
+        errorCode
+        errorMessage
+        tokens {
+            accessToken
+            refreshToken
+        }
+        account {
+            uuid
+            firstName
+            lastName
+            email
+        }
     }
 }

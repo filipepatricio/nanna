@@ -9,6 +9,7 @@ class AudioPlaybackState with _$AudioPlaybackState {
 
   const factory AudioPlaybackState.loading({
     required double speed,
+    required AudioItem audioItem,
   }) = _AudioPlaybackStateLoading;
 
   const factory AudioPlaybackState.playing({

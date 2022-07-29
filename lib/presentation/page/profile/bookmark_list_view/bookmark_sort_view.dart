@@ -59,12 +59,15 @@ class BookmarkSortView extends StatelessWidget {
           alignment: Alignment.centerLeft,
           color: AppColors.background,
           padding: const EdgeInsets.symmetric(
-            horizontal: AppDimens.l,
+            horizontal: AppDimens.ml,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(AppVectorGraphics.sort),
+              SvgPicture.asset(
+                AppVectorGraphics.sort,
+                color: AppColors.black,
+              ),
               const SizedBox(width: AppDimens.s),
               Text(
                 config!.type.title,

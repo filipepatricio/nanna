@@ -1,39 +1,49 @@
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state_ext.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar_cubit.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar_cubit_factory.di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class CurrentAudioFloatingProgress extends HookWidget {
-  const CurrentAudioFloatingProgress(this.progressSize, {Key? key}) : super(key: key);
+  const CurrentAudioFloatingProgress(
+    this.progressSize,
+    this.progress,
+    this.audioProgressType, {
+    Key? key,
+  }) : super(key: key);
 
   final double progressSize;
+  final double progress;
+  final AudioProgressType audioProgressType;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubitFactory<AudioProgressBarCubit, AudioProgressBarCubitFactory>(
-      closeOnDispose: false,
-    );
+    final cubit = useCubitFactory<AudioProgressBarCubit, AudioProgressBarCubitFactory>(closeOnDispose: false);
     final state = useCubitBuilder(cubit);
 
-    useEffect(
-      () {
-        cubit.initialize();
-      },
-      [cubit],
-    );
-
     return RepaintBoundary(
-      child: CircularPercentIndicator(
-        radius: progressSize * 0.5,
-        backgroundColor: AppColors.dividerGrey,
-        percent: state.progress > 1.0 ? 1 : state.progress,
-        progressColor: state.progressColor,
-        lineWidth: progressSize * 0.07,
-        backgroundWidth: progressSize * 0.07,
-        circularStrokeCap: CircularStrokeCap.round,
+      child: SizedBox(
+        width: progressSize,
+        height: progressSize,
+        child: audioProgressType == AudioProgressType.loading
+            ? CircularProgressIndicator(
+                strokeWidth: AppDimens.strokeAudioWidth(progressSize),
+                backgroundColor: AppColors.dividerGrey,
+                color: AppColors.black,
+              )
+            : CircularProgressIndicator(
+                strokeWidth: AppDimens.strokeAudioWidth(progressSize),
+                backgroundColor: AppColors.dividerGrey,
+                color: AppColors.black,
+                value: audioProgressType == AudioProgressType.current
+                    ? state.progress > 1.0
+                        ? 1
+                        : state.progress
+                    : progress,
+              ),
       ),
     );
   }

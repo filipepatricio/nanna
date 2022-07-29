@@ -78,15 +78,15 @@ class AudioFloatingControlButton extends HookWidget {
       heroTag: null,
       elevation: elevation,
       highlightElevation: elevation,
-      shape: state.showProgress(article)
-          ? null
-          : RoundedRectangleBorder(
+      shape: article == null
+          ? RoundedRectangleBorder(
               side: BorderSide(
                 color: AppColors.dividerGrey,
-                width: article != null ? progressSize * 0.07 : AppDimens.one,
+                width: AppDimens.strokeAudioWidth(progressSize),
               ),
               borderRadius: BorderRadius.circular(AppDimens.c),
-            ),
+            )
+          : null,
       onPressed: state.getAction(cubit),
       backgroundColor: color,
       child: Stack(
@@ -100,7 +100,12 @@ class AudioFloatingControlButton extends HookWidget {
               color: state.imageColor,
             ),
           ),
-          if (state.showProgress(article)) CurrentAudioFloatingProgress(progressSize),
+          if (article != null)
+            CurrentAudioFloatingProgress(
+              progressSize,
+              state.progress,
+              state.audioType,
+            ),
         ],
       ),
     );

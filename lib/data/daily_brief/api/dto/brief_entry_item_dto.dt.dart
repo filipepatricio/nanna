@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
@@ -11,7 +12,6 @@ import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'brief_entry_item_dto.dt.freezed.dart';
-
 part 'brief_entry_item_dto.dt.g.dart';
 
 @Freezed(unionKey: '__typename', unionValueCase: FreezedUnionCase.pascal, fallbackUnion: unknownKey)
@@ -34,6 +34,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String sourceUrl,
     String? author,
     bool hasAudioVersion,
+    ArticleProgressDTO progress,
     ArticleProgressState progressState,
   ) = BriefEntryItemDTOArticle;
 

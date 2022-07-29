@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.
 import 'package:better_informed_mobile/data/article/api/dto/article_content_type_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
@@ -335,6 +336,8 @@ class MockDTO {
     'Cassandre Lueilwitz',
     // hasAudioVersion
     false,
+    // progress
+    _progress,
     // progressState
     ArticleProgressState.unread,
   );
@@ -565,6 +568,15 @@ class MockDTO {
     'Opinion',
   );
 
+  static final _progress = ArticleProgressDTO(
+    // audioPosition
+    30,
+    // audioProgress
+    45,
+    // contentProgress
+    10,
+  );
+
   static final _publisher = PublisherDTO(
     'Manhattan Center for Cognitive Behavioral Therapy',
     ImageDTO('publishers/nyt-black'),
@@ -602,6 +614,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     String? sourceUrl,
     String? author,
     bool? hasAudioVersion,
+    ArticleProgressDTO? progress,
     ArticleProgressState? progressState,
   }) {
     return ArticleHeaderDTO(
@@ -621,6 +634,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl ?? this.sourceUrl,
       author ?? this.author,
       hasAudioVersion ?? this.hasAudioVersion,
+      progress ?? this.progress,
       progressState ?? this.progressState,
     );
   }
@@ -643,6 +657,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl,
       author,
       hasAudioVersion,
+      progress,
       progressState,
     );
   }
@@ -665,6 +680,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl,
       author,
       hasAudioVersion,
+      progress,
       progressState,
     );
   }

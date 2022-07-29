@@ -1,6 +1,11 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
+
+const _logoHeight = 36.0;
 
 class Loader extends StatelessWidget {
   const Loader({
@@ -19,6 +24,40 @@ class Loader extends StatelessWidget {
         value: kIsTest ? .5 : null,
         strokeWidth: strokeWidth,
         valueColor: AlwaysStoppedAnimation(color),
+      ),
+    );
+  }
+}
+
+class LoaderLogo extends StatelessWidget {
+  const LoaderLogo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final logo = SvgPicture.asset(
+      AppVectorGraphics.informedLogoDark,
+      height: _logoHeight,
+    );
+
+    return Center(
+      child: Stack(
+        alignment: Alignment.center,
+        fit: StackFit.passthrough,
+        children: [
+          logo,
+          Shimmer(
+            gradient: const LinearGradient(
+              colors: [
+                AppColors.transparentWhite,
+                AppColors.white70,
+                AppColors.transparentWhite,
+                AppColors.white70,
+              ],
+            ),
+            // Necessary to solve the shimmer's shape
+            child: logo,
+          ),
+        ],
       ),
     );
   }

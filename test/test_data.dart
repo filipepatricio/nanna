@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_content_d
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
@@ -48,6 +49,7 @@ class TestData {
     ),
     ArticleTypeDTOMapper(),
     ArticleKindDTOMapper(),
+    ArticleProgressDTOMapper(),
   );
 
   static final _topicPreviewMapper = TopicPreviewDTOMapper(
@@ -85,6 +87,7 @@ class TestData {
         ),
         ArticleTypeDTOMapper(),
         ArticleKindDTOMapper(),
+        ArticleProgressDTOMapper(),
       ),
       _topicPreviewMapper,
       ColorDTOMapper(),
@@ -103,6 +106,7 @@ class TestData {
           ),
           ArticleTypeDTOMapper(),
           ArticleKindDTOMapper(),
+          ArticleProgressDTOMapper(),
         ),
         BriefEntryTopicPreviewDTOMapper(
           TopicOwnerDTOMapper(
@@ -127,6 +131,7 @@ class TestData {
     ),
     ArticleTypeDTOMapper(),
     ArticleKindDTOMapper(),
+    ArticleProgressDTOMapper(),
   );
 
   static final _categoryItemMapper = CategoryItemDTOMapper(

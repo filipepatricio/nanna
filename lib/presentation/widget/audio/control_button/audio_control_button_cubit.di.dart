@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_position_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_audio_position_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
@@ -26,6 +27,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
     this._trackActivityUseCase,
     this._trackArticleAudioPositionUseCase,
     this._audioPositionStreamUseCase,
+    this._getArticleAudioPositionUseCase,
   );
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
@@ -35,6 +37,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
   final TrackActivityUseCase _trackActivityUseCase;
   final TrackArticleAudioPositionUseCase _trackArticleAudioPositionUseCase;
   final AudioPositionStreamUseCase _audioPositionStreamUseCase;
+  final GetArticleAudioPositionUseCase _getArticleAudioPositionUseCase;
 
   MediaItemArticle? _article;
   String? _imageUrl;
@@ -55,6 +58,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
         _trackActivityUseCase,
         _trackArticleAudioPositionUseCase,
         _audioPositionStreamUseCase,
+        _getArticleAudioPositionUseCase,
       );
     }
 
@@ -66,6 +70,7 @@ class AudioControlButtonCubitFactory implements CubitFactory<AudioControlButtonC
       _trackActivityUseCase,
       _trackArticleAudioPositionUseCase,
       _audioPositionStreamUseCase,
+      _getArticleAudioPositionUseCase,
       _article!,
       _imageUrl,
     );
@@ -81,6 +86,7 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> {
     this._trackActivityUseCase,
     this._trackArticleAudioPositionUseCase,
     this._audioPositionStreamUseCase,
+    this._getArticleAudioPositionUseCase,
   ) : super(AudioControlButtonState.loading());
 
   final PrepareArticleAudioTrackUseCase _prepareAudioTrackUseCase;
@@ -90,6 +96,7 @@ abstract class AudioControlButtonCubit extends Cubit<AudioControlButtonState> {
   final TrackActivityUseCase _trackActivityUseCase;
   final TrackArticleAudioPositionUseCase _trackArticleAudioPositionUseCase;
   final AudioPositionStreamUseCase _audioPositionStreamUseCase;
+  final GetArticleAudioPositionUseCase _getArticleAudioPositionUseCase;
 
   StreamSubscription? _audioPlaybackSubscription;
   StreamSubscription? _audioPositionSubscription;
@@ -124,6 +131,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
     TrackActivityUseCase trackActivityUseCase,
     TrackArticleAudioPositionUseCase trackArticleAudioPositionUseCase,
     AudioPositionStreamUseCase audioPositionStreamUseCase,
+    GetArticleAudioPositionUseCase getArticleAudioPositionUseCase,
   ) : super(
           prepareAudioTrackUseCase,
           playAudioUseCase,
@@ -132,6 +140,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
           trackActivityUseCase,
           trackArticleAudioPositionUseCase,
           audioPositionStreamUseCase,
+          getArticleAudioPositionUseCase,
         );
 
   @override
@@ -139,8 +148,8 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
     await _audioPlaybackSubscription?.cancel();
     _audioPlaybackSubscription = _audioPlaybackStateStreamUseCase().listen((playbackState) {
       final newButtonState = playbackState.map(
-        notInitialized: (_) => AudioControlButtonState.notInitilized(),
-        loading: (_) => AudioControlButtonState.loading(),
+        notInitialized: (_) => AudioControlButtonState.notInitilized(0.0),
+        loading: (playbackState) => AudioControlButtonState.loading(),
         playing: (playbackState) => AudioControlButtonState.playing(audioItem: playbackState.audioItem),
         paused: (playbackState) => AudioControlButtonState.paused(audioItem: playbackState.audioItem),
         completed: (playbackState) => AudioControlButtonState.paused(audioItem: playbackState.audioItem),
@@ -156,7 +165,11 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
       playing: (state) async {
         await _pauseAudioUseCase();
         _trackActivityUseCase.trackEvent(AnalyticsEvent.pausedArticleAudio(state.audioItem.id));
-        _trackArticleAudioPositionUseCase(state.audioItem.slug, _currentPosition.inSeconds);
+        _trackArticleAudioPositionUseCase(
+          state.audioItem.slug,
+          _currentPosition.inSeconds,
+          state.audioItem.duration?.inSeconds,
+        );
       },
       orElse: () {
         Fimber.w('Can not pause audio in this state: ${state.toString()}');
@@ -170,7 +183,11 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
       paused: (state) async {
         await _playAudioUseCase();
         _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(state.audioItem.id));
-        _trackArticleAudioPositionUseCase(state.audioItem.slug, _currentPosition.inSeconds);
+        _trackArticleAudioPositionUseCase(
+          state.audioItem.slug,
+          _currentPosition.inSeconds,
+          state.audioItem.duration?.inSeconds,
+        );
       },
       orElse: () {
         Fimber.w('Can not play audio in this state: ${state.toString()}');
@@ -188,6 +205,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     TrackActivityUseCase trackActivityUseCase,
     TrackArticleAudioPositionUseCase trackArticleAudioPositionUseCase,
     AudioPositionStreamUseCase audioPositionStreamUseCase,
+    GetArticleAudioPositionUseCase getArticleAudioPositionUseCase,
     this._article,
     this._imageUrl,
   ) : super(
@@ -198,6 +216,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
           trackActivityUseCase,
           trackArticleAudioPositionUseCase,
           audioPositionStreamUseCase,
+          getArticleAudioPositionUseCase,
         );
 
   final MediaItemArticle _article;
@@ -208,8 +227,10 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     await _audioPlaybackSubscription?.cancel();
     _audioPlaybackSubscription = _audioPlaybackStateStreamUseCase().listen((playbackState) {
       final newButtonState = playbackState.map(
-        notInitialized: (_) => AudioControlButtonState.notInitilized(),
-        loading: (_) => AudioControlButtonState.loading(),
+        notInitialized: (_) => AudioControlButtonState.notInitilized(_getArticleAudioPositionUseCase(_article)),
+        loading: (playbackState) => playbackState.audioItem.slug == _article.slug
+            ? AudioControlButtonState.loading()
+            : AudioControlButtonState.notInitilized(_getArticleAudioPositionUseCase(_article)),
         playing: (playbackState) => _handlePlayingState(playbackState.audioItem),
         paused: (playbackState) => _handlePausedState(playbackState.audioItem),
         completed: (playbackState) => _handleCompletedState(playbackState.audioItem),
@@ -218,6 +239,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
         emit(newButtonState);
       }
     });
+
     await super.initialize();
   }
 
@@ -236,7 +258,11 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
         if (forceNewAudio || state.completed) {
           if (!state.completed) {
             // Tracking current audio position before being replaced by new audio
-            _trackArticleAudioPositionUseCase(state.currentAudioItem.slug, _currentPosition.inSeconds);
+            _trackArticleAudioPositionUseCase(
+              state.currentAudioItem.slug,
+              _currentPosition.inSeconds,
+              state.currentAudioItem.duration?.inSeconds,
+            );
           }
           await _prepareNewAudio();
         } else {
@@ -262,7 +288,11 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     if (audioItem.id == _article.id) {
       return AudioControlButtonState.playing(audioItem: audioItem);
     } else {
-      return AudioControlButtonState.inDifferentAudio(currentAudioItem: audioItem, completed: false);
+      return AudioControlButtonState.inDifferentAudio(
+        currentAudioItem: audioItem,
+        completed: false,
+        progress: _getArticleAudioPositionUseCase(_article),
+      );
     }
   }
 
@@ -270,7 +300,11 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     if (audioItem.id == _article.id) {
       return AudioControlButtonState.paused(audioItem: audioItem);
     } else {
-      return AudioControlButtonState.inDifferentAudio(currentAudioItem: audioItem, completed: false);
+      return AudioControlButtonState.inDifferentAudio(
+        currentAudioItem: audioItem,
+        completed: false,
+        progress: _getArticleAudioPositionUseCase(_article),
+      );
     }
   }
 
@@ -278,7 +312,11 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     if (audioItem.id == _article.id) {
       return AudioControlButtonState.paused(audioItem: audioItem);
     } else {
-      return AudioControlButtonState.inDifferentAudio(currentAudioItem: audioItem, completed: true);
+      return AudioControlButtonState.inDifferentAudio(
+        currentAudioItem: audioItem,
+        completed: true,
+        progress: _getArticleAudioPositionUseCase(_article),
+      );
     }
   }
 }

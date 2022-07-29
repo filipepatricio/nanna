@@ -1,7 +1,7 @@
 part of 'article_cover.dart';
 
-class _ArticleCoverDailyBriefListItem extends HookWidget {
-  const _ArticleCoverDailyBriefListItem({
+class _ArticleCoverBookmark extends HookWidget {
+  const _ArticleCoverBookmark({
     required this.onTap,
     required this.article,
     required this.coverColor,
@@ -38,9 +38,13 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  const Spacer(),
                   Row(
                     children: [
-                      PublisherLogo.dark(publisher: article.publisher),
+                      PublisherLogo.dark(
+                        publisher: article.publisher,
+                        dimension: AppDimens.ml,
+                      ),
                       Flexible(
                         child: Text(
                           article.publisher.name,
@@ -52,22 +56,13 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                     ],
                   ),
                   const Spacer(),
-                  Text(
-                    article.strippedTitle,
-                    maxLines: 2,
-                    style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const Spacer(),
-                  Flexible(
-                    child: ArticleDottedInfo(
-                      article: article,
-                      isLight: false,
-                      showLogo: false,
-                      showPublisher: false,
-                      showDate: false,
-                      textStyle: AppTypography.caption1Medium,
-                      color: AppColors.textGrey,
+                  Expanded(
+                    flex: 6,
+                    child: Text(
+                      article.strippedTitle,
+                      maxLines: 3,
+                      style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],

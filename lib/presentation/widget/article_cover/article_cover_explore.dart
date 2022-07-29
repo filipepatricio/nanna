@@ -22,16 +22,11 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox.square(
+            _ArticleSquareCover(
+              article: article,
+              coverColor: coverColor,
+              showArticleIndicator: true,
               dimension: constraints.maxWidth,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppDimens.s),
-                child: _CoverImage(
-                  article: article,
-                  coverColor: coverColor,
-                  showArticleIndicator: true,
-                ),
-              ),
             ),
             _ArticleCoverContent(article: article),
           ],
@@ -56,7 +51,7 @@ class _ArticleCoverExploreList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final coverSize = useMemoized(
-      () => MediaQuery.of(context).size.width * _coverSizeToScreenWidthFactor,
+      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
 
@@ -65,13 +60,11 @@ class _ArticleCoverExploreList extends HookWidget {
       onTap: onTap,
       child: Row(
         children: [
-          SizedBox.square(
+          _ArticleSquareCover(
+            article: article,
+            coverColor: coverColor,
+            showArticleIndicator: false,
             dimension: coverSize,
-            child: _CoverImage(
-              article: article,
-              coverColor: coverColor,
-              showArticleIndicator: false,
-            ),
           ),
           const SizedBox(width: AppDimens.m),
           Expanded(
@@ -83,7 +76,10 @@ class _ArticleCoverExploreList extends HookWidget {
                 children: [
                   Row(
                     children: [
-                      PublisherLogo.dark(publisher: article.publisher),
+                      PublisherLogo.dark(
+                        publisher: article.publisher,
+                        dimension: AppDimens.ml,
+                      ),
                       Flexible(
                         child: Text(
                           article.publisher.name,
@@ -119,54 +115,6 @@ class _ArticleCoverExploreList extends HookWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _CoverImage extends StatelessWidget {
-  const _CoverImage({
-    required this.article,
-    required this.coverColor,
-    required this.showArticleIndicator,
-    this.borderRadius,
-    Key? key,
-  }) : super(key: key);
-
-  final MediaItemArticle article;
-  final Color? coverColor;
-  final bool showArticleIndicator;
-  final double? borderRadius;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(borderRadius ?? AppDimens.s),
-            child: article.hasImage
-                ? ArticleImage(
-                    image: article.image!,
-                    cardColor: coverColor,
-                  )
-                : SizedBox.expand(
-                    child: Container(color: coverColor),
-                  ),
-          ),
-        ),
-        if (showArticleIndicator)
-          Positioned(
-            top: AppDimens.s,
-            left: AppDimens.s,
-            child: CoverLabel.article(),
-          ),
-        if (article.hasAudioVersion)
-          Positioned(
-            bottom: AppDimens.s,
-            right: AppDimens.s,
-            child: AudioIconButton(article: article),
-          ),
-      ],
     );
   }
 }
