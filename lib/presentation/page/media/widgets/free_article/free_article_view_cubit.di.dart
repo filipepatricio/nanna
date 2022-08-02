@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/free_article/free_article_view_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -6,7 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:neat_periodic_task/neat_periodic_task.dart';
 
 @injectable
-class FreeArticleViewCubit extends Cubit {
+class FreeArticleViewCubit extends Cubit<FreeArticleViewState> {
   FreeArticleViewCubit(this._trackArticleReadingProgressUseCase) : super(const FreeArticleViewState.idle());
 
   final TrackArticleReadingProgressUseCase _trackArticleReadingProgressUseCase;
@@ -15,6 +16,9 @@ class FreeArticleViewCubit extends Cubit {
   int _progress = 0;
 
   late final String _articleSlug;
+  ArticleProgress? _articleProgress;
+
+  ArticleProgress? get articleProgress => _articleProgress;
 
   NeatPeriodicTaskScheduler? _readingProgressTrackingScheduler;
 
@@ -52,7 +56,9 @@ class FreeArticleViewCubit extends Cubit {
     }
   }
 
-  Future<void> _trackReadingProgress() async => _trackArticleReadingProgressUseCase(_articleSlug, _progress);
+  Future<void> _trackReadingProgress() async {
+    _articleProgress = await _trackArticleReadingProgressUseCase(_articleSlug, _progress);
+  }
 
   @override
   Future<void> close() {

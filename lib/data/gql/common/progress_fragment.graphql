@@ -1,0 +1,6 @@
+fragment progressFragment on ArticleProgress {
+    __typename
+    audioPosition
+    audioProgress
+    contentProgress
+}

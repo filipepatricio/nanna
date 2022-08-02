@@ -17,6 +17,7 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
     as update_article_content_progress;
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
@@ -165,16 +166,28 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       );
 
   @override
-  void trackReadingProgress(String slug, int progress) => _client.mutate(
-        MutationOptions(
-          document: update_article_content_progress.document,
-          operationName: update_article_content_progress.updateArticleContentProgress.name?.value,
-          variables: {
-            'slug': slug,
-            'progress': progress,
-          },
-        ),
-      );
+  Future<ArticleProgressDTO> trackReadingProgress(String slug, int progress) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: update_article_content_progress.document,
+        operationName: update_article_content_progress.updateArticleContentProgress.name?.value,
+        variables: {
+          'slug': slug,
+          'progress': progress,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(result, (raw) {
+      final progressRaw = raw['updateArticleContentProgress']['progress'] as Map<String, dynamic>;
+      final progress = ArticleProgressDTO.fromJson(progressRaw);
+      return progress;
+    });
+
+    if (dto == null) throw Exception('Response for article progress is null');
+
+    return dto;
+  }
 
   @override
   Future<TopicMediaItemsDTO> getOtherTopicEntries(String articleSlug, String topicSlug) async {

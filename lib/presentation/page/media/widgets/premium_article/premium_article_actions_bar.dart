@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -23,6 +24,7 @@ class PremiumArticleActionsBar extends HookWidget {
     required this.pageController,
     required this.snackbarController,
     required this.articleOutputModeNotifier,
+    required this.cubit,
     this.briefId,
     this.topicId,
     Key? key,
@@ -34,6 +36,7 @@ class PremiumArticleActionsBar extends HookWidget {
   final String? topicId;
   final String? briefId;
   final ValueNotifier<ArticleOutputMode> articleOutputModeNotifier;
+  final PremiumArticleViewCubit cubit;
 
   bool get fromTopic => topicId != null;
 
@@ -173,7 +176,9 @@ class PremiumArticleActionsBar extends HookWidget {
                         Icons.arrow_back_ios_rounded,
                         size: AppDimens.backArrowSize,
                       ),
-                      onPressed: () => context.popRoute(),
+                      onPressed: () {
+                        context.popRoute(cubit.articleProgress);
+                      },
                     ),
                   ),
                   Row(

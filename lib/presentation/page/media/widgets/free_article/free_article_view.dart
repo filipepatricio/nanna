@@ -74,7 +74,7 @@ class FreeArticleView extends HookWidget {
             iconSize: AppDimens.backArrowSize,
             alignment: Alignment.center,
             padding: EdgeInsets.zero,
-            onPressed: () => context.popRoute(),
+            onPressed: () => context.popRoute(cubit.articleProgress),
           ),
         ),
         actions: [

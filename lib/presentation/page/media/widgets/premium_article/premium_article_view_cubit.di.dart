@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_other_topic_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_related_content_use_case.di.dart';
@@ -45,6 +46,9 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   late String? _topicTitle;
   late NeatPeriodicTaskScheduler? _readingProgressTrackingScheduler;
 
+  ArticleProgress? _articleProgress;
+
+  ArticleProgress? get articleProgress => _articleProgress;
   String? get topicId => _topicId;
   String? get briefId => _briefId;
   String get topicTitle {
@@ -147,7 +151,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
 
   Future<void> _trackReadingProgress() async {
     final progress = (scrollData.progress * 100).toInt().clamp(0, 100);
-    _trackArticleReadingProgressUseCase.call(_currentFullArticle.metadata.slug, progress);
+    _articleProgress = await _trackArticleReadingProgressUseCase.call(_currentFullArticle.metadata.slug, progress);
     return;
   }
 

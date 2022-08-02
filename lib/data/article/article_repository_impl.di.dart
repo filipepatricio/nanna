@@ -1,12 +1,14 @@
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/audio_file_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content.dart';
+import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
@@ -25,6 +27,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
     this._briefEntryItemDTOMapper,
     this._mediaItemDTOMapper,
     this._categoryItemDTOMapper,
+    this._articleProgressDTOMapper,
   );
 
   final ArticleApiDataSource _articleDataSource;
@@ -34,6 +37,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
   final BriefEntryItemDTOMapper _briefEntryItemDTOMapper;
   final MediaItemDTOMapper _mediaItemDTOMapper;
   final CategoryItemDTOMapper _categoryItemDTOMapper;
+  final ArticleProgressDTOMapper _articleProgressDTOMapper;
 
   final BehaviorSubject<ReadingBanner> _broadcaster = BehaviorSubject();
 
@@ -72,8 +76,10 @@ class ArticleRepositoryImpl implements ArticleRepository {
       _articleDataSource.trackAudioPosition(articleSlug, position);
 
   @override
-  void trackReadingProgress(String articleSlug, int progress) =>
-      _articleDataSource.trackReadingProgress(articleSlug, progress);
+  Future<ArticleProgress> trackReadingProgress(String articleSlug, int progress) async {
+    final dto = await _articleDataSource.trackReadingProgress(articleSlug, progress);
+    return _articleProgressDTOMapper(dto);
+  }
 
   @override
   Future<List<MediaItem>> getOtherTopicEntries(String articleSlug, String topicSlug) async {

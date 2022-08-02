@@ -126,6 +126,7 @@ class PremiumArticleView extends HookWidget {
                     briefId: briefId,
                     topicId: topicId,
                     articleOutputModeNotifier: articleOutputModeNotifier,
+                    cubit: cubit,
                   ),
                 ),
               ],

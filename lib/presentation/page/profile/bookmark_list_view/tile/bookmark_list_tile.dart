@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dt.dart';
@@ -14,11 +15,12 @@ import 'package:better_informed_mobile/presentation/widget/share_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 typedef OnRemoveBookmarkPressed = void Function(Bookmark bookmark);
 
-class BookmarkListTile extends StatelessWidget {
+class BookmarkListTile extends HookWidget {
   const BookmarkListTile({
     required this.bookmarkCover,
     required this.onRemoveBookmarkPressed,
@@ -34,6 +36,12 @@ class BookmarkListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final articleProgress = useMemoized(
+      () => ValueNotifier<ArticleProgress?>(
+        bookmarkCover.bookmark.data.mapOrNull(article: (data) => data.article.progress),
+      ),
+    );
+
     return Column(
       children: [
         const SizedBox(height: AppDimens.m),
@@ -41,7 +49,7 @@ class BookmarkListTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimens.ml,
           ),
-          child: bookmarkCover.getContent(context),
+          child: bookmarkCover.getContent(context, articleProgress),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -51,7 +59,12 @@ class BookmarkListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              bookmarkCover.bookmark.getReadProgressLabel(context),
+              ValueListenableBuilder<ArticleProgress?>(
+                valueListenable: articleProgress,
+                builder: (context, value, child) {
+                  return bookmarkCover.bookmark.getReadProgressLabel(context, articleProgress);
+                },
+              ),
               Row(
                 children: [
                   _BookmarkRemoveButton(
@@ -66,7 +79,12 @@ class BookmarkListTile extends StatelessWidget {
             ],
           ),
         ),
-        bookmarkCover.bookmark.getReadProgressBar(context),
+        ValueListenableBuilder<ArticleProgress?>(
+          valueListenable: articleProgress,
+          builder: (context, value, child) {
+            return bookmarkCover.bookmark.getReadProgressBar(context, articleProgress);
+          },
+        ),
         const SizedBox(height: AppDimens.m),
         if (!isLast)
           const Padding(
@@ -134,52 +152,61 @@ extension on Bookmark {
 
   Widget getReadProgressBar(
     BuildContext context,
+    ValueNotifier<ArticleProgress?> articleProgress,
   ) {
-    return data.map(
-      article: (data) => Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDimens.ml,
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppDimens.s),
-          child: LinearProgressIndicator(
-            backgroundColor: AppColors.dividerGreyLight,
-            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.darkGreyBackground),
-            value: data.article.progress.contentProgress / 100.0,
-          ),
-        ),
-      ),
-      topic: (_) => const SizedBox.shrink(),
-      unknown: (_) => const SizedBox.shrink(),
-    );
+    final articleProgressValue = articleProgress.value;
+    return articleProgressValue != null
+        ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.ml),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppDimens.s),
+              child: LinearProgressIndicator(
+                backgroundColor: AppColors.dividerGreyLight,
+                valueColor: const AlwaysStoppedAnimation<Color>(AppColors.darkGreyBackground),
+                value: articleProgressValue.contentProgress / 100.0,
+              ),
+            ),
+          )
+        : const SizedBox.shrink();
   }
 
   Widget getReadProgressLabel(
     BuildContext context,
+    ValueNotifier<ArticleProgress?> articleProgress,
   ) {
-    return data.map(
-      article: (data) => Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDimens.s,
-        ),
-        child: Text(
-          LocaleKeys.article_percentageRead.tr(args: ['${(data.article.progress.contentProgress).ceil()}']),
-          style: AppTypography.subH2Bold.copyWith(color: AppColors.darkerGrey),
-        ),
-      ),
-      topic: (_) => const SizedBox.shrink(),
-      unknown: (_) => const SizedBox.shrink(),
-    );
+    final articleProgressValue = articleProgress.value;
+    return articleProgressValue != null
+        ? Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDimens.s,
+            ),
+            child: Text(
+              LocaleKeys.article_percentageRead.tr(args: ['${(articleProgressValue.contentProgress).ceil()}']),
+              style: AppTypography.subH2Bold.copyWith(color: AppColors.darkerGrey),
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }
 
 extension on BookmarkTileCover {
-  Widget getContent(BuildContext context) {
+  Widget getContent(
+    BuildContext context,
+    ValueNotifier<ArticleProgress?> articleProgress,
+  ) {
     return map(
       standard: (_) {
         return bookmark.data.mapOrNull(
               article: (data) => ArticleCover.bookmark(
                 article: data.article,
+                onTap: () => AutoRouter.of(context)
+                    .push(
+                  MediaItemPageRoute(article: data.article),
+                )
+                    .then((value) {
+                  final progress = value as ArticleProgress?;
+                  articleProgress.value = progress;
+                }),
               ),
               topic: (_) => throw Exception('There should not be topic with static cover'),
             ) ??
