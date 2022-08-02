@@ -62,7 +62,7 @@ class BookmarkListTile extends HookWidget {
               ValueListenableBuilder<ArticleProgress?>(
                 valueListenable: articleProgress,
                 builder: (context, value, child) {
-                  return bookmarkCover.bookmark.getReadProgressLabel(context, articleProgress);
+                  return bookmarkCover.bookmark.getReadProgressLabel(context, value);
                 },
               ),
               Row(
@@ -82,7 +82,7 @@ class BookmarkListTile extends HookWidget {
         ValueListenableBuilder<ArticleProgress?>(
           valueListenable: articleProgress,
           builder: (context, value, child) {
-            return bookmarkCover.bookmark.getReadProgressBar(context, articleProgress);
+            return bookmarkCover.bookmark.getReadProgressBar(context, value);
           },
         ),
         const SizedBox(height: AppDimens.m),
@@ -152,9 +152,9 @@ extension on Bookmark {
 
   Widget getReadProgressBar(
     BuildContext context,
-    ValueNotifier<ArticleProgress?> articleProgress,
+    ArticleProgress? articleProgress,
   ) {
-    final articleProgressValue = articleProgress.value;
+    final articleProgressValue = articleProgress;
     return articleProgressValue != null
         ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.ml),
@@ -172,9 +172,9 @@ extension on Bookmark {
 
   Widget getReadProgressLabel(
     BuildContext context,
-    ValueNotifier<ArticleProgress?> articleProgress,
+    ArticleProgress? articleProgress,
   ) {
-    final articleProgressValue = articleProgress.value;
+    final articleProgressValue = articleProgress;
     return articleProgressValue != null
         ? Padding(
             padding: const EdgeInsets.symmetric(
@@ -199,11 +199,7 @@ extension on BookmarkTileCover {
         return bookmark.data.mapOrNull(
               article: (data) => ArticleCover.bookmark(
                 article: data.article,
-                onTap: () => AutoRouter.of(context)
-                    .push(
-                  MediaItemPageRoute(article: data.article),
-                )
-                    .then((value) {
+                onTap: () => AutoRouter.of(context).push(MediaItemPageRoute(article: data.article)).then((value) {
                   final progress = value as ArticleProgress?;
                   articleProgress.value = progress;
                 }),

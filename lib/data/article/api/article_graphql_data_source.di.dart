@@ -178,11 +178,14 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       ),
     );
 
-    final dto = _responseResolver.resolve(result, (raw) {
-      final progressRaw = raw['updateArticleContentProgress']['progress'] as Map<String, dynamic>;
-      final progress = ArticleProgressDTO.fromJson(progressRaw);
-      return progress;
-    });
+    final dto = _responseResolver.resolve(
+      result,
+      rootKey: 'updateArticleContentProgress',
+      (raw) {
+        final progressRaw = raw['progress'] as Map<String, dynamic>;
+        return ArticleProgressDTO.fromJson(progressRaw);
+      },
+    );
 
     if (dto == null) throw Exception('Response for article progress is null');
 
