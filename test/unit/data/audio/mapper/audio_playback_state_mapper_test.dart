@@ -57,6 +57,8 @@ void main() {
         audioItem: audioItem,
       );
 
+      when(audioItemMapper.to(mediaItem)).thenAnswer((realInvocation) => audioItem);
+
       final actual = mapper(original);
 
       expect(actual, expected);
@@ -87,6 +89,8 @@ void main() {
         speed: 1.0,
         audioItem: audioItem,
       );
+
+      when(audioItemMapper.to(mediaItem)).thenAnswer((realInvocation) => audioItem);
 
       final actual = mapper(original);
 

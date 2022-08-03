@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/data/explore/api/documents/__generated__/
 import 'package:better_informed_mobile/data/explore/api/documents/__generated__/get_explore_section.ast.gql.dart'
     as get_explore_section;
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
-import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
+import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/explore_content_api_data_source.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -22,12 +22,13 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   final GraphQLClient _client;
   final GraphQLResponseResolver _responseResolver;
 
-  int? _exploreHighlightedContentHashCode;
+  int? _exploreContentHashCode;
 
   @override
-  Future<ExploreHighlightedContentDTO> getExploreHighlightedContent() async {
+  Future<ExploreContentDTO> getExploreContent() async {
     final result = await _client.query(
       QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
         document: get_explore_section.document,
         operationName: get_explore_section.getExploreSection.name?.value,
       ),
@@ -35,7 +36,7 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) => ExploreHighlightedContentDTO.fromJson(raw),
+      (raw) => ExploreContentDTO.fromJson(raw),
     );
 
     return dto ?? (throw Exception('Explore highlighted content can not be null'));
@@ -66,7 +67,7 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
   }
 
   @override
-  Stream<ExploreHighlightedContentDTO?> exploreHighlightedContentStream() async* {
+  Stream<ExploreContentDTO?> exploreContentStream() async* {
     final observableQuery = _client.watchQuery(
       WatchQueryOptions(
         fetchPolicy: FetchPolicy.cacheAndNetwork,
@@ -79,15 +80,15 @@ class ExploreContentGraphqlDataSource implements ExploreContentApiDataSource {
     );
 
     yield* observableQuery.stream.map(
-      (result) => _responseResolver.resolve<ExploreHighlightedContentDTO?>(
+      (result) => _responseResolver.resolve<ExploreContentDTO?>(
         result,
         (raw) {
           final newHashCode = jsonEncode(raw).hashCode;
-          if (_exploreHighlightedContentHashCode == newHashCode) {
+          if (_exploreContentHashCode == newHashCode) {
             return null;
           }
-          _exploreHighlightedContentHashCode = newHashCode;
-          return ExploreHighlightedContentDTO.fromJson(raw);
+          _exploreContentHashCode = newHashCode;
+          return ExploreContentDTO.fromJson(raw);
         },
       ),
     );

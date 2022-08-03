@@ -38,11 +38,7 @@ class CurrentAudioFloatingProgress extends HookWidget {
                 strokeWidth: AppDimens.strokeAudioWidth(progressSize),
                 backgroundColor: AppColors.dividerGrey,
                 color: AppColors.black,
-                value: audioProgressType == AudioProgressType.current
-                    ? state.progress > 1.0
-                        ? 1
-                        : state.progress
-                    : progress,
+                value: audioProgressType == AudioProgressType.current ? state.progress.clamp(0, 1) : progress,
               ),
       ),
     );

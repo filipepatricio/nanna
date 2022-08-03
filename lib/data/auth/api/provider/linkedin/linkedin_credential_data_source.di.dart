@@ -8,13 +8,12 @@ import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart'
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:oauth2/oauth2.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:uni_links/uni_links.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 @injectable
 class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource {
@@ -71,14 +70,30 @@ class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource 
         rethrow;
       }
     } else {
-      final openedWithSuccess = await launchUrl(authUri);
+      Uri? redirect;
+      final compiler = Completer();
 
-      if (!openedWithSuccess) throw Exception('LinkedIn authorization uri failed to open');
+      final options = InAppBrowserClassOptions(
+        crossPlatform: InAppBrowserOptions(hideUrlBar: true),
+        inAppWebViewGroupOptions: InAppWebViewGroupOptions(crossPlatform: InAppWebViewOptions(clearCache: true)),
+      );
 
-      final redirect = await uriLinkStream.whereType<Uri>().first;
-      await closeInAppWebView();
+      await CustomInAppBrowser(
+        onRedirect: (url) {
+          redirect = url;
+          compiler.complete();
+        },
+        onUserExit: compiler.complete,
+      ).openUrlRequest(
+        urlRequest: URLRequest(url: authUri),
+        options: options,
+      );
 
-      return redirect;
+      await compiler.future;
+
+      if (redirect == null) throw SignInAbortedException();
+
+      return redirect!;
     }
   }
 
@@ -105,4 +120,25 @@ class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource 
       rethrow;
     }
   }
+}
+
+class CustomInAppBrowser extends InAppBrowser {
+  CustomInAppBrowser({
+    required this.onRedirect,
+    required this.onUserExit,
+  });
+
+  final void Function(Uri) onRedirect;
+  final VoidCallback onUserExit;
+
+  @override
+  void onUpdateVisitedHistory(Uri? url, bool? androidIsReload) {
+    if (url?.toString().contains('api/auth/callback/linkedin?code') ?? false) {
+      onRedirect(url!);
+      close();
+    }
+  }
+
+  @override
+  void onExit() => onUserExit();
 }

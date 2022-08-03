@@ -2,7 +2,6 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:better_informed_mobile/data/audio/handler/informed_audio_handler.dart';
 import 'package:better_informed_mobile/data/audio/handler/informed_base_audio_handler.dart';
-import 'package:better_informed_mobile/data/util/audio_progress.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:injectable/injectable.dart';
 import 'package:just_audio/just_audio.dart';
@@ -11,9 +10,6 @@ import 'package:just_audio/just_audio.dart';
 abstract class AudioModule {
   @lazySingleton
   AudioPlayer get audioPlayer => AudioPlayer();
-
-  @singleton
-  AudioProgress get audioProgress => AudioProgress();
 
   @preResolve
   @LazySingleton(env: liveEnvs)

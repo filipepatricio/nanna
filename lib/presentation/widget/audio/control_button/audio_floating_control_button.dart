@@ -80,11 +80,8 @@ class AudioFloatingControlButton extends HookWidget {
       highlightElevation: elevation,
       shape: article == null
           ? RoundedRectangleBorder(
-              side: BorderSide(
-                color: AppColors.dividerGrey,
-                width: AppDimens.strokeAudioWidth(progressSize),
-              ),
-              borderRadius: BorderRadius.circular(AppDimens.c),
+              side: const BorderSide(color: AppColors.grey),
+              borderRadius: BorderRadius.circular(AppDimens.xl),
             )
           : null,
       onPressed: state.getAction(cubit),
@@ -94,10 +91,15 @@ class AudioFloatingControlButton extends HookWidget {
         clipBehavior: Clip.none,
         children: [
           Center(
-            child: SvgPicture.asset(
-              state.imagePath,
-              height: imageHeight,
-              color: state.imageColor,
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: state.imagePath.contains('play') ? AppDimens.xxs : AppDimens.zero,
+              ),
+              child: SvgPicture.asset(
+                state.imagePath,
+                height: imageHeight,
+                color: state.imageColor,
+              ),
             ),
           ),
           if (article != null)
