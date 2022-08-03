@@ -25,8 +25,8 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
+import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
-import 'package:better_informed_mobile/data/explore/api/dto/explore_highlighted_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/push_notification/api/dto/notification_channel_dto.dt.dart';
@@ -223,7 +223,7 @@ class MockDTO {
   static final _briefEntryStyleArticleLarge = BriefEntryStyleDTO(null, BriefEntryStyleType.articleCardWithLargeImage);
 
   /// Explore
-  static final exploreHighlightedContent = ExploreHighlightedContentDTO(
+  static final exploreContent = ExploreContentDTO(
     [
       ExploreContentPillDTO.articles('articles', 'Articles', _mockedPillIcon),
       ExploreContentPillDTO.articles('topics', 'Topics', _mockedPillIcon),

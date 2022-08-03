@@ -2,18 +2,17 @@ import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'explore_highlighted_content_dto.dt.g.dart';
+part 'explore_content_dto.dt.g.dart';
 
 @JsonSerializable()
-class ExploreHighlightedContentDTO {
-  ExploreHighlightedContentDTO(this.pillSection, this.highlightedSection);
+class ExploreContentDTO {
+  ExploreContentDTO(this.pillSection, this.highlightedSection);
 
-  factory ExploreHighlightedContentDTO.fromJson(Map<String, dynamic> json) =>
-      _$ExploreHighlightedContentDTOFromJson(json);
+  factory ExploreContentDTO.fromJson(Map<String, dynamic> json) => _$ExploreContentDTOFromJson(json);
   @JsonKey(name: 'pillSection')
   final List<ExploreContentPillDTO> pillSection;
   @JsonKey(name: 'highlightedSection')
   final List<ExploreContentAreaDTO> highlightedSection;
 
-  Map<String, dynamic> toJson() => _$ExploreHighlightedContentDTOToJson(this);
+  Map<String, dynamic> toJson() => _$ExploreContentDTOToJson(this);
 }

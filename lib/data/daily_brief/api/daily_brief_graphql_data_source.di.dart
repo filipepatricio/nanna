@@ -28,7 +28,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
       QueryOptions(
         document: current_brief.document,
         operationName: current_brief.currentBriefForStartupScreen.name?.value,
-        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
