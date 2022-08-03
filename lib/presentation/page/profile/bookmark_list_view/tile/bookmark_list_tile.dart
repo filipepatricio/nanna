@@ -199,10 +199,12 @@ extension on BookmarkTileCover {
         return bookmark.data.mapOrNull(
               article: (data) => ArticleCover.bookmark(
                 article: data.article,
-                onTap: () => AutoRouter.of(context).push(MediaItemPageRoute(article: data.article)).then((value) {
-                  final progress = value as ArticleProgress?;
+                onTap: () async {
+                  final progress = await AutoRouter.of(context).push<ArticleProgress?>(
+                    MediaItemPageRoute(article: data.article),
+                  );
                   articleProgress.value = progress;
-                }),
+                },
               ),
               topic: (_) => throw Exception('There should not be topic with static cover'),
             ) ??
