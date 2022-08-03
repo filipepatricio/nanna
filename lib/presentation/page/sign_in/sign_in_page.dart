@@ -23,6 +23,10 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 final _emailInputKey = GlobalKey();
+const _loadingLogo = Padding(
+  padding: EdgeInsets.only(bottom: kToolbarHeight),
+  child: LoaderLogo(),
+);
 
 class SignInPage extends HookWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -69,7 +73,7 @@ class SignInPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         leading: state.maybeMap(
-          magicLink: (state) => Padding(
+          magicLink: (_) => Padding(
             padding: const EdgeInsets.only(left: AppDimens.m + AppDimens.xxs),
             child: IconButton(
               icon: const Icon(Icons.close_rounded),
@@ -94,8 +98,8 @@ class SignInPage extends HookWidget {
             child: SnackbarParentView(
               controller: snackbarController,
               child: state.maybeMap(
-                processing: (_) => const Loader(),
-                processingLinkedIn: (_) => const Loader(),
+                processing: (_) => _loadingLogo,
+                processingLinkedIn: (_) => _loadingLogo,
                 magicLink: (state) => MagicLinkContent(email: state.email),
                 idle: (state) => _IdleContent(
                   cubit: cubit,
