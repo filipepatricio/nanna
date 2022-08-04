@@ -7,12 +7,13 @@ part 'audio_control_button_state.dt.freezed.dart';
 @freezed
 class AudioControlButtonState with _$AudioControlButtonState {
   @Implements<BuildState>()
-  factory AudioControlButtonState.notInitilized() = _AudioControlButtonStateNotInitialized;
+  factory AudioControlButtonState.notInitilized(double progress) = _AudioControlButtonStateNotInitialized;
 
   @Implements<BuildState>()
   factory AudioControlButtonState.inDifferentAudio({
     required AudioItem currentAudioItem,
     required bool completed,
+    required double progress,
   }) = _AudioControlButtonStateInDifferentAudio;
 
   @Implements<BuildState>()

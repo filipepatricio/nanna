@@ -101,8 +101,8 @@ class ArticleCoverAudioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: AppDimens.xxl + AppDimens.xxs,
-      height: AppDimens.xxl + AppDimens.xxs,
+      width: AppDimens.audioControlButtonSize,
+      height: AppDimens.audioControlButtonSize,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [
@@ -114,6 +114,7 @@ class ArticleCoverAudioButton extends StatelessWidget {
         elevation: 0,
         color: AppColors.white,
         imageHeight: AppDimens.sl + AppDimens.xxs,
+        progressSize: AppDimens.audioControlButtonSize,
       ),
     );
   }

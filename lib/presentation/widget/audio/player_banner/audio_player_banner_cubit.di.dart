@@ -53,7 +53,11 @@ class AudioPlayerBannerCubit extends Cubit<AudioPlayerBannerState> {
   Future<void> stop() async {
     final audioItem = state.mapOrNull(visible: (value) => value.audioItem);
     if (audioItem != null && _currentPosition != null) {
-      _trackArticleAudioPositionUseCase(audioItem.slug, _currentPosition!.inSeconds);
+      _trackArticleAudioPositionUseCase(
+        audioItem.slug,
+        _currentPosition!.inSeconds,
+        audioItem.duration?.inSeconds,
+      );
     }
     await _stopAudioUseCase();
   }

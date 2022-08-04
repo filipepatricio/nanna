@@ -167,13 +167,14 @@ class _AudioControlButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: AppDimens.xxl + AppDimens.xxs,
-      height: AppDimens.xxl + AppDimens.xxs,
+      width: AppDimens.audioControlButtonSize,
+      height: AppDimens.audioControlButtonSize,
       child: FittedBox(
         child: state.maybeMap(
           visible: (state) {
             return const AudioFloatingControlButton.forCurrentAudio(
               elevation: 0,
+              progressSize: AppDimens.audioControlButtonSize,
             );
           },
           orElse: () {},

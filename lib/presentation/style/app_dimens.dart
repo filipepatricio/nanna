@@ -107,6 +107,9 @@ class AppDimens {
   /// 0.72
   static const exploreTopicCellSizeFactor = 0.72;
 
+  /// 42
+  static const audioControlButtonSize = AppDimens.xxl + AppDimens.xxs;
+
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
       topicViewHeaderImageHeight(context) +
@@ -178,4 +181,6 @@ class AppDimens {
   static const shareHeight = 1280.0;
 
   static double coverSize(BuildContext context, double widthFactor) => MediaQuery.of(context).size.width * widthFactor;
+
+  static double strokeAudioWidth(double progressSize) => progressSize * 0.04;
 }

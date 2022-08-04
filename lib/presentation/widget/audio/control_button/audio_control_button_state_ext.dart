@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state.dt.dart';
 import 'package:flutter/widgets.dart';
 
+enum AudioProgressType { current, other, loading }
+
 extension AudioControlButtonStateViewExtension on AudioControlButtonState {
   Function()? getAction(
     AudioControlButtonCubit cubit,
@@ -14,6 +16,28 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
       loading: (_) => null,
       playing: (_) => () => cubit.pause(),
       paused: (_) => () => cubit.play(),
+      orElse: () => throw Exception('Unhandled type'),
+    );
+  }
+
+  double get progress {
+    return maybeMap(
+      notInitilized: (e) => e.progress,
+      inDifferentAudio: (e) => e.progress,
+      loading: (_) => 0.0,
+      playing: (_) => 0.0,
+      paused: (_) => 0.0,
+      orElse: () => throw Exception('Unhandled type'),
+    );
+  }
+
+  AudioProgressType get audioType {
+    return maybeMap(
+      notInitilized: (_) => AudioProgressType.other,
+      inDifferentAudio: (_) => AudioProgressType.other,
+      loading: (_) => AudioProgressType.loading,
+      playing: (_) => AudioProgressType.current,
+      paused: (_) => AudioProgressType.current,
       orElse: () => throw Exception('Unhandled type'),
     );
   }
