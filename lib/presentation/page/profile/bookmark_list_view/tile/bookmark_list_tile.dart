@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -36,10 +37,8 @@ class BookmarkListTile extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final articleProgress = useMemoized(
-      () => ValueNotifier<ArticleProgress?>(
-        bookmarkCover.bookmark.data.mapOrNull(article: (data) => data.article.progress),
-      ),
+    final articleProgress = useState<ArticleProgress?>(
+      bookmarkCover.bookmark.data.mapOrNull(article: (data) => data.article.progress),
     );
 
     return Column(
@@ -59,12 +58,7 @@ class BookmarkListTile extends HookWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ValueListenableBuilder<ArticleProgress?>(
-                valueListenable: articleProgress,
-                builder: (context, value, child) {
-                  return bookmarkCover.bookmark.getReadProgressLabel(context, value);
-                },
-              ),
+              bookmarkCover.bookmark.getReadProgressLabel(context, articleProgress.value),
               Row(
                 children: [
                   _BookmarkRemoveButton(
@@ -79,12 +73,7 @@ class BookmarkListTile extends HookWidget {
             ],
           ),
         ),
-        ValueListenableBuilder<ArticleProgress?>(
-          valueListenable: articleProgress,
-          builder: (context, value, child) {
-            return bookmarkCover.bookmark.getReadProgressBar(context, value);
-          },
-        ),
+        bookmarkCover.bookmark.getReadProgressBar(context, articleProgress.value),
         const SizedBox(height: AppDimens.m),
         if (!isLast)
           const Padding(
@@ -190,6 +179,17 @@ extension on Bookmark {
 }
 
 extension on BookmarkTileCover {
+  Future<void> goToArticle(
+    BuildContext context,
+    MediaItemArticle article,
+    ValueNotifier<ArticleProgress?> articleProgress,
+  ) async {
+    final progress = await AutoRouter.of(context).push<ArticleProgress?>(
+      MediaItemPageRoute(article: article),
+    );
+    articleProgress.value = progress;
+  }
+
   Widget getContent(
     BuildContext context,
     ValueNotifier<ArticleProgress?> articleProgress,
@@ -199,12 +199,7 @@ extension on BookmarkTileCover {
         return bookmark.data.mapOrNull(
               article: (data) => ArticleCover.bookmark(
                 article: data.article,
-                onTap: () async {
-                  final progress = await AutoRouter.of(context).push<ArticleProgress?>(
-                    MediaItemPageRoute(article: data.article),
-                  );
-                  articleProgress.value = progress;
-                },
+                onTap: () => goToArticle(context, data.article, articleProgress),
               ),
               topic: (_) => throw Exception('There should not be topic with static cover'),
             ) ??
@@ -215,6 +210,7 @@ extension on BookmarkTileCover {
               context,
               cover.indexOfType,
               bookmark,
+              articleProgress,
             ) ??
             const SizedBox.shrink();
       },
@@ -225,11 +221,13 @@ extension on BookmarkTileCover {
     BuildContext context,
     int index,
     Bookmark bookmark,
+    ValueNotifier<ArticleProgress?> articleProgress,
   ) {
     return bookmark.data.mapOrNull(
       article: (data) => ArticleCover.bookmark(
         article: data.article,
         coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+        onTap: () => goToArticle(context, data.article, articleProgress),
       ),
       topic: (data) => TopicCover.bookmark(
         topic: data.topic.asPreview,
