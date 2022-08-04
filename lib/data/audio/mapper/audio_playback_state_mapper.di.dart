@@ -27,6 +27,7 @@ class AudioPlaybackStateMapper implements Mapper<CurrentAudioItemDTO, AudioPlayb
       case AudioProcessingState.buffering:
         return AudioPlaybackState.loading(
           speed: data.state.speed,
+          audioItem: _audioItemMapper.to(mediaItem),
         );
       case AudioProcessingState.ready:
         return _mapReadyState(data.state, mediaItem);
@@ -46,6 +47,7 @@ class AudioPlaybackStateMapper implements Mapper<CurrentAudioItemDTO, AudioPlayb
     if (duration == null) {
       return AudioPlaybackState.loading(
         speed: state.speed,
+        audioItem: _audioItemMapper.to(mediaItem),
       );
     }
 

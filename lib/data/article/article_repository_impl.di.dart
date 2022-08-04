@@ -35,6 +35,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
   final MediaItemDTOMapper _mediaItemDTOMapper;
   final CategoryItemDTOMapper _categoryItemDTOMapper;
 
+  final Map<String, double> _audioProgress = {};
   final BehaviorSubject<ReadingBanner> _broadcaster = BehaviorSubject();
 
   @override
@@ -68,8 +69,10 @@ class ArticleRepositoryImpl implements ArticleRepository {
   }
 
   @override
-  void trackAudioPosition(String articleSlug, int position) =>
-      _articleDataSource.trackAudioPosition(articleSlug, position);
+  void trackAudioPosition(String articleSlug, int position, [int? duration]) {
+    _articleDataSource.trackAudioPosition(articleSlug, position);
+    _audioProgress[articleSlug] = position / (duration ?? 1);
+  }
 
   @override
   void trackReadingProgress(String articleSlug, int progress) =>
@@ -85,5 +88,12 @@ class ArticleRepositoryImpl implements ArticleRepository {
   Future<List<CategoryItem>> getRelatedContent(String slug) async {
     final dto = await _articleDataSource.getRelatedContent(slug);
     return dto.map<CategoryItem>(_categoryItemDTOMapper).toList();
+  }
+
+  @override
+  double getArticleAudioProgress(MediaItemArticle article) {
+    if (_audioProgress[article.slug] == null) return article.progress.audioProgress / 100;
+
+    return _audioProgress[article.slug]!;
   }
 }

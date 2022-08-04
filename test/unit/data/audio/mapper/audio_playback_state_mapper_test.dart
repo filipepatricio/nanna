@@ -44,7 +44,20 @@ void main() {
         state: state,
         mediaItem: mediaItem,
       );
-      const expected = AudioPlaybackState.loading(speed: 1.0);
+      final audioItem = AudioItem(
+        id: 'id',
+        slug: 'slug',
+        title: 'title',
+        author: 'author',
+        imageUrl: 'imageUrl',
+        duration: null,
+      );
+      final expected = AudioPlaybackState.loading(
+        speed: 1.0,
+        audioItem: audioItem,
+      );
+
+      when(audioItemMapper.to(mediaItem)).thenAnswer((realInvocation) => audioItem);
 
       final actual = mapper(original);
 
@@ -64,7 +77,20 @@ void main() {
         state: state,
         mediaItem: mediaItem,
       );
-      const expected = AudioPlaybackState.loading(speed: 1.0);
+      final audioItem = AudioItem(
+        id: 'id',
+        slug: 'slug',
+        title: 'title',
+        author: 'author',
+        imageUrl: 'imageUrl',
+        duration: null,
+      );
+      final expected = AudioPlaybackState.loading(
+        speed: 1.0,
+        audioItem: audioItem,
+      );
+
+      when(audioItemMapper.to(mediaItem)).thenAnswer((realInvocation) => audioItem);
 
       final actual = mapper(original);
 
@@ -93,8 +119,9 @@ void main() {
         imageUrl: 'imageUrl',
         duration: null,
       );
-      const expected = AudioPlaybackState.loading(
+      final expected = AudioPlaybackState.loading(
         speed: 1.0,
+        audioItem: audioItem,
       );
 
       when(audioItemMapper.to(mediaItem)).thenAnswer((realInvocation) => audioItem);
