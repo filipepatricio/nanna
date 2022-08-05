@@ -9,11 +9,6 @@ fragment briefFragment on Brief {
             message
             icon
         }
-        goodbye {
-            headline
-            message
-            icon
-        }
         introduction {
             icon
             text
@@ -34,4 +29,13 @@ fragment briefFragment on Brief {
                 }
             }
         }
+    relax {
+        callToAction {
+            actionText
+            preText
+        }
+        headline
+        icon
+        message
+    }
 }
