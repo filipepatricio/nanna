@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/audio/data/audio_position.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_position_seek_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_position_stream_use_case.di.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar_state.dt.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
 class AudioProgressBarCubit extends Cubit<AudioProgressBarState> {
   AudioProgressBarCubit(
@@ -63,6 +65,22 @@ class AudioProgressBarCubit extends Cubit<AudioProgressBarState> {
         event.position,
         event.totalDuration,
       ),
+    );
+  }
+}
+
+extension AudioProgressBarStateExtension on AudioProgressBarState {
+  double get progress {
+    return map(
+      inactive: (_) => 0.0,
+      active: (state) => state.progress.inMilliseconds / state.totalDuration.inMilliseconds,
+    );
+  }
+
+  Color get progressColor {
+    return map(
+      inactive: (_) => AppColors.textPrimary.withOpacity(0.7),
+      active: (_) => AppColors.textPrimary,
     );
   }
 }

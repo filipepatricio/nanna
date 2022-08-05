@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -250,9 +249,7 @@ class ArticleCover extends StatelessWidget {
         return _ArticleCoverBookmark(
           article: article,
           coverColor: coverColor,
-          onTap: () => AutoRouter.of(context).push(
-            MediaItemPageRoute(article: article),
-          ),
+          onTap: onTap,
         );
       case ArticleCoverType.topicBigImage:
         return _ArticleCoverTopicBigImage(

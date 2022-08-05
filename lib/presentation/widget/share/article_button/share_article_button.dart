@@ -57,12 +57,12 @@ class ShareArticleButton extends HookWidget {
         ),
         if (state == ShareArticleButtonState.processing)
           const Positioned.fill(
-            left: AppDimens.xs,
-            right: AppDimens.xs,
-            bottom: AppDimens.xs,
-            top: AppDimens.xs,
+            left: AppDimens.m,
+            right: AppDimens.m,
+            bottom: AppDimens.m,
+            top: AppDimens.m,
             child: Loader(
-              strokeWidth: 3.0,
+              strokeWidth: 2.0,
               color: AppColors.limeGreen,
             ),
           ),

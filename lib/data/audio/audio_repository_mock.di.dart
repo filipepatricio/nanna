@@ -19,7 +19,19 @@ class AudioRepositoryMock implements AudioRepository {
 
   @override
   Future<void> prepareItem(AudioItem item, AudioFile audioFile) async {
-    _playbackState.add(const AudioPlaybackState.loading(speed: 1.0));
+    _playbackState.add(
+      AudioPlaybackState.loading(
+        speed: 1.0,
+        audioItem: AudioItem(
+          id: MockDTO.premiumArticleWithAudio.id,
+          slug: MockDTO.premiumArticleWithAudio.slug,
+          title: 'Some title',
+          author: 'New York Times',
+          imageUrl: null,
+          duration: const Duration(seconds: 120),
+        ),
+      ),
+    );
     _playbackState.add(
       AudioPlaybackState.paused(
         speed: 1.0,

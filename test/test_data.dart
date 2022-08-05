@@ -20,8 +20,8 @@ import 'package:better_informed_mobile/data/daily_brief/api/mapper/headline_dto_
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/past_days_brief_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_area_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_pill_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/explore/api/mapper/explore_highlighted_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
@@ -77,7 +77,7 @@ class TestData {
     ),
   );
 
-  static final _exploreHighlightedContentMapper = ExploreHighlightedContentDTOMapper(
+  static final _exploreContentMapper = ExploreContentDTOMapper(
     ExploreContentPillDTOMapper(),
     ExploreContentAreaDTOMapper(
       ArticleDTOToMediaItemMapper(
@@ -161,8 +161,7 @@ class TestData {
 
   static Topic get topicWithEditorOwner => _topicMapper(MockDTO.topicWithEditorOwner);
 
-  static ExploreContent get exploreHighlightedContent =>
-      _exploreHighlightedContentMapper(MockDTO.exploreHighlightedContent);
+  static ExploreContent get exploreContent => _exploreContentMapper(MockDTO.exploreContent);
 
   static CurrentBrief get currentBrief => _currentBriefMapper(MockDTO.currentBrief());
 

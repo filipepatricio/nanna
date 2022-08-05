@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
@@ -38,7 +39,9 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   void trackAudioPosition(String articleSlug, int position) {}
 
   @override
-  void trackReadingProgress(String articleSlug, int progress) {}
+  Future<ArticleProgressDTO> trackReadingProgress(String articleSlug, int progress) async {
+    return MockDTO.articleProgress;
+  }
 
   @override
   Future<TopicMediaItemsDTO> getOtherTopicEntries(String articleSlug, String topicSlug) async {

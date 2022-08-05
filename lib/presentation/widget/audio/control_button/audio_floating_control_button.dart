@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state_ext.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/current_audio_floating_progress.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/switch_audio/switch_audio_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 class AudioFloatingControlButton extends HookWidget {
   const AudioFloatingControlButton({
     required this.article,
+    this.progressSize = AppDimens.c,
     this.elevation,
     this.imageHeight = AppDimens.sl + AppDimens.xxs,
     this.color = AppColors.background,
@@ -21,6 +23,7 @@ class AudioFloatingControlButton extends HookWidget {
   }) : super(key: key);
 
   const AudioFloatingControlButton.forCurrentAudio({
+    required this.progressSize,
     this.elevation,
     this.imageHeight = AppDimens.m + AppDimens.xxs,
     this.color = AppColors.background,
@@ -31,6 +34,7 @@ class AudioFloatingControlButton extends HookWidget {
   final MediaItemArticle? article;
   final double? elevation;
   final double? imageHeight;
+  final double progressSize;
   final Color color;
 
   @override
@@ -40,6 +44,7 @@ class AudioFloatingControlButton extends HookWidget {
       AppDimens.articleAudioCoverSize,
       AppDimens.articleAudioCoverSize,
     );
+
     final cubit = useCubitFactory<AudioControlButtonCubit, AudioControlButtonCubitFactory>(
       onCubitCreate: (factory) {
         factory.configure(article: article, imageUrl: imageUrl);
@@ -73,18 +78,37 @@ class AudioFloatingControlButton extends HookWidget {
       heroTag: null,
       elevation: elevation,
       highlightElevation: elevation,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: elevation != null ? AppColors.grey : AppColors.transparent),
-        borderRadius: BorderRadius.circular(AppDimens.xl),
-      ),
+      shape: article == null
+          ? RoundedRectangleBorder(
+              side: const BorderSide(color: AppColors.grey),
+              borderRadius: BorderRadius.circular(AppDimens.xl),
+            )
+          : null,
       onPressed: state.getAction(cubit),
       backgroundColor: color,
-      child: Center(
-        child: SvgPicture.asset(
-          state.imagePath,
-          height: imageHeight,
-          color: state.imageColor,
-        ),
+      child: Stack(
+        alignment: Alignment.center,
+        clipBehavior: Clip.none,
+        children: [
+          Center(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: state.imagePath.contains('play') ? AppDimens.xxs : AppDimens.zero,
+              ),
+              child: SvgPicture.asset(
+                state.imagePath,
+                height: imageHeight,
+                color: state.imageColor,
+              ),
+            ),
+          ),
+          if (article != null)
+            CurrentAudioFloatingProgress(
+              progressSize,
+              state.progress,
+              state.audioType,
+            ),
+        ],
       ),
     );
   }

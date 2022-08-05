@@ -3,9 +3,12 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class TrackArticleAudioPositionUseCase {
-  const TrackArticleAudioPositionUseCase(this._articleRepository);
+  const TrackArticleAudioPositionUseCase(
+    this._articleRepository,
+  );
 
   final ArticleRepository _articleRepository;
 
-  void call(String articleSlug, int position) => _articleRepository.trackAudioPosition(articleSlug, position);
+  void call(String articleSlug, int position, [int? duration]) =>
+      _articleRepository.trackAudioPosition(articleSlug, position, duration);
 }
