@@ -1,5 +1,10 @@
+# import 'package:better_informed_mobile/data/gql/common/progress_fragment.graphql';
+
 mutation updateArticleAudioPosition($slug: String!, $position: Int!) {
   updateArticleAudioPosition(slug: $slug, position: $position) {
     successful
+    progress{
+        ...progressFragment
+    }
   }
 }

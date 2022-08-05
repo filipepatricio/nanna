@@ -1,4 +1,5 @@
 # import 'package:better_informed_mobile/data/gql/common/kind_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/progress_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/cloudinary_image_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/publisher_fragment.graphql';
 
@@ -18,10 +19,8 @@ fragment articleFragment on Article {
     kind {
         ...kindFragment
     }
-    progress{
-        audioPosition
-        audioProgress
-        contentProgress
+    progress {
+        ...progressFragment
     }
     progressState
     publicationDate
