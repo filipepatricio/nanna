@@ -6,7 +6,10 @@ part 'audio_progress_bar_state.dt.freezed.dart';
 @freezed
 class AudioProgressBarState with _$AudioProgressBarState {
   @Implements<BuildState>()
-  factory AudioProgressBarState.inactive() = _AudioProgressBarStateInactive;
+  factory AudioProgressBarState.initial() = _AudioProgressBarStateInitial;
+
+  @Implements<BuildState>()
+  factory AudioProgressBarState.inactive(double progress) = _AudioProgressBarStateInactive;
 
   @Implements<BuildState>()
   factory AudioProgressBarState.active(

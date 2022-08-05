@@ -187,7 +187,8 @@
       "relatedReads": "Related reads you might enjoy"
     },
     "otherBriefs": "More Articles and Deep Dives from Today",
-    "moreFromTopic": "More from ‘{}’"
+    "moreFromTopic": "More from ‘{}’",
+    "percentageRead": "{}% read"
   },
   "readingList": {
     "title": "Reading list",

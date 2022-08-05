@@ -59,6 +59,7 @@ class AudioRepositoryImpl implements AudioRepository {
     await _audioFileDownloader.loadAndSaveFile(file, audioFile.url);
 
     _totalDuration = await _audioHandler.open(file.path);
+    await _audioHandler.seek(_getArticleAudioPosition(_currentPlayedArticle));
   }
 
   @override
@@ -69,7 +70,7 @@ class AudioRepositoryImpl implements AudioRepository {
 
   @override
   Future<void> play() async {
-    await seek(_getArticleAudioPosition(_currentPlayedArticle));
+    await _audioHandler.seek(_getArticleAudioPosition(_currentPlayedArticle));
 
     await _audioHandler.play();
   }
@@ -123,9 +124,7 @@ class AudioRepositoryImpl implements AudioRepository {
   }
 
   Duration _getArticleAudioPosition(MediaItemArticle article) {
-    if (_audioPositions[article.slug] == null) return Duration(seconds: article.progress.audioPosition);
-
-    return _audioPositions[article.slug]!;
+    return _audioPositions[article.slug] ?? Duration(seconds: article.progress.audioPosition);
   }
 
   void _setArticleAudioPosition(String articleSlug, Duration position) {

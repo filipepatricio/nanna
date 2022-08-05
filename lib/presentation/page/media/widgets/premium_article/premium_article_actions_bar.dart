@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -23,6 +22,7 @@ class PremiumArticleActionsBar extends HookWidget {
     required this.pageController,
     required this.snackbarController,
     required this.articleOutputModeNotifier,
+    required this.onBackPressed,
     this.briefId,
     this.topicId,
     Key? key,
@@ -34,6 +34,7 @@ class PremiumArticleActionsBar extends HookWidget {
   final String? topicId;
   final String? briefId;
   final ValueNotifier<ArticleOutputMode> articleOutputModeNotifier;
+  final VoidCallback onBackPressed;
 
   bool get fromTopic => topicId != null;
 
@@ -173,7 +174,7 @@ class PremiumArticleActionsBar extends HookWidget {
                         Icons.arrow_back_ios_rounded,
                         size: AppDimens.backArrowSize,
                       ),
-                      onPressed: () => context.popRoute(),
+                      onPressed: onBackPressed,
                     ),
                   ),
                   Row(

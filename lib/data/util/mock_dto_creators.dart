@@ -337,7 +337,7 @@ class MockDTO {
     // hasAudioVersion
     false,
     // progress
-    _progress,
+    articleProgress,
     // progressState
     ArticleProgressState.unread,
   );
@@ -568,7 +568,7 @@ class MockDTO {
     'Opinion',
   );
 
-  static final _progress = ArticleProgressDTO(
+  static final articleProgress = ArticleProgressDTO(
     // audioPosition
     30,
     // audioProgress

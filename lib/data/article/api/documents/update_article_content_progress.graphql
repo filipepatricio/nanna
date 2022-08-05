@@ -1,5 +1,10 @@
+# import 'package:better_informed_mobile/data/gql/common/progress_fragment.graphql';
+
 mutation updateArticleContentProgress($slug: String!, $progress: Int!) {
   updateArticleContentProgress(slug: $slug, progress: $progress) {
     successful
+    progress{
+        ...progressFragment
+    }
   }
 }
