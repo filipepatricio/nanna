@@ -56,8 +56,9 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
           )
         : EdgeInsets.zero;
 
-    return ColoredBox(
-      color: AppColors.white,
+    return DecoratedBox(
+      // To ensure darker border in the notes section, while keeping dynamic radius in each corner
+      decoration: decoration.copyWith(color: AppColors.darkLinen),
       child: Container(
         decoration: decoration,
         padding: padding,

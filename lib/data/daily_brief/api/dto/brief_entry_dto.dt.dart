@@ -6,9 +6,10 @@ part 'brief_entry_dto.dt.g.dart';
 
 @JsonSerializable()
 class BriefEntryDTO {
-  BriefEntryDTO(this.item, this.style);
+  const BriefEntryDTO(this.item, this.style);
 
   factory BriefEntryDTO.fromJson(Map<String, dynamic> json) => _$BriefEntryDTOFromJson(json);
+
   final BriefEntryItemDTO item;
   final BriefEntryStyleDTO style;
 

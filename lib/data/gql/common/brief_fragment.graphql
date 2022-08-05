@@ -2,40 +2,63 @@
 # import 'package:better_informed_mobile/data/gql/common/topic_preview_fragment.graphql';
 
 fragment briefFragment on Brief {
+  __typename
+  id
+  greeting {
+    headline
+    message
+    icon
+  }
+  introduction {
+    icon
+    text
+  }
+  date
+  sections {
     __typename
-     id
-        greeting {
-            headline
-            message
-            icon
-        }
-        introduction {
-            icon
-            text
-        }
-        date
-        entries {
-            style {
-                backgroundColor
-                type
-            }
-            item {
-                __typename
-                ... on Article {
-                    ...articleFragment
-                }
-                ... on Topic {
-                    ...topicPreviewFragment
-                }
-            }
-        }
-    relax {
-        callToAction {
-            actionText
-            preText
-        }
-        headline
-        icon
-        message
+    ... on SectionWithEntries {
+      title
+      backgroundColor
+      entries {
+        ...briefEntryFragment
+      }
     }
+
+    ... on SectionWithSubSections {
+      title
+      backgroundColor
+      sections {
+        title
+        entries {
+          ...briefEntryFragment
+        }
+      }
+    }
+  }
+  relax {
+    callToAction {
+      actionText
+      preText
+    }
+    headline
+    icon
+    message
+  }
+}
+
+fragment briefEntryFragment on BriefEntry {
+  __typename
+  style {
+    backgroundColor
+    type
+  }
+  item {
+    __typename
+    ... on Article {
+      ...articleFragment
+    }
+    ... on Topic {
+      ...topicPreviewFragment
+    }
+  }
 }

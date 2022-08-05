@@ -1,5 +1,5 @@
-class CurrentBriefIntroduction {
-  CurrentBriefIntroduction({
+class BriefIntroduction {
+  const BriefIntroduction({
     required this.text,
     required this.icon,
   });

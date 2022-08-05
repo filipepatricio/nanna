@@ -3,8 +3,8 @@ import 'dart:collection';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
@@ -31,6 +31,7 @@ const _minVisibilityToTrack = 0.9;
 const _trackEventTotalBufferTime = Duration(seconds: 1);
 const _trackEventBufferTime = Duration(milliseconds: 100);
 final _requiredEventsCount = _trackEventTotalBufferTime.inMilliseconds / _trackEventBufferTime.inMilliseconds;
+final firstTopicKey = GlobalKey();
 
 @injectable
 class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
@@ -52,14 +53,13 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
-  late CurrentBrief _currentBrief;
+  late Brief _currentBrief;
   List<PastDaysBrief> _pastDaysBriefs = [];
 
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
 
   List<TargetFocus> targets = <TargetFocus>[];
-  final topicCardKey = GlobalKey();
 
   bool _shouldShowTutorialCoachMark = true;
 
@@ -77,8 +77,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   Future<void> initialize() async {
     await loadBriefs();
 
-    _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((newCurrentBrief) {
-      _currentBrief = newCurrentBrief;
+    _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((currentBrief) {
+      _currentBrief = currentBrief;
       _updateIdleState();
     });
 
@@ -142,10 +142,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     _updateIdleState();
   }
 
-  void selectCurrentBrief(CurrentBrief? currentBrief) {
-    if (currentBrief == null) return;
+  void selectBrief(Brief? brief) {
+    if (brief == null) return;
 
-    _currentBrief = currentBrief;
+    _currentBrief = brief;
 
     if (_currentBrief.date == clock.now() && (_currentBriefSubscription?.isPaused ?? false)) {
       _currentBriefSubscription?.resume();
@@ -225,7 +225,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     targets.add(
       TargetFocus(
         identify: DailyBriefPageTutorialCoachMarkStep.topicCard.key,
-        keyTarget: topicCardKey,
+        keyTarget: firstTopicKey,
         color: AppColors.shadowColor,
         enableTargetTab: false,
         pulseVariation: Tween(begin: 1.0, end: 1.0),

@@ -1,12 +1,12 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 
 class PastDaysBrief {
-  PastDaysBrief({
+  const PastDaysBrief({
     required this.brief,
     required this.date,
   });
 
-  final CurrentBrief? brief;
+  final Brief? brief;
   final DateTime date;
 
   @override

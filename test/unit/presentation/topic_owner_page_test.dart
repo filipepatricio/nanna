@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/widgets/last_updated_topics.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,16 +7,6 @@ import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
 void main() {
-  testWidgets(
-    'unknown owner avatar in topic cover',
-    (tester) async {
-      await tester.startApp();
-      await tester.fling(find.byType(TopicCover).first, const Offset(0, -10000), 100);
-      await tester.pumpAndSettle();
-      expect(find.byType(UnknownOwnerAvatar, skipOffstage: false), findsOneWidget);
-    },
-  );
-
   testWidgets(
     'unknown owner avatar in topic page',
     (tester) async {

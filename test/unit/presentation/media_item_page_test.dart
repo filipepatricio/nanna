@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
@@ -303,7 +302,7 @@ class FakeBookmarkButtonCubit extends Fake implements BookmarkButtonCubit {
 class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubit {
   final idleState = PremiumArticleViewState.idle(
     article: TestData.fullArticle,
-    moreFromBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    moreFromBriefItems: TestData.currentBrief.allEntries.map((entry) => entry.item).toList(),
     otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
     relatedContentItems: TestData.categoryItemList,

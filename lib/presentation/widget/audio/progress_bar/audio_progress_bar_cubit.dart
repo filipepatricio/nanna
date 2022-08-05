@@ -97,8 +97,8 @@ extension AudioProgressBarStateExtension on AudioProgressBarState {
 
   Color get progressColor {
     return map(
-      initial: (_) => AppColors.textPrimary70,
-      inactive: (_) => AppColors.textPrimary70,
+      initial: (_) => AppColors.charcoal70,
+      inactive: (_) => AppColors.charcoal70,
       active: (_) => AppColors.textPrimary,
     );
   }

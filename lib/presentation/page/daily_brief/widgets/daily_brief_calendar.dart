@@ -70,7 +70,7 @@ class DailyBriefCalendar extends StatelessWidget {
                         curve: Curves.easeInOut,
                       );
 
-                      cubit.selectCurrentBrief(e.brief);
+                      cubit.selectBrief(e.brief);
                     },
                   ),
                 )
@@ -101,14 +101,14 @@ class _CalendarItem extends HookWidget {
     BoxDecoration? itemDecoration() {
       if (type.value == _CalendarItemType.selected) {
         return BoxDecoration(
-          color: AppColors.darkGreyBackground,
+          color: AppColors.charcoal,
           borderRadius: BorderRadius.circular(AppDimens.s),
         );
       }
 
       if (type.value == _CalendarItemType.current) {
         return BoxDecoration(
-          border: Border.all(color: AppColors.darkGreyBackground),
+          border: Border.all(color: AppColors.charcoal),
           borderRadius: BorderRadius.circular(AppDimens.s),
         );
       }
