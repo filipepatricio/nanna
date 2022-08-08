@@ -14,7 +14,6 @@ import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informe
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
@@ -209,56 +208,54 @@ class PremiumArticleReadView extends HookWidget {
                       article: cubit.article.metadata,
                       controller: pageController,
                     ),
-                  NoScrollGlow(
-                    child: CustomScrollView(
-                      controller: mainController,
-                      physics: const NeverScrollableScrollPhysics(
-                        parent: ClampingScrollPhysics(),
-                      ),
-                      slivers: [
-                        SliverFillViewport(
-                          delegate: SliverChildListDelegate(
-                            [
-                              _ArticleContentView(
-                                article: cubit.article,
-                                articleContentKey: _articleContentKey,
-                                articleController: articleController,
-                                cubit: cubit,
-                                dynamicPosition: dynamicListenPosition,
-                                readProgress: readProgress,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            [
-                              if (data.otherTopicItems.isNotEmpty)
-                                ArticleMoreFromSection(
-                                  title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
-                                  items: data.otherTopicItems.buildWidgets(context, cubit),
-                                )
-                              else if (data.moreFromBriefItems.isNotEmpty)
-                                ArticleMoreFromSection(
-                                  title: LocaleKeys.article_otherBriefs.tr(),
-                                  items: data.moreFromBriefItems.buildWidgets(context, cubit),
-                                ),
-                            ],
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: RelatedContentSection(
-                            articleId: cubit.article.metadata.id,
-                            featuredCategories: data.featuredCategories,
-                            briefId: cubit.briefId,
-                            topicId: cubit.topicId,
-                            relatedContentItems: data.relatedContentItems,
-                            onRelatedContentItemTap: cubit.onRelatedContentItemTap,
-                            onRelatedCategoryTap: cubit.onRelatedCategoryTap,
-                          ),
-                        ),
-                      ],
+                  CustomScrollView(
+                    controller: mainController,
+                    physics: const NeverScrollableScrollPhysics(
+                      parent: ClampingScrollPhysics(),
                     ),
+                    slivers: [
+                      SliverFillViewport(
+                        delegate: SliverChildListDelegate(
+                          [
+                            _ArticleContentView(
+                              article: cubit.article,
+                              articleContentKey: _articleContentKey,
+                              articleController: articleController,
+                              cubit: cubit,
+                              dynamicPosition: dynamicListenPosition,
+                              readProgress: readProgress,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            if (data.otherTopicItems.isNotEmpty)
+                              ArticleMoreFromSection(
+                                title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
+                                items: data.otherTopicItems.buildWidgets(context, cubit),
+                              )
+                            else if (data.moreFromBriefItems.isNotEmpty)
+                              ArticleMoreFromSection(
+                                title: LocaleKeys.article_otherBriefs.tr(),
+                                items: data.moreFromBriefItems.buildWidgets(context, cubit),
+                              ),
+                          ],
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: RelatedContentSection(
+                          articleId: cubit.article.metadata.id,
+                          featuredCategories: data.featuredCategories,
+                          briefId: cubit.briefId,
+                          topicId: cubit.topicId,
+                          relatedContentItems: data.relatedContentItems,
+                          onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                          onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
