@@ -17,6 +17,7 @@ import 'package:better_informed_mobile/data/categories/dto/category_preference_d
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/call_to_action_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_introduction_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
@@ -24,6 +25,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/relax_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
@@ -145,8 +147,6 @@ class MockDTO {
           text:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
         ),
-        // goodbye
-        HeadlineDTO('You’re all _informed_', "Can't get enough?", null),
         (date ?? DateTime(2022, 07, 8)).toIso8601String(),
         //entries
         [
@@ -175,6 +175,7 @@ class MockDTO {
             _briefEntryStyleTopic,
           ),
         ],
+        relax,
       );
 
   // Past days briefs
@@ -594,6 +595,10 @@ class MockDTO {
   static final _summaryCardShort = SummaryCardDTO(
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. **Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip.**',
   );
+
+  static final relax = RelaxDTO('0/24 articles read', _mockedPillIcon, callToAction, 'Time to get _informed_');
+
+  static final callToAction = CallToActionDTO('More stories on', 'Explore');
 }
 
 extension ArticleHeaderDTOExtension on ArticleHeaderDTO {

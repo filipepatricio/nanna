@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dar
 import 'package:better_informed_mobile/domain/daily_brief/data/current_brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/relax.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
@@ -299,7 +300,7 @@ class _IdleContent extends HookWidget {
         ),
         _RelaxSection(
           onVisible: cubit.trackRelaxPage,
-          headline: currentBrief.goodbye,
+          relax: currentBrief.relax,
         ),
       ],
     );
@@ -330,13 +331,13 @@ class _IdleContent extends HookWidget {
 class _RelaxSection extends StatelessWidget {
   const _RelaxSection({
     required this.onVisible,
-    required this.headline,
+    required this.relax,
     Key? key,
   }) : super(key: key);
 
   static const String relaxSectionKey = 'kRelaxSectionKey';
   final VoidCallback onVisible;
-  final Headline headline;
+  final Relax relax;
 
   @override
   Widget build(BuildContext context) {
@@ -345,7 +346,7 @@ class _RelaxSection extends StatelessWidget {
       onVisible: onVisible,
       borderFraction: 0.6,
       child: RelaxView.dailyBrief(
-        headline: headline,
+        relax: relax,
       ),
     );
   }

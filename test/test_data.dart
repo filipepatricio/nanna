@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_i
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_style_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_topic_preview_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/call_to_action_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/current_brief_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/current_brief_introduction_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
@@ -19,6 +20,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_style_d
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/headline_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/past_days_brief_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/relax_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_area_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_pill_dto_mapper.di.dart';
@@ -120,6 +122,7 @@ class TestData {
       ),
       BriefEntryStyleDTOMapper(),
     ),
+    RelaxDTOMapper(CallToActionDTOMapper()),
   );
 
   static final _pastDaysBriefMapper = PastDaysBriefDTOMapper(_currentBriefMapper);
