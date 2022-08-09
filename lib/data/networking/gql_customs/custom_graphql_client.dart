@@ -51,6 +51,7 @@ class CustomGraphQlClient extends GraphQLClient {
         optionsWithCustomMapper.customMapper.mapAndThrow(optionalException);
       }
       generalExceptionMapper.mapAndThrow(optionalException);
+      throw optionalException;
     }
   }
 }
