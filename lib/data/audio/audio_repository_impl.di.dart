@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,16 +29,28 @@ class AudioRepositoryImpl implements AudioRepository {
   final AudioItemMapper _audioItemMapper;
   final AudioFileDownloader _audioFileDownloader;
 
+  final Map<String, Duration> _audioPositions = {};
+
   var _lastPosition = Duration.zero;
+  var _totalDuration = Duration.zero;
+
+  late MediaItemArticle _currentPlayedArticle;
 
   @override
   Future<void> closeItem() async {
+    _setArticleAudioPosition(
+      _currentPlayedArticle.slug,
+      _lastPosition == _totalDuration ? Duration.zero : _lastPosition,
+    );
+
     _lastPosition = Duration.zero;
     await _audioHandler.stop();
   }
 
   @override
-  Future<void> prepareItem(AudioItem item, AudioFile audioFile) async {
+  Future<void> prepareItem(AudioItem item, AudioFile audioFile, MediaItemArticle article) async {
+    _currentPlayedArticle = article;
+
     final mediaItem = _audioItemMapper.from(item);
     await _audioHandler.notifyLoading(mediaItem);
 
@@ -45,21 +58,27 @@ class AudioRepositoryImpl implements AudioRepository {
     final file = await _getAudioFile(fileName);
     await _audioFileDownloader.loadAndSaveFile(file, audioFile.url);
 
-    await _audioHandler.open(file.path);
+    _totalDuration = await _audioHandler.open(file.path);
+    await _audioHandler.seek(_getArticleAudioPosition(_currentPlayedArticle));
   }
 
   @override
   Future<void> pause() async {
+    _setArticleAudioPosition(_currentPlayedArticle.slug, _lastPosition);
     await _audioHandler.pause();
   }
 
   @override
   Future<void> play() async {
+    await _audioHandler.seek(_getArticleAudioPosition(_currentPlayedArticle));
+
     await _audioHandler.play();
   }
 
   @override
   Future<void> seek(Duration position) async {
+    _setArticleAudioPosition(_currentPlayedArticle.slug, position);
+
     await _audioHandler.seek(position);
   }
 
@@ -102,5 +121,13 @@ class AudioRepositoryImpl implements AudioRepository {
     final uri = Uri.parse(url);
     final lastSegment = uri.pathSegments.last;
     return lastSegment;
+  }
+
+  Duration _getArticleAudioPosition(MediaItemArticle article) {
+    return _audioPositions[article.slug] ?? Duration(seconds: article.progress.audioPosition);
+  }
+
+  void _setArticleAudioPosition(String articleSlug, Duration position) {
+    _audioPositions[articleSlug] = position;
   }
 }

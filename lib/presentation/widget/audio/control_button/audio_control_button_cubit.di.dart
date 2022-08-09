@@ -131,7 +131,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
     TrackActivityUseCase trackActivityUseCase,
     TrackArticleAudioPositionUseCase trackArticleAudioPositionUseCase,
     AudioPositionStreamUseCase audioPositionStreamUseCase,
-    GetArticleAudioProgressUseCase getArticleAudioPositionUseCase,
+    GetArticleAudioProgressUseCase getArticleAudioProgressUseCase,
   ) : super(
           prepareAudioTrackUseCase,
           playAudioUseCase,
@@ -140,7 +140,7 @@ class _CurrentlyPlayingAudioCubit extends AudioControlButtonCubit {
           trackActivityUseCase,
           trackArticleAudioPositionUseCase,
           audioPositionStreamUseCase,
-          getArticleAudioPositionUseCase,
+          getArticleAudioProgressUseCase,
         );
 
   @override
@@ -205,7 +205,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
     TrackActivityUseCase trackActivityUseCase,
     TrackArticleAudioPositionUseCase trackArticleAudioPositionUseCase,
     AudioPositionStreamUseCase audioPositionStreamUseCase,
-    GetArticleAudioProgressUseCase getArticleAudioPositionUseCase,
+    GetArticleAudioProgressUseCase getArticleAudioProgressUseCase,
     this._article,
     this._imageUrl,
   ) : super(
@@ -216,7 +216,7 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
           trackActivityUseCase,
           trackArticleAudioPositionUseCase,
           audioPositionStreamUseCase,
-          getArticleAudioPositionUseCase,
+          getArticleAudioProgressUseCase,
         );
 
   final MediaItemArticle _article;

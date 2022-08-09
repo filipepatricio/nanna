@@ -29,14 +29,14 @@ void main() {
     when(articleRepository.getArticleAudioFile(article.slug, any)).thenAnswer(
       (realInvocation) async => audioFile,
     );
-    when(audioRepository.prepareItem(any, audioFile)).thenAnswer((_) async {});
+    when(audioRepository.prepareItem(any, audioFile, article)).thenAnswer((_) async {});
 
     await expectLater(
       useCase(article: article, imageUrl: imageUrl),
       completes,
     );
 
-    verify(audioRepository.prepareItem(any, audioFile));
+    verify(audioRepository.prepareItem(any, audioFile, article));
     verify(articleRepository.getArticleAudioFile(article.slug));
   });
 
@@ -50,7 +50,7 @@ void main() {
     when(articleRepository.getArticleAudioFile(article.slug, any)).thenAnswer(
       (realInvocation) async => audioFile,
     );
-    when(audioRepository.prepareItem(any, audioFile)).thenAnswer((invocation) async {
+    when(audioRepository.prepareItem(any, audioFile, article)).thenAnswer((invocation) async {
       if (invocationCounter++ == 0) {
         throw FileAccessExpired();
       }
@@ -61,7 +61,7 @@ void main() {
       completes,
     );
 
-    verify(audioRepository.prepareItem(any, audioFile)).called(2);
+    verify(audioRepository.prepareItem(any, audioFile, article)).called(2);
     verify(articleRepository.getArticleAudioFile(article.slug)).called(1);
     verify(articleRepository.getArticleAudioFile(article.slug, true)).called(1);
   });
@@ -80,7 +80,7 @@ void main() {
       throwsA(exception),
     );
 
-    verifyNever(audioRepository.prepareItem(any, any));
+    verifyNever(audioRepository.prepareItem(any, any, any));
     verify(articleRepository.getArticleAudioFile(article.slug)).called(1);
   });
 }

@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_playback_state.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -18,7 +19,7 @@ class AudioRepositoryMock implements AudioRepository {
   }
 
   @override
-  Future<void> prepareItem(AudioItem item, AudioFile audioFile) async {
+  Future<void> prepareItem(AudioItem item, AudioFile audioFile, MediaItemArticle article) async {
     _playbackState.add(
       AudioPlaybackState.loading(
         speed: 1.0,
@@ -65,7 +66,7 @@ class AudioRepositoryMock implements AudioRepository {
   }
 
   @override
-  Future<void> play() async {
+  Future<void> play([MediaItemArticle? article]) async {
     _playbackState.add(
       AudioPlaybackState.playing(
         speed: 1.0,
