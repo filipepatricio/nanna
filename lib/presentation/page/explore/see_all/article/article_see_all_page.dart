@@ -136,31 +136,29 @@ class _ArticleGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NoScrollGlow(
-      child: CustomScrollView(
-        controller: scrollController,
-        key: pageStorageKey,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.all(AppDimens.l),
-            sliver: SliverToBoxAdapter(
-              child: AlignedGridView.count(
-                physics: const BottomBouncingScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                crossAxisSpacing: AppDimens.l,
-                mainAxisSpacing: AppDimens.m,
-                itemCount: articles.length,
-                itemBuilder: (context, index) => _GridItem(
-                  article: articles[index],
-                  index: index,
-                ),
+    return CustomScrollView(
+      controller: scrollController,
+      key: pageStorageKey,
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.all(AppDimens.l),
+          sliver: SliverToBoxAdapter(
+            child: AlignedGridView.count(
+              physics: const BottomBouncingScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              crossAxisSpacing: AppDimens.l,
+              mainAxisSpacing: AppDimens.m,
+              itemCount: articles.length,
+              itemBuilder: (context, index) => _GridItem(
+                article: articles[index],
+                index: index,
               ),
             ),
           ),
-          SeeAllLoadMoreIndicator(show: withLoader),
-        ],
-      ),
+        ),
+        SeeAllLoadMoreIndicator(show: withLoader),
+      ],
     );
   }
 }
