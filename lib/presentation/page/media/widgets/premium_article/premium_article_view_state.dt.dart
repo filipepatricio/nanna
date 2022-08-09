@@ -19,5 +19,6 @@ class PremiumArticleViewState with _$PremiumArticleViewState {
     required List<MediaItem> otherTopicItems,
     required List<Category> featuredCategories,
     required List<CategoryItem> relatedContentItems,
+    required bool enablePageSwipe,
   }) = _PremiumArticleViewStateIdle;
 }
