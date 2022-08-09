@@ -39,7 +39,7 @@ class InformedAudioHandler extends InformedBaseAudioHandler with SeekHandler {
   }
 
   @override
-  Future<void> open(String path) async {
+  Future<Duration> open(String path) async {
     final duration = await _audioPlayer.setFilePath(path);
     if (duration == null) throw Exception('Unknown audio file duration: $path');
 
@@ -47,6 +47,8 @@ class InformedAudioHandler extends InformedBaseAudioHandler with SeekHandler {
 
     mediaItem.add(mediaItem.value?.copyWith(duration: duration));
     playbackState.add(PlaybackStateExtension.getLoaded(duration));
+
+    return duration;
   }
 
   @override

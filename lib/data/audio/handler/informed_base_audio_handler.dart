@@ -6,7 +6,7 @@ abstract class InformedBaseAudioHandler extends BaseAudioHandler {
 
   Future<void> notifyLoading(MediaItem item);
 
-  Future<void> open(String path);
+  Future<Duration> open(String path);
 
   Stream<CurrentAudioItemDTO> get currentAudioItemStream;
 }
