@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:flutter/material.dart';
@@ -145,13 +146,9 @@ class _SkipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        minimumSize: Size.zero,
-        padding: EdgeInsets.zero,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
-      onPressed: () {
+    return ExpandTapWidget(
+      tapPadding: const EdgeInsets.all(AppDimens.l),
+      onTap: () {
         controller.animateToPage(
           _notificationSlide,
           duration: const Duration(milliseconds: 400),
