@@ -25,7 +25,7 @@ const quoteVariantDataList = [
     withTextMark: true,
   ),
   QuoteVariantData._(
-    backgroundColor: AppColors.darkGreyBackground,
+    backgroundColor: AppColors.charcoal,
     foregroundColor: AppColors.white,
     withTextMark: false,
   ),

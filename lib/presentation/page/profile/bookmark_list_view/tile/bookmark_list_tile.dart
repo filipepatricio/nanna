@@ -151,7 +151,7 @@ extension on Bookmark {
               borderRadius: BorderRadius.circular(AppDimens.s),
               child: LinearProgressIndicator(
                 backgroundColor: AppColors.dividerGreyLight,
-                valueColor: const AlwaysStoppedAnimation<Color>(AppColors.darkGreyBackground),
+                valueColor: const AlwaysStoppedAnimation<Color>(AppColors.charcoal),
                 value: articleProgressValue.contentProgress / 100.0,
               ),
             ),

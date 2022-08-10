@@ -27,6 +27,7 @@ const shareImage = Device(name: 'share_image', size: Size(720, 1280));
 /// Can be used to take screenshots of very long lists without hiding overflowing widgets.
 const highDevice = Device(name: 'high_screen', size: Size(375, 1500));
 const veryHighDevice = Device(name: 'very_high_screen', size: Size(375, 2400));
+const ultraHighDevice = Device(name: 'ultra_high_screen', size: Size(375, 5000));
 
 /// Test matrix to define which flavors and which devices should be used for a visual test.
 class TestConfig {

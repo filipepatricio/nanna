@@ -36,14 +36,13 @@ void main() {
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
     );
+    final entry = TestData.currentBrief.allEntries.first;
     final event = AnalyticsEvent.dailyBriefEntryPreviewed(
       TestData.currentBrief.id,
-      TestData.currentBrief.entries.first.id,
+      entry.id,
       0,
-      TestData.currentBrief.entries.first.type.name,
+      entry.type.name,
     );
-
-    final entry = TestData.currentBrief.entries.first;
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
 
@@ -78,7 +77,7 @@ void main() {
         matching: find.byType(ArticleCover),
       );
 
-      await tester.dragUntilVisible(articleCoverFinder, find.byType(DailyBriefPage), const Offset(0, -50));
+      await tester.dragUntilVisible(articleCoverFinder.first, find.byType(DailyBriefPage), const Offset(0, -50));
       await tester.pumpAndSettle();
 
       await tester.tap(articleCoverFinder.first);

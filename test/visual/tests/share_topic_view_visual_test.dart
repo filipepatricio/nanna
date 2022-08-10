@@ -13,7 +13,7 @@ void main() {
         initialRoute: PlaceholderPageRoute(
           child: ShareTopicView(
             topic: TestData.topic,
-            articles: TestData.topic.entries.map((e) => e.item as MediaItemArticle).toList(),
+            articles: TestData.topic.entries.map((entry) => entry.item as MediaItemArticle).toList(),
           ),
         ),
       );

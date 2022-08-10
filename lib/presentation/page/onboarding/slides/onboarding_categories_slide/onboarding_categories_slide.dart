@@ -79,7 +79,7 @@ class _MainContent extends HookWidget {
             _SelectableCard(
               icon: const Icon(
                 Icons.add,
-                color: AppColors.darkGreyBackground,
+                color: AppColors.charcoal,
               ),
               height: height,
               width: width,
@@ -132,7 +132,9 @@ class _SelectableCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(AppDimens.buttonRadius),
-          border: Border.all(color: isSelected ? AppColors.darkGreyBackground : AppColors.dividerGreyLight),
+          border: Border.all(
+            color: isSelected ? AppColors.charcoal : AppColors.dividerGreyLight,
+          ),
         ),
         width: width,
         height: height,

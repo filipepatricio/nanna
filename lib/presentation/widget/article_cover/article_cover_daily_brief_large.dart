@@ -20,8 +20,8 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: DecoratedBox(
-        decoration: BoxDecoration(borderRadius: borderRadius),
+      // To fix glitch gap between items of the same background color https://github.com/flutter/flutter/issues/15035#issuecomment-370028740
+      child: RepaintBoundary(
         child: ClipRRect(
           borderRadius: borderRadius,
           child: Column(

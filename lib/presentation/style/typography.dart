@@ -75,6 +75,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle h1MediumLora = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: fontFamilyLora,
+    fontSize: 24,
+    height: 1.33,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h1 = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: fontFamilyPlusJakartaSans,
