@@ -150,6 +150,7 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
     otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
     relatedContentItems: TestData.categoryItemList,
+    enablePageSwipe: true,
   );
 
   PremiumArticleViewState get idleState => _idleState;
@@ -192,6 +193,7 @@ class FakePremiumArticleViewCubitFromTopic extends FakePremiumArticleViewCubitFr
     otherTopicItems: TestData.topic.entries.map<MediaItem>((entry) => entry.item).toList(),
     featuredCategories: List.generate(4, (index) => TestData.category),
     relatedContentItems: TestData.categoryItemList,
+    enablePageSwipe: true,
   );
 
   @override

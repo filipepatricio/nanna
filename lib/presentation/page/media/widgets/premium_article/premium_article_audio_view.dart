@@ -15,16 +15,19 @@ import 'package:better_informed_mobile/presentation/widget/audio/speed_button/au
 import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:upgrader/upgrader.dart';
 
 class PremiumArticleAudioView extends HookWidget {
   const PremiumArticleAudioView({
     required this.article,
     required this.cubit,
+    required this.enablePageSwipe,
     Key? key,
   }) : super(key: key);
 
   final Article article;
   final PremiumArticleAudioCubit cubit;
+  final VoidBoolCallback enablePageSwipe;
 
   bool get hasAudioCredits => article.audioFile?.credits?.isNotEmpty ?? false;
 
@@ -103,6 +106,7 @@ class PremiumArticleAudioView extends HookWidget {
             flex: 2,
             child: AudioProgressBar(
               article: article.metadata,
+              enablePageSwipe: enablePageSwipe,
             ),
           ),
           const Spacer(),

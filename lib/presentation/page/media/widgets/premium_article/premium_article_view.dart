@@ -83,7 +83,7 @@ class PremiumArticleView extends HookWidget {
               alignment: Alignment.bottomCenter,
               children: [
                 PageView(
-                  physics: const ClampingScrollPhysics(),
+                  physics: state.scrollPhysic,
                   controller: horizontalPageController,
                   scrollDirection: Axis.horizontal,
                   onPageChanged: (page) {
@@ -111,6 +111,7 @@ class PremiumArticleView extends HookWidget {
                       PremiumArticleAudioView(
                         article: article,
                         cubit: audioCubit,
+                        enablePageSwipe: cubit.enablePageSwipe,
                       ),
                   ],
                 ),
