@@ -3,7 +3,7 @@ name: Scheduled release
 on:
   workflow_dispatch:
   schedule:
-    # This is set in UTC timezone, so we set 13 to run at 14 in UTC+1 (Summer time)
+    # Always set hour in UTC timezone
     - cron: '0 12 * * FRI'
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       - name: Create Pull Request
         uses: repo-sync/pull-request@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
           source_branch: 'develop'
           destination_branch: 'main'
           pr_title: 'Scheduled release'

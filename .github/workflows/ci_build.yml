@@ -2,7 +2,7 @@ name: CI Build
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 env:
   JAVA_VERSION: '12.x'
@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "slack_id=U02KFBZ3N7P" >> $GITHUB_ENV
       - name: Set slack Jan id
-        if:  github.event.pull_request.user.login == 'jlukas99'
+        if: github.event.pull_request.user.login == 'jlukas99'
         run: |
           echo "slack_id=U03F4JSQCGP" >> $GITHUB_ENV
       - name: Set Filipe slack id
@@ -58,11 +58,9 @@ jobs:
         run: |
           echo "slack_id=U02J1L1AX4J" >> $GITHUB_ENV
 
-
-
   commit_lint:
     name: Commit linting
-    needs: [ set_slack_id ]
+    needs: [set_slack_id]
     runs-on: ubuntu-latest
     outputs:
       succeeded: ${{ steps.result.outputs.result }}
@@ -76,7 +74,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: wagoid/commitlint-github-action@v4
+      - uses: wagoid/commitlint-github-action@v5
 
       - name: Slack message commit linting failed
         if: failure()
@@ -99,7 +97,7 @@ jobs:
         run: echo "::set-output name=result::true"
 
   code_lint_test:
-    needs: [ set_slack_id, changes, commit_lint ]
+    needs: [set_slack_id, changes, commit_lint]
     if: ${{ needs.changes.outputs.tests == 'true' || needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true' || needs.changes.outputs.ios == 'true' }}
     name: Linting & Testing
     runs-on: ubuntu-latest
@@ -160,7 +158,7 @@ jobs:
         run: echo "::set-output name=result::true"
 
   build_android:
-    needs: [ set_slack_id, changes, commit_lint, code_lint_test ]
+    needs: [set_slack_id, changes, commit_lint, code_lint_test]
     if: ${{ needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true' }}
     name: Android build
     runs-on: ubuntu-latest
@@ -217,7 +215,7 @@ jobs:
         run: echo "::set-output name=result::true"
 
   build_ios:
-    needs: [ set_slack_id, changes, commit_lint, code_lint_test ]
+    needs: [set_slack_id, changes, commit_lint, code_lint_test]
     if: ${{ needs.changes.outputs.app == 'true' || needs.changes.outputs.ios == 'true' }}
     name: iOS build
     runs-on: macos-latest
@@ -278,7 +276,7 @@ jobs:
         run: echo "::set-output name=result::true"
 
   all_jobs_succeeded:
-    needs: [ changes, commit_lint, code_lint_test, build_android, build_ios ]
+    needs: [changes, commit_lint, code_lint_test, build_android, build_ios]
     name: All jobs succeeded
     runs-on: ubuntu-latest
     if: always()
