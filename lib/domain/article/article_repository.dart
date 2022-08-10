@@ -28,4 +28,6 @@ abstract class ArticleRepository {
   Future<List<CategoryItem>> getRelatedContent(String slug);
 
   double getArticleAudioProgress(MediaItemArticle article);
+
+  int getArticleReadProgress(MediaItemArticle article);
 }

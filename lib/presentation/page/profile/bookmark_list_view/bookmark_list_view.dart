@@ -194,6 +194,7 @@ class _Idle extends StatelessWidget {
               },
               isLast: index == bookmarks.length - 1,
               snackbarController: snackbarController,
+              cubit: cubit,
             ),
             childCount: bookmarks.length,
             addAutomaticKeepAlives: false,
