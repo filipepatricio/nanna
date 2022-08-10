@@ -280,32 +280,30 @@ class _TopicIdleView extends HookWidget {
             onPointerUp: (_) => _snapPage(context, scrollController),
             child: Stack(
               children: [
-                NoScrollGlow(
-                  child: CustomScrollView(
-                    physics: getPlatformScrollPhysics(
-                      const AlwaysScrollableScrollPhysics(),
-                    ),
-                    controller: scrollController,
-                    slivers: [
-                      TopicAppBar(
-                        topic: topic,
-                        cubit: cubit,
-                        isShowingTutorialToast: isShowingTutorialToast,
-                        scrollPositionNotifier: scrollPositionNotifier,
-                        onArticlesLabelTap: () => topic.hasSummary
-                            ? _scrollToArticles(context, scrollController)
-                            : _scrollToSummary(context, scrollController),
-                        onArrowTap: () => _scrollToSummary(context, scrollController),
-                        snackbarController: snackbarController,
-                      ),
-                      TopicView(
-                        topic: topic,
-                        cubit: cubit,
-                        mediaItemKey: cubit.mediaItemKey,
-                        scrollController: scrollController,
-                      ),
-                    ],
+                CustomScrollView(
+                  physics: getPlatformScrollPhysics(
+                    const AlwaysScrollableScrollPhysics(),
                   ),
+                  controller: scrollController,
+                  slivers: [
+                    TopicAppBar(
+                      topic: topic,
+                      cubit: cubit,
+                      isShowingTutorialToast: isShowingTutorialToast,
+                      scrollPositionNotifier: scrollPositionNotifier,
+                      onArticlesLabelTap: () => topic.hasSummary
+                          ? _scrollToArticles(context, scrollController)
+                          : _scrollToSummary(context, scrollController),
+                      onArrowTap: () => _scrollToSummary(context, scrollController),
+                      snackbarController: snackbarController,
+                    ),
+                    TopicView(
+                      topic: topic,
+                      cubit: cubit,
+                      mediaItemKey: cubit.mediaItemKey,
+                      scrollController: scrollController,
+                    ),
+                  ],
                 ),
                 ValueListenableBuilder<double>(
                   valueListenable: audioBannerBottomPosition,

@@ -98,85 +98,83 @@ class _DailyBriefPage extends HookWidget {
           child: RefreshIndicator(
             onRefresh: cubit.loadBriefs,
             color: AppColors.darkGrey,
-            child: NoScrollGlow(
-              child: CustomScrollView(
-                controller: scrollController,
-                physics: state.maybeMap(
-                  error: (_) => const NeverScrollableScrollPhysics(),
-                  loading: (_) => const NeverScrollableScrollPhysics(),
-                  orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
-                ),
-                slivers: [
-                  state.maybeMap(
-                    idle: (state) => DailyBriefScrollableAppBar(
-                      showCalendar: state.showCalendar,
-                      scrollController: scrollController,
-                      briefDate: state.currentBrief.date,
-                      pastDaysBriefs: state.pastDaysBriefs,
-                      showAppBarTitle: state.showAppBarTitle,
-                      cubit: cubit,
-                    ),
-                    orElse: () => const SliverToBoxAdapter(),
-                  ),
-                  state.maybeMap(
-                    idle: (state) => SliverPinnedHeader(
-                      child: DailyBriefCalendar(
-                        isVisible: state.showCalendar,
-                        currentBriefDate: state.currentBrief.date,
-                        pastDaysBriefs: state.pastDaysBriefs,
-                        isFloating: state.showAppBarTitle,
-                        cubit: cubit,
-                        scrollController: scrollController,
-                      ),
-                    ),
-                    orElse: () => const SliverToBoxAdapter(),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppDimens.l,
-                      AppDimens.zero,
-                      AppDimens.l,
-                      AppDimens.l,
-                    ),
-                    sliver: state.maybeMap(
-                      idle: (state) => _IdleContent(
-                        cubit: cubit,
-                        currentBrief: state.currentBrief,
-                        cardStackWidth: cardStackWidth,
-                        cardStackHeight: cardStackHeight,
-                        tutorialCoachMark: tutorialCoachMark,
-                        scrollController: scrollController,
-                      ),
-                      error: (_) => SliverPadding(
-                        padding: EdgeInsets.only(top: topPadding),
-                        sliver: SliverToBoxAdapter(
-                          child: Center(
-                            child: CardsErrorView(
-                              retryAction: cubit.loadBriefs,
-                              size: Size(cardStackWidth, cardStackHeight),
-                            ),
-                          ),
-                        ),
-                      ),
-                      loading: (_) => SliverPadding(
-                        padding: EdgeInsets.only(top: topPadding),
-                        sliver: SliverToBoxAdapter(
-                          child: DailyBriefLoadingView(
-                            coverSize: Size(
-                              cardStackWidth,
-                              cardStackHeight,
-                            ),
-                          ),
-                        ),
-                      ),
-                      orElse: () => const SizedBox.shrink(),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: AudioPlayerBannerPlaceholder(),
-                  ),
-                ],
+            child: CustomScrollView(
+              controller: scrollController,
+              physics: state.maybeMap(
+                error: (_) => const NeverScrollableScrollPhysics(),
+                loading: (_) => const NeverScrollableScrollPhysics(),
+                orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
               ),
+              slivers: [
+                state.maybeMap(
+                  idle: (state) => DailyBriefScrollableAppBar(
+                    showCalendar: state.showCalendar,
+                    scrollController: scrollController,
+                    briefDate: state.currentBrief.date,
+                    pastDaysBriefs: state.pastDaysBriefs,
+                    showAppBarTitle: state.showAppBarTitle,
+                    cubit: cubit,
+                  ),
+                  orElse: () => const SliverToBoxAdapter(),
+                ),
+                state.maybeMap(
+                  idle: (state) => SliverPinnedHeader(
+                    child: DailyBriefCalendar(
+                      isVisible: state.showCalendar,
+                      currentBriefDate: state.currentBrief.date,
+                      pastDaysBriefs: state.pastDaysBriefs,
+                      isFloating: state.showAppBarTitle,
+                      cubit: cubit,
+                      scrollController: scrollController,
+                    ),
+                  ),
+                  orElse: () => const SliverToBoxAdapter(),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppDimens.l,
+                    AppDimens.zero,
+                    AppDimens.l,
+                    AppDimens.l,
+                  ),
+                  sliver: state.maybeMap(
+                    idle: (state) => _IdleContent(
+                      cubit: cubit,
+                      currentBrief: state.currentBrief,
+                      cardStackWidth: cardStackWidth,
+                      cardStackHeight: cardStackHeight,
+                      tutorialCoachMark: tutorialCoachMark,
+                      scrollController: scrollController,
+                    ),
+                    error: (_) => SliverPadding(
+                      padding: EdgeInsets.only(top: topPadding),
+                      sliver: SliverToBoxAdapter(
+                        child: Center(
+                          child: CardsErrorView(
+                            retryAction: cubit.loadBriefs,
+                            size: Size(cardStackWidth, cardStackHeight),
+                          ),
+                        ),
+                      ),
+                    ),
+                    loading: (_) => SliverPadding(
+                      padding: EdgeInsets.only(top: topPadding),
+                      sliver: SliverToBoxAdapter(
+                        child: DailyBriefLoadingView(
+                          coverSize: Size(
+                            cardStackWidth,
+                            cardStackHeight,
+                          ),
+                        ),
+                      ),
+                    ),
+                    orElse: () => const SizedBox.shrink(),
+                  ),
+                ),
+                const SliverToBoxAdapter(
+                  child: AudioPlayerBannerPlaceholder(),
+                ),
+              ],
             ),
           ),
         ),

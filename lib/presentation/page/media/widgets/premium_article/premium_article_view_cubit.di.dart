@@ -41,6 +41,11 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetFeaturedCategoriesUseCase _getFeaturedCategoriesUseCase;
   final GetRelatedContentUseCase _getRelatedContentUseCase;
 
+  final moreFromBriefItems = <BriefEntryItem>[];
+  final otherTopicItems = <MediaItem>[];
+  final relatedContentItems = <CategoryItem>[];
+  final featuredCategories = <Category>[];
+
   late Article _currentFullArticle;
   late String? _topicId;
   late String? _briefId;
@@ -77,11 +82,6 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     String? topicId,
   ) async {
     emit(const PremiumArticleViewState.initial());
-
-    final moreFromBriefItems = <BriefEntryItem>[];
-    final otherTopicItems = <MediaItem>[];
-    final relatedContentItems = <CategoryItem>[];
-    final featuredCategories = <Category>[];
 
     _briefId = briefId;
     _topicId = topicId;
@@ -179,7 +179,16 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   }
 
   void enablePageSwipe(bool enable) {
-    state.mapOrNull(idle: (e) => emit(e.copyWith(enablePageSwipe: enable)));
+    emit(
+      PremiumArticleViewState.idle(
+        article: _currentFullArticle,
+        moreFromBriefItems: moreFromBriefItems,
+        otherTopicItems: otherTopicItems,
+        featuredCategories: featuredCategories,
+        relatedContentItems: relatedContentItems,
+        enablePageSwipe: enable,
+      ),
+    );
   }
 }
 

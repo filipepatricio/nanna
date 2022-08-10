@@ -12,7 +12,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:flutter/material.dart';
@@ -77,15 +76,13 @@ class OnboardingPage extends HookWidget {
           children: [
             Expanded(
               flex: 20,
-              child: NoScrollGlow(
-                child: PageView(
-                  controller: controller,
-                  onPageChanged: (index) {
-                    cubit.trackOnboardingPage(index);
-                    pageIndex.value = index;
-                  },
-                  children: _pageList,
-                ),
+              child: PageView(
+                controller: controller,
+                onPageChanged: (index) {
+                  cubit.trackOnboardingPage(index);
+                  pageIndex.value = index;
+                },
+                children: _pageList,
               ),
             ),
             const Spacer(flex: 1),

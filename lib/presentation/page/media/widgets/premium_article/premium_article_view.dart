@@ -82,40 +82,38 @@ class PremiumArticleView extends HookWidget {
             audioCubitBuilder: (audioCubit) => Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                NoScrollGlow(
-                  child: PageView(
-                    physics: state.scrollPhysic,
-                    controller: horizontalPageController,
-                    scrollDirection: Axis.horizontal,
-                    onPageChanged: (page) {
-                      switch (page) {
-                        case 0:
-                          articleOutputModeNotifier.value = ArticleOutputMode.read;
-                          break;
-                        case 1:
-                          articleOutputModeNotifier.value = ArticleOutputMode.audio;
-                          break;
-                      }
-                    },
-                    children: [
-                      state.maybeMap(
-                        idle: (_) => PremiumArticleReadView(
-                          articleController: controller,
-                          pageController: pageController,
-                          cubit: cubit,
-                          readArticleProgress: readArticleProgress,
-                          mainController: mainController,
-                        ),
-                        orElse: () => const SizedBox.shrink(),
+                PageView(
+                  physics: state.scrollPhysic,
+                  controller: horizontalPageController,
+                  scrollDirection: Axis.horizontal,
+                  onPageChanged: (page) {
+                    switch (page) {
+                      case 0:
+                        articleOutputModeNotifier.value = ArticleOutputMode.read;
+                        break;
+                      case 1:
+                        articleOutputModeNotifier.value = ArticleOutputMode.audio;
+                        break;
+                    }
+                  },
+                  children: [
+                    state.maybeMap(
+                      idle: (_) => PremiumArticleReadView(
+                        articleController: controller,
+                        pageController: pageController,
+                        cubit: cubit,
+                        readArticleProgress: readArticleProgress,
+                        mainController: mainController,
                       ),
-                      if (article.metadata.hasAudioVersion)
-                        PremiumArticleAudioView(
-                          article: article,
-                          cubit: audioCubit,
-                          enablePageSwipe: cubit.enablePageSwipe,
-                        ),
-                    ],
-                  ),
+                      orElse: () => const SizedBox.shrink(),
+                    ),
+                    if (article.metadata.hasAudioVersion)
+                      PremiumArticleAudioView(
+                        article: article,
+                        cubit: audioCubit,
+                        enablePageSwipe: cubit.enablePageSwipe,
+                      ),
+                  ],
                 ),
                 Positioned(
                   top: 0,
