@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/article/data/article_progress.dart
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -26,6 +27,7 @@ class BookmarkListTile extends HookWidget {
     required this.bookmarkCover,
     required this.onRemoveBookmarkPressed,
     required this.snackbarController,
+    required this.cubit,
     this.isLast = false,
     Key? key,
   }) : super(key: key);
@@ -33,13 +35,16 @@ class BookmarkListTile extends HookWidget {
   final BookmarkTileCover bookmarkCover;
   final OnRemoveBookmarkPressed onRemoveBookmarkPressed;
   final SnackbarController snackbarController;
+  final BookmarkListViewCubit cubit;
   final bool isLast;
 
   @override
   Widget build(BuildContext context) {
-    final articleProgress = useState<ArticleProgress?>(
-      bookmarkCover.bookmark.data.mapOrNull(article: (data) => data.article.progress),
-    );
+    final articleProgress = useState<ArticleProgress?>(null);
+
+    useEffect(() {
+      articleProgress.value = cubit.getCurrentReadProgress(bookmarkCover.bookmark.data);
+    });
 
     return Column(
       children: [
