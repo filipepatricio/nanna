@@ -102,7 +102,7 @@ class _SearchBar extends HookWidget {
         autofocus: false,
         focusNode: searchTextFieldfocusNode,
         cursorHeight: AppDimens.sl,
-        cursorColor: AppColors.darkGreyBackground,
+        cursorColor: AppColors.charcoal,
         textInputAction: TextInputAction.search,
         autocorrect: false,
         decoration: InputDecoration(
@@ -114,7 +114,7 @@ class _SearchBar extends HookWidget {
           ),
           prefixIcon: SvgPicture.asset(
             AppVectorGraphics.search,
-            color: AppColors.darkGreyBackground,
+            color: AppColors.charcoal,
             fit: BoxFit.scaleDown,
           ),
           suffixIcon: query.value.isNotEmpty
@@ -132,7 +132,7 @@ class _SearchBar extends HookWidget {
               : const SizedBox.shrink(),
         ),
         style: AppTypography.h4Medium.copyWith(
-          color: AppColors.darkGreyBackground,
+          color: AppColors.charcoal,
           height: 1,
         ),
         onTap: explorePageCubit.startTyping,
@@ -182,7 +182,7 @@ class _CancelButton extends HookWidget {
                   child: Text(
                     LocaleKeys.common_cancel.tr(),
                     style: AppTypography.h4Bold.copyWith(
-                      color: AppColors.darkGreyBackground,
+                      color: AppColors.charcoal,
                       height: 1.3,
                     ),
                   ),

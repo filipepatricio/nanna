@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,7 +16,7 @@ void main() {
   visualTest(DailyBriefPage, (tester) async {
     await tester.startApp();
     await tester.matchGoldenFile();
-    await tester.fling(find.byType(TopicCover).first, const Offset(0, -20000), 100);
+    await tester.fling(find.byType(BriefEntryCover).first, const Offset(0, -20000), 100);
     await tester.pumpAndSettle();
     await tester.matchGoldenFile('daily_brief_page_(relax)');
   });
@@ -27,7 +27,7 @@ void main() {
       await tester.startApp();
       await tester.matchGoldenFile();
     },
-    testConfig: TestConfig.withDevices([veryHighDevice]),
+    testConfig: TestConfig.withDevices([ultraHighDevice]),
   );
 
   visualTest('${DailyBriefPage}_(audio_banner)', (tester) async {
@@ -38,19 +38,17 @@ void main() {
         );
       },
     );
-    await tester.fling(find.byType(TopicCover).first, const Offset(0, -10000), 100);
-    await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
 
   visualTest(
     '${DailyBriefPage}_(error)',
     (tester) async {
-      final cubit = FakeDailyBriefPageCubit();
-
       await tester.startApp(
         dependencyOverride: (getIt) async {
-          getIt.registerFactory<DailyBriefPageCubit>(() => cubit);
+          getIt.registerFactory<DailyBriefPageCubit>(
+            () => FakeDailyBriefPageCubit(),
+          );
         },
       );
       await tester.matchGoldenFile();
@@ -84,7 +82,6 @@ void main() {
           await tester.pumpAndSettle();
 
           await tester.matchGoldenFile();
-          await tester.pumpAndSettle(const Duration(seconds: 5));
         },
       );
     },
@@ -98,14 +95,13 @@ void main() {
         () async {
           await tester.startApp();
 
-          await tester.fling(find.byType(TopicCover).first, const Offset(0, -20000), 100);
+          await tester.fling(find.byType(BriefEntryCover).first, const Offset(0, -20000), 100);
           await tester.pumpAndSettle();
 
           await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).last));
           await tester.pumpAndSettle();
 
           await tester.matchGoldenFile();
-          await tester.pumpAndSettle(const Duration(seconds: 5));
         },
       );
     },

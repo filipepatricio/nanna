@@ -4,10 +4,12 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class BriefEntryCover extends HookWidget {
   const BriefEntryCover({
@@ -16,6 +18,8 @@ class BriefEntryCover extends HookWidget {
     required this.width,
     required this.height,
     this.topicCardKey,
+    this.onVisibilityChanged,
+    this.padding,
     Key? key,
   }) : super(key: key);
 
@@ -24,58 +28,95 @@ class BriefEntryCover extends HookWidget {
   final double width;
   final double height;
   final GlobalKey? topicCardKey;
+  final Function(VisibilityInfo)? onVisibilityChanged;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     final item = briefEntry.item;
     final style = briefEntry.style;
-    switch (style.type) {
-      case BriefEntryStyleType.articleCardWithLargeImage:
-        return item.maybeMap(
-          article: (data) => data.article.map(
-            article: (article) => ArticleCover.dailyBriefLarge(
-              article: article,
-              onTap: () => context.navigateToArticle(
-                article: article,
-                briefId: briefId,
-              ),
-            ),
-            unknown: (_) => const SizedBox(),
-          ),
-          orElse: () => const SizedBox(),
-        );
-      case BriefEntryStyleType.articleCardWithSmallImage:
-        return item.maybeMap(
-          article: (data) => data.article.map(
-            article: (article) => ArticleCover.dailyBriefSmall(
-              article: article,
-              coverColor: style.backgroundColor,
-              onTap: () => context.navigateToArticle(
-                article: article,
-                briefId: briefId,
-              ),
-            ),
-            unknown: (_) => const SizedBox(),
-          ),
-          orElse: () => const SizedBox(),
-        );
-      case BriefEntryStyleType.topicCard:
-        return item.maybeMap(
-          topicPreview: (data) => LimitedBox(
-            key: topicCardKey,
-            maxWidth: width,
-            maxHeight: height,
-            child: TopicCover.dailyBrief(
-              topic: data.topicPreview,
-              onTap: () => context.navigateToTopic(
-                topicPreview: data.topicPreview,
-                briefId: briefId,
-              ),
-            ),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
-    }
+
+    return Padding(
+      padding: padding ?? const EdgeInsets.symmetric(vertical: AppDimens.sl),
+      child: VisibilityDetector(
+        key: Key(briefEntry.id),
+        onVisibilityChanged: onVisibilityChanged,
+        child: item.map(
+          article: (data) {
+            switch (style.type) {
+              case BriefEntryStyleType.articleCardWithLargeImage:
+                return item.maybeMap(
+                  article: (data) => data.article.map(
+                    article: (article) => ArticleCover.dailyBriefLarge(
+                      article: article,
+                      onTap: () => context.navigateToArticle(
+                        article: article,
+                        briefId: briefId,
+                      ),
+                    ),
+                    unknown: (_) => const SizedBox(),
+                  ),
+                  orElse: () => const SizedBox(),
+                );
+              case BriefEntryStyleType.articleCardWithSmallImage:
+                return item.maybeMap(
+                  article: (data) => data.article.map(
+                    article: (article) => ArticleCover.dailyBriefSmall(
+                      article: article,
+                      onTap: () => context.navigateToArticle(
+                        article: article,
+                        briefId: briefId,
+                      ),
+                    ),
+                    unknown: (_) => const SizedBox(),
+                  ),
+                  orElse: () => const SizedBox(),
+                );
+              case BriefEntryStyleType.articleCardSmallItem:
+                return item.maybeMap(
+                  article: (data) => data.article.map(
+                    article: (article) => ArticleCover.dailyBriefList(
+                      article: article,
+                      backgroundColor: style.backgroundColor,
+                      onTap: () => context.navigateToArticle(
+                        article: article,
+                        briefId: briefId,
+                      ),
+                    ),
+                    unknown: (_) => const SizedBox(),
+                  ),
+                  orElse: () => const SizedBox(),
+                );
+              default:
+                return const SizedBox();
+            }
+          },
+          topicPreview: (data) {
+            switch (style.type) {
+              case BriefEntryStyleType.topicCard:
+                return item.maybeMap(
+                  topicPreview: (data) => LimitedBox(
+                    key: topicCardKey,
+                    maxWidth: width,
+                    maxHeight: height,
+                    child: TopicCover.dailyBrief(
+                      topic: data.topicPreview,
+                      onTap: () => context.navigateToTopic(
+                        topicPreview: data.topicPreview,
+                        briefId: briefId,
+                      ),
+                    ),
+                  ),
+                  orElse: () => const SizedBox.shrink(),
+                );
+              default:
+                return const SizedBox();
+            }
+          },
+          unknown: (_) => const SizedBox(),
+        ),
+      ),
+    );
   }
 }
 

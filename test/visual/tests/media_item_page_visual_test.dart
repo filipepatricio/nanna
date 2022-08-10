@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/exception/article_geoblocked_exception.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
@@ -147,7 +146,7 @@ class FakeMediaItemPageCubit extends Fake implements MediaItemCubit {
 class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticleViewCubit {
   final _idleState = PremiumArticleViewState.idle(
     article: TestData.fullArticle,
-    moreFromBriefItems: TestData.currentBrief.entries.map<BriefEntryItem>((entry) => entry.item).toList(),
+    moreFromBriefItems: TestData.currentBrief.allEntries.map((entry) => entry.item).toList(),
     otherTopicItems: [],
     featuredCategories: List.generate(4, (index) => TestData.category),
     relatedContentItems: TestData.categoryItemList,
