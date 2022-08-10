@@ -14,11 +14,13 @@ class AppColors {
   static const Color black05 = Color(0x0D000000);
   static const Color black04 = Color(0x0A000000);
   static const Color limeGreen = Color(0xffBBF383);
+  static const Color limeGreen44 = Color(0x70BBF383);
   static const Color limeGreenVivid = Color(0xffA2F054);
   static const Color limeGreenDark = Color(0xff6AE476);
   static const Color textGrey = Color(0xff989898);
   static const Color charcoal = Color(0xff282B35);
-  static const Color charcoal70 = Color(0x70282B35);
+  static const Color charcoal20 = Color(0x33282B35);
+  static const Color charcoal70 = Color(0xB3282B35);
   static const Color linen = Color(0xffFCFAF8);
   static const Color darkLinen = Color(0xffF4F1EE);
   static const Color transparent = Color(0x00000000);

@@ -62,7 +62,7 @@ class _ReadingBannerBody extends StatelessWidget {
                 minHeight: AppDimens.xs,
                 value: readingBanner.scrollProgress,
                 valueColor: const AlwaysStoppedAnimation<Color>(AppColors.limeGreen),
-                backgroundColor: AppColors.limeGreen.withOpacity(0.44),
+                backgroundColor: AppColors.limeGreen44,
               ),
               Row(
                 children: [
