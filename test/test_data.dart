@@ -196,6 +196,8 @@ class TestData {
 
   static Brief get currentBrief => _currentBriefMapper(MockDTO.currentBrief());
 
+  static Brief get currentBriefVisited => _currentBriefMapper(MockDTO.currentBriefVisited);
+
   static List<PastDaysBrief> get pastDaysBriefs =>
       MockDTO.pastDaysBriefs.map<PastDaysBrief>(_pastDaysBriefMapper).toList();
 

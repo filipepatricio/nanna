@@ -45,7 +45,7 @@ class DailyBriefPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<DailyBriefPageCubit>();
     final state = useCubitBuilder(cubit);
-    final tutorialCoachMark = cubit.tutorialCoachMark(context);
+    final tutorialCoachMark = cubit.tutorialCoachMark();
 
     final body = _DailyBriefPage(
       state: state,
