@@ -40,6 +40,8 @@ class ArticleRepositoryImpl implements ArticleRepository {
   final ArticleProgressDTOMapper _articleProgressDTOMapper;
 
   final Map<String, double> _audioProgress = {};
+  final Map<String, int> _readProgress = {};
+
   final BehaviorSubject<ReadingBanner> _broadcaster = BehaviorSubject();
 
   @override
@@ -80,7 +82,10 @@ class ArticleRepositoryImpl implements ArticleRepository {
 
   @override
   Future<ArticleProgress> trackReadingProgress(String articleSlug, int progress) async {
+    _readProgress[articleSlug] = progress;
+
     final dto = await _articleDataSource.trackReadingProgress(articleSlug, progress);
+
     return _articleProgressDTOMapper(dto);
   }
 
@@ -98,8 +103,11 @@ class ArticleRepositoryImpl implements ArticleRepository {
 
   @override
   double getArticleAudioProgress(MediaItemArticle article) {
-    if (_audioProgress[article.slug] == null) return article.progress.audioProgress / 100;
+    return _audioProgress[article.slug] ?? article.progress.audioProgress / 100;
+  }
 
-    return _audioProgress[article.slug]!;
+  @override
+  int getArticleReadProgress(MediaItemArticle article) {
+    return _readProgress[article.slug] ?? article.progress.contentProgress;
   }
 }

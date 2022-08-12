@@ -17,6 +17,7 @@ import 'package:better_informed_mobile/presentation/page/media/article_scroll_da
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:neat_periodic_task/neat_periodic_task.dart';
 
@@ -39,6 +40,11 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetOtherTopicEntriesUseCase _getOtherTopicEntriesUseCase;
   final GetFeaturedCategoriesUseCase _getFeaturedCategoriesUseCase;
   final GetRelatedContentUseCase _getRelatedContentUseCase;
+
+  final moreFromBriefItems = <BriefEntryItem>[];
+  final otherTopicItems = <MediaItem>[];
+  final relatedContentItems = <CategoryItem>[];
+  final featuredCategories = <Category>[];
 
   late Article _currentFullArticle;
   late String? _topicId;
@@ -77,11 +83,6 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   ) async {
     emit(const PremiumArticleViewState.initial());
 
-    final moreFromBriefItems = <BriefEntryItem>[];
-    final otherTopicItems = <MediaItem>[];
-    final relatedContentItems = <CategoryItem>[];
-    final featuredCategories = <Category>[];
-
     _briefId = briefId;
     _topicId = topicId;
 
@@ -94,6 +95,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
         otherTopicItems: otherTopicItems,
         featuredCategories: featuredCategories,
         relatedContentItems: relatedContentItems,
+        enablePageSwipe: true,
       ),
     );
 
@@ -116,6 +118,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
         otherTopicItems: otherTopicItems,
         featuredCategories: featuredCategories,
         relatedContentItems: relatedContentItems,
+        enablePageSwipe: true,
       ),
     );
   }
@@ -174,8 +177,30 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     _trackActivityUseCase
         .trackEvent(AnalyticsEvent.articleMoreFromTopicItemTapped(_currentFullArticle.metadata.id, item));
   }
+
+  void enablePageSwipe(bool enable) {
+    emit(
+      PremiumArticleViewState.idle(
+        article: _currentFullArticle,
+        moreFromBriefItems: moreFromBriefItems,
+        otherTopicItems: otherTopicItems,
+        featuredCategories: featuredCategories,
+        relatedContentItems: relatedContentItems,
+        enablePageSwipe: enable,
+      ),
+    );
+  }
 }
 
 extension on MediaItemScrollData {
   double get progress => contentHeight > 0 ? readArticleContentOffset / contentHeight : 0.0;
+}
+
+extension ScrollPhysicExtension on PremiumArticleViewState {
+  ScrollPhysics get scrollPhysic => kIsAppleDevice
+      ? const ClampingScrollPhysics()
+      : maybeMap(
+          orElse: () => const ClampingScrollPhysics(),
+          idle: (e) => e.enablePageSwipe ? const ClampingScrollPhysics() : const NeverScrollableScrollPhysics(),
+        );
 }

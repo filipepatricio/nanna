@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/mapper/current_brief_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_dto_mapper.di.dart';
 
 import 'package:better_informed_mobile/data/mapper.dart';
 
@@ -8,14 +8,14 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class PastDaysBriefDTOMapper implements Mapper<PastDaysBriefDTO, PastDaysBrief> {
-  PastDaysBriefDTOMapper(this._currentBriefDTOMapper);
+  const PastDaysBriefDTOMapper(this._briefDTOMapper);
 
-  final CurrentBriefDTOMapper _currentBriefDTOMapper;
+  final BriefDTOMapper _briefDTOMapper;
 
   @override
   PastDaysBrief call(PastDaysBriefDTO data) {
     return PastDaysBrief(
-      brief: data.brief != null ? _currentBriefDTOMapper(data.brief!) : null,
+      brief: data.brief != null ? _briefDTOMapper(data.brief!) : null,
       date: data.date,
     );
   }

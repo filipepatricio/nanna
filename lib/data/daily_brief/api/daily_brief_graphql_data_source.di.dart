@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/documents/__generate
     as current_brief;
 import 'package:better_informed_mobile/data/daily_brief/api/documents/__generated__/past_days_briefs.ast.gql.dart'
     as past_days_briefs;
-import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -23,7 +23,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   int? _currentBriefHashCode;
 
   @override
-  Future<CurrentBriefDTO> currentBrief() async {
+  Future<BriefDTO> currentBrief() async {
     final result = await _client.query(
       QueryOptions(
         document: current_brief.document,
@@ -34,7 +34,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) => CurrentBriefDTO.fromJson(raw),
+      (raw) => BriefDTO.fromJson(raw),
       rootKey: 'currentBrief',
     );
 
@@ -67,7 +67,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   }
 
   @override
-  Stream<CurrentBriefDTO?> currentBriefStream() async* {
+  Stream<BriefDTO?> currentBriefStream() async* {
     final observableQuery = _client.watchQuery(
       WatchQueryOptions(
         document: current_brief.document,
@@ -81,7 +81,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
     );
 
     yield* observableQuery.stream.map(
-      (result) => _responseResolver.resolve<CurrentBriefDTO?>(
+      (result) => _responseResolver.resolve<BriefDTO?>(
         result,
         (raw) {
           final newBriefHashCode = jsonEncode(raw).hashCode;
@@ -89,7 +89,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
             return null;
           }
           _currentBriefHashCode = newBriefHashCode;
-          return CurrentBriefDTO.fromJson(raw);
+          return BriefDTO.fromJson(raw);
         },
         rootKey: 'currentBrief',
       ),

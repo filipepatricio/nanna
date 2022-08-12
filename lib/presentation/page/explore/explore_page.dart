@@ -85,53 +85,51 @@ class ExplorePage extends HookWidget {
         child: ReadingBannerWrapper(
           child: Stack(
             children: [
-              NoScrollGlow(
-                child: RefreshIndicator(
-                  color: AppColors.darkGrey,
-                  onRefresh: state.maybeMap(
-                    search: (_) => searchViewCubit.refresh,
-                    orElse: () => cubit.loadExplorePageData,
+              RefreshIndicator(
+                color: AppColors.darkGrey,
+                onRefresh: state.maybeMap(
+                  search: (_) => searchViewCubit.refresh,
+                  orElse: () => cubit.loadExplorePageData,
+                ),
+                child: CustomScrollView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  controller: scrollController,
+                  physics: state.maybeMap(
+                    initialLoading: (_) => const NeverScrollableScrollPhysics(),
+                    error: (_) => const NeverScrollableScrollPhysics(),
+                    orElse: () => getPlatformScrollPhysics(),
                   ),
-                  child: CustomScrollView(
-                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                    controller: scrollController,
-                    physics: state.maybeMap(
-                      initialLoading: (_) => const NeverScrollableScrollPhysics(),
-                      error: (_) => const NeverScrollableScrollPhysics(),
-                      orElse: () => getPlatformScrollPhysics(),
+                  slivers: [
+                    SliverSearchAppBar(
+                      explorePageCubit: cubit,
+                      searchTextEditingController: searchTextEditingController,
+                      searchViewCubit: searchViewCubit,
                     ),
-                    slivers: [
-                      SliverSearchAppBar(
+                    state.maybeMap(
+                      initialLoading: (_) => const _LoadingSection(),
+                      error: (_) => const _LoadingSection(),
+                      orElse: () => const SliverToBoxAdapter(),
+                    ),
+                    state.maybeMap(
+                      idle: (state) => _ItemList(
+                        items: state.items,
+                      ),
+                      search: (_) => SearchView(
+                        cubit: searchViewCubit,
+                        scrollController: scrollController,
+                      ),
+                      searchHistory: (state) => SearchHistoryView(
                         explorePageCubit: cubit,
-                        searchTextEditingController: searchTextEditingController,
                         searchViewCubit: searchViewCubit,
+                        scrollController: scrollController,
+                        searchHistory: state.searchHistory,
                       ),
-                      state.maybeMap(
-                        initialLoading: (_) => const _LoadingSection(),
-                        error: (_) => const _LoadingSection(),
-                        orElse: () => const SliverToBoxAdapter(),
-                      ),
-                      state.maybeMap(
-                        idle: (state) => _ItemList(
-                          items: state.items,
-                        ),
-                        search: (_) => SearchView(
-                          cubit: searchViewCubit,
-                          scrollController: scrollController,
-                        ),
-                        searchHistory: (state) => SearchHistoryView(
-                          explorePageCubit: cubit,
-                          searchViewCubit: searchViewCubit,
-                          scrollController: scrollController,
-                          searchHistory: state.searchHistory,
-                        ),
-                        orElse: () => const SliverToBoxAdapter(),
-                      ),
-                      const SliverToBoxAdapter(
-                        child: AudioPlayerBannerPlaceholder(),
-                      ),
-                    ],
-                  ),
+                      orElse: () => const SliverToBoxAdapter(),
+                    ),
+                    const SliverToBoxAdapter(
+                      child: AudioPlayerBannerPlaceholder(),
+                    ),
+                  ],
                 ),
               ),
               Align(

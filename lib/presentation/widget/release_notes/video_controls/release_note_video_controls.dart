@@ -84,8 +84,8 @@ class _Overlay extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.textPrimary.withOpacity(0.2),
+        decoration: const BoxDecoration(
+          color: AppColors.charcoal20,
         ),
         child: Center(
           child: GestureDetector(

@@ -30,6 +30,16 @@ This hook will run before commiting anything, and it:
 
 If this last step fails, an error message will be shown and the commit will not be completed
 
+# Committing changes
+
+When pushing changes to any branch, but specially when opening a PR for review, all generated commit messages must follow this structure:
+
+<type>: <message>
+
+Where <type> can be either `feat` or `fix`
+
+And <message> is a free text explaining the content of the commit
+
 ## Running App
 
 Right now we have 3 app flavors: dev, stage and prod. This adds requirement for additional arguments when running flutter app:
@@ -161,7 +171,6 @@ example:
 - Hint, you can spend some time and read cubit_hooks.dart file in our project. Because in there we have our own custom hooks for cubits.
   When we create public widgets we use named parameters.
 
-
 - [ ] How to use [gql_build](https://pub.dev/packages/gql_build)?
 
 - Create `.graphql` file with [operation](https://graphql.org/learn/queries/)
@@ -169,7 +178,6 @@ example:
 - `ast.gql.dart` file will be generated under `__generated__` folder
 - Import generated file with specified prefix (so there will be no conflicts between generated documents)
 - Access document, name etc. through prefix f.e. `generated_file.document`
-
 
 - [ ] Working with [intelliJ GraphQL plugin](https://plugins.jetbrains.com/plugin/8097-graphql)
 - Generate `schema.graphql` with `.graphqlconfig` (see xample below) by running graphql endpoint
@@ -198,7 +206,6 @@ Graphqlconfig example:
 - [ ] Generating scheme without help of [intelliJ GraphQL plugin](https://plugins.jetbrains.com/plugin/8097-graphql)
 - Install [get-graphql-schema](https://github.com/prisma-labs/get-graphql-schema)
 - Run `make graphql_schema` from project root
-
 
 - [ ] While creating `.graphql` files
 
@@ -410,3 +417,20 @@ Run `[fvm] flutter pub run dart_code_metrics:metrics check-unused-code lib` to c
 Run `[fvm] flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib` to chek for unnecessary nullable parameters. This one makes some noise from our DTOs, but can highlight some other fixable situations
 
 This can be done thank to the `dart_code_metrics` package dev integration in `pubspec.yaml`
+
+# Releases
+
+## Staging
+
+Staging releases are triggered after every PR merge into `develop`, fetching the `version` number from `pubspec.yaml` file, and setting `build` number incrementally based on the github action's `run_number`. In order to change the staging version number, we need to update `pubspec.yaml`
+
+## Production
+
+Production releases are versioned via Git `tags`. The `CD Prod` workflow that triggers after each `push` to `main` will first fetch previous tags, and analize all commit messages that have just been merged.
+
+- If the job finds a commit message with the format `fix: <message>`, it will trigger a `patch` number pump
+- If the job finds a commit message with the format `feat: <message>`, it will trigger a `minor` number pump. This will take precedence over the `patch` pump
+
+If the job does not find any commit messages with any of these formats, it will not generate a new tag, and instead return the current tag
+
+This condition is analized by bof deployment jobs (Android and iOS), and they will build their apps with the returned `tag` as `version_name`

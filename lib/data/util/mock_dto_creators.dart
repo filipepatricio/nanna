@@ -14,16 +14,20 @@ import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dar
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/current_brief_introduction_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_introduction_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_section_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_subsection_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/call_to_action_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/relax_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_pill_dto.dt.dart';
@@ -135,47 +139,81 @@ class MockDTO {
 
   /// Today's topics
 
-  static CurrentBriefDTO currentBrief({DateTime? date}) => CurrentBriefDTO(
+  static BriefDTO currentBrief({DateTime? date}) => BriefDTO(
         'brief-id',
         // greeting
         HeadlineDTO('**👋 Moritz**, here are the topics of the day', null, null),
         // introduction - text max length: 150 chars
-        CurrentBriefIntroductionDTO(
+        const BriefIntroductionDTO(
           icon: _mockedPillIcon,
           text:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamaa',
         ),
-        // goodbye
-        HeadlineDTO('You’re all _informed_', "Can't get enough?", null),
         (date ?? DateTime(2022, 07, 8)).toIso8601String(),
-        //entries
+        relax,
+        //sections
         [
-          BriefEntryDTO(
-            topic.asBriefEntryItem,
-            _briefEntryStyleTopic,
+          BriefSectionDTO.entries(
+            'General News',
+            null,
+            [
+              BriefEntryDTO(
+                topic.asBriefEntryItem,
+                _briefEntryStyleTopic,
+              ),
+              BriefEntryDTO(
+                _freeArticle.asBriefEntryItem,
+                _briefEntryStyleArticleLarge,
+              ),
+              BriefEntryDTO(
+                premiumArticle.asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+              ..._briefEntriesArticlesList,
+            ],
           ),
-          BriefEntryDTO(
-            topicWithEditorOwner.asBriefEntryItem,
-            _briefEntryStyleTopic,
+          BriefSectionDTO.subsections(
+            'Personalised content',
+            '#F2E8E7',
+            [
+              BriefSubsectionDTO(
+                title: 'Crypto',
+                entries: _briefEntriesArticlesList,
+              ),
+              BriefSubsectionDTO(
+                title: 'Business',
+                entries: _briefEntriesArticlesList,
+              ),
+            ],
           ),
-          BriefEntryDTO(
-            _freeArticle.asBriefEntryItem,
-            _briefEntryStyleArticleLarge,
-          ),
-          BriefEntryDTO(
-            premiumArticle.asBriefEntryItem,
-            _briefEntryStyleArticleSmall,
-          ),
-          BriefEntryDTO(
-            premiumArticleWithAudio.asBriefEntryItem,
-            _briefEntryStyleArticleLarge,
-          ),
-          BriefEntryDTO(
-            topicWithUnknownOwner.asBriefEntryItem,
-            _briefEntryStyleTopic,
+          BriefSectionDTO.entries(
+            '_Lighter note_',
+            null,
+            [
+              BriefEntryDTO(
+                topicWithUnknownOwner.asBriefEntryItem,
+                _briefEntryStyleTopic,
+              ),
+              ..._briefEntriesArticlesList,
+            ],
           ),
         ],
       );
+
+  static final _briefEntriesArticlesList = [
+    BriefEntryDTO(
+      premiumArticle.asBriefEntryItem,
+      _briefEntryStyleArticleSmallItem,
+    ),
+    BriefEntryDTO(
+      premiumArticleWithAudio.asBriefEntryItem,
+      _briefEntryStyleArticleSmallItem,
+    ),
+    BriefEntryDTO(
+      _freeArticle.asBriefEntryItem,
+      _briefEntryStyleArticleSmallItem,
+    ),
+  ];
 
   // Past days briefs
   static final pastDaysBriefs = [
@@ -217,10 +255,22 @@ class MockDTO {
     ),
   ];
 
-  static final _briefEntryStyleTopic = BriefEntryStyleDTO(null, BriefEntryStyleType.topicCard);
-  static final _briefEntryStyleArticleSmall =
-      BriefEntryStyleDTO('#F2E8E7', BriefEntryStyleType.articleCardWithSmallImage);
-  static final _briefEntryStyleArticleLarge = BriefEntryStyleDTO(null, BriefEntryStyleType.articleCardWithLargeImage);
+  static final _briefEntryStyleTopic = BriefEntryStyleDTO(
+    null,
+    BriefEntryStyleType.topicCard,
+  );
+  static final _briefEntryStyleArticleSmall = BriefEntryStyleDTO(
+    '#F2E8E7',
+    BriefEntryStyleType.articleCardWithSmallImage,
+  );
+  static final _briefEntryStyleArticleSmallItem = BriefEntryStyleDTO(
+    '#F2E8E7',
+    BriefEntryStyleType.articleCardSmallItem,
+  );
+  static final _briefEntryStyleArticleLarge = BriefEntryStyleDTO(
+    null,
+    BriefEntryStyleType.articleCardWithLargeImage,
+  );
 
   /// Explore
   static final exploreContent = ExploreContentDTO(
@@ -594,6 +644,10 @@ class MockDTO {
   static final _summaryCardShort = SummaryCardDTO(
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. **Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip.**',
   );
+
+  static final relax = RelaxDTO('0/24 articles read', _mockedPillIcon, callToAction, 'Time to get _informed_');
+
+  static final callToAction = CallToActionDTO('More stories on', 'Explore');
 }
 
 extension ArticleHeaderDTOExtension on ArticleHeaderDTO {

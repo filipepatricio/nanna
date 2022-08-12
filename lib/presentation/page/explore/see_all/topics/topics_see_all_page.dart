@@ -134,30 +134,28 @@ class _TopicGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NoScrollGlow(
-      child: CustomScrollView(
-        key: pageStorageKey,
-        controller: scrollController,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.all(AppDimens.l),
-            sliver: SliverToBoxAdapter(
-              child: AlignedGridView.count(
-                physics: const BottomBouncingScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                itemCount: topics.length,
-                crossAxisSpacing: AppDimens.l,
-                mainAxisSpacing: AppDimens.m,
-                itemBuilder: (context, index) => _GridItem(
-                  topic: topics[index],
-                ),
+    return CustomScrollView(
+      key: pageStorageKey,
+      controller: scrollController,
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.all(AppDimens.l),
+          sliver: SliverToBoxAdapter(
+            child: AlignedGridView.count(
+              physics: const BottomBouncingScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              itemCount: topics.length,
+              crossAxisSpacing: AppDimens.l,
+              mainAxisSpacing: AppDimens.m,
+              itemBuilder: (context, index) => _GridItem(
+                topic: topics[index],
               ),
             ),
           ),
-          SeeAllLoadMoreIndicator(show: withLoader),
-        ],
-      ),
+        ),
+        SeeAllLoadMoreIndicator(show: withLoader),
+      ],
     );
   }
 }

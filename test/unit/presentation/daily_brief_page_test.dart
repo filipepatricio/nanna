@@ -1,5 +1,5 @@
+import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
-import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
@@ -36,14 +36,13 @@ void main() {
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
     );
+    final entry = TestData.currentBrief.allEntries.first;
     final event = AnalyticsEvent.dailyBriefEntryPreviewed(
       TestData.currentBrief.id,
-      TestData.currentBrief.entries.first.id,
+      entry.id,
       0,
-      TestData.currentBrief.entries.first.type.name,
+      entry.type.name,
     );
-
-    final entry = TestData.currentBrief.entries.first;
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
 
@@ -78,7 +77,7 @@ void main() {
         matching: find.byType(ArticleCover),
       );
 
-      await tester.dragUntilVisible(articleCoverFinder, find.byType(DailyBriefPage), const Offset(0, -50));
+      await tester.dragUntilVisible(articleCoverFinder.first, find.byType(DailyBriefPage), const Offset(0, -50));
       await tester.pumpAndSettle();
 
       await tester.tap(articleCoverFinder.first);
@@ -115,14 +114,14 @@ void main() {
 
       final goToExploreLabelFinder = find.descendant(
         of: find.byType(RelaxView),
-        matching: find.byText(LocaleKeys.dailyBrief_goToExplore.tr()),
+        matching: find.byText(MockDTO.callToAction.actionText),
       );
 
       await tester.fling(find.byType(TopicCover).first, const Offset(0, -10000), 100);
 
       await tester.pumpAndSettle();
       expect(goToExploreLabelFinder, findsOneWidget);
-      tapTextSpan(goToExploreLabelFinder, LocaleKeys.dailyBrief_goToExplore.tr());
+      tapTextSpan(goToExploreLabelFinder, MockDTO.callToAction.actionText);
       await tester.pumpAndSettle();
 
       expect(find.byType(ExplorePage), findsOneWidget);

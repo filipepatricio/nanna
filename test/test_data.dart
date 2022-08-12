@@ -7,18 +7,22 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_style_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_topic_preview_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/mapper/current_brief_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/mapper/current_brief_introduction_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_introduction_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_section_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_subsection_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/call_to_action_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_style_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/headline_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/media_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/past_days_brief_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/relax_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_area_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_pill_dto_mapper.di.dart';
@@ -33,7 +37,7 @@ import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
@@ -94,32 +98,42 @@ class TestData {
     ),
   );
 
-  static final _currentBriefMapper = CurrentBriefDTOMapper(
+  static final _currentBriefMapper = BriefDTOMapper(
     HeadlineDTOMapper(),
-    CurrentBriefIntroductionDTOMapper(),
-    BriefEntryDTOMapper(
-      BriefEntryItemDTOMapper(
-        BriefEntryMediaItemDTOMapper(
-          ArticleImageDTOMapper(),
-          PublisherDTOMapper(
-            ImageDTOMapper(),
-          ),
-          ArticleTypeDTOMapper(),
-          ArticleKindDTOMapper(),
-          ArticleProgressDTOMapper(),
-        ),
-        BriefEntryTopicPreviewDTOMapper(
-          TopicOwnerDTOMapper(
-            ImageDTOMapper(),
-          ),
-          PublisherDTOMapper(
-            ImageDTOMapper(),
-          ),
+    BriefIntroductionDTOMapper(),
+    BriefSectionDTOMapper(
+      _briefEntryDTOMapper,
+      BriefSubsectionDTOMapper(
+        _briefEntryDTOMapper,
+      ),
+    ),
+    RelaxDTOMapper(
+      CallToActionDTOMapper(),
+    ),
+  );
+
+  static final _briefEntryDTOMapper = BriefEntryDTOMapper(
+    BriefEntryItemDTOMapper(
+      BriefEntryMediaItemDTOMapper(
+        ArticleImageDTOMapper(),
+        PublisherDTOMapper(
           ImageDTOMapper(),
         ),
+        ArticleTypeDTOMapper(),
+        ArticleKindDTOMapper(),
+        ArticleProgressDTOMapper(),
       ),
-      BriefEntryStyleDTOMapper(),
+      BriefEntryTopicPreviewDTOMapper(
+        TopicOwnerDTOMapper(
+          ImageDTOMapper(),
+        ),
+        PublisherDTOMapper(
+          ImageDTOMapper(),
+        ),
+        ImageDTOMapper(),
+      ),
     ),
+    BriefEntryStyleDTOMapper(),
   );
 
   static final _pastDaysBriefMapper = PastDaysBriefDTOMapper(_currentBriefMapper);
@@ -163,7 +177,7 @@ class TestData {
 
   static ExploreContent get exploreContent => _exploreContentMapper(MockDTO.exploreContent);
 
-  static CurrentBrief get currentBrief => _currentBriefMapper(MockDTO.currentBrief());
+  static Brief get currentBrief => _currentBriefMapper(MockDTO.currentBrief());
 
   static List<PastDaysBrief> get pastDaysBriefs =>
       MockDTO.pastDaysBriefs.map<PastDaysBrief>(_pastDaysBriefMapper).toList();

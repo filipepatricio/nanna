@@ -99,13 +99,11 @@ class ArticleCover extends StatelessWidget {
 
   factory ArticleCover.dailyBriefSmall({
     required MediaItemArticle article,
-    Color? coverColor,
     VoidCallback? onTap,
   }) =>
       ArticleCover._(
         ArticleCoverType.dailyBriefSmall,
         article: article,
-        coverColor: coverColor,
         onTap: onTap,
       );
 
@@ -183,11 +181,11 @@ class ArticleCover extends StatelessWidget {
 
   factory ArticleCover.dailyBriefList({
     required MediaItemArticle article,
-    required Color backgroundColor,
+    Color? backgroundColor,
     VoidCallback? onTap,
   }) =>
       ArticleCover._(
-        ArticleCoverType.topicWithoutImage,
+        ArticleCoverType.dailyBriefList,
         article: article,
         backgroundColor: backgroundColor,
         onTap: onTap,

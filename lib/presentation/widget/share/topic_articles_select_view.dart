@@ -266,7 +266,7 @@ class _IdleView extends HookWidget {
             child: FilledButton(
               onTap: () => cubit.shareImage(shareOption),
               text: LocaleKeys.common_next.tr(),
-              fillColor: AppColors.darkGreyBackground,
+              fillColor: AppColors.charcoal,
               textColor: AppColors.white,
             ),
           ),

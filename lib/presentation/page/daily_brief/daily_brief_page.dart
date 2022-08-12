@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/current_brief.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/current_brief_introduction.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_introduction.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_section.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_subsection.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/relax.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
@@ -18,23 +20,21 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/widgets/dai
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/images.dart';
 import 'package:better_informed_mobile/presentation/util/markdown_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 const _topicCardTutorialOffsetFromBottomFraction = 1.4;
 
@@ -79,7 +79,6 @@ class _DailyBriefPage extends HookWidget {
     final scrollController = useScrollController();
     final cardStackWidth = MediaQuery.of(context).size.width;
     const cardStackHeight = AppDimens.briefEntryCardStackHeight;
-    final topPadding = AppDimens.safeTopPadding(context);
 
     useEffect(
       () {
@@ -97,85 +96,88 @@ class _DailyBriefPage extends HookWidget {
           child: RefreshIndicator(
             onRefresh: cubit.loadBriefs,
             color: AppColors.darkGrey,
-            child: NoScrollGlow(
-              child: CustomScrollView(
-                controller: scrollController,
-                physics: state.maybeMap(
-                  error: (_) => const NeverScrollableScrollPhysics(),
-                  loading: (_) => const NeverScrollableScrollPhysics(),
-                  orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
+            child: CustomScrollView(
+              controller: scrollController,
+              physics: state.maybeMap(
+                error: (_) => const NeverScrollableScrollPhysics(),
+                loading: (_) => const NeverScrollableScrollPhysics(),
+                orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
+              ),
+              slivers: [
+                state.maybeMap(
+                  idle: (state) => DailyBriefScrollableAppBar(
+                    showCalendar: state.showCalendar,
+                    scrollController: scrollController,
+                    briefDate: state.currentBrief.date,
+                    pastDaysBriefs: state.pastDaysBriefs,
+                    showAppBarTitle: state.showAppBarTitle,
+                    cubit: cubit,
+                  ),
+                  orElse: () => const SliverToBoxAdapter(),
                 ),
-                slivers: [
-                  state.maybeMap(
-                    idle: (state) => DailyBriefScrollableAppBar(
-                      showCalendar: state.showCalendar,
-                      scrollController: scrollController,
-                      briefDate: state.currentBrief.date,
+                state.maybeMap(
+                  idle: (state) => SliverPinnedHeader(
+                    child: DailyBriefCalendar(
+                      isVisible: state.showCalendar,
+                      currentBriefDate: state.currentBrief.date,
                       pastDaysBriefs: state.pastDaysBriefs,
-                      showAppBarTitle: state.showAppBarTitle,
+                      isFloating: state.showAppBarTitle,
                       cubit: cubit,
+                      scrollController: scrollController,
                     ),
-                    orElse: () => const SliverToBoxAdapter(),
                   ),
-                  state.maybeMap(
-                    idle: (state) => SliverPinnedHeader(
-                      child: DailyBriefCalendar(
-                        isVisible: state.showCalendar,
-                        currentBriefDate: state.currentBrief.date,
-                        pastDaysBriefs: state.pastDaysBriefs,
-                        isFloating: state.showAppBarTitle,
-                        cubit: cubit,
-                        scrollController: scrollController,
-                      ),
-                    ),
-                    orElse: () => const SliverToBoxAdapter(),
+                  orElse: () => const SliverToBoxAdapter(),
+                ),
+                state.maybeMap(
+                  idle: (state) => _IdleContent(
+                    cubit: cubit,
+                    brief: state.currentBrief,
+                    cardStackWidth: cardStackWidth,
+                    cardStackHeight: cardStackHeight,
+                    tutorialCoachMark: tutorialCoachMark,
+                    scrollController: scrollController,
                   ),
-                  SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(
+                  error: (_) => SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      AppDimens.l,
+                      AppDimens.safeTopPadding(context),
                       AppDimens.l,
                       AppDimens.zero,
-                      AppDimens.l,
-                      AppDimens.l,
                     ),
-                    sliver: state.maybeMap(
-                      idle: (state) => _IdleContent(
-                        cubit: cubit,
-                        currentBrief: state.currentBrief,
-                        cardStackWidth: cardStackWidth,
-                        cardStackHeight: cardStackHeight,
-                        tutorialCoachMark: tutorialCoachMark,
-                        scrollController: scrollController,
-                      ),
-                      error: (_) => SliverPadding(
-                        padding: EdgeInsets.only(top: topPadding),
-                        sliver: SliverToBoxAdapter(
-                          child: Center(
-                            child: CardsErrorView(
-                              retryAction: cubit.loadBriefs,
-                              size: Size(cardStackWidth, cardStackHeight),
-                            ),
-                          ),
+                    sliver: SliverToBoxAdapter(
+                      child: Center(
+                        child: CardsErrorView(
+                          retryAction: cubit.loadBriefs,
+                          size: Size(cardStackWidth, cardStackHeight),
                         ),
                       ),
-                      loading: (_) => SliverPadding(
-                        padding: EdgeInsets.only(top: topPadding),
-                        sliver: SliverToBoxAdapter(
-                          child: DailyBriefLoadingView(
-                            coverSize: Size(
-                              cardStackWidth,
-                              cardStackHeight,
-                            ),
-                          ),
-                        ),
-                      ),
-                      orElse: () => const SizedBox.shrink(),
                     ),
                   ),
-                  const SliverToBoxAdapter(
-                    child: AudioPlayerBannerPlaceholder(),
+                  loading: (_) => SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      AppDimens.l,
+                      AppDimens.safeTopPadding(context),
+                      AppDimens.l,
+                      AppDimens.zero,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: DailyBriefLoadingView(
+                        coverSize: Size(
+                          cardStackWidth,
+                          cardStackHeight,
+                        ),
+                      ),
+                    ),
                   ),
-                ],
-              ),
+                  orElse: () => const SizedBox.shrink(),
+                ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: AppDimens.l),
+                ),
+                const SliverToBoxAdapter(
+                  child: AudioPlayerBannerPlaceholder(),
+                ),
+              ],
             ),
           ),
         ),
@@ -187,7 +189,7 @@ class _DailyBriefPage extends HookWidget {
 class _IdleContent extends HookWidget {
   const _IdleContent({
     required this.cubit,
-    required this.currentBrief,
+    required this.brief,
     required this.cardStackWidth,
     required this.cardStackHeight,
     required this.tutorialCoachMark,
@@ -196,11 +198,32 @@ class _IdleContent extends HookWidget {
   }) : super(key: key);
 
   final DailyBriefPageCubit cubit;
-  final CurrentBrief currentBrief;
+  final Brief brief;
   final double cardStackWidth;
   final double cardStackHeight;
   final TutorialCoachMark tutorialCoachMark;
   final ScrollController scrollController;
+
+  VoidCallback topicCardTutorialListener(ScrollController listScrollController, double topicCardTriggerPoint) {
+    var isToShowMediaItemTutorialCoachMark = true;
+    void topicCardListener() {
+      if (isToShowMediaItemTutorialCoachMark &&
+          didListScrollReachTopicCard(listScrollController, topicCardTriggerPoint)) {
+        listScrollController.jumpTo(
+          topicCardTriggerPoint,
+        );
+        cubit.showTopicCardTutorialCoachMark();
+        isToShowMediaItemTutorialCoachMark = false;
+        scrollController.removeListener(topicCardListener);
+      }
+    }
+
+    return topicCardListener;
+  }
+
+  bool didListScrollReachTopicCard(ScrollController listScrollController, double topicCardTriggerPoint) {
+    return listScrollController.offset >= topicCardTriggerPoint && !listScrollController.position.outOfRange;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -216,10 +239,10 @@ class _IdleContent extends HookWidget {
 
     useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        idle: (currentBrief, _, __, ___) => _precacheFullSizeImages(
+        idle: (currentBrief, _, __, ___) => precacheBriefFullScreenImages(
           context,
           cloudinaryProvider,
-          currentBrief.entries,
+          currentBrief.allEntries,
         ),
         shouldShowTopicCardTutorialCoachMark: () {
           final topicCardTriggerPoint =
@@ -243,100 +266,196 @@ class _IdleContent extends HookWidget {
       );
     });
 
+    BriefEntry? firstTopic;
+    if (brief.allEntries.any((entry) => entry.isTopic)) {
+      firstTopic = brief.allEntries.firstWhere(
+        (element) => element.item.maybeMap(
+          topicPreview: (_) => true,
+          orElse: () => false,
+        ),
+      );
+    }
+
     return MultiSliver(
       children: [
-        _Greeting(
-          greeting: currentBrief.greeting,
-          introduction: currentBrief.introduction,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: _Greeting(
+            greeting: brief.greeting,
+            introduction: brief.introduction,
+          ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final currentEntry = currentBrief.entries[index];
-
-              BriefEntry? firstTopic;
-              if (currentBrief.entries.any((entry) => entry.isTopic)) {
-                firstTopic = currentBrief.entries.firstWhere(
-                  (element) => element.item.maybeMap(
-                    topicPreview: (_) => true,
-                    orElse: () => false,
-                  ),
-                );
-              }
-
-              return VisibilityDetector(
-                key: Key(currentEntry.id),
-                onVisibilityChanged: (visibility) {
-                  if (currentEntry == firstTopic) {
-                    cubit.initializeTutorialCoachMark();
-                  }
-                  if (!kIsTest) {
-                    cubit.trackBriefEntryPreviewed(
-                      currentEntry,
-                      index,
-                      visibility.visibleFraction,
-                    );
-                  }
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+            (context, index) => brief.sections[index].map(
+              entries: (section) => _BriefSection(
+                title: section.title,
+                backgroundColor: section.backgroundColor,
+                children: section.entries.expand(
+                  (entry) => [
                     BriefEntryCover(
-                      briefEntry: currentEntry,
-                      briefId: currentBrief.id,
+                      briefEntry: entry,
+                      briefId: brief.id,
                       width: cardStackWidth,
                       height: cardStackHeight,
-                      topicCardKey: currentEntry == firstTopic ? cubit.topicCardKey : null,
+                      padding: _needsDivider(section, entry)
+                          ? EdgeInsets.zero
+                          : const EdgeInsets.only(
+                              bottom: AppDimens.l,
+                            ),
+                      topicCardKey: entry == firstTopic ? firstTopicKey : null,
+                      onVisibilityChanged: (visibility) {
+                        if (entry == firstTopic && visibility.visibleFraction == 1) {
+                          cubit.initializeTutorialCoachMark();
+                        }
+                        if (!kIsTest) {
+                          cubit.trackBriefEntryPreviewed(
+                            entry,
+                            index,
+                            visibility.visibleFraction,
+                          );
+                        }
+                      },
                     ),
-                    const SizedBox(height: AppDimens.l),
+                    if (_needsDivider(section, entry))
+                      const InformedDivider(
+                        padding: EdgeInsets.symmetric(vertical: AppDimens.sl),
+                      ),
                   ],
                 ),
-              );
-            },
-            childCount: currentBrief.entries.length,
+              ),
+              subsections: (section) => _BriefSection(
+                title: section.title,
+                backgroundColor: section.backgroundColor,
+                children: section.subsections.map(
+                  (subsection) => _BriefSubsection(
+                    subsection: subsection,
+                    children: subsection.entries.map(
+                      (entry) => BriefEntryCover(
+                        briefEntry: entry,
+                        briefId: brief.id,
+                        width: cardStackWidth,
+                        height: cardStackHeight,
+                        topicCardKey: entry == firstTopic ? firstTopicKey : null,
+                        onVisibilityChanged: (visibility) {
+                          if (entry == firstTopic) {
+                            cubit.initializeTutorialCoachMark();
+                          }
+                          if (!kIsTest) {
+                            cubit.trackBriefEntryPreviewed(
+                              entry,
+                              index,
+                              visibility.visibleFraction,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              unknown: (_) => const SizedBox.shrink(),
+            ),
+            childCount: brief.sections.length,
             addAutomaticKeepAlives: false,
           ),
         ),
-        _RelaxSection(
-          onVisible: cubit.trackRelaxPage,
-          headline: currentBrief.goodbye,
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(
+            AppDimens.l,
+            AppDimens.m,
+            AppDimens.l,
+            AppDimens.zero,
+          ),
+          sliver: SliverToBoxAdapter(
+            child: _RelaxSection(
+              onVisible: cubit.trackRelaxPage,
+              relax: brief.relax,
+            ),
+          ),
         ),
       ],
     );
   }
 
-  bool didListScrollReachTopicCard(ScrollController listScrollController, double topicCardTriggerPoint) {
-    return listScrollController.offset >= topicCardTriggerPoint && !listScrollController.position.outOfRange;
+  bool _needsDivider(BriefSectionWithEntries section, BriefEntry entry) =>
+      section.backgroundColor == null &&
+      entry.style.type == BriefEntryStyleType.articleCardSmallItem &&
+      entry != section.entries.last &&
+      section.entries[section.entries.indexOf(entry) + 1].style.type == BriefEntryStyleType.articleCardSmallItem;
+}
+
+class _BriefSubsection extends StatelessWidget {
+  const _BriefSubsection({
+    required this.subsection,
+    required this.children,
+    Key? key,
+  }) : super(key: key);
+
+  final BriefSubsection subsection;
+  final Iterable<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          subsection.title,
+          textAlign: TextAlign.start,
+          style: AppTypography.h4ExtraBold,
+        ),
+        ...children,
+        const SizedBox(height: AppDimens.sl),
+      ],
+    );
   }
+}
 
-  VoidCallback topicCardTutorialListener(ScrollController listScrollController, double topicCardTriggerPoint) {
-    var isToShowMediaItemTutorialCoachMark = true;
-    void topicCardListener() {
-      if (isToShowMediaItemTutorialCoachMark &&
-          didListScrollReachTopicCard(listScrollController, topicCardTriggerPoint)) {
-        listScrollController.jumpTo(
-          topicCardTriggerPoint,
-        );
-        cubit.showTopicCardTutorialCoachMark();
-        isToShowMediaItemTutorialCoachMark = false;
-        scrollController.removeListener(topicCardListener);
-      }
-    }
+class _BriefSection extends StatelessWidget {
+  const _BriefSection({
+    required this.title,
+    required this.children,
+    this.backgroundColor,
+    Key? key,
+  }) : super(key: key);
 
-    return topicCardListener;
+  final String title;
+  final Color? backgroundColor;
+  final Iterable<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: backgroundColor,
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: AppDimens.m),
+          InformedMarkdownBody(
+            markdown: title,
+            baseTextStyle: AppTypography.h1MediumLora,
+          ),
+          const SizedBox(height: AppDimens.m),
+          ...children,
+          const SizedBox(height: AppDimens.m),
+        ],
+      ),
+    );
   }
 }
 
 class _RelaxSection extends StatelessWidget {
   const _RelaxSection({
     required this.onVisible,
-    required this.headline,
+    required this.relax,
     Key? key,
   }) : super(key: key);
 
   static const String relaxSectionKey = 'kRelaxSectionKey';
   final VoidCallback onVisible;
-  final Headline headline;
+  final Relax relax;
 
   @override
   Widget build(BuildContext context) {
@@ -345,7 +464,7 @@ class _RelaxSection extends StatelessWidget {
       onVisible: onVisible,
       borderFraction: 0.6,
       child: RelaxView.dailyBrief(
-        headline: headline,
+        relax: relax,
       ),
     );
   }
@@ -359,7 +478,7 @@ class _Greeting extends StatelessWidget {
   }) : super(key: key);
 
   final Headline greeting;
-  final CurrentBriefIntroduction? introduction;
+  final BriefIntroduction? introduction;
 
   @override
   Widget build(BuildContext context) {
@@ -399,43 +518,6 @@ class _Greeting extends StatelessWidget {
         ],
         const SizedBox(height: AppDimens.m),
       ],
-    );
-  }
-}
-
-void _precacheFullSizeImages(
-  BuildContext context,
-  CloudinaryImageProvider cloudinaryProvider,
-  List<BriefEntry> entries,
-) {
-  for (final entry in entries) {
-    entry.item.mapOrNull(
-      article: (article) {
-        final articleImageHeight = AppDimens.articleHeaderImageHeight(context);
-        final articleImageWidth = AppDimens.articleHeaderImageWidth(context);
-
-        final config = CloudinaryConfig(width: articleImageWidth, height: articleImageHeight);
-
-        article.article.mapOrNull(
-          article: (article) {
-            if (article.type == ArticleType.premium) {
-              final articleImageUrl = article.imageUrl;
-              if (articleImageUrl.isNotEmpty) {
-                final url = config.applyAndGenerateUrl(context, articleImageUrl, cloudinaryProvider);
-                precacheImage(CachedNetworkImageProvider(url), context);
-              }
-            }
-          },
-        );
-      },
-      topicPreview: (topic) {
-        final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
-        final topicHeaderImageWidth = AppDimens.topicViewHeaderImageWidth(context);
-        final config = CloudinaryConfig(width: topicHeaderImageWidth, height: topicHeaderImageHeight);
-        final publicId = topic.topicPreview.heroImage.publicId;
-        final url = config.applyAndGenerateUrl(context, publicId, cloudinaryProvider);
-        precacheImage(CachedNetworkImageProvider(url), context);
-      },
     );
   }
 }
