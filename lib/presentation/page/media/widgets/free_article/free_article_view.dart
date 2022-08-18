@@ -116,6 +116,10 @@ class FreeArticleView extends HookWidget {
                       }
                     },
                     onScrollChanged: (controller, _, y) async {
+                      if (y <= 0) {
+                        return;
+                      }
+
                       if (y > scrollPosition.value) {
                         scrollPosition.value = y.toDouble();
                         showTabBar.value = false;
