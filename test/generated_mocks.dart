@@ -20,7 +20,11 @@ import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.da
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
+import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/audio/use_case/audio_position_seek_use_case.di.dart';
+import 'package:better_informed_mobile/domain/audio/use_case/audio_position_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
@@ -77,6 +81,10 @@ const _classes = [
   TrackActivityUseCase,
   IncomingPushDataRefreshStreamUseCase,
   GetPastDaysBriesfUseCase,
+  AudioPlaybackStateStreamUseCase,
+  AudioPositionStreamUseCase,
+  AudioPositionSeekUseCase,
+  GetArticleAudioProgressUseCase,
 ];
 
 @GenerateMocks(_classes)

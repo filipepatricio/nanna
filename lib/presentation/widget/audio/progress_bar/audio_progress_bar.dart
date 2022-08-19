@@ -42,9 +42,9 @@ class AudioProgressBar extends HookWidget {
 
     return Center(
       child: state.map(
-        initial: (_) => const _LoadingProgressBar(),
-        inactive: (state) => _InactiveProgressBar(state.progress),
-        active: (state) => _ActiveProgressBar(
+        initial: (_) => const LoadingProgressBar(),
+        inactive: (state) => InactiveProgressBar(state.progress),
+        active: (state) => ActiveProgressBar(
           cubit: cubit,
           position: state.progress,
           totalDuration: state.totalDuration,
@@ -55,8 +55,8 @@ class AudioProgressBar extends HookWidget {
   }
 }
 
-class _ActiveProgressBar extends StatelessWidget {
-  const _ActiveProgressBar({
+class ActiveProgressBar extends StatelessWidget {
+  const ActiveProgressBar({
     required this.cubit,
     required this.position,
     required this.totalDuration,
@@ -96,8 +96,8 @@ class _ActiveProgressBar extends StatelessWidget {
   }
 }
 
-class _InactiveProgressBar extends StatelessWidget {
-  const _InactiveProgressBar(this.progress, {Key? key}) : super(key: key);
+class InactiveProgressBar extends StatelessWidget {
+  const InactiveProgressBar(this.progress, {Key? key}) : super(key: key);
 
   final double progress;
 
@@ -119,8 +119,8 @@ class _InactiveProgressBar extends StatelessWidget {
   }
 }
 
-class _LoadingProgressBar extends StatelessWidget {
-  const _LoadingProgressBar({Key? key}) : super(key: key);
+class LoadingProgressBar extends StatelessWidget {
+  const LoadingProgressBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

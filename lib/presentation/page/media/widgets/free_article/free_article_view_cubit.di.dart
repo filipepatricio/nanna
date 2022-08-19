@@ -44,7 +44,9 @@ class FreeArticleViewCubit extends Cubit<FreeArticleViewState> {
   }
 
   void setMaxScrollOffset(int? maxScrollOffset) {
-    _maxScrollOffset = maxScrollOffset;
+    if ((maxScrollOffset ?? 0) > 0) {
+      _maxScrollOffset = maxScrollOffset;
+    }
   }
 
   void updateScrollOffset(int scrollOffset) {

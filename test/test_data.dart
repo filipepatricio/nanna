@@ -35,6 +35,8 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_m
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
+import 'package:better_informed_mobile/domain/audio/data/audio_position.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
@@ -158,6 +160,21 @@ class TestData {
   static final _articleContentMapper = ArticleContentDTOMapper(
     ArticleContentTypeDTOMapper(),
   );
+
+  static AudioItem get audioItem => AudioItem(
+        id: TestData.premiumArticleWithAudio.id,
+        slug: TestData.premiumArticleWithAudio.slug,
+        title: 'Some title',
+        author: 'New York Times',
+        imageUrl: null,
+        duration: const Duration(seconds: 360),
+      );
+
+  static AudioPosition get audioPosition => AudioPosition(
+        audioItemID: premiumArticleWithAudio.id,
+        position: const Duration(seconds: 120),
+        totalDuration: const Duration(seconds: 360),
+      );
 
   static Article get fullArticle => Article(
         metadata: article,
