@@ -8,6 +8,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/subjects.dart';
 
+const mockAudioPosition = Duration(seconds: 10);
+
 @LazySingleton(as: AudioRepository, env: mockEnvs)
 class AudioRepositoryMock implements AudioRepository {
   final BehaviorSubject<AudioPlaybackState> _playbackState =
@@ -86,7 +88,7 @@ class AudioRepositoryMock implements AudioRepository {
   Stream<AudioPlaybackState> get playbackState => _playbackState.stream;
 
   @override
-  Stream<Duration> get position => Stream.value(const Duration(seconds: 10));
+  Stream<Duration> get position => Stream.value(mockAudioPosition);
 
   @override
   Future<void> seek(Duration seekDuration) async {}
