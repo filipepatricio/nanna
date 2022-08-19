@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 
-const _logoHeight = 36.0;
+const _logoHeight = 43.0;
+const _logoWidth = 204.0;
 
 class Loader extends StatelessWidget {
   const Loader({
@@ -36,13 +37,12 @@ class LoaderLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     final logo = SvgPicture.asset(
       AppVectorGraphics.informedLogoDark,
+      width: _logoWidth,
       height: _logoHeight,
     );
 
     return Center(
       child: Stack(
-        alignment: Alignment.center,
-        fit: StackFit.passthrough,
         children: [
           logo,
           Shimmer(
