@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/audio/audio_repository_mock.di.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
@@ -16,6 +17,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
@@ -273,6 +275,30 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(CategoryPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'check if the audio position is properly loaded',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: MainPageRoute(
+          children: [
+            MediaItemPageRoute(
+              article: TestData.premiumArticleWithAudio,
+            ),
+          ],
+        ),
+      );
+
+      await tester.tap(find.byType(ArticleOutputModeToggleButton));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PremiumArticleAudioView), findsOneWidget);
+
+      final progressBar = tester.widget<ActiveProgressBar>(find.byType(ActiveProgressBar).first);
+
+      expect(progressBar.position.inSeconds, mockAudioPosition.inSeconds);
     },
   );
 }
