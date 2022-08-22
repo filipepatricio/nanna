@@ -260,7 +260,7 @@ class _IdleContent extends HookWidget {
             },
           );
         },
-        showTopicCardTutorialCoachMark: tutorialCoachMark.show,
+        showTopicCardTutorialCoachMark: () => tutorialCoachMark.show(context: context),
         skipTutorialCoachMark: (_) => tutorialCoachMark.skip(),
         finishTutorialCoachMark: tutorialCoachMark.finish,
       );

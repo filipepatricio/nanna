@@ -48,6 +48,6 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
 
   @override
   Future<String> initialTab() async {
-    return await LDClient.stringVariation('root-route', '') ?? '';
+    return await LDClient.stringVariation('root-route', '');
   }
 }

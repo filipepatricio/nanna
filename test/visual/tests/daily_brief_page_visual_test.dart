@@ -122,5 +122,5 @@ class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
   Future<void> close() async {}
 
   @override
-  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(context, targets: <TargetFocus>[]);
+  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(targets: <TargetFocus>[]);
 }

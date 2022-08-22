@@ -251,7 +251,7 @@ class _TopicIdleView extends HookWidget {
             },
           );
         },
-        showMediaItemTutorialCoachMark: tutorialCoachMark.show,
+        showMediaItemTutorialCoachMark: () => tutorialCoachMark.show(context: context),
         skipTutorialCoachMark: (jumpToNextCoachMark) {
           tutorialCoachMark.skip();
         },
