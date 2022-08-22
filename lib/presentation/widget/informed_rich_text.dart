@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:better_informed_mobile/exports.dart' hide TextDirection;
 import 'package:better_informed_mobile/presentation/util/custom_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/selection_controller_bundle.dart';
+import 'package:better_informed_mobile/presentation/util/string_util.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_selectable_text.dart';
 import 'package:better_informed_mobile/presentation/widget/text_selection_controls/platform_text_selection_controls.dart';
 import 'package:flutter/material.dart' hide SelectableText;
@@ -167,9 +168,11 @@ class _CustomTextPainter extends HookWidget {
 
     for (final span in spans) {
       if (_isHighlighted(span)) {
+        final List<InlineSpan> startSpans = _getStartSpans(computedSpans);
+
         final startWidth = TextPainter(
           textDirection: TextDirection.ltr,
-          text: TextSpan(children: computedSpans),
+          text: TextSpan(children: startSpans),
           textAlign: textAlign,
           maxLines: maxLines,
         );
@@ -194,6 +197,24 @@ class _CustomTextPainter extends HookWidget {
     }
   }
 
+  List<InlineSpan> _getStartSpans(List<InlineSpan> computedSpans) {
+    if (computedSpans.isNotEmpty) {
+      final lastSpan = computedSpans.last;
+      final spanText = lastSpan.toPlainText();
+
+      if (spanText.endsWithWhiteSpace) {
+        final string = spanText[spanText.length - 1];
+        final whiteSpaceSpan = TextSpan(
+          text: string,
+          style: lastSpan.style,
+        );
+        return [whiteSpaceSpan, ...computedSpans];
+      }
+    }
+
+    return computedSpans;
+  }
+
   bool _isHighlighted(InlineSpan span) => span.style?.fontStyle == FontStyle.italic;
 
   TextSpan _modifyHighlightedText(TextSpan span) {
@@ -211,6 +232,7 @@ class _CustomTextPainter extends HookWidget {
 
 class _CustomHighlightTextPainter extends CustomPainter {
   _CustomHighlightTextPainter(this.textPainter, this.offsets, this.highlightColor);
+
   final TextPainter textPainter;
   final List<Offset> offsets;
   final Color highlightColor;
@@ -254,20 +276,14 @@ class _CustomHighlightTextPainter extends CustomPainter {
 
   void _paintHighlight(double startPos, LineMetrics line, double endPos, Canvas canvas) {
     final path = Path()
-      ..moveTo(line.left + startPos - 2, line.height * 0.30 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + endPos - 3, line.height * 0.35 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + endPos, line.height * 0.95 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + startPos + 2, line.height * 0.92 + _calculateBaselineOffset(line))
+      ..moveTo(line.left + startPos - 5, line.height * 0.3 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + endPos + 3, line.height * 0.35 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + endPos + 5, line.height * 0.95 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + startPos - 3, line.height * 0.92 + _calculateBaselineOffset(line))
       ..close();
-
-    if (_isVisualGlitch(path)) {
-      return;
-    }
 
     canvas.drawPath(path, Paint()..color = highlightColor);
   }
 
   double _calculateBaselineOffset(LineMetrics line) => line.baseline + line.descent - line.height;
-
-  bool _isVisualGlitch(Path path) => path.getBounds().width < 3.0;
 }
