@@ -237,13 +237,19 @@ class _IdleContent extends HookWidget {
       [cubit],
     );
 
-    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
+    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, _) {
       state.whenOrNull(
-        idle: (currentBrief, _, __, ___) => precacheBriefFullScreenImages(
-          context,
-          cloudinaryProvider,
-          currentBrief.allEntries,
-        ),
+        preCacheImages: (briefEntryList) {
+          final mediaQuery = MediaQuery.maybeOf(context);
+
+          if (mediaQuery != null) {
+            precacheBriefFullScreenImages(
+              context,
+              cloudinaryProvider,
+              briefEntryList,
+            );
+          }
+        },
         shouldShowTopicCardTutorialCoachMark: () {
           final topicCardTriggerPoint =
               scrollController.offset + AppDimens.appBarHeight * _topicCardTutorialOffsetFromBottomFraction;
