@@ -11,7 +11,8 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
-import 'package:better_informed_mobile/presentation/widget/bottom_stacked_cards.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
@@ -66,12 +67,11 @@ class TopicOwnerPage extends HookWidget {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(AppDimens.m)),
         child: Material(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
               _ActionsBar(controller: scrollController, owner: owner),
               Flexible(
                 child: ListView(
-                  shrinkWrap: true,
                   physics: getPlatformScrollPhysics(),
                   controller: scrollController,
                   children: [
@@ -83,7 +83,7 @@ class TopicOwnerPage extends HookWidget {
                           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                           child: TopicOwnerAvatar(
                             owner: owner,
-                            textStyle: AppTypography.h3bold,
+                            textStyle: AppTypography.h4Bold,
                             imageSize: AppDimens.avatarSize * 1.3,
                           ),
                         ),
@@ -93,31 +93,9 @@ class TopicOwnerPage extends HookWidget {
                           child: Text(
                             owner.bio,
                             softWrap: true,
-                            style: AppTypography.b2Regular,
+                            style: AppTypography.b1MediumLora,
                           ),
                         ),
-                        const SizedBox(height: AppDimens.xl),
-                        GestureDetector(
-                          onTap: () {
-                            context.pushRoute(const HowDoWeCurateContentPageRoute());
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                            child: Row(
-                              children: [
-                                Text(
-                                  LocaleKeys.topic_howDoWeCurateContent_label.tr(),
-                                  style: AppTypography.h4Bold.copyWith(decoration: TextDecoration.underline),
-                                ),
-                                const SizedBox(width: AppDimens.xs),
-                                const Icon(Icons.arrow_forward_ios_rounded, size: 12),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: AppDimens.xl),
-                        const BottomStackedCards(),
-                        const SizedBox(height: AppDimens.m),
                         if (owner is! EditorialTeam) ...[
                           _AnimatedSwitcher(
                             child: state.maybeMap(
@@ -137,6 +115,26 @@ class TopicOwnerPage extends HookWidget {
                             ),
                           ),
                           const SizedBox(height: AppDimens.xxl),
+                        ],
+                        if (owner is! Expert) ...[
+                          const SizedBox(height: AppDimens.xl),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                            child: FilledButton(
+                              text: LocaleKeys.topic_howDoWeCurateContent_label.tr(),
+                              fillColor: AppColors.textPrimary,
+                              textColor: AppColors.white,
+                              trailing: const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: AppColors.white,
+                                size: AppDimens.ml,
+                              ),
+                              onTap: () {
+                                context.pushRoute(const HowDoWeCurateContentPageRoute());
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: AppDimens.xl),
                         ],
                         if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
                           _SocialMediaLinks(
@@ -210,27 +208,27 @@ class _ActionsBar extends HookWidget {
               onPressed: () => context.popRoute(),
             ),
           ),
-          Positioned(
-            right: AppDimens.ml,
-            child: AnimatedOpacity(
-              opacity: 1 - showOwnerTitle.value,
-              duration: const Duration(milliseconds: 200),
-              child: Container(
-                padding: const EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppDimens.xxs),
-                  color: owner is Editor ? AppColors.limeGreen : AppColors.peach,
-                ),
-                child: Text(
-                  (owner is Expert
-                          ? LocaleKeys.topic_owner_expertIn.tr(args: [(owner as Expert).areaOfExpertise])
-                          : LocaleKeys.topic_owner_editorialTeam.tr())
-                      .toUpperCase(),
-                  style: AppTypography.labelText,
+          if (owner is! EditorialTeam)
+            Positioned(
+              right: AppDimens.ml,
+              child: AnimatedOpacity(
+                opacity: 1 - showOwnerTitle.value,
+                duration: const Duration(milliseconds: 200),
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppDimens.xs),
+                    color: owner is Editor ? AppColors.limeGreen : AppColors.peach,
+                  ),
+                  child: Text(
+                    owner is Expert
+                        ? LocaleKeys.topic_owner_expertIn.tr(args: [(owner as Expert).areaOfExpertise])
+                        : LocaleKeys.topic_owner_editorialTeam.tr(),
+                    style: AppTypography.topicOwnerLabelText,
+                  ),
                 ),
               ),
             ),
-          ),
           AnimatedOpacity(
             opacity: showOwnerTitle.value,
             duration: const Duration(milliseconds: 200),
@@ -264,9 +262,9 @@ class _SocialMediaLinks extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            LocaleKeys.topic_owner_followExpertOn.tr(args: [owner.name]),
-            style: AppTypography.b3Regular.copyWith(height: 2.0),
+          InformedMarkdownBody(
+            markdown: LocaleKeys.topic_owner_followExpertOn.tr(args: [owner.name]),
+            baseTextStyle: AppTypography.b2Regular.copyWith(height: 2.0),
           ),
           const SizedBox(height: AppDimens.m),
           Row(

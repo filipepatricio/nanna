@@ -82,12 +82,12 @@ class TopicOwnerAvatar extends HookWidget {
                       ),
                     )
                   : Image.asset(
-                      owner is Expert ? AppRasterGraphics.expertAvatar : AppRasterGraphics.editorialTeamAvatar,
+                      AppRasterGraphics.editorialTeamAvatar,
                       width: imageWidth,
                       height: imageHeight,
                     ),
             ),
-            const SizedBox(width: AppDimens.s),
+            const SizedBox(width: AppDimens.m + AppDimens.xxs),
           ],
           Expanded(
             child: RichText(
