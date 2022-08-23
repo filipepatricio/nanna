@@ -27,8 +27,8 @@ class HighlightedTopicsAreaView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarousellSmallCoverWidthFactor;
-    final height = width * AppDimens.exploreTopicCarousellSmallCoverAspectRatio;
+    final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor;
+    final height = width * AppDimens.exploreTopicCarouselSmallCoverAspectRatio;
     final backgroundColor = area.backgroundColor == null ? AppColors.background : Color(area.backgroundColor!);
 
     return Container(

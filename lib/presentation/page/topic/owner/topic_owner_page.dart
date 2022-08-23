@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/topic/owner/widgets/last_updated_topics.dart';
+import 'package:better_informed_mobile/presentation/page/topic/owner/widgets/owner_topics.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -35,8 +35,6 @@ class TopicOwnerPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<TopicOwnerPageCubit>();
     final state = useCubitBuilder(cubit);
-    final cardStackHeight =
-        MediaQuery.of(context).size.width * 0.5 > 450 ? MediaQuery.of(context).size.width * 0.5 : 450.0;
     final snackbarController = useMemoized(() => SnackbarController());
 
     useCubitListener<TopicOwnerPageCubit, TopicOwnerPageState>(
@@ -85,6 +83,7 @@ class TopicOwnerPage extends HookWidget {
                             owner: owner,
                             textStyle: AppTypography.h4Bold,
                             imageSize: AppDimens.avatarSize * 1.3,
+                            horizontalSpacing: AppDimens.m + AppDimens.xxs,
                           ),
                         ),
                         const SizedBox(height: AppDimens.m),
@@ -101,20 +100,18 @@ class TopicOwnerPage extends HookWidget {
                             child: state.maybeMap(
                               idleExpert: (state) => state.topics.isEmpty
                                   ? const SizedBox.shrink()
-                                  : LastUpdatedTopics(
+                                  : OwnerTopics(
                                       topics: state.topics,
-                                      cardStackHeight: cardStackHeight,
                                     ),
                               idleEditor: (state) => state.topics.isEmpty
                                   ? const SizedBox.shrink()
-                                  : LastUpdatedTopics(
+                                  : OwnerTopics(
                                       topics: state.topics,
-                                      cardStackHeight: cardStackHeight,
                                     ),
                               orElse: () => const SizedBox.shrink(),
                             ),
                           ),
-                          const SizedBox(height: AppDimens.xxl),
+                          const SizedBox(height: AppDimens.xl),
                         ],
                         if (owner is! Expert) ...[
                           const SizedBox(height: AppDimens.xl),
@@ -215,7 +212,7 @@ class _ActionsBar extends HookWidget {
                 opacity: 1 - showOwnerTitle.value,
                 duration: const Duration(milliseconds: 200),
                 child: Container(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(AppDimens.s),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppDimens.xs),
                     color: owner is Editor ? AppColors.limeGreen : AppColors.peach,

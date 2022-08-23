@@ -22,6 +22,7 @@ class TopicOwnerAvatar extends HookWidget {
     this.imageSize = AppDimens.avatarSize,
     this.underlined = false,
     this.fontSize,
+    this.horizontalSpacing = AppDimens.s,
     this.onTap,
   }) : super(key: key);
 
@@ -33,6 +34,7 @@ class TopicOwnerAvatar extends HookWidget {
   final bool withPrefix;
   final double imageSize;
   final double? fontSize;
+  final double horizontalSpacing;
   final Function()? onTap;
 
   static const defaultAvatarTextStyle = AppTypography.h3boldLoraItalic;
@@ -82,12 +84,12 @@ class TopicOwnerAvatar extends HookWidget {
                       ),
                     )
                   : Image.asset(
-                      AppRasterGraphics.editorialTeamAvatar,
+                      owner is Expert ? AppRasterGraphics.expertAvatar : AppRasterGraphics.editorialTeamAvatar,
                       width: imageWidth,
                       height: imageHeight,
                     ),
             ),
-            const SizedBox(width: AppDimens.m + AppDimens.xxs),
+            SizedBox(width: horizontalSpacing),
           ],
           Expanded(
             child: RichText(

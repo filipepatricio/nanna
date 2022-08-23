@@ -8,19 +8,17 @@ import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cov
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class LastUpdatedTopics extends HookWidget {
-  const LastUpdatedTopics({
+class OwnerTopics extends HookWidget {
+  const OwnerTopics({
     required this.topics,
-    required this.cardStackHeight,
     Key? key,
   }) : super(key: key);
   final List<TopicPreview> topics;
-  final double cardStackHeight;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarousellSmallCoverWidthFactor;
-    final height = width * AppDimens.exploreTopicCarousellSmallCoverAspectRatio;
+    const width = AppDimens.topicSmallImageCoverWidth;
+    final height = useMemoized(() => width * AppDimens.exploreTopicCarouselSmallCoverAspectRatio);
 
     final items = ExploreAreaItemGenerator.generate(
       topics,

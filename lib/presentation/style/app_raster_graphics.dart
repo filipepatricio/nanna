@@ -5,6 +5,7 @@ class AppRasterGraphics {
   static const String shareStickerBackgroundPeach = 'assets/raster_graphics/share_sticker_background_peach.jpg';
 
   static const String editorialTeamAvatar = 'assets/raster_graphics/editorial_team_avatar.png';
+  static const String expertAvatar = 'assets/raster_graphics/expert_avatar.png';
 
   // Assets for visual testing
   static const String testPublisherLogoDark = 'assets/raster_graphics/test_publisher_logo_dark.png';
