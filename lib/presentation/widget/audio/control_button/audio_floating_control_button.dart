@@ -16,7 +16,7 @@ class AudioFloatingControlButton extends HookWidget {
   const AudioFloatingControlButton({
     required this.article,
     this.progressSize = AppDimens.c,
-    this.elevation,
+    this.elevation = 0,
     this.imageHeight = AppDimens.sl + AppDimens.xxs,
     this.color = AppColors.background,
     Key? key,

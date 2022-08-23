@@ -66,7 +66,7 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                     ),
                                   ),
                                   if (!article.shouldShowArticleCoverNote && article.hasAudioVersion)
-                                    AudioIconButton(article: article)
+                                    if (article.visited) const VisitedCheck() else AudioIconButton(article: article),
                                 ],
                               ),
                               SizedBox(
