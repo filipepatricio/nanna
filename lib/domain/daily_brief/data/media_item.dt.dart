@@ -34,10 +34,11 @@ class MediaItem with _$MediaItem {
 }
 
 extension Getters on MediaItemArticle {
-  /// Wether the [MediaItemArticle] has a non-null [image] and this [image] is not [ArticleImageUnknown]
   bool get hasImage => image != null && image is! ArticleImageUnknown;
 
-  /// Wether the article cover should show the note section
+  bool get visited =>
+      progressState == ArticleProgressState.inProgress || progressState == ArticleProgressState.finished;
+
   bool get shouldShowArticleCoverNote => note != null;
 
   String get imageUrl {

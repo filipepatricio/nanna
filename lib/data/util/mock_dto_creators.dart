@@ -138,7 +138,6 @@ class MockDTO {
   );
 
   /// Today's topics
-
   static BriefDTO currentBrief({DateTime? date}) => BriefDTO(
         'brief-id',
         // greeting
@@ -214,6 +213,37 @@ class MockDTO {
       _briefEntryStyleArticleSmallItem,
     ),
   ];
+
+  static BriefDTO get currentBriefVisited => currentBrief().copyWith(
+        sections: [
+          BriefSectionDTO.entries(
+            'General News',
+            null,
+            [
+              BriefEntryDTO(
+                topic.copyWith(visited: true).asBriefEntryItem,
+                _briefEntryStyleTopic,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
+                _briefEntryStyleArticleLarge,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
+                _briefEntryStyleArticleSmallItem,
+              ),
+              BriefEntryDTO(
+                premiumArticle.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+            ],
+          ),
+        ],
+      );
 
   // Past days briefs
   static final pastDaysBriefs = [
@@ -804,6 +834,26 @@ extension on TopicDTO {
       heroImage,
       entries.length,
       visited,
+    );
+  }
+}
+
+extension on BriefDTO {
+  BriefDTO copyWith({
+    String? id,
+    HeadlineDTO? greeting,
+    BriefIntroductionDTO? introduction,
+    String? date,
+    RelaxDTO? relax,
+    List<BriefSectionDTO>? sections,
+  }) {
+    return BriefDTO(
+      id ?? this.id,
+      greeting ?? this.greeting,
+      introduction ?? this.introduction,
+      date ?? this.date,
+      relax ?? this.relax,
+      sections ?? this.sections,
     );
   }
 }

@@ -9,7 +9,7 @@ part 'brief_dto.dt.g.dart';
 
 @JsonSerializable(createToJson: false)
 class BriefDTO {
-  BriefDTO(
+  const BriefDTO(
     this.id,
     this.greeting,
     this.introduction,
