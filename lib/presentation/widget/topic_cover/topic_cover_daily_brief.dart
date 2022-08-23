@@ -33,9 +33,12 @@ class _TopicCoverDailyBrief extends StatelessWidget {
                 left: AppDimens.m,
                 child: CoverLabel.topic(topic: topic),
               ),
-              _TopicCoverContent.dailyBrief(
+              CoverOpacity.topic(
                 topic: topic,
-                mode: Brightness.light,
+                child: _TopicCoverContent.dailyBrief(
+                  topic: topic,
+                  mode: Brightness.light,
+                ),
               ),
               if (topic.visited)
                 const Positioned(
