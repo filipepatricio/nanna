@@ -213,7 +213,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(
-        context,
         targets: targets,
         paddingFocus: 0,
         opacityShadow: 0.5,

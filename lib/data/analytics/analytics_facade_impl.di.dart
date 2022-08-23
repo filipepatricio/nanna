@@ -32,7 +32,7 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
 
   @override
   Future<void> identify(String userId, [String? method]) async {
-    Sentry.configureScope((scope) => scope.user = SentryUser(id: userId));
+    Sentry.configureScope((scope) => scope.setUser(SentryUser(id: userId)));
 
     if (method == null) return;
 
@@ -55,7 +55,7 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
 
   @override
   Future<void> event(AnalyticsEvent event) async {
-    Sentry.addBreadcrumb(Breadcrumb(message: event.name, category: 'event', data: event.properties));
+    await Sentry.addBreadcrumb(Breadcrumb(message: event.name, category: 'event', data: event.properties));
     await Segment.track(eventName: event.name, properties: event.properties);
     await LDClient.track(event.name, data: _tryGenerateTrackData(event.properties));
     await _appsflyerSdk.logEvent(event.name, event.properties);

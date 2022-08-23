@@ -12,7 +12,6 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/seek_button/audio_seek_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/speed_button/audio_speed_button.dart';
-import 'package:better_informed_mobile/presentation/widget/use_automatic_keep_alive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:upgrader/upgrader.dart';
