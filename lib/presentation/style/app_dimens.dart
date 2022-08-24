@@ -189,4 +189,11 @@ class AppDimens {
   static double coverSize(BuildContext context, double widthFactor) => MediaQuery.of(context).size.width * widthFactor;
 
   static double strokeAudioWidth(double progressSize) => progressSize * 0.04;
+
+  /// 42
+  static const customCheckboxSize = 24.0;
+
+  static const customCheckboxIconSize = 17.0;
+
+  static const customCheckboxRadius = 4.0;
 }

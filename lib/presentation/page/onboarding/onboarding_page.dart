@@ -1,13 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_articles_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide/onboarding_notifications_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_publishers_slide.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_tracking_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -25,10 +23,7 @@ final List<Widget> _pageList = [
   const OnboardingPublishersSlide(),
   const OnboardingArticlesSlide(),
   const OnboardingCategoriesSlide(),
-  if (kIsAppleDevice) ...[
-    const OnboardingNotificationsSlide(),
-    const OnboardingTrackingSlide(),
-  ]
+  const OnboardingNotificationsSlide(),
 ];
 
 const _notificationSlide = 3;

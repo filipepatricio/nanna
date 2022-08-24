@@ -109,6 +109,8 @@ type Article {
     type: ArticleType!
     "The article's URL used for sharing"
     url: String!
+    "Denotes whether the article is visited by the user"
+    visited: Boolean!
     "The article's word count, i.e. its length"
     wordCount: Int
 }

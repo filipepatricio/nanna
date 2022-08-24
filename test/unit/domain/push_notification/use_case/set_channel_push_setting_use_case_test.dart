@@ -20,12 +20,14 @@ void main() {
       name: 'Abc',
       pushEnabled: true,
       emailEnabled: false,
+      description: 'defgh',
     );
     final channelOut = NotificationChannel(
       id: '',
       name: '',
       pushEnabled: true,
       emailEnabled: true,
+      description: '',
     );
 
     when(pushNotificationRepository.setNotificationChannel(any, any, any)).thenAnswer(
