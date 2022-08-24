@@ -1,5 +1,5 @@
 PODS:
-  - Amplitude (8.10.0):
+  - Amplitude (8.12.0):
     - AnalyticsConnector (~> 1.0.0)
   - Analytics (4.1.6)
   - AnalyticsConnector (1.0.0)
@@ -26,39 +26,42 @@ PODS:
     - ReachabilitySwift
   - device_info_plus (0.0.1):
     - Flutter
-  - Firebase/Auth (8.15.0):
+  - Firebase/Auth (9.4.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 8.15.0)
-  - Firebase/CoreOnly (8.15.0):
-    - FirebaseCore (= 8.15.0)
-  - Firebase/Messaging (8.15.0):
+    - FirebaseAuth (~> 9.4.0)
+  - Firebase/CoreOnly (9.4.0):
+    - FirebaseCore (= 9.4.0)
+  - Firebase/Messaging (9.4.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 8.15.0)
-  - firebase_auth (3.3.18):
-    - Firebase/Auth (= 8.15.0)
+    - FirebaseMessaging (~> 9.4.0)
+  - firebase_auth (3.6.4):
+    - Firebase/Auth (= 9.4.0)
     - firebase_core
     - Flutter
-  - firebase_core (1.17.0):
-    - Firebase/CoreOnly (= 8.15.0)
+  - firebase_core (1.21.0):
+    - Firebase/CoreOnly (= 9.4.0)
     - Flutter
-  - firebase_messaging (11.4.0):
-    - Firebase/Messaging (= 8.15.0)
+  - firebase_messaging (12.0.3):
+    - Firebase/Messaging (= 9.4.0)
     - firebase_core
     - Flutter
-  - FirebaseAuth (8.15.0):
-    - FirebaseCore (~> 8.0)
+  - FirebaseAuth (9.4.0):
+    - FirebaseCore (~> 9.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/Environment (~> 7.7)
-    - GTMSessionFetcher/Core (~> 1.5)
-  - FirebaseCore (8.15.0):
-    - FirebaseCoreDiagnostics (~> 8.0)
+    - GTMSessionFetcher/Core (< 3.0, >= 1.7)
+  - FirebaseCore (9.4.0):
+    - FirebaseCoreDiagnostics (~> 9.0)
+    - FirebaseCoreInternal (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (8.15.0):
-    - GoogleDataTransport (~> 9.1)
+  - FirebaseCoreDiagnostics (9.4.0):
+    - GoogleDataTransport (< 10.0.0, >= 9.1.4)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-    - nanopb (~> 2.30908.0)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+  - FirebaseCoreInternal (9.4.0):
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
   - FirebaseFirestore (8.6.0):
     - FirebaseFirestore/AutodetectLeveldb (= 8.6.0)
   - FirebaseFirestore/AutodetectLeveldb (8.6.0):
@@ -67,20 +70,20 @@ PODS:
   - FirebaseFirestore/Base (8.6.0)
   - FirebaseFirestore/WithLeveldb (8.6.0):
     - FirebaseFirestore/Base
-  - FirebaseInstallations (8.15.0):
-    - FirebaseCore (~> 8.0)
+  - FirebaseInstallations (9.4.0):
+    - FirebaseCore (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
-    - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseMessaging (8.15.0):
-    - FirebaseCore (~> 8.0)
-    - FirebaseInstallations (~> 8.0)
-    - GoogleDataTransport (~> 9.1)
+    - PromisesObjC (~> 2.1)
+  - FirebaseMessaging (9.4.0):
+    - FirebaseCore (~> 9.0)
+    - FirebaseInstallations (~> 9.0)
+    - GoogleDataTransport (< 10.0.0, >= 9.1.4)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Reachability (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
-    - nanopb (~> 2.30908.0)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - Flutter (1.0.0)
   - flutter_custom_tabs (0.0.1):
     - Flutter
@@ -113,11 +116,11 @@ PODS:
   - google_sign_in_ios (0.0.1):
     - Flutter
     - GoogleSignIn (~> 6.2)
-  - GoogleDataTransport (9.1.4):
+  - GoogleDataTransport (9.2.0):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleSignIn (6.2.2):
+  - GoogleSignIn (6.2.3):
     - AppAuth (~> 1.5)
     - GTMAppAuth (~> 1.3)
     - GTMSessionFetcher/Core (~> 1.1)
@@ -144,25 +147,25 @@ PODS:
   - GTMSessionFetcher/Core (1.7.2)
   - just_audio (0.0.1):
     - Flutter
-  - LaunchDarkly (5.4.3):
-    - LaunchDarkly/Core (= 5.4.3)
-  - LaunchDarkly/Core (5.4.3):
-    - LDSwiftEventSource (= 1.2.1)
+  - LaunchDarkly (6.1.0):
+    - LaunchDarkly/Core (= 6.1.0)
+  - LaunchDarkly/Core (6.1.0):
+    - LDSwiftEventSource (= 1.3.1)
   - launchdarkly_flutter_client_sdk (0.0.1):
     - Flutter
-    - LaunchDarkly (= 5.4.3)
-  - LDSwiftEventSource (1.2.1)
-  - nanopb (2.30908.0):
-    - nanopb/decode (= 2.30908.0)
-    - nanopb/encode (= 2.30908.0)
-  - nanopb/decode (2.30908.0)
-  - nanopb/encode (2.30908.0)
+    - LaunchDarkly (= 6.1.0)
+  - LDSwiftEventSource (1.3.1)
+  - nanopb (2.30909.0):
+    - nanopb/decode (= 2.30909.0)
+    - nanopb/encode (= 2.30909.0)
+  - nanopb/decode (2.30909.0)
+  - nanopb/encode (2.30909.0)
   - OrderedSet (5.0.0)
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_ios (0.0.1):
     - Flutter
-  - PromisesObjC (2.1.0)
+  - PromisesObjC (2.1.1)
   - ReachabilitySwift (5.0.0)
   - Segment-Amplitude (3.3.2):
     - Amplitude (~> 8.3)
@@ -173,13 +176,13 @@ PODS:
   - segment-appsflyer-ios/Main (6.5.2):
     - Analytics
     - AppsFlyerFramework (~> 6.5.2)
-  - Sentry (7.11.0):
-    - Sentry/Core (= 7.11.0)
-  - Sentry/Core (7.11.0)
+  - Sentry (7.23.0):
+    - Sentry/Core (= 7.23.0)
+  - Sentry/Core (7.23.0)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry (~> 7.11.0)
+    - Sentry (~> 7.23.0)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_ios (0.0.1):
@@ -252,6 +255,7 @@ SPEC REPOS:
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
+    - FirebaseCoreInternal
     - FirebaseInstallations
     - FirebaseMessaging
     - FMDB
@@ -350,7 +354,7 @@ CHECKOUT OPTIONS:
     :tag: 8.6.0
 
 SPEC CHECKSUMS:
-  Amplitude: 2904f346250510b9e19a4e2262017bcf1d4368f9
+  Amplitude: dd7170426ed983dd5aeafa694db40180cff62bd6
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AnalyticsConnector: 4c386d5972ac9da86e22d668564dbbac97558754
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
@@ -361,16 +365,17 @@ SPEC CHECKSUMS:
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
-  Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
-  firebase_auth: ace975b530600827bd901a9a18584f7cdaf6d160
-  firebase_core: aa1b92020533f5c23955e388c347c58fd64f8627
-  firebase_messaging: 8957bf304b47daf8bf12d0b111fdecc5b33e77a3
-  FirebaseAuth: 3e73bf8abf4fbb40f8b421f361f4cc48ee57388c
-  FirebaseCore: 5743c5785c074a794d35f2fff7ecc254a91e08b1
-  FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
+  Firebase: 7703fc4022824b6d6db1bf7bea58d13b8e17ec46
+  firebase_auth: d858056948955e9adb6be1d7e4cbf03ab3a9fc46
+  firebase_core: c1cdfa024dc7f3d1ba8055a2ae323dba3dce4fa1
+  firebase_messaging: b65dacd4de1b469893dea0d754b1947f45ef4f7a
+  FirebaseAuth: ae5d4402e1516497357d909162b091b3ca2a2e9c
+  FirebaseCore: 9a2b10270a854731c4d4d8a97d0aa8380ec3458d
+  FirebaseCoreDiagnostics: aaa87098082c4d4bdd1a9557b1186d18ca85ce8c
+  FirebaseCoreInternal: a13302b0088fbf5f38b79b6ece49c2af7d3e05d6
   FirebaseFirestore: 113b2724b363d79c98c965f43e8af970745c13f3
-  FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
-  FirebaseMessaging: 5e5118a2383b3531e730d974680954c679ca0a13
+  FirebaseInstallations: 61db1054e688d2bdc4e2b3f744c1b086e913b742
+  FirebaseMessaging: 4e220eddd356181469ba2ec5f7d5fafbc2312841
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_custom_tabs: 7a10a08686955cb748e5d26e0ae586d30689bf89
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
@@ -381,26 +386,26 @@ SPEC CHECKSUMS:
   flutter_web_auth: 09a0abd245f1a07a3ff4dcf1247a048d89ee12a9
   fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  google_sign_in_ios: 90eec6616c4c2105b9f9fe5c774773d13565b504
-  GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
-  GoogleSignIn: 3c68388ac221f379676e8f1cb115df3aaf73b93f
+  google_sign_in_ios: 4f85eb9f937450765c8573bb85fd8cd6a5af675c
+  GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
+  GoogleSignIn: f4d3939cc0d9264d7509c4b9a924a6c987e30b54
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
-  LaunchDarkly: a4552a94d29a13cdd755374f4331f8d68dd7a58e
-  launchdarkly_flutter_client_sdk: f1e6cd993e123233d4e471f07a7016ac23f7f749
-  LDSwiftEventSource: 4f48b8d123032c64073a0fabc2d2ce60da27f820
-  nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  LaunchDarkly: 44e1728319bd7693a2a619561a8237187406b920
+  launchdarkly_flutter_client_sdk: be0515d48a345356bc57c5495b1b553f85b21ea8
+  LDSwiftEventSource: 1ac1b0986a07c5fe4f2c94d87f1d41f4de6ae727
+  nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
-  PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
+  PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   Segment-Amplitude: 6c1e59c8c278a21029ba7a6a788fcb31b9233a2c
   segment-appsflyer-ios: 78c65acfd78dd17ed347623f01919c44b0226174
-  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
-  sentry_flutter: efb3df2c203cd03aad255892a8d628a458656d14
+  Sentry: a0d4563fa4ddacba31fdcc35daaa8573d87224d6
+  sentry_flutter: 8bde7d0e57a721727fe573f13bb292c497b5a249
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440

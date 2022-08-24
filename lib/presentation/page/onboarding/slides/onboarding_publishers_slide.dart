@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,20 +17,35 @@ class OnboardingPublishersSlide extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Container(
+          height: AppDimens.safeTopPadding(context),
+          color: AppColors.transparent,
+        ),
         Expanded(
           flex: 13,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: SvgPicture.asset(
-              AppVectorGraphics.publishersLogo,
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width,
-            ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                top: -AppDimens.safeTopPadding(context),
+                bottom: AppDimens.zero,
+                left: AppDimens.zero,
+                right: AppDimens.zero,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: SvgPicture.asset(
+                    AppVectorGraphics.publishersLogo,
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: AppDimens.xl),
         Expanded(
-          flex: 8,
+          flex: 9,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
             child: Column(

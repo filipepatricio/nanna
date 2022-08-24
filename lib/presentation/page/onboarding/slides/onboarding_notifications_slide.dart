@@ -19,7 +19,7 @@ class OnboardingNotificationsSlide extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(height: AppDimens.safeTopPadding(context)),
-          const Spacer(),
+          const Spacer(flex: 2),
           Expanded(
             flex: 2,
             child: Text(

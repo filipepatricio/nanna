@@ -21,57 +21,53 @@ const _space = SizedBox(height: AppDimens.l + AppDimens.xs);
 class OnboardingArticlesSlide extends StatelessWidget {
   const OnboardingArticlesSlide({Key? key}) : super(key: key);
 
-  List<Widget> get _columnOne => [
-        const Flexible(child: _ArticleCard(AppRasterGraphics.placeholderOne, false)),
-        _space,
-        Flexible(child: _TopicCard(AppRasterGraphics.placeholderTwo, _fakeTopicOwners[1])),
-        _space,
-        const Flexible(child: _ArticleCard(AppRasterGraphics.placeholderThree, false)),
-      ];
-
-  List<Widget> get _columnTwo => [
-        const Flexible(child: _ArticleCard(AppRasterGraphics.placeholderFour, true)),
-        _space,
-        const Flexible(child: _ArticleCard(AppRasterGraphics.placeholderFive, false)),
-        _space,
-        Flexible(child: _TopicCard(AppRasterGraphics.placeholderSix, _fakeTopicOwners[0])),
-      ];
-
-  List<Widget> get _columnThree => [
-        const Flexible(child: _ArticleCard(AppRasterGraphics.placeholderSeven, false)),
-        _space,
-        const Flexible(child: _ArticleCard(AppRasterGraphics.placeholderEight, false)),
-        _space,
-        Flexible(child: _TopicCard(AppRasterGraphics.placeholderNine, _fakeTopicOwners[0])),
-      ];
-
-  List<Widget> _background(BuildContext context) => [
-        Positioned(
-          bottom: 0,
-          left: -AppDimens.xl,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _columnOne,
-          ),
+  Positioned get _leftColumnImages => Positioned(
+        bottom: AppDimens.zero,
+        right: AppDimens.onboardingGridCard + AppDimens.l + AppDimens.xs,
+        left: -(AppDimens.onboardingGridCard + AppDimens.l + AppDimens.xs),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _ArticleCard(AppRasterGraphics.placeholderOne, false),
+            _space,
+            _TopicCard(AppRasterGraphics.placeholderTwo, _fakeTopicOwners[1]),
+            _space,
+            const _ArticleCard(AppRasterGraphics.placeholderThree, false),
+          ],
         ),
-        Positioned(
-          top: -AppDimens.s,
-          left: 0,
-          right: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _columnTwo,
-          ),
+      );
+
+  Positioned _centerColumnImages(BuildContext context) => Positioned(
+        left: AppDimens.zero,
+        right: AppDimens.zero,
+        bottom: -(AppDimens.onboardingGridCard * 0.65),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _ArticleCard(AppRasterGraphics.placeholderFour, true),
+            _space,
+            const _ArticleCard(AppRasterGraphics.placeholderFive, false),
+            _space,
+            _TopicCard(AppRasterGraphics.placeholderSix, _fakeTopicOwners[0]),
+          ],
         ),
-        Positioned(
-          bottom: 0,
-          right: -AppDimens.xl,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _columnThree,
-          ),
+      );
+
+  Positioned get _rightColumnImages => Positioned(
+        bottom: AppDimens.zero,
+        right: -(AppDimens.onboardingGridCard + AppDimens.l + AppDimens.xs),
+        left: AppDimens.onboardingGridCard + AppDimens.l + AppDimens.xs,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _ArticleCard(AppRasterGraphics.placeholderSeven, false),
+            _space,
+            const _ArticleCard(AppRasterGraphics.placeholderEight, false),
+            _space,
+            _TopicCard(AppRasterGraphics.placeholderNine, _fakeTopicOwners[0]),
+          ],
         ),
-      ];
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +81,17 @@ class OnboardingArticlesSlide extends StatelessWidget {
         ),
         Expanded(
           flex: 13,
-          child: AbsorbPointer(
-            absorbing: true,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: _background(context),
+          child: ClipRRect(
+            child: Transform.scale(
+              scale: MediaQuery.of(context).size.width * 0.0025,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  _leftColumnImages,
+                  _centerColumnImages(context),
+                  _rightColumnImages,
+                ],
+              ),
             ),
           ),
         ),

@@ -123,7 +123,6 @@ class FakeTopicPageCubit extends Fake implements TopicPageCubit {
 
   @override
   TutorialCoachMark tutorialCoachMark(context) => TutorialCoachMark(
-        context,
         targets: targets,
         paddingFocus: 0,
         opacityShadow: 0.5,

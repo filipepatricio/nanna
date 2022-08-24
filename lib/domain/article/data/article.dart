@@ -3,17 +3,6 @@ import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-enum ArticleType { free, premium }
-
-enum ArticleProgressState {
-  @JsonValue("FINISHED")
-  finished,
-  @JsonValue("IN_PROGRESS")
-  inProgress,
-  @JsonValue("UNREAD")
-  unread,
-}
-
 class Article {
   Article({
     required this.metadata,
@@ -25,4 +14,15 @@ class Article {
   final AudioFile? audioFile;
 
   bool get hasImage => metadata.hasImage;
+}
+
+enum ArticleType { free, premium }
+
+enum ArticleProgressState {
+  @JsonValue("FINISHED")
+  finished,
+  @JsonValue("IN_PROGRESS")
+  inProgress,
+  @JsonValue("UNREAD")
+  unread,
 }

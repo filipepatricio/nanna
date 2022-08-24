@@ -6,6 +6,7 @@ class _ArticleSquareCover extends StatelessWidget {
     required this.coverColor,
     required this.showArticleIndicator,
     required this.dimension,
+    this.visited = false,
     this.borderRadius,
     Key? key,
   }) : super(key: key);
@@ -15,6 +16,7 @@ class _ArticleSquareCover extends StatelessWidget {
   final bool showArticleIndicator;
   final double dimension;
   final double? borderRadius;
+  final bool visited;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class _ArticleSquareCover extends StatelessWidget {
             Positioned(
               bottom: AppDimens.s,
               right: AppDimens.s,
-              child: AudioIconButton(article: article),
+              child: visited ? const VisitedCheck() : AudioIconButton(article: article),
             ),
         ],
       ),
