@@ -73,7 +73,10 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                           ),
                                         ),
                                         if (!article.shouldShowArticleCoverNote && article.hasAudioVersion)
-                                          ArticleCoverAudioButton(article: article),
+                                          if (!article.visited)
+                                            ArticleCoverAudioButton(article: article)
+                                          else
+                                            const VisitedCheck(),
                                       ],
                                     ),
                                     Text(

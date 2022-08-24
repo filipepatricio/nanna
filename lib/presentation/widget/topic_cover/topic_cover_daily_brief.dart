@@ -22,25 +22,30 @@ class _TopicCoverDailyBrief extends StatelessWidget {
           topic: topic,
           child: Stack(
             children: [
-              Stack(
-                children: [
-                  Positioned.fill(
-                    child: TopicCoverImage(
-                      topic: topic,
-                      darkeningMode: DarkeningMode.gradient,
-                    ),
-                  ),
-                  Positioned(
-                    top: AppDimens.m,
-                    left: AppDimens.m,
-                    child: CoverLabel.topic(topic: topic),
-                  ),
-                ],
+              Positioned.fill(
+                child: TopicCoverImage(
+                  topic: topic,
+                  darkeningMode: DarkeningMode.gradient,
+                ),
               ),
-              _TopicCoverContent.dailyBrief(
+              Positioned(
+                top: AppDimens.m,
+                left: AppDimens.m,
+                child: CoverLabel.topic(topic: topic),
+              ),
+              CoverOpacity.topic(
                 topic: topic,
-                mode: Brightness.light,
+                child: _TopicCoverContent.dailyBrief(
+                  topic: topic,
+                  mode: Brightness.light,
+                ),
               ),
+              if (topic.visited)
+                const Positioned(
+                  bottom: AppDimens.m,
+                  right: AppDimens.m,
+                  child: VisitedCheck(),
+                ),
             ],
           ),
         ),

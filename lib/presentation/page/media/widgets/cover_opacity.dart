@@ -49,7 +49,7 @@ class CoverOpacity extends HookWidget {
     );
 
     return Opacity(
-      opacity: visited ? 0.30 : 1,
+      opacity: visited ? 0.4 : 1,
       child: child,
     );
   }

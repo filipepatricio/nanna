@@ -31,6 +31,7 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
               coverColor: coverColor,
               showArticleIndicator: false,
               dimension: coverSize,
+              visited: article.visited,
             ),
             const SizedBox(width: AppDimens.m),
             Expanded(
