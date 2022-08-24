@@ -28,11 +28,6 @@ class _TopicCoverDailyBrief extends StatelessWidget {
                   darkeningMode: DarkeningMode.gradient,
                 ),
               ),
-              Positioned(
-                top: AppDimens.m,
-                left: AppDimens.m,
-                child: CoverLabel.topic(topic: topic),
-              ),
               CoverOpacity.topic(
                 topic: topic,
                 child: _TopicCoverContent.dailyBrief(

@@ -82,8 +82,9 @@ class _CoverContentDailyBrief extends StatelessWidget {
       padding: const EdgeInsets.all(AppDimens.m),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          CoverLabel.topic(topic: topic),
           const Spacer(),
           InformedMarkdownBody(
             markdown: topic.title,

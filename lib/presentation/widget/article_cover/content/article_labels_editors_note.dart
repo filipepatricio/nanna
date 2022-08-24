@@ -82,8 +82,8 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
               children: [
                 if (kind != null) CoverLabel.articleKind(kind),
                 const Spacer(),
-                if (article.hasAudioVersion)
-                  if (article.visited) const VisitedCheck() else ArticleCoverAudioButton(article: article),
+                if (article.hasAudioVersion && !article.visited) ArticleCoverAudioButton(article: article),
+                if (article.visited) const VisitedCheck()
               ],
             ),
           ],

@@ -43,11 +43,17 @@ class _ArticleSquareCover extends StatelessWidget {
               left: AppDimens.s,
               child: CoverLabel.article(),
             ),
-          if (article.hasAudioVersion)
+          if (article.hasAudioVersion && !article.visited)
             Positioned(
               bottom: AppDimens.s,
               right: AppDimens.s,
-              child: visited ? const VisitedCheck() : AudioIconButton(article: article),
+              child: AudioIconButton(article: article),
+            ),
+          if (article.visited)
+            const Positioned(
+              bottom: AppDimens.s,
+              right: AppDimens.s,
+              child: VisitedCheck(),
             ),
         ],
       ),
