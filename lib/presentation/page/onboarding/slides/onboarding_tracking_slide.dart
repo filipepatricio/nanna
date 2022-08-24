@@ -17,7 +17,8 @@ class OnboardingTrackingSlide extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const Spacer(flex: 2),
+          SizedBox(height: AppDimens.safeTopPadding(context)),
+          const Spacer(),
           Expanded(
             flex: 3,
             child: Text(

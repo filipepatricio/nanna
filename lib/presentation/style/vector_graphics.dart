@@ -85,4 +85,7 @@ class AppVectorGraphics {
 
   static const String shareCopy = 'assets/vector_graphics/copy_ic.svg';
   static const String shareMore = 'assets/vector_graphics/more_ic.svg';
+
+  static const String publishersLogo = 'assets/vector_graphics/publishers_logos.svg';
+  static const String fakePlayButton = 'assets/vector_graphics/fake_play_button.svg';
 }

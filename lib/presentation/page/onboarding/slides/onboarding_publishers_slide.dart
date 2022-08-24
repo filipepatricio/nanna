@@ -1,19 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OnboardingPictureSlide extends StatelessWidget {
-  const OnboardingPictureSlide({
-    required this.title,
-    required this.descriptionHeader,
-    required this.description,
-    required this.imageAsset,
-    Key? key,
-  }) : super(key: key);
-  final String title, descriptionHeader, description, imageAsset;
+class OnboardingPublishersSlide extends StatelessWidget {
+  const OnboardingPublishersSlide({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +16,16 @@ class OnboardingPictureSlide extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const Spacer(),
         Expanded(
-          flex: 11,
-          child: SvgPicture.asset(imageAsset, fit: BoxFit.fitWidth),
+          flex: 13,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: SvgPicture.asset(
+              AppVectorGraphics.publishersLogo,
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+            ),
+          ),
         ),
         const SizedBox(height: AppDimens.xl),
         Expanded(
@@ -37,7 +38,7 @@ class OnboardingPictureSlide extends StatelessWidget {
                 Expanded(
                   flex: 8,
                   child: AutoSizeText(
-                    descriptionHeader,
+                    LocaleKeys.onboarding_headerSlideOne.tr(),
                     style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
                     maxLines: 3,
                     stepGranularity: 0.1,
@@ -47,7 +48,7 @@ class OnboardingPictureSlide extends StatelessWidget {
                 Expanded(
                   flex: 10,
                   child: AutoSizeText(
-                    description,
+                    LocaleKeys.onboarding_descriptionSlideOne.tr(),
                     style: AppTypography.b2Regular,
                     maxLines: 4,
                     stepGranularity: 0.1,

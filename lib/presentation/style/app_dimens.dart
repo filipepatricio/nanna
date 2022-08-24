@@ -110,6 +110,9 @@ class AppDimens {
   /// 42
   static const audioControlButtonSize = AppDimens.xxl + AppDimens.xxs;
 
+  /// 131
+  static const onboardingGridCard = 131.0;
+
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
       topicViewHeaderImageHeight(context) +
