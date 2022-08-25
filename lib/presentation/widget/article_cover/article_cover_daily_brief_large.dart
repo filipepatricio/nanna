@@ -72,11 +72,10 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                             textStyle: AppTypography.metadata1Medium,
                                           ),
                                         ),
-                                        if (!article.shouldShowArticleCoverNote && article.hasAudioVersion)
-                                          if (!article.visited)
-                                            ArticleCoverAudioButton(article: article)
-                                          else
-                                            const VisitedCheck(),
+                                        if (!article.shouldShowArticleCoverNote &&
+                                            article.hasAudioVersion &&
+                                            !article.visited)
+                                          ArticleCoverAudioButton(article: article)
                                       ],
                                     ),
                                     Text(
@@ -107,6 +106,12 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                           ],
                         ),
                       ),
+                      if (!article.shouldShowArticleCoverNote && article.visited)
+                        const Positioned(
+                          bottom: AppDimens.m,
+                          right: AppDimens.m,
+                          child: VisitedCheck(),
+                        ),
                     ],
                   ),
                 ),
