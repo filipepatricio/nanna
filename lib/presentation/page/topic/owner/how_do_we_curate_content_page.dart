@@ -12,8 +12,8 @@ class HowDoWeCurateContentPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+    return SafeArea(
+      bottom: false,
       child: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(AppDimens.m)),
         child: Scaffold(
@@ -25,6 +25,7 @@ class HowDoWeCurateContentPage extends HookWidget {
                 child: ListView(
                   physics: getPlatformScrollPhysics(),
                   children: [
+                    const SizedBox(height: AppDimens.xl),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                       child: Column(

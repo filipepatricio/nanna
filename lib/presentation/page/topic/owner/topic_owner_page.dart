@@ -59,17 +59,18 @@ class TopicOwnerPage extends HookWidget {
       () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
     );
 
-    return Padding(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+    return SafeArea(
+      bottom: false,
       child: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(AppDimens.m)),
         child: Material(
           child: Column(
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
             children: [
               _ActionsBar(controller: scrollController, owner: owner),
               Flexible(
                 child: ListView(
+                  shrinkWrap: true,
                   physics: getPlatformScrollPhysics(),
                   controller: scrollController,
                   children: [
@@ -77,6 +78,7 @@ class TopicOwnerPage extends HookWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        const SizedBox(height: AppDimens.m),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                           child: TopicOwnerAvatar(
