@@ -28,11 +28,11 @@ class RelatedContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final tileWidth = useMemoized(
-      () => MediaQuery.of(context).size.width * AppDimens.exploreTopicCarousellSmallCoverWidthFactor,
+      () => MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor,
       [MediaQuery.of(context).size],
     );
     final tileHeight = useMemoized(
-      () => tileWidth * AppDimens.exploreTopicCarousellSmallCoverAspectRatio,
+      () => tileWidth * AppDimens.exploreTopicCarouselSmallCoverAspectRatio,
       [MediaQuery.of(context).size],
     );
 

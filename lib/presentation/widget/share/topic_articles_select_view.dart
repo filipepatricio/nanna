@@ -500,7 +500,7 @@ class _ArticleItemBody extends HookWidget {
                   header.timeToRead.toString(),
                 ],
               ),
-              style: AppTypography.labelText.copyWith(fontWeight: FontWeight.w400),
+              style: AppTypography.labelText,
             ),
             const SizedBox(height: AppDimens.s),
           ],

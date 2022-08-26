@@ -11,17 +11,17 @@ typedef ExploreAreaItemBuilder<T> = Widget Function(T itemValue, int index);
 
 class ExploreAreaItemCarouselView<T> extends HookWidget {
   const ExploreAreaItemCarouselView({
-    required this.areaId,
     required this.itemBuilder,
     required this.items,
     required this.itemWidth,
+    this.areaId,
     this.onViewAllTap,
     double? itemHeight,
     Key? key,
   })  : itemHeight = itemHeight ?? itemWidth,
         super(key: key);
 
-  final String areaId;
+  final String? areaId;
   final ExploreAreaItemBuilder<T> itemBuilder;
   final List<ExploreAreaItem<T>> items;
   final double itemWidth;
@@ -38,12 +38,15 @@ class ExploreAreaItemCarouselView<T> extends HookWidget {
         controller: eventController,
         child: HorizontalListInteractionListener(
           callback: (lastVisibleItemIndex) {
-            eventController.track(
-              AnalyticsEvent.exploreAreaCarouselBrowsed(
-                areaId,
-                lastVisibleItemIndex,
-              ),
-            );
+            final areaId = this.areaId;
+            if (areaId != null) {
+              eventController.track(
+                AnalyticsEvent.exploreAreaCarouselBrowsed(
+                  areaId,
+                  lastVisibleItemIndex,
+                ),
+              );
+            }
           },
           itemsCount: items.length,
           child: ListView.separated(
