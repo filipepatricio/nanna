@@ -17,6 +17,7 @@ class BriefEntryCover extends HookWidget {
     required this.briefId,
     required this.width,
     required this.height,
+    required this.refetchCurrentBrief,
     this.topicCardKey,
     this.onVisibilityChanged,
     this.padding,
@@ -30,6 +31,7 @@ class BriefEntryCover extends HookWidget {
   final GlobalKey? topicCardKey;
   final Function(VisibilityInfo)? onVisibilityChanged;
   final EdgeInsets? padding;
+  final VoidCallback refetchCurrentBrief;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +51,14 @@ class BriefEntryCover extends HookWidget {
                   article: (data) => data.article.map(
                     article: (article) => ArticleCover.dailyBriefLarge(
                       article: article,
-                      onTap: () => context.navigateToArticle(
-                        article: article,
-                        briefId: briefId,
-                      ),
+                      onTap: () async {
+                        await context.navigateToArticle(
+                          article: article,
+                          briefId: briefId,
+                        );
+
+                        refetchCurrentBrief();
+                      },
                     ),
                     unknown: (_) => const SizedBox(),
                   ),
@@ -63,10 +69,14 @@ class BriefEntryCover extends HookWidget {
                   article: (data) => data.article.map(
                     article: (article) => ArticleCover.dailyBriefSmall(
                       article: article,
-                      onTap: () => context.navigateToArticle(
-                        article: article,
-                        briefId: briefId,
-                      ),
+                      onTap: () async {
+                        await context.navigateToArticle(
+                          article: article,
+                          briefId: briefId,
+                        );
+
+                        refetchCurrentBrief();
+                      },
                     ),
                     unknown: (_) => const SizedBox(),
                   ),
@@ -78,10 +88,14 @@ class BriefEntryCover extends HookWidget {
                     article: (article) => ArticleCover.dailyBriefList(
                       article: article,
                       backgroundColor: style.backgroundColor,
-                      onTap: () => context.navigateToArticle(
-                        article: article,
-                        briefId: briefId,
-                      ),
+                      onTap: () async {
+                        await context.navigateToArticle(
+                          article: article,
+                          briefId: briefId,
+                        );
+
+                        refetchCurrentBrief();
+                      },
                     ),
                     unknown: (_) => const SizedBox(),
                   ),
@@ -101,10 +115,14 @@ class BriefEntryCover extends HookWidget {
                     maxHeight: height,
                     child: TopicCover.dailyBrief(
                       topic: data.topicPreview,
-                      onTap: () => context.navigateToTopic(
-                        topicPreview: data.topicPreview,
-                        briefId: briefId,
-                      ),
+                      onTap: () async {
+                        await context.navigateToTopic(
+                          topicPreview: data.topicPreview,
+                          briefId: briefId,
+                        );
+
+                        refetchCurrentBrief();
+                      },
                     ),
                   ),
                   orElse: () => const SizedBox.shrink(),
@@ -121,11 +139,11 @@ class BriefEntryCover extends HookWidget {
 }
 
 extension on BuildContext {
-  void navigateToArticle({
+  Future<void> navigateToArticle({
     required MediaItemArticle article,
     required String briefId,
-  }) {
-    pushRoute(
+  }) async {
+    await pushRoute(
       MediaItemPageRoute(
         article: article,
         briefId: briefId,
@@ -133,11 +151,11 @@ extension on BuildContext {
     );
   }
 
-  void navigateToTopic({
+  Future<void> navigateToTopic({
     required TopicPreview topicPreview,
     required String briefId,
-  }) {
-    pushRoute(
+  }) async {
+    await pushRoute(
       TopicPage(
         topicSlug: topicPreview.slug,
         briefId: briefId,
