@@ -3,10 +3,12 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_articles_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_picture_slide.dart';
+import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_publishers_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_tracking_slide.dart';
+import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -20,18 +22,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 final List<Widget> _pageList = [
-  OnboardingPictureSlide(
-    title: LocaleKeys.onboarding_title.tr(),
-    descriptionHeader: LocaleKeys.onboarding_headerSlideOne.tr(),
-    description: LocaleKeys.onboarding_descriptionSlideOne.tr(),
-    imageAsset: AppVectorGraphics.onboardingSlideOne,
-  ),
-  OnboardingPictureSlide(
-    title: LocaleKeys.onboarding_title.tr(),
-    descriptionHeader: LocaleKeys.onboarding_headerSlideTwo.tr(),
-    description: LocaleKeys.onboarding_descriptionSlideTwo.tr(),
-    imageAsset: AppVectorGraphics.onboardingSlideTwo,
-  ),
+  const OnboardingPublishersSlide(),
+  const OnboardingArticlesSlide(),
   const OnboardingCategoriesSlide(),
   if (kIsAppleDevice) ...[
     const OnboardingNotificationsSlide(),
@@ -72,6 +64,7 @@ class OnboardingPage extends HookWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
+        top: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -99,11 +92,17 @@ class OnboardingPage extends HookWidget {
                   const SizedBox(height: AppDimens.m),
                   Row(
                     children: [
-                      if (pageIndex.value == 0)
-                        _SkipButton(
-                          cubit: cubit,
-                          controller: controller,
+                      AnimatedOpacity(
+                        duration: const Duration(milliseconds: AppAnimation.skipButton),
+                        opacity: pageIndex.value == 0 ? 1 : 0,
+                        child: AbsorbPointer(
+                          absorbing: pageIndex.value != 0,
+                          child: _SkipButton(
+                            cubit: cubit,
+                            controller: controller,
+                          ),
                         ),
+                      ),
                       const Spacer(),
                       if (isLastPage)
                         FilledButton(
