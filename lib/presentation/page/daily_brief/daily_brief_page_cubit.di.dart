@@ -54,6 +54,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
   late Brief _currentBrief;
+  bool _isTodayBrief = true;
   List<PastDaysBrief> _pastDaysBriefs = [];
 
   StreamSubscription? _dataRefreshSubscription;
@@ -98,6 +99,16 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       emit(DailyBriefPageState.showTutorialToast(LocaleKeys.tutorial_dailyBriefSnackBarText.tr()));
       await _setTutorialStepSeenUseCase(TutorialStep.dailyBrief);
     }
+  }
+
+  Future<void> refetchBriefs() async {
+    if (_isTodayBrief) {
+      _currentBrief = await _getCurrentBriefUseCase();
+    } else {
+      _pastDaysBriefs = await _getPastDaysBriesfUseCase();
+    }
+
+    _updateIdleState();
   }
 
   Future<void> loadPastDaysBriefs() async {
@@ -150,12 +161,13 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
   void selectBrief(Brief? brief) {
     if (brief == null) return;
-
     _currentBrief = brief;
 
     if (_currentBrief.date == clock.now() && (_currentBriefSubscription?.isPaused ?? false)) {
+      _isTodayBrief = true;
       _currentBriefSubscription?.resume();
     } else if (!(_currentBriefSubscription?.isPaused ?? true)) {
+      _isTodayBrief = false;
       _currentBriefSubscription?.pause();
     }
 
