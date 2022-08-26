@@ -18,28 +18,31 @@ class _TopicCoverDailyBrief extends StatelessWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(AppDimens.m),
         ),
-        child: Stack(
-          children: [
-            Stack(
-              children: [
-                Positioned.fill(
-                  child: TopicCoverImage(
-                    topic: topic,
-                    darkeningMode: DarkeningMode.gradient,
-                  ),
+        child: CoverOpacity.topic(
+          topic: topic,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: TopicCoverImage(
+                  topic: topic,
+                  darkeningMode: DarkeningMode.gradient,
                 ),
-                Positioned(
-                  top: AppDimens.m,
-                  left: AppDimens.m,
-                  child: CoverLabel.topic(topic: topic),
+              ),
+              CoverOpacity.topic(
+                topic: topic,
+                child: _TopicCoverContent.dailyBrief(
+                  topic: topic,
+                  mode: Brightness.light,
                 ),
-              ],
-            ),
-            _TopicCoverContent.dailyBrief(
-              topic: topic,
-              mode: Brightness.light,
-            ),
-          ],
+              ),
+              if (topic.visited)
+                const Positioned(
+                  bottom: AppDimens.m,
+                  right: AppDimens.m,
+                  child: VisitedCheck(),
+                ),
+            ],
+          ),
         ),
       ),
     );

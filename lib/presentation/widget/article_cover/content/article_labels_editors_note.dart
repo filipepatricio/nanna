@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/widget/article_cover/article
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/visited_check.dart';
 import 'package:flutter/material.dart';
 
 class ArticleLabelsEditorsNote extends StatelessWidget {
@@ -81,7 +82,8 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
               children: [
                 if (kind != null) CoverLabel.articleKind(kind),
                 const Spacer(),
-                if (article.hasAudioVersion) ArticleCoverAudioButton(article: article),
+                if (article.hasAudioVersion && !article.visited) ArticleCoverAudioButton(article: article),
+                if (article.visited) const VisitedCheck()
               ],
             ),
           ],
@@ -114,7 +116,6 @@ class ArticleCoverAudioButton extends StatelessWidget {
         article: article,
         elevation: 0,
         color: AppColors.white,
-        imageHeight: AppDimens.sl + AppDimens.xxs,
         progressSize: AppDimens.audioControlButtonSize,
       ),
     );

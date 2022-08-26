@@ -138,7 +138,6 @@ class MockDTO {
   );
 
   /// Today's topics
-
   static BriefDTO currentBrief({DateTime? date}) => BriefDTO(
         'brief-id',
         // greeting
@@ -214,6 +213,59 @@ class MockDTO {
       _briefEntryStyleArticleSmallItem,
     ),
   ];
+
+  static BriefDTO get currentBriefVisited => currentBrief().copyWith(
+        sections: [
+          BriefSectionDTO.entries(
+            'General News',
+            null,
+            [
+              BriefEntryDTO(
+                topic.copyWith(visited: true).asBriefEntryItem,
+                _briefEntryStyleTopic,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
+                _briefEntryStyleArticleLarge,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithoutNoteWithAudio
+                    .copyWith(progressState: ArticleProgressState.inProgress)
+                    .asBriefEntryItem,
+                _briefEntryStyleArticleLarge,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithoutNoteWithAudio
+                    .copyWith(progressState: ArticleProgressState.finished)
+                    .asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
+                _briefEntryStyleArticleSmallItem,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithoutNoteWithAudio
+                    .copyWith(progressState: ArticleProgressState.inProgress)
+                    .asBriefEntryItem,
+                _briefEntryStyleArticleSmallItem,
+              ),
+              BriefEntryDTO(
+                premiumArticle.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithoutNote.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+            ],
+          ),
+        ],
+      );
 
   // Past days briefs
   static final pastDaysBriefs = [
@@ -353,7 +405,7 @@ class MockDTO {
 
   /// Articles
 
-  static final _freeArticle = ArticleHeaderDTO(
+  static final _freeArticleWithoutNote = ArticleHeaderDTO(
     // id
     'id-free',
     // slug
@@ -365,7 +417,7 @@ class MockDTO {
     // strippedTitle
     'Location, Location, Location: Investing in Real Estate in the Metaverse',
     // note
-    'You should read this because everything you wanted to know about the hype about virtual real estate, major players and how to get started with virtual real estate platforms.',
+    null,
     // credits
     'This article originally appeared here',
     // type
@@ -392,6 +444,18 @@ class MockDTO {
     ArticleProgressState.unread,
   );
 
+  static final _freeArticle = _freeArticleWithoutNote.copyWith(
+    note:
+        'You should read this because everything you wanted to know about the hype about virtual real estate, major players and how to get started with virtual real estate platforms.',
+  );
+
+  static final premiumArticleWithoutNote = _freeArticleWithoutNote.copyWith(
+    id: 'id-premium',
+    slug: 'slug-premium',
+    type: ArticleTypeDTO.premium,
+    image: _articleImageCloudinary,
+  );
+
   static final premiumArticle = _freeArticle.copyWith(
     id: 'id-premium',
     slug: 'slug-premium',
@@ -399,6 +463,11 @@ class MockDTO {
     image: _articleImageCloudinary,
   );
 
+  static final premiumArticleWithoutNoteWithAudio = premiumArticleWithoutNote.copyWith(
+    id: 'id-premium-audio',
+    slug: 'slug-premium-audio',
+    hasAudioVersion: true,
+  );
   static final premiumArticleWithAudio = premiumArticle.copyWith(
     id: 'id-premium-audio',
     slug: 'slug-premium-audio',
@@ -804,6 +873,26 @@ extension on TopicDTO {
       heroImage,
       entries.length,
       visited,
+    );
+  }
+}
+
+extension on BriefDTO {
+  BriefDTO copyWith({
+    String? id,
+    HeadlineDTO? greeting,
+    BriefIntroductionDTO? introduction,
+    String? date,
+    RelaxDTO? relax,
+    List<BriefSectionDTO>? sections,
+  }) {
+    return BriefDTO(
+      id ?? this.id,
+      greeting ?? this.greeting,
+      introduction ?? this.introduction,
+      date ?? this.date,
+      relax ?? this.relax,
+      sections ?? this.sections,
     );
   }
 }

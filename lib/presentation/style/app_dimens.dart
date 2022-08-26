@@ -99,16 +99,19 @@ class AppDimens {
   static const briefEntryCardStackHeight = 350.0;
 
   /// 0.4
-  static const exploreTopicCarousellSmallCoverWidthFactor = 0.4;
+  static const exploreTopicCarouselSmallCoverWidthFactor = 0.4;
 
   /// 1.65
-  static double exploreTopicCarousellSmallCoverAspectRatio = 1.65;
+  static const exploreTopicCarouselSmallCoverAspectRatio = 1.65;
 
   /// 0.72
   static const exploreTopicCellSizeFactor = 0.72;
 
   /// 42
   static const audioControlButtonSize = AppDimens.xxl + AppDimens.xxs;
+
+  /// 131
+  static const onboardingGridCard = 131.0;
 
   /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
@@ -133,11 +136,14 @@ class AppDimens {
   /// The smallest value from 75% of screen height and 500
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);
 
-  /// 410
-  static double articleSmallImageCoverHeight = 322;
+  /// 322
+  static const articleSmallImageCoverHeight = 322;
+
+  /// 148
+  static const topicSmallImageCoverWidth = 148.0;
 
   /// 45
-  static const double topicViewStackedCardsDividerHeight = 45.0;
+  static const topicViewStackedCardsDividerHeight = 45.0;
 
   /// Full screen width
   static double photoCaptionImageContainerWidth(BuildContext context) => MediaQuery.of(context).size.width;

@@ -54,6 +54,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
   late Brief _currentBrief;
+  bool _isTodayBrief = true;
   List<PastDaysBrief> _pastDaysBriefs = [];
 
   StreamSubscription? _dataRefreshSubscription;
@@ -79,7 +80,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
     _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((currentBrief) {
       _currentBrief = currentBrief;
-      _updateIdleState();
+      _updateIdleState(preCacheImages: true);
     });
 
     _dataRefreshSubscription = _incomingPushDataRefreshStreamUseCase().listen((event) {
@@ -100,6 +101,16 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
+  Future<void> refetchBriefs() async {
+    if (_isTodayBrief) {
+      _currentBrief = await _getCurrentBriefUseCase();
+    } else {
+      _pastDaysBriefs = await _getPastDaysBriesfUseCase();
+    }
+
+    _updateIdleState();
+  }
+
   Future<void> loadPastDaysBriefs() async {
     try {
       _pastDaysBriefs = await _getPastDaysBriesfUseCase();
@@ -114,14 +125,14 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
     try {
       _currentBrief = await _getCurrentBriefUseCase();
-      _updateIdleState();
+      _updateIdleState(preCacheImages: true);
     } catch (e, s) {
       Fimber.e('Loading briefs failed', ex: e, stacktrace: s);
       emit(DailyBriefPageState.error());
     }
   }
 
-  void _updateIdleState() {
+  void _updateIdleState({bool preCacheImages = false}) {
     emit(
       DailyBriefPageState.idle(
         currentBrief: _currentBrief,
@@ -130,30 +141,37 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
         showAppBarTitle: _shouldShowAppBarTitle,
       ),
     );
+
+    if (preCacheImages) emit(DailyBriefPageState.preCacheImages(briefEntryList: _currentBrief.allEntries));
   }
 
   void toggleCalendar(bool showCalendar) {
-    _shouldShowCalendar = showCalendar;
-    _updateIdleState();
+    if (showCalendar != _shouldShowCalendar) {
+      _shouldShowCalendar = showCalendar;
+      _updateIdleState();
+    }
   }
 
   void toggleAppBarTitle(bool showTitle) {
-    _shouldShowAppBarTitle = showTitle;
-    _updateIdleState();
+    if (showTitle != _shouldShowAppBarTitle) {
+      _shouldShowAppBarTitle = showTitle;
+      _updateIdleState();
+    }
   }
 
   void selectBrief(Brief? brief) {
     if (brief == null) return;
-
     _currentBrief = brief;
 
     if (_currentBrief.date == clock.now() && (_currentBriefSubscription?.isPaused ?? false)) {
+      _isTodayBrief = true;
       _currentBriefSubscription?.resume();
     } else if (!(_currentBriefSubscription?.isPaused ?? true)) {
+      _isTodayBrief = false;
       _currentBriefSubscription?.pause();
     }
 
-    _updateIdleState();
+    _updateIdleState(preCacheImages: true);
   }
 
   void trackRelaxPage() =>
@@ -212,8 +230,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(
-        context,
+  TutorialCoachMark tutorialCoachMark() => TutorialCoachMark(
         targets: targets,
         paddingFocus: 0,
         opacityShadow: 0.5,

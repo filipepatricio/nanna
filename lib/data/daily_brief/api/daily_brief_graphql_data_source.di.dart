@@ -72,7 +72,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
       WatchQueryOptions(
         document: current_brief.document,
         operationName: current_brief.currentBriefForStartupScreen.name?.value,
-        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        fetchPolicy: FetchPolicy.networkOnly,
         pollInterval: const Duration(minutes: 10),
         fetchResults: true,
         eagerlyFetchResults: false,

@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../fakes.dart';
+import '../../test_data.dart';
 import '../visual_test_utils.dart';
 
 void main() {
@@ -25,6 +26,21 @@ void main() {
     '${DailyBriefPage}_(full_height)',
     (tester) async {
       await tester.startApp();
+      await tester.matchGoldenFile();
+    },
+    testConfig: TestConfig.withDevices([ultraHighDevice]),
+  );
+
+  visualTest(
+    '${DailyBriefPage}_(full_height_visited)',
+    (tester) async {
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(
+            () => FakeDailyBriefPageCubitVisited(),
+          );
+        },
+      );
       await tester.matchGoldenFile();
     },
     testConfig: TestConfig.withDevices([ultraHighDevice]),
@@ -122,5 +138,35 @@ class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
   Future<void> close() async {}
 
   @override
-  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(context, targets: <TargetFocus>[]);
+  TutorialCoachMark tutorialCoachMark() => TutorialCoachMark(targets: <TargetFocus>[]);
+}
+
+class FakeDailyBriefPageCubitVisited extends Fake implements DailyBriefPageCubit {
+  final _state = DailyBriefPageState.idle(
+    currentBrief: TestData.currentBriefVisited,
+    pastDaysBriefs: [],
+    showCalendar: false,
+    showAppBarTitle: false,
+  );
+
+  @override
+  DailyBriefPageState get state => _state;
+
+  @override
+  Stream<DailyBriefPageState> get stream => Stream.value(_state);
+
+  @override
+  Future<void> initialize() async {}
+
+  @override
+  Future<void> close() async {}
+
+  @override
+  Future<void> initializeTutorialSnackBar() async {}
+
+  @override
+  Future<void> initializeTutorialCoachMark() async {}
+
+  @override
+  TutorialCoachMark tutorialCoachMark() => TutorialCoachMark(targets: <TargetFocus>[]);
 }

@@ -54,6 +54,15 @@ class CoverLabel extends StatelessWidget {
         color: AppColors.darkLinen,
       );
 
+  factory CoverLabel.onboarding({required TopicOwner owner}) => owner is Expert
+      ? CoverLabel._(
+          label: '${LocaleKeys.topic_expert.tr()} ${LocaleKeys.topic_label.tr()}',
+        )
+      : CoverLabel._(
+          icon: AppVectorGraphics.topicLabel,
+          label: LocaleKeys.topic_label.tr(),
+        );
+
   final String? icon;
   final String? label;
   final Color? color;

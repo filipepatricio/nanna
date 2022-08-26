@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
@@ -29,11 +28,11 @@ class RelatedContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final tileWidth = useMemoized(
-      () => MediaQuery.of(context).size.width * AppDimens.exploreTopicCarousellSmallCoverWidthFactor,
+      () => MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor,
       [MediaQuery.of(context).size],
     );
     final tileHeight = useMemoized(
-      () => tileWidth * AppDimens.exploreTopicCarousellSmallCoverAspectRatio,
+      () => tileWidth * AppDimens.exploreTopicCarouselSmallCoverAspectRatio,
       [MediaQuery.of(context).size],
     );
 
@@ -116,8 +115,8 @@ class _Article extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: CoverOpacity(
-        visited: article.progressState == ArticleProgressState.finished,
+      child: CoverOpacity.article(
+        article: article,
         child: ArticleCover.exploreCarousel(
           article: article,
           onTap: () {
@@ -152,8 +151,8 @@ class _Topic extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: CoverOpacity(
-        visited: topic.visited,
+      child: CoverOpacity.topic(
+        topic: topic,
         child: TopicCover.exploreSmall(
           topic: topic,
           onTap: () {

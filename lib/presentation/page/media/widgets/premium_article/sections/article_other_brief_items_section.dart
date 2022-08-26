@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
@@ -66,8 +65,8 @@ class MoreFromSectionListItem extends StatelessWidget {
     required VoidCallback onItemTap,
   }) =>
       MoreFromSectionListItem._(
-        child: CoverOpacity(
-          visited: article.progressState == ArticleProgressState.finished,
+        child: CoverOpacity.article(
+          article: article,
           child: ArticleCover.otherBriefItemsList(
             article: article,
             onTap: onItemTap,
@@ -80,8 +79,8 @@ class MoreFromSectionListItem extends StatelessWidget {
     required VoidCallback onItemTap,
   }) =>
       MoreFromSectionListItem._(
-        child: CoverOpacity(
-          visited: topic.visited,
+        child: CoverOpacity.topic(
+          topic: topic,
           child: TopicCover.otherBriefItemsList(
             topic: topic,
             onTap: onItemTap,

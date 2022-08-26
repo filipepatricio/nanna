@@ -22,6 +22,7 @@ class OnboardingCategoriesSlide extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        SizedBox(height: AppDimens.safeTopPadding(context)),
         const Spacer(flex: 2),
         Expanded(
           flex: 3,
@@ -44,7 +45,7 @@ class OnboardingCategoriesSlide extends StatelessWidget {
           ),
         ),
         const Expanded(
-          flex: 14,
+          flex: 15,
           child: _MainContent(),
         ),
       ],

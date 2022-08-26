@@ -45,7 +45,7 @@ class AppColors {
   static const Color settingsHeader = Color(0x44282B35);
   static const Color settingsIcon = Color(0xff898A8D);
 
-  static const Color socialNetworksIcon = Color(0x80282B35);
+  static const Color socialNetworksIcon = Color(0xff282B35);
 
   static const Color dividerGrey = Color(0xffD1D5DB);
   static const Color dividerGreyLight = Color(0xffE5E5EA);

@@ -45,7 +45,7 @@ class DailyBriefPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<DailyBriefPageCubit>();
     final state = useCubitBuilder(cubit);
-    final tutorialCoachMark = cubit.tutorialCoachMark(context);
+    final tutorialCoachMark = cubit.tutorialCoachMark();
 
     final body = _DailyBriefPage(
       state: state,
@@ -237,13 +237,19 @@ class _IdleContent extends HookWidget {
       [cubit],
     );
 
-    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, context) {
+    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, _) {
       state.whenOrNull(
-        idle: (currentBrief, _, __, ___) => precacheBriefFullScreenImages(
-          context,
-          cloudinaryProvider,
-          currentBrief.allEntries,
-        ),
+        preCacheImages: (briefEntryList) {
+          final mediaQuery = MediaQuery.maybeOf(context);
+
+          if (mediaQuery != null) {
+            precacheBriefFullScreenImages(
+              context,
+              cloudinaryProvider,
+              briefEntryList,
+            );
+          }
+        },
         shouldShowTopicCardTutorialCoachMark: () {
           final topicCardTriggerPoint =
               scrollController.offset + AppDimens.appBarHeight * _topicCardTutorialOffsetFromBottomFraction;
@@ -260,7 +266,7 @@ class _IdleContent extends HookWidget {
             },
           );
         },
-        showTopicCardTutorialCoachMark: tutorialCoachMark.show,
+        showTopicCardTutorialCoachMark: () => tutorialCoachMark.show(context: context),
         skipTutorialCoachMark: (_) => tutorialCoachMark.skip(),
         finishTutorialCoachMark: tutorialCoachMark.finish,
       );
@@ -304,6 +310,7 @@ class _IdleContent extends HookWidget {
                               bottom: AppDimens.l,
                             ),
                       topicCardKey: entry == firstTopic ? firstTopicKey : null,
+                      refetchCurrentBrief: () => cubit.refetchBriefs(),
                       onVisibilityChanged: (visibility) {
                         if (entry == firstTopic && visibility.visibleFraction == 1) {
                           cubit.initializeTutorialCoachMark();
@@ -337,6 +344,7 @@ class _IdleContent extends HookWidget {
                         width: cardStackWidth,
                         height: cardStackHeight,
                         topicCardKey: entry == firstTopic ? firstTopicKey : null,
+                        refetchCurrentBrief: () => cubit.refetchBriefs(),
                         onVisibilityChanged: (visibility) {
                           if (entry == firstTopic) {
                             cubit.initializeTutorialCoachMark();

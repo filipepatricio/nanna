@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/topic/owner/widgets/last_updated_topics.dart';
+import 'package:better_informed_mobile/presentation/page/topic/owner/widgets/owner_topics.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -31,7 +31,7 @@ void main() {
           ],
         ),
       );
-      expect(find.byType(LastUpdatedTopics), findsNothing);
+      expect(find.byType(OwnerTopics), findsNothing);
     },
   );
 
@@ -47,7 +47,7 @@ void main() {
       );
       expect(
         find.byWidgetPredicate(
-          (widget) => widget is LastUpdatedTopics && widget.topics.length == 2,
+          (widget) => widget is OwnerTopics && widget.topics.length == 2,
         ),
         findsOneWidget,
       );

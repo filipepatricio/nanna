@@ -13,6 +13,7 @@ class FilledButton extends StatelessWidget {
     this.textColor = AppColors.textPrimary,
     this.isLoading = false,
     this.leading,
+    this.trailing,
     Key? key,
   }) : super(key: key);
   final String text;
@@ -23,10 +24,12 @@ class FilledButton extends StatelessWidget {
   final Color textColor;
   final bool isLoading;
   final Widget? leading;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
     final leading = this.leading;
+    final trailing = this.trailing;
     return GestureDetector(
       onTap: isEnabled ? onTap : () => {},
       child: Container(
@@ -65,6 +68,10 @@ class FilledButton extends StatelessWidget {
                             color: isEnabled ? textColor : textColor.withOpacity(0.44),
                           ),
                         ),
+                        if (trailing != null) ...[
+                          const SizedBox(width: AppDimens.sl),
+                          trailing,
+                        ],
                       ],
                     ),
             ),

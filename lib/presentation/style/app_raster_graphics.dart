@@ -15,4 +15,15 @@ class AppRasterGraphics {
       'assets/raster_graphics/test_reading_list_cover_image_cropped.png';
   static const String testArticleHeroImage = 'assets/raster_graphics/test_article_hero_image.jpg';
   static const String testTopicHeroImage = 'assets/raster_graphics/test_topic_hero_image.jpeg';
+
+  // Placeholder assets
+  static const String placeholderOne = 'assets/raster_graphics/placeholders/one.jpg';
+  static const String placeholderTwo = 'assets/raster_graphics/placeholders/two.jpg';
+  static const String placeholderThree = 'assets/raster_graphics/placeholders/three.jpg';
+  static const String placeholderFour = 'assets/raster_graphics/placeholders/four.jpg';
+  static const String placeholderFive = 'assets/raster_graphics/placeholders/five.jpg';
+  static const String placeholderSix = 'assets/raster_graphics/placeholders/six.jpg';
+  static const String placeholderSeven = 'assets/raster_graphics/placeholders/seven.jpg';
+  static const String placeholderEight = 'assets/raster_graphics/placeholders/eight.jpg';
+  static const String placeholderNine = 'assets/raster_graphics/placeholders/nine.jpg';
 }
