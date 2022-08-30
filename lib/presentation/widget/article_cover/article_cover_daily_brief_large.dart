@@ -56,7 +56,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                 ),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Row(
@@ -72,12 +72,9 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                             textStyle: AppTypography.metadata1Medium,
                                           ),
                                         ),
-                                        if (!article.shouldShowArticleCoverNote &&
-                                            article.hasAudioVersion &&
-                                            !article.visited)
-                                          ArticleCoverAudioButton(article: article)
                                       ],
                                     ),
+                                    const Spacer(),
                                     Text(
                                       article.strippedTitle,
                                       style: AppTypography.h4ExtraBold.copyWith(
@@ -87,6 +84,14 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                       ),
                                       maxLines: 4,
                                     ),
+                                    if (!article.shouldShowArticleCoverNote) ...[
+                                      const SizedBox(height: AppDimens.l),
+                                      ArticleLabelsSection(
+                                        article: article,
+                                        bookmarkButtonMode: BookmarkButtonMode.image,
+                                        audioFloatingControlButtonMode: AudioFloatingControlButtonMode.white,
+                                      ),
+                                    ],
                                   ],
                                 ),
                               ),
