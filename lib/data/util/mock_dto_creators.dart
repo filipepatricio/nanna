@@ -165,7 +165,15 @@ class MockDTO {
                 _briefEntryStyleArticleLarge,
               ),
               BriefEntryDTO(
-                premiumArticle.asBriefEntryItem,
+                premiumArticleWithAudio.asBriefEntryItem,
+                _briefEntryStyleArticleLarge,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithoutNoteWithAudio.asBriefEntryItem,
+                _briefEntryStyleArticleLarge,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithAudio.asBriefEntryItem,
                 _briefEntryStyleArticleSmall,
               ),
               ..._briefEntriesArticlesList,
