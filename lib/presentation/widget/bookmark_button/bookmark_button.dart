@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.d
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -32,11 +31,13 @@ class BookmarkButton extends HookWidget {
     String? topicId,
     String? briefId,
     SnackbarController? snackbarController,
+    double? iconSize,
     Key? key,
   }) : this._(
           BookmarkTypeData.article(article.slug, article.id, topicId, briefId),
           mode: mode,
           snackbarController: snackbarController,
+          iconSize: iconSize,
           key: key,
         );
 
@@ -45,11 +46,13 @@ class BookmarkButton extends HookWidget {
     required BookmarkButtonMode mode,
     String? briefId,
     SnackbarController? snackbarController,
+    double? iconSize,
     Key? key,
   }) : this._(
           BookmarkTypeData.topic(topic.slug, topic.id, briefId),
           mode: mode,
           snackbarController: snackbarController,
+          iconSize: iconSize,
           key: key,
         );
 
@@ -57,12 +60,14 @@ class BookmarkButton extends HookWidget {
     this._data, {
     required this.mode,
     this.snackbarController,
+    this.iconSize,
     Key? key,
   }) : super(key: key);
 
   final BookmarkTypeData _data;
   final BookmarkButtonMode mode;
   final SnackbarController? snackbarController;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -119,9 +124,9 @@ class BookmarkButton extends HookWidget {
               ),
             ),
       child: SizedBox.square(
-        dimension: _iconSize,
-        child: Padding(
-          padding: const EdgeInsets.all(AppDimens.xs),
+        dimension: iconSize ?? _iconSize,
+        child: Container(
+          padding: EdgeInsets.zero,
           child: Center(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: _animationDuration),

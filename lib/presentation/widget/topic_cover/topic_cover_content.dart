@@ -98,8 +98,12 @@ class _CoverContentDailyBrief extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              BookmarkButton.topic(topic: topic, mode: BookmarkButtonMode.image),
-              const SizedBox(width: AppDimens.sl),
+              BookmarkButton.topic(
+                topic: topic,
+                mode: BookmarkButtonMode.image,
+                iconSize: AppDimens.l,
+              ),
+              const SizedBox(width: AppDimens.ml),
               Flexible(
                 child: TopicOwnerAvatar(
                   owner: topic.owner,
