@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
+import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/visited_check.dart';
@@ -76,10 +77,16 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
                 ),
                 maxLines: 6,
               ),
-              const SizedBox(height: AppDimens.s),
+              const SizedBox(height: AppDimens.ml),
             ],
             Row(
               children: [
+                BookmarkButton.article(
+                  article: article,
+                  mode: BookmarkButtonMode.color,
+                  iconSize: AppDimens.l,
+                ),
+                const SizedBox(width: AppDimens.ml),
                 if (kind != null) CoverLabel.articleKind(kind),
                 const Spacer(),
                 if (article.hasAudioVersion && !article.visited) ArticleCoverAudioButton(article: article),
