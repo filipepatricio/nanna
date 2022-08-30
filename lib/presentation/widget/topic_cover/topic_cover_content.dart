@@ -95,9 +95,11 @@ class _CoverContentDailyBrief extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.l),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              BookmarkButton.topic(topic: topic, mode: BookmarkButtonMode.image),
+              const SizedBox(width: AppDimens.sl),
               Flexible(
                 child: TopicOwnerAvatar(
                   owner: topic.owner,
@@ -109,15 +111,6 @@ class _CoverContentDailyBrief extends StatelessWidget {
                   onTap: () => AutoRouter.of(context).push(
                     TopicOwnerPageRoute(owner: topic.owner, fromTopicSlug: topic.slug),
                   ),
-                ),
-              ),
-              Text(
-                LocaleKeys.readingList_articleCount.tr(
-                  args: [topic.entryCount.toString()],
-                ),
-                style: AppTypography.metadata1Medium.copyWith(
-                  height: 1.5,
-                  color: darkMode ? null : AppColors.white,
                 ),
               ),
             ],
