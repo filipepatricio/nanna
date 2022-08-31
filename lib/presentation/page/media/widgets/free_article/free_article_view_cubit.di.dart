@@ -33,11 +33,11 @@ class FreeArticleViewCubit extends Cubit<FreeArticleViewState> {
     _readingProgressTrackingScheduler = kIsTest
         ? null
         : NeatPeriodicTaskScheduler(
-            interval: const Duration(seconds: 5),
-            name: 'reading-progress-tracker',
-            timeout: const Duration(seconds: 1),
+            interval: const Duration(seconds: 3),
+            name: 'reading-progress-tracker-free',
+            timeout: const Duration(milliseconds: 1500),
             task: _trackReadingProgress,
-            minCycle: const Duration(seconds: 2),
+            minCycle: const Duration(milliseconds: 1500),
           );
 
     _readingProgressTrackingScheduler?.start();
@@ -52,9 +52,6 @@ class FreeArticleViewCubit extends Cubit<FreeArticleViewState> {
   void updateScrollOffset(int scrollOffset) {
     if (_maxScrollOffset != null) {
       _progress = _calculateProgress(scrollOffset, _maxScrollOffset!);
-      if (_progress == 100) {
-        _trackReadingProgress();
-      }
     }
   }
 
