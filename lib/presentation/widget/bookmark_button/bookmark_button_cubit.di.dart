@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
@@ -28,8 +29,6 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
 
   StreamSubscription? _notifierSubscription;
 
-  late BookmarkTypeData bookmarkTypeData;
-
   @override
   Future<void> close() {
     _notifierSubscription?.cancel();
@@ -38,8 +37,6 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
 
   Future<void> initialize(BookmarkTypeData data) async {
     emit(BookmarkButtonState.initializing());
-
-    bookmarkTypeData = data;
 
     final bookmarkState = await _getBookmarkStateUseCase(data);
 
@@ -51,24 +48,25 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
   }
 
   void _registerBookmarkChangeNotification(BookmarkTypeData data) {
-    _notifierSubscription = _getBookmarkChangeStreamUseCase()
-        .debounceTime(const Duration(seconds: 1))
-        .switchMap((changedData) => _reloadOnChangeNotification(data, changedData))
+    _notifierSubscription = _getBookmarkChangeStreamUseCase(includeProfileEvents: true)
+        .debounceTime(const Duration(milliseconds: 100))
+        .switchMap((event) => _reloadOnChangeNotification(event, data))
         .listen(_handleBookmarkState);
   }
 
-  Stream<BookmarkState> _reloadOnChangeNotification(BookmarkTypeData data, BookmarkTypeData changedData) async* {
-    if (data.slug != changedData.slug) {
+  Stream<BookmarkState> _reloadOnChangeNotification(BookmarkEvent event, BookmarkTypeData data) async* {
+    if (event.data.slug != data.slug) {
       return;
     }
-    emit(BookmarkButtonState.switching(data));
-    yield await _getBookmarkStateUseCase(data);
+    yield event.state;
   }
 
   void _handleBookmarkState(BookmarkState bookmarkState) {
     if (isClosed) return;
 
-    emit(BookmarkButtonState.idle(bookmarkTypeData, bookmarkState));
+    state.mapOrNull(
+      idle: (state) => emit(BookmarkButtonState.idle(state.data, bookmarkState)),
+    );
   }
 
   Future<void> switchState({bool? fromUndo}) async {

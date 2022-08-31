@@ -6,10 +6,10 @@ import 'package:better_informed_mobile/domain/article/data/article_progress.dart
 import 'package:better_informed_mobile/domain/article/use_case/get_article_read_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.di.dart';
@@ -151,18 +151,18 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   void _registerBookmarkChangeNotification(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) {
     _notifierSubscription = _getBookmarkChangeStreamUseCase()
         .debounceTime(const Duration(seconds: 1))
-        .switchMap((changedData) => _reloadOnChangeNotification(changedData, filter, sort, order))
+        .switchMap((event) => _reloadOnChangeNotification(event, filter, sort, order))
         .listen(_handlePaginationState);
   }
 
   Stream<PaginationEngineState<Bookmark>> _reloadOnChangeNotification(
-    BookmarkTypeData changedData,
+    BookmarkEvent event,
     BookmarkFilter filter,
     BookmarkSort sort,
     BookmarkOrder order,
   ) async* {
     final filters = [BookmarkFilter.all] +
-        changedData.map(
+        event.data.map(
           article: (_) => [BookmarkFilter.article],
           topic: (_) => [BookmarkFilter.topic],
         );

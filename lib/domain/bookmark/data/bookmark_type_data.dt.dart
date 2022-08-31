@@ -9,13 +9,11 @@ class BookmarkTypeData with _$BookmarkTypeData {
     String articleId, [
     String? topicId,
     String? briefId,
-    double? iconSize,
   ]) = _BookmarkTypeDataArticle;
 
   const factory BookmarkTypeData.topic(
     String slug,
     String topicId, [
     String? briefId,
-    double? iconSize,
   ]) = _BookmarkTypeDataTopic;
 }
