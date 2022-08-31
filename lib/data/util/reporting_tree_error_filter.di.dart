@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
+import 'package:better_informed_mobile/domain/exception/server_error_exception.dart';
 import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +20,7 @@ class ReportingTreeErrorFilterController {
     _HttpExceptionErrorFilter(),
     _ErrorFilter<NoInternetConnectionException>(),
     _ErrorFilter<UnauthorizedException>(),
+    _ErrorFilter<ServerErrorException>(),
   ];
 
   bool shouldFilterOut(dynamic error) {
