@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.di.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -8,7 +8,7 @@ class GetBookmarkChangeStreamUseCase {
 
   final BookmarkChangeNotifier _notifier;
 
-  Stream<List<BookmarkFilter>> call(BookmarkFilter filter) {
-    return _notifier.stream.where((filters) => filters.contains(filter));
+  Stream<BookmarkTypeData> call() {
+    return _notifier.stream;
   }
 }

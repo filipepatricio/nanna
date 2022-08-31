@@ -24,7 +24,7 @@ class SwitchBookmarkStateUseCase {
   ) async {
     final newState = await state.map(
       bookmarked: (state) => _removeBookmark(state.id, data),
-      notBookmarked: (state) => _bookmark(data),
+      notBookmarked: (state) => _addBookmark(data),
     );
 
     _bookmarkChangeNotifier.notify(data);
@@ -32,7 +32,7 @@ class SwitchBookmarkStateUseCase {
     return newState;
   }
 
-  Future<BookmarkState> _bookmark(BookmarkTypeData data) async {
+  Future<BookmarkState> _addBookmark(BookmarkTypeData data) async {
     _trackBookmarkAdded(data);
     return data.map(
       article: (data) => _bookmarkRepository.bookmarkArticle(data.slug),

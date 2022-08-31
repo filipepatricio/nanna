@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dar
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.di.dart';
@@ -148,19 +149,28 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   }
 
   void _registerBookmarkChangeNotification(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) {
-    _notifierSubscription = _getBookmarkChangeStreamUseCase(filter)
+    _notifierSubscription = _getBookmarkChangeStreamUseCase()
         .debounceTime(const Duration(seconds: 1))
-        .switchMap((_) => _reloadOnChangeNotification(filter, sort, order))
+        .switchMap((changedData) => _reloadOnChangeNotification(changedData, filter, sort, order))
         .listen(_handlePaginationState);
   }
 
   Stream<PaginationEngineState<Bookmark>> _reloadOnChangeNotification(
+    BookmarkTypeData changedData,
     BookmarkFilter filter,
     BookmarkSort sort,
     BookmarkOrder order,
   ) async* {
-    emit(BookmarkListViewState.loading(filter));
-    yield await _initializePaginationEngine(filter, sort, order);
+    final filters = [BookmarkFilter.all] +
+        changedData.map(
+          article: (_) => [BookmarkFilter.article],
+          topic: (_) => [BookmarkFilter.topic],
+        );
+
+    if (filters.contains(filter)) {
+      emit(BookmarkListViewState.loading(filter));
+      yield await _initializePaginationEngine(filter, sort, order);
+    }
   }
 
   Future<PaginationEngineState<Bookmark>> _initializePaginationEngine(
