@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart'
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
@@ -42,6 +43,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     this._setTutorialStepSeenUseCase,
     this._trackActivityUseCase,
     this._incomingPushDataRefreshStreamUseCase,
+    this._getShouldUpdateBriefStreamUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -50,6 +52,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final IncomingPushDataRefreshStreamUseCase _incomingPushDataRefreshStreamUseCase;
+  final GetShouldUpdateBriefStreamUseCase _getShouldUpdateBriefStreamUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -59,6 +62,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
+  StreamSubscription? _shouldUpdateBriefSubscription;
 
   List<TargetFocus> targets = <TargetFocus>[];
 
@@ -71,6 +75,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   Future<void> close() async {
     await _dataRefreshSubscription?.cancel();
     await _currentBriefSubscription?.cancel();
+    await _shouldUpdateBriefSubscription?.cancel();
     await _trackItemController.close();
     await super.close();
   }
@@ -88,6 +93,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       loadBriefs();
     });
 
+    _shouldUpdateBriefSubscription = _getShouldUpdateBriefStreamUseCase()
+        .debounceTime(const Duration(milliseconds: 100))
+        .listen((_) => _refetchBriefs());
+
     _initializeItemPreviewTracker();
 
     await loadPastDaysBriefs();
@@ -101,7 +110,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  Future<void> refetchBriefs() async {
+  Future<void> _refetchBriefs() async {
     if (_isTodayBrief) {
       _currentBrief = await _getCurrentBriefUseCase();
     } else {

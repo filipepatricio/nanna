@@ -23,7 +23,7 @@ class ArticleLabelsSection extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final kind = article.kind;
-    final shouldShowAudioButton = useMemoized(() => article.hasAudioVersion && !article.visited);
+    final shouldShowAudioButton = article.hasAudioVersion && !article.visited;
     return Row(
       children: [
         BookmarkButton.article(

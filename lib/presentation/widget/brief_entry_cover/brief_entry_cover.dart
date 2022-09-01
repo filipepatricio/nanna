@@ -17,7 +17,6 @@ class BriefEntryCover extends HookWidget {
     required this.briefId,
     required this.width,
     required this.height,
-    required this.refetchCurrentBrief,
     this.topicCardKey,
     this.onVisibilityChanged,
     this.padding,
@@ -31,7 +30,6 @@ class BriefEntryCover extends HookWidget {
   final GlobalKey? topicCardKey;
   final Function(VisibilityInfo)? onVisibilityChanged;
   final EdgeInsets? padding;
-  final VoidCallback refetchCurrentBrief;
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +54,6 @@ class BriefEntryCover extends HookWidget {
                           article: article,
                           briefId: briefId,
                         );
-
-                        refetchCurrentBrief();
                       },
                     ),
                     unknown: (_) => const SizedBox(),
@@ -74,8 +70,6 @@ class BriefEntryCover extends HookWidget {
                           article: article,
                           briefId: briefId,
                         );
-
-                        refetchCurrentBrief();
                       },
                     ),
                     unknown: (_) => const SizedBox(),
@@ -93,8 +87,6 @@ class BriefEntryCover extends HookWidget {
                           article: article,
                           briefId: briefId,
                         );
-
-                        refetchCurrentBrief();
                       },
                     ),
                     unknown: (_) => const SizedBox(),
@@ -120,8 +112,6 @@ class BriefEntryCover extends HookWidget {
                           topicPreview: data.topicPreview,
                           briefId: briefId,
                         );
-
-                        refetchCurrentBrief();
                       },
                     ),
                   ),
