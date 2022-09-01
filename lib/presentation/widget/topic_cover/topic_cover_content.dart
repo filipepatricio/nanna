@@ -95,9 +95,15 @@ class _CoverContentDailyBrief extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.l),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              BookmarkButton.topic(
+                topic: topic,
+                mode: BookmarkButtonMode.image,
+                iconSize: AppDimens.l,
+              ),
+              const SizedBox(width: AppDimens.ml),
               Flexible(
                 child: TopicOwnerAvatar(
                   owner: topic.owner,
@@ -111,15 +117,16 @@ class _CoverContentDailyBrief extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
-                LocaleKeys.readingList_articleCount.tr(
-                  args: [topic.entryCount.toString()],
+              if (!topic.visited)
+                Text(
+                  LocaleKeys.readingList_articleCount.tr(
+                    args: [topic.entryCount.toString()],
+                  ),
+                  style: AppTypography.metadata1Medium.copyWith(
+                    height: 1.5,
+                    color: darkMode ? null : AppColors.white,
+                  ),
                 ),
-                style: AppTypography.metadata1Medium.copyWith(
-                  height: 1.5,
-                  color: darkMode ? null : AppColors.white,
-                ),
-              ),
             ],
           ),
         ],

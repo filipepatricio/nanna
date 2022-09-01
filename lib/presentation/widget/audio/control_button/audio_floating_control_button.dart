@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+enum AudioFloatingControlButtonMode { white, colored }
+
 class AudioFloatingControlButton extends HookWidget {
   const AudioFloatingControlButton({
     required this.article,
@@ -19,6 +21,7 @@ class AudioFloatingControlButton extends HookWidget {
     this.elevation = 0,
     this.imageHeight = AppDimens.sl + AppDimens.xxs,
     this.color = AppColors.background,
+    this.mode = AudioFloatingControlButtonMode.colored,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +30,7 @@ class AudioFloatingControlButton extends HookWidget {
     this.elevation,
     this.imageHeight = AppDimens.m + AppDimens.xxs,
     this.color = AppColors.background,
+    this.mode = AudioFloatingControlButtonMode.colored,
     Key? key,
   })  : article = null,
         super(key: key);
@@ -36,6 +40,7 @@ class AudioFloatingControlButton extends HookWidget {
   final double? imageHeight;
   final double progressSize;
   final Color color;
+  final AudioFloatingControlButtonMode mode;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +85,9 @@ class AudioFloatingControlButton extends HookWidget {
       highlightElevation: elevation,
       shape: article == null
           ? RoundedRectangleBorder(
-              side: const BorderSide(color: AppColors.grey),
+              side: BorderSide(
+                color: mode == AudioFloatingControlButtonMode.colored ? AppColors.grey : AppColors.white,
+              ),
               borderRadius: BorderRadius.circular(AppDimens.xl),
             )
           : null,
@@ -98,7 +105,7 @@ class AudioFloatingControlButton extends HookWidget {
               child: SvgPicture.asset(
                 state.imagePath,
                 height: imageHeight,
-                color: state.imageColor,
+                color: mode == AudioFloatingControlButtonMode.colored ? state.imageColor : AppColors.white,
               ),
             ),
           ),

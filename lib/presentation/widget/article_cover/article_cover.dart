@@ -9,7 +9,10 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_labels_editors_note.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_labels_section.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
+import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
@@ -29,7 +32,7 @@ part 'article_cover_topic_big_image.dart';
 part 'article_cover_topic_without_image.dart';
 part 'article_square_cover.dart';
 
-const _coverSizeToScreenWidthFactor = 0.26;
+const _coverSizeToScreenWidthFactor = 0.27;
 
 const articleCoverShadows = [
   BoxShadow(offset: Offset(0, 10), blurRadius: 80, spreadRadius: -4, color: AppColors.shadowLinenColor),

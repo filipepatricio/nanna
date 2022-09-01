@@ -65,10 +65,6 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                       color: AppColors.textGrey,
                                     ),
                                   ),
-                                  if (!article.shouldShowArticleCoverNote &&
-                                      article.hasAudioVersion &&
-                                      !article.visited)
-                                    AudioIconButton(article: article),
                                 ],
                               ),
                               SizedBox(
@@ -109,6 +105,14 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              if (!article.shouldShowArticleCoverNote) ...[
+                                const SizedBox(height: AppDimens.l),
+                                ArticleLabelsSection(
+                                  article: article,
+                                  bookmarkButtonMode: BookmarkButtonMode.color,
+                                  audioFloatingControlButtonMode: AudioFloatingControlButtonMode.colored,
+                                ),
+                              ],
                             ],
                           ),
                         ),
@@ -117,12 +121,6 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (!article.shouldShowArticleCoverNote && article.visited)
-                  const Positioned(
-                    bottom: AppDimens.m,
-                    right: AppDimens.m,
-                    child: VisitedCheck(),
-                  ),
               ],
             ),
           ),
