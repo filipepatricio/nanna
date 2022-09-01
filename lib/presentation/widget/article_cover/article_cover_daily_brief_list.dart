@@ -44,7 +44,7 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                     Row(
                       children: [
                         PublisherLogo.dark(publisher: article.publisher),
-                        Flexible(
+                        Expanded(
                           child: Text(
                             article.publisher.name,
                             maxLines: 1,
@@ -52,26 +52,19 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        BookmarkButton.article(
+                          article: article,
+                          mode: BookmarkButtonMode.color,
+                          iconSize: AppDimens.l,
+                        )
                       ],
                     ),
-                    const Spacer(),
+                    const SizedBox(height: AppDimens.s),
                     Text(
                       article.strippedTitle,
-                      maxLines: 2,
+                      maxLines: 4,
                       style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
                       overflow: TextOverflow.ellipsis,
-                    ),
-                    const Spacer(),
-                    Flexible(
-                      child: ArticleDottedInfo(
-                        article: article,
-                        isLight: false,
-                        showLogo: false,
-                        showPublisher: false,
-                        showDate: false,
-                        textStyle: AppTypography.caption1Medium,
-                        color: AppColors.textGrey,
-                      ),
                     ),
                   ],
                 ),

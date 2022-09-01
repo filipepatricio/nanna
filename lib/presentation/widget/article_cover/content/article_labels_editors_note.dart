@@ -3,10 +3,10 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_labels_section.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
-import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
+import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/visited_check.dart';
 import 'package:flutter/material.dart';
 
 class ArticleLabelsEditorsNote extends StatelessWidget {
@@ -21,7 +21,6 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final kind = article.kind;
     final note = article.note;
 
     // Overlapping top border for editor's note is handled by [_ArticleCoverDailyBriefLarge]
@@ -76,47 +75,15 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
                 ),
                 maxLines: 6,
               ),
-              const SizedBox(height: AppDimens.s),
+              const SizedBox(height: AppDimens.ml),
             ],
-            Row(
-              children: [
-                if (kind != null) CoverLabel.articleKind(kind),
-                const Spacer(),
-                if (article.hasAudioVersion && !article.visited) ArticleCoverAudioButton(article: article),
-                if (article.visited) const VisitedCheck()
-              ],
+            ArticleLabelsSection(
+              article: article,
+              bookmarkButtonMode: BookmarkButtonMode.color,
+              audioFloatingControlButtonMode: AudioFloatingControlButtonMode.colored,
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ArticleCoverAudioButton extends StatelessWidget {
-  const ArticleCoverAudioButton({
-    required this.article,
-    Key? key,
-  }) : super(key: key);
-
-  final MediaItemArticle article;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: AppDimens.audioControlButtonSize,
-      height: AppDimens.audioControlButtonSize,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(color: AppColors.black05, blurRadius: 5.0),
-        ],
-      ),
-      child: AudioFloatingControlButton(
-        article: article,
-        elevation: 0,
-        color: AppColors.white,
-        progressSize: AppDimens.audioControlButtonSize,
       ),
     );
   }

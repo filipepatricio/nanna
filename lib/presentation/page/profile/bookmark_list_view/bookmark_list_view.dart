@@ -17,6 +17,7 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_mes
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 typedef OnSortConfigChanged = Function(BookmarkSortConfigName configName);
 
@@ -78,68 +79,74 @@ class BookmarkListView extends HookWidget {
       [cubit],
     );
 
-    return SnackbarParentView(
-      controller: snackbarController,
-      child: NextPageLoadExecutor(
-        enabled: state.shouldListen,
-        onNextPageLoad: cubit.loadNextPage,
-        scrollController: scrollController,
-        child: state.maybeMap(
-          initial: (_) => const SizedBox.shrink(),
-          loading: (_) => Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _SelectedSortConfig(
-                onSortConfigChanged: onSortConfigChanged,
-                config: sortConfig,
-                enabled: false,
-              ),
-              const Expanded(
-                child: Loader(
-                  color: AppColors.limeGreen,
+    return VisibilityDetector(
+      onVisibilityChanged: (_) {
+        snackbarController.discardMessage();
+      },
+      key: const Key('bookmark_list'),
+      child: SnackbarParentView(
+        controller: snackbarController,
+        child: NextPageLoadExecutor(
+          enabled: state.shouldListen,
+          onNextPageLoad: cubit.loadNextPage,
+          scrollController: scrollController,
+          child: state.maybeMap(
+            initial: (_) => const SizedBox.shrink(),
+            loading: (_) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _SelectedSortConfig(
+                  onSortConfigChanged: onSortConfigChanged,
+                  config: sortConfig,
+                  enabled: false,
                 ),
-              ),
-            ],
+                const Expanded(
+                  child: Loader(
+                    color: AppColors.limeGreen,
+                  ),
+                ),
+              ],
+            ),
+            empty: (_) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _SelectedSortConfig(
+                  onSortConfigChanged: onSortConfigChanged,
+                  config: sortConfig,
+                  enabled: false,
+                ),
+                Expanded(
+                  child: ProfileEmptyPage(filter: filter),
+                ),
+              ],
+            ),
+            idle: (state) => _Idle(
+              cubit: cubit,
+              bookmarks: state.bookmarks,
+              sortConfig: sortConfig,
+              scrollController: scrollController,
+              onSortConfigChanged: onSortConfigChanged,
+              snackbarController: snackbarController,
+            ),
+            loadMore: (state) => _Idle(
+              cubit: cubit,
+              bookmarks: state.bookmarks,
+              sortConfig: sortConfig,
+              scrollController: scrollController,
+              onSortConfigChanged: onSortConfigChanged,
+              snackbarController: snackbarController,
+              withLoader: true,
+            ),
+            allLoaded: (state) => _Idle(
+              cubit: cubit,
+              bookmarks: state.bookmarks,
+              sortConfig: sortConfig,
+              scrollController: scrollController,
+              onSortConfigChanged: onSortConfigChanged,
+              snackbarController: snackbarController,
+            ),
+            orElse: () => const SizedBox.shrink(),
           ),
-          empty: (_) => Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _SelectedSortConfig(
-                onSortConfigChanged: onSortConfigChanged,
-                config: sortConfig,
-                enabled: false,
-              ),
-              Expanded(
-                child: ProfileEmptyPage(filter: filter),
-              ),
-            ],
-          ),
-          idle: (state) => _Idle(
-            cubit: cubit,
-            bookmarks: state.bookmarks,
-            sortConfig: sortConfig,
-            scrollController: scrollController,
-            onSortConfigChanged: onSortConfigChanged,
-            snackbarController: snackbarController,
-          ),
-          loadMore: (state) => _Idle(
-            cubit: cubit,
-            bookmarks: state.bookmarks,
-            sortConfig: sortConfig,
-            scrollController: scrollController,
-            onSortConfigChanged: onSortConfigChanged,
-            snackbarController: snackbarController,
-            withLoader: true,
-          ),
-          allLoaded: (state) => _Idle(
-            cubit: cubit,
-            bookmarks: state.bookmarks,
-            sortConfig: sortConfig,
-            scrollController: scrollController,
-            onSortConfigChanged: onSortConfigChanged,
-            snackbarController: snackbarController,
-          ),
-          orElse: () => const SizedBox.shrink(),
         ),
       ),
     );

@@ -9,7 +9,7 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_vie
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-typedef SnackbarMessageListener = Function(SnackbarMessage);
+typedef SnackbarMessageListener = Function(SnackbarMessage?);
 
 const _hiddenMessageBottomMargin = -140.0;
 const _messageAnimationDuration = Duration(milliseconds: 1300);
@@ -32,7 +32,14 @@ class SnackbarParentView extends HookWidget {
 
     useEffect(
       () {
-        Future<void> listener(SnackbarMessage message) => cubit.addMessage(message);
+        Future<void> listener(SnackbarMessage? message) async {
+          if (message != null) {
+            await cubit.addMessage(message);
+          } else {
+            await cubit.discardMessage();
+          }
+        }
+
         controller._addListener(listener);
         return () => controller._removeListener(listener);
       },
@@ -86,6 +93,12 @@ class SnackbarController {
   void showMessage(SnackbarMessage message) {
     for (final element in _listeners) {
       element(message);
+    }
+  }
+
+  void discardMessage() {
+    for (final element in _listeners) {
+      element(null);
     }
   }
 

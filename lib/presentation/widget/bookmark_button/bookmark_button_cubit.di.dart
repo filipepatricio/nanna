@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
+import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/switch_bookmark_state_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @injectable
 class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
@@ -13,11 +19,21 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
     this._getBookmarkStateUseCase,
     this._setBookmarkStateUseCase,
     this._trackActivityUseCase,
+    this._getBookmarkChangeStreamUseCase,
   ) : super(BookmarkButtonState.initializing());
 
   final GetBookmarkStateUseCase _getBookmarkStateUseCase;
   final SwitchBookmarkStateUseCase _setBookmarkStateUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
+  final GetBookmarkChangeStreamUseCase _getBookmarkChangeStreamUseCase;
+
+  StreamSubscription? _notifierSubscription;
+
+  @override
+  Future<void> close() {
+    _notifierSubscription?.cancel();
+    return super.close();
+  }
 
   Future<void> initialize(BookmarkTypeData data) async {
     emit(BookmarkButtonState.initializing());
@@ -27,6 +43,30 @@ class BookmarkButtonCubit extends Cubit<BookmarkButtonState> {
     if (!isClosed) {
       emit(BookmarkButtonState.idle(data, bookmarkState));
     }
+
+    _registerBookmarkChangeNotification(data);
+  }
+
+  void _registerBookmarkChangeNotification(BookmarkTypeData data) {
+    _notifierSubscription = _getBookmarkChangeStreamUseCase(includeProfileEvents: true)
+        .debounceTime(const Duration(milliseconds: 100))
+        .switchMap((event) => _reloadOnChangeNotification(event, data))
+        .listen(_handleBookmarkState);
+  }
+
+  Stream<BookmarkState> _reloadOnChangeNotification(BookmarkEvent event, BookmarkTypeData data) async* {
+    if (event.data.slug != data.slug) {
+      return;
+    }
+    yield event.state;
+  }
+
+  void _handleBookmarkState(BookmarkState bookmarkState) {
+    if (isClosed) return;
+
+    state.mapOrNull(
+      idle: (state) => emit(BookmarkButtonState.idle(state.data, bookmarkState)),
+    );
   }
 
   Future<void> switchState({bool? fromUndo}) async {

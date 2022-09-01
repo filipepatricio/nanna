@@ -135,18 +135,17 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
       contentHeight: maxExtent - scrollData.contentOffset,
       pageHeight: maxExtent,
     );
-    _trackReadingProgress();
   }
 
   void _setupReadingProgressTracker() {
     _readingProgressTrackingScheduler = kIsTest
         ? null
         : NeatPeriodicTaskScheduler(
-            interval: const Duration(seconds: 5),
-            name: 'reading-progress-tracker',
-            timeout: const Duration(seconds: 1),
+            interval: const Duration(seconds: 3),
+            name: 'reading-progress-tracker-premium',
+            timeout: const Duration(milliseconds: 1500),
             task: _trackReadingProgress,
-            minCycle: const Duration(seconds: 2),
+            minCycle: const Duration(milliseconds: 1500),
           );
 
     _readingProgressTrackingScheduler?.start();
