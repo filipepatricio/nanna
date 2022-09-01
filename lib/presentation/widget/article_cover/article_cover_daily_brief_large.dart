@@ -111,12 +111,6 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (!article.shouldShowArticleCoverNote && article.visited)
-                        const Positioned(
-                          bottom: AppDimens.m,
-                          right: AppDimens.m,
-                          child: VisitedCheck(),
-                        ),
                     ],
                   ),
                 ),

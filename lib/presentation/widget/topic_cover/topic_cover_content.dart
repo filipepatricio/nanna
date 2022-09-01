@@ -117,6 +117,16 @@ class _CoverContentDailyBrief extends StatelessWidget {
                   ),
                 ),
               ),
+              if (!topic.visited)
+                Text(
+                  LocaleKeys.readingList_articleCount.tr(
+                    args: [topic.entryCount.toString()],
+                  ),
+                  style: AppTypography.metadata1Medium.copyWith(
+                    height: 1.5,
+                    color: darkMode ? null : AppColors.white,
+                  ),
+                ),
             ],
           ),
         ],
