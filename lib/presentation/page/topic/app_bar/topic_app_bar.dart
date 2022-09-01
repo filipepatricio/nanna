@@ -109,7 +109,7 @@ class TopicAppBar extends HookWidget {
       ),
       actions: [
         BookmarkButton.topic(
-          topic: topic,
+          topic: topic.asPreview,
           briefId: cubit.briefId,
           mode: isExpanded.value ? BookmarkButtonMode.image : BookmarkButtonMode.color,
           snackbarController: snackbarController,

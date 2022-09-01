@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
+import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:injectable/injectable.dart';
@@ -24,25 +25,41 @@ class SwitchBookmarkStateUseCase {
   ) async {
     final newState = await state.map(
       bookmarked: (state) => _removeBookmark(state.id, data),
-      notBookmarked: (state) => _bookmark(data),
+      notBookmarked: (state) => _addBookmark(data),
     );
-
-    _bookmarkChangeNotifier.notify(data);
 
     return newState;
   }
 
-  Future<BookmarkState> _bookmark(BookmarkTypeData data) async {
+  Future<BookmarkState> _addBookmark(BookmarkTypeData data) async {
     _trackBookmarkAdded(data);
-    return data.map(
+    final state = await data.map(
       article: (data) => _bookmarkRepository.bookmarkArticle(data.slug),
       topic: (data) => _bookmarkRepository.bookmarkTopic(data.slug),
     );
+
+    _bookmarkChangeNotifier.notify(
+      BookmarkEvent(
+        data: data,
+        state: state,
+      ),
+    );
+
+    return state;
   }
 
   Future<BookmarkState> _removeBookmark(String id, BookmarkTypeData data) async {
     _trackBookmarkRemoved(data);
-    return _bookmarkRepository.removeBookmark(id);
+    final state = await _bookmarkRepository.removeBookmark(id);
+
+    _bookmarkChangeNotifier.notify(
+      BookmarkEvent(
+        data: data,
+        state: state,
+      ),
+    );
+
+    return state;
   }
 
   void _trackBookmarkAdded(BookmarkTypeData data) {
