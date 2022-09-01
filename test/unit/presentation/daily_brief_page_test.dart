@@ -56,6 +56,8 @@ void main() {
       yield TestData.currentBrief;
     });
 
+    when(getShouldUpdateBriefStreamUseCase.call()).thenAnswer((_) async* {});
+
     when(isTutorialStepSeenUseCase.call(any)).thenAnswer((_) async => true);
 
     when(incomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
