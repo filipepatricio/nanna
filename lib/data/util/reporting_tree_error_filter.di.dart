@@ -15,6 +15,7 @@ abstract class ReportingTreeErrorFilter {
 class ReportingTreeErrorFilterController {
   final List<ReportingTreeErrorFilter> _filters = [
     _CubitClosedErrorFilter(),
+    _NoConnectionErrorFilter(),
     _FirebaseConnectionErrorFilter(),
     _SignInWithAppleAuthorizationErrorFilter(),
     _HttpExceptionErrorFilter(),
@@ -32,6 +33,13 @@ class _CubitClosedErrorFilter implements ReportingTreeErrorFilter {
   @override
   bool filterOut(error) {
     return error is StateError && error.message == 'Cannot emit new states after calling close';
+  }
+}
+
+class _NoConnectionErrorFilter implements ReportingTreeErrorFilter {
+  @override
+  bool filterOut(error) {
+    return error is SocketException;
   }
 }
 
