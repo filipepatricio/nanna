@@ -27,6 +27,7 @@ void main() {
     final incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
     final isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
     final setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
+    final getShouldUpdateBriefStreamUseCase = MockGetShouldUpdateBriefStreamUseCase();
 
     final dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -35,6 +36,7 @@ void main() {
       setTutorialStepSeenUseCase,
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
+      getShouldUpdateBriefStreamUseCase,
     );
     final entry = TestData.currentBrief.allEntries.first;
     final event = AnalyticsEvent.dailyBriefEntryPreviewed(
