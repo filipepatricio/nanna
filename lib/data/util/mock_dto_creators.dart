@@ -161,11 +161,23 @@ class MockDTO {
                 _briefEntryStyleTopic,
               ),
               BriefEntryDTO(
-                _freeArticle.asBriefEntryItem,
+                premiumArticleWithAudio.asBriefEntryItem,
                 _briefEntryStyleArticleLarge,
               ),
               BriefEntryDTO(
-                premiumArticle.asBriefEntryItem,
+                premiumArticleWithoutNoteWithAudio.asBriefEntryItem,
+                _briefEntryStyleArticleLarge,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithoutNoteWithAudio.asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+              BriefEntryDTO(
+                _freeArticleWithoutNote.asBriefEntryItem,
+                _briefEntryStyleArticleSmall,
+              ),
+              BriefEntryDTO(
+                _freeArticle.asBriefEntryItem,
                 _briefEntryStyleArticleSmall,
               ),
               ..._briefEntriesArticlesList,

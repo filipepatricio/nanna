@@ -1,15 +1,32 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class MainNavigationObserver extends AutoRouterObserver {
-  MainNavigationObserver(this._trackActivityUseCase);
+  MainNavigationObserver(
+    this._trackActivityUseCase,
+    this._updateBriefNotifierUseCase,
+  );
 
   final TrackActivityUseCase _trackActivityUseCase;
+  final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    switch (route.settings.name) {
+      case MediaItemPageRoute.name:
+        _updateBriefNotifierUseCase();
+        return;
+      case TopicPage.name:
+        _updateBriefNotifierUseCase();
+        return;
+    }
+  }
 
   @override
   void didPush(Route route, Route? previousRoute) {

@@ -310,7 +310,6 @@ class _IdleContent extends HookWidget {
                               bottom: AppDimens.l,
                             ),
                       topicCardKey: entry == firstTopic ? firstTopicKey : null,
-                      refetchCurrentBrief: () => cubit.refetchBriefs(),
                       onVisibilityChanged: (visibility) {
                         if (entry == firstTopic && visibility.visibleFraction == 1) {
                           cubit.initializeTutorialCoachMark();
@@ -344,7 +343,6 @@ class _IdleContent extends HookWidget {
                         width: cardStackWidth,
                         height: cardStackHeight,
                         topicCardKey: entry == firstTopic ? firstTopicKey : null,
-                        refetchCurrentBrief: () => cubit.refetchBriefs(),
                         onVisibilityChanged: (visibility) {
                           if (entry == firstTopic) {
                             cubit.initializeTutorialCoachMark();

@@ -28,7 +28,11 @@ class AppInfoDataSource {
   }
 
   Future<bool> shouldUpdate() async {
-    await _upgrader.initialize();
-    return _upgrader.shouldDisplayUpgrade();
+    try {
+      await _upgrader.initialize();
+      return _upgrader.shouldDisplayUpgrade();
+    } catch (_) {
+      return false;
+    }
   }
 }
