@@ -79,7 +79,8 @@ class _HttpExceptionErrorFilter implements ReportingTreeErrorFilter {
   @override
   bool filterOut(error) {
     if (error is HttpException) {
-      final message = error.message;
+      final message = error.toString();
+
       return message.contains('Connection closed while receiving data') &&
           message.contains('informed-audio-production');
     }
