@@ -25,7 +25,6 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
             _ArticleSquareCover(
               article: article,
               coverColor: coverColor,
-              showArticleIndicator: true,
               dimension: constraints.maxWidth,
             ),
             _ArticleCoverContent(article: article),
@@ -63,7 +62,6 @@ class _ArticleCoverExploreList extends HookWidget {
           _ArticleSquareCover(
             article: article,
             coverColor: coverColor,
-            showArticleIndicator: false,
             dimension: coverSize,
           ),
           const SizedBox(width: AppDimens.m),

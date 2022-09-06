@@ -4,7 +4,6 @@ class _ArticleSquareCover extends StatelessWidget {
   const _ArticleSquareCover({
     required this.article,
     required this.coverColor,
-    required this.showArticleIndicator,
     required this.dimension,
     this.visited = false,
     this.borderRadius,
@@ -13,7 +12,6 @@ class _ArticleSquareCover extends StatelessWidget {
 
   final MediaItemArticle article;
   final Color? coverColor;
-  final bool showArticleIndicator;
   final double dimension;
   final double? borderRadius;
   final bool visited;
@@ -37,12 +35,6 @@ class _ArticleSquareCover extends StatelessWidget {
                     ),
             ),
           ),
-          if (showArticleIndicator)
-            Positioned(
-              top: AppDimens.s,
-              left: AppDimens.s,
-              child: CoverLabel.article(),
-            ),
           if (article.hasAudioVersion && !visited)
             Positioned(
               bottom: AppDimens.s,

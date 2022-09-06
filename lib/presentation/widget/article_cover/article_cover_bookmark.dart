@@ -27,7 +27,6 @@ class _ArticleCoverBookmark extends HookWidget {
           _ArticleSquareCover(
             article: article,
             coverColor: coverColor,
-            showArticleIndicator: false,
             dimension: coverSize,
           ),
           const SizedBox(width: AppDimens.m),
