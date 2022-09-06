@@ -19,6 +19,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:clock/clock.dart';
@@ -157,6 +158,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   void toggleCalendar(bool showCalendar) {
     if (showCalendar != _shouldShowCalendar) {
       _shouldShowCalendar = showCalendar;
+      _shouldShowCalendar
+          ? _trackActivityUseCase.trackEvent(AnalyticsEvent.briefCalendarOpened(_currentBrief.id))
+          : _trackActivityUseCase.trackEvent(AnalyticsEvent.briefCalendarClosed(_currentBrief.id));
+
       _updateIdleState();
     }
   }
@@ -172,13 +177,17 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     if (brief == null) return;
     _currentBrief = brief;
 
-    if (_currentBrief.date == clock.now() && (_currentBriefSubscription?.isPaused ?? false)) {
-      _isTodayBrief = true;
+    _isTodayBrief = _currentBrief.date.isSameDateAs(clock.now());
+
+    if (_isTodayBrief && (_currentBriefSubscription?.isPaused ?? false)) {
       _currentBriefSubscription?.resume();
     } else if (!(_currentBriefSubscription?.isPaused ?? true)) {
-      _isTodayBrief = false;
       _currentBriefSubscription?.pause();
     }
+
+    _trackActivityUseCase.trackEvent(
+      AnalyticsEvent.calendarBriefSelected(_currentBrief.id, isTodaysBrief: _isTodayBrief),
+    );
 
     _updateIdleState(preCacheImages: true);
   }

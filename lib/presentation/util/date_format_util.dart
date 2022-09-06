@@ -69,3 +69,9 @@ class DateFormatUtil {
     }
   }
 }
+
+extension DateTimeExtension on DateTime {
+  bool isSameDateAs(DateTime date) {
+    return year == date.year && month == date.month && day == date.day;
+  }
+}
