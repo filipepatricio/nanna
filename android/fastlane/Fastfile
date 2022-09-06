@@ -32,7 +32,7 @@ platform :android do
     desc "Submit to internal track in Google Play Store - staging"
     lane :internal_play_store_staging do
       upload_to_play_store(
-        track: 'alpha',
+        track: 'internal',
         package_name: 'so.informed.staging',
         json_key: "../google_play_credentials.json",
         version_code: flutter_version()["version_code"],
