@@ -12,24 +12,33 @@ class _TopicCoverExploreLarge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(AppDimens.s),
-          topRight: Radius.circular(AppDimens.s),
-        ),
-        child: Stack(
-          children: [
-            TopicCoverImage(
-              topic: topic,
-              borderRadius: AppDimens.s,
-              darkeningMode: DarkeningMode.solid,
-            ),
-            _TopicCoverContent.exploreLarge(
-              topic: topic,
-            ),
-          ],
+    return CoverOpacity.topic(
+      topic: topic,
+      child: GestureDetector(
+        onTap: onTap,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppDimens.s),
+            topRight: Radius.circular(AppDimens.s),
+          ),
+          child: Stack(
+            children: [
+              TopicCoverImage(
+                topic: topic,
+                borderRadius: AppDimens.s,
+                darkeningMode: DarkeningMode.solid,
+              ),
+              _TopicCoverContent.exploreLarge(
+                topic: topic,
+              ),
+              if (topic.visited)
+                const Positioned(
+                  bottom: AppDimens.s,
+                  right: AppDimens.s,
+                  child: VisitedCheck(),
+                ),
+            ],
+          ),
         ),
       ),
     );
