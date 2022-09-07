@@ -7,5 +7,5 @@ extension StringCasingExtension on String {
 }
 
 extension StringComparisionExtenion on String {
-  bool get endsWithWhiteSpace => CodeUnitUtil.isWhitespace(codeUnitAt(length - 1));
+  bool get endsWithWhiteSpace => isNotEmpty && CodeUnitUtil.isWhitespace(codeUnitAt(length - 1));
 }
