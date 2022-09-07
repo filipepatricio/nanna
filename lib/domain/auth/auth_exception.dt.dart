@@ -5,4 +5,6 @@ part 'auth_exception.dt.freezed.dart';
 @freezed
 class AuthException with _$AuthException {
   factory AuthException.unknown() = _AuthExceptionUnknown;
+
+  factory AuthException.unauthorized() = _AuthExceptionUnauthorized;
 }
