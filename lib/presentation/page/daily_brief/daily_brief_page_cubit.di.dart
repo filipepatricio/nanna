@@ -94,9 +94,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       loadBriefs();
     });
 
-    _shouldUpdateBriefSubscription = _getShouldUpdateBriefStreamUseCase()
-        .debounceTime(const Duration(milliseconds: 100))
-        .listen((_) => _refetchBriefs());
+    _shouldUpdateBriefSubscription = _getShouldUpdateBriefStreamUseCase().listen((_) => _refetchBriefs());
 
     _initializeItemPreviewTracker();
 

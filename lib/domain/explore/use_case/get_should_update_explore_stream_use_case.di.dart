@@ -2,8 +2,8 @@ import 'package:better_informed_mobile/domain/general/should_refresh_visit_state
 import 'package:injectable/injectable.dart';
 
 @injectable
-class GetShouldUpdateBriefStreamUseCase {
-  GetShouldUpdateBriefStreamUseCase(this._notifier);
+class GetShouldUpdateExploreStreamUseCase {
+  GetShouldUpdateExploreStreamUseCase(this._notifier);
 
   final ShouldRefreshVisitStateNotifier _notifier;
 

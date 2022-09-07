@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
+import 'package:better_informed_mobile/domain/explore/use_case/get_should_update_explore_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/get_search_history_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/remove_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -24,12 +25,14 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._setTutorialStepSeenUseCase,
     this._getSearchHistoryUseCase,
     this._removeSearchHistoryQueryUseCase,
+    this._getShouldUpdateExploreStreamUseCase,
   ) : super(ExplorePageState.initialLoading());
 
   final GetExploreContentUseCase _getExploreContentUseCase;
   final GetFeaturedCategoriesUseCase _getFeaturedCategoriesUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  final GetShouldUpdateExploreStreamUseCase _getShouldUpdateExploreStreamUseCase;
 
   final GetSearchHistoryUseCase _getSearchHistoryUseCase;
   final RemoveSearchHistoryQueryUseCase _removeSearchHistoryQueryUseCase;
@@ -38,10 +41,12 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   late ExplorePageState _latestIdleState;
 
   StreamSubscription? _exploreContentSubscription;
+  StreamSubscription? _shouldUpdateExploreSubscription;
 
   @override
   Future<void> close() async {
     await _exploreContentSubscription?.cancel();
+    await _shouldUpdateExploreSubscription?.cancel();
     await super.close();
   }
 
@@ -50,6 +55,8 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
     _exploreContentSubscription =
         _getExploreContentUseCase.highlightedContentStream.listen(_processAndEmitExploreContent);
+
+    _shouldUpdateExploreSubscription = _getShouldUpdateExploreStreamUseCase().listen((_) => loadExplorePageData());
 
     try {
       await _showTutorialSnackBar();
