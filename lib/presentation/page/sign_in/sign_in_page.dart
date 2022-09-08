@@ -38,6 +38,13 @@ class SignInPage extends HookWidget {
     final emailController = useTextEditingController();
     final snackbarController = useMemoized(() => SnackbarController());
 
+    void showSnackbar(String message) => snackbarController.showMessage(
+          SnackbarMessage.simple(
+            message: message,
+            type: SnackbarMessageType.negative,
+          ),
+        );
+
     useOnAppLifecycleStateChange((previous, current) {
       if (current != previous && current == AppLifecycleState.resumed) {
         cubit.cancelLinkedInSignIn();
@@ -51,14 +58,8 @@ class SignInPage extends HookWidget {
             if (!state.isOnboardingSeen) const OnboardingPageRoute() else const MainPageRoute(),
           ],
         ),
-        generalError: (_) {
-          snackbarController.showMessage(
-            SnackbarMessage.simple(
-              message: tr(LocaleKeys.common_generalError),
-              type: SnackbarMessageType.negative,
-            ),
-          );
-        },
+        unauthorizedError: (_) => showSnackbar(LocaleKeys.signIn_unauthorized.tr()),
+        generalError: (_) => showSnackbar(LocaleKeys.common_generalError.tr()),
         orElse: () {},
       );
     });

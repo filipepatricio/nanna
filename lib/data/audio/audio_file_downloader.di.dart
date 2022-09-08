@@ -14,7 +14,7 @@ class AudioFileDownloader {
       if (result == HttpStatus.forbidden) {
         throw FileAccessExpired();
       } else if (result != HttpStatus.ok) {
-        throw Exception('Loading pdf failed with code $result');
+        throw Exception('Loading audio file ${args.file} failed with code $result');
       }
     }
   }

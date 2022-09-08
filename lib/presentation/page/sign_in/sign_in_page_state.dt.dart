@@ -19,5 +19,7 @@ class SignInPageState with _$SignInPageState {
 
   factory SignInPageState.success(bool isOnboardingSeen) = _SignInPageStateSuccess;
 
+  factory SignInPageState.unauthorizedError() = _SignInPageStateUnauthorizedError;
+
   factory SignInPageState.generalError() = _SignInPageStateGeneralError;
 }
