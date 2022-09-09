@@ -167,7 +167,9 @@ class _CancelButton extends HookWidget {
                 child: TextButton(
                   onPressed: () {
                     searchTextEditingController.clear();
-                    cubit.explore();
+                    Future.delayed(Duration.zero, () {
+                      cubit.explore();
+                    });
                     final currentFocus = FocusScope.of(context);
                     if (!currentFocus.hasPrimaryFocus) {
                       currentFocus.unfocus();
