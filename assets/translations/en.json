@@ -130,6 +130,7 @@
     }
   },
   "signIn": {
+    "unauthorized": "This link has expired. Please type in your email again to get a new one",
     "header": {
       "signIn": "Welcome to the smart & flexible news format",
       "magicLinkOne": "_Check your mail!_",

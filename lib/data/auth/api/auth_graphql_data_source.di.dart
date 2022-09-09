@@ -66,6 +66,9 @@ class AuthGraphqlDataSource implements AuthApiDataSource {
   }
 
   Object _resolveSignInError(String? errorCode, SignInCredentials credentials) {
+    if (errorCode == 'unauthorized') {
+      return AuthException.unauthorized();
+    }
     return AuthException.unknown();
   }
 }

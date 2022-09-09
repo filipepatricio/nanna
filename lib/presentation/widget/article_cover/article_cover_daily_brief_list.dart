@@ -29,7 +29,6 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
             _ArticleSquareCover(
               article: article,
               coverColor: coverColor,
-              showArticleIndicator: false,
               dimension: coverSize,
               visited: article.visited,
             ),

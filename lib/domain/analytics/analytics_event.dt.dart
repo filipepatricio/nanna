@@ -28,6 +28,28 @@ class AnalyticsEvent with _$AnalyticsEvent {
         },
       );
 
+  factory AnalyticsEvent.briefCalendarOpened(String briefId) => AnalyticsEvent._(
+        'BriefCalendarOpened',
+        {
+          'brief_id': briefId,
+        },
+      );
+
+  factory AnalyticsEvent.briefCalendarClosed(String briefId) => AnalyticsEvent._(
+        'BriefCalendarClosed',
+        {
+          'brief_id': briefId,
+        },
+      );
+
+  factory AnalyticsEvent.calendarBriefSelected(String briefId, {required bool isTodaysBrief}) => AnalyticsEvent._(
+        'CalendarBriefSelected',
+        {
+          'brief_id': briefId,
+          'is_todays_brief': isTodaysBrief ? 'true' : 'false',
+        },
+      );
+
   factory AnalyticsEvent.topicSummaryRead(String topicId) => AnalyticsEvent._(
         'TopicSummaryRead',
         {
