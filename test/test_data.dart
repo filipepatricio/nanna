@@ -194,6 +194,8 @@ class TestData {
 
   static ExploreContent get exploreContent => _exploreContentMapper(MockDTO.exploreContent);
 
+  static ExploreContent get exploreContentVisited => _exploreContentMapper(MockDTO.exploreContentVisited);
+
   static Brief get currentBrief => _currentBriefMapper(MockDTO.currentBrief());
 
   static Brief get currentBriefVisited => _currentBriefMapper(MockDTO.currentBriefVisited);
