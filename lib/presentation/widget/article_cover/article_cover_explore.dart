@@ -18,17 +18,21 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: LayoutBuilder(
-        builder: (context, constraints) => Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _ArticleSquareCover(
-              article: article,
-              coverColor: coverColor,
-              dimension: constraints.maxWidth,
-            ),
-            _ArticleCoverContent(article: article),
-          ],
+        builder: (context, constraints) => CoverOpacity.article(
+          article: article,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _ArticleSquareCover(
+                article: article,
+                coverColor: coverColor,
+                dimension: constraints.maxWidth,
+                visited: article.visited,
+              ),
+              _ArticleCoverContent(article: article),
+            ],
+          ),
         ),
       ),
     );
@@ -54,64 +58,68 @@ class _ArticleCoverExploreList extends HookWidget {
       [MediaQuery.of(context).size],
     );
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Row(
-        children: [
-          _ArticleSquareCover(
-            article: article,
-            coverColor: coverColor,
-            dimension: coverSize,
-          ),
-          const SizedBox(width: AppDimens.m),
-          Expanded(
-            child: SizedBox(
-              height: coverSize,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    children: [
-                      PublisherLogo.dark(
-                        publisher: article.publisher,
-                        dimension: AppDimens.ml,
-                      ),
-                      Flexible(
-                        child: Text(
-                          article.publisher.name,
-                          maxLines: 1,
-                          style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
-                          overflow: TextOverflow.ellipsis,
+    return CoverOpacity.article(
+      article: article,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Row(
+          children: [
+            _ArticleSquareCover(
+              article: article,
+              coverColor: coverColor,
+              dimension: coverSize,
+              visited: article.visited,
+            ),
+            const SizedBox(width: AppDimens.m),
+            Expanded(
+              child: SizedBox(
+                height: coverSize,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Row(
+                      children: [
+                        PublisherLogo.dark(
+                          publisher: article.publisher,
+                          dimension: AppDimens.ml,
                         ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Text(
-                    article.strippedTitle,
-                    maxLines: 2,
-                    style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const Spacer(),
-                  Flexible(
-                    child: ArticleDottedInfo(
-                      article: article,
-                      isLight: false,
-                      showLogo: false,
-                      showPublisher: false,
-                      fullDate: true,
-                      textStyle: AppTypography.caption1Medium,
-                      color: AppColors.textGrey,
+                        Flexible(
+                          child: Text(
+                            article.publisher.name,
+                            maxLines: 1,
+                            style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const Spacer(),
+                    Text(
+                      article.strippedTitle,
+                      maxLines: 2,
+                      style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Spacer(),
+                    Flexible(
+                      child: ArticleDottedInfo(
+                        article: article,
+                        isLight: false,
+                        showLogo: false,
+                        showPublisher: false,
+                        fullDate: true,
+                        textStyle: AppTypography.caption1Medium,
+                        color: AppColors.textGrey,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

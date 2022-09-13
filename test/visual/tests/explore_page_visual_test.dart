@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../fakes.dart';
+import '../../test_data.dart';
 import '../visual_test_utils.dart';
 
 void main() {
@@ -36,9 +38,25 @@ void main() {
   );
 
   visualTest(
+    '${ExplorePage}_(full_height_visited)',
+    (tester) async {
+      await tester.startApp(
+        initialRoute: const ExploreTabGroupRouter(),
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<ExplorePageCubit>(
+            () => FakeExplorePageCubitVisited(),
+          );
+        },
+      );
+      await tester.matchGoldenFile();
+    },
+    testConfig: TestConfig.withDevices([veryHighDevice]),
+  );
+
+  visualTest(
     '${ExplorePage}_(error)',
     (tester) async {
-      final cubit = FakeExplorePageCubit();
+      final cubit = FakeErrorExplorePageCubit();
 
       await tester.startApp(
         initialRoute: const ExploreTabGroupRouter(),
@@ -67,12 +85,30 @@ void main() {
   );
 }
 
-class FakeExplorePageCubit extends Fake implements ExplorePageCubit {
+class FakeErrorExplorePageCubit extends Fake implements ExplorePageCubit {
   @override
   ExplorePageState get state => ExplorePageState.error();
 
   @override
   Stream<ExplorePageState> get stream => Stream.value(ExplorePageState.error());
+
+  @override
+  Future<void> initialize() async {}
+  @override
+  Future<void> close() async {}
+}
+
+class FakeExplorePageCubitVisited extends Fake implements ExplorePageCubit {
+  final _state = ExplorePageState.idle([
+    ExploreItem.pills([TestData.category]),
+    ...TestData.exploreContentVisited.areas.map(ExploreItem.stream).toList(),
+  ]);
+
+  @override
+  ExplorePageState get state => _state;
+
+  @override
+  Stream<ExplorePageState> get stream => Stream.value(_state);
 
   @override
   Future<void> initialize() async {}
