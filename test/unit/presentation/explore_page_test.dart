@@ -108,7 +108,7 @@ void main() {
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
       await tester.tap(find.byType(TextFormField));
-      expect(find.byType(SearchHistoryView), findsOneWidget);
+      expect(find.byType(ExplorePage), findsOneWidget);
     },
   );
 }
