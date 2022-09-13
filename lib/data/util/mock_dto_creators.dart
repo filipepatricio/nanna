@@ -355,6 +355,24 @@ class MockDTO {
     ],
   );
 
+  static final exploreContentVisited = ExploreContentDTO(
+    [
+      ExploreContentPillDTO.articles('articles', 'Articles', _mockedPillIcon),
+      ExploreContentPillDTO.articles('topics', 'Topics', _mockedPillIcon),
+      ExploreContentPillDTO.articles('articles', 'Articles', null),
+      ExploreContentPillDTO.articles('topics', 'Topics', null),
+      ExploreContentPillDTO.articles('articles', 'Articles', _mockedPillIcon),
+      ExploreContentPillDTO.articles('topics', 'Topics', _mockedPillIcon),
+    ],
+    [
+      _exploreTopicsAreaVisited,
+      _exploreArticlesAreaVisited,
+      _exploreHighlightedTopicsAreaVisited,
+      _exploreSmallTopicsAreaVisited,
+      _exploreArticlesListAreaVisited,
+    ],
+  );
+
   static final search = SearchContentDTO(
     [
       SearchResultDTO.topic(topicPreview),
@@ -410,6 +428,8 @@ class MockDTO {
   static final topicVisited = topic.copyWith(visited: true);
 
   static final topicPreview = topic.asPreview;
+
+  static final topicPreviewVisited = topicVisited.asPreview;
 
   static final topicPreviewWithEditorOwner = topicWithEditorOwner.asPreview;
 
@@ -610,6 +630,22 @@ class MockDTO {
     ],
   );
 
+  static final _exploreArticlesAreaVisited = ExploreContentAreaDTO.articles(
+    'explore-articles-id',
+    'By Publisher',
+    'This is description',
+    _mockedPillIcon,
+    false,
+    true,
+    [
+      premiumArticle.copyWith(progressState: ArticleProgressState.inProgress),
+      _freeArticle.copyWith(progressState: ArticleProgressState.inProgress),
+      premiumArticle.copyWith(progressState: ArticleProgressState.finished),
+      _freeArticle.copyWith(progressState: ArticleProgressState.finished),
+      premiumArticle.copyWith(progressState: ArticleProgressState.finished),
+    ],
+  );
+
   static final _exploreTopicsArea = ExploreContentAreaDTO.topics(
     'explore-topics-id',
     'Hot topics',
@@ -622,6 +658,21 @@ class MockDTO {
       topicPreview,
       topicPreview,
       topicPreview,
+    ],
+  );
+
+  static final _exploreTopicsAreaVisited = ExploreContentAreaDTO.topics(
+    'explore-topics-id',
+    'Hot topics',
+    _mockedPillIcon,
+    false,
+    true,
+    [
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
     ],
   );
 
@@ -642,6 +693,23 @@ class MockDTO {
     ],
   );
 
+  static final _exploreHighlightedTopicsAreaVisited = ExploreContentAreaDTO.highlightedTopics(
+    'explore-highlighted-topics-id',
+    'Trending news',
+    'Discover other topics of interest',
+    'DFBFFF',
+    _mockedPillIcon,
+    false,
+    false,
+    [
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
+    ],
+  );
+
   static final _exploreSmallTopicsArea = ExploreContentAreaDTO.smallTopics(
     'explore-small-topics-id',
     'More topics',
@@ -658,6 +726,22 @@ class MockDTO {
     ],
   );
 
+  static final _exploreSmallTopicsAreaVisited = ExploreContentAreaDTO.smallTopics(
+    'explore-small-topics-id',
+    'More topics',
+    'Discover other topics of interest',
+    _mockedPillIcon,
+    false,
+    false,
+    [
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
+      topicPreviewVisited,
+    ],
+  );
+
   static final _exploreArticlesListArea = ExploreContentAreaDTO.articlesList(
     'explore-articles-list-id',
     'Some more articles',
@@ -671,6 +755,22 @@ class MockDTO {
       premiumArticle,
       _freeArticle,
       premiumArticle,
+    ],
+  );
+
+  static final _exploreArticlesListAreaVisited = ExploreContentAreaDTO.articlesList(
+    'explore-articles-list-id',
+    'Some more articles',
+    'Those are articles in the list',
+    _mockedPillIcon,
+    false,
+    false,
+    [
+      premiumArticle.copyWith(progressState: ArticleProgressState.inProgress),
+      _freeArticle.copyWith(progressState: ArticleProgressState.inProgress),
+      premiumArticle.copyWith(progressState: ArticleProgressState.finished),
+      _freeArticle.copyWith(progressState: ArticleProgressState.finished),
+      premiumArticle.copyWith(progressState: ArticleProgressState.inProgress),
     ],
   );
 
