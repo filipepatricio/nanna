@@ -28,6 +28,8 @@ class AppConfig {
     this.segmentWriteKey,
     this.launchDarklyKey,
     this.appsFlyerKey,
+    this.revenueCatKeyiOS,
+    this.revenueCatKeyAndroid,
   });
   final String name;
   final String apiUrl;
@@ -40,6 +42,8 @@ class AppConfig {
   final String? segmentWriteKey;
   final String? launchDarklyKey;
   final String? appsFlyerKey;
+  final String? revenueCatKeyiOS;
+  final String? revenueCatKeyAndroid;
 
   static const dev = AppConfig._(
     name: Environment.dev,
@@ -52,6 +56,8 @@ class AppConfig {
     linkedinConfig: LinkedinConfig.dev(),
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
     appsFlyerKey: 'dev_key',
+    revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
+    revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
   );
 
   static const mock = AppConfig._(
@@ -80,6 +86,8 @@ class AppConfig {
     linkedinConfig: LinkedinConfig.staging(),
     launchDarklyKey: 'mob-348e437c-2b6b-42f5-9a74-5599f33908c0',
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',
+    revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
+    revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
   );
 
   static const prod = AppConfig._(

@@ -8,6 +8,8 @@ import 'package:better_informed_mobile/domain/exception/unauthorized_exception.d
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/purchases/use_case/identify_purchases_user_use_case.di.dart';
+import 'package:better_informed_mobile/domain/purchases/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -25,6 +27,8 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     this._isInternetConnectionAvailableUseCase,
     this._getOnboardingCategoriesUseCase,
     this._identifyAnalyticsUserUseCase,
+    this._initializePurchasesUseCase,
+    this._identifyPurchasesUserUseCase,
   ) : super(EntryPageState.idle());
 
   final IsSignedInUseCase _isSignedInUseCase;
@@ -35,6 +39,8 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
   final GetOnboardingCategoriesUseCase _getOnboardingCategoriesUseCase;
   final IdentifyAnalyticsUserUseCase _identifyAnalyticsUserUseCase;
+  final InitializePurchasesUseCase _initializePurchasesUseCase;
+  final IdentifyPurchasesUserUseCase _identifyPurchasesUserUseCase;
 
   bool? _isConnectionAvailable;
 
@@ -48,6 +54,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
 
   Future<void> initialize() async {
     await _saveReleaseNoteIfFirstRunUseCase();
+    await _initializePurchasesUseCase();
 
     final signedIn = await _isSignedInUseCase();
 
@@ -73,6 +80,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     try {
       await _initializeFeatureFlagsUseCase();
       await _identifyAnalyticsUserUseCase();
+      await _identifyPurchasesUserUseCase();
     } on UnauthorizedException {
       emit(EntryPageState.notSignedIn());
       return;
