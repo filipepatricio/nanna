@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dt.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences_group.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -56,61 +55,55 @@ class _IdleContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox(height: AppDimens.xxl),
-          _HeaderContainer(
-            startWidget: Text(
-              tr(LocaleKeys.onboarding_headerSlideThree),
-              style: AppTypography.h4Bold.copyWith(color: AppColors.textGrey),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(height: AppDimens.safeTopPadding(context)),
+        const Spacer(flex: 2),
+        const SizedBox(height: AppDimens.m),
+        _HeaderContainer(
+          startWidget: Text(
+            tr(LocaleKeys.onboarding_headerSlideThree),
+            style: AppTypography.h4Bold.copyWith(color: AppColors.textGrey),
+          ),
+          trailingChildren: [
+            Text(
+              LocaleKeys.onboarding_notifications_push.tr(),
+              style: AppTypography.systemText.copyWith(color: AppColors.charcoal),
             ),
-            trailingChildren: [
-              Text(
-                LocaleKeys.onboarding_notifications_push.tr(),
-                style: AppTypography.systemText.copyWith(color: AppColors.charcoal),
-              ),
-              Text(
-                LocaleKeys.onboarding_notifications_email.tr(),
-                style: AppTypography.systemText.copyWith(color: AppColors.charcoal),
-              ),
+            Text(
+              LocaleKeys.onboarding_notifications_email.tr(),
+              style: AppTypography.systemText.copyWith(color: AppColors.charcoal),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppDimens.m),
+        Expanded(
+          flex: 22,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ...notificationGroups
+                  .map(
+                    (group) => group.channels.map(
+                      (notification) => _NotificationRow(
+                        channel: notification,
+                        snackbarController: snackbarController,
+                      ),
+                    ),
+                  )
+                  .flattened
+                  .expand(
+                    (element) => [
+                      element,
+                      const SizedBox(height: AppDimens.l),
+                    ],
+                  ),
             ],
           ),
-          const SizedBox(height: AppDimens.m),
-          ...notificationGroups
-              .map(
-                (group) => group.channels.map(
-                  (notification) => _NotificationRow(
-                    channel: notification,
-                    snackbarController: snackbarController,
-                  ),
-                ),
-              )
-              .flattened
-              .expand(
-                (element) => [
-                  element,
-                  const SizedBox(height: AppDimens.l),
-                ],
-              ),
-          if (kIsAppleDevice)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  LocaleKeys.onboarding_tracking_title.tr(),
-                  style: AppTypography.h4Bold,
-                ),
-                const SizedBox(height: AppDimens.s),
-                AutoSizeText(
-                  LocaleKeys.onboarding_tracking_info.tr(),
-                  style: AppTypography.b2Regular,
-                ),
-              ],
-            ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
