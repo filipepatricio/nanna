@@ -30,7 +30,9 @@ class AppConfig {
     this.appsFlyerKey,
     this.revenueCatKeyiOS,
     this.revenueCatKeyAndroid,
+    this.revenueCatPremiumEntitlementId,
   });
+
   final String name;
   final String apiUrl;
   final String cloudinaryCloudName;
@@ -44,6 +46,7 @@ class AppConfig {
   final String? appsFlyerKey;
   final String? revenueCatKeyiOS;
   final String? revenueCatKeyAndroid;
+  final String? revenueCatPremiumEntitlementId;
 
   static const dev = AppConfig._(
     name: Environment.dev,
@@ -58,6 +61,7 @@ class AppConfig {
     appsFlyerKey: 'dev_key',
     revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
     revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
+    revenueCatPremiumEntitlementId: 'premium',
   );
 
   static const mock = AppConfig._(
@@ -88,6 +92,7 @@ class AppConfig {
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',
     revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
     revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
+    revenueCatPremiumEntitlementId: 'premium',
   );
 
   static const prod = AppConfig._(

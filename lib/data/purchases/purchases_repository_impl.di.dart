@@ -5,17 +5,16 @@ import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-const premiumEntitlementId = 'premium'; // Set in RevenueCat, do not change
-
 @LazySingleton(as: PurchasesRepository, env: liveEnvs)
 class PurchasesRepositoryImpl implements PurchasesRepository {
   const PurchasesRepositoryImpl(this._config);
 
   final AppConfig _config;
+
   @override
   Future<bool> hasActiveSubscription() async {
     final customer = await Purchases.getCustomerInfo();
-    return customer.hasActiveSubscription;
+    return customer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
   }
 
   @override
@@ -46,8 +45,8 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<bool> purchase(Package package) async {
     try {
-      final updatedCustomer = await Purchases.purchasePackage(package);
-      return updatedCustomer.hasActiveSubscription;
+      final customer = await Purchases.purchasePackage(package);
+      return customer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
     } on PlatformException catch (e) {
       if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.purchaseCancelledError) {
         return false;
@@ -58,11 +57,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   @override
   Future<bool> retorePurchases() async {
-    final updatedCustomer = await Purchases.restorePurchases();
-    return updatedCustomer.hasActiveSubscription;
+    final customer = await Purchases.restorePurchases();
+    return customer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
   }
-}
-
-extension on CustomerInfo {
-  bool get hasActiveSubscription => entitlements.active[premiumEntitlementId] != null;
 }
