@@ -10,6 +10,7 @@ class NotificationChannelDTOMapper implements BidirectionalMapper<NotificationCh
     return NotificationChannelDTO(
       data.id,
       data.name,
+      data.description,
       data.emailEnabled,
       data.pushEnabled,
     );
@@ -20,7 +21,7 @@ class NotificationChannelDTOMapper implements BidirectionalMapper<NotificationCh
     return NotificationChannel(
       id: data.id,
       name: data.name,
-      description: 'Our skilled editorial team reads and selects the most important articles of the day.',
+      description: data.description,
       pushEnabled: data.pushEnabled,
       emailEnabled: data.emailEnabled,
     );

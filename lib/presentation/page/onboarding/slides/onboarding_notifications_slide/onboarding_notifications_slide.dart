@@ -25,8 +25,10 @@ class OnboardingNotificationsSlide extends HookWidget {
     final state = useCubitBuilder(cubit);
     final snackbarController = useMemoized(() => SnackbarController());
 
-    useMemoized(
-      () => cubit.init(),
+    useEffect(
+      () {
+        cubit.init();
+      },
       [cubit],
     );
 
@@ -57,14 +59,13 @@ class _IdleContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: AppDimens.safeTopPadding(context)),
         const Spacer(flex: 2),
-        const SizedBox(height: AppDimens.m),
         _HeaderContainer(
           startWidget: Text(
-            tr(LocaleKeys.onboarding_headerSlideThree),
+            LocaleKeys.onboarding_headerSlideThree.tr(),
             style: AppTypography.h4Bold.copyWith(color: AppColors.textGrey),
           ),
           trailingChildren: [
@@ -80,7 +81,7 @@ class _IdleContent extends StatelessWidget {
         ),
         const SizedBox(height: AppDimens.m),
         Expanded(
-          flex: 22,
+          flex: 20,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -97,7 +98,7 @@ class _IdleContent extends StatelessWidget {
                   .expand(
                     (element) => [
                       element,
-                      const SizedBox(height: AppDimens.l),
+                      const SizedBox(height: AppDimens.m),
                     ],
                   ),
             ],
