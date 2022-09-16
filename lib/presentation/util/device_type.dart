@@ -19,7 +19,7 @@ extension DeviceTypeExtension on DeviceType {
   double get scaleFactor {
     switch (this) {
       case DeviceType.small:
-        return 0.9;
+        return 0.8;
       case DeviceType.regular:
         return 1.0;
       case DeviceType.tablet:

@@ -7,6 +7,7 @@ class NotificationChannel with _$NotificationChannel {
   factory NotificationChannel({
     required String id,
     required String name,
+    required String description,
     required bool pushEnabled,
     required bool emailEnabled,
   }) = _NotificationChannel;

@@ -112,14 +112,23 @@ class MockDTO {
           NotificationChannelDTO(
             'daily_brief',
             'New Daily Brief',
+            'Our skilled editorial team reads and selects the most important articles of the day.',
             false,
             true,
           ),
           NotificationChannelDTO(
             'new_topic',
-            'Incoming New Topic',
+            'Incoming topic',
+            'We provide you with incoming updates and new topics on a rolling daily basis.',
             true,
             true,
+          ),
+          NotificationChannelDTO(
+            'new_article',
+            'Incoming article',
+            'We provide you with incoming updates and new articles on a rolling daily basis.',
+            true,
+            false,
           ),
         ],
       ),
@@ -129,6 +138,7 @@ class MockDTO {
           NotificationChannelDTO(
             'new_features',
             'New features & improvements',
+            'Get the latest on new improvements and features.',
             false,
             true,
           ),

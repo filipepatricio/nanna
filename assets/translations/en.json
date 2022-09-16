@@ -45,6 +45,10 @@
     "categories": {
       "everything": "Show me everything"
     },
+    "notifications": {
+      "push": "Push",
+      "email": "Email"
+    },
     "notificationBulletPoints": {
       "headerOne": "Daily News Brief",
       "descOne": "Our skilled editorial team screens and selects the top articles of the day.",
