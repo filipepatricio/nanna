@@ -14,41 +14,50 @@ class _TopicCoverExploreSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(AppDimens.s),
-          topRight: Radius.circular(AppDimens.s),
-        ),
-        child: LayoutBuilder(
-          builder: (context, constraints) => Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox.square(
-                dimension: constraints.maxWidth,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: TopicCoverImage(
-                        topic: topic,
-                        borderRadius: AppDimens.s,
+    return CoverOpacity.topic(
+      topic: topic,
+      child: GestureDetector(
+        onTap: onTap,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppDimens.s),
+            topRight: Radius.circular(AppDimens.s),
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) => Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox.square(
+                  dimension: constraints.maxWidth,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: TopicCoverImage(
+                          topic: topic,
+                          borderRadius: AppDimens.s,
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      top: AppDimens.s,
-                      left: AppDimens.s,
-                      child: CoverLabel.topic(topic: topic),
-                    ),
-                  ],
+                      Positioned(
+                        top: AppDimens.s,
+                        left: AppDimens.s,
+                        child: CoverLabel.topic(topic: topic),
+                      ),
+                      if (topic.visited)
+                        const Positioned(
+                          bottom: AppDimens.s,
+                          right: AppDimens.s,
+                          child: VisitedCheck(),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-              _TopicCoverContent.exploreSmall(
-                topic: topic,
-                hasBackgroundColor: hasBackgroundColor,
-              ),
-            ],
+                _TopicCoverContent.exploreSmall(
+                  topic: topic,
+                  hasBackgroundColor: hasBackgroundColor,
+                ),
+              ],
+            ),
           ),
         ),
       ),
