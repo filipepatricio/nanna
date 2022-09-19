@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/presentation/page/settings/main/settings_
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/sign_in_page.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/how_do_we_curate_content_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page.dart';
@@ -51,6 +52,7 @@ const mainPageRoute = CustomRoute(
     RedirectRoute(path: '', redirectTo: topicsPathSegment),
     AutoRoute(path: '$topicsPathSegment/:topicSlug', page: TopicPage, name: 'TopicPage'),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
+    CustomRoute(page: SubscriptionPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
     AutoRoute<ArticleProgress?>(path: '$articlePathSegment/:articleSlug', page: MediaItemPage),

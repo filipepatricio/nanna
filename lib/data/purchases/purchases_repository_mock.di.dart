@@ -1,20 +1,24 @@
+import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/purchases/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/purchases/purchases_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 @LazySingleton(as: PurchasesRepository, env: mockEnvs)
 class PurchasesRepositoryMock implements PurchasesRepository {
-  const PurchasesRepositoryMock();
+  const PurchasesRepositoryMock(this._subscriptionPlanMapper);
+
+  final SubscriptionPlanMapper _subscriptionPlanMapper;
 
   @override
   Future<bool> hasActiveSubscription() async {
-    return false;
+    return true;
   }
 
   @override
-  Future<Offering> getOffering() async {
-    return const Offering('premium', 'description', []);
+  Future<List<SubscriptionPlan>> getSubscriptionPlans() async {
+    return _subscriptionPlanMapper(MockDTO.offering);
   }
 
   @override
@@ -28,12 +32,12 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   }
 
   @override
-  Future<bool> purchase(Package package) async {
+  Future<bool> purchase(SubscriptionPlan plan) async {
     return true;
   }
 
   @override
-  Future<bool> retorePurchases() async {
+  Future<bool> retorePurchase() async {
     return true;
   }
 }

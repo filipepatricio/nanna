@@ -33,6 +33,7 @@ import 'presentation/explore_page_test.dart' as explore_page_test;
 import 'presentation/main_page_test.dart' as main_page_test;
 import 'presentation/media_item_page_test.dart' as media_item_page_test;
 import 'presentation/sign_in_page_test.dart' as sign_in_page_test;
+import 'presentation/subscription_page_test.dart' as subscription_page_test;
 import 'presentation/topic_owner_page_test.dart' as topic_owner_page_test;
 import 'presentation/util/date_format_util_test.dart' as date_format_util_test;
 import 'presentation/widget/audio/progress_bar/audio_progress_bar_cubit_test.dart' as audio_progress_bar_cubit_test;
@@ -79,4 +80,5 @@ void main() {
   group('topic_owner_page_test', topic_owner_page_test.main);
   group('date_format_util_test', date_format_util_test.main);
   group('audio_progress_bar_cubit_test', audio_progress_bar_cubit_test.main);
+  group('subscription_page_test', subscription_page_test.main);
 }

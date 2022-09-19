@@ -43,7 +43,7 @@ class ExploreAreaHeader extends StatelessWidget {
             const SizedBox(height: AppDimens.xs),
             Text(
               optDescription,
-              style: AppTypography.subH1Medium,
+              style: AppTypography.subH1Medium.copyWith(height: 2.21),
             ),
           ],
         ],
