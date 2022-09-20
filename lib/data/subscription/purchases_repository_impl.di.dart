@@ -16,6 +16,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   final AppConfig _config;
   final SubscriptionPlanMapper _subscriptionPlanMapper;
+
   @override
   Future<bool> hasActiveSubscription() async {
     final customer = await Purchases.getCustomerInfo();

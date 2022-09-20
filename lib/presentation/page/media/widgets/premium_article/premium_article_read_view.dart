@@ -15,6 +15,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -24,6 +26,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.articleController,
     required this.pageController,
     required this.mainController,
+    required this.snackbarController,
     this.readArticleProgress,
     Key? key,
   }) : super(key: key);
@@ -32,6 +35,7 @@ class PremiumArticleReadView extends HookWidget {
   final PageController pageController;
   final ScrollController mainController;
   final PremiumArticleViewCubit cubit;
+  final SnackbarController snackbarController;
   final double? readArticleProgress;
 
   final GlobalKey _articleContentKey = GlobalKey();
@@ -223,6 +227,7 @@ class PremiumArticleReadView extends HookWidget {
                               cubit: cubit,
                               dynamicPosition: dynamicListenPosition,
                               readProgress: readProgress,
+                              snackbarController: snackbarController,
                             ),
                           ],
                         ),
@@ -312,6 +317,7 @@ class _ArticleContentView extends StatefulHookWidget {
     required this.articleController,
     required this.cubit,
     required this.articleContentKey,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
@@ -321,6 +327,7 @@ class _ArticleContentView extends StatefulHookWidget {
   final Article article;
   final PremiumArticleViewCubit cubit;
   final Key articleContentKey;
+  final SnackbarController snackbarController;
 
   @override
   State<_ArticleContentView> createState() => _ArticleContentViewState();
@@ -348,6 +355,15 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
                           article: widget.article,
                           articleContentKey: widget.articleContentKey,
                           scrollToPosition: () => _scrollToPosition(widget.readProgress.value),
+                          requestRefresh: () => widget.cubit.refreshArticle(),
+                          onGeneralError: () {
+                            widget.snackbarController.showMessage(
+                              SnackbarMessage.simple(
+                                message: LocaleKeys.common_error_tryAgainLater.tr(),
+                                type: SnackbarMessageType.negative,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -363,7 +379,7 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
             _ArticleProgressBar(readProgress: widget.readProgress),
           ],
         ),
-        if (widget.article.metadata.hasAudioVersion)
+        if (widget.article.metadata.hasAudioVersion && widget.article.metadata.availableInSubscription)
           _AnimatedAudioButton(
             dynamicPosition: widget.dynamicPosition,
             readProgress: widget.readProgress,

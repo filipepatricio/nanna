@@ -22,6 +22,7 @@ class MediaItem with _$MediaItem {
     required int? timeToRead,
     required Publisher publisher,
     required bool hasAudioVersion,
+    required bool availableInSubscription,
     required String sourceUrl,
     required ArticleProgressState progressState,
     required ArticleProgress progress,

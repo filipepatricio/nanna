@@ -1,4 +1,4 @@
-part of '../subscription_page.dart';
+part of 'subscription_plan_card.dart';
 
 class _Timeline extends StatelessWidget {
   const _Timeline({

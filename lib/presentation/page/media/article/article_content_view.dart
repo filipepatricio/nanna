@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -12,22 +13,32 @@ import 'package:better_informed_mobile/presentation/widget/article/article_dotte
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-class ArticleContentView extends StatelessWidget {
+class ArticleContentView extends HookWidget {
   const ArticleContentView({
     required this.article,
     required this.articleContentKey,
     required this.scrollToPosition,
+    required this.requestRefresh,
+    required this.onGeneralError,
     Key? key,
   }) : super(key: key);
 
   final Article article;
   final Key articleContentKey;
   final Function() scrollToPosition;
+  final VoidCallback requestRefresh;
+  final VoidCallback onGeneralError;
 
   @override
   Widget build(BuildContext context) {
+    final showCredits = useMemoized(
+      () => article.metadata.credits.isNotEmpty && article.metadata.availableInSubscription,
+      [article],
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -43,7 +54,7 @@ class ArticleContentView extends StatelessWidget {
               key: articleContentKey,
               child: _articleContent(context),
             ),
-            if (article.metadata.credits.isNotEmpty)
+            if (showCredits)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: _Credits(credits: article.metadata.credits),
@@ -56,16 +67,21 @@ class ArticleContentView extends StatelessWidget {
 
   Widget? _articleContent(BuildContext context) {
     if (article.content.type == ArticleContentType.markdown) {
-      return ArticleContentMarkdown(
-        markdown: article.content.content,
-        shareTextCallback: (quote) {
-          showQuoteEditor(
-            context,
-            article.metadata,
-            quote,
-          );
-        },
-        scrollToPosition: scrollToPosition,
+      return ArticlePaywallView(
+        article: article,
+        onPurchaseSuccess: requestRefresh,
+        onGeneralError: onGeneralError,
+        child: ArticleContentMarkdown(
+          markdown: article.content.content,
+          shareTextCallback: (quote) {
+            showQuoteEditor(
+              context,
+              article.metadata,
+              quote,
+            );
+          },
+          scrollToPosition: scrollToPosition,
+        ),
       );
     } else if (article.content.type == ArticleContentType.html) {
       return ArticleContentHtml(

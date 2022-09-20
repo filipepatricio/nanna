@@ -37,8 +37,11 @@ import 'package:better_informed_mobile/domain/push_notification/push_notificatio
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_remote_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_preferred_subscription_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
@@ -95,6 +98,9 @@ const _classes = [
   IsOnboardingPaywallSeenUseCase,
   HasActiveSubscriptionUseCase,
   SetOnboardingPaywallSeenUseCase,
+  PurchasesRepository,
+  GetPreferredSubscriptionPlanUseCase,
+  PurchaseSubscriptionUseCase,
 ];
 
 @GenerateMocks(_classes)

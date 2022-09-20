@@ -36,6 +36,7 @@ class AppColors {
   static const Color carrotRed = Color(0xffFB6F43);
   static const Color peach = Color(0xffF2E8E7);
   static const Color blueSelected = Color(0xff0099FF);
+  static const Color secondaryNeutralGrey = Color(0xFFE5E5EA);
 
   static const Color background = linen;
   static const Color textPrimary = charcoal;
@@ -50,7 +51,7 @@ class AppColors {
   static const Color socialNetworksIcon = Color(0xff282B35);
 
   static const Color dividerGrey = Color(0xffD1D5DB);
-  static const Color dividerGreyLight = Color(0xffE5E5EA);
+  static const Color dividerGreyLight = secondaryNeutralGrey;
 
   static const String shareBackgroundTopColor = "#FFFFFF";
   static const String shareBackgroundBottomColor = "#FFFFFF";

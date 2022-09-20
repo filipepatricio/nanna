@@ -27,6 +27,8 @@ class SubscriptionPlan {
   final String packageId;
 
   bool get isAnnual => type == SubscriptionPlanType.annual;
+
+  bool get hasTrial => trialDays > 0;
 }
 
 SubscriptionPlanType fromPackageType(PackageType type) {

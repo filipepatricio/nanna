@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
-import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_cubit.di.dart';
@@ -9,28 +7,26 @@ import 'package:better_informed_mobile/presentation/page/subscription/subscripti
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
+import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
+import 'package:better_informed_mobile/presentation/widget/subscription/subscrption_links_footer.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
-part 'widgets/links_footer.dart';
-part 'widgets/subscribe_button.dart';
-part 'widgets/subscription_plan_card.dart';
 part 'widgets/subscription_plans_loading_view.dart';
 part 'widgets/subscription_plans_view.dart';
-part 'widgets/timeline.dart';
 
 typedef OpenInBrowserFunction = Future<void> Function(String);
 
@@ -105,6 +101,7 @@ class SubscriptionPage extends HookWidget {
                           orElse: () => _SubscriptionPlansView(
                             cubit: cubit,
                             openInBrowser: _openInBrowser,
+                            trialViewMode: cubit.plans.every((element) => element.hasTrial),
                           ),
                         ),
                       ),

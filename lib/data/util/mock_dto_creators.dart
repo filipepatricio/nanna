@@ -481,6 +481,8 @@ class MockDTO {
     'Cassandre Lueilwitz',
     // hasAudioVersion
     false,
+    // availableInSubscription
+    true,
     // progress
     articleProgress,
     // progressState
@@ -519,6 +521,12 @@ class MockDTO {
     id: 'id-premium-audio',
     slug: 'slug-premium-audio',
     hasAudioVersion: true,
+  );
+  static final premiumArticleWithAudioLocked = premiumArticle.copyWith(
+    id: 'id-premium-audio',
+    slug: 'slug-premium-audio-not-available',
+    hasAudioVersion: true,
+    availableInSubscription: false,
   );
 
   static final articleContentMarkdown = ArticleContentDTO(
@@ -846,13 +854,19 @@ class MockDTO {
 
   static final callToAction = CallToActionDTO('More stories on', 'Explore');
 
-  static const offering = Offering(
+  static const offeringWithTrial = Offering(
+    'offering-id-trial',
+    'description',
+    [annualPackageTrial, monthlyPackageTrial],
+  );
+
+  static const offeringWithoutTrial = Offering(
     'offering-id',
     'description',
     [annualPackage, monthlyPackage],
   );
 
-  static const annualPackage = Package(
+  static const annualPackageTrial = Package(
     '\$rc_annual', //identifier
     PackageType.annual, //packageType
     //storeProduct
@@ -876,7 +890,7 @@ class MockDTO {
     'premium', //offeringIdentifier
   );
 
-  static const monthlyPackage = Package(
+  static const monthlyPackageTrial = Package(
     '\$rc_monthly',
     PackageType.monthly,
     StoreProduct(
@@ -894,6 +908,39 @@ class MockDTO {
         PeriodUnit.week,
         1,
       ),
+      discounts: [],
+    ),
+    'premium',
+  );
+
+  static const annualPackage = Package(
+    '\$rc_annual', //identifier
+    PackageType.annual, //packageType
+    //storeProduct
+    StoreProduct(
+      'inf_st_0099_1y_2w0', //identifier
+      'annual sub', //description
+      'Yearly subscription', //title
+      0.99, //price
+      '\$0.99', //priceString
+      'USD', //currencyCode
+      introductoryPrice: null,
+      discounts: [],
+    ),
+    'premium', //offeringIdentifier
+  );
+
+  static const monthlyPackage = Package(
+    '\$rc_monthly',
+    PackageType.monthly,
+    StoreProduct(
+      'inf_st_0049_1m_1w0',
+      'monthly sub',
+      'Monthly subscription',
+      0.49000000000000005,
+      '\$0.49',
+      'USD',
+      introductoryPrice: null,
       discounts: [],
     ),
     'premium',
@@ -918,6 +965,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     String? sourceUrl,
     String? author,
     bool? hasAudioVersion,
+    bool? availableInSubscription,
     ArticleProgressDTO? progress,
     ArticleProgressState? progressState,
     bool? locked,
@@ -939,6 +987,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl ?? this.sourceUrl,
       author ?? this.author,
       hasAudioVersion ?? this.hasAudioVersion,
+      availableInSubscription ?? this.availableInSubscription,
       progress ?? this.progress,
       progressState ?? this.progressState,
       locked ?? this.locked,
@@ -963,6 +1012,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl,
       author,
       hasAudioVersion,
+      availableInSubscription,
       progress,
       progressState,
       locked,
@@ -987,6 +1037,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       sourceUrl,
       author,
       hasAudioVersion,
+      availableInSubscription,
       progress,
       progressState,
       locked,

@@ -181,6 +181,7 @@ class PremiumArticleActionsBar extends HookWidget {
                         ArticleOutputModeToggleButton(
                           buttonColor: buttonColor,
                           articleOutputMode: articleOutputModeNotifier,
+                          enabled: article.metadata.availableInSubscription,
                         )
                       ],
                       const SizedBox(width: AppDimens.m),
@@ -225,11 +226,13 @@ class ArticleOutputModeToggleButton extends StatelessWidget {
   const ArticleOutputModeToggleButton({
     required this.buttonColor,
     required this.articleOutputMode,
+    this.enabled = true,
     Key? key,
   }) : super(key: key);
 
   final ValueNotifier<Color> buttonColor;
   final ValueNotifier<ArticleOutputMode> articleOutputMode;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -242,19 +245,21 @@ class ArticleOutputModeToggleButton extends StatelessWidget {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
               child: GestureDetector(
-                onTap: () {
-                  switch (value) {
-                    case ArticleOutputMode.read:
-                      articleOutputMode.value = ArticleOutputMode.audio;
-                      break;
-                    case ArticleOutputMode.audio:
-                      articleOutputMode.value = ArticleOutputMode.read;
-                      break;
-                  }
-                },
+                onTap: enabled
+                    ? () {
+                        switch (value) {
+                          case ArticleOutputMode.read:
+                            articleOutputMode.value = ArticleOutputMode.audio;
+                            break;
+                          case ArticleOutputMode.audio:
+                            articleOutputMode.value = ArticleOutputMode.read;
+                            break;
+                        }
+                      }
+                    : null,
                 child: SvgPicture.asset(
                   value == ArticleOutputMode.read ? AppVectorGraphics.headphones : AppVectorGraphics.lines,
-                  color: colorValue,
+                  color: enabled ? colorValue : colorValue.withOpacity(0.4),
                 ),
               ),
             );

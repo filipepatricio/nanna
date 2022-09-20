@@ -26,8 +26,11 @@ import 'domain/release_notes/use_case/get_current_release_note_use_case_test.dar
     as get_current_release_note_use_case_test;
 import 'domain/release_notes/use_case/save_release_note_if_first_run_use_case_test.dart'
     as save_release_note_if_first_run_use_case_test;
+import 'domain/subscription/use_case/get_article_paywall_preferred_plan_use_case_test.dart'
+    as get_article_paywall_preferred_plan_use_case_test;
 import 'presentation/app_connectivity_checker_test.dart' as app_connectivity_checker_test;
 import 'presentation/app_update_checker_test.dart' as app_update_checker_test;
+import 'presentation/article_paywall_view_test.dart' as article_paywall_view_test;
 import 'presentation/daily_brief_page_test.dart' as daily_brief_page_test;
 import 'presentation/explore_page_test.dart' as explore_page_test;
 import 'presentation/main_page_test.dart' as main_page_test;
@@ -68,6 +71,7 @@ void main() {
   );
   group('set_channel_email_setting_use_case_test', set_channel_email_setting_use_case_test.main);
   group('set_channel_push_setting_use_case_test', set_channel_push_setting_use_case_test.main);
+  group('get_article_paywall_preferred_plan_use_case_test', get_article_paywall_preferred_plan_use_case_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);
@@ -81,4 +85,5 @@ void main() {
   group('date_format_util_test', date_format_util_test.main);
   group('audio_progress_bar_cubit_test', audio_progress_bar_cubit_test.main);
   group('subscription_page_test', subscription_page_test.main);
+  group('article_paywall_view_test', article_paywall_view_test.main);
 }
