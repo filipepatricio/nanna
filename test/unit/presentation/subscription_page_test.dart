@@ -21,13 +21,21 @@ void main() {
       await tester.startApp(initialRoute: const SubscriptionPageRoute());
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeCharged.tr(args: [daysString(TestData.subscriptionPlans.first.trialDays)]),
+          LocaleKeys.subscription_youllBeCharged.tr(
+            args: [
+              LocaleKeys.date_day.plural(TestData.subscriptionPlans.first.trialDays),
+            ],
+          ),
         ),
         findsOneWidget,
       );
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeCharged.tr(args: [daysString(TestData.subscriptionPlans.last.trialDays)]),
+          LocaleKeys.subscription_youllBeCharged.tr(
+            args: [
+              LocaleKeys.date_day.plural(TestData.subscriptionPlans.last.trialDays),
+            ],
+          ),
         ),
         findsNothing,
       );
@@ -35,13 +43,21 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeCharged.tr(args: [daysString(TestData.subscriptionPlans.last.trialDays)]),
+          LocaleKeys.subscription_youllBeCharged.tr(
+            args: [
+              LocaleKeys.date_day.plural(TestData.subscriptionPlans.last.trialDays),
+            ],
+          ),
         ),
         findsOneWidget,
       );
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeCharged.tr(args: [daysString(TestData.subscriptionPlans.first.trialDays)]),
+          LocaleKeys.subscription_youllBeCharged.tr(
+            args: [
+              LocaleKeys.date_day.plural(TestData.subscriptionPlans.first.trialDays),
+            ],
+          ),
         ),
         findsNothing,
       );
@@ -54,8 +70,11 @@ void main() {
       await tester.startApp(initialRoute: const SubscriptionPageRoute());
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeChargedFooter
-              .tr(args: [daysString(TestData.subscriptionPlans.first.trialDays)]),
+          LocaleKeys.subscription_youllBeChargedFooter.tr(
+            args: [
+              LocaleKeys.date_day.plural(TestData.subscriptionPlans.first.trialDays),
+            ],
+          ),
           skipOffstage: false,
         ),
         findsOneWidget,
@@ -64,8 +83,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeChargedFooter
-              .tr(args: [daysString(TestData.subscriptionPlans.last.trialDays)]),
+          LocaleKeys.subscription_youllBeChargedFooter.tr(
+            args: [
+              LocaleKeys.date_day.plural(TestData.subscriptionPlans.last.trialDays),
+            ],
+          ),
           skipOffstage: false,
         ),
         findsOneWidget,

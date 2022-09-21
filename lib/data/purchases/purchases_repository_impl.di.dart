@@ -52,7 +52,18 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<bool> purchase(SubscriptionPlan plan) async {
     try {
-      final updatedCustomer = await Purchases.purchasePackage(plan.package);
+      final offerings = await Purchases.getOfferings();
+      if (offerings.current == null) {
+        throw Exception('There is no current offering configured');
+      }
+
+      final package =
+          offerings.current?.availablePackages.firstWhere((package) => package.identifier == plan.packageId);
+      if (package == null) {
+        throw Exception('Selected package is not part of the current offering. Id: ${plan.packageId}');
+      }
+
+      final updatedCustomer = await Purchases.purchasePackage(package);
       return updatedCustomer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
     } on PlatformException catch (e) {
       if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.purchaseCancelledError) {

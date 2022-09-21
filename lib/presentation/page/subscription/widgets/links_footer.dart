@@ -23,7 +23,7 @@ class _LinksFooter extends StatelessWidget {
           valueListenable: selectedPlanNotifier,
           builder: (context, selectedPlan, child) => Text(
             LocaleKeys.subscription_youllBeChargedFooter.tr(
-              args: [daysString(selectedPlan.trialDays)],
+              args: [LocaleKeys.date_day.plural(selectedPlan.trialDays)],
             ),
             textAlign: TextAlign.center,
             style: AppTypography.metadata1Medium.copyWith(color: AppColors.textGrey),

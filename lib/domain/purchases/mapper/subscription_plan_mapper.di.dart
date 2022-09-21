@@ -21,7 +21,7 @@ class SubscriptionPlanMapper implements Mapper<Offering, List<SubscriptionPlan>>
           trialDays: package.trialDays,
           reminderDays: package.reminderDays,
           discountPercentage: package.discountPercentage(offering),
-          package: package,
+          packageId: package.identifier,
         ),
       );
     }

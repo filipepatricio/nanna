@@ -71,7 +71,9 @@ class _Timeline extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        LocaleKeys.subscription_receiveAnEmail.tr(args: [daysString(plan.reminderDays)]),
+                        LocaleKeys.subscription_receiveAnEmail.tr(
+                          args: [LocaleKeys.date_day.plural(plan.reminderDays)],
+                        ),
                         style: labelStyle,
                         maxLines: 2,
                       ),
@@ -88,7 +90,11 @@ class _Timeline extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        LocaleKeys.subscription_youllBeCharged.tr(args: [daysString(plan.trialDays)]),
+                        LocaleKeys.subscription_youllBeCharged.tr(
+                          args: [
+                            LocaleKeys.date_day.plural(plan.trialDays),
+                          ],
+                        ),
                         style: labelStyle,
                         maxLines: 2,
                       ),

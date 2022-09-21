@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/exports.dart';
 import 'package:purchases_flutter/object_wrappers.dart';
 
 enum SubscriptionPlanType { annual, monthly }
@@ -12,7 +11,7 @@ class SubscriptionPlan {
     required this.priceString,
     required this.trialDays,
     required this.reminderDays,
-    required this.package,
+    required this.packageId,
     this.discountPercentage = 0,
   });
 
@@ -25,18 +24,9 @@ class SubscriptionPlan {
   final int reminderDays;
   final int discountPercentage;
 
-  final Package package;
+  final String packageId;
 
   bool get isAnnual => type == SubscriptionPlanType.annual;
-
-  String get periodString {
-    switch (type) {
-      case SubscriptionPlanType.annual:
-        return LocaleKeys.subscription_year.tr();
-      default:
-        return LocaleKeys.subscription_month.tr();
-    }
-  }
 }
 
 SubscriptionPlanType fromPackageType(PackageType type) {

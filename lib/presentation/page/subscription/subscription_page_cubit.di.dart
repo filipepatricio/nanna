@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/purchases/use_case/get_preferred_subscription_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/purchases/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/purchases/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/purchases/use_case/restore_purchase_use_case.di.dart';
@@ -10,11 +11,13 @@ import 'package:injectable/injectable.dart';
 class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
   SubscriptionPageCubit(
     this._getSubscriptionPlansUseCase,
+    this._getPreferredSubscriptionPlanUseCase,
     this._restorePurchaseUseCase,
     this._purchaseSubscriptionUseCase,
   ) : super(SubscriptionPageState.initializing());
 
   final GetSubscriptionPlansUseCase _getSubscriptionPlansUseCase;
+  final GetPreferredSubscriptionPlanUseCase _getPreferredSubscriptionPlanUseCase;
   final RestorePurchaseUseCase _restorePurchaseUseCase;
   final PurchaseSubscriptionUseCase _purchaseSubscriptionUseCase;
 
@@ -25,18 +28,17 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
     plans = await _getSubscriptionPlansUseCase();
 
     if (plans.isNotEmpty) {
-      selectedPlan = plans.firstWhere(
-        (plan) => plan.isAnnual,
-        orElse: () => plans.first,
-      );
+      selectedPlan = _getPreferredSubscriptionPlanUseCase.call(plans);
     }
 
     emit(SubscriptionPageState.idle());
   }
 
   void selectPlan(SubscriptionPlan plan) {
-    selectedPlan = plan;
-    emit(SubscriptionPageState.idle());
+    if (selectedPlan != plan) {
+      selectedPlan = plan;
+      emit(SubscriptionPageState.idle());
+    }
   }
 
   Future<void> purchase() async {

@@ -110,8 +110,3 @@ class SubscriptionPage extends HookWidget {
     );
   }
 }
-
-String daysString(int days) {
-  final suffix = (days == 1 ? LocaleKeys.subscription_day : LocaleKeys.subscription_days).tr();
-  return '$days $suffix';
-}
