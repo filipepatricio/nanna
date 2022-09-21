@@ -29,6 +29,7 @@ class ArticleHeaderDTO {
     this.hasAudioVersion,
     this.progress,
     this.progressState,
+    this.locked,
   );
 
   factory ArticleHeaderDTO.fromJson(Map<String, dynamic> json) => _$ArticleHeaderDTOFromJson(json);
@@ -51,6 +52,7 @@ class ArticleHeaderDTO {
   final bool hasAudioVersion;
   final ArticleProgressDTO progress;
   final ArticleProgressState progressState;
+  final bool locked;
 
   Map<String, dynamic> toJson() => _$ArticleHeaderDTOToJson(this);
 }

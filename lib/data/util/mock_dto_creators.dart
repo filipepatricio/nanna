@@ -485,6 +485,8 @@ class MockDTO {
     articleProgress,
     // progressState
     ArticleProgressState.unread,
+    // locked
+    false,
   );
 
   static final _freeArticle = _freeArticleWithoutNote.copyWith(
@@ -497,6 +499,7 @@ class MockDTO {
     slug: 'slug-premium',
     type: ArticleTypeDTO.premium,
     image: _articleImageCloudinary,
+    locked: true,
   );
 
   static final premiumArticle = _freeArticle.copyWith(
@@ -504,6 +507,7 @@ class MockDTO {
     slug: 'slug-premium',
     type: ArticleTypeDTO.premium,
     image: _articleImageCloudinary,
+    locked: true,
   );
 
   static final premiumArticleWithoutNoteWithAudio = premiumArticleWithoutNote.copyWith(
@@ -915,6 +919,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     bool? hasAudioVersion,
     ArticleProgressDTO? progress,
     ArticleProgressState? progressState,
+    bool? locked,
   }) {
     return ArticleHeaderDTO(
       id ?? this.id,
@@ -935,6 +940,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       hasAudioVersion ?? this.hasAudioVersion,
       progress ?? this.progress,
       progressState ?? this.progressState,
+      locked ?? this.locked,
     );
   }
 
@@ -958,6 +964,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       hasAudioVersion,
       progress,
       progressState,
+      locked,
     );
   }
 
@@ -981,6 +988,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       hasAudioVersion,
       progress,
       progressState,
+      locked,
     );
   }
 }

@@ -111,6 +111,7 @@ class _ArticleCoverDailyBriefSmall extends StatelessWidget {
                                   article: article,
                                   bookmarkButtonMode: BookmarkButtonMode.color,
                                   audioFloatingControlButtonMode: AudioFloatingControlButtonMode.colored,
+                                  lockerMode: LockerMode.color,
                                 ),
                               ],
                             ],

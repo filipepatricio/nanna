@@ -90,6 +90,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                         article: article,
                                         bookmarkButtonMode: BookmarkButtonMode.image,
                                         audioFloatingControlButtonMode: AudioFloatingControlButtonMode.white,
+                                        lockerMode: LockerMode.image,
                                       ),
                                     ],
                                   ],

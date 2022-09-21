@@ -36,6 +36,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     bool hasAudioVersion,
     ArticleProgressDTO progress,
     ArticleProgressState progressState,
+    bool locked,
   ) = BriefEntryItemDTOArticle;
 
   @FreezedUnionValue('Topic')

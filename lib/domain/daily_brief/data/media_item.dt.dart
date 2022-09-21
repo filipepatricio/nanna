@@ -25,6 +25,7 @@ class MediaItem with _$MediaItem {
     required String sourceUrl,
     required ArticleProgressState progressState,
     required ArticleProgress progress,
+    required bool locked,
     DateTime? publicationDate,
     ArticleImage? image,
     String? author,

@@ -48,6 +48,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemA
       hasAudioVersion: data.hasAudioVersion,
       progress: _articleProgressDTOMapper(data.progress),
       progressState: data.progressState,
+      locked: data.locked,
     );
   }
 }

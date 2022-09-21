@@ -58,7 +58,7 @@ class _ArticleCoverOtherBriefItemsList extends HookWidget {
                   Row(
                     children: [
                       PublisherLogo.dark(publisher: article.publisher),
-                      Flexible(
+                      Expanded(
                         child: Text(
                           article.publisher.name,
                           maxLines: 1,
@@ -66,6 +66,7 @@ class _ArticleCoverOtherBriefItemsList extends HookWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      if (article.locked) const Locker.color(),
                     ],
                   ),
                 ],

@@ -51,6 +51,10 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        if (article.locked) ...[
+                          const Locker.color(),
+                          const SizedBox(width: AppDimens.m),
+                        ],
                         BookmarkButton.article(
                           article: article,
                           mode: BookmarkButtonMode.color,
