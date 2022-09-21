@@ -85,7 +85,7 @@ class _ArticleCoverExploreList extends HookWidget {
                           publisher: article.publisher,
                           dimension: AppDimens.ml,
                         ),
-                        Flexible(
+                        Expanded(
                           child: Text(
                             article.publisher.name,
                             maxLines: 1,
@@ -93,6 +93,7 @@ class _ArticleCoverExploreList extends HookWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        if (article.locked) const Locker.dark(),
                       ],
                     ),
                     const Spacer(),
@@ -164,16 +165,28 @@ class _ArticleCoverContent extends StatelessWidget {
             baseTextStyle: titleStyle,
           ),
         ),
-        if (timeToRead != null) ...[
-          const SizedBox(height: AppDimens.s),
-          Text(
-            LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
-            style: AppTypography.caption1Medium.copyWith(
-              height: 1.2,
-              color: AppColors.textGrey,
+        const SizedBox(height: AppDimens.s),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (timeToRead != null)
+              Text(
+                LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
+                style: AppTypography.caption1Medium.copyWith(
+                  height: 1.2,
+                  color: AppColors.textGrey,
+                ),
+              ),
+            const Spacer(),
+            Visibility(
+              visible: article.locked,
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              child: const Locker.dark(),
             ),
-          ),
-        ]
+          ],
+        ),
       ],
     );
   }

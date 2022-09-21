@@ -50,6 +50,7 @@ class BriefEntryMediaItemDTOMapper implements Mapper<BriefEntryItemDTO, MediaIte
           hasAudioVersion: data.hasAudioVersion,
           progress: _articleProgressDTOMapper(data.progress),
           progressState: data.progressState,
+          locked: data.locked,
         );
       },
       topicPreview: (_) => null,
