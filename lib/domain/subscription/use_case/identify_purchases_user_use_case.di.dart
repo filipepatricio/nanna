@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
-import 'package:better_informed_mobile/domain/purchases/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

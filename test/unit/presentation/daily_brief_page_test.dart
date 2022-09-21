@@ -28,6 +28,10 @@ void main() {
     final isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
     final setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
     final getShouldUpdateBriefStreamUseCase = MockGetShouldUpdateBriefStreamUseCase();
+    final shouldUsePaidSubscriptionsUseCase = MockShouldUsePaidSubscriptionsUseCase();
+    final isOnboardingPaywallSeenUseCase = MockIsOnboardingPaywallSeenUseCase();
+    final hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
+    final setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
 
     final dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -37,6 +41,10 @@ void main() {
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
       getShouldUpdateBriefStreamUseCase,
+      shouldUsePaidSubscriptionsUseCase,
+      isOnboardingPaywallSeenUseCase,
+      hasActiveSubscriptionUseCase,
+      setOnboardingPaywallSeenUseCase,
     );
 
     final entry = TestData.currentBrief.allEntries.first;

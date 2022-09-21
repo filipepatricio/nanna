@@ -1,8 +1,8 @@
-import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
-import 'package:better_informed_mobile/domain/purchases/use_case/get_preferred_subscription_plan_use_case.di.dart';
-import 'package:better_informed_mobile/domain/purchases/use_case/get_subscription_plans_use_case.di.dart';
-import 'package:better_informed_mobile/domain/purchases/use_case/purchase_subscription_use_case.di.dart';
-import 'package:better_informed_mobile/domain/purchases/use_case/restore_purchase_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_preferred_subscription_plan_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';

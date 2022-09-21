@@ -9,7 +9,11 @@ import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.d
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -45,6 +49,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     this._trackActivityUseCase,
     this._incomingPushDataRefreshStreamUseCase,
     this._getShouldUpdateBriefStreamUseCase,
+    this._shouldUsePaidSubscriptionsUseCase,
+    this._isOnboardingPaywallSeenUseCase,
+    this._hasActiveSubscriptionUseCase,
+    this._setOnboardingPaywallSeenUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -54,6 +62,10 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final IncomingPushDataRefreshStreamUseCase _incomingPushDataRefreshStreamUseCase;
   final GetShouldUpdateBriefStreamUseCase _getShouldUpdateBriefStreamUseCase;
+  final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
+  final IsOnboardingPaywallSeenUseCase _isOnboardingPaywallSeenUseCase;
+  final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
+  final SetOnboardingPaywallSeenUseCase _setOnboardingPaywallSeenUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -99,6 +111,13 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     _initializeItemPreviewTracker();
 
     await loadPastDaysBriefs();
+
+    if (await _shouldUsePaidSubscriptionsUseCase()) {
+      if (!(await _hasActiveSubscriptionUseCase()) && !(await _isOnboardingPaywallSeenUseCase())) {
+        await _setOnboardingPaywallSeenUseCase();
+        emit(DailyBriefPageState.showPaywall());
+      }
+    }
   }
 
   Future<void> initializeTutorialSnackBar() async {

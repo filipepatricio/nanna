@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_section.dt.
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_subsection.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/relax.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
@@ -269,6 +270,7 @@ class _IdleContent extends HookWidget {
         showTopicCardTutorialCoachMark: () => tutorialCoachMark.show(context: context),
         skipTutorialCoachMark: (_) => tutorialCoachMark.skip(),
         finishTutorialCoachMark: tutorialCoachMark.finish,
+        showPaywall: () => context.pushRoute(const SubscriptionPageRoute()),
       );
     });
 
