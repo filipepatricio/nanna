@@ -43,6 +43,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
+import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/purchases/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 
 class TestData {
@@ -161,6 +163,8 @@ class TestData {
     ArticleContentTypeDTOMapper(),
   );
 
+  static final _subscriptionPlanMapper = SubscriptionPlanMapper();
+
   static AudioItem get audioItem => AudioItem(
         id: TestData.premiumArticleWithAudio.id,
         slug: TestData.premiumArticleWithAudio.slug,
@@ -207,4 +211,6 @@ class TestData {
 
   static List<CategoryItem> get categoryItemList =>
       MockDTO.categoryItemList.map<CategoryItem>(_categoryItemMapper).toList();
+
+  static List<SubscriptionPlan> get subscriptionPlans => _subscriptionPlanMapper(MockDTO.offering);
 }

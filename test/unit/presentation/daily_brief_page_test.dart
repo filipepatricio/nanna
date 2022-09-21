@@ -38,6 +38,7 @@ void main() {
       incomingPushDataRefreshStreamUseCase,
       getShouldUpdateBriefStreamUseCase,
     );
+
     final entry = TestData.currentBrief.allEntries.first;
     final event = AnalyticsEvent.dailyBriefEntryPreviewed(
       TestData.currentBrief.id,

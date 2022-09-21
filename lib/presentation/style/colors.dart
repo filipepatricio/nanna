@@ -17,7 +17,6 @@ class AppColors {
   static const Color limeGreen44 = Color(0x70BBF383);
   static const Color limeGreenVivid = Color(0xffA2F054);
   static const Color limeGreenDark = Color(0xff6AE476);
-  static const Color textGrey = Color(0xff989898);
   static const Color charcoal = Color(0xff282B35);
   static const Color charcoal20 = Color(0x33282B35);
   static const Color charcoal70 = Color(0xB3282B35);
@@ -27,6 +26,8 @@ class AppColors {
   static const Color transparentWhite = Color(0x00FFFFFF);
   static const Color blue = Color(0xff4579FF);
   static const Color grey = Color(0xffe7e7e7);
+  static const Color lightGrey = Color(0xffe5e5ea);
+  static const Color neutralGrey = Color(0xff989898);
   static const Color rose = Color(0xffF3E5F4);
   static const Color pastelGreen = Color(0xffE4F1E2);
   static const Color pastelPurple = Color(0xffDFBFFF);
@@ -38,6 +39,7 @@ class AppColors {
 
   static const Color background = linen;
   static const Color textPrimary = charcoal;
+  static const Color textGrey = neutralGrey;
 
   static const Color shadowLinenColor = Color(0x336B6346);
   static const Color shadowColor = Color(0x1f000000);

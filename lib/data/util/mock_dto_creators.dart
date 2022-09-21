@@ -47,6 +47,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.d
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 const _mockedPillIcon = '''
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -839,6 +840,59 @@ class MockDTO {
   static final relax = RelaxDTO('0/24 articles read', _mockedPillIcon, callToAction, 'Time to get _informed_');
 
   static final callToAction = CallToActionDTO('More stories on', 'Explore');
+
+  static const offering = Offering(
+    'offering-id',
+    'description',
+    [annualPackage, monthlyPackage],
+  );
+
+  static const annualPackage = Package(
+    '\$rc_annual', //identifier
+    PackageType.annual, //packageType
+    //storeProduct
+    StoreProduct(
+      'inf_st_0099_1y_2w0', //identifier
+      'with 14 days free trial', //description
+      'Yearly subscription', //title
+      0.99, //price
+      '\$0.99', //priceString
+      'USD', //currencyCode
+      introductoryPrice: IntroductoryPrice(
+        0.0, //price
+        '\$0.00', //priceString:
+        'P2W', //period
+        1, //cycles
+        PeriodUnit.week, //periodUnit
+        2, //periodNumberOfUnits
+      ),
+      discounts: [],
+    ),
+    'premium', //offeringIdentifier
+  );
+
+  static const monthlyPackage = Package(
+    '\$rc_monthly',
+    PackageType.monthly,
+    StoreProduct(
+      'inf_st_0049_1m_1w0',
+      'with 7 days free trial',
+      'Monthly subscription',
+      0.49000000000000005,
+      '\$0.49',
+      'USD',
+      introductoryPrice: IntroductoryPrice(
+        0.0,
+        '\$0.00',
+        'P1W',
+        1,
+        PeriodUnit.week,
+        1,
+      ),
+      discounts: [],
+    ),
+    'premium',
+  );
 }
 
 extension ArticleHeaderDTOExtension on ArticleHeaderDTO {

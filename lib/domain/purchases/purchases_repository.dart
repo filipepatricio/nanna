@@ -1,4 +1,4 @@
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
 
 abstract class PurchasesRepository {
   Future<void> initialize();
@@ -7,9 +7,9 @@ abstract class PurchasesRepository {
 
   Future<bool> hasActiveSubscription();
 
-  Future<Offering> getOffering();
+  Future<List<SubscriptionPlan>> getSubscriptionPlans();
 
-  Future<bool> retorePurchases();
+  Future<bool> retorePurchase();
 
-  Future<bool> purchase(Package package);
+  Future<bool> purchase(SubscriptionPlan plan);
 }

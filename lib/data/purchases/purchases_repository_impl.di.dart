@@ -1,4 +1,6 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/purchases/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/purchases/purchases_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -7,10 +9,13 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 @LazySingleton(as: PurchasesRepository, env: liveEnvs)
 class PurchasesRepositoryImpl implements PurchasesRepository {
-  const PurchasesRepositoryImpl(this._config);
+  const PurchasesRepositoryImpl(
+    this._config,
+    this._subscriptionPlanMapper,
+  );
 
   final AppConfig _config;
-
+  final SubscriptionPlanMapper _subscriptionPlanMapper;
   @override
   Future<bool> hasActiveSubscription() async {
     final customer = await Purchases.getCustomerInfo();
@@ -18,9 +23,11 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Future<Offering> getOffering() async {
+  Future<List<SubscriptionPlan>> getSubscriptionPlans() async {
     final offerings = await Purchases.getOfferings();
-    if (offerings.current != null) return offerings.current!;
+    if (offerings.current != null) {
+      return _subscriptionPlanMapper.call(offerings.current!);
+    }
     throw Exception('There is no current offering configured');
   }
 
@@ -43,10 +50,21 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Future<bool> purchase(Package package) async {
+  Future<bool> purchase(SubscriptionPlan plan) async {
     try {
-      final customer = await Purchases.purchasePackage(package);
-      return customer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
+      final offerings = await Purchases.getOfferings();
+      if (offerings.current == null) {
+        throw Exception('There is no current offering configured');
+      }
+
+      final package =
+          offerings.current?.availablePackages.firstWhere((package) => package.identifier == plan.packageId);
+      if (package == null) {
+        throw Exception('Selected package is not part of the current offering. Id: ${plan.packageId}');
+      }
+
+      final updatedCustomer = await Purchases.purchasePackage(package);
+      return updatedCustomer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
     } on PlatformException catch (e) {
       if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.purchaseCancelledError) {
         return false;
@@ -56,8 +74,15 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Future<bool> retorePurchases() async {
-    final customer = await Purchases.restorePurchases();
-    return customer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
+  Future<bool> retorePurchase() async {
+    try {
+      final updatedCustomer = await Purchases.restorePurchases();
+      return updatedCustomer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
+    } on PlatformException catch (e) {
+      if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.missingReceiptFileError) {
+        return false;
+      }
+      rethrow;
+    }
   }
 }
