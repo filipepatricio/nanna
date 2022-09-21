@@ -66,7 +66,7 @@ class _ArticleCoverOtherBriefItemsList extends HookWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      if (article.locked) const Locker.color(),
+                      if (article.locked) const Locker.dark(),
                     ],
                   ),
                 ],

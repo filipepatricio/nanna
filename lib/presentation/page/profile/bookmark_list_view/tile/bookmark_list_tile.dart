@@ -68,7 +68,7 @@ class BookmarkListTile extends HookWidget {
               Row(
                 children: [
                   if (bookmarkCover.bookmark.isArticleLocked) ...[
-                    const Locker.color(),
+                    const Locker.dark(),
                     const SizedBox(width: AppDimens.m),
                   ],
                   _BookmarkRemoveButton(

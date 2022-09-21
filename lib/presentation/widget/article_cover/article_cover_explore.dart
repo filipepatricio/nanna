@@ -93,7 +93,7 @@ class _ArticleCoverExploreList extends HookWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (article.locked) const Locker.color(),
+                        if (article.locked) const Locker.dark(),
                       ],
                     ),
                     const Spacer(),
@@ -178,12 +178,13 @@ class _ArticleCoverContent extends StatelessWidget {
                 ),
               ),
             const Spacer(),
-            if (article.locked)
-              const SizedBox(
-                height: AppDimens.l,
-                width: AppDimens.l,
-                child: Locker.color(),
-              ),
+            Visibility(
+              visible: article.locked,
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              child: const Locker.dark(),
+            ),
           ],
         ),
       ],

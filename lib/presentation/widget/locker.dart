@@ -13,9 +13,9 @@ class Locker extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  const Locker.color() : this(mode: LockerMode.color);
+  const Locker.dark() : this(mode: LockerMode.color);
 
-  const Locker.image() : this(mode: LockerMode.image);
+  const Locker.light() : this(mode: LockerMode.image);
 
   final LockerMode mode;
 

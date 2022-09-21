@@ -52,7 +52,7 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                           ),
                         ),
                         if (article.locked) ...[
-                          const Locker.color(),
+                          const Locker.dark(),
                           const SizedBox(width: AppDimens.m),
                         ],
                         BookmarkButton.article(

@@ -86,7 +86,7 @@ class _ArticleCoverTopicBigImage extends StatelessWidget {
                             showPublisher: false,
                           ),
                           const Spacer(),
-                          if (article.locked) const Locker.image(),
+                          if (article.locked) const Locker.light(),
                           const SizedBox(width: AppDimens.l),
                         ],
                       ),

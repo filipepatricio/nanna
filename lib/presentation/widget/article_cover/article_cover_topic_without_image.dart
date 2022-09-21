@@ -69,7 +69,7 @@ class _ArticleCoverTopicWithoutImage extends StatelessWidget {
                     isLight: false,
                   ),
                   const Spacer(),
-                  if (article.locked) const Locker.color(),
+                  if (article.locked) const Locker.dark(),
                   const SizedBox(width: AppDimens.l),
                 ],
               ),
