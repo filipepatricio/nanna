@@ -88,6 +88,12 @@ class _DailyBriefPage extends HookWidget {
       [cubit],
     );
 
+    useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, _) {
+      state.whenOrNull(
+        showPaywall: () => context.pushRoute(const SubscriptionPageRoute()),
+      );
+    });
+
     return Scaffold(
       body: TabBarListener(
         currentPage: context.routeData,
@@ -270,7 +276,6 @@ class _IdleContent extends HookWidget {
         showTopicCardTutorialCoachMark: () => tutorialCoachMark.show(context: context),
         skipTutorialCoachMark: (_) => tutorialCoachMark.skip(),
         finishTutorialCoachMark: tutorialCoachMark.finish,
-        showPaywall: () => context.pushRoute(const SubscriptionPageRoute()),
       );
     });
 
