@@ -43,8 +43,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
-import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
-import 'package:better_informed_mobile/domain/purchases/mapper/subscription_plan_mapper.di.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 
 class TestData {

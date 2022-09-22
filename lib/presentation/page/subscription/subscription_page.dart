@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
-import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';

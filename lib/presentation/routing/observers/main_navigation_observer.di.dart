@@ -20,22 +20,15 @@ class MainNavigationObserver extends AutoRouterObserver {
   void didPop(Route route, Route? previousRoute) {
     switch (route.settings.name) {
       case MediaItemPageRoute.name:
-        _updateBriefNotifierUseCase();
-        return;
       case TopicPage.name:
+      case SubscriptionPageRoute.name:
         _updateBriefNotifierUseCase();
-        return;
     }
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
     switch (route.settings.name) {
-      case CategoryPageRoute.name:
-        return;
-      case MediaItemPageRoute.name:
-        // Handled in MediaItemPageCubit
-        return;
       case ArticleSeeAllPageRoute.name:
         final args = route.settings.arguments as ArticleSeeAllPageRouteArgs;
         return _trackActivityUseCase.trackPage(AnalyticsPage.exploreArea(args.areaId, args.referred.name));
@@ -48,8 +41,6 @@ class MainNavigationObserver extends AutoRouterObserver {
         return _trackActivityUseCase.trackPage(AnalyticsPage.accountSettings());
       case SettingsNotificationsPageRoute.name:
         return _trackActivityUseCase.trackPage(AnalyticsPage.notificationSettings());
-      default:
-        return;
     }
   }
 }

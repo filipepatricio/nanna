@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
-import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
-import 'package:better_informed_mobile/domain/purchases/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

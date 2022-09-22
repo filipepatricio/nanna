@@ -12,7 +12,6 @@ void main() {
     (tester) async {
       await tester.startApp(initialRoute: const SubscriptionPageRoute());
       expect(find.byType(SubscriptionPlanCard), findsNWidgets(2));
-      // expect(find.byText(LocaleKeys.signIn_providerButton_apple.tr()), findsOneWidget);
     },
   );
   testWidgets(
