@@ -19,6 +19,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.paddingBuilders,
     this.shareTextCallback,
     this.markdownImageBuilder,
+    this.useTextHighlight = true,
     Key? key,
   })  : selectable = false,
         selectionControllers = null,
@@ -36,14 +37,17 @@ class InformedMarkdownBody extends StatelessWidget {
     this.paddingBuilders,
     this.shareTextCallback,
     this.markdownImageBuilder,
+    this.useTextHighlight = true,
     Key? key,
   })  : selectable = true,
         super(key: key);
+
   final String markdown;
   final TextStyle baseTextStyle;
   final TextStyle? strongTextStyle;
   final EdgeInsets? pPadding;
   final bool selectable;
+  final bool useTextHighlight;
   final Color highlightColor;
   final int? maxLines;
   final TextAlign textAlignment;
@@ -75,6 +79,7 @@ class InformedMarkdownBody extends StatelessWidget {
         return selectable
             ? InformedRichText.selectable(
                 textSpan: span!,
+                useTextHighlight: useTextHighlight,
                 highlightColor: highlightColor,
                 selectionControllers: selectionControllers,
                 maxLines: maxLines,
@@ -83,6 +88,7 @@ class InformedMarkdownBody extends StatelessWidget {
               )
             : InformedRichText(
                 textSpan: span!,
+                useTextHighlight: useTextHighlight,
                 highlightColor: highlightColor,
                 maxLines: maxLines,
                 textAlign: textAlignment,

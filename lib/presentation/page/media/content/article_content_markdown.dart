@@ -22,9 +22,7 @@ class ArticleContentMarkdown extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(
       () {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => scrollToPosition(),
-        );
+        WidgetsBinding.instance.addPostFrameCallback((_) => scrollToPosition());
       },
       [],
     );
@@ -37,6 +35,7 @@ class ArticleContentMarkdown extends HookWidget {
         baseTextStyle: AppTypography.articleText,
         strongTextStyle: AppTypography.articleTextBold,
         shareTextCallback: shareTextCallback,
+        useTextHighlight: false,
         paddingBuilders: <String, MarkdownPaddingBuilder>{
           'p': PPaddingBuilder(),
           'h1': HeadingsPaddingBuilder(),

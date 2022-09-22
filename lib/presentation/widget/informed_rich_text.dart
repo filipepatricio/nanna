@@ -18,6 +18,7 @@ class InformedRichText extends HookWidget implements RichTextBase {
     required this.textSpan,
     required this.highlightColor,
     this.textAlign = TextAlign.start,
+    this.useTextHighlight = true,
     this.maxLines,
     this.shareCallback,
     Key? key,
@@ -30,6 +31,7 @@ class InformedRichText extends HookWidget implements RichTextBase {
     required this.highlightColor,
     required this.selectionControllers,
     this.textAlign = TextAlign.start,
+    this.useTextHighlight = true,
     this.maxLines,
     this.shareCallback,
     Key? key,
@@ -40,6 +42,7 @@ class InformedRichText extends HookWidget implements RichTextBase {
   final TextSpan textSpan;
 
   final bool selectable;
+  final bool useTextHighlight;
   final Color highlightColor;
   final TextAlign textAlign;
   final int? maxLines;
@@ -60,6 +63,7 @@ class InformedRichText extends HookWidget implements RichTextBase {
         textAlign: textAlign,
         shareCallback: shareCallback,
         selectionControllers: selectionControllers,
+        useTextHighlight: useTextHighlight,
       ),
     );
   }
@@ -75,12 +79,15 @@ class _CustomTextPainter extends HookWidget {
     this.maxLines,
     this.shareCallback,
     this.selectionControllers,
+    this.useTextHighlight = true,
     Key? key,
   })  : assert(selectable && selectionControllers != null || !selectable),
         super(key: key);
+
   final BoxConstraints size;
   final List<InlineSpan> spans;
   final bool selectable;
+  final bool useTextHighlight;
   final Color highlightColor;
   final TextAlign textAlign;
   final int? maxLines;
@@ -114,7 +121,7 @@ class _CustomTextPainter extends HookWidget {
       () {
         return spans.map(
           (span) {
-            if (span is TextSpan && _isHighlighted(span)) {
+            if (useTextHighlight && span is TextSpan && _isHighlighted(span)) {
               return _modifyHighlightedText(span);
             }
 
@@ -133,11 +140,13 @@ class _CustomTextPainter extends HookWidget {
 
     return CustomPaint(
       size: textPainter.size,
-      painter: _CustomHighlightTextPainter(
-        textPainter,
-        underlined,
-        highlightColor,
-      ),
+      painter: useTextHighlight
+          ? _CustomHighlightTextPainter(
+              textPainter,
+              underlined,
+              highlightColor,
+            )
+          : null,
       child: selectable
           ? InformedSelectableText.rich(
               TextSpan(children: spansWithoutDecoration),
@@ -146,10 +155,7 @@ class _CustomTextPainter extends HookWidget {
               textAlign: textAlign,
               selectionControls: createPlatformSpecific(
                 [
-                  shareControlData(
-                    tr(LocaleKeys.common_share),
-                    shareCallback,
-                  ),
+                  shareControlData(tr(LocaleKeys.common_share), shareCallback),
                 ],
               ),
               onSelectionChanged: (_, __) => selectionControllers?.unselectAllBut(controller.key),
