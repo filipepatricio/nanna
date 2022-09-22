@@ -1,13 +1,14 @@
 fragment expertFragment on Expert {
-    __typename
-    id
-    bio
-    name
-    areaOfExpertise
-    instagram
-    linkedin
-    website
-    avatar {
-        publicId
-    }
+  __typename
+  id
+  bio
+  name
+  areaOfExpertise
+  instagram
+  linkedin
+  website
+  twitter
+  avatar {
+    publicId
+  }
 }

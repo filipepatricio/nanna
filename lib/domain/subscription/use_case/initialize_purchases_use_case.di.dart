@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/purchases/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

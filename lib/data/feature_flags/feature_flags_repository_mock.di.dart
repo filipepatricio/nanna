@@ -20,7 +20,12 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
   }
 
   @override
-  Future<String> initialTab() {
-    return Future.value('');
+  Future<String> initialTab() async {
+    return '';
+  }
+
+  @override
+  Future<bool> usePaidSubscriptions() async {
+    return false;
   }
 }

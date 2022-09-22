@@ -615,6 +615,7 @@ class MockDTO {
     'instagram.com',
     'linkedin.com',
     'website.com',
+    'twitter.com',
     // avatar
     ImageDTO('owner_1'),
   );

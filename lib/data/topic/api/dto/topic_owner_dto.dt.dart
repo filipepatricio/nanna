@@ -16,6 +16,7 @@ class TopicOwnerDTO with _$TopicOwnerDTO {
     String? instagram,
     String? linkedin,
     String? website,
+    String? twitter,
     ImageDTO? avatar,
   ) = _TopicOwnerDTOExpert;
 

@@ -2,10 +2,12 @@ import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/widgets/daily_brief_calendar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
@@ -20,16 +22,41 @@ import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
 void main() {
-  test('brief entry preview is being tracked correctly', () async {
-    final trackActivityUseCase = MockTrackActivityUseCase();
-    final getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
-    final getPastDaysBriesfUseCase = MockGetPastDaysBriesfUseCase();
-    final incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
-    final isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
-    final setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
-    final getShouldUpdateBriefStreamUseCase = MockGetShouldUpdateBriefStreamUseCase();
+  late MockTrackActivityUseCase trackActivityUseCase;
+  late MockGetCurrentBriefUseCase getCurrentBriefUseCase;
+  late MockGetPastDaysBriesfUseCase getPastDaysBriesfUseCase;
+  late MockIncomingPushDataRefreshStreamUseCase incomingPushDataRefreshStreamUseCase;
+  late MockIsTutorialStepSeenUseCase isTutorialStepSeenUseCase;
+  late MockSetTutorialStepSeenUseCase setTutorialStepSeenUseCase;
+  late MockGetShouldUpdateBriefStreamUseCase getShouldUpdateBriefStreamUseCase;
+  late MockShouldUsePaidSubscriptionsUseCase shouldUsePaidSubscriptionsUseCase;
+  late MockIsOnboardingPaywallSeenUseCase isOnboardingPaywallSeenUseCase;
+  late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
+  late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
+  late DailyBriefPageCubit dailyBriefPageCubit;
 
-    final dailyBriefPageCubit = DailyBriefPageCubit(
+  final entry = TestData.currentBrief.allEntries.first;
+  final event = AnalyticsEvent.dailyBriefEntryPreviewed(
+    TestData.currentBrief.id,
+    entry.id,
+    0,
+    entry.type.name,
+  );
+
+  setUp(() {
+    trackActivityUseCase = MockTrackActivityUseCase();
+    getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
+    getPastDaysBriesfUseCase = MockGetPastDaysBriesfUseCase();
+    incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
+    isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
+    setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
+    getShouldUpdateBriefStreamUseCase = MockGetShouldUpdateBriefStreamUseCase();
+    shouldUsePaidSubscriptionsUseCase = MockShouldUsePaidSubscriptionsUseCase();
+    isOnboardingPaywallSeenUseCase = MockIsOnboardingPaywallSeenUseCase();
+    hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
+    setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
+
+    dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
       getPastDaysBriesfUseCase,
       isTutorialStepSeenUseCase,
@@ -37,32 +64,28 @@ void main() {
       trackActivityUseCase,
       incomingPushDataRefreshStreamUseCase,
       getShouldUpdateBriefStreamUseCase,
-    );
-
-    final entry = TestData.currentBrief.allEntries.first;
-    final event = AnalyticsEvent.dailyBriefEntryPreviewed(
-      TestData.currentBrief.id,
-      entry.id,
-      0,
-      entry.type.name,
+      shouldUsePaidSubscriptionsUseCase,
+      isOnboardingPaywallSeenUseCase,
+      hasActiveSubscriptionUseCase,
+      setOnboardingPaywallSeenUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
-
     when(getCurrentBriefUseCase.call()).thenAnswer((_) async => TestData.currentBrief);
-
     when(getPastDaysBriesfUseCase.call()).thenAnswer((_) async => TestData.pastDaysBriefs);
-
     when(getCurrentBriefUseCase.stream).thenAnswer((_) async* {
       yield TestData.currentBrief;
     });
-
     when(getShouldUpdateBriefStreamUseCase.call()).thenAnswer((_) async* {});
-
     when(isTutorialStepSeenUseCase.call(any)).thenAnswer((_) async => true);
-
     when(incomingPushDataRefreshStreamUseCase.call()).thenAnswer((_) async* {});
+    when(shouldUsePaidSubscriptionsUseCase.call()).thenAnswer((_) async => true);
+    when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => true);
+    when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => true);
+    when(setOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async {});
+  });
 
+  test('brief entry preview is being tracked correctly', () async {
     await dailyBriefPageCubit.initialize();
 
     dailyBriefPageCubit.trackBriefEntryPreviewed(entry, 0, 1);
@@ -221,6 +244,41 @@ void main() {
           expect(appBarTitle, findsOneWidget);
         },
       );
+    },
+  );
+
+  testWidgets(
+    'subscription page is shown when conditions are met',
+    (tester) async {
+      when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => false);
+      when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => false);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+        },
+      );
+
+      expect(dailyBriefPageCubit.state, DailyBriefPageState.showPaywall());
+      verify(setOnboardingPaywallSeenUseCase.call()).called(1);
+      expect(find.byType(SubscriptionPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'subscription page is not shown when user is subscribed',
+    (tester) async {
+      when(hasActiveSubscriptionUseCase.call()).thenAnswer((_) async => true);
+      when(isOnboardingPaywallSeenUseCase.call()).thenAnswer((_) async => false);
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<DailyBriefPageCubit>(() => dailyBriefPageCubit);
+        },
+      );
+
+      verify(hasActiveSubscriptionUseCase.call()).called(1);
+      expect(find.byType(SubscriptionPage), findsNothing);
     },
   );
 }

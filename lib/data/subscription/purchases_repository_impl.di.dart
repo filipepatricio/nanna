@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/purchases/data/subscription_plan.dart';
-import 'package:better_informed_mobile/domain/purchases/mapper/subscription_plan_mapper.di.dart';
-import 'package:better_informed_mobile/domain/purchases/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
+import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
