@@ -37,6 +37,7 @@ class Expert extends TopicOwner {
     this.instagram,
     this.linkedin,
     this.website,
+    this.twitter,
     Image? avatar,
   }) : super(
           id: id,
@@ -49,6 +50,7 @@ class Expert extends TopicOwner {
   final String? instagram;
   final String? linkedin;
   final String? website;
+  final String? twitter;
 
   bool get hasSocialMediaLinks => instagram != null || linkedin != null || website != null;
 }
