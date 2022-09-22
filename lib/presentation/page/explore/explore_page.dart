@@ -242,7 +242,7 @@ class _Area extends HookWidget {
   final int orderIndex;
   @override
   Widget build(BuildContext context) {
-    final eventController = useEventTrackController();
+    final eventController = useEventTrackingController();
 
     return GeneralEventTracker(
       controller: eventController,

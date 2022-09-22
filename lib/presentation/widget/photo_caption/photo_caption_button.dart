@@ -27,7 +27,7 @@ class PhotoCaptionButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eventController = useEventTrackController();
+    final eventController = useEventTrackingController();
     final showPhotoCaptionTooltip = useState(false);
     final caption = cloudinaryImage.caption;
     return caption == null

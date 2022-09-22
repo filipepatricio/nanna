@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/purchases/use_case/purchase_subscr
 import 'package:better_informed_mobile/domain/purchases/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -43,20 +44,30 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
 
   Future<void> purchase() async {
     emit(SubscriptionPageState.processing());
-    final successful = await _purchaseSubscriptionUseCase.call(selectedPlan);
-    if (!successful) {
-      emit(SubscriptionPageState.idle());
-      return;
+    try {
+      final successful = await _purchaseSubscriptionUseCase.call(selectedPlan);
+      if (!successful) {
+        emit(SubscriptionPageState.idle());
+        return;
+      }
+      emit(SubscriptionPageState.success());
+    } catch (e) {
+      Fimber.e('Error while trying to purchase package ${selectedPlan.packageId}', ex: e);
+      emit(SubscriptionPageState.generalError());
     }
-    emit(SubscriptionPageState.success());
   }
 
   Future<void> restorePurchase() async {
-    final successful = await _restorePurchaseUseCase();
-    if (!successful) {
-      emit(SubscriptionPageState.idle());
-      return;
+    try {
+      final successful = await _restorePurchaseUseCase();
+      if (!successful) {
+        emit(SubscriptionPageState.idle());
+        return;
+      }
+      emit(SubscriptionPageState.success());
+    } catch (e) {
+      Fimber.e('Error while trying to restore purchase', ex: e);
+      emit(SubscriptionPageState.generalError());
     }
-    emit(SubscriptionPageState.success());
   }
 }

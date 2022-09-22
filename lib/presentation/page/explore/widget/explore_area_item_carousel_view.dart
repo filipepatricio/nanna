@@ -30,7 +30,7 @@ class ExploreAreaItemCarouselView<T> extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eventController = useEventTrackController();
+    final eventController = useEventTrackingController();
 
     return SizedBox(
       height: itemHeight,
