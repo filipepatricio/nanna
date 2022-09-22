@@ -50,4 +50,9 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   Future<String> initialTab() async {
     return await LDClient.stringVariation('root-route', '');
   }
+
+  @override
+  Future<bool> usePaidSubscriptions() async {
+    return await LDClient.boolVariation('use-paid-subscriptions', false);
+  }
 }

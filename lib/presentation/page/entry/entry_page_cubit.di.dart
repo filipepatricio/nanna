@@ -8,9 +8,9 @@ import 'package:better_informed_mobile/domain/exception/unauthorized_exception.d
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
-import 'package:better_informed_mobile/domain/purchases/use_case/identify_purchases_user_use_case.di.dart';
-import 'package:better_informed_mobile/domain/purchases/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/identify_purchases_user_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';

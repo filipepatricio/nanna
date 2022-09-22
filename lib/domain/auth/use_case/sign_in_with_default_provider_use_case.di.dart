@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/auth/auth_repository.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
-import 'package:better_informed_mobile/domain/purchases/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:injectable/injectable.dart';
 
