@@ -269,6 +269,24 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'item_id': item.typeId,
         },
       );
+
+  factory AnalyticsEvent.subscriptionPageDismissed() => AnalyticsEvent._('SubscriptionPageDismissed');
+
+  factory AnalyticsEvent.subscriptionPlanSelected({required String packageId}) => AnalyticsEvent._(
+        'SubscriptionPlanSelected',
+        {
+          'package_id': packageId,
+        },
+      );
+
+  factory AnalyticsEvent.subscriptionPlanPurchased({required String packageId}) => AnalyticsEvent._(
+        'SubscriptionPlanPurchased',
+        {
+          'package_id': packageId,
+        },
+      );
+
+  factory AnalyticsEvent.purchaseRestored() => AnalyticsEvent._('PurchaseRestored');
 }
 
 extension on BookmarkSortConfigName {

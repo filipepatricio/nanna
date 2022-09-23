@@ -75,7 +75,7 @@ class ReleaseNoteContentView extends StatelessWidget {
           const SizedBox(height: AppDimens.m),
           Text(
             releaseNote.headline,
-            style: AppTypography.h5Bold,
+            style: AppTypography.h1Bold.copyWith(height: 1.5),
           ),
           const SizedBox(height: AppDimens.s),
           Text(

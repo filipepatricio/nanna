@@ -27,6 +27,7 @@ class AppVectorGraphics {
   static const String instagram = 'assets/vector_graphics/instagram.svg';
   static const String linkedin = 'assets/vector_graphics/linkedin.svg';
   static const String website = 'assets/vector_graphics/website.svg';
+  static const String twitter = 'assets/vector_graphics/twitter.svg';
 
   static const String settings = 'assets/vector_graphics/settings_ic.svg';
   static const String account = 'assets/vector_graphics/account_ic.svg';
@@ -77,6 +78,7 @@ class AppVectorGraphics {
 
   static const String headphones = 'assets/vector_graphics/headphones.svg';
   static const String lines = 'assets/vector_graphics/lines.svg';
+  static const String locker = 'assets/vector_graphics/locker.svg';
 
   static const String playArrow = 'assets/vector_graphics/play_arrow.svg';
   static const String pause = 'assets/vector_graphics/pause.svg';

@@ -4,6 +4,7 @@ query getNotificationPreferencesMobile{
         channels {
             id
             name
+            description
             pushEnabled
             emailEnabled
         }

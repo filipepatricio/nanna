@@ -45,6 +45,10 @@
     "categories": {
       "everything": "Show me everything"
     },
+    "notifications": {
+      "push": "Push",
+      "email": "Email"
+    },
     "notificationBulletPoints": {
       "headerOne": "Daily News Brief",
       "descOne": "Our skilled editorial team screens and selects the top articles of the day.",
@@ -92,6 +96,26 @@
     "goToExplore": "Go to explore",
     "articlesCount": "{} articles on this topic"
   },
+  "date": {
+    "day": {
+      "one": "{} day",
+      "other": "{} days"
+    },
+    "month": "month",
+    "year": "year"
+  },
+  "subscription": {
+    "yourFreeTrial": "Your _free trial_ with informed",
+    "restorePurchase": "Restore purchase",
+    "startYourTrial": "Now, start your trial to get full access today.",
+    "receiveAnEmail": "In {}, receive an email reminder that your free trial is ending.",
+    "youllBeCharged": "In {}, you’ll be charged for informed.",
+    "tryForFree": "Try For Free",
+    "viewAllPlans": "View all plans",
+    "youllBeChargedFooter": "You will be charged only after the {} trial period.\nCancel anytime.",
+    "off": "{}% off",
+    "subscribe": "Subscribe"
+  },
   "settings": {
     "settings": "Settings",
     "profileHeader": "Profile",
@@ -102,6 +126,7 @@
     "manageMyInterests": "Manage My Interests",
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
+    "termsAndConditions": "Terms & Conditions",
     "termsOfService": "Terms of service",
     "privacyPolicyContent": "This is a placeholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "termsContent": "This is a placeholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",

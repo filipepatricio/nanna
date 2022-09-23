@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.di.dart';
@@ -12,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -98,7 +98,8 @@ class TopicOwnerPage extends HookWidget {
                           ),
                         ),
                         if (owner is! EditorialTeam) ...[
-                          _AnimatedSwitcher(
+                          InformedAnimatedSwitcher(
+                            duration: const Duration(milliseconds: 1000),
                             child: state.maybeMap(
                               idleExpert: (state) => state.topics.isEmpty
                                   ? const SizedBox.shrink()
@@ -255,6 +256,7 @@ class _SocialMediaLinks extends StatelessWidget {
     final instagram = owner.instagram;
     final linkedin = owner.linkedin;
     final website = owner.website;
+    final twitter = owner.twitter;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
@@ -271,23 +273,22 @@ class _SocialMediaLinks extends StatelessWidget {
               if (instagram != null)
                 _SocialMediaIcon(
                   icon: AppVectorGraphics.instagram,
-                  onTap: () {
-                    cubit.openSocialMediaLink(instagram);
-                  },
+                  onTap: () => cubit.openSocialMediaLink(instagram),
+                ),
+              if (twitter != null)
+                _SocialMediaIcon(
+                  icon: AppVectorGraphics.twitter,
+                  onTap: () => cubit.openSocialMediaLink(twitter),
                 ),
               if (linkedin != null)
                 _SocialMediaIcon(
                   icon: AppVectorGraphics.linkedin,
-                  onTap: () {
-                    cubit.openSocialMediaLink(linkedin);
-                  },
+                  onTap: () => cubit.openSocialMediaLink(linkedin),
                 ),
               if (website != null)
                 _SocialMediaIcon(
                   icon: AppVectorGraphics.website,
-                  onTap: () {
-                    cubit.openSocialMediaLink(website);
-                  },
+                  onTap: () => cubit.openSocialMediaLink(website),
                 ),
             ],
           ),
@@ -319,20 +320,5 @@ class _SocialMediaIcon extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _AnimatedSwitcher extends StatelessWidget {
-  const _AnimatedSwitcher({required this.child, Key? key}) : super(key: key);
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return kIsTest
-        ? child
-        : AnimatedSwitcher(
-            duration: const Duration(milliseconds: 1000),
-            child: child,
-          );
   }
 }

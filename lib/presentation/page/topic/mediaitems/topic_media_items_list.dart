@@ -22,7 +22,7 @@ class TopicMediaItemsList extends HookWidget {
 
   final Topic topic;
   final TopicPageCubit cubit;
-  final GeneralEventTrackerController eventController;
+  final GeneralEventTrackingController eventController;
   final GlobalKey? mediaItemKey;
 
   @override

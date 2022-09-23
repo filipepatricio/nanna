@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/widget/article_cover/content
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/locker.dart';
 import 'package:flutter/material.dart';
 
 class ArticleLabelsEditorsNote extends StatelessWidget {
@@ -81,6 +82,7 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
               article: article,
               bookmarkButtonMode: BookmarkButtonMode.color,
               audioFloatingControlButtonMode: AudioFloatingControlButtonMode.colored,
+              lockerMode: LockerMode.color,
             ),
           ],
         ),

@@ -171,14 +171,6 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h5Bold = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 24,
-    height: 1.5,
-    color: AppColors.textPrimary,
-  );
-
   static const TextStyle h5BoldSmall = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -215,7 +207,7 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     fontFamily: fontFamilyPlusJakartaSans,
     fontSize: 14,
-    height: 2.21,
+    height: 1,
     color: AppColors.textPrimary,
   );
 

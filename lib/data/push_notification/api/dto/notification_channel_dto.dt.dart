@@ -7,6 +7,7 @@ class NotificationChannelDTO {
   NotificationChannelDTO(
     this.id,
     this.name,
+    this.description,
     this.emailEnabled,
     this.pushEnabled,
   );
@@ -14,6 +15,7 @@ class NotificationChannelDTO {
   factory NotificationChannelDTO.fromJson(Map<String, dynamic> json) => _$NotificationChannelDTOFromJson(json);
   final String id;
   final String name;
+  final String description;
   final bool emailEnabled;
   final bool pushEnabled;
 

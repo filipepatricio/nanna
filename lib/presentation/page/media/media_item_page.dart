@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -13,6 +12,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -60,7 +60,7 @@ class MediaItemPage extends HookWidget {
       body: Column(
         children: [
           Expanded(
-            child: _AnimatedSwitcher(
+            child: InformedAnimatedSwitcher(
               child: state.maybeMap(
                 loading: (state) => const _LoadingContent(),
                 idleFree: (state) => FreeArticleView(
@@ -198,25 +198,6 @@ class _ErrorContent extends StatelessWidget {
         const SizedBox(height: AppDimens.xxxl + AppDimens.l),
       ],
     );
-  }
-}
-
-class _AnimatedSwitcher extends StatelessWidget {
-  const _AnimatedSwitcher({
-    required this.child,
-    Key? key,
-  }) : super(key: key);
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return kIsTest
-        ? child
-        : AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
-            child: child,
-          );
   }
 }
 

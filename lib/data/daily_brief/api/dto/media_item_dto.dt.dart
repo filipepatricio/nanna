@@ -34,6 +34,7 @@ class MediaItemDTO with _$MediaItemDTO {
     bool hasAudioVersion,
     ArticleProgressDTO progress,
     ArticleProgressState progressState,
+    bool locked,
   ) = MediaItemDTOArticle;
 
   @FreezedUnionValue(unknownKey)

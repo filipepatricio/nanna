@@ -50,6 +50,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
           hasAudioVersion: data.hasAudioVersion,
           progress: _articleProgressDTOMapper(data.progress),
           progressState: data.progressState,
+          locked: data.locked,
         );
       },
       unknown: (_) => const MediaItem.unknown(),

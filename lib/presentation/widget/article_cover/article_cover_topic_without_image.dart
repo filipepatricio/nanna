@@ -59,14 +59,21 @@ class _ArticleCoverTopicWithoutImage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(left: AppDimens.l, bottom: AppDimens.l),
-                child: ArticleDottedInfo(
-                  article: article,
-                  showPublisher: false,
-                  isLight: false,
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(width: AppDimens.l),
+                  ArticleDottedInfo(
+                    article: article,
+                    showPublisher: false,
+                    isLight: false,
+                  ),
+                  const Spacer(),
+                  if (article.locked) const Locker.dark(),
+                  const SizedBox(width: AppDimens.l),
+                ],
               ),
+              const SizedBox(height: AppDimens.l),
               if (editorsNote != null)
                 ArticleEditorsNote(
                   note: editorsNote!,

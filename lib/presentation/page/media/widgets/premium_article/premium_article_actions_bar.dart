@@ -155,10 +155,7 @@ class PremiumArticleActionsBar extends HookWidget {
                       label: fromTopic
                           ? Text(
                               LocaleKeys.article_topicOverview.tr(),
-                              style: AppTypography.subH1Medium.copyWith(
-                                color: color,
-                                height: 1,
-                              ),
+                              style: AppTypography.subH1Medium.copyWith(color: color),
                             )
                           : const SizedBox.shrink(),
                       style: ButtonStyle(

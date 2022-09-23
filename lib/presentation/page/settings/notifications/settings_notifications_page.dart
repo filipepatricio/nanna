@@ -35,7 +35,7 @@ class SettingsNotificationsPage extends HookWidget {
         titleSpacing: 0.0,
         title: Text(
           LocaleKeys.settings_settings.tr(),
-          style: AppTypography.subH1Medium.copyWith(height: 1),
+          style: AppTypography.subH1Medium,
         ),
       ),
       body: SnackbarParentView(

@@ -76,14 +76,21 @@ class _ArticleCoverTopicBigImage extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(left: AppDimens.l, bottom: AppDimens.l),
-                        child: ArticleDottedInfo(
-                          article: article,
-                          isLight: true,
-                          showPublisher: false,
-                        ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: AppDimens.l),
+                          ArticleDottedInfo(
+                            article: article,
+                            isLight: true,
+                            showPublisher: false,
+                          ),
+                          const Spacer(),
+                          if (article.locked) const Locker.light(),
+                          const SizedBox(width: AppDimens.l),
+                        ],
                       ),
+                      const SizedBox(height: AppDimens.l),
                       if (editorsNote != null)
                         ArticleEditorsNote(
                           note: editorsNote!,

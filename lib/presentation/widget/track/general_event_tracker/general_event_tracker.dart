@@ -6,12 +6,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 typedef EventCallback = void Function(AnalyticsEvent event);
 
-GeneralEventTrackerController useEventTrackController() {
-  return useMemoized(() => GeneralEventTrackerController());
+GeneralEventTrackingController useEventTrackingController() {
+  return useMemoized(() => GeneralEventTrackingController());
 }
 
-class GeneralEventTrackerController {
-  GeneralEventTrackerController();
+class GeneralEventTrackingController {
+  GeneralEventTrackingController();
   EventCallback? _onEvent;
 
   void track(AnalyticsEvent event) {
@@ -25,7 +25,7 @@ class GeneralEventTracker extends HookWidget {
     required this.child,
     Key? key,
   }) : super(key: key);
-  final GeneralEventTrackerController controller;
+  final GeneralEventTrackingController controller;
   final Widget child;
 
   @override

@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
+import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -123,7 +124,8 @@ class SettingsAccountBody extends HookWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: AppDimens.m),
-                      child: DeleteAccountLink(
+                      child: LinkLabel(
+                        label: LocaleKeys.settings_deleteAccount_button.tr(),
                         onTap: () => _onDeleteAccountLinkTap(context),
                       ),
                     ),
@@ -170,29 +172,5 @@ class SettingsAccountBody extends HookWidget {
   void _onSaveButtonTap(ValueNotifier<bool> isFormFocused) {
     _onDismissTextFormFocus(isFormFocused);
     cubit.saveAccountData();
-  }
-}
-
-class DeleteAccountLink extends StatelessWidget {
-  const DeleteAccountLink({
-    required this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Text(
-        LocaleKeys.settings_deleteAccount_button.tr(),
-        style: AppTypography.systemText.copyWith(
-          color: AppColors.black,
-          decoration: TextDecoration.underline,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
   }
 }

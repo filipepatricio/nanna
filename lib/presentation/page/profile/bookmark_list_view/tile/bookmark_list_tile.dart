@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
+import 'package:better_informed_mobile/presentation/widget/locker.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share_button.dart';
@@ -66,6 +67,10 @@ class BookmarkListTile extends HookWidget {
               bookmarkCover.bookmark.getReadProgressLabel(context, articleProgress.value),
               Row(
                 children: [
+                  if (bookmarkCover.bookmark.isArticleLocked) ...[
+                    const Locker.dark(),
+                    const SizedBox(width: AppDimens.m),
+                  ],
                   _BookmarkRemoveButton(
                     onRemoveBookmarkPressed: () => onRemoveBookmarkPressed(
                       bookmarkCover.bookmark,
@@ -121,6 +126,11 @@ class _BookmarkRemoveButton extends StatelessWidget {
 }
 
 extension on Bookmark {
+  bool get isArticleLocked => data.maybeMap(
+        article: (data) => data.article.locked,
+        orElse: () => false,
+      );
+
   Widget getShareButton(
     BuildContext context,
     SnackbarController snackbarController,
