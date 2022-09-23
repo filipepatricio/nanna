@@ -37,7 +37,7 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   }
 
   @override
-  Future<bool> retorePurchase() async {
+  Future<bool> restorePurchase() async {
     return true;
   }
 }

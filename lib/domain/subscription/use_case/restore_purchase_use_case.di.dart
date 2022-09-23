@@ -14,7 +14,7 @@ class RestorePurchaseUseCase {
   final AnalyticsRepository _analyticsRepository;
 
   Future<bool> call() async {
-    final result = await _purchasesRepository.retorePurchase();
+    final result = await _purchasesRepository.restorePurchase();
     if (result) _analyticsRepository.event(AnalyticsEvent.purchaseRestored());
     return result;
   }
