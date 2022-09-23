@@ -33,7 +33,9 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   @override
   Future<void> identify(String userId) async {
-    await Purchases.logIn(userId);
+    if (await Purchases.isConfigured) {
+      await Purchases.logIn(userId);
+    }
     return;
   }
 
@@ -74,7 +76,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Future<bool> retorePurchase() async {
+  Future<bool> restorePurchase() async {
     try {
       final updatedCustomer = await Purchases.restorePurchases();
       return updatedCustomer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;

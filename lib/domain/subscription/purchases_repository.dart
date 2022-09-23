@@ -9,7 +9,7 @@ abstract class PurchasesRepository {
 
   Future<List<SubscriptionPlan>> getSubscriptionPlans();
 
-  Future<bool> retorePurchase();
+  Future<bool> restorePurchase();
 
   Future<bool> purchase(SubscriptionPlan plan);
 }
