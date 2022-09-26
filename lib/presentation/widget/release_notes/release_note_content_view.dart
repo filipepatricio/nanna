@@ -80,7 +80,7 @@ class ReleaseNoteContentView extends StatelessWidget {
           const SizedBox(height: AppDimens.s),
           Text(
             releaseNote.content,
-            style: AppTypography.b1Medium,
+            style: AppTypography.b2Medium,
           ),
         ],
       ),

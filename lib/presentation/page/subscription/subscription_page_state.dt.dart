@@ -15,7 +15,7 @@ class SubscriptionPageState with _$SubscriptionPageState {
   factory SubscriptionPageState.processing() = _SubscriptionPageStateProcessing;
 
   @Implements<BuildState>()
-  factory SubscriptionPageState.success() = _SubscriptionPageStateSuccess;
+  factory SubscriptionPageState.success({required bool withTrial}) = _SubscriptionPageStateSuccess;
 
   factory SubscriptionPageState.generalError() = _SubscriptionPageStateGeneralError;
 }

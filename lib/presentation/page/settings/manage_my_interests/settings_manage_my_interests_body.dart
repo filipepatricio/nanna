@@ -114,7 +114,7 @@ class _CategoryItem extends StatelessWidget {
           Expanded(
             child: Text(
               categoryPreference.category.name,
-              style: AppTypography.h4Medium.copyWith(height: 1),
+              style: AppTypography.b2Medium.copyWith(height: 1),
             ),
           ),
           const SizedBox(width: AppDimens.xl),

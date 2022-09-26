@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_cubit.di.dart';
@@ -14,6 +13,7 @@ import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
+import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -49,6 +49,9 @@ class SubscriptionPage extends HookWidget {
 
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
+        success: (trialMode) => AutoRouter.of(context).replace(
+          SubscriptionSuccessPageRoute(trialMode: trialMode),
+        ),
         generalError: () {
           snackbarController.showMessage(
             SnackbarMessage.simple(
@@ -69,46 +72,17 @@ class SubscriptionPage extends HookWidget {
       );
     }
 
-    return SafeArea(
-      bottom: false,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppDimens.m)),
-        child: Scaffold(
-          backgroundColor: AppColors.background,
-          body: GeneralEventTracker(
-            controller: eventController,
-            child: SnackbarParentView(
-              controller: snackbarController,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(AppDimens.l, AppDimens.l, AppDimens.l, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.close_rounded),
-                      color: AppColors.black,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        eventController.track(AnalyticsEvent.subscriptionPageDismissed());
-                        context.popRoute();
-                      },
-                    ),
-                    Expanded(
-                      child: InformedAnimatedSwitcher(
-                        child: state.maybeMap(
-                          initializing: (_) => const _SubscriptionPlansLoadingView(),
-                          orElse: () => _SubscriptionPlansView(
-                            cubit: cubit,
-                            openInBrowser: _openInBrowser,
-                            trialViewMode: cubit.plans.every((element) => element.hasTrial),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return ModalBottomSheet(
+      snackbarController: snackbarController,
+      child: GeneralEventTracker(
+        controller: eventController,
+        child: InformedAnimatedSwitcher(
+          child: state.maybeMap(
+            initializing: (_) => const _SubscriptionPlansLoadingView(),
+            orElse: () => SubscriptionPlansView(
+              cubit: cubit,
+              openInBrowser: _openInBrowser,
+              trialViewMode: cubit.plans.every((element) => element.hasTrial),
             ),
           ),
         ),

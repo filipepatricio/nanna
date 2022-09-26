@@ -4,6 +4,7 @@ class AppVectorGraphics {
   static const String onboardingSlideOne = 'assets/vector_graphics/onboarding_slide_one.svg';
   static const String onboardingSlideTwo = 'assets/vector_graphics/onboarding_slide_two.svg';
   static const String tracking = 'assets/vector_graphics/tracking.svg';
+  static const String happySun = 'assets/vector_graphics/happy_sun.svg';
   static const String happyGreenSun = 'assets/vector_graphics/happy_green_sun_ic.svg';
   static const String notes = 'assets/vector_graphics/notes_ic.svg';
   static const String megaphone = 'assets/vector_graphics/megaphone_ic.svg';

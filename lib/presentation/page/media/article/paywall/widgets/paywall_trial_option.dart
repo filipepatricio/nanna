@@ -65,7 +65,7 @@ class _PaywallTrialOption extends StatelessWidget {
         Center(
           child: LinkLabel(
             label: LocaleKeys.subscription_viewAllPlansAction.tr(),
-            style: AppTypography.h4Medium,
+            style: AppTypography.b2Medium,
             onTap: () => AutoRouter.of(context).push(const SubscriptionPageRoute()),
           ),
         ),

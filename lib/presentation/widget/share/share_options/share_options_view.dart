@@ -143,7 +143,7 @@ class _Button extends StatelessWidget {
               Expanded(
                 child: Text(
                   text,
-                  style: AppTypography.h4Medium.copyWith(height: 1.0),
+                  style: AppTypography.b2Medium.copyWith(height: 1.0),
                 ),
               ),
             ],
