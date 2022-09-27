@@ -3,6 +3,7 @@ part of '../article_paywall_view.dart';
 class _PaywallMultipleOptions extends HookWidget {
   const _PaywallMultipleOptions({
     required this.plans,
+    required this.snackbarController,
     required this.onPurchasePressed,
     required this.onRestorePressed,
     required this.isProcessing,
@@ -10,6 +11,7 @@ class _PaywallMultipleOptions extends HookWidget {
   }) : super(key: key);
 
   final List<SubscriptionPlan> plans;
+  final SnackbarController snackbarController;
   final OnPurchasePressed onPurchasePressed;
   final VoidCallback onRestorePressed;
   final bool isProcessing;
@@ -58,7 +60,7 @@ class _PaywallMultipleOptions extends HookWidget {
     await openInAppBrowser(
       uri,
       (error, stacktrace) {
-        // showBrowserError(uri, snackbarController);
+        showBrowserError(uri, snackbarController);
       },
     );
   }

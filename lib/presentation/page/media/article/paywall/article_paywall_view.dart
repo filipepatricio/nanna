@@ -12,6 +12,8 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscrption_links_footer.dart';
@@ -30,14 +32,14 @@ class ArticlePaywallView extends HookWidget {
   const ArticlePaywallView({
     required this.article,
     required this.onPurchaseSuccess,
-    required this.onGeneralError,
+    required this.snackbarController,
     required this.child,
     super.key,
   });
 
   final Article article;
   final OnPurchaseSuccess onPurchaseSuccess;
-  final OnGeneralError onGeneralError;
+  final SnackbarController snackbarController;
   final Widget child;
 
   @override
@@ -48,6 +50,14 @@ class ArticlePaywallView extends HookWidget {
     useCubitListener<ArticlePaywallCubit, ArticlePaywallState>(cubit, (cubit, state, context) {
       state.mapOrNull(
         purchaseSuccess: (_) => onPurchaseSuccess(),
+        generalError: (_) {
+          snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: LocaleKeys.common_error_tryAgainLater.tr(),
+              type: SnackbarMessageType.negative,
+            ),
+          );
+        },
       );
     });
 
@@ -91,6 +101,7 @@ class ArticlePaywallView extends HookWidget {
               ),
               multiplePlans: (state) => _PaywallMultipleOptions(
                 plans: state.plans,
+                snackbarController: snackbarController,
                 onPurchasePressed: cubit.purchase,
                 onRestorePressed: cubit.restore,
                 isProcessing: state.processing,

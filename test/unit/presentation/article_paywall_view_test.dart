@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/purchase_sub
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ void main() {
           body: SingleChildScrollView(
             child: ArticlePaywallView(
               article: article,
-              onGeneralError: () {},
+              snackbarController: SnackbarController(),
               onPurchaseSuccess: () {},
               child: Text(article.content.content),
             ),
@@ -82,7 +83,7 @@ void main() {
           body: SingleChildScrollView(
             child: ArticlePaywallView(
               article: article,
-              onGeneralError: () {},
+              snackbarController: SnackbarController(),
               onPurchaseSuccess: () {},
               child: Text(article.content.content),
             ),

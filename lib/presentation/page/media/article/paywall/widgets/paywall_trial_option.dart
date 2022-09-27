@@ -45,7 +45,7 @@ class _PaywallTrialOption extends StatelessWidget {
               Text(
                 LocaleKeys.subscription_subscriptionInfo_withTrial.tr(
                   args: [
-                    '${plan.trialDays} ${LocaleKeys.common_days.plural(plan.trialDays)}',
+                    '${plan.trialDays} ${LocaleKeys.date_day.plural(plan.trialDays)}',
                     plan.priceString,
                   ],
                 ),

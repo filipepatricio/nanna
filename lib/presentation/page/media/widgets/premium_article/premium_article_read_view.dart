@@ -15,7 +15,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -356,14 +355,7 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
                           articleContentKey: widget.articleContentKey,
                           scrollToPosition: () => _scrollToPosition(widget.readProgress.value),
                           requestRefresh: () => widget.cubit.refreshArticle(),
-                          onGeneralError: () {
-                            widget.snackbarController.showMessage(
-                              SnackbarMessage.simple(
-                                message: LocaleKeys.common_error_tryAgainLater.tr(),
-                                type: SnackbarMessageType.negative,
-                              ),
-                            );
-                          },
+                          snackbarController: widget.snackbarController,
                         ),
                       ],
                     ),

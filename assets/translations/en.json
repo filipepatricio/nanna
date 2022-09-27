@@ -26,10 +26,6 @@
       "oops": "Oops",
       "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy ",
       "tryAgainLater": "👎 Oops, looks like something went wrong, please try again later!"
-    },
-    "days": {
-      "one": "day",
-      "other": "days"
     }
   },
   "social": {

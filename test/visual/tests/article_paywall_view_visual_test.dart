@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,7 +36,7 @@ void main() {
             child: ArticlePaywallView(
               article: article,
               onPurchaseSuccess: () {},
-              onGeneralError: () {},
+              snackbarController: SnackbarController(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: Text(shortText),
@@ -71,7 +72,7 @@ void main() {
             child: ArticlePaywallView(
               article: article,
               onPurchaseSuccess: () {},
-              onGeneralError: () {},
+              snackbarController: SnackbarController(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: Text(article.content.content),
@@ -109,7 +110,7 @@ void main() {
             child: ArticlePaywallView(
               article: article,
               onPurchaseSuccess: () {},
-              onGeneralError: () {},
+              snackbarController: SnackbarController(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                 child: Text(article.content.content),

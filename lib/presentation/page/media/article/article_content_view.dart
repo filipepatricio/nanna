@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -22,7 +23,7 @@ class ArticleContentView extends HookWidget {
     required this.articleContentKey,
     required this.scrollToPosition,
     required this.requestRefresh,
-    required this.onGeneralError,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
@@ -30,7 +31,7 @@ class ArticleContentView extends HookWidget {
   final Key articleContentKey;
   final Function() scrollToPosition;
   final VoidCallback requestRefresh;
-  final VoidCallback onGeneralError;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class ArticleContentView extends HookWidget {
       return ArticlePaywallView(
         article: article,
         onPurchaseSuccess: requestRefresh,
-        onGeneralError: onGeneralError,
+        snackbarController: snackbarController,
         child: ArticleContentMarkdown(
           markdown: article.content.content,
           shareTextCallback: (quote) {
