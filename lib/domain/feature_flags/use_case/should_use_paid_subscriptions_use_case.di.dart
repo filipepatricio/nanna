@@ -8,7 +8,5 @@ class ShouldUsePaidSubscriptionsUseCase {
   );
   final FeaturesFlagsRepository _featuresFlagsRepository;
 
-  Future<bool> call() async {
-    return await _featuresFlagsRepository.usePaidSubscriptions();
-  }
+  Future<bool> call() async => await _featuresFlagsRepository.usePaidSubscriptions();
 }

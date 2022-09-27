@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/settings/subscription/subscription_card/subscription_card.dart';
 import 'package:better_informed_mobile/presentation/page/settings/widgets/settings_main_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -18,7 +19,6 @@ import 'package:better_informed_mobile/presentation/widget/version_label/version
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 const _feedbackEmail = 'feedback@informed.so';
@@ -27,11 +27,13 @@ class SettingsMainBody extends HookWidget {
   const SettingsMainBody({
     required this.cubit,
     required this.snackbarController,
+    required this.useSubscriptions,
     Key? key,
   }) : super(key: key);
 
   final SettingsMainCubit cubit;
   final SnackbarController snackbarController;
+  final bool useSubscriptions;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,13 @@ class SettingsMainBody extends HookWidget {
           sliver: SliverList(
             delegate: SliverChildListDelegate(
               [
+                if (useSubscriptions) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
+                    child: SubscriptionCard(),
+                  ),
+                  const SizedBox(height: AppDimens.m),
+                ],
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
                   child: Text(

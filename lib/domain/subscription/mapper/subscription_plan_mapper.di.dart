@@ -1,15 +1,18 @@
 import 'dart:math' as math;
 
 import 'package:better_informed_mobile/data/mapper.dart';
+import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 @injectable
-class SubscriptionPlanMapper implements Mapper<Offering, List<SubscriptionPlan>> {
+class SubscriptionPlanMapper implements Mapper<OfferingDTO, List<SubscriptionPlan>> {
   @override
-  List<SubscriptionPlan> call(Offering offering) {
+  List<SubscriptionPlan> call(OfferingDTO dto) {
     final plans = <SubscriptionPlan>[];
+    final offering = dto.offering;
+
     for (final package in offering.availablePackages) {
       plans.add(
         SubscriptionPlan(
@@ -18,10 +21,11 @@ class SubscriptionPlanMapper implements Mapper<Offering, List<SubscriptionPlan>>
           description: package.storeProduct.description,
           price: package.storeProduct.price,
           priceString: package.storeProduct.priceString,
-          trialDays: package.trialDays,
-          reminderDays: package.reminderDays,
+          trialDays: dto.isFirstTimeSubscriber ? package.trialDays : 0,
+          reminderDays: dto.isFirstTimeSubscriber ? package.reminderDays : 0,
           discountPercentage: package.discountPercentage(offering),
           packageId: package.identifier,
+          productId: package.storeProduct.identifier,
         ),
       );
     }

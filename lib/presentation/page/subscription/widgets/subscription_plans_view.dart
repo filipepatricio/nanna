@@ -35,13 +35,7 @@ class SubscriptionPlansView extends HookWidget {
                   baseTextStyle: AppTypography.h1MediumLora,
                 ),
                 const SizedBox(height: AppDimens.l),
-                ...[
-                  _SubscriptionInfoLine(text: LocaleKeys.subscription_info_access.tr()),
-                  _SubscriptionInfoLine(text: LocaleKeys.subscription_info_reporting.tr()),
-                  _SubscriptionInfoLine(text: LocaleKeys.subscription_info_fresh.tr()),
-                ].withDividers(
-                  divider: const SizedBox(height: AppDimens.m),
-                ),
+                const SubscriptionBenefits(),
               ],
               const SizedBox(height: AppDimens.l),
               ...cubit.plans
@@ -91,30 +85,6 @@ class SubscriptionPlansView extends HookWidget {
               );
             },
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class _SubscriptionInfoLine extends StatelessWidget {
-  const _SubscriptionInfoLine({
-    required this.text,
-    Key? key,
-  }) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SvgPicture.asset(AppVectorGraphics.checkmark),
-        const SizedBox(width: AppDimens.s),
-        Text(
-          text,
-          style: AppTypography.subH1Medium,
         ),
       ],
     );

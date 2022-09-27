@@ -17,6 +17,13 @@ class SettingsMainPage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
+    useEffect(
+      () {
+        cubit.initialize();
+      },
+      [cubit],
+    );
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -31,12 +38,13 @@ class SettingsMainPage extends HookWidget {
       body: SnackbarParentView(
         controller: snackbarController,
         child: state.maybeWhen(
-          init: () => SettingsMainBody(
+          idle: (useSubscriptions) => SettingsMainBody(
             cubit: cubit,
             snackbarController: snackbarController,
+            useSubscriptions: useSubscriptions,
           ),
           loading: () => const Loader(),
-          orElse: () => const SizedBox.shrink(),
+          orElse: Container.new,
         ),
       ),
     );

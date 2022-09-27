@@ -30,6 +30,7 @@ void main() {
         trialDays: 14,
         reminderDays: 7,
         packageId: '000',
+        productId: '000',
       ),
       SubscriptionPlan(
         type: SubscriptionPlanType.monthly,
@@ -40,6 +41,7 @@ void main() {
         trialDays: 7,
         reminderDays: 7,
         packageId: '001',
+        productId: '001',
       ),
     ];
     final expected = ArticlePaywallSubscriptionPlanPack.singleTrial(plans[0]);
@@ -63,6 +65,7 @@ void main() {
         trialDays: 0,
         reminderDays: 7,
         packageId: '000',
+        productId: '000',
       ),
       SubscriptionPlan(
         type: SubscriptionPlanType.monthly,
@@ -73,6 +76,7 @@ void main() {
         trialDays: 0,
         reminderDays: 7,
         packageId: '001',
+        productId: '001',
       ),
     ];
     final expected = ArticlePaywallSubscriptionPlanPack.multiple(plans);

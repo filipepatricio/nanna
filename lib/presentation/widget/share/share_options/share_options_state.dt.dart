@@ -8,6 +8,7 @@ part 'share_options_state.dt.freezed.dart';
 class ShareOptionsState with _$ShareOptionsState {
   @Implements<BuildState>()
   const factory ShareOptionsState.loading() = _Loading;
+
   @Implements<BuildState>()
   const factory ShareOptionsState.idle(List<ShareOptions> shareOptions) = _Idle;
 }

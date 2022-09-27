@@ -11,6 +11,7 @@ class FilledButton extends StatelessWidget {
     this.fillColor = AppColors.limeGreen,
     this.disableColor = AppColors.background,
     this.textColor = AppColors.textPrimary,
+    this.disableTextColor = AppColors.charcoal70,
     this.isLoading = false,
     this.leading,
     this.trailing,
@@ -22,6 +23,7 @@ class FilledButton extends StatelessWidget {
   final Color fillColor;
   final Color disableColor;
   final Color textColor;
+  final Color disableTextColor;
   final bool isLoading;
   final Widget? leading;
   final Widget? trailing;
@@ -65,7 +67,7 @@ class FilledButton extends StatelessWidget {
                         Text(
                           text,
                           style: AppTypography.buttonBold.copyWith(
-                            color: isEnabled ? textColor : textColor.withOpacity(0.44),
+                            color: isEnabled ? textColor : disableTextColor,
                           ),
                         ),
                         if (trailing != null) ...[
