@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_other_topic_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_related_content_use_case.di.dart';
@@ -31,6 +32,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getOtherTopicEntriesUseCase,
     this._getFeaturedCategoriesUseCase,
     this._getRelatedContentUseCase,
+    this._getArticleUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -40,6 +42,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetOtherTopicEntriesUseCase _getOtherTopicEntriesUseCase;
   final GetFeaturedCategoriesUseCase _getFeaturedCategoriesUseCase;
   final GetRelatedContentUseCase _getRelatedContentUseCase;
+  final GetArticleUseCase _getArticleUseCase;
 
   final moreFromBriefItems = <BriefEntryItem>[];
   final otherTopicItems = <MediaItem>[];
@@ -110,6 +113,23 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
 
     featuredCategories.addAll(await _getFeaturedCategoriesUseCase());
     relatedContentItems.addAll(await _getRelatedContentUseCase(_currentFullArticle.metadata.slug));
+
+    emit(
+      PremiumArticleViewState.idle(
+        article: _currentFullArticle,
+        moreFromBriefItems: moreFromBriefItems,
+        otherTopicItems: otherTopicItems,
+        featuredCategories: featuredCategories,
+        relatedContentItems: relatedContentItems,
+        enablePageSwipe: true,
+      ),
+    );
+  }
+
+  Future<void> refreshArticle() async {
+    emit(const PremiumArticleViewState.initial());
+
+    _currentFullArticle = await _getArticleUseCase(article.metadata);
 
     emit(
       PremiumArticleViewState.idle(

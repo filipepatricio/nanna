@@ -1,4 +1,8 @@
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/data/article_paywall_subscription_plan_pack.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_cubit.di.dart';
@@ -77,4 +81,22 @@ class FakeIsTutorialStepSeenUseCase extends Fake implements IsTutorialStepSeenUs
 
   @override
   Future<bool> call(TutorialStep tutorialStep) async => isStepSeen;
+}
+
+class FakeGetArticlePaywallPreferredPlanUseCase implements GetArticlePaywallPreferredPlanUseCase {
+  FakeGetArticlePaywallPreferredPlanUseCase(this.pack);
+
+  final ArticlePaywallSubscriptionPlanPack pack;
+
+  @override
+  Future<ArticlePaywallSubscriptionPlanPack> call() async => pack;
+}
+
+class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPlansUseCase {
+  FakeGetSubscriptionPlansUseCase(this.plans);
+
+  final List<SubscriptionPlan> plans;
+
+  @override
+  Future<List<SubscriptionPlan>> call() async => plans;
 }

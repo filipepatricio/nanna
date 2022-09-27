@@ -27,6 +27,7 @@ fragment articleFragment on Article {
     timeToRead
     hasAudioVersion
     locked
+    availableInSubscription
     articleImage {
         __typename
         ... on CloudinaryImage {

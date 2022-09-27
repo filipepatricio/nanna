@@ -48,6 +48,7 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
           sourceUrl: data.sourceUrl,
           author: data.author,
           hasAudioVersion: data.hasAudioVersion,
+          availableInSubscription: data.availableInSubscription,
           progress: _articleProgressDTOMapper(data.progress),
           progressState: data.progressState,
           locked: data.locked,

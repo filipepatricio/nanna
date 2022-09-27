@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
+import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
+import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../finders.dart';
@@ -22,7 +23,7 @@ void main() {
         find.byText(
           LocaleKeys.subscription_youllBeCharged.tr(
             args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlans.first.trialDays),
+              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.first.trialDays),
             ],
           ),
         ),
@@ -32,7 +33,7 @@ void main() {
         find.byText(
           LocaleKeys.subscription_youllBeCharged.tr(
             args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlans.last.trialDays),
+              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.last.trialDays),
             ],
           ),
         ),
@@ -44,7 +45,7 @@ void main() {
         find.byText(
           LocaleKeys.subscription_youllBeCharged.tr(
             args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlans.last.trialDays),
+              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.last.trialDays),
             ],
           ),
         ),
@@ -54,7 +55,7 @@ void main() {
         find.byText(
           LocaleKeys.subscription_youllBeCharged.tr(
             args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlans.first.trialDays),
+              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.first.trialDays),
             ],
           ),
         ),
@@ -69,9 +70,9 @@ void main() {
       await tester.startApp(initialRoute: const SubscriptionPageRoute());
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeChargedFooter.tr(
+          LocaleKeys.subscription_chargeInfo_trial.tr(
             args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlans.first.trialDays),
+              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.first.trialDays),
             ],
           ),
           skipOffstage: false,
@@ -82,9 +83,9 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.byText(
-          LocaleKeys.subscription_youllBeChargedFooter.tr(
+          LocaleKeys.subscription_chargeInfo_trial.tr(
             args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlans.last.trialDays),
+              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.last.trialDays),
             ],
           ),
           skipOffstage: false,
@@ -101,8 +102,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.byWidgetPredicate(
-          (widget) =>
-              widget is SubscribeButton && widget.cubit.selectedPlan.title == TestData.subscriptionPlans.last.title,
+          (widget) => widget is SubscribeButton && widget.plan.title == TestData.subscriptionPlansWithTrial.last.title,
         ),
         findsOneWidget,
       );

@@ -190,6 +190,9 @@ class TestData {
   static MediaItemArticle get premiumArticleWithAudio =>
       _mediaItemMapper(MockDTO.premiumArticleWithAudio.asMediaItem) as MediaItemArticle;
 
+  static MediaItemArticle get premiumArticleWithAudioAndLocked =>
+      _mediaItemMapper(MockDTO.premiumArticleWithAudioLocked.asMediaItem) as MediaItemArticle;
+
   static Topic get topic => _topicMapper(MockDTO.topic);
 
   static Topic get topicWithUnknownOwner => _topicMapper(MockDTO.topicWithUnknownOwner);
@@ -212,5 +215,8 @@ class TestData {
   static List<CategoryItem> get categoryItemList =>
       MockDTO.categoryItemList.map<CategoryItem>(_categoryItemMapper).toList();
 
-  static List<SubscriptionPlan> get subscriptionPlans => _subscriptionPlanMapper(MockDTO.offering);
+  static List<SubscriptionPlan> get subscriptionPlansWithTrial => _subscriptionPlanMapper(MockDTO.offeringWithTrial);
+
+  static List<SubscriptionPlan> get subscriptionPlansWithoutTrial =>
+      _subscriptionPlanMapper(MockDTO.offeringWithoutTrial);
 }
