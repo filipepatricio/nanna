@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:better_informed_mobile/data/auth/api/provider/linkedin/authorization_state_generator.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/linkedin/linkedin_user_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
@@ -19,10 +20,12 @@ import 'package:oauth2/oauth2.dart';
 class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource {
   LinkedinCredentialDataSource(
     this._linkedinUserDataSource,
+    this._authorizationStateGenerator,
     this.appConfig,
   );
 
   final LinkedinUserDataSource _linkedinUserDataSource;
+  final AuthorizationStateGenerator _authorizationStateGenerator;
   final AppConfig appConfig;
 
   @override
@@ -33,6 +36,11 @@ class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource 
       Uri.parse('https://www.linkedin.com/oauth/v2/accessToken'),
       secret: appConfig.linkedinConfig.clientSecret,
       basicAuth: false,
+      // Funny thing, dart oauth2 library enforces PKCE flow on every provider
+      // but linkedin allows PKCE flow only with https://www.linkedin.com/oauth/native-pkce/authorization url
+      // which is restricted to their "Sales Navigator partners", so in order to not rewrite the whole library
+      // and be able to login we are passing empty string for [codeVerifier] which is doing the job, at least for now
+      codeVerifier: '',
     );
 
     final redirectUri = Uri.parse(appConfig.linkedinConfig.redirectUri);
@@ -41,7 +49,8 @@ class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource 
       'r_liteprofile',
     ];
 
-    final authUri = authGrant.getAuthorizationUrl(redirectUri, scopes: scopes);
+    final state = _authorizationStateGenerator.generate();
+    final authUri = authGrant.getAuthorizationUrl(redirectUri, scopes: scopes, state: state);
     final redirect = await _redirect(authUri);
 
     final accessToken = await _retrieveAccessToken(authGrant, redirect);
