@@ -22,6 +22,7 @@ class MainNavigationObserver extends AutoRouterObserver {
       case MediaItemPageRoute.name:
       case TopicPage.name:
       case SubscriptionPageRoute.name:
+      case SubscriptionSuccessPageRoute.name:
         _updateBriefNotifierUseCase();
     }
   }

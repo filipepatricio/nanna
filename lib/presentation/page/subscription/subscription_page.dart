@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page_cubit.di.dart';
@@ -72,10 +73,14 @@ class SubscriptionPage extends HookWidget {
       );
     }
 
-    return ModalBottomSheet(
-      snackbarController: snackbarController,
-      child: GeneralEventTracker(
-        controller: eventController,
+    return GeneralEventTracker(
+      controller: eventController,
+      child: ModalBottomSheet(
+        snackbarController: snackbarController,
+        onClose: () => state.maybeMap(
+          success: (_) {},
+          orElse: () => eventController.track(AnalyticsEvent.subscriptionPageDismissed()),
+        ),
         child: InformedAnimatedSwitcher(
           child: state.maybeMap(
             initializing: (_) => const _SubscriptionPlansLoadingView(),
