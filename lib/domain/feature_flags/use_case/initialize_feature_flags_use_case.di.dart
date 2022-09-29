@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/feature_flags/data/feature_flag_data.dt.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/user/user_repository.dart';
@@ -37,13 +38,15 @@ class InitializeFeatureFlagsUseCase {
       final clientPlatform = _appInfoRepository.getPlatform();
 
       await _featuresFlagsRepository.initialize(
-        tokenData.uuid,
-        email,
-        firstName,
-        lastName,
-        client,
-        clientVersion,
-        clientPlatform,
+        FeatureFlagData(
+          uuid: tokenData.uuid,
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          client: client,
+          clientVersion: clientVersion,
+          clientPlatform: clientPlatform,
+        ),
       );
     }
   }

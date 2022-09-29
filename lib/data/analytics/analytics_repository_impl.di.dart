@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
+import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -31,8 +32,8 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
   /// Deferred initialization of Appsflyer for its dependency on device's IDFA (we need to request permission first)
   @override
-  Future<void> initializeAttribution() async {
-    await _analyticsFacade.initializeAttribution();
+  Future<InstallAttributionPayload?> initializeAttribution() async {
+    return _analyticsFacade.initializeAttribution();
   }
 
   @override
