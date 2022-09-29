@@ -65,7 +65,7 @@ class SubscriptionPlanCard extends HookWidget {
               if (plan.hasTrial) ...[
                 Text(
                   plan.description,
-                  style: AppTypography.b1Medium.copyWith(color: AppColors.darkerGrey),
+                  style: AppTypography.b2Medium.copyWith(color: AppColors.darkerGrey),
                 ),
                 const SizedBox(height: AppDimens.xs),
               ],

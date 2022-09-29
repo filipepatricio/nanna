@@ -1,4 +1,9 @@
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscription_plan_card.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -108,4 +113,73 @@ void main() {
       );
     },
   );
+  testWidgets(
+    'subscription button changes depending on wether plan has trial',
+    (tester) async {
+      final useCase = FakeGetSubscriptionPlansUseCase();
+      await tester.startApp(
+        initialRoute: const SubscriptionPageRoute(),
+        dependencyOverride: (getIt) async => getIt.registerFactory<GetSubscriptionPlansUseCase>(() => useCase),
+      );
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_tryForFreeAction.tr(),
+          skipOffstage: false,
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_tryForFreeAction.tr(),
+          skipOffstage: false,
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(find.byType(SubscriptionPlanCard).last);
+      await tester.pumpAndSettle();
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_subscribe.tr(),
+        ),
+        findsOneWidget,
+      );
+    },
+  );
+  testWidgets(
+    'no trial version of subscription page is shown when not all plans have trial',
+    (tester) async {
+      final useCase = FakeGetSubscriptionPlansUseCase();
+      await tester.startApp(
+        initialRoute: const SubscriptionPageRoute(),
+        dependencyOverride: (getIt) async => getIt.registerFactory<GetSubscriptionPlansUseCase>(() => useCase),
+      );
+      expect(
+        find.byWidgetPredicate((widget) => widget is SubscriptionPlansView && !widget.trialViewMode),
+        findsOneWidget,
+      );
+    },
+  );
+  testWidgets(
+    'trial version of subscription page is shown when all plans have trials',
+    (tester) async {
+      await tester.startApp(initialRoute: const SubscriptionPageRoute());
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is InformedMarkdownBody && widget.markdown == LocaleKeys.subscription_title_trial.tr(),
+        ),
+        findsOneWidget,
+      );
+    },
+  );
+}
+
+class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPlansUseCase {
+  @override
+  Future<List<SubscriptionPlan>> call() async =>
+      [TestData.subscriptionPlansWithTrial.first, TestData.subscriptionPlansWithoutTrial.last];
+}
+
+class FakeGetSubscriptionPlansUseCaseNoTrial extends Fake implements GetSubscriptionPlansUseCase {
+  @override
+  Future<List<SubscriptionPlan>> call() async => TestData.subscriptionPlansWithoutTrial;
 }

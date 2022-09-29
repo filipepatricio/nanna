@@ -25,7 +25,7 @@ class SettingsMainItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: AppTypography.h4Medium.copyWith(height: 1)),
+            Text(label, style: AppTypography.b2Medium.copyWith(height: 1)),
             SvgPicture.asset(
               icon,
               width: AppDimens.l,

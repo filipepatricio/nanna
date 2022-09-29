@@ -147,14 +147,6 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h4Medium = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 16,
-    height: 1.93,
-    color: AppColors.textPrimary,
-  );
-
   static const TextStyle h4Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: fontFamilyPlusJakartaSans,
@@ -242,14 +234,6 @@ class AppTypography {
     fontSize: 10,
     height: 2.58,
     letterSpacing: 0.15,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle b1Medium = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontFamily: fontFamilyPlusJakartaSans,
-    fontSize: 16,
-    height: 1.5,
     color: AppColors.textPrimary,
   );
 

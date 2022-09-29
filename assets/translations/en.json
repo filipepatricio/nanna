@@ -130,7 +130,12 @@
       "withTrial": "{} free trial, then {} / year",
       "standard": "{} / year"
     },
-    "tryForFreeAction": "Try For Free"
+    "tryForFreeAction": "Try For Free",
+    "withXDaysFreeTrial": "with {} free trial",
+    "thanksForStartingTrial": "Thanks for starting your\n_free trial_",
+    "thanksForSubscribing": "Thanks for subscribing,\nyou’re _awesome_",
+    "everythingIsReady": "Everything is ready to start enjoying informed unlimited access.",
+    "startReading": "Start Reading"
   },
   "settings": {
     "settings": "Settings",

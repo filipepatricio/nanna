@@ -1,7 +1,7 @@
 part of '../subscription_page.dart';
 
-class _SubscriptionPlansView extends HookWidget {
-  const _SubscriptionPlansView({
+class SubscriptionPlansView extends HookWidget {
+  const SubscriptionPlansView({
     required this.cubit,
     required this.openInBrowser,
     required this.trialViewMode,
@@ -64,9 +64,9 @@ class _SubscriptionPlansView extends HookWidget {
               const SizedBox(height: AppDimens.xl),
               ValueListenableBuilder<SubscriptionPlan>(
                 valueListenable: selectedPlanNotifier,
-                builder: (context, value, child) {
+                builder: (context, selectedPlan, child) {
                   return SubscribeButton(
-                    plan: value,
+                    plan: selectedPlan,
                     onPurchasePressed: (_) => cubit.purchase(),
                     isLoading: state.maybeMap(
                       processing: (_) => true,

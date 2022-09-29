@@ -1,10 +1,4 @@
-app_identifier([
-    "so.informed",
-    "so.informed.staging",
-    "so.informed.staging.ImageNotification",
-    "so.informed.ImageNotification"
-]) # The bundle identifier of your app
-
+app_identifier("so.informed,so.informed.staging,so.informed.staging.ImageNotification,so.informed.ImageNotification") # The bundle identifier of your app
 git_url("https://github.com/informedtechnologies/nanna-certificates.git")
 storage_mode("git")
 type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
