@@ -1,10 +1,11 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 
 abstract class AnalyticsFacade {
   Future<void> disable();
 
-  Future<void> initializeAttribution();
+  Future<InstallAttributionPayload?> initializeAttribution();
 
   Future<void> config(String writeKey);
 

@@ -1,10 +1,11 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 
 abstract class AnalyticsRepository {
   Future<void> initialize();
 
-  Future<void> initializeAttribution();
+  Future<InstallAttributionPayload?> initializeAttribution();
 
   Future<void> requestTrackingPermission();
 

@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
+import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,7 +13,7 @@ class AnalyticsRepositoryMock implements AnalyticsRepository {
   }
 
   @override
-  Future<void> initializeAttribution() async {}
+  Future<InstallAttributionPayload?> initializeAttribution() async => null;
 
   @override
   Future<void> identify(String userId, [String? method]) async {
