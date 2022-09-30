@@ -69,8 +69,8 @@ class ArticleRepositoryImpl implements ArticleRepository {
   }
 
   @override
-  Future<List<BriefEntryItem>> getOtherBriefEntries(String articleSlug) async {
-    final dto = await _articleDataSource.getOtherBriefEntries(articleSlug);
+  Future<List<BriefEntryItem>> getOtherBriefEntries(String articleSlug, String briefId) async {
+    final dto = await _articleDataSource.getOtherBriefEntries(articleSlug, briefId);
     return dto.map<BriefEntryItem>(_briefEntryItemDTOMapper).toList();
   }
 

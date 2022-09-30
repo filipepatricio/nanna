@@ -8,5 +8,13 @@ class GetOtherBriefEntriesUseCase {
 
   final ArticleRepository _articleRepository;
 
-  Future<List<BriefEntryItem>> call(String slug) => _articleRepository.getOtherBriefEntries(slug);
+  Future<List<BriefEntryItem>> call(
+    String slug,
+    String briefId,
+  ) {
+    return _articleRepository.getOtherBriefEntries(
+      slug,
+      briefId,
+    );
+  }
 }
