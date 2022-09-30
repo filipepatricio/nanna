@@ -17,7 +17,7 @@ abstract class ArticleRepository {
 
   Future<AudioFile> getArticleAudioFile(String slug, [bool forceFresh = false]);
 
-  Future<List<BriefEntryItem>> getOtherBriefEntries(String articleSlug);
+  Future<List<BriefEntryItem>> getOtherBriefEntries(String articleSlug, String briefId);
 
   Future<ArticleProgress> trackReadingProgress(String articleSlug, int progress);
 

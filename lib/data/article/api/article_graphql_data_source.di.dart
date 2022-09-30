@@ -126,13 +126,16 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug) async {
+  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug, String briefId) async {
     final result = await _client.query(
       QueryOptions(
         document: get_other_brief_entries.document,
         operationName: get_other_brief_entries.getOtherBriefEntries.name?.value,
         fetchPolicy: FetchPolicy.networkOnly,
-        variables: {'articleSlug': articleSlug},
+        variables: {
+          'articleSlug': articleSlug,
+          'briefId': briefId,
+        },
       ),
     );
 
