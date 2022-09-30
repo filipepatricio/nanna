@@ -1,3 +1,5 @@
+import 'package:better_informed_mobile/data/feature_flags/data/feature_flag_data.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -7,36 +9,30 @@ const clientKey = 'client';
 const clientVersionKey = 'clientVersion';
 const clientPlatformKey = 'clientPlatform';
 
+const attributionStatusKey = 'afStatus';
+const attributionCampaignKey = 'afCampaign';
+const attributionMediaSourceKey = 'afMediaSource';
+const attributionAdSet = 'afAdset';
+
 @LazySingleton(as: FeaturesFlagsRepository, env: liveEnvs)
 class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
-  const FeatureFlagsRepositoryImpl(this._config);
+  FeatureFlagsRepositoryImpl(this._config);
 
   final AppConfig _config;
 
+  FeatureFlagData? _data;
+
   @override
-  Future<void> initialize(
-    String uuid,
-    String email,
-    String firstName,
-    String lastName,
-    String client,
-    String clientVersion,
-    String clientPlatform,
-  ) async {
+  Future<void> initialize(FeatureFlagData data) async {
+    _data = data;
+
     final launchDarklyKey = _config.launchDarklyKey;
 
     if (launchDarklyKey != null) {
       final config =
           LDConfigBuilder(launchDarklyKey).connectionTimeoutMillis(5000).eventsFlushIntervalMillis(5000).build();
 
-      final user = LDUserBuilder(uuid)
-          .email(email)
-          .firstName(firstName)
-          .lastName(lastName)
-          .custom(clientKey, LDValue.ofString(client))
-          .custom(clientVersionKey, LDValue.ofString(clientVersion))
-          .custom(clientPlatformKey, LDValue.ofString(clientPlatform))
-          .build();
+      final user = _buildUser(data);
 
       // If the user already exists in LaunchDarkly, this call also updates their profile values
       await LDClient.start(config, user);
@@ -54,5 +50,46 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   @override
   Future<bool> usePaidSubscriptions() async {
     return await LDClient.boolVariation('use-paid-subscriptions', false);
+  }
+
+  @override
+  Future<void> setupAttribution(InstallAttributionPayload installAttributionPayload) async {
+    final data = _data;
+
+    if (data != null) {
+      final dataWithAttribution = data.copyWith(attributionPayload: installAttributionPayload);
+      final updatedUser = _buildUser(dataWithAttribution);
+
+      await LDClient.identify(updatedUser);
+
+      _data = dataWithAttribution;
+    }
+  }
+
+  LDUser _buildUser(FeatureFlagData data) {
+    final builder = LDUserBuilder(data.uuid)
+        .email(data.email)
+        .firstName(data.firstName)
+        .lastName(data.lastName)
+        .custom(clientKey, LDValue.ofString(data.client))
+        .custom(clientVersionKey, LDValue.ofString(data.clientVersion))
+        .custom(clientPlatformKey, LDValue.ofString(data.clientPlatform));
+
+    final attribution = data.attributionPayload;
+    if (attribution != null) {
+      attribution.map(
+        organic: (attribution) {
+          builder.custom(attributionStatusKey, LDValue.ofString('Organic'));
+        },
+        nonOrganic: (attribution) {
+          builder.custom(attributionStatusKey, LDValue.ofString('Non-organic'));
+          builder.custom(attributionCampaignKey, LDValue.ofString(attribution.campaign));
+          builder.custom(attributionMediaSourceKey, LDValue.ofString(attribution.mediaSource));
+          builder.custom(attributionAdSet, LDValue.ofString(attribution.adset));
+        },
+      );
+    }
+
+    return builder.build();
   }
 }

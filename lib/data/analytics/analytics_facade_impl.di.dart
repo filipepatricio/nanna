@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
+import 'package:better_informed_mobile/data/analytics/dto/install_attribution_data_dto.dt.dart';
+import 'package:better_informed_mobile/data/analytics/mapper/install_attribution_payload_mapper.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
@@ -10,13 +15,26 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 @LazySingleton(as: AnalyticsFacade, env: liveEnvs)
 class AnalyticsFacadeImpl implements AnalyticsFacade {
-  AnalyticsFacadeImpl(this._appsflyerSdk);
+  AnalyticsFacadeImpl(
+    this._appsflyerSdk,
+    this._installAttributionPayloadMapper,
+  );
 
   final AppsflyerSdk _appsflyerSdk;
+  final InstallAttributionPayloadMapper _installAttributionPayloadMapper;
 
   @override
-  Future<void> initializeAttribution() async {
-    await _appsflyerSdk.initSdk();
+  Future<InstallAttributionPayload?> initializeAttribution() async {
+    final completer = Completer<InstallAttributionPayload?>();
+
+    _appsflyerSdk.onInstallConversionData((data) {
+      final dto = InstallAttributionDataDTO.fromJson((data as Map).cast<String, dynamic>());
+      completer.complete(_installAttributionPayloadMapper.from(dto.payload));
+    });
+
+    await _appsflyerSdk.initSdk(registerConversionDataCallback: true);
+
+    return completer.future.timeout(const Duration(seconds: 10), onTimeout: () => null);
   }
 
   @override
