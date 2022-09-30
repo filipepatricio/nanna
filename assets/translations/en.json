@@ -105,16 +105,37 @@
     "year": "year"
   },
   "subscription": {
-    "yourFreeTrial": "Your _free trial_ with informed",
+    "title": {
+      "trial": "Your _free trial_ with informed",
+      "standard": "Subscribe for _unlimited_ news access"
+    },
+    "info": {
+      "access": "Unlimited news access",
+      "reporting": "Collection of thoughtful reporting",
+      "fresh": "Fresh news every day"
+    },
     "restorePurchase": "Restore purchase",
     "startYourTrial": "Now, start your trial to get full access today.",
     "receiveAnEmail": "In {}, receive an email reminder that your free trial is ending.",
     "youllBeCharged": "In {}, you’ll be charged for informed.",
-    "tryForFree": "Try For Free",
-    "viewAllPlans": "View all plans",
-    "youllBeChargedFooter": "You will be charged only after the {} trial period.\nCancel anytime.",
+    "viewAllPlansAction": "View all plans",
+    "chargeInfo": {
+      "trial": "You will be charged only after the {} trial period.\nCancel anytime.",
+      "standard": "Recurring billing · Cancel anytime"
+    },
     "off": "{}% off",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "description": "Read or listen to every article in the app. If you change your mind, you can cancel anytime",
+    "subscriptionInfo": {
+      "withTrial": "{} free trial, then {} / year",
+      "standard": "{} / year"
+    },
+    "tryForFreeAction": "Try For Free",
+    "withXDaysFreeTrial": "with {} free trial",
+    "thanksForStartingTrial": "Thanks for starting your\n_free trial_",
+    "thanksForSubscribing": "Thanks for subscribing,\nyou’re _awesome_",
+    "everythingIsReady": "Everything is ready to start enjoying informed unlimited access.",
+    "startReading": "Start Reading"
   },
   "settings": {
     "settings": "Settings",

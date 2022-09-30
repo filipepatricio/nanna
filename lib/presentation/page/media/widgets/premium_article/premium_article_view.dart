@@ -72,6 +72,14 @@ class PremiumArticleView extends HookWidget {
       [horizontalPageController, articleOutputModeNotifier],
     );
 
+    final showAudioMode = useMemoized(
+      () => state.map(
+        initial: (_) => false,
+        idle: (state) => state.article.metadata.hasAudioVersion && state.article.metadata.availableInSubscription,
+      ),
+      [state],
+    );
+
     return Scaffold(
       body: ScrollsToTop(
         onScrollsToTop: (_) => controller.animateToStart(),
@@ -104,10 +112,11 @@ class PremiumArticleView extends HookWidget {
                         cubit: cubit,
                         readArticleProgress: readArticleProgress,
                         mainController: mainController,
+                        snackbarController: snackbarController,
                       ),
                       orElse: () => const SizedBox.shrink(),
                     ),
-                    if (article.metadata.hasAudioVersion)
+                    if (showAudioMode)
                       PremiumArticleAudioView(
                         article: article,
                         cubit: audioCubit,

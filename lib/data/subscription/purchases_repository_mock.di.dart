@@ -18,7 +18,7 @@ class PurchasesRepositoryMock implements PurchasesRepository {
 
   @override
   Future<List<SubscriptionPlan>> getSubscriptionPlans() async {
-    return _subscriptionPlanMapper(MockDTO.offering);
+    return _subscriptionPlanMapper(MockDTO.offeringWithTrial);
   }
 
   @override

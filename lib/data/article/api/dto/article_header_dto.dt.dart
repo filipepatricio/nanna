@@ -27,6 +27,7 @@ class ArticleHeaderDTO {
     this.sourceUrl,
     this.author,
     this.hasAudioVersion,
+    this.availableInSubscription,
     this.progress,
     this.progressState,
     this.locked,
@@ -50,6 +51,7 @@ class ArticleHeaderDTO {
   final String sourceUrl;
   final String? author;
   final bool hasAudioVersion;
+  final bool availableInSubscription;
   final ArticleProgressDTO progress;
   final ArticleProgressState progressState;
   final bool locked;

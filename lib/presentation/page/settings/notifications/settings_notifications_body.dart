@@ -125,7 +125,7 @@ class _NotificationChannel extends StatelessWidget {
           Expanded(
             child: Text(
               channel.name,
-              style: AppTypography.h4Medium.copyWith(height: 1),
+              style: AppTypography.b2Medium.copyWith(height: 1),
             ),
           ),
           const SizedBox(width: AppDimens.xl),

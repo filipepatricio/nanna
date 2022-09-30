@@ -34,6 +34,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String sourceUrl,
     String? author,
     bool hasAudioVersion,
+    bool availableInSubscription,
     ArticleProgressDTO progress,
     ArticleProgressState progressState,
     bool locked,
