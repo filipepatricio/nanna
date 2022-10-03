@@ -31,6 +31,7 @@ import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repositor
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
@@ -46,6 +47,7 @@ import 'package:better_informed_mobile/domain/subscription/use_case/set_onboardi
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
+import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mockito/annotations.dart';
@@ -101,6 +103,8 @@ const _classes = [
   PurchasesRepository,
   GetPreferredSubscriptionPlanUseCase,
   PurchaseSubscriptionUseCase,
+  FeaturesFlagsRepository,
+  NetworkCacheManager,
 ];
 
 @GenerateMocks(_classes)

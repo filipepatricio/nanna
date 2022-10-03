@@ -16,4 +16,6 @@ class MainState with _$MainState {
   const factory MainState.multiNavigate(List<String> path) = __MainStateMultiNavigate;
 
   const factory MainState.showReleaseNote(ReleaseNote releaseNote) = _MainStateShowReleaseNote;
+
+  const factory MainState.resetRouteStack() = _MainStateResetRouteStack;
 }
