@@ -21,4 +21,8 @@ class PremiumArticleViewState with _$PremiumArticleViewState {
     required List<CategoryItem> relatedContentItems,
     required bool enablePageSwipe,
   }) = _PremiumArticleViewStateIdle;
+
+  const factory PremiumArticleViewState.freeArticlesWarning({
+    required String message,
+  }) = _PremiumArticleViewStateFreeArticlesWarning;
 }

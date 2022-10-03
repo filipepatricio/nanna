@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_other_topic_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_related_content_use_case.di.dart';
@@ -13,6 +16,7 @@ import 'package:better_informed_mobile/domain/categories/data/category_item.dt.d
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
@@ -33,6 +37,8 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getFeaturedCategoriesUseCase,
     this._getRelatedContentUseCase,
     this._getArticleUseCase,
+    this._getFreeArticlesLeftWarningStreamUseCase,
+    this._getActiveSubscriptionUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -43,11 +49,17 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetFeaturedCategoriesUseCase _getFeaturedCategoriesUseCase;
   final GetRelatedContentUseCase _getRelatedContentUseCase;
   final GetArticleUseCase _getArticleUseCase;
+  final GetFreeArticlesLeftWarningStreamUseCase _getFreeArticlesLeftWarningStreamUseCase;
+  final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
 
   final moreFromBriefItems = <BriefEntryItem>[];
   final otherTopicItems = <MediaItem>[];
   final relatedContentItems = <CategoryItem>[];
   final featuredCategories = <Category>[];
+
+  StreamSubscription? _activeSubscriptionStreamSubscription;
+  StreamSubscription? _freeArticlesLeftWarningSubscription;
+  String? _lastFreeArticlesLeftWarning;
 
   late Article _currentFullArticle;
   late String? _topicId;
@@ -75,6 +87,8 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   @override
   Future<void> close() async {
     await _readingProgressTrackingScheduler?.stop();
+    await _freeArticlesLeftWarningSubscription?.cancel();
+    await _activeSubscriptionStreamSubscription?.cancel();
     return super.close();
   }
 
@@ -124,6 +138,20 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
         enablePageSwipe: true,
       ),
     );
+
+    _freeArticlesLeftWarningSubscription = _getFreeArticlesLeftWarningStreamUseCase().listen(
+      (warning) {
+        if (_lastFreeArticlesLeftWarning != warning) {
+          _lastFreeArticlesLeftWarning = warning;
+
+          final lastState = state;
+          emit(PremiumArticleViewState.freeArticlesWarning(message: warning));
+          emit(lastState);
+        }
+      },
+    );
+
+    _activeSubscriptionStreamSubscription = _getActiveSubscriptionUseCase.stream.listen((_) => refreshArticle());
   }
 
   Future<void> refreshArticle() async {
@@ -164,14 +192,21 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
             interval: const Duration(seconds: 3),
             name: 'reading-progress-tracker-premium',
             timeout: const Duration(milliseconds: 1500),
-            task: _trackReadingProgress,
+            task: _scheduledTrackReadingProgress,
             minCycle: const Duration(milliseconds: 1500),
           );
 
     _readingProgressTrackingScheduler?.start();
   }
 
-  Future<void> _trackReadingProgress() async {
+  Future<void> _scheduledTrackReadingProgress() async {
+    if (scrollData.progress > 0) {
+      await trackReadingProgress();
+    }
+    return;
+  }
+
+  Future<void> trackReadingProgress() async {
     final progress = (scrollData.progress * 100).toInt().clamp(1, 100);
     _articleProgress = await _trackArticleReadingProgressUseCase.call(_currentFullArticle.metadata.slug, progress);
     return;
@@ -216,7 +251,7 @@ extension on MediaItemScrollData {
 }
 
 extension ScrollPhysicExtension on PremiumArticleViewState {
-  ScrollPhysics get scrollPhysic => kIsAppleDevice
+  ScrollPhysics get scrollPhysics => kIsAppleDevice
       ? const ClampingScrollPhysics()
       : maybeMap(
           orElse: () => const ClampingScrollPhysics(),

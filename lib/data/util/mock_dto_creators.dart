@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dar
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/update_article_progress_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
 import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
@@ -487,7 +488,7 @@ class MockDTO {
     // availableInSubscription
     true,
     // progress
-    articleProgress,
+    updateArticleProgressResponse.progress,
     // progressState
     ArticleProgressState.unread,
     // locked
@@ -826,13 +827,28 @@ class MockDTO {
     'Opinion',
   );
 
-  static final articleProgress = ArticleProgressDTO(
-    // audioPosition
-    30,
-    // audioProgress
-    45,
-    // contentProgress
-    10,
+  static final updateArticleProgressResponse = UpdateArticleProgressResponseDTO(
+    ArticleProgressDTO(
+      // audioPosition
+      30,
+      // audioProgress
+      45,
+      // contentProgress
+      10,
+    ),
+    null,
+  );
+
+  static final updateArticleProgressResponseWarning = UpdateArticleProgressResponseDTO(
+    ArticleProgressDTO(
+      // audioPosition
+      30,
+      // audioProgress
+      45,
+      // contentProgress
+      10,
+    ),
+    'This is your last free article this month.',
   );
 
   static final _publisher = PublisherDTO(

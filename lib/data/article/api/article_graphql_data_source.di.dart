@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/documents/__generated__/article_audio_file.ast.gql.dart'
     as article_audio_file;
@@ -17,9 +19,9 @@ import 'package:better_informed_mobile/data/article/api/documents/__generated__/
     as update_article_content_progress;
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
-import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/dto/update_article_progress_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_exception_mapper_facade.di.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
@@ -169,7 +171,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
       );
 
   @override
-  Future<ArticleProgressDTO> trackReadingProgress(String slug, int progress) async {
+  Future<UpdateArticleProgressResponseDTO> trackReadingProgress(String slug, int progress) async {
     final result = await _client.mutate(
       MutationOptions(
         document: update_article_content_progress.document,
@@ -184,13 +186,10 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     final dto = _responseResolver.resolve(
       result,
       rootKey: 'updateArticleContentProgress',
-      (raw) {
-        final progressRaw = raw['progress'] as Map<String, dynamic>;
-        return ArticleProgressDTO.fromJson(progressRaw);
-      },
+      UpdateArticleProgressResponseDTO.fromJson,
     );
 
-    if (dto == null) throw Exception('Response for article progress is null');
+    if (dto == null) throw Exception('Response for article progress update is null');
 
     return dto;
   }

@@ -30,4 +30,8 @@ abstract class ArticleRepository {
   double getArticleAudioProgress(MediaItemArticle article);
 
   int getArticleReadProgress(MediaItemArticle article);
+
+  Stream<String> get freeArticlesLeftWarningStream;
+
+  void dispose();
 }
