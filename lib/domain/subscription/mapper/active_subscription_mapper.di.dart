@@ -21,7 +21,7 @@ class ActiveSubscriptionMapper implements Mapper<ActiveSubscriptionDTO, ActiveSu
 
     final activePlan = dto.plans.firstWhere((plan) => plan.productId == activeEntitlement.productIdentifier);
 
-    if (activeEntitlement.periodType == PeriodType.trial) {
+    if (activeEntitlement.periodType == PeriodType.trial || activeEntitlement.periodType == PeriodType.intro) {
       return ActiveSubscription.trial(
         DateTime.parse(activeEntitlement.originalPurchaseDate),
         dto.customer.managementURL ?? '',
