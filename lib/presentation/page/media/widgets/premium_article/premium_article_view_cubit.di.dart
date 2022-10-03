@@ -172,7 +172,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   }
 
   Future<void> _trackReadingProgress() async {
-    final progress = (scrollData.progress * 100).toInt().clamp(0, 100);
+    final progress = (scrollData.progress * 100).toInt().clamp(1, 100);
     _articleProgress = await _trackArticleReadingProgressUseCase.call(_currentFullArticle.metadata.slug, progress);
     return;
   }
