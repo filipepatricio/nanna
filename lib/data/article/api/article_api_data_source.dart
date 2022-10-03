@@ -13,7 +13,7 @@ abstract class ArticleApiDataSource {
 
   Future<AudioFileDTO> getArticleAudioFile(String slug, bool forceFresh);
 
-  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug);
+  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug, String briefId);
 
   Future<TopicMediaItemsDTO> getOtherTopicEntries(String articleSlug, String topicSlug);
 

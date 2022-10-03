@@ -1,8 +1,8 @@
 # import 'package:better_informed_mobile/data/gql/common/article_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/topic_fragment.graphql';
 
-query getOtherBriefEntries($articleSlug: String!) {
-	getOtherBriefEntries(articleSlug: $articleSlug) {
+query getOtherBriefEntries($articleSlug: String!, $briefId: UUID!) {
+	getOtherBriefEntries(articleSlug: $articleSlug, briefId: $briefId) {
 		__typename
 		... on Article {
 			...articleFragment

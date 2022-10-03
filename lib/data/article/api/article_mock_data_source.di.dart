@@ -34,7 +34,7 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
   }
 
   @override
-  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug) async {
+  Future<List<BriefEntryItemDTO>> getOtherBriefEntries(String articleSlug, String? briefId) async {
     return MockDTO.currentBrief().allEntries.map((entry) => entry.item).toList();
   }
 
