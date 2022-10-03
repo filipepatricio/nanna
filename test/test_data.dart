@@ -34,6 +34,7 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_map
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_position.dart';
@@ -43,7 +44,9 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
+import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/mapper/active_subscription_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 
@@ -165,6 +168,8 @@ class TestData {
 
   static final _subscriptionPlanMapper = SubscriptionPlanMapper();
 
+  static final _activeSubscriptionMapper = ActiveSubscriptionMapper(AppConfig.mock);
+
   static AudioItem get audioItem => AudioItem(
         id: TestData.premiumArticleWithAudio.id,
         slug: TestData.premiumArticleWithAudio.slug,
@@ -214,6 +219,12 @@ class TestData {
 
   static List<CategoryItem> get categoryItemList =>
       MockDTO.categoryItemList.map<CategoryItem>(_categoryItemMapper).toList();
+
+  static ActiveSubscriptionPremium get activeSubscription =>
+      _activeSubscriptionMapper(MockDTO.activeSubscription) as ActiveSubscriptionPremium;
+
+  static ActiveSubscriptionTrial get activeSubscriptionTrial =>
+      _activeSubscriptionMapper(MockDTO.activeSubscriptionTrial) as ActiveSubscriptionTrial;
 
   static List<SubscriptionPlan> get subscriptionPlansWithTrial => _subscriptionPlanMapper(MockDTO.offeringWithTrial);
 

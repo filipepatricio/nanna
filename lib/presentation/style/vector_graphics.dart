@@ -23,6 +23,9 @@ class AppVectorGraphics {
   static const String articleLabel = 'assets/vector_graphics/article_label.svg';
 
   static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
+  static const String informedLogoFree = 'assets/vector_graphics/informed_logo_free.svg';
+  static const String informedLogoTrial = 'assets/vector_graphics/informed_logo_trial.svg';
+  static const String informedLogoPremium = 'assets/vector_graphics/informed_logo_premium.svg';
 
   static const String share = 'assets/vector_graphics/share.svg';
   static const String instagram = 'assets/vector_graphics/instagram.svg';

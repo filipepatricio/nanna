@@ -40,6 +40,8 @@ import 'package:better_informed_mobile/data/release_notes/dto/release_note_dto.d
 import 'package:better_informed_mobile/data/release_notes/dto/release_note_media_dto.dt.dart';
 import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
+import 'package:better_informed_mobile/data/subscription/dto/active_subscription_dto.dart';
+import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
@@ -47,6 +49,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.d
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 const _mockedPillIcon = '''
@@ -854,19 +857,29 @@ class MockDTO {
 
   static final callToAction = CallToActionDTO('More stories on', 'Explore');
 
-  static const offeringWithTrial = Offering(
-    'offering-id-trial',
-    'description',
-    [annualPackageTrial, monthlyPackageTrial],
+  static final activeSubscription = activeSubscriptionWithCustomer(customerInfo);
+
+  static final activeSubscriptionTrial = activeSubscriptionWithCustomer(customerInfoTrial);
+
+  static const offeringWithTrial = OfferingDTO(
+    offering: Offering(
+      'offering-id-trial',
+      'description',
+      [annualPackage, monthlyPackage],
+    ),
+    isFirstTimeSubscriber: true,
   );
 
-  static const offeringWithoutTrial = Offering(
-    'offering-id',
-    'description',
-    [annualPackage, monthlyPackage],
+  static const offeringWithoutTrial = OfferingDTO(
+    offering: Offering(
+      'offering-id-trial',
+      'description',
+      [annualPackage, monthlyPackage],
+    ),
+    isFirstTimeSubscriber: false,
   );
 
-  static const annualPackageTrial = Package(
+  static const annualPackage = Package(
     '\$rc_annual', //identifier
     PackageType.annual, //packageType
     //storeProduct
@@ -890,7 +903,7 @@ class MockDTO {
     'premium', //offeringIdentifier
   );
 
-  static const monthlyPackageTrial = Package(
+  static const monthlyPackage = Package(
     '\$rc_monthly',
     PackageType.monthly,
     StoreProduct(
@@ -913,37 +926,122 @@ class MockDTO {
     'premium',
   );
 
-  static const annualPackage = Package(
-    '\$rc_annual', //identifier
-    PackageType.annual, //packageType
-    //storeProduct
-    StoreProduct(
-      'inf_st_0099_1y_2w0', //identifier
-      'annual sub', //description
-      'Yearly subscription', //title
-      0.99, //price
-      '\$0.99', //priceString
-      'USD', //currencyCode
-      introductoryPrice: null,
-      discounts: [],
-    ),
-    'premium', //offeringIdentifier
+  static final annualSubscriptionPlan = SubscriptionPlan(
+    type: SubscriptionPlanType.annual,
+    title: annualPackage.storeProduct.title,
+    description: annualPackage.storeProduct.description,
+    price: annualPackage.storeProduct.price,
+    priceString: annualPackage.storeProduct.priceString,
+    trialDays: 14,
+    reminderDays: 7,
+    packageId: annualPackage.identifier,
+    productId: annualPackage.storeProduct.identifier,
   );
 
-  static const monthlyPackage = Package(
-    '\$rc_monthly',
-    PackageType.monthly,
-    StoreProduct(
-      'inf_st_0049_1m_1w0',
-      'monthly sub',
-      'Monthly subscription',
-      0.49000000000000005,
-      '\$0.49',
-      'USD',
-      introductoryPrice: null,
-      discounts: [],
-    ),
+  static final monthlySubscriptionPlan = SubscriptionPlan(
+    type: SubscriptionPlanType.monthly,
+    title: monthlyPackage.storeProduct.title,
+    description: monthlyPackage.storeProduct.description,
+    price: monthlyPackage.storeProduct.price,
+    priceString: monthlyPackage.storeProduct.priceString,
+    trialDays: 7,
+    reminderDays: 3,
+    packageId: monthlyPackage.identifier,
+    productId: monthlyPackage.storeProduct.identifier,
+  );
+
+  static final premiumEntitlement = EntitlementInfo(
+    //identifier
     'premium',
+    //isActive
+    true,
+    //willRenew
+    true,
+    //latestPurchaseDate
+    '2022-09-28T15:59:37Z',
+    //originalPurchaseDate
+    '2022-09-26T18:21:43Z',
+    //productIdentifier
+    monthlyPackage.storeProduct.identifier,
+    //isSandbox
+    true,
+    ownershipType: OwnershipType.purchased,
+    store: Store.appStore,
+    periodType: PeriodType.normal,
+    expirationDate: '2022-09-28T16:04:37Z',
+    unsubscribeDetectedAt: null,
+    billingIssueDetectedAt: null,
+  );
+
+  static final premiumEntitlementTrial = EntitlementInfo(
+    //identifier
+    'premium',
+    //isActive
+    true,
+    //willRenew
+    true,
+    //latestPurchaseDate
+    '2022-09-28T15:59:37Z',
+    //originalPurchaseDate
+    '2022-09-26T18:21:43Z',
+    //productIdentifier
+    monthlyPackage.storeProduct.identifier,
+    //isSandbox
+    true,
+    ownershipType: OwnershipType.purchased,
+    store: Store.appStore,
+    periodType: PeriodType.trial,
+    expirationDate: '2022-09-28T16:04:37Z',
+    unsubscribeDetectedAt: null,
+    billingIssueDetectedAt: null,
+  );
+
+  static final customerInfoTrial = customerInfowithEntitlement(premiumEntitlementTrial);
+
+  static final customerInfo = customerInfowithEntitlement(premiumEntitlement);
+}
+
+ActiveSubscriptionDTO activeSubscriptionWithCustomer(CustomerInfo customer) => ActiveSubscriptionDTO(
+      customer: customer,
+      plans: [
+        MockDTO.annualSubscriptionPlan,
+        MockDTO.monthlySubscriptionPlan,
+      ],
+    );
+
+CustomerInfo customerInfowithEntitlement(EntitlementInfo entitlement, [Package package = MockDTO.monthlyPackage]) {
+  return CustomerInfo(
+    //entitlements
+    EntitlementInfos(
+      //all
+      {'premium': entitlement},
+      //active
+      {'premium': entitlement},
+    ),
+    //allPurchaseDates
+    {
+      package.storeProduct.identifier: entitlement.latestPurchaseDate,
+    },
+    //activeSubscriptions
+    [package.storeProduct.identifier],
+    //allPurchasedProductIdentifiers
+    [package.storeProduct.identifier],
+    //nonSubscriptionTransactions
+    [],
+    //firstSeen
+    '2022-09-13T22:23:05Z',
+    //originalAppUserId
+    '\$RCAnonymousID:4574983707c544e0aecf0a1553e1c4b1',
+    //allExpirationDates
+    {
+      package.storeProduct.identifier: entitlement.expirationDate,
+    },
+    //requestDate
+    '2022-09-28T15:59:44Z',
+    latestExpirationDate: entitlement.expirationDate,
+    originalPurchaseDate: '2013-08-01T07:00:00Z',
+    originalApplicationVersion: '1.0',
+    managementURL: 'https://apps.apple.com/account/subscriptions',
   );
 }
 

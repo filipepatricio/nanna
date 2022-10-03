@@ -12,6 +12,7 @@ class SubscriptionPlan {
     required this.trialDays,
     required this.reminderDays,
     required this.packageId,
+    required this.productId,
     this.discountPercentage = 0,
   });
 
@@ -25,6 +26,7 @@ class SubscriptionPlan {
   final int discountPercentage;
 
   final String packageId;
+  final String productId;
 
   bool get isAnnual => type == SubscriptionPlanType.annual;
 
