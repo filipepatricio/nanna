@@ -17,7 +17,7 @@ class SubscriptionCardCubit extends Cubit<SubscriptionCardState> {
   Future<void> initialize() async {
     _emitIdleState(await _getActiveSubscriptionUseCase());
 
-    _activeSubscriptionStreamSubscription ??= _getActiveSubscriptionUseCase.stream.listen(_emitIdleState);
+    _activeSubscriptionStreamSubscription = _getActiveSubscriptionUseCase.stream.listen(_emitIdleState);
   }
 
   void _emitIdleState(ActiveSubscription activeSubscription) {
@@ -32,7 +32,7 @@ class SubscriptionCardCubit extends Cubit<SubscriptionCardState> {
 
   @override
   Future<void> close() async {
-    await super.close();
     await _activeSubscriptionStreamSubscription?.cancel();
+    await super.close();
   }
 }

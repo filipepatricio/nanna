@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/data/article/api/article_api_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
@@ -44,6 +46,8 @@ class ArticleRepositoryImpl implements ArticleRepository {
 
   final BehaviorSubject<ReadingBanner> _broadcaster = BehaviorSubject();
 
+  var _freeArticlesLeftWarningStream = StreamController<String>.broadcast();
+
   @override
   Stream<ReadingBanner> getReadingBannerStream() => _broadcaster.stream;
 
@@ -86,7 +90,11 @@ class ArticleRepositoryImpl implements ArticleRepository {
 
     final dto = await _articleDataSource.trackReadingProgress(articleSlug, progress);
 
-    return _articleProgressDTOMapper(dto);
+    if (dto.freeArticlesLeftWarning != null) {
+      _freeArticlesLeftWarningStream.add(dto.freeArticlesLeftWarning!);
+    }
+
+    return _articleProgressDTOMapper(dto.progress);
   }
 
   @override
@@ -109,5 +117,14 @@ class ArticleRepositoryImpl implements ArticleRepository {
   @override
   int getArticleReadProgress(MediaItemArticle article) {
     return _readProgress[article.slug] ?? article.progress.contentProgress;
+  }
+
+  @override
+  Stream<String> get freeArticlesLeftWarningStream => _freeArticlesLeftWarningStream.stream;
+
+  @override
+  void dispose() {
+    _freeArticlesLeftWarningStream.close();
+    _freeArticlesLeftWarningStream = StreamController<String>.broadcast();
   }
 }
