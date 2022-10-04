@@ -244,7 +244,7 @@
     "continueToArticle": "Continue reading",
     "geoblockedError": {
       "title": "Content unavailable",
-      "content": "Bummer. The content you requested is not available in your country.",
+      "content": "The content you requested is not yet available in your country.",
       "action": "Okay"
     },
     "topicOverview": "Topic Overview",
