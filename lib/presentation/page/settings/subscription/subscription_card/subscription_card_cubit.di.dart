@@ -26,6 +26,7 @@ class SubscriptionCardCubit extends Cubit<SubscriptionCardState> {
         free: (_) => const SubscriptionCardState.free(),
         trial: (subscription) => SubscriptionCardState.trial(remainingDays: subscription.remainingTrialDays),
         premium: (_) => const SubscriptionCardState.premium(),
+        manualPremium: (_) => const SubscriptionCardState.premium(),
       ),
     );
   }

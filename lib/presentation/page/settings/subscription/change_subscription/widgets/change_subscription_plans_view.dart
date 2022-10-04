@@ -154,5 +154,6 @@ extension on ActiveSubscription {
         free: (_) => clock.now(),
         trial: (trial) => clock.now().add(Duration(days: trial.remainingTrialDays)),
         premium: (premium) => premium.expirationDate!,
+        manualPremium: (premium) => premium.expirationDate!,
       );
 }
