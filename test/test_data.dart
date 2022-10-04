@@ -230,4 +230,6 @@ class TestData {
 
   static List<SubscriptionPlan> get subscriptionPlansWithoutTrial =>
       _subscriptionPlanMapper(MockDTO.offeringWithoutTrial);
+
+  static String? get freeArticlesLeftWarning => MockDTO.updateArticleProgressResponseWarning.freeArticlesLeftWarning;
 }

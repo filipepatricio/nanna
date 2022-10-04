@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
+import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
@@ -17,6 +18,7 @@ class SignOutUseCase {
     this._refreshTokenServiceCache,
     this._userStore,
     this._purchasesRepository,
+    this._articleRepository,
   );
   final AuthStore _authStore;
   final AnalyticsRepository _analyticsRepository;
@@ -25,11 +27,13 @@ class SignOutUseCase {
   final RefreshTokenServiceCache _refreshTokenServiceCache;
   final UserStore _userStore;
   final PurchasesRepository _purchasesRepository;
+  final ArticleRepository _articleRepository;
 
   Future<void> call() async {
     _refreshTokenServiceCache.clear();
     _pushNotificationRepository.dispose();
     _purchasesRepository.dispose();
+    _articleRepository.dispose();
 
     await _pushNotificationStore.clear();
     await _authStore.delete();

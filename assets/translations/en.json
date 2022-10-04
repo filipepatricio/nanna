@@ -146,6 +146,9 @@
     "premium": "Premium",
     "endsIn": "Ends in {}",
     "goPremium": "Go Premium",
+    "snackbar": {
+      "link": "Upgrade for unlimited access"
+    },
     "change": {
       "title": "Change _your plan_",
       "footer": "Your new plan starts on {}",

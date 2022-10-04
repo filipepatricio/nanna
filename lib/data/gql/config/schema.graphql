@@ -791,7 +791,7 @@ type RootQueryType {
   getOnboardingCategories: [Category]
 
   """Returns other entries in current Brief minus given Article"""
-  getOtherBriefEntries(articleSlug: String!): [BriefEntryItem]
+  getOtherBriefEntries(articleSlug: String!, briefId: UUID): [BriefEntryItem]
 
   """Returns other entries in given Topic minus given Article"""
   getOtherTopicEntries(articleSlug: String!, topicSlug: String!): [TopicMediaItem]
@@ -1045,6 +1045,10 @@ type TopicsExploreArea implements ExploreArea {
 
 """Response for article progress mutation"""
 type UpdateArticleProgressResponse {
+  """
+  Text of warning about number of free articles left in current period or null if warning is not necessary
+  """
+  freeArticlesLeftWarning: String
   progress: ArticleProgress
   successful: Boolean!
 }

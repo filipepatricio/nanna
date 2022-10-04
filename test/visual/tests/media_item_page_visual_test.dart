@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/article/exception/article_geoblocked_exception.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
@@ -25,7 +26,7 @@ void main() {
         ],
       ),
     );
-    await tester.pumpAndSettle();
+
     await tester.matchGoldenFile('media_item_page_(image)');
     await tester.tap(find.byType(AnimatedPointerDown).last);
     await tester.pumpAndSettle();
@@ -33,6 +34,24 @@ void main() {
     await tester.flingFrom(const Offset(0, 400.0), const Offset(0, -20000), 100);
     await tester.pumpAndSettle();
     await tester.matchGoldenFile('media_item_page_(bottom)');
+  });
+
+  visualTest('${MediaItemPage}_(free_articles_warning)', (tester) async {
+    await tester.startApp(
+      initialRoute: MainPageRoute(
+        children: [
+          MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
+        ],
+      ),
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<GetFreeArticlesLeftWarningStreamUseCase>(
+          () => FakeGetFreeArticlesLeftWarningStreamUseCase(),
+        );
+      },
+    );
+    await tester.fling(find.byType(MediaItemPage), const Offset(0, -1000), 100);
+    await tester.pumpAndSettle();
+    await tester.matchGoldenFile();
   });
 
   visualTest('${MediaItemPage}_(audio)', (tester) async {
@@ -177,6 +196,9 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
   Future<void> initialize(_, __, ___, ____) async {}
 
   @override
+  Future<void> trackReadingProgress() async {}
+
+  @override
   void setupScrollData(_, __) {}
 
   @override
@@ -204,4 +226,11 @@ class FakePremiumArticleViewCubitFromTopic extends FakePremiumArticleViewCubitFr
 
   @override
   String get topicTitle => TestData.topic.strippedTitle;
+}
+
+class FakeGetFreeArticlesLeftWarningStreamUseCase extends Fake implements GetFreeArticlesLeftWarningStreamUseCase {
+  @override
+  Stream<String> call() => TestData.freeArticlesLeftWarning != null
+      ? Stream.value('This is your last free article this month.')
+      : const Stream.empty();
 }

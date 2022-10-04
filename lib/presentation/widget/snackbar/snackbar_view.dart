@@ -97,6 +97,8 @@ extension on SnackbarMessage {
         return AppColors.charcoal;
       case SnackbarMessageType.negative:
         return AppColors.carrotRed;
+      case SnackbarMessageType.informative:
+        return AppColors.pastelPurple;
     }
   }
 

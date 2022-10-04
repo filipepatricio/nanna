@@ -25,4 +25,7 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
 
   @override
   Future<void> setupAttribution(InstallAttributionPayload installAttributionPayload) async {}
+
+  @override
+  Stream<bool> usePaidSubscriptionStream() async* {}
 }

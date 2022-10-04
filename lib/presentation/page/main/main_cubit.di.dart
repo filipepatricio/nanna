@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:better_informed_mobile/domain/auth/use_case/get_token_expiration_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/use_case/subscribe_for_deep_link_use_case.di.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/use_paid_subscription_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_navigation_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/maybe_register_push_notification_token_use_case.di.dart';
@@ -23,6 +24,7 @@ class MainCubit extends Cubit<MainState> {
     this._incomingPushNavigationStreamUseCase,
     this._subscribeForDeepLinkUseCase,
     this._getCurrentReleaseNoteUseCase,
+    this._usePaidSubscriptionChangeStreamUseCase,
   ) : super(const MainState.init());
 
   final GetTokenExpirationStreamUseCase _getTokenExpirationStreamUseCase;
@@ -30,16 +32,19 @@ class MainCubit extends Cubit<MainState> {
   final IncomingPushNavigationStreamUseCase _incomingPushNavigationStreamUseCase;
   final SubscribeForDeepLinkUseCase _subscribeForDeepLinkUseCase;
   final GetCurrentReleaseNoteUseCase _getCurrentReleaseNoteUseCase;
+  final UsePaidSubscriptionChangeStreamUseCase _usePaidSubscriptionChangeStreamUseCase;
 
   StreamSubscription? _incomingPushNavigationSubscription;
   StreamSubscription? _tokenExpirationSubscription;
   StreamSubscription? _deepLinkSubscription;
+  StreamSubscription? _usePaidSubscriptionFlagChangeSubscription;
 
   @override
   Future<void> close() async {
     await _incomingPushNavigationSubscription?.cancel();
     await _tokenExpirationSubscription?.cancel();
     await _deepLinkSubscription?.cancel();
+    await _usePaidSubscriptionFlagChangeSubscription?.cancel();
     return super.close();
   }
 
@@ -51,6 +56,7 @@ class MainCubit extends Cubit<MainState> {
 
     _subscribeToPushNavigationStream();
     _subscribeToDeepLinkStream();
+    _subscribeToPaidSubscriptionChangeStream();
 
     try {
       await _maybeRegisterPushNotificationTokenUseCase();
@@ -71,6 +77,13 @@ class MainCubit extends Cubit<MainState> {
   void _subscribeToDeepLinkStream() {
     _deepLinkSubscription = _subscribeForDeepLinkUseCase().listen((path) async {
       emit(_handleNavigationAction(path));
+      emit(const MainState.init());
+    });
+  }
+
+  void _subscribeToPaidSubscriptionChangeStream() {
+    _usePaidSubscriptionFlagChangeSubscription = _usePaidSubscriptionChangeStreamUseCase().listen((event) {
+      emit(const MainState.resetRouteStack());
       emit(const MainState.init());
     });
   }
