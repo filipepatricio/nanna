@@ -19,7 +19,11 @@ void main() {
         ),
         dependencyOverride: (getIt) async {
           getIt.registerFactory<SettingsSubscriptionPageCubit>(
-            () => FakeSettingsSubscriptionPageCubitTrial(),
+            () => FakeSettingsSubscriptionPageCubit(
+              SettingsSubscriptionPageState.trial(
+                subscription: TestData.activeSubscriptionTrial,
+              ),
+            ),
           );
         },
       );
@@ -36,7 +40,31 @@ void main() {
       ),
       dependencyOverride: (getIt) async {
         getIt.registerFactory<SettingsSubscriptionPageCubit>(
-          () => FakeSettingsSubscriptionPageCubit(),
+          () => FakeSettingsSubscriptionPageCubit(
+            SettingsSubscriptionPageState.premium(
+              subscription: TestData.activeSubscription,
+            ),
+          ),
+        );
+      },
+    );
+    await tester.matchGoldenFile();
+  });
+
+  visualTest('${SettingsSubscriptionPage}_(manual)', (tester) async {
+    await tester.startApp(
+      initialRoute: const ProfileTabGroupRouter(
+        children: [
+          SettingsSubscriptionPageRoute(),
+        ],
+      ),
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<SettingsSubscriptionPageCubit>(
+          () => FakeSettingsSubscriptionPageCubit(
+            SettingsSubscriptionPageState.manualPremium(
+              subscription: TestData.activeSubscriptionManual,
+            ),
+          ),
         );
       },
     );
@@ -44,30 +72,16 @@ void main() {
   });
 }
 
-class FakeSettingsSubscriptionPageCubitTrial extends Fake implements SettingsSubscriptionPageCubit {
-  final trial = SettingsSubscriptionPageState.trial(subscription: TestData.activeSubscriptionTrial);
-
-  @override
-  SettingsSubscriptionPageState get state => trial;
-
-  @override
-  Stream<SettingsSubscriptionPageState> get stream => Stream.value(trial);
-
-  @override
-  Future<void> initialize() async {}
-
-  @override
-  Future<void> close() async {}
-}
-
 class FakeSettingsSubscriptionPageCubit extends Fake implements SettingsSubscriptionPageCubit {
-  final premium = SettingsSubscriptionPageState.premium(subscription: TestData.activeSubscription);
+  FakeSettingsSubscriptionPageCubit(this._state);
+
+  final SettingsSubscriptionPageState _state;
 
   @override
-  SettingsSubscriptionPageState get state => premium;
+  SettingsSubscriptionPageState get state => _state;
 
   @override
-  Stream<SettingsSubscriptionPageState> get stream => Stream.value(premium);
+  Stream<SettingsSubscriptionPageState> get stream => Stream.value(_state);
 
   @override
   Future<void> initialize() async {}
