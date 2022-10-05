@@ -25,6 +25,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 part './widgets/change_subscription_card.dart';
 part './widgets/settings_subscription_premium_view.dart';
 part './widgets/settings_subscription_trial_view.dart';
+part './widgets/settings_subscription_manual_premium_view.dart';
 
 class SettingsSubscriptionPage extends HookWidget {
   const SettingsSubscriptionPage({Key? key}) : super(key: key);
@@ -73,6 +74,9 @@ class SettingsSubscriptionPage extends HookWidget {
           premium: (data) => _SettingsSubscriptionPremiumView(
             subscription: data,
             onCancelSubscriptionTap: () => _openInBrowser(data.manageSubscriptionURL),
+          ),
+          manualPremium: (data) => _SettingsSubscriptionManualPremiumView(
+            subscription: data,
           ),
           orElse: Container.new,
         ),
