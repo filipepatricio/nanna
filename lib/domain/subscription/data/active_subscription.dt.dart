@@ -21,4 +21,10 @@ class ActiveSubscription with _$ActiveSubscription {
     bool willRenew,
     SubscriptionPlan plan,
   ) = ActiveSubscriptionPremium;
+
+  factory ActiveSubscription.manualPremium(
+    String manageSubscriptionURL,
+    DateTime? expirationDate,
+    bool willRenew,
+  ) = ActiveSubscriptionManualPremium;
 }

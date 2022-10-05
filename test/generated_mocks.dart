@@ -38,6 +38,7 @@ import 'package:better_informed_mobile/domain/push_notification/push_notificatio
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_remote_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_preferred_subscription_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
@@ -51,6 +52,7 @@ import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mockito/annotations.dart';
+import 'package:purchases_flutter/object_wrappers.dart';
 
 const _classes = [
   AudioRepository,
@@ -105,6 +107,8 @@ const _classes = [
   PurchaseSubscriptionUseCase,
   FeaturesFlagsRepository,
   NetworkCacheManager,
+  CustomerInfo,
+  SubscriptionPlan,
 ];
 
 @GenerateMocks(_classes)

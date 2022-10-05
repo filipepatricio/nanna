@@ -19,23 +19,33 @@ class ActiveSubscriptionMapper implements Mapper<ActiveSubscriptionDTO, ActiveSu
       return ActiveSubscription.free();
     }
 
-    final activePlan = dto.plans.firstWhere((plan) => plan.productId == activeEntitlement.productIdentifier);
+    final plans = dto.plans;
 
-    if (activeEntitlement.periodType == PeriodType.trial || activeEntitlement.periodType == PeriodType.intro) {
-      return ActiveSubscription.trial(
+    if (plans.any((element) => element.productId == activeEntitlement.productIdentifier)) {
+      final activePlan = plans.firstWhere((plan) => plan.productId == activeEntitlement.productIdentifier);
+
+      if (activeEntitlement.periodType == PeriodType.trial || activeEntitlement.periodType == PeriodType.intro) {
+        return ActiveSubscription.trial(
+          DateTime.parse(activeEntitlement.originalPurchaseDate),
+          dto.customer.managementURL ?? '',
+          DateTime.parse(activeEntitlement.expirationDate!).difference(clock.now()).inDays,
+          activePlan,
+        );
+      }
+
+      return ActiveSubscription.premium(
         DateTime.parse(activeEntitlement.originalPurchaseDate),
         dto.customer.managementURL ?? '',
-        DateTime.parse(activeEntitlement.expirationDate!).difference(clock.now()).inDays,
+        activeEntitlement.expirationDate != null ? DateTime.parse(activeEntitlement.expirationDate!) : null,
+        activeEntitlement.willRenew,
         activePlan,
       );
     }
 
-    return ActiveSubscription.premium(
-      DateTime.parse(activeEntitlement.originalPurchaseDate),
+    return ActiveSubscription.manualPremium(
       dto.customer.managementURL ?? '',
       activeEntitlement.expirationDate != null ? DateTime.parse(activeEntitlement.expirationDate!) : null,
       activeEntitlement.willRenew,
-      activePlan,
     );
   }
 }
