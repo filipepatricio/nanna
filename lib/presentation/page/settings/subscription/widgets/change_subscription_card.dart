@@ -11,11 +11,13 @@ class _ChangeSubscriptionCard extends StatelessWidget {
 
   final String icon;
   final String title;
-  final String subtitle;
-  final VoidCallback onTap;
+  final String? subtitle;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final subtitle = this.subtitle;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -42,18 +44,20 @@ class _ChangeSubscriptionCard extends StatelessWidget {
                   title,
                   style: AppTypography.h4ExtraBold.copyWith(height: 1.5),
                 ),
-                Text(
-                  subtitle,
-                  style: AppTypography.subH1Medium.copyWith(height: 1.5),
-                ),
+                if (subtitle != null)
+                  Text(
+                    subtitle,
+                    style: AppTypography.subH1Medium.copyWith(height: 1.5),
+                  ),
               ],
             ),
             const Spacer(),
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: AppDimens.m,
-              color: AppColors.charcoal,
-            ),
+            if (onTap != null)
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: AppDimens.m,
+                color: AppColors.charcoal,
+              ),
           ],
         ),
       ),

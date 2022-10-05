@@ -19,4 +19,8 @@ class SettingsSubscriptionPageState with _$SettingsSubscriptionPageState {
   @Implements<BuildState>()
   const factory SettingsSubscriptionPageState.premium({required ActiveSubscriptionPremium subscription}) =
       _SettingsSubscriptionPageStatePremium;
+
+  @Implements<BuildState>()
+  const factory SettingsSubscriptionPageState.manualPremium({required ActiveSubscriptionManualPremium subscription}) =
+      _SettingsSubscriptionPageStateManualPremium;
 }

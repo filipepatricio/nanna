@@ -223,6 +223,9 @@ class TestData {
   static ActiveSubscriptionPremium get activeSubscription =>
       _activeSubscriptionMapper(MockDTO.activeSubscription) as ActiveSubscriptionPremium;
 
+  static ActiveSubscriptionManualPremium get activeSubscriptionManual =>
+      _activeSubscriptionMapper(MockDTO.activeSubscriptionManual) as ActiveSubscriptionManualPremium;
+
   static ActiveSubscriptionTrial get activeSubscriptionTrial =>
       _activeSubscriptionMapper(MockDTO.activeSubscriptionTrial) as ActiveSubscriptionTrial;
 

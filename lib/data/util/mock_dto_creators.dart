@@ -875,6 +875,8 @@ class MockDTO {
 
   static final activeSubscription = activeSubscriptionWithCustomer(customerInfo);
 
+  static final activeSubscriptionManual = activeSubscriptionWithCustomer(customerInfoManual);
+
   static final activeSubscriptionTrial = activeSubscriptionWithCustomer(customerInfoTrial);
 
   static const offeringWithTrial = OfferingDTO(
@@ -1015,6 +1017,10 @@ class MockDTO {
   static final customerInfoTrial = customerInfowithEntitlement(premiumEntitlementTrial);
 
   static final customerInfo = customerInfowithEntitlement(premiumEntitlement);
+
+  static final customerInfoManual = customerInfowithEntitlement(
+    premiumEntitlement.copyWith(productIdentifier: 'custom-identifier'),
+  );
 }
 
 ActiveSubscriptionDTO activeSubscriptionWithCustomer(CustomerInfo customer) => ActiveSubscriptionDTO(
