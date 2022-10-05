@@ -43,7 +43,7 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   }
 
   @override
-  Future<bool> purchase(SubscriptionPlan plan) async {
+  Future<bool> purchase(SubscriptionPlan plan, {String? oldProductId}) async {
     return true;
   }
 

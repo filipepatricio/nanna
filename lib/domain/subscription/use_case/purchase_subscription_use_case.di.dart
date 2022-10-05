@@ -17,8 +17,11 @@ class PurchaseSubscriptionUseCase {
   final AnalyticsRepository _analyticsRepository;
   final NetworkCacheManager _networkCacheManager;
 
-  Future<bool> call(SubscriptionPlan plan) async {
-    final result = await _purchasesRepository.purchase(plan);
+  Future<bool> call(SubscriptionPlan plan, {String? oldProductId}) async {
+    final result = await _purchasesRepository.purchase(
+      plan,
+      oldProductId: oldProductId,
+    );
     if (result) {
       _analyticsRepository.event(AnalyticsEvent.subscriptionPlanPurchased(packageId: plan.packageId));
       await _networkCacheManager.clear();
