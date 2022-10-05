@@ -8,11 +8,14 @@ import 'package:better_informed_mobile/domain/subscription/data/subscription_pla
 import 'package:better_informed_mobile/domain/subscription/mapper/active_subscription_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
+import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:rxdart/rxdart.dart';
+
+const _currentOfferingKey = 'current';
 
 @LazySingleton(as: PurchasesRepository, env: liveEnvs)
 class PurchasesRepositoryImpl implements PurchasesRepository {
@@ -47,7 +50,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<ActiveSubscription> getActiveSubscription() async {
     final customer = await Purchases.getCustomerInfo();
-    final plans = await getSubscriptionPlans();
+    final plans = await _getAllSubscriptionPlans();
 
     return _activeSubscriptionMapper(
       ActiveSubscriptionDTO(
@@ -58,18 +61,19 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Future<List<SubscriptionPlan>> getSubscriptionPlans() async {
+  Future<List<SubscriptionPlan>> getSubscriptionPlans({String offeringId = _currentOfferingKey}) async {
     final offerings = await Purchases.getOfferings();
-    if (offerings.current != null) {
+    final offering = offerings.getCurrentOrCustomOffering(offeringId);
+    if (offering != null) {
       return _subscriptionPlanMapper.call(
         OfferingDTO(
-          offering: offerings.current!,
+          offering: offering,
           isFirstTimeSubscriber: await isFirstTimeSubscriber(),
         ),
       );
     }
 
-    throw Exception('There is no current offering configured');
+    throw Exception('There is no $offeringId offering configured');
   }
 
   @override
@@ -105,15 +109,13 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   Future<bool> purchase(SubscriptionPlan plan, {String? oldProductId}) async {
     try {
       final offerings = await Purchases.getOfferings();
-      if (offerings.current == null) {
-        throw Exception('There is no current offering configured');
-      }
+      final offering = offerings.getCurrentOrCustomOffering(plan.offeringId);
 
-      final package = offerings.current!.availablePackages.firstWhereOrNull(
+      final package = offering?.availablePackages.firstWhereOrNull(
         (package) => package.identifier == plan.packageId,
       );
       if (package == null) {
-        throw Exception('Selected package is not part of the current offering. Id: ${plan.packageId}');
+        throw Exception('Selected package is not part of the ${plan.offeringId} offering. Id: ${plan.packageId}');
       }
 
       final customer = await Purchases.purchasePackage(
@@ -155,5 +157,31 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
     _activeSubscriptionStream.close();
     _activeSubscriptionStream = BehaviorSubject<ActiveSubscription>();
     Purchases.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
+  }
+
+  Future<List<SubscriptionPlan>> _getAllSubscriptionPlans() async {
+    final offerings = await Purchases.getOfferings();
+    final firstTimeSubscriber = await isFirstTimeSubscriber();
+    if (offerings.all.values.isEmpty) return [];
+
+    return offerings.all.values
+        .map(
+          (offering) => _subscriptionPlanMapper.call(
+            OfferingDTO(
+              offering: offering,
+              isFirstTimeSubscriber: firstTimeSubscriber,
+            ),
+          ),
+        )
+        .flattened
+        .toList();
+  }
+}
+
+extension on Offerings {
+  Offering? getCurrentOrCustomOffering(String offeringId) {
+    if (offeringId == _currentOfferingKey) return current;
+
+    return getOffering(offeringId);
   }
 }

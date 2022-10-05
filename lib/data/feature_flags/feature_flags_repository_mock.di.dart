@@ -20,7 +20,12 @@ class FeatureFlagsRepositoryMock implements FeaturesFlagsRepository {
 
   @override
   Future<bool> usePaidSubscriptions() async {
-    return false;
+    return true;
+  }
+
+  @override
+  Future<String> defaultPaywall() async {
+    return 'current';
   }
 
   @override

@@ -890,7 +890,7 @@ class MockDTO {
 
   static const offeringWithoutTrial = OfferingDTO(
     offering: Offering(
-      'offering-id-trial',
+      'offering-id',
       'description',
       [annualPackage, monthlyPackage],
     ),
@@ -952,6 +952,7 @@ class MockDTO {
     priceString: annualPackage.storeProduct.priceString,
     trialDays: 14,
     reminderDays: 7,
+    offeringId: offeringWithTrial.offering.identifier,
     packageId: annualPackage.identifier,
     productId: annualPackage.storeProduct.identifier,
   );
@@ -964,6 +965,7 @@ class MockDTO {
     priceString: monthlyPackage.storeProduct.priceString,
     trialDays: 7,
     reminderDays: 3,
+    offeringId: offeringWithTrial.offering.identifier,
     packageId: monthlyPackage.identifier,
     productId: monthlyPackage.storeProduct.identifier,
   );

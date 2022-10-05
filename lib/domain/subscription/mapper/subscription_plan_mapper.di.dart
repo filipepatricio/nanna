@@ -24,6 +24,7 @@ class SubscriptionPlanMapper implements Mapper<OfferingDTO, List<SubscriptionPla
           trialDays: dto.isFirstTimeSubscriber ? package.trialDays : 0,
           reminderDays: dto.isFirstTimeSubscriber ? package.reminderDays : 0,
           discountPercentage: package.discountPercentage(offering),
+          offeringId: offering.identifier,
           packageId: package.identifier,
           productId: package.storeProduct.identifier,
         ),

@@ -12,7 +12,7 @@ abstract class PurchasesRepository {
 
   Future<ActiveSubscription> getActiveSubscription();
 
-  Future<List<SubscriptionPlan>> getSubscriptionPlans();
+  Future<List<SubscriptionPlan>> getSubscriptionPlans({String offeringId});
 
   Future<bool> restorePurchase();
 
