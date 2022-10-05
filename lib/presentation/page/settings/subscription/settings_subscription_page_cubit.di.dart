@@ -21,6 +21,7 @@ class SettingsSubscriptionPageCubit extends Cubit<SettingsSubscriptionPageState>
       premium: (subscription) {
         emit(SettingsSubscriptionPageState.premium(subscription: subscription));
       },
+      // TODO: INF-2008
     );
   }
 }

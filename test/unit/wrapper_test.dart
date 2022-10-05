@@ -10,6 +10,7 @@ import 'data/images/cloudinary_test.dart' as cloudinary_test;
 import 'data/networking/app_version_link/app_version_link_transformer_test.dart' as app_version_link_transformer_test;
 import 'data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
 import 'data/onboarding/onboarding_store_impl_test.dart' as onboarding_store_impl_test;
+import 'data/subscription/mapper/active_subscription_mapper_test.dart' as active_subscription_mapper_test;
 import 'data/topic/api/mapper/topic_dto_mapper_test.dart' as topic_dto_mapper_test;
 import 'data/topic/api/mapper/topic_preview_dto_mapper_test.dart' as topic_preview_dto_mapper_test;
 import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
@@ -60,6 +61,7 @@ void main() {
   group('app_version_link_transformer_test', app_version_link_transformer_test.main);
   group('should_refresh_validator_test', should_refresh_validator_test.main);
   group('cloudinary_test', cloudinary_test.main);
+  group('active_subscription_mapper_test', active_subscription_mapper_test.main);
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);
