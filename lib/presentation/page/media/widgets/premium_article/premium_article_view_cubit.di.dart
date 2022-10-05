@@ -152,6 +152,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     );
 
     _activeSubscriptionStreamSubscription = _getActiveSubscriptionUseCase.stream.listen((_) => refreshArticle());
+    await _getActiveSubscriptionUseCase();
   }
 
   Future<void> refreshArticle() async {

@@ -13,7 +13,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:rxdart/rxdart.dart';
 
 const _currentOfferingKey = 'current';
 
@@ -29,7 +28,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   final SubscriptionPlanMapper _subscriptionPlanMapper;
   final ActiveSubscriptionMapper _activeSubscriptionMapper;
 
-  var _activeSubscriptionStream = BehaviorSubject<ActiveSubscription>();
+  var _activeSubscriptionStream = StreamController<ActiveSubscription>.broadcast();
 
   @override
   Future<bool> isFirstTimeSubscriber() async {
@@ -85,8 +84,6 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
       Purchases.addCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
     }
-
-    return;
   }
 
   Future<void> _updateActiveSubscriptionStream(CustomerInfo info) async {
@@ -150,12 +147,12 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Stream<ActiveSubscription> get activeSubscriptionStream => _activeSubscriptionStream.stream;
+  Stream<ActiveSubscription> get activeSubscriptionStream => _activeSubscriptionStream.stream.distinct();
 
   @override
   void dispose() {
     _activeSubscriptionStream.close();
-    _activeSubscriptionStream = BehaviorSubject<ActiveSubscription>();
+    _activeSubscriptionStream = StreamController.broadcast();
     Purchases.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
   }
 
