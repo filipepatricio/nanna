@@ -52,7 +52,10 @@ class ChangeSubscriptionPageCubit extends Cubit<ChangeSubscriptionPageState> {
   Future<void> purchase() async {
     emit(ChangeSubscriptionPageState.processing(plans: _plans, subscription: _subscription));
     try {
-      final successful = await _purchaseSubscriptionUseCase.call(selectedPlan!);
+      final successful = await _purchaseSubscriptionUseCase(
+        selectedPlan!,
+        oldProductId: currentPlan?.productId,
+      );
       if (!successful) {
         _emitIdle();
         return;

@@ -16,7 +16,7 @@ abstract class PurchasesRepository {
 
   Future<bool> restorePurchase();
 
-  Future<bool> purchase(SubscriptionPlan plan);
+  Future<bool> purchase(SubscriptionPlan plan, {String? oldProductId});
 
   Stream<ActiveSubscription> get activeSubscriptionStream;
 

@@ -37,6 +37,10 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<bool> hasActiveSubscription() async {
     final customer = await Purchases.getCustomerInfo();
+    return _hasPremiumEntitlement(customer);
+  }
+
+  bool _hasPremiumEntitlement(CustomerInfo customer) {
     return customer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
   }
 
@@ -98,7 +102,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Future<bool> purchase(SubscriptionPlan plan) async {
+  Future<bool> purchase(SubscriptionPlan plan, {String? oldProductId}) async {
     try {
       final offerings = await Purchases.getOfferings();
       if (offerings.current == null) {
@@ -112,8 +116,13 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
         throw Exception('Selected package is not part of the current offering. Id: ${plan.packageId}');
       }
 
-      final updatedCustomer = await Purchases.purchasePackage(package);
-      return updatedCustomer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
+      final customer = await Purchases.purchasePackage(
+        package,
+        upgradeInfo: oldProductId != null // https://www.revenuecat.com/docs/managing-subscriptions#google-play
+            ? UpgradeInfo(oldProductId, prorationMode: ProrationMode.immediateWithTimeProration)
+            : null,
+      );
+      return _hasPremiumEntitlement(customer);
     } on PlatformException catch (e) {
       if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.purchaseCancelledError) {
         return false;
@@ -128,8 +137,8 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<bool> restorePurchase() async {
     try {
-      final updatedCustomer = await Purchases.restorePurchases();
-      return updatedCustomer.entitlements.active[_config.revenueCatPremiumEntitlementId] != null;
+      final customer = await Purchases.restorePurchases();
+      return _hasPremiumEntitlement(customer);
     } on PlatformException catch (e) {
       if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.missingReceiptFileError) {
         return false;
