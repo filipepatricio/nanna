@@ -12,7 +12,7 @@ class _ChangeSubscriptionCard extends StatelessWidget {
   final String icon;
   final String title;
   final String? subtitle;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +52,12 @@ class _ChangeSubscriptionCard extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: AppDimens.m,
-              color: AppColors.charcoal,
-            ),
+            if (onTap != null)
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: AppDimens.m,
+                color: AppColors.charcoal,
+              ),
           ],
         ),
       ),
