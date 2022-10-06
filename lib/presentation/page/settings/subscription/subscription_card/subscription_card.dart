@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/subscription/subscription_card/subscription_card_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/settings/subscription/subscription_card/subscription_card_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -28,45 +29,45 @@ class SubscriptionCard extends HookWidget {
       [cubit],
     );
 
-    return Container(
-      padding: const EdgeInsets.all(AppDimens.m),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppDimens.m),
-        ),
-        border: Border.all(color: AppColors.lightGrey),
-      ),
-      child: state.map(
-        loading: (_) => const _LoadingContent(),
-        free: (data) => _IdleContent(
-          icon: AppVectorGraphics.informedLogoFree,
-          typeLabel: LocaleKeys.subscription_free.tr(),
-          callToActionLabel: Text(
-            LocaleKeys.subscription_goPremium.tr(),
-            style: AppTypography.subH1Medium.copyWith(decoration: TextDecoration.underline),
+    return GestureDetector(
+      onTap: state.getOnTap(context),
+      child: Container(
+        padding: const EdgeInsets.all(AppDimens.m),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(AppDimens.m),
           ),
-          onTap: () => context.pushRoute(const SubscriptionPageRoute()),
+          border: Border.all(color: AppColors.lightGrey),
         ),
-        trial: (data) => _IdleContent(
-          icon: AppVectorGraphics.informedLogoTrial,
-          typeLabel: LocaleKeys.subscription_trial.tr(),
-          callToActionLabel: Text(
-            LocaleKeys.subscription_endsIn.tr(
-              args: [LocaleKeys.date_day.plural(data.remainingDays)],
+        child: state.map(
+          loading: (_) => const _LoadingContent(),
+          free: (data) => _IdleContent(
+            icon: AppVectorGraphics.informedLogoFree,
+            typeLabel: LocaleKeys.subscription_free.tr(),
+            callToActionLabel: Text(
+              LocaleKeys.subscription_goPremium.tr(),
+              style: AppTypography.subH1Medium.copyWith(decoration: TextDecoration.underline),
             ),
-            style: AppTypography.subH1Medium,
           ),
-          onTap: () => context.pushRoute(const SettingsSubscriptionPageRoute()),
-        ),
-        premium: (data) => _IdleContent(
-          icon: AppVectorGraphics.informedLogoPremium,
-          typeLabel: LocaleKeys.subscription_premium.tr(),
-          callToActionLabel: Text(
-            LocaleKeys.subscription_membership.tr(),
-            style: AppTypography.subH1Medium,
+          trial: (data) => _IdleContent(
+            icon: AppVectorGraphics.informedLogoTrial,
+            typeLabel: LocaleKeys.subscription_trial.tr(),
+            callToActionLabel: Text(
+              LocaleKeys.subscription_endsIn.tr(
+                args: [LocaleKeys.date_day.plural(data.remainingDays)],
+              ),
+              style: AppTypography.subH1Medium,
+            ),
           ),
-          onTap: () => context.pushRoute(const SettingsSubscriptionPageRoute()),
+          premium: (data) => _IdleContent(
+            icon: AppVectorGraphics.informedLogoPremium,
+            typeLabel: LocaleKeys.subscription_premium.tr(),
+            callToActionLabel: Text(
+              LocaleKeys.subscription_membership.tr(),
+              style: AppTypography.subH1Medium,
+            ),
+          ),
         ),
       ),
     );
@@ -111,40 +112,45 @@ class _IdleContent extends StatelessWidget {
     required this.icon,
     required this.typeLabel,
     required this.callToActionLabel,
-    required this.onTap,
     Key? key,
   }) : super(key: key);
 
   final String icon;
   final String typeLabel;
   final Widget callToActionLabel;
-  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          SvgPicture.asset(
-            icon,
-            height: AppDimens.xxxl,
-          ),
-          const SizedBox(width: AppDimens.m),
-          Text(
-            typeLabel,
-            style: AppTypography.h4ExtraBold.copyWith(height: 1),
-          ),
-          const Spacer(),
-          callToActionLabel,
-          const SizedBox(width: AppDimens.xs),
-          const Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: AppDimens.m,
-            color: AppColors.charcoal,
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        SvgPicture.asset(
+          icon,
+          height: AppDimens.xxxl,
+        ),
+        const SizedBox(width: AppDimens.m),
+        Text(
+          typeLabel,
+          style: AppTypography.h4ExtraBold.copyWith(height: 1),
+        ),
+        const Spacer(),
+        callToActionLabel,
+        const SizedBox(width: AppDimens.xs),
+        const Icon(
+          Icons.arrow_forward_ios_rounded,
+          size: AppDimens.m,
+          color: AppColors.charcoal,
+        ),
+      ],
+    );
+  }
+}
+
+extension on SubscriptionCardState {
+  VoidCallback? getOnTap(BuildContext context) {
+    return mapOrNull(
+      free: (_) => () => context.pushRoute(const SubscriptionPageRoute()),
+      trial: (_) => () => context.pushRoute(const SettingsSubscriptionPageRoute()),
+      premium: (_) => () => context.pushRoute(const SettingsSubscriptionPageRoute()),
     );
   }
 }
