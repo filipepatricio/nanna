@@ -11,6 +11,7 @@ class SubscriptionPlan {
     required this.priceString,
     required this.trialDays,
     required this.reminderDays,
+    required this.offeringId,
     required this.packageId,
     required this.productId,
     this.discountPercentage = 0,
@@ -25,6 +26,7 @@ class SubscriptionPlan {
   final int reminderDays;
   final int discountPercentage;
 
+  final String offeringId;
   final String packageId;
   final String productId;
 

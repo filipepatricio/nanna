@@ -26,13 +26,18 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
   late SubscriptionPlan selectedPlan;
 
   Future<void> initialize() async {
-    plans = await _getSubscriptionPlansUseCase();
+    try {
+      plans = await _getSubscriptionPlansUseCase();
 
-    if (plans.isNotEmpty) {
-      selectedPlan = _getPreferredSubscriptionPlanUseCase.call(plans);
+      if (plans.isNotEmpty) {
+        selectedPlan = _getPreferredSubscriptionPlanUseCase.call(plans);
+      }
+
+      emit(const SubscriptionPageState.idle());
+    } catch (e) {
+      Fimber.e('Error while trying to load available subscription plans', ex: e);
+      emit(const SubscriptionPageState.generalError());
     }
-
-    emit(const SubscriptionPageState.idle());
   }
 
   void selectPlan(SubscriptionPlan plan) {

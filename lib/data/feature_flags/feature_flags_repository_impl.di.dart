@@ -18,6 +18,12 @@ const attributionAdSet = 'afAdset';
 
 const _usePaidSubscriptionFlag = 'use-paid-subscriptions';
 
+const _rootRouteFlag = 'root-route';
+const _rootRouteFlagDefaultValue = '';
+
+const _paywallFlag = 'paywall';
+const _paywallFlagDefaultValue = 'current';
+
 @LazySingleton(as: FeaturesFlagsRepository, env: liveEnvs)
 class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   FeatureFlagsRepositoryImpl(this._config);
@@ -48,7 +54,12 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
 
   @override
   Future<String> initialTab() async {
-    return await LDClient.stringVariation('root-route', '');
+    return await LDClient.stringVariation(_rootRouteFlag, _rootRouteFlagDefaultValue);
+  }
+
+  @override
+  Future<String> defaultPaywall() async {
+    return await LDClient.stringVariation(_paywallFlag, _paywallFlagDefaultValue);
   }
 
   @override
