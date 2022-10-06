@@ -13,7 +13,7 @@ class FreeArticleViewCubit extends Cubit<FreeArticleViewState> {
   final TrackArticleReadingProgressUseCase _trackArticleReadingProgressUseCase;
 
   int? _maxScrollOffset;
-  int _progress = 0;
+  int _progress = 1;
 
   late final String _articleSlug;
   ArticleProgress? _articleProgress;
@@ -66,5 +66,5 @@ class FreeArticleViewCubit extends Cubit<FreeArticleViewState> {
   }
 
   int _calculateProgress(int currentPosition, int maxHeight) =>
-      ((currentPosition / maxHeight) * 100).toInt().clamp(0, 100);
+      ((currentPosition / maxHeight) * 100).toInt().clamp(1, 100);
 }
