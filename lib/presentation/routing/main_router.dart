@@ -33,6 +33,7 @@ import 'package:flutter/material.dart';
 const magicLinkSegment = 'magic';
 const topicsPathSegment = 'topics';
 const articlePathSegment = 'articles';
+const subscribePathSegment = 'subscribe';
 
 final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRouterKey');
 
@@ -55,7 +56,11 @@ const mainPageRoute = CustomRoute(
     RedirectRoute(path: '', redirectTo: topicsPathSegment),
     AutoRoute(path: '$topicsPathSegment/:topicSlug', page: TopicPage, name: 'TopicPage'),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
-    CustomRoute(page: SubscriptionPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
+    CustomRoute(
+      path: subscribePathSegment,
+      page: SubscriptionPage,
+      customRouteBuilder: modalBottomSheetPageRouteBuilder,
+    ),
     CustomRoute(page: ChangeSubscriptionPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: SubscriptionSuccessPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
