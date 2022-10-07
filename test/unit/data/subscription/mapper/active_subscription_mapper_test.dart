@@ -55,6 +55,11 @@ void main() {
         {AppConfig.dev.revenueCatPremiumEntitlementId!: activeEntitlement},
       ),
     );
+    when(customer.allPurchaseDates).thenReturn(
+      {
+        activeEntitlement.productIdentifier: activeEntitlement.latestPurchaseDate,
+      },
+    );
     when(activePlan.productId).thenReturn(activeEntitlement.productIdentifier);
     when(customer.managementURL).thenReturn('www.google.com');
 
@@ -68,6 +73,7 @@ void main() {
           customer.managementURL!,
           2,
           activePlan,
+          null,
         ),
       );
     });
@@ -115,6 +121,7 @@ void main() {
           DateTime(2022, 01, 10),
           activeEntitlement.willRenew,
           activePlan,
+          null,
         ),
       );
     });
@@ -161,7 +168,6 @@ void main() {
         ActiveSubscription.manualPremium(
           customer.managementURL!,
           DateTime(2022, 01, 10),
-          activeEntitlement.willRenew,
         ),
       );
     });
