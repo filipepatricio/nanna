@@ -7,6 +7,8 @@ abstract class AnalyticsFacade {
 
   Future<InstallAttributionPayload?> initializeAttribution();
 
+  Future<String?> getAppsflyerId();
+
   Future<void> config(String writeKey);
 
   Future<void> identify(String userId, [String? method]);

@@ -37,4 +37,7 @@ class AnalyticsRepositoryMock implements AnalyticsRepository {
 
   @override
   Future<void> requestTrackingPermission() async {}
+
+  @override
+  Future<String?> getAppsflyerId() async => "000-123-012";
 }

@@ -7,6 +7,8 @@ abstract class AnalyticsRepository {
 
   Future<InstallAttributionPayload?> initializeAttribution();
 
+  Future<String?> getAppsflyerId();
+
   Future<void> requestTrackingPermission();
 
   Future<void> identify(String userId, [String? method]);

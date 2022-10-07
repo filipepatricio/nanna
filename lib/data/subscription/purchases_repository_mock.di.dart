@@ -66,4 +66,7 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   void dispose() {
     return;
   }
+
+  @override
+  Future<void> linkWithAppsflyer(String appsflyerId) async {}
 }

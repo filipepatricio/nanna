@@ -173,6 +173,12 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
         .flattened
         .toList();
   }
+
+  @override
+  Future<void> linkWithAppsflyer(String appsflyerId) async {
+    await Purchases.collectDeviceIdentifiers();
+    await Purchases.setAppsflyerID(appsflyerId);
+  }
 }
 
 extension on Offerings {
