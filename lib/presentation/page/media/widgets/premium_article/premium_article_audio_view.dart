@@ -45,77 +45,80 @@ class PremiumArticleAudioView extends HookWidget {
       height: 1.12,
     );
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-      color: AppColors.background,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: AppDimens.appBarHeight + MediaQuery.of(context).padding.top),
-          if (article.hasImage)
-            Flexible(
-              flex: 15,
-              child: AspectRatio(
-                aspectRatio: 0.65,
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return ArticleCover.audioView(
-                      article: article.metadata,
-                      coverColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
-                      height: constraints.maxHeight,
-                      width: constraints.maxWidth,
-                      shouldShowTimeToRead: false,
-                      shouldShowAudioIcon: false,
-                    );
-                  },
+    return WillPopScope(
+      onWillPop: () async => !Navigator.of(context).userGestureInProgress,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        color: AppColors.background,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: AppDimens.appBarHeight + MediaQuery.of(context).padding.top),
+            if (article.hasImage)
+              Flexible(
+                flex: 15,
+                child: AspectRatio(
+                  aspectRatio: 0.65,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return ArticleCover.audioView(
+                        article: article.metadata,
+                        coverColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
+                        height: constraints.maxHeight,
+                        width: constraints.maxWidth,
+                        shouldShowTimeToRead: false,
+                        shouldShowAudioIcon: false,
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          const Spacer(),
-          Text(
-            article.metadata.strippedTitle,
-            textAlign: TextAlign.center,
-            style: AppTypography.h4Bold,
-          ),
-          const Spacer(),
-          ArticleDottedInfo(
-            article: article.metadata,
-            isLight: false,
-            showLogo: false,
-            showReadTime: false,
-            fullDate: true,
-            textStyle: metadataStyle,
-            color: metadataStyle.color,
-            centerContent: true,
-          ),
-          const Spacer(),
-          if (hasAudioCredits) ...[
+            const Spacer(),
             Text(
-              article.audioFile!.credits!,
+              article.metadata.strippedTitle,
               textAlign: TextAlign.center,
-              style: metadataStyle.copyWith(
-                height: 1.6,
-                fontStyle: FontStyle.italic,
+              style: AppTypography.h4Bold,
+            ),
+            const Spacer(),
+            ArticleDottedInfo(
+              article: article.metadata,
+              isLight: false,
+              showLogo: false,
+              showReadTime: false,
+              fullDate: true,
+              textStyle: metadataStyle,
+              color: metadataStyle.color,
+              centerContent: true,
+            ),
+            const Spacer(),
+            if (hasAudioCredits) ...[
+              Text(
+                article.audioFile!.credits!,
+                textAlign: TextAlign.center,
+                style: metadataStyle.copyWith(
+                  height: 1.6,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              const Spacer(),
+            ],
+            Expanded(
+              flex: 2,
+              child: AudioProgressBar(
+                article: article.metadata,
+                enablePageSwipe: enablePageSwipe,
               ),
             ),
             const Spacer(),
-          ],
-          Expanded(
-            flex: 2,
-            child: AudioProgressBar(
-              article: article.metadata,
-              enablePageSwipe: enablePageSwipe,
+            _AudioComponentsView(article: article.metadata),
+            const Spacer(flex: 2),
+            const Center(
+              child: AudioSpeedButton(),
             ),
-          ),
-          const Spacer(),
-          _AudioComponentsView(article: article.metadata),
-          const Spacer(flex: 2),
-          const Center(
-            child: AudioSpeedButton(),
-          ),
-          const Spacer(flex: 2),
-        ],
+            const Spacer(flex: 2),
+          ],
+        ),
       ),
     );
   }
