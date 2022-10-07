@@ -38,6 +38,9 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
   }
 
   @override
+  Future<String?> getAppsflyerId() => _appsflyerSdk.getAppsFlyerUID();
+
+  @override
   Future<void> config(String writeKey) async {
     return await Segment.config(
       options: SegmentConfig(

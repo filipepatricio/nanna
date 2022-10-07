@@ -6,6 +6,8 @@ abstract class PurchasesRepository {
 
   Future<void> identify(String userId);
 
+  Future<void> linkWithAppsflyer(String appsflyerId);
+
   Future<bool> isFirstTimeSubscriber();
 
   Future<bool> hasActiveSubscription();

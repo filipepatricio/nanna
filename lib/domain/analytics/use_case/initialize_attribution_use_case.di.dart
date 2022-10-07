@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
+import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,10 +9,12 @@ class InitializeAttributionUseCase {
   InitializeAttributionUseCase(
     this._analyticsRepository,
     this._featuresFlagsRepository,
+    this._purchasesRepository,
   );
 
   final AnalyticsRepository _analyticsRepository;
   final FeaturesFlagsRepository _featuresFlagsRepository;
+  final PurchasesRepository _purchasesRepository;
 
   Future<void> call() async => _initialize().ignore();
 
@@ -23,6 +26,11 @@ class InitializeAttributionUseCase {
       }
     } catch (e, s) {
       Fimber.e('Attribution initialization failed', ex: e, stacktrace: s);
+    } finally {
+      final appsflyerId = await _analyticsRepository.getAppsflyerId();
+      if (appsflyerId != null) {
+        await _purchasesRepository.linkWithAppsflyer(appsflyerId);
+      }
     }
   }
 }
