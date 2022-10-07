@@ -100,7 +100,7 @@ class _CoverContentDailyBrief extends StatelessWidget {
             children: [
               BookmarkButton.topic(
                 topic: topic,
-                mode: BookmarkButtonMode.image,
+                color: AppColors.white,
                 iconSize: AppDimens.l,
               ),
               const SizedBox(width: AppDimens.ml),

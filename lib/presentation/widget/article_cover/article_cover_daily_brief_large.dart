@@ -88,7 +88,7 @@ class _ArticleCoverDailyBriefLarge extends StatelessWidget {
                                       const SizedBox(height: AppDimens.l),
                                       ArticleLabelsSection(
                                         article: article,
-                                        bookmarkButtonMode: BookmarkButtonMode.image,
+                                        bookmarkButtonColor: AppColors.white,
                                         audioFloatingControlButtonMode: AudioFloatingControlButtonMode.white,
                                         lockerMode: LockerMode.image,
                                       ),

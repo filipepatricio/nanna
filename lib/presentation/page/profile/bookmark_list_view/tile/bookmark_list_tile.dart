@@ -116,7 +116,7 @@ class _BookmarkRemoveButton extends StatelessWidget {
           child: Center(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 100),
-              child: SvgPicture.asset(AppVectorGraphics.heartSelected),
+              child: SvgPicture.asset(AppVectorGraphics.bookmarkSelected),
             ),
           ),
         ),
