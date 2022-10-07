@@ -37,6 +37,9 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
   }
 
   @override
+  Future<String?> getAppsflyerId() => _analyticsFacade.getAppsflyerId();
+
+  @override
   Future<void> identify(String userId, [String? method]) async {
     await _analyticsFacade.identify(userId, method);
   }
