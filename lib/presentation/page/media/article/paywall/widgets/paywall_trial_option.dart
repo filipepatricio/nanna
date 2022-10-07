@@ -43,9 +43,9 @@ class _PaywallTrialOption extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                LocaleKeys.subscription_subscriptionInfo_withTrial.tr(
+                LocaleKeys.subscription_planInfo_trial.tr(
                   args: [
-                    '${plan.trialDays} ${LocaleKeys.date_day.plural(plan.trialDays)}',
+                    LocaleKeys.date_day.plural(plan.trialDays),
                     plan.priceString,
                   ],
                 ),

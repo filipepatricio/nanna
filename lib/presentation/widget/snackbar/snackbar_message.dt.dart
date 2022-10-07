@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snackbar_message.dt.freezed.dart';
 
-enum SnackbarMessageType { positive, negative }
+enum SnackbarMessageType { positive, negative, informative }
 
 class SnackbarAction {
   SnackbarAction({

@@ -109,7 +109,7 @@
       "trial": "Your _free trial_ with informed",
       "standard": "Subscribe for _unlimited_ news access"
     },
-    "info": {
+    "benefit": {
       "access": "Unlimited news access",
       "reporting": "Collection of thoughtful reporting",
       "fresh": "Fresh news every day"
@@ -126,8 +126,8 @@
     "off": "{}% off",
     "subscribe": "Subscribe",
     "description": "Read or listen to every article in the app. If you change your mind, you can cancel anytime",
-    "subscriptionInfo": {
-      "withTrial": "{} free trial, then {} / year",
+    "planInfo": {
+      "trial": "{} free trial, then {} / year",
       "standard": "{} / year"
     },
     "tryForFreeAction": "Try For Free",
@@ -135,7 +135,30 @@
     "thanksForStartingTrial": "Thanks for starting your\n_free trial_",
     "thanksForSubscribing": "Thanks for subscribing,\nyou’re _awesome_",
     "everythingIsReady": "Everything is ready to start enjoying informed unlimited access.",
-    "startReading": "Start Reading"
+    "startReading": "Start Reading",
+    "membership": "Membership",
+    "planIncludes": "Plan includes",
+    "renewalDate": "Renewal date",
+    "endDate": "End date",
+    "cancelSubscription": "Cancel subscription",
+    "free": "Free",
+    "trial": "Trial",
+    "premium": "Premium",
+    "endsIn": "Ends in {}",
+    "goPremium": "Go Premium",
+    "snackbar": {
+      "link": "Upgrade for unlimited access"
+    },
+    "change": {
+      "title": "Change _your plan_",
+      "footer": "Your new plan starts on {}",
+      "confirm": "Confirm change",
+      "currentPlan": "Current Plan"
+    },
+    "settings": {
+      "endsIn": "Your free trial ends in {} days",
+      "freeThrough": "Free through {}, then you'll be charged {} / {}. Cancel anytime"
+    }
   },
   "settings": {
     "settings": "Settings",
@@ -221,7 +244,7 @@
     "continueToArticle": "Continue reading",
     "geoblockedError": {
       "title": "Content unavailable",
-      "content": "Bummer. The content you requested is not available in your country.",
+      "content": "The content you requested is not yet available in your country.",
       "action": "Okay"
     },
     "topicOverview": "Topic Overview",

@@ -203,6 +203,9 @@ class PremiumArticleReadView extends HookWidget {
                 scrollDirection: Axis.vertical,
                 onPageChanged: (page) {
                   showTabBar.value = false;
+                  if (page == 1) {
+                    cubit.trackReadingProgress();
+                  }
                 },
                 children: [
                   if (articleWithImage)

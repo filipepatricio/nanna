@@ -10,12 +10,15 @@ import 'data/images/cloudinary_test.dart' as cloudinary_test;
 import 'data/networking/app_version_link/app_version_link_transformer_test.dart' as app_version_link_transformer_test;
 import 'data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
 import 'data/onboarding/onboarding_store_impl_test.dart' as onboarding_store_impl_test;
+import 'data/subscription/mapper/active_subscription_mapper_test.dart' as active_subscription_mapper_test;
 import 'data/topic/api/mapper/topic_dto_mapper_test.dart' as topic_dto_mapper_test;
 import 'data/topic/api/mapper/topic_preview_dto_mapper_test.dart' as topic_preview_dto_mapper_test;
 import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
 import 'domain/audio/prepare_audio_track_use_case_test.dart' as prepare_audio_track_use_case_test;
 import 'domain/bookmark/use_case/get_bookmark_state_use_case_test.dart' as get_bookmark_state_use_case_test;
 import 'domain/bookmark/use_case/switch_bookmark_state_use_case_test.dart' as switch_bookmark_state_use_case_test;
+import 'domain/feature_flags/use_case/use_paid_subscription_change_stream_use_case_test.dart'
+    as use_paid_subscription_change_stream_use_case_test;
 import 'domain/push_notification/use_case/maybe_register_push_notification_token_use_case_test.dart'
     as maybe_register_push_notification_token_use_case_test;
 import 'domain/push_notification/use_case/set_channel_email_setting_use_case_test.dart'
@@ -58,6 +61,7 @@ void main() {
   group('app_version_link_transformer_test', app_version_link_transformer_test.main);
   group('should_refresh_validator_test', should_refresh_validator_test.main);
   group('cloudinary_test', cloudinary_test.main);
+  group('active_subscription_mapper_test', active_subscription_mapper_test.main);
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);
@@ -72,6 +76,7 @@ void main() {
   group('set_channel_email_setting_use_case_test', set_channel_email_setting_use_case_test.main);
   group('set_channel_push_setting_use_case_test', set_channel_push_setting_use_case_test.main);
   group('get_article_paywall_preferred_plan_use_case_test', get_article_paywall_preferred_plan_use_case_test.main);
+  group('use_paid_subscription_change_stream_use_case_test', use_paid_subscription_change_stream_use_case_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);

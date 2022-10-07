@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/data/feature_flags/data/feature_flag_data.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -13,6 +15,14 @@ const attributionStatusKey = 'afStatus';
 const attributionCampaignKey = 'afCampaign';
 const attributionMediaSourceKey = 'afMediaSource';
 const attributionAdSet = 'afAdset';
+
+const _usePaidSubscriptionFlag = 'use-paid-subscriptions';
+
+const _rootRouteFlag = 'root-route';
+const _rootRouteFlagDefaultValue = '';
+
+const _paywallFlag = 'paywall';
+const _paywallFlagDefaultValue = 'current';
 
 @LazySingleton(as: FeaturesFlagsRepository, env: liveEnvs)
 class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
@@ -44,12 +54,17 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
 
   @override
   Future<String> initialTab() async {
-    return await LDClient.stringVariation('root-route', '');
+    return await LDClient.stringVariation(_rootRouteFlag, _rootRouteFlagDefaultValue);
+  }
+
+  @override
+  Future<String> defaultPaywall() async {
+    return await LDClient.stringVariation(_paywallFlag, _paywallFlagDefaultValue);
   }
 
   @override
   Future<bool> usePaidSubscriptions() async {
-    return await LDClient.boolVariation('use-paid-subscriptions', false);
+    return LDClient.boolVariation(_usePaidSubscriptionFlag, false);
   }
 
   @override
@@ -64,6 +79,27 @@ class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
 
       _data = dataWithAttribution;
     }
+  }
+
+  @override
+  Stream<bool> usePaidSubscriptionStream() async* {
+    late StreamController<bool> streamController;
+
+    Future<void> flagListener(String flagKey) async {
+      final usePaidSubscriptions = await LDClient.boolVariation(flagKey, false);
+      streamController.sink.add(usePaidSubscriptions);
+    }
+
+    streamController = StreamController<bool>(
+      onCancel: () async {
+        await LDClient.unregisterFeatureFlagListener(_usePaidSubscriptionFlag, flagListener);
+        await streamController.close();
+      },
+    );
+
+    await LDClient.registerFeatureFlagListener(_usePaidSubscriptionFlag, flagListener);
+
+    yield* streamController.stream;
   }
 
   LDUser _buildUser(FeatureFlagData data) {

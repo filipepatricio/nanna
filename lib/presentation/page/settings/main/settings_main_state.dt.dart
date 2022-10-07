@@ -6,10 +6,13 @@ part 'settings_main_state.dt.freezed.dart';
 @freezed
 class SettingsMainState with _$SettingsMainState {
   @Implements<BuildState>()
-  const factory SettingsMainState.init() = SettingsMainStateInit;
+  const factory SettingsMainState.init() = _SettingsMainStateInit;
 
   @Implements<BuildState>()
-  const factory SettingsMainState.loading() = SettingsMainStateLoading;
+  const factory SettingsMainState.idle({required bool subscriptionsEnabled}) = _SettingsMainStateIdle;
+
+  @Implements<BuildState>()
+  const factory SettingsMainState.loading() = _SettingsMainStateLoading;
 
   factory SettingsMainState.sendingEmailError() = _SettingsMainStateSendingEmailError;
 }

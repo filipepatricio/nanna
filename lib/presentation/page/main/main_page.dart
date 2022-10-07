@@ -46,6 +46,13 @@ class MainPage extends HookWidget {
           context: context,
           releaseNote: state.releaseNote,
         ),
+        resetRouteStack: (_) async {
+          await AutoRouter.of(context).replaceAll(
+            [
+              const EntryPageRoute(),
+            ],
+          );
+        },
         orElse: () {},
       );
     });

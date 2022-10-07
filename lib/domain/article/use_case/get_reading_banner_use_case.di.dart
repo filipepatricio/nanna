@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 @injectable
 class GetReadingBannerStreamUseCase {
   GetReadingBannerStreamUseCase(this._articleRepository);
+
   final ArticleRepository _articleRepository;
 
   Stream<ReadingBanner> call() => _articleRepository.getReadingBannerStream();

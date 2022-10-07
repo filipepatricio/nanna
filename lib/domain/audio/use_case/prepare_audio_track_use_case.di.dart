@@ -19,6 +19,8 @@ class PrepareArticleAudioTrackUseCase {
     required MediaItemArticle article,
     String? imageUrl,
   }) async {
+    if (!article.availableInSubscription) return;
+
     final audioFile = await _articleRepository.getArticleAudioFile(article.slug);
 
     final item = AudioItem(

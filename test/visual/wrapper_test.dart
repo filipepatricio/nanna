@@ -5,6 +5,7 @@ import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_te
 import 'tests/article_paywall_view_visual_test.dart' as article_paywall_view_visual_test;
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
 import 'tests/category_page_visual_test.dart' as category_page_visual_test;
+import 'tests/change_subscription_page_visual_test.dart' as change_subscription_page_visual_test;
 import 'tests/daily_brief_page_visual_test.dart' as daily_brief_page_visual_test;
 import 'tests/explore_page_visual_test.dart' as explore_page_visual_test;
 import 'tests/how_do_we_curate_content_page_visual_test.dart' as how_do_we_curate_content_page_visual_test;
@@ -20,6 +21,7 @@ import 'tests/settings_account_page_visual_test.dart' as settings_account_page_v
 import 'tests/settings_main_page_visual_test.dart' as settings_main_page_visual_test;
 import 'tests/settings_manage_my_interests_page_visual_test.dart' as settings_manage_my_interests_page_visual_test;
 import 'tests/settings_notifications_page_visual_test.dart' as settings_notifications_page_visual_test;
+import 'tests/settings_subscription_page_visual_test.dart' as settings_subscription_page_visual_test;
 import 'tests/share_article_view_visual_test.dart' as share_article_view_visual_test;
 import 'tests/share_topic_view_visual_test.dart' as share_reading_list_view_visual_test;
 import 'tests/sign_in_page_visual_test.dart' as sign_in_page_visual_test;
@@ -64,4 +66,6 @@ void main() {
   group('topics_see_all_page_visual_test', topics_see_all_page_visual_test.main);
   group('release_note_popup_visual_test', release_note_popup_visual_test.main);
   group('subscription_page_visual_test', subscription_page_visual_test.main);
+  group('settings_subscription_page_visual_test', settings_subscription_page_visual_test.main);
+  group('change_subscription_page_visual_test', change_subscription_page_visual_test.main);
 }

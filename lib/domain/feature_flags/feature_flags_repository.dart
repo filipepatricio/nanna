@@ -9,4 +9,8 @@ abstract class FeaturesFlagsRepository {
   Future<String> initialTab();
 
   Future<bool> usePaidSubscriptions();
+
+  Stream<bool> usePaidSubscriptionStream();
+
+  Future<String> defaultPaywall();
 }
