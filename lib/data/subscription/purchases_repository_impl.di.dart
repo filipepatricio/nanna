@@ -176,8 +176,10 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   @override
   Future<void> linkWithAppsflyer(String appsflyerId) async {
-    await Purchases.collectDeviceIdentifiers();
-    await Purchases.setAppsflyerID(appsflyerId);
+    if (await Purchases.isConfigured) {
+      await Purchases.collectDeviceIdentifiers();
+      await Purchases.setAppsflyerID(appsflyerId);
+    }
   }
 }
 
