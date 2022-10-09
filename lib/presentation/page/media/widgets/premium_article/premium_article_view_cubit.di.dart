@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/domain/categories/data/category_item.dt.d
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
@@ -39,6 +40,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getArticleUseCase,
     this._getFreeArticlesLeftWarningStreamUseCase,
     this._getActiveSubscriptionUseCase,
+    this._shouldUsePaidSubscriptionsUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -51,6 +53,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetArticleUseCase _getArticleUseCase;
   final GetFreeArticlesLeftWarningStreamUseCase _getFreeArticlesLeftWarningStreamUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
+  final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
 
   final moreFromBriefItems = <BriefEntryItem>[];
   final otherTopicItems = <MediaItem>[];
@@ -151,8 +154,10 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
       },
     );
 
-    _activeSubscriptionStreamSubscription = _getActiveSubscriptionUseCase.stream.listen((_) => refreshArticle());
-    await _getActiveSubscriptionUseCase();
+    if (await _shouldUsePaidSubscriptionsUseCase()) {
+      _activeSubscriptionStreamSubscription = _getActiveSubscriptionUseCase.stream.listen((_) => refreshArticle());
+      await _getActiveSubscriptionUseCase();
+    }
   }
 
   Future<void> refreshArticle() async {
