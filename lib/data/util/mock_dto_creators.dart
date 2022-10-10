@@ -910,9 +910,9 @@ class MockDTO {
       'USD', //currencyCode
       introductoryPrice: IntroductoryPrice(
         0.0, //price
-        '\$0.00', //priceString:
-        'P2W', //period
-        1, //cycles
+        '', //priceString
+        '', //period
+        0, //cycles
         PeriodUnit.week, //periodUnit
         2, //periodNumberOfUnits
       ),
@@ -932,11 +932,11 @@ class MockDTO {
       '\$0.49',
       'USD',
       introductoryPrice: IntroductoryPrice(
-        0.0,
-        '\$0.00',
-        'P1W',
-        1,
-        PeriodUnit.week,
+        0.0, //price
+        '', //priceString
+        '', //period
+        0, //cycles
+        PeriodUnit.week, //periodUnit
         1,
       ),
       discounts: [],
@@ -993,28 +993,7 @@ class MockDTO {
     billingIssueDetectedAt: null,
   );
 
-  static final premiumEntitlementTrial = EntitlementInfo(
-    //identifier
-    'premium',
-    //isActive
-    true,
-    //willRenew
-    true,
-    //latestPurchaseDate
-    '2022-09-28T15:59:37Z',
-    //originalPurchaseDate
-    '2022-09-26T18:21:43Z',
-    //productIdentifier
-    monthlyPackage.storeProduct.identifier,
-    //isSandbox
-    true,
-    ownershipType: OwnershipType.purchased,
-    store: Store.appStore,
-    periodType: PeriodType.trial,
-    expirationDate: '2022-09-28T16:04:37Z',
-    unsubscribeDetectedAt: null,
-    billingIssueDetectedAt: null,
-  );
+  static final premiumEntitlementTrial = premiumEntitlement.copyWith(periodType: PeriodType.trial);
 
   static final customerInfoTrial = customerInfoWithEntitlement(premiumEntitlementTrial);
 

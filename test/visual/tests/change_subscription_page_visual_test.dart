@@ -26,6 +26,8 @@ class FakeChangeSubscriptionPageCubit extends Fake implements ChangeSubscription
   @override
   final SubscriptionPlan? currentPlan = TestData.subscriptionPlansWithoutTrial.first;
   @override
+  final SubscriptionPlan nextPlan = TestData.subscriptionPlansWithoutTrial.last;
+  @override
   final SubscriptionPlan selectedPlan = TestData.subscriptionPlansWithoutTrial.last;
 
   final idle = ChangeSubscriptionPageState.idle(

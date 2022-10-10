@@ -107,6 +107,9 @@ void main() {
         {AppConfig.dev.revenueCatPremiumEntitlementId!: activeEntitlement},
       ),
     );
+    when(customer.allPurchaseDates).thenReturn(
+      {activeEntitlement.productIdentifier: activeEntitlement.originalPurchaseDate},
+    );
     when(activePlan.productId).thenReturn(activeEntitlement.productIdentifier);
     when(customer.managementURL).thenReturn('www.google.com');
 
@@ -168,6 +171,64 @@ void main() {
         ActiveSubscription.manualPremium(
           customer.managementURL!,
           DateTime(2022, 01, 10),
+        ),
+      );
+    });
+  });
+
+  test("returns next plan for user who made a plan change that hasn't yet been applied", () {
+    const firstPurchaseDate = '2022-01-08';
+    const secondPurchaseDate = '2022-01-10';
+    const firstProductId = 'productIdentifier';
+    const secondProductId = 'productIdentifier2';
+    const activeEntitlement = EntitlementInfo(
+      'identifier',
+      true,
+      true,
+      secondPurchaseDate,
+      firstPurchaseDate,
+      firstProductId,
+      true,
+      expirationDate: '2022-01-12',
+      periodType: PeriodType.normal,
+    );
+
+    final customer = MockCustomerInfo();
+    final activePlan = MockSubscriptionPlan();
+    final nextPlan = MockSubscriptionPlan();
+    final subscription = ActiveSubscriptionDTO(
+      customer: customer,
+      plans: [
+        activePlan,
+        nextPlan,
+      ],
+    );
+
+    when(customer.entitlements).thenReturn(
+      EntitlementInfos(
+        {AppConfig.dev.revenueCatPremiumEntitlementId!: activeEntitlement},
+        {AppConfig.dev.revenueCatPremiumEntitlementId!: activeEntitlement},
+      ),
+    );
+    when(customer.allPurchaseDates).thenReturn(
+      {firstProductId: firstPurchaseDate, secondProductId: secondPurchaseDate},
+    );
+    when(activePlan.productId).thenReturn(activeEntitlement.productIdentifier);
+    when(nextPlan.productId).thenReturn(secondProductId);
+    when(customer.managementURL).thenReturn('www.google.com');
+
+    withClock(Clock.fixed(DateTime(2022, 01, 11)), () {
+      final result = activeSubscriptionMapper(subscription);
+
+      expect(
+        result,
+        ActiveSubscription.premium(
+          DateTime(2022, 01, 8),
+          customer.managementURL!,
+          DateTime(2022, 01, 12),
+          activeEntitlement.willRenew,
+          activePlan,
+          nextPlan,
         ),
       );
     });
