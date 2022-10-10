@@ -82,7 +82,7 @@ class FreeArticleView extends HookWidget {
             article: article,
             topicId: topicId,
             briefId: briefId,
-            mode: BookmarkButtonMode.color,
+            color: AppColors.textPrimary,
             snackbarController: snackbarController,
           ),
           const SizedBox(width: AppDimens.m),

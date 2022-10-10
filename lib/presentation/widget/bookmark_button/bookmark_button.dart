@@ -22,12 +22,10 @@ const _loaderStroke = 2.0;
 const _iconSize = 32.0;
 const _animationDuration = 100;
 
-enum BookmarkButtonMode { image, color }
-
 class BookmarkButton extends HookWidget {
   BookmarkButton.article({
     required MediaItemArticle article,
-    required BookmarkButtonMode mode,
+    required Color color,
     String? topicId,
     String? briefId,
     SnackbarController? snackbarController,
@@ -35,7 +33,7 @@ class BookmarkButton extends HookWidget {
     Key? key,
   }) : this._(
           BookmarkTypeData.article(article.slug, article.id, topicId, briefId),
-          mode: mode,
+          color: color,
           snackbarController: snackbarController,
           iconSize: iconSize,
           key: key,
@@ -43,14 +41,14 @@ class BookmarkButton extends HookWidget {
 
   BookmarkButton.topic({
     required TopicPreview topic,
-    required BookmarkButtonMode mode,
+    required Color color,
     String? briefId,
     SnackbarController? snackbarController,
     double? iconSize,
     Key? key,
   }) : this._(
           BookmarkTypeData.topic(topic.slug, topic.id, briefId),
-          mode: mode,
+          color: color,
           snackbarController: snackbarController,
           iconSize: iconSize,
           key: key,
@@ -58,14 +56,14 @@ class BookmarkButton extends HookWidget {
 
   const BookmarkButton._(
     this._data, {
-    required this.mode,
+    required this.color,
     this.snackbarController,
     this.iconSize,
     Key? key,
   }) : super(key: key);
 
   final BookmarkTypeData _data;
-  final BookmarkButtonMode mode;
+  final Color color;
   final SnackbarController? snackbarController;
   final double? iconSize;
 
@@ -141,7 +139,7 @@ class BookmarkButton extends HookWidget {
                 idle: (state) => _IdleButton(
                   cubit: cubit,
                   state: state.state,
-                  mode: mode,
+                  color: color,
                   animationController: animationController,
                 ),
                 switching: (state) => const _Switching(),
@@ -159,14 +157,14 @@ class _IdleButton extends StatelessWidget {
   const _IdleButton({
     required this.cubit,
     required this.state,
-    required this.mode,
+    required this.color,
     required this.animationController,
     Key? key,
   }) : super(key: key);
 
   final BookmarkButtonCubit cubit;
   final BookmarkState state;
-  final BookmarkButtonMode mode;
+  final Color color;
   final AnimationController animationController;
 
   @override
@@ -178,7 +176,7 @@ class _IdleButton extends StatelessWidget {
         await animationController.reverse();
         await cubit.switchState();
       },
-      child: state.icon(mode),
+      child: state.icon(color),
     );
   }
 }
@@ -188,23 +186,15 @@ class _Switching extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(AppVectorGraphics.heartInactive);
+    return SvgPicture.asset(AppVectorGraphics.bookmarkInactive);
   }
 }
 
 extension on BookmarkState {
-  SvgPicture icon(BookmarkButtonMode mode) {
-    switch (mode) {
-      case BookmarkButtonMode.image:
-        return map(
-          bookmarked: (_) => SvgPicture.asset(AppVectorGraphics.heartSelectedNoBorder),
-          notBookmarked: (_) => SvgPicture.asset(AppVectorGraphics.heartUnselectedWhite),
-        );
-      case BookmarkButtonMode.color:
-        return map(
-          bookmarked: (_) => SvgPicture.asset(AppVectorGraphics.heartSelected),
-          notBookmarked: (_) => SvgPicture.asset(AppVectorGraphics.heartUnselected),
-        );
-    }
+  SvgPicture icon(Color color) {
+    return map(
+      bookmarked: (_) => SvgPicture.asset(AppVectorGraphics.bookmarkSelected, color: color),
+      notBookmarked: (_) => SvgPicture.asset(AppVectorGraphics.bookmarkUnselected, color: color),
+    );
   }
 }

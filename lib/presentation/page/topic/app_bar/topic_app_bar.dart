@@ -111,7 +111,7 @@ class TopicAppBar extends HookWidget {
         BookmarkButton.topic(
           topic: topic.asPreview,
           briefId: cubit.briefId,
-          mode: isExpanded.value ? BookmarkButtonMode.image : BookmarkButtonMode.color,
+          color: isExpanded.value ? AppColors.white : AppColors.textPrimary,
           snackbarController: snackbarController,
         ),
         const SizedBox(width: AppDimens.s),
@@ -128,7 +128,7 @@ class TopicAppBar extends HookWidget {
           iconSize: AppDimens.xxl,
           icon: SvgPicture.asset(
             AppVectorGraphics.share,
-            color: isExpanded.value ? AppColors.white : AppColors.black,
+            color: isExpanded.value ? AppColors.white : AppColors.textPrimary,
           ),
         ),
       ],

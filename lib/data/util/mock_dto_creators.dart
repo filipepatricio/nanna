@@ -1016,11 +1016,11 @@ class MockDTO {
     billingIssueDetectedAt: null,
   );
 
-  static final customerInfoTrial = customerInfowithEntitlement(premiumEntitlementTrial);
+  static final customerInfoTrial = customerInfoWithEntitlement(premiumEntitlementTrial);
 
-  static final customerInfo = customerInfowithEntitlement(premiumEntitlement);
+  static final customerInfo = customerInfoWithEntitlement(premiumEntitlement);
 
-  static final customerInfoManual = customerInfowithEntitlement(
+  static final customerInfoManual = customerInfoWithEntitlement(
     premiumEntitlement.copyWith(productIdentifier: 'custom-identifier'),
   );
 }
@@ -1033,7 +1033,7 @@ ActiveSubscriptionDTO activeSubscriptionWithCustomer(CustomerInfo customer) => A
       ],
     );
 
-CustomerInfo customerInfowithEntitlement(EntitlementInfo entitlement, [Package package = MockDTO.monthlyPackage]) {
+CustomerInfo customerInfoWithEntitlement(EntitlementInfo entitlement, [Package package = MockDTO.monthlyPackage]) {
   return CustomerInfo(
     //entitlements
     EntitlementInfos(

@@ -12,14 +12,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class ArticleLabelsSection extends HookWidget {
   const ArticleLabelsSection({
     required this.article,
-    required this.bookmarkButtonMode,
+    required this.bookmarkButtonColor,
     required this.audioFloatingControlButtonMode,
     required this.lockerMode,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final BookmarkButtonMode bookmarkButtonMode;
+  final Color bookmarkButtonColor;
   final AudioFloatingControlButtonMode audioFloatingControlButtonMode;
   final LockerMode lockerMode;
 
@@ -36,7 +36,7 @@ class ArticleLabelsSection extends HookWidget {
         ],
         BookmarkButton.article(
           article: article,
-          mode: bookmarkButtonMode,
+          color: bookmarkButtonColor,
           iconSize: AppDimens.l,
         ),
         const SizedBox(width: AppDimens.ml),
