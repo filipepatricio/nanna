@@ -1,8 +1,8 @@
 name: CI Build
 
 on:
-  pull_request:
-    branches: [main, develop]
+  # pull_request:
+  #   branches: [main, develop]
 
 env:
   JAVA_VERSION: '12.x'

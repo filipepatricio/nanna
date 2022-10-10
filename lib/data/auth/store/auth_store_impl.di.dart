@@ -18,6 +18,7 @@ class AuthStoreImpl implements AuthStore {
     this._authTokenEntityToOAuthMapper,
     this._tokenContentDTOMapper,
   );
+
   final FreshLink<OAuth2Token> _freshLink;
   final AuthTokenEntityMapper _authTokenEntityMapper;
   final AuthTokenEntityToOAuthMapper _authTokenEntityToOAuthMapper;

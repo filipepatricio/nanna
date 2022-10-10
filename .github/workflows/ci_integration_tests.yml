@@ -1,0 +1,175 @@
+name: CI Integration tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'feature/inf-1664-create-basic-integration-test-for-nanna'
+  pull_request:
+    branches: [main]
+  # schedule:
+  # Always set hour in UTC timezone
+  # - cron: "0 21 * * THU"
+
+env:
+  JAVA_VERSION: "12.x"
+  RUBY_VERSION: '3.1'
+  ACCESS_TOKEN: ${{ secrets.FIREBASE_TEST_LAB_API_ACCESS_TOKEN_PROD }}
+
+jobs:
+  # test_android:
+  #   name: Test Android
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 30
+  #   steps:
+  #     - name: Cancel previous jobs
+  #       uses: styfle/cancel-workflow-action@0.11.0
+  #       with:
+  #         access_token: ${{ github.token }}
+
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Get Flutter version
+  #       id: get-flutter-version
+  #       uses: zgosalvez/github-actions-get-flutter-version-env@v2
+
+  #     - name: Setup
+  #       uses: subosito/flutter-action@v2.8.0
+  #       with:
+  #         flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+  #         cache: true
+
+  #     - name: Build
+  #       run: |
+  #         flutter pub get
+  #         flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+  #         flutter pub run build_runner build --delete-conflicting-outputs
+
+  #     - name: Decrypt Android keys
+  #       run: sh ./.github/scripts/decrypt_android_secrets.sh
+  #       env:
+  #         ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+
+  #     - name: Build Android apks
+  #       run: sh ./.github/scripts/gen_android_int_test.sh
+
+  #     - name: Run tests on Test Lab
+  #       uses: actions-hub/gcloud@master
+  #       env:
+  #         PROJECT_ID: frontend-production-328408
+  #         APPLICATION_CREDENTIALS: ${{secrets.FIREBASE_TEST_LAB_SERVICE_ACCOUNT_CREDENTIALS}}
+  #       with:
+  #         args: firebase test android run --type=instrumentation --app="build/app/outputs/apk/prod/debug/app-prod-debug.apk" --test="build/app/outputs/apk/androidTest/prod/debug/app-prod-debug-androidTest.apk" --device=model=oriole,orientation=portrait,version=32 --timeout=5m --results-dir=test-results
+
+      # - name: Slack message android tests failed
+      #   if: failure()
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     icon_emoji: ":x:"
+      #     job_name: Integration Test - Android
+      #     status: ${{ job.status }}
+      #     fields: repo,author,job,took,workflow,pullRequest
+      #     if_mention: "failure"
+      #     channel: "C03HLNW54EN"
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+      #     MATRIX_CONTEXT: ${{ toJson(matrix) }}
+
+  test_ios:
+    name: Test iOS
+    runs-on: macos-12
+    outputs:
+      succeeded: ${{ steps.result.outputs.result }}
+    timeout-minutes: 30
+    steps:
+      - name: Cancel previous jobs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Setup Ruby for fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+          working-directory: 'ios'
+
+      # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
+      - name: Get Flutter version
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v2
+
+      - name: Setup
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+          # cache: true
+
+      - name: Build
+        run: |
+          flutter pub get
+          flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+          flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Prepare iOS profiles
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+          lane: 'setup_profiles'
+          subdirectory: 'ios'
+        env:
+          ITC_TEAM_ID: '${{ secrets.ITC_TEAM_ID }}'
+          DEVELOPER_PORTAL_TEAM_ID: '${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}'
+          FASTLANE_APPLE_ID: '${{ secrets.FASTLANE_APPLE_EMAIL_ID }}'
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: '${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}'
+          MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+          GIT_AUTHORIZATION: '${{ secrets.GIT_AUTHORIZATION }}'
+          TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
+          TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
+          APP_SCHEME: 'prod'
+          BUNDLE_ID: 'so.informed'
+          BUNDLE_ID_NOTIFICATION: 'so.informed.ImageNotification'
+          PROVISIONING_PROFILE_SPECIFIER: 'match AppStore so.informed'
+          PROVISIONING_PROFILE_SPECIFIER_NOTIFICATION: 'match AppStore so.informed.ImageNotification'
+          APPLICATION_ID: '1577915307'
+
+      - name: Build iOS test cases
+        run: ./.github/scripts/gen_ios_int_test.sh
+
+      - name: Clean iOS profiles
+        if: always()
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+          lane: 'clean_profiles'
+          subdirectory: 'ios'
+        env:
+          TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
+
+      - name: Run tests on Test Lab
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: frontend-production-328408
+          APPLICATION_CREDENTIALS: ${{secrets.FIREBASE_TEST_LAB_SERVICE_ACCOUNT_CREDENTIALS}}
+        with:
+          args: firebase test ios run --test="build/ios_integ/Build/Products/ios_tests.zip" --timeout=5m --device model=iphone13pro,orientation=portrait --results-dir=results
+
+      # - name: Slack message iOS app building failed
+      #   if: failure()
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     icon_emoji: ':x:'
+      #     job_name: Integration test - iOS
+      #     status: ${{ job.status }}
+      #     fields: repo,author,job,took,workflow,pullRequest
+      #     if_mention: 'failure'
+      #     channel: 'C03HLNW54EN'
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+      #     MATRIX_CONTEXT: ${{ toJson(matrix) }}
