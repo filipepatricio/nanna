@@ -32,7 +32,6 @@ class PremiumArticleAudioView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useAutomaticKeepAlive(wantKeepAlive: true);
     useEffect(
       () {
         cubit.preload();
