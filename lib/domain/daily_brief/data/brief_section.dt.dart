@@ -17,7 +17,7 @@ class BriefSection with _$BriefSection {
     required String title,
     required Color? backgroundColor,
     required List<BriefSubsection> subsections,
-  }) = _BriefSectionWithSubsections;
+  }) = BriefSectionWithSubsections;
 
   const factory BriefSection.unknown() = _BriefSectionUnknown;
 }
