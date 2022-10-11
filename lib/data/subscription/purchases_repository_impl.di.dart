@@ -79,6 +79,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   Future<void> identify(String userId) async {
     if (await Purchases.isConfigured) {
       await Purchases.logIn(userId);
+
       // Prefetches and caches available offerings
       unawaited(Purchases.getOfferings());
 

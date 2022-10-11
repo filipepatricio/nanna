@@ -26,16 +26,21 @@ class ChangeSubscriptionPageCubit extends Cubit<ChangeSubscriptionPageState> {
   late List<SubscriptionPlan> _plans;
   late ActiveSubscription _subscription;
 
-  late SubscriptionPlan? currentPlan;
   SubscriptionPlan? selectedPlan;
+
+  SubscriptionPlan? get currentPlan => _subscription.mapOrNull(
+        trial: (data) => data.plan,
+        premium: (data) => data.plan,
+      );
+
+  SubscriptionPlan? get nextPlan => _subscription.mapOrNull<SubscriptionPlan?>(
+        trial: (data) => data.nextPlan,
+        premium: (data) => data.nextPlan,
+      );
 
   Future<void> initialize() async {
     _plans = await _getSubscriptionPlansUseCase();
     _subscription = await _getActiveSubscriptionUseCase();
-    currentPlan = _subscription.mapOrNull(
-      trial: (data) => data.plan,
-      premium: (data) => data.plan,
-    );
 
     if (currentPlan != null) selectedPlan = currentPlan!;
 

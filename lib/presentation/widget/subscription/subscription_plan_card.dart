@@ -20,6 +20,7 @@ class SubscriptionPlanCard extends HookWidget {
     required this.isSelected,
     required this.onPlanPressed,
     this.isCurrent = false,
+    this.isNextPlan = false,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +28,7 @@ class SubscriptionPlanCard extends HookWidget {
   final bool isSelected;
   final OnPlanPressed onPlanPressed;
   final bool isCurrent;
+  final bool isNextPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +60,12 @@ class SubscriptionPlanCard extends HookWidget {
               if (isCurrent) ...[
                 Text(
                   LocaleKeys.subscription_change_currentPlan.tr(),
+                  style: AppTypography.b2Medium.copyWith(color: AppColors.darkerGrey),
+                ),
+                const SizedBox(height: AppDimens.s),
+              ] else if (isNextPlan) ...[
+                Text(
+                  LocaleKeys.subscription_change_upcomingPlan.tr(),
                   style: AppTypography.b2Medium.copyWith(color: AppColors.darkerGrey),
                 ),
                 const SizedBox(height: AppDimens.s),

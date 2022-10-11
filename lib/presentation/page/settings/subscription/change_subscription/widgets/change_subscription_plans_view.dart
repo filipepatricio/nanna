@@ -14,6 +14,7 @@ class _ChangeSubscriptionPlansView extends HookWidget {
   Widget build(BuildContext context) {
     final selectedPlanNotifier = useValueNotifier<SubscriptionPlan>(cubit.selectedPlan!);
     final currentPlan = cubit.currentPlan;
+    final nextPlan = cubit.nextPlan;
     final state = useCubitBuilder(cubit);
 
     return CustomScrollView(
@@ -33,12 +34,14 @@ class _ChangeSubscriptionPlansView extends HookWidget {
                   plans: data.plans,
                   selectedPlanNotifier: selectedPlanNotifier,
                   currentPlan: currentPlan,
+                  nextPlan: nextPlan,
                   cubit: cubit,
                 ),
                 processing: (data) => _PlanCardsList(
                   plans: data.plans,
                   selectedPlanNotifier: selectedPlanNotifier,
                   currentPlan: currentPlan,
+                  nextPlan: nextPlan,
                   cubit: cubit,
                 ),
                 orElse: () => Container(),
@@ -54,7 +57,8 @@ class _ChangeSubscriptionPlansView extends HookWidget {
                     textColor: AppColors.white,
                     disableColor: AppColors.lightGrey,
                     disableTextColor: AppColors.darkGrey,
-                    isEnabled: currentPlan?.productId != selectedPlan.productId,
+                    isEnabled: currentPlan?.productId != selectedPlan.productId &&
+                        currentPlan?.productId != nextPlan?.productId,
                     isLoading: state.maybeMap(
                       processing: (_) => true,
                       orElse: () => false,
@@ -94,6 +98,7 @@ class _PlanCardsList extends StatelessWidget {
     required this.plans,
     required this.selectedPlanNotifier,
     required this.currentPlan,
+    required this.nextPlan,
     required this.cubit,
     Key? key,
   }) : super(key: key);
@@ -101,6 +106,7 @@ class _PlanCardsList extends StatelessWidget {
   final List<SubscriptionPlan> plans;
   final ValueNotifier<SubscriptionPlan> selectedPlanNotifier;
   final SubscriptionPlan? currentPlan;
+  final SubscriptionPlan? nextPlan;
   final ChangeSubscriptionPageCubit cubit;
 
   @override
@@ -116,6 +122,7 @@ class _PlanCardsList extends StatelessWidget {
                   plan: plan,
                   isSelected: plan.productId == selectedPlan.productId,
                   isCurrent: plan.productId == currentPlan?.productId,
+                  isNextPlan: plan.productId == nextPlan?.productId,
                   onPlanPressed: (plan) {
                     selectedPlanNotifier.value = plan;
                     cubit.selectPlan(plan);
