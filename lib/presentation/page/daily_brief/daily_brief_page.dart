@@ -304,68 +304,12 @@ class _IdleContent extends HookWidget {
               entries: (section) => _BriefSection(
                 title: section.title,
                 backgroundColor: section.backgroundColor,
-                children: section.entries.expand(
-                  (entry) => [
-                    BriefEntryCover(
-                      briefEntry: entry,
-                      briefId: brief.id,
-                      width: cardStackWidth,
-                      height: cardStackHeight,
-                      padding: _needsDivider(section, entry)
-                          ? EdgeInsets.zero
-                          : const EdgeInsets.only(
-                              bottom: AppDimens.l,
-                            ),
-                      topicCardKey: entry == firstTopic ? firstTopicKey : null,
-                      onVisibilityChanged: (visibility) {
-                        if (entry == firstTopic && visibility.visibleFraction == 1) {
-                          cubit.initializeTutorialCoachMark();
-                        }
-                        if (!kIsTest) {
-                          cubit.trackBriefEntryPreviewed(
-                            entry,
-                            index,
-                            visibility.visibleFraction,
-                          );
-                        }
-                      },
-                    ),
-                    if (_needsDivider(section, entry))
-                      const InformedDivider(
-                        padding: EdgeInsets.symmetric(vertical: AppDimens.sl),
-                      ),
-                  ],
-                ),
+                children: _mapEntriesToCovers(section, firstTopic, index),
               ),
               subsections: (section) => _BriefSection(
                 title: section.title,
                 backgroundColor: section.backgroundColor,
-                children: section.subsections.map(
-                  (subsection) => _BriefSubsection(
-                    subsection: subsection,
-                    children: subsection.entries.map(
-                      (entry) => BriefEntryCover(
-                        briefEntry: entry,
-                        briefId: brief.id,
-                        width: cardStackWidth,
-                        height: cardStackHeight,
-                        topicCardKey: entry == firstTopic ? firstTopicKey : null,
-                        onVisibilityChanged: (visibility) {
-                          if (entry == firstTopic) {
-                            cubit.initializeTutorialCoachMark();
-                          }
-                          if (!kIsTest) {
-                            cubit.trackBriefEntryPreviewed(
-                              entry,
-                              index,
-                              visibility.visibleFraction,
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ),
+                children: _mapSubsectionsToWidgets(section, firstTopic, index),
               ),
               unknown: (_) => const SizedBox.shrink(),
             ),
@@ -389,6 +333,118 @@ class _IdleContent extends HookWidget {
         ),
       ],
     );
+  }
+
+  Iterable<Widget> _mapEntriesToCovers(BriefSectionWithEntries section, BriefEntry? firstTopic, int index) sync* {
+    final startingIndex = _calculateStartingIndexForSection(index);
+
+    for (int i = 0; i < section.entries.length; i++) {
+      final entry = section.entries[i];
+
+      yield BriefEntryCover(
+        briefEntry: entry,
+        briefId: brief.id,
+        width: cardStackWidth,
+        height: cardStackHeight,
+        padding: _needsDivider(section, entry)
+            ? EdgeInsets.zero
+            : const EdgeInsets.only(
+                bottom: AppDimens.l,
+              ),
+        topicCardKey: entry == firstTopic ? firstTopicKey : null,
+        onVisibilityChanged: (visibility) {
+          if (entry == firstTopic && visibility.visibleFraction == 1) {
+            cubit.initializeTutorialCoachMark();
+          }
+          if (!kIsTest) {
+            cubit.trackBriefEntryPreviewed(
+              entry,
+              startingIndex + i,
+              visibility.visibleFraction,
+            );
+          }
+        },
+      );
+
+      if (_needsDivider(section, entry)) {
+        yield const InformedDivider(
+          padding: EdgeInsets.symmetric(vertical: AppDimens.sl),
+        );
+      }
+    }
+  }
+
+  Iterable<Widget> _mapSubsectionsToWidgets(
+    BriefSectionWithSubsections section,
+    BriefEntry? firstTopic,
+    int sectionIndex,
+  ) sync* {
+    for (int i = 0; i < section.subsections.length; i++) {
+      final subsection = section.subsections[i];
+
+      yield _BriefSubsection(
+        subsection: subsection,
+        children: _mapSubsectionEntries(section, subsection, firstTopic, sectionIndex, i),
+      );
+    }
+  }
+
+  Iterable<Widget> _mapSubsectionEntries(
+    BriefSectionWithSubsections section,
+    BriefSubsection subsection,
+    BriefEntry? firstTopic,
+    int sectionIndex,
+    int subsectionIndex,
+  ) sync* {
+    final startingIndexWithoutSubsections = _calculateStartingIndexForSection(sectionIndex, subsectionIndex);
+    final startingIndex = startingIndexWithoutSubsections +
+        (subsectionIndex == 0
+            ? 0
+            : section.subsections
+                .take(subsectionIndex)
+                .map((e) => e.entries.length)
+                .reduce((value, element) => value + element));
+
+    for (int i = 0; i < subsection.entries.length; i++) {
+      final entry = subsection.entries[i];
+
+      yield BriefEntryCover(
+        briefEntry: entry,
+        briefId: brief.id,
+        width: cardStackWidth,
+        height: cardStackHeight,
+        topicCardKey: entry == firstTopic ? firstTopicKey : null,
+        onVisibilityChanged: (visibility) {
+          if (entry == firstTopic) {
+            cubit.initializeTutorialCoachMark();
+          }
+          if (!kIsTest) {
+            cubit.trackBriefEntryPreviewed(
+              entry,
+              startingIndex + i,
+              visibility.visibleFraction,
+            );
+          }
+        },
+      );
+    }
+  }
+
+  int _calculateStartingIndexForSection(int sectionIndex, [int? subsectionIndex]) {
+    if (sectionIndex == 0) return 0;
+
+    return brief.sections
+        .take(sectionIndex)
+        .map(
+          (element) => element.map(
+            entries: (element) => element.entries.length,
+            subsections: (element) => element.subsections
+                .map((subsection) => subsection.entries.length)
+                .reduce((value, element) => element + value),
+            unknown: (_) => 0,
+          ),
+        )
+        .reduce((value, element) => value + element);
   }
 
   bool _needsDivider(BriefSectionWithEntries section, BriefEntry entry) =>
