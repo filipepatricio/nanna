@@ -3,17 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snackbar_message.dt.freezed.dart';
 
-enum SnackbarMessageType { positive, negative, informative }
-
-class SnackbarAction {
-  SnackbarAction({
-    required this.label,
-    required this.callback,
-  });
-  String label;
-  VoidCallback callback;
-}
-
 @freezed
 class SnackbarMessage with _$SnackbarMessage {
   factory SnackbarMessage.simple({
@@ -26,4 +15,16 @@ class SnackbarMessage with _$SnackbarMessage {
     required Widget message,
     required SnackbarMessageType type,
   }) = _SnackbarMessageCustom;
+}
+
+enum SnackbarMessageType { positive, negative, informative }
+
+class SnackbarAction {
+  SnackbarAction({
+    required this.label,
+    required this.callback,
+  });
+
+  String label;
+  VoidCallback callback;
 }

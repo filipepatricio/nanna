@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart'
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
