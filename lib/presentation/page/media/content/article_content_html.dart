@@ -71,7 +71,7 @@ String _makeHtmlContentResponsive(String htmlContent) {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
               body {
-                color: #282B35;
+                color: #252525;
                 font-family: Lora;
                 font-size: 18px;
                 line-height: 29px;

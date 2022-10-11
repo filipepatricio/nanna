@@ -35,7 +35,7 @@ class _PaywallTrialOption extends StatelessWidget {
               Radius.circular(AppDimens.m),
             ),
             border: Border.all(
-              color: AppColors.secondaryNeutralGrey,
+              color: AppColors.lightGrey,
             ),
           ),
           child: Column(

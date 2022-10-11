@@ -28,7 +28,7 @@ class TutorialTooltip extends StatelessWidget {
       children: [
         DecoratedBox(
           decoration: const BoxDecoration(
-            color: AppColors.pastelPurple,
+            color: AppColors.white,
             borderRadius: BorderRadius.all(
               Radius.circular(AppDimens.m),
             ),

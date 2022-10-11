@@ -453,7 +453,7 @@ class _ArticleProgressBar extends HookWidget {
             return LinearProgressIndicator(
               value: readProgress.value,
               backgroundColor: AppColors.transparent,
-              valueColor: const AlwaysStoppedAnimation(AppColors.limeGreenVivid),
+              valueColor: const AlwaysStoppedAnimation(AppColors.limeGreen),
               minHeight: 6,
             );
           },
