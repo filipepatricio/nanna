@@ -124,10 +124,9 @@ class _HeaderContainer extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 2,
+          flex: 10,
           child: startWidget,
         ),
-        const SizedBox(width: AppDimens.m),
         _BaseRightRow(children: trailingChildren),
       ],
     );
@@ -145,6 +144,7 @@ class _BaseRightRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: 4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: children,

@@ -159,27 +159,34 @@ class _Idle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(unselectedWidgetColor: AppColors.transparent),
-      child: Container(
-        width: AppDimens.l,
-        height: AppDimens.l,
-        decoration: BoxDecoration(
-          shape: type.boxShape,
-          borderRadius: type.borderRadius,
-          color: value ? type.activeColor : AppColors.transparent,
-          border: Border.fromBorderSide(
-            BorderSide(
-              width: 2.0,
-              color: value ? type.activeColor : AppColors.dividerGreyLight,
+      child: GestureDetector(
+        onTap: () => onChange(!value),
+        child: Container(
+          color: AppColors.transparent,
+          padding: const EdgeInsets.all(AppDimens.s),
+          child: Container(
+            width: AppDimens.l,
+            height: AppDimens.l,
+            decoration: BoxDecoration(
+              shape: type.boxShape,
+              borderRadius: type.borderRadius,
+              color: value ? type.activeColor : AppColors.transparent,
+              border: Border.fromBorderSide(
+                BorderSide(
+                  width: 2.0,
+                  color: value ? type.activeColor : AppColors.dividerGreyLight,
+                ),
+              ),
+            ),
+            child: Checkbox(
+              key: switchKey,
+              value: value,
+              shape: const CircleBorder(),
+              activeColor: type.activeColor,
+              visualDensity: VisualDensity.compact,
+              onChanged: (value) => onChange(value!),
             ),
           ),
-        ),
-        child: Checkbox(
-          key: switchKey,
-          value: value,
-          shape: const CircleBorder(),
-          activeColor: type.activeColor,
-          visualDensity: VisualDensity.compact,
-          onChanged: (value) => onChange(value!),
         ),
       ),
     );
