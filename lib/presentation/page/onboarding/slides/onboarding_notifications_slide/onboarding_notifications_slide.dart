@@ -62,7 +62,7 @@ class _IdleContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: AppDimens.safeTopPadding(context)),
-        const Spacer(flex: 2),
+        const Spacer(flex: 5),
         _HeaderContainer(
           startWidget: Text(
             LocaleKeys.onboarding_headerSlideThree.tr(),
@@ -79,9 +79,9 @@ class _IdleContent extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppDimens.m),
+        const Spacer(),
         Expanded(
-          flex: 20,
+          flex: 50,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -98,7 +98,7 @@ class _IdleContent extends StatelessWidget {
                   .expand(
                     (element) => [
                       element,
-                      const SizedBox(height: AppDimens.m),
+                      const Spacer(),
                     ],
                   ),
             ],
@@ -124,7 +124,7 @@ class _HeaderContainer extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 10,
+          flex: 2,
           child: startWidget,
         ),
         _BaseRightRow(children: trailingChildren),
@@ -144,7 +144,6 @@ class _BaseRightRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: children,
