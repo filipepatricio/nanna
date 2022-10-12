@@ -13,8 +13,9 @@ class ProfilePageState with _$ProfilePageState {
   @Implements<BuildState>()
   factory ProfilePageState.idle(
     BookmarkFilter filter,
-    BookmarkSortConfigName sortConfigName,
-  ) = _ProfilePageStateIdle;
+    BookmarkSortConfigName sortConfigName, [
+    @Default(0) int version,
+  ]) = _ProfilePageStateIdle;
 
   factory ProfilePageState.showTutorialToast(String text) = _ProfilePageStateShowTutorialToast;
 }

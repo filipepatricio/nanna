@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_sort_option_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/store_last_selected_sort_option_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
@@ -17,12 +20,22 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
     this._storeLastSelectedSortOptionUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
+    this._getActiveSubscriptionUseCase,
   ) : super(ProfilePageState.initializing());
 
   final GetBookmarkSortOptionUseCase _getBookmarkSortOptionUseCase;
   final StoreLastSelectedSortOptionUseCase _storeLastSelectedSortOptionUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
+  final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
+
+  StreamSubscription? _activeSubscriptionSub;
+
+  @override
+  Future<void> close() async {
+    await _activeSubscriptionSub?.cancel();
+    return super.close();
+  }
 
   Future<void> initialize() async {
     final sortConfig = await _getBookmarkSortOptionUseCase();
@@ -33,6 +46,14 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
       emit(ProfilePageState.showTutorialToast(LocaleKeys.tutorial_profileSnackBarText.tr()));
       await _setTutorialStepSeenUseCase(TutorialStep.profile);
     }
+
+    _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.listen((event) async {
+      state.mapOrNull(
+        idle: (state) {
+          emit(state.copyWith(version: state.version + 1));
+        },
+      );
+    });
   }
 
   void changeFilter(BookmarkFilter filter) {
