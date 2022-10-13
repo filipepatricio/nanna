@@ -27,7 +27,7 @@ class InformedTooltip extends StatelessWidget {
       children: [
         DecoratedBox(
           decoration: const BoxDecoration(
-            color: AppColors.white,
+            color: AppColors.snackBarInformative,
             borderRadius: BorderRadius.all(
               Radius.circular(AppDimens.s),
             ),

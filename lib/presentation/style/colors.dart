@@ -41,6 +41,10 @@ class AppColors {
   static const Color textPrimary = charcoal;
   static const Color textGrey = neutralGrey;
 
+  static const Color snackBarPositive = successGreen;
+  static const Color snackBarNegative = carrotRed;
+  static const Color snackBarInformative = pastelPurple;
+
   static const Color shadowLinenColor = Color(0x336B6346);
   static const Color shadowColor = Color(0x1f000000);
 

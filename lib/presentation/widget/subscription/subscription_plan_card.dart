@@ -101,7 +101,7 @@ class SubscriptionPlanCard extends HookWidget {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: AppColors.pastelPurple,
+                        color: AppColors.limeGreen,
                       ),
                       child: Text(
                         LocaleKeys.subscription_off.tr(args: [('${plan.discountPercentage}')]),

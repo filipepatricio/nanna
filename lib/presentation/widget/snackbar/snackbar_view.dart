@@ -94,11 +94,11 @@ extension on SnackbarMessage {
   Color get backgroundColor {
     switch (type) {
       case SnackbarMessageType.positive:
-        return AppColors.successGreen;
+        return AppColors.snackBarPositive;
       case SnackbarMessageType.negative:
-        return AppColors.carrotRed;
+        return AppColors.snackBarNegative;
       case SnackbarMessageType.informative:
-        return AppColors.white;
+        return AppColors.snackBarInformative;
     }
   }
 
