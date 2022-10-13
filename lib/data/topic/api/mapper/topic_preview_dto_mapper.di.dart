@@ -1,8 +1,8 @@
-import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:injectable/injectable.dart';
 
@@ -10,12 +10,12 @@ import 'package:injectable/injectable.dart';
 class TopicPreviewDTOMapper implements Mapper<TopicPreviewDTO, TopicPreview> {
   TopicPreviewDTOMapper(
     this._topicOwnerDTOMapper,
-    this._publisherDTOMapper,
+    this._topicPublisherInformationDTOMapper,
     this._imageDTOMapper,
   );
 
   final TopicOwnerDTOMapper _topicOwnerDTOMapper;
-  final PublisherDTOMapper _publisherDTOMapper;
+  final TopicPublisherInformationDTOMapper _topicPublisherInformationDTOMapper;
   final ImageDTOMapper _imageDTOMapper;
 
   @override
@@ -29,7 +29,7 @@ class TopicPreviewDTOMapper implements Mapper<TopicPreviewDTO, TopicPreview> {
       data.url,
       _topicOwnerDTOMapper(data.owner),
       DateTime.parse(data.lastUpdatedAt).toLocal(),
-      data.highlightedPublishers.map((publisher) => _publisherDTOMapper(publisher)).toList(),
+      _topicPublisherInformationDTOMapper(data.publisherInformation),
       _imageDTOMapper(data.heroImage),
       data.entryCount,
       data.visited,

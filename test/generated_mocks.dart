@@ -15,6 +15,7 @@ import 'package:better_informed_mobile/data/onboarding/mapper/onboarding_version
 import 'package:better_informed_mobile/data/onboarding/store/onboarding_database.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/app_info_data_source.di.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
@@ -65,6 +66,7 @@ const _classes = [
   ImageDTOMapper,
   EntryDTOMapper,
   SummaryCardDTOMapper,
+  TopicPublisherInformationDTOMapper,
   OnboardingDatabase,
   OnboardingVersionEntityMapper,
   OAuthCredentialProviderDataSource,

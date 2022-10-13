@@ -47,6 +47,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.da
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
@@ -412,10 +413,7 @@ class MockDTO {
     _expert,
     '2021-12-23T11:38:26Z',
     // highlightedPublishers
-    [
-      _publisher,
-      _publisher,
-    ],
+    _topicPublisherInformation,
     // heroImage
     _image,
     [
@@ -428,6 +426,14 @@ class MockDTO {
       _summaryCardShort,
     ],
     false,
+  );
+
+  static final _topicPublisherInformation = TopicPublisherInformationDTO(
+    [
+      _publisher,
+      _publisher,
+    ],
+    "+ 2 more",
   );
 
   static final topicWithEditorOwner = topic.copyWith(
@@ -1156,7 +1162,7 @@ extension on TopicDTO {
     String? url,
     TopicOwnerDTO? owner,
     String? lastUpdatedAt,
-    List<PublisherDTO>? highlightedPublishers,
+    TopicPublisherInformationDTO? publisherInformation,
     ImageDTO? heroImage,
     List<EntryDTO>? entries,
     List<SummaryCardDTO>? summaryCards,
@@ -1171,7 +1177,7 @@ extension on TopicDTO {
       url ?? this.url,
       owner ?? this.owner,
       lastUpdatedAt ?? this.lastUpdatedAt,
-      highlightedPublishers ?? this.highlightedPublishers,
+      publisherInformation ?? this.publisherInformation,
       heroImage ?? this.heroImage,
       entries ?? this.entries,
       summaryCards ?? this.summaryCards,
@@ -1189,7 +1195,7 @@ extension on TopicDTO {
       url,
       owner,
       lastUpdatedAt,
-      highlightedPublishers,
+      publisherInformation,
       heroImage,
       entries.length,
       visited,
@@ -1206,7 +1212,7 @@ extension on TopicDTO {
       url,
       owner,
       lastUpdatedAt,
-      highlightedPublishers,
+      publisherInformation,
       heroImage,
       entries.length,
       visited,
