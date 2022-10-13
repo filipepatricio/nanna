@@ -6,41 +6,41 @@ description: A new Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Version handled in CD workflows - check out .github/workflows/cd_prod.yml and .github/workflows/cd_staging.yml
-version: 1.28.0+0
+version: 1.32.0+0
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
-  flutter: 3.0.5
+  sdk: '>=2.18.2 <3.0.0'
+  flutter: 3.3.4
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  auto_route: 4.2.1
+  auto_route: 5.0.1
   freezed_annotation: 2.1.0
   fimber: 0.6.6
   injectable: 1.5.3
   get_it: 7.2.0
-  json_annotation: 4.6.0
+  json_annotation: 4.7.0
   bloc: 8.1.0
   flutter_hooks: 0.18.5+1
   easy_localization: 3.0.1
-  clock: 1.1.0
-  url_launcher: 6.1.5
-  path: 1.8.1
+  clock: 1.1.1
+  url_launcher: 6.1.6
+  path: 1.8.2
   path_provider: 2.0.11
   flutter_svg: 1.1.4
   graphql_flutter: 5.1.0
   fresh_graphql: 0.5.2
-  modal_bottom_sheet: 2.1.0
+  modal_bottom_sheet: 2.1.2
   uni_links: 0.5.1
-  flutter_secure_storage: 5.1.2
-  firebase_core: 1.21.0
-  firebase_messaging: 12.0.3
-  firebase_auth: 3.6.4
+  flutter_secure_storage: 6.0.0
+  firebase_core: 1.24.0
+  firebase_messaging: 13.1.0
+  firebase_auth: 3.11.2
   sign_in_with_apple: 4.1.0
-  google_sign_in: 5.4.1
-  flutter_keyboard_visibility: 5.3.0
+  google_sign_in: 5.4.2
+  flutter_keyboard_visibility: 5.4.0
   email_validator: 2.1.17
   flutter_markdown:
     git:
@@ -52,14 +52,14 @@ dependencies:
   hive: 2.2.3
   hive_flutter: 1.1.0
   package_info_plus: 1.4.3+1
-  sentry_flutter: 6.9.1
+  sentry_flutter: 6.12.1
   shimmer: 2.0.0
   jiffy: 5.0.0
   flutter_html: 2.2.1
-  flutter_segment: 3.11.0
+  flutter_segment: 3.12.1
   fluttertoast: 8.0.9
   flutter_email_sender: 5.1.0
-  share_plus: 4.0.10+1
+  share_plus: 5.0.0
   visibility_detector: 0.3.3
   flutter_styled_toast: 2.1.3
   tutorial_coach_mark: 1.2.4
@@ -70,24 +70,24 @@ dependencies:
     git:
       url: https://github.com/MohammedXAbdo/flutter_inappwebview.git
       ref: 93801e0ab78e2e017df2f136e24a59eacf6266e2
-  cached_network_image: 3.2.1
+  cached_network_image: 3.2.2
   social_share: 2.2.1
   scrolls_to_top: 1.1.1
   dotted_border: 2.0.0+2
   audio_video_progress_bar: 0.11.0
-  upgrader: 4.6.0
-  just_audio: 0.9.28
+  upgrader: 4.7.0
+  just_audio: 0.9.29
   audio_service: 0.18.7
   audio_session: 0.1.10
   launchdarkly_flutter_client_sdk: 1.1.4
   jwt_decoder: 2.0.1
-  appsflyer_sdk: 6.5.2+2
+  appsflyer_sdk: 6.8.2
   app_tracking_transparency: 2.0.2+4
   flutter_staggered_grid_view: 0.6.2
-  sliver_tools: 0.2.7
-  gql: 0.13.1
+  sliver_tools: 0.2.8
+  gql: 0.14.1-alpha+1661890990239
   http: 0.13.5
-  provider: 6.0.3
+  provider: 6.0.4
   markdown: 5.0.0
   html: 0.15.0
   shared_preferences: 2.0.15
@@ -96,14 +96,10 @@ dependencies:
   flutter_web_auth:
     git:
       url: https://github.com/noga-dev/flutter_web_auth.git
-  chewie: 1.3.4
+  chewie: 1.3.5
   video_player: 2.4.7
-  connectivity_plus: 2.3.6+1
-  gql_build:
-    git:
-      url: https://github.com/gql-dart/gql.git
-      path: codegen/gql_build
-      ref: c6644dab44234468bfe134cf6316a965912a2bce
+  connectivity_plus: 2.3.9
+  gql_build: 0.6.0
   neat_periodic_task: 2.0.0
   responsive_framework: 0.2.0
   purchases_flutter: 4.2.1
@@ -113,20 +109,19 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  auto_route_generator: 4.2.0
-  build_runner: 2.2.0
-  freezed: 2.0.3+1
-  injectable_generator: 1.5.3
-  json_serializable: 6.3.1
-  mockito: 5.2.0
+  auto_route_generator: 5.0.2
+  build_runner: 2.3.0
+  freezed: 2.1.0+1
+  injectable_generator: 1.5.4
+  json_serializable: 6.5.1
+  mockito: 5.3.2
   bloc_test: 9.1.0
   hive_generator: 1.1.3
   flutter_launcher_icons: 0.10.0
   flutter_lints: 2.0.1
-  dart_code_metrics: 4.16.0
 
 dependency_overrides:
-  flutter_svg: 1.1.0
+  flutter_svg: 1.1.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

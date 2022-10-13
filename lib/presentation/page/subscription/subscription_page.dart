@@ -62,7 +62,7 @@ class SubscriptionPage extends HookWidget {
       );
     });
 
-    Future<void> _openInBrowser(String uri) async {
+    Future<void> openInBrowser(String uri) async {
       await openInAppBrowser(
         uri,
         (error, stacktrace) {
@@ -84,7 +84,7 @@ class SubscriptionPage extends HookWidget {
             initializing: (_) => const _SubscriptionPlansLoadingView(),
             orElse: () => SubscriptionPlansView(
               cubit: cubit,
-              openInBrowser: _openInBrowser,
+              openInBrowser: openInBrowser,
               trialViewMode: cubit.plans.every((element) => element.hasTrial),
             ),
           ),

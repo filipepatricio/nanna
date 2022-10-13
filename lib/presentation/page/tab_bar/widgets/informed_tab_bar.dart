@@ -64,7 +64,7 @@ class InformedTabBar extends HookWidget {
       currentIndex: router!.activeIndex,
       onTap: (index) {
         if (index == router!.activeIndex) {
-          if (context.tabsRouter.canPopSelfOrChildren) {
+          if (context.tabsRouter.canPop()) {
             context.router.popTop();
           } else {
             cubit.tabPressed(MainTabExtension.fromIndex(index));
