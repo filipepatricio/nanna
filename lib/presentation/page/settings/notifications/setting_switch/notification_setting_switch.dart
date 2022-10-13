@@ -48,9 +48,21 @@ class NotificationSettingSwitch extends HookWidget {
     required this.channel,
     required this.notificationType,
     required this.snackbarController,
-    this.type = NotificationSwitchWidgetType.roundedGreen,
+    required this.type,
     Key? key,
   }) : super(key: key);
+
+  factory NotificationSettingSwitch.roundedGreen({
+    required NotificationChannel channel,
+    required NotificationType notificationType,
+    required SnackbarController snackbarController,
+  }) =>
+      NotificationSettingSwitch(
+        channel: channel,
+        notificationType: notificationType,
+        snackbarController: snackbarController,
+        type: NotificationSwitchWidgetType.roundedGreen,
+      );
 
   factory NotificationSettingSwitch.squareBlack({
     required NotificationChannel channel,

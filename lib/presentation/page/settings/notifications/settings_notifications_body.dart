@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dt.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences_group.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_header_container.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_type.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -33,18 +34,16 @@ class SettingsNotificationsBody extends HookWidget {
             delegate: SliverChildListDelegate(
               [
                 const SizedBox(height: AppDimens.l),
-                Row(
-                  children: [
-                    Text(
-                      LocaleKeys.settings_notifications.tr(),
-                      style: AppTypography.h4Bold.copyWith(height: 1),
-                    ),
-                    const Spacer(),
+                NotificationHeaderContainer(
+                  startWidget: Text(
+                    LocaleKeys.settings_notifications.tr(),
+                    style: AppTypography.h4Bold.copyWith(height: 1),
+                  ),
+                  trailingChildren: [
                     Text(
                       LocaleKeys.settings_push.tr(),
                       style: AppTypography.b3Regular.copyWith(height: 1),
                     ),
-                    const SizedBox(width: AppDimens.l),
                     Text(
                       LocaleKeys.settings_email.tr(),
                       style: AppTypography.b3Regular.copyWith(height: 1),
@@ -120,22 +119,18 @@ class _NotificationChannel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppDimens.l),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              channel.name,
-              style: AppTypography.b2Medium.copyWith(height: 1),
-            ),
-          ),
-          const SizedBox(width: AppDimens.xl),
-          NotificationSettingSwitch(
+      child: NotificationHeaderContainer(
+        startWidget: Text(
+          channel.name,
+          style: AppTypography.b2Medium.copyWith(height: 1),
+        ),
+        trailingChildren: [
+          NotificationSettingSwitch.roundedGreen(
             channel: channel,
             snackbarController: snackbarController,
             notificationType: NotificationType.push,
           ),
-          const SizedBox(width: AppDimens.xl),
-          NotificationSettingSwitch(
+          NotificationSettingSwitch.roundedGreen(
             channel: channel,
             snackbarController: snackbarController,
             notificationType: NotificationType.email,
