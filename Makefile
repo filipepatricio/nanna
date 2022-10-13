@@ -59,5 +59,9 @@ fvm_ui_changes_report:
 graphql_schema:
 	get-graphql-schema https://api.staging.informed.so/graphql > lib/data/gql/config/schema.graphql
 
+start_app_sksl:
+	fvm flutter run --profile --cache-sksl --flavor prod --dart-define=env=prod
+
+
 $(MAKE_CACHE_DIR):
 	mkdir -p $@

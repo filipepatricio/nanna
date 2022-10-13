@@ -70,7 +70,7 @@ class PremiumArticleActionsBar extends HookWidget {
       [hasImage],
     );
 
-    void _setButtonColor(
+    void setButtonColor(
       ValueNotifier<Color> backgroundColor,
       ValueNotifier<Color> bookmarkColor,
       ValueNotifier<Color> buttonColor,
@@ -97,7 +97,7 @@ class PremiumArticleActionsBar extends HookWidget {
       () {
         if (!hasImage) return () {};
         void listener() {
-          _setButtonColor(backgroundColor, bookmarkColor, buttonColor, pageController);
+          setButtonColor(backgroundColor, bookmarkColor, buttonColor, pageController);
         }
 
         pageController.addListener(listener);
@@ -117,7 +117,7 @@ class PremiumArticleActionsBar extends HookWidget {
             buttonColor.value = AppColors.textPrimary;
             systemUiOverlayStyle.value = AppTheme.systemUIOverlayStyleDark;
           } else {
-            _setButtonColor(backgroundColor, bookmarkColor, buttonColor, pageController);
+            setButtonColor(backgroundColor, bookmarkColor, buttonColor, pageController);
           }
         }
 

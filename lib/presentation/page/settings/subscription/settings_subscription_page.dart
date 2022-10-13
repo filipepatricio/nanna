@@ -43,7 +43,7 @@ class SettingsSubscriptionPage extends HookWidget {
       [cubit],
     );
 
-    Future<void> _openInBrowser(String uri) async {
+    Future<void> openInBrowser(String uri) async {
       await openInAppBrowser(
         uri,
         (error, stacktrace) {
@@ -69,11 +69,11 @@ class SettingsSubscriptionPage extends HookWidget {
           loading: () => const Loader(),
           trial: (data) => _SettingsSubscriptionTrialView(
             subscription: data,
-            onCancelSubscriptionTap: () => _openInBrowser(data.manageSubscriptionURL),
+            onCancelSubscriptionTap: () => openInBrowser(data.manageSubscriptionURL),
           ),
           premium: (data) => _SettingsSubscriptionPremiumView(
             subscription: data,
-            onCancelSubscriptionTap: () => _openInBrowser(data.manageSubscriptionURL),
+            onCancelSubscriptionTap: () => openInBrowser(data.manageSubscriptionURL),
           ),
           manualPremium: (data) => _SettingsSubscriptionManualPremiumView(
             subscription: data,

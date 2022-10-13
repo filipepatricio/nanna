@@ -53,7 +53,7 @@ class TopicAppBar extends HookWidget {
 
     final scrollThreshold = AppDimens.topicViewHeaderImageHeight(context) * .85;
 
-    void _updateAppBar() {
+    void updateAppBar() {
       if (isExpanded.value != scrollPositionNotifier.value < scrollThreshold) {
         isExpanded.value = scrollPositionNotifier.value < scrollThreshold;
       }
@@ -61,8 +61,8 @@ class TopicAppBar extends HookWidget {
 
     useEffect(
       () {
-        scrollPositionNotifier.addListener(_updateAppBar);
-        return () => scrollPositionNotifier.removeListener(_updateAppBar);
+        scrollPositionNotifier.addListener(updateAppBar);
+        return () => scrollPositionNotifier.removeListener(updateAppBar);
       },
       [scrollPositionNotifier],
     );
