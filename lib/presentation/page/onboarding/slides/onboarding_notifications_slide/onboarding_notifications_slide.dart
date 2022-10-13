@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/push_notification/data/notificatio
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences_group.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide/cubit/onboarding_notifications_slide_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_header_container.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_type.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -62,8 +63,8 @@ class _IdleContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: AppDimens.safeTopPadding(context)),
-        const Spacer(flex: 2),
-        _HeaderContainer(
+        const Spacer(flex: 5),
+        NotificationHeaderContainer(
           startWidget: Text(
             LocaleKeys.onboarding_headerSlideThree.tr(),
             style: AppTypography.h4Bold.copyWith(color: AppColors.textGrey),
@@ -79,9 +80,9 @@ class _IdleContent extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppDimens.m),
+        const Spacer(),
         Expanded(
-          flex: 20,
+          flex: 50,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -98,99 +99,11 @@ class _IdleContent extends StatelessWidget {
                   .expand(
                     (element) => [
                       element,
-                      const SizedBox(height: AppDimens.m),
+                      const Spacer(),
                     ],
                   ),
             ],
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class _HeaderContainer extends StatelessWidget {
-  const _HeaderContainer({
-    required this.startWidget,
-    required this.trailingChildren,
-    Key? key,
-  }) : super(key: key);
-
-  final List<Widget> trailingChildren;
-  final Widget startWidget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: startWidget,
-        ),
-        const SizedBox(width: AppDimens.m),
-        _BaseRightRow(children: trailingChildren),
-      ],
-    );
-  }
-}
-
-class _BaseRightRow extends StatelessWidget {
-  const _BaseRightRow({
-    required this.children,
-    Key? key,
-  }) : super(key: key);
-
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: children,
-      ),
-    );
-  }
-}
-
-class _NotificationRow extends StatelessWidget {
-  const _NotificationRow({
-    required this.channel,
-    required this.snackbarController,
-    Key? key,
-  }) : super(key: key);
-
-  final NotificationChannel channel;
-  final SnackbarController snackbarController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _HeaderContainer(
-          startWidget: Text(
-            channel.name,
-            style: AppTypography.h4Bold,
-          ),
-          trailingChildren: [
-            NotificationSettingSwitch.squareBlack(
-              channel: channel,
-              notificationType: NotificationType.push,
-              snackbarController: snackbarController,
-            ),
-            NotificationSettingSwitch.squareBlack(
-              channel: channel,
-              notificationType: NotificationType.email,
-              snackbarController: snackbarController,
-            ),
-          ],
-        ),
-        const SizedBox(height: AppDimens.s),
-        AutoSizeText(
-          channel.description,
-          style: AppTypography.b2Regular,
         ),
       ],
     );
@@ -229,6 +142,50 @@ class CustomCheckbox extends StatelessWidget {
               )
             : const SizedBox.shrink(),
       ),
+    );
+  }
+}
+
+class _NotificationRow extends StatelessWidget {
+  const _NotificationRow({
+    required this.channel,
+    required this.snackbarController,
+    Key? key,
+  }) : super(key: key);
+
+  final NotificationChannel channel;
+  final SnackbarController snackbarController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        NotificationHeaderContainer(
+          startWidget: Text(
+            channel.name,
+            style: AppTypography.h4Bold,
+          ),
+          trailingChildren: [
+            NotificationSettingSwitch.squareBlack(
+              channel: channel,
+              notificationType: NotificationType.push,
+              snackbarController: snackbarController,
+            ),
+            NotificationSettingSwitch.squareBlack(
+              channel: channel,
+              notificationType: NotificationType.email,
+              snackbarController: snackbarController,
+            ),
+          ],
+        ),
+        const SizedBox(height: AppDimens.s),
+        AutoSizeText(
+          channel.description,
+          style: AppTypography.b2Regular,
+        ),
+      ],
     );
   }
 }
