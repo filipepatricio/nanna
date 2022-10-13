@@ -18,6 +18,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/precache_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
@@ -41,6 +42,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getFreeArticlesLeftWarningStreamUseCase,
     this._getActiveSubscriptionUseCase,
     this._shouldUsePaidSubscriptionsUseCase,
+    this._precacheSubscriptionPlansUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -54,6 +56,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetFreeArticlesLeftWarningStreamUseCase _getFreeArticlesLeftWarningStreamUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
   final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
+  final PrecacheSubscriptionPlansUseCase _precacheSubscriptionPlansUseCase;
 
   final moreFromBriefItems = <BriefEntryItem>[];
   final otherTopicItems = <MediaItem>[];
@@ -120,6 +123,10 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     );
 
     _setupReadingProgressTracker();
+
+    if (!_currentFullArticle.metadata.availableInSubscription) {
+      await _precacheSubscriptionPlansUseCase();
+    }
 
     if (topicSlug != null) {
       _topicTitle = (await _getTopicBySlugUseCase.call(topicSlug)).strippedTitle;

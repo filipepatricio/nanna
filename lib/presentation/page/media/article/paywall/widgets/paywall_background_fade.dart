@@ -1,6 +1,6 @@
 part of '../article_paywall_view.dart';
 
-const _backgroundFadeHeight = 400.0;
+const _backgroundFadeHeight = 200.0;
 
 class _PaywallBackgroundFade extends StatelessWidget {
   const _PaywallBackgroundFade({Key? key}) : super(key: key);
@@ -27,10 +27,6 @@ class _PaywallBackgroundFade extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          Container(
-            height: AppDimens.c,
-            color: AppColors.background,
           ),
         ],
       ),

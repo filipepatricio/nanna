@@ -10,6 +10,9 @@ class ArticlePaywallState with _$ArticlePaywallState {
   factory ArticlePaywallState.initializing() = _ArticlePaywallStateInitializing;
 
   @Implements<BuildState>()
+  factory ArticlePaywallState.loading() = _ArticlePaywallStateLoading;
+
+  @Implements<BuildState>()
   factory ArticlePaywallState.disabled() = _ArticlePaywallStateDisabled;
 
   @Implements<BuildState>()
