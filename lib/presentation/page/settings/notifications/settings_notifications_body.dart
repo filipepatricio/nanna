@@ -125,12 +125,12 @@ class _NotificationChannel extends StatelessWidget {
           style: AppTypography.b2Medium.copyWith(height: 1),
         ),
         trailingChildren: [
-          NotificationSettingSwitch.roundedGreen(
+          NotificationSettingSwitch.squareBlack(
             channel: channel,
             snackbarController: snackbarController,
             notificationType: NotificationType.push,
           ),
-          NotificationSettingSwitch.roundedGreen(
+          NotificationSettingSwitch.squareBlack(
             channel: channel,
             snackbarController: snackbarController,
             notificationType: NotificationType.email,

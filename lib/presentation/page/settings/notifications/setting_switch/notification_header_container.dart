@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:flutter/material.dart';
 
 class NotificationHeaderContainer extends StatelessWidget {
@@ -37,7 +38,7 @@ class _BaseRightRow extends StatelessWidget {
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: children,
+        children: children.map((e) => SizedBox(width: AppDimens.xxxl, child: e)).toList(),
       ),
     );
   }
