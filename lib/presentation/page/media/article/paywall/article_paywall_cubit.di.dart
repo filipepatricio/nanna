@@ -26,6 +26,7 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
       return;
     }
 
+    emit(ArticlePaywallState.loading());
     await _setupPaywall();
   }
 

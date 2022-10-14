@@ -8,8 +8,6 @@ abstract class PurchasesRepository {
 
   Future<void> linkWithAppsflyer(String appsflyerId);
 
-  Future<bool> isFirstTimeSubscriber();
-
   Future<bool> hasActiveSubscription();
 
   Future<ActiveSubscription> getActiveSubscription();
@@ -21,6 +19,8 @@ abstract class PurchasesRepository {
   Future<bool> purchase(SubscriptionPlan plan, {String? oldProductId});
 
   Stream<ActiveSubscription> get activeSubscriptionStream;
+
+  Future<void> precacheSubscriptionPlans();
 
   void dispose();
 }

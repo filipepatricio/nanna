@@ -1,15 +1,12 @@
-part of '../subscription_page.dart';
+part of '../article_paywall_view.dart';
 
-class _SubscriptionPlansLoadingView extends StatelessWidget {
-  const _SubscriptionPlansLoadingView({
-    Key? key,
-  }) : super(key: key);
+class _PaywallLoadingView extends StatelessWidget {
+  const _PaywallLoadingView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: const [
         SizedBox(
           height: 50,
@@ -20,21 +17,13 @@ class _SubscriptionPlansLoadingView extends StatelessWidget {
         ),
         SizedBox(height: AppDimens.l),
         SizedBox(
-          height: 250,
+          height: 200,
           child: LoadingShimmer(
             mainColor: AppColors.lightGrey,
             radius: AppDimens.ml,
           ),
         ),
-        SizedBox(height: AppDimens.m),
-        SizedBox(
-          height: 100,
-          child: LoadingShimmer(
-            mainColor: AppColors.lightGrey,
-            radius: AppDimens.ml,
-          ),
-        ),
-        SizedBox(height: AppDimens.xl),
+        SizedBox(height: AppDimens.l),
         SizedBox(
           height: 50,
           child: LoadingShimmer(
