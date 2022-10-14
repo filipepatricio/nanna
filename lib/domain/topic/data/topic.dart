@@ -1,10 +1,10 @@
-import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_category.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
 
 class Topic {
@@ -18,7 +18,7 @@ class Topic {
     required this.owner,
     required this.lastUpdatedAt,
     required this.topicSummaryList,
-    required this.highlightedPublishers,
+    required this.publisherInformation,
     required this.heroImage,
     required this.entries,
     required this.visited,
@@ -33,7 +33,7 @@ class Topic {
   final TopicOwner owner;
   final List<TopicSummary> topicSummaryList;
   final DateTime lastUpdatedAt;
-  final List<Publisher> highlightedPublishers;
+  final TopicPublisherInformation publisherInformation;
   final TopicCategory? category;
   final Image heroImage;
   final List<Entry> entries;
@@ -53,7 +53,7 @@ class Topic {
       url,
       owner,
       lastUpdatedAt,
-      highlightedPublishers,
+      publisherInformation,
       heroImage,
       entries.length,
       visited,

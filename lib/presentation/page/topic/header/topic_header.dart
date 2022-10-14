@@ -97,8 +97,8 @@ class TopicHeader extends HookWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  PublisherLogoRow(topic: topic.asPreview, mode: Brightness.light),
                   SelectedArticlesLabel(topic: topic, onTap: onArticlesLabelTap),
+                  PublisherLogoRow(topic: topic.asPreview, mode: Brightness.light),
                 ],
               ),
               const SizedBox(height: AppDimens.xl),
