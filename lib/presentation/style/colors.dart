@@ -29,7 +29,6 @@ class AppColors {
   static const Color neutralGrey = Color(0xff989898);
   static const Color rose = Color(0xffF3E5F4);
   static const Color pastelGreen = Color(0xffE4F1E2);
-  static const Color pastelPurple = Color(0xffDFBFFF);
   static const Color darkGrey = Color(0xff6B7280);
   static const Color darkerGrey = Color(0xff5F5F5F);
   static const Color carrotRed = Color(0xffF15147);
@@ -43,7 +42,7 @@ class AppColors {
 
   static const Color snackBarPositive = successGreen;
   static const Color snackBarNegative = carrotRed;
-  static const Color snackBarInformative = pastelPurple;
+  static const Color snackBarInformative = white;
 
   static const Color shadowLinenColor = Color(0x336B6346);
   static const Color shadowColor = Color(0x1f000000);

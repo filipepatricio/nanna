@@ -21,7 +21,7 @@ class _ArticleCoverTopicWithoutImage extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(AppDimens.m),
-          boxShadow: articleCoverShadows,
+          boxShadow: cardShadows,
         ),
         width: double.infinity,
         child: Padding(

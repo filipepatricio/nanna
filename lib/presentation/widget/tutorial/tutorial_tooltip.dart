@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/shadows.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class TutorialTooltip extends StatelessWidget {
             borderRadius: BorderRadius.all(
               Radius.circular(AppDimens.m),
             ),
+            boxShadow: cardShadows,
           ),
           child: Padding(
             padding:

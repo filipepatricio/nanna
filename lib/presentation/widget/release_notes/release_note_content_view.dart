@@ -36,7 +36,7 @@ class ReleaseNoteContentView extends StatelessWidget {
                   horizontal: AppDimens.s,
                 ),
                 decoration: const BoxDecoration(
-                  color: AppColors.limeGreen,
+                  color: AppColors.lightGrey,
                   borderRadius: BorderRadius.all(
                     Radius.circular(AppDimens.xs),
                   ),

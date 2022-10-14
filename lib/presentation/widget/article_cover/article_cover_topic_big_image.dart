@@ -22,7 +22,7 @@ class _ArticleCoverTopicBigImage extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: borderRadius,
-          boxShadow: articleCoverShadows,
+          boxShadow: cardShadows,
         ),
         child: ClipRRect(
           borderRadius: borderRadius,
