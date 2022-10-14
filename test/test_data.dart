@@ -32,6 +32,7 @@ import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_ma
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -67,8 +68,10 @@ class TestData {
     TopicOwnerDTOMapper(
       ImageDTOMapper(),
     ),
-    PublisherDTOMapper(
-      ImageDTOMapper(),
+    TopicPublisherInformationDTOMapper(
+      PublisherDTOMapper(
+        ImageDTOMapper(),
+      ),
     ),
     ImageDTOMapper(),
   );
@@ -80,8 +83,10 @@ class TestData {
       EntryStyleDTOMapper(),
     ),
     SummaryCardDTOMapper(),
-    PublisherDTOMapper(
-      ImageDTOMapper(),
+    TopicPublisherInformationDTOMapper(
+      PublisherDTOMapper(
+        ImageDTOMapper(),
+      ),
     ),
     TopicOwnerDTOMapper(
       ImageDTOMapper(),
@@ -134,8 +139,10 @@ class TestData {
         TopicOwnerDTOMapper(
           ImageDTOMapper(),
         ),
-        PublisherDTOMapper(
-          ImageDTOMapper(),
+        TopicPublisherInformationDTOMapper(
+          PublisherDTOMapper(
+            ImageDTOMapper(),
+          ),
         ),
         ImageDTOMapper(),
       ),

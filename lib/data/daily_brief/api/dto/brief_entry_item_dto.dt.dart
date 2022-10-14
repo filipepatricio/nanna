@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dar
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -50,7 +51,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String url,
     TopicOwnerDTO owner,
     String lastUpdatedAt,
-    List<PublisherDTO> highlightedPublishers,
+    TopicPublisherInformationDTO publisherInformation,
     ImageDTO heroImage,
     int entryCount,
     bool visited,
