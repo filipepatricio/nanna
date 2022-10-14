@@ -18,11 +18,6 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   final ActiveSubscriptionMapper _activeSubscriptionMapper;
 
   @override
-  Future<bool> isFirstTimeSubscriber() async {
-    return true;
-  }
-
-  @override
   Future<bool> hasActiveSubscription() async {
     return true;
   }
@@ -69,4 +64,9 @@ class PurchasesRepositoryMock implements PurchasesRepository {
 
   @override
   Future<void> linkWithAppsflyer(String appsflyerId) async {}
+
+  @override
+  Future<void> precacheSubscriptionPlans() async {
+    return;
+  }
 }
