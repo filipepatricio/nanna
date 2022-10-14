@@ -30,8 +30,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   var _activeSubscriptionStream = StreamController<ActiveSubscription>.broadcast();
 
-  @override
-  Future<bool> isFirstTimeSubscriber() async {
+  Future<bool> _isFirstTimeSubscriber() async {
     final customer = await Purchases.getCustomerInfo();
     return customer.entitlements.all[_config.revenueCatPremiumEntitlementId] == null;
   }
@@ -67,7 +66,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
       return _subscriptionPlanMapper.call(
         OfferingDTO(
           offering: offering,
-          isFirstTimeSubscriber: await isFirstTimeSubscriber(),
+          isFirstTimeSubscriber: await _isFirstTimeSubscriber(),
         ),
       );
     }
@@ -79,6 +78,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   Future<void> identify(String userId) async {
     if (await Purchases.isConfigured) {
       await Purchases.logIn(userId);
+
       // Prefetches and caches available offerings
       unawaited(Purchases.getOfferings());
 
@@ -158,7 +158,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   Future<List<SubscriptionPlan>> _getAllSubscriptionPlans() async {
     final offerings = await Purchases.getOfferings();
-    final firstTimeSubscriber = await isFirstTimeSubscriber();
+    final firstTimeSubscriber = await _isFirstTimeSubscriber();
     if (offerings.all.values.isEmpty) return [];
 
     return offerings.all.values
@@ -180,6 +180,14 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
       await Purchases.collectDeviceIdentifiers();
       await Purchases.setAppsflyerID(appsflyerId);
     }
+  }
+
+  @override
+  Future<void> precacheSubscriptionPlans() async {
+    if (await Purchases.isConfigured) {
+      await Purchases.getOfferings();
+    }
+    return;
   }
 }
 

@@ -15,9 +15,12 @@ import 'package:flutter_svg/svg.dart';
 enum RelaxViewType { dailyBrief, article }
 
 const _iconSize = 54.0;
+const _dailyBriefCardHeight = 280.0;
+const _articleCardHeight = 350.0;
 
 class RelaxView extends StatelessWidget {
   const RelaxView._({
+    required this.height,
     required this.type,
     this.relax,
     this.briefId,
@@ -29,6 +32,7 @@ class RelaxView extends StatelessWidget {
   }) =>
       RelaxView._(
         type: RelaxViewType.dailyBrief,
+        height: _dailyBriefCardHeight,
         relax: relax,
       );
 
@@ -37,16 +41,30 @@ class RelaxView extends StatelessWidget {
   ) =>
       RelaxView._(
         type: RelaxViewType.article,
+        height: _articleCardHeight,
         briefId: briefId,
       );
 
+  final double height;
   final RelaxViewType type;
   final Relax? relax;
   final String? briefId;
 
   @override
   Widget build(BuildContext context) {
+    Widget content;
+
+    switch (type) {
+      case RelaxViewType.dailyBrief:
+        content = _DailyBriefContent(relax: relax!);
+        break;
+      case RelaxViewType.article:
+        content = _ArticleContent(briefId: briefId);
+        break;
+    }
+
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.m),
         color: () {
@@ -58,111 +76,74 @@ class RelaxView extends StatelessWidget {
           }
         }(),
       ),
-      height: AppDimens.briefEntryCardStackHeight,
+      height: height,
       width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Spacer(flex: 1),
-          _Content(
-            relax: relax,
-            type: type,
-          ),
-          _Message(
-            message: relax?.message,
-            type: type,
-          ),
-          _Footer(
-            type: type,
-            briefId: briefId,
-            callToAction: relax?.callToAction,
-          ),
-          const SizedBox(height: AppDimens.l),
-        ],
-      ),
+      child: content,
     );
   }
 }
 
-class _Footer extends StatelessWidget {
-  const _Footer({
-    required this.type,
-    required this.callToAction,
+class _DailyBriefContent extends StatelessWidget {
+  const _DailyBriefContent({
+    required this.relax,
+    Key? key,
+  }) : super(key: key);
+
+  final Relax relax;
+
+  @override
+  Widget build(BuildContext context) {
+    final callToAction = relax.callToAction;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Spacer(),
+        _DailyBriefHeadline(relax),
+        const SizedBox(height: AppDimens.s),
+        Text(
+          relax.message,
+          style: AppTypography.b2Medium,
+          textAlign: TextAlign.center,
+        ),
+        if (callToAction != null) ...[
+          const SizedBox(height: AppDimens.xxxl),
+          _DailyBriefFooter(callToAction),
+        ] else
+          const SizedBox.shrink(),
+        const Spacer(),
+      ],
+    );
+  }
+}
+
+class _ArticleContent extends StatelessWidget {
+  const _ArticleContent({
     required this.briefId,
     Key? key,
   }) : super(key: key);
 
-  final RelaxViewType type;
-  final CallToAction? callToAction;
   final String? briefId;
 
   @override
   Widget build(BuildContext context) {
-    switch (type) {
-      case RelaxViewType.dailyBrief:
-        if (callToAction != null) {
-          return _DailyBriefFooter(callToAction!);
-        } else {
-          return const SizedBox.shrink();
-        }
-      case RelaxViewType.article:
-        return _ArticleFooter(briefId);
-    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Spacer(flex: 1),
+        const _ArticleHeadline(),
+        const Spacer(flex: 1),
+        _ArticleFooter(briefId),
+        const SizedBox(height: AppDimens.xl),
+      ],
+    );
   }
 }
 
-class _Message extends StatelessWidget {
-  const _Message({
-    required this.type,
-    required this.message,
-    Key? key,
-  }) : super(key: key);
-
-  final RelaxViewType type;
-  final String? message;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (type) {
-      case RelaxViewType.dailyBrief:
-        return Expanded(
-          child: Center(
-            child: Text(
-              message!,
-              style: AppTypography.b2Medium,
-            ),
-          ),
-        );
-      case RelaxViewType.article:
-        return const Spacer();
-    }
-  }
-}
-
-class _Content extends StatelessWidget {
-  const _Content({
-    required this.relax,
-    required this.type,
-    Key? key,
-  }) : super(key: key);
-
-  final Relax? relax;
-  final RelaxViewType type;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (type) {
-      case RelaxViewType.dailyBrief:
-        return _DailyBriefContent(relax!);
-      case RelaxViewType.article:
-        return const _ArticleContent();
-    }
-  }
-}
-
-class _DailyBriefContent extends HookWidget {
-  const _DailyBriefContent(this.relax, {Key? key}) : super(key: key);
+class _DailyBriefHeadline extends HookWidget {
+  const _DailyBriefHeadline(this.relax, {Key? key}) : super(key: key);
 
   final Relax relax;
 
@@ -173,15 +154,14 @@ class _DailyBriefContent extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (relax.icon != null)
+          if (relax.icon != null) ...[
+            const SizedBox(height: AppDimens.l),
             SvgPicture.string(
               relax.icon!,
               width: _iconSize,
               height: _iconSize,
-            )
-          else
-            SvgPicture.asset(AppVectorGraphics.relaxCoffee),
-          const SizedBox(height: AppDimens.l),
+            ),
+          ],
           InformedMarkdownBody(
             markdown: relax.headline,
             baseTextStyle: AppTypography.h2Medium,
@@ -223,8 +203,8 @@ class _DailyBriefFooter extends StatelessWidget {
   }
 }
 
-class _ArticleContent extends StatelessWidget {
-  const _ArticleContent({Key? key}) : super(key: key);
+class _ArticleHeadline extends StatelessWidget {
+  const _ArticleHeadline({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

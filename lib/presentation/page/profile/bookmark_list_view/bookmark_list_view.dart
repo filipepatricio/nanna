@@ -43,6 +43,7 @@ class BookmarkListView extends HookWidget {
       keys: [
         filter,
         sortConfig,
+        key,
       ],
     );
     final state = useCubitBuilder(cubit);

@@ -1,6 +1,6 @@
-import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 
 class TopicPreview {
   TopicPreview(
@@ -12,7 +12,7 @@ class TopicPreview {
     this.url,
     this.owner,
     this.lastUpdatedAt,
-    this.highlightedPublishers,
+    this.publisherInformation,
     this.heroImage,
     this.entryCount,
     this.visited,
@@ -26,7 +26,7 @@ class TopicPreview {
   final String url;
   final TopicOwner owner;
   final DateTime lastUpdatedAt;
-  final List<Publisher> highlightedPublishers;
+  final TopicPublisherInformation publisherInformation;
   final Image heroImage;
   final int entryCount;
   final bool visited;

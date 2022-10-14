@@ -63,18 +63,16 @@ class PremiumArticleActionsBar extends HookWidget {
       [hasImage],
     );
 
-    final bookmarkMode = useMemoized(
+    final bookmarkColor = useMemoized(
       () => ValueNotifier(
-        hasImage && articleOutputModeNotifier.value == ArticleOutputMode.read
-            ? BookmarkButtonMode.image
-            : BookmarkButtonMode.color,
+        hasImage && articleOutputModeNotifier.value == ArticleOutputMode.read ? AppColors.white : AppColors.textPrimary,
       ),
       [hasImage],
     );
 
-    void _setButtonColor(
+    void setButtonColor(
       ValueNotifier<Color> backgroundColor,
-      ValueNotifier<BookmarkButtonMode> bookmarkMode,
+      ValueNotifier<Color> bookmarkColor,
       ValueNotifier<Color> buttonColor,
       PageController pageController,
     ) {
@@ -89,17 +87,17 @@ class PremiumArticleActionsBar extends HookWidget {
 
       systemUiOverlayStyle.value = page == 1.0 ? AppTheme.systemUIOverlayStyleDark : AppTheme.systemUIOverlayStyleLight;
       backgroundColor.value = page == 1.0 ? AppColors.background : AppColors.transparent;
-      bookmarkMode.value = page > 0.5 ? BookmarkButtonMode.color : BookmarkButtonMode.image;
 
       final buttonAnimValue = AlwaysStoppedAnimation(min(1.0, page));
       buttonColor.value = buttonTween.evaluate(buttonAnimValue) ?? AppColors.white;
+      bookmarkColor.value = buttonTween.evaluate(buttonAnimValue) ?? AppColors.white;
     }
 
     useEffect(
       () {
         if (!hasImage) return () {};
         void listener() {
-          _setButtonColor(backgroundColor, bookmarkMode, buttonColor, pageController);
+          setButtonColor(backgroundColor, bookmarkColor, buttonColor, pageController);
         }
 
         pageController.addListener(listener);
@@ -115,11 +113,11 @@ class PremiumArticleActionsBar extends HookWidget {
           final audioMode = articleOutputModeNotifier.value == ArticleOutputMode.audio;
           if (audioMode) {
             backgroundColor.value = AppColors.transparent;
-            bookmarkMode.value = BookmarkButtonMode.color;
+            bookmarkColor.value = AppColors.textPrimary;
             buttonColor.value = AppColors.textPrimary;
             systemUiOverlayStyle.value = AppTheme.systemUIOverlayStyleDark;
           } else {
-            _setButtonColor(backgroundColor, bookmarkMode, buttonColor, pageController);
+            setButtonColor(backgroundColor, bookmarkColor, buttonColor, pageController);
           }
         }
 
@@ -185,13 +183,13 @@ class PremiumArticleActionsBar extends HookWidget {
                         )
                       ],
                       const SizedBox(width: AppDimens.m),
-                      ValueListenableBuilder<BookmarkButtonMode>(
-                        valueListenable: bookmarkMode,
-                        builder: (context, mode, child) => BookmarkButton.article(
+                      ValueListenableBuilder<Color>(
+                        valueListenable: bookmarkColor,
+                        builder: (context, color, child) => BookmarkButton.article(
                           article: article.metadata,
                           topicId: topicId,
                           briefId: briefId,
-                          mode: mode,
+                          color: color,
                           snackbarController: snackbarController,
                         ),
                       ),

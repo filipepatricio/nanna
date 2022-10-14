@@ -153,7 +153,8 @@
       "title": "Change _your plan_",
       "footer": "Your new plan starts on {}",
       "confirm": "Confirm change",
-      "currentPlan": "Current Plan"
+      "currentPlan": "Current Plan",
+      "upcomingPlan": "Upcoming Plan"
     },
     "settings": {
       "endsIn": "Your free trial ends in {} days",

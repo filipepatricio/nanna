@@ -42,7 +42,7 @@ for (fileNameEntry in propertyFileNameMap.entrySet()) {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -55,7 +55,7 @@ android {
     defaultConfig {
         applicationId "so.informed"
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

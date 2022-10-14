@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/page/settings/subscription/s
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-@lazySingleton
+@injectable
 class SubscriptionCardCubit extends Cubit<SubscriptionCardState> {
   SubscriptionCardCubit(this._getActiveSubscriptionUseCase) : super(const SubscriptionCardState.loading());
 

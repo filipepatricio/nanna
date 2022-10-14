@@ -47,6 +47,7 @@ import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.da
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
@@ -412,10 +413,7 @@ class MockDTO {
     _expert,
     '2021-12-23T11:38:26Z',
     // highlightedPublishers
-    [
-      _publisher,
-      _publisher,
-    ],
+    _topicPublisherInformation,
     // heroImage
     _image,
     [
@@ -428,6 +426,14 @@ class MockDTO {
       _summaryCardShort,
     ],
     false,
+  );
+
+  static final _topicPublisherInformation = TopicPublisherInformationDTO(
+    [
+      _publisher,
+      _publisher,
+    ],
+    "+ 2 more",
   );
 
   static final topicWithEditorOwner = topic.copyWith(
@@ -910,9 +916,9 @@ class MockDTO {
       'USD', //currencyCode
       introductoryPrice: IntroductoryPrice(
         0.0, //price
-        '\$0.00', //priceString:
-        'P2W', //period
-        1, //cycles
+        '', //priceString
+        '', //period
+        0, //cycles
         PeriodUnit.week, //periodUnit
         2, //periodNumberOfUnits
       ),
@@ -932,11 +938,11 @@ class MockDTO {
       '\$0.49',
       'USD',
       introductoryPrice: IntroductoryPrice(
-        0.0,
-        '\$0.00',
-        'P1W',
-        1,
-        PeriodUnit.week,
+        0.0, //price
+        '', //priceString
+        '', //period
+        0, //cycles
+        PeriodUnit.week, //periodUnit
         1,
       ),
       discounts: [],
@@ -993,34 +999,13 @@ class MockDTO {
     billingIssueDetectedAt: null,
   );
 
-  static final premiumEntitlementTrial = EntitlementInfo(
-    //identifier
-    'premium',
-    //isActive
-    true,
-    //willRenew
-    true,
-    //latestPurchaseDate
-    '2022-09-28T15:59:37Z',
-    //originalPurchaseDate
-    '2022-09-26T18:21:43Z',
-    //productIdentifier
-    monthlyPackage.storeProduct.identifier,
-    //isSandbox
-    true,
-    ownershipType: OwnershipType.purchased,
-    store: Store.appStore,
-    periodType: PeriodType.trial,
-    expirationDate: '2022-09-28T16:04:37Z',
-    unsubscribeDetectedAt: null,
-    billingIssueDetectedAt: null,
-  );
+  static final premiumEntitlementTrial = premiumEntitlement.copyWith(periodType: PeriodType.trial);
 
-  static final customerInfoTrial = customerInfowithEntitlement(premiumEntitlementTrial);
+  static final customerInfoTrial = customerInfoWithEntitlement(premiumEntitlementTrial);
 
-  static final customerInfo = customerInfowithEntitlement(premiumEntitlement);
+  static final customerInfo = customerInfoWithEntitlement(premiumEntitlement);
 
-  static final customerInfoManual = customerInfowithEntitlement(
+  static final customerInfoManual = customerInfoWithEntitlement(
     premiumEntitlement.copyWith(productIdentifier: 'custom-identifier'),
   );
 }
@@ -1033,7 +1018,7 @@ ActiveSubscriptionDTO activeSubscriptionWithCustomer(CustomerInfo customer) => A
       ],
     );
 
-CustomerInfo customerInfowithEntitlement(EntitlementInfo entitlement, [Package package = MockDTO.monthlyPackage]) {
+CustomerInfo customerInfoWithEntitlement(EntitlementInfo entitlement, [Package package = MockDTO.monthlyPackage]) {
   return CustomerInfo(
     //entitlements
     EntitlementInfos(
@@ -1177,7 +1162,7 @@ extension on TopicDTO {
     String? url,
     TopicOwnerDTO? owner,
     String? lastUpdatedAt,
-    List<PublisherDTO>? highlightedPublishers,
+    TopicPublisherInformationDTO? publisherInformation,
     ImageDTO? heroImage,
     List<EntryDTO>? entries,
     List<SummaryCardDTO>? summaryCards,
@@ -1192,7 +1177,7 @@ extension on TopicDTO {
       url ?? this.url,
       owner ?? this.owner,
       lastUpdatedAt ?? this.lastUpdatedAt,
-      highlightedPublishers ?? this.highlightedPublishers,
+      publisherInformation ?? this.publisherInformation,
       heroImage ?? this.heroImage,
       entries ?? this.entries,
       summaryCards ?? this.summaryCards,
@@ -1210,7 +1195,7 @@ extension on TopicDTO {
       url,
       owner,
       lastUpdatedAt,
-      highlightedPublishers,
+      publisherInformation,
       heroImage,
       entries.length,
       visited,
@@ -1227,7 +1212,7 @@ extension on TopicDTO {
       url,
       owner,
       lastUpdatedAt,
-      highlightedPublishers,
+      publisherInformation,
       heroImage,
       entries.length,
       visited,

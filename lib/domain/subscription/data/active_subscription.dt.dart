@@ -12,6 +12,7 @@ class ActiveSubscription with _$ActiveSubscription {
     String manageSubscriptionURL,
     int remainingTrialDays,
     SubscriptionPlan plan,
+    SubscriptionPlan? nextPlan,
   ) = ActiveSubscriptionTrial;
 
   factory ActiveSubscription.premium(
@@ -20,11 +21,11 @@ class ActiveSubscription with _$ActiveSubscription {
     DateTime? expirationDate,
     bool willRenew,
     SubscriptionPlan plan,
+    SubscriptionPlan? nextPlan,
   ) = ActiveSubscriptionPremium;
 
   factory ActiveSubscription.manualPremium(
     String manageSubscriptionURL,
     DateTime? expirationDate,
-    bool willRenew,
   ) = ActiveSubscriptionManualPremium;
 }

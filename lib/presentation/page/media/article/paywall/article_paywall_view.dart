@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/subscription/subscribe_button.dart';
@@ -23,10 +24,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 part 'widgets/paywall_background_fade.dart';
 part 'widgets/paywall_multiple_options.dart';
 part 'widgets/paywall_trial_option.dart';
-
-typedef OnPurchasePressed = void Function(SubscriptionPlan plan);
-typedef OnPurchaseSuccess = void Function();
-typedef OnGeneralError = void Function();
+part 'widgets/paywall_loading_view.dart';
 
 class ArticlePaywallView extends HookWidget {
   const ArticlePaywallView({
@@ -38,7 +36,7 @@ class ArticlePaywallView extends HookWidget {
   });
 
   final Article article;
-  final OnPurchaseSuccess onPurchaseSuccess;
+  final VoidCallback onPurchaseSuccess;
   final SnackbarController snackbarController;
   final Widget child;
 
@@ -74,13 +72,7 @@ class ArticlePaywallView extends HookWidget {
       children: [
         Stack(
           children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                minHeight: _backgroundFadeHeight,
-                minWidth: double.infinity,
-              ),
-              child: child,
-            ),
+            child,
             if (state.showPaywall)
               const Positioned(
                 left: 0,
@@ -90,7 +82,8 @@ class ArticlePaywallView extends HookWidget {
               ),
           ],
         ),
-        if (state.showPaywall)
+        if (state.showPaywall) ...[
+          const SizedBox(height: AppDimens.c),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: state.maybeMap(
@@ -106,9 +99,11 @@ class ArticlePaywallView extends HookWidget {
                 onRestorePressed: cubit.restore,
                 isProcessing: state.processing,
               ),
+              loading: (_) => const _PaywallLoadingView(),
               orElse: () => const SizedBox(),
             ),
           ),
+        ],
       ],
     );
   }
@@ -119,6 +114,7 @@ extension on ArticlePaywallState {
     return maybeMap(
       multiplePlans: (_) => true,
       trial: (_) => true,
+      loading: (_) => true,
       orElse: () => false,
     );
   }

@@ -48,9 +48,21 @@ class NotificationSettingSwitch extends HookWidget {
     required this.channel,
     required this.notificationType,
     required this.snackbarController,
-    this.type = NotificationSwitchWidgetType.roundedGreen,
+    required this.type,
     Key? key,
   }) : super(key: key);
+
+  factory NotificationSettingSwitch.roundedGreen({
+    required NotificationChannel channel,
+    required NotificationType notificationType,
+    required SnackbarController snackbarController,
+  }) =>
+      NotificationSettingSwitch(
+        channel: channel,
+        notificationType: notificationType,
+        snackbarController: snackbarController,
+        type: NotificationSwitchWidgetType.roundedGreen,
+      );
 
   factory NotificationSettingSwitch.squareBlack({
     required NotificationChannel channel,
@@ -98,20 +110,17 @@ class NotificationSettingSwitch extends HookWidget {
       },
     );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
-      child: state.maybeMap(
-        notInitialized: (_) => const _NotInitialized(),
-        processing: (state) => _Processing(),
-        idle: (state) => _Idle(
-          type: type,
-          name: state.name,
-          value: state.value,
-          switchKey: key,
-          onChange: cubit.changeSetting,
-        ),
-        orElse: () => const SizedBox.shrink(),
+    return state.maybeMap(
+      notInitialized: (_) => const _NotInitialized(),
+      processing: (state) => _Processing(),
+      idle: (state) => _Idle(
+        type: type,
+        name: state.name,
+        value: state.value,
+        switchKey: key,
+        onChange: cubit.changeSetting,
       ),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }
@@ -128,13 +137,15 @@ class _NotInitialized extends StatelessWidget {
 class _Processing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: AppDimens.l,
-      width: AppDimens.l,
-      padding: const EdgeInsets.all(AppDimens.one),
-      child: const Loader(
-        strokeWidth: 2.0,
-        color: AppColors.dividerGreyLight,
+    return Center(
+      child: Container(
+        height: AppDimens.l,
+        width: AppDimens.l,
+        padding: const EdgeInsets.all(AppDimens.one),
+        child: const Loader(
+          strokeWidth: 2.0,
+          color: AppColors.dividerGreyLight,
+        ),
       ),
     );
   }
@@ -159,27 +170,36 @@ class _Idle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(unselectedWidgetColor: AppColors.transparent),
-      child: Container(
-        width: AppDimens.l,
-        height: AppDimens.l,
-        decoration: BoxDecoration(
-          shape: type.boxShape,
-          borderRadius: type.borderRadius,
-          color: value ? type.activeColor : AppColors.transparent,
-          border: Border.fromBorderSide(
-            BorderSide(
-              width: 2.0,
-              color: value ? type.activeColor : AppColors.dividerGreyLight,
+      child: GestureDetector(
+        onTap: () => onChange(!value),
+        child: Center(
+          child: Container(
+            color: AppColors.transparent,
+            padding: const EdgeInsets.all(AppDimens.s),
+            child: Container(
+              width: AppDimens.l,
+              height: AppDimens.l,
+              decoration: BoxDecoration(
+                shape: type.boxShape,
+                borderRadius: type.borderRadius,
+                color: value ? type.activeColor : AppColors.transparent,
+                border: Border.fromBorderSide(
+                  BorderSide(
+                    width: 2.0,
+                    color: value ? type.activeColor : AppColors.dividerGreyLight,
+                  ),
+                ),
+              ),
+              child: Checkbox(
+                key: switchKey,
+                value: value,
+                shape: const CircleBorder(),
+                activeColor: type.activeColor,
+                visualDensity: VisualDensity.compact,
+                onChanged: (value) => onChange(value!),
+              ),
             ),
           ),
-        ),
-        child: Checkbox(
-          key: switchKey,
-          value: value,
-          shape: const CircleBorder(),
-          activeColor: type.activeColor,
-          visualDensity: VisualDensity.compact,
-          onChanged: (value) => onChange(value!),
         ),
       ),
     );

@@ -14,7 +14,7 @@ class _SubscriptionPlansLoadingView extends StatelessWidget {
         SizedBox(
           height: 50,
           child: LoadingShimmer(
-            mainColor: AppColors.darkLinen,
+            mainColor: AppColors.lightGrey,
             radius: AppDimens.m,
           ),
         ),
@@ -22,7 +22,7 @@ class _SubscriptionPlansLoadingView extends StatelessWidget {
         SizedBox(
           height: 250,
           child: LoadingShimmer(
-            mainColor: AppColors.darkLinen,
+            mainColor: AppColors.lightGrey,
             radius: AppDimens.ml,
           ),
         ),
@@ -30,7 +30,7 @@ class _SubscriptionPlansLoadingView extends StatelessWidget {
         SizedBox(
           height: 100,
           child: LoadingShimmer(
-            mainColor: AppColors.darkLinen,
+            mainColor: AppColors.lightGrey,
             radius: AppDimens.ml,
           ),
         ),
@@ -38,7 +38,7 @@ class _SubscriptionPlansLoadingView extends StatelessWidget {
         SizedBox(
           height: 50,
           child: LoadingShimmer(
-            mainColor: AppColors.darkLinen,
+            mainColor: AppColors.lightGrey,
             radius: AppDimens.m,
           ),
         ),

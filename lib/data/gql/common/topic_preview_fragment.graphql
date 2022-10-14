@@ -26,8 +26,11 @@ fragment topicPreviewFragment on Topic {
         }
     }
     introduction
-    highlightedPublishers {
-        ...publisherFragment
+    publisherInformation{
+        highlightedPublishers {
+            ...publisherFragment
+        }
+        remainingPublishersIndicator
     }
     heroImage {
         ...cloudinaryImageFragment

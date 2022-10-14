@@ -253,7 +253,7 @@ jobs:
           flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Build iOS app
-        run: flutter build ios --release --no-codesign --dart-define=env=prod --flavor prod
+        run: flutter build ios --release --no-codesign --dart-define=env=prod --flavor prod --bundle-sksl-path warmup.sksl.json
 
       - name: Slack message iOS app building failed
         if: failure()

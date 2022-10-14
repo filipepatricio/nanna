@@ -144,7 +144,7 @@ void main() {
                 )
                 .pictureProvider as ExactAssetPicture)
             .assetName,
-        AppVectorGraphics.heartUnselectedWhite,
+        AppVectorGraphics.bookmarkUnselected,
       );
     },
   );
@@ -175,7 +175,7 @@ void main() {
                 )
                 .pictureProvider as ExactAssetPicture)
             .assetName,
-        AppVectorGraphics.heartSelectedNoBorder,
+        AppVectorGraphics.bookmarkSelected,
       );
     },
   );

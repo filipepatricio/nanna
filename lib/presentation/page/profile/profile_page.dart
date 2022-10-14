@@ -27,11 +27,11 @@ class ProfilePage extends HookWidget {
     final scrollController = useScrollController();
 
     useCubitListener<ProfilePageCubit, ProfilePageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(
-        showTutorialToast: (text) => Future.delayed(const Duration(milliseconds: 100), () {
+      state.mapOrNull(
+        showTutorialToast: (state) => Future.delayed(const Duration(milliseconds: 100), () {
           showInfoToast(
             context: context,
-            text: text,
+            text: state.text,
           );
         }),
       );
@@ -84,6 +84,7 @@ class ProfilePage extends HookWidget {
                     color: AppColors.limeGreen,
                   ),
                   idle: (state) => BookmarkListView(
+                    key: ValueKey(state.version),
                     scrollController: scrollController,
                     filter: state.filter,
                     sortConfigName: state.sortConfigName,

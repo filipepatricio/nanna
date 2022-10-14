@@ -74,11 +74,9 @@ class AppVectorGraphics {
   static const String bigSearch = 'assets/vector_graphics/search_big.svg';
   static const String clearText = 'assets/vector_graphics/clear_text.svg';
 
-  static const String heartInactive = 'assets/vector_graphics/heart_inactive.svg';
-  static const String heartSelected = 'assets/vector_graphics/heart_selected.svg';
-  static const String heartSelectedNoBorder = 'assets/vector_graphics/heart_selected_no_border.svg';
-  static const String heartUnselected = 'assets/vector_graphics/heart_unselected.svg';
-  static const String heartUnselectedWhite = 'assets/vector_graphics/heart_unselected_white.svg';
+  static const String bookmarkInactive = 'assets/vector_graphics/bookmark_disabled.svg';
+  static const String bookmarkSelected = 'assets/vector_graphics/bookmark_filled.svg';
+  static const String bookmarkUnselected = 'assets/vector_graphics/bookmark_border.svg';
 
   static const String headphones = 'assets/vector_graphics/headphones.svg';
   static const String lines = 'assets/vector_graphics/lines.svg';

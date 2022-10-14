@@ -53,7 +53,7 @@ class TopicAppBar extends HookWidget {
 
     final scrollThreshold = AppDimens.topicViewHeaderImageHeight(context) * .85;
 
-    void _updateAppBar() {
+    void updateAppBar() {
       if (isExpanded.value != scrollPositionNotifier.value < scrollThreshold) {
         isExpanded.value = scrollPositionNotifier.value < scrollThreshold;
       }
@@ -61,8 +61,8 @@ class TopicAppBar extends HookWidget {
 
     useEffect(
       () {
-        scrollPositionNotifier.addListener(_updateAppBar);
-        return () => scrollPositionNotifier.removeListener(_updateAppBar);
+        scrollPositionNotifier.addListener(updateAppBar);
+        return () => scrollPositionNotifier.removeListener(updateAppBar);
       },
       [scrollPositionNotifier],
     );
@@ -111,7 +111,7 @@ class TopicAppBar extends HookWidget {
         BookmarkButton.topic(
           topic: topic.asPreview,
           briefId: cubit.briefId,
-          mode: isExpanded.value ? BookmarkButtonMode.image : BookmarkButtonMode.color,
+          color: isExpanded.value ? AppColors.white : AppColors.textPrimary,
           snackbarController: snackbarController,
         ),
         const SizedBox(width: AppDimens.s),
@@ -128,7 +128,7 @@ class TopicAppBar extends HookWidget {
           iconSize: AppDimens.xxl,
           icon: SvgPicture.asset(
             AppVectorGraphics.share,
-            color: isExpanded.value ? AppColors.white : AppColors.black,
+            color: isExpanded.value ? AppColors.white : AppColors.textPrimary,
           ),
         ),
       ],
