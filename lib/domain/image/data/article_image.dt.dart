@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'article_image.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ArticleImage with _$ArticleImage {
   const factory ArticleImage.cloudinary(Image cloudinaryImage) = ArticleImageCloudinary;
 

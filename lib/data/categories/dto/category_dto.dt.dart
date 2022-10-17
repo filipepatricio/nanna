@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'category_dto.dt.g.dart';
@@ -10,7 +9,6 @@ class CategoryDTO {
     required this.id,
     required this.slug,
     required this.icon,
-    required this.items,
     required this.color,
   });
 
@@ -21,6 +19,4 @@ class CategoryDTO {
   final String name;
   final String slug;
   final String? color;
-  @JsonKey(defaultValue: [])
-  final List<CategoryItemDTO> items;
 }

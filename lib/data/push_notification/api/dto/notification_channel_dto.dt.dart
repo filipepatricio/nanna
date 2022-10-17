@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'notification_channel_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class NotificationChannelDTO {
   NotificationChannelDTO(
     this.id,
@@ -18,6 +18,4 @@ class NotificationChannelDTO {
   final String description;
   final bool emailEnabled;
   final bool pushEnabled;
-
-  Map<String, dynamic> toJson() => _$NotificationChannelDTOToJson(this);
 }

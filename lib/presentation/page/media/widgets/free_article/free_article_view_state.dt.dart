@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'free_article_view_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class FreeArticleViewState with _$FreeArticleViewState {
   @Implements<BuildState>()
   const factory FreeArticleViewState.idle() = _FreeArticleViewStateIDle;

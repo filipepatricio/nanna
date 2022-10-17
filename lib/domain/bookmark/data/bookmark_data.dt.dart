@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bookmark_data.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class BookmarkData with _$BookmarkData {
   factory BookmarkData.article(MediaItemArticle article) = _BookmarkDataArticle;
 

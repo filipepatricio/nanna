@@ -15,6 +15,7 @@ import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dar
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_with_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
@@ -484,7 +485,7 @@ class MockDTO {
     // publisher
     _publisher,
     // image
-    _articleImageCloudinary,
+    null,
     // sourceUrl
     'source-url',
     // author
@@ -499,11 +500,13 @@ class MockDTO {
     ArticleProgressState.unread,
     // locked
     false,
+    category,
   );
 
   static final _freeArticle = _freeArticleWithoutNote.copyWith(
     note:
         'You should read this because everything you wanted to know about the hype about virtual real estate, major players and how to get started with virtual real estate platforms.',
+    image: _articleImageCloudinary,
   );
 
   static final premiumArticleWithoutNote = _freeArticleWithoutNote.copyWith(
@@ -512,6 +515,12 @@ class MockDTO {
     type: ArticleTypeDTO.premium,
     image: _articleImageCloudinary,
     locked: true,
+  );
+
+  static final premiumArticleWithoutImage = _freeArticleWithoutNote.copyWith(
+    id: 'id-premium',
+    slug: 'slug-premium',
+    type: ArticleTypeDTO.premium,
   );
 
   static final premiumArticle = _freeArticle.copyWith(
@@ -531,12 +540,14 @@ class MockDTO {
     id: 'id-premium-audio',
     slug: 'slug-premium-audio',
     hasAudioVersion: true,
+    image: _articleImageCloudinary,
   );
   static final premiumArticleWithAudioLocked = premiumArticle.copyWith(
     id: 'id-premium-audio',
     slug: 'slug-premium-audio-not-available',
     hasAudioVersion: true,
     availableInSubscription: false,
+    image: _articleImageCloudinary,
   );
 
   static final articleContentMarkdown = ArticleContentDTO(
@@ -565,7 +576,15 @@ class MockDTO {
   );
 
   // CategoryDTO
-  static final category = CategoryDTO(
+  static const category = CategoryDTO(
+    name: 'Politics',
+    id: 'id',
+    slug: 'politics',
+    icon: _mockedPillIcon,
+    color: "#E3BEE9",
+  );
+
+  static final categoryWithItems = CategoryWithItemsDTO(
     name: 'Politics',
     id: 'id',
     slug: 'politics',
@@ -583,7 +602,7 @@ class MockDTO {
 
   // CategoriesDTO
 
-  static final categories = CategoriesDTO(
+  static const categories = CategoriesDTO(
     [
       MockDTO.category,
       MockDTO.category,
@@ -602,7 +621,7 @@ class MockDTO {
 
   // CategoryPreference
 
-  static final categoryPreference = CategoryPreferenceDTO(
+  static const categoryPreference = CategoryPreferenceDTO(
     isPreferred: true,
     category: MockDTO.category,
   );
@@ -1077,6 +1096,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     ArticleProgressDTO? progress,
     ArticleProgressState? progressState,
     bool? locked,
+    CategoryDTO? category,
   }) {
     return ArticleHeaderDTO(
       id ?? this.id,
@@ -1099,6 +1119,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       progress ?? this.progress,
       progressState ?? this.progressState,
       locked ?? this.locked,
+      category ?? this.category,
     );
   }
 
@@ -1124,6 +1145,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       progress,
       progressState,
       locked,
+      category,
     );
   }
 
@@ -1149,6 +1171,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       progress,
       progressState,
       locked,
+      category,
     );
   }
 }

@@ -1,20 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/article_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/free_article/free_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
-import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_svg/svg.dart';
 
 const _finishedAnimation = 1.0;
 
@@ -65,37 +60,10 @@ class FreeArticleView extends HookWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        foregroundColor: AppColors.textPrimary,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: AppDimens.s),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_rounded),
-            iconSize: AppDimens.backArrowSize,
-            alignment: Alignment.center,
-            padding: EdgeInsets.zero,
-            onPressed: () => context.popRoute(cubit.articleProgress),
-          ),
-        ),
-        actions: [
-          BookmarkButton.article(
-            article: article,
-            topicId: topicId,
-            briefId: briefId,
-            color: AppColors.textPrimary,
-            snackbarController: snackbarController,
-          ),
-          const SizedBox(width: AppDimens.m),
-          Padding(
-            padding: const EdgeInsets.only(right: AppDimens.s, top: AppDimens.s),
-            child: ShareArticleButton(
-              snackbarController: snackbarController,
-              article: article,
-              buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
-            ),
-          ),
-        ],
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      appBar: ArticleAppBar(
+        article: article,
+        snackbarController: snackbarController,
+        onBackPressed: () => context.popRoute(cubit.articleProgress),
       ),
       body: SnackbarParentView(
         controller: snackbarController,

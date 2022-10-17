@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_onboarding_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/set_selected_onboarding_categories_stream_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide_data.dt.dart';

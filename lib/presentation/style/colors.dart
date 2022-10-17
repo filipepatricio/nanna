@@ -28,6 +28,7 @@ class AppColors {
   static const Color lightGrey = Color(0xffEEEEEC);
   static const Color neutralGrey = Color(0xff989898);
   static const Color rose = Color(0xffF3E5F4);
+  static const Color pastelBlue = Color(0xff72A1FD);
   static const Color pastelGreen = Color(0xffE4F1E2);
   static const Color darkGrey = Color(0xff6B7280);
   static const Color darkerGrey = Color(0xff5F5F5F);

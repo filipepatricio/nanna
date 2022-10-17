@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'entry_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class EntryDTO {
   EntryDTO(this.item, this.note, this.style);
 
@@ -12,6 +12,4 @@ class EntryDTO {
   final String? note;
   final MediaItemDTO item;
   final EntryStyleDTO style;
-
-  Map<String, dynamic> toJson() => _$EntryDTOToJson(this);
 }

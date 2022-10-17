@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'article_scroll_data.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class MediaItemScrollData with _$MediaItemScrollData {
   factory MediaItemScrollData({
     required double contentOffset,

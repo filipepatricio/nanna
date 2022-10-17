@@ -3,13 +3,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'install_attribution_data_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class InstallAttributionDataDTO {
   InstallAttributionDataDTO(this.payload);
 
   factory InstallAttributionDataDTO.fromJson(Map<String, dynamic> json) => _$InstallAttributionDataDTOFromJson(json);
 
   final InstallAttributionPayloadDTO payload;
-
-  Map<String, dynamic> toJson() => _$InstallAttributionDataDTOToJson(this);
 }

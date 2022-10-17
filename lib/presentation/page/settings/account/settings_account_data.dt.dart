@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'settings_account_data.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SettingsAccountData with _$SettingsAccountData {
   factory SettingsAccountData({
     required String firstName,

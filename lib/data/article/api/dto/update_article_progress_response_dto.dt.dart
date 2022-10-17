@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'update_article_progress_response_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class UpdateArticleProgressResponseDTO {
   UpdateArticleProgressResponseDTO(
     this.progress,

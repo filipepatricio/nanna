@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'brief_subsection_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class BriefSubsectionDTO {
   const BriefSubsectionDTO({
     required this.title,
@@ -14,6 +14,4 @@ class BriefSubsectionDTO {
 
   final String title;
   final List<BriefEntryDTO> entries;
-
-  Map<String, dynamic> toJson() => _$BriefSubsectionDTOToJson(this);
 }

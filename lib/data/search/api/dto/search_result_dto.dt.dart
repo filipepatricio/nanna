@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'search_result_dto.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SearchResultDTO with _$SearchResultDTO {
   factory SearchResultDTO.topic(TopicPreviewDTO topicPreview) = _SearchResultDTOTopic;
 

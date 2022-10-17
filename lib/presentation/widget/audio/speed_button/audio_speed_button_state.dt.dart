@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'audio_speed_button_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AudioSpeedButtonState with _$AudioSpeedButtonState {
   @Implements<BuildState>()
   factory AudioSpeedButtonState.disabled() = _AudioSpeedButtonStateDisabled;

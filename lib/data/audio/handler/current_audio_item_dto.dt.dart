@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'current_audio_item_dto.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class CurrentAudioItemDTO with _$CurrentAudioItemDTO {
   factory CurrentAudioItemDTO({
     required PlaybackState state,

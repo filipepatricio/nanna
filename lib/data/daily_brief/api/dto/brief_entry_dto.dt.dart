@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'brief_entry_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class BriefEntryDTO {
   const BriefEntryDTO(this.item, this.style);
 
@@ -12,6 +12,4 @@ class BriefEntryDTO {
 
   final BriefEntryItemDTO item;
   final BriefEntryStyleDTO style;
-
-  Map<String, dynamic> toJson() => _$BriefEntryDTOToJson(this);
 }

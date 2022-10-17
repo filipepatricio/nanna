@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'explore_content_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ExploreContentDTO {
   ExploreContentDTO(this.pillSection, this.highlightedSection);
 
@@ -13,6 +13,4 @@ class ExploreContentDTO {
   final List<ExploreContentPillDTO> pillSection;
   @JsonKey(name: 'highlightedSection')
   final List<ExploreContentAreaDTO> highlightedSection;
-
-  Map<String, dynamic> toJson() => _$ExploreContentDTOToJson(this);
 }

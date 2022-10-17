@@ -4,9 +4,11 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.d
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -129,25 +131,36 @@ class BookmarkButton extends HookWidget {
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: _animationDuration),
               child: state.maybeMap(
-                initializing: (_) => const SizedBox.square(
-                  dimension: _loaderSize,
-                  child: Loader(
-                    color: AppColors.limeGreen,
-                    strokeWidth: _loaderStroke,
-                  ),
-                ),
+                initializing: (_) => const _Loader(),
                 idle: (state) => _IdleButton(
                   cubit: cubit,
                   state: state.state,
                   color: color,
                   animationController: animationController,
                 ),
-                switching: (state) => const _Switching(),
+                switching: (state) => const _Loader(),
                 orElse: () => const SizedBox.shrink(),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _Loader extends StatelessWidget {
+  const _Loader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox.square(
+      dimension: _loaderSize,
+      child: Loader(
+        color: AppColors.limeGreenDark,
+        strokeWidth: _loaderStroke,
       ),
     );
   }
@@ -169,24 +182,16 @@ class _IdleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ExpandTapWidget(
       onTap: () async {
         await HapticFeedback.mediumImpact();
         await animationController.forward();
         await animationController.reverse();
         await cubit.switchState();
       },
+      tapPadding: const EdgeInsets.all(AppDimens.m),
       child: state.icon(color),
     );
-  }
-}
-
-class _Switching extends StatelessWidget {
-  const _Switching({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SvgPicture.asset(AppVectorGraphics.bookmarkInactive);
   }
 }
 

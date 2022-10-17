@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'profile_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ProfilePageState with _$ProfilePageState {
   @Implements<BuildState>()
   factory ProfilePageState.initializing() = _ProfilePageStateInitializing;

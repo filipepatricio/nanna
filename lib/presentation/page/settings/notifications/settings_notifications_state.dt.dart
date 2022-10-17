@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'settings_notifications_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SettingsNotificationsState with _$SettingsNotificationsState {
   @Implements<BuildState>()
   factory SettingsNotificationsState.loading() = SettingsNotificationsStateLoading;

@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'topic_owner_dto.dt.freezed.dart';
 part 'topic_owner_dto.dt.g.dart';
 
-@Freezed(unionKey: '__typename', fallbackUnion: unknownKey)
+@Freezed(unionKey: '__typename', fallbackUnion: unknownKey, toJson: false)
 class TopicOwnerDTO with _$TopicOwnerDTO {
   @FreezedUnionValue('Expert')
   factory TopicOwnerDTO.expert(

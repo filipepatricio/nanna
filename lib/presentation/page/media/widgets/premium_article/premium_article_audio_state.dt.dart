@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'premium_article_audio_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class PremiumArticleAudioState with _$PremiumArticleAudioState {
   @Implements<BuildState>()
   factory PremiumArticleAudioState.notInitialized() = _PremiumArticleAudioStateNotInitialized;

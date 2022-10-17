@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'article_see_all_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ArticleSeeAllPageState with _$ArticleSeeAllPageState {
   @Implements<BuildState>()
   factory ArticleSeeAllPageState.loading() = _ArticleSeeAllPageStateLoading;

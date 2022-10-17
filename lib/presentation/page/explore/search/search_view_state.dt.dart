@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'search_view_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SearchViewState with _$SearchViewState {
   @Implements<BuildState>()
   factory SearchViewState.initial() = _SearchViewStateInitial;

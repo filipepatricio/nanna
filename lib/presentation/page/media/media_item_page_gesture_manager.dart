@@ -7,15 +7,11 @@ class MediaItemPageGestureManager {
   MediaItemPageGestureManager({
     required this.context,
     required this.articleViewController,
-    required this.pageViewController,
-    required this.articleHasImage,
     required this.mainViewController,
   });
 
   final BuildContext context;
   final ScrollController articleViewController;
-  final PageController pageViewController;
-  final bool articleHasImage;
   final ScrollController mainViewController;
 
   Drag? _drag;
@@ -47,11 +43,7 @@ class MediaItemPageGestureManager {
       );
 
   void handleDragStart(DragStartDetails details) {
-    if (_isOnImagePage()) {
-      _activeController = pageViewController;
-      _drag = pageViewController.position.drag(details, disposeDrag);
-      return;
-    } else if (_isOnArticlePart()) {
+    if (_isOnArticlePart()) {
       _activeController = articleViewController;
       _drag = articleViewController.position.drag(details, disposeDrag);
       return;
@@ -76,9 +68,7 @@ class MediaItemPageGestureManager {
   ScrollController? getNextController() {
     final primaryDelta = _lastDragUpdateDetails?.primaryDelta ?? 0;
 
-    if (_isTopOverscrollingArticleView(primaryDelta)) {
-      return pageViewController;
-    } else if (_isBottomOverscrollingPageView(primaryDelta) || _isTopOverscrollingAdditionalContent(primaryDelta)) {
+    if (_isTopOverscrollingAdditionalContent(primaryDelta)) {
       return articleViewController;
     } else if (_isBottomOverscrollingArticleView(primaryDelta)) {
       return mainViewController;
@@ -130,17 +120,7 @@ class MediaItemPageGestureManager {
     _activeController?.position.jumpTo(_activeController?.position.pixels ?? 0);
   }
 
-  bool _isOnImagePage() => articleHasImage && pageViewController.hasClients && (pageViewController.page ?? 0.0) < 1.0;
-
-  bool _isOnArticlePart() => !_isOnImagePage() && mainViewController.position.pixels <= 0;
-
-  bool _isTopOverscrollingArticleView(double primaryDelta) {
-    return _activeController == articleViewController && _isDragDirectionTop(primaryDelta) && _isScrollAtStart;
-  }
-
-  bool _isBottomOverscrollingPageView(double primaryDelta) {
-    return _activeController == pageViewController && _isDragDirectionDown(primaryDelta) && _isScrollAtEnd;
-  }
+  bool _isOnArticlePart() => mainViewController.position.pixels <= 0;
 
   bool _isBottomOverscrollingArticleView(double primaryDelta) {
     return _activeController == articleViewController && _isDragDirectionDown(primaryDelta) && _isScrollAtEnd;
@@ -154,8 +134,6 @@ class MediaItemPageGestureManager {
 
   bool get _isScrollAtEnd =>
       (_activeController?.position.pixels ?? 0.0) >= (_activeController?.position.maxScrollExtent ?? 0.0);
-
-  bool get _isScrollAtStart => _activeController?.position.pixels == _activeController?.position.minScrollExtent;
 
   bool _isDragDirectionTop(double primaryDelta) => primaryDelta > 0;
 

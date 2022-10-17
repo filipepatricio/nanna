@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'explore_content_area.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ExploreContentArea with _$ExploreContentArea {
   factory ExploreContentArea.articles({
     required String id,

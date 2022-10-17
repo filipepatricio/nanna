@@ -53,7 +53,6 @@ class PremiumArticleAudioView extends HookWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: AppDimens.appBarHeight + MediaQuery.of(context).padding.top),
             if (article.hasImage)
               Flexible(
                 flex: 15,

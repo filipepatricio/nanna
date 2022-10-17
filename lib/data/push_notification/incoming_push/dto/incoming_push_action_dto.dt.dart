@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'incoming_push_action_dto.dt.freezed.dart';
 part 'incoming_push_action_dto.dt.g.dart';
 
-@Freezed(unionKey: 'type', fallbackUnion: unknownKey)
+@Freezed(unionKey: 'type', fallbackUnion: unknownKey, toJson: false)
 class IncomingPushActionDTO with _$IncomingPushActionDTO {
   @FreezedUnionValue('refresh_daily_brief')
   factory IncomingPushActionDTO.refreshDailyBrief() = _IncomingPushActionDTORefreshDailyBrief;

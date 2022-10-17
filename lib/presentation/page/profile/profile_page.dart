@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_v
 import 'package:better_informed_mobile/presentation/page/profile/profile_filter_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -70,31 +69,29 @@ class ProfilePage extends HookWidget {
       body: TabBarListener(
         scrollController: scrollController,
         currentPage: context.routeData,
-        child: ReadingBannerWrapper(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ProfileFilterTabBar(
-                controller: tabController,
-                onChange: cubit.changeFilter,
-              ),
-              Expanded(
-                child: state.maybeMap(
-                  initializing: (state) => const Loader(
-                    color: AppColors.limeGreen,
-                  ),
-                  idle: (state) => BookmarkListView(
-                    key: ValueKey(state.version),
-                    scrollController: scrollController,
-                    filter: state.filter,
-                    sortConfigName: state.sortConfigName,
-                    onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
-                  ),
-                  orElse: () => const SizedBox.shrink(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ProfileFilterTabBar(
+              controller: tabController,
+              onChange: cubit.changeFilter,
+            ),
+            Expanded(
+              child: state.maybeMap(
+                initializing: (state) => const Loader(
+                  color: AppColors.limeGreen,
                 ),
+                idle: (state) => BookmarkListView(
+                  key: ValueKey(state.version),
+                  scrollController: scrollController,
+                  filter: state.filter,
+                  sortConfigName: state.sortConfigName,
+                  onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
+                ),
+                orElse: () => const SizedBox.shrink(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

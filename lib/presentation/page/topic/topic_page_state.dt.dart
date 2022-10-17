@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'topic_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class TopicPageState with _$TopicPageState {
   @Implements<BuildState>()
   factory TopicPageState.idle(Topic topic) = _TopicPageStateStateIdle;

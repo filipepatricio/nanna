@@ -11,7 +11,7 @@ import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_e
 import 'package:better_informed_mobile/domain/article/use_case/get_other_topic_entries_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_related_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
@@ -190,23 +190,16 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
             interval: const Duration(seconds: 3),
             name: 'reading-progress-tracker-premium',
             timeout: const Duration(milliseconds: 1500),
-            task: _scheduledTrackReadingProgress,
+            task: trackReadingProgress,
             minCycle: const Duration(milliseconds: 1500),
           );
 
     _readingProgressTrackingScheduler?.start();
   }
 
-  Future<void> _scheduledTrackReadingProgress() async {
-    if (scrollData.progress > 0) {
-      await trackReadingProgress();
-    }
-    return;
-  }
-
   Future<void> trackReadingProgress() async {
-    if (_currentFullArticle.metadata.availableInSubscription) {
-      final progress = (scrollData.progress * 100).toInt().clamp(1, 100);
+    final progress = (scrollData.progress * 100).toInt().clamp(1, 100);
+    if (_currentFullArticle.metadata.availableInSubscription && progress > (_articleProgress?.contentProgress ?? 0)) {
       _articleProgress = await _trackArticleReadingProgressUseCase.call(_currentFullArticle.metadata.slug, progress);
     }
     return;

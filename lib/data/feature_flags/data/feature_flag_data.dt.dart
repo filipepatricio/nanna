@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'feature_flag_data.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class FeatureFlagData with _$FeatureFlagData {
   factory FeatureFlagData({
     required String uuid,

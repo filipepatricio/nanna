@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'tab_bar_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class TabBarState with _$TabBarState {
   @Implements<BuildState>()
   const factory TabBarState.idle() = _TabBarStateIdle;

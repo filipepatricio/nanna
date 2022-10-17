@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'article_with_background.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ArticleWithBackground with _$ArticleWithBackground {
   factory ArticleWithBackground.image(MediaItemArticle article, ArticleImage image) = _$ArticleWithBackgroundImage;
 

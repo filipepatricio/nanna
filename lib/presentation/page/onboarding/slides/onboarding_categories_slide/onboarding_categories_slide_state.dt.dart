@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'onboarding_categories_slide_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class OnboardingCategoriesSlideState with _$OnboardingCategoriesSlideState {
   @Implements<BuildState>()
   const factory OnboardingCategoriesSlideState.idle({required OnboardingCategoriesSlideData data}) =

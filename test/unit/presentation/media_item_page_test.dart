@@ -8,13 +8,13 @@ import 'package:better_informed_mobile/presentation/page/explore/explore_page.da
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
@@ -40,7 +40,6 @@ void main() {
         ),
       );
       expect(find.byType(PremiumArticleView), findsOneWidget);
-      expect(find.byType(ArticleOutputModeToggleButton), findsNothing);
       expect(find.byType(PremiumArticleAudioView), findsNothing);
     },
   );
@@ -55,9 +54,8 @@ void main() {
           ],
         ),
       );
-      expect(find.byType(PremiumArticleView), findsOneWidget);
-      expect(find.byType(ArticleOutputModeToggleButton), findsOneWidget);
-      await tester.tap(find.byType(ArticleOutputModeToggleButton));
+
+      await tester.fling(find.byType(PremiumArticleView), const Offset(-2000, 0), 100);
       await tester.pumpAndSettle();
       expect(find.byType(PremiumArticleAudioView), findsOneWidget);
     },
@@ -73,9 +71,7 @@ void main() {
           ],
         ),
       );
-
-      expect(find.byType(ArticleOutputModeToggleButton), findsOneWidget);
-      await tester.tap(find.byType(ArticleOutputModeToggleButton));
+      await tester.fling(find.byType(PremiumArticleView), const Offset(-2000, 0), 100);
       await tester.pumpAndSettle();
 
       final playButton = find.byType(AudioControlButton);
@@ -129,7 +125,7 @@ void main() {
       );
       final bookmarkButton = find.descendant(
         of: find.byType(BookmarkButton),
-        matching: find.byType(GestureDetector),
+        matching: find.byType(ExpandTapWidget),
       );
       expect(bookmarkButton, findsOneWidget);
 
@@ -160,7 +156,7 @@ void main() {
       );
       final bookmarkButton = find.descendant(
         of: find.byType(BookmarkButton),
-        matching: find.byType(GestureDetector),
+        matching: find.byType(ExpandTapWidget),
       );
       expect(bookmarkButton, findsOneWidget);
 
@@ -290,7 +286,7 @@ void main() {
         ),
       );
 
-      await tester.tap(find.byType(ArticleOutputModeToggleButton));
+      await tester.fling(find.byType(PremiumArticleView), const Offset(-2000, 0), 100);
       await tester.pumpAndSettle();
 
       expect(find.byType(PremiumArticleAudioView), findsOneWidget);

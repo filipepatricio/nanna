@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'user_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class UserDTO {
   UserDTO(this.uuid, this.firstName, this.lastName, this.email);
 
@@ -11,6 +11,4 @@ class UserDTO {
   final String? firstName;
   final String? lastName;
   final String email;
-
-  Map<String, dynamic> toJson() => _$UserDTOToJson(this);
 }

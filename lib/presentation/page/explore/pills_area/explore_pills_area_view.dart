@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_with_items.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -20,7 +20,7 @@ class ExplorePillsAreaView extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final List<Category> categories;
+  final List<CategoryWithItems> categories;
 
   @override
   Widget build(BuildContext context) {

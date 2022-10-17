@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_update_checker_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AppUpdateCheckerState with _$AppUpdateCheckerState {
   @Implements<BuildState>()
   factory AppUpdateCheckerState.idle() = _AppUpdateCheckerStateIdle;

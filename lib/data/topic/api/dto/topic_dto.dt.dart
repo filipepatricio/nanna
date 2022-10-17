@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'topic_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class TopicDTO {
   TopicDTO(
     this.id,
@@ -39,6 +39,4 @@ class TopicDTO {
   final List<EntryDTO> entries;
   final List<SummaryCardDTO> summaryCards;
   final bool visited;
-
-  Map<String, dynamic> toJson() => _$TopicDTOToJson(this);
 }

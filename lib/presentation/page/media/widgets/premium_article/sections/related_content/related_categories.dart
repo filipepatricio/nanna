@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -44,7 +44,7 @@ class RelatedCategories extends StatelessWidget {
 
                 context.navigateTo(
                   CategoryPageRoute(
-                    category: featuredCategories[index],
+                    category: featuredCategories[index].asCategoryWithItems(),
                   ),
                 );
               },

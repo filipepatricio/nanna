@@ -145,7 +145,7 @@ Example:
 
 ```
     MyReadsPageState - initialLoading, idle
-    @freezed
+    @Freezed(toJson: false)
     class MyReadsPageState with _$MyReadsPageState {
     @Implements<BuildState>()
     factory MyReadsPageState.initialLoading() = _MyReadsPageStateInitialLoading;

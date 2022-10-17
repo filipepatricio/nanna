@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'explore_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ExplorePageState with _$ExplorePageState {
   @Implements<BuildState>()
   factory ExplorePageState.initialLoading() = _ExplorePageStateInitialLoading;

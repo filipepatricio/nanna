@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'article_kind_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ArticleKindDTO {
   ArticleKindDTO(
     this.name,
@@ -10,6 +10,4 @@ class ArticleKindDTO {
 
   factory ArticleKindDTO.fromJson(Map<String, dynamic> json) => _$ArticleKindDTOFromJson(json);
   final String name;
-
-  Map<String, dynamic> toJson() => _$ArticleKindDTOToJson(this);
 }

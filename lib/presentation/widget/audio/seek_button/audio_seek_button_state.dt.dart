@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'audio_seek_button_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AudioSeekButtonState with _$AudioSeekButtonState {
   @Implements<BuildState>()
   factory AudioSeekButtonState.disabled() = _AudioSeekButtonStateDisabled;

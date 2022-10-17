@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'change_subscription_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ChangeSubscriptionPageState with _$ChangeSubscriptionPageState {
   @Implements<BuildState>()
   const factory ChangeSubscriptionPageState.initializing() = _ChangeSubscriptionPageStateInit;
