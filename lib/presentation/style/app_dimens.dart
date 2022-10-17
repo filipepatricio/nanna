@@ -155,7 +155,7 @@ class AppDimens {
   static const explorePillAreaHeight = 170.0;
 
   /// 50
-  static const explorePillHeight = 50.0;
+  static const explorePillHeight = 32.0;
 
   /// 32
   static const bookmarkIconSize = 32.0;

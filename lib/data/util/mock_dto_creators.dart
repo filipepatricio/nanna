@@ -570,6 +570,7 @@ class MockDTO {
     id: 'id',
     slug: 'politics',
     icon: _mockedPillIcon,
+    color: "#E3BEE9",
     items: categoryItemList,
   );
 
