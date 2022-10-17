@@ -37,6 +37,7 @@ class RelatedCategories extends StatelessWidget {
             itemBuilder: (context, index) => ExplorePill(
               title: featuredCategories[index].name,
               icon: featuredCategories[index].icon,
+              color: featuredCategories[index].color,
               index: index,
               onTap: () {
                 onItemTap?.call(featuredCategories[index]);
@@ -48,7 +49,7 @@ class RelatedCategories extends StatelessWidget {
                 );
               },
             ),
-            separatorBuilder: (context, _) => const SizedBox(width: AppDimens.m),
+            separatorBuilder: (context, _) => const SizedBox(width: AppDimens.s),
             itemCount: featuredCategories.length,
           ),
         ),
