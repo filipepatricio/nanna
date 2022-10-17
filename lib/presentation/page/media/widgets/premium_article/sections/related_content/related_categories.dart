@@ -36,7 +36,6 @@ class RelatedCategories extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
             itemBuilder: (context, index) => ExplorePill(
               title: featuredCategories[index].name,
-              icon: featuredCategories[index].icon,
               color: featuredCategories[index].color,
               index: index,
               onTap: () {

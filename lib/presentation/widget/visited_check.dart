@@ -10,17 +10,16 @@ class VisitedCheck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppDimens.xl,
-      width: AppDimens.xl,
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.white, width: 1),
-        color: AppColors.black,
+      height: AppDimens.l,
+      width: AppDimens.l,
+      decoration: const BoxDecoration(
+        color: AppColors.limeGreen,
         shape: BoxShape.circle,
       ),
       child: const Center(
         child: Icon(
           Icons.check,
-          color: AppColors.white,
+          color: AppColors.black,
           size: AppDimens.ml,
         ),
       ),

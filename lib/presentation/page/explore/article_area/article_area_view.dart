@@ -55,7 +55,7 @@ class ArticleAreaView extends HookWidget {
           ),
           onViewAllTap: () => context.navigateToSeeAll(area, isHighlighted),
         ),
-        const SizedBox(height: AppDimens.ml),
+        const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
       ],
     );
   }

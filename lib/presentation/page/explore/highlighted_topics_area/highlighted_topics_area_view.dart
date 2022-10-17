@@ -56,7 +56,7 @@ class HighlightedTopicsAreaView extends HookWidget {
             itemHeight: height,
             onViewAllTap: () => _navigateToSeeAll(context),
           ),
-          const SizedBox(height: AppDimens.ml),
+          const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
         ],
       ),
     );

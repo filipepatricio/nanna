@@ -99,10 +99,10 @@ class AppDimens {
   static const briefEntryCardStackHeight = 350.0;
 
   /// 0.4
-  static const exploreTopicCarouselSmallCoverWidthFactor = 0.4;
+  static const exploreTopicCarouselSmallCoverWidthFactor = 0.43;
 
   /// 1.65
-  static const exploreTopicCarouselSmallCoverAspectRatio = 1.65;
+  static const exploreTopicCarouselSmallCoverAspectRatio = 2;
 
   /// 0.72
   static const exploreTopicCellSizeFactor = 0.72;
@@ -151,11 +151,11 @@ class AppDimens {
   /// 65% Full screen height
   static double photoCaptionImageContainerHeight(BuildContext context) => MediaQuery.of(context).size.height * .65;
 
-  /// 170
-  static const explorePillAreaHeight = 170.0;
-
-  /// 50
+  /// 32
   static const explorePillHeight = 32.0;
+
+  /// 32
+  static const explorePillRadius = 70.0;
 
   /// 32
   static const bookmarkIconSize = 32.0;
@@ -167,7 +167,7 @@ class AppDimens {
   static const audioBannerHeight = 80.0;
 
   /// 42
-  static const searchBarHeight = 42.0;
+  static const searchBarHeight = 36.0;
 
   static double textHeight({required TextStyle style, required int maxLines}) =>
       (style.fontSize! * 1.05 * (style.height ?? 1)) * maxLines;
@@ -196,4 +196,8 @@ class AppDimens {
   static const customCheckboxIconSize = 17.0;
 
   static const customCheckboxRadius = 4.0;
+
+  static const pageHorizontalMargin = AppDimens.m;
+
+  static const explorePageSectionBottomPadding = AppDimens.s;
 }

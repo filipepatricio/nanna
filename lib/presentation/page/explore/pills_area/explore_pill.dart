@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 class ExplorePill extends StatelessWidget {
   const ExplorePill({
     required this.title,
-    required this.icon,
     required this.index,
     required this.onTap,
     required this.color,
@@ -13,7 +12,6 @@ class ExplorePill extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
-  final String? icon;
   final int index;
   final VoidCallback onTap;
   final Color? color;
@@ -26,7 +24,7 @@ class ExplorePill extends StatelessWidget {
         height: AppDimens.explorePillHeight,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(70),
+          borderRadius: BorderRadius.circular(AppDimens.explorePillRadius),
         ),
         padding: const EdgeInsets.symmetric(
           vertical: AppDimens.s,

@@ -17,10 +17,10 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: LayoutBuilder(
-        builder: (context, constraints) => CoverOpacity.article(
-          article: article,
-          child: Column(
+      child: Container(
+        color: AppColors.charcoal20,
+        child: LayoutBuilder(
+          builder: (context, constraints) => Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -28,7 +28,6 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
                 article: article,
                 coverColor: coverColor,
                 dimension: constraints.maxWidth,
-                visited: article.visited,
               ),
               _ArticleCoverContent(article: article),
             ],
@@ -69,7 +68,6 @@ class _ArticleCoverExploreList extends HookWidget {
               article: article,
               coverColor: coverColor,
               dimension: coverSize,
-              visited: article.visited,
             ),
             const SizedBox(width: AppDimens.m),
             Expanded(
@@ -136,26 +134,28 @@ class _ArticleCoverContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeToRead = article.timeToRead;
-    const titleMaxLines = 2;
+    const titleMaxLines = 4;
     const titleStyle = AppTypography.metadata1ExtraBold;
     final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: AppDimens.s),
-        ArticleDottedInfo(
-          article: article,
-          isLight: false,
-          showLogo: false,
-          showDate: false,
-          showReadTime: false,
-          color: AppColors.textGrey,
-          textStyle: AppTypography.caption1Medium.copyWith(height: 1.1),
+        const SizedBox(height: AppDimens.m),
+        SizedBox(
+          height: AppDimens.m,
+          child: ArticleDottedInfo(
+            article: article,
+            isLight: false,
+            showLogo: true,
+            showDate: false,
+            showReadTime: false,
+            color: AppColors.textGrey,
+            textStyle: AppTypography.caption1Medium.copyWith(height: 1.1),
+          ),
         ),
-        const SizedBox(height: AppDimens.s),
+        const SizedBox(height: AppDimens.m),
         SizedBox(
           height: titleHeight,
           child: InformedMarkdownBody(
@@ -165,18 +165,14 @@ class _ArticleCoverContent extends StatelessWidget {
             baseTextStyle: titleStyle,
           ),
         ),
-        const SizedBox(height: AppDimens.s),
+        const SizedBox(height: AppDimens.m),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (timeToRead != null)
-              Text(
-                LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
-                style: AppTypography.caption1Medium.copyWith(
-                  height: 1.2,
-                  color: AppColors.textGrey,
-                ),
-              ),
+            _TimeToRead(
+              visited: article.visited,
+              timeToRead: article.timeToRead,
+            ),
             const Spacer(),
             Visibility(
               visible: article.locked,
@@ -189,5 +185,45 @@ class _ArticleCoverContent extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _TimeToRead extends StatelessWidget {
+  const _TimeToRead({
+    required this.visited,
+    required this.timeToRead,
+    Key? key,
+  }) : super(key: key);
+
+  final bool visited;
+  final int? timeToRead;
+
+  @override
+  Widget build(BuildContext context) {
+    return visited
+        ? Row(
+            children: [
+              const VisitedCheck(),
+              const SizedBox(width: AppDimens.s),
+              Text(
+                LocaleKeys.article_read.tr(),
+                style: AppTypography.caption1Medium.copyWith(
+                  height: 1.2,
+                  color: AppColors.textGrey,
+                ),
+              )
+            ],
+          )
+        : Container(
+            child: timeToRead == null
+                ? const SizedBox()
+                : Text(
+                    LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
+                    style: AppTypography.caption1Medium.copyWith(
+                      height: 1.2,
+                      color: AppColors.textGrey,
+                    ),
+                  ),
+          );
   }
 }

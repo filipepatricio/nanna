@@ -50,7 +50,7 @@ class TopicsAreaView extends HookWidget {
             onTap: () => context.navigateToTopic(topic),
           ),
         ),
-        const SizedBox(height: AppDimens.ml),
+        const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
       ],
     );
   }

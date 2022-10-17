@@ -5,7 +5,6 @@ class _ArticleSquareCover extends StatelessWidget {
     required this.article,
     required this.coverColor,
     required this.dimension,
-    this.visited = false,
     this.borderRadius,
     Key? key,
   }) : super(key: key);
@@ -14,7 +13,6 @@ class _ArticleSquareCover extends StatelessWidget {
   final Color? coverColor;
   final double dimension;
   final double? borderRadius;
-  final bool visited;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +22,6 @@ class _ArticleSquareCover extends StatelessWidget {
         children: [
           Positioned.fill(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(borderRadius ?? AppDimens.s),
               child: article.hasImage
                   ? ArticleImage(
                       image: article.image!,
@@ -35,17 +32,11 @@ class _ArticleSquareCover extends StatelessWidget {
                     ),
             ),
           ),
-          if (article.hasAudioVersion && !visited)
+          if (article.hasAudioVersion)
             Positioned(
               bottom: AppDimens.s,
               right: AppDimens.s,
               child: AudioIconButton(article: article),
-            ),
-          if (visited)
-            const Positioned(
-              bottom: AppDimens.s,
-              right: AppDimens.s,
-              child: VisitedCheck(),
             ),
         ],
       ),

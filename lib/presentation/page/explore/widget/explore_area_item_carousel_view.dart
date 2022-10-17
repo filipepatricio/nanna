@@ -50,7 +50,7 @@ class ExploreAreaItemCarouselView<T> extends HookWidget {
           },
           itemsCount: items.length,
           child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             itemBuilder: (context, index) {
               return _Cell(
                 itemBuilder: itemBuilder,
@@ -63,7 +63,7 @@ class ExploreAreaItemCarouselView<T> extends HookWidget {
             },
             separatorBuilder: (context, index) {
               return const SizedBox(
-                width: AppDimens.m,
+                width: AppDimens.s + AppDimens.xxs,
               );
             },
             itemCount: items.length,

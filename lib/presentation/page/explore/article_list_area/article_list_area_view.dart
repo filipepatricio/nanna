@@ -51,7 +51,7 @@ class ArticleListAreaView extends StatelessWidget {
                 .toList(),
           ),
         ),
-        const SizedBox(height: AppDimens.ml),
+        const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
       ],
     );
   }

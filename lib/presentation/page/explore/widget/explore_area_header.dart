@@ -23,7 +23,7 @@ class ExploreAreaHeader extends StatelessWidget {
     final optDescription = description;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
