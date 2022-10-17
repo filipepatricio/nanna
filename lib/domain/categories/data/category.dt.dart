@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,6 +12,7 @@ class Category with _$Category {
     required String id,
     required String slug,
     required String icon,
+    required Color? color,
     required List<CategoryItem> items,
   }) = _Category;
 }

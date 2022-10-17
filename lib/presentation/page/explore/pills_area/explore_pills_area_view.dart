@@ -37,7 +37,7 @@ class ExplorePillsAreaView extends StatelessWidget {
       child: MasonryGridView.count(
         padding: const EdgeInsets.only(
           left: AppDimens.l,
-          right: AppDimens.l,
+          right: AppDimens.s,
           top: _pillsTopPadding,
           bottom: _pillsBottomPadding,
         ),
@@ -51,6 +51,7 @@ class ExplorePillsAreaView extends StatelessWidget {
           return ExplorePill(
             title: category.name,
             icon: category.icon,
+            color: category.color,
             index: index,
             onTap: () => AutoRouter.of(context).push(
               CategoryPageRoute(
