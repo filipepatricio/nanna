@@ -15,5 +15,5 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
-    <color name="splashScreenBackgroundColor">#FCFAF8</color>
+    <color name="splashScreenBackgroundColor">#F8F8F7</color>
 </resources>

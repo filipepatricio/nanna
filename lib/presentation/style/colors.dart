@@ -15,43 +15,45 @@ class AppColors {
   static const Color black04 = Color(0x0A000000);
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreen44 = Color(0x70BBF383);
-  static const Color limeGreenVivid = Color(0xffA2F054);
   static const Color limeGreenDark = Color(0xff6AE476);
-  static const Color charcoal = Color(0xff282B35);
-  static const Color charcoal20 = Color(0x33282B35);
-  static const Color charcoal70 = Color(0xB3282B35);
+  static const Color charcoal = Color(0xff252525);
+  static const Color charcoal20 = Color(0x33252525);
+  static const Color charcoal70 = Color(0xB3252525);
   static const Color linen = Color(0xffFCFAF8);
-  static const Color darkLinen = Color(0xffF4F1EE);
+  static const Color darkLinen = Color(0xffF8F8F7);
   static const Color transparent = Color(0x00000000);
   static const Color transparentWhite = Color(0x00FFFFFF);
   static const Color blue = Color(0xff4579FF);
   static const Color grey = Color(0xffe7e7e7);
-  static const Color lightGrey = Color(0xffe5e5ea);
+  static const Color lightGrey = Color(0xffEEEEEC);
   static const Color neutralGrey = Color(0xff989898);
   static const Color rose = Color(0xffF3E5F4);
   static const Color pastelGreen = Color(0xffE4F1E2);
-  static const Color pastelPurple = Color(0xffDFBFFF);
   static const Color darkGrey = Color(0xff6B7280);
   static const Color darkerGrey = Color(0xff5F5F5F);
-  static const Color carrotRed = Color(0xffFB6F43);
+  static const Color carrotRed = Color(0xffF15147);
+  static const Color successGreen = Color(0xff439E5C);
   static const Color peach = Color(0xffF2E8E7);
   static const Color blueSelected = Color(0xff0099FF);
-  static const Color secondaryNeutralGrey = Color(0xFFE5E5EA);
 
   static const Color background = linen;
   static const Color textPrimary = charcoal;
   static const Color textGrey = neutralGrey;
 
+  static const Color snackBarPositive = successGreen;
+  static const Color snackBarNegative = carrotRed;
+  static const Color snackBarInformative = white;
+
   static const Color shadowLinenColor = Color(0x336B6346);
   static const Color shadowColor = Color(0x1f000000);
 
-  static const Color settingsHeader = Color(0x44282B35);
+  static const Color settingsHeader = Color(0x44252525);
   static const Color settingsIcon = Color(0xff898A8D);
 
-  static const Color socialNetworksIcon = Color(0xff282B35);
+  static const Color socialNetworksIcon = charcoal;
 
   static const Color dividerGrey = Color(0xffD1D5DB);
-  static const Color dividerGreyLight = secondaryNeutralGrey;
+  static const Color dividerGreyLight = lightGrey;
 
   static const String shareBackgroundTopColor = "#FFFFFF";
   static const String shareBackgroundBottomColor = "#FFFFFF";

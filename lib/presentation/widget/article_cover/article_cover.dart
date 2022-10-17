@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_i
 import 'package:better_informed_mobile/presentation/page/media/widgets/cover_opacity.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/shadows.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_editors_note.dart';
@@ -34,11 +35,6 @@ part 'article_cover_topic_without_image.dart';
 part 'article_square_cover.dart';
 
 const _coverSizeToScreenWidthFactor = 0.27;
-
-const articleCoverShadows = [
-  BoxShadow(offset: Offset(0, 10), blurRadius: 80, spreadRadius: -4, color: AppColors.shadowLinenColor),
-  BoxShadow(offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0, color: AppColors.shadowLinenColor),
-];
 
 enum ArticleCoverType {
   exploreCarousel,
