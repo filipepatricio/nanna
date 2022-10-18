@@ -1,12 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingPublishersSlide extends StatelessWidget {
   const OnboardingPublishersSlide({Key? key}) : super(key: key);
@@ -31,13 +30,10 @@ class OnboardingPublishersSlide extends StatelessWidget {
                 bottom: AppDimens.zero,
                 left: AppDimens.zero,
                 right: AppDimens.zero,
-                child: Align(
+                child: Image.asset(
+                  AppRasterGraphics.onboardingPublishers,
                   alignment: Alignment.topCenter,
-                  child: SvgPicture.asset(
-                    AppVectorGraphics.publishersLogo,
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
-                  ),
+                  fit: BoxFit.cover,
                 ),
               ),
             ],
