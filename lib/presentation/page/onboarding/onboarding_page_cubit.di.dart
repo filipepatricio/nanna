@@ -29,6 +29,7 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
     this._getCurrentOnboardingCategoriesUseCase,
     this._updatePreferredCategoriesUseCase,
   ) : super(OnboardingPageState.idle());
+
   final RequestNotificationPermissionUseCase _requestNotificationPermissionUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final SetOnboardingSeenUseCase _setOnboardingSeenUseCase;
