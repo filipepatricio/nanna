@@ -26,7 +26,7 @@ class _PaywallMultipleOptions extends HookWidget {
       children: [
         InformedMarkdownBody(
           markdown: LocaleKeys.subscription_title_standard.tr(),
-          baseTextStyle: AppTypography.h1MediumLora,
+          baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.l),
         ...plans

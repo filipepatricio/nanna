@@ -89,7 +89,7 @@ class TopicHeader extends HookWidget {
               InformedMarkdownBody(
                 markdown: topic.introduction,
                 maxLines: 5,
-                baseTextStyle: AppTypography.b1MediumLora.copyWith(
+                baseTextStyle: AppTypography.b1Medium.copyWith(
                   color: AppColors.white,
                 ),
               ),

@@ -155,17 +155,15 @@ class _QuoteText extends StatelessWidget {
     if (quoteVariantData.withTextMark) {
       return InformedMarkdownBody(
         markdown: '‘_${quote}_’',
-        baseTextStyle: AppTypography.h0SemiBold.copyWith(
+        baseTextStyle: AppTypography.articleQuote.copyWith(
           color: quoteVariantData.foregroundColor,
-          fontFamily: fontFamilyLora,
         ),
       );
     } else {
       return Text(
         '‘$quote’',
-        style: AppTypography.h0SemiBold.copyWith(
+        style: AppTypography.articleQuote.copyWith(
           color: quoteVariantData.foregroundColor,
-          fontFamily: fontFamilyLora,
         ),
       );
     }

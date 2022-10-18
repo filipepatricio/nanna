@@ -52,7 +52,7 @@ class _ArticleCoverTopicWithoutImage extends StatelessWidget {
                     const SizedBox(height: AppDimens.m),
                     InformedMarkdownBody(
                       markdown: article.title,
-                      baseTextStyle: AppTypography.h1SemiBold,
+                      baseTextStyle: AppTypography.articleTitle,
                       maxLines: 4,
                     ),
                   ],

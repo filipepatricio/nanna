@@ -27,12 +27,12 @@ class SubscriptionPlansView extends HookWidget {
               if (trialViewMode) ...[
                 InformedMarkdownBody(
                   markdown: LocaleKeys.subscription_title_trial.tr(),
-                  baseTextStyle: AppTypography.h1MediumLora,
+                  baseTextStyle: AppTypography.h1Medium,
                 ),
               ] else ...[
                 InformedMarkdownBody(
                   markdown: LocaleKeys.subscription_title_standard.tr(),
-                  baseTextStyle: AppTypography.h1MediumLora,
+                  baseTextStyle: AppTypography.h1Medium,
                 ),
                 const SizedBox(height: AppDimens.l),
                 const SubscriptionBenefits(),

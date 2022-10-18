@@ -24,7 +24,7 @@ class ArticleEditorsNote extends StatelessWidget {
         children: [
           InformedMarkdownBody(
             markdown: note,
-            baseTextStyle: AppTypography.b2RegularLora,
+            baseTextStyle: AppTypography.b2Regular,
             maxLines: 7,
           ),
         ],

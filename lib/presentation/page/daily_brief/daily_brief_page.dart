@@ -504,7 +504,7 @@ class _BriefSection extends StatelessWidget {
           const SizedBox(height: AppDimens.m),
           InformedMarkdownBody(
             markdown: title,
-            baseTextStyle: AppTypography.h1MediumLora,
+            baseTextStyle: AppTypography.h1Medium,
           ),
           const SizedBox(height: AppDimens.m),
           ...children,

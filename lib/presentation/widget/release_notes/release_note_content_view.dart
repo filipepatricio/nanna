@@ -55,7 +55,7 @@ class ReleaseNoteContentView extends StatelessWidget {
               const Spacer(),
               Text(
                 DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
-                style: AppTypography.b2MediumLora.copyWith(color: AppColors.textGrey),
+                style: AppTypography.b2Medium.copyWith(color: AppColors.textGrey),
               ),
               if (showCloseButton) ...[
                 const SizedBox(width: AppDimens.m),
