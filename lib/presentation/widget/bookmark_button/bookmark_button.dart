@@ -84,7 +84,7 @@ class BookmarkButton extends HookWidget {
           bookmarkAdded: (_) {
             snackbarController?.showMessage(
               SnackbarMessage.simple(
-                message: tr(LocaleKeys.bookmark_bookmarkSuccess),
+                message: tr(LocaleKeys.bookmark_addBookmarkSuccess),
                 type: SnackbarMessageType.positive,
               ),
             );
@@ -92,7 +92,7 @@ class BookmarkButton extends HookWidget {
           bookmarkRemoved: (value) {
             snackbarController?.showMessage(
               SnackbarMessage.simple(
-                message: tr(LocaleKeys.bookmark_unbookmarkSuccess),
+                message: tr(LocaleKeys.bookmark_removeBookmarkSuccess),
                 type: SnackbarMessageType.positive,
                 action: SnackbarAction(
                   label: tr(LocaleKeys.common_undo),
