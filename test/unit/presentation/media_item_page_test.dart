@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/data/audio/audio_repository_mock.di.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -334,9 +333,6 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
     relatedContentItems: TestData.categoryItemList,
     enablePageSwipe: true,
   );
-
-  @override
-  Article get article => TestData.fullArticle;
 
   @override
   String? get briefId => TestData.currentBrief.id;

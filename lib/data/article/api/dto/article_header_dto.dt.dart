@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'article_header_dto.dt.g.dart';

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
@@ -75,7 +75,7 @@ class PremiumArticleView extends HookWidget {
         articleOutputModeNotifier.addListener(listener);
         return () => articleOutputModeNotifier.removeListener(listener);
       },
-      [horizontalPageController, articleOutputModeNotifier],
+      [horizontalPageController, articleOutputModeNotifier, article],
     );
 
     useCubitListener<PremiumArticleViewCubit, PremiumArticleViewState>(

@@ -41,6 +41,9 @@ type Article {
   """Credit note for this article"""
   credits: String
 
+  """Expert that recommended this article"""
+  expert: Expert
+
   """Denotes whether this article has an audio version available"""
   hasAudioVersion: Boolean
 
@@ -61,6 +64,9 @@ type Article {
 
   """Preview text for article content"""
   previewText: Text!
+
+  """The article's primary category"""
+  primaryCategory: Category!
 
   """The articles's reading/listening progress info"""
   progress: ArticleProgress!
@@ -290,7 +296,7 @@ type Brief {
   entries: [BriefEntry] @deprecated(reason: "Use sections instead")
 
   """A status message to be shown when the reader finished the brief"""
-  goodbye: StatusMessage!
+  goodbye: StatusMessage! @deprecated(reason: "Use relax field instead")
 
   """A status message to be shown at the beginning of the brief"""
   greeting: StatusMessage!
@@ -374,6 +380,9 @@ type CallToActionLink {
 
 """A category"""
 type Category {
+  """The category's color"""
+  color: HexColor
+
   """The category's icon"""
   icon: SVG
 
@@ -694,6 +703,9 @@ type RootMutationType {
   """Mark topic as visited by user"""
   markTopicVisited(slug: String!): MarkTopicVisitedResponse
 
+  """Mark category with given id as preferred"""
+  preferCategory(categoryId: UUID!): UpdatePreferredCategoriesResponse
+
   """Exchange the refresh token for a new access token"""
   refresh(refreshToken: String!): RefreshPayload
 
@@ -720,6 +732,9 @@ type RootMutationType {
 
   """Login via OAuth provider provided identity token"""
   signIn(idToken: String, information: UserMeta, provider: String!, token: String): SignInPayload
+
+  """Mark category with given id as non-preferred"""
+  unpreferCategory(categoryId: UUID!): UpdatePreferredCategoriesResponse
 
   """Update position in seconds of article audio for the current user"""
   updateArticleAudioPosition(
@@ -928,6 +943,9 @@ type TextBlock {
 
 """A topic is a grouping of related articles"""
 type Topic {
+  """All categories of topic"""
+  categories: [Category]
+
   """The cover image"""
   coverImage: CloudinaryImage!
 
@@ -941,7 +959,7 @@ type Topic {
   heroImage: CloudinaryImage!
 
   """Outstanding article publishers in this topic"""
-  highlightedPublishers: [Publisher]
+  highlightedPublishers: [Publisher] @deprecated(reason: "Use publisherInformation field instead")
 
   """The topic's database ID"""
   id: UUID!
@@ -960,6 +978,12 @@ type Topic {
 
   """The creator's note to the topic. Only applicable for editor"""
   ownersNote: String
+
+  """Primary category of topic"""
+  primaryCategory: Category!
+
+  """Information about publishers of topic articles"""
+  publisherInformation: TopicPublisherInformation!
 
   """The reading list relevant for this topic"""
   readingList: ReadingList!
@@ -1021,6 +1045,15 @@ union TopicMediaItem = Article
 
 """A topic owner is the one responsible for the topic"""
 union TopicOwner = Editor | EditorialTeam | Expert
+
+"""Information about publishers of topic articles"""
+type TopicPublisherInformation {
+  """Partner publishers with icons"""
+  highlightedPublishers: [Publisher]
+
+  """Text to display near partner publisher icons"""
+  remainingPublishersIndicator: String
+}
 
 type TopicsExploreArea implements ExploreArea {
   """The area's description"""
