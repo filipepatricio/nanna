@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_cubit.di.dart';
@@ -29,14 +29,12 @@ part 'widgets/paywall_loading_view.dart';
 class ArticlePaywallView extends HookWidget {
   const ArticlePaywallView({
     required this.article,
-    required this.onPurchaseSuccess,
     required this.snackbarController,
     required this.child,
     super.key,
   });
 
   final Article article;
-  final VoidCallback onPurchaseSuccess;
   final SnackbarController snackbarController;
   final Widget child;
 
@@ -47,7 +45,6 @@ class ArticlePaywallView extends HookWidget {
 
     useCubitListener<ArticlePaywallCubit, ArticlePaywallState>(cubit, (cubit, state, context) {
       state.mapOrNull(
-        purchaseSuccess: (_) => onPurchaseSuccess(),
         generalError: (_) {
           snackbarController.showMessage(
             SnackbarMessage.simple(
@@ -63,7 +60,7 @@ class ArticlePaywallView extends HookWidget {
       () {
         cubit.initialize(article);
       },
-      [cubit, article],
+      [cubit, article.metadata.availableInSubscription],
     );
 
     return Column(
