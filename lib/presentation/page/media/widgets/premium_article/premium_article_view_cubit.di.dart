@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
@@ -16,8 +16,6 @@ import 'package:better_informed_mobile/domain/categories/data/category_item.dt.d
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/precache_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
@@ -40,8 +38,6 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getRelatedContentUseCase,
     this._getArticleUseCase,
     this._getFreeArticlesLeftWarningStreamUseCase,
-    this._getActiveSubscriptionUseCase,
-    this._shouldUsePaidSubscriptionsUseCase,
     this._precacheSubscriptionPlansUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
@@ -54,8 +50,6 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetRelatedContentUseCase _getRelatedContentUseCase;
   final GetArticleUseCase _getArticleUseCase;
   final GetFreeArticlesLeftWarningStreamUseCase _getFreeArticlesLeftWarningStreamUseCase;
-  final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
-  final ShouldUsePaidSubscriptionsUseCase _shouldUsePaidSubscriptionsUseCase;
   final PrecacheSubscriptionPlansUseCase _precacheSubscriptionPlansUseCase;
 
   final moreFromBriefItems = <BriefEntryItem>[];
@@ -63,7 +57,6 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final relatedContentItems = <CategoryItem>[];
   final featuredCategories = <Category>[];
 
-  StreamSubscription? _activeSubscriptionStreamSubscription;
   StreamSubscription? _freeArticlesLeftWarningSubscription;
   String? _lastFreeArticlesLeftWarning;
 
@@ -86,15 +79,12 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     return '';
   }
 
-  Article get article => _currentFullArticle;
-
   var scrollData = MediaItemScrollData.initial();
 
   @override
   Future<void> close() async {
     await _readingProgressTrackingScheduler?.stop();
     await _freeArticlesLeftWarningSubscription?.cancel();
-    await _activeSubscriptionStreamSubscription?.cancel();
     return super.close();
   }
 
@@ -160,17 +150,12 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
         }
       },
     );
-
-    if (await _shouldUsePaidSubscriptionsUseCase()) {
-      _activeSubscriptionStreamSubscription = _getActiveSubscriptionUseCase.stream.listen((_) => refreshArticle());
-      await _getActiveSubscriptionUseCase();
-    }
   }
 
   Future<void> refreshArticle() async {
     emit(const PremiumArticleViewState.initial());
 
-    _currentFullArticle = await _getArticleUseCase(article.metadata);
+    _currentFullArticle = await _getArticleUseCase(_currentFullArticle.metadata);
 
     emit(
       PremiumArticleViewState.idle(

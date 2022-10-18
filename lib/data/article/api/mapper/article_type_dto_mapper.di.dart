@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

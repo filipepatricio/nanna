@@ -1,17 +1,19 @@
-import 'package:better_informed_mobile/domain/article/data/article_content.dart';
+import 'package:better_informed_mobile/domain/article/data/article_content.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Article {
-  Article({
-    required this.metadata,
-    required this.content,
-    this.audioFile,
-  });
-  final MediaItemArticle metadata;
-  final ArticleContent content;
-  final AudioFile? audioFile;
+part 'article.dt.freezed.dart';
+
+@freezed
+class Article with _$Article {
+  factory Article({
+    required MediaItemArticle metadata,
+    required ArticleContent content,
+    AudioFile? audioFile,
+  }) = _Article;
+
+  Article._();
 
   bool get hasImage => metadata.hasImage;
 }

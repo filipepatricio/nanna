@@ -79,9 +79,9 @@ class MediaItemPage extends HookWidget {
                   topicSlug: topicSlug,
                 ),
                 error: (state) => _ErrorContent(article: state.article),
-                emptyError: (_) => _ErrorContent(
+                emptyError: (state) => _ErrorContent(
                   onTryAgain: () {
-                    cubit.initialize(article, slug, topicId, topicSlug, briefId);
+                    cubit.initialize(state.article, slug, topicId, topicSlug, briefId);
                   },
                 ),
                 geoblocked: (_) => const _ErrorGeoblocked(),
