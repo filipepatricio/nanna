@@ -19,6 +19,7 @@ import 'package:better_informed_mobile/presentation/widget/cover_label/cover_lab
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/locker.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/visited_check.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +84,7 @@ class ArticleCover extends StatelessWidget {
 
   factory ArticleCover.exploreList({
     required MediaItemArticle article,
+    required SnackbarController snackbarController,
     Color? coverColor,
     VoidCallback? onTap,
   }) =>
@@ -91,6 +93,7 @@ class ArticleCover extends StatelessWidget {
         article: article,
         coverColor: coverColor,
         onTap: onTap,
+        snackbarController: snackbarController,
       );
 
   factory ArticleCover.dailyBriefLarge({
@@ -225,6 +228,7 @@ class ArticleCover extends StatelessWidget {
           onTap: onTap,
           article: article,
           coverColor: coverColor,
+          snackbarController: snackbarController!,
         );
       case ArticleCoverType.dailyBriefLarge:
         return _ArticleCoverDailyBriefLarge(

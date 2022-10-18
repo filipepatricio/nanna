@@ -48,12 +48,14 @@ class _ArticleCoverExploreList extends HookWidget {
     required this.onTap,
     required this.article,
     required this.coverColor,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final VoidCallback? onTap;
   final MediaItemArticle article;
   final Color? coverColor;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -62,68 +64,95 @@ class _ArticleCoverExploreList extends HookWidget {
       [MediaQuery.of(context).size],
     );
 
-    return CoverOpacity.article(
-      article: article,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: Row(
-          children: [
-            _ArticleSquareCover(
-              article: article,
-              coverColor: coverColor,
-              dimension: coverSize,
-            ),
-            const SizedBox(width: AppDimens.m),
-            Expanded(
-              child: SizedBox(
-                height: coverSize,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Row(
-                      children: [
-                        PublisherLogo.dark(
-                          publisher: article.publisher,
-                          dimension: AppDimens.ml,
-                        ),
-                        Expanded(
-                          child: Text(
-                            article.publisher.name,
-                            maxLines: 1,
-                            style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
-                            overflow: TextOverflow.ellipsis,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: coverSize,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        children: [
+                          PublisherLogo.dark(
+                            publisher: article.publisher,
+                            dimension: AppDimens.ml,
                           ),
-                        ),
-                        if (article.locked) const Locker.dark(),
-                      ],
-                    ),
-                    const Spacer(),
-                    Text(
-                      article.strippedTitle,
-                      maxLines: 2,
-                      style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const Spacer(),
-                    Flexible(
-                      child: ArticleDottedInfo(
-                        article: article,
-                        isLight: false,
-                        showLogo: false,
-                        showPublisher: false,
-                        fullDate: true,
-                        textStyle: AppTypography.caption1Medium,
-                        color: AppColors.textGrey,
+                          Expanded(
+                            child: Text(
+                              article.publisher.name,
+                              maxLines: 1,
+                              style: AppTypography.caption1Medium.copyWith(color: AppColors.textGrey),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          if (article.locked) const Locker.dark(),
+                        ],
                       ),
-                    ),
-                  ],
+                      const Spacer(),
+                      Text(
+                        article.strippedTitle,
+                        maxLines: 3,
+                        style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+              const SizedBox(width: AppDimens.m),
+              _ArticleAspectRatioCover(
+                article: article,
+                coverColor: coverColor,
+                aspectRatio: 6 / 5,
+                width: coverSize,
+              ),
+            ],
+          ),
+          const SizedBox(height: AppDimens.sl),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: ArticleDottedInfo(
+                  article: article,
+                  isLight: false,
+                  showLogo: false,
+                  showPublisher: false,
+                  showDate: false,
+                  textStyle: AppTypography.caption1Medium,
+                  color: AppColors.textGrey,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ShareArticleButton(
+                    article: article,
+                    snackbarController: snackbarController,
+                    backgroundColor: AppColors.transparent,
+                  ),
+                  const SizedBox(width: AppDimens.s),
+                  BookmarkButton.article(article: article),
+                  if (article.hasAudioVersion) ...[
+                    const SizedBox(width: AppDimens.s),
+                    AudioIconButton(
+                      article: article,
+                      height: AppDimens.xl,
+                    ),
+                  ]
+                ],
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -186,7 +215,6 @@ class _ArticleCoverContent extends StatelessWidget {
             else
               BookmarkButton.article(
                 article: article,
-                color: AppColors.charcoal,
                 snackbarController: snackbarController,
               ),
           ],

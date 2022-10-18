@@ -27,7 +27,7 @@ const _animationDuration = 100;
 class BookmarkButton extends HookWidget {
   BookmarkButton.article({
     required MediaItemArticle article,
-    required Color color,
+    Color color = AppColors.charcoal,
     String? topicId,
     String? briefId,
     SnackbarController? snackbarController,

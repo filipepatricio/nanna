@@ -270,7 +270,10 @@ class _Area extends HookWidget {
             isHighlighted: area.isHighlighted,
             snackbarController: snackbarController,
           ),
-          articlesList: (area) => ArticleListAreaView(area: area),
+          articlesList: (area) => ArticleListAreaView(
+            area: area,
+            snackbarController: snackbarController,
+          ),
           topics: (area) => TopicsAreaView(
             area: area,
             isHighlighted: area.isHighlighted,

@@ -56,7 +56,6 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                         ],
                         BookmarkButton.article(
                           article: article,
-                          color: AppColors.textPrimary,
                           iconSize: AppDimens.l,
                         )
                       ],

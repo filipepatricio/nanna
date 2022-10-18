@@ -79,7 +79,7 @@ class ArticleLabelsEditorsNote extends StatelessWidget {
             ],
             ArticleLabelsSection(
               article: article,
-              bookmarkButtonColor: AppColors.textPrimary,
+              bookmarkButtonColor: AppColors.charcoal,
               audioFloatingControlButtonMode: AudioFloatingControlButtonMode.colored,
               lockerMode: LockerMode.color,
             ),
