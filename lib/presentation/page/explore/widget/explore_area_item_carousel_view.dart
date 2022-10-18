@@ -109,7 +109,6 @@ class _Cell<T> extends StatelessWidget {
         child: SizedBox.square(
           dimension: itemWidth,
           child: ViewAllButton(
-            title: item.title,
             onTap: onViewAllTap,
           ),
         ),

@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 
 class ViewAllButton extends StatelessWidget {
   const ViewAllButton({
-    required this.title,
     this.onTap,
     Key? key,
   }) : super(key: key);
 
-  final String title;
   final VoidCallback? onTap;
 
   @override
@@ -20,12 +18,12 @@ class ViewAllButton extends StatelessWidget {
       onTap: onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.darkLinen,
-          borderRadius: BorderRadius.circular(AppDimens.s),
+          color: AppColors.lightGrey,
+          borderRadius: BorderRadius.circular(AppDimens.articleSmallImageCoverBorderRadius),
         ),
         child: Center(
           child: Text(
-            LocaleKeys.explore_viewAll.tr(args: [title]),
+            LocaleKeys.explore_viewAll.tr(),
             style: AppTypography.b3Medium.copyWith(color: AppColors.darkerGrey),
             textAlign: TextAlign.center,
           ),

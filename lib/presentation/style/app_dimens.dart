@@ -139,6 +139,9 @@ class AppDimens {
   /// 322
   static const articleSmallImageCoverHeight = 322;
 
+  /// 2
+  static const articleSmallImageCoverBorderRadius = 2.0;
+
   /// 148
   static const topicSmallImageCoverWidth = 148.0;
 

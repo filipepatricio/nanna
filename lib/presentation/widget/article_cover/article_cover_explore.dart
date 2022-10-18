@@ -5,12 +5,14 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
     required this.onTap,
     required this.article,
     required this.coverColor,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final VoidCallback? onTap;
   final MediaItemArticle article;
   final Color? coverColor;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,10 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
                 coverColor: coverColor,
                 dimension: constraints.maxWidth,
               ),
-              _ArticleCoverContent(article: article),
+              _ArticleCoverContent(
+                article: article,
+                snackbarController: snackbarController,
+              ),
             ],
           ),
         ),
@@ -127,10 +132,12 @@ class _ArticleCoverExploreList extends HookWidget {
 class _ArticleCoverContent extends StatelessWidget {
   const _ArticleCoverContent({
     required this.article,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -174,13 +181,14 @@ class _ArticleCoverContent extends StatelessWidget {
               timeToRead: article.timeToRead,
             ),
             const Spacer(),
-            Visibility(
-              visible: article.locked,
-              maintainSize: true,
-              maintainAnimation: true,
-              maintainState: true,
-              child: const Locker.dark(),
-            ),
+            if (article.locked)
+              const Locker.dark()
+            else
+              BookmarkButton.article(
+                article: article,
+                color: AppColors.charcoal,
+                snackbarController: snackbarController,
+              ),
           ],
         ),
       ],

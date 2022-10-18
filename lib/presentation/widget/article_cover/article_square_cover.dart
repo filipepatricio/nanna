@@ -22,6 +22,7 @@ class _ArticleSquareCover extends StatelessWidget {
         children: [
           Positioned.fill(
             child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppDimens.articleSmallImageCoverBorderRadius),
               child: article.hasImage
                   ? ArticleImage(
                       image: article.image!,

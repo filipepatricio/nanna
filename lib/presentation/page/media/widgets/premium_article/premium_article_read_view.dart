@@ -138,6 +138,7 @@ class PremiumArticleReadView extends HookWidget {
                     relatedContentItems: data.relatedContentItems,
                     onRelatedContentItemTap: cubit.onRelatedContentItemTap,
                     onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                    snackbarController: snackbarController,
                   ),
                 ),
               ],

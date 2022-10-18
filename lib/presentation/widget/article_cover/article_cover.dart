@@ -19,6 +19,7 @@ import 'package:better_informed_mobile/presentation/widget/cover_label/cover_lab
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/locker.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/visited_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -62,11 +63,13 @@ class ArticleCover extends StatelessWidget {
     this.editorsNote,
     this.backgroundColor,
     this.mediaItemKey,
+    this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   factory ArticleCover.exploreCarousel({
     required MediaItemArticle article,
+    required SnackbarController snackbarController,
     Color? coverColor,
     VoidCallback? onTap,
   }) =>
@@ -75,6 +78,7 @@ class ArticleCover extends StatelessWidget {
         article: article,
         coverColor: coverColor,
         onTap: onTap,
+        snackbarController: snackbarController,
       );
 
   factory ArticleCover.exploreList({
@@ -204,6 +208,7 @@ class ArticleCover extends StatelessWidget {
   final String? editorsNote;
   final Color? backgroundColor;
   final GlobalKey? mediaItemKey;
+  final SnackbarController? snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +218,7 @@ class ArticleCover extends StatelessWidget {
           onTap: onTap,
           article: article,
           coverColor: coverColor,
+          snackbarController: snackbarController!,
         );
       case ArticleCoverType.exploreList:
         return _ArticleCoverExploreList(

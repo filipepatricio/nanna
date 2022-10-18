@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/page/explore/widget/explore_
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -16,6 +17,7 @@ class ArticleAreaView extends HookWidget {
   ArticleAreaView({
     required this.area,
     required this.isHighlighted,
+    required this.snackbarController,
     Key? key,
   })  : _items = ExploreAreaItemGenerator.generate(
           area.articles,
@@ -26,6 +28,7 @@ class ArticleAreaView extends HookWidget {
   final ExploreContentAreaArticles area;
   final bool isHighlighted;
   final List<ExploreAreaItem<MediaItemArticle>> _items;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +55,7 @@ class ArticleAreaView extends HookWidget {
             article: article,
             onTap: () => context.navigateToArticle(article),
             coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+            snackbarController: snackbarController,
           ),
           onViewAllTap: () => context.navigateToSeeAll(area, isHighlighted),
         ),

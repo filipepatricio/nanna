@@ -159,7 +159,7 @@ class _Loader extends StatelessWidget {
     return const SizedBox.square(
       dimension: _loaderSize,
       child: Loader(
-        color: AppColors.limeGreenDark,
+        color: AppColors.charcoal,
         strokeWidth: _loaderStroke,
       ),
     );
@@ -198,8 +198,14 @@ class _IdleButton extends StatelessWidget {
 extension on BookmarkState {
   SvgPicture icon(Color color) {
     return map(
-      bookmarked: (_) => SvgPicture.asset(AppVectorGraphics.bookmarkSelected, color: color),
-      notBookmarked: (_) => SvgPicture.asset(AppVectorGraphics.bookmarkUnselected, color: color),
+      bookmarked: (_) => SvgPicture.asset(
+        AppVectorGraphics.bookmarkFilled,
+        color: color,
+      ),
+      notBookmarked: (_) => SvgPicture.asset(
+        AppVectorGraphics.bookmarkOutline,
+        color: color,
+      ),
     );
   }
 }

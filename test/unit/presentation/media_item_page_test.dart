@@ -139,7 +139,7 @@ void main() {
                 )
                 .pictureProvider as ExactAssetPicture)
             .assetName,
-        AppVectorGraphics.bookmarkUnselected,
+        AppVectorGraphics.bookmarkOutline,
       );
     },
   );
@@ -170,7 +170,7 @@ void main() {
                 )
                 .pictureProvider as ExactAssetPicture)
             .assetName,
-        AppVectorGraphics.bookmarkSelected,
+        AppVectorGraphics.bookmarkFilled,
       );
     },
   );

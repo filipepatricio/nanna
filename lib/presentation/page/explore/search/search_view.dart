@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -22,11 +23,13 @@ class SearchView extends HookWidget {
   const SearchView({
     required this.cubit,
     required this.scrollController,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final SearchViewCubit cubit;
   final ScrollController scrollController;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +56,18 @@ class SearchView extends HookWidget {
         ),
         idle: (state) => ItemsGridView(
           itemCount: state.results.length,
-          itemBuilder: (context, index) => itemBuilder(context, index, state.results),
+          itemBuilder: (context, index) => itemBuilder(context, index, state.results, snackbarController),
           scrollController: scrollController,
         ),
         loadMore: (state) => ItemsGridView(
           itemCount: state.results.length,
-          itemBuilder: (context, index) => itemBuilder(context, index, state.results),
+          itemBuilder: (context, index) => itemBuilder(context, index, state.results, snackbarController),
           scrollController: scrollController,
           withLoader: true,
         ),
         allLoaded: (state) => ItemsGridView(
           itemCount: state.results.length,
-          itemBuilder: (context, index) => itemBuilder(context, index, state.results),
+          itemBuilder: (context, index) => itemBuilder(context, index, state.results, snackbarController),
           scrollController: scrollController,
         ),
         orElse: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
@@ -76,12 +79,14 @@ class SearchView extends HookWidget {
     BuildContext context,
     int index,
     List<SearchResult> items,
+    SnackbarController snackbarController,
   ) =>
       items[index].mapOrNull(
         article: (data) => ArticleCover.exploreCarousel(
           article: data.article,
           onTap: () => context.navigateToArticle(data.article),
           coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+          snackbarController: snackbarController,
         ),
         topic: (data) => TopicCover.exploreSmall(
           topic: data.topicPreview,
