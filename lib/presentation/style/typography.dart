@@ -361,6 +361,22 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle articleBigTitle = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 18,
+    height: 1.33,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle articleSmallTitle = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 16,
+    height: 1.33,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle articleTextRegular = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyIvarText,

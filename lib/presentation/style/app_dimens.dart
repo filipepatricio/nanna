@@ -102,7 +102,7 @@ class AppDimens {
   static const exploreTopicCarouselSmallCoverWidthFactor = 0.43;
 
   /// 1.65
-  static const exploreTopicCarouselSmallCoverAspectRatio = 2;
+  static const exploreTopicCarouselSmallCoverAspectRatio = 2.05;
 
   /// 0.72
   static const exploreTopicCellSizeFactor = 0.72;

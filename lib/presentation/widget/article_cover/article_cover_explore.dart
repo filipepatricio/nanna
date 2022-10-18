@@ -99,7 +99,7 @@ class _ArticleCoverExploreList extends HookWidget {
                       Text(
                         article.strippedTitle,
                         maxLines: 3,
-                        style: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+                        style: AppTypography.articleBigTitle.copyWith(height: 1.25),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const Spacer(),
@@ -180,7 +180,7 @@ class _ArticleCoverContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const titleMaxLines = 4;
-    const titleStyle = AppTypography.metadata1ExtraBold;
+    const titleStyle = AppTypography.articleSmallTitle;
     final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
 
     return Column(
@@ -210,7 +210,7 @@ class _ArticleCoverContent extends StatelessWidget {
             baseTextStyle: titleStyle,
           ),
         ),
-        const SizedBox(height: AppDimens.m),
+        const SizedBox(height: AppDimens.xs),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
