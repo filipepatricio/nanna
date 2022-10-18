@@ -119,20 +119,29 @@ class _ArticleCoverExploreList extends HookWidget {
           const SizedBox(height: AppDimens.sl),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Flexible(
-                child: ArticleDottedInfo(
-                  article: article,
-                  isLight: false,
-                  showLogo: false,
-                  showPublisher: false,
-                  showDate: false,
-                  textStyle: AppTypography.caption1Medium,
-                  color: AppColors.textGrey,
-                ),
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  const CategoryPill(
+                    title: "TO DEFINE",
+                    color: AppColors.blue,
+                  ),
+                  const SizedBox(width: AppDimens.s),
+                  ArticleDottedInfo(
+                    article: article,
+                    isLight: false,
+                    showLogo: false,
+                    showPublisher: false,
+                    showDate: false,
+                    textStyle: AppTypography.caption1Medium,
+                    color: AppColors.textGrey,
+                  ),
+                ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              const Spacer(),
+              Wrap(
                 children: [
                   ShareArticleButton(
                     article: article,
@@ -151,7 +160,7 @@ class _ArticleCoverExploreList extends HookWidget {
                 ],
               ),
             ],
-          )
+          ),
         ],
       ),
     );

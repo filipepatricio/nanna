@@ -2,7 +2,7 @@ import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
+import 'package:better_informed_mobile/presentation/page/explore/pills_area/category_pill.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page.dart';
@@ -64,8 +64,8 @@ void main() {
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
 
-      expect(find.byType(ExplorePill), findsNWidgets(12));
-      await tester.tap(find.byType(ExplorePill).first);
+      expect(find.byType(CategoryPill), findsNWidgets(12));
+      await tester.tap(find.byType(CategoryPill).first);
       await tester.pumpAndSettle();
       expect(find.byType(CategoryPage), findsOneWidget);
     },

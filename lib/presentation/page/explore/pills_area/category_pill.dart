@@ -2,18 +2,16 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
-class ExplorePill extends StatelessWidget {
-  const ExplorePill({
+class CategoryPill extends StatelessWidget {
+  const CategoryPill({
     required this.title,
-    required this.index,
-    required this.onTap,
     required this.color,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   final String title;
-  final int index;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Color? color;
 
   @override

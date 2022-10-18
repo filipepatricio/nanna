@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
+import 'package:better_informed_mobile/presentation/page/explore/pills_area/category_pill.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
@@ -254,7 +254,7 @@ void main() {
       final categoryPillFinder = find
           .descendant(
             of: find.byType(RelatedCategories),
-            matching: find.byType(ExplorePill),
+            matching: find.byType(CategoryPill),
           )
           .first;
 
