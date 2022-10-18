@@ -37,11 +37,11 @@
     "title": "How we use push notifications",
     "headerSlideOne": "High-quality news curation",
     "headerSlideTwo": "Unbiased reporting, cutting through the noise",
-    "headerSlideCategories": "Choose topics that interest you",
+    "headerSlideCategories": "Add your interests",
     "headerSlideThree": "Notifications",
     "descriptionSlideOne": "Our editorial team and topic experts source and read the best articles from global publishers, carefully curating your daily news brief.",
     "descriptionSlideTwo": "A 360 view and array of different perspectives, giving you the fact-based context to understand this complex world.",
-    "descriptionSlideCategories": "This will be used to get personalized results and stories for you",
+    "descriptionSlideCategories": "Choose what matters to you and you’ll get daily reading suggestions tailored to your interests. Change these anytime in Profile → Settings.",
     "categories": {
       "everything": "Show me everything"
     },
