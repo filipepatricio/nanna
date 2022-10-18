@@ -41,9 +41,6 @@ void main() {
     await tester.drag(find.byType(PremiumArticleView), const Offset(0, -2000));
     await tester.pumpAndSettle();
     await tester.matchGoldenFile('media_item_page_(content)');
-    await tester.flingFrom(const Offset(0, 400.0), const Offset(0, -20000), 100);
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile('media_item_page_(bottom)');
   });
 
   visualTest('${MediaItemPage}_(free_articles_warning)', (tester) async {
@@ -202,9 +199,6 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
 
   @override
   Future<void> trackReadingProgress() async {}
-
-  @override
-  void setupScrollData(_, __) {}
 
   @override
   void updateScrollData(_, __) {}

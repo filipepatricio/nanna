@@ -1,20 +1,16 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
-import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_more_from_section.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content_section.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -22,7 +18,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.cubit,
-    required this.articleController,
     required this.mainController,
     required this.snackbarController,
     required this.actionsBarColorModeNotifier,
@@ -30,7 +25,6 @@ class PremiumArticleReadView extends HookWidget {
   }) : super(key: key);
 
   final PremiumArticleViewCubit cubit;
-  final ScrollController articleController;
   final ScrollController mainController;
   final SnackbarController snackbarController;
   final ValueNotifier<ArticleActionsBarColorMode> actionsBarColorModeNotifier;
@@ -38,22 +32,10 @@ class PremiumArticleReadView extends HookWidget {
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articleHeaderKey = GlobalKey();
 
-  void calculateArticleContentOffset() {
-    const globalPageOffset = 0.0;
-    final globalContentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
-    cubit.setupScrollData(globalContentOffset, globalPageOffset);
-  }
-
-  double? _getSize(GlobalKey key) {
+  double _getSize(GlobalKey key) {
     final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     final position = renderBox?.size;
-    return position?.height;
-  }
-
-  double? _calculateGlobalOffset(GlobalKey key) {
-    final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
-    final position = renderBox?.localToGlobal(Offset.zero);
-    return position?.dy;
+    return position?.height ?? 0;
   }
 
   bool _updateScrollPosition(
@@ -62,36 +44,26 @@ class PremiumArticleReadView extends HookWidget {
     ValueNotifier<double> readProgress,
     double fullHeight,
     BuildContext context,
-    Function() onScrollEnd,
   ) {
-    if (articleController.hasClients) {
-      if (scrollInfo is ScrollUpdateNotification) {
-        final articleHeaderHeight = _getSize(_articleHeaderKey) ?? 0;
-        final newProgress = articleController.offset / articleController.position.maxScrollExtent;
+    if (mainController.hasClients) {
+      final articleHeaderHeight = _getSize(_articleHeaderKey);
+      final articleFullHeight = articleHeaderHeight + _getSize(_articleContentKey);
+      final newProgress = mainController.offset / articleFullHeight;
 
+      if (scrollInfo is ScrollUpdateNotification) {
         final primaryDelta = scrollInfo.dragDetails?.primaryDelta ?? 0;
-        if (primaryDelta.abs() > 1 && scrollInfo is! ScrollEndNotification) {
-          showTabBar.value = primaryDelta > 0 && articleController.offset >= articleHeaderHeight / 2;
+        if (primaryDelta.abs() > 1) {
+          showTabBar.value = primaryDelta > 0 && mainController.offset >= articleHeaderHeight / 2.5;
         }
 
         readProgress.value = newProgress.isFinite ? newProgress : 0;
 
-        actionsBarColorModeNotifier.value = articleController.offset >= articleHeaderHeight
+        actionsBarColorModeNotifier.value = mainController.offset >= articleHeaderHeight
             ? ArticleActionsBarColorMode.background
             : ArticleActionsBarColorMode.custom;
-
-        if (articleController.position.pixels == articleController.position.maxScrollExtent &&
-            mainController.position.pixels == mainController.position.minScrollExtent &&
-            scrollInfo.dragDetails?.primaryDelta == null) {
-          onScrollEnd();
-        }
       }
 
       if (scrollInfo is ScrollEndNotification) {
-        var readScrollOffset = articleController.offset - cubit.scrollData.contentOffset;
-        if (readScrollOffset < 0) {
-          readScrollOffset = fullHeight - (cubit.scrollData.contentOffset - articleController.offset);
-        }
         if (scrollInfo.metrics.pixels == mainController.position.maxScrollExtent) {
           showTabBar.value = true;
         }
@@ -99,10 +71,7 @@ class PremiumArticleReadView extends HookWidget {
           showTabBar.value = false;
         }
 
-        cubit.updateScrollData(
-          readScrollOffset,
-          articleController.position.maxScrollExtent,
-        );
+        cubit.updateScrollData(mainController.offset, articleFullHeight);
       }
     }
 
@@ -113,14 +82,6 @@ class PremiumArticleReadView extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive(wantKeepAlive: true);
     final state = useCubitBuilder(cubit);
-    final gestureManager = useMemoized(
-      () => MediaItemPageGestureManager(
-        context: context,
-        articleViewController: articleController,
-        mainViewController: mainController,
-      ),
-      [state.articleWithImage],
-    );
     final readProgress = useMemoized(() => ValueNotifier(0.0));
     final showTabBar = useState(false);
     final maxHeight = useMemoized(
@@ -128,160 +89,75 @@ class PremiumArticleReadView extends HookWidget {
       [MediaQuery.of(context).size.height],
     );
 
-    useEffect(
-      () {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => calculateArticleContentOffset(),
-        );
-      },
-      [],
-    );
-
-    return RawGestureDetector(
-      gestures: Map<Type, GestureRecognizerFactory>.fromEntries(
-        [gestureManager.dragGestureRecognizer, gestureManager.tapGestureRecognizer],
-      ),
-      behavior: HitTestBehavior.opaque,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (scrollInfo) => _updateScrollPosition(
-          scrollInfo,
-          showTabBar,
-          readProgress,
-          maxHeight,
-          context,
-          () {
-            final nexController = gestureManager.getNextController();
-            if (nexController != null) {
-              gestureManager.switchControllers(nexController);
-            }
-          },
-        ),
-        child: state.maybeMap(
-          orElse: Container.new,
-          idle: (data) => Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              CustomScrollView(
-                controller: mainController,
-                physics: const NeverScrollableScrollPhysics(
-                  parent: ClampingScrollPhysics(),
-                ),
-                slivers: [
-                  SliverFillViewport(
-                    delegate: SliverChildListDelegate(
-                      [
-                        _ArticleContentView(
-                          cubit: cubit,
-                          article: data.article,
-                          articleContentKey: _articleContentKey,
-                          articleHeaderKey: _articleHeaderKey,
-                          articleController: articleController,
-                          snackbarController: snackbarController,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        if (data.otherTopicItems.isNotEmpty)
-                          ArticleMoreFromSection(
-                            title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
-                            items: data.otherTopicItems.buildWidgets(context, cubit),
-                          )
-                        else if (data.moreFromBriefItems.isNotEmpty)
-                          ArticleMoreFromSection(
-                            title: LocaleKeys.article_otherBriefs.tr(),
-                            items: data.moreFromBriefItems.buildWidgets(context, cubit),
-                          ),
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: RelatedContentSection(
-                      articleId: data.article.metadata.id,
-                      featuredCategories: data.featuredCategories,
-                      briefId: cubit.briefId,
-                      topicId: cubit.topicId,
-                      relatedContentItems: data.relatedContentItems,
-                      onRelatedContentItemTap: cubit.onRelatedContentItemTap,
-                      onRelatedCategoryTap: cubit.onRelatedCategoryTap,
-                    ),
-                  ),
-                ],
-              ),
-              InformedTabBar.floating(show: showTabBar.value),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: _ArticleProgressBar(
-                  readProgress: readProgress,
-                  color: data.article.metadata.category?.color,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ArticleContentView extends StatefulHookWidget {
-  const _ArticleContentView({
-    required this.cubit,
-    required this.article,
-    required this.articleController,
-    required this.articleContentKey,
-    required this.articleHeaderKey,
-    required this.snackbarController,
-    Key? key,
-  }) : super(key: key);
-
-  final Article article;
-  final PremiumArticleViewCubit cubit;
-  final ScrollController articleController;
-  final Key articleContentKey;
-  final Key articleHeaderKey;
-  final SnackbarController snackbarController;
-
-  @override
-  State<_ArticleContentView> createState() => _ArticleContentViewState();
-}
-
-class _ArticleContentViewState extends State<_ArticleContentView> with AutomaticKeepAliveClientMixin {
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-
-    return Column(
-      children: [
-        Expanded(
-          child: CustomScrollView(
-            primary: false,
-            physics: NeverScrollableScrollPhysics(
-              parent: getPlatformScrollPhysics(),
+    return state.maybeMap(
+      idle: (data) => Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          NotificationListener<ScrollNotification>(
+            onNotification: (scrollInfo) => _updateScrollPosition(
+              scrollInfo,
+              showTabBar,
+              readProgress,
+              maxHeight,
+              context,
             ),
-            controller: widget.articleController,
-            slivers: [
-              SliverToBoxAdapter(
-                child: ArticleContentView(
-                  article: widget.article,
-                  articleHeaderKey: widget.articleHeaderKey,
-                  articleContentKey: widget.articleContentKey,
-                  snackbarController: widget.snackbarController,
+            child: CustomScrollView(
+              controller: mainController,
+              physics: const ClampingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: ArticleContentView(
+                    article: data.article,
+                    articleHeaderKey: _articleHeaderKey,
+                    articleContentKey: _articleContentKey,
+                    snackbarController: snackbarController,
+                  ),
                 ),
-              ),
-            ],
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      if (data.otherTopicItems.isNotEmpty)
+                        ArticleMoreFromSection(
+                          title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
+                          items: data.otherTopicItems.buildWidgets(context, cubit),
+                        )
+                      else if (data.moreFromBriefItems.isNotEmpty)
+                        ArticleMoreFromSection(
+                          title: LocaleKeys.article_otherBriefs.tr(),
+                          items: data.moreFromBriefItems.buildWidgets(context, cubit),
+                        ),
+                    ],
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: RelatedContentSection(
+                    articleId: data.article.metadata.id,
+                    featuredCategories: data.featuredCategories,
+                    briefId: cubit.briefId,
+                    topicId: cubit.topicId,
+                    relatedContentItems: data.relatedContentItems,
+                    onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                    onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          InformedTabBar.floating(show: showTabBar.value),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: _ArticleProgressBar(
+              readProgress: readProgress,
+              color: data.article.metadata.category?.color,
+            ),
+          ),
+        ],
+      ),
+      orElse: Container.new,
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 class _ArticleProgressBar extends HookWidget {
@@ -391,13 +267,4 @@ extension on List<BriefEntryItem> {
           unknown: (_) => const SizedBox.shrink(),
         ),
       ).toList();
-}
-
-extension on PremiumArticleViewState {
-  bool get articleWithImage {
-    return mapOrNull(
-          idle: (state) => state.article.metadata.hasImage,
-        ) ??
-        false;
-  }
 }

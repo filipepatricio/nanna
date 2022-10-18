@@ -43,7 +43,6 @@ class ArticleContentView extends HookWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: MediaQuery.of(context).padding.top),
         _ArticleHeader(
           key: articleHeaderKey,
           article: article.metadata,
@@ -86,7 +85,10 @@ class ArticleContentView extends HookWidget {
 }
 
 class _ArticleHeader extends StatelessWidget {
-  const _ArticleHeader({required this.article, Key? key}) : super(key: key);
+  const _ArticleHeader({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
 
   final MediaItemArticle article;
 
@@ -115,12 +117,12 @@ class _ArticleHeader extends StatelessWidget {
                   isLight: false,
                   showDate: false,
                   showReadTime: false,
-                  textStyle: AppTypography.b2Regular.copyWith(height: 1),
+                  textStyle: AppTypography.metadata1Medium,
                 ),
                 const SizedBox(height: AppDimens.m),
                 InformedMarkdownBody(
                   markdown: article.title,
-                  baseTextStyle: AppTypography.h1ExtraBold,
+                  baseTextStyle: AppTypography.h0SemiBold,
                   highlightColor: AppColors.transparent,
                 ),
                 const SizedBox(height: AppDimens.xl),

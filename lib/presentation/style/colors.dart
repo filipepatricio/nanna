@@ -13,6 +13,7 @@ class AppColors {
   static const Color black10 = Color(0x1A000000);
   static const Color black05 = Color(0x0D000000);
   static const Color black04 = Color(0x0A000000);
+  static const Color accent = Color(0xFFC7F860);
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreen44 = Color(0x70BBF383);
   static const Color limeGreenDark = Color(0xff6AE476);

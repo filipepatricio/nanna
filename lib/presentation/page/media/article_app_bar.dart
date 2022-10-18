@@ -65,25 +65,18 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
       builder: (context, bookmarkButton) => AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: animation.value,
-        leading: TextButton.icon(
-          label: fromTopic
-              ? Text(
-                  LocaleKeys.article_topicOverview.tr(),
-                  style: AppTypography.subH1Medium.copyWith(color: AppColors.textPrimary),
-                )
-              : const SizedBox.shrink(),
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(
-              EdgeInsets.only(right: fromTopic ? AppDimens.s : AppDimens.zero),
-            ),
-            foregroundColor: MaterialStateProperty.all(AppColors.textPrimary),
-          ),
-          icon: const Icon(
-            Icons.arrow_back_ios_rounded,
-            size: AppDimens.backArrowSize,
-          ),
+        centerTitle: false,
+        title: Text(
+          (fromTopic ? LocaleKeys.article_topicOverview : LocaleKeys.common_back).tr(),
+          style: AppTypography.subH1Medium.copyWith(color: AppColors.textPrimary),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_rounded),
+          color: AppColors.textPrimary,
+          iconSize: AppDimens.backArrowSize,
           onPressed: onBackPressed,
         ),
+        titleSpacing: AppDimens.zero,
         actions: [
           bookmarkButton!,
           const SizedBox(width: AppDimens.m),

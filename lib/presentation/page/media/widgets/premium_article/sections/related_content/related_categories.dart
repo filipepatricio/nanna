@@ -22,10 +22,10 @@ class RelatedCategories extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
           child: Text(
             LocaleKeys.article_relatedContent_exploreMoreCategories.tr(),
-            style: AppTypography.h1ExtraBold,
+            style: AppTypography.h1Medium,
           ),
         ),
         const SizedBox(height: AppDimens.m),
@@ -33,7 +33,7 @@ class RelatedCategories extends StatelessWidget {
           height: AppDimens.explorePillHeight,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
             itemBuilder: (context, index) => ExplorePill(
               title: featuredCategories[index].name,
               icon: featuredCategories[index].icon,

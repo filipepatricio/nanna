@@ -45,7 +45,6 @@ class PremiumArticleView extends HookWidget {
     final state = useCubitBuilder(cubit);
     final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
     final articleOutputModeNotifier = useMemoized(() => ValueNotifier(articleOutputMode));
-    final controller = useMemoized(() => ScrollController(keepScrollOffset: true));
     final mainController = useScrollController(keepScrollOffset: true);
     final actionsBarColorModeNotifier = useMemoized(
       () => ValueNotifier(
@@ -115,7 +114,7 @@ class PremiumArticleView extends HookWidget {
         onBackPressed: () => context.popRoute(cubit.articleProgress),
       ),
       body: ScrollsToTop(
-        onScrollsToTop: (_) => controller.animateToStart(),
+        onScrollsToTop: (_) => mainController.animateToStart(),
         child: SnackbarParentView(
           controller: snackbarController,
           child: PremiumArticleAudioCubitProvider(
@@ -142,7 +141,6 @@ class PremiumArticleView extends HookWidget {
                   children: [
                     state.maybeMap(
                       idle: (_) => PremiumArticleReadView(
-                        articleController: controller,
                         cubit: cubit,
                         mainController: mainController,
                         snackbarController: snackbarController,

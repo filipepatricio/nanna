@@ -352,9 +352,6 @@ class FakePremiumArticleViewCubit extends Fake implements PremiumArticleViewCubi
   Future<void> trackReadingProgress() async {}
 
   @override
-  void setupScrollData(_, __) {}
-
-  @override
   void updateScrollData(_, __) {}
 
   @override

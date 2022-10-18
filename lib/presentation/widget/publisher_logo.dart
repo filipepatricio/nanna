@@ -9,7 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _publisherLogoSize = 24.0;
+const _publisherLogoSize = 20.0;
 
 class PublisherLogo extends HookWidget {
   const PublisherLogo._({

@@ -62,6 +62,7 @@ class FreeArticleView extends HookWidget {
     return Scaffold(
       appBar: ArticleAppBar(
         article: article,
+        topicId: topicId,
         snackbarController: snackbarController,
         onBackPressed: () => context.popRoute(cubit.articleProgress),
       ),

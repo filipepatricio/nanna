@@ -169,17 +169,10 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     );
   }
 
-  void setupScrollData(double globalContentOffset, double globalPageOffset) {
-    scrollData = scrollData.copyWith(
-      contentOffset: globalContentOffset - globalPageOffset,
-    );
-  }
-
   void updateScrollData(double scrollOffset, double maxExtent) {
     scrollData = scrollData.copyWith(
       readArticleContentOffset: scrollOffset,
       contentHeight: maxExtent - scrollData.contentOffset,
-      pageHeight: maxExtent,
     );
   }
 
