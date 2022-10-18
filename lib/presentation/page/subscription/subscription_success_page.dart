@@ -41,7 +41,7 @@ class SubscriptionSuccessPage extends HookWidget {
                     : LocaleKeys.subscription_thanksForSubscribing)
                 .tr(),
             textAlignment: TextAlign.center,
-            baseTextStyle: AppTypography.h1MediumLora,
+            baseTextStyle: AppTypography.h1Medium,
           ),
           const SizedBox(height: AppDimens.s),
           Text(

@@ -131,7 +131,7 @@ class _ArticleBanner extends StatelessWidget {
           children: [
             Text(
               tr(LocaleKeys.shareQuote_readOn),
-              style: AppTypography.h1.copyWith(height: 1.0),
+              style: AppTypography.h1,
             ),
             SvgPicture.asset(
               AppVectorGraphics.informedLogoDark,

@@ -26,7 +26,7 @@ class _ChangeSubscriptionPlansView extends HookWidget {
               const SizedBox(height: AppDimens.m),
               InformedMarkdownBody(
                 markdown: LocaleKeys.subscription_change_title.tr(),
-                baseTextStyle: AppTypography.h1MediumLora,
+                baseTextStyle: AppTypography.h1Medium,
               ),
               const SizedBox(height: AppDimens.xl),
               state.maybeMap(

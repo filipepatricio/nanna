@@ -94,7 +94,7 @@ class TopicOwnerPage extends HookWidget {
                           child: Text(
                             owner.bio,
                             softWrap: true,
-                            style: AppTypography.b1MediumLora,
+                            style: AppTypography.b1Medium,
                           ),
                         ),
                         if (owner is! EditorialTeam) ...[

@@ -37,7 +37,7 @@ class TopicOwnerAvatar extends HookWidget {
   final double horizontalSpacing;
   final Function()? onTap;
 
-  static const defaultAvatarTextStyle = AppTypography.h3boldLoraItalic;
+  static const defaultAvatarTextStyle = AppTypography.h3BoldItalic;
 
   @override
   Widget build(BuildContext context) {
