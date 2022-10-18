@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_c
 import 'package:better_informed_mobile/presentation/page/media/article/article_image_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page_gesture_manager.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_other_brief_items_section.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content_section.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
@@ -39,8 +40,6 @@ class PremiumArticleReadView extends HookWidget {
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articlePageKey = GlobalKey();
-
-  bool get articleWithImage => cubit.article.metadata.hasImage;
 
   void calculateArticleContentOffset() {
     final globalContentOffset = _calculateGlobalOffset(_articleContentKey) ?? 0;
@@ -124,10 +123,10 @@ class PremiumArticleReadView extends HookWidget {
         context: context,
         articleViewController: articleController,
         pageViewController: pageController,
-        articleHasImage: articleWithImage,
+        articleHasImage: state.articleWithImage,
         mainViewController: mainController,
       ),
-      [articleWithImage],
+      [state.articleWithImage],
     );
     final readProgress = useMemoized(() => ValueNotifier(0.0));
     final showTabBar = useState(false);
@@ -208,9 +207,9 @@ class PremiumArticleReadView extends HookWidget {
                   }
                 },
                 children: [
-                  if (articleWithImage)
+                  if (data.articleWithImage)
                     ArticleImageView(
-                      article: cubit.article.metadata,
+                      article: data.article.metadata,
                       controller: pageController,
                     ),
                   CustomScrollView(
@@ -223,7 +222,7 @@ class PremiumArticleReadView extends HookWidget {
                         delegate: SliverChildListDelegate(
                           [
                             _ArticleContentView(
-                              article: cubit.article,
+                              article: data.article,
                               articleContentKey: _articleContentKey,
                               articleController: articleController,
                               cubit: cubit,
@@ -235,6 +234,7 @@ class PremiumArticleReadView extends HookWidget {
                         ),
                       ),
                       SliverList(
+                        key: ValueKey(data.article.content.content.hashCode),
                         delegate: SliverChildListDelegate(
                           [
                             if (data.otherTopicItems.isNotEmpty)
@@ -252,7 +252,7 @@ class PremiumArticleReadView extends HookWidget {
                       ),
                       SliverToBoxAdapter(
                         child: RelatedContentSection(
-                          articleId: cubit.article.metadata.id,
+                          articleId: data.article.metadata.id,
                           featuredCategories: data.featuredCategories,
                           briefId: cubit.briefId,
                           topicId: cubit.topicId,
@@ -351,13 +351,13 @@ class _ArticleContentViewState extends State<_ArticleContentView> with Automatic
                 controller: widget.articleController,
                 slivers: [
                   SliverList(
+                    key: ValueKey(widget.article.content.content.hashCode),
                     delegate: SliverChildListDelegate(
                       [
                         ArticleContentView(
                           article: widget.article,
                           articleContentKey: widget.articleContentKey,
                           scrollToPosition: () => _scrollToPosition(widget.readProgress.value),
-                          requestRefresh: () => widget.cubit.refreshArticle(),
                           snackbarController: widget.snackbarController,
                         ),
                       ],
@@ -541,4 +541,13 @@ extension on List<BriefEntryItem> {
           unknown: (_) => const SizedBox.shrink(),
         ),
       ).toList();
+}
+
+extension on PremiumArticleViewState {
+  bool get articleWithImage {
+    return mapOrNull(
+          idle: (state) => state.article.metadata.hasImage,
+        ) ??
+        false;
+  }
 }

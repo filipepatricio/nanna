@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';

@@ -36,7 +36,7 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_inf
 import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_position.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';

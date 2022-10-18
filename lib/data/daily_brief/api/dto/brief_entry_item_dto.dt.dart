@@ -9,7 +9,7 @@ import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'brief_entry_item_dto.dt.freezed.dart';

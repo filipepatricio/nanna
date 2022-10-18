@@ -14,6 +14,7 @@ class ArticleContentMarkdown extends HookWidget {
     required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
+
   final String markdown;
   final ShareTextCallback shareTextCallback;
   final Function() scrollToPosition;
