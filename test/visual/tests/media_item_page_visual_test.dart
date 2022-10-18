@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/exception/article_geoblocked_exception.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
@@ -145,7 +145,7 @@ void main() {
 
 class FakeGetArticleUseCase extends Fake implements GetArticleUseCase {
   @override
-  Future<Article> call(MediaItemArticle article) => throw ArticleGeoblockedException();
+  Future<Article> call(MediaItemArticle article, {bool refreshMetadata = false}) => throw ArticleGeoblockedException();
 }
 
 class FakeMediaItemPageCubit extends Fake implements MediaItemCubit {
@@ -173,9 +173,6 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
   );
 
   PremiumArticleViewState get idleState => _idleState;
-
-  @override
-  Article get article => TestData.fullArticle;
 
   @override
   String? get briefId => TestData.currentBrief.id;

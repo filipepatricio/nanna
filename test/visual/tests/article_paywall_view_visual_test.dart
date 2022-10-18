@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/article_paywall_subscription_plan_pack.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -35,7 +35,6 @@ void main() {
           body: SingleChildScrollView(
             child: ArticlePaywallView(
               article: article,
-              onPurchaseSuccess: () {},
               snackbarController: SnackbarController(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
@@ -71,7 +70,6 @@ void main() {
             reverse: true,
             child: ArticlePaywallView(
               article: article,
-              onPurchaseSuccess: () {},
               snackbarController: SnackbarController(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
@@ -109,7 +107,6 @@ void main() {
             reverse: true,
             child: ArticlePaywallView(
               article: article,
-              onPurchaseSuccess: () {},
               snackbarController: SnackbarController(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),

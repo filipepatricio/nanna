@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -22,7 +22,6 @@ class ArticleContentView extends HookWidget {
     required this.article,
     required this.articleContentKey,
     required this.scrollToPosition,
-    required this.requestRefresh,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
@@ -30,7 +29,6 @@ class ArticleContentView extends HookWidget {
   final Article article;
   final Key articleContentKey;
   final Function() scrollToPosition;
-  final VoidCallback requestRefresh;
   final SnackbarController snackbarController;
 
   @override
@@ -70,7 +68,6 @@ class ArticleContentView extends HookWidget {
     if (article.content.type == ArticleContentType.markdown) {
       return ArticlePaywallView(
         article: article,
-        onPurchaseSuccess: requestRefresh,
         snackbarController: snackbarController,
         child: ArticleContentMarkdown(
           markdown: article.content.content,
