@@ -26,4 +26,8 @@ class AppRasterGraphics {
   static const String placeholderSeven = 'assets/raster_graphics/placeholders/seven.jpg';
   static const String placeholderEight = 'assets/raster_graphics/placeholders/eight.jpg';
   static const String placeholderNine = 'assets/raster_graphics/placeholders/nine.jpg';
+
+  // Onboarding
+  static const String onboardingPublishers = 'assets/raster_graphics/onboarding_publishers.jpg';
+  static const String onboardingEditorialProcess = 'assets/raster_graphics/onboarding_editorial_process.png';
 }
