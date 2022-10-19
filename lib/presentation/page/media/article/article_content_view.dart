@@ -106,7 +106,7 @@ class _ArticleHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,

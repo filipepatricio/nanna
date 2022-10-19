@@ -52,11 +52,11 @@ class RelatedContentSection extends StatelessWidget {
               snackbarController: snackbarController,
             ),
           Padding(
-            padding: const EdgeInsets.all(AppDimens.m),
+            padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
             child: RelaxView.article(),
           ),
           SizedBox(
-            height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,
+            height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.l,
           ),
         ],
       ),

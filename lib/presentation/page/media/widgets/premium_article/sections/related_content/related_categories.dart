@@ -22,7 +22,7 @@ class RelatedCategories extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           child: Text(
             LocaleKeys.article_relatedContent_exploreMoreCategories.tr(),
             style: AppTypography.h1Medium,
@@ -33,7 +33,7 @@ class RelatedCategories extends StatelessWidget {
           height: AppDimens.explorePillHeight,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             itemBuilder: (context, index) => CategoryPill(
               title: featuredCategories[index].name,
               color: featuredCategories[index].color,

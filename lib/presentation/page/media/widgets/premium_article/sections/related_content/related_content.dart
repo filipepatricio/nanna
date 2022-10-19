@@ -44,14 +44,14 @@ class RelatedContent extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: Text(
               LocaleKeys.article_relatedContent_similarStories.tr(),
               style: AppTypography.h1Medium,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: Text(
               LocaleKeys.article_relatedContent_relatedReads.tr(),
               style: AppTypography.h4Regular,
@@ -62,7 +62,7 @@ class RelatedContent extends HookWidget {
             child: SizedBox(
               height: tileHeight,
               child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   return relatedContentItems[index].mapOrNull(
