@@ -33,6 +33,21 @@ class SubscriptionPlan {
   bool get isAnnual => type == SubscriptionPlanType.annual;
 
   bool get hasTrial => trialDays > 0;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is SubscriptionPlan &&
+        other.offeringId == offeringId &&
+        other.packageId == packageId &&
+        other.productId == productId;
+  }
+
+  @override
+  int get hashCode {
+    return offeringId.hashCode ^ packageId.hashCode ^ productId.hashCode;
+  }
 }
 
 SubscriptionPlanType fromPackageType(PackageType type) {

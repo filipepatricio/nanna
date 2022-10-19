@@ -14,7 +14,7 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
         child: ListView(
           physics: getPlatformScrollPhysics(),
           children: [
@@ -25,7 +25,7 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
             ),
             const SizedBox(height: AppDimens.l),
             _ChangeSubscriptionCard(
-              icon: AppVectorGraphics.informedLogoTrial,
+              icon: AppVectorGraphics.informedLogoGreen,
               title: LocaleKeys.subscription_trial.tr(),
               subtitle: subscription.plan.title,
               onTap: () => context.pushRoute(const ChangeSubscriptionPageRoute()),

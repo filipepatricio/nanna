@@ -60,7 +60,7 @@ class AppDimens {
   static const settingsItemHeight = 44.0;
 
   /// 8
-  static const buttonRadius = 8.0;
+  static const buttonRadius = 4.0;
 
   /// 50
   static const buttonHeight = 50.0;

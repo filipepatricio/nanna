@@ -172,10 +172,8 @@ class _ErrorView extends StatelessWidget {
         const SizedBox(height: AppDimens.l),
         SizedBox(
           width: _tryAgainButtonWidth,
-          child: FilledButton(
+          child: FilledButton.black(
             text: LocaleKeys.common_tryAgain.tr(),
-            fillColor: AppColors.textPrimary,
-            textColor: AppColors.white,
             onTap: refreshCallback,
           ),
         ),

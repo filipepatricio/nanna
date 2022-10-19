@@ -32,7 +32,7 @@ class SubscriptionPlanCard extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    const animationsDuration = Duration(milliseconds: 200);
+    const animationsDuration = Duration(milliseconds: 250);
 
     final eventController = useEventTrackingController();
 
@@ -49,9 +49,9 @@ class SubscriptionPlanCard extends HookWidget {
           decoration: BoxDecoration(
             border: Border.all(color: isSelected ? AppColors.charcoal : AppColors.lightGrey),
             borderRadius: const BorderRadius.all(
-              Radius.circular(AppDimens.ml),
+              Radius.circular(AppDimens.m),
             ),
-            color: AppColors.white,
+            color: isSelected ? AppColors.white : AppColors.lightGrey,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -60,20 +60,20 @@ class SubscriptionPlanCard extends HookWidget {
               if (isCurrent) ...[
                 Text(
                   LocaleKeys.subscription_change_currentPlan.tr(),
-                  style: AppTypography.b2Medium.copyWith(color: AppColors.darkerGrey),
+                  style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
                 ),
                 const SizedBox(height: AppDimens.s),
               ] else if (isNextPlan) ...[
                 Text(
                   LocaleKeys.subscription_change_upcomingPlan.tr(),
-                  style: AppTypography.b2Medium.copyWith(color: AppColors.darkerGrey),
+                  style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
                 ),
                 const SizedBox(height: AppDimens.s),
               ],
               Flexible(
                 child: AutoSizeText(
                   plan.title,
-                  style: AppTypography.h4ExtraBold.copyWith(height: 1),
+                  style: AppTypography.b2Medium,
                   maxLines: 1,
                 ),
               ),
@@ -81,7 +81,7 @@ class SubscriptionPlanCard extends HookWidget {
               if (plan.hasTrial) ...[
                 Text(
                   plan.description,
-                  style: AppTypography.b2Medium.copyWith(color: AppColors.darkerGrey),
+                  style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
                 ),
                 const SizedBox(height: AppDimens.xs),
               ],
@@ -91,21 +91,21 @@ class SubscriptionPlanCard extends HookWidget {
                 children: [
                   Text(
                     plan.priceString,
-                    style: AppTypography.h4ExtraBold,
+                    style: AppTypography.b2Medium,
                   ),
                   if (plan.discountPercentage > 0)
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        vertical: AppDimens.xs,
-                        horizontal: AppDimens.s,
+                        vertical: AppDimens.s,
+                        horizontal: AppDimens.sl,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(AppDimens.m),
                         color: AppColors.limeGreen,
                       ),
                       child: Text(
                         LocaleKeys.subscription_off.tr(args: [('${plan.discountPercentage}')]),
-                        style: AppTypography.topicOwnerLabelText,
+                        style: AppTypography.b2Regular.copyWith(height: 1),
                       ),
                     ),
                 ],

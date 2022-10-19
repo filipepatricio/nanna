@@ -82,7 +82,7 @@ class ArticlePaywallView extends HookWidget {
         if (state.showPaywall) ...[
           const SizedBox(height: AppDimens.c),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
             child: state.maybeMap(
               trial: (state) => _PaywallTrialOption(
                 plan: state.plan,

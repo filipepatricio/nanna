@@ -120,10 +120,8 @@ class TopicOwnerPage extends HookWidget {
                           const SizedBox(height: AppDimens.xl),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                            child: FilledButton(
+                            child: FilledButton.black(
                               text: LocaleKeys.topic_howDoWeCurateContent_label.tr(),
-                              fillColor: AppColors.textPrimary,
-                              textColor: AppColors.white,
                               trailing: const Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 color: AppColors.white,

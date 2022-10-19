@@ -12,7 +12,7 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
         child: ListView(
           physics: getPlatformScrollPhysics(),
           children: [
@@ -23,7 +23,7 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
             ),
             const SizedBox(height: AppDimens.l),
             _ChangeSubscriptionCard(
-              icon: AppVectorGraphics.informedLogoPremium,
+              icon: AppVectorGraphics.informedLogoGreen,
               title: LocaleKeys.subscription_premium.tr(),
               subtitle: null,
               onTap: null,
