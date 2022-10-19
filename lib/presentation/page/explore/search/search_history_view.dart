@@ -49,7 +49,7 @@ class SearchHistoryView extends HookWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                              child: Text(query, style: AppTypography.b2Medium.copyWith(height: 1)),
+                              child: Text(query, style: AppTypography.b2SemiBold.copyWith(height: 1)),
                             ),
                           ],
                         ),

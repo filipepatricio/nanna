@@ -100,7 +100,7 @@ class _ArticleHeader extends StatelessWidget {
     final metadataStyle = AppTypography.systemText.copyWith(height: 1.5);
 
     return Container(
-      color: article.hasImage ? (article.category?.color ?? AppColors.background) : AppColors.background,
+      color: article.hasImage ? (article.category.color ?? AppColors.background) : AppColors.background,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -76,8 +76,8 @@ class AppTypography {
     height: 1.33,
   );
 
-  static const TextStyle h2Medium = TextStyle(
-    fontWeight: FontWeight.w500,
+  static const TextStyle h2SemiBold = TextStyle(
+    fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,
     fontSize: 24,
     height: 1.33,
@@ -151,15 +151,15 @@ class AppTypography {
   static const TextStyle subH1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 14,
+    fontSize: 16,
     height: 2.21,
     color: AppColors.textPrimary,
   );
 
   static const TextStyle subH1Medium = TextStyle(
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 14,
+    fontSize: 16,
     height: 1,
     color: AppColors.textPrimary,
   );
@@ -167,7 +167,7 @@ class AppTypography {
   static const TextStyle subH1Regular = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 14,
+    fontSize: 16,
     height: 2.21,
     color: AppColors.textPrimary,
   );
@@ -222,8 +222,8 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle b2Medium = TextStyle(
-    fontWeight: FontWeight.w500,
+  static const TextStyle b2SemiBold = TextStyle(
+    fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,
     fontSize: 16,
     height: 1.5,
@@ -283,7 +283,7 @@ class AppTypography {
   static const TextStyle caption1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 12,
+    fontSize: 14,
     height: 1.25,
     color: AppColors.textGrey,
   );

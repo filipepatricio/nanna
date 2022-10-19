@@ -30,7 +30,7 @@ class CategoryPill extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: AppTypography.b3Regular.copyWith(height: 1),
+          style: AppTypography.b3Regular.copyWith(height: 1.1),
         ),
       ),
     );

@@ -19,24 +19,21 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Container(
-        color: AppColors.charcoal20,
-        child: LayoutBuilder(
-          builder: (context, constraints) => Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _ArticleSquareCover(
-                article: article,
-                coverColor: coverColor,
-                dimension: constraints.maxWidth,
-              ),
-              _ArticleCoverContent(
-                article: article,
-                snackbarController: snackbarController,
-              ),
-            ],
-          ),
+      child: LayoutBuilder(
+        builder: (context, constraints) => Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _ArticleSquareCover(
+              article: article,
+              coverColor: coverColor,
+              dimension: constraints.maxWidth,
+            ),
+            _ArticleCoverContent(
+              article: article,
+              snackbarController: snackbarController,
+            ),
+          ],
         ),
       ),
     );
@@ -124,9 +121,9 @@ class _ArticleCoverExploreList extends HookWidget {
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  const CategoryPill(
-                    title: "TO DEFINE",
-                    color: AppColors.blue,
+                  CategoryPill(
+                    title: article.category.name,
+                    color: article.category.color,
                   ),
                   const SizedBox(width: AppDimens.s),
                   ArticleDottedInfo(
@@ -149,7 +146,10 @@ class _ArticleCoverExploreList extends HookWidget {
                     backgroundColor: AppColors.transparent,
                   ),
                   const SizedBox(width: AppDimens.s),
-                  BookmarkButton.article(article: article),
+                  BookmarkButton.article(
+                    article: article,
+                    snackbarController: snackbarController,
+                  ),
                   if (article.hasAudioVersion) ...[
                     const SizedBox(width: AppDimens.s),
                     AudioIconButton(

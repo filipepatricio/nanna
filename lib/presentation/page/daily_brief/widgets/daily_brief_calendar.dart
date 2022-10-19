@@ -171,7 +171,7 @@ class _CalendarItem extends HookWidget {
                           color: AppColors.white,
                           height: AppDimens.zero,
                         )
-                      : AppTypography.b2Medium.copyWith(
+                      : AppTypography.b2SemiBold.copyWith(
                           height: AppDimens.zero,
                         ),
                 ),

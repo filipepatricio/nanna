@@ -21,7 +21,7 @@ class _DailyBriefContent extends StatelessWidget {
         const SizedBox(height: AppDimens.s),
         Text(
           relax.message,
-          style: AppTypography.b2Medium,
+          style: AppTypography.b2SemiBold,
           textAlign: TextAlign.center,
         ),
         if (callToAction != null) ...[
@@ -56,7 +56,7 @@ class _DailyBriefHeadline extends HookWidget {
           ],
           InformedMarkdownBody(
             markdown: relax.headline,
-            baseTextStyle: AppTypography.h2Medium,
+            baseTextStyle: AppTypography.h2SemiBold,
             highlightColor: AppColors.limeGreen,
             textAlignment: TextAlign.center,
           ),
@@ -80,7 +80,7 @@ class _DailyBriefFooter extends StatelessWidget {
           if (callToAction.preText != null) ...[
             TextSpan(
               text: callToAction.preText,
-              style: AppTypography.b2Medium,
+              style: AppTypography.b2SemiBold,
             ),
             const TextSpan(text: ' '),
           ],
