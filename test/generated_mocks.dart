@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/data/auth/api/provider/linkedin/linkedin_
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
 import 'package:better_informed_mobile/data/auth/app_link/magic_link_parser.di.dart';
+import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/mapper/onboarding_version_entity_mapper.di.dart';
@@ -115,6 +116,7 @@ const _classes = [
   SubscriptionPlan,
   GetActiveSubscriptionUseCase,
   GetSubscriptionPlansUseCase,
+  CategoryDTOMapper,
 ];
 
 @GenerateMocks(_classes)

@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
@@ -9,7 +10,7 @@ part 'topic_dto.dt.g.dart';
 
 @JsonSerializable(createToJson: false)
 class TopicDTO {
-  TopicDTO(
+  const TopicDTO(
     this.id,
     this.slug,
     this.title,
@@ -23,9 +24,11 @@ class TopicDTO {
     this.entries,
     this.summaryCards,
     this.visited,
+    this.category,
   );
 
   factory TopicDTO.fromJson(Map<String, dynamic> json) => _$TopicDTOFromJson(json);
+
   final String id;
   final String slug;
   final String title;
@@ -39,4 +42,6 @@ class TopicDTO {
   final List<EntryDTO> entries;
   final List<SummaryCardDTO> summaryCards;
   final bool visited;
+  @JsonKey(name: 'primaryCategory')
+  final CategoryDTO category;
 }

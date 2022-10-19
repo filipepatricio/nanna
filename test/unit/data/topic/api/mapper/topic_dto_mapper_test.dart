@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../generated_mocks.mocks.dart';
+import '../../../../../test_data.dart';
 
 void main() {
   late MockImageDTOMapper imageDTOMapper;
@@ -18,6 +19,7 @@ void main() {
   late MockTopicPublisherInformationDTOMapper topicPublisherInformationDTOMapper;
   late MockTopicOwnerDTOMapper topicOwnerDTOMapper;
   late TopicDTOMapper mapper;
+  late MockCategoryDTOMapper categoryDTOMapper;
 
   setUp(() {
     imageDTOMapper = MockImageDTOMapper();
@@ -25,12 +27,14 @@ void main() {
     summaryCardDTOMapper = MockSummaryCardDTOMapper();
     topicPublisherInformationDTOMapper = MockTopicPublisherInformationDTOMapper();
     topicOwnerDTOMapper = MockTopicOwnerDTOMapper();
+    categoryDTOMapper = MockCategoryDTOMapper();
     mapper = TopicDTOMapper(
       imageDTOMapper,
       entryDTOMapper,
       summaryCardDTOMapper,
       topicPublisherInformationDTOMapper,
       topicOwnerDTOMapper,
+      categoryDTOMapper,
     );
   });
 
@@ -63,6 +67,7 @@ void main() {
       heroImage: heroImage,
       entries: entries,
       visited: false,
+      category: TestData.category,
     );
 
     when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
@@ -70,6 +75,7 @@ void main() {
     when(entryDTOMapper(any)).thenAnswer((realInvocation) => entry);
     when(summaryCardDTOMapper(any)).thenAnswer((realInvocation) => summaryCard);
     when(imageDTOMapper(dto.heroImage)).thenAnswer((realInvocation) => heroImage);
+    when(categoryDTOMapper(dto.category)).thenAnswer((realInvocation) => TestData.category);
 
     final actual = mapper(dto);
 

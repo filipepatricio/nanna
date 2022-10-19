@@ -3,6 +3,7 @@
 # import 'package:better_informed_mobile/data/gql/common/editorial_team_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/cloudinary_image_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/publisher_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/category_fragment.graphql';
 
 
 fragment topicPreviewFragment on Topic {
@@ -37,4 +38,7 @@ fragment topicPreviewFragment on Topic {
     }
     entryCount
     visited
+    primaryCategory {
+        ...categoryFragment
+    }
 }

@@ -57,6 +57,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     ImageDTO heroImage,
     int entryCount,
     bool visited,
+    @JsonKey(name: 'primaryCategory') CategoryDTO category,
   ) = BriefEntryItemDTOTopic;
 
   @FreezedUnionValue(unknownKey)
