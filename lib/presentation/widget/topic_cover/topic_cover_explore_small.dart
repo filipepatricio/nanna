@@ -38,11 +38,14 @@ class _TopicCoverExploreSmall extends StatelessWidget {
                     child: Container(
                       color: AppColors.blue, //TODO: add topic primaryCategory color
                       child: Center(
-                        child: Text(
-                          topic.title,
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                          style: AppTypography.subH1Medium.copyWith(height: 1.3),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.xs),
+                          child: Text(
+                            topic.title,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: AppTypography.subH1Medium.copyWith(height: 1.3),
+                          ),
                         ),
                       ),
                     ),

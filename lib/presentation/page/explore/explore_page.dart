@@ -9,14 +9,12 @@ import 'package:better_informed_mobile/presentation/page/explore/article_list_ar
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/sliver_search_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_loading_section.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -274,15 +272,7 @@ class _Area extends HookWidget {
             area: area,
             snackbarController: snackbarController,
           ),
-          topics: (area) => TopicsAreaView(
-            area: area,
-            isHighlighted: area.isHighlighted,
-          ),
           smallTopics: (area) => SmallTopicsAreaView(
-            area: area,
-            snackbarController: snackbarController,
-          ),
-          highlightedTopics: (area) => HighlightedTopicsAreaView(
             area: area,
             snackbarController: snackbarController,
           ),

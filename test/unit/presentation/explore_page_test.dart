@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/page/explore/pills_area/cate
 import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/view_all_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
@@ -45,7 +45,7 @@ void main() {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
 
       final topicCoverFinder = find.descendant(
-        of: find.byType(TopicsAreaView),
+        of: find.byType(SmallTopicsAreaView),
         matching: find.byType(TopicCover),
       );
 
@@ -76,7 +76,7 @@ void main() {
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
 
-      final topicsAreaFinder = find.byType(TopicsAreaView);
+      final topicsAreaFinder = find.byType(SmallTopicsAreaView);
       await tester.ensureVisible(topicsAreaFinder);
       await tester.pumpAndSettle();
 

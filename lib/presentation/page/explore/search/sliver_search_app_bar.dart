@@ -106,7 +106,7 @@ class _SearchBar extends HookWidget {
           hintText: LocaleKeys.common_search.tr(),
           hintStyle: AppTypography.b2SemiBold.copyWith(
             color: AppColors.textGrey,
-            height: 1,
+            height: 1.1,
           ),
           prefixIcon: SvgPicture.asset(
             AppVectorGraphics.search,
@@ -179,9 +179,9 @@ class _CancelButton extends HookWidget {
                   ),
                   child: Text(
                     LocaleKeys.common_cancel.tr(),
-                    style: AppTypography.h4Bold.copyWith(
-                      color: AppColors.charcoal,
-                      height: 1.3,
+                    style: AppTypography.h4Regular.copyWith(
+                      color: AppColors.textGrey,
+                      height: 1,
                     ),
                   ),
                 ),
