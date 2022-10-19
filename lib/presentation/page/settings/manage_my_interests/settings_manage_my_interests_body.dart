@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -40,47 +39,30 @@ class SettingsManageMyInterestsBody extends HookWidget {
       );
     });
 
-    return CustomScrollView(
+    return ListView(
       physics: getPlatformScrollPhysics(),
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Padding(
-                  padding: const EdgeInsets.all(AppDimens.l),
-                  child: Text(
-                    LocaleKeys.settings_manageMyInterests.tr(),
-                    style: AppTypography.h4Bold.copyWith(height: 1),
-                  ),
-                ),
-                ...categoryPreferences
-                    .map(
-                      (data) => _CategoryItem(
-                        categoryPreference: data,
-                        snackbarController: snackbarController,
-                        cubit: cubit,
-                        onSwitch: (value) {
-                          cubit.updatePreferredCategories(
-                            categoryPreferences.map((e) => e == data ? e.copyWith(isPreferred: value) : e).toList(),
-                          );
-                        },
-                      ),
-                    )
-                    .expand(
-                      (element) => [
-                        element,
-                        const Divider(),
-                      ],
-                    ),
+      padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
+      children: [
+        ...categoryPreferences
+            .map(
+              (data) => _CategoryItem(
+                categoryPreference: data,
+                snackbarController: snackbarController,
+                cubit: cubit,
+                onSwitch: (value) {
+                  cubit.updatePreferredCategories(
+                    categoryPreferences.map((e) => e == data ? e.copyWith(isPreferred: value) : e).toList(),
+                  );
+                },
+              ),
+            )
+            .expand(
+              (element) => [
+                element,
+                const Divider(),
               ],
             ),
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: AudioPlayerBannerPlaceholder(),
-        ),
+        const AudioPlayerBannerPlaceholder(),
       ],
     );
   }
