@@ -13,11 +13,6 @@ class _TopicCoverContent extends StatelessWidget {
         topic: topic,
       );
 
-  factory _TopicCoverContent.exploreLarge({required TopicPreview topic}) => _TopicCoverContent._(
-        type: TopicCoverType.exploreLarge,
-        topic: topic,
-      );
-
   factory _TopicCoverContent.exploreSmall({
     required TopicPreview topic,
     required SnackbarController snackbarController,
@@ -57,8 +52,6 @@ class _TopicCoverContent extends StatelessWidget {
         return _CoverContentDailyBrief(topic: topic, mode: mode);
       case TopicCoverType.bookmark:
         return _CoverContentBookmark(topic: topic);
-      case TopicCoverType.exploreLarge:
-        return _CoverContentExploreLarge(topic: topic);
       case TopicCoverType.exploreSmall:
         return _CoverContentExploreSmall(
           topic: topic,
@@ -175,44 +168,6 @@ class _CoverContentBookmark extends HookWidget {
             markdown: topic.title,
             maxLines: 3,
             baseTextStyle: AppTypography.h5BoldSmall.copyWith(height: 1.25),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CoverContentExploreLarge extends StatelessWidget {
-  const _CoverContentExploreLarge({
-    required this.topic,
-    Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned.fill(
-      top: AppDimens.m,
-      bottom: AppDimens.l,
-      left: AppDimens.m,
-      right: AppDimens.l,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CoverLabel.topic(topic: topic),
-          const SizedBox(height: AppDimens.m),
-          InformedMarkdownBody(
-            markdown: topic.title,
-            maxLines: 4,
-            baseTextStyle: AppTypography.h1ExtraBold.copyWith(
-              color: AppColors.white,
-            ),
-          ),
-          const SizedBox(height: AppDimens.s),
-          UpdatedLabel(
-            mode: Brightness.light,
-            dateTime: topic.lastUpdatedAt,
           ),
         ],
       ),

@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/domain/categories/data/category_item.dt.d
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/cover_opacity.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
@@ -122,20 +121,17 @@ class _Article extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: CoverOpacity.article(
+      child: ArticleCover.exploreCarousel(
         article: article,
-        child: ArticleCover.exploreCarousel(
-          article: article,
-          snackbarController: snackbarController,
-          onTap: () {
-            onItemTap();
-            context.navigateToArticle(
-              article: article,
-              briefId: briefId,
-              topicId: topicId,
-            );
-          },
-        ),
+        snackbarController: snackbarController,
+        onTap: () {
+          onItemTap();
+          context.navigateToArticle(
+            article: article,
+            briefId: briefId,
+            topicId: topicId,
+          );
+        },
       ),
     );
   }
@@ -161,19 +157,16 @@ class _Topic extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: CoverOpacity.topic(
+      child: TopicCover.exploreSmall(
         topic: topic,
-        child: TopicCover.exploreSmall(
-          topic: topic,
-          onTap: () {
-            onItemTap();
-            context.navigateToTopic(
-              topic: topic,
-              briefId: briefId,
-            );
-          },
-          snackbarController: snackbarController,
-        ),
+        onTap: () {
+          onItemTap();
+          context.navigateToTopic(
+            topic: topic,
+            briefId: briefId,
+          );
+        },
+        snackbarController: snackbarController,
       ),
     );
   }
