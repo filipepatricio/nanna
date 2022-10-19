@@ -1,7 +1,7 @@
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_category.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
@@ -22,8 +22,9 @@ class Topic {
     required this.heroImage,
     required this.entries,
     required this.visited,
-    this.category,
+    required this.category,
   });
+
   final String id;
   final String slug;
   final String title;
@@ -34,10 +35,10 @@ class Topic {
   final List<TopicSummary> topicSummaryList;
   final DateTime lastUpdatedAt;
   final TopicPublisherInformation publisherInformation;
-  final TopicCategory? category;
   final Image heroImage;
   final List<Entry> entries;
   final bool visited;
+  final Category category;
 
   bool get hasSummary => topicSummaryList.isNotEmpty;
 
@@ -57,6 +58,7 @@ class Topic {
       heroImage,
       entries.length,
       visited,
+      category,
     );
   }
 }

@@ -77,6 +77,7 @@ class TestData {
       ),
     ),
     ImageDTOMapper(),
+    CategoryDTOMapper(),
   );
 
   static final _topicMapper = TopicDTOMapper(
@@ -94,6 +95,7 @@ class TestData {
     TopicOwnerDTOMapper(
       ImageDTOMapper(),
     ),
+    CategoryDTOMapper(),
   );
 
   static final _exploreContentMapper = ExploreContentDTOMapper(
@@ -141,6 +143,7 @@ class TestData {
           ),
         ),
         ImageDTOMapper(),
+        CategoryDTOMapper(),
       ),
     ),
     BriefEntryStyleDTOMapper(),

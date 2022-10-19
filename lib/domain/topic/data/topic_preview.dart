@@ -1,9 +1,10 @@
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 
 class TopicPreview {
-  TopicPreview(
+  const TopicPreview(
     this.id,
     this.slug,
     this.title,
@@ -16,6 +17,7 @@ class TopicPreview {
     this.heroImage,
     this.entryCount,
     this.visited,
+    this.category,
   );
 
   final String id;
@@ -30,4 +32,5 @@ class TopicPreview {
   final Image heroImage;
   final int entryCount;
   final bool visited;
+  final Category category;
 }
