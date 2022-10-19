@@ -1,16 +1,18 @@
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class SignInWithGoogleButton extends StatelessWidget {
-  const SignInWithGoogleButton({
+class SignInWithProviderButton extends StatelessWidget {
+  const SignInWithProviderButton({
+    required this.label,
+    required this.icon,
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
+  final String label;
+  final Widget icon;
   final VoidCallback onTap;
 
   @override
@@ -18,26 +20,25 @@ class SignInWithGoogleButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(AppDimens.sl),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white,
           border: Border.all(
-            width: AppDimens.one,
-            color: AppColors.black,
+            width: 1.5,
+            color: AppColors.lightGrey,
           ),
           borderRadius: const BorderRadius.all(
-            Radius.circular(AppDimens.s),
+            Radius.circular(AppDimens.buttonRadius),
           ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgPicture.asset(AppVectorGraphics.googleSignIn),
+            icon,
             const SizedBox(width: AppDimens.m),
             Text(
-              LocaleKeys.signIn_providerButton_google.tr(),
-              style: AppTypography.b2Regular,
+              label,
+              style: AppTypography.b2Medium,
             ),
           ],
         ),

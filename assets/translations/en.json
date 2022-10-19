@@ -36,13 +36,13 @@
   },
   "onboarding": {
     "title": "How we use push notifications",
-    "headerSlideOne": "High-quality news curation",
-    "headerSlideTwo": "Unbiased reporting, cutting through the noise",
+    "headerSlideOne": "Access curated articles",
+    "headerSlideTwo": "Explore diverse perspectives",
     "headerSlideCategories": "Add your interests",
     "headerSlideThree": "Notifications",
-    "descriptionSlideOne": "Our editorial team and topic experts source and read the best articles from global publishers, carefully curating your daily news brief.",
-    "descriptionSlideTwo": "A 360 view and array of different perspectives, giving you the fact-based context to understand this complex world.",
-    "descriptionSlideCategories": "Choose what matters to you and you’ll get daily reading suggestions tailored to your interests. Change these anytime in Profile → Settings.",
+    "descriptionSlideOne": "Get the daily must-reads from trusted, premium news sources – all in one app.",
+    "descriptionSlideTwo": "Our editors and topic experts read hundreds of articles daily, choosing only the best and deliberately curating diverse perspectives.",
+    "descriptionSlideCategories": "Choose what matters to you and you’ll get daily reading suggestions tailored to your interests, alongside wider curated articles.",
     "categories": {
       "everything": "Show me everything"
     },
@@ -201,9 +201,10 @@
     }
   },
   "signIn": {
+    "welcome": "Welcome to informed ",
     "unauthorized": "This link has expired. Please type in your email again to get a new one",
     "header": {
-      "signIn": "Welcome to the smart & flexible news format",
+      "signIn": "Sign up now to access world-class journalism from premium publishers, curated by editors & experts.",
       "magicLinkOne": "_Check your mail!_",
       "magicLinkTwo": "We've sent you a magic link to {}"
     },

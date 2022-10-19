@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_page_state.dt.dart';
@@ -7,7 +6,6 @@ import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboa
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_notifications_slide/onboarding_notifications_slide.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_publishers_slide.dart';
-import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_tracking_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -26,11 +24,10 @@ final List<Widget> _pageList = [
   const OnboardingArticlesSlide(),
   const OnboardingCategoriesSlide(),
   const OnboardingNotificationsSlide(),
-  if (kIsAppleDevice) const OnboardingTrackingSlide(),
 ];
 
 const _notificationSlide = 3;
-const _trackingSlide = 4;
+const _trackingSlide = 3;
 
 class OnboardingPage extends HookWidget {
   @override
@@ -92,9 +89,9 @@ class OnboardingPage extends HookWidget {
                     children: [
                       AnimatedOpacity(
                         duration: const Duration(milliseconds: AppAnimation.skipButton),
-                        opacity: pageIndex.value == 0 ? 1 : 0,
+                        opacity: pageIndex.value == _pageList.length - 1 ? 0 : 1,
                         child: AbsorbPointer(
-                          absorbing: pageIndex.value != 0,
+                          absorbing: pageIndex.value == _pageList.length - 1,
                           child: _SkipButton(
                             cubit: cubit,
                             controller: controller,
@@ -103,7 +100,7 @@ class OnboardingPage extends HookWidget {
                       ),
                       const Spacer(),
                       if (isLastPage)
-                        FilledButton.green(
+                        FilledButton.black(
                           text: LocaleKeys.common_continue.tr(),
                           onTap: () => _navigateToMainPage(
                             context,
@@ -175,10 +172,6 @@ class _NextPageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        if (currentPage == _notificationSlide) {
-          await cubit.requestNotificationPermission();
-        }
-
         await controller.nextPage(
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeIn,

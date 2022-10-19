@@ -51,7 +51,7 @@ class OnboardingArticlesSlide extends StatelessWidget {
                   flex: 8,
                   child: AutoSizeText(
                     LocaleKeys.onboarding_headerSlideTwo.tr(),
-                    style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
+                    style: AppTypography.h0Bold.copyWith(height: 1.14),
                     maxLines: 3,
                     stepGranularity: 0.1,
                   ),
