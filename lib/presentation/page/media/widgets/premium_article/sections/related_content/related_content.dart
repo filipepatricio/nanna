@@ -121,7 +121,7 @@ class _Article extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: ArticleCover.exploreCarousel(
+      child: ArticleCover.small(
         article: article,
         snackbarController: snackbarController,
         onTap: () {
@@ -157,7 +157,7 @@ class _Topic extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: TopicCover.exploreSmall(
+      child: TopicCover.small(
         topic: topic,
         onTap: () {
           onItemTap();

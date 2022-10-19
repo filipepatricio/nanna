@@ -1,7 +1,7 @@
 part of 'article_cover.dart';
 
-class _ArticleCoverExploreCarousel extends StatelessWidget {
-  const _ArticleCoverExploreCarousel({
+class _ArticleCoverSmall extends StatelessWidget {
+  const _ArticleCoverSmall({
     required this.onTap,
     required this.article,
     required this.coverColor,
@@ -40,8 +40,8 @@ class _ArticleCoverExploreCarousel extends StatelessWidget {
   }
 }
 
-class _ArticleCoverExploreList extends HookWidget {
-  const _ArticleCoverExploreList({
+class _ArticleCoverList extends HookWidget {
+  const _ArticleCoverList({
     required this.onTap,
     required this.article,
     required this.coverColor,

@@ -191,12 +191,12 @@ class _GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return article.map(
-      image: (data) => ArticleCover.exploreCarousel(
+      image: (data) => ArticleCover.small(
         article: article.article,
         onTap: () => context.navigateToArticle(article.article),
         snackbarController: snackbarController,
       ),
-      color: (data) => ArticleCover.exploreCarousel(
+      color: (data) => ArticleCover.small(
         article: article.article,
         coverColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
         onTap: () => context.navigateToArticle(article.article),

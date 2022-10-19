@@ -13,12 +13,12 @@ class _TopicCoverContent extends StatelessWidget {
         topic: topic,
       );
 
-  factory _TopicCoverContent.exploreSmall({
+  factory _TopicCoverContent.small({
     required TopicPreview topic,
     required SnackbarController snackbarController,
   }) =>
       _TopicCoverContent._(
-        type: TopicCoverType.exploreSmall,
+        type: TopicCoverType.small,
         topic: topic,
         snackbarController: snackbarController,
       );
@@ -52,8 +52,8 @@ class _TopicCoverContent extends StatelessWidget {
         return _CoverContentDailyBrief(topic: topic, mode: mode);
       case TopicCoverType.bookmark:
         return _CoverContentBookmark(topic: topic);
-      case TopicCoverType.exploreSmall:
-        return _CoverContentExploreSmall(
+      case TopicCoverType.small:
+        return _CoverContentSmall(
           topic: topic,
           snackbarController: snackbarController!,
         );
@@ -175,8 +175,8 @@ class _CoverContentBookmark extends HookWidget {
   }
 }
 
-class _CoverContentExploreSmall extends StatelessWidget {
-  const _CoverContentExploreSmall({
+class _CoverContentSmall extends StatelessWidget {
+  const _CoverContentSmall({
     required this.topic,
     required this.snackbarController,
     Key? key,

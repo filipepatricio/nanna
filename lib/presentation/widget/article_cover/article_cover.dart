@@ -40,8 +40,8 @@ part 'article_square_cover.dart';
 const _coverSizeToScreenWidthFactor = 0.27;
 
 enum ArticleCoverType {
-  exploreCarousel,
-  exploreList,
+  small,
+  list,
   dailyBriefLarge,
   dailyBriefSmall,
   dailyBriefList,
@@ -69,28 +69,28 @@ class ArticleCover extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  factory ArticleCover.exploreCarousel({
+  factory ArticleCover.small({
     required MediaItemArticle article,
     required SnackbarController snackbarController,
     Color? coverColor,
     VoidCallback? onTap,
   }) =>
       ArticleCover._(
-        ArticleCoverType.exploreCarousel,
+        ArticleCoverType.small,
         article: article,
         coverColor: coverColor,
         onTap: onTap,
         snackbarController: snackbarController,
       );
 
-  factory ArticleCover.exploreList({
+  factory ArticleCover.list({
     required MediaItemArticle article,
     required SnackbarController snackbarController,
     Color? coverColor,
     VoidCallback? onTap,
   }) =>
       ArticleCover._(
-        ArticleCoverType.exploreList,
+        ArticleCoverType.list,
         article: article,
         coverColor: coverColor,
         onTap: onTap,
@@ -217,15 +217,15 @@ class ArticleCover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (_type) {
-      case ArticleCoverType.exploreCarousel:
-        return _ArticleCoverExploreCarousel(
+      case ArticleCoverType.small:
+        return _ArticleCoverSmall(
           onTap: onTap,
           article: article,
           coverColor: coverColor,
           snackbarController: snackbarController!,
         );
-      case ArticleCoverType.exploreList:
-        return _ArticleCoverExploreList(
+      case ArticleCoverType.list:
+        return _ArticleCoverList(
           onTap: onTap,
           article: article,
           coverColor: coverColor,

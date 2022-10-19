@@ -99,13 +99,13 @@ class CategoryPage extends HookWidget {
     SnackbarController snackbarController,
   ) =>
       items[index].mapOrNull(
-        article: (data) => ArticleCover.exploreCarousel(
+        article: (data) => ArticleCover.small(
           article: data.article,
           onTap: () => context.navigateToArticle(data.article),
           coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
           snackbarController: snackbarController,
         ),
-        topic: (data) => TopicCover.exploreSmall(
+        topic: (data) => TopicCover.small(
           topic: data.topicPreview,
           onTap: () => context.navigateToTopic(data.topicPreview),
           snackbarController: snackbarController,

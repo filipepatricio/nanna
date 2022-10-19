@@ -1,7 +1,7 @@
 part of 'topic_cover.dart';
 
-class _TopicCoverExploreSmall extends StatelessWidget {
-  const _TopicCoverExploreSmall({
+class _TopicCoverSmall extends StatelessWidget {
+  const _TopicCoverSmall({
     required this.topic,
     required this.onTap,
     required this.snackbarController,
@@ -54,7 +54,7 @@ class _TopicCoverExploreSmall extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppDimens.s),
-            _TopicCoverContent.exploreSmall(
+            _TopicCoverContent.small(
               topic: topic,
               snackbarController: snackbarController,
             ),

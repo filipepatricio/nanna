@@ -38,7 +38,7 @@ class ArticleListAreaView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: area.articles
                 .map(
-                  (article) => ArticleCover.exploreList(
+                  (article) => ArticleCover.list(
                     article: article,
                     onTap: () => context.navigateToArticle(article),
                     coverColor: AppColors.mockedColors[_getColorIndex(article)],

@@ -23,7 +23,7 @@ part 'topic_cover_daily_brief.dart';
 part 'topic_cover_explore_small.dart';
 part 'topic_cover_other_brief_items_list.dart';
 
-enum TopicCoverType { bookmark, dailyBrief, exploreSmall, otherBriefItemsList }
+enum TopicCoverType { bookmark, dailyBrief, small, otherBriefItemsList }
 
 const _coverSizeToScreenWidthFactor = 0.26;
 
@@ -40,13 +40,13 @@ class TopicCover extends HookWidget {
         onTap: onTap,
       );
 
-  factory TopicCover.exploreSmall({
+  factory TopicCover.small({
     required TopicPreview topic,
     required SnackbarController snackbarController,
     Function()? onTap,
   }) =>
       TopicCover._(
-        type: TopicCoverType.exploreSmall,
+        type: TopicCoverType.small,
         topic: topic,
         onTap: onTap,
         snackbarController: snackbarController,
@@ -74,8 +74,8 @@ class TopicCover extends HookWidget {
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case TopicCoverType.exploreSmall:
-        return _TopicCoverExploreSmall(
+      case TopicCoverType.small:
+        return _TopicCoverSmall(
           topic: topic,
           snackbarController: snackbarController!,
           onTap: onTap,

@@ -185,7 +185,7 @@ class _GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TopicCover.exploreSmall(
+    return TopicCover.small(
       topic: topic,
       onTap: () => context.pushRoute(
         TopicPage(

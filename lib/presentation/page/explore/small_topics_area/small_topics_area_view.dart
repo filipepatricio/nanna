@@ -48,7 +48,7 @@ class SmallTopicsAreaView extends HookWidget {
           items: _items,
           itemWidth: width,
           itemHeight: height,
-          itemBuilder: (topic, _) => TopicCover.exploreSmall(
+          itemBuilder: (topic, _) => TopicCover.small(
             topic: topic,
             onTap: () => context.navigateToTopic(topic),
             snackbarController: snackbarController,
