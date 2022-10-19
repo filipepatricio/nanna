@@ -107,8 +107,8 @@ class AppDimens {
   /// 1.65
   static const exploreTopicCarouselSmallCoverAspectRatio = 1.25;
 
-  /// 0.72
-  static const exploreTopicCellSizeFactor = 0.72;
+  /// 0.50
+  static const exploreTopicCellSizeFactor = 0.50;
 
   /// 42
   static const audioControlButtonSize = AppDimens.xxl + AppDimens.xxs;

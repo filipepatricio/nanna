@@ -196,7 +196,7 @@ class _LoadingSection extends StatelessWidget {
       delegate: SliverChildListDelegate(
         const [
           ExploreLoadingView.pills(),
-          SizedBox(height: AppDimens.xc),
+          SizedBox(height: AppDimens.c),
           ExploreLoadingView.stream(),
         ],
       ),

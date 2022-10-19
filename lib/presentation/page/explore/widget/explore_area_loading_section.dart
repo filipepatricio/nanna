@@ -60,9 +60,9 @@ class _PillsArea extends StatelessWidget {
                 Row(
                   children: const [
                     _Pill(width: 120),
-                    SizedBox(width: AppDimens.m),
+                    SizedBox(width: AppDimens.s),
                     _Pill(width: 80),
-                    SizedBox(width: AppDimens.m),
+                    SizedBox(width: AppDimens.s),
                     _Pill(width: 100),
                   ],
                 ),
