@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'explore_content_area_dto.dt.freezed.dart';
 part 'explore_content_area_dto.dt.g.dart';
 
-@Freezed(unionKey: '__typename', fallbackUnion: unknownKey)
+@Freezed(unionKey: '__typename', fallbackUnion: unknownKey, toJson: false)
 class ExploreContentAreaDTO with _$ExploreContentAreaDTO {
   @FreezedUnionValue('ArticlesExploreArea')
   factory ExploreContentAreaDTO.articles(

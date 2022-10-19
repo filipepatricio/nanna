@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'onboarding_notifications_slide_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class OnboardingNotificationsSlideState with _$OnboardingNotificationsSlideState {
   @Implements<BuildState>()
   const factory OnboardingNotificationsSlideState.idle({required NotificationPreferences preferences}) =

@@ -84,7 +84,9 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     final categories = await _getFeaturedCategoriesUseCase();
     _latestIdleState = ExplorePageState.idle(
       [
-        ExploreItem.pills(categories),
+        ExploreItem.pills(
+          categories.map((category) => category.asCategoryWithItems()).toList(),
+        ),
         ...exploreContent.areas.map(ExploreItem.stream).toList(),
       ],
     );

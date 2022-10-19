@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'install_attribution_payload_dto.dt.freezed.dart';
 part 'install_attribution_payload_dto.dt.g.dart';
 
-@Freezed(unionKey: 'af_status')
+@Freezed(unionKey: 'af_status', toJson: false)
 class InstallAttributionPayloadDTO with _$InstallAttributionPayloadDTO {
   @FreezedUnionValue('Organic')
   factory InstallAttributionPayloadDTO.organic() = _InstallAttributionPayloadDTOOrganic;

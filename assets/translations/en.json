@@ -3,6 +3,7 @@
     "skip": "Skip",
     "continue": "Continue",
     "next": "Next",
+    "back": "Back",
     "signOut": "Sign out",
     "signUp": "Sign up",
     "cancel": "Cancel",
@@ -93,7 +94,6 @@
     "selectedArticles": "{} selected articles",
     "articles": "{} articles",
     "summaryHeadline": "Topic summary",
-    "goToExplore": "Go to explore",
     "articlesCount": "{} articles on this topic"
   },
   "date": {
@@ -287,7 +287,8 @@
   "continueListening": "Continue listening",
   "explore": {
     "title": "Explore",
-    "viewAll": "View All\n{}"
+    "viewAll": "View All\n{}",
+    "moreStoriesOnExplore": "More stories on Explore"
   },
   "search": {
     "emptyResults": "We couldn’t find any results matching '{}'",

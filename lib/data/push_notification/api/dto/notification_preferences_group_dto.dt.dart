@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'notification_preferences_group_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class NotificationPreferencesGroupDTO {
   NotificationPreferencesGroupDTO(this.name, this.channels);
 
@@ -11,6 +11,4 @@ class NotificationPreferencesGroupDTO {
       _$NotificationPreferencesGroupDTOFromJson(json);
   final String name;
   final List<NotificationChannelDTO> channels;
-
-  Map<String, dynamic> toJson() => _$NotificationPreferencesGroupDTOToJson(this);
 }

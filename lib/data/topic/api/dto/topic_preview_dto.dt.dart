@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'topic_preview_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class TopicPreviewDTO {
   TopicPreviewDTO(
     this.id,
@@ -35,6 +35,4 @@ class TopicPreviewDTO {
   final ImageDTO heroImage;
   final int entryCount;
   final bool visited;
-
-  Map<String, dynamic> toJson() => _$TopicPreviewDTOToJson(this);
 }

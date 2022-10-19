@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'topic_articles_select_view_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class TopicArticlesSelectViewState with _$TopicArticlesSelectViewState {
   @Implements<BuildState>()
   factory TopicArticlesSelectViewState.initializing() = _TopicArticlesSelectViewStateInitializing;

@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'main_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class MainState with _$MainState {
   @Implements<BuildState>()
   const factory MainState.init() = MainStateInit;

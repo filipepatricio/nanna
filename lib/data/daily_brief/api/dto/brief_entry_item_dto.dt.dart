@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.
 import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
@@ -15,7 +16,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'brief_entry_item_dto.dt.freezed.dart';
 part 'brief_entry_item_dto.dt.g.dart';
 
-@Freezed(unionKey: '__typename', unionValueCase: FreezedUnionCase.pascal, fallbackUnion: unknownKey)
+@Freezed(unionKey: '__typename', unionValueCase: FreezedUnionCase.pascal, fallbackUnion: unknownKey, toJson: false)
 class BriefEntryItemDTO with _$BriefEntryItemDTO {
   @FreezedUnionValue('Article')
   const factory BriefEntryItemDTO.article(
@@ -39,6 +40,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     ArticleProgressDTO progress,
     ArticleProgressState progressState,
     bool locked,
+    @JsonKey(name: 'primaryCategory') CategoryDTO category,
   ) = BriefEntryItemDTOArticle;
 
   @FreezedUnionValue('Topic')

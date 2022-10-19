@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'category_item_dto.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class CategoryItemDTO with _$CategoryItemDTO {
   factory CategoryItemDTO.topic(TopicPreviewDTO topicPreview) = _CategoryItemDTOTopic;
 

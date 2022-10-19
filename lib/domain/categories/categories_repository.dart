@@ -1,5 +1,6 @@
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_with_items.dart';
 
 abstract class CategoriesRepository {
   Future<List<Category>> getOnboardingCategories();
@@ -8,7 +9,7 @@ abstract class CategoriesRepository {
 
   Future<List<Category>> getFeaturedCategories();
 
-  Future<Category> getPaginatedCategory(String slug, int limit, int offset);
+  Future<CategoryWithItems> getPaginatedCategory(String slug, int limit, int offset);
 
   Stream<List<Category>> get categoriesStream;
 

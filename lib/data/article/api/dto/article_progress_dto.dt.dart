@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'article_progress_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ArticleProgressDTO {
   ArticleProgressDTO(
     this.audioPosition,
@@ -14,6 +14,4 @@ class ArticleProgressDTO {
   final int audioPosition;
   final int audioProgress;
   final int contentProgress;
-
-  Map<String, dynamic> toJson() => _$ArticleProgressDTOToJson(this);
 }

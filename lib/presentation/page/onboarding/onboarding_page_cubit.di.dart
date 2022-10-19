@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attribution_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/request_tracking_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_onboarding_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/data/onboarding_version.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/get_seen_onboarding_version_use_case.di.dart';

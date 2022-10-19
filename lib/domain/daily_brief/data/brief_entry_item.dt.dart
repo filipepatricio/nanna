@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'brief_entry_item.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class BriefEntryItem with _$BriefEntryItem {
   const factory BriefEntryItem.article({
     required MediaItem article,

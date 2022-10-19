@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'audio_playback_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AudioPlaybackState with _$AudioPlaybackState {
   const factory AudioPlaybackState.notInitialized() = _AudioPlaybackStateNotInitialized;
 

@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'analytics_event.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AnalyticsEvent with _$AnalyticsEvent {
   factory AnalyticsEvent._(String name, [Map<String, dynamic>? properties]) = _AnalyticsEvent;
 

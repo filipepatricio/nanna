@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'brief_section.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class BriefSection with _$BriefSection {
   const factory BriefSection.entries({
     required String title,

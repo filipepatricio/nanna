@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'bookmark_id_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class BookmarkIdDTO {
   BookmarkIdDTO(this.id);
 

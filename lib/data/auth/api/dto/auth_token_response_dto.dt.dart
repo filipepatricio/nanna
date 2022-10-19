@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'auth_token_response_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class AuthTokenResponseDTO {
   AuthTokenResponseDTO(
     this.successful,
@@ -15,6 +15,4 @@ class AuthTokenResponseDTO {
   final bool successful;
   final String? errorMessage;
   final AuthTokenDTO? tokens;
-
-  Map<String, dynamic> toJson() => _$AuthTokenResponseDTOToJson(this);
 }

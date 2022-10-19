@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bookmark_tile_cover.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class BookmarkTileCover with _$BookmarkTileCover {
   factory BookmarkTileCover.standard(Bookmark bookmark) = _BookmarkTileCoverStandard;
 

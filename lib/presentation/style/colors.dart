@@ -13,6 +13,7 @@ class AppColors {
   static const Color black10 = Color(0x1A000000);
   static const Color black05 = Color(0x0D000000);
   static const Color black04 = Color(0x0A000000);
+  static const Color accent = Color(0xFFC7F860);
   static const Color limeGreen = Color(0xffBBF383);
   static const Color limeGreen44 = Color(0x70BBF383);
   static const Color limeGreenDark = Color(0xff6AE476);
@@ -28,6 +29,7 @@ class AppColors {
   static const Color lightGrey = Color(0xffEEEEEC);
   static const Color neutralGrey = Color(0xff989898);
   static const Color rose = Color(0xffF3E5F4);
+  static const Color pastelBlue = Color(0xff72A1FD);
   static const Color pastelGreen = Color(0xffE4F1E2);
   static const Color darkGrey = Color(0xff6B7280);
   static const Color darkerGrey = Color(0xff5F5F5F);

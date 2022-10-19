@@ -2,6 +2,7 @@
 # import 'package:better_informed_mobile/data/gql/common/progress_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/cloudinary_image_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/publisher_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/category_fragment.graphql';
 
 fragment articleFragment on Article {
     __typename
@@ -39,5 +40,8 @@ fragment articleFragment on Article {
     }
     publisher {
         ...publisherFragment
+    }
+    primaryCategory {
+        ...categoryFragment
     }
 }

@@ -100,7 +100,7 @@ class FakeErrorExplorePageCubit extends Fake implements ExplorePageCubit {
 
 class FakeExplorePageCubitVisited extends Fake implements ExplorePageCubit {
   final _state = ExplorePageState.idle([
-    ExploreItem.pills([TestData.category]),
+    ExploreItem.pills([TestData.categoryWithItems]),
     ...TestData.exploreContentVisited.areas.map(ExploreItem.stream).toList(),
   ]);
 

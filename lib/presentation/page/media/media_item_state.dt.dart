@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'media_item_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class MediaItemState with _$MediaItemState {
   @Implements<BuildState>()
   const factory MediaItemState.initializing() = _MediaItemStateInitializing;

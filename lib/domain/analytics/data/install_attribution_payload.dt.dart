@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'install_attribution_payload.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class InstallAttributionPayload with _$InstallAttributionPayload {
   factory InstallAttributionPayload.organic() = _InstallAttributionPayloadOrganic;
 

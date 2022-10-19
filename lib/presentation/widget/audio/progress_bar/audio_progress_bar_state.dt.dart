@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'audio_progress_bar_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AudioProgressBarState with _$AudioProgressBarState {
   @Implements<BuildState>()
   factory AudioProgressBarState.initial() = _AudioProgressBarStateInitial;

@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
@@ -30,7 +30,7 @@ class RelatedContentSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.pastelGreen,
+      color: AppColors.background,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -48,8 +48,8 @@ class RelatedContentSection extends StatelessWidget {
               topicId: topicId,
             ),
           Padding(
-            padding: const EdgeInsets.all(AppDimens.l),
-            child: RelaxView.article(briefId),
+            padding: const EdgeInsets.all(AppDimens.m),
+            child: RelaxView.article(),
           ),
           SizedBox(
             height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,

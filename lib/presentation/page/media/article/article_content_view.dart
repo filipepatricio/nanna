@@ -2,6 +2,7 @@ import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
@@ -10,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
+import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -21,14 +23,14 @@ class ArticleContentView extends HookWidget {
   const ArticleContentView({
     required this.article,
     required this.articleContentKey,
-    required this.scrollToPosition,
+    required this.articleHeaderKey,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final Article article;
+  final Key articleHeaderKey;
   final Key articleContentKey;
-  final Function() scrollToPosition;
   final SnackbarController snackbarController;
 
   @override
@@ -41,108 +43,122 @@ class ArticleContentView extends HookWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(height: MediaQuery.of(context).padding.top),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-          child: _ArticleHeader(article: article.metadata),
+        _ArticleHeader(
+          key: articleHeaderKey,
+          article: article.metadata,
         ),
+        const SizedBox(height: AppDimens.l),
         Column(
+          key: articleContentKey,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              key: articleContentKey,
-              child: _articleContent(context),
-            ),
+            if (article.content.type == ArticleContentType.markdown)
+              ArticlePaywallView(
+                article: article,
+                snackbarController: snackbarController,
+                child: ArticleContentMarkdown(
+                  markdown: article.content.content,
+                  shareTextCallback: (quote) {
+                    showQuoteEditor(
+                      context,
+                      article.metadata,
+                      quote,
+                    );
+                  },
+                ),
+              )
+            else if (article.content.type == ArticleContentType.html)
+              ArticleContentHtml(
+                html: article.content.content,
+              ),
             if (showCredits)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
                 child: _Credits(credits: article.metadata.credits),
               ),
+            const SizedBox(height: AppDimens.xxc),
           ],
         ),
       ],
     );
   }
-
-  Widget? _articleContent(BuildContext context) {
-    if (article.content.type == ArticleContentType.markdown) {
-      return ArticlePaywallView(
-        article: article,
-        snackbarController: snackbarController,
-        child: ArticleContentMarkdown(
-          markdown: article.content.content,
-          shareTextCallback: (quote) {
-            showQuoteEditor(
-              context,
-              article.metadata,
-              quote,
-            );
-          },
-          scrollToPosition: scrollToPosition,
-        ),
-      );
-    } else if (article.content.type == ArticleContentType.html) {
-      return ArticleContentHtml(
-        html: article.content.content,
-        scrollToPosition: scrollToPosition,
-      );
-    }
-    return null;
-  }
 }
 
 class _ArticleHeader extends StatelessWidget {
-  const _ArticleHeader({required this.article, Key? key}) : super(key: key);
+  const _ArticleHeader({
+    required this.article,
+    Key? key,
+  }) : super(key: key);
 
   final MediaItemArticle article;
 
   @override
   Widget build(BuildContext context) {
-    final author = article.author;
+    final articleImage = article.image;
 
-    final metadataStyle = AppTypography.systemText.copyWith(color: AppColors.textGrey, height: 1.5);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const SizedBox(height: AppDimens.xxc),
-        if (author != null) ...[
-          Text(
-            LocaleKeys.article_byName.tr(args: [author]),
-            style: metadataStyle,
+    final author = article.author;
+    final metadataStyle = AppTypography.systemText.copyWith(height: 1.5);
+
+    return Container(
+      color: article.hasImage ? (article.category?.color ?? AppColors.background) : AppColors.background,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: AppDimens.l),
+                ArticleDottedInfo(
+                  article: article,
+                  isLight: false,
+                  showDate: false,
+                  showReadTime: false,
+                  textStyle: AppTypography.metadata1Medium,
+                ),
+                const SizedBox(height: AppDimens.m),
+                InformedMarkdownBody(
+                  markdown: article.title,
+                  baseTextStyle: AppTypography.h0SemiBold,
+                  highlightColor: AppColors.transparent,
+                ),
+                const SizedBox(height: AppDimens.xl),
+                if (author != null)
+                  Text(
+                    LocaleKeys.article_byName.tr(args: [author]),
+                    style: metadataStyle,
+                  ),
+                ArticleDottedInfo(
+                  article: article,
+                  isLight: false,
+                  showPublisher: false,
+                  showLogo: false,
+                  textStyle: metadataStyle,
+                  publisherMaxLines: 2,
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: AppDimens.m),
+          const SizedBox(height: AppDimens.xl),
+          if (articleImage != null)
+            Align(
+              alignment: Alignment.centerRight,
+              child: SizedBox(
+                height: AppDimens.articleHeaderImageHeight(context),
+                width: AppDimens.articleHeaderImageWidth(context),
+                child: ArticleImage(
+                  image: articleImage,
+                  cardColor: AppColors.background,
+                  fit: BoxFit.cover,
+                  darkeningMode: DarkeningMode.solid,
+                ),
+              ),
+            )
         ],
-        InformedMarkdownBody(
-          markdown: article.title,
-          baseTextStyle: AppTypography.h1ExtraBold,
-          highlightColor: AppColors.transparent,
-          shareTextCallback: (quote) {
-            showQuoteEditor(
-              context,
-              article,
-              quote,
-            );
-          },
-        ),
-        const SizedBox(height: AppDimens.m),
-        ArticleDottedInfo(
-          article: article,
-          isLight: false,
-          showLogo: false,
-          textStyle: metadataStyle,
-          color: metadataStyle.color,
-          publisherMaxLines: 2,
-        ),
-        const SizedBox(height: AppDimens.xl),
-        const Divider(
-          height: 0.5,
-          color: AppColors.dividerGreyLight,
-          indent: AppDimens.xxl,
-          endIndent: AppDimens.xxl,
-        ),
-        const SizedBox(height: AppDimens.xl),
-      ],
+      ),
     );
   }
 }

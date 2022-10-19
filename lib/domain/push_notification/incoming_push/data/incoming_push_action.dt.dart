@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'incoming_push_action.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class IncomingPushAction with _$IncomingPushAction {
   factory IncomingPushAction.refreshDailyBrief() = IncomingPushActionRefreshDailyBrief;
 

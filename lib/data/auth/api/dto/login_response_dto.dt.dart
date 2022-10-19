@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'login_response_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class LoginResponseDTO {
   LoginResponseDTO(
     this.successful,
@@ -20,6 +20,4 @@ class LoginResponseDTO {
   final String? errorMessage;
   final AuthTokenDTO? tokens;
   final UserDTO? account;
-
-  Map<String, dynamic> toJson() => _$LoginResponseDTOToJson(this);
 }

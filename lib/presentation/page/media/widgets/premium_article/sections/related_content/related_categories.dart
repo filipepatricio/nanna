@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -22,10 +22,10 @@ class RelatedCategories extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
           child: Text(
             LocaleKeys.article_relatedContent_exploreMoreCategories.tr(),
-            style: AppTypography.h1ExtraBold,
+            style: AppTypography.h1Medium,
           ),
         ),
         const SizedBox(height: AppDimens.m),
@@ -33,7 +33,7 @@ class RelatedCategories extends StatelessWidget {
           height: AppDimens.explorePillHeight,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
             itemBuilder: (context, index) => ExplorePill(
               title: featuredCategories[index].name,
               icon: featuredCategories[index].icon,
@@ -44,7 +44,7 @@ class RelatedCategories extends StatelessWidget {
 
                 context.navigateTo(
                   CategoryPageRoute(
-                    category: featuredCategories[index],
+                    category: featuredCategories[index].asCategoryWithItems(),
                   ),
                 );
               },

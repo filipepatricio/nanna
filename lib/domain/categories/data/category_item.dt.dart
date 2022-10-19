@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'category_item.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class CategoryItem with _$CategoryItem {
   factory CategoryItem.article(MediaItemArticle article) = _CategoryItemArticle;
 

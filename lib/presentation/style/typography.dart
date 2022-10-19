@@ -14,11 +14,11 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h0ExtraBold = TextStyle(
-    fontWeight: FontWeight.w800,
-    fontFamily: _fontFamilyLausanne,
-    fontSize: 36,
-    height: 1.23,
+  static const TextStyle h0SemiBold = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 32,
+    height: 1.18,
     color: AppColors.textPrimary,
   );
 
@@ -99,12 +99,20 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h3BoldItalic = TextStyle(
+  static const TextStyle h4BoldItalic = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: _fontFamilyLausanne,
     fontStyle: FontStyle.italic,
     fontSize: 16,
     height: 1.25,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h4Regular = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 16,
+    height: 1.5,
     color: AppColors.textPrimary,
   );
 

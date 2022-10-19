@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snackbar_message.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SnackbarMessage with _$SnackbarMessage {
   factory SnackbarMessage.simple({
     required String message,

@@ -25,6 +25,9 @@ class ArticleGraphqlDataSource implements ArticleApiDataSource {
     if (slug == MockDTO.premiumArticleWithAudio.slug) {
       return MockDTO.premiumArticleWithAudio;
     }
+    if (slug == MockDTO.premiumArticleWithoutImage.slug) {
+      return MockDTO.premiumArticleWithoutImage;
+    }
     return MockDTO.premiumArticle;
   }
 

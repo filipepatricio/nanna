@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'analytics_page.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AnalyticsPage with _$AnalyticsPage {
   factory AnalyticsPage._(String name, [Map<String, dynamic>? properties]) = _AnalyticsPage;
 

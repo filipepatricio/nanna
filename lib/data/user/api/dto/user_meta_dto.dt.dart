@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'user_meta_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class UserMetaDTO {
   UserMetaDTO(this.firstName, this.lastName, [this.avatarUrl = '']);
 
@@ -10,6 +10,4 @@ class UserMetaDTO {
   final String? avatarUrl;
   final String? firstName;
   final String? lastName;
-
-  Map<String, dynamic> toJson() => _$UserMetaDTOToJson(this);
 }

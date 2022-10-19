@@ -8,17 +8,27 @@ import 'package:better_informed_mobile/presentation/page/media/article_scroll_da
 import 'package:better_informed_mobile/presentation/page/media/media_item_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_actions_bar.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/animated_pointer_down.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_data.dart';
 import '../visual_test_utils.dart';
 
 void main() {
-  visualTest(MediaItemPage, (tester) async {
+  visualTest('${MediaItemPage}_(no_image)', (tester) async {
+    await tester.startApp(
+      initialRoute: MainPageRoute(
+        children: [
+          MediaItemPageRoute(slug: TestData.premiumArticleWithoutImage.slug),
+        ],
+      ),
+    );
+    await tester.matchGoldenFile();
+  });
+
+  visualTest('${MediaItemPage}_(image)', (tester) async {
     await tester.startApp(
       initialRoute: MainPageRoute(
         children: [
@@ -27,13 +37,10 @@ void main() {
       ),
     );
 
-    await tester.matchGoldenFile('media_item_page_(image)');
-    await tester.tap(find.byType(AnimatedPointerDown).last);
+    await tester.matchGoldenFile();
+    await tester.drag(find.byType(PremiumArticleView), const Offset(0, -2000));
     await tester.pumpAndSettle();
     await tester.matchGoldenFile('media_item_page_(content)');
-    await tester.flingFrom(const Offset(0, 400.0), const Offset(0, -20000), 100);
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile('media_item_page_(bottom)');
   });
 
   visualTest('${MediaItemPage}_(free_articles_warning)', (tester) async {
@@ -49,8 +56,6 @@ void main() {
         );
       },
     );
-    await tester.fling(find.byType(MediaItemPage), const Offset(0, -1000), 100);
-    await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
 
@@ -62,7 +67,7 @@ void main() {
         ],
       ),
     );
-    await tester.tap(find.byType(ArticleOutputModeToggleButton));
+    await tester.fling(find.byType(PremiumArticleView), const Offset(-2000, 0), 100);
     await tester.pumpAndSettle();
     await tester.matchGoldenFile();
   });
@@ -110,7 +115,7 @@ void main() {
         },
       );
 
-      await tester.fling(find.byType(MediaItemPage), const Offset(0, -10000), 100);
+      await tester.fling(find.byType(PremiumArticleView), const Offset(0, -10000), 100);
       await tester.pumpAndSettle();
       await tester.matchGoldenFile();
     },
@@ -135,7 +140,7 @@ void main() {
         },
       );
 
-      await tester.fling(find.byType(MediaItemPage), const Offset(0, -10000), 100);
+      await tester.fling(find.byType(PremiumArticleView), const Offset(0, -10000), 100);
       await tester.pumpAndSettle();
       await tester.matchGoldenFile();
     },
@@ -194,9 +199,6 @@ class FakePremiumArticleViewCubitFromBrief extends Fake implements PremiumArticl
 
   @override
   Future<void> trackReadingProgress() async {}
-
-  @override
-  void setupScrollData(_, __) {}
 
   @override
   void updateScrollData(_, __) {}

@@ -532,6 +532,9 @@ type Expert {
   """The expert's name"""
   name: String!
 
+  """The expert's real name"""
+  realName: String!
+
   """Link to the expert's twitter profile"""
   twitter: String
 
@@ -733,6 +736,9 @@ type RootMutationType {
   """Login via OAuth provider provided identity token"""
   signIn(idToken: String, information: UserMeta, provider: String!, token: String): SignInPayload
 
+  """Ensures that user's subscription info is in sync"""
+  subscriptionPurchased(productId: String): SubscriptionPurchasedResponse
+
   """Mark category with given id as non-preferred"""
   unpreferCategory(categoryId: UUID!): UpdatePreferredCategoriesResponse
 
@@ -915,6 +921,11 @@ type StatusMessage {
 
   """Markdown-formatted message"""
   message: String
+}
+
+"""Response for account deletion"""
+type SubscriptionPurchasedResponse {
+  successful: Boolean!
 }
 
 """One highlight in the summary"""
@@ -1104,4 +1115,3 @@ as UTF-8 character sequences. The UUID4 type is most often used to represent
 unique human-readable ID strings.
 """
 scalar UUID
-

@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bookmark_data_dto.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class BookmarkDataDTO with _$BookmarkDataDTO {
   factory BookmarkDataDTO.topic(TopicDTO topic) = _BookmarkDataDTOTopic;
 

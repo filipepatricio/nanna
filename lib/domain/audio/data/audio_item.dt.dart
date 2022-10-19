@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'audio_item.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AudioItem with _$AudioItem {
   factory AudioItem({
     required String id,

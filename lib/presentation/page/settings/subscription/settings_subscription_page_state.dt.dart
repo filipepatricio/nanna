@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'settings_subscription_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SettingsSubscriptionPageState with _$SettingsSubscriptionPageState {
   @Implements<BuildState>()
   const factory SettingsSubscriptionPageState.init() = _SettingsSubscriptionPageStateInit;

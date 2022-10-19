@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'token_data_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class TokenDataDTO {
   TokenDataDTO(this.uuid, this.email, this.firstName, this.lastName);
 

@@ -10,6 +10,7 @@ class AuthTokenEntity {
   });
 
   factory AuthTokenEntity.fromJson(Map<String, dynamic> json) => _$AuthTokenEntityFromJson(json);
+
   final String accessToken;
   final String refreshToken;
 

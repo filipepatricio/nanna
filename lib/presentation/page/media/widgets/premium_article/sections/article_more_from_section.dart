@@ -25,16 +25,15 @@ class ArticleMoreFromSection extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Divider(height: 0),
         Padding(
-          padding: const EdgeInsets.all(AppDimens.l),
+          padding: const EdgeInsets.symmetric(vertical: AppDimens.l, horizontal: AppDimens.m),
           child: Text(
             title,
-            style: AppTypography.h1ExtraBold,
+            style: AppTypography.h1Medium,
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
           child: Column(
             children: items
                 .expand(

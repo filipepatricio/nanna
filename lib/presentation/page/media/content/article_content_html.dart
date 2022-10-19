@@ -11,11 +11,10 @@ const _listElementTag = 'li';
 class ArticleContentHtml extends HookWidget {
   const ArticleContentHtml({
     required this.html,
-    required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
+
   final String html;
-  final Function() scrollToPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +23,6 @@ class ArticleContentHtml extends HookWidget {
         _makeHtmlContentResponsive(html),
       ),
       [html],
-    );
-
-    useEffect(
-      () {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => scrollToPosition(),
-        );
-      },
-      [],
     );
 
     return Html.fromDom(
@@ -79,12 +69,12 @@ String _makeHtmlContentResponsive(String htmlContent) {
                 margin: 0;
               }
               ol {
-                padding-left: 24px;
-                padding-right: 24px;
+                padding-left: 16px;
+                padding-right: 16px;
               }
               ul {
-                padding-left: 24px;
-                padding-right: 24px;
+                padding-left: 16px;
+                padding-right: 16px;
               }
               li {
                 padding-top: 6px;
@@ -92,15 +82,15 @@ String _makeHtmlContentResponsive(String htmlContent) {
               }
               p {
                 margin: 0;
-                padding-left: 24px;
-                padding-right: 24px;
+                padding-left: 16px;
+                padding-right: 16px;
                 padding-bottom: 18px;
               }
               h1, h2, h3, h4, h5, h6 {
                 line-height: 24px;
                 font-family: "Plus Jakarta Sans";
-                padding-left: 24px;
-                padding-right: 24px;
+                padding-left: 16px;
+                padding-right: 16px;
               }
               strong{
                 line-height: 26px;

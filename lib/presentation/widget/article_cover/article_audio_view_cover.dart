@@ -68,7 +68,7 @@ class _ArticleImageOverlay extends StatelessWidget {
     final hasImage = article.hasImage;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.xl, AppDimens.m, AppDimens.m),
+      padding: const EdgeInsets.fromLTRB(AppDimens.m, AppDimens.l, AppDimens.m, AppDimens.m),
       height: height,
       width: width,
       child: Column(

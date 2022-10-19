@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'publisher_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class PublisherDTO {
   PublisherDTO(
     this.name,
@@ -15,6 +15,4 @@ class PublisherDTO {
   final String name;
   final ImageDTO? darkLogo;
   final ImageDTO? lightLogo;
-
-  Map<String, dynamic> toJson() => _$PublisherDTOToJson(this);
 }

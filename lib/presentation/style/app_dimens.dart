@@ -53,8 +53,8 @@ class AppDimens {
   /// 80.0
   static const xxxc = 80.0;
 
-  /// 18.0
-  static const backArrowSize = 18.0;
+  /// 16.0
+  static const backArrowSize = 16.0;
 
   /// 44.0
   static const settingsItemHeight = 44.0;
@@ -128,10 +128,10 @@ class AppDimens {
   static double topicViewHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   /// Full screen article image height
-  static double articleHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
+  static double articleHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height * .8;
 
   /// Full screen article image width
-  static double articleHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width;
+  static double articleHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width - AppDimens.m;
 
   /// The smallest value from 75% of screen height and 500
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);

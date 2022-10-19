@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'quote_editor_view_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class QuoteEditorViewState with _$QuoteEditorViewState {
   @Implements<BuildState>()
   factory QuoteEditorViewState(

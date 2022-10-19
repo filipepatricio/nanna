@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snackbar_parent_view_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SnackbarParentViewState with _$SnackbarParentViewState {
   const SnackbarParentViewState._();
 
