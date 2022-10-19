@@ -105,11 +105,13 @@ class TopicOwnerPage extends HookWidget {
                                   ? const SizedBox.shrink()
                                   : OwnerTopics(
                                       topics: state.topics,
+                                      snackbarController: snackbarController,
                                     ),
                               idleEditor: (state) => state.topics.isEmpty
                                   ? const SizedBox.shrink()
                                   : OwnerTopics(
                                       topics: state.topics,
+                                      snackbarController: snackbarController,
                                     ),
                               orElse: () => const SizedBox.shrink(),
                             ),

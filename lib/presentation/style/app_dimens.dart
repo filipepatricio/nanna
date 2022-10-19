@@ -102,7 +102,10 @@ class AppDimens {
   static const exploreTopicCarouselSmallCoverWidthFactor = 0.43;
 
   /// 1.65
-  static const exploreTopicCarouselSmallCoverAspectRatio = 2.05;
+  static const exploreArticleCarouselSmallCoverAspectRatio = 2.05;
+
+  /// 1.65
+  static const exploreTopicCarouselSmallCoverAspectRatio = 1.25;
 
   /// 0.72
   static const exploreTopicCellSizeFactor = 0.72;
@@ -140,7 +143,7 @@ class AppDimens {
   static const articleSmallImageCoverHeight = 322;
 
   /// 2
-  static const articleSmallImageCoverBorderRadius = 2.0;
+  static const smallImageCoverBorderRadius = 2.0;
 
   /// 148
   static const topicSmallImageCoverWidth = 148.0;

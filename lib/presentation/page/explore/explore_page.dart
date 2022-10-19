@@ -278,8 +278,14 @@ class _Area extends HookWidget {
             area: area,
             isHighlighted: area.isHighlighted,
           ),
-          smallTopics: (area) => SmallTopicsAreaView(area: area),
-          highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),
+          smallTopics: (area) => SmallTopicsAreaView(
+            area: area,
+            snackbarController: snackbarController,
+          ),
+          highlightedTopics: (area) => HighlightedTopicsAreaView(
+            area: area,
+            snackbarController: snackbarController,
+          ),
           unknown: (_) => const SizedBox.shrink(),
         ),
       ),

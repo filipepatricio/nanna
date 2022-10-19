@@ -35,7 +35,7 @@ class RelatedContent extends HookWidget {
       [MediaQuery.of(context).size],
     );
     final tileHeight = useMemoized(
-      () => tileWidth * AppDimens.exploreTopicCarouselSmallCoverAspectRatio,
+      () => tileWidth * AppDimens.exploreArticleCarouselSmallCoverAspectRatio,
       [MediaQuery.of(context).size],
     );
 
@@ -84,6 +84,7 @@ class RelatedContent extends HookWidget {
                           topic: topic.topicPreview,
                           width: tileWidth,
                           briefId: briefId,
+                          snackbarController: snackbarController,
                         ),
                       ) ??
                       const SizedBox.shrink();
@@ -145,6 +146,7 @@ class _Topic extends StatelessWidget {
     required this.topic,
     required this.width,
     required this.onItemTap,
+    required this.snackbarController,
     this.briefId,
     Key? key,
   }) : super(key: key);
@@ -153,6 +155,7 @@ class _Topic extends StatelessWidget {
   final String? briefId;
   final double width;
   final VoidCallback onItemTap;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +172,7 @@ class _Topic extends StatelessWidget {
               briefId: briefId,
             );
           },
+          snackbarController: snackbarController,
         ),
       ),
     );

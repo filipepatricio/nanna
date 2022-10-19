@@ -33,7 +33,7 @@ class ArticleAreaView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor;
-    final height = width * AppDimens.exploreTopicCarouselSmallCoverAspectRatio;
+    final height = width * AppDimens.exploreArticleCarouselSmallCoverAspectRatio;
 
     return Column(
       mainAxisSize: MainAxisSize.min,

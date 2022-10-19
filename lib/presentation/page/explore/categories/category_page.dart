@@ -108,7 +108,7 @@ class CategoryPage extends HookWidget {
         topic: (data) => TopicCover.exploreSmall(
           topic: data.topicPreview,
           onTap: () => context.navigateToTopic(data.topicPreview),
-          hasBackgroundColor: false,
+          snackbarController: snackbarController,
         ),
       );
 }

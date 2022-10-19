@@ -18,11 +18,14 @@ class _TopicCoverContent extends StatelessWidget {
         topic: topic,
       );
 
-  factory _TopicCoverContent.exploreSmall({required TopicPreview topic, bool hasBackgroundColor = false}) =>
+  factory _TopicCoverContent.exploreSmall({
+    required TopicPreview topic,
+    required SnackbarController snackbarController,
+  }) =>
       _TopicCoverContent._(
         type: TopicCoverType.exploreSmall,
         topic: topic,
-        hasBackgroundColor: hasBackgroundColor,
+        snackbarController: snackbarController,
       );
 
   factory _TopicCoverContent.otherBriefItemsList({required TopicPreview topic, required double coverSize}) =>
@@ -36,16 +39,16 @@ class _TopicCoverContent extends StatelessWidget {
     required this.topic,
     required this.type,
     this.mode = Brightness.dark,
-    this.hasBackgroundColor = false,
     this.coverSize,
+    this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final TopicCoverType type;
   final Brightness mode;
-  final bool hasBackgroundColor;
   final double? coverSize;
+  final SnackbarController? snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,10 @@ class _TopicCoverContent extends StatelessWidget {
       case TopicCoverType.exploreLarge:
         return _CoverContentExploreLarge(topic: topic);
       case TopicCoverType.exploreSmall:
-        return _CoverContentExploreSmall(topic: topic, hasBackgroundColor: hasBackgroundColor);
+        return _CoverContentExploreSmall(
+          topic: topic,
+          snackbarController: snackbarController!,
+        );
       case TopicCoverType.otherBriefItemsList:
         return _CoverContentOtherBriefItemsList(topic: topic, coverSize: coverSize);
     }
@@ -217,52 +223,34 @@ class _CoverContentExploreLarge extends StatelessWidget {
 class _CoverContentExploreSmall extends StatelessWidget {
   const _CoverContentExploreSmall({
     required this.topic,
-    this.hasBackgroundColor = false,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final bool hasBackgroundColor;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
-    const titleMaxLines = 2;
-    const titleStyle = AppTypography.metadata1ExtraBold;
-    final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const SizedBox(height: AppDimens.s),
-        TopicOwnerAvatar(
-          owner: topic.owner,
-          withImage: false,
-          imageSize: AppDimens.zero,
-          textStyle: AppTypography.caption1Medium,
-          mode: Brightness.dark,
-        ),
-        const SizedBox(height: AppDimens.s),
-        SizedBox(
-          height: titleHeight,
-          child: InformedMarkdownBody(
-            markdown: topic.title,
-            maxLines: titleMaxLines,
-            baseTextStyle: titleStyle,
+        Expanded(
+          child: TopicOwnerAvatar(
+            owner: topic.owner,
+            withImage: true,
+            imageSize: AppDimens.l,
+            textStyle: AppTypography.b3Regular.copyWith(
+              color: AppColors.textGrey,
+              height: 1.1,
+            ),
+            mode: Brightness.dark,
           ),
         ),
-        const SizedBox(height: AppDimens.s),
-        Wrap(
-          children: [
-            UpdatedLabel(
-              withPrefix: false,
-              dateTime: topic.lastUpdatedAt,
-              mode: Brightness.dark,
-              textStyle: AppTypography.caption1Medium.copyWith(
-                height: 1.2,
-                color: hasBackgroundColor ? null : AppColors.textGrey,
-              ),
-            ),
-          ],
+        BookmarkButton.topic(
+          topic: topic,
+          snackbarController: snackbarController,
         ),
       ],
     );

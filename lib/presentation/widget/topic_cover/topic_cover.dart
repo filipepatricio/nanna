@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookm
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/image/topic_cover_image.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
 import 'package:better_informed_mobile/presentation/widget/updated_label.dart';
@@ -47,12 +48,16 @@ class TopicCover extends HookWidget {
         onTap: onTap,
       );
 
-  factory TopicCover.exploreSmall({required TopicPreview topic, bool hasBackgroundColor = false, Function()? onTap}) =>
+  factory TopicCover.exploreSmall({
+    required TopicPreview topic,
+    required SnackbarController snackbarController,
+    Function()? onTap,
+  }) =>
       TopicCover._(
         type: TopicCoverType.exploreSmall,
         topic: topic,
         onTap: onTap,
-        hasBackgroundColor: hasBackgroundColor,
+        snackbarController: snackbarController,
       );
 
   factory TopicCover.otherBriefItemsList({required TopicPreview topic, Function()? onTap}) => TopicCover._(
@@ -64,15 +69,15 @@ class TopicCover extends HookWidget {
   const TopicCover._({
     required this.topic,
     required this.type,
-    this.hasBackgroundColor = false,
     this.onTap,
+    this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final TopicCoverType type;
-  final bool hasBackgroundColor;
   final Function()? onTap;
+  final SnackbarController? snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +85,7 @@ class TopicCover extends HookWidget {
       case TopicCoverType.exploreSmall:
         return _TopicCoverExploreSmall(
           topic: topic,
-          hasBackgroundColor: hasBackgroundColor,
+          snackbarController: snackbarController!,
           onTap: onTap,
         );
       case TopicCoverType.exploreLarge:
@@ -91,7 +96,6 @@ class TopicCover extends HookWidget {
       case TopicCoverType.bookmark:
         return _TopicCoverBookmark(
           topic: topic,
-          hasBackgroundColor: hasBackgroundColor,
           onTap: onTap,
         );
       case TopicCoverType.dailyBrief:

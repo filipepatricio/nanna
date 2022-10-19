@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -37,6 +38,7 @@ class TopicsSeeAllPage extends HookWidget {
     final cubit = useCubit<TopicsSeeAllPageCubit>();
     final state = useCubitBuilder<TopicsSeeAllPageCubit, TopicsSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -52,20 +54,24 @@ class TopicsSeeAllPage extends HookWidget {
 
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: title),
-      body: AudioPlayerBannerWrapper(
-        layout: AudioPlayerBannerLayout.column,
-        child: NextPageLoadExecutor(
-          enabled: shouldListen,
-          onNextPageLoad: cubit.loadNextPage,
-          scrollController: scrollController,
-          child: TabBarListener(
-            currentPage: context.routeData,
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: AudioPlayerBannerWrapper(
+          layout: AudioPlayerBannerLayout.column,
+          child: NextPageLoadExecutor(
+            enabled: shouldListen,
+            onNextPageLoad: cubit.loadNextPage,
             scrollController: scrollController,
-            child: _Body(
-              title: title,
-              pageStorageKey: pageStorageKey,
+            child: TabBarListener(
+              currentPage: context.routeData,
               scrollController: scrollController,
-              state: state,
+              child: _Body(
+                title: title,
+                pageStorageKey: pageStorageKey,
+                scrollController: scrollController,
+                state: state,
+                snackbarController: snackbarController,
+              ),
             ),
           ),
         ),
@@ -80,12 +86,14 @@ class _Body extends StatelessWidget {
     required this.state,
     required this.scrollController,
     required this.pageStorageKey,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final String title;
   final TopicsSeeAllPageState state;
   final ScrollController scrollController;
   final PageStorageKey pageStorageKey;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +104,7 @@ class _Body extends StatelessWidget {
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
+        snackbarController: snackbarController,
         withLoader: false,
       ),
       loadingMore: (state) => _TopicGrid(
@@ -103,6 +112,7 @@ class _Body extends StatelessWidget {
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
+        snackbarController: snackbarController,
         withLoader: true,
       ),
       allLoaded: (state) => _TopicGrid(
@@ -110,6 +120,7 @@ class _Body extends StatelessWidget {
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
+        snackbarController: snackbarController,
         withLoader: false,
       ),
       orElse: () => const SizedBox.shrink(),
@@ -124,6 +135,7 @@ class _TopicGrid extends StatelessWidget {
     required this.topics,
     required this.scrollController,
     required this.withLoader,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final String title;
@@ -131,6 +143,7 @@ class _TopicGrid extends StatelessWidget {
   final List<TopicPreview> topics;
   final ScrollController scrollController;
   final bool withLoader;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +163,7 @@ class _TopicGrid extends StatelessWidget {
               mainAxisSpacing: AppDimens.m,
               itemBuilder: (context, index) => _GridItem(
                 topic: topics[index],
+                snackbarController: snackbarController,
               ),
             ),
           ),
@@ -163,9 +177,11 @@ class _TopicGrid extends StatelessWidget {
 class _GridItem extends StatelessWidget {
   const _GridItem({
     required this.topic,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final TopicPreview topic;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -176,6 +192,7 @@ class _GridItem extends StatelessWidget {
           topicSlug: topic.slug,
         ),
       ),
+      snackbarController: snackbarController,
     );
   }
 }

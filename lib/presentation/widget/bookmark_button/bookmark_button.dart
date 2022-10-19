@@ -43,7 +43,7 @@ class BookmarkButton extends HookWidget {
 
   BookmarkButton.topic({
     required TopicPreview topic,
-    required Color color,
+    Color color = AppColors.charcoal,
     String? briefId,
     SnackbarController? snackbarController,
     double? iconSize,

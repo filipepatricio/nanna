@@ -63,7 +63,7 @@ class _ArticleImageCover extends StatelessWidget {
       children: [
         Positioned.fill(
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppDimens.articleSmallImageCoverBorderRadius),
+            borderRadius: BorderRadius.circular(AppDimens.smallImageCoverBorderRadius),
             child: article.hasImage
                 ? ArticleImage(
                     image: article.image!,
