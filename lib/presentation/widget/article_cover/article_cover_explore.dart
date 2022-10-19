@@ -121,19 +121,16 @@ class _ArticleCoverExploreList extends HookWidget {
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  CategoryPill(
-                    title: article.category.name,
-                    color: article.category.color,
-                  ),
-                  const SizedBox(width: AppDimens.s),
-                  ArticleDottedInfo(
-                    article: article,
-                    isLight: false,
-                    showLogo: false,
-                    showPublisher: false,
-                    showDate: false,
-                    textStyle: AppTypography.caption1Medium,
-                    color: AppColors.textGrey,
+                  if (!article.visited) ...[
+                    CategoryPill(
+                      title: article.category.name,
+                      color: article.category.color,
+                    ),
+                    const SizedBox(width: AppDimens.s),
+                  ],
+                  ArticleTimeReadLabel(
+                    visited: article.visited,
+                    timeToRead: article.timeToRead,
                   ),
                 ],
               ),
@@ -214,7 +211,7 @@ class _ArticleCoverContent extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _TimeToRead(
+            ArticleTimeReadLabel(
               visited: article.visited,
               timeToRead: article.timeToRead,
             ),
@@ -230,45 +227,5 @@ class _ArticleCoverContent extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class _TimeToRead extends StatelessWidget {
-  const _TimeToRead({
-    required this.visited,
-    required this.timeToRead,
-    Key? key,
-  }) : super(key: key);
-
-  final bool visited;
-  final int? timeToRead;
-
-  @override
-  Widget build(BuildContext context) {
-    return visited
-        ? Row(
-            children: [
-              const VisitedCheck(),
-              const SizedBox(width: AppDimens.s),
-              Text(
-                LocaleKeys.article_read.tr(),
-                style: AppTypography.caption1Medium.copyWith(
-                  height: 1.2,
-                  color: AppColors.textGrey,
-                ),
-              )
-            ],
-          )
-        : Container(
-            child: timeToRead == null
-                ? const SizedBox()
-                : Text(
-                    LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
-                    style: AppTypography.caption1Medium.copyWith(
-                      height: 1.2,
-                      color: AppColors.textGrey,
-                    ),
-                  ),
-          );
   }
 }
