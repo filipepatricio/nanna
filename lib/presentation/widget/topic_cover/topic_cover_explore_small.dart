@@ -36,7 +36,7 @@ class _TopicCoverExploreSmall extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: Container(
-                      color: AppColors.blue, //TODO: add topic primaryCategory color
+                      color: topic.category.color,
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: AppDimens.xs),
