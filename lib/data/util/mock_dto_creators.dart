@@ -427,6 +427,7 @@ class MockDTO {
       _summaryCardShort,
     ],
     false,
+    category,
   );
 
   static final _topicPublisherInformation = TopicPublisherInformationDTO(
@@ -1191,6 +1192,7 @@ extension on TopicDTO {
     List<EntryDTO>? entries,
     List<SummaryCardDTO>? summaryCards,
     bool? visited,
+    CategoryDTO? category,
   }) {
     return TopicDTO(
       id ?? this.id,
@@ -1206,6 +1208,7 @@ extension on TopicDTO {
       entries ?? this.entries,
       summaryCards ?? this.summaryCards,
       visited ?? this.visited,
+      category ?? this.category,
     );
   }
 
@@ -1223,6 +1226,7 @@ extension on TopicDTO {
       heroImage,
       entries.length,
       visited,
+      category,
     );
   }
 
@@ -1240,6 +1244,7 @@ extension on TopicDTO {
       heroImage,
       entries.length,
       visited,
+      category,
     );
   }
 }

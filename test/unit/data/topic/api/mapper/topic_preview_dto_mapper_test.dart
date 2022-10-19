@@ -8,21 +8,25 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../generated_mocks.mocks.dart';
+import '../../../../../test_data.dart';
 
 void main() {
   late MockTopicOwnerDTOMapper topicOwnerDTOMapper;
   late MockTopicPublisherInformationDTOMapper topicPublisherInformationDTOMapper;
   late MockImageDTOMapper imageDTOMapper;
   late TopicPreviewDTOMapper mapper;
+  late MockCategoryDTOMapper categoryDTOMapper;
 
   setUp(() {
     topicOwnerDTOMapper = MockTopicOwnerDTOMapper();
     topicPublisherInformationDTOMapper = MockTopicPublisherInformationDTOMapper();
     imageDTOMapper = MockImageDTOMapper();
+    categoryDTOMapper = MockCategoryDTOMapper();
     mapper = TopicPreviewDTOMapper(
       topicOwnerDTOMapper,
       topicPublisherInformationDTOMapper,
       imageDTOMapper,
+      categoryDTOMapper,
     );
   });
 
@@ -45,11 +49,13 @@ void main() {
       heroImage,
       3,
       false,
+      TestData.category,
     );
 
     when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
     when(topicPublisherInformationDTOMapper(any)).thenAnswer((realInvocation) => publisherInformation);
     when(imageDTOMapper(dto.heroImage)).thenAnswer((realInvocation) => heroImage);
+    when(categoryDTOMapper(dto.category)).thenAnswer((realInvocation) => TestData.category);
 
     final actual = mapper(dto);
 

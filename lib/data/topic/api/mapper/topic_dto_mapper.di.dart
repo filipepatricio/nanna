@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
@@ -18,12 +19,14 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
     this._summaryCardDTOMapper,
     this._topicPublisherInformationDTOMapper,
     this._topicOwnerDTOMapper,
+    this._categoryDTOMapper,
   );
   final ImageDTOMapper _imageDTOMapper;
   final EntryDTOMapper _entryDTOMapper;
   final SummaryCardDTOMapper _summaryCardDTOMapper;
   final TopicPublisherInformationDTOMapper _topicPublisherInformationDTOMapper;
   final TopicOwnerDTOMapper _topicOwnerDTOMapper;
+  final CategoryDTOMapper _categoryDTOMapper;
 
   @override
   Topic call(TopicDTO data) {
@@ -41,6 +44,7 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
       entries: data.entries.map<Entry>(_entryDTOMapper).toList(),
       topicSummaryList: data.summaryCards.map<TopicSummary>(_summaryCardDTOMapper).toList(),
       visited: data.visited,
+      category: _categoryDTOMapper(data.category),
     );
   }
 }
