@@ -49,7 +49,7 @@ void main() {
         matching: find.byType(TopicCover),
       );
 
-      expect(topicCoverFinder, findsNWidgets(2));
+      expect(topicCoverFinder, findsNWidgets(3));
       await tester.ensureVisible(topicCoverFinder.first);
       await tester.pumpAndSettle();
       await tester.tap(topicCoverFinder.first);
@@ -63,8 +63,7 @@ void main() {
     'can navigate from explore to pill',
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
-
-      expect(find.byType(CategoryPill), findsNWidgets(12));
+      expect(find.byType(CategoryPill), findsAtLeastNWidgets(8));
       await tester.tap(find.byType(CategoryPill).first);
       await tester.pumpAndSettle();
       expect(find.byType(CategoryPage), findsOneWidget);
