@@ -107,7 +107,6 @@ class ExplorePage extends HookWidget {
                     ),
                     state.maybeMap(
                       initialLoading: (_) => const _LoadingSection(),
-                      error: (_) => const _LoadingSection(),
                       orElse: () => const SliverToBoxAdapter(),
                     ),
                     state.maybeMap(

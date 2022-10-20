@@ -44,7 +44,6 @@ class PremiumArticleView extends HookWidget {
     final cubit = useCubit<PremiumArticleViewCubit>();
     final state = useCubitBuilder(cubit);
     final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
-    final articleOutputModeNotifier = useMemoized(() => ValueNotifier(articleOutputMode));
     final mainController = useScrollController(keepScrollOffset: true);
     final actionsBarColorModeNotifier = useMemoized(
       () => ValueNotifier(
@@ -58,7 +57,7 @@ class PremiumArticleView extends HookWidget {
       () {
         cubit.initialize(article, briefId, topicSlug, topicId);
       },
-      [horizontalPageController, articleOutputModeNotifier, article],
+      [article],
     );
 
     useCubitListener<PremiumArticleViewCubit, PremiumArticleViewState>(
@@ -74,7 +73,7 @@ class PremiumArticleView extends HookWidget {
                   AutoSizeText(
                     data.message,
                     maxLines: 2,
-                    style: AppTypography.b2Regular.copyWith(color: AppColors.charcoal),
+                    style: AppTypography.b2Regular.copyWith(color: AppColors.textPrimary),
                   ),
                   GestureDetector(
                     onTap: () => context.pushRoute(const SubscriptionPageRoute()),
@@ -82,7 +81,7 @@ class PremiumArticleView extends HookWidget {
                       LocaleKeys.subscription_snackbar_link.tr(),
                       maxLines: 1,
                       style: AppTypography.b2Bold.copyWith(
-                        color: AppColors.charcoal,
+                        color: AppColors.textPrimary,
                         decoration: TextDecoration.underline,
                       ),
                     ),
@@ -113,10 +112,10 @@ class PremiumArticleView extends HookWidget {
         actionsBarColorModeNotifier: actionsBarColorModeNotifier,
         onBackPressed: () => context.popRoute(cubit.articleProgress),
       ),
-      body: ScrollsToTop(
-        onScrollsToTop: (_) => mainController.animateToStart(),
-        child: SnackbarParentView(
-          controller: snackbarController,
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: ScrollsToTop(
+          onScrollsToTop: (_) => mainController.animateToStart(),
           child: PremiumArticleAudioCubitProvider(
             article: article.metadata,
             audioCubitBuilder: (audioCubit) => Stack(
@@ -129,11 +128,9 @@ class PremiumArticleView extends HookWidget {
                   onPageChanged: (page) {
                     switch (page) {
                       case 0:
-                        articleOutputModeNotifier.value = ArticleOutputMode.read;
                         actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.custom;
                         break;
                       case 1:
-                        articleOutputModeNotifier.value = ArticleOutputMode.audio;
                         actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.background;
                         break;
                     }
