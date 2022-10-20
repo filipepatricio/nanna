@@ -20,8 +20,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 part 'topic_cover_bookmark.dart';
 part 'topic_cover_content.dart';
 part 'topic_cover_daily_brief.dart';
-part 'topic_cover_explore_small.dart';
 part 'topic_cover_other_brief_items_list.dart';
+part 'topic_cover_small.dart';
 
 enum TopicCoverType { bookmark, dailyBrief, small, otherBriefItemsList }
 

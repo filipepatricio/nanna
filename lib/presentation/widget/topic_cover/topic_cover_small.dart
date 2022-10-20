@@ -39,12 +39,12 @@ class _TopicCoverSmall extends StatelessWidget {
                       color: topic.category.color,
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.xs),
+                          padding: const EdgeInsets.all(AppDimens.m),
                           child: Text(
-                            topic.title,
+                            topic.strippedTitle,
                             maxLines: 2,
                             textAlign: TextAlign.center,
-                            style: AppTypography.subH1Medium.copyWith(height: 1.3),
+                            style: AppTypography.subH0Medium.copyWith(height: 1.3),
                           ),
                         ),
                       ),

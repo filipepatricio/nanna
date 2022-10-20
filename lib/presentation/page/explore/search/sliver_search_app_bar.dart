@@ -104,7 +104,7 @@ class _SearchBar extends HookWidget {
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: LocaleKeys.common_search.tr(),
-          hintStyle: AppTypography.b2SemiBold.copyWith(
+          hintStyle: AppTypography.b2Medium.copyWith(
             color: AppColors.textGrey,
             height: 1.05,
           ),
@@ -127,7 +127,7 @@ class _SearchBar extends HookWidget {
                 )
               : const SizedBox.shrink(),
         ),
-        style: AppTypography.b2SemiBold.copyWith(
+        style: AppTypography.b2Medium.copyWith(
           color: AppColors.charcoal,
           height: 1,
         ),

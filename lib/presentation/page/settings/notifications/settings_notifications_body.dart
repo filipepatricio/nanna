@@ -122,7 +122,7 @@ class _NotificationChannel extends StatelessWidget {
       child: NotificationHeaderContainer(
         startWidget: Text(
           channel.name,
-          style: AppTypography.b2SemiBold.copyWith(height: 1),
+          style: AppTypography.b2Medium.copyWith(height: 1),
         ),
         trailingChildren: [
           NotificationSettingSwitch.squareBlack(

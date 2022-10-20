@@ -574,13 +574,13 @@ class _Greeting extends StatelessWidget {
             ),
             child: InformedMarkdownBody(
               markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)}   ${intro.text}',
-              baseTextStyle: AppTypography.b2SemiBold,
+              baseTextStyle: AppTypography.b2Medium,
               textAlignment: TextAlign.left,
               markdownImageBuilder: (uri, title, alt) => MarkdownUtil.rawSvgMarkdownBuilder(
                 uri,
                 title,
                 alt,
-                AppTypography.b2SemiBold.fontSize! * 1.2,
+                AppTypography.b2Medium.fontSize! * 1.2,
               ),
             ),
           ),

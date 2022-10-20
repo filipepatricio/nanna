@@ -32,7 +32,7 @@ class ExploreAreaHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTypography.h2SemiBold,
+                style: AppTypography.h2Medium,
               ),
               if (isPreferred) SvgPicture.asset(AppVectorGraphics.starFilled),
             ],
