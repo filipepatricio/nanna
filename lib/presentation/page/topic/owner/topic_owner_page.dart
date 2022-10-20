@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
@@ -68,6 +69,10 @@ class TopicOwnerPage extends HookWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _ActionsBar(controller: scrollController, owner: owner),
+              Container(
+                color: AppColors.lightGrey,
+                height: AppDimens.one,
+              ),
               Flexible(
                 child: ListView(
                   shrinkWrap: true,
@@ -80,23 +85,25 @@ class TopicOwnerPage extends HookWidget {
                       children: [
                         const SizedBox(height: AppDimens.m),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                           child: TopicOwnerAvatar(
                             owner: owner,
-                            textStyle: AppTypography.h4Bold,
-                            imageSize: AppDimens.avatarSize * 1.3,
+                            textStyle: AppTypography.h2Medium.copyWith(color: AppColors.textPrimary),
+                            imageSize: AppDimens.avatarSize * 2,
                             horizontalSpacing: AppDimens.m + AppDimens.xxs,
+                            showExpertiseArea: true,
                           ),
                         ),
                         const SizedBox(height: AppDimens.m),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                           child: Text(
                             owner.bio,
                             softWrap: true,
-                            style: AppTypography.b1Medium,
+                            style: AppTypography.articleText,
                           ),
                         ),
+                        const SizedBox(height: AppDimens.s),
                         if (owner is! EditorialTeam) ...[
                           InformedAnimatedSwitcher(
                             duration: const Duration(milliseconds: 1000),
@@ -116,27 +123,30 @@ class TopicOwnerPage extends HookWidget {
                               orElse: () => const SizedBox.shrink(),
                             ),
                           ),
-                          const SizedBox(height: AppDimens.xl),
                         ],
                         if (owner is! Expert) ...[
-                          const SizedBox(height: AppDimens.xl),
+                          const SizedBox(height: AppDimens.m),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                            child: FilledButton.black(
+                            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+                            child: FilledButton.white(
                               text: LocaleKeys.topic_howDoWeCurateContent_label.tr(),
-                              trailing: const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: AppColors.white,
-                                size: AppDimens.ml,
+                              trailing: SvgPicture.asset(
+                                AppVectorGraphics.chevronNext,
+                                fit: BoxFit.scaleDown,
+                              ),
+                              border: Border.all(
+                                color: AppColors.lightGrey,
+                                width: 1.0,
                               ),
                               onTap: () {
                                 context.pushRoute(const HowDoWeCurateContentPageRoute());
                               },
                             ),
                           ),
-                          const SizedBox(height: AppDimens.xl),
+                          const SizedBox(height: AppDimens.s),
                         ],
                         if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
+                          const SizedBox(height: AppDimens.m),
                           _SocialMediaLinks(
                             cubit: cubit,
                             owner: owner as Expert,
@@ -169,6 +179,9 @@ class _ActionsBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final showOwnerTitle = useState(0.0);
+    final actionBarTitle = owner is Editor
+        ? LocaleKeys.topic_owner_editorInfo.tr()
+        : (owner is EditorialTeam ? LocaleKeys.topic_owner_authorInfo.tr() : LocaleKeys.topic_owner_expertInfo.tr());
 
     void setShowOwnerTitle() {
       if (controller.hasClients) {
@@ -193,42 +206,29 @@ class _ActionsBar extends HookWidget {
     );
 
     return Container(
-      height: kToolbarHeight + AppDimens.m,
+      height: kToolbarHeight,
       color: AppColors.background,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Positioned(
-            left: AppDimens.ml,
-            child: IconButton(
-              icon: const Icon(Icons.close_rounded),
-              color: AppColors.black,
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.zero,
-              onPressed: () => context.popRoute(),
+            left: AppDimens.pageHorizontalMargin,
+            child: Text(
+              actionBarTitle,
+              style: AppTypography.b2Medium,
             ),
           ),
-          if (owner is! EditorialTeam)
-            Positioned(
-              right: AppDimens.ml,
-              child: AnimatedOpacity(
-                opacity: 1 - showOwnerTitle.value,
-                duration: const Duration(milliseconds: 200),
-                child: Container(
-                  padding: const EdgeInsets.all(AppDimens.s),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppDimens.xs),
-                    color: owner is Editor ? AppColors.limeGreen : AppColors.peach,
-                  ),
-                  child: Text(
-                    owner is Expert
-                        ? LocaleKeys.topic_owner_expertIn.tr(args: [(owner as Expert).areaOfExpertise])
-                        : LocaleKeys.topic_owner_editorialTeam.tr(),
-                    style: AppTypography.topicOwnerLabelText,
-                  ),
-                ),
+          Positioned(
+            right: AppDimens.pageHorizontalMargin,
+            child: ExpandTapWidget(
+              onTap: () => context.popRoute(),
+              tapPadding: const EdgeInsets.all(AppDimens.s),
+              child: SvgPicture.asset(
+                AppVectorGraphics.closeBackground,
+                fit: BoxFit.scaleDown,
               ),
             ),
+          ),
           AnimatedOpacity(
             opacity: showOwnerTitle.value,
             duration: const Duration(milliseconds: 200),
@@ -259,7 +259,7 @@ class _SocialMediaLinks extends StatelessWidget {
     final twitter = owner.twitter;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

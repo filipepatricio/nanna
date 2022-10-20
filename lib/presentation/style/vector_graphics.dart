@@ -60,17 +60,18 @@ class AppVectorGraphics {
 
   static const String shareNotSelected = 'assets/vector_graphics/share_not_selected.svg';
   static const String shareSelected = 'assets/vector_graphics/share_selected.svg';
-  static const String closeIOS = 'assets/vector_graphics/close_ios.svg';
   static const String shareImage = 'assets/vector_graphics/share_image.svg';
   static const String shareText = 'assets/vector_graphics/share_text.svg';
   static const String shareStory = 'assets/vector_graphics/share_story.svg';
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
   static const String close = 'assets/vector_graphics/close.svg';
+  static const String closeBackground = 'assets/vector_graphics/close_bg.svg';
   static const String photoCaption = 'assets/vector_graphics/photo_caption_ic.svg';
   static const String search = 'assets/vector_graphics/search_ic.svg';
   static const String bigSearch = 'assets/vector_graphics/search_big.svg';
   static const String clearText = 'assets/vector_graphics/clear_text.svg';
+  static const String chevronNext = 'assets/vector_graphics/chevron_next.svg';
 
   static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';
   static const String bookmarkOutline = 'assets/vector_graphics/bookmark_outline.svg';

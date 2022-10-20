@@ -122,7 +122,7 @@ class _ArticleHeader extends StatelessWidget {
                 const SizedBox(height: AppDimens.m),
                 InformedMarkdownBody(
                   markdown: article.title,
-                  baseTextStyle: AppTypography.h0SemiBold,
+                  baseTextStyle: AppTypography.articleH0SemiBold,
                   highlightColor: AppColors.transparent,
                 ),
                 const SizedBox(height: AppDimens.xl),

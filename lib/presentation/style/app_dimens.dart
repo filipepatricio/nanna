@@ -59,7 +59,7 @@ class AppDimens {
   /// 44.0
   static const settingsItemHeight = 44.0;
 
-  /// 8
+  /// 4
   static const buttonRadius = 4.0;
 
   /// 50
@@ -105,7 +105,7 @@ class AppDimens {
   static const exploreArticleCarouselSmallCoverAspectRatio = 2.1;
 
   /// 1.65
-  static const exploreTopicCarouselSmallCoverAspectRatio = 1.25;
+  static const exploreTopicCarouselSmallCoverAspectRatio = 1.3;
 
   /// 0.50
   static const exploreTopicCellSizeFactor = 0.50;
@@ -144,9 +144,6 @@ class AppDimens {
 
   /// 2
   static const smallImageCoverBorderRadius = 2.0;
-
-  /// 148
-  static const topicSmallImageCoverWidth = 148.0;
 
   /// 45
   static const topicViewStackedCardsDividerHeight = 45.0;
