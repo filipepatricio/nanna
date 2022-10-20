@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _iconHeightImagePercentage = 0.35;
+const _iconHeightImagePercentage = 0.8;
 
 class AudioIconButton extends HookWidget {
   const AudioIconButton({
@@ -25,7 +25,7 @@ class AudioIconButton extends HookWidget {
       child: AudioFloatingControlButton(
         article: article,
         elevation: 0,
-        color: AppColors.white,
+        color: AppColors.lightGrey,
         imageHeight: height * _iconHeightImagePercentage,
         progressSize: height,
       ),

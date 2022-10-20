@@ -13,16 +13,14 @@ class _TopicCoverContent extends StatelessWidget {
         topic: topic,
       );
 
-  factory _TopicCoverContent.exploreLarge({required TopicPreview topic}) => _TopicCoverContent._(
-        type: TopicCoverType.exploreLarge,
-        topic: topic,
-      );
-
-  factory _TopicCoverContent.exploreSmall({required TopicPreview topic, bool hasBackgroundColor = false}) =>
+  factory _TopicCoverContent.small({
+    required TopicPreview topic,
+    required SnackbarController snackbarController,
+  }) =>
       _TopicCoverContent._(
-        type: TopicCoverType.exploreSmall,
+        type: TopicCoverType.small,
         topic: topic,
-        hasBackgroundColor: hasBackgroundColor,
+        snackbarController: snackbarController,
       );
 
   factory _TopicCoverContent.otherBriefItemsList({required TopicPreview topic, required double coverSize}) =>
@@ -36,16 +34,16 @@ class _TopicCoverContent extends StatelessWidget {
     required this.topic,
     required this.type,
     this.mode = Brightness.dark,
-    this.hasBackgroundColor = false,
     this.coverSize,
+    this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final TopicCoverType type;
   final Brightness mode;
-  final bool hasBackgroundColor;
   final double? coverSize;
+  final SnackbarController? snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +52,11 @@ class _TopicCoverContent extends StatelessWidget {
         return _CoverContentDailyBrief(topic: topic, mode: mode);
       case TopicCoverType.bookmark:
         return _CoverContentBookmark(topic: topic);
-      case TopicCoverType.exploreLarge:
-        return _CoverContentExploreLarge(topic: topic);
-      case TopicCoverType.exploreSmall:
-        return _CoverContentExploreSmall(topic: topic, hasBackgroundColor: hasBackgroundColor);
+      case TopicCoverType.small:
+        return _CoverContentSmall(
+          topic: topic,
+          snackbarController: snackbarController!,
+        );
       case TopicCoverType.otherBriefItemsList:
         return _CoverContentOtherBriefItemsList(topic: topic, coverSize: coverSize);
     }
@@ -176,93 +175,37 @@ class _CoverContentBookmark extends HookWidget {
   }
 }
 
-class _CoverContentExploreLarge extends StatelessWidget {
-  const _CoverContentExploreLarge({
+class _CoverContentSmall extends StatelessWidget {
+  const _CoverContentSmall({
     required this.topic,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
-    return Positioned.fill(
-      top: AppDimens.m,
-      bottom: AppDimens.l,
-      left: AppDimens.m,
-      right: AppDimens.l,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CoverLabel.topic(topic: topic),
-          const SizedBox(height: AppDimens.m),
-          InformedMarkdownBody(
-            markdown: topic.title,
-            maxLines: 4,
-            baseTextStyle: AppTypography.h1ExtraBold.copyWith(
-              color: AppColors.white,
-            ),
-          ),
-          const SizedBox(height: AppDimens.s),
-          UpdatedLabel(
-            mode: Brightness.light,
-            dateTime: topic.lastUpdatedAt,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CoverContentExploreSmall extends StatelessWidget {
-  const _CoverContentExploreSmall({
-    required this.topic,
-    this.hasBackgroundColor = false,
-    Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-  final bool hasBackgroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    const titleMaxLines = 2;
-    const titleStyle = AppTypography.metadata1ExtraBold;
-    final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const SizedBox(height: AppDimens.s),
-        TopicOwnerAvatar(
-          owner: topic.owner,
-          withImage: false,
-          imageSize: AppDimens.zero,
-          textStyle: AppTypography.caption1Medium,
-          mode: Brightness.dark,
-        ),
-        const SizedBox(height: AppDimens.s),
-        SizedBox(
-          height: titleHeight,
-          child: InformedMarkdownBody(
-            markdown: topic.title,
-            maxLines: titleMaxLines,
-            baseTextStyle: titleStyle,
+        Expanded(
+          child: TopicOwnerAvatar(
+            owner: topic.owner,
+            withImage: true,
+            imageSize: AppDimens.l,
+            textStyle: AppTypography.b3Regular.copyWith(
+              color: AppColors.textGrey,
+              height: 1.1,
+            ),
+            mode: Brightness.dark,
           ),
         ),
-        const SizedBox(height: AppDimens.s),
-        Wrap(
-          children: [
-            UpdatedLabel(
-              withPrefix: false,
-              dateTime: topic.lastUpdatedAt,
-              mode: Brightness.dark,
-              textStyle: AppTypography.caption1Medium.copyWith(
-                height: 1.2,
-                color: hasBackgroundColor ? null : AppColors.textGrey,
-              ),
-            ),
-          ],
+        BookmarkButton.topic(
+          topic: topic,
+          snackbarController: snackbarController,
         ),
       ],
     );

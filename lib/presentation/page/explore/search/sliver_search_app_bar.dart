@@ -35,7 +35,7 @@ class SliverSearchAppBar extends StatelessWidget {
       centerTitle: false,
       elevation: 3.0,
       expandedHeight: AppDimens.appBarHeight,
-      titleSpacing: AppDimens.l,
+      titleSpacing: AppDimens.pageHorizontalMargin,
       actions: [
         _CancelButton(
           cubit: explorePageCubit,
@@ -90,12 +90,8 @@ class _SearchBar extends HookWidget {
     return Container(
       height: AppDimens.searchBarHeight,
       decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(
-          color: AppColors.textGrey,
-          width: 1,
-        ),
+        color: AppColors.lightGrey,
+        borderRadius: BorderRadius.circular(AppDimens.xs),
       ),
       child: TextFormField(
         controller: searchTextEditingController,
@@ -110,7 +106,7 @@ class _SearchBar extends HookWidget {
           hintText: LocaleKeys.common_search.tr(),
           hintStyle: AppTypography.b2Medium.copyWith(
             color: AppColors.textGrey,
-            height: 1.23,
+            height: 1.05,
           ),
           prefixIcon: SvgPicture.asset(
             AppVectorGraphics.search,
@@ -163,7 +159,7 @@ class _CancelButton extends HookWidget {
                   orElse: () => false,
                 )
             ? Container(
-                margin: const EdgeInsets.only(right: AppDimens.l),
+                margin: const EdgeInsets.only(right: AppDimens.pageHorizontalMargin),
                 child: TextButton(
                   onPressed: () {
                     searchTextEditingController.clear();
@@ -183,9 +179,9 @@ class _CancelButton extends HookWidget {
                   ),
                   child: Text(
                     LocaleKeys.common_cancel.tr(),
-                    style: AppTypography.h4Bold.copyWith(
-                      color: AppColors.charcoal,
-                      height: 1.3,
+                    style: AppTypography.h4Regular.copyWith(
+                      color: AppColors.textGrey,
+                      height: 1.2,
                     ),
                   ),
                 ),

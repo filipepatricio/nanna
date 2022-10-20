@@ -25,7 +25,7 @@ class SearchHistoryView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.all(AppDimens.l),
+      padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
@@ -49,7 +49,7 @@ class SearchHistoryView extends HookWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                              child: Text(query, style: AppTypography.b2Medium.copyWith(height: 1)),
+                              child: Text(query, style: AppTypography.b2Regular.copyWith(height: 1)),
                             ),
                           ],
                         ),

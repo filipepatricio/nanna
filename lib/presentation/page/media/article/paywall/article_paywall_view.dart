@@ -22,9 +22,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'widgets/paywall_background_fade.dart';
+part 'widgets/paywall_loading_view.dart';
 part 'widgets/paywall_multiple_options.dart';
 part 'widgets/paywall_trial_option.dart';
-part 'widgets/paywall_loading_view.dart';
 
 class ArticlePaywallView extends HookWidget {
   const ArticlePaywallView({
@@ -82,7 +82,7 @@ class ArticlePaywallView extends HookWidget {
         if (state.showPaywall) ...[
           const SizedBox(height: AppDimens.c),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: state.maybeMap(
               trial: (state) => _PaywallTrialOption(
                 plan: state.plan,

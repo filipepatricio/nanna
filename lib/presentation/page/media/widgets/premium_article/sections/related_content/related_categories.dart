@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
+import 'package:better_informed_mobile/presentation/page/explore/pills_area/category_pill.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class RelatedCategories extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           child: Text(
             LocaleKeys.article_relatedContent_exploreMoreCategories.tr(),
             style: AppTypography.h1Medium,
@@ -33,12 +33,10 @@ class RelatedCategories extends StatelessWidget {
           height: AppDimens.explorePillHeight,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-            itemBuilder: (context, index) => ExplorePill(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+            itemBuilder: (context, index) => CategoryPill(
               title: featuredCategories[index].name,
-              icon: featuredCategories[index].icon,
               color: featuredCategories[index].color,
-              index: index,
               onTap: () {
                 onItemTap?.call(featuredCategories[index]);
 

@@ -2,20 +2,16 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
-class ExplorePill extends StatelessWidget {
-  const ExplorePill({
+class CategoryPill extends StatelessWidget {
+  const CategoryPill({
     required this.title,
-    required this.icon,
-    required this.index,
-    required this.onTap,
     required this.color,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   final String title;
-  final String? icon;
-  final int index;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Color? color;
 
   @override
@@ -26,7 +22,7 @@ class ExplorePill extends StatelessWidget {
         height: AppDimens.explorePillHeight,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(70),
+          borderRadius: BorderRadius.circular(AppDimens.explorePillRadius),
         ),
         padding: const EdgeInsets.symmetric(
           vertical: AppDimens.s,
@@ -34,7 +30,7 @@ class ExplorePill extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: AppTypography.b3Regular.copyWith(height: 1),
+          style: AppTypography.b3Regular.copyWith(height: 1.1),
         ),
       ),
     );

@@ -28,7 +28,7 @@ class MediaItem with _$MediaItem {
     required ArticleProgressState progressState,
     required ArticleProgress progress,
     required bool locked,
-    Category? category,
+    required Category category,
     DateTime? publicationDate,
     ArticleImage? image,
     String? author,
