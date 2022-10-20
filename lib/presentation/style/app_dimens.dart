@@ -54,7 +54,7 @@ class AppDimens {
   static const xxxc = 80.0;
 
   /// 16.0
-  static const backArrowSize = 16.0;
+  static const backArrowSize = 17.0;
 
   /// 44.0
   static const settingsItemHeight = 44.0;

@@ -3,13 +3,12 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -62,21 +61,10 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
 
     return AnimatedBuilder(
       animation: animation,
-      builder: (context, bookmarkButton) => AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      builder: (context, bookmarkButton) => InformedCupertinoAppBar(
+        brightness: Brightness.light,
         backgroundColor: animation.value,
-        centerTitle: false,
-        title: Text(
-          (fromTopic ? LocaleKeys.article_topicOverview : LocaleKeys.common_back).tr(),
-          style: AppTypography.subH1Medium.copyWith(color: AppColors.textPrimary),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_rounded),
-          color: AppColors.textPrimary,
-          iconSize: AppDimens.backArrowSize,
-          onPressed: onBackPressed,
-        ),
-        titleSpacing: AppDimens.zero,
+        backLabel: fromTopic ? LocaleKeys.article_topicOverview.tr() : LocaleKeys.common_back.tr(),
         actions: [
           bookmarkButton!,
           const SizedBox(width: AppDimens.m),

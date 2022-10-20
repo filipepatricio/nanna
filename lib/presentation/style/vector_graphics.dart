@@ -32,10 +32,10 @@ class AppVectorGraphics {
   static const String twitter = 'assets/vector_graphics/twitter.svg';
 
   static const String settings = 'assets/vector_graphics/settings_ic.svg';
-  static const String account = 'assets/vector_graphics/account_ic.svg';
+  static const String account = 'assets/vector_graphics/account.svg';
   static const String terms = 'assets/vector_graphics/terms_ic.svg';
   static const String privacy = 'assets/vector_graphics/privacy_ic.svg';
-  static const String notifications = 'assets/vector_graphics/notification_ic.svg';
+  static const String notifications = 'assets/vector_graphics/notification.svg';
   static const String feedback = 'assets/vector_graphics/feedback_ic.svg';
   static const String star = 'assets/vector_graphics/star.svg';
   static const String starFilled = 'assets/vector_graphics/star_filled.svg';
