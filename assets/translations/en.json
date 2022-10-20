@@ -106,7 +106,7 @@
   },
   "subscription": {
     "title": {
-      "trial": "Your _free trial_ with informed",
+      "trial": "Your free trial with informed",
       "standard": "Subscribe for _unlimited_ news access"
     },
     "benefit": {
@@ -116,8 +116,8 @@
     },
     "restorePurchase": "Restore purchase",
     "startYourTrial": "Now, start your trial to get full access today.",
-    "receiveAnEmail": "In {}, receive an email reminder that your free trial is ending.",
-    "youllBeCharged": "In {}, you’ll be charged for informed.",
+    "receiveAnEmail": "In {}: receive an email reminder that your free trial is ending.",
+    "youllBeCharged": "In {}: you’ll be charged for informed.",
     "viewAllPlansAction": "View all plans",
     "chargeInfo": {
       "trial": "You will be charged only after the {} trial period.\nCancel anytime.",
@@ -132,8 +132,8 @@
     },
     "tryForFreeAction": "Try For Free",
     "withXDaysFreeTrial": "with {} free trial",
-    "thanksForStartingTrial": "Thanks for starting your\n_free trial_",
-    "thanksForSubscribing": "Thanks for subscribing,\nyou’re _awesome_",
+    "thanksForStartingTrial": "Thanks for starting your\n _free trial_",
+    "thanksForSubscribing": "Thanks for subscribing,\n you’re _awesome_",
     "everythingIsReady": "Everything is ready to start enjoying informed unlimited access.",
     "startReading": "Start Reading",
     "membership": "Membership",

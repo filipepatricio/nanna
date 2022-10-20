@@ -145,10 +145,8 @@ class _ErrorContent extends StatelessWidget {
             Center(
               child: SizedBox(
                 width: _tryAgainButtonWidth,
-                child: FilledButton(
+                child: FilledButton.black(
                   text: LocaleKeys.common_tryAgain.tr(),
-                  fillColor: AppColors.textPrimary,
-                  textColor: AppColors.white,
                   onTap: () {
                     onTryAgain?.call();
                   },

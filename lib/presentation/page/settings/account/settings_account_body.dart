@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/page/settings/account/settin
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/settings/widgets/settings_input_item.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
@@ -139,13 +138,10 @@ class SettingsAccountBody extends HookWidget {
               duration: const Duration(milliseconds: 250),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: FilledButton(
+                child: FilledButton.green(
                   text: LocaleKeys.settings_save.tr(),
                   onTap: () => _onSaveButtonTap(isFormFocused),
                   isEnabled: cubit.formsAreValid(),
-                  disableColor: AppColors.dividerGrey,
-                  fillColor: AppColors.limeGreen,
-                  textColor: AppColors.textPrimary,
                   isLoading: state.maybeMap(updating: (_) => true, orElse: () => false),
                 ),
               ),

@@ -31,9 +31,14 @@ class _ChangeSubscriptionCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SvgPicture.asset(
-              icon,
-              height: AppDimens.xxxl,
+            ClipRRect(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(AppDimens.s),
+              ),
+              child: SvgPicture.asset(
+                icon,
+                height: AppDimens.xxxl,
+              ),
             ),
             const SizedBox(width: AppDimens.m),
             Column(
@@ -42,12 +47,12 @@ class _ChangeSubscriptionCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppTypography.h4ExtraBold.copyWith(height: 1.5),
+                  style: AppTypography.h4Regular.copyWith(height: 1.5),
                 ),
                 if (subtitle != null)
                   Text(
                     subtitle,
-                    style: AppTypography.subH1Medium.copyWith(height: 1.5),
+                    style: AppTypography.subH1Regular.copyWith(height: 1.5),
                   ),
               ],
             ),

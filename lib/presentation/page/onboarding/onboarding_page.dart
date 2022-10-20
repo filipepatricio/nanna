@@ -103,10 +103,8 @@ class OnboardingPage extends HookWidget {
                       ),
                       const Spacer(),
                       if (isLastPage)
-                        FilledButton(
+                        FilledButton.green(
                           text: LocaleKeys.common_continue.tr(),
-                          fillColor: AppColors.limeGreen,
-                          textColor: AppColors.textPrimary,
                           onTap: () => _navigateToMainPage(
                             context,
                             cubit,
