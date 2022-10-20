@@ -67,10 +67,12 @@ class AppVectorGraphics {
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
   static const String close = 'assets/vector_graphics/close.svg';
+  static const String closeBackground = 'assets/vector_graphics/close_bg.svg';
   static const String photoCaption = 'assets/vector_graphics/photo_caption_ic.svg';
   static const String search = 'assets/vector_graphics/search_ic.svg';
   static const String bigSearch = 'assets/vector_graphics/search_big.svg';
   static const String clearText = 'assets/vector_graphics/clear_text.svg';
+  static const String chevronNext = 'assets/vector_graphics/chevron_next.svg';
 
   static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';
   static const String bookmarkOutline = 'assets/vector_graphics/bookmark_outline.svg';

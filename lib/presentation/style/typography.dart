@@ -14,9 +14,9 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h0SemiBold = TextStyle(
-    fontWeight: FontWeight.w600,
-    fontFamily: _fontFamilyIvarHeadline,
+  static const TextStyle h0Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
     fontSize: 32,
     height: 1.18,
     color: AppColors.textPrimary,
@@ -353,6 +353,14 @@ class AppTypography {
   );
 
   ///Ivar fonts (External content)
+
+  static const TextStyle articleH0SemiBold = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 32,
+    height: 1.18,
+    color: AppColors.textPrimary,
+  );
 
   static const TextStyle articleQuote = TextStyle(
     fontWeight: FontWeight.w600,
