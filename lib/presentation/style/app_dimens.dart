@@ -116,8 +116,8 @@ class AppDimens {
   /// 0.50
   static const exploreTopicCellSizeFactor = 0.50;
 
-  /// 42
-  static const audioControlButtonSize = AppDimens.xxl + AppDimens.xxs;
+  /// 32
+  static const audioControlButtonSize = AppDimens.xl;
 
   /// 16.0
   static const audioViewControlButtonSize = 60.0;
@@ -175,8 +175,8 @@ class AppDimens {
   /// 1024
   static const articleAudioCoverSize = 1024;
 
-  /// 80
-  static const audioBannerHeight = 80.0;
+  /// 68
+  static const audioBannerHeight = 68.0;
 
   /// 42
   static const searchBarHeight = 36.0;

@@ -88,6 +88,8 @@ class PremiumArticleAudioView extends HookWidget {
               article.metadata.strippedTitle,
               textAlign: TextAlign.center,
               style: AppTypography.articleH0SemiBold,
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
             if (hasAudioCredits) ...[

@@ -11,7 +11,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -153,7 +152,6 @@ class _ArticleHeader extends StatelessWidget {
                   image: articleImage,
                   cardColor: AppColors.background,
                   fit: BoxFit.cover,
-                  darkeningMode: DarkeningMode.solid,
                 ),
               ),
             )
