@@ -17,8 +17,8 @@ class AppTypography {
   static const TextStyle h0Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 32,
-    height: 1.18,
+    fontSize: 36,
+    height: 1.1,
     color: AppColors.textPrimary,
   );
 
