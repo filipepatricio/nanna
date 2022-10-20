@@ -132,9 +132,7 @@ class _SelectableCard extends StatelessWidget {
     return AnimatedContainer(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.xs),
-        border: Border.all(
-          color: isSelected ? AppColors.charcoal : AppColors.dividerGreyLight,
-        ),
+        border: isSelected ? Border.all(color: AppColors.charcoal, width: 1.5) : null,
       ),
       width: _tileSize,
       height: _tileSize,
@@ -147,7 +145,10 @@ class _SelectableCard extends StatelessWidget {
         child: Center(
           child: AutoSizeText(
             text,
-            style: AppTypography.b3Medium.copyWith(height: 1.4),
+            style: AppTypography.b3Medium.copyWith(
+              height: 1.2,
+              letterSpacing: 0,
+            ),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             textAlign: TextAlign.center,
