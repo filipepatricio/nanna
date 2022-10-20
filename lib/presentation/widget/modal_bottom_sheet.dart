@@ -34,16 +34,19 @@ class ModalBottomSheet extends StatelessWidget {
             body: SnackbarParentView(
               controller: snackbarController,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(AppDimens.l, AppDimens.l, AppDimens.l, 0),
+                padding: const EdgeInsets.only(top: AppDimens.l),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    IconButton(
-                      icon: SvgPicture.asset(AppVectorGraphics.close),
-                      color: AppColors.black,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.zero,
-                      onPressed: context.popRoute,
+                    Padding(
+                      padding: const EdgeInsets.only(left: AppDimens.l),
+                      child: IconButton(
+                        icon: SvgPicture.asset(AppVectorGraphics.close),
+                        color: AppColors.black,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.zero,
+                        onPressed: context.popRoute,
+                      ),
                     ),
                     Expanded(child: child),
                   ],

@@ -5,50 +5,76 @@ class _ArticleSquareCover extends StatelessWidget {
     required this.article,
     required this.coverColor,
     required this.dimension,
-    this.visited = false,
-    this.borderRadius,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final Color? coverColor;
   final double dimension;
-  final double? borderRadius;
-  final bool visited;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox.square(
       dimension: dimension,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(borderRadius ?? AppDimens.s),
-              child: article.hasImage
-                  ? ArticleImage(
-                      image: article.image!,
-                      cardColor: coverColor,
-                    )
-                  : SizedBox.expand(
-                      child: Container(color: coverColor),
-                    ),
-            ),
-          ),
-          if (article.hasAudioVersion && !visited)
-            Positioned(
-              bottom: AppDimens.s,
-              right: AppDimens.s,
-              child: AudioIconButton(article: article),
-            ),
-          if (visited)
-            const Positioned(
-              bottom: AppDimens.s,
-              right: AppDimens.s,
-              child: VisitedCheck(),
-            ),
-        ],
+      child: _ArticleImageCover(article: article, coverColor: coverColor),
+    );
+  }
+}
+
+class _ArticleAspectRatioCover extends StatelessWidget {
+  const _ArticleAspectRatioCover({
+    required this.article,
+    required this.coverColor,
+    required this.aspectRatio,
+    required this.width,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+  final Color? coverColor;
+  final double aspectRatio;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      child: AspectRatio(
+        aspectRatio: 6 / 5,
+        child: _ArticleImageCover(article: article, coverColor: coverColor),
       ),
+    );
+  }
+}
+
+class _ArticleImageCover extends StatelessWidget {
+  const _ArticleImageCover({
+    required this.article,
+    required this.coverColor,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+  final Color? coverColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppDimens.smallImageCoverBorderRadius),
+            child: article.hasImage
+                ? ArticleImage(
+                    image: article.image!,
+                    cardColor: coverColor,
+                  )
+                : SizedBox.expand(
+                    child: Container(color: coverColor),
+                  ),
+          ),
+        ),
+      ],
     );
   }
 }

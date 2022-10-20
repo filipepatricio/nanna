@@ -148,6 +148,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle subH0Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 16,
+    height: 1,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle subH1Bold = TextStyle(
     fontWeight: FontWeight.w700,
     fontFamily: _fontFamilyLausanne,
@@ -283,7 +291,7 @@ class AppTypography {
   static const TextStyle caption1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 12,
+    fontSize: 14,
     height: 1.25,
     color: AppColors.textGrey,
   );
@@ -357,6 +365,22 @@ class AppTypography {
     fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyIvarHeadline,
     fontSize: 24,
+    height: 1.33,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle articleBigTitle = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 18,
+    height: 1.33,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle articleSmallTitle = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 16,
     height: 1.33,
     color: AppColors.textPrimary,
   );

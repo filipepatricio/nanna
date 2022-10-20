@@ -9,8 +9,8 @@ import '../visual_test_utils.dart';
 void main() {
   visualTest(TopicsSeeAllPage, (tester) async {
     final area = TestData.exploreContent.areas.firstWhere(
-      (area) => area is ExploreContentAreaTopics,
-    ) as ExploreContentAreaTopics;
+      (area) => area is ExploreContentAreaSmallTopics,
+    ) as ExploreContentAreaSmallTopics;
 
     await tester.startApp(
       initialRoute: ExploreTabGroupRouter(

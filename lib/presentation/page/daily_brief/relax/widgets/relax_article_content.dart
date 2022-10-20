@@ -29,7 +29,7 @@ class _ArticleHeadline extends StatelessWidget {
         InformedMarkdownBody(
           markdown: "_${LocaleKeys.article_relatedContent_cantGetEnough.tr()}_",
           baseTextStyle: AppTypography.h2Medium,
-          highlightColor: AppColors.accent,
+          highlightColor: AppColors.limeGreen,
           textAlignment: TextAlign.center,
         ),
         const SizedBox(height: AppDimens.sl),
@@ -48,12 +48,9 @@ class _ArticleFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilledButton(
+    return FilledButton.white(
       onTap: context.goToExplore,
-      fillColor: AppColors.white,
-      textColor: AppColors.textPrimary,
       text: LocaleKeys.explore_moreStoriesOnExplore.tr(),
     );
-    // style: AppTypography.b2Medium.copyWith(decoration: TextDecoration.underline),
   }
 }

@@ -23,9 +23,7 @@ class AppVectorGraphics {
   static const String articleLabel = 'assets/vector_graphics/article_label.svg';
 
   static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
-  static const String informedLogoFree = 'assets/vector_graphics/informed_logo_free.svg';
-  static const String informedLogoTrial = 'assets/vector_graphics/informed_logo_trial.svg';
-  static const String informedLogoPremium = 'assets/vector_graphics/informed_logo_premium.svg';
+  static const String informedLogoGreen = 'assets/vector_graphics/informed_logo_green.svg';
 
   static const String share = 'assets/vector_graphics/share.svg';
   static const String instagram = 'assets/vector_graphics/instagram.svg';
@@ -74,9 +72,8 @@ class AppVectorGraphics {
   static const String bigSearch = 'assets/vector_graphics/search_big.svg';
   static const String clearText = 'assets/vector_graphics/clear_text.svg';
 
-  static const String bookmarkInactive = 'assets/vector_graphics/bookmark_disabled.svg';
-  static const String bookmarkSelected = 'assets/vector_graphics/bookmark_filled.svg';
-  static const String bookmarkUnselected = 'assets/vector_graphics/bookmark_border.svg';
+  static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';
+  static const String bookmarkOutline = 'assets/vector_graphics/bookmark_outline.svg';
 
   static const String headphones = 'assets/vector_graphics/headphones.svg';
   static const String lines = 'assets/vector_graphics/lines.svg';

@@ -613,10 +613,6 @@ class MockDTO {
       MockDTO.category,
       MockDTO.category,
       MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
-      MockDTO.category,
     ],
   );
 

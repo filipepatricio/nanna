@@ -284,11 +284,8 @@ class _SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilledButton(
-      disableColor: AppColors.dividerGrey,
-      fillColor: AppColors.black,
+    return FilledButton.black(
       isEnabled: isEmailValid,
-      textColor: AppColors.white,
       text: LocaleKeys.common_signUp.tr(),
       onTap: () => cubit.sendMagicLink(),
     );

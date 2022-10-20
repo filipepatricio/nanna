@@ -26,9 +26,7 @@ class GetExploreContentUseCase {
     return areas.map(
       articles: (area) => area.articles.isNotEmpty,
       articlesList: (area) => area.articles.isNotEmpty,
-      topics: (area) => area.topics.isNotEmpty,
       smallTopics: (area) => area.topics.isNotEmpty,
-      highlightedTopics: (area) => area.topics.isNotEmpty,
       unknown: (_) => false,
     );
   }

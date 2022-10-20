@@ -138,6 +138,7 @@ class PremiumArticleReadView extends HookWidget {
                     relatedContentItems: data.relatedContentItems,
                     onRelatedContentItemTap: cubit.onRelatedContentItemTap,
                     onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                    snackbarController: snackbarController,
                   ),
                 ),
               ],
@@ -150,7 +151,7 @@ class PremiumArticleReadView extends HookWidget {
             right: 0,
             child: _ArticleProgressBar(
               readProgress: readProgress,
-              color: data.article.metadata.category?.color,
+              color: data.article.metadata.category.color,
             ),
           ),
         ],

@@ -14,7 +14,7 @@ class _Timeline extends StatelessWidget {
     const dottedTimelineWidth = 1.0;
     const dotSize = 13.0;
 
-    final labelStyle = AppTypography.subH1Medium.copyWith(
+    final labelStyle = AppTypography.subH1Regular.copyWith(
       height: 1.4,
       color: AppColors.darkerGrey,
     );

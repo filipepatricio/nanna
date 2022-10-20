@@ -4,13 +4,11 @@ class _TopicCoverBookmark extends HookWidget {
   const _TopicCoverBookmark({
     required this.onTap,
     required this.topic,
-    this.hasBackgroundColor = false,
     Key? key,
   }) : super(key: key);
 
   final VoidCallback? onTap;
   final TopicPreview topic;
-  final bool hasBackgroundColor;
 
   @override
   Widget build(BuildContext context) {

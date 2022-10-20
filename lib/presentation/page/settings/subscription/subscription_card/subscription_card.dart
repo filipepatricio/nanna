@@ -43,7 +43,7 @@ class SubscriptionCard extends HookWidget {
         child: state.map(
           loading: (_) => const _LoadingContent(),
           free: (data) => _IdleContent(
-            icon: AppVectorGraphics.informedLogoFree,
+            icon: AppVectorGraphics.informedLogoGreen,
             typeLabel: LocaleKeys.subscription_free.tr(),
             callToActionLabel: Text(
               LocaleKeys.subscription_goPremium.tr(),
@@ -51,7 +51,7 @@ class SubscriptionCard extends HookWidget {
             ),
           ),
           trial: (data) => _IdleContent(
-            icon: AppVectorGraphics.informedLogoTrial,
+            icon: AppVectorGraphics.informedLogoGreen,
             typeLabel: LocaleKeys.subscription_trial.tr(),
             callToActionLabel: Text(
               LocaleKeys.subscription_endsIn.tr(
@@ -61,7 +61,7 @@ class SubscriptionCard extends HookWidget {
             ),
           ),
           premium: (data) => _IdleContent(
-            icon: AppVectorGraphics.informedLogoPremium,
+            icon: AppVectorGraphics.informedLogoGreen,
             typeLabel: LocaleKeys.subscription_premium.tr(),
             callToActionLabel: Text(
               LocaleKeys.subscription_membership.tr(),
@@ -123,14 +123,19 @@ class _IdleContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SvgPicture.asset(
-          icon,
-          height: AppDimens.xxxl,
+        ClipRRect(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(AppDimens.s),
+          ),
+          child: SvgPicture.asset(
+            icon,
+            height: AppDimens.xxxl,
+          ),
         ),
         const SizedBox(width: AppDimens.m),
         Text(
           typeLabel,
-          style: AppTypography.h4ExtraBold.copyWith(height: 1),
+          style: AppTypography.h4Regular.copyWith(height: 1),
         ),
         const Spacer(),
         callToActionLabel,

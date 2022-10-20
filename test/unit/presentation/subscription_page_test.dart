@@ -123,23 +123,17 @@ void main() {
       );
       expect(
         find.byWidgetPredicate(
-          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_tryForFreeAction.tr(),
-          skipOffstage: false,
+          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_subscribe.tr(),
         ),
         findsOneWidget,
       );
-      expect(
-        find.byWidgetPredicate(
-          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_tryForFreeAction.tr(),
-          skipOffstage: false,
-        ),
-        findsOneWidget,
-      );
+
       await tester.tap(find.byType(SubscriptionPlanCard).last);
       await tester.pumpAndSettle();
       expect(
         find.byWidgetPredicate(
-          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_subscribe.tr(),
+          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_tryForFreeAction.tr(),
+          skipOffstage: false,
         ),
         findsOneWidget,
       );
@@ -176,7 +170,7 @@ void main() {
 class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPlansUseCase {
   @override
   Future<List<SubscriptionPlan>> call() async =>
-      [TestData.subscriptionPlansWithTrial.first, TestData.subscriptionPlansWithoutTrial.last];
+      [TestData.subscriptionPlansWithoutTrial.first, TestData.subscriptionPlansWithTrial.last];
 }
 
 class FakeGetSubscriptionPlansUseCaseNoTrial extends Fake implements GetSubscriptionPlansUseCase {

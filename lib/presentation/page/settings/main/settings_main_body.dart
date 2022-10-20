@@ -55,7 +55,7 @@ class SettingsMainBody extends HookWidget {
               [
                 if (useSubscriptions) ...[
                   const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
+                    padding: EdgeInsets.symmetric(horizontal: AppDimens.m),
                     child: SubscriptionCard(),
                   ),
                   const SizedBox(height: AppDimens.m),
@@ -132,11 +132,9 @@ class SettingsMainBody extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    FilledButton(
+                    FilledButton.red(
                       text: LocaleKeys.common_signOut.tr(),
-                      fillColor: AppColors.carrotRed,
-                      textColor: AppColors.white,
-                      onTap: () => cubit.signOut(),
+                      onTap: cubit.signOut,
                     ),
                     const SizedBox(height: AppDimens.s),
                     const VersionLabel(),

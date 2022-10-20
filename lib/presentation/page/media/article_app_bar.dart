@@ -40,7 +40,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final animationController = useAnimationController(duration: const Duration(milliseconds: 200));
     final animation = ColorTween(
-      begin: article.hasImage ? (article.category?.color ?? AppColors.background) : AppColors.background,
+      begin: article.hasImage ? (article.category.color ?? AppColors.background) : AppColors.background,
       end: AppColors.background,
     ).chain(CurveTween(curve: Curves.easeIn)).animate(animationController);
 

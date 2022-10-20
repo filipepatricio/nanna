@@ -14,76 +14,82 @@ class SubscriptionPlansView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedPlanNotifier = useValueNotifier<SubscriptionPlan>(cubit.selectedPlan);
     final state = useCubitBuilder(cubit);
+    final selectedPlanNotifier = useValueNotifier<SubscriptionPlan>(cubit.selectedPlan);
 
     return CustomScrollView(
       physics: getPlatformScrollPhysics(),
       slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate.fixed(
-            [
-              const SizedBox(height: AppDimens.l),
-              if (trialViewMode) ...[
-                InformedMarkdownBody(
-                  markdown: LocaleKeys.subscription_title_trial.tr(),
-                  baseTextStyle: AppTypography.h1Medium,
-                ),
-              ] else ...[
-                InformedMarkdownBody(
-                  markdown: LocaleKeys.subscription_title_standard.tr(),
-                  baseTextStyle: AppTypography.h1Medium,
-                ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
                 const SizedBox(height: AppDimens.l),
-                const SubscriptionBenefits(),
+                if (trialViewMode) ...[
+                  InformedMarkdownBody(
+                    markdown: LocaleKeys.subscription_title_trial.tr(),
+                    baseTextStyle: AppTypography.h1Medium,
+                  ),
+                ] else ...[
+                  InformedMarkdownBody(
+                    markdown: LocaleKeys.subscription_title_standard.tr(),
+                    baseTextStyle: AppTypography.h1Medium,
+                  ),
+                  const SizedBox(height: AppDimens.l),
+                  const SubscriptionBenefits(),
+                ],
+                const SizedBox(height: AppDimens.l),
+                ...cubit.plans
+                    .map(
+                      (plan) => ValueListenableBuilder<SubscriptionPlan>(
+                        valueListenable: selectedPlanNotifier,
+                        builder: (context, value, child) {
+                          return SubscriptionPlanCard(
+                            plan: plan,
+                            isSelected: value == plan,
+                            onPlanPressed: (SubscriptionPlan plan) {
+                              selectedPlanNotifier.value = plan;
+                              cubit.selectPlan(plan);
+                            },
+                          );
+                        },
+                      ),
+                    )
+                    .withDividers(divider: const SizedBox(height: AppDimens.m)),
+                const SizedBox(height: AppDimens.xl),
+                ValueListenableBuilder<SubscriptionPlan>(
+                  valueListenable: selectedPlanNotifier,
+                  builder: (context, selectedPlan, child) {
+                    return SubscribeButton.dark(
+                      plan: selectedPlan,
+                      onPurchasePressed: (_) => cubit.purchase(),
+                      isLoading: state.maybeMap(
+                        processing: (_) => true,
+                        orElse: () => false,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: AppDimens.m),
               ],
-              const SizedBox(height: AppDimens.l),
-              ...cubit.plans
-                  .map(
-                    (plan) => ValueListenableBuilder<SubscriptionPlan>(
-                      valueListenable: selectedPlanNotifier,
-                      builder: (context, value, child) {
-                        return SubscriptionPlanCard(
-                          plan: plan,
-                          isSelected: value == plan,
-                          onPlanPressed: (SubscriptionPlan plan) {
-                            selectedPlanNotifier.value = plan;
-                            cubit.selectPlan(plan);
-                          },
-                        );
-                      },
-                    ),
-                  )
-                  .withDividers(divider: const SizedBox(height: AppDimens.m)),
-              const SizedBox(height: AppDimens.xl),
-              ValueListenableBuilder<SubscriptionPlan>(
-                valueListenable: selectedPlanNotifier,
-                builder: (context, selectedPlan, child) {
-                  return SubscribeButton(
-                    plan: selectedPlan,
-                    onPurchasePressed: (_) => cubit.purchase(),
-                    isLoading: state.maybeMap(
-                      processing: (_) => true,
-                      orElse: () => false,
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: AppDimens.m),
-            ],
+            ),
           ),
         ),
         SliverFillRemaining(
           hasScrollBody: false,
-          child: ValueListenableBuilder<SubscriptionPlan>(
-            valueListenable: selectedPlanNotifier,
-            builder: (context, value, child) {
-              return SubscriptionLinksFooter(
-                subscriptionPlan: value,
-                onRestorePressed: cubit.restorePurchase,
-                openInBrowser: openInBrowser,
-              );
-            },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: ValueListenableBuilder<SubscriptionPlan>(
+              valueListenable: selectedPlanNotifier,
+              builder: (context, value, child) {
+                return SubscriptionLinksFooter(
+                  subscriptionPlan: value,
+                  onRestorePressed: cubit.restorePurchase,
+                  openInBrowser: openInBrowser,
+                );
+              },
+            ),
           ),
         ),
       ],
