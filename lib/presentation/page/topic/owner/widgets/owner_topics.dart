@@ -20,8 +20,8 @@ class OwnerTopics extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    const width = AppDimens.topicSmallImageCoverWidth;
-    final height = useMemoized(() => width * AppDimens.exploreArticleCarouselSmallCoverAspectRatio);
+    final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor;
+    final height = width * AppDimens.exploreTopicCarouselSmallCoverAspectRatio;
 
     final items = ExploreAreaItemGenerator.generate(
       topics,
@@ -31,7 +31,7 @@ class OwnerTopics extends HookWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: AppDimens.xl),
+        const SizedBox(height: AppDimens.m),
         ExploreAreaItemCarouselView<TopicPreview>(
           itemBuilder: (topic, _) => TopicCover.small(
             topic: topic,

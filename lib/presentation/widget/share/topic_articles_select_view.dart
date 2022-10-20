@@ -357,7 +357,7 @@ class _IOSHeader extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => AutoRouter.of(context).pop(),
-            child: SvgPicture.asset(AppVectorGraphics.closeIOS),
+            child: SvgPicture.asset(AppVectorGraphics.closeBackground),
           ),
         ],
       ),

@@ -91,6 +91,7 @@ class TopicOwnerPage extends HookWidget {
                             textStyle: AppTypography.h2Medium.copyWith(color: AppColors.textPrimary),
                             imageSize: AppDimens.avatarSize * 2,
                             horizontalSpacing: AppDimens.m + AppDimens.xxs,
+                            showExpertiseArea: true,
                           ),
                         ),
                         const SizedBox(height: AppDimens.m),
@@ -102,6 +103,7 @@ class TopicOwnerPage extends HookWidget {
                             style: AppTypography.articleText,
                           ),
                         ),
+                        const SizedBox(height: AppDimens.s),
                         if (owner is! EditorialTeam) ...[
                           InformedAnimatedSwitcher(
                             duration: const Duration(milliseconds: 1000),
@@ -121,10 +123,9 @@ class TopicOwnerPage extends HookWidget {
                               orElse: () => const SizedBox.shrink(),
                             ),
                           ),
-                          const SizedBox(height: AppDimens.xl),
                         ],
                         if (owner is! Expert) ...[
-                          const SizedBox(height: AppDimens.xl),
+                          const SizedBox(height: AppDimens.m),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                             child: FilledButton.white(
@@ -142,9 +143,10 @@ class TopicOwnerPage extends HookWidget {
                               },
                             ),
                           ),
-                          const SizedBox(height: AppDimens.xl),
+                          const SizedBox(height: AppDimens.s),
                         ],
                         if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
+                          const SizedBox(height: AppDimens.m),
                           _SocialMediaLinks(
                             cubit: cubit,
                             owner: owner as Expert,
@@ -177,6 +179,9 @@ class _ActionsBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final showOwnerTitle = useState(0.0);
+    final actionBarTitle = owner is Editor
+        ? LocaleKeys.topic_owner_editorInfo.tr()
+        : (owner is EditorialTeam ? LocaleKeys.topic_owner_authorInfo.tr() : LocaleKeys.topic_owner_expertInfo.tr());
 
     void setShowOwnerTitle() {
       if (controller.hasClients) {
@@ -209,7 +214,7 @@ class _ActionsBar extends HookWidget {
           Positioned(
             left: AppDimens.pageHorizontalMargin,
             child: Text(
-              LocaleKeys.topic_owner_authorInfo.tr(),
+              actionBarTitle,
               style: AppTypography.b2Medium,
             ),
           ),
@@ -224,27 +229,6 @@ class _ActionsBar extends HookWidget {
               ),
             ),
           ),
-          if (owner is! EditorialTeam)
-            Positioned(
-              right: AppDimens.ml,
-              child: AnimatedOpacity(
-                opacity: 1 - showOwnerTitle.value,
-                duration: const Duration(milliseconds: 200),
-                child: Container(
-                  padding: const EdgeInsets.all(AppDimens.s),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppDimens.xs),
-                    color: owner is Editor ? AppColors.limeGreen : AppColors.peach,
-                  ),
-                  child: Text(
-                    owner is Expert
-                        ? LocaleKeys.topic_owner_expertIn.tr(args: [(owner as Expert).areaOfExpertise])
-                        : LocaleKeys.topic_owner_editorialTeam.tr(),
-                    style: AppTypography.topicOwnerLabelText,
-                  ),
-                ),
-              ),
-            ),
           AnimatedOpacity(
             opacity: showOwnerTitle.value,
             duration: const Duration(milliseconds: 200),
@@ -275,7 +259,7 @@ class _SocialMediaLinks extends StatelessWidget {
     final twitter = owner.twitter;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

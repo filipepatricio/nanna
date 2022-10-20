@@ -273,6 +273,7 @@
     "owner": {
       "authorInfo": "Author Info",
       "editorInfo": "Editor Info",
+      "expertInfo": "Expert Info",
       "editorialTeam": "Informed Editorial Team",
       "expertIn": "Expert in {}",
       "loadingExpertTopics": "We're loading\n{}'s topics",

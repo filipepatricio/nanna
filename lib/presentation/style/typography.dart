@@ -304,13 +304,6 @@ class AppTypography {
     color: AppColors.textGrey,
   );
 
-  static const TextStyle topicOwnerLabelText = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamilyLausanne,
-    fontSize: 10,
-    color: AppColors.textPrimary,
-  );
-
   static const TextStyle labelText = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,

@@ -23,6 +23,7 @@ class TopicOwnerAvatar extends HookWidget {
     this.underlined = false,
     this.fontSize,
     this.horizontalSpacing = AppDimens.s,
+    this.showExpertiseArea = false,
     this.onTap,
   }) : super(key: key);
 
@@ -35,6 +36,7 @@ class TopicOwnerAvatar extends HookWidget {
   final double imageSize;
   final double? fontSize;
   final double horizontalSpacing;
+  final bool showExpertiseArea;
   final Function()? onTap;
 
   static const defaultAvatarTextStyle = AppTypography.h4BoldItalic;
@@ -92,29 +94,45 @@ class TopicOwnerAvatar extends HookWidget {
             SizedBox(width: horizontalSpacing),
           ],
           Expanded(
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  if (withPrefix)
-                    TextSpan(
-                      text: '${LocaleKeys.article_by.tr()} ',
-                      style: textStyle.copyWith(
-                        fontSize: fontSize,
-                        color: mode == Brightness.light ? AppColors.white : null,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      if (withPrefix)
+                        TextSpan(
+                          text: '${LocaleKeys.article_by.tr()} ',
+                          style: textStyle.copyWith(
+                            fontSize: fontSize,
+                            color: mode == Brightness.light ? AppColors.white : null,
+                          ),
+                        ),
+                      TextSpan(
+                        text: owner.name,
+                        style: textStyle.copyWith(
+                          fontSize: fontSize,
+                          color: mode == Brightness.light ? AppColors.white : null,
+                          decoration: underlined ? TextDecoration.underline : null,
+                        ),
                       ),
-                    ),
-                  TextSpan(
-                    text: owner.name,
-                    style: textStyle.copyWith(
-                      fontSize: fontSize,
-                      color: mode == Brightness.light ? AppColors.white : null,
-                      decoration: underlined ? TextDecoration.underline : null,
+                    ],
+                  ),
+                  softWrap: true,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (showExpertiseArea)
+                  Text(
+                    owner is Expert
+                        ? LocaleKeys.topic_owner_expertIn.tr(args: [(owner as Expert).areaOfExpertise])
+                        : LocaleKeys.topic_owner_editorialTeam.tr(),
+                    style: AppTypography.b3Regular.copyWith(
+                      color: AppColors.darkGrey,
+                      height: 1.5,
                     ),
                   ),
-                ],
-              ),
-              softWrap: true,
-              maxLines: 2,
+              ],
             ),
           ),
         ],
