@@ -2,8 +2,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
-class CategoryPill extends StatelessWidget {
-  const CategoryPill({
+class InformedPill extends StatelessWidget {
+  const InformedPill({
     required this.title,
     required this.color,
     this.onTap,

@@ -124,7 +124,7 @@ class PremiumArticleReadView extends HookWidget {
                       else if (data.moreFromBriefItems.isNotEmpty)
                         ArticleMoreFromSection(
                           title: LocaleKeys.article_otherBriefs.tr(),
-                          items: data.moreFromBriefItems.buildWidgets(context, cubit),
+                          items: data.moreFromBriefItems.buildWidgets(context, cubit, snackbarController),
                         ),
                     ],
                   ),
@@ -239,7 +239,12 @@ extension on List<MediaItem> {
 }
 
 extension on List<BriefEntryItem> {
-  List<Widget> buildWidgets(BuildContext context, PremiumArticleViewCubit cubit) => map<Widget>(
+  List<Widget> buildWidgets(
+    BuildContext context,
+    PremiumArticleViewCubit cubit,
+    SnackbarController snackbarController,
+  ) =>
+      map<Widget>(
         (briefEntryItem) => briefEntryItem.map(
           article: (briefItemArticle) => briefItemArticle.article.map(
             article: (mediaItemArticle) => MoreFromSectionListItem.article(
@@ -257,6 +262,7 @@ extension on List<BriefEntryItem> {
           ),
           topicPreview: (briefItemTopic) => MoreFromSectionListItem.topic(
             topic: briefItemTopic.topicPreview,
+            snackbarController: snackbarController,
             onItemTap: () {
               cubit.onMoreFromBriefItemTap(briefEntryItem);
               context.navigateToTopic(

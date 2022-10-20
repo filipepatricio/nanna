@@ -37,7 +37,7 @@ class TopicMediaItemsList extends HookWidget {
     );
 
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {

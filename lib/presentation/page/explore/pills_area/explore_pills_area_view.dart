@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_with_items.dart';
-import 'package:better_informed_mobile/presentation/page/explore/pills_area/category_pill.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -38,7 +38,7 @@ class ExplorePillsAreaView extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
-          return CategoryPill(
+          return InformedPill(
             title: category.name,
             color: category.color,
             onTap: () => AutoRouter.of(context).push(

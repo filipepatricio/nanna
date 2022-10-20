@@ -11,7 +11,7 @@ import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_owner/topic_owner_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -219,8 +219,7 @@ class _TopicHeader extends StatelessWidget {
             top: AppDimens.xxl,
             left: AppDimens.xl,
             right: AppDimens.xl,
-            child: TopicOwnerAvatar(
-              withPrefix: true,
+            child: TopicOwnerAvatar.small(
               owner: topic.owner,
               mode: Brightness.light,
             ),

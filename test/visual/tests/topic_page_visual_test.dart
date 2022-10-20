@@ -1,9 +1,7 @@
 import 'package:better_informed_mobile/exports.dart' as e;
-import 'package:better_informed_mobile/presentation/page/topic/summary/topic_summary_section.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,20 +18,8 @@ void main() {
         initialRoute: e.MainPageRoute(children: [e.TopicPage(topicSlug: '')]),
       );
       await tester.matchGoldenFile('topic_page_(header)');
-      await tester.dragUntilVisible(
-        find.byType(TopicSummarySection),
-        find.byType(TopicPage),
-        const Offset(0, -25),
-      );
-      await tester.pumpAndSettle();
-      await tester.matchGoldenFile('topic_page_(summary)');
 
-      await tester.dragUntilVisible(
-        find.byKey(TopicView.bottomPaddingKey).first,
-        find.byType(TopicPage),
-        const Offset(0, -25),
-        maxIteration: 1000,
-      );
+      await tester.fling(find.byType(TopicPage), const Offset(0, -4000), 100);
       await tester.pumpAndSettle();
       await tester.matchGoldenFile('topic_page_(articles)');
     },
@@ -52,19 +38,7 @@ void main() {
       );
       await tester.matchGoldenFile('topic_page_(header)_(audio_banner)');
 
-      await tester.dragUntilVisible(
-        find.byType(TopicSummarySection),
-        find.byType(TopicPage),
-        const Offset(0, -25),
-      );
-      await tester.pumpAndSettle();
-
-      await tester.dragUntilVisible(
-        find.byKey(TopicView.bottomPaddingKey).first,
-        find.byType(TopicPage),
-        const Offset(0, -25),
-        maxIteration: 1000,
-      );
+      await tester.fling(find.byType(TopicPage), const Offset(0, -4000), 100);
       await tester.pumpAndSettle();
       await tester.matchGoldenFile('topic_page_(articles)_(audio_banner)');
     },

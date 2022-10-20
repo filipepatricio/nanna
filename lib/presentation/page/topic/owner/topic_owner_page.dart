@@ -16,7 +16,7 @@ import 'package:better_informed_mobile/presentation/widget/informed_animated_swi
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_owner/topic_owner_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -86,13 +86,7 @@ class TopicOwnerPage extends HookWidget {
                         const SizedBox(height: AppDimens.m),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                          child: TopicOwnerAvatar(
-                            owner: owner,
-                            textStyle: AppTypography.h2Medium.copyWith(color: AppColors.textPrimary),
-                            imageSize: AppDimens.avatarSize * 2,
-                            horizontalSpacing: AppDimens.m + AppDimens.xxs,
-                            showExpertiseArea: true,
-                          ),
+                          child: TopicOwnerAvatar.big(owner: owner),
                         ),
                         const SizedBox(height: AppDimens.m),
                         Padding(

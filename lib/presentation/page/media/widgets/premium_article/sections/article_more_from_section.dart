@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/cover_opa
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 
@@ -55,6 +56,7 @@ enum MoreFromSectionItemType { article, topic }
 
 class MoreFromSectionListItem extends StatelessWidget {
   const MoreFromSectionListItem._({
+    required this.type,
     required this.child,
     Key? key,
   }) : super(key: key);
@@ -64,6 +66,7 @@ class MoreFromSectionListItem extends StatelessWidget {
     required VoidCallback onItemTap,
   }) =>
       MoreFromSectionListItem._(
+        type: MoreFromSectionItemType.article,
         child: CoverOpacity.article(
           article: article,
           child: ArticleCover.otherBriefItemsList(
@@ -76,17 +79,18 @@ class MoreFromSectionListItem extends StatelessWidget {
   factory MoreFromSectionListItem.topic({
     required TopicPreview topic,
     required VoidCallback onItemTap,
+    required SnackbarController snackbarController,
   }) =>
       MoreFromSectionListItem._(
-        child: CoverOpacity.topic(
+        type: MoreFromSectionItemType.topic,
+        child: TopicCover.big(
           topic: topic,
-          child: TopicCover.otherBriefItemsList(
-            topic: topic,
-            onTap: onItemTap,
-          ),
+          onTap: onItemTap,
+          snackbarController: snackbarController,
         ),
       );
 
+  final MoreFromSectionItemType type;
   final Widget child;
 
   @override

@@ -86,8 +86,11 @@ class AppDimens {
   /// 0.85
   static const topicCardWidthViewportFraction = 0.85;
 
-  /// 32
-  static const avatarSize = 32.0;
+  /// 24
+  static const avatarSize = 24.0;
+
+  /// 64
+  static const avatarSizeBig = 64.0;
 
   /// 45
   static const topicViewTopicHeaderPadding = 45.0;
@@ -96,7 +99,10 @@ class AppDimens {
   static const topicViewSummaryTextHeight = 300.0;
 
   /// 350.0
-  static const briefEntryCardStackHeight = 350.0;
+  static const topicCardBigMaxHeight = 375.0;
+
+  /// MediaQuery.of(context).size.width
+  static double topicCardBigMaxWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   /// 0.4
   static const exploreTopicCarouselSmallCoverWidthFactor = 0.43;

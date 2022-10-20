@@ -9,7 +9,7 @@ class UpdatedLabel extends StatelessWidget {
   const UpdatedLabel({
     required this.dateTime,
     this.mode = Brightness.dark,
-    this.fontSize = 12,
+    this.fontSize = 14,
     this.textStyle = AppTypography.systemText,
     this.withPrefix = true,
     Key? key,

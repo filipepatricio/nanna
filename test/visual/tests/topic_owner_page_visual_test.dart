@@ -14,10 +14,10 @@ void main() {
           fromTopicSlug: TestData.topic.slug,
         ),
       );
-
       await tester.matchGoldenFile();
     },
   );
+
   visualTest(
     '${TopicOwnerPage}_(full_height)',
     (tester) async {
@@ -27,7 +27,6 @@ void main() {
           fromTopicSlug: TestData.topic.slug,
         ),
       );
-
       await tester.matchGoldenFile();
     },
     testConfig: TestConfig.withDevices([highDevice]),

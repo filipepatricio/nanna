@@ -21,6 +21,9 @@ class AppVectorGraphics {
   static const String topicLabel = 'assets/vector_graphics/topic_label.svg';
   static const String expertTopicLabel = 'assets/vector_graphics/expert_topic_label.svg';
   static const String articleLabel = 'assets/vector_graphics/article_label.svg';
+  static const String expertAvatar = 'assets/vector_graphics/expert_avatar.svg';
+  static const String editorialTeamAvatar = 'assets/vector_graphics/editorial_team_avatar.svg';
+  static const String editorialTeamAvatarBig = 'assets/vector_graphics/editorial_team_avatar_big.svg';
 
   static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
   static const String informedLogoGreen = 'assets/vector_graphics/informed_logo_green.svg';

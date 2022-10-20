@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore/pills_area/category_pill.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page.dart';
@@ -11,6 +10,7 @@ import 'package:better_informed_mobile/presentation/page/explore/widget/view_all
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -63,8 +63,8 @@ void main() {
     'can navigate from explore to pill',
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
-      expect(find.byType(CategoryPill), findsAtLeastNWidgets(8));
-      await tester.tap(find.byType(CategoryPill).first);
+      expect(find.byType(InformedPill), findsAtLeastNWidgets(8));
+      await tester.tap(find.byType(InformedPill).last);
       await tester.pumpAndSettle();
       expect(find.byType(CategoryPage), findsOneWidget);
     },
