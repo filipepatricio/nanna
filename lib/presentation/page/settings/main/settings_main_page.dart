@@ -2,12 +2,11 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_body.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsMainPage extends HookWidget {
@@ -26,14 +25,10 @@ class SettingsMainPage extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        title: Text(
-          LocaleKeys.settings_settings.tr(),
-          style: AppTypography.h3bold,
-        ),
-        centerTitle: true,
+      appBar: InformedCupertinoAppBar(
+        brightness: Brightness.light,
+        backLabel: LocaleKeys.profile_title.tr(),
+        title: LocaleKeys.settings_settings.tr(),
       ),
       body: SnackbarParentView(
         controller: snackbarController,
