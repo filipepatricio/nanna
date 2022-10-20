@@ -329,6 +329,14 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle buttonMedium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 16,
+    height: 1,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle navbarText = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
@@ -340,7 +348,7 @@ class AppTypography {
   static const TextStyle timeLabelText = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 8,
+    fontSize: 12,
     letterSpacing: 1,
     color: AppColors.textPrimary,
   );

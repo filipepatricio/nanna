@@ -119,6 +119,9 @@ class AppDimens {
   /// 42
   static const audioControlButtonSize = AppDimens.xxl + AppDimens.xxs;
 
+  /// 16.0
+  static const audioViewControlButtonSize = 60.0;
+
   /// 131
   static const onboardingGridCard = 131.0;
 

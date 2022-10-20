@@ -105,7 +105,9 @@ class AudioFloatingControlButton extends HookWidget {
               child: SvgPicture.asset(
                 state.imagePath,
                 height: imageHeight,
-                color: mode == AudioFloatingControlButtonMode.colored ? state.imageColor : AppColors.white,
+                color: mode == AudioFloatingControlButtonMode.colored
+                    ? AppColors.textPrimary.withAlpha(state.imageAlpha)
+                    : AppColors.white,
               ),
             ),
           ),

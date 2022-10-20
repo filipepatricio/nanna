@@ -15,7 +15,7 @@ class FilledButton extends StatelessWidget {
     this.isLoading = false,
     this.leading,
     this.trailing,
-    this.border,
+    this.withOutline = false,
     Key? key,
   }) : super(key: key);
 
@@ -87,7 +87,7 @@ class FilledButton extends StatelessWidget {
     VoidCallback? onTap,
     Widget? leading,
     Widget? trailing,
-    BoxBorder? border,
+    bool withOutline = false,
   }) =>
       FilledButton._(
         text: text,
@@ -100,7 +100,7 @@ class FilledButton extends StatelessWidget {
         isLoading: false,
         leading: leading,
         trailing: trailing,
-        border: border,
+        withOutline: withOutline,
       );
 
   final String text;
@@ -113,7 +113,7 @@ class FilledButton extends StatelessWidget {
   final bool isLoading;
   final Widget? leading;
   final Widget? trailing;
-  final BoxBorder? border;
+  final bool withOutline;
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,12 @@ class FilledButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isEnabled ? fillColor : disableColor,
-          border: border,
+          border: withOutline
+              ? Border.all(
+                  color: AppColors.lightGrey,
+                  width: 1.0,
+                )
+              : null,
           borderRadius: const BorderRadius.all(
             Radius.circular(AppDimens.buttonRadius),
           ),
@@ -155,7 +160,7 @@ class FilledButton extends StatelessWidget {
                         ],
                         Text(
                           text,
-                          style: AppTypography.buttonBold.copyWith(
+                          style: AppTypography.buttonMedium.copyWith(
                             color: isEnabled ? textColor : disableTextColor,
                           ),
                         ),
