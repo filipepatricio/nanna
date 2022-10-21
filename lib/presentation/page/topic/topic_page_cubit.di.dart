@@ -41,7 +41,6 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   String? get briefId => _briefId;
 
   List<TargetFocus> targets = <TargetFocus>[];
-  final summaryCardKey = GlobalKey();
   final mediaItemKey = GlobalKey();
 
   Future<void> initializeWithSlug(String slug, String? briefId) async {

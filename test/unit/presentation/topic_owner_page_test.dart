@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/widgets/owner_topics.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_owner_avatar.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_owner/topic_owner_avatar_unknown.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_data.dart';
@@ -17,7 +17,7 @@ void main() {
           ],
         ),
       );
-      expect(find.byType(UnknownOwnerAvatar), findsOneWidget);
+      expect(find.byType(TopicOwnerAvatarUnknown, skipOffstage: false), findsOneWidget);
     },
   );
 

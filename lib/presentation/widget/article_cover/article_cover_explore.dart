@@ -122,7 +122,7 @@ class _ArticleCoverList extends HookWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   if (!article.visited) ...[
-                    CategoryPill(
+                    InformedPill(
                       title: article.category.name,
                       color: article.category.color,
                     ),

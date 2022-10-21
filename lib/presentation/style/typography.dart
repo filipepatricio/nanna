@@ -7,9 +7,9 @@ const _fontFamilyLausanne = 'Lausanne';
 
 class AppTypography {
   static const TextStyle h1Headline = TextStyle(
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 36,
+    fontSize: 38,
     height: 1.25,
     color: AppColors.textPrimary,
   );

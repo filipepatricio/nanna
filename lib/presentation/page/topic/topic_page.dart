@@ -161,16 +161,6 @@ class _TopicIdleView extends HookWidget {
   final TopicPageCubit cubit;
   final TutorialCoachMark tutorialCoachMark;
 
-  void _scrollToSummary(BuildContext context, ScrollController controller) {
-    controller.animateViewTo(
-      AppDimens.topicViewHeaderImageHeight(context) - kToolbarHeight - MediaQuery.of(context).viewPadding.bottom,
-    );
-  }
-
-  void _scrollToArticles(BuildContext context, ScrollController controller) {
-    controller.animateViewTo(AppDimens.topicArticleSectionTriggerPoint(context));
-  }
-
   bool _updateScrollPosition(ScrollNotification scrollInfo, ValueNotifier<double> scrollPositionNotifier) {
     if (scrollInfo.metrics.axis == Axis.vertical &&
         scrollInfo.depth == _mainScrollDepth &&
@@ -196,29 +186,6 @@ class _TopicIdleView extends HookWidget {
       audioBannerBottomPosition.value = min(
         position - _hiddenAudioBannerPosition,
         0,
-      );
-    }
-  }
-
-  void _snapPage(BuildContext context, ScrollController scrollController) {
-    final maxHeight = AppDimens.topicViewHeaderImageHeight(context) - MediaQuery.of(context).viewPadding.bottom;
-    final minHeight = kToolbarHeight + MediaQuery.of(context).viewInsets.top;
-
-    final position = scrollController.position.pixels;
-    final scrollDistance = maxHeight - minHeight;
-
-    /// ScrollDirection.forward = scrolling from the bottom / ScrollDirection.reverse = scrolling from the top
-    final thresholdFactor = scrollController.position.userScrollDirection == ScrollDirection.forward ? 0.9 : 0.1;
-
-    if (position > 0 && position < scrollDistance) {
-      final snapOffset = position / scrollDistance > thresholdFactor ? scrollDistance : 0.0;
-
-      Future.microtask(
-        () => scrollController.animateTo(
-          snapOffset,
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.linearToEaseOut,
-        ),
       );
     }
   }
@@ -276,60 +243,45 @@ class _TopicIdleView extends HookWidget {
               scrollPositionNotifier,
             );
           },
-          child: Listener(
-            onPointerUp: (_) => _snapPage(context, scrollController),
-            child: Stack(
-              children: [
-                CustomScrollView(
-                  physics: getPlatformScrollPhysics(
-                    const AlwaysScrollableScrollPhysics(),
-                  ),
-                  controller: scrollController,
-                  slivers: [
-                    TopicAppBar(
-                      topic: topic,
-                      cubit: cubit,
-                      isShowingTutorialToast: isShowingTutorialToast,
-                      scrollPositionNotifier: scrollPositionNotifier,
-                      onArticlesLabelTap: () => topic.hasSummary
-                          ? _scrollToArticles(context, scrollController)
-                          : _scrollToSummary(context, scrollController),
-                      onArrowTap: () => _scrollToSummary(context, scrollController),
-                      snackbarController: snackbarController,
-                    ),
-                    TopicView(
-                      topic: topic,
-                      cubit: cubit,
-                      mediaItemKey: cubit.mediaItemKey,
-                      scrollController: scrollController,
-                    ),
-                  ],
+          child: Stack(
+            children: [
+              CustomScrollView(
+                physics: getPlatformScrollPhysics(
+                  const AlwaysScrollableScrollPhysics(),
                 ),
-                ValueListenableBuilder<double>(
-                  valueListenable: audioBannerBottomPosition,
-                  builder: (context, audioBannerBottomPosition, banner) => Positioned(
-                    bottom: audioBannerBottomPosition,
-                    left: 0,
-                    right: 0,
-                    child: banner!,
+                controller: scrollController,
+                slivers: [
+                  TopicAppBar(
+                    topic: topic,
+                    cubit: cubit,
+                    isShowingTutorialToast: isShowingTutorialToast,
+                    scrollPositionNotifier: scrollPositionNotifier,
+                    snackbarController: snackbarController,
                   ),
-                  child: const AudioPlayerBannerShadow(
-                    child: AudioPlayerBanner(),
+                  TopicView(
+                    topic: topic,
+                    cubit: cubit,
+                    mediaItemKey: cubit.mediaItemKey,
+                    scrollController: scrollController,
                   ),
+                ],
+              ),
+              ValueListenableBuilder<double>(
+                valueListenable: audioBannerBottomPosition,
+                builder: (context, audioBannerBottomPosition, banner) => Positioned(
+                  bottom: audioBannerBottomPosition,
+                  left: 0,
+                  right: 0,
+                  child: banner!,
                 ),
-              ],
-            ),
+                child: const AudioPlayerBannerShadow(
+                  child: AudioPlayerBanner(),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-}
-
-extension on ScrollController {
-  Future<void> animateViewTo(double offset) => animateTo(
-        offset,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOutCubic,
-      );
 }

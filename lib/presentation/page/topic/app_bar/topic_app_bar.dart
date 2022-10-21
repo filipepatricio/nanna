@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/header/topic_header.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -8,7 +9,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
-import 'package:better_informed_mobile/presentation/widget/marquee.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_options/share_options_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -22,32 +22,26 @@ class TopicAppBar extends HookWidget {
     required this.cubit,
     required this.isShowingTutorialToast,
     required this.scrollPositionNotifier,
-    required this.onArticlesLabelTap,
-    required this.onArrowTap,
     required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final Topic topic;
   final TopicPageCubit cubit;
   final ValueNotifier<double> scrollPositionNotifier;
-  final VoidCallback onArticlesLabelTap;
-  final VoidCallback onArrowTap;
   final ValueNotifier<bool> isShowingTutorialToast;
   final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
     final isExpanded = useState(true);
-    final hasScrolled = useState(false);
-    final isMounted = useIsMounted();
 
     final title = Text(
-      topic.strippedTitle,
+      LocaleKeys.topic_label.tr(),
       textAlign: TextAlign.center,
       textScaleFactor: 1.0,
       style: AppTypography.h4Bold.copyWith(
         height: 1,
-        color: isExpanded.value ? AppColors.transparent : AppColors.black,
+        color: isExpanded.value ? AppColors.white : AppColors.textPrimary,
       ),
     );
 
@@ -68,25 +62,21 @@ class TopicAppBar extends HookWidget {
     );
 
     return SliverAppBar(
+      elevation: 1,
       pinned: true,
-      elevation: 3.0,
-      shadowColor: AppColors.black40,
-      backgroundColor: AppColors.background,
       titleSpacing: 0,
-      automaticallyImplyLeading: false,
       centerTitle: true,
+      shadowColor: AppColors.black40,
+      automaticallyImplyLeading: false,
+      backgroundColor: AppColors.background,
       systemOverlayStyle: isExpanded.value && !isShowingTutorialToast.value
           ? AppTheme.systemUIOverlayStyleLight
           : AppTheme.systemUIOverlayStyleDark,
       // Because expandedHeight automatically includes the status bar height, I have to remove it from this value
       expandedHeight: AppDimens.topicViewHeaderImageHeight(context) - MediaQuery.of(context).viewPadding.top,
       flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.parallax,
-        background: TopicHeader(
-          topic: topic,
-          onArticlesLabelTap: onArticlesLabelTap,
-          onArrowTap: onArrowTap,
-        ),
+        collapseMode: CollapseMode.pin,
+        background: TopicHeader(topic: topic),
       ),
       leading: IconButton(
         padding: EdgeInsets.zero,
@@ -97,15 +87,7 @@ class TopicAppBar extends HookWidget {
       ),
       title: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-        child: hasScrolled.value || isExpanded.value
-            ? title
-            : Marquee(
-                animationDuration: const Duration(seconds: 3),
-                onDone: () {
-                  if (isMounted()) hasScrolled.value = true;
-                },
-                child: title,
-              ),
+        child: title,
       ),
       actions: [
         BookmarkButton.topic(

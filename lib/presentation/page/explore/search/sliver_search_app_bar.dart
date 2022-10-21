@@ -33,7 +33,7 @@ class SliverSearchAppBar extends StatelessWidget {
       shadowColor: AppColors.black40,
       pinned: true,
       centerTitle: false,
-      elevation: 3.0,
+      elevation: 1.0,
       expandedHeight: AppDimens.appBarHeight,
       titleSpacing: AppDimens.pageHorizontalMargin,
       actions: [

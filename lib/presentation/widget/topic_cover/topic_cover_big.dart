@@ -1,7 +1,7 @@
 part of 'topic_cover.dart';
 
-class _TopicCoverSmall extends StatelessWidget {
-  const _TopicCoverSmall({
+class _TopicCoverBig extends StatelessWidget {
+  const _TopicCoverBig({
     required this.topic,
     required this.onTap,
     required this.snackbarController,
@@ -16,34 +16,43 @@ class _TopicCoverSmall extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: LayoutBuilder(
-        builder: (context, constraints) => Column(
+      child: LimitedBox(
+        maxWidth: AppDimens.topicCardBigMaxWidth(context),
+        maxHeight: AppDimens.topicCardBigMaxHeight,
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox.square(
-              dimension: constraints.maxWidth,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
+            TopicOwnerAvatar.small(owner: topic.owner),
+            const SizedBox(height: AppDimens.s),
+            Expanded(
+              child: Stack(
+                alignment: Alignment.bottomCenter,
                 children: [
-                  Expanded(
-                    flex: 6,
+                  Positioned.fill(
                     child: TopicCoverImage(
                       topic: topic,
                       borderRadius: AppDimens.smallImageCoverBorderRadius,
                     ),
                   ),
-                  Expanded(
-                    flex: 4,
+                  Positioned(
+                    top: AppDimens.m,
+                    child: InformedPill(
+                      title: LocaleKeys.topic_label.tr(),
+                      color: AppColors.white,
+                    ),
+                  ),
+                  Positioned(
+                    left: AppDimens.xl,
+                    right: AppDimens.xl,
                     child: Container(
                       color: topic.category.color,
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(AppDimens.m),
-                          child: AutoSizeText(
+                          child: Text(
                             topic.strippedTitle,
                             maxLines: 2,
-                            minFontSize: 14,
                             textAlign: TextAlign.center,
                             style: AppTypography.subH0Medium.copyWith(height: 1.25),
                             overflow: TextOverflow.ellipsis,
@@ -56,7 +65,7 @@ class _TopicCoverSmall extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppDimens.s),
-            _TopicCoverBar.small(
+            _TopicCoverBar.big(
               topic: topic,
               snackbarController: snackbarController,
             ),
