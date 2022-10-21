@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/bordered_button.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -74,11 +73,9 @@ class SwitchAudioPopup extends StatelessWidget {
             onTap: () => Navigator.pop(context, false),
           ),
           const SizedBox(height: AppDimens.m),
-          BorderedButton(
-            text: Text(
-              tr(LocaleKeys.audio_switchAudio_approve),
-              style: AppTypography.buttonBold,
-            ),
+          FilledButton.white(
+            text: LocaleKeys.audio_switchAudio_approve.tr(),
+            withOutline: true,
             onTap: () => Navigator.pop(context, true),
           ),
           const SizedBox(height: AppDimens.c),
