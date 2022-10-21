@@ -95,14 +95,6 @@ class PremiumArticleView extends HookWidget {
       },
     );
 
-    final showAudioMode = useMemoized(
-      () => state.maybeMap(
-        idle: (state) => state.article.metadata.hasAudioVersion && state.article.metadata.availableInSubscription,
-        orElse: () => false,
-      ),
-      [state],
-    );
-
     return Scaffold(
       appBar: ArticleAppBar(
         article: article.metadata,
@@ -118,42 +110,37 @@ class PremiumArticleView extends HookWidget {
           onScrollsToTop: (_) => mainController.animateToStart(),
           child: PremiumArticleAudioCubitProvider(
             article: article.metadata,
-            audioCubitBuilder: (audioCubit) => Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                PageView(
-                  physics: state.scrollPhysics,
-                  controller: horizontalPageController,
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: (page) {
-                    switch (page) {
-                      case 0:
-                        actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.custom;
-                        break;
-                      case 1:
-                        actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.background;
-                        break;
-                    }
-                  },
-                  children: [
-                    state.maybeMap(
-                      idle: (_) => PremiumArticleReadView(
-                        cubit: cubit,
-                        mainController: mainController,
-                        snackbarController: snackbarController,
-                        actionsBarColorModeNotifier: actionsBarColorModeNotifier,
-                      ),
-                      orElse: Container.new,
+            audioCubitBuilder: (audioCubit) => state.maybeMap(
+              idle: (state) => PageView(
+                physics: state.scrollPhysics,
+                controller: horizontalPageController,
+                scrollDirection: Axis.horizontal,
+                onPageChanged: (page) {
+                  switch (page) {
+                    case 0:
+                      actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.custom;
+                      break;
+                    case 1:
+                      actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.background;
+                      break;
+                  }
+                },
+                children: [
+                  PremiumArticleReadView(
+                    cubit: cubit,
+                    mainController: mainController,
+                    snackbarController: snackbarController,
+                    actionsBarColorModeNotifier: actionsBarColorModeNotifier,
+                  ),
+                  if (state.article.metadata.hasAudioVersion && state.article.metadata.availableInSubscription)
+                    PremiumArticleAudioView(
+                      article: article,
+                      cubit: audioCubit,
+                      enablePageSwipe: cubit.enablePageSwipe,
                     ),
-                    if (showAudioMode)
-                      PremiumArticleAudioView(
-                        article: article,
-                        cubit: audioCubit,
-                        enablePageSwipe: cubit.enablePageSwipe,
-                      ),
-                  ],
-                ),
-              ],
+                ],
+              ),
+              orElse: Container.new,
             ),
           ),
         ),
