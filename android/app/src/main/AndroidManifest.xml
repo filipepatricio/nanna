@@ -47,6 +47,8 @@
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/magic"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/topics"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/articles"/>
+                <data android:scheme="https" android:host="get.informed.so" android:pathPrefix="/"/>
+                <data android:scheme="https" android:host="informed.onelink.me" android:pathPrefix="/"/>
             </intent-filter>
         </activity>
 

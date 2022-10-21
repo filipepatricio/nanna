@@ -11,6 +11,8 @@
         <key>com.apple.developer.associated-domains</key>
         <array>
             <string>applinks:${APP_LINKS_HOST}</string>
+            <string>applinks:get.informed.so</string>
+            <string>applinks:informed.onelink.me</string>
         </array>
         <key>com.apple.developer.kernel.increased-memory-limit</key>
         <true/>
