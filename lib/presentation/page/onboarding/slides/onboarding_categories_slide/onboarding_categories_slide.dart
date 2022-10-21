@@ -22,29 +22,23 @@ class OnboardingCategoriesSlide extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SizedBox(height: AppDimens.safeTopPadding(context)),
-        const Spacer(flex: 2),
-        Expanded(
-          flex: 3,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
-            child: AutoSizeText(
-              tr(LocaleKeys.onboarding_headerSlideCategories),
-              style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
-            ),
+        const SizedBox(height: AppDimens.l),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: AutoSizeText(
+            LocaleKeys.onboarding_headerSlideCategories.tr(),
+            style: AppTypography.h0Bold.copyWith(height: 1.14, fontSize: 34),
+          ),
+        ),
+        const SizedBox(height: AppDimens.l),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: AutoSizeText(
+            LocaleKeys.onboarding_descriptionSlideCategories.tr(),
+            style: AppTypography.b2Regular,
           ),
         ),
         Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
-            child: AutoSizeText(
-              LocaleKeys.onboarding_descriptionSlideCategories.tr(),
-              style: AppTypography.b2Regular,
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 15,
           child: LayoutBuilder(
             builder: (context, constraints) {
               final rows = constraints.maxHeight ~/ (_tileSize + _tileSpacing);

@@ -43,12 +43,12 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
       end: AppColors.background,
     ).chain(CurveTween(curve: Curves.easeIn)).animate(animationController);
 
-    if (actionsBarColorModeNotifier?.value == ArticleActionsBarColorMode.background) {
-      animationController.animateTo(1, duration: Duration.zero);
-    }
-
     useEffect(
       () {
+        if (actionsBarColorModeNotifier?.value == ArticleActionsBarColorMode.background) {
+          animationController.animateTo(1, duration: Duration.zero);
+        }
+
         void listener() {
           if (actionsBarColorModeNotifier?.value == ArticleActionsBarColorMode.custom) {
             animationController.reverse();
