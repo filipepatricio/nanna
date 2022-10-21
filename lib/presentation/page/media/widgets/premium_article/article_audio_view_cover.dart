@@ -1,11 +1,20 @@
-part of 'article_cover.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/generated/local_keys.g.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
-class _ArticleAudioViewCover extends StatelessWidget {
-  const _ArticleAudioViewCover({
+class ArticleAudioViewCover extends StatelessWidget {
+  const ArticleAudioViewCover({
     required this.article,
     required this.width,
     required this.height,
-    this.cardColor = AppColors.transparent,
     this.shouldShowTimeToRead = true,
     this.shouldShowAudioIcon = true,
     Key? key,
@@ -14,7 +23,6 @@ class _ArticleAudioViewCover extends StatelessWidget {
   final MediaItemArticle article;
   final double width;
   final double height;
-  final Color cardColor;
   final bool shouldShowTimeToRead;
   final bool shouldShowAudioIcon;
 
@@ -26,11 +34,11 @@ class _ArticleAudioViewCover extends StatelessWidget {
         if (hasImage)
           ArticleImage(
             image: article.image!,
-            cardColor: cardColor,
+            cardColor: article.category.color,
           )
         else ...[
           Container(
-            color: cardColor,
+            color: article.category.color,
             width: width,
             height: height,
           ),
@@ -56,6 +64,7 @@ class _ArticleImageOverlay extends StatelessWidget {
     required this.shouldShowAudioIcon,
     Key? key,
   }) : super(key: key);
+
   final MediaItemArticle article;
   final double? height;
   final double? width;

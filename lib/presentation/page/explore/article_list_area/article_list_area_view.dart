@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/explore/data/explore_content_area.
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_header.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +40,6 @@ class ArticleListAreaView extends StatelessWidget {
                   (article) => ArticleCover.list(
                     article: article,
                     onTap: () => context.navigateToArticle(article),
-                    coverColor: AppColors.mockedColors[_getColorIndex(article)],
                     snackbarController: snackbarController,
                   ),
                 )
@@ -58,10 +56,6 @@ class ArticleListAreaView extends StatelessWidget {
         const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
       ],
     );
-  }
-
-  int _getColorIndex(MediaItemArticle article) {
-    return area.articles.indexOf(article) % AppColors.mockedColors.length;
   }
 }
 

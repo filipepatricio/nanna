@@ -392,7 +392,14 @@ class _IdleContent extends HookWidget {
 
       yield _BriefSubsection(
         subsection: subsection,
-        children: _mapSubsectionEntries(section, subsection, firstTopic, sectionIndex, i, snackbarController),
+        children: _mapSubsectionEntries(
+          section,
+          subsection,
+          firstTopic,
+          sectionIndex,
+          i,
+          snackbarController,
+        ),
       );
     }
   }

@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/explore/explore_area_it
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_header.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_item_carousel_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +53,6 @@ class ArticleAreaView extends HookWidget {
           itemBuilder: (article, index) => ArticleCover.small(
             article: article,
             onTap: () => context.navigateToArticle(article),
-            coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
             snackbarController: snackbarController,
           ),
           onViewAllTap: () => context.navigateToSeeAll(area, isHighlighted),

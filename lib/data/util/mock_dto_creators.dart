@@ -187,15 +187,15 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio.asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 _freeArticleWithoutNote.asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 _freeArticle.asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               ..._briefEntriesArticlesList,
             ],
@@ -265,13 +265,13 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
                     .copyWith(progressState: ArticleProgressState.finished)
                     .asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
@@ -285,11 +285,11 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticle.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNote.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
             ],
           ),
@@ -339,10 +339,6 @@ class MockDTO {
   static final _briefEntryStyleTopic = BriefEntryStyleDTO(
     null,
     BriefEntryStyleType.topicCard,
-  );
-  static final _briefEntryStyleArticleSmall = BriefEntryStyleDTO(
-    '#F2E8E7',
-    BriefEntryStyleType.articleCardWithSmallImage,
   );
   static final _briefEntryStyleArticleSmallItem = BriefEntryStyleDTO(
     '#F2E8E7',

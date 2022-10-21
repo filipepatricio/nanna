@@ -86,7 +86,11 @@
     "selectedArticles": "{} selected articles",
     "articles": "{} articles",
     "summaryHeadline": "Topic summary",
-    "articlesCount": "{} articles on this topic"
+    "articlesCount": "{} articles on this topic",
+    "recommendedBy": {
+      "informed": "Recommended by informed",
+      "expert": "Recommended by {}"
+    }
   },
   "date": {
     "day": {

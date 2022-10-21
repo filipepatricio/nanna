@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart' as d;
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
@@ -23,62 +24,69 @@ class ArticleImage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final height = constraints.maxHeight;
-        final width = constraints.maxWidth;
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(AppDimens.buttonRadius)),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final height = constraints.maxHeight;
+              final width = constraints.maxWidth;
 
-        if (image is d.ArticleImageCloudinary) {
-          return CloudinaryImage(
-            publicId: (image as d.ArticleImageCloudinary).cloudinaryImage.publicId,
-            config: CloudinaryConfig(
-              width: width,
-              height: height,
-            ),
-            width: width,
-            height: height,
-            fit: fit,
-            darkeningMode: darkeningMode,
-            testImage: AppRasterGraphics.testArticleHeroImage,
-          );
-        }
+              if (image is d.ArticleImageCloudinary) {
+                return CloudinaryImage(
+                  publicId: (image as d.ArticleImageCloudinary).cloudinaryImage.publicId,
+                  config: CloudinaryConfig(
+                    width: width,
+                    height: height,
+                  ),
+                  width: width,
+                  height: height,
+                  fit: fit,
+                  darkeningMode: darkeningMode,
+                  testImage: AppRasterGraphics.testArticleHeroImage,
+                );
+              }
 
-        if (image is d.ArticleImageRemote) {
-          return CachedNetworkImage(
-            imageUrl: (image as d.ArticleImageRemote).url,
-            width: width,
-            height: height,
-            fit: fit,
-            imageBuilder: (context, image) => Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: image,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              foregroundDecoration: BoxDecoration(
-                color: darkeningMode == DarkeningMode.solid ? AppColors.black40 : null,
-              ),
-            ),
-            errorWidget: (_, __, ___) => Container(
-              color: cardColor ?? AppColors.black40,
-              width: width,
-              height: height,
-            ),
-            placeholder: (context, _) => LoadingShimmer(
-              width: width,
-              height: height,
-              mainColor: AppColors.white,
-            ),
-          );
-        }
+              if (image is d.ArticleImageRemote) {
+                return CachedNetworkImage(
+                  imageUrl: (image as d.ArticleImageRemote).url,
+                  width: width,
+                  height: height,
+                  fit: fit,
+                  imageBuilder: (context, image) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: image,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    foregroundDecoration: BoxDecoration(
+                      color: darkeningMode == DarkeningMode.solid ? AppColors.black40 : null,
+                    ),
+                  ),
+                  errorWidget: (_, __, ___) => Container(
+                    color: cardColor ?? AppColors.black40,
+                    width: width,
+                    height: height,
+                  ),
+                  placeholder: (context, _) => LoadingShimmer(
+                    width: width,
+                    height: height,
+                    mainColor: AppColors.white,
+                  ),
+                );
+              }
 
-        return Container(
-          color: cardColor,
-          width: width,
-          height: height,
-        );
-      },
+              return Container(
+                color: cardColor,
+                width: width,
+                height: height,
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

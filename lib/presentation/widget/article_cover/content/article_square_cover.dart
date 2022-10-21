@@ -1,4 +1,4 @@
-part of 'article_cover.dart';
+part of '../article_cover.dart';
 
 class _ArticleSquareCover extends StatelessWidget {
   const _ArticleSquareCover({
@@ -40,8 +40,11 @@ class _ArticleAspectRatioCover extends StatelessWidget {
     return SizedBox(
       width: width,
       child: AspectRatio(
-        aspectRatio: 6 / 5,
-        child: _ArticleImageCover(article: article, coverColor: coverColor),
+        aspectRatio: aspectRatio,
+        child: _ArticleImageCover(
+          article: article,
+          coverColor: coverColor,
+        ),
       ),
     );
   }
@@ -59,22 +62,35 @@ class _ArticleImageCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppDimens.smallImageCoverBorderRadius),
-            child: article.hasImage
-                ? ArticleImage(
+    final darkeningMode = article.locked ? DarkeningMode.solid : DarkeningMode.none;
+
+    return SizedBox.expand(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppDimens.smallImageCoverBorderRadius),
+        child: article.hasImage
+            ? Stack(
+                children: [
+                  ArticleImage(
                     image: article.image!,
                     cardColor: coverColor,
-                  )
-                : SizedBox.expand(
-                    child: Container(color: coverColor),
+                    darkeningMode: darkeningMode,
                   ),
-          ),
-        ),
-      ],
+                  if (article.locked)
+                    Positioned.fill(
+                      child: Center(
+                        child: SvgPicture.asset(
+                          AppVectorGraphics.locker,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ),
+                ],
+              )
+            : ArticleNoImageView(
+                color: coverColor,
+                locked: article.locked,
+              ),
+      ),
     );
   }
 }
