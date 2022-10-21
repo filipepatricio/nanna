@@ -36,13 +36,13 @@
   },
   "onboarding": {
     "title": "How we use push notifications",
-    "headerSlideOne": "Access curated articles",
+    "headerSlideOne": "Access trusted, premium news sources",
     "headerSlideTwo": "Explore diverse perspectives",
     "headerSlideCategories": "Add your interests",
     "headerSlideThree": "Notifications",
-    "descriptionSlideOne": "Get the daily must-reads from trusted, premium news sources – all in one app.",
+    "descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
     "descriptionSlideTwo": "Our editors and topic experts read hundreds of articles daily, choosing only the best and deliberately curating diverse perspectives.",
-    "descriptionSlideCategories": "Choose what matters to you and you’ll get daily reading suggestions tailored to your interests, alongside wider curated articles.",
+    "descriptionSlideCategories": "Choose what matters to you and you’ll get personalised daily reading suggestions, alongside wider curated articles. Change your interests anytime in Profile → Settings.",
     "categories": {
       "everything": "Show me everything"
     },
@@ -50,17 +50,9 @@
       "push": "Push",
       "email": "Email"
     },
-    "notificationBulletPoints": {
-      "headerOne": "Daily News Brief",
-      "descOne": "Our skilled editorial team screens and selects the top articles of the day.",
-      "headerTwo": "Incoming Updates",
-      "descTwo": "Emerging updates and new topics will be provided for you on a rolling basis, every day.",
-      "headerThree": "Fresh App Updates",
-      "descThree": "We are constantly improving our product. We will keep you posted on new improvements and features."
-    },
     "tracking": {
       "title": "Improve your experience",
-      "info": "We track the behavior of our users to better understand their needs and to improve performance. Please consider allowing tracking for an enhaced experience."
+      "info": "We track user behaviour to understand your needs better and make performance improvements. Please consider tapping ‘Allow’ for an enhanced experience."
     }
   },
   "tutorial": {

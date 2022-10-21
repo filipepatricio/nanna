@@ -21,7 +21,7 @@ class OnboardingArticlesSlide extends StatelessWidget {
           color: AppColors.transparent,
         ),
         Expanded(
-          flex: 13,
+          flex: 14,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -43,28 +43,22 @@ class OnboardingArticlesSlide extends StatelessWidget {
         Expanded(
           flex: 9,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  flex: 8,
-                  child: AutoSizeText(
-                    LocaleKeys.onboarding_headerSlideTwo.tr(),
-                    style: AppTypography.h0Bold.copyWith(height: 1.14),
-                    maxLines: 3,
-                    stepGranularity: 0.1,
-                  ),
+                AutoSizeText(
+                  LocaleKeys.onboarding_headerSlideTwo.tr(),
+                  style: AppTypography.h0Bold.copyWith(height: 1.14),
+                  maxLines: 3,
+                  stepGranularity: 0.1,
                 ),
-                const Spacer(),
-                Expanded(
-                  flex: 10,
-                  child: AutoSizeText(
-                    LocaleKeys.onboarding_descriptionSlideTwo.tr(),
-                    style: AppTypography.b2Regular,
-                    maxLines: 4,
-                    stepGranularity: 0.1,
-                  ),
+                const SizedBox(height: AppDimens.s),
+                AutoSizeText(
+                  LocaleKeys.onboarding_descriptionSlideTwo.tr(),
+                  style: AppTypography.b2Regular,
+                  maxLines: 4,
+                  stepGranularity: 0.1,
                 ),
               ],
             ),
