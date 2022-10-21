@@ -27,21 +27,21 @@ class _ArticleAudioViewCover extends StatelessWidget {
           ArticleImage(
             image: article.image!,
             cardColor: cardColor,
-            darkeningMode: DarkeningMode.solid,
           )
-        else
+        else ...[
           Container(
             color: cardColor,
             width: width,
             height: height,
           ),
-        _ArticleImageOverlay(
-          article: article,
-          height: height,
-          width: width,
-          shouldShowTimeToRead: shouldShowTimeToRead,
-          shouldShowAudioIcon: shouldShowAudioIcon,
-        )
+          _ArticleImageOverlay(
+            article: article,
+            height: height,
+            width: width,
+            shouldShowTimeToRead: shouldShowTimeToRead,
+            shouldShowAudioIcon: shouldShowAudioIcon,
+          )
+        ]
       ],
     );
   }

@@ -67,6 +67,7 @@ class _RewindButton extends StatelessWidget {
       icon: SvgPicture.asset(
         AppVectorGraphics.skipBack10Seconds,
         color: state.imageColor,
+        height: AppDimens.audioViewControlButtonSize / 2,
       ),
     );
   }
@@ -90,6 +91,7 @@ class _FastForwardButton extends StatelessWidget {
       icon: SvgPicture.asset(
         AppVectorGraphics.skipForward10Seconds,
         color: state.imageColor,
+        height: AppDimens.audioViewControlButtonSize / 2,
       ),
     );
   }

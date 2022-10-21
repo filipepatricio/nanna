@@ -39,15 +39,15 @@ class PremiumArticleAudioView extends HookWidget {
       [cubit],
     );
 
-    final metadataStyle = AppTypography.systemText.copyWith(
-      color: AppColors.textGrey,
+    final metadataStyle = AppTypography.metadata1Medium.copyWith(
+      color: AppColors.black,
       height: 1.12,
     );
 
     return WillPopScope(
       onWillPop: () async => !Navigator.of(context).userGestureInProgress,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
         color: AppColors.background,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -73,21 +73,23 @@ class PremiumArticleAudioView extends HookWidget {
                 ),
               ),
             const Spacer(),
-            Text(
-              article.metadata.strippedTitle,
-              textAlign: TextAlign.center,
-              style: AppTypography.h4Bold,
-            ),
-            const Spacer(),
             ArticleDottedInfo(
               article: article.metadata,
               isLight: false,
               showLogo: false,
               showReadTime: false,
-              fullDate: true,
+              showDate: false,
               textStyle: metadataStyle,
               color: metadataStyle.color,
               centerContent: true,
+            ),
+            const Spacer(),
+            Text(
+              article.metadata.strippedTitle,
+              textAlign: TextAlign.center,
+              style: AppTypography.articleH0SemiBold,
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
             if (hasAudioCredits) ...[
