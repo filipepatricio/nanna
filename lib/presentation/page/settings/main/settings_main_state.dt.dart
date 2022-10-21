@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'settings_main_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SettingsMainState with _$SettingsMainState {
   @Implements<BuildState>()
   const factory SettingsMainState.init() = _SettingsMainStateInit;

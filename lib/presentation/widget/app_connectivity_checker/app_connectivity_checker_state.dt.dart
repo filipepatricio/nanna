@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_connectivity_checker_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class AppConnectivityCheckerState with _$AppConnectivityCheckerState {
   @Implements<BuildState>()
   factory AppConnectivityCheckerState.connected() = _AppConnectivityCheckerStateIdle;

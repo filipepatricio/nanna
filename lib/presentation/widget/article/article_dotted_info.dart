@@ -19,7 +19,7 @@ class ArticleDottedInfo extends StatelessWidget {
     this.showDate = true,
     this.fullDate = false,
     this.showReadTime = true,
-    this.textStyle = AppTypography.metadata1Regular,
+    this.textStyle = AppTypography.metadata1Medium,
     this.color,
     this.publisherMaxLines = 1,
     this.centerContent = false,

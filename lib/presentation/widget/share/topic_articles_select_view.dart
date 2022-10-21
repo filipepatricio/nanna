@@ -263,11 +263,9 @@ class _IdleView extends HookWidget {
             ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
-            child: FilledButton(
+            child: FilledButton.black(
               onTap: () => cubit.shareImage(shareOption),
               text: LocaleKeys.common_next.tr(),
-              fillColor: AppColors.charcoal,
-              textColor: AppColors.white,
             ),
           ),
         ],
@@ -359,7 +357,7 @@ class _IOSHeader extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => AutoRouter.of(context).pop(),
-            child: SvgPicture.asset(AppVectorGraphics.closeIOS),
+            child: SvgPicture.asset(AppVectorGraphics.closeBackground),
           ),
         ],
       ),

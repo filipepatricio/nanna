@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_area_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_item_carousel_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,14 +12,16 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class OwnerTopics extends HookWidget {
   const OwnerTopics({
     required this.topics,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final List<TopicPreview> topics;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
-    const width = AppDimens.topicSmallImageCoverWidth;
-    final height = useMemoized(() => width * AppDimens.exploreTopicCarouselSmallCoverAspectRatio);
+    final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor;
+    final height = width * AppDimens.exploreTopicCarouselSmallCoverAspectRatio;
 
     final items = ExploreAreaItemGenerator.generate(
       topics,
@@ -28,12 +31,12 @@ class OwnerTopics extends HookWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: AppDimens.xl),
+        const SizedBox(height: AppDimens.m),
         ExploreAreaItemCarouselView<TopicPreview>(
-          itemBuilder: (topic, _) => TopicCover.exploreSmall(
+          itemBuilder: (topic, _) => TopicCover.small(
             topic: topic,
             onTap: () => context.navigateToTopic(topic),
-            hasBackgroundColor: true,
+            snackbarController: snackbarController,
           ),
           items: items,
           itemWidth: width,

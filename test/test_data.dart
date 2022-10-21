@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/categories/mapper/category_with_items_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
@@ -33,14 +34,14 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/util/color_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_position.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_with_items.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
@@ -62,6 +63,7 @@ class TestData {
     ArticleTypeDTOMapper(),
     ArticleKindDTOMapper(),
     ArticleProgressDTOMapper(),
+    CategoryDTOMapper(),
   );
 
   static final _topicPreviewMapper = TopicPreviewDTOMapper(
@@ -74,6 +76,7 @@ class TestData {
       ),
     ),
     ImageDTOMapper(),
+    CategoryDTOMapper(),
   );
 
   static final _topicMapper = TopicDTOMapper(
@@ -91,22 +94,14 @@ class TestData {
     TopicOwnerDTOMapper(
       ImageDTOMapper(),
     ),
+    CategoryDTOMapper(),
   );
 
   static final _exploreContentMapper = ExploreContentDTOMapper(
     ExploreContentPillDTOMapper(),
     ExploreContentAreaDTOMapper(
-      ArticleDTOToMediaItemMapper(
-        ArticleImageDTOMapper(),
-        PublisherDTOMapper(
-          ImageDTOMapper(),
-        ),
-        ArticleTypeDTOMapper(),
-        ArticleKindDTOMapper(),
-        ArticleProgressDTOMapper(),
-      ),
+      _articleToMediaItemMapper,
       _topicPreviewMapper,
-      ColorDTOMapper(),
     ),
   );
 
@@ -134,6 +129,7 @@ class TestData {
         ArticleTypeDTOMapper(),
         ArticleKindDTOMapper(),
         ArticleProgressDTOMapper(),
+        CategoryDTOMapper(),
       ),
       BriefEntryTopicPreviewDTOMapper(
         TopicOwnerDTOMapper(
@@ -145,6 +141,7 @@ class TestData {
           ),
         ),
         ImageDTOMapper(),
+        CategoryDTOMapper(),
       ),
     ),
     BriefEntryStyleDTOMapper(),
@@ -160,6 +157,7 @@ class TestData {
     ArticleTypeDTOMapper(),
     ArticleKindDTOMapper(),
     ArticleProgressDTOMapper(),
+    CategoryDTOMapper(),
   );
 
   static final _categoryItemMapper = CategoryItemDTOMapper(
@@ -167,7 +165,9 @@ class TestData {
     _articleToMediaItemMapper,
   );
 
-  static final _categoryMapper = CategoryDTOMapper(_categoryItemMapper);
+  static final _categoryMapper = CategoryDTOMapper();
+
+  static final _categoryWithItemsMapper = CategoryWithItemsDTOMapper(_categoryItemMapper);
 
   static final _articleContentMapper = ArticleContentDTOMapper(
     ArticleContentTypeDTOMapper(),
@@ -199,6 +199,9 @@ class TestData {
 
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;
 
+  static MediaItemArticle get premiumArticleWithoutImage =>
+      _mediaItemMapper(MockDTO.premiumArticleWithoutImage.asMediaItem) as MediaItemArticle;
+
   static MediaItemArticle get premiumArticleWithAudio =>
       _mediaItemMapper(MockDTO.premiumArticleWithAudio.asMediaItem) as MediaItemArticle;
 
@@ -223,6 +226,8 @@ class TestData {
       MockDTO.pastDaysBriefs.map<PastDaysBrief>(_pastDaysBriefMapper).toList();
 
   static Category get category => _categoryMapper(MockDTO.category);
+
+  static CategoryWithItems get categoryWithItems => _categoryWithItemsMapper(MockDTO.categoryWithItems);
 
   static List<CategoryItem> get categoryItemList =>
       MockDTO.categoryItemList.map<CategoryItem>(_categoryItemMapper).toList();

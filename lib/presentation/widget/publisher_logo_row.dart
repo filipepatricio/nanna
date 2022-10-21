@@ -11,31 +11,31 @@ class PublisherLogoRow extends HookWidget {
     this.mode = Brightness.dark,
     Key? key,
   }) : super(key: key);
+
   final TopicPreview topic;
   final Brightness mode;
 
   @override
   Widget build(BuildContext context) {
-    final providers = topic.publisherInformation.highlightedPublishers;
+    final publishers = topic.publisherInformation.highlightedPublishers;
     final remainingPublishersIndicator = topic.publisherInformation.remainingPublishersIndicator;
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        ...providers.map(
-          (publisher) {
-            return mode == Brightness.dark
-                ? PublisherLogo.dark(publisher: publisher)
-                : PublisherLogo.light(publisher: publisher);
-          },
+        ...publishers.map(
+          (publisher) => mode == Brightness.dark
+              ? PublisherLogo.dark(publisher: publisher)
+              : PublisherLogo.light(publisher: publisher),
         ),
         if (remainingPublishersIndicator != null)
           Text(
             remainingPublishersIndicator,
             textAlign: TextAlign.start,
             style: AppTypography.b2Regular.copyWith(
-              color: AppColors.white,
+              color: mode == Brightness.dark ? AppColors.textPrimary : AppColors.white,
               height: 1.2,
             ),
-          )
+          ),
       ],
     );
   }

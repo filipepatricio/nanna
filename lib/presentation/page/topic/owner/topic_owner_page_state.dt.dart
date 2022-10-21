@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'topic_owner_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class TopicOwnerPageState with _$TopicOwnerPageState {
   @Implements<BuildState>()
   factory TopicOwnerPageState.idleExpert(List<TopicPreview> topics) = _TopicOwnerPageStateIdleExpert;

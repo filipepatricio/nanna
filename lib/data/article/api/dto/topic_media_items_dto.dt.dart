@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'topic_media_items_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class TopicMediaItemsDTO {
   TopicMediaItemsDTO(this.getOtherTopicEntries);
 

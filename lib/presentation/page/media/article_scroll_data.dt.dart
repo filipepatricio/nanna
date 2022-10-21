@@ -1,20 +1,29 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class MediaItemScrollData {
+  const MediaItemScrollData({
+    required this.contentOffset,
+    required this.readArticleContentOffset,
+    required this.contentHeight,
+  });
 
-part 'article_scroll_data.dt.freezed.dart';
-
-@freezed
-class MediaItemScrollData with _$MediaItemScrollData {
-  factory MediaItemScrollData({
-    required double contentOffset,
-    required double readArticleContentOffset,
-    required double contentHeight,
-    required double pageHeight,
-  }) = _MediaItemScrollData;
-
-  factory MediaItemScrollData.initial() => MediaItemScrollData(
+  factory MediaItemScrollData.initial() => const MediaItemScrollData(
         contentOffset: 0,
-        pageHeight: 0,
         contentHeight: 0,
         readArticleContentOffset: 0,
       );
+
+  final double contentOffset;
+  final double readArticleContentOffset;
+  final double contentHeight;
+
+  MediaItemScrollData copyWith({
+    double? contentOffset,
+    double? readArticleContentOffset,
+    double? contentHeight,
+  }) {
+    return MediaItemScrollData(
+      contentOffset: contentOffset ?? this.contentOffset,
+      readArticleContentOffset: readArticleContentOffset ?? this.readArticleContentOffset,
+      contentHeight: contentHeight ?? this.contentHeight,
+    );
+  }
 }

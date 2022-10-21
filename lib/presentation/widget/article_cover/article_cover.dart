@@ -5,20 +5,24 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_i
 import 'package:better_informed_mobile/presentation/page/media/widgets/cover_opacity.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/shadows.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_labels_editors_note.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_labels_section.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/cover_label/cover_label.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:better_informed_mobile/presentation/widget/locker.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
-import 'package:better_informed_mobile/presentation/widget/visited_check.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -35,14 +39,9 @@ part 'article_square_cover.dart';
 
 const _coverSizeToScreenWidthFactor = 0.27;
 
-const articleCoverShadows = [
-  BoxShadow(offset: Offset(0, 10), blurRadius: 80, spreadRadius: -4, color: AppColors.shadowLinenColor),
-  BoxShadow(offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0, color: AppColors.shadowLinenColor),
-];
-
 enum ArticleCoverType {
-  exploreCarousel,
-  exploreList,
+  small,
+  list,
   dailyBriefLarge,
   dailyBriefSmall,
   dailyBriefList,
@@ -66,31 +65,36 @@ class ArticleCover extends StatelessWidget {
     this.editorsNote,
     this.backgroundColor,
     this.mediaItemKey,
+    this.snackbarController,
     Key? key,
   }) : super(key: key);
 
-  factory ArticleCover.exploreCarousel({
+  factory ArticleCover.small({
     required MediaItemArticle article,
+    required SnackbarController snackbarController,
     Color? coverColor,
     VoidCallback? onTap,
   }) =>
       ArticleCover._(
-        ArticleCoverType.exploreCarousel,
+        ArticleCoverType.small,
         article: article,
         coverColor: coverColor,
         onTap: onTap,
+        snackbarController: snackbarController,
       );
 
-  factory ArticleCover.exploreList({
+  factory ArticleCover.list({
     required MediaItemArticle article,
+    required SnackbarController snackbarController,
     Color? coverColor,
     VoidCallback? onTap,
   }) =>
       ArticleCover._(
-        ArticleCoverType.exploreList,
+        ArticleCoverType.list,
         article: article,
         coverColor: coverColor,
         onTap: onTap,
+        snackbarController: snackbarController,
       );
 
   factory ArticleCover.dailyBriefLarge({
@@ -208,21 +212,24 @@ class ArticleCover extends StatelessWidget {
   final String? editorsNote;
   final Color? backgroundColor;
   final GlobalKey? mediaItemKey;
+  final SnackbarController? snackbarController;
 
   @override
   Widget build(BuildContext context) {
     switch (_type) {
-      case ArticleCoverType.exploreCarousel:
-        return _ArticleCoverExploreCarousel(
+      case ArticleCoverType.small:
+        return _ArticleCoverSmall(
           onTap: onTap,
           article: article,
           coverColor: coverColor,
+          snackbarController: snackbarController!,
         );
-      case ArticleCoverType.exploreList:
-        return _ArticleCoverExploreList(
+      case ArticleCoverType.list:
+        return _ArticleCoverList(
           onTap: onTap,
           article: article,
           coverColor: coverColor,
+          snackbarController: snackbarController!,
         );
       case ArticleCoverType.dailyBriefLarge:
         return _ArticleCoverDailyBriefLarge(

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/shadows.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class SnackbarView extends HookWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(AppDimens.s),
         ),
+        boxShadow: cardShadows,
       ),
       child: LayoutBuilder(
         builder: (context, constraints) => Row(
@@ -94,11 +96,11 @@ extension on SnackbarMessage {
   Color get backgroundColor {
     switch (type) {
       case SnackbarMessageType.positive:
-        return AppColors.charcoal;
+        return AppColors.snackBarPositive;
       case SnackbarMessageType.negative:
-        return AppColors.carrotRed;
+        return AppColors.snackBarNegative;
       case SnackbarMessageType.informative:
-        return AppColors.pastelPurple;
+        return AppColors.snackBarInformative;
     }
   }
 

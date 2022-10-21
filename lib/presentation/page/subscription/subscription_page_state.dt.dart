@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'subscription_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SubscriptionPageState with _$SubscriptionPageState {
   @Implements<BuildState>()
   const factory SubscriptionPageState.initializing() = _SubscriptionPageStateInitial;

@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
@@ -38,6 +38,7 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
 
       if (result) {
         emit(ArticlePaywallState.purchaseSuccess());
+        emit(ArticlePaywallState.loading());
       } else {
         await _setupPaywall();
       }

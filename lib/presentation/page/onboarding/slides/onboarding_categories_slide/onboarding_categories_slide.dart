@@ -5,14 +5,13 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/flexible_wrap.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 const _onboardingTopicCardAnimDurationMs = 200;
+const _tileSize = 90.0;
+const _tileSpacing = 16.0;
 
 class OnboardingCategoriesSlide extends StatelessWidget {
   const OnboardingCategoriesSlide({super.key});
@@ -44,9 +43,14 @@ class OnboardingCategoriesSlide extends StatelessWidget {
             ),
           ),
         ),
-        const Expanded(
+        Expanded(
           flex: 15,
-          child: _MainContent(),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final rows = constraints.maxHeight ~/ (_tileSize + _tileSpacing);
+              return _MainContent(rows: rows);
+            },
+          ),
         ),
       ],
     );
@@ -55,8 +59,11 @@ class OnboardingCategoriesSlide extends StatelessWidget {
 
 class _MainContent extends HookWidget {
   const _MainContent({
+    required this.rows,
     Key? key,
   }) : super(key: key);
+
+  final int rows;
 
   @override
   Widget build(BuildContext context) {
@@ -70,36 +77,36 @@ class _MainContent extends HookWidget {
       [cubit],
     );
 
-    return state.maybeMap(
-      orElse: () => const Loader(),
-      idle: (idleState) => Padding(
-        padding: const EdgeInsets.only(top: AppDimens.xl),
-        child: FlexibleWrapWithHorizontalScroll(
-          spacing: AppDimens.s,
-          childrenBuilder: (width, height) => [
-            _SelectableCard(
-              icon: const Icon(
-                Icons.add,
-                color: AppColors.charcoal,
-              ),
-              height: height,
-              width: width,
-              text: LocaleKeys.onboarding_categories_everything.tr(),
-              isSelected: idleState.data.selectedCategories.isEmpty,
-              onPressed: cubit.onAllCardPressed,
+    return Center(
+      child: state.maybeMap(
+        orElse: () => const Loader(),
+        idle: (idleState) => Padding(
+          padding: const EdgeInsets.only(top: AppDimens.xl),
+          child: GridView(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            scrollDirection: Axis.horizontal,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: rows,
+              childAspectRatio: 1.0,
+              crossAxisSpacing: _tileSpacing,
+              mainAxisSpacing: _tileSpacing,
             ),
-            ...idleState.data.categories.map(
-              (category) => _SelectableCard(
-                icon: SvgPicture.string(category.icon),
-                height: height,
-                width: width,
-                text: category.name,
-                isSelected: idleState.data.selectedCategories.contains(category),
-                onPressed: () => cubit.onCardPressed(category),
+            children: [
+              ...idleState.data.categories.map(
+                (category) => _SelectableCard(
+                  text: category.name,
+                  isSelected: idleState.data.selectedCategories.contains(category),
+                  onPressed: () => cubit.onCardPressed(category),
+                  color: category.color,
+                ),
               ),
-            ),
-          ],
-          childrenRowCount: 3,
+              _SelectableCard(
+                text: LocaleKeys.onboarding_categories_everything.tr(),
+                isSelected: idleState.data.selectedCategories.isEmpty,
+                onPressed: cubit.onAllCardPressed,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -108,54 +115,44 @@ class _MainContent extends HookWidget {
 
 class _SelectableCard extends StatelessWidget {
   const _SelectableCard({
-    required this.width,
     required this.text,
     required this.isSelected,
     required this.onPressed,
-    required this.height,
-    required this.icon,
+    this.color,
     Key? key,
   }) : super(key: key);
 
-  final double width;
-  final double height;
   final String text;
   final bool isSelected;
   final VoidCallback onPressed;
-  final Widget icon;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      onPressed: onPressed,
-      child: AnimatedContainer(
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(AppDimens.buttonRadius),
-          border: Border.all(
-            color: isSelected ? AppColors.charcoal : AppColors.dividerGreyLight,
-          ),
-        ),
-        width: width,
-        height: height,
-        duration: const Duration(milliseconds: _onboardingTopicCardAnimDurationMs),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            icon,
-            const SizedBox(height: AppDimens.s),
-            Flexible(
-              child: AutoSizeText(
-                text,
-                style: AppTypography.b3Medium.copyWith(height: 1.4),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
+    return AnimatedContainer(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(AppDimens.buttonRadius)),
+        border: isSelected ? Border.all(color: AppColors.charcoal, width: 1.5) : null,
+      ),
+      width: _tileSize,
+      height: _tileSize,
+      duration: const Duration(milliseconds: _onboardingTopicCardAnimDurationMs),
+      child: CupertinoButton(
+        color: color ?? AppColors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(AppDimens.buttonRadius)),
+        padding: EdgeInsets.zero,
+        onPressed: onPressed,
+        child: Center(
+          child: AutoSizeText(
+            text,
+            style: AppTypography.b3Medium.copyWith(
+              height: 1.2,
+              letterSpacing: 0,
             ),
-          ],
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bookmark_type_data.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class BookmarkTypeData with _$BookmarkTypeData {
   const factory BookmarkTypeData.article(
     String slug,

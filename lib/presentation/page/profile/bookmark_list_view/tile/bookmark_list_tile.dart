@@ -54,7 +54,7 @@ class BookmarkListTile extends HookWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimens.ml,
           ),
-          child: bookmarkCover.getContent(context, articleProgress),
+          child: bookmarkCover.getContent(context, articleProgress, snackbarController),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -116,7 +116,7 @@ class _BookmarkRemoveButton extends StatelessWidget {
           child: Center(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 100),
-              child: SvgPicture.asset(AppVectorGraphics.bookmarkSelected),
+              child: SvgPicture.asset(AppVectorGraphics.bookmarkFilled),
             ),
           ),
         ),
@@ -208,6 +208,7 @@ extension on BookmarkTileCover {
   Widget getContent(
     BuildContext context,
     ValueNotifier<ArticleProgress?> articleProgress,
+    SnackbarController snackbarController,
   ) {
     return map(
       standard: (_) {
@@ -226,6 +227,7 @@ extension on BookmarkTileCover {
               cover.indexOfType,
               bookmark,
               articleProgress,
+              snackbarController,
             ) ??
             const SizedBox.shrink();
       },
@@ -237,6 +239,7 @@ extension on BookmarkTileCover {
     int index,
     Bookmark bookmark,
     ValueNotifier<ArticleProgress?> articleProgress,
+    SnackbarController snackbarController,
   ) {
     return bookmark.data.mapOrNull(
       article: (data) => ArticleCover.bookmark(
@@ -244,6 +247,7 @@ extension on BookmarkTileCover {
         coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
         onTap: () => goToArticle(context, data.article, articleProgress),
       ),
+      //TODO: Replace with TopicCover.big
       topic: (data) => TopicCover.bookmark(
         topic: data.topic.asPreview,
         onTap: () => AutoRouter.of(context).push(

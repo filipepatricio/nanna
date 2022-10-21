@@ -1,4 +1,4 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dt.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences_group.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -67,42 +67,56 @@ class _IdleContent extends StatelessWidget {
         NotificationHeaderContainer(
           startWidget: Text(
             LocaleKeys.onboarding_headerSlideThree.tr(),
-            style: AppTypography.h4Bold.copyWith(color: AppColors.textGrey),
+            style: AppTypography.b3Medium.copyWith(color: AppColors.textGrey),
           ),
           trailingChildren: [
             Text(
               LocaleKeys.onboarding_notifications_push.tr(),
-              style: AppTypography.systemText.copyWith(color: AppColors.charcoal),
+              style: AppTypography.b3Medium.copyWith(color: AppColors.charcoal),
             ),
             Text(
               LocaleKeys.onboarding_notifications_email.tr(),
-              style: AppTypography.systemText.copyWith(color: AppColors.charcoal),
+              style: AppTypography.b3Medium.copyWith(color: AppColors.charcoal),
             ),
           ],
         ),
         const Spacer(),
         Expanded(
           flex: 50,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ...notificationGroups
-                  .map(
-                    (group) => group.channels.map(
-                      (notification) => _NotificationRow(
-                        channel: notification,
-                        snackbarController: snackbarController,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ...notificationGroups
+                    .map(
+                      (group) => group.channels.map(
+                        (notification) => _NotificationRow(
+                          channel: notification,
+                          snackbarController: snackbarController,
+                        ),
                       ),
+                    )
+                    .flattened
+                    .expand(
+                      (element) => [
+                        element,
+                        const SizedBox(height: AppDimens.l),
+                      ],
                     ),
-                  )
-                  .flattened
-                  .expand(
-                    (element) => [
-                      element,
-                      const Spacer(),
-                    ],
+                if (kIsAppleDevice) ...[
+                  Text(
+                    LocaleKeys.onboarding_tracking_title.tr(),
+                    style: AppTypography.b2Medium,
                   ),
-            ],
+                  const SizedBox(height: AppDimens.s),
+                  Text(
+                    LocaleKeys.onboarding_tracking_info.tr(),
+                    style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
+                  ),
+                ],
+              ],
+            ),
           ),
         ),
       ],
@@ -165,7 +179,7 @@ class _NotificationRow extends StatelessWidget {
         NotificationHeaderContainer(
           startWidget: Text(
             channel.name,
-            style: AppTypography.h4Bold,
+            style: AppTypography.b2Medium,
           ),
           trailingChildren: [
             NotificationSettingSwitch.squareBlack(
@@ -181,9 +195,9 @@ class _NotificationRow extends StatelessWidget {
           ],
         ),
         const SizedBox(height: AppDimens.s),
-        AutoSizeText(
+        Text(
           channel.description,
-          style: AppTypography.b2Regular,
+          style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
         ),
       ],
     );

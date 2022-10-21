@@ -3,7 +3,8 @@
     "skip": "Skip",
     "continue": "Continue",
     "next": "Next",
-    "signOut": "Sign out",
+    "back": "Back",
+    "signOut": "Sign Out",
     "signUp": "Sign up",
     "cancel": "Cancel",
     "generalError": "Something went wrong.\nTry again later.",
@@ -35,13 +36,13 @@
   },
   "onboarding": {
     "title": "How we use push notifications",
-    "headerSlideOne": "High-quality news curation",
-    "headerSlideTwo": "Unbiased reporting, cutting through the noise",
-    "headerSlideCategories": "Choose topics that interest you",
+    "headerSlideOne": "Access curated articles",
+    "headerSlideTwo": "Explore diverse perspectives",
+    "headerSlideCategories": "Add your interests",
     "headerSlideThree": "Notifications",
-    "descriptionSlideOne": "Our editorial team and topic experts source and read the best articles from global publishers, carefully curating your daily news brief.",
-    "descriptionSlideTwo": "A 360 view and array of different perspectives, giving you the fact-based context to understand this complex world.",
-    "descriptionSlideCategories": "This will be used to get personalized results and stories for you",
+    "descriptionSlideOne": "Get the daily must-reads from trusted, premium news sources – all in one app.",
+    "descriptionSlideTwo": "Our editors and topic experts read hundreds of articles daily, choosing only the best and deliberately curating diverse perspectives.",
+    "descriptionSlideCategories": "Choose what matters to you and you’ll get daily reading suggestions tailored to your interests, alongside wider curated articles.",
     "categories": {
       "everything": "Show me everything"
     },
@@ -93,7 +94,6 @@
     "selectedArticles": "{} selected articles",
     "articles": "{} articles",
     "summaryHeadline": "Topic summary",
-    "goToExplore": "Go to explore",
     "articlesCount": "{} articles on this topic"
   },
   "date": {
@@ -106,7 +106,7 @@
   },
   "subscription": {
     "title": {
-      "trial": "Your _free trial_ with informed",
+      "trial": "Your free trial with informed",
       "standard": "Subscribe for _unlimited_ news access"
     },
     "benefit": {
@@ -116,8 +116,8 @@
     },
     "restorePurchase": "Restore purchase",
     "startYourTrial": "Now, start your trial to get full access today.",
-    "receiveAnEmail": "In {}, receive an email reminder that your free trial is ending.",
-    "youllBeCharged": "In {}, you’ll be charged for informed.",
+    "receiveAnEmail": "In {}: receive an email reminder that your free trial is ending.",
+    "youllBeCharged": "In {}: you’ll be charged for informed.",
     "viewAllPlansAction": "View all plans",
     "chargeInfo": {
       "trial": "You will be charged only after the {} trial period.\nCancel anytime.",
@@ -132,8 +132,8 @@
     },
     "tryForFreeAction": "Try For Free",
     "withXDaysFreeTrial": "with {} free trial",
-    "thanksForStartingTrial": "Thanks for starting your\n_free trial_",
-    "thanksForSubscribing": "Thanks for subscribing,\nyou’re _awesome_",
+    "thanksForStartingTrial": "Thanks for starting your\n _free trial_",
+    "thanksForSubscribing": "Thanks for subscribing,\n you’re _awesome_",
     "everythingIsReady": "Everything is ready to start enjoying informed unlimited access.",
     "startReading": "Start Reading",
     "membership": "Membership",
@@ -169,10 +169,11 @@
     "email": "Email",
     "push": "Push",
     "manageMyInterests": "Manage My Interests",
+    "manageMyInterestsTitle": "Interests",
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsAndConditions": "Terms & Conditions",
-    "termsOfService": "Terms of service",
+    "termsOfService": "Terms of Service",
     "privacyPolicyContent": "This is a placeholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "termsContent": "This is a placeholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "newsUpdates": "News Updates",
@@ -188,7 +189,7 @@
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
     "wrongEmailInput": "Wrong email input",
-    "feedbackButton": "Give feedback",
+    "feedbackButton": "Give Feedback",
     "feedbackSubject": "Feedback on Informed App",
     "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
     "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
@@ -200,9 +201,10 @@
     }
   },
   "signIn": {
+    "welcome": "Welcome to informed ",
     "unauthorized": "This link has expired. Please type in your email again to get a new one",
     "header": {
-      "signIn": "Welcome to the smart & flexible news format",
+      "signIn": "Sign up now to access world-class journalism from premium publishers, curated by editors & experts.",
       "magicLinkOne": "_Check your mail!_",
       "magicLinkTwo": "We've sent you a magic link to {}"
     },
@@ -234,8 +236,9 @@
     },
     "byName": "By {}",
     "by": "By",
+    "read": "Read",
     "readMore": "Read more",
-    "readMinutes": "{} min",
+    "readMinutes": "{} min read",
     "loadingNext": "Loading next article in\nthe reading list.",
     "allArticlesRead": "Great! You’ve read all\narticles on this topic.",
     "goBackToTopic": "Back to topic overview",
@@ -266,13 +269,17 @@
     "articleCount": "{} articles"
   },
   "topic": {
-    "label": "Deep Dive",
+    "label": "Expert Deep Dive",
     "expert": "Expert",
     "updated": "Updated {}",
+    "recommendedBy": "Recommended by ",
+    "curatedBy": "Curated by ",
     "owner": {
+      "authorInfo": "Author Info",
+      "editorInfo": "Editor Info",
+      "expertInfo": "Expert Info",
       "editorialTeam": "Informed Editorial Team",
       "expertIn": "Expert in {}",
-      "editorBio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world.",
       "loadingExpertTopics": "We're loading\n{}'s topics",
       "followExpertOn": "Follow **{}** on"
     },
@@ -287,7 +294,8 @@
   "continueListening": "Continue listening",
   "explore": {
     "title": "Explore",
-    "viewAll": "View All\n{}"
+    "viewAll": "View All",
+    "moreStoriesOnExplore": "More stories on Explore"
   },
   "search": {
     "emptyResults": "We couldn’t find any results matching '{}'",
@@ -322,8 +330,8 @@
     "asStory": "Share quote as story"
   },
   "bookmark": {
-    "bookmarkSuccess": "👍  Saved to your Profile",
-    "unbookmarkSuccess": "✋ Removed from your Profile",
+    "addBookmarkSuccess": "Saved to your Profile",
+    "removeBookmarkSuccess": "Removed from your Profile",
     "sortBy": "Sort by",
     "bookmarkSortConfig": {
       "lastAdded": "Last Added",

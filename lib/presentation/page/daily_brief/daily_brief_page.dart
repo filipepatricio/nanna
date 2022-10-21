@@ -30,6 +30,7 @@ import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/bri
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +79,7 @@ class _DailyBriefPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final cardStackWidth = MediaQuery.of(context).size.width;
-    const cardStackHeight = AppDimens.briefEntryCardStackHeight;
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -103,88 +103,93 @@ class _DailyBriefPage extends HookWidget {
           child: RefreshIndicator(
             onRefresh: cubit.loadBriefs,
             color: AppColors.darkGrey,
-            child: CustomScrollView(
-              controller: scrollController,
-              physics: state.maybeMap(
-                error: (_) => const NeverScrollableScrollPhysics(),
-                loading: (_) => const NeverScrollableScrollPhysics(),
-                orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
-              ),
-              slivers: [
-                state.maybeMap(
-                  idle: (state) => DailyBriefScrollableAppBar(
-                    showCalendar: state.showCalendar,
-                    scrollController: scrollController,
-                    briefDate: state.currentBrief.date,
-                    pastDaysBriefs: state.pastDaysBriefs,
-                    showAppBarTitle: state.showAppBarTitle,
-                    cubit: cubit,
-                  ),
-                  orElse: () => const SliverToBoxAdapter(),
+            child: SnackbarParentView(
+              controller: snackbarController,
+              child: CustomScrollView(
+                controller: scrollController,
+                physics: state.maybeMap(
+                  error: (_) => const NeverScrollableScrollPhysics(),
+                  loading: (_) => const NeverScrollableScrollPhysics(),
+                  orElse: () => AlwaysScrollableScrollPhysics(parent: getPlatformScrollPhysics()),
                 ),
-                state.maybeMap(
-                  idle: (state) => SliverPinnedHeader(
-                    child: DailyBriefCalendar(
-                      isVisible: state.showCalendar,
-                      currentBriefDate: state.currentBrief.date,
-                      pastDaysBriefs: state.pastDaysBriefs,
-                      isFloating: state.showAppBarTitle,
-                      cubit: cubit,
+                slivers: [
+                  state.maybeMap(
+                    idle: (state) => DailyBriefScrollableAppBar(
+                      showCalendar: state.showCalendar,
                       scrollController: scrollController,
+                      briefDate: state.currentBrief.date,
+                      pastDaysBriefs: state.pastDaysBriefs,
+                      showAppBarTitle: state.showAppBarTitle,
+                      cubit: cubit,
                     ),
+                    orElse: () => const SliverToBoxAdapter(),
                   ),
-                  orElse: () => const SliverToBoxAdapter(),
-                ),
-                state.maybeMap(
-                  idle: (state) => _IdleContent(
-                    cubit: cubit,
-                    brief: state.currentBrief,
-                    cardStackWidth: cardStackWidth,
-                    cardStackHeight: cardStackHeight,
-                    tutorialCoachMark: tutorialCoachMark,
-                    scrollController: scrollController,
-                  ),
-                  error: (_) => SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      AppDimens.l,
-                      AppDimens.safeTopPadding(context),
-                      AppDimens.l,
-                      AppDimens.zero,
+                  state.maybeMap(
+                    idle: (state) => SliverPinnedHeader(
+                      child: DailyBriefCalendar(
+                        isVisible: state.showCalendar,
+                        currentBriefDate: state.currentBrief.date,
+                        pastDaysBriefs: state.pastDaysBriefs,
+                        isFloating: state.showAppBarTitle,
+                        cubit: cubit,
+                        scrollController: scrollController,
+                      ),
                     ),
-                    sliver: SliverToBoxAdapter(
-                      child: Center(
-                        child: CardsErrorView(
-                          retryAction: cubit.loadBriefs,
-                          size: Size(cardStackWidth, cardStackHeight),
+                    orElse: () => const SliverToBoxAdapter(),
+                  ),
+                  state.maybeMap(
+                    idle: (state) => _IdleContent(
+                      cubit: cubit,
+                      brief: state.currentBrief,
+                      tutorialCoachMark: tutorialCoachMark,
+                      scrollController: scrollController,
+                      snackbarController: snackbarController,
+                    ),
+                    error: (_) => SliverPadding(
+                      padding: EdgeInsets.fromLTRB(
+                        AppDimens.pageHorizontalMargin,
+                        AppDimens.safeTopPadding(context),
+                        AppDimens.pageHorizontalMargin,
+                        AppDimens.zero,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: Center(
+                          child: CardsErrorView(
+                            retryAction: cubit.loadBriefs,
+                            size: Size(
+                              AppDimens.topicCardBigMaxWidth(context),
+                              AppDimens.topicCardBigMaxHeight,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  loading: (_) => SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      AppDimens.l,
-                      AppDimens.safeTopPadding(context),
-                      AppDimens.l,
-                      AppDimens.zero,
-                    ),
-                    sliver: SliverToBoxAdapter(
-                      child: DailyBriefLoadingView(
-                        coverSize: Size(
-                          cardStackWidth,
-                          cardStackHeight,
+                    loading: (_) => SliverPadding(
+                      padding: EdgeInsets.fromLTRB(
+                        AppDimens.pageHorizontalMargin,
+                        AppDimens.safeTopPadding(context),
+                        AppDimens.pageHorizontalMargin,
+                        AppDimens.zero,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: DailyBriefLoadingView(
+                          coverSize: Size(
+                            AppDimens.topicCardBigMaxWidth(context),
+                            AppDimens.topicCardBigMaxHeight,
+                          ),
                         ),
                       ),
                     ),
+                    orElse: () => const SizedBox.shrink(),
                   ),
-                  orElse: () => const SizedBox.shrink(),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: AppDimens.l),
-                ),
-                const SliverToBoxAdapter(
-                  child: AudioPlayerBannerPlaceholder(),
-                ),
-              ],
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: AppDimens.l),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: AudioPlayerBannerPlaceholder(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -197,19 +202,17 @@ class _IdleContent extends HookWidget {
   const _IdleContent({
     required this.cubit,
     required this.brief,
-    required this.cardStackWidth,
-    required this.cardStackHeight,
     required this.tutorialCoachMark,
     required this.scrollController,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final DailyBriefPageCubit cubit;
   final Brief brief;
-  final double cardStackWidth;
-  final double cardStackHeight;
   final TutorialCoachMark tutorialCoachMark;
   final ScrollController scrollController;
+  final SnackbarController snackbarController;
 
   VoidCallback topicCardTutorialListener(ScrollController listScrollController, double topicCardTriggerPoint) {
     var isToShowMediaItemTutorialCoachMark = true;
@@ -292,7 +295,7 @@ class _IdleContent extends HookWidget {
     return MultiSliver(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           child: _Greeting(
             greeting: brief.greeting,
             introduction: brief.introduction,
@@ -304,12 +307,12 @@ class _IdleContent extends HookWidget {
               entries: (section) => _BriefSection(
                 title: section.title,
                 backgroundColor: section.backgroundColor,
-                children: _mapEntriesToCovers(section, firstTopic, index),
+                children: _mapEntriesToCovers(section, firstTopic, index, snackbarController),
               ),
               subsections: (section) => _BriefSection(
                 title: section.title,
                 backgroundColor: section.backgroundColor,
-                children: _mapSubsectionsToWidgets(section, firstTopic, index),
+                children: _mapSubsectionsToWidgets(section, firstTopic, index, snackbarController),
               ),
               unknown: (_) => const SizedBox.shrink(),
             ),
@@ -317,14 +320,14 @@ class _IdleContent extends HookWidget {
             addAutomaticKeepAlives: false,
           ),
         ),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(
-            AppDimens.l,
-            AppDimens.m,
-            AppDimens.l,
-            AppDimens.zero,
-          ),
-          sliver: SliverToBoxAdapter(
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppDimens.pageHorizontalMargin,
+              AppDimens.m,
+              AppDimens.pageHorizontalMargin,
+              AppDimens.zero,
+            ),
             child: _RelaxSection(
               onVisible: cubit.trackRelaxPage,
               relax: brief.relax,
@@ -335,7 +338,12 @@ class _IdleContent extends HookWidget {
     );
   }
 
-  Iterable<Widget> _mapEntriesToCovers(BriefSectionWithEntries section, BriefEntry? firstTopic, int index) sync* {
+  Iterable<Widget> _mapEntriesToCovers(
+    BriefSectionWithEntries section,
+    BriefEntry? firstTopic,
+    int index,
+    SnackbarController snackbarController,
+  ) sync* {
     final startingIndex = _calculateStartingIndexForSection(index);
 
     for (int i = 0; i < section.entries.length; i++) {
@@ -344,8 +352,7 @@ class _IdleContent extends HookWidget {
       yield BriefEntryCover(
         briefEntry: entry,
         briefId: brief.id,
-        width: cardStackWidth,
-        height: cardStackHeight,
+        snackbarController: snackbarController,
         padding: _needsDivider(section, entry)
             ? EdgeInsets.zero
             : const EdgeInsets.only(
@@ -378,13 +385,14 @@ class _IdleContent extends HookWidget {
     BriefSectionWithSubsections section,
     BriefEntry? firstTopic,
     int sectionIndex,
+    SnackbarController snackbarController,
   ) sync* {
     for (int i = 0; i < section.subsections.length; i++) {
       final subsection = section.subsections[i];
 
       yield _BriefSubsection(
         subsection: subsection,
-        children: _mapSubsectionEntries(section, subsection, firstTopic, sectionIndex, i),
+        children: _mapSubsectionEntries(section, subsection, firstTopic, sectionIndex, i, snackbarController),
       );
     }
   }
@@ -395,6 +403,7 @@ class _IdleContent extends HookWidget {
     BriefEntry? firstTopic,
     int sectionIndex,
     int subsectionIndex,
+    SnackbarController snackbarController,
   ) sync* {
     final startingIndexWithoutSubsections = _calculateStartingIndexForSection(sectionIndex, subsectionIndex);
     final startingIndex = startingIndexWithoutSubsections +
@@ -411,8 +420,7 @@ class _IdleContent extends HookWidget {
       yield BriefEntryCover(
         briefEntry: entry,
         briefId: brief.id,
-        width: cardStackWidth,
-        height: cardStackHeight,
+        snackbarController: snackbarController,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
         onVisibilityChanged: (visibility) {
           if (entry == firstTopic) {
@@ -497,14 +505,14 @@ class _BriefSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.m),
           InformedMarkdownBody(
             markdown: title,
-            baseTextStyle: AppTypography.h1MediumLora,
+            baseTextStyle: AppTypography.h1Medium,
           ),
           const SizedBox(height: AppDimens.m),
           ...children,

@@ -2,13 +2,14 @@ import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.
 import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
+import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'article_header_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ArticleHeaderDTO {
   ArticleHeaderDTO(
     this.id,
@@ -31,9 +32,11 @@ class ArticleHeaderDTO {
     this.progress,
     this.progressState,
     this.locked,
+    this.category,
   );
 
   factory ArticleHeaderDTO.fromJson(Map<String, dynamic> json) => _$ArticleHeaderDTOFromJson(json);
+
   final String id;
   final String slug;
   final String url;
@@ -55,6 +58,6 @@ class ArticleHeaderDTO {
   final ArticleProgressDTO progress;
   final ArticleProgressState progressState;
   final bool locked;
-
-  Map<String, dynamic> toJson() => _$ArticleHeaderDTOToJson(this);
+  @JsonKey(name: 'primaryCategory')
+  final CategoryDTO category;
 }

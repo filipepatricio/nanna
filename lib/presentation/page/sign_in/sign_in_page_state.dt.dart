@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'sign_in_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SignInPageState with _$SignInPageState {
   @Implements<BuildState>()
   factory SignInPageState.idle(bool emailCorrect) = _SignInPageStateIdle;

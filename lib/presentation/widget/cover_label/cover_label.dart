@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/domain/article/data/article_kind.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -22,25 +21,6 @@ class CoverLabel extends StatelessWidget {
           'The label can contain either a child or icon and label, not both',
         ),
         super(key: key);
-
-  factory CoverLabel.topic({
-    required TopicPreview topic,
-    Color? color,
-    Color? borderColor,
-  }) =>
-      topic.owner is Expert
-          ? CoverLabel._(
-              icon: AppVectorGraphics.expertTopicLabel,
-              label: '${LocaleKeys.topic_expert.tr()} ${LocaleKeys.topic_label.tr()}',
-              color: color,
-              borderColor: borderColor,
-            )
-          : CoverLabel._(
-              icon: AppVectorGraphics.topicLabel,
-              label: LocaleKeys.topic_label.tr(),
-              color: color,
-              borderColor: borderColor,
-            );
 
   factory CoverLabel.article({Color? color, Color? borderColor}) => CoverLabel._(
         icon: AppVectorGraphics.articleLabel,

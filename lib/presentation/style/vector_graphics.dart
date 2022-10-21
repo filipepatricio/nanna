@@ -21,11 +21,12 @@ class AppVectorGraphics {
   static const String topicLabel = 'assets/vector_graphics/topic_label.svg';
   static const String expertTopicLabel = 'assets/vector_graphics/expert_topic_label.svg';
   static const String articleLabel = 'assets/vector_graphics/article_label.svg';
+  static const String expertAvatar = 'assets/vector_graphics/expert_avatar.svg';
+  static const String editorialTeamAvatar = 'assets/vector_graphics/editorial_team_avatar.svg';
+  static const String editorialTeamAvatarBig = 'assets/vector_graphics/editorial_team_avatar_big.svg';
 
   static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
-  static const String informedLogoFree = 'assets/vector_graphics/informed_logo_free.svg';
-  static const String informedLogoTrial = 'assets/vector_graphics/informed_logo_trial.svg';
-  static const String informedLogoPremium = 'assets/vector_graphics/informed_logo_premium.svg';
+  static const String informedLogoGreen = 'assets/vector_graphics/informed_logo_green.svg';
 
   static const String share = 'assets/vector_graphics/share.svg';
   static const String instagram = 'assets/vector_graphics/instagram.svg';
@@ -34,10 +35,10 @@ class AppVectorGraphics {
   static const String twitter = 'assets/vector_graphics/twitter.svg';
 
   static const String settings = 'assets/vector_graphics/settings_ic.svg';
-  static const String account = 'assets/vector_graphics/account_ic.svg';
+  static const String account = 'assets/vector_graphics/account.svg';
   static const String terms = 'assets/vector_graphics/terms_ic.svg';
   static const String privacy = 'assets/vector_graphics/privacy_ic.svg';
-  static const String notifications = 'assets/vector_graphics/notification_ic.svg';
+  static const String notifications = 'assets/vector_graphics/notification.svg';
   static const String feedback = 'assets/vector_graphics/feedback_ic.svg';
   static const String star = 'assets/vector_graphics/star.svg';
   static const String starFilled = 'assets/vector_graphics/star_filled.svg';
@@ -62,21 +63,21 @@ class AppVectorGraphics {
 
   static const String shareNotSelected = 'assets/vector_graphics/share_not_selected.svg';
   static const String shareSelected = 'assets/vector_graphics/share_selected.svg';
-  static const String closeIOS = 'assets/vector_graphics/close_ios.svg';
   static const String shareImage = 'assets/vector_graphics/share_image.svg';
   static const String shareText = 'assets/vector_graphics/share_text.svg';
   static const String shareStory = 'assets/vector_graphics/share_story.svg';
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
   static const String close = 'assets/vector_graphics/close.svg';
+  static const String closeBackground = 'assets/vector_graphics/close_bg.svg';
   static const String photoCaption = 'assets/vector_graphics/photo_caption_ic.svg';
   static const String search = 'assets/vector_graphics/search_ic.svg';
   static const String bigSearch = 'assets/vector_graphics/search_big.svg';
   static const String clearText = 'assets/vector_graphics/clear_text.svg';
+  static const String chevronNext = 'assets/vector_graphics/chevron_next.svg';
 
-  static const String bookmarkInactive = 'assets/vector_graphics/bookmark_disabled.svg';
-  static const String bookmarkSelected = 'assets/vector_graphics/bookmark_filled.svg';
-  static const String bookmarkUnselected = 'assets/vector_graphics/bookmark_border.svg';
+  static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';
+  static const String bookmarkOutline = 'assets/vector_graphics/bookmark_outline.svg';
 
   static const String headphones = 'assets/vector_graphics/headphones.svg';
   static const String lines = 'assets/vector_graphics/lines.svg';
@@ -90,6 +91,5 @@ class AppVectorGraphics {
   static const String shareCopy = 'assets/vector_graphics/copy_ic.svg';
   static const String shareMore = 'assets/vector_graphics/more_ic.svg';
 
-  static const String publishersLogo = 'assets/vector_graphics/publishers_logos.svg';
   static const String fakePlayButton = 'assets/vector_graphics/fake_play_button.svg';
 }

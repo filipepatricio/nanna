@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'explore_area_item.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ExploreAreaItem<T> with _$ExploreAreaItem<T> {
   factory ExploreAreaItem.standard(T value) = _ExploreAreaItemStandard;
 

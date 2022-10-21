@@ -11,24 +11,16 @@ class ArticleContentMarkdown extends HookWidget {
   const ArticleContentMarkdown({
     required this.markdown,
     required this.shareTextCallback,
-    required this.scrollToPosition,
     Key? key,
   }) : super(key: key);
+
   final String markdown;
   final ShareTextCallback shareTextCallback;
-  final Function() scrollToPosition;
 
   @override
   Widget build(BuildContext context) {
-    useEffect(
-      () {
-        WidgetsBinding.instance.addPostFrameCallback((_) => scrollToPosition());
-      },
-      [],
-    );
-
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
       child: InformedMarkdownBody.selectable(
         markdown: markdown,
         selectionControllers: SelectionControllerBundle(),

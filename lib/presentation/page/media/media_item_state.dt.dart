@@ -1,11 +1,11 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'media_item_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class MediaItemState with _$MediaItemState {
   @Implements<BuildState>()
   const factory MediaItemState.initializing() = _MediaItemStateInitializing;
@@ -26,5 +26,5 @@ class MediaItemState with _$MediaItemState {
   const factory MediaItemState.geoblocked() = _MediaItemStateGeoblocked;
 
   @Implements<BuildState>()
-  const factory MediaItemState.emptyError() = _MediaItemStateEmptyError;
+  const factory MediaItemState.emptyError({MediaItemArticle? article}) = _MediaItemStateEmptyError;
 }

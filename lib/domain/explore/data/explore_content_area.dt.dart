@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'explore_content_area.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ExploreContentArea with _$ExploreContentArea {
   factory ExploreContentArea.articles({
     required String id,
@@ -26,15 +26,6 @@ class ExploreContentArea with _$ExploreContentArea {
     required List<MediaItemArticle> articles,
   }) = ExploreContentAreaArticlesList;
 
-  factory ExploreContentArea.topics({
-    required String id,
-    required String title,
-    required String? icon,
-    required bool isHighlighted,
-    required bool isPreferred,
-    required List<TopicPreview> topics,
-  }) = ExploreContentAreaTopics;
-
   factory ExploreContentArea.smallTopics({
     required String id,
     required String title,
@@ -44,17 +35,6 @@ class ExploreContentArea with _$ExploreContentArea {
     required bool isPreferred,
     required List<TopicPreview> topics,
   }) = ExploreContentAreaSmallTopics;
-
-  factory ExploreContentArea.highlightedTopics({
-    required String id,
-    required String title,
-    required String? description,
-    required int? backgroundColor,
-    required String? icon,
-    required bool isHighlighted,
-    required bool isPreferred,
-    required List<TopicPreview> topics,
-  }) = ExploreContentAreaHighlightedTopics;
 
   factory ExploreContentArea.unknown({
     required String id,

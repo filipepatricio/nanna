@@ -53,14 +53,14 @@ class AppDimens {
   /// 80.0
   static const xxxc = 80.0;
 
-  /// 18.0
-  static const backArrowSize = 18.0;
+  /// 16.0
+  static const backArrowSize = 17.0;
 
   /// 44.0
   static const settingsItemHeight = 44.0;
 
-  /// 8
-  static const buttonRadius = 8.0;
+  /// 4
+  static const buttonRadius = 4.0;
 
   /// 50
   static const buttonHeight = 50.0;
@@ -86,8 +86,11 @@ class AppDimens {
   /// 0.85
   static const topicCardWidthViewportFraction = 0.85;
 
-  /// 32
-  static const avatarSize = 32.0;
+  /// 24
+  static const avatarSize = 24.0;
+
+  /// 64
+  static const avatarSizeBig = 64.0;
 
   /// 45
   static const topicViewTopicHeaderPadding = 45.0;
@@ -96,19 +99,28 @@ class AppDimens {
   static const topicViewSummaryTextHeight = 300.0;
 
   /// 350.0
-  static const briefEntryCardStackHeight = 350.0;
+  static const topicCardBigMaxHeight = 375.0;
+
+  /// MediaQuery.of(context).size.width
+  static double topicCardBigMaxWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   /// 0.4
-  static const exploreTopicCarouselSmallCoverWidthFactor = 0.4;
+  static const exploreTopicCarouselSmallCoverWidthFactor = 0.43;
 
   /// 1.65
-  static const exploreTopicCarouselSmallCoverAspectRatio = 1.65;
+  static const exploreArticleCarouselSmallCoverAspectRatio = 2.1;
 
-  /// 0.72
-  static const exploreTopicCellSizeFactor = 0.72;
+  /// 1.65
+  static const exploreTopicCarouselSmallCoverAspectRatio = 1.3;
 
-  /// 42
-  static const audioControlButtonSize = AppDimens.xxl + AppDimens.xxs;
+  /// 0.50
+  static const exploreTopicCellSizeFactor = 0.50;
+
+  /// 32
+  static const audioControlButtonSize = AppDimens.xl;
+
+  /// 16.0
+  static const audioViewControlButtonSize = 60.0;
 
   /// 131
   static const onboardingGridCard = 131.0;
@@ -128,10 +140,10 @@ class AppDimens {
   static double topicViewHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   /// Full screen article image height
-  static double articleHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
+  static double articleHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height * .8;
 
   /// Full screen article image width
-  static double articleHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width;
+  static double articleHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width - AppDimens.m;
 
   /// The smallest value from 75% of screen height and 500
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);
@@ -139,8 +151,8 @@ class AppDimens {
   /// 322
   static const articleSmallImageCoverHeight = 322;
 
-  /// 148
-  static const topicSmallImageCoverWidth = 148.0;
+  /// 2
+  static const smallImageCoverBorderRadius = 2.0;
 
   /// 45
   static const topicViewStackedCardsDividerHeight = 45.0;
@@ -151,11 +163,11 @@ class AppDimens {
   /// 65% Full screen height
   static double photoCaptionImageContainerHeight(BuildContext context) => MediaQuery.of(context).size.height * .65;
 
-  /// 170
-  static const explorePillAreaHeight = 170.0;
+  /// 32
+  static const explorePillHeight = 32.0;
 
-  /// 50
-  static const explorePillHeight = 50.0;
+  /// 32
+  static const explorePillRadius = 70.0;
 
   /// 32
   static const bookmarkIconSize = 32.0;
@@ -163,11 +175,11 @@ class AppDimens {
   /// 1024
   static const articleAudioCoverSize = 1024;
 
-  /// 80
-  static const audioBannerHeight = 80.0;
+  /// 68
+  static const audioBannerHeight = 68.0;
 
   /// 42
-  static const searchBarHeight = 42.0;
+  static const searchBarHeight = 36.0;
 
   static double textHeight({required TextStyle style, required int maxLines}) =>
       (style.fontSize! * 1.05 * (style.height ?? 1)) * maxLines;
@@ -196,4 +208,8 @@ class AppDimens {
   static const customCheckboxIconSize = 17.0;
 
   static const customCheckboxRadius = 4.0;
+
+  static const pageHorizontalMargin = AppDimens.m;
+
+  static const explorePageSectionBottomPadding = AppDimens.s;
 }

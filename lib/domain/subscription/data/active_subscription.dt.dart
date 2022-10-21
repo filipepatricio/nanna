@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'active_subscription.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ActiveSubscription with _$ActiveSubscription {
   factory ActiveSubscription.free() = _ActiveSubscriptionFree;
 

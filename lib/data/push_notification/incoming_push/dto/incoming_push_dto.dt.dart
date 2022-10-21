@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'incoming_push_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class IncomingPushDTO {
   IncomingPushDTO(this.actions, this.meta);
 
@@ -11,6 +11,4 @@ class IncomingPushDTO {
 
   final List<IncomingPushActionDTO> actions;
   final Map<String, dynamic> meta;
-
-  Map<String, dynamic> toJson() => _$IncomingPushDTOToJson(this);
 }

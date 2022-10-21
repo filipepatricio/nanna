@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'notification_channel.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class NotificationChannel with _$NotificationChannel {
   factory NotificationChannel({
     required String id,

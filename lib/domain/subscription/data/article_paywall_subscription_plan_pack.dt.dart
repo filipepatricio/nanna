@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'article_paywall_subscription_plan_pack.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ArticlePaywallSubscriptionPlanPack with _$ArticlePaywallSubscriptionPlanPack {
   factory ArticlePaywallSubscriptionPlanPack.singleTrial(SubscriptionPlan plan) =
       _ArticlePaywallSubscriptionPlanPackSingleTrial;

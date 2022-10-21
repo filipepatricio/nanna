@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'linked_in_user.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class LinkedinUserDTO {
   LinkedinUserDTO(
     this.firstName,

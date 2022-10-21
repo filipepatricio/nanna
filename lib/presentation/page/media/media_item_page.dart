@@ -17,6 +17,7 @@ import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -29,7 +30,6 @@ class MediaItemPage extends HookWidget {
     this.article,
     this.topicId,
     this.briefId,
-    this.readArticleProgress,
     this.articleOutputMode = ArticleOutputMode.read,
     Key? key,
   }) : super(key: key);
@@ -39,7 +39,6 @@ class MediaItemPage extends HookWidget {
   final MediaItemArticle? article;
   final String? topicId;
   final String? briefId;
-  final double? readArticleProgress;
   final ArticleOutputMode articleOutputMode;
 
   @override
@@ -57,39 +56,32 @@ class MediaItemPage extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Column(
-        children: [
-          Expanded(
-            child: InformedAnimatedSwitcher(
-              child: state.maybeMap(
-                loading: (state) => const _LoadingContent(),
-                idleFree: (state) => FreeArticleView(
-                  article: state.header,
-                  snackbarController: snackbarController,
-                  briefId: briefId,
-                  topicId: topicId,
-                ),
-                idlePremium: (state) => PremiumArticleView(
-                  article: state.article,
-                  snackbarController: snackbarController,
-                  readArticleProgress: readArticleProgress,
-                  articleOutputMode: articleOutputMode,
-                  briefId: briefId,
-                  topicId: topicId,
-                  topicSlug: topicSlug,
-                ),
-                error: (state) => _ErrorContent(article: state.article),
-                emptyError: (_) => _ErrorContent(
-                  onTryAgain: () {
-                    cubit.initialize(article, slug, topicId, topicSlug, briefId);
-                  },
-                ),
-                geoblocked: (_) => const _ErrorGeoblocked(),
-                orElse: () => const SizedBox.shrink(),
-              ),
-            ),
+      body: InformedAnimatedSwitcher(
+        child: state.maybeMap(
+          loading: (_) => const _LoadingContent(),
+          idleFree: (data) => FreeArticleView(
+            article: data.header,
+            snackbarController: snackbarController,
+            briefId: briefId,
+            topicId: topicId,
           ),
-        ],
+          idlePremium: (data) => PremiumArticleView(
+            article: data.article,
+            snackbarController: snackbarController,
+            articleOutputMode: articleOutputMode,
+            briefId: briefId,
+            topicId: topicId,
+            topicSlug: topicSlug,
+          ),
+          error: (data) => _ErrorContent(article: data.article),
+          emptyError: (_) => _ErrorContent(
+            onTryAgain: () {
+              cubit.initialize(article, slug, topicId, topicSlug, briefId);
+            },
+          ),
+          geoblocked: (_) => const _ErrorGeoblocked(),
+          orElse: Container.new,
+        ),
       ),
     );
   }
@@ -102,28 +94,11 @@ class _LoadingContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-            left: AppDimens.l,
-            top: MediaQuery.of(context).padding.top + AppDimens.s,
-          ),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_rounded),
-            color: AppColors.textPrimary,
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.zero,
-            onPressed: () => context.popRoute(),
-          ),
-        ),
-        const Expanded(
-          child: Center(
-            child: Loader(),
-          ),
-        ),
-      ],
+    return const Scaffold(
+      appBar: _BaseAppBar(),
+      body: Center(
+        child: Loader(),
+      ),
     );
   }
 }
@@ -142,61 +117,44 @@ class _ErrorContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final article = this.article;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.m),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_rounded),
-            color: AppColors.black,
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.zero,
-            onPressed: () => context.popRoute(),
+    return Scaffold(
+      appBar: const _BaseAppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(AppVectorGraphics.articleError),
+          const SizedBox(height: AppDimens.m),
+          Text(
+            LocaleKeys.dailyBrief_oops.tr(),
+            style: AppTypography.h3bold,
+            textAlign: TextAlign.center,
           ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: AppDimens.l),
-            SvgPicture.asset(AppVectorGraphics.articleError),
-            const SizedBox(height: AppDimens.m),
-            Text(
-              LocaleKeys.dailyBrief_oops.tr(),
-              style: AppTypography.h3bold,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              LocaleKeys.article_loadError.tr(),
-              style: AppTypography.h3Normal,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppDimens.xl),
-            if (article != null)
-              OpenWebButton(
-                url: article.sourceUrl,
-                buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
-              )
-            else
-              Center(
-                child: SizedBox(
-                  width: _tryAgainButtonWidth,
-                  child: FilledButton(
-                    text: LocaleKeys.common_tryAgain.tr(),
-                    fillColor: AppColors.textPrimary,
-                    textColor: AppColors.white,
-                    onTap: () {
-                      onTryAgain?.call();
-                    },
-                  ),
+          Text(
+            LocaleKeys.article_loadError.tr(),
+            style: AppTypography.h3Normal,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: AppDimens.xl),
+          if (article != null)
+            OpenWebButton(
+              url: article.sourceUrl,
+              buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
+            )
+          else
+            Center(
+              child: SizedBox(
+                width: _tryAgainButtonWidth,
+                child: FilledButton.black(
+                  text: LocaleKeys.common_tryAgain.tr(),
+                  onTap: () {
+                    onTryAgain?.call();
+                  },
                 ),
-              )
-          ],
-        ),
-        const SizedBox(height: AppDimens.xxxl + AppDimens.l),
-      ],
+              ),
+            )
+        ],
+      ),
     );
   }
 }
@@ -206,14 +164,39 @@ class _ErrorGeoblocked extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-      child: GeneralErrorView(
-        title: LocaleKeys.article_geoblockedError_title.tr(),
-        content: LocaleKeys.article_geoblockedError_content.tr(),
-        action: LocaleKeys.article_geoblockedError_action.tr(),
-        retryCallback: () => context.popRoute(),
+    return Scaffold(
+      appBar: const _BaseAppBar(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        child: GeneralErrorView(
+          title: LocaleKeys.article_geoblockedError_title.tr(),
+          content: LocaleKeys.article_geoblockedError_content.tr(),
+          action: LocaleKeys.article_geoblockedError_action.tr(),
+          retryCallback: context.popRoute,
+        ),
       ),
     );
   }
+}
+
+class _BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _BaseAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios_rounded),
+        color: AppColors.textPrimary,
+        iconSize: AppDimens.backArrowSize,
+        onPressed: context.popRoute,
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

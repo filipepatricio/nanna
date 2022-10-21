@@ -58,7 +58,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
       shadowColor: AppColors.black40,
       pinned: true,
       centerTitle: true,
-      elevation: showCalendar ? 0 : 3.0,
+      elevation: showCalendar ? 0 : 1.0,
       expandedHeight: AppDimens.appBarHeight,
       title: AnimatedOpacity(
         duration: const Duration(milliseconds: AppAnimation.opacityDuration),

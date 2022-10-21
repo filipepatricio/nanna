@@ -31,12 +31,10 @@ class CurrentAudioFloatingProgress extends HookWidget {
         child: audioProgressType == AudioProgressType.loading
             ? CircularProgressIndicator(
                 strokeWidth: AppDimens.strokeAudioWidth(progressSize),
-                backgroundColor: AppColors.dividerGrey,
                 color: AppColors.black,
               )
             : CircularProgressIndicator(
                 strokeWidth: AppDimens.strokeAudioWidth(progressSize),
-                backgroundColor: AppColors.dividerGrey,
                 color: AppColors.black,
                 value: audioProgressType == AudioProgressType.current ? state.progress.clamp(0, 1) : progress,
               ),

@@ -2,7 +2,7 @@ fragment expertFragment on Expert {
   __typename
   id
   bio
-  name
+  name : realName
   areaOfExpertise
   instagram
   linkedin

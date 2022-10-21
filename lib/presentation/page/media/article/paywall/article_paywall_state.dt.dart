@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'article_paywall_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ArticlePaywallState with _$ArticlePaywallState {
   @Implements<BuildState>()
   factory ArticlePaywallState.initializing() = _ArticlePaywallStateInitializing;

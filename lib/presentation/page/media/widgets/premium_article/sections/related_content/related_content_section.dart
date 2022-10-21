@@ -1,10 +1,11 @@
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 
 class RelatedContentSection extends StatelessWidget {
@@ -14,6 +15,7 @@ class RelatedContentSection extends StatelessWidget {
     required this.briefId,
     required this.relatedContentItems,
     required this.topicId,
+    required this.snackbarController,
     this.onRelatedContentItemTap,
     this.onRelatedCategoryTap,
     Key? key,
@@ -26,11 +28,12 @@ class RelatedContentSection extends StatelessWidget {
   final String? topicId;
   final void Function(CategoryItem)? onRelatedContentItemTap;
   final void Function(Category)? onRelatedCategoryTap;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.pastelGreen,
+      color: AppColors.background,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -46,13 +49,14 @@ class RelatedContentSection extends StatelessWidget {
               relatedContentItems: relatedContentItems,
               briefId: briefId,
               topicId: topicId,
+              snackbarController: snackbarController,
             ),
           Padding(
-            padding: const EdgeInsets.all(AppDimens.l),
-            child: RelaxView.article(briefId),
+            padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
+            child: RelaxView.article(),
           ),
           SizedBox(
-            height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.s,
+            height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.l,
           ),
         ],
       ),

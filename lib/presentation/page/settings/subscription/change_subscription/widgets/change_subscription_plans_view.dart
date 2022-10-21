@@ -20,72 +20,74 @@ class _ChangeSubscriptionPlansView extends HookWidget {
     return CustomScrollView(
       physics: getPlatformScrollPhysics(),
       slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate.fixed(
-            [
-              const SizedBox(height: AppDimens.m),
-              InformedMarkdownBody(
-                markdown: LocaleKeys.subscription_change_title.tr(),
-                baseTextStyle: AppTypography.h1MediumLora,
-              ),
-              const SizedBox(height: AppDimens.xl),
-              state.maybeMap(
-                idle: (data) => _PlanCardsList(
-                  plans: data.plans,
-                  selectedPlanNotifier: selectedPlanNotifier,
-                  currentPlan: currentPlan,
-                  nextPlan: nextPlan,
-                  cubit: cubit,
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
+                const SizedBox(height: AppDimens.m),
+                InformedMarkdownBody(
+                  markdown: LocaleKeys.subscription_change_title.tr(),
+                  baseTextStyle: AppTypography.h1Medium,
                 ),
-                processing: (data) => _PlanCardsList(
-                  plans: data.plans,
-                  selectedPlanNotifier: selectedPlanNotifier,
-                  currentPlan: currentPlan,
-                  nextPlan: nextPlan,
-                  cubit: cubit,
+                const SizedBox(height: AppDimens.xl),
+                state.maybeMap(
+                  idle: (data) => _PlanCardsList(
+                    plans: data.plans,
+                    selectedPlanNotifier: selectedPlanNotifier,
+                    currentPlan: currentPlan,
+                    nextPlan: nextPlan,
+                    cubit: cubit,
+                  ),
+                  processing: (data) => _PlanCardsList(
+                    plans: data.plans,
+                    selectedPlanNotifier: selectedPlanNotifier,
+                    currentPlan: currentPlan,
+                    nextPlan: nextPlan,
+                    cubit: cubit,
+                  ),
+                  orElse: () => Container(),
                 ),
-                orElse: () => Container(),
-              ),
-              const SizedBox(height: AppDimens.xl),
-              ValueListenableBuilder<SubscriptionPlan>(
-                valueListenable: selectedPlanNotifier,
-                builder: (context, selectedPlan, _) {
-                  return FilledButton(
-                    text: LocaleKeys.subscription_change_confirm.tr(),
-                    onTap: cubit.purchase,
-                    fillColor: AppColors.charcoal,
-                    textColor: AppColors.white,
-                    disableColor: AppColors.lightGrey,
-                    disableTextColor: AppColors.darkGrey,
-                    isEnabled: currentPlan?.productId != selectedPlan.productId &&
-                        currentPlan?.productId != nextPlan?.productId,
-                    isLoading: state.maybeMap(
-                      processing: (_) => true,
-                      orElse: () => false,
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: AppDimens.m),
-              state.maybeMap(
-                idle: (data) => _ExpirationDateFooter(data.subscription.expirationDate),
-                processing: (data) => _ExpirationDateFooter(data.subscription.expirationDate),
-                orElse: Container.new,
-              ),
-            ],
+                const SizedBox(height: AppDimens.xl),
+                ValueListenableBuilder<SubscriptionPlan>(
+                  valueListenable: selectedPlanNotifier,
+                  builder: (context, selectedPlan, _) {
+                    return FilledButton.black(
+                      text: LocaleKeys.subscription_change_confirm.tr(),
+                      onTap: cubit.purchase,
+                      isEnabled: currentPlan?.productId != selectedPlan.productId &&
+                          currentPlan?.productId != nextPlan?.productId,
+                      isLoading: state.maybeMap(
+                        processing: (_) => true,
+                        orElse: () => false,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: AppDimens.m),
+                state.maybeMap(
+                  idle: (data) => _ExpirationDateFooter(data.subscription.expirationDate),
+                  processing: (data) => _ExpirationDateFooter(data.subscription.expirationDate),
+                  orElse: Container.new,
+                ),
+              ],
+            ),
           ),
         ),
         SliverFillRemaining(
           hasScrollBody: false,
-          child: ValueListenableBuilder<SubscriptionPlan>(
-            valueListenable: selectedPlanNotifier,
-            builder: (context, selectedPlan, _) {
-              return SubscriptionLinksFooter(
-                subscriptionPlan: selectedPlan,
-                onRestorePressed: cubit.restorePurchase,
-                openInBrowser: openInBrowser,
-              );
-            },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            child: ValueListenableBuilder<SubscriptionPlan>(
+              valueListenable: selectedPlanNotifier,
+              builder: (context, selectedPlan, _) {
+                return SubscriptionLinksFooter(
+                  subscriptionPlan: selectedPlan,
+                  onRestorePressed: cubit.restorePurchase,
+                  openInBrowser: openInBrowser,
+                );
+              },
+            ),
           ),
         ),
       ],
@@ -120,9 +122,9 @@ class _PlanCardsList extends StatelessWidget {
               builder: (context, selectedPlan, _) {
                 return SubscriptionPlanCard(
                   plan: plan,
-                  isSelected: plan.productId == selectedPlan.productId,
-                  isCurrent: plan.productId == currentPlan?.productId,
-                  isNextPlan: plan.productId == nextPlan?.productId,
+                  isSelected: plan == selectedPlan,
+                  isCurrent: plan == currentPlan,
+                  isNextPlan: plan == nextPlan,
                   onPlanPressed: (plan) {
                     selectedPlanNotifier.value = plan;
                     cubit.selectPlan(plan);

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_with_items.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_cubit.di.dart';
@@ -15,6 +15,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,13 +25,15 @@ class CategoryPage extends HookWidget {
     required this.category,
     Key? key,
   }) : super(key: key);
-  final Category category;
+
+  final CategoryWithItems category;
 
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
     final cubit = useCubit<CategoryPageCubit>();
     final state = useCubitBuilder<CategoryPageCubit, CategoryPageState>(cubit);
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -46,42 +49,45 @@ class CategoryPage extends HookWidget {
 
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: category.name),
-      body: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          NextPageLoadExecutor(
-            enabled: shouldListen,
-            onNextPageLoad: cubit.loadNextPage,
-            scrollController: scrollController,
-            child: TabBarListener(
-              currentPage: context.routeData,
+      body: SnackbarParentView(
+        controller: snackbarController,
+        child: CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            NextPageLoadExecutor(
+              enabled: shouldListen,
+              onNextPageLoad: cubit.loadNextPage,
               scrollController: scrollController,
-              child: state.maybeMap(
-                loading: (_) => const SliverToBoxAdapter(child: Loader()),
-                withPagination: (state) => ItemsGridView(
-                  itemCount: state.items.length,
-                  itemBuilder: (context, index) => itemBuilder(context, index, state.items),
-                  scrollController: scrollController,
+              child: TabBarListener(
+                currentPage: context.routeData,
+                scrollController: scrollController,
+                child: state.maybeMap(
+                  loading: (_) => const SliverToBoxAdapter(child: Loader()),
+                  withPagination: (state) => ItemsGridView(
+                    itemCount: state.items.length,
+                    itemBuilder: (context, index) => itemBuilder(context, index, state.items, snackbarController),
+                    scrollController: scrollController,
+                  ),
+                  loadingMore: (state) => ItemsGridView(
+                    itemCount: state.items.length,
+                    itemBuilder: (context, index) => itemBuilder(context, index, state.items, snackbarController),
+                    scrollController: scrollController,
+                    withLoader: true,
+                  ),
+                  allLoaded: (state) => ItemsGridView(
+                    itemCount: state.items.length,
+                    itemBuilder: (context, index) => itemBuilder(context, index, state.items, snackbarController),
+                    scrollController: scrollController,
+                  ),
+                  orElse: () => const SliverToBoxAdapter(),
                 ),
-                loadingMore: (state) => ItemsGridView(
-                  itemCount: state.items.length,
-                  itemBuilder: (context, index) => itemBuilder(context, index, state.items),
-                  scrollController: scrollController,
-                  withLoader: true,
-                ),
-                allLoaded: (state) => ItemsGridView(
-                  itemCount: state.items.length,
-                  itemBuilder: (context, index) => itemBuilder(context, index, state.items),
-                  scrollController: scrollController,
-                ),
-                orElse: () => const SliverToBoxAdapter(),
               ),
             ),
-          ),
-          const SliverToBoxAdapter(
-            child: AudioPlayerBannerPlaceholder(),
-          ),
-        ],
+            const SliverToBoxAdapter(
+              child: AudioPlayerBannerPlaceholder(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -90,17 +96,19 @@ class CategoryPage extends HookWidget {
     BuildContext context,
     int index,
     List<CategoryItem> items,
+    SnackbarController snackbarController,
   ) =>
       items[index].mapOrNull(
-        article: (data) => ArticleCover.exploreCarousel(
+        article: (data) => ArticleCover.small(
           article: data.article,
           onTap: () => context.navigateToArticle(data.article),
           coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
+          snackbarController: snackbarController,
         ),
-        topic: (data) => TopicCover.exploreSmall(
+        topic: (data) => TopicCover.small(
           topic: data.topicPreview,
           onTap: () => context.navigateToTopic(data.topicPreview),
-          hasBackgroundColor: false,
+          snackbarController: snackbarController,
         ),
       );
 }

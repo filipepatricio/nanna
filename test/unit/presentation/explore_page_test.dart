@@ -2,15 +2,15 @@ import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/explore/article_area/article_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page.dart';
-import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
+import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/view_all_button.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,11 +45,11 @@ void main() {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
 
       final topicCoverFinder = find.descendant(
-        of: find.byType(TopicsAreaView),
+        of: find.byType(SmallTopicsAreaView),
         matching: find.byType(TopicCover),
       );
 
-      expect(topicCoverFinder, findsNWidgets(2));
+      expect(topicCoverFinder, findsNWidgets(3));
       await tester.ensureVisible(topicCoverFinder.first);
       await tester.pumpAndSettle();
       await tester.tap(topicCoverFinder.first);
@@ -63,9 +63,8 @@ void main() {
     'can navigate from explore to pill',
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
-
-      expect(find.byType(ExplorePill), findsNWidgets(12));
-      await tester.tap(find.byType(ExplorePill).first);
+      expect(find.byType(InformedPill), findsAtLeastNWidgets(8));
+      await tester.tap(find.byType(InformedPill).last);
       await tester.pumpAndSettle();
       expect(find.byType(CategoryPage), findsOneWidget);
     },
@@ -76,7 +75,7 @@ void main() {
     (tester) async {
       await tester.startApp(initialRoute: const ExploreTabGroupRouter());
 
-      final topicsAreaFinder = find.byType(TopicsAreaView);
+      final topicsAreaFinder = find.byType(SmallTopicsAreaView);
       await tester.ensureVisible(topicsAreaFinder);
       await tester.pumpAndSettle();
 

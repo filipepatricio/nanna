@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,8 +16,7 @@ class BriefEntryCover extends HookWidget {
   const BriefEntryCover({
     required this.briefEntry,
     required this.briefId,
-    required this.width,
-    required this.height,
+    required this.snackbarController,
     this.topicCardKey,
     this.onVisibilityChanged,
     this.padding,
@@ -25,11 +25,10 @@ class BriefEntryCover extends HookWidget {
 
   final BriefEntry briefEntry;
   final String briefId;
-  final double width;
-  final double height;
   final GlobalKey? topicCardKey;
   final Function(VisibilityInfo)? onVisibilityChanged;
   final EdgeInsets? padding;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -101,19 +100,16 @@ class BriefEntryCover extends HookWidget {
             switch (style.type) {
               case BriefEntryStyleType.topicCard:
                 return item.maybeMap(
-                  topicPreview: (data) => LimitedBox(
+                  topicPreview: (data) => TopicCover.big(
                     key: topicCardKey,
-                    maxWidth: width,
-                    maxHeight: height,
-                    child: TopicCover.dailyBrief(
-                      topic: data.topicPreview,
-                      onTap: () async {
-                        await context.navigateToTopic(
-                          topicPreview: data.topicPreview,
-                          briefId: briefId,
-                        );
-                      },
-                    ),
+                    snackbarController: snackbarController,
+                    topic: data.topicPreview,
+                    onTap: () async {
+                      await context.navigateToTopic(
+                        topicPreview: data.topicPreview,
+                        briefId: briefId,
+                      );
+                    },
                   ),
                   orElse: () => const SizedBox.shrink(),
                 );

@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_cubit.di.dart';
@@ -54,12 +55,20 @@ class AudioControlButton extends HookWidget {
       [cubit],
     );
 
-    return IconButton(
-      onPressed: state.getAction(cubit),
-      padding: const EdgeInsets.only(right: AppDimens.s),
-      icon: SvgPicture.asset(
-        state.imagePath,
-        color: state.imageColor,
+    return Container(
+      height: AppDimens.audioViewControlButtonSize,
+      width: AppDimens.audioViewControlButtonSize,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppDimens.audioViewControlButtonSize / 2),
+        color: AppColors.black.withAlpha(state.imageAlpha),
+      ),
+      child: IconButton(
+        onPressed: state.getAction(cubit),
+        icon: SvgPicture.asset(
+          state.imagePath,
+          color: AppColors.white,
+          height: AppDimens.audioViewControlButtonSize,
+        ),
       ),
     );
   }

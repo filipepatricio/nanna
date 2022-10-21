@@ -1,18 +1,16 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
-import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pill.dart';
+import 'package:better_informed_mobile/domain/categories/data/category_with_items.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-const _maxPillLines = 3;
-const _maxPillsPerLine = 3;
-const _pillPadding = 8.0;
-const _pillsTopPadding = AppDimens.sl;
-const _pillsBottomPadding = AppDimens.ml;
+const _pillLines = 1;
+const _pillPadding = AppDimens.s;
+const _pillsTopPadding = AppDimens.zero;
+const _pillsBottomPadding = AppDimens.zero;
+const _pillsAreaHeight = AppDimens.explorePillHeight + _pillsTopPadding + _pillsBottomPadding;
 
 class ExplorePillsAreaView extends StatelessWidget {
   const ExplorePillsAreaView({
@@ -20,38 +18,29 @@ class ExplorePillsAreaView extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final List<Category> categories;
+  final List<CategoryWithItems> categories;
 
   @override
   Widget build(BuildContext context) {
-    final lineCount = min(_maxPillLines, (categories.length / _maxPillsPerLine).ceil());
-    final height = min(
-          AppDimens.explorePillAreaHeight,
-          lineCount * AppDimens.explorePillHeight + (lineCount > 1 ? _pillPadding : 0),
-        ) +
-        _pillsTopPadding +
-        _pillsBottomPadding;
-
     return SizedBox(
-      height: height,
+      height: _pillsAreaHeight,
       child: MasonryGridView.count(
         padding: const EdgeInsets.only(
-          left: AppDimens.l,
-          right: AppDimens.l,
+          left: AppDimens.pageHorizontalMargin,
+          right: AppDimens.s,
           top: _pillsTopPadding,
           bottom: _pillsBottomPadding,
         ),
         scrollDirection: Axis.horizontal,
-        crossAxisCount: lineCount,
+        crossAxisCount: _pillLines,
         mainAxisSpacing: _pillPadding,
         crossAxisSpacing: _pillPadding,
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
-          return ExplorePill(
+          return InformedPill(
             title: category.name,
-            icon: category.icon,
-            index: index,
+            color: category.color,
             onTap: () => AutoRouter.of(context).push(
               CategoryPageRoute(
                 category: category,

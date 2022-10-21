@@ -48,9 +48,9 @@ class _PillsArea extends StatelessWidget {
       baseColor: AppColors.background,
       highlightColor: AppColors.white,
       child: SizedBox(
-        height: AppDimens.explorePillAreaHeight,
+        height: AppDimens.explorePillHeight,
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
           children: [
@@ -60,30 +60,10 @@ class _PillsArea extends StatelessWidget {
                 Row(
                   children: const [
                     _Pill(width: 120),
-                    SizedBox(width: AppDimens.m),
+                    SizedBox(width: AppDimens.s),
                     _Pill(width: 80),
-                    SizedBox(width: AppDimens.m),
+                    SizedBox(width: AppDimens.s),
                     _Pill(width: 100),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  children: const [
-                    _Pill(width: 80),
-                    SizedBox(width: AppDimens.m),
-                    _Pill(width: 100),
-                    SizedBox(width: AppDimens.m),
-                    _Pill(width: 120),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  children: const [
-                    _Pill(width: 120),
-                    SizedBox(width: AppDimens.m),
-                    _Pill(width: 100),
-                    SizedBox(width: AppDimens.m),
-                    _Pill(width: 120),
                   ],
                 ),
               ],
@@ -109,7 +89,7 @@ class _Pill extends StatelessWidget {
       height: AppDimens.explorePillHeight,
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(AppDimens.s),
+        borderRadius: BorderRadius.circular(AppDimens.explorePillRadius),
         border: Border.all(
           color: AppColors.dividerGreyLight,
           width: 1,
@@ -170,11 +150,6 @@ class _StreamCell extends StatelessWidget {
       height: size,
       decoration: const BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(
-            AppDimens.m,
-          ),
-        ),
       ),
     );
   }

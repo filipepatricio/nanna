@@ -19,12 +19,12 @@ class _PaywallTrialOption extends StatelessWidget {
       children: [
         InformedMarkdownBody(
           markdown: LocaleKeys.subscription_title_standard.tr(),
-          baseTextStyle: AppTypography.h1MediumLora,
+          baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.s),
         Text(
           LocaleKeys.subscription_description.tr(),
-          style: AppTypography.subH1Medium,
+          style: AppTypography.b2Medium.copyWith(height: 1.2),
         ),
         const SizedBox(height: AppDimens.m),
         Container(
@@ -34,9 +34,7 @@ class _PaywallTrialOption extends StatelessWidget {
             borderRadius: const BorderRadius.all(
               Radius.circular(AppDimens.m),
             ),
-            border: Border.all(
-              color: AppColors.secondaryNeutralGrey,
-            ),
+            border: Border.all(color: AppColors.lightGrey),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -49,11 +47,11 @@ class _PaywallTrialOption extends StatelessWidget {
                     plan.priceString,
                   ],
                 ),
-                style: AppTypography.h4ExtraBold,
+                style: AppTypography.b2Medium,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppDimens.m),
-              SubscribeButton(
+              SubscribeButton.light(
                 plan: plan,
                 isLoading: isProcessing,
                 onPurchasePressed: onPurchasePressed,

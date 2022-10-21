@@ -37,7 +37,7 @@ class DailyBriefCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: isFloating ? 3 : 0,
+      elevation: isFloating ? 1.0 : 0.0,
       color: AppColors.background,
       child: AnimatedContainer(
         height: isVisible ? AppDimens.calendarAppBar : AppDimens.zero,

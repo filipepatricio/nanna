@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'article_image_dto.dt.freezed.dart';
 part 'article_image_dto.dt.g.dart';
 
-@Freezed(unionKey: '__typename', fallbackUnion: unknownKey)
+@Freezed(unionKey: '__typename', fallbackUnion: unknownKey, toJson: false)
 class ArticleImageDTO with _$ArticleImageDTO {
   @FreezedUnionValue('CloudinaryImage')
   factory ArticleImageDTO.cloudinary(String publicId, {String? caption}) = ArticleImageDTOCloudinary;

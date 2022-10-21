@@ -1,5 +1,5 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
-import 'package:better_informed_mobile/domain/categories/data/category.dt.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
@@ -8,7 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'premium_article_view_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class PremiumArticleViewState with _$PremiumArticleViewState {
   const factory PremiumArticleViewState.initial() = _PremiumArticleViewStateInitial;
 

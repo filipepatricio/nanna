@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'subscription_card_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SubscriptionCardState with _$SubscriptionCardState {
   @Implements<BuildState>()
   const factory SubscriptionCardState.loading() = _SubscriptionCardStateLoading;

@@ -3,13 +3,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'article_content_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ArticleContentDTO {
   ArticleContentDTO(this.content, this.markupLanguage);
 
   factory ArticleContentDTO.fromJson(Map<String, dynamic> json) => _$ArticleContentDTOFromJson(json);
   final String content;
   final ArticleContentTypeDTO markupLanguage;
-
-  Map<String, dynamic> toJson() => _$ArticleContentDTOToJson(this);
 }

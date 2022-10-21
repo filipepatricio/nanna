@@ -28,7 +28,7 @@ class CurrentAudioProgressBar extends HookWidget {
         value: state.progress,
         color: state.progressColor,
         backgroundColor: AppColors.transparent,
-        minHeight: AppDimens.xs,
+        minHeight: AppDimens.xxs,
       ),
     );
   }

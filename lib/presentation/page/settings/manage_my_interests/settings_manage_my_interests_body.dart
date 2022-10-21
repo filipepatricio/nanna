@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -12,7 +11,6 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_mes
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SettingsManageMyInterestsBody extends HookWidget {
   const SettingsManageMyInterestsBody({
@@ -41,44 +39,30 @@ class SettingsManageMyInterestsBody extends HookWidget {
       );
     });
 
-    return CustomScrollView(
+    return ListView(
       physics: getPlatformScrollPhysics(),
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Padding(
-                  padding: const EdgeInsets.all(AppDimens.l),
-                  child: Text(
-                    LocaleKeys.settings_manageMyInterests.tr(),
-                    style: AppTypography.h4Bold.copyWith(height: 1),
-                  ),
-                ),
-                ...categoryPreferences
-                    .map(
-                      (data) => _CategoryItem(
-                        categoryPreference: data,
-                        snackbarController: snackbarController,
-                        cubit: cubit,
-                        onSwitch: (value) {
-                          cubit.updatePreferredCategories(
-                            categoryPreferences.map((e) => e == data ? e.copyWith(isPreferred: value) : e).toList(),
-                          );
-                        },
-                      ),
-                    )
-                    .expand(
-                      (element) => [element, const Divider()],
-                    ),
+      padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
+      children: [
+        ...categoryPreferences
+            .map(
+              (data) => _CategoryItem(
+                categoryPreference: data,
+                snackbarController: snackbarController,
+                cubit: cubit,
+                onSwitch: (value) {
+                  cubit.updatePreferredCategories(
+                    categoryPreferences.map((e) => e == data ? e.copyWith(isPreferred: value) : e).toList(),
+                  );
+                },
+              ),
+            )
+            .expand(
+              (element) => [
+                element,
+                const Divider(),
               ],
             ),
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: AudioPlayerBannerPlaceholder(),
-        ),
+        const AudioPlayerBannerPlaceholder(),
       ],
     );
   }
@@ -104,13 +88,15 @@ class _CategoryItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
       child: Row(
         children: [
-          SvgPicture.string(
-            categoryPreference.category.icon,
-            width: AppDimens.l,
-            height: AppDimens.l,
-            fit: BoxFit.contain,
+          Container(
+            height: AppDimens.m,
+            width: AppDimens.m,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: categoryPreference.category.color,
+            ),
           ),
-          const SizedBox(width: AppDimens.m),
+          const SizedBox(width: AppDimens.s),
           Expanded(
             child: Text(
               categoryPreference.category.name,

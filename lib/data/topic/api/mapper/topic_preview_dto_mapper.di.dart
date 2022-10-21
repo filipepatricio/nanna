@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
@@ -12,11 +13,13 @@ class TopicPreviewDTOMapper implements Mapper<TopicPreviewDTO, TopicPreview> {
     this._topicOwnerDTOMapper,
     this._topicPublisherInformationDTOMapper,
     this._imageDTOMapper,
+    this._categoryDTOMapper,
   );
 
   final TopicOwnerDTOMapper _topicOwnerDTOMapper;
   final TopicPublisherInformationDTOMapper _topicPublisherInformationDTOMapper;
   final ImageDTOMapper _imageDTOMapper;
+  final CategoryDTOMapper _categoryDTOMapper;
 
   @override
   TopicPreview call(TopicPreviewDTO data) {
@@ -33,6 +36,7 @@ class TopicPreviewDTOMapper implements Mapper<TopicPreviewDTO, TopicPreview> {
       _imageDTOMapper(data.heroImage),
       data.entryCount,
       data.visited,
+      _categoryDTOMapper(data.category),
     );
   }
 }

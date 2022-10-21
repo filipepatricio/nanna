@@ -30,7 +30,6 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
               article: article,
               coverColor: coverColor,
               dimension: coverSize,
-              visited: article.visited,
             ),
             const SizedBox(width: AppDimens.m),
             Expanded(
@@ -57,7 +56,6 @@ class _ArticleCoverDailyBriefListItem extends HookWidget {
                         ],
                         BookmarkButton.article(
                           article: article,
-                          color: AppColors.textPrimary,
                           iconSize: AppDimens.l,
                         )
                       ],

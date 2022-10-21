@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'notification_setting_switch_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class NotificationSettingSwitchState with _$NotificationSettingSwitchState {
   @Implements<BuildState>()
   factory NotificationSettingSwitchState.notInitialized() = _NotificationSettingSwitchStateNotInitialized;

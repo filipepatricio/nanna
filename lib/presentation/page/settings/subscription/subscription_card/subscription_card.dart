@@ -40,32 +40,35 @@ class SubscriptionCard extends HookWidget {
           ),
           border: Border.all(color: AppColors.lightGrey),
         ),
-        child: state.map(
-          loading: (_) => const _LoadingContent(),
-          free: (data) => _IdleContent(
-            icon: AppVectorGraphics.informedLogoFree,
-            typeLabel: LocaleKeys.subscription_free.tr(),
-            callToActionLabel: Text(
-              LocaleKeys.subscription_goPremium.tr(),
-              style: AppTypography.subH1Medium.copyWith(decoration: TextDecoration.underline),
-            ),
-          ),
-          trial: (data) => _IdleContent(
-            icon: AppVectorGraphics.informedLogoTrial,
-            typeLabel: LocaleKeys.subscription_trial.tr(),
-            callToActionLabel: Text(
-              LocaleKeys.subscription_endsIn.tr(
-                args: [LocaleKeys.date_day.plural(data.remainingDays)],
+        child: AnimatedSize(
+          duration: const Duration(milliseconds: 100),
+          child: state.map(
+            loading: (_) => const _LoadingContent(),
+            free: (data) => _IdleContent(
+              icon: AppVectorGraphics.informedLogoGreen,
+              typeLabel: LocaleKeys.subscription_free.tr(),
+              callToActionLabel: Text(
+                LocaleKeys.subscription_goPremium.tr(),
+                style: AppTypography.subH1Medium.copyWith(decoration: TextDecoration.underline),
               ),
-              style: AppTypography.subH1Medium,
             ),
-          ),
-          premium: (data) => _IdleContent(
-            icon: AppVectorGraphics.informedLogoPremium,
-            typeLabel: LocaleKeys.subscription_premium.tr(),
-            callToActionLabel: Text(
-              LocaleKeys.subscription_membership.tr(),
-              style: AppTypography.subH1Medium,
+            trial: (data) => _IdleContent(
+              icon: AppVectorGraphics.informedLogoGreen,
+              typeLabel: LocaleKeys.subscription_trial.tr(),
+              callToActionLabel: Text(
+                LocaleKeys.subscription_endsIn.tr(
+                  args: [LocaleKeys.date_day.plural(data.remainingDays)],
+                ),
+                style: AppTypography.subH1Medium,
+              ),
+            ),
+            premium: (data) => _IdleContent(
+              icon: AppVectorGraphics.informedLogoGreen,
+              typeLabel: LocaleKeys.subscription_premium.tr(),
+              callToActionLabel: Text(
+                LocaleKeys.subscription_membership.tr(),
+                style: AppTypography.subH1Medium,
+              ),
             ),
           ),
         ),
@@ -123,14 +126,19 @@ class _IdleContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SvgPicture.asset(
-          icon,
-          height: AppDimens.xxxl,
+        ClipRRect(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(AppDimens.s),
+          ),
+          child: SvgPicture.asset(
+            icon,
+            height: AppDimens.xxxl,
+          ),
         ),
         const SizedBox(width: AppDimens.m),
         Text(
           typeLabel,
-          style: AppTypography.h4ExtraBold.copyWith(height: 1),
+          style: AppTypography.h4Regular.copyWith(height: 1),
         ),
         const Spacer(),
         callToActionLabel,

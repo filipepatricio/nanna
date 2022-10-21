@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'share_options_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ShareOptionsState with _$ShareOptionsState {
   @Implements<BuildState>()
   const factory ShareOptionsState.loading() = _Loading;

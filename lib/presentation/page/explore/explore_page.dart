@@ -9,16 +9,13 @@ import 'package:better_informed_mobile/presentation/page/explore/article_list_ar
 import 'package:better_informed_mobile/presentation/page/explore/explore_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/page/explore/highlighted_topics_area/highlighted_topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/pills_area/explore_pills_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_history_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/sliver_search_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/explore/small_topics_area/small_topics_area_view.dart';
-import 'package:better_informed_mobile/presentation/page/explore/topics_area/topics_area_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_loading_section.dart';
-import 'package:better_informed_mobile/presentation/page/reading_banner/reading_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -28,6 +25,7 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
@@ -44,6 +42,7 @@ class ExplorePage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final scrollControllerIdleOffset = useState(0.0);
+    final snackbarController = useMemoized(() => SnackbarController());
 
     final searchViewCubit = useCubit<SearchViewCubit>();
     final searchTextEditingController = useTextEditingController();
@@ -82,15 +81,16 @@ class ExplorePage extends HookWidget {
       body: TabBarListener(
         scrollController: scrollController,
         currentPage: context.routeData,
-        child: ReadingBannerWrapper(
-          child: Stack(
-            children: [
-              RefreshIndicator(
-                color: AppColors.darkGrey,
-                onRefresh: state.maybeMap(
-                  search: (_) => searchViewCubit.refresh,
-                  orElse: () => cubit.loadExplorePageData,
-                ),
+        child: Stack(
+          children: [
+            RefreshIndicator(
+              color: AppColors.darkGrey,
+              onRefresh: state.maybeMap(
+                search: (_) => searchViewCubit.refresh,
+                orElse: () => cubit.loadExplorePageData,
+              ),
+              child: SnackbarParentView(
+                controller: snackbarController,
                 child: CustomScrollView(
                   keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   controller: scrollController,
@@ -107,16 +107,17 @@ class ExplorePage extends HookWidget {
                     ),
                     state.maybeMap(
                       initialLoading: (_) => const _LoadingSection(),
-                      error: (_) => const _LoadingSection(),
                       orElse: () => const SliverToBoxAdapter(),
                     ),
                     state.maybeMap(
                       idle: (state) => _ItemList(
                         items: state.items,
+                        snackbarController: snackbarController,
                       ),
                       search: (_) => SearchView(
                         cubit: searchViewCubit,
                         scrollController: scrollController,
+                        snackbarController: snackbarController,
                       ),
                       searchHistory: (state) => SearchHistoryView(
                         explorePageCubit: cubit,
@@ -132,15 +133,15 @@ class ExplorePage extends HookWidget {
                   ],
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: state.maybeMap(
-                  error: (_) => _ErrorView(refreshCallback: () => cubit.initialize()),
-                  orElse: () => const SizedBox.shrink(),
-                ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: state.maybeMap(
+                error: (_) => _ErrorView(refreshCallback: () => cubit.initialize()),
+                orElse: () => const SizedBox.shrink(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -175,10 +176,8 @@ class _ErrorView extends StatelessWidget {
         const SizedBox(height: AppDimens.l),
         SizedBox(
           width: _tryAgainButtonWidth,
-          child: FilledButton(
+          child: FilledButton.black(
             text: LocaleKeys.common_tryAgain.tr(),
-            fillColor: AppColors.textPrimary,
-            textColor: AppColors.white,
             onTap: refreshCallback,
           ),
         ),
@@ -196,7 +195,7 @@ class _LoadingSection extends StatelessWidget {
       delegate: SliverChildListDelegate(
         const [
           ExploreLoadingView.pills(),
-          SizedBox(height: AppDimens.xc),
+          SizedBox(height: AppDimens.c),
           ExploreLoadingView.stream(),
         ],
       ),
@@ -207,10 +206,12 @@ class _LoadingSection extends StatelessWidget {
 class _ItemList extends StatelessWidget {
   const _ItemList({
     required this.items,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final List<ExploreItem> items;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -223,6 +224,7 @@ class _ItemList extends StatelessWidget {
           stream: (item) => _Area(
             area: item.area,
             orderIndex: index,
+            snackbarController: snackbarController,
           ),
         ),
         childCount: items.length,
@@ -236,10 +238,14 @@ class _Area extends HookWidget {
   const _Area({
     required this.area,
     required this.orderIndex,
+    required this.snackbarController,
     Key? key,
   }) : super(key: key);
+
   final ExploreContentArea area;
   final int orderIndex;
+  final SnackbarController snackbarController;
+
   @override
   Widget build(BuildContext context) {
     final eventController = useEventTrackingController();
@@ -256,11 +262,19 @@ class _Area extends HookWidget {
         ),
         borderFraction: 0.6,
         child: area.map(
-          articles: (area) => ArticleAreaView(area: area, isHighlighted: area.isHighlighted),
-          articlesList: (area) => ArticleListAreaView(area: area),
-          topics: (area) => TopicsAreaView(area: area, isHighlighted: area.isHighlighted),
-          smallTopics: (area) => SmallTopicsAreaView(area: area),
-          highlightedTopics: (area) => HighlightedTopicsAreaView(area: area),
+          articles: (area) => ArticleAreaView(
+            area: area,
+            isHighlighted: area.isHighlighted,
+            snackbarController: snackbarController,
+          ),
+          articlesList: (area) => ArticleListAreaView(
+            area: area,
+            snackbarController: snackbarController,
+          ),
+          smallTopics: (area) => SmallTopicsAreaView(
+            area: area,
+            snackbarController: snackbarController,
+          ),
           unknown: (_) => const SizedBox.shrink(),
         ),
       ),

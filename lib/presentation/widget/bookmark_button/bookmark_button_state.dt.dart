@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bookmark_button_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class BookmarkButtonState with _$BookmarkButtonState {
   @Implements<BuildState>()
   factory BookmarkButtonState.initializing() = _BookmarkButtonStateInitializing;

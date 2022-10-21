@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -39,21 +39,20 @@ class PremiumArticleAudioView extends HookWidget {
       [cubit],
     );
 
-    final metadataStyle = AppTypography.systemText.copyWith(
-      color: AppColors.textGrey,
+    final metadataStyle = AppTypography.metadata1Medium.copyWith(
+      color: AppColors.black,
       height: 1.12,
     );
 
     return WillPopScope(
       onWillPop: () async => !Navigator.of(context).userGestureInProgress,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
         color: AppColors.background,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: AppDimens.appBarHeight + MediaQuery.of(context).padding.top),
             if (article.hasImage)
               Flexible(
                 flex: 15,
@@ -74,21 +73,23 @@ class PremiumArticleAudioView extends HookWidget {
                 ),
               ),
             const Spacer(),
-            Text(
-              article.metadata.strippedTitle,
-              textAlign: TextAlign.center,
-              style: AppTypography.h4Bold,
-            ),
-            const Spacer(),
             ArticleDottedInfo(
               article: article.metadata,
               isLight: false,
               showLogo: false,
               showReadTime: false,
-              fullDate: true,
+              showDate: false,
               textStyle: metadataStyle,
               color: metadataStyle.color,
               centerContent: true,
+            ),
+            const Spacer(),
+            Text(
+              article.metadata.strippedTitle,
+              textAlign: TextAlign.center,
+              style: AppTypography.articleH0SemiBold,
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
             ),
             const Spacer(),
             if (hasAudioCredits) ...[

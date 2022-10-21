@@ -26,7 +26,7 @@ class _PaywallMultipleOptions extends HookWidget {
       children: [
         InformedMarkdownBody(
           markdown: LocaleKeys.subscription_title_standard.tr(),
-          baseTextStyle: AppTypography.h1MediumLora,
+          baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.l),
         ...plans
@@ -34,17 +34,20 @@ class _PaywallMultipleOptions extends HookWidget {
               (plan) => SubscriptionPlanCard(
                 plan: plan,
                 isSelected: selectedPlan.value == plan,
-                onPlanPressed: (SubscriptionPlan plan) {
+                onPlanPressed: (plan) {
                   selectedPlan.value = plan;
                 },
               ),
             )
             .withDividers(divider: const SizedBox(height: AppDimens.m)),
         const SizedBox(height: AppDimens.l),
-        SubscribeButton(
-          plan: selectedPlan.value,
-          isLoading: isProcessing,
-          onPurchasePressed: onPurchasePressed,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+          child: SubscribeButton.light(
+            plan: selectedPlan.value,
+            isLoading: isProcessing,
+            onPurchasePressed: onPurchasePressed,
+          ),
         ),
         const SizedBox(height: AppDimens.l),
         SubscriptionLinksFooter(

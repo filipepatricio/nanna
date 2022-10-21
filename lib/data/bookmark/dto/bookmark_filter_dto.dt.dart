@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bookmark_filter_dto.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class BookmarkFilterDTO with _$BookmarkFilterDTO {
   const factory BookmarkFilterDTO._(String value) = _BookmarkFilterDTO;
 

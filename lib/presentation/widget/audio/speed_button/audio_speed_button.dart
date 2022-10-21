@@ -1,9 +1,8 @@
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/speed_button/audio_speed_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/speed_button/audio_speed_button_state.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/bordered_button.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -25,16 +24,13 @@ class AudioSpeedButton extends HookWidget {
     return UnconstrainedBox(
       child: Opacity(
         opacity: state.isEnabled ? 1.0 : 0.7,
-        child: BorderedButton(
-          text: Text(
-            tr(
-              LocaleKeys.audio_speed,
-              args: [
-                state.currentSpeed,
-              ],
-            ),
-            style: AppTypography.h5BoldSmall.copyWith(height: 1.2),
+        child: FilledButton.white(
+          text: LocaleKeys.audio_speed.tr(
+            args: [
+              state.currentSpeed,
+            ],
           ),
+          withOutline: true,
           onTap: state.isEnabled ? cubit.switchSpeed : null,
         ),
       ),

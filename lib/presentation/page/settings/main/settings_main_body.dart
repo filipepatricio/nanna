@@ -12,7 +12,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/version_label/version_label.dart';
@@ -45,110 +45,74 @@ class SettingsMainBody extends HookWidget {
       );
     });
 
-    return CustomScrollView(
-      physics: const ClampingScrollPhysics(),
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.only(top: AppDimens.l),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                if (useSubscriptions) ...[
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
-                    child: SubscriptionCard(),
-                  ),
-                  const SizedBox(height: AppDimens.m),
-                ],
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  child: Text(
-                    LocaleKeys.settings_profileHeader.tr(),
-                    style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
-                  ),
-                ),
-                const SizedBox(height: AppDimens.l),
-                SettingsMainItem(
-                  label: LocaleKeys.settings_account.tr(),
-                  icon: AppVectorGraphics.account,
-                  onTap: () => AutoRouter.of(context).push(const SettingsAccountPageRoute()),
-                ),
-                const SizedBox(height: AppDimens.l),
-                SettingsMainItem(
-                  label: LocaleKeys.settings_notifications.tr(),
-                  icon: AppVectorGraphics.notifications,
-                  onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
-                ),
-                const SizedBox(height: AppDimens.l),
-                SettingsMainItem(
-                  label: LocaleKeys.settings_manageMyInterests.tr(),
-                  icon: AppVectorGraphics.star,
-                  onTap: () => AutoRouter.of(context).push(const SettingsManageMyInterestsPageRoute()),
-                ),
-                const SizedBox(height: AppDimens.xxxl),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                  child: Text(
-                    LocaleKeys.settings_aboutHeader.tr(),
-                    style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
-                  ),
-                ),
-                const SizedBox(height: AppDimens.l),
-                SettingsMainItem(
-                  label: LocaleKeys.settings_privacyPolicy.tr(),
-                  icon: AppVectorGraphics.privacy,
-                  onTap: () => _openInBrowser(policyPrivacyUri),
-                ),
-                const SizedBox(height: AppDimens.l),
-                SettingsMainItem(
-                  label: LocaleKeys.settings_termsOfService.tr(),
-                  icon: AppVectorGraphics.terms,
-                  onTap: () => _openInBrowser(termsOfServiceUri),
-                ),
-                const SizedBox(height: AppDimens.l),
-                SettingsMainItem(
-                  label: LocaleKeys.settings_feedbackButton.tr(),
-                  icon: AppVectorGraphics.feedback,
-                  onTap: () {
-                    cubit.sendFeedbackEmail(
-                      _feedbackEmail,
-                      LocaleKeys.settings_feedbackSubject.tr(),
-                      LocaleKeys.settings_feedbackText.tr(),
-                    );
-                  },
-                ),
-              ],
-            ),
+    return ListView(
+      physics: getPlatformScrollPhysics(),
+      padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
+      children: [
+        if (useSubscriptions) ...[
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppDimens.m),
+            child: SubscriptionCard(),
+          ),
+          const SizedBox(height: AppDimens.m),
+        ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: Text(
+            LocaleKeys.settings_profileHeader.tr(),
+            style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
           ),
         ),
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(AppDimens.l, AppDimens.l, AppDimens.l, AppDimens.s),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: UnconstrainedBox(
-                constrainedAxis: Axis.horizontal,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FilledButton(
-                      text: LocaleKeys.common_signOut.tr(),
-                      fillColor: AppColors.carrotRed,
-                      textColor: AppColors.white,
-                      onTap: () => cubit.signOut(),
-                    ),
-                    const SizedBox(height: AppDimens.s),
-                    const VersionLabel(),
-                  ],
-                ),
-              ),
-            ),
+        const SizedBox(height: AppDimens.s),
+        SettingsMainItem(
+          label: LocaleKeys.settings_account.tr(),
+          icon: AppVectorGraphics.account,
+          onTap: () => AutoRouter.of(context).push(const SettingsAccountPageRoute()),
+        ),
+        SettingsMainItem(
+          label: LocaleKeys.settings_notifications.tr(),
+          icon: AppVectorGraphics.notifications,
+          onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
+        ),
+        SettingsMainItem(
+          label: LocaleKeys.settings_manageMyInterests.tr(),
+          icon: AppVectorGraphics.star,
+          onTap: () => AutoRouter.of(context).push(const SettingsManageMyInterestsPageRoute()),
+        ),
+        const SizedBox(height: AppDimens.xl),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          child: Text(
+            LocaleKeys.settings_aboutHeader.tr(),
+            style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
           ),
         ),
-        const SliverToBoxAdapter(
-          child: AudioPlayerBannerPlaceholder(),
+        const SizedBox(height: AppDimens.s),
+        SettingsMainItem(
+          label: LocaleKeys.settings_privacyPolicy.tr(),
+          onTap: () => _openInBrowser(policyPrivacyUri),
         ),
+        SettingsMainItem(
+          label: LocaleKeys.settings_termsOfService.tr(),
+          onTap: () => _openInBrowser(termsOfServiceUri),
+        ),
+        SettingsMainItem(
+          label: LocaleKeys.settings_feedbackButton.tr(),
+          onTap: () {
+            cubit.sendFeedbackEmail(
+              _feedbackEmail,
+              LocaleKeys.settings_feedbackSubject.tr(),
+              LocaleKeys.settings_feedbackText.tr(),
+            );
+          },
+        ),
+        SettingsMainItem(
+          label: LocaleKeys.common_signOut.tr(),
+          onTap: () => cubit.signOut(),
+          fontColor: AppColors.darkerGrey,
+        ),
+        const _VersionBox(),
+        const AudioPlayerBannerPlaceholder(),
       ],
     );
   }
@@ -197,6 +161,27 @@ class SettingsMainBody extends HookWidget {
       SnackbarMessage.simple(
         message: LocaleKeys.profile_emailCopied.tr(),
         type: SnackbarMessageType.positive,
+      ),
+    );
+  }
+}
+
+class _VersionBox extends StatelessWidget {
+  const _VersionBox();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(left: AppDimens.l),
+        child: SizedBox(
+          height: 54,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: VersionLabel(),
+          ),
+        ),
       ),
     );
   }

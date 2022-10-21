@@ -27,7 +27,6 @@ class _ArticleCoverOtherBriefItemsList extends HookWidget {
           _ArticleSquareCover(
             article: article,
             coverColor: coverColor,
-            borderRadius: AppDimens.xs,
             dimension: coverSize,
           ),
           const SizedBox(width: AppDimens.m),

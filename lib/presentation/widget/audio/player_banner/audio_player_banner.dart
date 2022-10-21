@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -12,12 +10,9 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/current_audio_progress_bar.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-
-const _imageWidth = 80.0;
 
 class AudioPlayerBanner extends HookWidget {
   const AudioPlayerBanner({
@@ -59,8 +54,6 @@ class AudioPlayerBanner extends HookWidget {
       [state],
     );
 
-    final imageUrl = state.imageUrl;
-
     final bottomSpacing = MediaQuery.of(context).padding.bottom;
     final height = AppDimens.audioBannerHeight + MediaQuery.of(context).padding.bottom;
 
@@ -81,22 +74,7 @@ class AudioPlayerBanner extends HookWidget {
                 children: [
                   Row(
                     children: [
-                      if (imageUrl != null)
-                        if (!kIsTest)
-                          CachedNetworkImage(
-                            imageUrl: imageUrl,
-                            width: _imageWidth,
-                            height: height,
-                            fit: BoxFit.cover,
-                          )
-                        else
-                          Image.asset(
-                            AppRasterGraphics.testReadingListCoverImageCropped,
-                            height: height,
-                            width: _imageWidth,
-                            fit: BoxFit.cover,
-                          ),
-                      const SizedBox(width: AppDimens.l),
+                      const SizedBox(width: AppDimens.pageHorizontalMargin),
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(bottom: bottomSpacing),
@@ -105,25 +83,30 @@ class AudioPlayerBanner extends HookWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                tr(LocaleKeys.continueListening),
-                                style: AppTypography.metadata1Regular.copyWith(color: AppColors.textGrey),
-                              ),
-                              Text(
                                 state.optionalTitle,
-                                style: AppTypography.b2Bold,
-                                maxLines: 1,
+                                style: AppTypography.articleSmallTitle,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(width: AppDimens.l),
+                      const SizedBox(width: AppDimens.m),
                       Padding(
                         padding: EdgeInsets.only(bottom: bottomSpacing),
                         child: _AudioControlButton(state: state),
                       ),
-                      const SizedBox(width: AppDimens.xxl),
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => cubit.stop(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
+                          child: SvgPicture.asset(
+                            AppVectorGraphics.close,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const Positioned(
@@ -131,20 +114,6 @@ class AudioPlayerBanner extends HookWidget {
                     left: 0,
                     right: 0,
                     child: CurrentAudioProgressBar(),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => cubit.stop(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
-                        child: SvgPicture.asset(
-                          AppVectorGraphics.close,
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -175,6 +144,7 @@ class _AudioControlButton extends StatelessWidget {
             return const AudioFloatingControlButton.forCurrentAudio(
               elevation: 0,
               progressSize: AppDimens.audioControlButtonSize,
+              color: AppColors.lightGrey,
             );
           },
           orElse: () {},
@@ -202,14 +172,6 @@ extension on AudioPlayerBannerState {
               articleOutputMode: ArticleOutputMode.audio,
             ),
           ),
-      hidden: (_) => null,
-    );
-  }
-
-  String? get imageUrl {
-    return map(
-      notInitialized: (_) => null,
-      visible: (state) => state.audioItem.imageUrl,
       hidden: (_) => null,
     );
   }

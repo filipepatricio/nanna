@@ -87,19 +87,16 @@ class InformedDialog extends HookWidget {
           children: [
             Expanded(
               flex: 6,
-              child: FilledButton(
+              child: FilledButton.white(
                 text: LocaleKeys.common_cancel.tr(),
-                fillColor: AppColors.black05,
                 onTap: () => Navigator.of(context, rootNavigator: true).pop(false),
               ),
             ),
             const Spacer(),
             Expanded(
               flex: 6,
-              child: FilledButton(
+              child: FilledButton.red(
                 text: LocaleKeys.settings_deleteAccount_delete.tr(),
-                fillColor: AppColors.carrotRed,
-                textColor: AppColors.white,
                 onTap: () => Navigator.of(context, rootNavigator: true).pop(true),
               ),
             ),

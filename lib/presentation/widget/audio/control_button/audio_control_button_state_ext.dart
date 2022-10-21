@@ -1,8 +1,6 @@
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state.dt.dart';
-import 'package:flutter/widgets.dart';
 
 enum AudioProgressType { current, other, loading }
 
@@ -53,13 +51,13 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
     );
   }
 
-  Color get imageColor {
+  int get imageAlpha {
     return maybeMap(
-      notInitilized: (_) => AppColors.textPrimary,
-      inDifferentAudio: (_) => AppColors.textPrimary,
-      loading: (_) => AppColors.textGrey,
-      playing: (_) => AppColors.textPrimary,
-      paused: (_) => AppColors.textPrimary,
+      notInitilized: (_) => 255,
+      inDifferentAudio: (_) => 255,
+      loading: (_) => 150,
+      playing: (_) => 255,
+      paused: (_) => 255,
       orElse: () => throw Exception('Unhandled type'),
     );
   }

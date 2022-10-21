@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'topic_publisher_information_dto.dt.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class TopicPublisherInformationDTO {
   TopicPublisherInformationDTO(
     this.highlightedPublishers,
@@ -14,6 +14,4 @@ class TopicPublisherInformationDTO {
       _$TopicPublisherInformationDTOFromJson(json);
   final List<PublisherDTO> highlightedPublishers;
   final String? remainingPublishersIndicator;
-
-  Map<String, dynamic> toJson() => _$TopicPublisherInformationDTOToJson(this);
 }

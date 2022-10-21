@@ -7,29 +7,26 @@ class _PaywallBackgroundFade extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-      child: Column(
-        children: [
-          Container(
-            height: _backgroundFadeHeight,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.background.withOpacity(0.0),
-                  AppColors.background,
-                ],
-                stops: const [
-                  0.0,
-                  1,
-                ],
-              ),
+    return Column(
+      children: [
+        Container(
+          height: _backgroundFadeHeight,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                AppColors.background.withOpacity(0.0),
+                AppColors.background,
+              ],
+              stops: const [
+                0.0,
+                1,
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

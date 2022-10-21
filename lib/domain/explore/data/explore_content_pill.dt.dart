@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'explore_content_pill.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class ExploreContentPill with _$ExploreContentPill {
   factory ExploreContentPill.articles({
     required String id,

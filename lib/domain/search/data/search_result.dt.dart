@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'search_result.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SearchResult with _$SearchResult {
   factory SearchResult.article(MediaItemArticle article) = _SearchResultArticle;
 

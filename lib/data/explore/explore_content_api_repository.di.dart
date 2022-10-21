@@ -44,9 +44,7 @@ class ExploreContentApiRepository implements ExploreContentRepository {
     final area = _exploreContentAreaDTOMapper(dto);
 
     return area.maybeMap(
-      topics: (data) => data.topics,
       smallTopics: (data) => data.topics,
-      highlightedTopics: (data) => data.topics,
       orElse: () => [],
     );
   }

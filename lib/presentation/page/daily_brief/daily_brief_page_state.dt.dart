@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'daily_brief_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class DailyBriefPageState with _$DailyBriefPageState {
   @Implements<BuildState>()
   factory DailyBriefPageState.idle({

@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'settings_account_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class SettingsAccountState with _$SettingsAccountState {
   @Implements<BuildState>()
   const factory SettingsAccountState.loading() = SettingsAccountStateLoading;

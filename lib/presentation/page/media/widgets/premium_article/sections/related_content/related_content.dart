@@ -3,10 +3,10 @@ import 'package:better_informed_mobile/domain/categories/data/category_item.dt.d
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/cover_opacity.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class RelatedContent extends HookWidget {
   const RelatedContent({
     required this.relatedContentItems,
+    required this.snackbarController,
     this.topicId,
     this.briefId,
     this.onItemTap,
@@ -21,6 +22,7 @@ class RelatedContent extends HookWidget {
   }) : super(key: key);
 
   final List<CategoryItem> relatedContentItems;
+  final SnackbarController snackbarController;
   final String? briefId;
   final String? topicId;
   final Function(CategoryItem)? onItemTap;
@@ -32,7 +34,7 @@ class RelatedContent extends HookWidget {
       [MediaQuery.of(context).size],
     );
     final tileHeight = useMemoized(
-      () => tileWidth * AppDimens.exploreTopicCarouselSmallCoverAspectRatio,
+      () => tileWidth * AppDimens.exploreArticleCarouselSmallCoverAspectRatio,
       [MediaQuery.of(context).size],
     );
 
@@ -42,17 +44,17 @@ class RelatedContent extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: Text(
               LocaleKeys.article_relatedContent_similarStories.tr(),
-              style: AppTypography.h1ExtraBold,
+              style: AppTypography.h1Medium,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: Text(
               LocaleKeys.article_relatedContent_relatedReads.tr(),
-              style: AppTypography.subH1Medium.copyWith(height: 1.4),
+              style: AppTypography.h4Regular,
             ),
           ),
           Padding(
@@ -60,7 +62,7 @@ class RelatedContent extends HookWidget {
             child: SizedBox(
               height: tileHeight,
               child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   return relatedContentItems[index].mapOrNull(
@@ -72,6 +74,7 @@ class RelatedContent extends HookWidget {
                                 briefId: briefId,
                                 topicId: topicId,
                                 width: tileWidth,
+                                snackbarController: snackbarController,
                               ),
                             ) ??
                             const SizedBox.shrink(),
@@ -80,6 +83,7 @@ class RelatedContent extends HookWidget {
                           topic: topic.topicPreview,
                           width: tileWidth,
                           briefId: briefId,
+                          snackbarController: snackbarController,
                         ),
                       ) ??
                       const SizedBox.shrink();
@@ -100,6 +104,7 @@ class _Article extends StatelessWidget {
     required this.article,
     required this.width,
     required this.onItemTap,
+    required this.snackbarController,
     this.briefId,
     this.topicId,
     Key? key,
@@ -110,24 +115,23 @@ class _Article extends StatelessWidget {
   final String? topicId;
   final double width;
   final VoidCallback onItemTap;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: CoverOpacity.article(
+      child: ArticleCover.small(
         article: article,
-        child: ArticleCover.exploreCarousel(
-          article: article,
-          onTap: () {
-            onItemTap();
-            context.navigateToArticle(
-              article: article,
-              briefId: briefId,
-              topicId: topicId,
-            );
-          },
-        ),
+        snackbarController: snackbarController,
+        onTap: () {
+          onItemTap();
+          context.navigateToArticle(
+            article: article,
+            briefId: briefId,
+            topicId: topicId,
+          );
+        },
       ),
     );
   }
@@ -138,6 +142,7 @@ class _Topic extends StatelessWidget {
     required this.topic,
     required this.width,
     required this.onItemTap,
+    required this.snackbarController,
     this.briefId,
     Key? key,
   }) : super(key: key);
@@ -146,23 +151,22 @@ class _Topic extends StatelessWidget {
   final String? briefId;
   final double width;
   final VoidCallback onItemTap;
+  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: CoverOpacity.topic(
+      child: TopicCover.small(
         topic: topic,
-        child: TopicCover.exploreSmall(
-          topic: topic,
-          onTap: () {
-            onItemTap();
-            context.navigateToTopic(
-              topic: topic,
-              briefId: briefId,
-            );
-          },
-        ),
+        onTap: () {
+          onItemTap();
+          context.navigateToTopic(
+            topic: topic,
+            briefId: briefId,
+          );
+        },
+        snackbarController: snackbarController,
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'entry_page_state.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class EntryPageState with _$EntryPageState {
   @Implements<BuildState>()
   factory EntryPageState.idle() = _EntryPageStateIdle;

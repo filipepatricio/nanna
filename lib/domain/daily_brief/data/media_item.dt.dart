@@ -1,13 +1,14 @@
-import 'package:better_informed_mobile/domain/article/data/article.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_kind.dart';
 import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
+import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'media_item.dt.freezed.dart';
 
-@freezed
+@Freezed(toJson: false)
 class MediaItem with _$MediaItem {
   const factory MediaItem.article({
     required String id,
@@ -27,6 +28,7 @@ class MediaItem with _$MediaItem {
     required ArticleProgressState progressState,
     required ArticleProgress progress,
     required bool locked,
+    required Category category,
     DateTime? publicationDate,
     ArticleImage? image,
     String? author,

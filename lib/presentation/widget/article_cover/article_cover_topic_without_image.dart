@@ -21,7 +21,7 @@ class _ArticleCoverTopicWithoutImage extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(AppDimens.m),
-          boxShadow: articleCoverShadows,
+          boxShadow: cardShadows,
         ),
         width: double.infinity,
         child: Padding(
@@ -52,7 +52,7 @@ class _ArticleCoverTopicWithoutImage extends StatelessWidget {
                     const SizedBox(height: AppDimens.m),
                     InformedMarkdownBody(
                       markdown: article.title,
-                      baseTextStyle: AppTypography.h1SemiBold,
+                      baseTextStyle: AppTypography.articleTitle,
                       maxLines: 4,
                     ),
                   ],

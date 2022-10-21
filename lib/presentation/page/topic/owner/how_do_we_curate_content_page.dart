@@ -25,22 +25,21 @@ class HowDoWeCurateContentPage extends HookWidget {
                 child: ListView(
                   physics: getPlatformScrollPhysics(),
                   children: [
-                    const SizedBox(height: AppDimens.xl),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             LocaleKeys.topic_howDoWeCurateContent_title.tr(),
                             softWrap: true,
-                            style: AppTypography.h1Bold,
+                            style: AppTypography.h0Medium,
                           ),
                           const SizedBox(height: AppDimens.l),
                           Text(
                             LocaleKeys.topic_howDoWeCurateContent_text.tr(),
                             softWrap: true,
-                            style: AppTypography.articleTextRegular.copyWith(
+                            style: AppTypography.articleText.copyWith(
                               height: 1.75,
                             ),
                           ),

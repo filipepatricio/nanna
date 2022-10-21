@@ -108,6 +108,8 @@ class AppConfig {
     linkedinConfig: LinkedinConfig.prod(),
     launchDarklyKey: 'mob-15482f92-5c32-458a-a3c9-4323b6d03656',
     appsFlyerKey: 'MrhtK2n5TX5wZjYD7Goe4U',
+    revenueCatKeyiOS: 'appl_vbotzvGRlvvfVSpOPubjlvxDApQ',
+    revenueCatKeyAndroid: 'goog_jUdAAFYAkEzYinZAmOWysZPVOut',
     revenueCatPremiumEntitlementId: 'premium',
   );
 }
