@@ -261,8 +261,9 @@ class _TopicIdleView extends HookWidget {
                   TopicView(
                     topic: topic,
                     cubit: cubit,
-                    mediaItemKey: cubit.mediaItemKey,
                     scrollController: scrollController,
+                    snackbarController: snackbarController,
+                    mediaItemKey: cubit.mediaItemKey,
                   ),
                 ],
               ),

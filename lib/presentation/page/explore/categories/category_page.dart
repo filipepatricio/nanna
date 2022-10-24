@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/explore/categories/cate
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/items_grid_view/items_grid_view.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
@@ -102,7 +101,6 @@ class CategoryPage extends HookWidget {
         article: (data) => ArticleCover.small(
           article: data.article,
           onTap: () => context.navigateToArticle(data.article),
-          coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
           snackbarController: snackbarController,
         ),
         topic: (data) => TopicCover.small(

@@ -85,7 +85,6 @@ class SearchView extends HookWidget {
         article: (data) => ArticleCover.small(
           article: data.article,
           onTap: () => context.navigateToArticle(data.article),
-          coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
           snackbarController: snackbarController,
         ),
         topic: (data) => TopicCover.small(

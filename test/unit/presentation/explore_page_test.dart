@@ -27,7 +27,7 @@ void main() {
       await tester.pumpAndSettle();
       final articleCoverFinder = find.descendant(
         of: find.byType(ArticleAreaView),
-        matching: find.byType(ArticleCover),
+        matching: find.bySubtype<ArticleCover>(),
       );
 
       await tester.ensureVisible(articleCoverFinder.first);
