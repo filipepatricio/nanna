@@ -56,7 +56,7 @@ class RelatedContentSection extends StatelessWidget {
             child: RelaxView.article(),
           ),
           SizedBox(
-            height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom + AppDimens.l,
+            height: MediaQuery.of(context).padding.bottom + AppDimens.l,
           ),
         ],
       ),
