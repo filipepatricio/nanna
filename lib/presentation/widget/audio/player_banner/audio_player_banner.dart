@@ -95,16 +95,20 @@ class AudioPlayerBanner extends HookWidget {
                       const SizedBox(width: AppDimens.m),
                       Padding(
                         padding: EdgeInsets.only(bottom: bottomSpacing),
-                        child: _AudioControlButton(state: state),
-                      ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () => cubit.stop(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
-                          child: SvgPicture.asset(
-                            AppVectorGraphics.close,
-                          ),
+                        child: Row(
+                          children: [
+                            _AudioControlButton(state: state),
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () => cubit.stop(),
+                              child: Padding(
+                                padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
+                                child: SvgPicture.asset(
+                                  AppVectorGraphics.close,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
