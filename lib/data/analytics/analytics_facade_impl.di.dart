@@ -23,6 +23,8 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
   final AppsflyerSdk _appsflyerSdk;
   final InstallAttributionPayloadMapper _installAttributionPayloadMapper;
 
+  var _deepLinkStream = StreamController<String>.broadcast();
+
   @override
   Future<InstallAttributionPayload?> initializeAttribution() async {
     final completer = Completer<InstallAttributionPayload?>();
@@ -32,10 +34,32 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
       completer.complete(_installAttributionPayloadMapper.from(dto.payload));
     });
 
-    await _appsflyerSdk.initSdk(registerConversionDataCallback: true);
+    await _appsflyerSdk.initSdk(
+      registerConversionDataCallback: true,
+      registerOnDeepLinkingCallback: true,
+    );
 
     return completer.future.timeout(const Duration(seconds: 10), onTimeout: () => null);
   }
+
+  @override
+  void subscribeToAppsflyerDeepLink() {
+    _appsflyerSdk.onDeepLinking((deepLink) {
+      if (deepLink.status == Status.FOUND) {
+        final value = deepLink.deepLink?.deepLinkValue;
+        if (value != null) {
+          return _deepLinkStream.sink.add(value);
+        }
+
+        throw Exception('Appslyer deeplink was found but has no value. Deeplink $deepLink');
+      }
+
+      throw Exception('Error handling Appsflyer deeplink. Error ${deepLink.status}. Deeplink $deepLink');
+    });
+  }
+
+  @override
+  Stream<String> get deepLinkStream => _deepLinkStream.stream;
 
   @override
   Future<String?> getAppsflyerId() => _appsflyerSdk.getAppsFlyerUID();
@@ -84,6 +108,8 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
 
   @override
   Future<void> reset() async {
+    await _deepLinkStream.close();
+    _deepLinkStream = StreamController<String>.broadcast();
     return await Segment.reset();
   }
 
