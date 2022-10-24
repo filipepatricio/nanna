@@ -2,10 +2,8 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 const _bottomSheetRadius = 10.0;
 
@@ -46,12 +44,6 @@ class SwitchAudioPopup extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.xl),
-          Center(
-            child: SvgPicture.asset(
-              AppVectorGraphics.flag,
-            ),
-          ),
-          const SizedBox(height: AppDimens.m),
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
