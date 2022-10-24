@@ -8,7 +8,7 @@ class BriefEntryStyleDTO {
   BriefEntryStyleDTO(this.backgroundColor, this.type);
 
   factory BriefEntryStyleDTO.fromJson(Map<String, dynamic> json) => _$BriefEntryStyleDTOFromJson(json);
-  
+
   final String? backgroundColor;
   final BriefEntryStyleType type;
 }

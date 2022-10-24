@@ -464,9 +464,9 @@ class _IdleContent extends HookWidget {
 
   bool _needsDivider(BriefSectionWithEntries section, BriefEntry entry) =>
       section.backgroundColor == null &&
-      entry.style.type == BriefEntryStyleType.articleCardSmallItem &&
+      entry.style.type == BriefEntryStyleType.articleCardSmall &&
       entry != section.entries.last &&
-      section.entries[section.entries.indexOf(entry) + 1].style.type == BriefEntryStyleType.articleCardSmallItem;
+      section.entries[section.entries.indexOf(entry) + 1].style.type == BriefEntryStyleType.articleCardSmall;
 }
 
 class _BriefSubsection extends StatelessWidget {

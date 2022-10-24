@@ -43,7 +43,7 @@ class BriefEntryCover extends HookWidget {
         child: item.map(
           article: (data) {
             switch (style.type) {
-              case BriefEntryStyleType.articleCardWithLargeImage:
+              case BriefEntryStyleType.articleCardLarge:
                 return item.maybeMap(
                   article: (data) => data.article.map(
                     article: (article) => ArticleCover.large(
@@ -62,7 +62,7 @@ class BriefEntryCover extends HookWidget {
                   ),
                   orElse: () => const SizedBox(),
                 );
-              case BriefEntryStyleType.articleCardSmallItem:
+              case BriefEntryStyleType.articleCardSmall:
                 return item.maybeMap(
                   article: (data) => data.article.map(
                     article: (article) => ArticleCover.list(

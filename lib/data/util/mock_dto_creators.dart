@@ -342,11 +342,11 @@ class MockDTO {
   );
   static final _briefEntryStyleArticleSmallItem = BriefEntryStyleDTO(
     '#F2E8E7',
-    BriefEntryStyleType.articleCardSmallItem,
+    BriefEntryStyleType.articleCardSmall,
   );
   static final _briefEntryStyleArticleLarge = BriefEntryStyleDTO(
     null,
-    BriefEntryStyleType.articleCardWithLargeImage,
+    BriefEntryStyleType.articleCardLarge,
   );
 
   /// Explore
