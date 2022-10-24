@@ -102,7 +102,7 @@ void main() {
 
       final articleCoverFinder = find.descendant(
         of: find.byType(DailyBriefPage),
-        matching: find.byType(ArticleCover),
+        matching: find.bySubtype<ArticleCover>(),
       );
 
       await tester.dragUntilVisible(articleCoverFinder.first, find.byType(DailyBriefPage), const Offset(0, -50));

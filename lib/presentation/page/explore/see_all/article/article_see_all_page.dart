@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/explore/see_all/article
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_with_background.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
@@ -198,7 +197,6 @@ class _GridItem extends StatelessWidget {
       ),
       color: (data) => ArticleCover.small(
         article: article.article,
-        coverColor: AppColors.mockedColors[data.colorIndex % AppColors.mockedColors.length],
         onTap: () => context.navigateToArticle(article.article),
         snackbarController: snackbarController,
       ),

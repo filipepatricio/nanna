@@ -6,17 +6,16 @@ class BriefEntryStyle {
     required this.backgroundColor,
     required this.type,
   });
+
   final Color? backgroundColor;
   final BriefEntryStyleType type;
 }
 
 enum BriefEntryStyleType {
   @JsonValue('ARTICLE_CARD')
-  articleCardWithLargeImage,
-  @JsonValue('SMALL_ARTICLE_CARD')
-  articleCardWithSmallImage,
+  articleCardLarge,
   @JsonValue('SMALL_ARTICLE_ITEM')
-  articleCardSmallItem,
+  articleCardSmall,
   @JsonValue('TOPIC_CARD')
   topicCard
 }
