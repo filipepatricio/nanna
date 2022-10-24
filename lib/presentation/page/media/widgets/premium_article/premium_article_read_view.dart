@@ -22,6 +22,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.mainController,
     required this.snackbarController,
     required this.actionsBarColorModeNotifier,
+    required this.onAudioBannerTap,
     Key? key,
   }) : super(key: key);
 
@@ -29,6 +30,7 @@ class PremiumArticleReadView extends HookWidget {
   final ScrollController mainController;
   final SnackbarController snackbarController;
   final ValueNotifier<ArticleActionsBarColorMode> actionsBarColorModeNotifier;
+  final VoidCallback? onAudioBannerTap;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articleHeaderKey = GlobalKey();
@@ -104,6 +106,7 @@ class PremiumArticleReadView extends HookWidget {
             ),
             child: AudioPlayerBannerWrapper(
               layout: AudioPlayerBannerLayout.stack,
+              onTap: onAudioBannerTap,
               child: CustomScrollView(
                 controller: mainController,
                 physics: const ClampingScrollPhysics(),
