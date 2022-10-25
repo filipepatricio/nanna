@@ -340,9 +340,17 @@ class AppTypography {
   static const TextStyle navbarText = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 12,
+    fontSize: 14,
     letterSpacing: 0.2,
     color: AppColors.textPrimary,
+  );
+
+  static const TextStyle navbarUnselectedText = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 14,
+    letterSpacing: 0.2,
+    color: AppColors.neutralGrey,
   );
 
   static const TextStyle timeLabelText = TextStyle(
