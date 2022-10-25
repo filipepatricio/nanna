@@ -107,47 +107,50 @@ class PremiumArticleReadView extends HookWidget {
             child: AudioPlayerBannerWrapper(
               layout: AudioPlayerBannerLayout.stack,
               onTap: onAudioBannerTap,
-              child: CustomScrollView(
+              child: Scrollbar(
                 controller: mainController,
-                physics: const ClampingScrollPhysics(),
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: ArticleContentView(
-                      article: data.article,
-                      articleHeaderKey: _articleHeaderKey,
-                      articleContentKey: _articleContentKey,
-                      snackbarController: snackbarController,
+                child: CustomScrollView(
+                  controller: mainController,
+                  physics: const ClampingScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: ArticleContentView(
+                        article: data.article,
+                        articleHeaderKey: _articleHeaderKey,
+                        articleContentKey: _articleContentKey,
+                        snackbarController: snackbarController,
+                      ),
                     ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        if (data.otherTopicItems.isNotEmpty)
-                          ArticleMoreFromSection(
-                            title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
-                            items: data.otherTopicItems.buildWidgets(context, cubit, snackbarController),
-                          )
-                        else if (data.moreFromBriefItems.isNotEmpty)
-                          ArticleMoreFromSection(
-                            title: LocaleKeys.article_otherBriefs.tr(),
-                            items: data.moreFromBriefItems.buildWidgets(context, cubit, snackbarController),
-                          ),
-                      ],
+                    SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          if (data.otherTopicItems.isNotEmpty)
+                            ArticleMoreFromSection(
+                              title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
+                              items: data.otherTopicItems.buildWidgets(context, cubit, snackbarController),
+                            )
+                          else if (data.moreFromBriefItems.isNotEmpty)
+                            ArticleMoreFromSection(
+                              title: LocaleKeys.article_otherBriefs.tr(),
+                              items: data.moreFromBriefItems.buildWidgets(context, cubit, snackbarController),
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: RelatedContentSection(
-                      articleId: data.article.metadata.id,
-                      featuredCategories: data.featuredCategories,
-                      briefId: cubit.briefId,
-                      topicId: cubit.topicId,
-                      relatedContentItems: data.relatedContentItems,
-                      onRelatedContentItemTap: cubit.onRelatedContentItemTap,
-                      onRelatedCategoryTap: cubit.onRelatedCategoryTap,
-                      snackbarController: snackbarController,
+                    SliverToBoxAdapter(
+                      child: RelatedContentSection(
+                        articleId: data.article.metadata.id,
+                        featuredCategories: data.featuredCategories,
+                        briefId: cubit.briefId,
+                        topicId: cubit.topicId,
+                        relatedContentItems: data.relatedContentItems,
+                        onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                        onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                        snackbarController: snackbarController,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
