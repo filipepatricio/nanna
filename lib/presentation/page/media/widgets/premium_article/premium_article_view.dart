@@ -131,6 +131,7 @@ class PremiumArticleView extends HookWidget {
                     mainController: mainController,
                     snackbarController: snackbarController,
                     actionsBarColorModeNotifier: actionsBarColorModeNotifier,
+                    onAudioBannerTap: () => horizontalPageController.jumpToPage(ArticleOutputMode.audio.index),
                   ),
                   if (state.article.metadata.hasAudioVersion && state.article.metadata.availableInSubscription)
                     PremiumArticleAudioView(
