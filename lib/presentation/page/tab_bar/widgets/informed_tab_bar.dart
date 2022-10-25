@@ -93,7 +93,6 @@ class _TabBar extends StatelessWidget {
       transitionOnUserGestures: true,
       child: _InformedAppBarShadow(
         child: BottomNavigationBar(
-          backgroundColor: AppColors.background,
           items: [
             ...MainTab.values.map(
               (tab) => BottomNavigationBarItem(
