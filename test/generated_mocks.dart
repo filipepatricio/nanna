@@ -33,6 +33,7 @@ import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repositor
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
@@ -117,6 +118,7 @@ const _classes = [
   GetActiveSubscriptionUseCase,
   GetSubscriptionPlansUseCase,
   CategoryDTOMapper,
+  DeepLinkRepository,
 ];
 
 @GenerateMocks(_classes)

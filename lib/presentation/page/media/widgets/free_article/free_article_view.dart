@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/free_article/free_article_view_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -127,7 +126,6 @@ class FreeArticleView extends HookWidget {
               right: 0,
               child: _PageLoadProgressBar(pageLoadingProgress: pageLoadingProgress),
             ),
-            InformedTabBar.floating(show: showTabBar.value),
           ],
         ),
       ),

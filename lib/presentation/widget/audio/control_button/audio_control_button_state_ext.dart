@@ -29,7 +29,7 @@ extension AudioControlButtonStateViewExtension on AudioControlButtonState {
     );
   }
 
-  AudioProgressType get audioType {
+  AudioProgressType get audioProgressType {
     return maybeMap(
       notInitilized: (_) => AudioProgressType.other,
       inDifferentAudio: (_) => AudioProgressType.other,

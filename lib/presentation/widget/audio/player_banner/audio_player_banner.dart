@@ -16,8 +16,11 @@ import 'package:flutter_svg/svg.dart';
 
 class AudioPlayerBanner extends HookWidget {
   const AudioPlayerBanner({
+    this.onTap,
     Key? key,
   }) : super(key: key);
+
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +67,7 @@ class AudioPlayerBanner extends HookWidget {
           sizeFactor: sizeAnimation,
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: state.getOnTap(context),
+            onTap: state.getOnTap(context, onTap),
             child: Container(
               height: height,
               decoration: const BoxDecoration(
@@ -95,16 +98,20 @@ class AudioPlayerBanner extends HookWidget {
                       const SizedBox(width: AppDimens.m),
                       Padding(
                         padding: EdgeInsets.only(bottom: bottomSpacing),
-                        child: _AudioControlButton(state: state),
-                      ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () => cubit.stop(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
-                          child: SvgPicture.asset(
-                            AppVectorGraphics.close,
-                          ),
+                        child: Row(
+                          children: [
+                            _AudioControlButton(state: state),
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () => cubit.stop(),
+                              child: Padding(
+                                padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
+                                child: SvgPicture.asset(
+                                  AppVectorGraphics.close,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -163,15 +170,17 @@ extension on AudioPlayerBannerState {
     );
   }
 
-  VoidCallback? getOnTap(BuildContext context) {
+  VoidCallback? getOnTap(BuildContext context, VoidCallback? onTap) {
     return map(
       notInitialized: (_) => null,
-      visible: (state) => () => AutoRouter.of(context).push(
-            MediaItemPageRoute(
-              slug: state.audioItem.slug,
-              articleOutputMode: ArticleOutputMode.audio,
-            ),
-          ),
+      visible: (state) =>
+          onTap ??
+          () => AutoRouter.of(context).push(
+                MediaItemPageRoute(
+                  slug: state.audioItem.slug,
+                  articleOutputMode: ArticleOutputMode.audio,
+                ),
+              ),
       hidden: (_) => null,
     );
   }

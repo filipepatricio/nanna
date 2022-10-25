@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
@@ -35,8 +33,5 @@ class DeepLinkRepositoryImpl implements DeepLinkRepository {
           _analyticsFacade.deepLinkStream,
           _appLinkDataSource.listenForIncomingActions().map((uri) => uri.path),
         ],
-      ).distinct().map((event) {
-        log(event);
-        return event;
-      });
+      ).distinct();
 }
