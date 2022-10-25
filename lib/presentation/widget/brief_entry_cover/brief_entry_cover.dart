@@ -44,42 +44,53 @@ class BriefEntryCover extends HookWidget {
           article: (data) {
             switch (style.type) {
               case BriefEntryStyleType.articleCardLarge:
-                return item.maybeMap(
-                  article: (data) => data.article.map(
-                    article: (article) => ArticleCover.large(
-                      article: article,
-                      snackbarController: snackbarController,
-                      onTap: () async {
-                        await context.navigateToArticle(
-                          article: article,
-                          briefId: briefId,
-                        );
-                      },
-                      showNote: true,
-                      showRecommendedBy: true,
-                    ),
-                    unknown: (_) => const SizedBox(),
+                return data.article.map(
+                  article: (article) => ArticleCover.large(
+                    article: article,
+                    snackbarController: snackbarController,
+                    onTap: () async {
+                      await context.navigateToArticle(
+                        article: article,
+                        briefId: briefId,
+                      );
+                    },
+                    showNote: true,
+                    showRecommendedBy: true,
                   ),
-                  orElse: () => const SizedBox(),
+                  unknown: (_) => const SizedBox(),
                 );
               case BriefEntryStyleType.articleCardSmall:
-                return item.maybeMap(
-                  article: (data) => data.article.map(
-                    article: (article) => ArticleCover.list(
-                      article: article,
-                      snackbarController: snackbarController,
-                      onTap: () async {
-                        await context.navigateToArticle(
-                          article: article,
-                          briefId: briefId,
-                        );
-                      },
-                      showNote: true,
-                      showRecommendedBy: true,
-                    ),
-                    unknown: (_) => const SizedBox(),
-                  ),
-                  orElse: () => const SizedBox(),
+                return data.article.map(
+                  article: (article) {
+                    if (article.hasImage) {
+                      return ArticleCover.list(
+                        article: article,
+                        snackbarController: snackbarController,
+                        onTap: () async {
+                          await context.navigateToArticle(
+                            article: article,
+                            briefId: briefId,
+                          );
+                        },
+                        showNote: true,
+                        showRecommendedBy: true,
+                      );
+                    } else {
+                      return ArticleCover.large(
+                        article: article,
+                        snackbarController: snackbarController,
+                        onTap: () async {
+                          await context.navigateToArticle(
+                            article: article,
+                            briefId: briefId,
+                          );
+                        },
+                        showNote: true,
+                        showRecommendedBy: true,
+                      );
+                    }
+                  },
+                  unknown: (_) => const SizedBox(),
                 );
               default:
                 return const SizedBox();

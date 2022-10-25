@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -19,10 +18,10 @@ import 'package:better_informed_mobile/presentation/widget/topic_owner/topic_own
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-part 'topic_cover_big.dart';
 part 'topic_cover_bar.dart';
-part 'topic_cover_small.dart';
+part 'topic_cover_big.dart';
 part 'topic_cover_bookmark.dart';
+part 'topic_cover_small.dart';
 
 enum TopicCoverType { big, small, bookmark }
 
