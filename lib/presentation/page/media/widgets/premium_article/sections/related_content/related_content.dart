@@ -54,7 +54,7 @@ class RelatedContent extends HookWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: Text(
               LocaleKeys.article_relatedContent_relatedReads.tr(),
-              style: AppTypography.h4Regular,
+              style: AppTypography.h4Medium,
             ),
           ),
           Padding(

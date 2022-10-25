@@ -295,7 +295,10 @@ class _IdleContent extends HookWidget {
     return MultiSliver(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.pageHorizontalMargin,
+            vertical: AppDimens.ml,
+          ),
           child: _Greeting(
             greeting: brief.greeting,
             introduction: brief.introduction,
@@ -568,27 +571,22 @@ class _Greeting extends StatelessWidget {
   Widget build(BuildContext context) {
     final intro = introduction;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: AppDimens.xs),
-        InformedMarkdownBody(
-          markdown: greeting.headline,
-          baseTextStyle: AppTypography.b3Medium.copyWith(color: AppColors.textGrey),
-        ),
-        if (intro != null) ...[
-          const SizedBox(height: AppDimens.m),
-          Container(
-            padding: const EdgeInsets.all(AppDimens.l),
-            decoration: const BoxDecoration(
-              color: AppColors.pastelGreen,
-              borderRadius: BorderRadius.all(
-                Radius.circular(AppDimens.m),
-              ),
-            ),
-            child: InformedMarkdownBody(
-              markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)}   ${intro.text}',
+    return Container(
+      padding: const EdgeInsets.only(left: AppDimens.sl),
+      decoration: const BoxDecoration(
+        border: Border(left: BorderSide(color: AppColors.limeGreen)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InformedMarkdownBody(
+            markdown: greeting.headline,
+            baseTextStyle: AppTypography.b2Medium.copyWith(color: AppColors.textGrey),
+          ),
+          if (intro != null)
+            InformedMarkdownBody(
+              markdown: intro.text,
               baseTextStyle: AppTypography.b2Medium,
               textAlignment: TextAlign.left,
               markdownImageBuilder: (uri, title, alt) => MarkdownUtil.rawSvgMarkdownBuilder(
@@ -598,10 +596,8 @@ class _Greeting extends StatelessWidget {
                 AppTypography.b2Medium.fontSize! * 1.2,
               ),
             ),
-          ),
         ],
-        const SizedBox(height: AppDimens.m),
-      ],
+      ),
     );
   }
 }

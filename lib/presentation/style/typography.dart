@@ -108,7 +108,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h4Regular = TextStyle(
+  static const TextStyle h4Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
     fontSize: 16,
