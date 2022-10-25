@@ -164,19 +164,11 @@ class _DailyBriefPage extends HookWidget {
                         ),
                       ),
                     ),
-                    loading: (_) => SliverPadding(
-                      padding: EdgeInsets.fromLTRB(
-                        AppDimens.pageHorizontalMargin,
-                        AppDimens.safeTopPadding(context),
-                        AppDimens.pageHorizontalMargin,
-                        AppDimens.zero,
-                      ),
-                      sliver: SliverToBoxAdapter(
-                        child: DailyBriefLoadingView(
-                          coverSize: Size(
-                            AppDimens.topicCardBigMaxWidth(context),
-                            AppDimens.topicCardBigMaxHeight,
-                          ),
+                    loading: (_) => SliverToBoxAdapter(
+                      child: DailyBriefLoadingView(
+                        coverSize: Size(
+                          AppDimens.topicCardBigMaxWidth(context),
+                          AppDimens.topicCardBigMaxHeight,
                         ),
                       ),
                     ),

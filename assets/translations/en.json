@@ -265,8 +265,8 @@
     "articleCount": "{} articles"
   },
   "topic": {
-    "label": "Expert Deep Dive",
-    "expert": "Expert",
+    "label": "Deep Dive",
+    "labelExpert": "Expert Deep Dive",
     "updated": "Updated {}",
     "recommendedBy": "Recommended by ",
     "curatedBy": "Curated by ",
