@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content_section.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,6 +21,7 @@ class PremiumArticleReadView extends HookWidget {
     required this.mainController,
     required this.snackbarController,
     required this.actionsBarColorModeNotifier,
+    required this.onAudioBannerTap,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +29,7 @@ class PremiumArticleReadView extends HookWidget {
   final ScrollController mainController;
   final SnackbarController snackbarController;
   final ValueNotifier<ArticleActionsBarColorMode> actionsBarColorModeNotifier;
+  final VoidCallback? onAudioBannerTap;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articleHeaderKey = GlobalKey();
@@ -85,47 +88,51 @@ class PremiumArticleReadView extends HookWidget {
               maxHeight,
               context,
             ),
-            child: CustomScrollView(
-              controller: mainController,
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: ArticleContentView(
-                    article: data.article,
-                    articleHeaderKey: _articleHeaderKey,
-                    articleContentKey: _articleContentKey,
-                    snackbarController: snackbarController,
+            child: AudioPlayerBannerWrapper(
+              layout: AudioPlayerBannerLayout.stack,
+              onTap: onAudioBannerTap,
+              child: CustomScrollView(
+                controller: mainController,
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: ArticleContentView(
+                      article: data.article,
+                      articleHeaderKey: _articleHeaderKey,
+                      articleContentKey: _articleContentKey,
+                      snackbarController: snackbarController,
+                    ),
                   ),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      if (data.otherTopicItems.isNotEmpty)
-                        ArticleMoreFromSection(
-                          title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
-                          items: data.otherTopicItems.buildWidgets(context, cubit, snackbarController),
-                        )
-                      else if (data.moreFromBriefItems.isNotEmpty)
-                        ArticleMoreFromSection(
-                          title: LocaleKeys.article_otherBriefs.tr(),
-                          items: data.moreFromBriefItems.buildWidgets(context, cubit, snackbarController),
-                        ),
-                    ],
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        if (data.otherTopicItems.isNotEmpty)
+                          ArticleMoreFromSection(
+                            title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
+                            items: data.otherTopicItems.buildWidgets(context, cubit, snackbarController),
+                          )
+                        else if (data.moreFromBriefItems.isNotEmpty)
+                          ArticleMoreFromSection(
+                            title: LocaleKeys.article_otherBriefs.tr(),
+                            items: data.moreFromBriefItems.buildWidgets(context, cubit, snackbarController),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                SliverToBoxAdapter(
-                  child: RelatedContentSection(
-                    articleId: data.article.metadata.id,
-                    featuredCategories: data.featuredCategories,
-                    briefId: cubit.briefId,
-                    topicId: cubit.topicId,
-                    relatedContentItems: data.relatedContentItems,
-                    onRelatedContentItemTap: cubit.onRelatedContentItemTap,
-                    onRelatedCategoryTap: cubit.onRelatedCategoryTap,
-                    snackbarController: snackbarController,
+                  SliverToBoxAdapter(
+                    child: RelatedContentSection(
+                      articleId: data.article.metadata.id,
+                      featuredCategories: data.featuredCategories,
+                      briefId: cubit.briefId,
+                      topicId: cubit.topicId,
+                      relatedContentItems: data.relatedContentItems,
+                      onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                      onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                      snackbarController: snackbarController,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Positioned(

@@ -45,7 +45,7 @@ class MediaItemPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController());
+    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     useEffect(
       () {

@@ -8,19 +8,27 @@ class AudioPlayerBannerWrapper extends StatelessWidget {
   const AudioPlayerBannerWrapper({
     required this.layout,
     required this.child,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   final AudioPlayerBannerLayout layout;
   final Widget child;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     switch (layout) {
       case AudioPlayerBannerLayout.stack:
-        return _Stack(child: child);
+        return _Stack(
+          onTap: onTap,
+          child: child,
+        );
       case AudioPlayerBannerLayout.column:
-        return _Column(child: child);
+        return _Column(
+          onTap: onTap,
+          child: child,
+        );
     }
   }
 }
@@ -28,22 +36,26 @@ class AudioPlayerBannerWrapper extends StatelessWidget {
 class _Stack extends StatelessWidget {
   const _Stack({
     required this.child,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   final Widget child;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         child,
-        const Positioned(
+        Positioned(
           left: 0,
           right: 0,
           bottom: 0,
           child: AudioPlayerBannerShadow(
-            child: AudioPlayerBanner(),
+            child: AudioPlayerBanner(
+              onTap: onTap,
+            ),
           ),
         ),
       ],
@@ -54,10 +66,12 @@ class _Stack extends StatelessWidget {
 class _Column extends StatelessWidget {
   const _Column({
     required this.child,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   final Widget child;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +92,7 @@ class _Column extends StatelessWidget {
             ],
           ),
         ),
-        const AudioPlayerBanner(),
+        AudioPlayerBanner(onTap: onTap),
       ],
     );
   }

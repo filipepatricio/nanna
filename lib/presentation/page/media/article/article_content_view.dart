@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
+import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -97,9 +98,10 @@ class _ArticleHeader extends StatelessWidget {
 
     final author = article.author;
     final metadataStyle = AppTypography.systemText.copyWith(height: 1.5);
+    final articleColor = article.category.color ?? AppColors.background;
 
     return Container(
-      color: article.hasImage ? (article.category.color ?? AppColors.background) : AppColors.background,
+      color: article.hasImage ? articleColor : AppColors.background,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -125,18 +127,44 @@ class _ArticleHeader extends StatelessWidget {
                   highlightColor: AppColors.transparent,
                 ),
                 const SizedBox(height: AppDimens.xl),
-                if (author != null)
-                  Text(
-                    LocaleKeys.article_byName.tr(args: [author]),
-                    style: metadataStyle,
-                  ),
-                ArticleDottedInfo(
-                  article: article,
-                  isLight: false,
-                  showPublisher: false,
-                  showLogo: false,
-                  textStyle: metadataStyle,
-                  publisherMaxLines: 2,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (author != null) ...[
+                            Text(
+                              LocaleKeys.article_byName.tr(args: [author]),
+                              style: metadataStyle,
+                            ),
+                            const SizedBox(height: AppDimens.xs),
+                          ],
+                          ArticleDottedInfo(
+                            article: article,
+                            isLight: false,
+                            showPublisher: false,
+                            showLogo: false,
+                            textStyle: metadataStyle,
+                            publisherMaxLines: 2,
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (article.hasAudioVersion)
+                      SizedBox(
+                        height: AppDimens.xxl,
+                        child: AudioFloatingControlButton(
+                          article: article,
+                          elevation: 0,
+                          color: AppColors.black,
+                          mode: AudioFloatingControlButtonMode.white,
+                          imageHeight: AppDimens.xl,
+                          progressSize: AppDimens.zero,
+                        ),
+                      )
+                  ],
                 ),
               ],
             ),
