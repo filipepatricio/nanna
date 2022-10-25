@@ -30,7 +30,7 @@ class _ArticleCoverLarge extends ArticleCover {
               markdown: article.note!,
               baseTextStyle: AppTypography.b2Regular.copyWith(),
             ),
-            const SizedBox(height: AppDimens.s),
+            const SizedBox(height: AppDimens.sl),
           ],
           if (showRecommendedBy) const ArticleRecommendedByView(),
           if (article.hasImage) ...[

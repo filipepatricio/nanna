@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_section.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_subsection.dart';
@@ -352,15 +351,14 @@ class _IdleContent extends HookWidget {
     for (int i = 0; i < section.entries.length; i++) {
       final entry = section.entries[i];
 
+      yield const InformedDivider(
+        padding: EdgeInsets.symmetric(vertical: AppDimens.m),
+      );
+
       yield BriefEntryCover(
         briefEntry: entry,
         briefId: brief.id,
         snackbarController: snackbarController,
-        padding: _needsDivider(section, entry)
-            ? EdgeInsets.zero
-            : const EdgeInsets.only(
-                bottom: AppDimens.l,
-              ),
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
         onVisibilityChanged: (visibility) {
           if (entry == firstTopic && visibility.visibleFraction == 1) {
@@ -375,12 +373,6 @@ class _IdleContent extends HookWidget {
           }
         },
       );
-
-      if (_needsDivider(section, entry)) {
-        yield const InformedDivider(
-          padding: EdgeInsets.symmetric(vertical: AppDimens.sl),
-        );
-      }
     }
   }
 
@@ -464,12 +456,6 @@ class _IdleContent extends HookWidget {
         )
         .reduce((value, element) => value + element);
   }
-
-  bool _needsDivider(BriefSectionWithEntries section, BriefEntry entry) =>
-      section.backgroundColor == null &&
-      entry.style.type == BriefEntryStyleType.articleCardSmall &&
-      entry != section.entries.last &&
-      section.entries[section.entries.indexOf(entry) + 1].style.type == BriefEntryStyleType.articleCardSmall;
 }
 
 class _BriefSubsection extends StatelessWidget {
@@ -522,7 +508,7 @@ class _BriefSection extends StatelessWidget {
           const SizedBox(height: AppDimens.m),
           InformedMarkdownBody(
             markdown: title,
-            baseTextStyle: AppTypography.h1Medium,
+            baseTextStyle: AppTypography.dailyBriefSectionTitle,
           ),
           const SizedBox(height: AppDimens.m),
           ...children,
