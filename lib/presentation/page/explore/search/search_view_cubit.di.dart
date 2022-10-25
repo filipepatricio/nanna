@@ -11,6 +11,8 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
+const minQueryCharactersTrigger = 2;
+
 @injectable
 class SearchViewCubit extends Cubit<SearchViewState> {
   SearchViewCubit(
@@ -65,7 +67,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     _querySubscription = _queryStreamController?.stream
         .debounceTime(const Duration(milliseconds: 500))
         .distinct()
-        .where((event) => event.isNotEmpty && event.length >= 3)
+        .where((event) => event.isNotEmpty && event.length >= minQueryCharactersTrigger)
         .switchMap((value) => Stream.fromFuture(_initializePaginationEngine(value)))
         .listen((event) => _onQueryChange(event));
   }
