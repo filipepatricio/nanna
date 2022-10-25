@@ -13,11 +13,13 @@ class ArticleMetadataRow extends StatelessWidget {
   const ArticleMetadataRow({
     required this.article,
     required this.snackbarController,
+    this.onBookmarkTap,
     super.key,
   });
 
   final MediaItemArticle article;
   final SnackbarController snackbarController;
+  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,7 @@ class ArticleMetadataRow extends StatelessWidget {
             BookmarkButton.article(
               article: article,
               snackbarController: snackbarController,
+              onTap: onBookmarkTap,
             ),
             if (article.hasAudioVersion) ...[
               const SizedBox(width: AppDimens.s),

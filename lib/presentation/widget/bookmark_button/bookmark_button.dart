@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -32,12 +33,14 @@ class BookmarkButton extends HookWidget {
     String? briefId,
     SnackbarController? snackbarController,
     double? iconSize,
+    VoidCallback? onTap,
     Key? key,
   }) : this._(
           BookmarkTypeData.article(article.slug, article.id, topicId, briefId),
           color: color,
           snackbarController: snackbarController,
           iconSize: iconSize,
+          onTap: onTap,
           key: key,
         );
 
@@ -47,12 +50,14 @@ class BookmarkButton extends HookWidget {
     String? briefId,
     SnackbarController? snackbarController,
     double? iconSize,
+    VoidCallback? onTap,
     Key? key,
   }) : this._(
           BookmarkTypeData.topic(topic.slug, topic.id, briefId),
           color: color,
           snackbarController: snackbarController,
           iconSize: iconSize,
+          onTap: onTap,
           key: key,
         );
 
@@ -61,6 +66,7 @@ class BookmarkButton extends HookWidget {
     required this.color,
     this.snackbarController,
     this.iconSize,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -68,6 +74,7 @@ class BookmarkButton extends HookWidget {
   final Color color;
   final SnackbarController? snackbarController;
   final double? iconSize;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +135,7 @@ class BookmarkButton extends HookWidget {
         child: Container(
           padding: EdgeInsets.zero,
           child: Center(
-            child: AnimatedSwitcher(
+            child: InformedAnimatedSwitcher(
               duration: const Duration(milliseconds: _animationDuration),
               child: state.maybeMap(
                 initializing: (_) => const _Loader(),
@@ -137,6 +144,7 @@ class BookmarkButton extends HookWidget {
                   state: state.state,
                   color: color,
                   animationController: animationController,
+                  onTap: onTap,
                 ),
                 switching: (state) => const _Loader(),
                 orElse: () => const SizedBox.shrink(),
@@ -172,6 +180,7 @@ class _IdleButton extends StatelessWidget {
     required this.state,
     required this.color,
     required this.animationController,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -179,6 +188,7 @@ class _IdleButton extends StatelessWidget {
   final BookmarkState state;
   final Color color;
   final AnimationController animationController;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -187,6 +197,9 @@ class _IdleButton extends StatelessWidget {
         await HapticFeedback.mediumImpact();
         await animationController.forward();
         await animationController.reverse();
+        if (onTap != null) {
+          return onTap?.call();
+        }
         await cubit.switchState();
       },
       tapPadding: const EdgeInsets.all(AppDimens.m),

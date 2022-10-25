@@ -13,7 +13,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
-import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -96,9 +96,7 @@ class _LoadingContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: _BaseAppBar(),
-      body: Center(
-        child: Loader(),
-      ),
+      body: LoadingShimmer.defaultColor(),
     );
   }
 }
