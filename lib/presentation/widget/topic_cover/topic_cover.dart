@@ -31,6 +31,7 @@ class TopicCover extends HookWidget {
     required TopicPreview topic,
     required SnackbarController snackbarController,
     VoidCallback? onTap,
+    VoidCallback? onBookmarkTap,
     Key? key,
   }) =>
       TopicCover._(
@@ -38,6 +39,7 @@ class TopicCover extends HookWidget {
         type: TopicCoverType.big,
         topic: topic,
         onTap: onTap,
+        onBookmarkTap: onBookmarkTap,
         snackbarController: snackbarController,
       );
 
@@ -65,6 +67,7 @@ class TopicCover extends HookWidget {
     required this.topic,
     required this.type,
     this.snackbarController,
+    this.onBookmarkTap,
     this.onTap,
     Key? key,
   }) : super(key: key);
@@ -72,7 +75,8 @@ class TopicCover extends HookWidget {
   final TopicPreview topic;
   final TopicCoverType type;
   final SnackbarController? snackbarController;
-  final Function()? onTap;
+  final VoidCallback? onTap;
+  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +91,7 @@ class TopicCover extends HookWidget {
         return _TopicCoverBig(
           topic: topic,
           snackbarController: snackbarController!,
+          onBookmarkTap: onBookmarkTap,
           onTap: onTap,
         );
       case TopicCoverType.bookmark:

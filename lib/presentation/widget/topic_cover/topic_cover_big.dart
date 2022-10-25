@@ -3,14 +3,16 @@ part of 'topic_cover.dart';
 class _TopicCoverBig extends StatelessWidget {
   const _TopicCoverBig({
     required this.topic,
-    required this.onTap,
     required this.snackbarController,
+    required this.onTap,
+    this.onBookmarkTap,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final VoidCallback? onTap;
   final SnackbarController snackbarController;
+  final VoidCallback? onTap;
+  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +70,7 @@ class _TopicCoverBig extends StatelessWidget {
             _TopicCoverBar.big(
               topic: topic,
               snackbarController: snackbarController,
+              onBookmarkTap: onBookmarkTap,
             ),
           ],
         ),

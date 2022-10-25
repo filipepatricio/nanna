@@ -7,14 +7,16 @@ class _ArticleCoverList extends ArticleCover {
     required this.snackbarController,
     required this.showNote,
     required this.showRecommendedBy,
+    this.onBookmarkTap,
     Key? key,
   }) : super._(key: key);
 
-  final VoidCallback? onTap;
   final MediaItemArticle article;
   final SnackbarController snackbarController;
   final bool showNote;
   final bool showRecommendedBy;
+  final VoidCallback? onTap;
+  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,7 @@ class _ArticleCoverList extends ArticleCover {
           ArticleMetadataRow(
             article: article,
             snackbarController: snackbarController,
+            onBookmarkTap: onBookmarkTap,
           ),
         ],
       ),

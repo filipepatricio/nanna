@@ -68,6 +68,7 @@ abstract class ArticleCover extends HookWidget {
     required VoidCallback onTap,
     bool showNote = false,
     bool showRecommendedBy = false,
+    VoidCallback? onBookmarkTap,
     Key? key,
   }) {
     return _ArticleCoverList(
@@ -76,6 +77,7 @@ abstract class ArticleCover extends HookWidget {
       onTap: onTap,
       showNote: showNote,
       showRecommendedBy: showRecommendedBy,
+      onBookmarkTap: onBookmarkTap,
       key: key,
     );
   }

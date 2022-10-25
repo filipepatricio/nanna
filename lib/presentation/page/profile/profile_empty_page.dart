@@ -24,7 +24,7 @@ class ProfileEmptyPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(AppVectorGraphics.pin),
+          SvgPicture.asset(AppVectorGraphics.bookmarkOutline),
           const SizedBox(height: AppDimens.m),
           RichText(
             textAlign: TextAlign.center,
@@ -32,11 +32,11 @@ class ProfileEmptyPage extends StatelessWidget {
               children: [
                 TextSpan(
                   text: tr(LocaleKeys.profile_emptyPage_title),
-                  style: AppTypography.h4Bold,
+                  style: AppTypography.b2Medium,
                 ),
                 TextSpan(
                   text: filter.infoText,
-                  style: AppTypography.b2Regular,
+                  style: AppTypography.b2Medium,
                 ),
               ],
             ),
