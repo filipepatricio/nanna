@@ -73,6 +73,7 @@ class AppVectorGraphics {
   static const String bigSearch = 'assets/vector_graphics/search_big.svg';
   static const String clearText = 'assets/vector_graphics/clear_text.svg';
   static const String chevronNext = 'assets/vector_graphics/chevron_next.svg';
+  static const String chevronDown = 'assets/vector_graphics/chevron_down.svg';
   static const String noImage = 'assets/vector_graphics/no_image.svg';
 
   static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';

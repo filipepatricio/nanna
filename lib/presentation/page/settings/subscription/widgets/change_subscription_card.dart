@@ -47,7 +47,7 @@ class _ChangeSubscriptionCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppTypography.h4Regular.copyWith(height: 1.5),
+                  style: AppTypography.h4Medium.copyWith(height: 1.5),
                 ),
                 if (subtitle != null)
                   Text(

@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_section.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_subsection.dart';
@@ -287,7 +286,10 @@ class _IdleContent extends HookWidget {
     return MultiSliver(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.pageHorizontalMargin,
+            vertical: AppDimens.ml,
+          ),
           child: _Greeting(
             greeting: brief.greeting,
             introduction: brief.introduction,
@@ -341,15 +343,14 @@ class _IdleContent extends HookWidget {
     for (int i = 0; i < section.entries.length; i++) {
       final entry = section.entries[i];
 
+      yield const InformedDivider(
+        padding: EdgeInsets.symmetric(vertical: AppDimens.m),
+      );
+
       yield BriefEntryCover(
         briefEntry: entry,
         briefId: brief.id,
         snackbarController: snackbarController,
-        padding: _needsDivider(section, entry)
-            ? EdgeInsets.zero
-            : const EdgeInsets.only(
-                bottom: AppDimens.l,
-              ),
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
         onVisibilityChanged: (visibility) {
           if (entry == firstTopic && visibility.visibleFraction == 1) {
@@ -364,12 +365,6 @@ class _IdleContent extends HookWidget {
           }
         },
       );
-
-      if (_needsDivider(section, entry)) {
-        yield const InformedDivider(
-          padding: EdgeInsets.symmetric(vertical: AppDimens.sl),
-        );
-      }
     }
   }
 
@@ -453,12 +448,6 @@ class _IdleContent extends HookWidget {
         )
         .reduce((value, element) => value + element);
   }
-
-  bool _needsDivider(BriefSectionWithEntries section, BriefEntry entry) =>
-      section.backgroundColor == null &&
-      entry.style.type == BriefEntryStyleType.articleCardSmall &&
-      entry != section.entries.last &&
-      section.entries[section.entries.indexOf(entry) + 1].style.type == BriefEntryStyleType.articleCardSmall;
 }
 
 class _BriefSubsection extends StatelessWidget {
@@ -511,7 +500,7 @@ class _BriefSection extends StatelessWidget {
           const SizedBox(height: AppDimens.m),
           InformedMarkdownBody(
             markdown: title,
-            baseTextStyle: AppTypography.h1Medium,
+            baseTextStyle: AppTypography.dailyBriefSectionTitle,
           ),
           const SizedBox(height: AppDimens.m),
           ...children,
@@ -560,27 +549,26 @@ class _Greeting extends StatelessWidget {
   Widget build(BuildContext context) {
     final intro = introduction;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: AppDimens.xs),
-        InformedMarkdownBody(
-          markdown: greeting.headline,
-          baseTextStyle: AppTypography.b3Medium.copyWith(color: AppColors.textGrey),
-        ),
-        if (intro != null) ...[
-          const SizedBox(height: AppDimens.m),
-          Container(
-            padding: const EdgeInsets.all(AppDimens.l),
-            decoration: const BoxDecoration(
-              color: AppColors.pastelGreen,
-              borderRadius: BorderRadius.all(
-                Radius.circular(AppDimens.m),
-              ),
+    return Container(
+      padding: const EdgeInsets.only(left: AppDimens.sl),
+      decoration: const BoxDecoration(
+        border: Border(left: BorderSide(color: AppColors.limeGreen)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InformedMarkdownBody(
+            markdown: greeting.headline,
+            baseTextStyle: AppTypography.b2Medium.copyWith(
+              color: AppColors.textGrey,
+              height: 1,
             ),
-            child: InformedMarkdownBody(
-              markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)}   ${intro.text}',
+          ),
+          if (intro != null) ...[
+            const SizedBox(height: AppDimens.xs),
+            InformedMarkdownBody(
+              markdown: intro.text,
               baseTextStyle: AppTypography.b2Medium,
               textAlignment: TextAlign.left,
               markdownImageBuilder: (uri, title, alt) => MarkdownUtil.rawSvgMarkdownBuilder(
@@ -590,10 +578,9 @@ class _Greeting extends StatelessWidget {
                 AppTypography.b2Medium.fontSize! * 1.2,
               ),
             ),
-          ),
+          ],
         ],
-        const SizedBox(height: AppDimens.m),
-      ],
+      ),
     );
   }
 }

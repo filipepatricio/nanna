@@ -179,7 +179,7 @@ class _CancelButton extends HookWidget {
                   ),
                   child: Text(
                     LocaleKeys.common_cancel.tr(),
-                    style: AppTypography.h4Regular.copyWith(
+                    style: AppTypography.h4Medium.copyWith(
                       color: AppColors.textGrey,
                       height: 1.2,
                     ),
