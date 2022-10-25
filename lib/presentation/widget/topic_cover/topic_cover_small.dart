@@ -27,23 +27,22 @@ class _TopicCoverSmall extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
-                    flex: 6,
+                    flex: 9,
                     child: TopicCoverImage(
                       topic: topic,
                       borderRadius: AppDimens.smallImageCoverBorderRadius,
                     ),
                   ),
                   Expanded(
-                    flex: 4,
+                    flex: 7,
                     child: Container(
                       color: topic.category.color,
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(AppDimens.m),
-                          child: AutoSizeText(
+                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+                          child: Text(
                             topic.strippedTitle,
                             maxLines: 2,
-                            minFontSize: 14,
                             textAlign: TextAlign.center,
                             style: AppTypography.subH0Medium.copyWith(height: 1.25),
                             overflow: TextOverflow.ellipsis,

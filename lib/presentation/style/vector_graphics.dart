@@ -12,11 +12,8 @@ class AppVectorGraphics {
   static const String flag = 'assets/vector_graphics/flag.svg';
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
-  static const String exploreSelected = 'assets/vector_graphics/explore_selected_ic.svg';
   static const String today = 'assets/vector_graphics/today_ic.svg';
-  static const String todaySelected = 'assets/vector_graphics/today_selected_ic.svg';
   static const String profile = 'assets/vector_graphics/profile_ic.svg';
-  static const String profileSelected = 'assets/vector_graphics/profile_selected_ic.svg';
 
   static const String topicLabel = 'assets/vector_graphics/topic_label.svg';
   static const String expertTopicLabel = 'assets/vector_graphics/expert_topic_label.svg';

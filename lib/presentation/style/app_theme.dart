@@ -12,10 +12,12 @@ class AppTheme {
           elevation: 0,
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          elevation: 0,
+          backgroundColor: AppColors.background,
           selectedLabelStyle: AppTypography.navbarText,
-          unselectedLabelStyle: AppTypography.navbarText,
+          unselectedLabelStyle: AppTypography.navbarUnselectedText,
           selectedItemColor: AppColors.textPrimary,
-          unselectedItemColor: AppColors.textPrimary,
+          unselectedItemColor: AppColors.neutralGrey,
         ),
       );
 

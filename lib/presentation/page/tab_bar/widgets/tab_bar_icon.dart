@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -28,11 +29,11 @@ extension MainTabExtension on MainTab {
   Widget _activeIcon() {
     switch (this) {
       case MainTab.today:
-        return _TabBarIcon(AppVectorGraphics.todaySelected, _title());
+        return _TabBarIcon(AppVectorGraphics.today, _title());
       case MainTab.explore:
-        return _TabBarIcon(AppVectorGraphics.exploreSelected, _title());
+        return _TabBarIcon(AppVectorGraphics.explore, _title());
       case MainTab.profile:
-        return _TabBarIcon(AppVectorGraphics.profileSelected, _title());
+        return _TabBarIcon(AppVectorGraphics.profile, _title());
     }
   }
 
@@ -63,8 +64,8 @@ class _TabBarIcon extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: AppDimens.s),
-      child: SvgPicture.asset(iconName),
+      padding: const EdgeInsets.only(bottom: AppDimens.s),
+      child: SvgPicture.asset(iconName, color: isActive ? AppColors.charcoal : AppColors.neutralGrey),
     );
   }
 }

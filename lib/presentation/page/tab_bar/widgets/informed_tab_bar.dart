@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ class InformedTabBar extends HookWidget {
   const InformedTabBar._({
     this.router,
     this.mode = InformedTabBarMode.fixed,
-    this.show = true,
     Key? key,
   }) : super(key: key);
 
@@ -21,37 +19,13 @@ class InformedTabBar extends HookWidget {
         router: router,
         mode: InformedTabBarMode.fixed,
       );
-  factory InformedTabBar.floating({required bool show}) => InformedTabBar._(
-        mode: InformedTabBarMode.floating,
-        show: show,
-      );
 
   final TabsRouter? router;
   final InformedTabBarMode mode;
-  final bool show;
 
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<TabBarCubit>(closeOnDispose: false);
-
-    if (mode == InformedTabBarMode.floating) {
-      return AnimatedPositioned(
-        // Adding up bottom padding to ensure bar is hidden below iPhone Dock
-        bottom: show ? 0 : -(AppDimens.xxc + MediaQuery.of(context).viewPadding.bottom),
-        curve: Curves.easeIn,
-        duration: const Duration(milliseconds: 200),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: _TabBar(
-            currentIndex: cubit.activeIndex,
-            onTap: (index) {
-              context.router.popUntilRoot();
-              cubit.setTab(index);
-            },
-          ),
-        ),
-      );
-    }
 
     useEffect(
       () {
@@ -93,7 +67,6 @@ class _TabBar extends StatelessWidget {
       transitionOnUserGestures: true,
       child: _InformedAppBarShadow(
         child: BottomNavigationBar(
-          backgroundColor: AppColors.background,
           items: [
             ...MainTab.values.map(
               (tab) => BottomNavigationBarItem(
