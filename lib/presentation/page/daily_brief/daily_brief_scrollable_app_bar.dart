@@ -4,11 +4,13 @@ import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
 class DailyBriefScrollableAppBar extends HookWidget {
   const DailyBriefScrollableAppBar({
@@ -77,8 +79,8 @@ class DailyBriefScrollableAppBar extends HookWidget {
           color: AppColors.background,
           padding: EdgeInsets.only(
             top: topPadding + AppDimens.sl,
-            left: AppDimens.l,
-            right: AppDimens.l,
+            left: AppDimens.pageHorizontalMargin,
+            right: AppDimens.pageHorizontalMargin,
           ),
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: AppAnimation.opacityDuration),
@@ -122,22 +124,22 @@ class BriefDate extends StatelessWidget {
         children: [
           Text(
             DateFormatUtil.currentBriefDate(briefDate),
-            style: isTitle ? AppTypography.h4Bold.copyWith(height: 2.25) : AppTypography.dailyBriefTitle,
+            style: isTitle ? AppTypography.h4Medium.copyWith(height: 2) : AppTypography.dailyBriefTitle,
           ),
           Visibility(
             visible: showCalendarButton,
             child: Padding(
               padding: EdgeInsets.only(
-                left: AppDimens.xs,
+                left: AppDimens.s,
                 top: isTitle ? AppDimens.s : AppDimens.zero,
               ),
               child: AnimatedRotation(
-                turns: showCalendar ? 0.25 : 0.75,
+                turns: showCalendar ? 0.5 : 1,
                 duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
-                child: Icon(
-                  Icons.chevron_left_rounded,
-                  color: AppColors.black,
-                  size: isTitle ? AppDimens.m : AppDimens.l,
+                child: SvgPicture.asset(
+                  AppVectorGraphics.chevronDown,
+                  color: AppColors.textPrimary,
+                  height: isTitle ? AppDimens.m : AppDimens.l,
                 ),
               ),
             ),

@@ -41,7 +41,7 @@ class InformedCupertinoAppBar extends StatelessWidget implements ObstructingPref
             ? null
             : Text(
                 title,
-                style: AppTypography.h4Regular.copyWith(
+                style: AppTypography.h4Medium.copyWith(
                   fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
                 ),
               ),

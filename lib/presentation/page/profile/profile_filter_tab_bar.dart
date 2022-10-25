@@ -41,8 +41,8 @@ class ProfileFilterTabBar extends StatelessWidget {
         controller: controller,
         indicatorSize: TabBarIndicatorSize.label,
         isScrollable: true,
-        unselectedLabelStyle: AppTypography.h4Regular,
-        labelStyle: AppTypography.h4Regular,
+        unselectedLabelStyle: AppTypography.h4Medium,
+        labelStyle: AppTypography.h4Medium,
         labelColor: AppColors.textPrimary,
         unselectedLabelColor: AppColors.neutralGrey,
         indicatorColor: AppColors.textPrimary,
@@ -71,7 +71,7 @@ class _TextFixedSizeTab extends HookWidget {
       () {
         final textPainter = TextPainter(
           textDirection: TextDirection.ltr,
-          text: TextSpan(text: text, style: AppTypography.h4Regular),
+          text: TextSpan(text: text, style: AppTypography.h4Medium),
           textAlign: TextAlign.left,
           maxLines: 1,
         );

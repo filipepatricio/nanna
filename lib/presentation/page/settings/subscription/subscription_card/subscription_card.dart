@@ -137,7 +137,7 @@ class _IdleContent extends StatelessWidget {
         const SizedBox(width: AppDimens.m),
         Text(
           typeLabel,
-          style: AppTypography.h4Regular.copyWith(height: 1),
+          style: AppTypography.h4Medium.copyWith(height: 1),
         ),
         const Spacer(),
         callToActionLabel,

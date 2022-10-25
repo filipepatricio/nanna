@@ -59,7 +59,7 @@ class RelaxView extends StatelessWidget {
         color: () {
           switch (type) {
             case RelaxViewType.dailyBrief:
-              return AppColors.darkLinen;
+              return AppColors.lightGrey;
             case RelaxViewType.article:
               return AppColors.lightGrey;
           }
