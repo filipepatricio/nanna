@@ -30,10 +30,10 @@ class AppTypography {
   );
 
   static const TextStyle dailyBriefTitle = TextStyle(
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
     fontSize: 32,
-    height: 1.375,
+    height: 1,
     color: AppColors.textPrimary,
   );
 
