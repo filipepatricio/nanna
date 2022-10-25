@@ -8,7 +8,6 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_more_from_section.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content_section.dart';
-import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/informed_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
@@ -43,7 +42,6 @@ class PremiumArticleReadView extends HookWidget {
 
   bool _updateScrollPosition(
     ScrollNotification scrollInfo,
-    ValueNotifier<bool> showTabBar,
     ValueNotifier<double> readProgress,
     double fullHeight,
     BuildContext context,
@@ -54,11 +52,6 @@ class PremiumArticleReadView extends HookWidget {
       final newProgress = mainController.offset / articleFullHeight;
 
       if (scrollInfo is ScrollUpdateNotification) {
-        final primaryDelta = scrollInfo.dragDetails?.primaryDelta ?? 0;
-        if (primaryDelta.abs() > 1) {
-          showTabBar.value = primaryDelta > 0 && mainController.offset >= articleHeaderHeight / 2.5;
-        }
-
         readProgress.value = newProgress.isFinite ? newProgress : 0;
 
         actionsBarColorModeNotifier.value = mainController.offset >= articleHeaderHeight
@@ -67,13 +60,6 @@ class PremiumArticleReadView extends HookWidget {
       }
 
       if (scrollInfo is ScrollEndNotification) {
-        if (scrollInfo.metrics.pixels == mainController.position.maxScrollExtent) {
-          showTabBar.value = true;
-        }
-        if (scrollInfo.metrics.pixels == mainController.position.minScrollExtent) {
-          showTabBar.value = false;
-        }
-
         cubit.updateScrollData(mainController.offset, articleFullHeight);
       }
     }
@@ -86,7 +72,6 @@ class PremiumArticleReadView extends HookWidget {
     useAutomaticKeepAlive(wantKeepAlive: true);
     final state = useCubitBuilder(cubit);
     final readProgress = useMemoized(() => ValueNotifier(0.0));
-    final showTabBar = useState(false);
     final maxHeight = useMemoized(
       () => MediaQuery.of(context).size.height,
       [MediaQuery.of(context).size.height],
@@ -99,7 +84,6 @@ class PremiumArticleReadView extends HookWidget {
           NotificationListener<ScrollNotification>(
             onNotification: (scrollInfo) => _updateScrollPosition(
               scrollInfo,
-              showTabBar,
               readProgress,
               maxHeight,
               context,
@@ -154,7 +138,6 @@ class PremiumArticleReadView extends HookWidget {
               ),
             ),
           ),
-          InformedTabBar.floating(show: showTabBar.value),
           Positioned(
             top: 0,
             left: 0,
