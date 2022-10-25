@@ -568,9 +568,13 @@ class _Greeting extends StatelessWidget {
         children: [
           InformedMarkdownBody(
             markdown: greeting.headline,
-            baseTextStyle: AppTypography.b2Medium.copyWith(color: AppColors.textGrey),
+            baseTextStyle: AppTypography.b2Medium.copyWith(
+              color: AppColors.textGrey,
+              height: 1,
+            ),
           ),
-          if (intro != null)
+          if (intro != null) ...[
+            const SizedBox(height: AppDimens.xs),
             InformedMarkdownBody(
               markdown: intro.text,
               baseTextStyle: AppTypography.b2Medium,
@@ -582,6 +586,7 @@ class _Greeting extends StatelessWidget {
                 AppTypography.b2Medium.fontSize! * 1.2,
               ),
             ),
+          ],
         ],
       ),
     );

@@ -18,17 +18,18 @@ class _DailyBriefContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _DailyBriefHeadline(relax),
-        const SizedBox(height: AppDimens.s),
+        const SizedBox(height: AppDimens.sl),
         Text(
           relax.message,
-          style: AppTypography.b2Medium,
+          style: AppTypography.b2Regular.copyWith(
+            color: AppColors.darkerGrey,
+          ),
           textAlign: TextAlign.center,
         ),
         if (callToAction != null) ...[
-          const SizedBox(height: AppDimens.xxxl),
+          const SizedBox(height: AppDimens.xl),
           _DailyBriefFooter(callToAction),
-        ] else
-          const SizedBox.shrink(),
+        ]
       ],
     );
   }
@@ -80,13 +81,17 @@ class _DailyBriefFooter extends StatelessWidget {
           if (callToAction.preText != null) ...[
             TextSpan(
               text: callToAction.preText,
-              style: AppTypography.b2Medium,
+              style: AppTypography.b2Regular.copyWith(
+                color: AppColors.darkerGrey,
+              ),
             ),
             const TextSpan(text: ' '),
           ],
           TextSpan(
             text: callToAction.actionText,
-            style: AppTypography.b2Bold.copyWith(decoration: TextDecoration.underline),
+            style: AppTypography.b2Bold.copyWith(
+              decoration: TextDecoration.underline,
+            ),
             recognizer: TapGestureRecognizer()..onTap = context.goToExplore,
           ),
         ],
