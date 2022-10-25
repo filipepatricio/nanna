@@ -46,12 +46,15 @@ class SnackbarParentView extends HookWidget {
       [controller],
     );
 
-    var showingPosition = AppDimens.l;
+    var showingPosition = AppDimens.m;
 
     if (controller.audioPlayerResponsive) {
       final audioPlayerCubit = useCubit<AudioPlayerBannerCubit>(closeOnDispose: false);
       final audioPlayerState = useCubitBuilder(audioPlayerCubit);
-      audioPlayerState.maybeMap(visible: (value) => showingPosition += AppDimens.audioBannerHeight, orElse: () {});
+      audioPlayerState.maybeMap(
+        visible: (value) => showingPosition += AppDimens.audioBannerHeight + MediaQuery.of(context).padding.bottom,
+        orElse: () {},
+      );
     }
 
     return Stack(

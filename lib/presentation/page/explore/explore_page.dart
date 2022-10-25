@@ -42,7 +42,7 @@ class ExplorePage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final scrollControllerIdleOffset = useState(0.0);
-    final snackbarController = useMemoized(() => SnackbarController());
+    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     final searchViewCubit = useCubit<SearchViewCubit>();
     final searchTextEditingController = useTextEditingController();

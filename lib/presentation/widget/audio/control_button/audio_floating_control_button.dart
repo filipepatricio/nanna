@@ -22,6 +22,7 @@ class AudioFloatingControlButton extends HookWidget {
     this.imageHeight = AppDimens.sl + AppDimens.xxs,
     this.color = AppColors.background,
     this.mode = AudioFloatingControlButtonMode.colored,
+    this.progressBarColor = AppColors.black,
     Key? key,
   }) : super(key: key);
 
@@ -31,6 +32,7 @@ class AudioFloatingControlButton extends HookWidget {
     this.imageHeight = AppDimens.audioViewControlButtonSize * 0.7,
     this.color = AppColors.background,
     this.mode = AudioFloatingControlButtonMode.colored,
+    this.progressBarColor = AppColors.black,
     Key? key,
   })  : article = null,
         super(key: key);
@@ -41,6 +43,7 @@ class AudioFloatingControlButton extends HookWidget {
   final double progressSize;
   final Color color;
   final AudioFloatingControlButtonMode mode;
+  final Color progressBarColor;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +95,7 @@ class AudioFloatingControlButton extends HookWidget {
             )
           : null,
       onPressed: state.getAction(cubit),
-      backgroundColor: color,
+      backgroundColor: color.withAlpha(state.imageAlpha),
       child: Stack(
         alignment: Alignment.center,
         clipBehavior: Clip.none,
@@ -113,9 +116,10 @@ class AudioFloatingControlButton extends HookWidget {
           ),
           if (article != null)
             CurrentAudioFloatingProgress(
-              progressSize,
-              state.progress,
-              state.audioType,
+              progressSize: progressSize,
+              progress: state.progress,
+              audioProgressType: state.audioProgressType,
+              progressBarColor: progressBarColor,
             ),
         ],
       ),
