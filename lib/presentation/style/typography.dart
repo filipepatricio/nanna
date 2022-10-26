@@ -14,31 +14,23 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h0Medium = TextStyle(
+  static const TextStyle onBoardingHeader = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
     fontSize: 36,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h0Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 32,
     height: 1.1,
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h0Bold = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamilyLausanne,
-    fontSize: 36,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle dailyBriefTitle = TextStyle(
+  static const TextStyle h0Regular = TextStyle(
     fontWeight: FontWeight.w400,
-    fontFamily: _fontFamilyLausanne,
-    fontSize: 32,
-    height: 1,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle dailyBriefSectionTitle = TextStyle(
-    fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
     fontSize: 32,
     height: 1,
@@ -304,10 +296,10 @@ class AppTypography {
     color: AppColors.textGrey,
   );
 
-  static const TextStyle caption2Medium = TextStyle(
-    fontWeight: FontWeight.w500,
+  static const TextStyle caption1Regular = TextStyle(
+    fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 10,
+    fontSize: 14,
     height: 1.2,
     color: AppColors.textGrey,
   );
