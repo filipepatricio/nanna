@@ -65,6 +65,7 @@ Future<void> main() async {
           saveLocale: true,
           child: InformedApp(
             getIt: getIt,
+            mainRouter: kDebugMode ? MainRouter() : null,
           ),
         ),
       ),
