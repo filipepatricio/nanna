@@ -34,7 +34,7 @@ class _SignInIdleView extends StatelessWidget {
                       children: [
                         Text(
                           LocaleKeys.signIn_welcome.tr(),
-                          style: AppTypography.h0Medium,
+                          style: AppTypography.onBoardingHeader,
                         ),
                         const SizedBox(height: AppDimens.s),
                         Text(

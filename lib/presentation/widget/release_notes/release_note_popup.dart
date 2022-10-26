@@ -27,7 +27,7 @@ class ReleaseNotePopup extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppDimens.l,
+          horizontal: AppDimens.pageHorizontalMargin,
           vertical: AppDimens.l,
         ),
         child: ClipRRect(

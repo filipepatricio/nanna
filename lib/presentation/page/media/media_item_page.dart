@@ -138,6 +138,7 @@ class _ErrorContent extends StatelessWidget {
             OpenWebButton(
               url: article.sourceUrl,
               buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
+              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
             )
           else
             Center(
