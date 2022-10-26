@@ -252,28 +252,30 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
 
   @override
   Future<void> play([bool forceNewAudio = false]) async {
-    await state.mapOrNull(
-      notInitilized: (state) => _prepareNewAudio(),
-      inDifferentAudio: (state) async {
-        if (forceNewAudio || state.completed) {
-          if (!state.completed) {
-            // Tracking current audio position before being replaced by new audio
-            _trackArticleAudioPositionUseCase(
-              state.currentAudioItem.slug,
-              _currentPosition.inSeconds,
-              state.currentAudioItem.duration?.inSeconds,
-            );
+    if (_article.availableInSubscription) {
+      await state.mapOrNull(
+        notInitilized: (state) => _prepareNewAudio(),
+        inDifferentAudio: (state) async {
+          if (forceNewAudio || state.completed) {
+            if (!state.completed) {
+              // Tracking current audio position before being replaced by new audio
+              _trackArticleAudioPositionUseCase(
+                state.currentAudioItem.slug,
+                _currentPosition.inSeconds,
+                state.currentAudioItem.duration?.inSeconds,
+              );
+            }
+            await _prepareNewAudio();
+          } else {
+            emit(AudioControlButtonState.showSwitchAudioPopup());
+            emit(state);
           }
-          await _prepareNewAudio();
-        } else {
-          emit(AudioControlButtonState.showSwitchAudioPopup());
-          emit(state);
-        }
-      },
-      paused: (_) => _playAudioUseCase(),
-    );
-    _trackArticleAudioPositionUseCase(_article.slug, _currentPosition.inSeconds);
-    _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(_article.id));
+        },
+        paused: (_) => _playAudioUseCase(),
+      );
+      _trackArticleAudioPositionUseCase(_article.slug, _currentPosition.inSeconds);
+      _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(_article.id));
+    }
   }
 
   Future<void> _prepareNewAudio() async {
