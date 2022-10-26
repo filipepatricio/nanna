@@ -39,7 +39,7 @@ class _ArticleCoverList extends ArticleCover {
             ),
             const SizedBox(height: AppDimens.s),
           ],
-          if (showRecommendedBy) const ArticleRecommendedByView(),
+          if (showRecommendedBy) ArticleRecommendedByView(curationInfo: article.curationInfo),
           const SizedBox(height: AppDimens.m),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,

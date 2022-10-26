@@ -2,13 +2,13 @@ import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'topic_owner_dto.dt.freezed.dart';
-part 'topic_owner_dto.dt.g.dart';
+part 'curator_dto.dt.freezed.dart';
+part 'curator_dto.dt.g.dart';
 
 @Freezed(unionKey: '__typename', fallbackUnion: unknownKey, toJson: false)
-class TopicOwnerDTO with _$TopicOwnerDTO {
+class CuratorDTO with _$CuratorDTO {
   @FreezedUnionValue('Expert')
-  factory TopicOwnerDTO.expert(
+  factory CuratorDTO.expert(
     String id,
     String name,
     String bio,
@@ -18,24 +18,24 @@ class TopicOwnerDTO with _$TopicOwnerDTO {
     String? website,
     String? twitter,
     ImageDTO? avatar,
-  ) = _TopicOwnerDTOExpert;
+  ) = _CuratorDTOExpert;
 
   @FreezedUnionValue('Editor')
-  factory TopicOwnerDTO.editor(
+  factory CuratorDTO.editor(
     String id,
     String name,
     String bio,
     ImageDTO? avatar,
-  ) = _TopicOwnerDTOEditor;
+  ) = _CuratorDTOEditor;
 
   @FreezedUnionValue('EditorialTeam')
-  factory TopicOwnerDTO.editorialTeam(
+  factory CuratorDTO.editorialTeam(
     String name,
     String bio,
-  ) = _TopicOwnerDTOEditorialTeam;
+  ) = _CuratorDTOEditorialTeam;
 
   @FreezedUnionValue(unknownKey)
-  factory TopicOwnerDTO.unknown() = _TopicOwnerDTOUnknown;
+  factory CuratorDTO.unknown() = _CuratorDTOUnknown;
 
-  factory TopicOwnerDTO.fromJson(Map<String, dynamic> json) => _$TopicOwnerDTOFromJson(json);
+  factory CuratorDTO.fromJson(Map<String, dynamic> json) => _$CuratorDTOFromJson(json);
 }

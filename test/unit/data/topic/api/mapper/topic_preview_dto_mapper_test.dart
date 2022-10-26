@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
+import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,19 +11,19 @@ import '../../../../../generated_mocks.mocks.dart';
 import '../../../../../test_data.dart';
 
 void main() {
-  late MockTopicOwnerDTOMapper topicOwnerDTOMapper;
+  late MockCuratorDTOMapper curatorDTOMapper;
   late MockTopicPublisherInformationDTOMapper topicPublisherInformationDTOMapper;
   late MockImageDTOMapper imageDTOMapper;
   late TopicPreviewDTOMapper mapper;
   late MockCategoryDTOMapper categoryDTOMapper;
 
   setUp(() {
-    topicOwnerDTOMapper = MockTopicOwnerDTOMapper();
+    curatorDTOMapper = MockCuratorDTOMapper();
     topicPublisherInformationDTOMapper = MockTopicPublisherInformationDTOMapper();
     imageDTOMapper = MockImageDTOMapper();
     categoryDTOMapper = MockCategoryDTOMapper();
     mapper = TopicPreviewDTOMapper(
-      topicOwnerDTOMapper,
+      curatorDTOMapper,
       topicPublisherInformationDTOMapper,
       imageDTOMapper,
       categoryDTOMapper,
@@ -33,7 +33,7 @@ void main() {
   test('maps dto to domain object', () {
     final dto = MockDTO.topicPreview;
 
-    final owner = FakeTopicOwner();
+    final owner = FakeCurator();
     final publisherInformation = FakeTopicPublisherInformation();
     final heroImage = FakeImage();
     final expected = TopicPreview(
@@ -52,7 +52,7 @@ void main() {
       TestData.category,
     );
 
-    when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
+    when(curatorDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
     when(topicPublisherInformationDTOMapper(any)).thenAnswer((realInvocation) => publisherInformation);
     when(imageDTOMapper(dto.heroImage)).thenAnswer((realInvocation) => heroImage);
     when(categoryDTOMapper(dto.category)).thenAnswer((realInvocation) => TestData.category);
@@ -77,7 +77,7 @@ void main() {
   });
 }
 
-class FakeTopicOwner extends Fake implements TopicOwner {}
+class FakeCurator extends Fake implements Curator {}
 
 class FakeImage extends Fake implements Image {}
 

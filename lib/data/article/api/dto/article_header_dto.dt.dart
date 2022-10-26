@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/article/api/dto/article_curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
@@ -33,6 +34,7 @@ class ArticleHeaderDTO {
     this.progressState,
     this.locked,
     this.category,
+    this.curationInfo,
   );
 
   factory ArticleHeaderDTO.fromJson(Map<String, dynamic> json) => _$ArticleHeaderDTOFromJson(json);
@@ -60,4 +62,5 @@ class ArticleHeaderDTO {
   final bool locked;
   @JsonKey(name: 'primaryCategory')
   final CategoryDTO category;
+  final ArticleCurationInfoDTO curationInfo;
 }

@@ -2,8 +2,8 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
+import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,7 +17,7 @@ void main() {
   late MockEntryDTOMapper entryDTOMapper;
   late MockSummaryCardDTOMapper summaryCardDTOMapper;
   late MockTopicPublisherInformationDTOMapper topicPublisherInformationDTOMapper;
-  late MockTopicOwnerDTOMapper topicOwnerDTOMapper;
+  late MockCuratorDTOMapper curatorDTOMapper;
   late TopicDTOMapper mapper;
   late MockCategoryDTOMapper categoryDTOMapper;
 
@@ -26,14 +26,14 @@ void main() {
     entryDTOMapper = MockEntryDTOMapper();
     summaryCardDTOMapper = MockSummaryCardDTOMapper();
     topicPublisherInformationDTOMapper = MockTopicPublisherInformationDTOMapper();
-    topicOwnerDTOMapper = MockTopicOwnerDTOMapper();
+    curatorDTOMapper = MockCuratorDTOMapper();
     categoryDTOMapper = MockCategoryDTOMapper();
     mapper = TopicDTOMapper(
       imageDTOMapper,
       entryDTOMapper,
       summaryCardDTOMapper,
       topicPublisherInformationDTOMapper,
-      topicOwnerDTOMapper,
+      curatorDTOMapper,
       categoryDTOMapper,
     );
   });
@@ -41,7 +41,7 @@ void main() {
   test('maps dto to domain object', () {
     final dto = MockDTO.topic;
 
-    final owner = FakeTopicOwner();
+    final owner = FakeCurator();
     final publisherInformation = FakeTopicPublisherInformation();
     final entry = FakeEntry();
     final entries = [entry, entry, entry];
@@ -70,7 +70,7 @@ void main() {
       category: TestData.category,
     );
 
-    when(topicOwnerDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
+    when(curatorDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
     when(topicPublisherInformationDTOMapper(any)).thenAnswer((realInvocation) => publisherInformation);
     when(entryDTOMapper(any)).thenAnswer((realInvocation) => entry);
     when(summaryCardDTOMapper(any)).thenAnswer((realInvocation) => summaryCard);
@@ -98,7 +98,7 @@ void main() {
   });
 }
 
-class FakeTopicOwner extends Fake implements TopicOwner {}
+class FakeCurator extends Fake implements Curator {}
 
 class FakeImage extends Fake implements Image {}
 
