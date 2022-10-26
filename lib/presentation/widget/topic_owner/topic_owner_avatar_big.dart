@@ -7,20 +7,20 @@ class _TopicOwnerAvatarBig extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final TopicOwner owner;
+  final Curator owner;
   final Brightness mode;
 
   @override
   Widget build(BuildContext context) {
-    if (owner is UnknownOwner) {
+    if (owner is UnknownCurator) {
       return const TopicOwnerAvatarUnknown();
     }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _TopicOwnerImage(
-          owner: owner,
+        CuratorImage(
+          curator: owner,
           imageWidth: AppDimens.avatarSizeBig,
           imageHeight: AppDimens.avatarSizeBig,
           editorAvatar: AppVectorGraphics.editorialTeamAvatarBig,

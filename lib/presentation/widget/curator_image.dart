@@ -1,22 +1,31 @@
-part of 'topic_owner_avatar.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/topic/data/curator.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class _TopicOwnerImage extends HookWidget {
-  const _TopicOwnerImage({
-    required this.owner,
+class CuratorImage extends HookWidget {
+  const CuratorImage({
+    required this.curator,
     required this.imageWidth,
     required this.imageHeight,
     this.editorAvatar = AppVectorGraphics.editorialTeamAvatarBig,
     Key? key,
   }) : super(key: key);
 
-  final TopicOwner owner;
+  final Curator curator;
   final double imageWidth;
   final double imageHeight;
   final String editorAvatar;
 
   @override
   Widget build(BuildContext context) {
-    final imageId = owner.avatar?.publicId;
+    final imageId = curator.avatar?.publicId;
     final cloudinaryProvider = useCloudinaryProvider();
     // Using non-dynamic resolution to force the use of the same cached image everywhere
     // Using 4 because the max. device pixel ratio currently is 3, 3.5. 4 covers all devices with good quality
@@ -47,7 +56,7 @@ class _TopicOwnerImage extends HookWidget {
               ),
             )
           : SvgPicture.asset(
-              owner is Expert ? AppVectorGraphics.expertAvatar : editorAvatar,
+              curator is Expert ? AppVectorGraphics.expertAvatar : editorAvatar,
               width: imageWidth,
               height: imageHeight,
             ),

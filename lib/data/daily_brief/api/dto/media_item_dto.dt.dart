@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:better_informed_mobile/data/article/api/dto/article_curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
@@ -38,6 +39,7 @@ class MediaItemDTO with _$MediaItemDTO {
     ArticleProgressState progressState,
     bool locked,
     @JsonKey(name: 'primaryCategory') CategoryDTO category,
+    ArticleCurationInfoDTO curationInfo,
   ) = MediaItemDTOArticle;
 
   @FreezedUnionValue(unknownKey)

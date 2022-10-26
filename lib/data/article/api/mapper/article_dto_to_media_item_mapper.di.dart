@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/article_curation_info_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
@@ -18,6 +19,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemA
     this._articleKindDTOMapper,
     this._articleProgressDTOMapper,
     this._categoryDTOMapper,
+    this._articleCurationInfoDTOMapper,
   );
   final ArticleImageDTOMapper _articleImageDTOMapper;
   final PublisherDTOMapper _publisherDTOMapper;
@@ -25,6 +27,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemA
   final ArticleKindDTOMapper _articleKindDTOMapper;
   final ArticleProgressDTOMapper _articleProgressDTOMapper;
   final CategoryDTOMapper _categoryDTOMapper;
+  final ArticleCurationInfoDTOMapper _articleCurationInfoDTOMapper;
 
   @override
   MediaItemArticle call(ArticleHeaderDTO data) {
@@ -54,6 +57,7 @@ class ArticleDTOToMediaItemMapper implements Mapper<ArticleHeaderDTO, MediaItemA
       progressState: data.progressState,
       locked: data.locked,
       category: _categoryDTOMapper(data.category),
+      curationInfo: _articleCurationInfoDTOMapper(data.curationInfo),
     );
   }
 }
