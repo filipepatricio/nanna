@@ -21,14 +21,13 @@ class TopicHeader extends HookWidget {
     final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
     final topicHeaderImageWidth = AppDimens.topicViewHeaderImageWidth(context);
 
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Positioned(
-          top: 0,
-          child: SizedBox(
-            width: topicHeaderImageWidth,
-            height: topicHeaderImageHeight,
+    return SizedBox(
+      width: topicHeaderImageWidth,
+      height: topicHeaderImageHeight,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Positioned.fill(
             child: CloudinaryImage(
               publicId: topic.heroImage.publicId,
               config: CloudinaryConfig(
@@ -38,36 +37,35 @@ class TopicHeader extends HookWidget {
               width: topicHeaderImageWidth,
               height: topicHeaderImageHeight,
               fit: BoxFit.cover,
-              darkeningMode: DarkeningMode.solid,
               testImage: AppRasterGraphics.testArticleHeroImage,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-          child: Container(
-            color: topic.category.color,
-            padding: const EdgeInsets.all(AppDimens.xl),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InformedMarkdownBody(
-                  markdown: topic.title,
-                  baseTextStyle: AppTypography.h1Headline,
-                  maxLines: 5,
-                ),
-                const SizedBox(height: AppDimens.m),
-                UpdatedLabel(
-                  dateTime: topic.lastUpdatedAt,
-                  mode: Brightness.dark,
-                  fontSize: 16,
-                ),
-              ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            child: Container(
+              color: topic.category.color,
+              padding: const EdgeInsets.all(AppDimens.xl),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InformedMarkdownBody(
+                    markdown: topic.title,
+                    baseTextStyle: AppTypography.h1Headline,
+                    maxLines: 5,
+                  ),
+                  const SizedBox(height: AppDimens.m),
+                  UpdatedLabel(
+                    dateTime: topic.lastUpdatedAt,
+                    mode: Brightness.dark,
+                    fontSize: 16,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

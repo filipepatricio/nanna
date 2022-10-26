@@ -40,7 +40,7 @@ class _TopicOwnerAvatarSmall extends StatelessWidget {
                 children: [
                   if (!shortLabel)
                     TextSpan(
-                      text: tr(owner is Expert ? LocaleKeys.topic_curatedBy : LocaleKeys.topic_recommendedBy),
+                      text: tr(owner is EditorialTeam ? LocaleKeys.topic_recommendedBy : LocaleKeys.topic_curatedBy),
                       style: AppTypography.subH1Medium.copyWith(
                         height: 1,
                         color: mode == Brightness.dark ? null : AppColors.white,
