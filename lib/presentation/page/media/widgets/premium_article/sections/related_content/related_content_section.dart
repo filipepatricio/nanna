@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -37,7 +36,7 @@ class RelatedContentSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (featuredCategories.isNotEmpty || relatedContentItems.isNotEmpty) const SizedBox(height: AppDimens.l),
+          const SizedBox(height: AppDimens.l),
           if (featuredCategories.isNotEmpty)
             RelatedCategories(
               featuredCategories,
@@ -51,10 +50,6 @@ class RelatedContentSection extends StatelessWidget {
               topicId: topicId,
               snackbarController: snackbarController,
             ),
-          Padding(
-            padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
-            child: RelaxView.article(),
-          ),
         ],
       ),
     );
