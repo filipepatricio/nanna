@@ -131,6 +131,7 @@ class _SearchBar extends HookWidget {
           color: AppColors.charcoal,
           height: 1,
         ),
+        onFieldSubmitted: searchViewCubit.submitSearchPhrase,
         onTap: explorePageCubit.startTyping,
       ),
     );
