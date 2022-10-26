@@ -11,7 +11,7 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-const minQueryCharactersTrigger = 2;
+const _minSearchQueryCharactersTrigger = 2;
 
 @injectable
 class SearchViewCubit extends Cubit<SearchViewState> {
@@ -52,7 +52,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   }
 
   Future<void> submitSearchPhrase(String query) async {
-    await _addSearchHistoryQueryUseCase(query);
+    _queryStreamController?.add(query);
   }
 
   Future<void> refresh() async {
@@ -71,7 +71,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     _querySubscription = _queryStreamController?.stream
         .debounceTime(const Duration(milliseconds: 500))
         .distinct()
-        .where((event) => event.isNotEmpty && event.length >= minQueryCharactersTrigger)
+        .where((query) => shouldTriggerSearch(query))
         .switchMap((value) => Stream.fromFuture(_initializePaginationEngine(value)))
         .listen((event) => _onQueryChange(event));
   }
@@ -84,6 +84,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     _paginationEngine = _searchPaginationEngineProvider.get(
       query: query,
     );
+    await _addSearchHistoryQueryUseCase(query);
     return _paginationEngine.loadMore();
   }
 
@@ -123,5 +124,9 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     } else {
       emit(SearchViewState.idle(results));
     }
+  }
+
+  bool shouldTriggerSearch(String query) {
+    return query.isNotEmpty && query.length >= _minSearchQueryCharactersTrigger;
   }
 }

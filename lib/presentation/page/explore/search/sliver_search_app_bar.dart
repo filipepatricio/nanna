@@ -73,8 +73,7 @@ class _SearchBar extends HookWidget {
         void listener() {
           query.value = searchTextEditingController.text;
           searchViewCubit.search(query.value);
-
-          if (query.value.isNotEmpty) {
+          if (searchViewCubit.shouldTriggerSearch(query.value)) {
             explorePageCubit.search();
           } else {
             explorePageCubit.startTyping();
@@ -131,7 +130,12 @@ class _SearchBar extends HookWidget {
           color: AppColors.charcoal,
           height: 1,
         ),
-        onFieldSubmitted: searchViewCubit.submitSearchPhrase,
+        onFieldSubmitted: (query) {
+          if (searchViewCubit.shouldTriggerSearch(query)) {
+            explorePageCubit.search();
+            searchViewCubit.submitSearchPhrase(query);
+          }
+        },
         onTap: explorePageCubit.startTyping,
       ),
     );

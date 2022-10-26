@@ -70,7 +70,7 @@ class SearchView extends HookWidget {
           itemBuilder: (context, index) => itemBuilder(context, index, state.results, snackbarController),
           scrollController: scrollController,
         ),
-        orElse: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+        orElse: () => const SliverToBoxAdapter(),
       ),
     );
   }
