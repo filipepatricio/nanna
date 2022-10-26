@@ -37,13 +37,14 @@ class _TopicCoverBig extends StatelessWidget {
                       borderRadius: AppDimens.smallImageCoverBorderRadius,
                     ),
                   ),
-                  Positioned(
-                    top: AppDimens.m,
-                    child: InformedPill(
-                      title: LocaleKeys.topic_label.tr(),
-                      color: AppColors.white,
+                  if (topic.owner is Expert)
+                    Positioned(
+                      top: AppDimens.m,
+                      child: InformedPill(
+                        title: LocaleKeys.topic_labelExpert.tr(),
+                        color: AppColors.white,
+                      ),
                     ),
-                  ),
                   Positioned(
                     left: AppDimens.xl,
                     right: AppDimens.xl,

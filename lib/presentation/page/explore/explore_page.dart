@@ -197,6 +197,10 @@ class _LoadingSection extends StatelessWidget {
           ExploreLoadingView.pills(),
           SizedBox(height: AppDimens.c),
           ExploreLoadingView.stream(),
+          SizedBox(height: AppDimens.xl),
+          ExploreLoadingView.stream(),
+          SizedBox(height: AppDimens.xl),
+          ExploreLoadingView.stream(),
         ],
       ),
     );

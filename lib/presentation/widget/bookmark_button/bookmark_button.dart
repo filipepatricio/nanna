@@ -138,7 +138,7 @@ class BookmarkButton extends HookWidget {
             child: InformedAnimatedSwitcher(
               duration: const Duration(milliseconds: _animationDuration),
               child: state.maybeMap(
-                initializing: (_) => const _Loader(),
+                initializing: (_) => _Loader(color: color),
                 idle: (state) => _IdleButton(
                   cubit: cubit,
                   state: state.state,
@@ -146,7 +146,7 @@ class BookmarkButton extends HookWidget {
                   animationController: animationController,
                   onTap: onTap,
                 ),
-                switching: (state) => const _Loader(),
+                switching: (state) => _Loader(color: color),
                 orElse: () => const SizedBox.shrink(),
               ),
             ),
@@ -159,15 +159,18 @@ class BookmarkButton extends HookWidget {
 
 class _Loader extends StatelessWidget {
   const _Loader({
+    required this.color,
     Key? key,
   }) : super(key: key);
 
+  final Color color;
+
   @override
   Widget build(BuildContext context) {
-    return const SizedBox.square(
+    return SizedBox.square(
       dimension: _loaderSize,
       child: Loader(
-        color: AppColors.charcoal,
+        color: color,
         strokeWidth: _loaderStroke,
       ),
     );
