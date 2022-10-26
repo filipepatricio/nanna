@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
@@ -107,32 +108,37 @@ class PremiumArticleReadView extends HookWidget {
                         snackbarController: snackbarController,
                       ),
                     ),
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          if (data.otherTopicItems.isNotEmpty)
-                            ArticleMoreFromSection(
-                              title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
-                              items: data.otherTopicItems.buildWidgets(context, cubit, snackbarController),
-                            )
-                          else if (data.moreFromBriefItems.isNotEmpty)
-                            ArticleMoreFromSection(
-                              title: LocaleKeys.article_otherBriefs.tr(),
-                              items: data.moreFromBriefItems.buildWidgets(context, cubit, snackbarController),
-                            ),
-                        ],
+                    if (data.otherTopicItems.isNotEmpty)
+                      SliverToBoxAdapter(
+                        child: ArticleMoreFromSection(
+                          title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
+                          items: data.otherTopicItems.buildWidgets(context, cubit, snackbarController),
+                        ),
                       ),
-                    ),
+                    if (data.moreFromBriefItems.isNotEmpty)
+                      SliverToBoxAdapter(
+                        child: ArticleMoreFromSection(
+                          title: LocaleKeys.article_otherBriefs.tr(),
+                          items: data.moreFromBriefItems.buildWidgets(context, cubit, snackbarController),
+                        ),
+                      ),
+                    if (data.relatedContentItems.isNotEmpty || data.featuredCategories.isNotEmpty)
+                      SliverToBoxAdapter(
+                        child: RelatedContentSection(
+                          articleId: data.article.metadata.id,
+                          featuredCategories: data.featuredCategories,
+                          briefId: cubit.briefId,
+                          topicId: cubit.topicId,
+                          relatedContentItems: data.relatedContentItems,
+                          onRelatedContentItemTap: cubit.onRelatedContentItemTap,
+                          onRelatedCategoryTap: cubit.onRelatedCategoryTap,
+                          snackbarController: snackbarController,
+                        ),
+                      ),
                     SliverToBoxAdapter(
-                      child: RelatedContentSection(
-                        articleId: data.article.metadata.id,
-                        featuredCategories: data.featuredCategories,
-                        briefId: cubit.briefId,
-                        topicId: cubit.topicId,
-                        relatedContentItems: data.relatedContentItems,
-                        onRelatedContentItemTap: cubit.onRelatedContentItemTap,
-                        onRelatedCategoryTap: cubit.onRelatedCategoryTap,
-                        snackbarController: snackbarController,
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
+                        child: RelaxView.article(),
                       ),
                     ),
                     const SliverToBoxAdapter(
