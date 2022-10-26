@@ -19,37 +19,34 @@ class _TopicAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = topic.owner is Expert ? LocaleKeys.topic_labelExpert.tr() : LocaleKeys.topic_label.tr();
-
+    final color = isScrolled.value ? AppColors.textPrimary : AppColors.white;
     return AnimatedBuilder(
       animation: backgroundColorAnimation,
       builder: (context, child) => AppBar(
         centerTitle: true,
-        titleSpacing: AppDimens.zero,
+        titleSpacing: AppDimens.s,
         backgroundColor: backgroundColorAnimation.value,
-        leading: IconButton(
-          padding: EdgeInsets.zero,
-          icon: const Icon(Icons.arrow_back_ios_rounded),
-          iconSize: AppDimens.backArrowSize,
-          color: isScrolled.value ? AppColors.textPrimary : AppColors.white,
-          onPressed: () => AutoRouter.of(context).pop(),
-        ),
+        leading: BackTextButton(text: LocaleKeys.common_back.tr(), color: color),
+        leadingWidth: AppDimens.xxc,
         title: Text(
           isScrolled.value ? topic.strippedTitle : title,
-          style: AppTypography.h4Bold.copyWith(
-            height: 1,
-            color: isScrolled.value ? AppColors.textPrimary : AppColors.white,
+          style: AppTypography.h4Medium.copyWith(
+            fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
+            height: 1.11,
+            color: color,
           ),
         ),
         actions: [
           BookmarkButton.topic(
             topic: topic.asPreview,
             briefId: cubit.briefId,
-            color: isScrolled.value ? AppColors.textPrimary : AppColors.white,
+            color: color,
             snackbarController: snackbarController,
           ),
-          const SizedBox(width: AppDimens.s),
           IconButton(
             key: const Key('share-topic-button'),
+            splashColor: AppColors.transparent,
+            highlightColor: AppColors.transparent,
             onPressed: () async {
               await shareTopicArticlesList(
                 context,
@@ -61,7 +58,7 @@ class _TopicAppBar extends StatelessWidget {
             iconSize: AppDimens.xxl,
             icon: SvgPicture.asset(
               AppVectorGraphics.share,
-              color: isScrolled.value ? AppColors.textPrimary : AppColors.white,
+              color: color,
             ),
           ),
         ],
