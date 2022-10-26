@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/main/main_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/restart_app_widget.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/release_notes/release_note_popup.dart';
 import 'package:fimber/fimber.dart';
@@ -46,13 +47,7 @@ class MainPage extends HookWidget {
           context: context,
           releaseNote: state.releaseNote,
         ),
-        resetRouteStack: (_) async {
-          await AutoRouter.of(context).replaceAll(
-            [
-              const EntryPageRoute(),
-            ],
-          );
-        },
+        resetRouteStack: (_) => RestartAppWidget.restartApp(context),
         orElse: () {},
       );
     });
