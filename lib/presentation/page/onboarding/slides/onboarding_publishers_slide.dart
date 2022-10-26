@@ -49,7 +49,7 @@ class OnboardingPublishersSlide extends StatelessWidget {
               children: [
                 AutoSizeText(
                   LocaleKeys.onboarding_headerSlideOne.tr(),
-                  style: AppTypography.h0Bold.copyWith(height: 1.14),
+                  style: AppTypography.onBoardingHeader.copyWith(height: 1.14),
                   maxLines: 3,
                   stepGranularity: 0.1,
                 ),

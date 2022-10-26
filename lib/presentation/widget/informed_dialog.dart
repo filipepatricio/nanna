@@ -16,14 +16,12 @@ class InformedDialog extends HookWidget {
   const InformedDialog._({
     required this.title,
     required this.text,
-    this.icon,
     this.secondaryText,
     this.action,
     this.onWillPop,
     Key? key,
   }) : super(key: key);
 
-  final Widget? icon;
   final String title;
   final String text;
   final String? secondaryText;
@@ -56,12 +54,6 @@ class InformedDialog extends HookWidget {
     return show<void>(
       context,
       routeName: appUpdateDialogRouteName,
-      icon: SvgPicture.asset(
-        AppVectorGraphics.megaphone,
-        width: AppDimens.onboardingIconSize,
-        height: AppDimens.onboardingIconSize,
-        fit: BoxFit.contain,
-      ),
       title: LocaleKeys.update_title.tr(),
       text: LocaleKeys.update_body.tr(),
       secondaryText: availableVersion != null ? LocaleKeys.update_versionAvailable.tr(args: [availableVersion]) : null,
@@ -69,7 +61,6 @@ class InformedDialog extends HookWidget {
         withIcon: false,
         url: platformStoreLink,
         buttonLabel: LocaleKeys.update_button.tr(),
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
         launchExternalApp: true,
       ),
       onWillPop: onWillPop ?? () async => true,
@@ -124,7 +115,6 @@ class InformedDialog extends HookWidget {
         builder: (context) => InformedDialog._(
           title: title,
           text: text,
-          icon: icon,
           secondaryText: secondaryText,
           action: action,
           onWillPop: onWillPop,
@@ -140,12 +130,7 @@ class InformedDialog extends HookWidget {
           horizontal: AppDimens.l,
           vertical: AppDimens.l,
         ),
-        contentPadding: const EdgeInsets.fromLTRB(
-          AppDimens.l,
-          AppDimens.xl,
-          AppDimens.l,
-          AppDimens.xxl,
-        ),
+        contentPadding: const EdgeInsets.all(AppDimens.l),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -154,13 +139,9 @@ class InformedDialog extends HookWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (icon != null) ...[
-                icon!,
-                const SizedBox(height: AppDimens.l),
-              ],
               Text(
                 title,
-                style: AppTypography.h4Bold,
+                style: AppTypography.h0Medium,
               ),
               const SizedBox(height: AppDimens.m),
               Text(
@@ -171,12 +152,12 @@ class InformedDialog extends HookWidget {
                 const SizedBox(height: AppDimens.l),
                 Text(
                   secondaryText!,
-                  style: AppTypography.b2Regular.copyWith(color: AppColors.textGrey),
+                  style: AppTypography.b2Regular.copyWith(color: AppColors.neutralGrey),
                 ),
               ],
               if (action != null) ...[
                 const SizedBox(height: AppDimens.l),
-                Center(child: action),
+                action!,
               ]
             ],
           ),

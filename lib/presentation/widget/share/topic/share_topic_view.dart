@@ -233,7 +233,7 @@ class _TopicHeader extends StatelessWidget {
               children: [
                 InformedMarkdownBody(
                   markdown: topic.title,
-                  baseTextStyle: AppTypography.h0Bold.copyWith(
+                  baseTextStyle: AppTypography.onBoardingHeader.copyWith(
                     color: AppColors.white,
                     height: 1.25,
                   ),
