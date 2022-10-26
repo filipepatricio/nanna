@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
-import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -25,7 +24,7 @@ extension WidgetTesterExtension on WidgetTester {
     DependencyOverrideCallback? dependencyOverride,
   }) async {
     final isTab = isTabRoute(initialRoute);
-    final mainRouter = MainRouter(mainRouterKey);
+    final mainRouter = MainRouter(GlobalKey());
 
     final getIt = await configureDependencies(AppConfig.mock.name);
     getIt.allowReassignment = true;
