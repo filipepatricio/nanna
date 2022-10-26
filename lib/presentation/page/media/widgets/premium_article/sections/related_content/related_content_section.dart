@@ -55,9 +55,6 @@ class RelatedContentSection extends StatelessWidget {
             padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
             child: RelaxView.article(),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).padding.bottom + AppDimens.l,
-          ),
         ],
       ),
     );

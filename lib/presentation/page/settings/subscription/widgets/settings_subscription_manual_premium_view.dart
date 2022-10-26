@@ -48,6 +48,7 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
               ),
             ],
             const SizedBox(height: AppDimens.l),
+            const AudioPlayerBannerPlaceholder(),
           ],
         ),
       ),

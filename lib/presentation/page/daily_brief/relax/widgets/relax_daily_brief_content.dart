@@ -74,28 +74,14 @@ class _DailyBriefFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        children: [
-          if (callToAction.preText != null) ...[
-            TextSpan(
-              text: callToAction.preText,
-              style: AppTypography.b2Regular.copyWith(
-                color: AppColors.darkerGrey,
-              ),
-            ),
-            const TextSpan(text: ' '),
-          ],
-          TextSpan(
-            text: callToAction.actionText,
-            style: AppTypography.b2Bold.copyWith(
-              decoration: TextDecoration.underline,
-            ),
-            recognizer: TapGestureRecognizer()..onTap = context.goToExplore,
-          ),
-        ],
-      ),
-    );
+    final preText = callToAction.preText;
+    final actionText = callToAction.actionText;
+
+    return preText != null
+        ? FilledButton.white(
+            text: "$preText $actionText",
+            onTap: context.goToExplore,
+          )
+        : const SizedBox.shrink();
   }
 }

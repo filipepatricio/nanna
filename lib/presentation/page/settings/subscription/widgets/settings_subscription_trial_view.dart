@@ -51,13 +51,16 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
             const SizedBox(height: AppDimens.l),
             const InformedDivider(),
             const SizedBox(height: AppDimens.l),
-            if (subscription.manageSubscriptionURL.isNotEmpty)
+            if (subscription.manageSubscriptionURL.isNotEmpty) ...[
               LinkLabel(
                 label: LocaleKeys.subscription_cancelSubscription.tr(),
                 style: AppTypography.buttonBold,
                 align: TextAlign.start,
                 onTap: onCancelSubscriptionTap,
               ),
+              const SizedBox(height: AppDimens.l),
+            ],
+            const AudioPlayerBannerPlaceholder(),
           ],
         ),
       ),
