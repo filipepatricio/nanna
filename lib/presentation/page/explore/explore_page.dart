@@ -107,9 +107,6 @@ class ExplorePage extends HookWidget {
                     ),
                     state.maybeMap(
                       initialLoading: (_) => const _LoadingSection(),
-                      orElse: () => const SliverToBoxAdapter(),
-                    ),
-                    state.maybeMap(
                       idle: (state) => _ItemList(
                         items: state.items,
                         snackbarController: snackbarController,
