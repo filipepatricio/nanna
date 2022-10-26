@@ -44,4 +44,16 @@ fragment articleFragment on Article {
     primaryCategory {
         ...categoryFragment
     }
+    curationInfo {
+        byline
+        curator {
+            __typename
+            ... on Expert {
+                ...expertFragment
+            }
+            ... on EditorialTeam {
+                ...editorialTeamFragment
+            }
+        }
+    }
 }

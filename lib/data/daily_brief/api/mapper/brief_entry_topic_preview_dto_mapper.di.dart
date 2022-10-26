@@ -16,7 +16,7 @@ class BriefEntryTopicPreviewDTOMapper implements Mapper<BriefEntryItemDTO, Topic
     this._categoryDTOMapper,
   );
 
-  final TopicOwnerDTOMapper _topicOwnerDTOMapper;
+  final CuratorDTOMapper _topicOwnerDTOMapper;
   final TopicPublisherInformationDTOMapper _topicPublisherInformationDTOMapper;
   final ImageDTOMapper _imageDTOMapper;
   final CategoryDTOMapper _categoryDTOMapper;

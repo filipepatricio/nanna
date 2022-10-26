@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/image/data/image.dart';
 
-abstract class TopicOwner {
-  const TopicOwner({
+abstract class Curator {
+  const Curator({
     required this.id,
     required this.name,
     required this.bio,
@@ -14,7 +14,7 @@ abstract class TopicOwner {
   final Image? avatar;
 }
 
-class Editor extends TopicOwner {
+class Editor extends Curator {
   const Editor({
     required String id,
     required String name,
@@ -28,7 +28,7 @@ class Editor extends TopicOwner {
         );
 }
 
-class Expert extends TopicOwner {
+class Expert extends Curator {
   const Expert({
     required String id,
     required String name,
@@ -55,7 +55,7 @@ class Expert extends TopicOwner {
   bool get hasSocialMediaLinks => instagram != null || linkedin != null || website != null;
 }
 
-class EditorialTeam extends TopicOwner {
+class EditorialTeam extends Curator {
   const EditorialTeam({
     required String name,
     required String bio,
@@ -66,6 +66,6 @@ class EditorialTeam extends TopicOwner {
         );
 }
 
-class UnknownOwner extends TopicOwner {
-  const UnknownOwner() : super(id: '', name: '', bio: '');
+class UnknownCurator extends Curator {
+  const UnknownCurator() : super(id: '', name: '', bio: '');
 }

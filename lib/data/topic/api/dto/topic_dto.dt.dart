@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/curator_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -35,7 +35,7 @@ class TopicDTO {
   final String strippedTitle;
   final String introduction;
   final String url;
-  final TopicOwnerDTO owner;
+  final CuratorDTO owner;
   final String lastUpdatedAt;
   final TopicPublisherInformationDTO publisherInformation;
   final ImageDTO heroImage;
