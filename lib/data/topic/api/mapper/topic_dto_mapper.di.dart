@@ -25,7 +25,7 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
   final EntryDTOMapper _entryDTOMapper;
   final SummaryCardDTOMapper _summaryCardDTOMapper;
   final TopicPublisherInformationDTOMapper _topicPublisherInformationDTOMapper;
-  final TopicOwnerDTOMapper _topicOwnerDTOMapper;
+  final CuratorDTOMapper _topicOwnerDTOMapper;
   final CategoryDTOMapper _categoryDTOMapper;
 
   @override

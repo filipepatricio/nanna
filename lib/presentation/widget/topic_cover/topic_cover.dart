@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
+import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';

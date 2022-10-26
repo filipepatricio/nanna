@@ -63,7 +63,7 @@ const _classes = [
   AudioRepository,
   ArticleRepository,
   AnalyticsRepository,
-  TopicOwnerDTOMapper,
+  CuratorDTOMapper,
   PublisherDTOMapper,
   ImageDTOMapper,
   EntryDTOMapper,

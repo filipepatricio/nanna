@@ -1,16 +1,17 @@
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/curator_dto.dt.dart';
+import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class TopicOwnerDTOMapper implements Mapper<TopicOwnerDTO, TopicOwner> {
-  TopicOwnerDTOMapper(this._imageDTOMapper);
+class CuratorDTOMapper implements Mapper<CuratorDTO, Curator> {
+  CuratorDTOMapper(this._imageDTOMapper);
+
   final ImageDTOMapper _imageDTOMapper;
 
   @override
-  TopicOwner call(TopicOwnerDTO data) {
+  Curator call(CuratorDTO data) {
     return data.map(
       expert: (data) => Expert(
         id: data.id,
@@ -33,7 +34,7 @@ class TopicOwnerDTOMapper implements Mapper<TopicOwnerDTO, TopicOwner> {
         name: data.name,
         bio: data.bio,
       ),
-      unknown: (data) => const UnknownOwner(),
+      unknown: (data) => const UnknownCurator(),
     );
   }
 }

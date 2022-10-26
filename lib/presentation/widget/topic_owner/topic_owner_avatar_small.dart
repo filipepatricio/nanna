@@ -9,14 +9,14 @@ class _TopicOwnerAvatarSmall extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final TopicOwner owner;
+  final Curator owner;
   final Brightness mode;
   final bool shortLabel;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    if (owner is UnknownOwner) {
+    if (owner is UnknownCurator) {
       return const TopicOwnerAvatarUnknown();
     }
 
@@ -27,8 +27,8 @@ class _TopicOwnerAvatarSmall extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _TopicOwnerImage(
-            owner: owner,
+          CuratorImage(
+            curator: owner,
             imageWidth: AppDimens.avatarSize,
             imageHeight: AppDimens.avatarSize,
             editorAvatar: AppVectorGraphics.editorialTeamAvatar,

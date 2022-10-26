@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
+import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dt.dart';
@@ -29,7 +29,7 @@ class TopicOwnerPage extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final TopicOwner owner;
+  final Curator owner;
   final String? fromTopicSlug;
 
   @override
@@ -164,7 +164,7 @@ class _ActionsBar extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  final TopicOwner owner;
+  final Curator owner;
   final ScrollController controller;
 
   @override

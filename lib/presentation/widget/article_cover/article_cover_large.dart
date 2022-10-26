@@ -32,7 +32,7 @@ class _ArticleCoverLarge extends ArticleCover {
             ),
             const SizedBox(height: AppDimens.sl),
           ],
-          if (showRecommendedBy) const ArticleRecommendedByView(),
+          if (showRecommendedBy) ArticleRecommendedByView(curationInfo: article.curationInfo),
           if (article.hasImage) ...[
             const SizedBox(height: AppDimens.m),
             _ArticleAspectRatioCover(

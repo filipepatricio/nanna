@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:better_informed_mobile/data/article/api/dto/article_curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
@@ -7,7 +8,7 @@ import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dar
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/curator_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
@@ -41,6 +42,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     ArticleProgressState progressState,
     bool locked,
     @JsonKey(name: 'primaryCategory') CategoryDTO category,
+    ArticleCurationInfoDTO curationInfo,
   ) = BriefEntryItemDTOArticle;
 
   @FreezedUnionValue('Topic')
@@ -51,7 +53,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String strippedTitle,
     String introduction,
     String url,
-    TopicOwnerDTO owner,
+    CuratorDTO owner,
     String lastUpdatedAt,
     TopicPublisherInformationDTO publisherInformation,
     ImageDTO heroImage,
