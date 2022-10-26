@@ -149,7 +149,7 @@ void main() {
 
       await tester.pumpAndSettle();
       expect(goToExploreLabelFinder, findsOneWidget);
-      tapTextSpan(goToExploreLabelFinder, MockDTO.callToAction.actionText);
+      await tester.tap(goToExploreLabelFinder);
       await tester.pumpAndSettle();
 
       expect(find.byType(ExplorePage), findsOneWidget);
