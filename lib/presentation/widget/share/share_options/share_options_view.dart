@@ -60,10 +60,7 @@ class _ShareOptionsView extends HookWidget {
           orElse: () => [
             const Padding(
               padding: EdgeInsets.all(AppDimens.l),
-              child: Loader(
-                strokeWidth: 3.0,
-                color: AppColors.limeGreen,
-              ),
+              child: Loader(strokeWidth: 3.0),
             ),
           ],
           idle: (data) => [

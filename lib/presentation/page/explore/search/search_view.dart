@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/items_grid_view/items_grid_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -46,9 +45,7 @@ class SearchView extends HookWidget {
         initial: (_) => const SliverToBoxAdapter(child: SizedBox.shrink()),
         loading: (_) => const SliverFillRemaining(
           child: Center(
-            child: Loader(
-              color: AppColors.limeGreen,
-            ),
+            child: Loader(),
           ),
         ),
         empty: (state) => SliverToBoxAdapter(

@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +15,7 @@ class SeeAllLoadMoreIndicator extends StatelessWidget {
       return const SliverPadding(
         padding: EdgeInsets.symmetric(vertical: AppDimens.l),
         sliver: SliverToBoxAdapter(
-          child: Loader(
-            color: AppColors.limeGreen,
-          ),
+          child: Loader(),
         ),
       );
     } else {

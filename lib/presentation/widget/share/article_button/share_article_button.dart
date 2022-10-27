@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button_cubit.di.dart';
@@ -61,10 +60,7 @@ class ShareArticleButton extends HookWidget {
             right: AppDimens.m,
             bottom: AppDimens.m,
             top: AppDimens.m,
-            child: Loader(
-              strokeWidth: 2.0,
-              color: AppColors.limeGreen,
-            ),
+            child: Loader(strokeWidth: 2.0),
           ),
       ],
     );

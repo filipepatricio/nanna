@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -39,9 +38,7 @@ class ItemsGridView extends StatelessWidget {
           const SliverPadding(
             padding: EdgeInsets.all(AppDimens.xl),
             sliver: SliverToBoxAdapter(
-              child: Loader(
-                color: AppColors.limeGreen,
-              ),
+              child: Loader(),
             ),
           ),
       ],
