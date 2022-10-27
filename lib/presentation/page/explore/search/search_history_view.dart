@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,7 +31,7 @@ class SearchHistoryView extends HookWidget {
           (BuildContext context, int index) {
             final query = searchHistory[index];
             return Padding(
-              padding: const EdgeInsets.only(bottom: AppDimens.xl),
+              padding: const EdgeInsets.only(bottom: AppDimens.ml),
               child: Row(
                 children: [
                   Expanded(
@@ -60,11 +59,12 @@ class SearchHistoryView extends HookWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: AppDimens.s),
-                  ExpandTapWidget(
+                  GestureDetector(
                     onTap: () => explorePageCubit.removeSearchHistoryQuery(query),
-                    tapPadding: const EdgeInsets.all(AppDimens.s),
-                    child: SvgPicture.asset(AppVectorGraphics.close),
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppDimens.s),
+                      child: SvgPicture.asset(AppVectorGraphics.close),
+                    ),
                   ),
                 ],
               ),

@@ -66,7 +66,7 @@ class _SearchBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final query = useState('');
-    final searchTextFieldfocusNode = useFocusNode();
+    final searchTextFieldFocusNode = useFocusNode();
 
     useEffect(
       () {
@@ -95,7 +95,7 @@ class _SearchBar extends HookWidget {
       child: TextFormField(
         controller: searchTextEditingController,
         autofocus: false,
-        focusNode: searchTextFieldfocusNode,
+        focusNode: searchTextFieldFocusNode,
         cursorHeight: AppDimens.sl,
         cursorColor: AppColors.charcoal,
         textInputAction: TextInputAction.search,
@@ -116,7 +116,7 @@ class _SearchBar extends HookWidget {
               ? GestureDetector(
                   onTap: () {
                     searchTextEditingController.clear();
-                    FocusScope.of(context).requestFocus(searchTextFieldfocusNode);
+                    FocusScope.of(context).requestFocus(searchTextFieldFocusNode);
                   },
                   child: SvgPicture.asset(
                     AppVectorGraphics.clearText,
