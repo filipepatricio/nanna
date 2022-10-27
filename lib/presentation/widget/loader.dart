@@ -3,10 +3,9 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shimmer/shimmer.dart';
 
-const _logoHeight = 43.0;
-const _logoWidth = 204.0;
+const _logoHeight = 63.0;
+const _logoWidth = 270.0;
 
 class Loader extends StatelessWidget {
   const Loader({
@@ -35,29 +34,11 @@ class LoaderLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logo = SvgPicture.asset(
-      AppVectorGraphics.informedLogoDark,
-      width: _logoWidth,
-      height: _logoHeight,
-    );
-
     return Center(
-      child: Stack(
-        children: [
-          logo,
-          Shimmer(
-            gradient: const LinearGradient(
-              colors: [
-                AppColors.transparentWhite,
-                AppColors.white70,
-                AppColors.transparentWhite,
-                AppColors.white70,
-              ],
-            ),
-            // Necessary to solve the shimmer's shape
-            child: logo,
-          ),
-        ],
+      child: SvgPicture.asset(
+        AppVectorGraphics.launcherLogoInformed,
+        width: _logoWidth,
+        height: _logoHeight,
       ),
     );
   }

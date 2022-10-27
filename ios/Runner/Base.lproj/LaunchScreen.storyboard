@@ -19,8 +19,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
-                                <rect key="frame" x="105" y="426.5" width="204" height="43"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="NewLaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
+                                <rect key="frame" x="105" y="426.5" width="270" height="63"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.98879617450000001" green="0.9801579118" blue="0.97257465119999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -36,6 +36,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchImage" width="204" height="43"/>
+        <image name="NewLaunchImage" width="270" height="63"/>
     </resources>
 </document>
