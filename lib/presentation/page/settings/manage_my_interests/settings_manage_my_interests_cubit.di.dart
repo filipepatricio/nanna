@@ -58,7 +58,7 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
       );
 
       if (!didUpdate) {
-        emit(SettingsManageMyInterestsState.showMessage(LocaleKeys.common_error_tryAgainLater.tr()));
+        emit(SettingsManageMyInterestsState.showMessage(LocaleKeys.common_error_body.tr()));
 
         final categoryPreferences = await _getCategoryPreferencesUseCase();
         emit(SettingsManageMyInterestsState.myInterestsSettingsLoaded(categoryPreferences));

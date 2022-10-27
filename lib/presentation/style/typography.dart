@@ -83,7 +83,7 @@ class AppTypography {
     height: 1.33,
   );
 
-  static const TextStyle h3Normal = TextStyle(
+  static const TextStyle h3Regular = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
     fontSize: 18,

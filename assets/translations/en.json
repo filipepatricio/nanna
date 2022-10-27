@@ -8,7 +8,6 @@
     "signUp": "Sign up",
     "cancel": "Cancel",
     "generalError": "Something went wrong.\nTry again later.",
-    "somethingWentWrong": "Something went wrong",
     "seeAll": "See All",
     "search": "Search",
     "gotIt": "Got it",
@@ -24,8 +23,9 @@
     "copyLink": "Copy link",
     "undo": "Undo",
     "error": {
-      "oops": "Oops",
+      "title": "Something went wrong",
       "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy ",
+      "body": "This error has been reported.",
       "tryAgainLater": "👎 Oops, looks like something went wrong, please try again later!"
     }
   },
@@ -79,8 +79,6 @@
     },
     "justSec": "Just a sec...",
     "loading": "We’re loading your brief",
-    "oops": "Oops!",
-    "tryAgainLater": "Something went wrong\n try again later",
     "readingList": "Reading list",
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
@@ -240,12 +238,15 @@
     "goBackToTopic": "Back to topic overview",
     "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
-    "loadError": "Something went wrong\n while loading the article",
+    "error":{
+      "title": "Oops",
+      "body": "Something went wrong\n while loading the article"
+    },
     "continueToArticle": "Continue reading",
     "geoblockedError": {
       "title": "Content unavailable",
       "content": "The content you requested is not yet available in your country.",
-      "action": "Okay"
+      "action": "Ok"
     },
     "topicOverview": "Topic Overview",
     "relatedContent": {
