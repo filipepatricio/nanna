@@ -52,7 +52,8 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   }
 
   Future<void> submitSearchPhrase(String query) async {
-    _queryStreamController?.add(query.trim());
+    await _initializeQueryController();
+    await search(query);
   }
 
   Future<void> refresh() async {
