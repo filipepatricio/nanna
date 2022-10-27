@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
+import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
@@ -90,6 +91,13 @@ class BookmarkListView extends HookWidget {
           child: InformedAnimatedSwitcher(
             child: state.maybeMap(
               initial: (_) => const SizedBox.shrink(),
+              error: (_) => Center(
+                child: GeneralErrorView(
+                  title: LocaleKeys.common_error_title.tr(),
+                  content: LocaleKeys.common_error_body.tr(),
+                  retryCallback: cubit.loadNextPage,
+                ),
+              ),
               loading: (_) => const Center(
                 child: Loader(
                   color: AppColors.neutralGrey,

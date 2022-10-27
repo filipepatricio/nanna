@@ -11,7 +11,6 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
@@ -22,6 +21,7 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_options/share_options_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_articles_select_view.dart';
@@ -109,51 +109,34 @@ class _TopicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: state.maybeMap(
+        idle: (_) => null,
+        orElse: () => InformedCupertinoAppBar(
+          brightness: Brightness.light,
+          backLabel: LocaleKeys.common_back.tr(),
+        ),
+      ),
       body: state.maybeMap(
         idle: (state) => _TopicIdleView(
           topic: state.topic,
           cubit: cubit,
           tutorialCoachMark: tutorialCoachMark,
         ),
-        loading: (_) => const _DefaultAppBarWrapper(
+        loading: (_) => const Center(
           child: TopicLoadingView(),
         ),
-        error: (_) => _DefaultAppBarWrapper(
-          child: GeneralErrorView(
-            title: LocaleKeys.dailyBrief_oops.tr(),
-            content: LocaleKeys.dailyBrief_tryAgainLater.tr(),
-            svgPath: AppVectorGraphics.magError,
-            retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+        error: (_) => Padding(
+          padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
+          child: Center(
+            child: GeneralErrorView(
+              title: LocaleKeys.common_error_title.tr(),
+              content: LocaleKeys.common_error_body.tr(),
+              retryCallback: () => cubit.initializeWithSlug(topicSlug, briefId),
+            ),
           ),
         ),
         orElse: () => const SizedBox.shrink(),
       ),
-    );
-  }
-}
-
-class _DefaultAppBarWrapper extends StatelessWidget {
-  const _DefaultAppBarWrapper({
-    required this.child,
-    Key? key,
-  }) : super(key: key);
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        child,
-        Align(
-          alignment: Alignment.topCenter,
-          child: AppBar(
-            systemOverlayStyle: AppTheme.systemUIOverlayStyleDark,
-            foregroundColor: AppColors.textPrimary,
-          ),
-        ),
-      ],
     );
   }
 }

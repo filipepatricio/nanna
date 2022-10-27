@@ -17,6 +17,7 @@ import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_v
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_page_loader.di.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -51,8 +52,13 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   Future<void> initialize(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) async {
     emit(BookmarkListViewState.loading(filter));
 
-    final paginationState = await _initializePaginationEngine(filter, sort, order);
-    _handlePaginationState(paginationState);
+    try {
+      final paginationState = await _initializePaginationEngine(filter, sort, order);
+      _handlePaginationState(paginationState);
+    } catch (e, s) {
+      Fimber.e('Loading bookmark list failed', ex: e, stacktrace: s);
+      emit(BookmarkListViewState.error());
+    }
 
     _registerBookmarkChangeNotification(filter, sort, order);
   }
@@ -65,8 +71,13 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
 
         emit(BookmarkListViewState.loadMore(filter, bookmarks));
 
-        final paginationState = await _paginationEngine.loadMore();
-        _handlePaginationState(paginationState);
+        try {
+          final paginationState = await _paginationEngine.loadMore();
+          _handlePaginationState(paginationState);
+        } catch (e, s) {
+          Fimber.e('Loading bookmark list failed', ex: e, stacktrace: s);
+          emit(BookmarkListViewState.error());
+        }
       },
     );
   }
@@ -182,6 +193,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
       sort: sort,
       order: order,
     );
+
     return _paginationEngine.loadMore();
   }
 

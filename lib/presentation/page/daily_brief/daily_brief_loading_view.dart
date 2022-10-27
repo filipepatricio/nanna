@@ -13,11 +13,8 @@ class DailyBriefLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(
-        AppDimens.pageHorizontalMargin,
-        AppDimens.safeTopPadding(context),
-        AppDimens.pageHorizontalMargin,
-        AppDimens.zero,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimens.pageHorizontalMargin,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

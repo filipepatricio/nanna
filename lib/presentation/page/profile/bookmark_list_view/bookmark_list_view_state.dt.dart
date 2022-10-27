@@ -11,6 +11,9 @@ class BookmarkListViewState with _$BookmarkListViewState {
   factory BookmarkListViewState.initial() = _BookmarkListViewStateInitial;
 
   @Implements<BuildState>()
+  factory BookmarkListViewState.error() = _BookmarkListViewStateError;
+
+  @Implements<BuildState>()
   factory BookmarkListViewState.loading(
     BookmarkFilter filter,
   ) = _BookmarkListViewStateLoading;

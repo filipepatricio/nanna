@@ -39,11 +39,11 @@ class GeneralErrorView extends StatelessWidget {
             children: [
               TextSpan(
                 text: '$title\n',
-                style: AppTypography.h3bold,
+                style: AppTypography.h4Bold,
               ),
               TextSpan(
                 text: content,
-                style: AppTypography.h3Normal,
+                style: AppTypography.h4Medium,
               ),
             ],
           ),
