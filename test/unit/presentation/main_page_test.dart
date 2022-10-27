@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
-import 'package:flutter/material.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -34,7 +34,7 @@ void main() {
     );
 
     expect(find.byType(TopicPage), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_rounded));
+    await tester.tap(find.byType(BackTextButton));
     await tester.pumpAndSettle();
     expect(find.byType(DailyBriefPage), findsOneWidget);
   });
@@ -61,7 +61,7 @@ void main() {
     );
 
     expect(find.byType(MediaItemPage), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_rounded));
+    await tester.tap(find.byType(BackTextButton));
     await tester.pumpAndSettle();
     expect(find.byType(DailyBriefPage), findsOneWidget);
   });
@@ -91,10 +91,10 @@ void main() {
       ),
       findsOneWidget,
     );
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_rounded));
+    await tester.tap(find.byType(BackTextButton));
     await tester.pumpAndSettle();
     expect(find.byType(TopicPage), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_rounded));
+    await tester.tap(find.byType(BackTextButton));
     await tester.pumpAndSettle();
     expect(find.byType(DailyBriefPage), findsOneWidget);
   });
