@@ -133,7 +133,6 @@ class _SearchBar extends HookWidget {
         onFieldSubmitted: (query) {
           if (searchViewCubit.shouldTriggerSearch(query)) {
             explorePageCubit.search();
-            searchViewCubit.submitSearchPhrase(query);
           }
         },
         onTap: explorePageCubit.startTyping,
@@ -186,7 +185,7 @@ class _CancelButton extends HookWidget {
                     LocaleKeys.common_cancel.tr(),
                     style: AppTypography.h4Medium.copyWith(
                       color: AppColors.textGrey,
-                      height: 1.2,
+                      height: 1.1,
                     ),
                   ),
                 ),
