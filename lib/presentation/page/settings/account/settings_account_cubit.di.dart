@@ -61,7 +61,7 @@ class SettingsAccountCubit extends Cubit<SettingsAccountState> {
         return await _signOutUseCase();
       }
 
-      emit(SettingsAccountState.showMessage(LocaleKeys.common_error_tryAgainLater.tr()));
+      emit(SettingsAccountState.showMessage(LocaleKeys.common_error_body.tr()));
     } catch (e, s) {
       Fimber.e('Deleting account failed', ex: e, stacktrace: s);
     } finally {

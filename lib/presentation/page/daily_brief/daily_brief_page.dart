@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_subsection.
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/relax.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
@@ -26,6 +25,7 @@ import 'package:better_informed_mobile/presentation/util/markdown_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
@@ -33,6 +33,7 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -134,7 +135,7 @@ class _DailyBriefPage extends HookWidget {
                         scrollController: scrollController,
                       ),
                     ),
-                    orElse: () => const SliverToBoxAdapter(),
+                    orElse: () => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
                   ),
                   state.maybeMap(
                     idle: (state) => _IdleContent(
@@ -144,22 +145,12 @@ class _DailyBriefPage extends HookWidget {
                       scrollController: scrollController,
                       snackbarController: snackbarController,
                     ),
-                    error: (_) => SliverPadding(
-                      padding: EdgeInsets.fromLTRB(
-                        AppDimens.pageHorizontalMargin,
-                        AppDimens.safeTopPadding(context),
-                        AppDimens.pageHorizontalMargin,
-                        AppDimens.zero,
-                      ),
-                      sliver: SliverToBoxAdapter(
-                        child: Center(
-                          child: CardsErrorView(
-                            retryAction: cubit.loadBriefs,
-                            size: Size(
-                              AppDimens.topicCardBigMaxWidth(context),
-                              AppDimens.topicCardBigMaxHeight,
-                            ),
-                          ),
+                    error: (_) => SliverFillRemaining(
+                      child: Center(
+                        child: GeneralErrorView(
+                          title: LocaleKeys.common_error_title.tr(),
+                          content: LocaleKeys.common_error_body.tr(),
+                          retryCallback: cubit.loadBriefs,
                         ),
                       ),
                     ),

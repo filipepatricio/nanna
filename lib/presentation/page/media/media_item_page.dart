@@ -7,21 +7,17 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/free_arti
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
-import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
-
-const _tryAgainButtonWidth = 150.0;
+import 'package:url_launcher/url_launcher.dart';
 
 class MediaItemPage extends HookWidget {
   const MediaItemPage({
@@ -73,13 +69,18 @@ class MediaItemPage extends HookWidget {
             topicId: topicId,
             topicSlug: topicSlug,
           ),
-          error: (data) => _ErrorContent(article: data.article),
+          error: (data) => _ErrorContent(
+            article: data.article,
+            onTryAgain: () {
+              cubit.initialize(article, slug, topicId, topicSlug, briefId);
+            },
+          ),
           emptyError: (_) => _ErrorContent(
             onTryAgain: () {
               cubit.initialize(article, slug, topicId, topicSlug, briefId);
             },
           ),
-          geoblocked: (_) => const _ErrorGeoblocked(),
+          geoblocked: (_) => const _ErrorGeoBlocked(),
           orElse: Container.new,
         ),
       ),
@@ -103,68 +104,62 @@ class _LoadingContent extends StatelessWidget {
 
 class _ErrorContent extends StatelessWidget {
   const _ErrorContent({
+    required this.onTryAgain,
     this.article,
-    this.onTryAgain,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle? article;
-  final VoidCallback? onTryAgain;
+  final VoidCallback onTryAgain;
+
+  Future<void> openUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.platformDefault,
+      );
+    } else {
+      Fimber.e('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final article = this.article;
 
     return Scaffold(
-      appBar: const _BaseAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(AppVectorGraphics.articleError),
-          const SizedBox(height: AppDimens.m),
-          Text(
-            LocaleKeys.dailyBrief_oops.tr(),
-            style: AppTypography.h3bold,
-            textAlign: TextAlign.center,
+      appBar: InformedCupertinoAppBar(
+        brightness: Brightness.light,
+        backLabel: LocaleKeys.common_back.tr(),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
+        child: Center(
+          child: GeneralErrorView(
+            title: LocaleKeys.article_error_title.tr(),
+            content: LocaleKeys.article_error_body.tr(),
+            action: article != null ? LocaleKeys.article_openSourceUrl.tr() : LocaleKeys.common_tryAgain.tr(),
+            retryCallback: () {
+              article == null ? onTryAgain.call() : openUrl(article.sourceUrl);
+            },
           ),
-          Text(
-            LocaleKeys.article_loadError.tr(),
-            style: AppTypography.h3Normal,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: AppDimens.xl),
-          if (article != null)
-            OpenWebButton(
-              url: article.sourceUrl,
-              buttonLabel: LocaleKeys.article_openSourceUrl.tr(),
-              padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-            )
-          else
-            Center(
-              child: SizedBox(
-                width: _tryAgainButtonWidth,
-                child: FilledButton.black(
-                  text: LocaleKeys.common_tryAgain.tr(),
-                  onTap: () {
-                    onTryAgain?.call();
-                  },
-                ),
-              ),
-            )
-        ],
+        ),
       ),
     );
   }
 }
 
-class _ErrorGeoblocked extends StatelessWidget {
-  const _ErrorGeoblocked({Key? key}) : super(key: key);
+class _ErrorGeoBlocked extends StatelessWidget {
+  const _ErrorGeoBlocked({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const _BaseAppBar(),
+      appBar: InformedCupertinoAppBar(
+        brightness: Brightness.light,
+        backLabel: LocaleKeys.common_back.tr(),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
         child: GeneralErrorView(
