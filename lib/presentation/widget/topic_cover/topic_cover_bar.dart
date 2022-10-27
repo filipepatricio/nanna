@@ -101,28 +101,15 @@ class _TopicCoverBarBig extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<TopicCoverBarCubit>();
-
-    useCubitListener<TopicCoverBarCubit, TopicCoverBarState>(cubit, (cubit, state, _) {
-      state.whenOrNull(
-        share: (topic, options) => shareTopicArticlesList(
-          context,
-          topic,
-          options,
-          snackbarController,
-        ),
-      );
-    });
-
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         PublisherLogoRow(topic: topic),
         const Spacer(),
-        ShareButton(
-          onTap: (options) => cubit.shareTopic(topic.slug, options),
-          backgroundColor: AppColors.transparent,
+        ShareTopicButton(
+          topic: topic,
+          snackbarController: snackbarController,
         ),
         const SizedBox(width: AppDimens.m),
         BookmarkButton.topic(

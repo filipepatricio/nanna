@@ -19,6 +19,7 @@ class ShareArticleButton extends HookWidget {
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
+
   final MediaItemArticle article;
   final WidgetBuilder? buttonBuilder;
   final Color? backgroundColor;
@@ -87,7 +88,6 @@ class _Button extends StatelessWidget {
 
     if (builder == null) {
       return ShareButton(
-        backgroundColor: backgroundColor,
         onTap: (shareOption) => cubit.share(shareOption, article),
       );
     } else {

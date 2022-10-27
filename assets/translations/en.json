@@ -315,9 +315,10 @@
     }
   },
   "shareTopic": {
-    "title": "Select the articles you want to share related to the topic",
-    "amountInfo": "You can share up to {} articles",
-    "selectedLabel": "{}/{} articles selected"
+    "articlesCount": {
+      "one": "{} article",
+      "other": "{} articles"
+    }
   },
   "shareQuote": {
     "readOn": "Read on ",
@@ -325,6 +326,9 @@
     "asImage": "Share quote as image",
     "asText": "Share quote as text",
     "asStory": "Share quote as story"
+  },
+  "shareArticle": {
+    "author": "By {}"
   },
   "bookmark": {
     "addBookmarkSuccess": "Saved to your Profile",

@@ -4,25 +4,31 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class ImageLoadResolver extends HookWidget {
+class ImageLoadResolver extends StatefulHookWidget {
   const ImageLoadResolver({
     required this.child,
     required this.images,
     required this.completer,
     Key? key,
   }) : super(key: key);
+
   final Widget child;
   final List<Image?> images;
   final Completer completer;
 
   @override
+  State<ImageLoadResolver> createState() => _ImageLoadResolverState();
+}
+
+class _ImageLoadResolverState extends State<ImageLoadResolver> {
+  @override
   Widget build(BuildContext context) {
     useEffect(
       () {
         if (!kIsTest) {
-          final notNullImages = images.whereType<Image>().toList();
+          final notNullImages = widget.images.whereType<Image>().toList();
           if (notNullImages.isEmpty) {
-            completer.complete();
+            widget.completer.complete();
             return () {};
           }
 
@@ -44,18 +50,19 @@ class ImageLoadResolver extends HookWidget {
           final subscription = mergedStream.listen(
             (event) {},
             onDone: () {
-              if (!completer.isCompleted) {
-                completer.complete();
+              if (!widget.completer.isCompleted) {
+                setState(() {});
+                widget.completer.complete();
               }
             },
-            onError: (e) => completer.completeError(e.toString()),
+            onError: (e) => widget.completer.completeError(e.toString()),
           );
           return () => subscription.cancel();
         }
       },
-      [images],
+      [widget.images],
     );
 
-    return child;
+    return widget.child;
   }
 }

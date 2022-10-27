@@ -22,6 +22,7 @@ const defaultDevices = [
 ];
 
 const shareImage = Device(name: 'share_image', size: Size(720, 1280));
+const shareSticker = Device(name: 'share_sticker', size: Size(480, 640));
 
 /// Can be used to take screenshots of very long lists without hiding overflowing widgets.
 const highDevice = Device(name: 'high_screen', size: Size(375, 1500));

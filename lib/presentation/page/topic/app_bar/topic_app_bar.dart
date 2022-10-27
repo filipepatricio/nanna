@@ -43,24 +43,14 @@ class _TopicAppBar extends StatelessWidget {
             color: color,
             snackbarController: snackbarController,
           ),
-          IconButton(
+          const SizedBox(width: AppDimens.s),
+          ShareTopicButton(
             key: const Key('share-topic-button'),
-            splashColor: AppColors.transparent,
-            highlightColor: AppColors.transparent,
-            onPressed: () async {
-              await shareTopicArticlesList(
-                context,
-                topic,
-                await showShareOptions(context),
-                snackbarController,
-              );
-            },
-            iconSize: AppDimens.xxl,
-            icon: SvgPicture.asset(
-              AppVectorGraphics.share,
-              color: color,
-            ),
+            topic: topic.asPreview,
+            snackbarController: snackbarController,
+            iconColor: isScrolled.value ? AppColors.textPrimary : AppColors.white,
           ),
+          const SizedBox(width: AppDimens.m),
         ],
       ),
     );

@@ -97,6 +97,7 @@ Image cloudinaryImageAuto({
   required double height,
   BoxFit? fit,
   String? testImage,
+  ImageType? imageType,
 }) =>
     _cloudinaryImage(
       publicId: publicId,
@@ -111,6 +112,7 @@ Image cloudinaryImageAuto({
       height: height,
       fit: fit,
       testImage: testImage,
+      imageType: imageType,
     );
 
 Image cloudinaryImageFit({

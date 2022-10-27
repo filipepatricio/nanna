@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/restart_app_widget.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:better_informed_mobile/presentation/util/device_type.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
@@ -75,15 +74,6 @@ class InformedApp extends HookWidget {
       );
     }
 
-    useEffect(
-      () {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => _precacheImages(context),
-        );
-      },
-      [],
-    );
-
     return Provider.value(
       value: getIt,
       child: RestartAppWidget(
@@ -116,19 +106,4 @@ class InformedApp extends HookWidget {
       ),
     );
   }
-}
-
-void _precacheImages(BuildContext context) {
-  precacheImage(
-    const AssetImage(
-      AppRasterGraphics.shareStickerBackgroundGreen,
-    ),
-    context,
-  );
-  precacheImage(
-    const AssetImage(
-      AppRasterGraphics.shareStickerBackgroundPeach,
-    ),
-    context,
-  );
 }
