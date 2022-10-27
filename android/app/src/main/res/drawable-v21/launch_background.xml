@@ -5,6 +5,6 @@
 
     <!-- logo -->
     <item
-        android:drawable="@drawable/dark_logo_informed"
+        android:drawable="@drawable/launcher_logo_informed"
         android:gravity="center"/>
 </layer-list>
