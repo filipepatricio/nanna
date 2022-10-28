@@ -27,15 +27,12 @@ class MagicLinkContent extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: SvgPicture.asset(
-                AppVectorGraphics.informedLogoDark,
+                AppVectorGraphics.launcherLogoInformed,
                 width: AppDimens.logoWidth,
                 height: AppDimens.logoHeight,
               ),
             ),
             const Spacer(),
-            Center(
-              child: SvgPicture.asset(AppVectorGraphics.mail),
-            ),
             const SizedBox(height: AppDimens.xl),
             Center(
               child: InformedMarkdownBody(
