@@ -1,14 +1,18 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dt.dart';
+import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_list_tile.dart';
-import 'package:better_informed_mobile/presentation/page/profile/profile_empty_page.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
+import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -17,7 +21,10 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_mes
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+part 'profile_empty_page.dart';
 
 typedef OnSortConfigChanged = Function(BookmarkSortConfigName configName);
 
@@ -97,10 +104,8 @@ class BookmarkListView extends HookWidget {
                   retryCallback: cubit.loadNextPage,
                 ),
               ),
-              loading: (_) => const Center(
-                child: Loader(),
-              ),
-              empty: (_) => ProfileEmptyPage(filter: filter),
+              loading: (_) => const BookmarkLoadingView(),
+              empty: (_) => _BookmarkEmptyView(filter: filter),
               idle: (state) => _Idle(
                 cubit: cubit,
                 bookmarks: state.bookmarks,

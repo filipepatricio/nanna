@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
@@ -42,10 +41,21 @@ class _PillsArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final row = Row(
+      children: const [
+        _Pill(width: 50),
+        SizedBox(width: AppDimens.s),
+        _Pill(width: 50),
+        SizedBox(width: AppDimens.s),
+        _Pill(width: 50),
+        SizedBox(width: AppDimens.s),
+        _Pill(width: 50),
+      ],
+    );
+
     return LoadingShimmer.defaultColor(
-      enabled: !kIsTest,
       child: SizedBox(
-        height: AppDimens.explorePillHeight,
+        height: AppDimens.explorePillHeight * 2 + AppDimens.m,
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           physics: const NeverScrollableScrollPhysics(),
@@ -54,15 +64,9 @@ class _PillsArea extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: const [
-                    _Pill(width: 120),
-                    SizedBox(width: AppDimens.s),
-                    _Pill(width: 80),
-                    SizedBox(width: AppDimens.s),
-                    _Pill(width: 100),
-                  ],
-                ),
+                row,
+                const SizedBox(height: AppDimens.m),
+                row,
               ],
             ),
           ],
@@ -109,7 +113,6 @@ class _StreamArea extends StatelessWidget {
     final size = MediaQuery.of(context).size.width * AppDimens.exploreTopicCellSizeFactor;
 
     return LoadingShimmer.defaultColor(
-      enabled: !kIsTest,
       child: SizedBox(
         height: size,
         child: ListView(
@@ -147,7 +150,7 @@ class _StreamCell extends StatelessWidget {
       decoration: const BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.all(
-          Radius.circular(AppDimens.m),
+          Radius.circular(AppDimens.s),
         ),
       ),
     );
