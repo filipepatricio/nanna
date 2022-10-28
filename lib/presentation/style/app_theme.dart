@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ class AppTheme {
           color: Colors.transparent,
           elevation: 0,
         ),
+        splashColor: kIsAppleDevice ? Colors.transparent : null,
+        highlightColor: kIsAppleDevice ? Colors.transparent : null,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           elevation: 0,
           backgroundColor: AppColors.background,
