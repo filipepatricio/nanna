@@ -70,7 +70,11 @@ dependencies:
     git:
       url: https://github.com/MohammedXAbdo/flutter_inappwebview.git
       ref: 93801e0ab78e2e017df2f136e24a59eacf6266e2
-  cached_network_image: 3.2.2
+  cached_network_image:
+    git:
+      url: https://github.com/davidmartos96/flutter_cached_network_image.git
+      ref: ce6d67111c727c3a44849d67d1c730985d999c9e
+      path: cached_network_image
   social_share: 2.2.1
   scrolls_to_top: 1.1.1
   dotted_border: 2.0.0+2
