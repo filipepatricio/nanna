@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_v
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_list_tile.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_empty_page.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
@@ -99,9 +98,7 @@ class BookmarkListView extends HookWidget {
                 ),
               ),
               loading: (_) => const Center(
-                child: Loader(
-                  color: AppColors.neutralGrey,
-                ),
+                child: Loader(),
               ),
               empty: (_) => ProfileEmptyPage(filter: filter),
               idle: (state) => _Idle(
@@ -181,9 +178,7 @@ class _Idle extends StatelessWidget {
           const SliverPadding(
             padding: EdgeInsets.all(AppDimens.xl),
             sliver: SliverToBoxAdapter(
-              child: Loader(
-                color: AppColors.neutralGrey,
-              ),
+              child: Loader(),
             ),
           ),
         const SliverToBoxAdapter(

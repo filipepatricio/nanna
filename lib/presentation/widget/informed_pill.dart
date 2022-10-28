@@ -28,8 +28,10 @@ class InformedPill extends StatelessWidget {
           vertical: AppDimens.s,
           horizontal: AppDimens.m,
         ),
+        alignment: Alignment.center,
         child: Text(
           title,
+          textAlign: TextAlign.center,
           style: AppTypography.b3Regular.copyWith(height: 1.1),
         ),
       ),
