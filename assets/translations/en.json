@@ -316,11 +316,12 @@
     }
   },
   "shareQuote": {
-    "readOn": "Read on ",
-    "title": "Article - {}",
-    "asImage": "Share quote as image",
-    "asText": "Share quote as text",
-    "asStory": "Share quote as story"
+    "title": "Share Quote",
+    "as": {
+      "image": "Image",
+      "text": "Text",
+      "igStory": "Instagram Story"
+    }
   },
   "shareArticle": {
     "author": "By {}"

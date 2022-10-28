@@ -59,11 +59,6 @@ class AppVectorGraphics {
 
   static const String openWeb = 'assets/vector_graphics/open_web_ic.svg';
 
-  static const String shareNotSelected = 'assets/vector_graphics/share_not_selected.svg';
-  static const String shareSelected = 'assets/vector_graphics/share_selected.svg';
-  static const String shareImage = 'assets/vector_graphics/share_image.svg';
-  static const String shareText = 'assets/vector_graphics/share_text.svg';
-  static const String shareStory = 'assets/vector_graphics/share_story.svg';
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
   static const String done = 'assets/vector_graphics/done.svg';
@@ -90,6 +85,9 @@ class AppVectorGraphics {
   static const String skipBack10Seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
   static const String skipForward10Seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
 
+  static const String image = 'assets/vector_graphics/image.svg';
+  static const String text = 'assets/vector_graphics/text.svg';
+  static const String igStory = 'assets/vector_graphics/ig_story.svg';
   static const String copy = 'assets/vector_graphics/copy.svg';
   static const String more = 'assets/vector_graphics/more.svg';
 

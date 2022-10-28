@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/share/share_options/share_option_item.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_options/share_options_cubit.di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -83,56 +84,13 @@ class _ShareOptionsView extends HookWidget {
             const Divider(height: 0),
             ...data.shareOptions
                 .map(
-                  (shareOption) => _Button(
+                  (shareOption) => ShareOptionItem(
                     svg: shareOption.getIcon(),
                     text: shareOption.getText(),
                     onTap: () => AutoRouter.of(context).pop(shareOption),
                   ),
                 )
                 .toList(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Button extends StatelessWidget {
-  const _Button({
-    required this.svg,
-    required this.text,
-    required this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  final String? svg;
-  final String text;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final svg = this.svg;
-
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(AppDimens.m),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(
-                text,
-                style: AppTypography.b2Regular,
-              ),
-            ),
-            if (svg != null) ...[
-              SvgPicture.asset(
-                svg,
-                width: AppDimens.l,
-                height: AppDimens.l,
-              ),
-            ],
           ],
         ),
       ),
