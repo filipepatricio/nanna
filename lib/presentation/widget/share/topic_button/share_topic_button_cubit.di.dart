@@ -1,31 +1,29 @@
 import 'dart:io';
 
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/share/data/share_content.dt.dart';
 import 'package:better_informed_mobile/domain/share/data/share_options.dart';
 import 'package:better_informed_mobile/domain/share/use_case/share_content_use_case.di.dart';
-import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view.dart';
+import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.di.dart';
+import 'package:better_informed_mobile/presentation/widget/share/topic/share_topic_view.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-enum ShareArticleButtonState { idle, processing, showMessage }
+enum ShareTopicButtonState { idle, processing, copiedMessage }
 
 @injectable
-class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
-  ShareArticleButtonCubit(
-    this._shareViewImageGenerator,
+class ShareTopicButtonCubit extends Cubit<ShareTopicButtonState> {
+  ShareTopicButtonCubit(
     this._shareContentUseCase,
-  ) : super(ShareArticleButtonState.idle);
+    this._shareViewImageGenerator,
+  ) : super(ShareTopicButtonState.idle);
 
-  final ShareViewImageGenerator _shareViewImageGenerator;
   final ShareContentUseCase _shareContentUseCase;
+  final ShareViewImageGenerator _shareViewImageGenerator;
 
-  Future<void> share(ShareOption? shareOption, MediaItemArticle article) async {
+  Future<void> share(ShareOption? shareOption, TopicPreview topic) async {
     if (shareOption == null) return;
-
-    emit(ShareArticleButtonState.processing);
 
     ShareContent shareContent;
 
@@ -33,72 +31,72 @@ class ShareArticleButtonCubit extends Cubit<ShareArticleButtonState> {
       case ShareOption.instagram:
         final images = await Future.wait(
           [
-            _generateForegroundImage(article),
-            _generateBackgroundImage(article),
+            _generateForegroundImage(topic),
+            _generateBackgroundImage(topic),
           ],
         );
 
         shareContent = ShareContent.instagram(
           images[0],
           images[1],
-          article.url,
+          topic.url,
         );
         break;
       case ShareOption.facebook:
         shareContent = ShareContent.facebook(
-          await _generateCombinedImage(article),
-          article.url,
+          await _generateCombinedImage(topic),
+          topic.url,
         );
         break;
       case ShareOption.copyLink:
         shareContent = ShareContent.text(
           shareOption,
-          article.url,
-          article.strippedTitle,
+          topic.url,
+          topic.strippedTitle,
         );
-        emit(ShareArticleButtonState.showMessage);
+        emit(ShareTopicButtonState.copiedMessage);
         break;
       default:
         shareContent = ShareContent.text(
           shareOption,
-          article.url,
-          article.strippedTitle,
+          topic.url,
+          topic.strippedTitle,
         );
         break;
     }
 
     await _shareContentUseCase(shareContent);
 
-    emit(ShareArticleButtonState.idle);
+    emit(ShareTopicButtonState.idle);
   }
 
-  Future<File> _generateForegroundImage(MediaItemArticle article) async {
-    ShareArticleStickerView factory() => ShareArticleStickerView(article: article);
+  Future<File> _generateForegroundImage(TopicPreview topic) async {
+    ShareTopicStickerView factory() => ShareTopicStickerView(topic: topic);
 
     return generateShareImage(
       _shareViewImageGenerator,
       factory,
-      '${article.id}_sticker_article.png',
+      '${topic.id}_sticker_topic.png',
     );
   }
 
-  Future<File> _generateBackgroundImage(MediaItemArticle article) async {
-    ShareArticleBackgroundView factoryEmptyImage() => ShareArticleBackgroundView(article: article);
+  Future<File> _generateBackgroundImage(TopicPreview topic) async {
+    ShareTopicBackgroundView factoryEmptyImage() => ShareTopicBackgroundView(topic: topic);
 
     return generateShareImage(
       _shareViewImageGenerator,
       factoryEmptyImage,
-      '${article.id}_background_article.png',
+      '${topic.id}_background_topic.png',
     );
   }
 
-  Future<File> _generateCombinedImage(MediaItemArticle article) async {
-    ShareArticleCombinedView factoryEmptyImage() => ShareArticleCombinedView(article: article);
+  Future<File> _generateCombinedImage(TopicPreview topic) async {
+    ShareTopicCombinedView factoryEmptyImage() => ShareTopicCombinedView(topic: topic);
 
     return generateShareImage(
       _shareViewImageGenerator,
       factoryEmptyImage,
-      '${article.id}_combined_article.png',
+      '${topic.id}_combined_topic.png',
     );
   }
 }

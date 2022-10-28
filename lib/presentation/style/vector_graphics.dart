@@ -90,8 +90,8 @@ class AppVectorGraphics {
   static const String skipBack10Seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
   static const String skipForward10Seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
 
-  static const String shareCopy = 'assets/vector_graphics/copy_ic.svg';
-  static const String shareMore = 'assets/vector_graphics/more_ic.svg';
+  static const String copy = 'assets/vector_graphics/copy.svg';
+  static const String more = 'assets/vector_graphics/more.svg';
 
   static const String fakePlayButton = 'assets/vector_graphics/fake_play_button.svg';
 }

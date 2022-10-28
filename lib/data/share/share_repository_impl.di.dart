@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/share/data/share_app.dart';
+import 'package:better_informed_mobile/domain/share/data/share_options.dart';
 import 'package:better_informed_mobile/domain/share/share_repository.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:injectable/injectable.dart';
@@ -9,15 +9,15 @@ import 'package:share_plus/share_plus.dart';
 import 'package:social_share/social_share.dart';
 
 const _socialShareOptions = {
-  'instagram': ShareOptions.instagram,
-  'facebook': ShareOptions.facebook,
-  'whatsapp': ShareOptions.whatsapp,
+  'instagram': ShareOption.instagram,
+  'facebook': ShareOption.facebook,
+  'whatsapp': ShareOption.whatsapp,
 };
 
 @LazySingleton(as: ShareRepository, env: liveEnvs)
 class ShareRepositoryImpl implements ShareRepository {
   @override
-  Future<List<ShareOptions>> getShareOptions() async {
+  Future<List<ShareOption>> getShareOptions() async {
     final apps = await SocialShare.checkInstalledAppsForShare();
     final entries = apps?.entries.map((e) => MapEntry(e.key as String, e.value as bool)).toList();
 
@@ -27,23 +27,23 @@ class ShareRepositoryImpl implements ShareRepository {
         .where((entry) => _socialShareOptions.containsKey(entry.key))
         .where((entry) => entry.value)
         .map((entry) => _socialShareOptions[entry.key])
-        .whereType<ShareOptions>()
+        .whereType<ShareOption>()
         .toList()
-      ..addAll([ShareOptions.copyLink, ShareOptions.more]);
+      ..addAll([ShareOption.copyLink, ShareOption.more]);
   }
 
   @override
-  Future<void> shareImage(ShareOptions shareOption, File image, [String? text, String? subject]) async {
+  Future<void> shareImage(ShareOption shareOption, File image, [String? text, String? subject]) async {
     await SocialShare.shareOptions('${subject ?? ''}\n\n${text ?? ''}\n', imagePath: image.path);
   }
 
   @override
-  Future<void> shareText(ShareOptions shareOption, String text, [String? subject]) async {
+  Future<void> shareText(ShareOption shareOption, String text, [String? subject]) async {
     switch (shareOption) {
-      case ShareOptions.whatsapp:
+      case ShareOption.whatsapp:
         await SocialShare.shareWhatsapp(text);
         break;
-      case ShareOptions.copyLink:
+      case ShareOption.copyLink:
         await SocialShare.copyToClipboard(text);
         break;
       default:

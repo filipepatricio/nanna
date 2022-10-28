@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic/share_topic_view.dart';
 
@@ -7,18 +6,53 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(
-    ShareTopicView,
+    ShareTopicStickerView,
     (tester) async {
       await tester.startApp(
         initialRoute: PlaceholderPageRoute(
-          child: ShareTopicView(
-            topic: TestData.topic,
-            articles: TestData.topic.entries.map((entry) => entry.item as MediaItemArticle).toList(),
-          ),
+          child: ShareTopicStickerView(topic: TestData.topic.asPreview),
         ),
       );
       await tester.matchGoldenFile();
     },
-    testConfig: TestConfig.withDevices([shareImage]),
+    testConfig: TestConfig.withDevices(
+      [
+        shareSticker,
+      ],
+    ),
+  );
+
+  visualTest(
+    ShareTopicBackgroundView,
+    (tester) async {
+      await tester.startApp(
+        initialRoute: PlaceholderPageRoute(
+          child: ShareTopicBackgroundView(topic: TestData.topic.asPreview),
+        ),
+      );
+      await tester.matchGoldenFile();
+    },
+    testConfig: TestConfig.withDevices(
+      [
+        shareImage,
+      ],
+    ),
+  );
+
+  visualTest(
+    ShareTopicCombinedView,
+    (tester) async {
+      await tester.startApp(
+        initialRoute: PlaceholderPageRoute(
+          child: ShareTopicCombinedView(topic: TestData.topic.asPreview),
+        ),
+      );
+      await tester.matchGoldenFile();
+    },
+    testConfig: TestConfig.withDevices(
+      [
+        shareImage,
+      ],
+    ),
   );
 }

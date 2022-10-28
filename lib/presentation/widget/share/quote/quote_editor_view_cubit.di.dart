@@ -1,11 +1,10 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/share/data/share_app.dart';
+import 'package:better_informed_mobile/domain/share/data/share_content.dt.dart';
+import 'package:better_informed_mobile/domain/share/data/share_options.dart';
 import 'package:better_informed_mobile/domain/share/use_case/get_share_options_list_use_case.di.dart';
-import 'package:better_informed_mobile/domain/share/use_case/share_image_use_case.di.dart';
-import 'package:better_informed_mobile/domain/share/use_case/share_text_use_case.di.dart';
-import 'package:better_informed_mobile/domain/share/use_case/share_using_instagram_use_case.di.dart';
+import 'package:better_informed_mobile/domain/share/use_case/share_content_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_background_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_foreground_view.dart';
@@ -20,18 +19,14 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   QuoteEditorViewCubit(
     this._trackActivityUseCase,
     this._getShareOptionsListUseCase,
-    this._shareTextUseCase,
-    this._shareImageUseCase,
-    this._shareUsingInstagramUseCase,
     this._shareViewImageGenerator,
+    this._shareContentUseCase,
   ) : super(QuoteEditorViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
   final GetShareOptionsListUseCase _getShareOptionsListUseCase;
-  final ShareTextUseCase _shareTextUseCase;
-  final ShareImageUseCase _shareImageUseCase;
-  final ShareUsingInstagramUseCase _shareUsingInstagramUseCase;
   final ShareViewImageGenerator _shareViewImageGenerator;
+  final ShareContentUseCase _shareContentUseCase;
 
   Future<void> initialize() async {
     final isInstagramAvailable = await _isInstagramAvailable();
@@ -64,7 +59,13 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
       'quote_${clock.now().millisecondsSinceEpoch}.png',
     );
 
-    await _shareImageUseCase(ShareOptions.more, image, shareText);
+    await _shareContentUseCase(
+      ShareContent.image(
+        ShareOption.more,
+        image,
+        shareText,
+      ),
+    );
 
     _trackActivityUseCase.trackEvent(
       AnalyticsEvent.imageArticleQuoteShared(
@@ -77,7 +78,12 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   Future<void> shareText(MediaItemArticle article, String quote) async {
     final fixedQuote = _getFixedQuote(quote);
 
-    await _shareTextUseCase(ShareOptions.more, '‘‘$fixedQuote’’\n\n${article.url}');
+    await _shareContentUseCase(
+      ShareContent.text(
+        ShareOption.more,
+        '‘‘$fixedQuote’’\n\n${article.url}',
+      ),
+    );
 
     _trackActivityUseCase.trackEvent(
       AnalyticsEvent.textArticleQuoteShared(
@@ -90,9 +96,7 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
   Future<void> shareStory(MediaItemArticle article, String quote) async {
     final fixedQuote = _getFixedQuote(quote);
 
-    QuoteBackgroundView backgroundFactory() => QuoteBackgroundView(
-          article: article,
-        );
+    QuoteBackgroundView backgroundFactory() => QuoteBackgroundView(article: article);
 
     final backgroundImage = await generateShareImage(
       _shareViewImageGenerator,
@@ -112,10 +116,12 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
       'quote_${clock.now().millisecondsSinceEpoch}_foreground.png',
     );
 
-    await _shareUsingInstagramUseCase(
-      foregroundImage,
-      backgroundImage,
-      article.url,
+    await _shareContentUseCase(
+      ShareContent.instagram(
+        foregroundImage,
+        backgroundImage,
+        article.url,
+      ),
     );
 
     _trackActivityUseCase.trackEvent(
@@ -138,6 +144,6 @@ class QuoteEditorViewCubit extends Cubit<QuoteEditorViewState> {
 
   Future<bool> _isInstagramAvailable() async {
     final shareOptions = await _getShareOptionsListUseCase();
-    return shareOptions.contains(ShareOptions.instagram);
+    return shareOptions.contains(ShareOption.instagram);
   }
 }
