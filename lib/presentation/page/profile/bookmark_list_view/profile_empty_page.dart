@@ -1,15 +1,7 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
-import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+part of 'bookmark_list_view.dart';
 
-class ProfileEmptyPage extends StatelessWidget {
-  const ProfileEmptyPage({
+class _BookmarkEmptyView extends StatelessWidget {
+  const _BookmarkEmptyView({
     required this.filter,
     Key? key,
   }) : super(key: key);
@@ -54,7 +46,7 @@ class ProfileEmptyPage extends StatelessWidget {
   }
 }
 
-extension on BookmarkFilter {
+extension Texts on BookmarkFilter {
   String get infoText {
     switch (this) {
       case BookmarkFilter.topic:
