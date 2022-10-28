@@ -83,7 +83,23 @@ class _SearchBar extends HookWidget {
         searchTextEditingController.addListener(listener);
         return () => searchTextEditingController.removeListener(listener);
       },
-      [SearchViewCubit, searchTextEditingController],
+      [searchViewCubit, searchTextEditingController],
+    );
+
+    useEffect(
+      () {
+        void listener() {
+          if (!searchTextFieldFocusNode.hasFocus) {
+            if (searchViewCubit.shouldTriggerSearch(query.value)) {
+              searchViewCubit.submitSearchPhrase(query.value);
+            }
+          }
+        }
+
+        searchTextFieldFocusNode.addListener(listener);
+        return () => searchTextFieldFocusNode.removeListener(listener);
+      },
+      [searchViewCubit, searchTextFieldFocusNode],
     );
 
     return Container(
@@ -132,6 +148,7 @@ class _SearchBar extends HookWidget {
         ),
         onFieldSubmitted: (query) {
           if (searchViewCubit.shouldTriggerSearch(query)) {
+            searchViewCubit.submitSearchPhrase(query);
             explorePageCubit.search();
           }
         },

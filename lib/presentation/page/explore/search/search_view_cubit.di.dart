@@ -50,6 +50,10 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     _queryStreamController?.add(_query);
   }
 
+  Future<void> submitSearchPhrase(String query) async {
+    await _addSearchHistoryQueryUseCase(query);
+  }
+
   Future<void> refresh() async {
     await _initializeQueryController();
     await search(_query);
@@ -79,7 +83,6 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     _paginationEngine = _searchPaginationEngineProvider.get(
       query: query,
     );
-    await _addSearchHistoryQueryUseCase(query);
     return _paginationEngine.loadMore();
   }
 
