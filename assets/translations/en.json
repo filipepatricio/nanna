@@ -238,7 +238,7 @@
     "goBackToTopic": "Back to topic overview",
     "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
-    "error":{
+    "error": {
       "title": "Oops",
       "body": "Something went wrong\n while loading the article"
     },
@@ -308,10 +308,10 @@
     },
     "emptyPage": {
       "title": "Nothing here, yet!\n",
+      "noAll": "Looks like there is nothing in this section of your Profile",
       "noTopics": "Looks like there aren’t any Deep Dives in this section of your Profile",
       "noArticles": "Looks like there aren’t any Articles in this section of your Profile",
-      "topicAction": "Go to Today’s Topics",
-      "articleAction": "Go to Explore"
+      "action": "Go to Explore"
     }
   },
   "shareTopic": {

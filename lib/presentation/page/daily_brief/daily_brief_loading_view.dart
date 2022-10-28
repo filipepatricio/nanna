@@ -19,25 +19,23 @@ class DailyBriefLoadingView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(
-            height: AppDimens.xxl,
-          ),
+          const SizedBox(height: AppDimens.xxl),
           LoadingShimmer.defaultColor(
             width: coverSize.width,
             height: coverSize.height * .5,
-            radius: AppDimens.m,
+            radius: AppDimens.s,
           ),
           const SizedBox(height: AppDimens.xxl),
           LoadingShimmer.defaultColor(
             width: coverSize.width,
-            height: coverSize.height,
-            radius: AppDimens.m,
+            height: coverSize.height * .8,
+            radius: AppDimens.s,
           ),
           const SizedBox(height: AppDimens.l),
           LoadingShimmer.defaultColor(
             width: coverSize.width,
-            height: coverSize.height,
-            radius: AppDimens.m,
+            height: coverSize.height * .8,
+            radius: AppDimens.s,
           ),
         ],
       ),

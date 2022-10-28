@@ -1,7 +1,4 @@
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
-import 'package:flutter/material.dart';
+part of 'topic_page.dart';
 
 class TopicLoadingView extends StatelessWidget {
   const TopicLoadingView({Key? key}) : super(key: key);
@@ -15,13 +12,6 @@ class TopicLoadingView extends StatelessWidget {
         children: [
           LoadingShimmer.defaultColor(
             height: AppDimens.topicViewHeaderImageHeight(context),
-          ),
-          const SizedBox(height: AppDimens.xl),
-          const LoadingShimmer(
-            mainColor: AppColors.white,
-            baseColor: AppColors.background,
-            height: AppDimens.topicViewSummaryTextHeight + AppDimens.xc,
-            padding: EdgeInsets.only(left: AppDimens.l, top: AppDimens.l),
           ),
         ],
       ),

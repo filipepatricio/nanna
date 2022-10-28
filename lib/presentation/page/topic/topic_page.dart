@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/header/topic_header.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_view.dart';
@@ -21,6 +20,7 @@ import 'package:better_informed_mobile/presentation/widget/back_text_button.dart
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_button/share_topic_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -32,6 +32,7 @@ import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 part 'app_bar/topic_app_bar.dart';
+part 'topic_loading_view.dart';
 
 /// Make sure that changes to the view won't change depth of the main scroll
 /// If they do, adjust depth accordingly
@@ -106,11 +107,13 @@ class _TopicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: state.maybeMap(loading: (_) => true, orElse: () => false),
       appBar: state.maybeMap(
         idle: (_) => null,
         orElse: () => InformedCupertinoAppBar(
           brightness: Brightness.light,
           backLabel: LocaleKeys.common_back.tr(),
+          backgroundColor: state.maybeMap(loading: (_) => AppColors.transparent, orElse: () => null),
         ),
       ),
       body: state.maybeMap(
@@ -119,9 +122,7 @@ class _TopicPage extends StatelessWidget {
           cubit: cubit,
           tutorialCoachMark: tutorialCoachMark,
         ),
-        loading: (_) => const Center(
-          child: TopicLoadingView(),
-        ),
+        loading: (_) => const TopicLoadingView(),
         error: (_) => Padding(
           padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
           child: Center(
@@ -132,7 +133,7 @@ class _TopicPage extends StatelessWidget {
             ),
           ),
         ),
-        orElse: () => const SizedBox.shrink(),
+        orElse: Container.new,
       ),
     );
   }

@@ -15,7 +15,6 @@ import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart'
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -95,9 +94,14 @@ class _LoadingContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: _BaseAppBar(),
-      body: LoadingShimmer.defaultColor(),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: InformedCupertinoAppBar(
+        backLabel: LocaleKeys.common_back.tr(),
+        backgroundColor: AppColors.transparent,
+        brightness: Brightness.light,
+      ),
+      body: const LoadingShimmer.defaultColor(),
     );
   }
 }
@@ -171,26 +175,4 @@ class _ErrorGeoBlocked extends StatelessWidget {
       ),
     );
   }
-}
-
-class _BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _BaseAppBar({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_rounded),
-        color: AppColors.textPrimary,
-        iconSize: AppDimens.backArrowSize,
-        onPressed: context.popRoute,
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

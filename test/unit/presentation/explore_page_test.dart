@@ -103,7 +103,6 @@ void main() {
       await tester.pumpAndSettle();
       await tester.testTextInput.receiveAction(TextInputAction.search);
       await tester.pumpAndSettle();
-      await tester.pump(const Duration(milliseconds: 600));
       expect(find.byType(SearchView), findsOneWidget);
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
