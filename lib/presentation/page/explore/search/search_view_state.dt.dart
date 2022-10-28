@@ -23,6 +23,4 @@ class SearchViewState with _$SearchViewState {
 
   @Implements<BuildState>()
   factory SearchViewState.allLoaded(List<SearchResult> results) = _SearchViewStateAllLoaded;
-
-  factory SearchViewState.queryChanged() = _SearchViewStateQueryChanged;
 }

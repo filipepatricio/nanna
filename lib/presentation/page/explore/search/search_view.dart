@@ -125,18 +125,18 @@ class _EmptyView extends StatelessWidget {
           padding: const EdgeInsets.only(
             left: AppDimens.xxxc,
             right: AppDimens.xxxc,
-            top: AppDimens.l,
+            top: AppDimens.xxxc,
             bottom: AppDimens.ml,
           ),
           height: 250,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: Center(
                   child: SvgPicture.asset(
-                    AppVectorGraphics.emptySearchResults,
-                    height: AppDimens.c,
+                    AppVectorGraphics.search,
+                    height: AppDimens.xl,
                     fit: BoxFit.scaleDown,
                   ),
                 ),

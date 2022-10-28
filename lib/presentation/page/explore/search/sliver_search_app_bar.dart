@@ -83,7 +83,23 @@ class _SearchBar extends HookWidget {
         searchTextEditingController.addListener(listener);
         return () => searchTextEditingController.removeListener(listener);
       },
-      [SearchViewCubit, searchTextEditingController],
+      [searchViewCubit, searchTextEditingController],
+    );
+
+    useEffect(
+      () {
+        void listener() {
+          if (!searchTextFieldFocusNode.hasFocus) {
+            if (searchViewCubit.shouldTriggerSearch(query.value)) {
+              searchViewCubit.submitSearchPhrase(query.value);
+            }
+          }
+        }
+
+        searchTextFieldFocusNode.addListener(listener);
+        return () => searchTextFieldFocusNode.removeListener(listener);
+      },
+      [searchViewCubit, searchTextFieldFocusNode],
     );
 
     return Container(
@@ -132,8 +148,8 @@ class _SearchBar extends HookWidget {
         ),
         onFieldSubmitted: (query) {
           if (searchViewCubit.shouldTriggerSearch(query)) {
-            explorePageCubit.search();
             searchViewCubit.submitSearchPhrase(query);
+            explorePageCubit.search();
           }
         },
         onTap: explorePageCubit.startTyping,
@@ -186,7 +202,7 @@ class _CancelButton extends HookWidget {
                     LocaleKeys.common_cancel.tr(),
                     style: AppTypography.h4Medium.copyWith(
                       color: AppColors.textGrey,
-                      height: 1.2,
+                      height: 1.1,
                     ),
                   ),
                 ),
