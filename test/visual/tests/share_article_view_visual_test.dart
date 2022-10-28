@@ -6,11 +6,41 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(
-    ShareArticleView,
+    ShareArticleStickerView,
     (tester) async {
       await tester.startApp(
         initialRoute: PlaceholderPageRoute(
-          child: ShareArticleView(
+          child: ShareArticleStickerView(
+            article: TestData.article,
+          ),
+        ),
+      );
+      await tester.matchGoldenFile();
+    },
+    testConfig: TestConfig.withDevices([shareSticker]),
+  );
+
+  visualTest(
+    ShareArticleBackgroundView,
+    (tester) async {
+      await tester.startApp(
+        initialRoute: PlaceholderPageRoute(
+          child: ShareArticleBackgroundView(
+            article: TestData.article,
+          ),
+        ),
+      );
+      await tester.matchGoldenFile();
+    },
+    testConfig: TestConfig.withDevices([shareImage]),
+  );
+
+  visualTest(
+    ShareArticleCombinedView,
+    (tester) async {
+      await tester.startApp(
+        initialRoute: PlaceholderPageRoute(
+          child: ShareArticleCombinedView(
             article: TestData.article,
           ),
         ),

@@ -131,6 +131,11 @@ class PremiumArticleView extends HookWidget {
                     mainController: mainController,
                     snackbarController: snackbarController,
                     actionsBarColorModeNotifier: actionsBarColorModeNotifier,
+                    onAudioBannerTap: () => horizontalPageController.animateToPage(
+                      ArticleOutputMode.audio.index,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.decelerate,
+                    ),
                   ),
                   if (state.article.metadata.hasAudioVersion && state.article.metadata.availableInSubscription)
                     PremiumArticleAudioView(

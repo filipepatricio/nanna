@@ -5,10 +5,6 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort_config
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_sort_option_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/store_last_selected_sort_option_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
-import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
-import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
-import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -18,15 +14,11 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   ProfilePageCubit(
     this._getBookmarkSortOptionUseCase,
     this._storeLastSelectedSortOptionUseCase,
-    this._isTutorialStepSeenUseCase,
-    this._setTutorialStepSeenUseCase,
     this._getActiveSubscriptionUseCase,
   ) : super(ProfilePageState.initializing());
 
   final GetBookmarkSortOptionUseCase _getBookmarkSortOptionUseCase;
   final StoreLastSelectedSortOptionUseCase _storeLastSelectedSortOptionUseCase;
-  final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
-  final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final GetActiveSubscriptionUseCase _getActiveSubscriptionUseCase;
 
   StreamSubscription? _activeSubscriptionSub;
@@ -40,12 +32,6 @@ class ProfilePageCubit extends Cubit<ProfilePageState> {
   Future<void> initialize() async {
     final sortConfig = await _getBookmarkSortOptionUseCase();
     emit(ProfilePageState.idle(BookmarkFilter.all, sortConfig));
-
-    final isProfileTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.profile);
-    if (!isProfileTutorialStepSeen) {
-      emit(ProfilePageState.showTutorialToast(LocaleKeys.tutorial_profileSnackBarText.tr()));
-      await _setTutorialStepSeenUseCase(TutorialStep.profile);
-    }
 
     _activeSubscriptionSub = _getActiveSubscriptionUseCase.stream.listen((event) async {
       state.mapOrNull(

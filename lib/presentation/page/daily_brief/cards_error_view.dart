@@ -34,8 +34,8 @@ class CardsErrorView extends HookWidget {
             height: size.height,
             width: size.width,
             child: GeneralErrorView(
-              title: LocaleKeys.dailyBrief_oops.tr(),
-              content: LocaleKeys.dailyBrief_tryAgainLater.tr(),
+              title: LocaleKeys.common_error_title.tr(),
+              content: LocaleKeys.common_error_body.tr(),
               svgPath: AppVectorGraphics.sadSun,
               retryCallback: retryAction,
             ),

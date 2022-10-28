@@ -8,6 +8,7 @@ class LinkLabel extends StatelessWidget {
     required this.onTap,
     this.style = AppTypography.systemText,
     this.align = TextAlign.center,
+    this.decoration = TextDecoration.underline,
     Key? key,
   }) : super(key: key);
 
@@ -15,6 +16,7 @@ class LinkLabel extends StatelessWidget {
   final VoidCallback onTap;
   final TextStyle style;
   final TextAlign align;
+  final TextDecoration decoration;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class LinkLabel extends StatelessWidget {
         label,
         style: style.copyWith(
           color: AppColors.charcoal,
-          decoration: TextDecoration.underline,
+          decoration: decoration,
         ),
         textAlign: align,
       ),

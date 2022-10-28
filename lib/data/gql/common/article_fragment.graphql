@@ -3,6 +3,8 @@
 # import 'package:better_informed_mobile/data/gql/common/cloudinary_image_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/publisher_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/category_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/expert_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/editorial_team_fragment.graphql';
 
 fragment articleFragment on Article {
     __typename
@@ -43,5 +45,17 @@ fragment articleFragment on Article {
     }
     primaryCategory {
         ...categoryFragment
+    }
+    curationInfo {
+        byline
+        curator {
+            __typename
+            ... on Expert {
+                ...expertFragment
+            }
+            ... on EditorialTeam {
+                ...editorialTeamFragment
+            }
+        }
     }
 }

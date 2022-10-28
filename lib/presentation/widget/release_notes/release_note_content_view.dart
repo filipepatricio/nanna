@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -28,7 +29,7 @@ class ReleaseNoteContentView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -38,16 +39,14 @@ class ReleaseNoteContentView extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: AppColors.lightGrey,
                   borderRadius: BorderRadius.all(
-                    Radius.circular(AppDimens.xs),
+                    Radius.circular(70),
                   ),
                 ),
                 child: Row(
                   children: [
-                    SvgPicture.asset(AppVectorGraphics.productUpdate),
-                    const SizedBox(width: AppDimens.xs),
                     Text(
                       LocaleKeys.releaseNotes_updateLabel.tr(),
-                      style: AppTypography.caption2Medium.copyWith(color: AppColors.black),
+                      style: AppTypography.caption1Regular.copyWith(color: AppColors.black),
                     ),
                   ],
                 ),
@@ -55,19 +54,14 @@ class ReleaseNoteContentView extends StatelessWidget {
               const Spacer(),
               Text(
                 DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
-                style: AppTypography.b2Medium.copyWith(color: AppColors.textGrey),
+                style: AppTypography.b3Medium.copyWith(color: AppColors.neutralGrey),
               ),
               if (showCloseButton) ...[
                 const SizedBox(width: AppDimens.m),
-                IconButton(
-                  onPressed: () => context.popRoute(),
-                  icon: SvgPicture.asset(AppVectorGraphics.close),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(
-                    maxHeight: AppDimens.l,
-                    maxWidth: AppDimens.l,
-                  ),
-                  splashRadius: AppDimens.l,
+                ExpandTapWidget(
+                  onTap: () => context.popRoute(),
+                  tapPadding: const EdgeInsets.all(AppDimens.l),
+                  child: SvgPicture.asset(AppVectorGraphics.closeBackground),
                 ),
               ],
             ],
@@ -75,12 +69,12 @@ class ReleaseNoteContentView extends StatelessWidget {
           const SizedBox(height: AppDimens.m),
           Text(
             releaseNote.headline,
-            style: AppTypography.h1Bold.copyWith(height: 1.5),
+            style: AppTypography.h0Medium,
           ),
           const SizedBox(height: AppDimens.s),
           Text(
             releaseNote.content,
-            style: AppTypography.b2Medium,
+            style: AppTypography.b2Medium.copyWith(color: AppColors.textGrey),
           ),
         ],
       ),

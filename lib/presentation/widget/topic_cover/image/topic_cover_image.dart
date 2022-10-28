@@ -9,13 +9,11 @@ class TopicCoverImage extends HookWidget {
   const TopicCoverImage({
     required this.topic,
     this.borderRadius = AppDimens.m,
-    this.darkeningMode = DarkeningMode.none,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final double borderRadius;
-  final DarkeningMode darkeningMode;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,6 @@ class TopicCoverImage extends HookWidget {
             height: height,
             fit: BoxFit.cover,
             alignment: Alignment.center,
-            darkeningMode: darkeningMode,
             testImage: AppRasterGraphics.testTopicHeroImage,
           ),
         );

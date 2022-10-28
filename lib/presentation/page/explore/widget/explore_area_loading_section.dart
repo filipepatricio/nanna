@@ -1,8 +1,7 @@
-import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 enum _ExploreLoadingViewType { pills, stream }
 
@@ -42,13 +41,21 @@ class _PillsArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      enabled: !kIsTest,
-      direction: ShimmerDirection.ltr,
-      baseColor: AppColors.background,
-      highlightColor: AppColors.white,
+    final row = Row(
+      children: const [
+        _Pill(width: 50),
+        SizedBox(width: AppDimens.s),
+        _Pill(width: 50),
+        SizedBox(width: AppDimens.s),
+        _Pill(width: 50),
+        SizedBox(width: AppDimens.s),
+        _Pill(width: 50),
+      ],
+    );
+
+    return LoadingShimmer.defaultColor(
       child: SizedBox(
-        height: AppDimens.explorePillHeight,
+        height: AppDimens.explorePillHeight * 2 + AppDimens.m,
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           physics: const NeverScrollableScrollPhysics(),
@@ -57,15 +64,9 @@ class _PillsArea extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: const [
-                    _Pill(width: 120),
-                    SizedBox(width: AppDimens.s),
-                    _Pill(width: 80),
-                    SizedBox(width: AppDimens.s),
-                    _Pill(width: 100),
-                  ],
-                ),
+                row,
+                const SizedBox(height: AppDimens.m),
+                row,
               ],
             ),
           ],
@@ -111,11 +112,7 @@ class _StreamArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width * AppDimens.exploreTopicCellSizeFactor;
 
-    return Shimmer.fromColors(
-      enabled: !kIsTest,
-      direction: ShimmerDirection.ltr,
-      baseColor: AppColors.background,
-      highlightColor: AppColors.white,
+    return LoadingShimmer.defaultColor(
       child: SizedBox(
         height: size,
         child: ListView(
@@ -123,6 +120,8 @@ class _StreamArea extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
           children: [
+            _StreamCell(size: size),
+            const SizedBox(width: AppDimens.m),
             _StreamCell(size: size),
             const SizedBox(width: AppDimens.m),
             _StreamCell(size: size),
@@ -147,9 +146,12 @@ class _StreamCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: size,
-      height: size,
+      height: size * 2,
       decoration: const BoxDecoration(
         color: AppColors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(AppDimens.s),
+        ),
       ),
     );
   }

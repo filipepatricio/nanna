@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/topic/data/topic_owner.dart';
+import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topics_from_editor_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topics_from_expert_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dt.dart';
@@ -16,7 +16,7 @@ class TopicOwnerPageCubit extends Cubit<TopicOwnerPageState> {
   final GetTopicsFromExpertUseCase _getTopicsFromExpertUseCase;
   final GetTopicsFromEditorUseCase _getTopicsFromEditorUseCase;
 
-  Future<void> initialize(TopicOwner owner, [String? fromTopicSlug]) async {
+  Future<void> initialize(Curator owner, [String? fromTopicSlug]) async {
     if (owner is EditorialTeam) {
       emit(TopicOwnerPageState.idleEditorialTeam());
       return;

@@ -85,24 +85,23 @@ class _LoadingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
-        Expanded(
-          child: SizedBox(
-            height: 20,
-            child: LoadingShimmer(
-              mainColor: AppColors.darkLinen,
-              radius: AppDimens.m,
+      children: [
+        LoadingShimmer.defaultColor(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(AppDimens.s),
+            ),
+            child: SvgPicture.asset(
+              AppVectorGraphics.informedLogoGreen,
+              height: AppDimens.xxxl,
             ),
           ),
         ),
-        Spacer(),
-        Expanded(
-          child: SizedBox(
+        const SizedBox(width: AppDimens.m),
+        const Expanded(
+          child: LoadingShimmer.defaultColor(
             height: 20,
-            child: LoadingShimmer(
-              mainColor: AppColors.darkLinen,
-              radius: AppDimens.m,
-            ),
+            radius: AppDimens.m,
           ),
         ),
       ],
@@ -138,7 +137,7 @@ class _IdleContent extends StatelessWidget {
         const SizedBox(width: AppDimens.m),
         Text(
           typeLabel,
-          style: AppTypography.h4Regular.copyWith(height: 1),
+          style: AppTypography.h4Medium.copyWith(height: 1),
         ),
         const Spacer(),
         callToActionLabel,

@@ -28,15 +28,11 @@ import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/bottom_sheet_route_builders.dart';
 import 'package:better_informed_mobile/presentation/routing/custom_route/fade_page_route.dart';
 import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 const magicLinkSegment = 'magic';
 const topicsPathSegment = 'topics';
 const articlePathSegment = 'articles';
 const subscribePathSegment = 'subscribe';
-
-final GlobalKey<NavigatorState> mainRouterKey = GlobalKey(debugLabel: 'mainRouterKey');
 
 @AdaptiveAutoRouter(
   routes: [

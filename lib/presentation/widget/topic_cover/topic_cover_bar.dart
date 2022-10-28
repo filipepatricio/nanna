@@ -14,23 +14,27 @@ class _TopicCoverBar extends StatelessWidget {
   factory _TopicCoverBar.big({
     required TopicPreview topic,
     required SnackbarController snackbarController,
+    VoidCallback? onBookmarkTap,
   }) =>
       _TopicCoverBar._(
         type: TopicCoverType.big,
         topic: topic,
         snackbarController: snackbarController,
+        onBookmarkTap: onBookmarkTap,
       );
 
   const _TopicCoverBar._({
     required this.topic,
     required this.type,
     this.snackbarController,
+    this.onBookmarkTap,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final TopicCoverType type;
   final SnackbarController? snackbarController;
+  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,7 @@ class _TopicCoverBar extends StatelessWidget {
         return _TopicCoverBarBig(
           topic: topic,
           snackbarController: snackbarController!,
+          onBookmarkTap: onBookmarkTap,
         );
       case TopicCoverType.small:
         return _TopicCoverBarSmall(
@@ -86,41 +91,31 @@ class _TopicCoverBarBig extends HookWidget {
   const _TopicCoverBarBig({
     required this.topic,
     required this.snackbarController,
+    this.onBookmarkTap,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final SnackbarController snackbarController;
+  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = useCubit<TopicCoverBarCubit>();
-
-    useCubitListener<TopicCoverBarCubit, TopicCoverBarState>(cubit, (cubit, state, _) {
-      state.whenOrNull(
-        share: (topic, options) => shareTopicArticlesList(
-          context,
-          topic,
-          options,
-          snackbarController,
-        ),
-      );
-    });
-
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         PublisherLogoRow(topic: topic),
         const Spacer(),
-        ShareButton(
-          onTap: (options) => cubit.shareTopic(topic.slug, options),
-          backgroundColor: AppColors.transparent,
+        ShareTopicButton(
+          topic: topic,
+          snackbarController: snackbarController,
         ),
         const SizedBox(width: AppDimens.m),
         BookmarkButton.topic(
           topic: topic,
           snackbarController: snackbarController,
+          onTap: onBookmarkTap,
         ),
       ],
     );

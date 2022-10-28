@@ -8,7 +8,6 @@
     "signUp": "Sign up",
     "cancel": "Cancel",
     "generalError": "Something went wrong.\nTry again later.",
-    "somethingWentWrong": "Something went wrong",
     "seeAll": "See All",
     "search": "Search",
     "gotIt": "Got it",
@@ -24,8 +23,9 @@
     "copyLink": "Copy link",
     "undo": "Undo",
     "error": {
-      "oops": "Oops",
+      "title": "Something went wrong",
       "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy ",
+      "body": "This error has been reported.",
       "tryAgainLater": "👎 Oops, looks like something went wrong, please try again later!"
     }
   },
@@ -79,14 +79,16 @@
     },
     "justSec": "Just a sec...",
     "loading": "We’re loading your brief",
-    "oops": "Oops!",
-    "tryAgainLater": "Something went wrong\n try again later",
     "readingList": "Reading list",
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
     "articles": "{} articles",
     "summaryHeadline": "Topic summary",
-    "articlesCount": "{} articles on this topic"
+    "articlesCount": "{} articles on this topic",
+    "recommendedBy": {
+      "informed": "Recommended by informed",
+      "expert": "Recommended by {}"
+    }
   },
   "date": {
     "day": {
@@ -236,12 +238,15 @@
     "goBackToTopic": "Back to topic overview",
     "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
-    "loadError": "Something went wrong\n while loading the article",
+    "error": {
+      "title": "Oops",
+      "body": "Something went wrong\n while loading the article"
+    },
     "continueToArticle": "Continue reading",
     "geoblockedError": {
       "title": "Content unavailable",
       "content": "The content you requested is not yet available in your country.",
-      "action": "Okay"
+      "action": "Ok"
     },
     "topicOverview": "Topic Overview",
     "relatedContent": {
@@ -261,8 +266,8 @@
     "articleCount": "{} articles"
   },
   "topic": {
-    "label": "Expert Deep Dive",
-    "expert": "Expert",
+    "label": "Deep Dive",
+    "labelExpert": "Expert Deep Dive",
     "updated": "Updated {}",
     "recommendedBy": "Recommended by ",
     "curatedBy": "Curated by ",
@@ -303,16 +308,17 @@
     },
     "emptyPage": {
       "title": "Nothing here, yet!\n",
-      "noTopics": "Looks like there aren’t any topics in this section of your Profile",
-      "noArticles": "Looks like there aren’t any articles in this section of your Profile",
-      "topicAction": "Go to Today’s Topics",
-      "articleAction": "Go to Explore"
+      "noAll": "Looks like there is nothing in this section of your Profile",
+      "noTopics": "Looks like there aren’t any Deep Dives in this section of your Profile",
+      "noArticles": "Looks like there aren’t any Articles in this section of your Profile",
+      "action": "Go to Explore"
     }
   },
   "shareTopic": {
-    "title": "Select the articles you want to share related to the topic",
-    "amountInfo": "You can share up to {} articles",
-    "selectedLabel": "{}/{} articles selected"
+    "articlesCount": {
+      "one": "{} article",
+      "other": "{} articles"
+    }
   },
   "shareQuote": {
     "readOn": "Read on ",
@@ -320,6 +326,9 @@
     "asImage": "Share quote as image",
     "asText": "Share quote as text",
     "asStory": "Share quote as story"
+  },
+  "shareArticle": {
+    "author": "By {}"
   },
   "bookmark": {
     "addBookmarkSuccess": "Saved to your Profile",

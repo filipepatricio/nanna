@@ -4,8 +4,8 @@ import 'package:better_informed_mobile/domain/release_notes/data/release_note.da
 import 'package:better_informed_mobile/domain/release_notes/data/release_note_media.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/release_notes/video_controls/release_note_video_controls.dart';
@@ -28,6 +28,7 @@ class ReleaseNoteMediaContainer extends HookWidget {
     final controller = usePageController();
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Stack(
@@ -43,26 +44,19 @@ class ReleaseNoteMediaContainer extends HookWidget {
               Positioned(
                 top: AppDimens.m,
                 right: AppDimens.m,
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: SvgPicture.asset(AppVectorGraphics.close),
-                    onPressed: () => context.popRoute(),
-                    padding: const EdgeInsets.all(AppDimens.xs),
-                    constraints: const BoxConstraints(),
-                    splashRadius: AppDimens.l,
-                  ),
+                child: ExpandTapWidget(
+                  onTap: () => context.popRoute(),
+                  tapPadding: const EdgeInsets.all(AppDimens.l),
+                  child: SvgPicture.asset(AppVectorGraphics.closeBackground),
                 ),
               ),
             ],
           ),
         ),
         if (releaseNote.hasMultipleMedia) ...[
-          const SizedBox(height: AppDimens.m),
-          Center(
+          const SizedBox(height: AppDimens.l),
+          Padding(
+            padding: const EdgeInsets.only(left: AppDimens.l),
             child: PageDotIndicator(
               controller: controller,
               pageCount: releaseNote.media.length,

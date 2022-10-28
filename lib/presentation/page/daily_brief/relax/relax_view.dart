@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -59,7 +58,7 @@ class RelaxView extends StatelessWidget {
         color: () {
           switch (type) {
             case RelaxViewType.dailyBrief:
-              return AppColors.darkLinen;
+              return AppColors.lightGrey;
             case RelaxViewType.article:
               return AppColors.lightGrey;
           }

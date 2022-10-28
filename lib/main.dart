@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
-import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:better_informed_mobile/presentation/style/app_theme.dart';
 import 'package:fimber/fimber.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -43,7 +42,6 @@ Future<void> main() async {
   await _setupAnalytics(getIt);
 
   await Hive.initFlutter();
-  final mainRouter = MainRouter(mainRouterKey);
 
   final filterController = getIt<ReportingTreeErrorFilterController>();
   await SentryFlutter.init(
@@ -66,8 +64,8 @@ Future<void> main() async {
           useOnlyLangCode: true,
           saveLocale: true,
           child: InformedApp(
-            mainRouter: mainRouter,
             getIt: getIt,
+            mainRouter: kDebugMode ? MainRouter() : null,
           ),
         ),
       ),

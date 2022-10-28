@@ -13,12 +13,11 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.di.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_page_loader.di.dart';
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_tile_cover.dt.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
 import 'package:bloc/bloc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -53,8 +52,13 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   Future<void> initialize(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) async {
     emit(BookmarkListViewState.loading(filter));
 
-    final paginationState = await _initializePaginationEngine(filter, sort, order);
-    _handlePaginationState(paginationState);
+    try {
+      final paginationState = await _initializePaginationEngine(filter, sort, order);
+      _handlePaginationState(paginationState);
+    } catch (e, s) {
+      Fimber.e('Loading bookmark list failed', ex: e, stacktrace: s);
+      emit(BookmarkListViewState.error());
+    }
 
     _registerBookmarkChangeNotification(filter, sort, order);
   }
@@ -67,15 +71,21 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
 
         emit(BookmarkListViewState.loadMore(filter, bookmarks));
 
-        final paginationState = await _paginationEngine.loadMore();
-        _handlePaginationState(paginationState);
+        try {
+          final paginationState = await _paginationEngine.loadMore();
+          _handlePaginationState(paginationState);
+        } catch (e, s) {
+          Fimber.e('Loading bookmark list failed', ex: e, stacktrace: s);
+          emit(BookmarkListViewState.error());
+        }
       },
     );
   }
 
   Future<void> removeBookmark(Bookmark bookmark) async {
     final bookmarks = state.bookmarks;
-    final index = bookmarks.map((e) => e.bookmark).toList().indexOf(bookmark);
+    final index = bookmarks.indexOf(bookmark);
+
     if (index != -1) {
       final updatedList = _paginationEngine.removeItemAt(index);
 
@@ -183,6 +193,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
       sort: sort,
       order: order,
     );
+
     return _paginationEngine.loadMore();
   }
 
@@ -201,28 +212,15 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     }
   }
 
-  List<BookmarkTileCover> _getProcessedBookmarks(List<Bookmark> bookmarks) {
+  List<Bookmark> _getProcessedBookmarks(List<Bookmark> bookmarks) {
     return _processBookmarks(bookmarks).toList(growable: false);
   }
 
-  Iterable<BookmarkTileCover> _processBookmarks(List<Bookmark> bookmarks) sync* {
-    var topicIndex = 0;
-    var articleIndex = 0;
-
-    for (var i = 0; i < bookmarks.length; i++) {
-      final bookmark = bookmarks[i];
-
+  Iterable<Bookmark> _processBookmarks(List<Bookmark> bookmarks) sync* {
+    for (final bookmark in bookmarks) {
       final cover = bookmark.data.mapOrNull(
-        article: (data) {
-          if (data.article.hasImage) {
-            return BookmarkTileCover.standard(bookmark);
-          } else {
-            return BookmarkTileCover.dynamic(bookmark, articleIndex++);
-          }
-        },
-        topic: (data) {
-          return BookmarkTileCover.dynamic(bookmark, topicIndex++);
-        },
+        article: (data) => bookmark,
+        topic: (data) => bookmark,
       );
 
       if (cover != null) yield cover;
@@ -239,7 +237,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
 }
 
 extension on BookmarkListViewState {
-  List<BookmarkTileCover> get bookmarks {
+  List<Bookmark> get bookmarks {
     return maybeMap(
       idle: (state) => state.bookmarks,
       loadMore: (state) => state.bookmarks,

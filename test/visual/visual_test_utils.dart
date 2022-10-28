@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
-import 'package:better_informed_mobile/presentation/routing/main_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +22,7 @@ const defaultDevices = [
 ];
 
 const shareImage = Device(name: 'share_image', size: Size(720, 1280));
+const shareSticker = Device(name: 'share_sticker', size: Size(480, 640));
 
 /// Can be used to take screenshots of very long lists without hiding overflowing widgets.
 const highDevice = Device(name: 'high_screen', size: Size(375, 1500));
@@ -115,7 +115,7 @@ extension StartAppExtension on WidgetTester {
     DependencyOverrideCallback? dependencyOverride,
   }) async {
     final isTab = isTabRoute(initialRoute);
-    final mainRouter = MainRouter(mainRouterKey);
+    final mainRouter = MainRouter(GlobalKey());
 
     final getIt = await configureDependencies(AppConfig.mock.name);
     getIt.allowReassignment = true;

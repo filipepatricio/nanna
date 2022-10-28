@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button_cubit.di.dart';
@@ -20,6 +19,7 @@ class ShareArticleButton extends HookWidget {
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
+
   final MediaItemArticle article;
   final WidgetBuilder? buttonBuilder;
   final Color? backgroundColor;
@@ -61,10 +61,7 @@ class ShareArticleButton extends HookWidget {
             right: AppDimens.m,
             bottom: AppDimens.m,
             top: AppDimens.m,
-            child: Loader(
-              strokeWidth: 2.0,
-              color: AppColors.limeGreen,
-            ),
+            child: Loader(strokeWidth: 2.0),
           ),
       ],
     );
@@ -91,7 +88,6 @@ class _Button extends StatelessWidget {
 
     if (builder == null) {
       return ShareButton(
-        backgroundColor: backgroundColor,
         onTap: (shareOption) => cubit.share(shareOption, article),
       );
     } else {

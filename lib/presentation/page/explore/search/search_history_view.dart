@@ -31,7 +31,7 @@ class SearchHistoryView extends HookWidget {
           (BuildContext context, int index) {
             final query = searchHistory[index];
             return Padding(
-              padding: const EdgeInsets.only(bottom: AppDimens.xl),
+              padding: const EdgeInsets.only(bottom: AppDimens.ml),
               child: Row(
                 children: [
                   Expanded(
@@ -49,7 +49,10 @@ class SearchHistoryView extends HookWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                              child: Text(query, style: AppTypography.b2Regular.copyWith(height: 1)),
+                              child: Text(
+                                query,
+                                style: AppTypography.b2Regular.copyWith(height: 1),
+                              ),
                             ),
                           ],
                         ),
@@ -58,7 +61,10 @@ class SearchHistoryView extends HookWidget {
                   ),
                   GestureDetector(
                     onTap: () => explorePageCubit.removeSearchHistoryQuery(query),
-                    child: SvgPicture.asset(AppVectorGraphics.close),
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppDimens.s),
+                      child: SvgPicture.asset(AppVectorGraphics.close),
+                    ),
                   ),
                 ],
               ),

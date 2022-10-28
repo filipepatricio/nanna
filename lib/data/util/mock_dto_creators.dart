@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_content_type_dto.dart';
+import 'package:better_informed_mobile/data/article/api/dto/article_curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
@@ -44,9 +45,9 @@ import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt
 import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
 import 'package:better_informed_mobile/data/subscription/dto/active_subscription_dto.dart';
 import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
+import 'package:better_informed_mobile/data/topic/api/dto/curator_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/topic_owner_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
@@ -187,15 +188,15 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio.asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 _freeArticleWithoutNote.asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 _freeArticle.asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               ..._briefEntriesArticlesList,
             ],
@@ -265,13 +266,13 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
                     .copyWith(progressState: ArticleProgressState.finished)
                     .asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
@@ -285,11 +286,11 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticle.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNote.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmall,
+                _briefEntryStyleArticleSmallItem,
               ),
             ],
           ),
@@ -340,17 +341,13 @@ class MockDTO {
     null,
     BriefEntryStyleType.topicCard,
   );
-  static final _briefEntryStyleArticleSmall = BriefEntryStyleDTO(
-    '#F2E8E7',
-    BriefEntryStyleType.articleCardWithSmallImage,
-  );
   static final _briefEntryStyleArticleSmallItem = BriefEntryStyleDTO(
     '#F2E8E7',
-    BriefEntryStyleType.articleCardSmallItem,
+    BriefEntryStyleType.articleCardSmall,
   );
   static final _briefEntryStyleArticleLarge = BriefEntryStyleDTO(
     null,
-    BriefEntryStyleType.articleCardWithLargeImage,
+    BriefEntryStyleType.articleCardLarge,
   );
 
   /// Explore
@@ -445,7 +442,7 @@ class MockDTO {
 
   static final topicWithUnknownOwner = topic.copyWith(
     slug: 'topic-with-unknown-owner',
-    owner: TopicOwnerDTO.unknown(),
+    owner: CuratorDTO.unknown(),
   );
 
   static final topicVisited = topic.copyWith(visited: true);
@@ -502,6 +499,7 @@ class MockDTO {
     // locked
     false,
     category,
+    articleCurationInfo,
   );
 
   static final _freeArticle = _freeArticleWithoutNote.copyWith(
@@ -601,6 +599,11 @@ class MockDTO {
     CategoryItemDTO.topic(topicPreview),
   ];
 
+  static final articleCurationInfo = ArticleCurationInfoDTO(
+    "Recommended by",
+    _expert,
+  );
+
   // CategoriesDTO
 
   static const categories = CategoriesDTO(
@@ -639,7 +642,7 @@ class MockDTO {
 
   /// Internal
 
-  static final _expert = TopicOwnerDTO.expert(
+  static final _expert = CuratorDTO.expert(
     'expert-id',
     // name
     '@billgates',
@@ -655,7 +658,7 @@ class MockDTO {
     ImageDTO('owner_1'),
   );
 
-  static final _editor = TopicOwnerDTO.editor(
+  static final _editor = CuratorDTO.editor(
     'editor-id',
     // name
     'Editor',
@@ -1094,6 +1097,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     ArticleProgressState? progressState,
     bool? locked,
     CategoryDTO? category,
+    ArticleCurationInfoDTO? curationInfo,
   }) {
     return ArticleHeaderDTO(
       id ?? this.id,
@@ -1117,6 +1121,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       progressState ?? this.progressState,
       locked ?? this.locked,
       category ?? this.category,
+      curationInfo ?? this.curationInfo,
     );
   }
 
@@ -1143,6 +1148,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       progressState,
       locked,
       category,
+      curationInfo,
     );
   }
 
@@ -1169,6 +1175,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
       progressState,
       locked,
       category,
+      curationInfo,
     );
   }
 }
@@ -1181,7 +1188,7 @@ extension on TopicDTO {
     String? strippedTitle,
     String? introduction,
     String? url,
-    TopicOwnerDTO? owner,
+    CuratorDTO? owner,
     String? lastUpdatedAt,
     TopicPublisherInformationDTO? publisherInformation,
     ImageDTO? heroImage,

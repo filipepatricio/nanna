@@ -25,10 +25,10 @@ class BriefEntryCover extends HookWidget {
 
   final BriefEntry briefEntry;
   final String briefId;
+  final SnackbarController snackbarController;
   final GlobalKey? topicCardKey;
   final Function(VisibilityInfo)? onVisibilityChanged;
   final EdgeInsets? padding;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -43,54 +43,54 @@ class BriefEntryCover extends HookWidget {
         child: item.map(
           article: (data) {
             switch (style.type) {
-              case BriefEntryStyleType.articleCardWithLargeImage:
-                return item.maybeMap(
-                  article: (data) => data.article.map(
-                    article: (article) => ArticleCover.dailyBriefLarge(
-                      article: article,
-                      onTap: () async {
-                        await context.navigateToArticle(
-                          article: article,
-                          briefId: briefId,
-                        );
-                      },
-                    ),
-                    unknown: (_) => const SizedBox(),
+              case BriefEntryStyleType.articleCardLarge:
+                return data.article.map(
+                  article: (article) => ArticleCover.large(
+                    article: article,
+                    snackbarController: snackbarController,
+                    onTap: () async {
+                      await context.navigateToArticle(
+                        article: article,
+                        briefId: briefId,
+                      );
+                    },
+                    showNote: true,
+                    showRecommendedBy: true,
                   ),
-                  orElse: () => const SizedBox(),
+                  unknown: (_) => const SizedBox(),
                 );
-              case BriefEntryStyleType.articleCardWithSmallImage:
-                return item.maybeMap(
-                  article: (data) => data.article.map(
-                    article: (article) => ArticleCover.dailyBriefSmall(
-                      article: article,
-                      onTap: () async {
-                        await context.navigateToArticle(
-                          article: article,
-                          briefId: briefId,
-                        );
-                      },
-                    ),
-                    unknown: (_) => const SizedBox(),
-                  ),
-                  orElse: () => const SizedBox(),
-                );
-              case BriefEntryStyleType.articleCardSmallItem:
-                return item.maybeMap(
-                  article: (data) => data.article.map(
-                    article: (article) => ArticleCover.dailyBriefList(
-                      article: article,
-                      backgroundColor: style.backgroundColor,
-                      onTap: () async {
-                        await context.navigateToArticle(
-                          article: article,
-                          briefId: briefId,
-                        );
-                      },
-                    ),
-                    unknown: (_) => const SizedBox(),
-                  ),
-                  orElse: () => const SizedBox(),
+              case BriefEntryStyleType.articleCardSmall:
+                return data.article.map(
+                  article: (article) {
+                    if (article.hasImage) {
+                      return ArticleCover.list(
+                        article: article,
+                        snackbarController: snackbarController,
+                        onTap: () async {
+                          await context.navigateToArticle(
+                            article: article,
+                            briefId: briefId,
+                          );
+                        },
+                        showNote: true,
+                        showRecommendedBy: true,
+                      );
+                    } else {
+                      return ArticleCover.large(
+                        article: article,
+                        snackbarController: snackbarController,
+                        onTap: () async {
+                          await context.navigateToArticle(
+                            article: article,
+                            briefId: briefId,
+                          );
+                        },
+                        showNote: true,
+                        showRecommendedBy: true,
+                      );
+                    }
+                  },
+                  unknown: (_) => const SizedBox(),
                 );
               default:
                 return const SizedBox();

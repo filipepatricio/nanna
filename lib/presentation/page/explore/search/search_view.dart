@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/items_grid_view/items_grid_view.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -46,9 +45,7 @@ class SearchView extends HookWidget {
         initial: (_) => const SliverToBoxAdapter(child: SizedBox.shrink()),
         loading: (_) => const SliverFillRemaining(
           child: Center(
-            child: Loader(
-              color: AppColors.limeGreen,
-            ),
+            child: Loader(),
           ),
         ),
         empty: (state) => SliverToBoxAdapter(
@@ -70,7 +67,7 @@ class SearchView extends HookWidget {
           itemBuilder: (context, index) => itemBuilder(context, index, state.results, snackbarController),
           scrollController: scrollController,
         ),
-        orElse: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+        orElse: () => const SliverToBoxAdapter(),
       ),
     );
   }
@@ -85,7 +82,6 @@ class SearchView extends HookWidget {
         article: (data) => ArticleCover.small(
           article: data.article,
           onTap: () => context.navigateToArticle(data.article),
-          coverColor: AppColors.mockedColors[index % AppColors.mockedColors.length],
           snackbarController: snackbarController,
         ),
         topic: (data) => TopicCover.small(
@@ -129,18 +125,18 @@ class _EmptyView extends StatelessWidget {
           padding: const EdgeInsets.only(
             left: AppDimens.xxxc,
             right: AppDimens.xxxc,
-            top: AppDimens.l,
+            top: AppDimens.xxxc,
             bottom: AppDimens.ml,
           ),
           height: 250,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: Center(
                   child: SvgPicture.asset(
-                    AppVectorGraphics.emptySearchResults,
-                    height: AppDimens.c,
+                    AppVectorGraphics.search,
+                    height: AppDimens.xl,
                     fit: BoxFit.scaleDown,
                   ),
                 ),

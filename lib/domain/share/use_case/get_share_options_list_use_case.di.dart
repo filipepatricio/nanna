@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/share/data/share_app.dart';
+import 'package:better_informed_mobile/domain/share/data/share_options.dart';
 import 'package:better_informed_mobile/domain/share/share_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,5 +8,5 @@ class GetShareOptionsListUseCase {
 
   final ShareRepository _shareRepository;
 
-  Future<List<ShareOptions>> call() => _shareRepository.getShareOptions();
+  Future<List<ShareOption>> call() => _shareRepository.getShareOptions();
 }

@@ -3,14 +3,16 @@ part of 'topic_cover.dart';
 class _TopicCoverBig extends StatelessWidget {
   const _TopicCoverBig({
     required this.topic,
-    required this.onTap,
     required this.snackbarController,
+    required this.onTap,
+    this.onBookmarkTap,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final VoidCallback? onTap;
   final SnackbarController snackbarController;
+  final VoidCallback? onTap;
+  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +37,14 @@ class _TopicCoverBig extends StatelessWidget {
                       borderRadius: AppDimens.smallImageCoverBorderRadius,
                     ),
                   ),
-                  Positioned(
-                    top: AppDimens.m,
-                    child: InformedPill(
-                      title: LocaleKeys.topic_label.tr(),
-                      color: AppColors.white,
+                  if (topic.owner is Expert)
+                    Positioned(
+                      top: AppDimens.m,
+                      child: InformedPill(
+                        title: LocaleKeys.topic_labelExpert.tr(),
+                        color: AppColors.white,
+                      ),
                     ),
-                  ),
                   Positioned(
                     left: AppDimens.xl,
                     right: AppDimens.xl,
@@ -68,6 +71,7 @@ class _TopicCoverBig extends StatelessWidget {
             _TopicCoverBar.big(
               topic: topic,
               snackbarController: snackbarController,
+              onBookmarkTap: onBookmarkTap,
             ),
           ],
         ),

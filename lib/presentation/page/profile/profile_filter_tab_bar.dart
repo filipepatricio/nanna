@@ -28,37 +28,30 @@ class ProfileFilterTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          height: _tabHeight + _tabIndicatorWeight,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 1,
-              color: AppColors.dividerGreyLight,
-            ),
-          ),
-        ),
-        TabBar(
-          onTap: (index) {
-            final filter = _filterList[index];
-            onChange(filter);
-          },
-          controller: controller,
-          indicatorSize: TabBarIndicatorSize.label,
-          isScrollable: true,
-          unselectedLabelStyle: AppTypography.subH1Regular,
-          labelStyle: AppTypography.subH1Bold,
-          labelColor: AppColors.textPrimary,
-          unselectedLabelColor: AppColors.textGrey,
-          indicatorColor: AppColors.textPrimary,
-          indicatorWeight: _tabIndicatorWeight,
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-          labelPadding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-          tabs: List.generate(_filterList.length, (index) => _filterList[index].tab),
-        ),
-      ],
+    return Theme(
+      data: ThemeData(
+        splashColor: AppColors.transparent,
+        highlightColor: AppColors.transparent,
+      ),
+      child: TabBar(
+        onTap: (index) {
+          final filter = _filterList[index];
+          onChange(filter);
+        },
+        controller: controller,
+        indicatorSize: TabBarIndicatorSize.label,
+        isScrollable: true,
+        unselectedLabelStyle: AppTypography.h4Medium,
+        labelStyle: AppTypography.h4Medium,
+        labelColor: AppColors.textPrimary,
+        unselectedLabelColor: AppColors.neutralGrey,
+        indicatorColor: AppColors.textPrimary,
+        indicatorWeight: _tabIndicatorWeight,
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+        labelPadding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+        splashFactory: NoSplash.splashFactory,
+        tabs: List.generate(_filterList.length, (index) => _filterList[index].tab),
+      ),
     );
   }
 }
@@ -78,7 +71,7 @@ class _TextFixedSizeTab extends HookWidget {
       () {
         final textPainter = TextPainter(
           textDirection: TextDirection.ltr,
-          text: TextSpan(text: text, style: AppTypography.subH1Bold),
+          text: TextSpan(text: text, style: AppTypography.h4Medium),
           textAlign: TextAlign.left,
           maxLines: 1,
         );

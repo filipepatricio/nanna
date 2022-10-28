@@ -12,7 +12,7 @@ class OpenWebButton extends StatelessWidget {
     required this.url,
     required this.buttonLabel,
     this.withIcon = true,
-    this.padding = const EdgeInsets.symmetric(horizontal: AppDimens.l),
+    this.padding = EdgeInsets.zero,
     this.launchExternalApp = false,
     Key? key,
   }) : super(key: key);
@@ -42,7 +42,7 @@ class OpenWebButton extends StatelessWidget {
           child: Container(
             height: AppDimens.buttonHeight,
             decoration: const BoxDecoration(
-              color: AppColors.black,
+              color: AppColors.charcoal,
               borderRadius: BorderRadius.all(
                 Radius.circular(AppDimens.buttonRadius),
               ),

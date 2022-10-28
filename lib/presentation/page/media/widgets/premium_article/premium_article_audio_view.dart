@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/article_audio_view_cover.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
-import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/seek_button/audio_seek_button.dart';
@@ -60,9 +58,8 @@ class PremiumArticleAudioView extends HookWidget {
                   aspectRatio: 0.65,
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      return ArticleCover.audioView(
+                      return ArticleAudioViewCover(
                         article: article.metadata,
-                        coverColor: AppColors.mockedColors[Random().nextInt(AppColors.mockedColors.length)],
                         height: constraints.maxHeight,
                         width: constraints.maxWidth,
                         shouldShowTimeToRead: false,

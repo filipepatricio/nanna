@@ -18,22 +18,18 @@ import 'package:better_informed_mobile/presentation/page/explore/small_topics_ar
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_loading_section.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-const _tryAgainButtonWidth = 150.0;
 
 class ExplorePage extends HookWidget {
   @override
@@ -42,7 +38,7 @@ class ExplorePage extends HookWidget {
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final scrollControllerIdleOffset = useState(0.0);
-    final snackbarController = useMemoized(() => SnackbarController());
+    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     final searchViewCubit = useCubit<SearchViewCubit>();
     final searchTextEditingController = useTextEditingController();
@@ -100,16 +96,17 @@ class ExplorePage extends HookWidget {
                     orElse: () => getPlatformScrollPhysics(),
                   ),
                   slivers: [
-                    SliverSearchAppBar(
-                      explorePageCubit: cubit,
-                      searchTextEditingController: searchTextEditingController,
-                      searchViewCubit: searchViewCubit,
+                    state.maybeMap(
+                      initialLoading: (_) => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
+                      error: (_) => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
+                      orElse: () => SliverSearchAppBar(
+                        explorePageCubit: cubit,
+                        searchTextEditingController: searchTextEditingController,
+                        searchViewCubit: searchViewCubit,
+                      ),
                     ),
                     state.maybeMap(
                       initialLoading: (_) => const _LoadingSection(),
-                      orElse: () => const SliverToBoxAdapter(),
-                    ),
-                    state.maybeMap(
                       idle: (state) => _ItemList(
                         items: state.items,
                         snackbarController: snackbarController,
@@ -125,6 +122,15 @@ class ExplorePage extends HookWidget {
                         scrollController: scrollController,
                         searchHistory: state.searchHistory,
                       ),
+                      error: (_) => SliverFillRemaining(
+                        child: Center(
+                          child: GeneralErrorView(
+                            title: LocaleKeys.common_error_title.tr(),
+                            content: LocaleKeys.common_error_body.tr(),
+                            retryCallback: cubit.initialize,
+                          ),
+                        ),
+                      ),
                       orElse: () => const SliverToBoxAdapter(),
                     ),
                     const SliverToBoxAdapter(
@@ -134,54 +140,9 @@ class ExplorePage extends HookWidget {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: state.maybeMap(
-                error: (_) => _ErrorView(refreshCallback: () => cubit.initialize()),
-                orElse: () => const SizedBox.shrink(),
-              ),
-            ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({
-    required this.refreshCallback,
-    Key? key,
-  }) : super(key: key);
-  final VoidCallback refreshCallback;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(height: AppDimens.c),
-        SvgPicture.asset(AppVectorGraphics.magError),
-        const SizedBox(height: AppDimens.l),
-        Text(
-          LocaleKeys.dailyBrief_oops.tr(),
-          style: AppTypography.h3bold,
-          textAlign: TextAlign.center,
-        ),
-        Text(
-          LocaleKeys.common_somethingWentWrong.tr(),
-          style: AppTypography.h3Normal,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: AppDimens.l),
-        SizedBox(
-          width: _tryAgainButtonWidth,
-          child: FilledButton.black(
-            text: LocaleKeys.common_tryAgain.tr(),
-            onTap: refreshCallback,
-          ),
-        ),
-      ],
     );
   }
 }
@@ -196,6 +157,10 @@ class _LoadingSection extends StatelessWidget {
         const [
           ExploreLoadingView.pills(),
           SizedBox(height: AppDimens.c),
+          ExploreLoadingView.stream(),
+          SizedBox(height: AppDimens.xl),
+          ExploreLoadingView.stream(),
+          SizedBox(height: AppDimens.xl),
           ExploreLoadingView.stream(),
         ],
       ),

@@ -14,26 +14,26 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h0Medium = TextStyle(
+  static const TextStyle onBoardingHeader = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
     fontSize: 36,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle h0Medium = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 32,
     height: 1.1,
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h0Bold = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamilyLausanne,
-    fontSize: 36,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle dailyBriefTitle = TextStyle(
-    fontWeight: FontWeight.w800,
+  static const TextStyle h0Regular = TextStyle(
+    fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
     fontSize: 32,
-    height: 1.375,
+    height: 1,
     color: AppColors.textPrimary,
   );
 
@@ -83,7 +83,7 @@ class AppTypography {
     height: 1.33,
   );
 
-  static const TextStyle h3Normal = TextStyle(
+  static const TextStyle h3Regular = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
     fontSize: 18,
@@ -108,7 +108,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle h4Regular = TextStyle(
+  static const TextStyle h4Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
     fontSize: 16,
@@ -296,10 +296,10 @@ class AppTypography {
     color: AppColors.textGrey,
   );
 
-  static const TextStyle caption2Medium = TextStyle(
-    fontWeight: FontWeight.w500,
+  static const TextStyle caption1Regular = TextStyle(
+    fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 10,
+    fontSize: 14,
     height: 1.2,
     color: AppColors.textGrey,
   );
@@ -340,9 +340,17 @@ class AppTypography {
   static const TextStyle navbarText = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
-    fontSize: 12,
+    fontSize: 14,
     letterSpacing: 0.2,
     color: AppColors.textPrimary,
+  );
+
+  static const TextStyle navbarUnselectedText = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 14,
+    letterSpacing: 0.2,
+    color: AppColors.neutralGrey,
   );
 
   static const TextStyle timeLabelText = TextStyle(

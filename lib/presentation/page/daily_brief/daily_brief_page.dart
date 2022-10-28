@@ -4,14 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_introduction.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_section.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_subsection.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/headline.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/relax.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/daily_brief/cards_error_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
@@ -27,6 +25,7 @@ import 'package:better_informed_mobile/presentation/util/markdown_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
@@ -34,6 +33,7 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -135,7 +135,7 @@ class _DailyBriefPage extends HookWidget {
                         scrollController: scrollController,
                       ),
                     ),
-                    orElse: () => const SliverToBoxAdapter(),
+                    orElse: () => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
                   ),
                   state.maybeMap(
                     idle: (state) => _IdleContent(
@@ -145,38 +145,20 @@ class _DailyBriefPage extends HookWidget {
                       scrollController: scrollController,
                       snackbarController: snackbarController,
                     ),
-                    error: (_) => SliverPadding(
-                      padding: EdgeInsets.fromLTRB(
-                        AppDimens.pageHorizontalMargin,
-                        AppDimens.safeTopPadding(context),
-                        AppDimens.pageHorizontalMargin,
-                        AppDimens.zero,
-                      ),
-                      sliver: SliverToBoxAdapter(
-                        child: Center(
-                          child: CardsErrorView(
-                            retryAction: cubit.loadBriefs,
-                            size: Size(
-                              AppDimens.topicCardBigMaxWidth(context),
-                              AppDimens.topicCardBigMaxHeight,
-                            ),
-                          ),
+                    error: (_) => SliverFillRemaining(
+                      child: Center(
+                        child: GeneralErrorView(
+                          title: LocaleKeys.common_error_title.tr(),
+                          content: LocaleKeys.common_error_body.tr(),
+                          retryCallback: cubit.loadBriefs,
                         ),
                       ),
                     ),
-                    loading: (_) => SliverPadding(
-                      padding: EdgeInsets.fromLTRB(
-                        AppDimens.pageHorizontalMargin,
-                        AppDimens.safeTopPadding(context),
-                        AppDimens.pageHorizontalMargin,
-                        AppDimens.zero,
-                      ),
-                      sliver: SliverToBoxAdapter(
-                        child: DailyBriefLoadingView(
-                          coverSize: Size(
-                            AppDimens.topicCardBigMaxWidth(context),
-                            AppDimens.topicCardBigMaxHeight,
-                          ),
+                    loading: (_) => SliverToBoxAdapter(
+                      child: DailyBriefLoadingView(
+                        coverSize: Size(
+                          AppDimens.topicCardBigMaxWidth(context),
+                          AppDimens.topicCardBigMaxHeight,
                         ),
                       ),
                     ),
@@ -295,7 +277,10 @@ class _IdleContent extends HookWidget {
     return MultiSliver(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimens.pageHorizontalMargin,
+            vertical: AppDimens.ml,
+          ),
           child: _Greeting(
             greeting: brief.greeting,
             introduction: brief.introduction,
@@ -349,15 +334,14 @@ class _IdleContent extends HookWidget {
     for (int i = 0; i < section.entries.length; i++) {
       final entry = section.entries[i];
 
+      yield const InformedDivider(
+        padding: EdgeInsets.symmetric(vertical: AppDimens.m),
+      );
+
       yield BriefEntryCover(
         briefEntry: entry,
         briefId: brief.id,
         snackbarController: snackbarController,
-        padding: _needsDivider(section, entry)
-            ? EdgeInsets.zero
-            : const EdgeInsets.only(
-                bottom: AppDimens.l,
-              ),
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
         onVisibilityChanged: (visibility) {
           if (entry == firstTopic && visibility.visibleFraction == 1) {
@@ -372,12 +356,6 @@ class _IdleContent extends HookWidget {
           }
         },
       );
-
-      if (_needsDivider(section, entry)) {
-        yield const InformedDivider(
-          padding: EdgeInsets.symmetric(vertical: AppDimens.sl),
-        );
-      }
     }
   }
 
@@ -392,7 +370,14 @@ class _IdleContent extends HookWidget {
 
       yield _BriefSubsection(
         subsection: subsection,
-        children: _mapSubsectionEntries(section, subsection, firstTopic, sectionIndex, i, snackbarController),
+        children: _mapSubsectionEntries(
+          section,
+          subsection,
+          firstTopic,
+          sectionIndex,
+          i,
+          snackbarController,
+        ),
       );
     }
   }
@@ -454,12 +439,6 @@ class _IdleContent extends HookWidget {
         )
         .reduce((value, element) => value + element);
   }
-
-  bool _needsDivider(BriefSectionWithEntries section, BriefEntry entry) =>
-      section.backgroundColor == null &&
-      entry.style.type == BriefEntryStyleType.articleCardSmallItem &&
-      entry != section.entries.last &&
-      section.entries[section.entries.indexOf(entry) + 1].style.type == BriefEntryStyleType.articleCardSmallItem;
 }
 
 class _BriefSubsection extends StatelessWidget {
@@ -512,7 +491,7 @@ class _BriefSection extends StatelessWidget {
           const SizedBox(height: AppDimens.m),
           InformedMarkdownBody(
             markdown: title,
-            baseTextStyle: AppTypography.h1Medium,
+            baseTextStyle: AppTypography.h0Medium,
           ),
           const SizedBox(height: AppDimens.m),
           ...children,
@@ -561,27 +540,26 @@ class _Greeting extends StatelessWidget {
   Widget build(BuildContext context) {
     final intro = introduction;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: AppDimens.xs),
-        InformedMarkdownBody(
-          markdown: greeting.headline,
-          baseTextStyle: AppTypography.b3Medium.copyWith(color: AppColors.textGrey),
-        ),
-        if (intro != null) ...[
-          const SizedBox(height: AppDimens.m),
-          Container(
-            padding: const EdgeInsets.all(AppDimens.l),
-            decoration: const BoxDecoration(
-              color: AppColors.pastelGreen,
-              borderRadius: BorderRadius.all(
-                Radius.circular(AppDimens.m),
-              ),
+    return Container(
+      padding: const EdgeInsets.only(left: AppDimens.sl),
+      decoration: const BoxDecoration(
+        border: Border(left: BorderSide(color: AppColors.limeGreen)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InformedMarkdownBody(
+            markdown: greeting.headline,
+            baseTextStyle: AppTypography.b2Medium.copyWith(
+              color: AppColors.textGrey,
+              height: 1,
             ),
-            child: InformedMarkdownBody(
-              markdown: '${MarkdownUtil.getRawSvgMarkdownImage(intro.icon)}   ${intro.text}',
+          ),
+          if (intro != null) ...[
+            const SizedBox(height: AppDimens.xs),
+            InformedMarkdownBody(
+              markdown: intro.text,
               baseTextStyle: AppTypography.b2Medium,
               textAlignment: TextAlign.left,
               markdownImageBuilder: (uri, title, alt) => MarkdownUtil.rawSvgMarkdownBuilder(
@@ -591,10 +569,9 @@ class _Greeting extends StatelessWidget {
                 AppTypography.b2Medium.fontSize! * 1.2,
               ),
             ),
-          ),
+          ],
         ],
-        const SizedBox(height: AppDimens.m),
-      ],
+      ),
     );
   }
 }

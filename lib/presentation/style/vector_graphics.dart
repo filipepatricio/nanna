@@ -12,11 +12,8 @@ class AppVectorGraphics {
   static const String flag = 'assets/vector_graphics/flag.svg';
 
   static const String explore = 'assets/vector_graphics/explore_ic.svg';
-  static const String exploreSelected = 'assets/vector_graphics/explore_selected_ic.svg';
   static const String today = 'assets/vector_graphics/today_ic.svg';
-  static const String todaySelected = 'assets/vector_graphics/today_selected_ic.svg';
   static const String profile = 'assets/vector_graphics/profile_ic.svg';
-  static const String profileSelected = 'assets/vector_graphics/profile_selected_ic.svg';
 
   static const String topicLabel = 'assets/vector_graphics/topic_label.svg';
   static const String expertTopicLabel = 'assets/vector_graphics/expert_topic_label.svg';
@@ -25,6 +22,7 @@ class AppVectorGraphics {
   static const String editorialTeamAvatar = 'assets/vector_graphics/editorial_team_avatar.svg';
   static const String editorialTeamAvatarBig = 'assets/vector_graphics/editorial_team_avatar_big.svg';
 
+  static const String launcherLogoInformed = 'assets/vector_graphics/launcher_logo_informed.svg';
   static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
   static const String informedLogoGreen = 'assets/vector_graphics/informed_logo_green.svg';
 
@@ -68,6 +66,7 @@ class AppVectorGraphics {
   static const String shareStory = 'assets/vector_graphics/share_story.svg';
   static const String newspaper = 'assets/vector_graphics/newspaper.svg';
   static const String checkmark = 'assets/vector_graphics/checkmark.svg';
+  static const String done = 'assets/vector_graphics/done.svg';
   static const String close = 'assets/vector_graphics/close.svg';
   static const String closeBackground = 'assets/vector_graphics/close_bg.svg';
   static const String photoCaption = 'assets/vector_graphics/photo_caption_ic.svg';
@@ -75,6 +74,9 @@ class AppVectorGraphics {
   static const String bigSearch = 'assets/vector_graphics/search_big.svg';
   static const String clearText = 'assets/vector_graphics/clear_text.svg';
   static const String chevronNext = 'assets/vector_graphics/chevron_next.svg';
+  static const String chevronBack = 'assets/vector_graphics/chevron_back.svg';
+  static const String chevronDown = 'assets/vector_graphics/chevron_down.svg';
+  static const String noImage = 'assets/vector_graphics/no_image.svg';
 
   static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';
   static const String bookmarkOutline = 'assets/vector_graphics/bookmark_outline.svg';
@@ -88,8 +90,8 @@ class AppVectorGraphics {
   static const String skipBack10Seconds = 'assets/vector_graphics/skip_back_10_seconds.svg';
   static const String skipForward10Seconds = 'assets/vector_graphics/skip_forward_10_seconds.svg';
 
-  static const String shareCopy = 'assets/vector_graphics/copy_ic.svg';
-  static const String shareMore = 'assets/vector_graphics/more_ic.svg';
+  static const String copy = 'assets/vector_graphics/copy.svg';
+  static const String more = 'assets/vector_graphics/more.svg';
 
   static const String fakePlayButton = 'assets/vector_graphics/fake_play_button.svg';
 }

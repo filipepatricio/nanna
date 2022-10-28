@@ -6,12 +6,13 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 const _borderRadius = 10.0;
-const sortViewHeight = 60.0;
+const sortViewHeight = 24.0;
 
 Future<BookmarkSortConfig?> showBookmarkSortOptionBottomSheet(
   BuildContext context,
@@ -45,65 +46,25 @@ class BookmarkSortView extends StatelessWidget {
   Widget build(BuildContext context) {
     final enabled = config != null;
 
-    if (enabled) {
-      return GestureDetector(
-        onTap: () async {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () async {
+        if (enabled) {
           final newConfig = await showBookmarkSortOptionBottomSheet(
             context,
             config!,
           );
           if (newConfig != null) onSortConfigChange(newConfig.type);
-        },
-        child: Container(
-          height: sortViewHeight,
-          alignment: Alignment.centerLeft,
-          color: AppColors.background,
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppDimens.ml,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                AppVectorGraphics.sort,
-                color: AppColors.black,
-              ),
-              const SizedBox(width: AppDimens.s),
-              Text(
-                config!.type.title,
-                style: AppTypography.subH1Regular.copyWith(height: 1.0),
-              ),
-            ],
-          ),
-        ),
-      );
-    } else {
-      return Container(
-        height: sortViewHeight,
-        alignment: Alignment.centerLeft,
-        color: AppColors.background,
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDimens.l,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              AppVectorGraphics.sort,
-              color: AppColors.textGrey,
-            ),
-            const SizedBox(width: AppDimens.s),
-            Text(
-              tr(LocaleKeys.bookmark_sortBy),
-              style: AppTypography.subH1Regular.copyWith(
-                color: AppColors.textGrey,
-                height: 1.0,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+        }
+      },
+      child: SvgPicture.asset(
+        AppVectorGraphics.sort,
+        color: enabled ? AppColors.black : AppColors.textGrey,
+        fit: BoxFit.scaleDown,
+        height: AppDimens.l,
+        width: AppDimens.l,
+      ),
+    );
   }
 }
 
@@ -124,69 +85,63 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
       color: AppColors.background,
       child: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: AppDimens.m),
-              Row(
-                children: [
-                  const SizedBox(width: AppDimens.l),
-                  Expanded(
-                    child: Text(
-                      tr(LocaleKeys.bookmark_sortBy),
-                      style: AppTypography.b2Bold,
-                    ),
-                  ),
-                  IconButton(
-                    icon: SvgPicture.asset(AppVectorGraphics.close),
-                    onPressed: () => AutoRouter.of(context).root.pop(),
-                  ),
-                  const SizedBox(width: AppDimens.l),
-                ],
-              ),
-              const SizedBox(height: AppDimens.m),
-              const InformedDivider(),
-              const SizedBox(height: AppDimens.l),
-              ...bookmarkConfigMap.entries
-                  .map(
-                    (entry) => GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () => AutoRouter.of(context).root.pop(entry.value),
-                      child: Row(
-                        children: [
-                          const SizedBox.square(dimension: AppDimens.l),
-                          if (config == entry.value)
-                            SvgPicture.asset(
-                              AppVectorGraphics.checkmark,
-                              height: AppDimens.l,
-                              width: AppDimens.l,
-                            )
-                          else
-                            const SizedBox.square(dimension: AppDimens.l),
-                          const SizedBox(width: AppDimens.s),
-                          Flexible(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: AppDimens.l,
-                              ),
-                              child: Text(
-                                entry.key.title,
-                                style: config == entry.value ? AppTypography.b2Bold : AppTypography.b2Regular,
-                              ),
-                            ),
-                          ),
-                        ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: AppDimens.m),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        tr(LocaleKeys.bookmark_sortBy),
+                        style: AppTypography.b2Bold,
                       ),
                     ),
-                  )
-                  .expand(
-                    (element) => [
-                      element,
-                      const SizedBox(height: AppDimens.l),
-                    ],
-                  )
-                  .toList(growable: false),
-            ],
+                    ExpandTapWidget(
+                      tapPadding: const EdgeInsets.all(AppDimens.l),
+                      onTap: () => AutoRouter.of(context).root.pop(),
+                      child: SvgPicture.asset(AppVectorGraphics.close),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppDimens.m),
+                const InformedDivider(),
+                const SizedBox(height: AppDimens.l),
+                ...bookmarkConfigMap.entries
+                    .map(
+                      (entry) => GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => AutoRouter.of(context).root.pop(entry.value),
+                        child: Row(
+                          children: [
+                            Text(
+                              entry.key.title,
+                              style: config == entry.value ? AppTypography.b2Bold : AppTypography.b2Regular,
+                            ),
+                            const Spacer(),
+                            if (config == entry.value)
+                              SvgPicture.asset(
+                                AppVectorGraphics.done,
+                                height: AppDimens.l,
+                                width: AppDimens.l,
+                              )
+                            else
+                              const SizedBox.shrink(),
+                          ],
+                        ),
+                      ),
+                    )
+                    .expand(
+                      (element) => [
+                        element,
+                        const SizedBox(height: AppDimens.l),
+                      ],
+                    )
+                    .toList(growable: false),
+              ],
+            ),
           ),
         ),
       ),

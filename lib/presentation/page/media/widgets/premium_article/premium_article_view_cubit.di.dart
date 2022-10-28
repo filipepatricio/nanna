@@ -128,6 +128,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     featuredCategories.addAll(await _getFeaturedCategoriesUseCase());
     relatedContentItems.addAll(await _getRelatedContentUseCase(_currentFullArticle.metadata.slug));
 
+    emit(const PremiumArticleViewState.initial());
     emit(
       PremiumArticleViewState.idle(
         article: _currentFullArticle,

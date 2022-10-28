@@ -45,9 +45,9 @@ class DailyBriefCalendar extends StatelessWidget {
         duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
         alignment: Alignment.topCenter,
         padding: const EdgeInsets.fromLTRB(
-          AppDimens.l,
+          AppDimens.pageHorizontalMargin,
           AppDimens.sl,
-          AppDimens.l,
+          AppDimens.pageHorizontalMargin,
           AppDimens.zero,
         ),
         child: AnimatedOpacity(
@@ -102,14 +102,14 @@ class _CalendarItem extends HookWidget {
       if (type.value == _CalendarItemType.selected) {
         return BoxDecoration(
           color: AppColors.charcoal,
-          borderRadius: BorderRadius.circular(AppDimens.s),
+          borderRadius: BorderRadius.circular(AppDimens.c),
         );
       }
 
       if (type.value == _CalendarItemType.current) {
         return BoxDecoration(
-          border: Border.all(color: AppColors.charcoal),
-          borderRadius: BorderRadius.circular(AppDimens.s),
+          border: Border.all(color: AppColors.limeGreen),
+          borderRadius: BorderRadius.circular(AppDimens.c),
         );
       }
 

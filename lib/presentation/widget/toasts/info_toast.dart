@@ -20,15 +20,14 @@ class InfoToast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQueryData.fromWindow(window).padding.top;
-    final topPaddingFromSafeArea = MediaQuery.of(context).padding.top;
 
     return Stack(
       clipBehavior: Clip.none,
       children: [
         Positioned(
           top: -topPadding,
-          left: 0,
-          right: 0,
+          left: AppDimens.l,
+          right: AppDimens.l,
           child: Dismissible(
             key: const Key('tutorialSnackBar'),
             direction: DismissDirection.up,
@@ -36,50 +35,48 @@ class InfoToast extends StatelessWidget {
               onDismiss?.call();
             },
             child: Container(
-              padding: EdgeInsets.only(
-                left: AppDimens.l,
-                right: AppDimens.l,
-                top: AppDimens.l + topPaddingFromSafeArea,
-                bottom: AppDimens.s,
-              ),
+              padding: const EdgeInsets.all(AppDimens.m),
               decoration: const BoxDecoration(
                 color: AppColors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(AppDimens.s),
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.shadowColor,
-                    offset: Offset(0.0, 4.0),
-                    blurRadius: 2.0,
-                    spreadRadius: -1.0,
+                    offset: Offset(0.0, 2.0),
+                    blurRadius: 10.0,
+                    spreadRadius: 0.0,
                   ),
                 ],
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   InformedMarkdownBody(
                     markdown: text,
-                    baseTextStyle: AppTypography.b2Regular.copyWith(
+                    baseTextStyle: AppTypography.b2Medium.copyWith(
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          dismissAllToast();
-                          onDismiss?.call();
-                        },
-                        child: Text(
-                          LocaleKeys.common_gotIt.tr(),
-                          style: AppTypography.h4Bold.copyWith(
-                            color: AppColors.textPrimary,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
+                  const SizedBox(height: AppDimens.m),
+                  TextButton(
+                    onPressed: () {
+                      dismissAllToast();
+                      onDismiss?.call();
+                    },
+                    style: TextButton.styleFrom(
+                      minimumSize: Size.zero,
+                      padding: EdgeInsets.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(
+                      LocaleKeys.common_gotIt.tr(),
+                      style: AppTypography.b2Regular.copyWith(
+                        color: AppColors.textPrimary,
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),

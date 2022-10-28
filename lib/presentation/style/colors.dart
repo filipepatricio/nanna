@@ -23,6 +23,7 @@ class AppColors {
   static const Color charcoal70 = Color(0xB3252525);
   static const Color linen = Color(0xffFCFAF8);
   static const Color darkLinen = Color(0xFFF8F8F7);
+  static const Color darkLinen95 = Color(0xF2F8F8F7);
   static const Color transparent = Color(0x00000000);
   static const Color transparentWhite = Color(0x00FFFFFF);
   static const Color blue = Color(0xff4579FF);
@@ -40,6 +41,7 @@ class AppColors {
   static const Color blueSelected = Color(0xff0099FF);
 
   static const Color background = darkLinen;
+  static const Color background95 = darkLinen95;
   static const Color textPrimary = charcoal;
   static const Color textGrey = darkerGrey;
 
