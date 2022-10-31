@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/relax/relax_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_content_view.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/article_more_from_section.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content_section.dart';
@@ -23,7 +22,6 @@ class PremiumArticleReadView extends HookWidget {
     required this.cubit,
     required this.mainController,
     required this.snackbarController,
-    required this.actionsBarColorModeNotifier,
     required this.onAudioBannerTap,
     Key? key,
   }) : super(key: key);
@@ -31,7 +29,6 @@ class PremiumArticleReadView extends HookWidget {
   final PremiumArticleViewCubit cubit;
   final ScrollController mainController;
   final SnackbarController snackbarController;
-  final ValueNotifier<ArticleActionsBarColorMode> actionsBarColorModeNotifier;
   final VoidCallback? onAudioBannerTap;
 
   final GlobalKey _articleContentKey = GlobalKey();
@@ -56,10 +53,6 @@ class PremiumArticleReadView extends HookWidget {
 
       if (scrollInfo is ScrollUpdateNotification) {
         readProgress.value = newProgress.isFinite ? newProgress : 0;
-
-        actionsBarColorModeNotifier.value = mainController.offset >= articleHeaderHeight
-            ? ArticleActionsBarColorMode.background
-            : ArticleActionsBarColorMode.custom;
       }
 
       if (scrollInfo is ScrollEndNotification) {
@@ -153,7 +146,7 @@ class PremiumArticleReadView extends HookWidget {
             ),
           ),
           Positioned(
-            top: 0,
+            top: AppDimens.articlePageContentTopPadding(context),
             left: 0,
             right: 0,
             child: _ArticleProgressBar(

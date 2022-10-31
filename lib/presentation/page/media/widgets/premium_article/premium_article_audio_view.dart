@@ -51,6 +51,8 @@ class PremiumArticleAudioView extends HookWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // To extend body behind AppBar without obscuring content
+            SizedBox(height: AppDimens.articlePageContentTopPadding(context)),
             if (article.hasImage)
               Flexible(
                 flex: 15,
