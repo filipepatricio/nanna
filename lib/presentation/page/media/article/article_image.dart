@@ -65,10 +65,9 @@ class ArticleImage extends HookWidget {
               width: width,
               height: height,
             ),
-            placeholder: (context, _) => LoadingShimmer(
+            placeholder: (context, _) => LoadingShimmer.defaultColor(
               width: width,
               height: height,
-              mainColor: AppColors.white,
             ),
           );
         }
