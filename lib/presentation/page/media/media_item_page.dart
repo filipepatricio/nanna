@@ -53,7 +53,7 @@ class MediaItemPage extends HookWidget {
       backgroundColor: AppColors.background,
       body: InformedAnimatedSwitcher(
         child: state.maybeMap(
-          loading: (_) => const _LoadingContent(),
+          loading: (data) => _LoadingContent(color: data.color),
           idleFree: (data) => FreeArticleView(
             article: data.header,
             snackbarController: snackbarController,
@@ -89,19 +89,22 @@ class MediaItemPage extends HookWidget {
 
 class _LoadingContent extends StatelessWidget {
   const _LoadingContent({
+    this.color,
     Key? key,
   }) : super(key: key);
+
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: InformedCupertinoAppBar(
-        backLabel: LocaleKeys.common_back.tr(),
+      appBar: const InformedCupertinoAppBar(
         backgroundColor: AppColors.transparent,
-        brightness: Brightness.light,
       ),
-      body: const LoadingShimmer.defaultColor(),
+      body: color != null
+          ? LoadingShimmer(mainColor: color!.withOpacity(.8), baseColor: color!)
+          : const LoadingShimmer.defaultColor(),
     );
   }
 }
@@ -133,10 +136,7 @@ class _ErrorContent extends StatelessWidget {
     final article = this.article;
 
     return Scaffold(
-      appBar: InformedCupertinoAppBar(
-        brightness: Brightness.light,
-        backLabel: LocaleKeys.common_back.tr(),
-      ),
+      appBar: const InformedCupertinoAppBar(),
       body: Padding(
         padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
         child: Center(
@@ -160,10 +160,7 @@ class _ErrorGeoBlocked extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: InformedCupertinoAppBar(
-        brightness: Brightness.light,
-        backLabel: LocaleKeys.common_back.tr(),
-      ),
+      appBar: const InformedCupertinoAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
         child: GeneralErrorView(

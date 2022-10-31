@@ -26,7 +26,6 @@ class SettingsMainPage extends HookWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: InformedCupertinoAppBar(
-        brightness: Brightness.light,
         backLabel: LocaleKeys.profile_title.tr(),
         title: LocaleKeys.settings_settings.tr(),
       ),

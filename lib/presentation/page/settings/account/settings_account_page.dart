@@ -25,7 +25,6 @@ class SettingsAccountPage extends HookWidget {
 
     return Scaffold(
       appBar: InformedCupertinoAppBar(
-        brightness: Brightness.light,
         backLabel: LocaleKeys.settings_settings.tr(),
         title: LocaleKeys.settings_account.tr(),
       ),

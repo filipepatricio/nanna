@@ -106,6 +106,8 @@ class _ArticleHeader extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // To extend body behind AppBar without obscuring content
+          SizedBox(height: AppDimens.articlePageContentTopPadding(context)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: Column(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -11,7 +13,7 @@ class MediaItemState with _$MediaItemState {
   const factory MediaItemState.initializing() = _MediaItemStateInitializing;
 
   @Implements<BuildState>()
-  const factory MediaItemState.loading() = _MediaItemStateLoading;
+  const factory MediaItemState.loading([Color? color]) = _MediaItemStateLoading;
 
   @Implements<BuildState>()
   const factory MediaItemState.idlePremium(Article article) = _MediaItemStateIdlePremium;

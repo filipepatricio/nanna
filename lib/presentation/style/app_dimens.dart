@@ -95,9 +95,6 @@ class AppDimens {
   /// 45
   static const topicViewTopicHeaderPadding = 45.0;
 
-  /// 300
-  static const topicViewSummaryTextHeight = 300.0;
-
   /// 350.0
   static const topicCardBigMaxHeight = 375.0;
 
@@ -125,11 +122,10 @@ class AppDimens {
   /// 131
   static const onboardingGridCard = 131.0;
 
-  /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding] + [topicViewSummaryTextHeight]
+  /// [topicViewHeaderImageHeight] + [topicViewTopicHeaderPadding]
   static double topicArticleSectionTriggerPoint(BuildContext context) =>
       topicViewHeaderImageHeight(context) +
       topicViewTopicHeaderPadding +
-      topicViewSummaryTextHeight +
       kToolbarHeight +
       MediaQuery.of(context).viewPadding.bottom;
 
@@ -147,6 +143,10 @@ class AppDimens {
 
   /// The smallest value from 75% of screen height and 500
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);
+
+  // [MediaQuery.padding.top] or [kToolbarHeight], whichever is higher
+  static double articlePageContentTopPadding(BuildContext context) =>
+      max(MediaQuery.of(context).padding.top, kToolbarHeight);
 
   /// 322
   static const articleSmallImageCoverHeight = 322;
