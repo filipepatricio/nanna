@@ -10,24 +10,21 @@ class _PaywallLoadingView extends StatelessWidget {
       children: const [
         SizedBox(
           height: 50,
-          child: LoadingShimmer(
-            mainColor: AppColors.lightGrey,
+          child: LoadingShimmer.defaultColor(
             radius: AppDimens.m,
           ),
         ),
         SizedBox(height: AppDimens.l),
         SizedBox(
           height: 200,
-          child: LoadingShimmer(
-            mainColor: AppColors.lightGrey,
+          child: LoadingShimmer.defaultColor(
             radius: AppDimens.ml,
           ),
         ),
         SizedBox(height: AppDimens.l),
         SizedBox(
           height: 50,
-          child: LoadingShimmer(
-            mainColor: AppColors.lightGrey,
+          child: LoadingShimmer.defaultColor(
             radius: AppDimens.m,
           ),
         ),
