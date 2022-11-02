@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
@@ -29,7 +27,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
-import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 part 'app_bar/topic_app_bar.dart';
 part 'topic_loading_view.dart';
@@ -50,7 +47,6 @@ class TopicPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<TopicPageCubit>();
     final state = useCubitBuilder(cubit);
-    final tutorialCoachMark = cubit.tutorialCoachMark(context);
 
     useEffect(
       () {
@@ -65,20 +61,12 @@ class TopicPage extends HookWidget {
       [topicSlug, cubit],
     );
 
-    final body = _TopicPage(
+    return _TopicPage(
       state: state,
       cubit: cubit,
-      tutorialCoachMark: tutorialCoachMark,
       topicSlug: topicSlug,
       briefId: briefId,
     );
-
-    return Platform.isAndroid
-        ? WillPopScope(
-            onWillPop: () => cubit.onAndroidBackButtonPress(tutorialCoachMark.isShowing),
-            child: body,
-          )
-        : body;
   }
 }
 
@@ -86,7 +74,6 @@ class _TopicPage extends StatelessWidget {
   const _TopicPage({
     required this.state,
     required this.cubit,
-    required this.tutorialCoachMark,
     required this.topicSlug,
     required this.briefId,
     Key? key,
@@ -94,7 +81,6 @@ class _TopicPage extends StatelessWidget {
 
   final TopicPageState state;
   final TopicPageCubit cubit;
-  final TutorialCoachMark tutorialCoachMark;
   final String topicSlug;
   final String? briefId;
 
@@ -113,7 +99,6 @@ class _TopicPage extends StatelessWidget {
           idle: (state) => _TopicIdleView(
             topic: state.topic,
             cubit: cubit,
-            tutorialCoachMark: tutorialCoachMark,
           ),
           loading: (_) => const TopicLoadingView(),
           error: (_) => Padding(
@@ -137,13 +122,11 @@ class _TopicIdleView extends HookWidget {
   const _TopicIdleView({
     required this.topic,
     required this.cubit,
-    required this.tutorialCoachMark,
     Key? key,
   }) : super(key: key);
 
   final Topic topic;
   final TopicPageCubit cubit;
-  final TutorialCoachMark tutorialCoachMark;
 
   @override
   Widget build(BuildContext context) {
@@ -171,11 +154,6 @@ class _TopicIdleView extends HookWidget {
             },
           );
         },
-        showMediaItemTutorialCoachMark: () => tutorialCoachMark.show(context: context),
-        skipTutorialCoachMark: (jumpToNextCoachMark) {
-          tutorialCoachMark.skip();
-        },
-        finishTutorialCoachMark: tutorialCoachMark.finish,
       );
     });
 
