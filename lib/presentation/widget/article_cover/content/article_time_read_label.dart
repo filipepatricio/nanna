@@ -7,17 +7,17 @@ import 'package:flutter/material.dart';
 
 class ArticleTimeReadLabel extends StatelessWidget {
   const ArticleTimeReadLabel({
-    required this.visited,
+    required this.finished,
     required this.timeToRead,
     Key? key,
   }) : super(key: key);
 
-  final bool visited;
+  final bool finished;
   final int? timeToRead;
 
   @override
   Widget build(BuildContext context) {
-    return visited
+    return finished
         ? Row(
             children: [
               const VisitedCheck(),
