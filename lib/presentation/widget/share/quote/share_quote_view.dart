@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/shadows.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/images.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_background_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view_content.dart';
@@ -18,12 +20,14 @@ const _stickerMaxHeight = 640.0;
 const _backgroundWidth = 720.0;
 const _backgroundHeight = 1280.0;
 
-class ShareArticleStickerView extends HookWidget implements BaseShareCompletable {
-  ShareArticleStickerView({
+class ShareQuoteStickerView extends HookWidget implements BaseShareCompletable {
+  ShareQuoteStickerView({
+    required this.quote,
     required this.article,
     super.key,
   });
 
+  final String quote;
   final MediaItemArticle article;
 
   final Completer _baseViewCompleter = Completer();
@@ -61,20 +65,44 @@ class ShareArticleStickerView extends HookWidget implements BaseShareCompletable
         child: Material(
           color: AppColors.transparent,
           child: Container(
-            padding: const EdgeInsets.all(AppDimens.l),
+            margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: article.category.color ?? AppColors.background,
               borderRadius: BorderRadius.circular(4),
+              boxShadow: cardShadows,
             ),
             constraints: const BoxConstraints(
               maxHeight: _stickerMaxHeight,
               maxWidth: _stickerWidth,
               minWidth: _stickerWidth,
             ),
-            child: ShareArticleViewContent(
-              article: article,
-              publisherImage: publisherImage,
-              titleMaxLines: 10,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: AppDimens.l),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: ShareArticleViewContent(
+                    article: article,
+                    publisherImage: publisherImage,
+                    titleMaxLines: 4,
+                  ),
+                ),
+                const SizedBox(height: AppDimens.l),
+                Container(
+                  margin: const EdgeInsets.only(left: AppDimens.l),
+                  padding: const EdgeInsets.all(AppDimens.l),
+                  color: AppColors.background,
+                  child: Text(
+                    '“$quote”',
+                    style: AppTypography.articleTextRegular.copyWith(
+                      fontSize: 28,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -83,12 +111,14 @@ class ShareArticleStickerView extends HookWidget implements BaseShareCompletable
   }
 }
 
-class ShareArticleCombinedView extends HookWidget implements BaseShareCompletable {
-  ShareArticleCombinedView({
+class ShareQuoteCombinedView extends HookWidget implements BaseShareCompletable {
+  ShareQuoteCombinedView({
+    required this.quote,
     required this.article,
     super.key,
   });
 
+  final String quote;
   final MediaItemArticle article;
 
   final Completer _baseViewCompleter = Completer();
@@ -102,7 +132,7 @@ class ShareArticleCombinedView extends HookWidget implements BaseShareCompletabl
   @override
   Widget build(BuildContext context) {
     final background = useMemoized(() => ShareArticleBackgroundView(article: article));
-    final foreground = useMemoized(() => ShareArticleStickerView(article: article));
+    final foreground = useMemoized(() => ShareQuoteStickerView(article: article, quote: quote));
 
     _baseViewCompleter.complete(
       Future.wait(

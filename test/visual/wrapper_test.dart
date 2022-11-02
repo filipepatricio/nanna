@@ -13,9 +13,7 @@ import 'tests/magic_link_view_visual_test.dart' as magic_link_view_visual_test;
 import 'tests/media_item_page_visual_test.dart' as media_item_page_visual_test;
 import 'tests/onboarding_page_visual_test.dart' as onboarding_page_visual_test;
 import 'tests/profile_page_visual_test.dart' as profile_page_visual_test;
-import 'tests/quote_background_view_visual_test.dart' as quote_background_view_visual_test;
 import 'tests/quote_editor_view_visual_test.dart' as quote_editor_view_visual_test;
-import 'tests/quote_foreground_view_visual_test.dart' as quote_foreground_view_visual_test;
 import 'tests/release_note_popup_visual_test.dart' as release_note_popup_visual_test;
 import 'tests/settings_account_page_visual_test.dart' as settings_account_page_visual_test;
 import 'tests/settings_main_page_visual_test.dart' as settings_main_page_visual_test;
@@ -23,6 +21,7 @@ import 'tests/settings_manage_my_interests_page_visual_test.dart' as settings_ma
 import 'tests/settings_notifications_page_visual_test.dart' as settings_notifications_page_visual_test;
 import 'tests/settings_subscription_page_visual_test.dart' as settings_subscription_page_visual_test;
 import 'tests/share_article_view_visual_test.dart' as share_article_view_visual_test;
+import 'tests/share_quote_view_visual_test.dart' as quote_foreground_view_visual_test;
 import 'tests/share_topic_view_visual_test.dart' as share_reading_list_view_visual_test;
 import 'tests/sign_in_page_visual_test.dart' as sign_in_page_visual_test;
 import 'tests/subscription_page_visual_test.dart' as subscription_page_visual_test;
@@ -46,7 +45,6 @@ void main() {
   group('media_item_page_visual_test', media_item_page_visual_test.main);
   group('onboarding_page_visual_test', onboarding_page_visual_test.main);
   group('profile_page_visual_test', profile_page_visual_test.main);
-  group('quote_background_view_visual_test', quote_background_view_visual_test.main);
   group('quote_editor_view_visual_test', quote_editor_view_visual_test.main);
   group('quote_foreground_view_visual_test', quote_foreground_view_visual_test.main);
   group('settings_account_page_visual_test', settings_account_page_visual_test.main);

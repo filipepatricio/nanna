@@ -64,12 +64,8 @@ class AppColors {
   static const Color dividerGrey = Color(0xffD1D5DB);
   static const Color dividerGreyLight = lightGrey;
 
+  static const Color textSelectionColor = Color(0xFFBBF383);
+
   static const String shareBackgroundTopColor = "#FFFFFF";
   static const String shareBackgroundBottomColor = "#FFFFFF";
-
-  static const mockedColors = [
-    AppColors.pastelGreen,
-    AppColors.rose,
-    AppColors.peach,
-  ];
 }
