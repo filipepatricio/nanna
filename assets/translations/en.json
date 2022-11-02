@@ -56,12 +56,10 @@
     }
   },
   "tutorial": {
-    "dailyBriefSnackBarText": "\uD83D\uDC4B\uD83C\uDFFB **Welcome to your Daily Brief.** Here you’ll get updates from our editorial team on the most important stories of the day.",
-    "topicSnackBarText": "\uD83D\uDC4D\uD83C\uDFFB **You’ve found a topic of interest.** Scroll down to get an overview or jump into the list of articles we curated for you.",
-    "exploreSnackBarText": "\uD83D\uDD0D **If you’d like to explore more** or missed a brief then you can find even more deep dives as well as articles here.",
-    "topicTooltipText": "\uD83C\uDF89 Informed voices, who are all experts in their fields. They put together deep dives exclusively for informed.",
-    "mediaItemTooltipText": "\uD83D\uDC49\uD83C\uDFFB Dive deeper? Our editorial team carefully curates a selection of articles to give you a 360° perspective on the topic.",
-    "profileSnackBarText": "\uD83D\uDC9A **Save articles and deep dives for later** – so that you can read or listen to your top picks whenever it suits you best."
+    "dailyBriefSnackBarText": "👋🏻 Welcome to your Daily Brief. Here you’ll get updates from our editorial team on the most important stories of the day.",
+    "topicSnackBarText": "👍🏻 You’ve found a topic of interest. Scroll down to get an overview or jump into the list of articles we curated for you. ",
+    "exploreSnackBarText": "🔍  If you’d like to explore more or missed a brief then you can find even more topics as well as articles here.",
+    "topicCoachmarkText": "🔍 Look out for the 'Deep Dive' label – these are article collections exploring a single subject in detail."
   },
   "main": {
     "todayTab": "Today",

@@ -287,7 +287,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
             customPosition: CustomTargetContentPosition(bottom: AppDimens.xl),
             builder: (context, controller) {
               return TutorialTooltip(
-                text: LocaleKeys.tutorial_topicTooltipText.tr(),
+                text: LocaleKeys.tutorial_topicCoachmarkText.tr(),
                 dismissButtonText: LocaleKeys.common_gotIt.tr(),
                 onDismiss: () => emit(DailyBriefPageState.finishTutorialCoachMark()),
               );
