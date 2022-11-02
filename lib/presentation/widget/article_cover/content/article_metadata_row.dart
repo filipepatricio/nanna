@@ -30,7 +30,7 @@ class ArticleMetadataRow extends StatelessWidget {
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            if (!article.visited) ...[
+            if (!article.finished) ...[
               InformedPill(
                 title: article.category.name,
                 color: article.category.color,
@@ -38,7 +38,7 @@ class ArticleMetadataRow extends StatelessWidget {
               const SizedBox(width: AppDimens.s),
             ],
             ArticleTimeReadLabel(
-              visited: article.visited,
+              finished: article.finished,
               timeToRead: article.timeToRead,
             ),
           ],

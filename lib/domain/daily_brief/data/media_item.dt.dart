@@ -42,8 +42,7 @@ class MediaItem with _$MediaItem {
 extension Getters on MediaItemArticle {
   bool get hasImage => image != null && image is! ArticleImageUnknown;
 
-  bool get visited =>
-      progressState == ArticleProgressState.inProgress || progressState == ArticleProgressState.finished;
+  bool get finished => progressState == ArticleProgressState.finished;
 
   bool get shouldShowArticleCoverNote => note != null;
 
