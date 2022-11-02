@@ -118,7 +118,7 @@ class _SearchBar extends HookWidget {
         autocorrect: false,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: LocaleKeys.common_search.tr(),
+          hintText: LocaleKeys.search_hint.tr(),
           hintStyle: AppTypography.b2Medium.copyWith(
             color: AppColors.textGrey,
             height: 1.05,

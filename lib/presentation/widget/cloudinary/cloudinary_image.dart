@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/presentation/style/app_raster_graphics.da
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_config.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -85,15 +86,9 @@ class CloudinaryImage extends HookWidget {
         height: height,
       ),
       placeholder: (context, _) => showLoadingShimmer
-          ? const LoadingShimmer(
-              mainColor: AppColors.pastelGreen,
-              baseColor: AppColors.darkLinen,
-            )
+          ? const LoadingShimmer.defaultColor()
           : const Center(
-              child: CircularProgressIndicator(
-                color: AppColors.pastelGreen,
-                strokeWidth: 3.0,
-              ),
+              child: Loader(strokeWidth: 3.0),
             ),
       fit: fit,
       width: width,

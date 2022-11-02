@@ -188,7 +188,7 @@ void main() {
           ],
         ),
       );
-      expect(find.byText(LocaleKeys.article_topicOverview.tr()), findsOneWidget);
+      expect(find.byText(LocaleKeys.topic_label.tr()), findsOneWidget);
     },
   );
 
@@ -202,7 +202,7 @@ void main() {
           ],
         ),
       );
-      expect(find.byText(LocaleKeys.article_topicOverview.tr()), findsNothing);
+      expect(find.byText(LocaleKeys.topic_label.tr()), findsNothing);
     },
   );
 
