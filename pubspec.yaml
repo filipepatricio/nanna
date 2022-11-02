@@ -66,10 +66,7 @@ dependencies:
   golden_toolkit: 0.13.0
   auto_size_text: 3.0.0
   flutter_custom_tabs: 1.0.4
-  flutter_inappwebview:
-    git:
-      url: https://github.com/MohammedXAbdo/flutter_inappwebview.git
-      ref: 93801e0ab78e2e017df2f136e24a59eacf6266e2
+  flutter_inappwebview: 5.7.1
   cached_network_image:
     git:
       url: https://github.com/davidmartos96/flutter_cached_network_image.git

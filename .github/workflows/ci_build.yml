@@ -218,7 +218,7 @@ jobs:
     needs: [set_slack_id, changes, commit_lint, code_lint_test]
     if: ${{ needs.changes.outputs.app == 'true' || needs.changes.outputs.ios == 'true' }}
     name: iOS build
-    runs-on: macos-latest
+    runs-on: macos-12
     outputs:
       succeeded: ${{ steps.result.outputs.result }}
     timeout-minutes: 25
