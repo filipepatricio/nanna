@@ -97,7 +97,6 @@ class ExplorePage extends HookWidget {
                   ),
                   slivers: [
                     state.maybeMap(
-                      initialLoading: (_) => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
                       error: (_) => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
                       orElse: () => SliverSearchAppBar(
                         explorePageCubit: cubit,
@@ -156,7 +155,7 @@ class _LoadingSection extends StatelessWidget {
       delegate: SliverChildListDelegate(
         const [
           ExploreLoadingView.pills(),
-          SizedBox(height: AppDimens.c),
+          SizedBox(height: AppDimens.xxl),
           ExploreLoadingView.stream(),
           SizedBox(height: AppDimens.xl),
           ExploreLoadingView.stream(),
