@@ -32,19 +32,18 @@ class SettingsMainCubit extends Cubit<SettingsMainState> {
     }
   }
 
-  Future<void> sendFeedbackEmail(String email, String subject, String body) async {
-    final mailToLink = Uri.parse('mailto:$email?subject=$subject&body=$body');
+  Future<void> sendFeedbackEmail(String email, String subject) async {
+    final mailToLink = Uri.parse('mailto:$email?subject=$subject');
 
     try {
       await launchUrl(mailToLink);
     } catch (_) {
-      await _sendEmailWithFallbackOption(email, subject, body);
+      await _sendEmailWithFallbackOption(email, subject);
     }
   }
 
-  Future<void> _sendEmailWithFallbackOption(String email, String subject, String body) async {
+  Future<void> _sendEmailWithFallbackOption(String email, String subject) async {
     final emailData = Email(
-      body: body,
       subject: subject,
       recipients: [email],
     );
