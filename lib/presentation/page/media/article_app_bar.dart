@@ -63,18 +63,12 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
 
     return AnimatedBuilder(
       animation: animation,
-      builder: (context, _) => ClipRect(
+      builder: (context, bookmark) => ClipRect(
         child: InformedCupertinoAppBar(
           backgroundColor: animation.value,
-          backLabel: fromTopic ? LocaleKeys.article_topicOverview.tr() : LocaleKeys.common_back.tr(),
+          backLabel: fromTopic ? LocaleKeys.topic_label.tr() : LocaleKeys.common_back.tr(),
           actions: [
-            BookmarkButton.article(
-              article: article,
-              topicId: topicId,
-              briefId: briefId,
-              color: AppColors.charcoal,
-              snackbarController: snackbarController,
-            ),
+            bookmark!,
             const SizedBox(width: AppDimens.m),
             Align(
               alignment: Alignment.center,
@@ -87,6 +81,13 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
             const SizedBox(width: AppDimens.ml),
           ],
         ),
+      ),
+      child: BookmarkButton.article(
+        article: article,
+        topicId: topicId,
+        briefId: briefId,
+        color: AppColors.charcoal,
+        snackbarController: snackbarController,
       ),
     );
   }

@@ -41,7 +41,7 @@
     "headerSlideCategories": "Add your interests",
     "headerSlideThree": "Notifications",
     "descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
-    "descriptionSlideTwo": "Our editors and topic experts read hundreds of articles daily, choosing only the best and deliberately curating diverse perspectives.",
+    "descriptionSlideTwo": "Our editors and experts read hundreds of articles daily, choosing only the best and deliberately curating diverse perspectives.",
     "descriptionSlideCategories": "Choose what matters to you and you’ll get personalised daily reading suggestions, alongside wider curated articles. Change your interests anytime in Profile → Settings.",
     "categories": {
       "everything": "Show me everything"
@@ -56,12 +56,12 @@
     }
   },
   "tutorial": {
-    "dailyBriefSnackBarText": "\uD83D\uDC4B\uD83C\uDFFB **Welcome to your Daily Brief!** Here you’ll get updates from our editorial team on the most important topics of the day.",
+    "dailyBriefSnackBarText": "\uD83D\uDC4B\uD83C\uDFFB **Welcome to your Daily Brief.** Here you’ll get updates from our editorial team on the most important stories of the day.",
     "topicSnackBarText": "\uD83D\uDC4D\uD83C\uDFFB **You’ve found a topic of interest.** Scroll down to get an overview or jump into the list of articles we curated for you.",
-    "exploreSnackBarText": "\uD83D\uDD0D **If you’d like to explore more** or missed a brief then you can find even more topics as well as articles here.",
-    "topicTooltipText": "\uD83C\uDF89 Informed voices, who are all experts in their fields. They put together topics exclusively for informed.",
+    "exploreSnackBarText": "\uD83D\uDD0D **If you’d like to explore more** or missed a brief then you can find even more deep dives as well as articles here.",
+    "topicTooltipText": "\uD83C\uDF89 Informed voices, who are all experts in their fields. They put together deep dives exclusively for informed.",
     "mediaItemTooltipText": "\uD83D\uDC49\uD83C\uDFFB Dive deeper? Our editorial team carefully curates a selection of articles to give you a 360° perspective on the topic.",
-    "profileSnackBarText": "\uD83D\uDC9A **Save articles and topics for later** – so that you can read or listen to your top picks whenever it suits you best."
+    "profileSnackBarText": "\uD83D\uDC9A **Save articles and deep dives for later** – so that you can read or listen to your top picks whenever it suits you best."
   },
   "main": {
     "todayTab": "Today",
@@ -83,8 +83,6 @@
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
     "articles": "{} articles",
-    "summaryHeadline": "Topic summary",
-    "articlesCount": "{} articles on this topic",
     "recommendedBy": {
       "informed": "Recommended by informed",
       "expert": "Recommended by {}"
@@ -172,7 +170,6 @@
     "termsContent": "This is a placeholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "newsUpdates": "News Updates",
     "newDailyBrief": "NewDailyBrief",
-    "incomingNewTopic": "Incoming new topic ",
     "productUpdates": "Product Updates",
     "newFeatures": "New features & improvements",
     "firstName": "First name",
@@ -235,7 +232,6 @@
     "readMinutes": "{} min read",
     "loadingNext": "Loading next article in\nthe reading list.",
     "allArticlesRead": "Great! You’ve read all\narticles on this topic.",
-    "goBackToTopic": "Back to topic overview",
     "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
     "error": {
@@ -248,7 +244,6 @@
       "content": "The content you requested is not yet available in your country.",
       "action": "Ok"
     },
-    "topicOverview": "Topic Overview",
     "relatedContent": {
       "exploreMoreCategories": "Explore More in These Categories",
       "cantGetEnough": "Can't get enough?",
@@ -277,7 +272,6 @@
       "expertInfo": "Expert Info",
       "editorialTeam": "Informed Editorial Team",
       "expertIn": "Expert in {}",
-      "loadingExpertTopics": "We're loading\n{}'s topics",
       "followExpertOn": "Follow **{}** on"
     },
     "howDoWeCurateContent": {
@@ -295,6 +289,7 @@
     "moreStoriesOnExplore": "More stories on Explore"
   },
   "search": {
+    "hint": "Search articles, deep dives, authors",
     "emptyResults": "We couldn’t find any results matching '{}'",
     "callToAction": "Check out our latest content"
   },
@@ -303,7 +298,7 @@
     "emailCopied": "Successfully copied email to your clipboard!",
     "filter": {
       "all": "All",
-      "topics": "Topics",
+      "topics": "Deep Dives",
       "articles": "Articles"
     },
     "emptyPage": {
