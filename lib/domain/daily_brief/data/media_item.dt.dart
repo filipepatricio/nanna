@@ -1,9 +1,9 @@
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/article/data/article_curation_info.dart';
 import 'package:better_informed_mobile/domain/article/data/article_kind.dart';
 import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/data/publisher.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/common/data/curation_info.dart';
 import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -30,7 +30,7 @@ class MediaItem with _$MediaItem {
     required ArticleProgress progress,
     required bool locked,
     required Category category,
-    required ArticleCurationInfo curationInfo,
+    required CurationInfo curationInfo,
     DateTime? publicationDate,
     ArticleImage? image,
     String? author,

@@ -16,7 +16,10 @@ class _TopicAppBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = topic.owner is Expert ? LocaleKeys.topic_labelExpert.tr() : LocaleKeys.topic_label.tr();
+    final title = topic.curationInfo.curator.maybeMap(
+      expert: (_) => LocaleKeys.topic_labelExpert.tr(),
+      orElse: () => LocaleKeys.topic_label.tr(),
+    );
     final animationController = useAnimationController(duration: const Duration(milliseconds: 150));
     final backgroundColorAnimation = ColorTween(
       begin: AppColors.transparent,

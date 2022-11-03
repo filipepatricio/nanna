@@ -10,7 +10,7 @@ void main() {
     (tester) async {
       await tester.startApp(
         initialRoute: TopicOwnerPageRoute(
-          owner: TestData.topic.owner,
+          owner: TestData.topic.curationInfo.curator,
           fromTopicSlug: TestData.topic.slug,
         ),
       );
@@ -23,7 +23,7 @@ void main() {
     (tester) async {
       await tester.startApp(
         initialRoute: TopicOwnerPageRoute(
-          owner: TestData.topic.owner,
+          owner: TestData.topic.curationInfo.curator,
           fromTopicSlug: TestData.topic.slug,
         ),
       );

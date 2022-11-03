@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/widgets/owner_topics.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_owner/topic_owner_avatar_unknown.dart';
+import 'package:better_informed_mobile/presentation/widget/curation/curator_avatar_unknown.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../test_data.dart';
@@ -17,7 +17,7 @@ void main() {
           ],
         ),
       );
-      expect(find.byType(TopicOwnerAvatarUnknown, skipOffstage: false), findsOneWidget);
+      expect(find.byType(CuratorAvatarUnknown, skipOffstage: false), findsOneWidget);
     },
   );
 
@@ -27,7 +27,7 @@ void main() {
       await tester.startApp(
         initialRoute: MainPageRoute(
           children: [
-            TopicOwnerPageRoute(owner: TestData.topicWithEditorOwner.owner),
+            TopicOwnerPageRoute(owner: TestData.topicWithEditorOwner.curationInfo.curator),
           ],
         ),
       );
@@ -41,7 +41,7 @@ void main() {
       await tester.startApp(
         initialRoute: MainPageRoute(
           children: [
-            TopicOwnerPageRoute(owner: TestData.topic.owner),
+            TopicOwnerPageRoute(owner: TestData.topic.curationInfo.curator),
           ],
         ),
       );

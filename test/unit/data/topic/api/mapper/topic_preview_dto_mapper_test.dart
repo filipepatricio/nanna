@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
+import 'package:better_informed_mobile/domain/common/data/curation_info.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
-import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,29 +11,29 @@ import '../../../../../generated_mocks.mocks.dart';
 import '../../../../../test_data.dart';
 
 void main() {
-  late MockCuratorDTOMapper curatorDTOMapper;
+  late MockCurationInfoDTOMapper curationInfoDTOMapper;
   late MockTopicPublisherInformationDTOMapper topicPublisherInformationDTOMapper;
   late MockImageDTOMapper imageDTOMapper;
   late TopicPreviewDTOMapper mapper;
   late MockCategoryDTOMapper categoryDTOMapper;
 
   setUp(() {
-    curatorDTOMapper = MockCuratorDTOMapper();
+    curationInfoDTOMapper = MockCurationInfoDTOMapper();
     topicPublisherInformationDTOMapper = MockTopicPublisherInformationDTOMapper();
     imageDTOMapper = MockImageDTOMapper();
     categoryDTOMapper = MockCategoryDTOMapper();
     mapper = TopicPreviewDTOMapper(
-      curatorDTOMapper,
       topicPublisherInformationDTOMapper,
       imageDTOMapper,
       categoryDTOMapper,
+      curationInfoDTOMapper,
     );
   });
 
   test('maps dto to domain object', () {
     final dto = MockDTO.topicPreview;
 
-    final owner = FakeCurator();
+    final curationInfo = FakeCurationInfo();
     final publisherInformation = FakeTopicPublisherInformation();
     final heroImage = FakeImage();
     final expected = TopicPreview(
@@ -43,7 +43,7 @@ void main() {
       'Lorem ipsum dolor sit amet, consectetur adip',
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       'url',
-      owner,
+      curationInfo,
       DateTime.utc(2021, 12, 23, 11, 38, 26).toLocal(),
       publisherInformation,
       heroImage,
@@ -52,7 +52,7 @@ void main() {
       TestData.category,
     );
 
-    when(curatorDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
+    when(curationInfoDTOMapper(dto.curationInfo)).thenAnswer((realInvocation) => curationInfo);
     when(topicPublisherInformationDTOMapper(any)).thenAnswer((realInvocation) => publisherInformation);
     when(imageDTOMapper(dto.heroImage)).thenAnswer((realInvocation) => heroImage);
     when(categoryDTOMapper(dto.category)).thenAnswer((realInvocation) => TestData.category);
@@ -68,7 +68,7 @@ void main() {
           .having((preview) => preview.strippedTitle, 'strippedTitle', expected.strippedTitle)
           .having((preview) => preview.introduction, 'introduction', expected.introduction)
           .having((preview) => preview.url, 'url', expected.url)
-          .having((preview) => preview.owner, 'owner', expected.owner)
+          .having((preview) => preview.curationInfo, 'curationInfo', expected.curationInfo)
           .having((preview) => preview.lastUpdatedAt, 'lastUpdatedAt', expected.lastUpdatedAt)
           .having((preview) => preview.publisherInformation, 'highlightedPublishers', expected.publisherInformation)
           .having((preview) => preview.heroImage, 'heroImage', expected.heroImage)
@@ -77,7 +77,7 @@ void main() {
   });
 }
 
-class FakeCurator extends Fake implements Curator {}
+class FakeCurationInfo extends Fake implements CurationInfo {}
 
 class FakeImage extends Fake implements Image {}
 

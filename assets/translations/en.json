@@ -80,11 +80,7 @@
     "readingList": "Reading list",
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
-    "articles": "{} articles",
-    "recommendedBy": {
-      "informed": "Recommended by informed",
-      "expert": "Recommended by {}"
-    }
+    "articles": "{} articles"
   },
   "date": {
     "day": {
@@ -261,8 +257,6 @@
     "label": "Deep Dive",
     "labelExpert": "Expert Deep Dive",
     "updated": "Updated {}",
-    "recommendedBy": "Recommended by ",
-    "curatedBy": "Curated by ",
     "owner": {
       "aboutThe": "About the",
       "editorialTeamTitle": "@:topic.owner.aboutThe editors",
