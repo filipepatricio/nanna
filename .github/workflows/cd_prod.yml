@@ -193,7 +193,6 @@ jobs:
           PROVISIONING_PROFILE_SPECIFIER: 'match AppStore so.informed'
           PROVISIONING_PROFILE_SPECIFIER_NOTIFICATION: 'match AppStore so.informed.ImageNotification'
           APPLICATION_ID: '1577915307'
-          ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD: true
 
       - name: Slack Notification
         uses: 8398a7/action-slack@v3
