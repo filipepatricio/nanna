@@ -102,7 +102,6 @@ class SettingsMainBody extends HookWidget {
             cubit.sendFeedbackEmail(
               _feedbackEmail,
               LocaleKeys.settings_feedbackSubject.tr(),
-              LocaleKeys.settings_feedbackText.tr(),
             );
           },
         ),

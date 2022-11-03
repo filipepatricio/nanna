@@ -16,14 +16,4 @@ class TopicPageState with _$TopicPageState {
   factory TopicPageState.error() = _TopicPageStateError;
 
   factory TopicPageState.showTutorialToast(String text) = _TopicPageStateShowTutorialToast;
-
-  factory TopicPageState.shouldShowMediaItemTutorialCoachMark() = _TopicPageStateShouldShowMediaItemTutorialCoachMark;
-
-  factory TopicPageState.showMediaItemTutorialCoachMark() = _TopicPageStateShowMediaItemTutorialCoachMark;
-
-  factory TopicPageState.skipTutorialCoachMark({
-    required bool jumpToNextCoachMark,
-  }) = _TopicPageStateSkipTutorialCoachMark;
-
-  factory TopicPageState.finishTutorialCoachMark() = _TopicPageStateFinishTutorialCoachMark;
 }
