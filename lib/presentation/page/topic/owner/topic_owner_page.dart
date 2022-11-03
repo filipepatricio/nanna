@@ -123,7 +123,7 @@ class TopicOwnerPage extends HookWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                             child: FilledButton.white(
-                              text: LocaleKeys.topic_howDoWeCurateContent_label.tr(),
+                              text: LocaleKeys.topic_howWeCurateContent_label.tr(),
                               trailing: SvgPicture.asset(
                                 AppVectorGraphics.chevronNext,
                                 fit: BoxFit.scaleDown,
@@ -171,8 +171,10 @@ class _ActionsBar extends HookWidget {
   Widget build(BuildContext context) {
     final showOwnerTitle = useState(0.0);
     final actionBarTitle = owner is Editor
-        ? LocaleKeys.topic_owner_editorInfo.tr()
-        : (owner is EditorialTeam ? LocaleKeys.topic_owner_authorInfo.tr() : LocaleKeys.topic_owner_expertInfo.tr());
+        ? LocaleKeys.topic_owner_editorTitle.tr()
+        : (owner is EditorialTeam
+            ? LocaleKeys.topic_owner_editorialTeamTitle.tr()
+            : LocaleKeys.topic_owner_expertTitle.tr());
 
     void setShowOwnerTitle() {
       if (controller.hasClients) {

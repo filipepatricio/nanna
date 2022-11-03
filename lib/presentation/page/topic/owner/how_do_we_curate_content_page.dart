@@ -31,13 +31,13 @@ class HowDoWeCurateContentPage extends HookWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            LocaleKeys.topic_howDoWeCurateContent_title.tr(),
+                            LocaleKeys.topic_howWeCurateContent_title.tr(),
                             softWrap: true,
                             style: AppTypography.h0Medium,
                           ),
                           const SizedBox(height: AppDimens.l),
                           Text(
-                            LocaleKeys.topic_howDoWeCurateContent_text.tr(),
+                            LocaleKeys.topic_howWeCurateContent_text.tr(),
                             softWrap: true,
                             style: AppTypography.articleText.copyWith(
                               height: 1.75,

@@ -3,10 +3,8 @@ import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/mediaitems/topic_media_items_list.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
@@ -39,25 +37,6 @@ class TopicView extends HookWidget {
   Widget build(BuildContext context) {
     final eventController = useEventTrackingController();
     final pageIndex = useState(0);
-
-    useEffect(
-      () {
-        cubit.initializeTutorialCoachMark();
-      },
-      [cubit],
-    );
-
-    useCubitListener<TopicPageCubit, TopicPageState>(cubit, (cubit, state, context) {
-      state.whenOrNull(
-        shouldShowMediaItemTutorialCoachMark: () {
-          final topicArticleSectionTriggerPoint = topic.hasSummary
-              ? AppDimens.topicArticleSectionTriggerPoint(context)
-              : AppDimens.topicViewHeaderImageHeight(context);
-          final listener = mediaItemTutorialListener(scrollController, topicArticleSectionTriggerPoint);
-          scrollController.addListener(listener);
-        },
-      );
-    });
 
     return MultiSliver(
       children: [
@@ -104,27 +83,5 @@ class TopicView extends HookWidget {
         ),
       ],
     );
-  }
-
-  bool didListScrollReachMediaItem(ScrollController listScrollController, double articleTriggerPosition) {
-    return listScrollController.offset >= articleTriggerPosition && !listScrollController.position.outOfRange;
-  }
-
-  VoidCallback mediaItemTutorialListener(ScrollController listScrollController, double articleTriggerPosition) {
-    var isToShowMediaItemTutorialCoachMark = true;
-    void mediaItemTutorialListener() {
-      if (isToShowMediaItemTutorialCoachMark &&
-          didListScrollReachMediaItem(listScrollController, articleTriggerPosition)) {
-        listScrollController.animateTo(
-          articleTriggerPosition,
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.decelerate,
-        );
-        cubit.showMediaItemTutorialCoachMark();
-        isToShowMediaItemTutorialCoachMark = false;
-      }
-    }
-
-    return mediaItemTutorialListener;
   }
 }
