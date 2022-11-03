@@ -283,8 +283,13 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
         pulseVariation: Tween(begin: 1.0, end: 1.0),
         contents: [
           TargetContent(
+            padding: EdgeInsets.zero,
             align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(bottom: AppDimens.xl),
+            customPosition: CustomTargetContentPosition(
+              left: AppDimens.m,
+              right: AppDimens.m,
+              bottom: AppDimens.xl,
+            ),
             builder: (context, controller) {
               return TutorialTooltip(
                 text: LocaleKeys.tutorial_topicCoachmarkText.tr(),
