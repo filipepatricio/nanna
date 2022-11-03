@@ -77,7 +77,10 @@ class _ShareOptionsView extends HookWidget {
                     style: AppTypography.b2Medium,
                   ),
                   const Spacer(),
-                  SvgPicture.asset(AppVectorGraphics.closeBackground),
+                  GestureDetector(
+                    onTap: () => AutoRouter.of(context).pop(),
+                    child: SvgPicture.asset(AppVectorGraphics.closeBackground),
+                  ),
                 ],
               ),
             ),
