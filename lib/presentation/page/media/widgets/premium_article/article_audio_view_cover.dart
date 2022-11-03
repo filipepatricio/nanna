@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/page/media/article/article_i
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -16,7 +15,6 @@ class ArticleAudioViewCover extends StatelessWidget {
     required this.width,
     required this.height,
     this.shouldShowTimeToRead = true,
-    this.shouldShowAudioIcon = true,
     Key? key,
   }) : super(key: key);
 
@@ -24,7 +22,6 @@ class ArticleAudioViewCover extends StatelessWidget {
   final double width;
   final double height;
   final bool shouldShowTimeToRead;
-  final bool shouldShowAudioIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +44,6 @@ class ArticleAudioViewCover extends StatelessWidget {
             height: height,
             width: width,
             shouldShowTimeToRead: shouldShowTimeToRead,
-            shouldShowAudioIcon: shouldShowAudioIcon,
           )
         ]
       ],
@@ -61,7 +57,6 @@ class _ArticleImageOverlay extends StatelessWidget {
     required this.height,
     required this.width,
     required this.shouldShowTimeToRead,
-    required this.shouldShowAudioIcon,
     Key? key,
   }) : super(key: key);
 
@@ -69,7 +64,6 @@ class _ArticleImageOverlay extends StatelessWidget {
   final double? height;
   final double? width;
   final bool shouldShowTimeToRead;
-  final bool shouldShowAudioIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -89,10 +83,8 @@ class _ArticleImageOverlay extends StatelessWidget {
             children: [
               if (hasImage) ...[
                 PublisherLogo.light(publisher: article.publisher),
-                if (article.hasAudioVersion && shouldShowAudioIcon) AudioIconButton(article: article)
               ] else ...[
                 PublisherLogo.dark(publisher: article.publisher),
-                if (article.hasAudioVersion && shouldShowAudioIcon) AudioIconButton(article: article)
               ]
             ],
           ),
