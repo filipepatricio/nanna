@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/topic/data/curator.dart';
+import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topics_from_editor_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topics_from_expert_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dt.dart';
@@ -16,28 +16,26 @@ class TopicOwnerPageCubit extends Cubit<TopicOwnerPageState> {
   final GetTopicsFromExpertUseCase _getTopicsFromExpertUseCase;
   final GetTopicsFromEditorUseCase _getTopicsFromEditorUseCase;
 
-  Future<void> initialize(Curator owner, [String? fromTopicSlug]) async {
-    if (owner is EditorialTeam) {
-      emit(TopicOwnerPageState.idleEditorialTeam());
-      return;
-    }
-
+  Future<void> initialize(Curator curator, [String? fromTopicSlug]) async {
     emit(TopicOwnerPageState.loading());
 
     try {
-      if (owner is Expert) {
-        emit(
-          TopicOwnerPageState.idleExpert(await _getTopicsFromExpertUseCase.call(owner.id, fromTopicSlug)),
-        );
-        return;
-      }
-
-      emit(
-        TopicOwnerPageState.idleEditor(await _getTopicsFromEditorUseCase.call(owner.id, fromTopicSlug)),
+      await curator.map(
+        editor: (curator) async {
+          final topics = await _getTopicsFromEditorUseCase.call(curator.id, fromTopicSlug);
+          emit(TopicOwnerPageState.idleEditor(topics));
+        },
+        expert: (curator) async {
+          final topics = await _getTopicsFromExpertUseCase.call(curator.id, fromTopicSlug);
+          emit(TopicOwnerPageState.idleExpert(topics));
+        },
+        editorialTeam: (curator) async {
+          emit(TopicOwnerPageState.idleEditorialTeam());
+        },
+        unknown: (_) async => emit(TopicOwnerPageState.error()),
       );
-      return;
     } catch (e, s) {
-      Fimber.e('Fetching ${owner.runtimeType} topics failed', ex: e, stacktrace: s);
+      Fimber.e('Fetching ${curator.runtimeType} topics failed', ex: e, stacktrace: s);
       emit(TopicOwnerPageState.error());
     }
   }

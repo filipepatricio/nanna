@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_content_type_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/article/api/mapper/article_curation_info_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_media_item_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
@@ -9,6 +8,8 @@ import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_map
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_with_items_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/common/mapper/curation_info_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/common/mapper/curator_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_entry_item_dto_mapper.di.dart';
@@ -32,7 +33,6 @@ import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_m
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
@@ -65,7 +65,7 @@ class TestData {
     ArticleKindDTOMapper(),
     ArticleProgressDTOMapper(),
     CategoryDTOMapper(),
-    ArticleCurationInfoDTOMapper(
+    CurationInfoDTOMapper(
       CuratorDTOMapper(
         ImageDTOMapper(),
       ),
@@ -73,9 +73,6 @@ class TestData {
   );
 
   static final _topicPreviewMapper = TopicPreviewDTOMapper(
-    CuratorDTOMapper(
-      ImageDTOMapper(),
-    ),
     TopicPublisherInformationDTOMapper(
       PublisherDTOMapper(
         ImageDTOMapper(),
@@ -83,6 +80,11 @@ class TestData {
     ),
     ImageDTOMapper(),
     CategoryDTOMapper(),
+    CurationInfoDTOMapper(
+      CuratorDTOMapper(
+        ImageDTOMapper(),
+      ),
+    ),
   );
 
   static final _topicMapper = TopicDTOMapper(
@@ -97,10 +99,12 @@ class TestData {
         ImageDTOMapper(),
       ),
     ),
-    CuratorDTOMapper(
-      ImageDTOMapper(),
-    ),
     CategoryDTOMapper(),
+    CurationInfoDTOMapper(
+      CuratorDTOMapper(
+        ImageDTOMapper(),
+      ),
+    ),
   );
 
   static final _exploreContentMapper = ExploreContentDTOMapper(
@@ -136,15 +140,17 @@ class TestData {
         ArticleKindDTOMapper(),
         ArticleProgressDTOMapper(),
         CategoryDTOMapper(),
-        ArticleCurationInfoDTOMapper(
+        CurationInfoDTOMapper(
           CuratorDTOMapper(
             ImageDTOMapper(),
           ),
         ),
       ),
       BriefEntryTopicPreviewDTOMapper(
-        CuratorDTOMapper(
-          ImageDTOMapper(),
+        CurationInfoDTOMapper(
+          CuratorDTOMapper(
+            ImageDTOMapper(),
+          ),
         ),
         TopicPublisherInformationDTOMapper(
           PublisherDTOMapper(
@@ -169,7 +175,7 @@ class TestData {
     ArticleKindDTOMapper(),
     ArticleProgressDTOMapper(),
     CategoryDTOMapper(),
-    ArticleCurationInfoDTOMapper(
+    CurationInfoDTOMapper(
       CuratorDTOMapper(
         ImageDTOMapper(),
       ),
