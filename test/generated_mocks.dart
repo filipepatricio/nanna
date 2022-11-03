@@ -10,12 +10,13 @@ import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_p
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
 import 'package:better_informed_mobile/data/auth/app_link/magic_link_parser.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/common/mapper/curation_info_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/common/mapper/curator_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/mapper/onboarding_version_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/store/onboarding_database.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/app_info_data_source.di.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
@@ -119,6 +120,7 @@ const _classes = [
   GetSubscriptionPlansUseCase,
   CategoryDTOMapper,
   DeepLinkRepository,
+  CurationInfoDTOMapper,
 ];
 
 @GenerateMocks(_classes)

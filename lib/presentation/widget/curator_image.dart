@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
-import 'package:better_informed_mobile/domain/topic/data/curator.dart';
+import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
@@ -54,7 +54,7 @@ class CuratorImage extends HookWidget {
               ),
             )
           : SvgPicture.asset(
-              curator is Expert ? AppVectorGraphics.expertAvatar : editorAvatar,
+              curator is ExpertCurator ? AppVectorGraphics.expertAvatar : editorAvatar,
               width: imageWidth,
               height: imageHeight,
             ),

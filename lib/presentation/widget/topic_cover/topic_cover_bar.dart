@@ -73,8 +73,8 @@ class _TopicCoverBarSmall extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: TopicOwnerAvatar.small(
-            owner: topic.owner,
+          child: CurationInfoView(
+            curationInfo: topic.curationInfo,
             shortLabel: true,
           ),
         ),

@@ -1,11 +1,11 @@
 // ignore_for_file: invalid_annotation_target
 
-import 'package:better_informed_mobile/data/article/api/dto/article_curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_type_dto.dart';
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
+import 'package:better_informed_mobile/data/common/dto/curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/article_image_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/dto_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
@@ -39,7 +39,7 @@ class MediaItemDTO with _$MediaItemDTO {
     ArticleProgressState progressState,
     bool locked,
     @JsonKey(name: 'primaryCategory') CategoryDTO category,
-    ArticleCurationInfoDTO curationInfo,
+    CurationInfoDTO curationInfo,
   ) = MediaItemDTOArticle;
 
   @FreezedUnionValue(unknownKey)

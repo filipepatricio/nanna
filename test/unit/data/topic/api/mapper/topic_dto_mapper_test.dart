@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
+import 'package:better_informed_mobile/domain/common/data/curation_info.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
-import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
@@ -17,7 +17,7 @@ void main() {
   late MockEntryDTOMapper entryDTOMapper;
   late MockSummaryCardDTOMapper summaryCardDTOMapper;
   late MockTopicPublisherInformationDTOMapper topicPublisherInformationDTOMapper;
-  late MockCuratorDTOMapper curatorDTOMapper;
+  late MockCurationInfoDTOMapper curationInfoDTOMapper;
   late TopicDTOMapper mapper;
   late MockCategoryDTOMapper categoryDTOMapper;
 
@@ -26,22 +26,22 @@ void main() {
     entryDTOMapper = MockEntryDTOMapper();
     summaryCardDTOMapper = MockSummaryCardDTOMapper();
     topicPublisherInformationDTOMapper = MockTopicPublisherInformationDTOMapper();
-    curatorDTOMapper = MockCuratorDTOMapper();
+    curationInfoDTOMapper = MockCurationInfoDTOMapper();
     categoryDTOMapper = MockCategoryDTOMapper();
     mapper = TopicDTOMapper(
       imageDTOMapper,
       entryDTOMapper,
       summaryCardDTOMapper,
       topicPublisherInformationDTOMapper,
-      curatorDTOMapper,
       categoryDTOMapper,
+      curationInfoDTOMapper,
     );
   });
 
   test('maps dto to domain object', () {
     final dto = MockDTO.topic;
 
-    final owner = FakeCurator();
+    final curationInfo = FakeCurationInfo();
     final publisherInformation = FakeTopicPublisherInformation();
     final entry = FakeEntry();
     final entries = [entry, entry, entry];
@@ -60,7 +60,7 @@ void main() {
       introduction:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       url: 'url',
-      owner: owner,
+      curationInfo: curationInfo,
       lastUpdatedAt: DateTime.utc(2021, 12, 23, 11, 38, 26).toLocal(),
       topicSummaryList: summaryCards,
       publisherInformation: publisherInformation,
@@ -70,7 +70,7 @@ void main() {
       category: TestData.category,
     );
 
-    when(curatorDTOMapper(dto.owner)).thenAnswer((realInvocation) => owner);
+    when(curationInfoDTOMapper(dto.curationInfo)).thenAnswer((realInvocation) => curationInfo);
     when(topicPublisherInformationDTOMapper(any)).thenAnswer((realInvocation) => publisherInformation);
     when(entryDTOMapper(any)).thenAnswer((realInvocation) => entry);
     when(summaryCardDTOMapper(any)).thenAnswer((realInvocation) => summaryCard);
@@ -88,7 +88,7 @@ void main() {
           .having((preview) => preview.strippedTitle, 'strippedTitle', expected.strippedTitle)
           .having((preview) => preview.introduction, 'introduction', expected.introduction)
           .having((preview) => preview.url, 'url', expected.url)
-          .having((preview) => preview.owner, 'owner', expected.owner)
+          .having((preview) => preview.curationInfo, 'curationInfo', expected.curationInfo)
           .having((preview) => preview.topicSummaryList, 'topicSummaryList', expected.topicSummaryList)
           .having((preview) => preview.entries, 'readingList', expected.entries)
           .having((preview) => preview.lastUpdatedAt, 'lastUpdatedAt', expected.lastUpdatedAt)
@@ -98,7 +98,7 @@ void main() {
   });
 }
 
-class FakeCurator extends Fake implements Curator {}
+class FakeCurationInfo extends Fake implements CurationInfo {}
 
 class FakeImage extends Fake implements Image {}
 

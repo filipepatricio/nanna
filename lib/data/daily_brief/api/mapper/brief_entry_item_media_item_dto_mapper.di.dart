@@ -1,9 +1,9 @@
-import 'package:better_informed_mobile/data/article/api/mapper/article_curation_info_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/common/mapper/curation_info_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
@@ -27,7 +27,7 @@ class BriefEntryMediaItemDTOMapper implements Mapper<BriefEntryItemDTO, MediaIte
   final ArticleKindDTOMapper _articleKindDTOMapper;
   final ArticleProgressDTOMapper _articleProgressDTOMapper;
   final CategoryDTOMapper _categoryDTOMapper;
-  final ArticleCurationInfoDTOMapper _articleCurationInfoDTOMapper;
+  final CurationInfoDTOMapper _articleCurationInfoDTOMapper;
 
   @override
   MediaItem? call(BriefEntryItemDTO data) {

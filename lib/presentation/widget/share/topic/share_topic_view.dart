@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/image/data/image.dart' as image_data;
-import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -113,15 +112,14 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                 RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
+                    style: AppTypography.b1Regular.copyWith(fontSize: 24, height: 1),
                     children: [
                       TextSpan(
-                        text: tr(
-                          topic.owner is EditorialTeam ? LocaleKeys.topic_recommendedBy : LocaleKeys.topic_curatedBy,
-                        ),
-                        style: AppTypography.b1Regular.copyWith(fontSize: 24, height: 1),
+                        text: topic.curationInfo.byline,
                       ),
+                      const TextSpan(text: ' '),
                       TextSpan(
-                        text: topic.owner.name,
+                        text: topic.curationInfo.curator.name,
                         style: AppTypography.b1Regular.copyWith(
                           fontSize: 24,
                           height: 1,
@@ -164,7 +162,7 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
   }
 
   Image? _topicOwnerImage(CloudinaryImageProvider cloudinary) {
-    final avatar = topic.owner.avatar;
+    final avatar = topic.curationInfo.curator.avatar;
 
     if (avatar != null) {
       return cloudinaryImageAuto(

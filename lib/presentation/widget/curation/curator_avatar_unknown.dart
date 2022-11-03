@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TopicOwnerAvatarUnknown extends StatelessWidget {
-  const TopicOwnerAvatarUnknown({
+class CuratorAvatarUnknown extends StatelessWidget {
+  const CuratorAvatarUnknown({
     Key? key,
   }) : super(key: key);
 

@@ -1,10 +1,10 @@
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/common/mapper/curation_info_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/topic/api/mapper/topic_owner_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
@@ -18,15 +18,16 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
     this._entryDTOMapper,
     this._summaryCardDTOMapper,
     this._topicPublisherInformationDTOMapper,
-    this._topicOwnerDTOMapper,
     this._categoryDTOMapper,
+    this._curationInfoDTOMapper,
   );
+
   final ImageDTOMapper _imageDTOMapper;
   final EntryDTOMapper _entryDTOMapper;
   final SummaryCardDTOMapper _summaryCardDTOMapper;
   final TopicPublisherInformationDTOMapper _topicPublisherInformationDTOMapper;
-  final CuratorDTOMapper _topicOwnerDTOMapper;
   final CategoryDTOMapper _categoryDTOMapper;
+  final CurationInfoDTOMapper _curationInfoDTOMapper;
 
   @override
   Topic call(TopicDTO data) {
@@ -37,7 +38,7 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
       strippedTitle: data.strippedTitle,
       introduction: data.introduction,
       url: data.url,
-      owner: _topicOwnerDTOMapper(data.owner),
+      curationInfo: _curationInfoDTOMapper(data.curationInfo),
       lastUpdatedAt: DateTime.parse(data.lastUpdatedAt).toLocal(),
       publisherInformation: _topicPublisherInformationDTOMapper(data.publisherInformation),
       heroImage: _imageDTOMapper(data.heroImage),

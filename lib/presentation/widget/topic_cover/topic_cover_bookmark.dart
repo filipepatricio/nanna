@@ -66,7 +66,10 @@ class _CoverContentBookmark extends HookWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(height: AppDimens.s),
-          TopicOwnerAvatar.small(owner: topic.owner, shortLabel: true),
+          CurationInfoView(
+            curationInfo: topic.curationInfo,
+            shortLabel: true,
+          ),
           const SizedBox(height: AppDimens.s),
           InformedMarkdownBody(
             markdown: topic.title,
