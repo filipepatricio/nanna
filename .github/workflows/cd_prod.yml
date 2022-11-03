@@ -20,7 +20,7 @@ on:
 
 env:
   JAVA_VERSION: '12.x'
-  RUBY_VERSION: '2.7'
+  RUBY_VERSION: '3.1'
 
 jobs:
   tag_release:
@@ -104,7 +104,7 @@ jobs:
           GOOGLE_PLAY_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_CREDENTIALS }}
 
       - name: Upload appbundle to internal testing
-        uses: maierj/fastlane-action@v2.2.0
+        uses: maierj/fastlane-action@v2.3.0
         with:
           lane: 'internal_play_store'
           subdirectory: android
@@ -174,7 +174,7 @@ jobs:
         run: flutter build ios --config-only --release --no-codesign --dart-define=env=prod --flavor prod --build-number="$BUILD_NUMBER" --build-name="$VERSION_NUMBER" --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
-        uses: maierj/fastlane-action@v2.2.0
+        uses: maierj/fastlane-action@v2.3.0
         with:
           lane: 'closed_beta'
           subdirectory: ios
