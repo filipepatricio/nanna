@@ -28,7 +28,7 @@ class DeepLinkRepositoryImpl implements DeepLinkRepository {
     }
   }
 
-  Stream<String> _deepLinkStream() => Rx.concat(
+  Stream<String> _deepLinkStream() => Rx.merge(
         [
           _analyticsFacade.deepLinkStream,
           _appLinkDataSource.listenForIncomingActions().map((uri) => uri.path),

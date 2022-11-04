@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/free_article/free_article_view_cubit.di.dart';
@@ -46,7 +45,10 @@ class FreeArticleView extends HookWidget {
         ],
       ),
       android: AndroidInAppWebViewOptions(useHybridComposition: true),
-      ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+        allowsBackForwardNavigationGestures: false,
+      ),
     );
 
     final cubit = useCubit<FreeArticleViewCubit>();
@@ -63,7 +65,6 @@ class FreeArticleView extends HookWidget {
         article: article,
         topicId: topicId,
         snackbarController: snackbarController,
-        onBackPressed: () => context.popRoute(cubit.articleProgress),
       ),
       body: SnackbarParentView(
         controller: snackbarController,

@@ -86,7 +86,7 @@ class _ArticleCoverSmallContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ArticleTimeReadLabel(
-              visited: article.visited,
+              finished: article.finished,
               timeToRead: article.timeToRead,
             ),
             const Spacer(),

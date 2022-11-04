@@ -4,7 +4,7 @@
     "continue": "Continue",
     "next": "Next",
     "back": "Back",
-    "signOut": "Sign Out",
+    "signOut": "Sign out",
     "signUp": "Sign up",
     "cancel": "Cancel",
     "generalError": "Something went wrong.\nTry again later.",
@@ -41,7 +41,7 @@
     "headerSlideCategories": "Add your interests",
     "headerSlideThree": "Notifications",
     "descriptionSlideOne": "Get a daily curation of must-read articles – all in one app.",
-    "descriptionSlideTwo": "Our editors and topic experts read hundreds of articles daily, choosing only the best and deliberately curating diverse perspectives.",
+    "descriptionSlideTwo": "Our editors and experts read hundreds of articles daily, choosing only the best and deliberately curating diverse perspectives.",
     "descriptionSlideCategories": "Choose what matters to you and you’ll get personalised daily reading suggestions, alongside wider curated articles. Change your interests anytime in Profile → Settings.",
     "categories": {
       "everything": "Show me everything"
@@ -56,12 +56,10 @@
     }
   },
   "tutorial": {
-    "dailyBriefSnackBarText": "\uD83D\uDC4B\uD83C\uDFFB **Welcome to your Daily Brief!** Here you’ll get updates from our editorial team on the most important topics of the day.",
-    "topicSnackBarText": "\uD83D\uDC4D\uD83C\uDFFB **You’ve found a topic of interest.** Scroll down to get an overview or jump into the list of articles we curated for you.",
-    "exploreSnackBarText": "\uD83D\uDD0D **If you’d like to explore more** or missed a brief then you can find even more topics as well as articles here.",
-    "topicTooltipText": "\uD83C\uDF89 Informed voices, who are all experts in their fields. They put together topics exclusively for informed.",
-    "mediaItemTooltipText": "\uD83D\uDC49\uD83C\uDFFB Dive deeper? Our editorial team carefully curates a selection of articles to give you a 360° perspective on the topic.",
-    "profileSnackBarText": "\uD83D\uDC9A **Save articles and topics for later** – so that you can read or listen to your top picks whenever it suits you best."
+    "dailyBriefSnackBarText": "👋🏻 Welcome to your Daily Brief. Here you’ll get updates from our editorial team on the most important stories of the day.",
+    "topicSnackBarText": "👍🏻 You’ve found a topic of interest. Scroll down to get an overview or jump into the list of articles we curated for you. ",
+    "exploreSnackBarText": "🔍  If you’d like to explore more or missed a brief then you can find even more topics as well as articles here.",
+    "topicCoachmarkText": "🔍 Look out for the 'Deep Dive' label – these are article collections exploring a single subject in detail."
   },
   "main": {
     "todayTab": "Today",
@@ -82,15 +80,10 @@
     "readingList": "Reading list",
     "relax": "Relax",
     "selectedArticles": "{} selected articles",
-    "articles": "{} articles",
-    "summaryHeadline": "Topic summary",
-    "articlesCount": "{} articles on this topic",
-    "recommendedBy": {
-      "informed": "Recommended by informed",
-      "expert": "Recommended by {}"
-    }
+    "articles": "{} articles"
   },
   "date": {
+    "daySuffix": "{}-day",
     "day": {
       "one": "{} day",
       "other": "{} days"
@@ -101,7 +94,8 @@
   "subscription": {
     "title": {
       "trial": "Your free trial with informed",
-      "standard": "Subscribe for _unlimited_ news access"
+      "standard": "Subscribe for _unlimited_ news access",
+      "article": "Subscribe for _unlimited_ access"
     },
     "benefit": {
       "access": "Unlimited news access",
@@ -119,9 +113,9 @@
     },
     "off": "{}% off",
     "subscribe": "Subscribe",
-    "description": "Read or listen to every article in the app. If you change your mind, you can cancel anytime",
+    "description": "Read or listen to all of our curated articles. Cancel anytime during your trial.",
     "planInfo": {
-      "trial": "{} free trial, then {} / year",
+      "trial": "Free {} trial, then {} / year",
       "standard": "{} / year"
     },
     "tryForFreeAction": "Try For Free",
@@ -162,17 +156,14 @@
     "notifications": "Notifications",
     "email": "Email",
     "push": "Push",
-    "manageMyInterests": "Manage My Interests",
+    "manageMyInterests": "Manage my interests",
     "manageMyInterestsTitle": "Interests",
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsAndConditions": "Terms & Conditions",
     "termsOfService": "Terms of Service",
-    "privacyPolicyContent": "This is a placeholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
-    "termsContent": "This is a placeholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "newsUpdates": "News Updates",
     "newDailyBrief": "NewDailyBrief",
-    "incomingNewTopic": "Incoming new topic ",
     "productUpdates": "Product Updates",
     "newFeatures": "New features & improvements",
     "firstName": "First name",
@@ -183,9 +174,8 @@
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
     "wrongEmailInput": "Wrong email input",
-    "feedbackButton": "Give Feedback",
-    "feedbackSubject": "Feedback on Informed App",
-    "feedbackText": "Hey there,\nwe love getting feedback, so let us know what you think! Thanks!\n\nYour team at Informed",
+    "feedbackButton": "Give feedback",
+    "feedbackSubject": "Feedback on Informed app",
     "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
     "deleteAccount": {
       "button": "Delete account",
@@ -235,7 +225,6 @@
     "readMinutes": "{} min read",
     "loadingNext": "Loading next article in\nthe reading list.",
     "allArticlesRead": "Great! You’ve read all\narticles on this topic.",
-    "goBackToTopic": "Back to topic overview",
     "goBackToExplore": "Back to explore",
     "openSourceUrl": "Open in Browser",
     "error": {
@@ -248,7 +237,6 @@
       "content": "The content you requested is not yet available in your country.",
       "action": "Ok"
     },
-    "topicOverview": "Topic Overview",
     "relatedContent": {
       "exploreMoreCategories": "Explore More in These Categories",
       "cantGetEnough": "Can't get enough?",
@@ -269,20 +257,18 @@
     "label": "Deep Dive",
     "labelExpert": "Expert Deep Dive",
     "updated": "Updated {}",
-    "recommendedBy": "Recommended by ",
-    "curatedBy": "Curated by ",
     "owner": {
-      "authorInfo": "Author Info",
-      "editorInfo": "Editor Info",
-      "expertInfo": "Expert Info",
+      "aboutThe": "About the",
+      "editorialTeamTitle": "@:topic.owner.aboutThe editors",
+      "editorTitle": "@:topic.owner.aboutThe editor",
+      "expertTitle": "@:topic.owner.aboutThe expert",
       "editorialTeam": "Informed Editorial Team",
       "expertIn": "Expert in {}",
-      "loadingExpertTopics": "We're loading\n{}'s topics",
       "followExpertOn": "Follow **{}** on"
     },
-    "howDoWeCurateContent": {
-      "label": "How do we curate content",
-      "title": "How do we curate content?",
+    "howWeCurateContent": {
+      "label": "How we curate content",
+      "title": "How we curate content?",
       "text": "We don't believe algorithms alone can provide you with the news and information you need. That's why, in addition to using algorithms for what they're good at, we have human beings curate our readlists, experienced journalists who can provide you with the context you need to understand a complex world.\n\nWe select our articles from sources with a proven track record of following ethical practices and standards in journalism, and we clearly delineate between news, opinion, and analysis.\n\nWhen the publications or authors we curate have a particularly strong political leanings, we mention that political perspective in the editor's note so the reader understands the biases they are encountering.\n\nOn occasion, we may use sources outside the standard realm of journalism, including blogs and academic articles. When we do so, we will clearly inform readers in the editor's note and highlight any political affiliations associated with the sources.\n\nOne of our central goals is to repair a splintered media landscape in which people remain in information bubbles, getting news from sources that only reinforce their existing beliefs.\n\nWe therefore believe firmly in providing a common platform where a variety of perspectives can be heard and hope, by doing so, we can help renew civil discourse and counteract ever-greater polarization.\n\nWe do not shy away from engaging with the most hotly discussed topics of the day. However, we seek to stay above the fray, presenting multiple points of view. While we strive to be non-partisan, this does not mean we don't have our own voice or believe there are some limits to acceptable discourse. We will not lend a platform to those who intentionally spread misinformation or question established science. We will exclude sources that peddle propaganda or seek to foment hatred."
     },
     "displayFullImage": "Display full image"
@@ -295,6 +281,7 @@
     "moreStoriesOnExplore": "More stories on Explore"
   },
   "search": {
+    "hint": "Search articles, deep dives, authors",
     "emptyResults": "We couldn’t find any results matching '{}'",
     "callToAction": "Check out our latest content"
   },
@@ -303,15 +290,17 @@
     "emailCopied": "Successfully copied email to your clipboard!",
     "filter": {
       "all": "All",
-      "topics": "Topics",
+      "topics": "Deep Dives",
       "articles": "Articles"
     },
     "emptyPage": {
-      "title": "Nothing here, yet!\n",
-      "noAll": "Looks like there is nothing in this section of your Profile",
-      "noTopics": "Looks like there aren’t any Deep Dives in this section of your Profile",
-      "noArticles": "Looks like there aren’t any Articles in this section of your Profile",
-      "action": "Go to Explore"
+      "title": "Nothing saved yet\n",
+      "noAll": "When you save an article or Deep Dive, you'll find it here.",
+      "noTopics": "When you save a Deep Dive,\nyou'll find it here.",
+      "noArticles": "When you save an article,\nyou'll find it here.",
+      "noAllAction": "Explore now",
+      "noTopicsAction": "Explore Deep Dives",
+      "noArticlesAction": "Explore articles"
     }
   },
   "shareTopic": {
@@ -321,11 +310,12 @@
     }
   },
   "shareQuote": {
-    "readOn": "Read on ",
-    "title": "Article - {}",
-    "asImage": "Share quote as image",
-    "asText": "Share quote as text",
-    "asStory": "Share quote as story"
+    "title": "Share Quote",
+    "as": {
+      "image": "Image",
+      "text": "Text",
+      "igStory": "Instagram Story"
+    }
   },
   "shareArticle": {
     "author": "By {}"
@@ -346,8 +336,8 @@
     "body": "You seem to be offline. Please check your network connection to load content"
   },
   "update": {
-    "title": "Breaking News: App Update",
-    "body": "New stories and features hot off the press! Update your app now to catch up on the latest news",
+    "title": "Update now",
+    "body": "We hope our latest update makes it easier to get informed. Thanks for reading and enjoy.",
     "versionAvailable": "Version {} is now available",
     "button": "Update"
   },
@@ -356,8 +346,8 @@
     "switchAudio": {
       "title": "This action will replace the current audio\n",
       "info": "Are you sure you want to switch and start listening to a new article?",
-      "deny": "No, keep current",
-      "approve": "Yes, switch"
+      "deny": "No, keep this one",
+      "approve": "Yes, play the new one"
     }
   },
   "releaseNotes": {

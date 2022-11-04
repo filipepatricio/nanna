@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/common/data/curation_info.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
-import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 
 class TopicPreview {
@@ -11,7 +11,7 @@ class TopicPreview {
     this.strippedTitle,
     this.introduction,
     this.url,
-    this.owner,
+    this.curationInfo,
     this.lastUpdatedAt,
     this.publisherInformation,
     this.heroImage,
@@ -26,7 +26,7 @@ class TopicPreview {
   final String strippedTitle;
   final String introduction;
   final String url;
-  final Curator owner;
+  final CurationInfo curationInfo;
   final DateTime lastUpdatedAt;
   final TopicPublisherInformation publisherInformation;
   final Image heroImage;

@@ -53,6 +53,9 @@ fragment articleFragment on Article {
             ... on Expert {
                 ...expertFragment
             }
+            ... on Editor {
+                ...editorFragment
+            }
             ... on EditorialTeam {
                 ...editorialTeamFragment
             }

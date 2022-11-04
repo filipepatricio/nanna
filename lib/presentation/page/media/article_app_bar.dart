@@ -16,7 +16,6 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   const ArticleAppBar({
     required this.article,
     required this.snackbarController,
-    required this.onBackPressed,
     this.actionsBarColorModeNotifier,
     this.briefId,
     this.topicId,
@@ -26,7 +25,6 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   final MediaItemArticle article;
   final SnackbarController snackbarController;
   final ValueNotifier<ArticleActionsBarColorMode>? actionsBarColorModeNotifier;
-  final VoidCallback onBackPressed;
   final String? briefId;
   final String? topicId;
 
@@ -37,10 +35,10 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final animationController = useAnimationController(duration: const Duration(milliseconds: 200));
+    final animationController = useAnimationController(duration: const Duration(milliseconds: 150));
     final animation = ColorTween(
       begin: article.hasImage ? (article.category.color ?? AppColors.background) : AppColors.background,
-      end: AppColors.background,
+      end: AppColors.background95,
     ).chain(CurveTween(curve: Curves.easeIn)).animate(animationController);
 
     useEffect(
@@ -65,23 +63,24 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
 
     return AnimatedBuilder(
       animation: animation,
-      builder: (context, bookmarkButton) => InformedCupertinoAppBar(
-        brightness: Brightness.light,
-        backgroundColor: animation.value,
-        backLabel: fromTopic ? LocaleKeys.article_topicOverview.tr() : LocaleKeys.common_back.tr(),
-        actions: [
-          bookmarkButton!,
-          const SizedBox(width: AppDimens.m),
-          Align(
-            alignment: Alignment.center,
-            child: ShareArticleButton(
-              article: article,
-              snackbarController: snackbarController,
-              buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
+      builder: (context, bookmark) => ClipRect(
+        child: InformedCupertinoAppBar(
+          backgroundColor: animation.value,
+          backLabel: fromTopic ? LocaleKeys.topic_label.tr() : LocaleKeys.common_back.tr(),
+          actions: [
+            bookmark!,
+            const SizedBox(width: AppDimens.m),
+            Align(
+              alignment: Alignment.center,
+              child: ShareArticleButton(
+                article: article,
+                snackbarController: snackbarController,
+                buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
+              ),
             ),
-          ),
-          const SizedBox(width: AppDimens.ml),
-        ],
+            const SizedBox(width: AppDimens.ml),
+          ],
+        ),
       ),
       child: BookmarkButton.article(
         article: article,

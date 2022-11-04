@@ -20,7 +20,7 @@ on:
 
 env:
   JAVA_VERSION: '12.x'
-  RUBY_VERSION: '2.7'
+  RUBY_VERSION: '3.1'
 
 jobs:
   deploy_android:
@@ -85,7 +85,7 @@ jobs:
           FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
 
       - name: Distribute app to Firebase
-        uses: maierj/fastlane-action@v2.2.0
+        uses: maierj/fastlane-action@v2.3.0
         with:
           lane: 'firebase_deploy'
           subdirectory: android
@@ -105,7 +105,7 @@ jobs:
           GOOGLE_PLAY_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_CREDENTIALS }}
 
       - name: Upload appbundle to internal testing
-        uses: maierj/fastlane-action@v2.2.0
+        uses: maierj/fastlane-action@v2.3.0
         with:
           lane: 'internal_play_store_staging'
           subdirectory: android
@@ -124,7 +124,7 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
   deploy_ios:
-    runs-on: macos-latest
+    runs-on: macos-12
     timeout-minutes: 30
     steps:
       - name: Setup build number
@@ -173,7 +173,7 @@ jobs:
         run: flutter build ios --config-only --release --no-codesign --dart-define=env=stage --flavor stage --build-number="$BUILD_NUMBER" --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
-        uses: maierj/fastlane-action@v2.2.0
+        uses: maierj/fastlane-action@v2.3.0
         with:
           lane: 'closed_beta'
           subdirectory: ios
@@ -192,7 +192,6 @@ jobs:
           PROVISIONING_PROFILE_SPECIFIER: 'match AppStore so.informed.staging'
           PROVISIONING_PROFILE_SPECIFIER_NOTIFICATION: 'match AppStore so.informed.staging.ImageNotification'
           APPLICATION_ID: '1587844260'
-          ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD: true
 
       - name: Slack Notification
         uses: 8398a7/action-slack@v3

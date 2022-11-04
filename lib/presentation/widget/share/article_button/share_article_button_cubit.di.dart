@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/share/data/share_content.dt.dart';
 import 'package:better_informed_mobile/domain/share/data/share_options.dart';
 import 'package:better_informed_mobile/domain/share/use_case/share_content_use_case.di.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article/share_article_background_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_util.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_view_image_generator.di.dart';

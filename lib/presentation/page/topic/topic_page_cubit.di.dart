@@ -3,16 +3,11 @@ import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_visited_use_case.di.dart';
-import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
-import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,71 +72,5 @@ class TopicPageCubit extends Cubit<TopicPageState> {
       emit(TopicPageState.showTutorialToast(LocaleKeys.tutorial_topicSnackBarText.tr()));
       await _setTutorialStepSeenUseCase.call(TutorialStep.topic);
     }
-  }
-
-  Future<void> initializeTutorialCoachMark() async {
-    final isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase(TutorialStep.topicMediaItem);
-
-    targets.clear();
-    if (!isTopicMediaItemTutorialStepSeen) {
-      emit(TopicPageState.shouldShowMediaItemTutorialCoachMark());
-      _initializeMediaTypeTutorialCoachMarkTarget();
-    }
-  }
-
-  TutorialCoachMark tutorialCoachMark(BuildContext context) => TutorialCoachMark(
-        targets: targets,
-        paddingFocus: 0,
-        opacityShadow: 0.5,
-        hideSkip: true,
-        onSkip: onSkipTutorialCoachMark,
-      );
-
-  void _initializeMediaTypeTutorialCoachMarkTarget() {
-    targets.add(
-      TargetFocus(
-        identify: TopicPageTutorialCoachMarkStep.mediaItem.key,
-        keyTarget: mediaItemKey,
-        color: AppColors.shadowColor,
-        enableTargetTab: false,
-        pulseVariation: Tween(begin: 1.0, end: 1.0),
-        contents: [
-          TargetContent(
-            align: ContentAlign.custom,
-            customPosition: CustomTargetContentPosition(bottom: AppDimens.xl),
-            builder: (context, controller) {
-              return TutorialTooltip(
-                text: LocaleKeys.tutorial_mediaItemTooltipText.tr(),
-                dismissButtonText: LocaleKeys.common_gotIt.tr(),
-                onDismiss: () => emit(TopicPageState.finishTutorialCoachMark()),
-              );
-            },
-          )
-        ],
-        shape: ShapeLightFocus.RRect,
-        radius: AppDimens.m,
-      ),
-    );
-  }
-
-  Future<void> showMediaItemTutorialCoachMark() async {
-    bool isTopicMediaItemTutorialStepSeen = await _isTutorialStepSeenUseCase.call(TutorialStep.topicMediaItem);
-    if (!isTopicMediaItemTutorialStepSeen) {
-      emit(TopicPageState.showMediaItemTutorialCoachMark());
-      await _setTutorialStepSeenUseCase.call(TutorialStep.topicMediaItem);
-      isTopicMediaItemTutorialStepSeen = true;
-    }
-  }
-
-  void onSkipTutorialCoachMark() {
-    targets.removeAt(0);
-  }
-
-  Future<bool> onAndroidBackButtonPress(bool isShowingTutorialCoachMark) async {
-    if (isShowingTutorialCoachMark) {
-      emit(TopicPageState.skipTutorialCoachMark(jumpToNextCoachMark: true));
-      return Future<bool>.value(false);
-    }
-    return Future<bool>.value(true);
   }
 }

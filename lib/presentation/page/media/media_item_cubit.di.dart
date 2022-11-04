@@ -84,7 +84,7 @@ class MediaItemCubit extends Cubit<MediaItemState> {
     _currentArticle = article;
     _trackActivityUseCase.trackPage(AnalyticsPage.article(article.id, topicId));
 
-    emit(const MediaItemState.loading());
+    emit(MediaItemState.loading(_currentArticle.category.color));
 
     if (article.type == ArticleType.free) {
       emit(MediaItemState.idleFree(article));

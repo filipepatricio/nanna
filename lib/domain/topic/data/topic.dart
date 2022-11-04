@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
+import 'package:better_informed_mobile/domain/common/data/curation_info.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
-import 'package:better_informed_mobile/domain/topic/data/curator.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
@@ -15,7 +15,7 @@ class Topic {
     required this.strippedTitle,
     required this.introduction,
     required this.url,
-    required this.owner,
+    required this.curationInfo,
     required this.lastUpdatedAt,
     required this.topicSummaryList,
     required this.publisherInformation,
@@ -31,7 +31,7 @@ class Topic {
   final String strippedTitle;
   final String introduction;
   final String url;
-  final Curator owner;
+  final CurationInfo curationInfo;
   final List<TopicSummary> topicSummaryList;
   final DateTime lastUpdatedAt;
   final TopicPublisherInformation publisherInformation;
@@ -52,7 +52,7 @@ class Topic {
       strippedTitle,
       introduction,
       url,
-      owner,
+      curationInfo,
       lastUpdatedAt,
       publisherInformation,
       heroImage,

@@ -94,13 +94,4 @@ class FakeTopicPageCubit extends Fake implements TopicPageCubit {
   Future<void> initializeWithSlug(_, __) async {}
   @override
   Future<void> close() async {}
-
-  @override
-  TutorialCoachMark tutorialCoachMark(context) => TutorialCoachMark(
-        targets: targets,
-        paddingFocus: 0,
-        opacityShadow: 0.5,
-        hideSkip: true,
-        onSkip: onSkipTutorialCoachMark,
-      );
 }

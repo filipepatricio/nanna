@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/topic/data/curator.dart';
+import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/topic/owner/topic_owner_page_state.dt.dart';
@@ -11,12 +11,12 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
+import 'package:better_informed_mobile/presentation/widget/curation/curator_avatar_big.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
-import 'package:better_informed_mobile/presentation/widget/topic_owner/topic_owner_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -86,7 +86,7 @@ class TopicOwnerPage extends HookWidget {
                         const SizedBox(height: AppDimens.m),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                          child: TopicOwnerAvatar.big(owner: owner),
+                          child: CuratorAvatarBig(curator: owner),
                         ),
                         const SizedBox(height: AppDimens.m),
                         Padding(
@@ -98,7 +98,7 @@ class TopicOwnerPage extends HookWidget {
                           ),
                         ),
                         const SizedBox(height: AppDimens.s),
-                        if (owner is! EditorialTeam) ...[
+                        if (owner is! EditorialTeamCurator) ...[
                           InformedAnimatedSwitcher(
                             duration: const Duration(milliseconds: 1000),
                             child: state.maybeMap(
@@ -118,12 +118,12 @@ class TopicOwnerPage extends HookWidget {
                             ),
                           ),
                         ],
-                        if (owner is! Expert) ...[
+                        if (owner is! ExpertCurator) ...[
                           const SizedBox(height: AppDimens.m),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                             child: FilledButton.white(
-                              text: LocaleKeys.topic_howDoWeCurateContent_label.tr(),
+                              text: LocaleKeys.topic_howWeCurateContent_label.tr(),
                               trailing: SvgPicture.asset(
                                 AppVectorGraphics.chevronNext,
                                 fit: BoxFit.scaleDown,
@@ -136,11 +136,11 @@ class TopicOwnerPage extends HookWidget {
                           ),
                           const SizedBox(height: AppDimens.s),
                         ],
-                        if (owner is Expert && (owner as Expert).hasSocialMediaLinks) ...[
+                        if (owner is ExpertCurator && (owner as ExpertCurator).hasSocialMediaLinks) ...[
                           const SizedBox(height: AppDimens.m),
                           _SocialMediaLinks(
                             cubit: cubit,
-                            owner: owner as Expert,
+                            owner: owner as ExpertCurator,
                           ),
                           const SizedBox(height: AppDimens.c),
                         ],
@@ -170,9 +170,12 @@ class _ActionsBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final showOwnerTitle = useState(0.0);
-    final actionBarTitle = owner is Editor
-        ? LocaleKeys.topic_owner_editorInfo.tr()
-        : (owner is EditorialTeam ? LocaleKeys.topic_owner_authorInfo.tr() : LocaleKeys.topic_owner_expertInfo.tr());
+    final actionBarTitle = owner.map(
+      editor: (owner) => LocaleKeys.topic_owner_editorTitle.tr(),
+      expert: (owner) => LocaleKeys.topic_owner_expertTitle.tr(),
+      editorialTeam: (owner) => LocaleKeys.topic_owner_editorialTeamTitle.tr(),
+      unknown: (_) => "",
+    );
 
     void setShowOwnerTitle() {
       if (controller.hasClients) {
@@ -239,8 +242,9 @@ class _SocialMediaLinks extends StatelessWidget {
     required this.owner,
     Key? key,
   }) : super(key: key);
+
   final TopicOwnerPageCubit cubit;
-  final Expert owner;
+  final ExpertCurator owner;
 
   @override
   Widget build(BuildContext context) {

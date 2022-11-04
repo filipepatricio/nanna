@@ -55,21 +55,12 @@ class _PillsArea extends StatelessWidget {
 
     return LoadingShimmer.defaultColor(
       child: SizedBox(
-        height: AppDimens.explorePillHeight * 2 + AppDimens.m,
-        child: ListView(
+        height: AppDimens.explorePillHeight,
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                row,
-                const SizedBox(height: AppDimens.m),
-                row,
-              ],
-            ),
-          ],
+          child: row,
         ),
       ),
     );
@@ -116,7 +107,7 @@ class _StreamArea extends StatelessWidget {
       child: SizedBox(
         height: size,
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
           children: [

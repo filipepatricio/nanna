@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/empty_router_widgets.dart';
-import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
@@ -62,7 +61,7 @@ const mainPageRoute = CustomRoute(
     CustomRoute(page: SubscriptionSuccessPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
-    AutoRoute<ArticleProgress?>(path: '$articlePathSegment/:articleSlug', page: MediaItemPage),
+    AutoRoute(path: '$articlePathSegment/:articleSlug', page: MediaItemPage),
     AutoRoute(page: CategoryPage),
   ],
 );

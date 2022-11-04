@@ -25,7 +25,7 @@ class _TopicCoverBig extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TopicOwnerAvatar.small(owner: topic.owner),
+            CurationInfoView(curationInfo: topic.curationInfo),
             const SizedBox(height: AppDimens.s),
             Expanded(
               child: Stack(
@@ -37,7 +37,7 @@ class _TopicCoverBig extends StatelessWidget {
                       borderRadius: AppDimens.smallImageCoverBorderRadius,
                     ),
                   ),
-                  if (topic.owner is Expert)
+                  if (topic.curationInfo.curator is ExpertCurator)
                     Positioned(
                       top: AppDimens.m,
                       child: InformedPill(

@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article/share_article_background_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view.dart';
 
 import '../../test_data.dart';

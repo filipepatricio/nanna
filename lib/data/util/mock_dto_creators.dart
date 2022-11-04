@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/data/article/api/dto/article_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_content_type_dto.dart';
-import 'package:better_informed_mobile/data/article/api/dto/article_curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_header_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_kind_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/article_progress_dto.dt.dart';
@@ -17,6 +16,8 @@ import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart'
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_with_items_dto.dt.dart';
+import 'package:better_informed_mobile/data/common/dto/curation_info_dto.dt.dart';
+import 'package:better_informed_mobile/data/common/dto/curator_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
@@ -45,7 +46,6 @@ import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt
 import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
 import 'package:better_informed_mobile/data/subscription/dto/active_subscription_dto.dart';
 import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/curator_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
@@ -408,7 +408,7 @@ class MockDTO {
     // introduction
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     'url',
-    _expert,
+    curationInfoExpert,
     '2021-12-23T11:38:26Z',
     // highlightedPublishers
     _topicPublisherInformation,
@@ -437,12 +437,12 @@ class MockDTO {
 
   static final topicWithEditorOwner = topic.copyWith(
     slug: 'topic-with-editor-owner',
-    owner: _editor,
+    curationInfo: curationInfoEditor,
   );
 
   static final topicWithUnknownOwner = topic.copyWith(
     slug: 'topic-with-unknown-owner',
-    owner: CuratorDTO.unknown(),
+    curationInfo: curationInfoUnknown,
   );
 
   static final topicVisited = topic.copyWith(visited: true);
@@ -499,7 +499,7 @@ class MockDTO {
     // locked
     false,
     category,
-    articleCurationInfo,
+    curationInfoExpert,
   );
 
   static final _freeArticle = _freeArticleWithoutNote.copyWith(
@@ -599,9 +599,24 @@ class MockDTO {
     CategoryItemDTO.topic(topicPreview),
   ];
 
-  static final articleCurationInfo = ArticleCurationInfoDTO(
+  static final curationInfoExpert = CurationInfoDTO(
     "Recommended by",
     _expert,
+  );
+
+  static final curationInfoEditor = CurationInfoDTO(
+    "Recommended by",
+    _editor,
+  );
+
+  static final curationInfoEditorialTeam = CurationInfoDTO(
+    "Recommended by",
+    _editorialTeam,
+  );
+
+  static final curationInfoUnknown = CurationInfoDTO(
+    "Recommended by",
+    CuratorDTO.unknown(),
   );
 
   // CategoriesDTO
@@ -666,6 +681,11 @@ class MockDTO {
     "Hi, it's Editor!\\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mu.",
     // avatar
     ImageDTO('owner_1'),
+  );
+
+  static final _editorialTeam = CuratorDTO.editorialTeam(
+    'informed',
+    "Hi, it's informed!\\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mu.",
   );
 
   static final _exploreArticlesArea = ExploreContentAreaDTO.articles(
@@ -1097,7 +1117,7 @@ extension ArticleHeaderDTOExtension on ArticleHeaderDTO {
     ArticleProgressState? progressState,
     bool? locked,
     CategoryDTO? category,
-    ArticleCurationInfoDTO? curationInfo,
+    CurationInfoDTO? curationInfo,
   }) {
     return ArticleHeaderDTO(
       id ?? this.id,
@@ -1188,7 +1208,7 @@ extension on TopicDTO {
     String? strippedTitle,
     String? introduction,
     String? url,
-    CuratorDTO? owner,
+    CurationInfoDTO? curationInfo,
     String? lastUpdatedAt,
     TopicPublisherInformationDTO? publisherInformation,
     ImageDTO? heroImage,
@@ -1204,7 +1224,7 @@ extension on TopicDTO {
       strippedTitle ?? this.strippedTitle,
       introduction ?? this.introduction,
       url ?? this.url,
-      owner ?? this.owner,
+      curationInfo ?? this.curationInfo,
       lastUpdatedAt ?? this.lastUpdatedAt,
       publisherInformation ?? this.publisherInformation,
       heroImage ?? this.heroImage,
@@ -1223,7 +1243,7 @@ extension on TopicDTO {
       strippedTitle,
       introduction,
       url,
-      owner,
+      curationInfo,
       lastUpdatedAt,
       publisherInformation,
       heroImage,
@@ -1241,7 +1261,7 @@ extension on TopicDTO {
       strippedTitle,
       introduction,
       url,
-      owner,
+      curationInfo,
       lastUpdatedAt,
       publisherInformation,
       heroImage,

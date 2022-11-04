@@ -45,6 +45,7 @@ class PremiumArticleView extends HookWidget {
     final state = useCubitBuilder(cubit);
     final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
     final mainController = useScrollController(keepScrollOffset: true);
+    final isScrolled = useValueNotifier(false);
     final actionsBarColorModeNotifier = useMemoized(
       () => ValueNotifier(
         articleOutputMode == ArticleOutputMode.read
@@ -58,6 +59,21 @@ class PremiumArticleView extends HookWidget {
         cubit.initialize(article, briefId, topicSlug, topicId);
       },
       [article],
+    );
+
+    void updateAppBar() {
+      final scrolled = mainController.offset >= kToolbarHeight;
+      isScrolled.value = scrolled;
+      actionsBarColorModeNotifier.value =
+          scrolled ? ArticleActionsBarColorMode.background : ArticleActionsBarColorMode.custom;
+    }
+
+    useEffect(
+      () {
+        mainController.addListener(updateAppBar);
+        return () => mainController.removeListener(updateAppBar);
+      },
+      [mainController],
     );
 
     useCubitListener<PremiumArticleViewCubit, PremiumArticleViewState>(
@@ -96,13 +112,13 @@ class PremiumArticleView extends HookWidget {
     );
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: ArticleAppBar(
         article: article.metadata,
         snackbarController: snackbarController,
         briefId: briefId,
         topicId: topicId,
         actionsBarColorModeNotifier: actionsBarColorModeNotifier,
-        onBackPressed: () => context.popRoute(cubit.articleProgress),
       ),
       body: SnackbarParentView(
         controller: snackbarController,
@@ -118,7 +134,8 @@ class PremiumArticleView extends HookWidget {
                 onPageChanged: (page) {
                   switch (page) {
                     case 0:
-                      actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.custom;
+                      actionsBarColorModeNotifier.value =
+                          isScrolled.value ? ArticleActionsBarColorMode.background : ArticleActionsBarColorMode.custom;
                       break;
                     case 1:
                       actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.background;
@@ -130,7 +147,6 @@ class PremiumArticleView extends HookWidget {
                     cubit: cubit,
                     mainController: mainController,
                     snackbarController: snackbarController,
-                    actionsBarColorModeNotifier: actionsBarColorModeNotifier,
                     onAudioBannerTap: () => horizontalPageController.animateToPage(
                       ArticleOutputMode.audio.index,
                       duration: const Duration(milliseconds: 300),

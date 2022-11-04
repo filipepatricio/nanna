@@ -14,16 +14,19 @@ fragment topicPreviewFragment on Topic {
     url
     strippedTitle
     lastUpdatedAt
-    owner {
-        __typename
-        ... on Expert {
-            ...expertFragment
-        }
-        ... on Editor {
-            ...editorFragment
-        }
-        ... on EditorialTeam {
-            ...editorialTeamFragment
+    curationInfo {
+        byline
+        curator {
+            __typename
+            ... on Expert {
+                ...expertFragment
+            }
+            ... on Editor {
+                ...editorFragment
+            }
+            ... on EditorialTeam {
+                ...editorialTeamFragment
+            }
         }
     }
     introduction

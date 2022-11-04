@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/image/data/article_image.dt.dart';
-import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/images.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article/share_article_background_view.dart';
+import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view_content.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:flutter/material.dart';
@@ -55,8 +54,6 @@ class ShareArticleStickerView extends HookWidget implements BaseShareCompletable
       );
     });
 
-    final author = article.author;
-
     return ImageLoadResolver(
       completer: _baseViewCompleter,
       images: [publisherImage],
@@ -74,123 +71,14 @@ class ShareArticleStickerView extends HookWidget implements BaseShareCompletable
               maxWidth: _stickerWidth,
               minWidth: _stickerWidth,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    if (publisherImage != null) ...[
-                      publisherImage,
-                      const SizedBox(width: AppDimens.s),
-                    ],
-                    Expanded(
-                      child: Text(
-                        article.publisher.name,
-                        style: AppTypography.b1Medium.copyWith(
-                          height: 1,
-                          fontSize: 24,
-                          fontWeight: FontWeight.lerp(
-                            FontWeight.w500,
-                            FontWeight.w600,
-                            0.5,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppDimens.m),
-                Text(
-                  article.strippedTitle,
-                  style: AppTypography.articleQuote.copyWith(
-                    fontSize: 36,
-                    height: 1.1,
-                    fontWeight: FontWeight.lerp(
-                      FontWeight.w500,
-                      FontWeight.w600,
-                      0.5,
-                    ),
-                  ),
-                  maxLines: 10,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if (author != null) ...[
-                  const SizedBox(height: AppDimens.m),
-                  Text(
-                    LocaleKeys.shareArticle_author.tr(
-                      args: [
-                        author,
-                      ],
-                    ),
-                    style: AppTypography.b1Regular.copyWith(
-                      fontSize: 24,
-                      height: 1,
-                    ),
-                  ),
-                ],
-              ],
+            child: ShareArticleViewContent(
+              article: article,
+              publisherImage: publisherImage,
+              titleMaxLines: 10,
             ),
           ),
         ),
       ),
-    );
-  }
-}
-
-class ShareArticleBackgroundView extends HookWidget implements BaseShareCompletable {
-  ShareArticleBackgroundView({
-    required this.article,
-    super.key,
-  });
-
-  final MediaItemArticle article;
-
-  final Completer _baseViewCompleter = Completer();
-
-  @override
-  Size get size => const Size(_backgroundWidth, _backgroundHeight);
-
-  @override
-  Completer get viewReadyCompleter => _baseViewCompleter;
-
-  @override
-  Widget build(BuildContext context) {
-    final cloudinary = useCloudinaryProvider();
-
-    final backgroundImage = useMemoized(
-      () {
-        if (!article.hasImage) return null;
-
-        final image = article.image;
-
-        if (image is ArticleImageCloudinary) {
-          return cloudinaryImageAuto(
-            cloudinary: cloudinary,
-            publicId: image.cloudinaryImage.publicId,
-            width: _backgroundWidth,
-            height: _backgroundHeight,
-            fit: BoxFit.cover,
-            testImage: AppRasterGraphics.testArticleHeroImage,
-          );
-        }
-
-        if (image is ArticleImageRemote) {
-          return remoteImage(
-            url: image.url,
-            width: _backgroundWidth,
-            height: _backgroundHeight,
-            fit: BoxFit.cover,
-            testImage: AppRasterGraphics.testArticleHeroImage,
-          );
-        }
-      },
-    );
-
-    return ImageLoadResolver(
-      images: [backgroundImage],
-      completer: _baseViewCompleter,
-      child: backgroundImage ?? const SizedBox.shrink(),
     );
   }
 }
