@@ -29,7 +29,7 @@ class PremiumArticleReadView extends HookWidget {
   final PremiumArticleViewCubit cubit;
   final ScrollController mainController;
   final SnackbarController snackbarController;
-  final VoidCallback? onAudioBannerTap;
+  final VoidCallback onAudioBannerTap;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articleHeaderKey = GlobalKey();
