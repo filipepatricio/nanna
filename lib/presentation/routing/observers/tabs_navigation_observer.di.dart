@@ -26,7 +26,7 @@ class TabsNavigationObserver extends AutoRouterObserver {
   Future<void> _trackTabView(String name) async {
     switch (name) {
       case DailyBriefTabGroupRouter.name:
-        _currentBrief ??= await _getCurrentBriefUseCase.stream.first;
+        _currentBrief ??= (await _getCurrentBriefUseCase.stream.first).currentBrief;
         return _trackActivityUseCase.trackPage(AnalyticsPage.dailyBrief(_currentBrief!.id));
       case ExploreTabGroupRouter.name:
         return _trackActivityUseCase.trackPage(AnalyticsPage.exploreSection());

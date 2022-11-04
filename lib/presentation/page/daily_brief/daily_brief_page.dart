@@ -117,8 +117,16 @@ class _DailyBriefPage extends HookWidget {
                     idle: (state) => DailyBriefScrollableAppBar(
                       showCalendar: state.showCalendar,
                       scrollController: scrollController,
-                      briefDate: state.currentBrief.date,
-                      pastDaysBriefs: state.pastDaysBriefs,
+                      briefDate: state.selectedBrief.date,
+                      pastDays: state.pastDays,
+                      showAppBarTitle: state.showAppBarTitle,
+                      cubit: cubit,
+                    ),
+                    loadingPastDay: (state) => DailyBriefScrollableAppBar(
+                      showCalendar: true,
+                      scrollController: scrollController,
+                      briefDate: state.selectedPastDay.date,
+                      pastDays: state.pastDays,
                       showAppBarTitle: state.showAppBarTitle,
                       cubit: cubit,
                     ),
@@ -128,11 +136,22 @@ class _DailyBriefPage extends HookWidget {
                     idle: (state) => SliverPinnedHeader(
                       child: DailyBriefCalendar(
                         isVisible: state.showCalendar,
-                        currentBriefDate: state.currentBrief.date,
-                        pastDaysBriefs: state.pastDaysBriefs,
+                        selectedBriefDate: state.selectedBrief.date,
+                        pastDays: state.pastDays,
                         isFloating: state.showAppBarTitle,
                         cubit: cubit,
                         scrollController: scrollController,
+                      ),
+                    ),
+                    loadingPastDay: (state) => SliverPinnedHeader(
+                      child: DailyBriefCalendar(
+                        isVisible: true,
+                        selectedBriefDate: state.selectedPastDay.date,
+                        pastDays: state.pastDays,
+                        isFloating: state.showAppBarTitle,
+                        cubit: cubit,
+                        scrollController: scrollController,
+                        isInLoadingState: true,
                       ),
                     ),
                     orElse: () => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
@@ -140,7 +159,7 @@ class _DailyBriefPage extends HookWidget {
                   state.maybeMap(
                     idle: (state) => _IdleContent(
                       cubit: cubit,
-                      brief: state.currentBrief,
+                      brief: state.selectedBrief,
                       tutorialCoachMark: tutorialCoachMark,
                       scrollController: scrollController,
                       snackbarController: snackbarController,
@@ -162,7 +181,17 @@ class _DailyBriefPage extends HookWidget {
                         ),
                       ),
                     ),
-                    orElse: () => const SizedBox.shrink(),
+                    loadingPastDay: (_) => SliverToBoxAdapter(
+                      child: DailyBriefLoadingView(
+                        coverSize: Size(
+                          AppDimens.topicCardBigMaxWidth(context),
+                          AppDimens.topicCardBigMaxHeight,
+                        ),
+                      ),
+                    ),
+                    orElse: () => const SliverToBoxAdapter(
+                      child: SizedBox.shrink(),
+                    ),
                   ),
                   const SliverToBoxAdapter(
                     child: SizedBox(height: AppDimens.l),

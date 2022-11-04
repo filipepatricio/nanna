@@ -23,6 +23,7 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_dto.
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_introduction_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_past_day_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_section_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_subsection_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/call_to_action_dto.dt.dart';
@@ -30,7 +31,6 @@ import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dar
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_style_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/headline_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/media_item_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/relax_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_area_dto.dt.dart';
 import 'package:better_informed_mobile/data/explore/api/dto/explore_content_dto.dt.dart';
@@ -299,41 +299,33 @@ class MockDTO {
 
   // Past days briefs
   static final pastDaysBriefs = [
-    PastDaysBriefDTO(
-      currentBrief(),
-      DateTime(2022, 07, 8),
+    BriefPastDayDTO(
+      DateTime(2022, 07, 8).toIso8601String(),
+      true,
     ),
-    PastDaysBriefDTO(
-      currentBrief(
-        date: DateTime(2022, 07, 8).add(const Duration(days: 1)),
-      ),
-      DateTime(2022, 07, 8).add(const Duration(days: 1)),
+    BriefPastDayDTO(
+      DateTime(2022, 07, 8).add(const Duration(days: 1)).toIso8601String(),
+      true,
     ),
-    PastDaysBriefDTO(
-      null,
-      DateTime(2022, 07, 8).add(const Duration(days: 2)),
+    BriefPastDayDTO(
+      DateTime(2022, 07, 8).add(const Duration(days: 2)).toIso8601String(),
+      false,
     ),
-    PastDaysBriefDTO(
-      null,
-      DateTime(2022, 07, 8).add(const Duration(days: 3)),
+    BriefPastDayDTO(
+      DateTime(2022, 07, 8).add(const Duration(days: 3)).toIso8601String(),
+      false,
     ),
-    PastDaysBriefDTO(
-      currentBrief(
-        date: DateTime(2022, 07, 8).add(const Duration(days: 4)),
-      ),
-      DateTime(2022, 07, 8).add(const Duration(days: 4)),
+    BriefPastDayDTO(
+      DateTime(2022, 07, 8).add(const Duration(days: 4)).toIso8601String(),
+      true,
     ),
-    PastDaysBriefDTO(
-      currentBrief(
-        date: DateTime(2022, 07, 8).add(const Duration(days: 5)),
-      ),
-      DateTime(2022, 07, 8).add(const Duration(days: 5)),
+    BriefPastDayDTO(
+      DateTime(2022, 07, 8).add(const Duration(days: 5)).toIso8601String(),
+      true,
     ),
-    PastDaysBriefDTO(
-      currentBrief(
-        date: DateTime(2022, 07, 8).add(const Duration(days: 6)),
-      ),
-      DateTime(2022, 07, 8).add(const Duration(days: 6)),
+    BriefPastDayDTO(
+      DateTime(2022, 07, 8).add(const Duration(days: 6)).toIso8601String(),
+      true,
     ),
   ];
 

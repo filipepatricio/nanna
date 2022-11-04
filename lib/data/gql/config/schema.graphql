@@ -41,8 +41,8 @@ type Article {
   """Credit note for this article"""
   credits: String
 
-  """Expert that recommended this article"""
-  expert: Expert
+  """Info about the curator of the article"""
+  curationInfo: CurationInfo!
 
   """Denotes whether this article has an audio version available"""
   hasAudioVersion: Boolean
@@ -349,7 +349,6 @@ type BriefEntryStyle {
 """Types of entry styles available"""
 enum BriefEntryStyleType {
   ARTICLE_CARD
-  SMALL_ARTICLE_CARD
   SMALL_ARTICLE_ITEM
   TOPIC_CARD
 }
@@ -446,6 +445,18 @@ type CloudinaryImage {
 """Article content block"""
 union ContentBlock = TextBlock
 
+"""Curation info"""
+type CurationInfo {
+  """Byline to show before curator"""
+  byline: String!
+
+  """Curator of article"""
+  curator: Curator!
+}
+
+"""The one who curated or recommended article"""
+union Curator = Editor | EditorialTeam | Expert
+
 """
 The `Date` scalar type represents a date. The Date appears in a JSON
 response as an ISO8601 formatted string, without a time component.
@@ -454,8 +465,9 @@ scalar Date
 
 """Date and its optional brief"""
 type DatedBrief {
-  brief: Brief
+  brief: Brief @deprecated(reason: "Use hasBrief field and getBriefByDate query instead of quering all briefs at once")
   date: Date!
+  hasBrief: Boolean
 }
 
 """
@@ -506,7 +518,7 @@ type EditorialTeam {
   name: String!
 }
 
-"""A domain expert curating topics"""
+"""A domain expert curating materials"""
 type Expert {
   """The expert's area of expertise"""
   areaOfExpertise: String!
@@ -790,6 +802,9 @@ type RootQueryType {
   """Request all user's bookmarks"""
   getBookmarks(filter: BookmarksFilterOptions = ALL, order: BookmarksOrderOptions = DESC, pagination: PaginationInput = {limit: 10, offset: 0}, sortBy: BookmarksSortOptions = ADDED): [Bookmark]
 
+  """Get a brief by date"""
+  getBriefByDate(date: Date!): Brief
+
   """A category"""
   getCategory(id: String, slug: String): Category
 
@@ -960,6 +975,9 @@ type Topic {
   """The cover image"""
   coverImage: CloudinaryImage!
 
+  """Info about the curator of the topic"""
+  curationInfo: CurationInfo!
+
   """Entries of this topic"""
   entries: [TopicEntry]
 
@@ -985,13 +1003,16 @@ type Topic {
   lastUpdatedAt: DateTime!
 
   """The creator of the topic"""
-  owner: TopicOwner!
+  owner: TopicOwner! @deprecated(reason: "Use curationInfo field instead")
 
   """The creator's note to the topic. Only applicable for editor"""
   ownersNote: String
 
   """Primary category of topic"""
   primaryCategory: Category!
+
+  """The Topics's reading progress"""
+  progressState: TopicProgressState!
 
   """Information about publishers of topic articles"""
   publisherInformation: TopicPublisherInformation!
@@ -1020,7 +1041,7 @@ type Topic {
   """The topic's URL used for sharing"""
   url: String!
 
-  """Was the topic visited by user"""
+  """Does the topic have no new content for the user"""
   visited: Boolean!
 }
 
@@ -1056,6 +1077,13 @@ union TopicMediaItem = Article
 
 """A topic owner is the one responsible for the topic"""
 union TopicOwner = Editor | EditorialTeam | Expert
+
+"""Topic Progress"""
+enum TopicProgressState {
+  FINISHED
+  IN_PROGRESS
+  UNREAD
+}
 
 """Information about publishers of topic articles"""
 type TopicPublisherInformation {
@@ -1115,3 +1143,4 @@ as UTF-8 character sequences. The UUID4 type is most often used to represent
 unique human-readable ID strings.
 """
 scalar UUID
+
