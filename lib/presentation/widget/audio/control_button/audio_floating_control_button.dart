@@ -73,6 +73,9 @@ class AudioFloatingControlButton extends HookWidget {
               await cubit.play(true);
             }
           },
+          needsSubscription: (_) async {
+            await context.pushRoute(const SubscriptionPageRoute());
+          },
         );
       },
     );
@@ -96,11 +99,7 @@ class AudioFloatingControlButton extends HookWidget {
               borderRadius: BorderRadius.circular(AppDimens.xl),
             )
           : null,
-      onPressed: () {
-        article?.availableInSubscription == true
-            ? state.getAction(cubit)
-            : context.pushRoute(const SubscriptionPageRoute());
-      },
+      onPressed: state.getAction(cubit),
       backgroundColor: color.withAlpha(state.imageAlpha),
       child: Stack(
         alignment: Alignment.center,
