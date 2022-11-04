@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 const _borderRadius = 10.0;
-const sortViewHeight = 24.0;
 
 Future<BookmarkSortConfig?> showBookmarkSortOptionBottomSheet(
   BuildContext context,

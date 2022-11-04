@@ -172,8 +172,3 @@ class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPla
   Future<List<SubscriptionPlan>> call() async =>
       [TestData.subscriptionPlansWithoutTrial.first, TestData.subscriptionPlansWithTrial.last];
 }
-
-class FakeGetSubscriptionPlansUseCaseNoTrial extends Fake implements GetSubscriptionPlansUseCase {
-  @override
-  Future<List<SubscriptionPlan>> call() async => TestData.subscriptionPlansWithoutTrial;
-}
