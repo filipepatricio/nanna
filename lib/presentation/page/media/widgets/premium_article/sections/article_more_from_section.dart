@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -7,8 +6,6 @@ import 'package:better_informed_mobile/presentation/widget/article_cover/article
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
-
-typedef ItemTapCallback = Function(BriefEntryItem);
 
 class ArticleMoreFromSection extends StatelessWidget {
   const ArticleMoreFromSection({
