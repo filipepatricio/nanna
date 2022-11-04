@@ -275,6 +275,9 @@ class _SelectedArticleCubit extends AudioControlButtonCubit {
       );
       _trackArticleAudioPositionUseCase(_article.slug, _currentPosition.inSeconds);
       _trackActivityUseCase.trackEvent(AnalyticsEvent.playedArticleAudio(_article.id));
+    } else {
+      emit(AudioControlButtonState.needsSubscription());
+      emit(AudioControlButtonState.notInitilized(_getArticleAudioProgressUseCase(_article)));
     }
   }
 

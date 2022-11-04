@@ -30,4 +30,6 @@ class AudioControlButtonState with _$AudioControlButtonState {
   }) = _AudioControlButtonStatePaused;
 
   factory AudioControlButtonState.showSwitchAudioPopup() = _$AudioControlButtonStateShowSwitchAudioPopup;
+
+  factory AudioControlButtonState.needsSubscription() = _$AudioControlButtonStateNeedsSubscription;
 }

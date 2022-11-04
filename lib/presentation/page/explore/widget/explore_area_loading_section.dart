@@ -56,8 +56,10 @@ class _PillsArea extends StatelessWidget {
     return LoadingShimmer.defaultColor(
       child: SizedBox(
         height: AppDimens.explorePillHeight,
-        child: Padding(
-          padding: const EdgeInsets.only(left: AppDimens.pageHorizontalMargin),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+          physics: const NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.horizontal,
           child: row,
         ),
       ),
