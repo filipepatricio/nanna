@@ -4,7 +4,7 @@
     "continue": "Continue",
     "next": "Next",
     "back": "Back",
-    "signOut": "Sign Out",
+    "signOut": "Sign out",
     "signUp": "Sign up",
     "cancel": "Cancel",
     "generalError": "Something went wrong.\nTry again later.",
@@ -83,6 +83,7 @@
     "articles": "{} articles"
   },
   "date": {
+    "daySuffix": "{}-day",
     "day": {
       "one": "{} day",
       "other": "{} days"
@@ -93,7 +94,8 @@
   "subscription": {
     "title": {
       "trial": "Your free trial with informed",
-      "standard": "Subscribe for _unlimited_ news access"
+      "standard": "Subscribe for _unlimited_ news access",
+      "article": "Subscribe for _unlimited_ access"
     },
     "benefit": {
       "access": "Unlimited news access",
@@ -111,9 +113,9 @@
     },
     "off": "{}% off",
     "subscribe": "Subscribe",
-    "description": "Read or listen to every article in the app. If you change your mind, you can cancel anytime",
+    "description": "Read or listen to all of our curated articles. Cancel anytime during your trial.",
     "planInfo": {
-      "trial": "{} free trial, then {} / year",
+      "trial": "Free {} trial, then {} / year",
       "standard": "{} / year"
     },
     "tryForFreeAction": "Try For Free",
@@ -154,14 +156,12 @@
     "notifications": "Notifications",
     "email": "Email",
     "push": "Push",
-    "manageMyInterests": "Manage My Interests",
+    "manageMyInterests": "Manage my interests",
     "manageMyInterestsTitle": "Interests",
     "aboutHeader": "About",
     "privacyPolicy": "Privacy Policy",
     "termsAndConditions": "Terms & Conditions",
     "termsOfService": "Terms of Service",
-    "privacyPolicyContent": "This is a placeholder text!!! PRIVACY PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
-    "termsContent": "This is a placeholder text!!! TERMS PLACEHOLDER We strongly believe that algorithms alone cannot deliver you the best news curation -at least for now. And we believe in the power of serendipity. This is why the curation of the articles you see is done by real human-beings. \n\nOur small and dedicated editorial screens extensively the most reliable sources every day - and creates the readlists with the most relevant content for you. \n\nBy this process, we make sure that we can break filter bubbles, provide you with a wide range of perspectives and always show you the bigger picture behind the most important news day.",
     "newsUpdates": "News Updates",
     "newDailyBrief": "NewDailyBrief",
     "productUpdates": "Product Updates",
@@ -174,8 +174,8 @@
     "wrongFirstNameInput": "Wrong first name input",
     "wrongLastNameInput": "Wrong last name input",
     "wrongEmailInput": "Wrong email input",
-    "feedbackButton": "Give Feedback",
-    "feedbackSubject": "Feedback on Informed App",
+    "feedbackButton": "Give feedback",
+    "feedbackSubject": "Feedback on Informed app",
     "feedbackMailError": "Oops, we're having trouble opening your email client automatically. You can send your feedback to ",
     "deleteAccount": {
       "button": "Delete account",
@@ -294,11 +294,13 @@
       "articles": "Articles"
     },
     "emptyPage": {
-      "title": "Nothing here, yet!\n",
-      "noAll": "Looks like there is nothing in this section of your Profile",
-      "noTopics": "Looks like there aren’t any Deep Dives in this section of your Profile",
-      "noArticles": "Looks like there aren’t any Articles in this section of your Profile",
-      "action": "Go to Explore"
+      "title": "Nothing saved yet\n",
+      "noAll": "When you save an article or Deep Dive, you'll find it here.",
+      "noTopics": "When you save a Deep Dive,\nyou'll find it here.",
+      "noArticles": "When you save an article,\nyou'll find it here.",
+      "noAllAction": "Explore now",
+      "noTopicsAction": "Explore Deep Dives",
+      "noArticlesAction": "Explore articles"
     }
   },
   "shareTopic": {

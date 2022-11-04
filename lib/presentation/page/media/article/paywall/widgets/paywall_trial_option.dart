@@ -16,9 +16,10 @@ class _PaywallTrialOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         InformedMarkdownBody(
-          markdown: LocaleKeys.subscription_title_standard.tr(),
+          markdown: LocaleKeys.subscription_title_article.tr(),
           baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.s),
@@ -43,7 +44,7 @@ class _PaywallTrialOption extends StatelessWidget {
               Text(
                 LocaleKeys.subscription_planInfo_trial.tr(
                   args: [
-                    LocaleKeys.date_day.plural(plan.trialDays),
+                    LocaleKeys.date_daySuffix.tr(args: ['${plan.trialDays}']),
                     plan.priceString,
                   ],
                 ),
