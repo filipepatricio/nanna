@@ -336,8 +336,8 @@
     "body": "You seem to be offline. Please check your network connection to load content"
   },
   "update": {
-    "title": "Breaking News: App Update",
-    "body": "New stories and features hot off the press! Update your app now to catch up on the latest news",
+    "title": "Update now",
+    "body": "We hope our latest update makes it easier to get informed. Thanks for reading and enjoy.",
     "versionAvailable": "Version {} is now available",
     "button": "Update"
   },
@@ -346,8 +346,8 @@
     "switchAudio": {
       "title": "This action will replace the current audio\n",
       "info": "Are you sure you want to switch and start listening to a new article?",
-      "deny": "No, keep current",
-      "approve": "Yes, switch"
+      "deny": "No, keep this one",
+      "approve": "Yes, play the new one"
     }
   },
   "releaseNotes": {
