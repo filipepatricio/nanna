@@ -25,7 +25,7 @@ class _PaywallMultipleOptions extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         InformedMarkdownBody(
-          markdown: LocaleKeys.subscription_title_standard.tr(),
+          markdown: LocaleKeys.subscription_title_article.tr(),
           baseTextStyle: AppTypography.h1Medium,
         ),
         const SizedBox(height: AppDimens.l),

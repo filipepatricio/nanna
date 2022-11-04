@@ -27,8 +27,8 @@ class _BookmarkEmptyView extends StatelessWidget {
                   style: AppTypography.b2Medium,
                 ),
                 TextSpan(
-                  text: filter.infoText,
-                  style: AppTypography.b2Medium,
+                  text: filter.emptyBodyText,
+                  style: AppTypography.b2Regular,
                 ),
               ],
             ),
@@ -36,7 +36,7 @@ class _BookmarkEmptyView extends StatelessWidget {
           const SizedBox(height: AppDimens.xl),
           Center(
             child: FilledButton.black(
-              text: LocaleKeys.profile_emptyPage_action.tr(),
+              text: filter.buttonText,
               onTap: () => AutoRouter.of(context).navigate(
                 const ExploreTabGroupRouter(
                   children: [
@@ -53,14 +53,25 @@ class _BookmarkEmptyView extends StatelessWidget {
 }
 
 extension Texts on BookmarkFilter {
-  String get infoText {
+  String get emptyBodyText {
     switch (this) {
       case BookmarkFilter.all:
-        return tr(LocaleKeys.profile_emptyPage_noAll);
+        return LocaleKeys.profile_emptyPage_noAll.tr();
       case BookmarkFilter.topic:
-        return tr(LocaleKeys.profile_emptyPage_noTopics);
+        return LocaleKeys.profile_emptyPage_noTopics.tr();
       case BookmarkFilter.article:
-        return tr(LocaleKeys.profile_emptyPage_noArticles);
+        return LocaleKeys.profile_emptyPage_noArticles.tr();
+    }
+  }
+
+  String get buttonText {
+    switch (this) {
+      case BookmarkFilter.all:
+        return LocaleKeys.profile_emptyPage_noAllAction.tr();
+      case BookmarkFilter.topic:
+        return LocaleKeys.profile_emptyPage_noTopicsAction.tr();
+      case BookmarkFilter.article:
+        return LocaleKeys.profile_emptyPage_noArticlesAction.tr();
     }
   }
 }
