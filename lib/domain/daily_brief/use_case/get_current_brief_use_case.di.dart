@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/daily_brief/daily_brief_repository.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
@@ -8,7 +8,7 @@ class GetCurrentBriefUseCase {
 
   final DailyBriefRepository _dailyBriefRepository;
 
-  Future<Brief> call() => _dailyBriefRepository.getCurrentBrief();
+  Future<BriefsWrapper> call() => _dailyBriefRepository.getCurrentBrief();
 
-  Stream<Brief> get stream => _dailyBriefRepository.currentBriefStream();
+  Stream<BriefsWrapper> get stream => _dailyBriefRepository.currentBriefStream();
 }

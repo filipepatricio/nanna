@@ -1,10 +1,10 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
 
 abstract class DailyBriefRepository {
-  Future<Brief> getCurrentBrief();
+  Future<BriefsWrapper> getCurrentBrief();
 
-  Future<List<PastDaysBrief>> getPastDaysBriefs();
+  Future<Brief> getPastBrief(DateTime date);
 
-  Stream<Brief> currentBriefStream();
+  Stream<BriefsWrapper> currentBriefStream();
 }
