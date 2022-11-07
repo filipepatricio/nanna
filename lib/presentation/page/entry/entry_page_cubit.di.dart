@@ -16,6 +16,8 @@ import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
 
+const _individualInitTimeout = Duration(seconds: 5);
+
 @injectable
 class EntryPageCubit extends Cubit<EntryPageState> {
   EntryPageCubit(
@@ -53,8 +55,19 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   }
 
   Future<void> initialize() async {
+    emit(EntryPageState.idle());
+
+    try {
+      await _initialize();
+    } catch (e, s) {
+      Fimber.e('App initialization failed', ex: e, stacktrace: s);
+      emit(EntryPageState.error());
+    }
+  }
+
+  Future<void> _initialize() async {
     await _saveReleaseNoteIfFirstRunUseCase();
-    await _initializePurchasesUseCase();
+    await _initializePurchasesUseCase()._withTimeout('Purchases configuration timeout');
 
     final signedIn = await _isSignedInUseCase();
 
@@ -63,24 +76,25 @@ class EntryPageCubit extends Cubit<EntryPageState> {
       return;
     }
 
-    await _initialize();
+    await _initializeSignedInUser();
 
+    await _connectionStateSubscription?.cancel();
     _connectionStateSubscription = _isInternetConnectionAvailableUseCase.stream.listen((isConnectionAvailable) {
       _isConnectionAvailable = isConnectionAvailable;
-      _initialize();
+      _initializeSignedInUser();
     });
   }
 
-  Future<void> _initialize() async {
-    _isConnectionAvailable ??= await _isInternetConnectionAvailableUseCase();
-    if (!_isConnectionAvailable!) {
-      return;
-    }
+  Future<void> _initializeSignedInUser() async {
+    _isConnectionAvailable ??= await _isInternetConnectionAvailableUseCase()._withTimeout('Connectivity check timeout');
+    if (!_isConnectionAvailable!) return;
+
+    await _connectionStateSubscription?.cancel();
 
     try {
       await _initializeFeatureFlagsUseCase();
-      await _identifyAnalyticsUserUseCase();
-      await _identifyPurchasesUserUseCase();
+      await _identifyAnalyticsUserUseCase()._withTimeout('Identyfying user for analytics timeout');
+      await _identifyPurchasesUserUseCase()._withTimeout('Identyfying user for purchases timeout');
     } on UnauthorizedException {
       emit(EntryPageState.notSignedIn());
       return;
@@ -104,5 +118,16 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     } catch (e, s) {
       Fimber.e('Pre-fetching onboarding categories failed', ex: e, stacktrace: s);
     }
+  }
+}
+
+extension _FutureExtension<T> on Future<T> {
+  Future<T> _withTimeout(String timeoutMessage) {
+    return timeout(
+      _individualInitTimeout,
+      onTimeout: () => Future.error(
+        Exception(timeoutMessage),
+      ),
+    );
   }
 }
