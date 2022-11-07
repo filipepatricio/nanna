@@ -61,9 +61,9 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   }
 
   Future<void> setOnboardingCompleted() async {
-    await _requestNotificationPermission();
     await _requestTrackingPermissionUseCase();
     await _initializeAttributionUseCase();
+    await _requestNotificationPermission();
     _trackOnboardingCompleted();
     await _setOnboardingSeenUseCase();
     await _setPreferredCategories();
