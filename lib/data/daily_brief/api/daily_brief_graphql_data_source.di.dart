@@ -4,12 +4,14 @@ import 'dart:convert';
 import 'package:better_informed_mobile/data/daily_brief/api/daily_brief_api_data_source.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/documents/__generated__/current_brief.ast.gql.dart'
     as current_brief;
-import 'package:better_informed_mobile/data/daily_brief/api/documents/__generated__/past_days_briefs.ast.gql.dart'
-    as past_days_briefs;
+import 'package:better_informed_mobile/data/daily_brief/api/documents/__generated__/get_brief_by_date.ast.gql.dart'
+    as get_brief_by_date;
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/briefs_wrapper_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/exports.dart';
+import 'package:fimber/fimber.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -23,7 +25,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   int? _currentBriefHashCode;
 
   @override
-  Future<BriefDTO> currentBrief() async {
+  Future<BriefsWrapperDTO> currentBrief() async {
     final result = await _client.query(
       QueryOptions(
         document: current_brief.document,
@@ -34,40 +36,39 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) => BriefDTO.fromJson(raw),
-      rootKey: 'currentBrief',
+      (raw) => BriefsWrapperDTO.fromJson(raw),
     );
 
     return dto ?? (throw Exception('Current brief is null'));
   }
 
   @override
-  Future<List<PastDaysBriefDTO>> pastDaysBriefs() async {
+  Future<BriefDTO> pastBrief(DateTime dateTime) async {
+    final formattedTime = DateFormat('y-MM-dd').format(dateTime);
+    Fimber.d('Formatted time: $formattedTime');
+
     final result = await _client.query(
       QueryOptions(
-        document: past_days_briefs.document,
-        operationName: past_days_briefs.getPastDaysBriefs.name?.value,
+        document: get_brief_by_date.document,
+        operationName: get_brief_by_date.getBriefByDate.name?.value,
+        variables: {
+          'date': formattedTime,
+        },
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) {
-        final pastDaysbriefsRaw = raw['getPastDaysBriefs'] as List<dynamic>;
-        final pastDaysbriefs = pastDaysbriefsRaw
-            .map((json) => PastDaysBriefDTO.fromJson(json as Map<String, dynamic>))
-            .toList(growable: false);
-
-        return pastDaysbriefs;
-      },
+      (raw) => BriefDTO.fromJson(raw),
+      rootKey: 'getBriefByDate',
     );
 
-    return dto ?? (throw Exception('Past days briefs is null'));
+    return dto ?? (throw Exception('Brief for $dateTime is null'));
   }
 
   @override
-  Stream<BriefDTO?> currentBriefStream() async* {
+  Stream<BriefsWrapperDTO?> currentBriefStream() async* {
     final observableQuery = _client.watchQuery(
       WatchQueryOptions(
         document: current_brief.document,
@@ -81,7 +82,7 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
     );
 
     yield* observableQuery.stream.map(
-      (result) => _responseResolver.resolve<BriefDTO?>(
+      (result) => _responseResolver.resolve<BriefsWrapperDTO?>(
         result,
         (raw) {
           final newBriefHashCode = jsonEncode(raw).hashCode;
@@ -89,9 +90,8 @@ class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
             return null;
           }
           _currentBriefHashCode = newBriefHashCode;
-          return BriefDTO.fromJson(raw);
+          return BriefsWrapperDTO.fromJson(raw);
         },
-        rootKey: 'currentBrief',
       ),
     );
   }

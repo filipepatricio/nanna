@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -120,42 +119,6 @@ class _IdleContent extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class CustomCheckbox extends StatelessWidget {
-  const CustomCheckbox({
-    required this.value,
-    required this.onPressed,
-    Key? key,
-  }) : super(key: key);
-
-  final VoidCallback onPressed;
-  final bool value;
-
-  @override
-  Widget build(BuildContext context) {
-    return ExpandTapWidget(
-      tapPadding: const EdgeInsets.all(AppDimens.l),
-      onTap: onPressed,
-      child: AnimatedContainer(
-        width: AppDimens.customCheckboxSize,
-        height: AppDimens.customCheckboxSize,
-        decoration: BoxDecoration(
-          color: value ? AppColors.charcoal : null,
-          borderRadius: const BorderRadius.all(Radius.circular(AppDimens.customCheckboxRadius)),
-          border: Border.all(color: value ? AppColors.charcoal : AppColors.textGrey),
-        ),
-        duration: const Duration(milliseconds: 100),
-        child: value
-            ? const Icon(
-                Icons.check,
-                color: AppColors.white,
-                size: AppDimens.customCheckboxIconSize,
-              )
-            : const SizedBox.shrink(),
-      ),
     );
   }
 }

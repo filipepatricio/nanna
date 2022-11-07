@@ -61,8 +61,8 @@ class _ArticleImageOverlay extends StatelessWidget {
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final double? height;
-  final double? width;
+  final double height;
+  final double width;
   final bool shouldShowTimeToRead;
 
   @override

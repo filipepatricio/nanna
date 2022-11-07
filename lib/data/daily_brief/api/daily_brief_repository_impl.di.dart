@@ -1,10 +1,10 @@
 import 'package:better_informed_mobile/data/daily_brief/api/daily_brief_api_data_source.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/briefs_wrapper_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/brief_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/mapper/past_days_brief_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/mapper/briefs_wrapper_dto_mapper.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/daily_brief_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,19 +13,19 @@ class DailyBriefRepositoryImpl implements DailyBriefRepository {
   DailyBriefRepositoryImpl(
     this._dailyBriefApiDataSource,
     this._briefDTOMapper,
-    this._pastDaysBriefDTOMapper,
+    this._briefsWrapperDTOMapper,
   );
 
   final DailyBriefApiDataSource _dailyBriefApiDataSource;
   final BriefDTOMapper _briefDTOMapper;
-  final PastDaysBriefDTOMapper _pastDaysBriefDTOMapper;
+  final BriefsWrapperDTOMapper _briefsWrapperDTOMapper;
 
-  final BehaviorSubject<Brief> _currentBriefStream = BehaviorSubject();
+  final BehaviorSubject<BriefsWrapper> _currentBriefStream = BehaviorSubject();
 
   @override
-  Future<Brief> getCurrentBrief() async {
+  Future<BriefsWrapper> getCurrentBrief() async {
     final dto = await _dailyBriefApiDataSource.currentBrief();
-    final currentBrief = _briefDTOMapper(dto);
+    final currentBrief = _briefsWrapperDTOMapper(dto);
 
     _currentBriefStream.add(currentBrief);
 
@@ -33,14 +33,14 @@ class DailyBriefRepositoryImpl implements DailyBriefRepository {
   }
 
   @override
-  Future<List<PastDaysBrief>> getPastDaysBriefs() async {
-    final dto = await _dailyBriefApiDataSource.pastDaysBriefs();
-    final pastDaysBriefs = dto.map<PastDaysBrief>(_pastDaysBriefDTOMapper).toList();
-
-    return pastDaysBriefs;
+  Future<Brief> getPastBrief(DateTime date) async {
+    final dto = await _dailyBriefApiDataSource.pastBrief(date);
+    return _briefDTOMapper(dto);
   }
 
   @override
-  Stream<Brief> currentBriefStream() =>
-      _dailyBriefApiDataSource.currentBriefStream().whereType<BriefDTO>().map((dto) => _briefDTOMapper(dto));
+  Stream<BriefsWrapper> currentBriefStream() => _dailyBriefApiDataSource
+      .currentBriefStream()
+      .whereType<BriefsWrapperDTO>()
+      .map((dto) => _briefsWrapperDTOMapper(dto));
 }

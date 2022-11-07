@@ -1,10 +1,12 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_past_day.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_past_days.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,19 +22,21 @@ class DailyBriefCalendar extends StatelessWidget {
   const DailyBriefCalendar({
     required this.isVisible,
     required this.isFloating,
-    required this.currentBriefDate,
-    required this.pastDaysBriefs,
+    required this.selectedBriefDate,
+    required this.pastDays,
     required this.cubit,
     required this.scrollController,
+    this.isInLoadingState = false,
     Key? key,
   }) : super(key: key);
 
   final bool isVisible;
   final bool isFloating;
-  final DateTime currentBriefDate;
-  final List<PastDaysBrief> pastDaysBriefs;
+  final DateTime selectedBriefDate;
+  final BriefPastDays pastDays;
   final DailyBriefPageCubit cubit;
   final ScrollController scrollController;
+  final bool isInLoadingState;
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +60,11 @@ class DailyBriefCalendar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: pastDaysBriefs
+            children: pastDays.days
                 .map(
-                  (e) => _CalendarItem(
-                    pastDaysBrief: e,
-                    currentBriefDate: currentBriefDate,
+                  (day) => _CalendarItem(
+                    pastDay: day,
+                    selectedBriefDate: selectedBriefDate,
                     onTap: () {
                       scrollController.animateTo(
                         0,
@@ -70,8 +74,9 @@ class DailyBriefCalendar extends StatelessWidget {
                         curve: Curves.easeInOut,
                       );
 
-                      cubit.selectBrief(e.brief);
+                      cubit.selectBrief(day.date);
                     },
+                    isInLoadingState: isInLoadingState,
                   ),
                 )
                 .toList(),
@@ -84,15 +89,17 @@ class DailyBriefCalendar extends StatelessWidget {
 
 class _CalendarItem extends HookWidget {
   const _CalendarItem({
-    required this.pastDaysBrief,
-    required this.currentBriefDate,
+    required this.pastDay,
+    required this.selectedBriefDate,
     required this.onTap,
+    required this.isInLoadingState,
     Key? key,
   }) : super(key: key);
 
-  final PastDaysBrief pastDaysBrief;
-  final DateTime currentBriefDate;
+  final BriefPastDay pastDay;
+  final DateTime selectedBriefDate;
   final Function() onTap;
+  final bool isInLoadingState;
 
   @override
   Widget build(BuildContext context) {
@@ -118,24 +125,24 @@ class _CalendarItem extends HookWidget {
 
     useEffect(
       () {
-        if (pastDaysBrief.brief?.date == currentBriefDate) {
+        if (pastDay.date.isSameDateAs(selectedBriefDate)) {
           type.value = _CalendarItemType.selected;
           return;
         }
 
-        if (pastDaysBrief.date.weekday == clock.now().weekday) {
+        if (pastDay.date.isSameDateAs(clock.now())) {
           type.value = _CalendarItemType.current;
           return;
         }
 
-        if (pastDaysBrief.brief == null) {
+        if (!pastDay.hasBrief || isInLoadingState) {
           type.value = _CalendarItemType.disable;
           return;
         }
 
         type.value = _CalendarItemType.normal;
       },
-      [currentBriefDate, pastDaysBrief],
+      [selectedBriefDate, pastDay, isInLoadingState],
     );
 
     return GestureDetector(
@@ -154,7 +161,7 @@ class _CalendarItem extends HookWidget {
                 width: AppDimens.xl,
                 child: Center(
                   child: Text(
-                    DateFormat(DateFormat.ABBR_WEEKDAY).format(pastDaysBrief.date),
+                    DateFormat(DateFormat.ABBR_WEEKDAY).format(pastDay.date),
                     style: AppTypography.subH2Medium,
                   ),
                 ),
@@ -165,7 +172,7 @@ class _CalendarItem extends HookWidget {
                 alignment: Alignment.center,
                 decoration: itemDecoration(),
                 child: Text(
-                  DateFormat(DateFormat.DAY).format(pastDaysBrief.date),
+                  DateFormat(DateFormat.DAY).format(pastDay.date),
                   style: type.value == _CalendarItemType.selected
                       ? AppTypography.h4Bold.copyWith(
                           color: AppColors.white,

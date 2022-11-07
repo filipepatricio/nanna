@@ -52,6 +52,7 @@ class TopicHeader extends HookWidget {
                   InformedMarkdownBody(
                     markdown: topic.title,
                     baseTextStyle: AppTypography.h1Headline,
+                    textAlignment: TextAlign.center,
                     maxLines: 5,
                   ),
                   const SizedBox(height: AppDimens.m),
