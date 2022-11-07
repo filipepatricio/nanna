@@ -95,7 +95,7 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                     ),
                   ),
                   textAlign: TextAlign.center,
-                  maxLines: 4,
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: AppDimens.xl),
@@ -153,6 +153,18 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                     ),
                   ],
                 ),
+                const SizedBox(height: AppDimens.xxl),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      AppVectorGraphics.launcherLogoInformed,
+                      width: 140,
+                      height: 32,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppDimens.s),
               ],
             ),
           ),
