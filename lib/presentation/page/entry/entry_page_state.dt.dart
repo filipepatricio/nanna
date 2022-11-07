@@ -8,6 +8,9 @@ class EntryPageState with _$EntryPageState {
   @Implements<BuildState>()
   factory EntryPageState.idle() = _EntryPageStateIdle;
 
+  @Implements<BuildState>()
+  factory EntryPageState.error() = _EntryPageStateError;
+
   factory EntryPageState.alreadySignedIn() = _EntryPageStateAlreadySignedIn;
 
   factory EntryPageState.notSignedIn() = _EntryPageStateNotSignedIn;

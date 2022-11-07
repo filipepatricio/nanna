@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker.dart';
+import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,6 +16,7 @@ class EntryPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<EntryPageCubit>();
+    final state = useCubitBuilder(cubit);
 
     useCubitListener<EntryPageCubit, EntryPageState>(cubit, (cubit, state, context) {
       state.maybeWhen(
@@ -41,11 +43,21 @@ class EntryPage extends HookWidget {
       [cubit],
     );
 
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.background,
       body: AppConnectivityChecker(
         closeCubitOnDispose: true,
-        child: LoaderLogo(),
+        child: state.maybeMap(
+          error: (_) => Center(
+            child: GeneralErrorView(
+              title: LocaleKeys.common_error_title.tr(),
+              content: LocaleKeys.common_error_body.tr(),
+              action: LocaleKeys.common_tryAgain.tr(),
+              retryCallback: () => cubit.initialize(),
+            ),
+          ),
+          orElse: () => const LoaderLogo(),
+        ),
       ),
     );
   }
