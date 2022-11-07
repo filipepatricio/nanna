@@ -5,9 +5,9 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
-import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
@@ -26,7 +26,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/tutorial/tutorial_tooltip.dart';
 import 'package:bloc/bloc.dart';
-import 'package:clock/clock.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
@@ -56,7 +55,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
-  final GetPastDaysBriesfUseCase _getPastDaysBriesfUseCase;
+  final GetPastBriefUseCase _getPastDaysBriesfUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
@@ -69,9 +68,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
-  late Brief _currentBrief;
-  bool _isTodayBrief = true;
-  List<PastDaysBrief> _pastDaysBriefs = [];
+  late BriefsWrapper _briefsWrapper;
+  late Brief _selectedBrief;
 
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
@@ -97,7 +95,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     await loadBriefs();
 
     _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((currentBrief) {
-      _currentBrief = currentBrief;
+      _briefsWrapper = currentBrief;
       _updateIdleState(preCacheImages: true);
     });
 
@@ -109,8 +107,6 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     _shouldUpdateBriefSubscription = _getShouldUpdateBriefStreamUseCase().listen((_) => _refetchBriefs());
 
     _initializeItemPreviewTracker();
-
-    await loadPastDaysBriefs();
 
     if (await _shouldUsePaidSubscriptionsUseCase()) {
       if (!(await _hasActiveSubscriptionUseCase()) && !(await _isOnboardingPaywallSeenUseCase())) {
@@ -129,29 +125,25 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   Future<void> _refetchBriefs() async {
-    if (_isTodayBrief) {
-      _currentBrief = await _getCurrentBriefUseCase();
+    final todaysBriefSelected = _selectedBrief == _briefsWrapper.currentBrief;
+
+    _briefsWrapper = await _getCurrentBriefUseCase();
+
+    if (todaysBriefSelected) {
+      _selectedBrief = _briefsWrapper.currentBrief;
     } else {
-      _pastDaysBriefs = await _getPastDaysBriesfUseCase();
+      _selectedBrief = await _getPastDaysBriesfUseCase(_selectedBrief.date);
     }
 
     _updateIdleState();
-  }
-
-  Future<void> loadPastDaysBriefs() async {
-    try {
-      _pastDaysBriefs = await _getPastDaysBriesfUseCase();
-      _updateIdleState();
-    } catch (e, s) {
-      Fimber.e('Loading past days briefs failed', ex: e, stacktrace: s);
-    }
   }
 
   Future<void> loadBriefs() async {
     emit(DailyBriefPageState.loading());
 
     try {
-      _currentBrief = await _getCurrentBriefUseCase();
+      _briefsWrapper = await _getCurrentBriefUseCase();
+      _selectedBrief = _briefsWrapper.currentBrief;
       _updateIdleState(preCacheImages: true);
     } catch (e, s) {
       Fimber.e('Loading briefs failed', ex: e, stacktrace: s);
@@ -162,22 +154,28 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   void _updateIdleState({bool preCacheImages = false}) {
     emit(
       DailyBriefPageState.idle(
-        currentBrief: _currentBrief,
-        pastDaysBriefs: _pastDaysBriefs,
+        selectedBrief: _selectedBrief,
+        pastDays: _briefsWrapper.pastDays,
         showCalendar: _shouldShowCalendar,
         showAppBarTitle: _shouldShowAppBarTitle,
       ),
     );
 
-    if (preCacheImages) emit(DailyBriefPageState.preCacheImages(briefEntryList: _currentBrief.allEntries));
+    if (preCacheImages) {
+      emit(
+        DailyBriefPageState.preCacheImages(
+          briefEntryList: _briefsWrapper.currentBrief.allEntries,
+        ),
+      );
+    }
   }
 
   void toggleCalendar(bool showCalendar) {
     if (showCalendar != _shouldShowCalendar) {
       _shouldShowCalendar = showCalendar;
       _shouldShowCalendar
-          ? _trackActivityUseCase.trackEvent(AnalyticsEvent.briefCalendarOpened(_currentBrief.id))
-          : _trackActivityUseCase.trackEvent(AnalyticsEvent.briefCalendarClosed(_currentBrief.id));
+          ? _trackActivityUseCase.trackEvent(AnalyticsEvent.briefCalendarOpened(_briefsWrapper.currentBrief.id))
+          : _trackActivityUseCase.trackEvent(AnalyticsEvent.briefCalendarClosed(_briefsWrapper.currentBrief.id));
 
       _updateIdleState();
     }
@@ -190,31 +188,48 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     }
   }
 
-  void selectBrief(Brief? brief) {
-    if (brief == null) return;
-    _currentBrief = brief;
+  Future<void> selectBrief(DateTime briefDate) async {
+    if (briefDate.isSameDateAs(_selectedBrief.date)) return;
 
-    _isTodayBrief = _currentBrief.date.isSameDateAs(clock.now());
+    if (briefDate.isSameDateAs(_briefsWrapper.currentBrief.date)) {
+      _selectedBrief = _briefsWrapper.currentBrief;
+    } else {
+      final selectedDay = _briefsWrapper.pastDays.days.firstWhere((element) => element.date.isSameDateAs(briefDate));
 
-    if (_isTodayBrief && (_currentBriefSubscription?.isPaused ?? false)) {
-      _currentBriefSubscription?.resume();
-    } else if (!(_currentBriefSubscription?.isPaused ?? true)) {
-      _currentBriefSubscription?.pause();
+      emit(
+        DailyBriefPageState.loadingPastDay(
+          selectedPastDay: selectedDay,
+          pastDays: _briefsWrapper.pastDays,
+          showAppBarTitle: _shouldShowAppBarTitle,
+        ),
+      );
+
+      _selectedBrief = await _getPastDaysBriesfUseCase(briefDate);
     }
 
     _trackActivityUseCase.trackEvent(
-      AnalyticsEvent.calendarBriefSelected(_currentBrief.id, isTodaysBrief: _isTodayBrief),
+      AnalyticsEvent.calendarBriefSelected(
+        _selectedBrief.id,
+        isTodaysBrief: _selectedBrief == _briefsWrapper.currentBrief,
+      ),
     );
 
     _updateIdleState(preCacheImages: true);
   }
 
-  void trackRelaxPage() =>
-      _trackActivityUseCase.trackEvent(AnalyticsEvent.dailyBriefRelaxMessageViewed(_currentBrief.id));
+  void trackRelaxPage() {
+    _trackActivityUseCase.trackEvent(
+      AnalyticsEvent.dailyBriefRelaxMessageViewed(_selectedBrief.id),
+    );
+  }
 
   void trackBriefEntryPreviewed(BriefEntry briefEntry, int position, double visibility) {
-    final event =
-        AnalyticsEvent.dailyBriefEntryPreviewed(_currentBrief.id, briefEntry.id, position, briefEntry.type.name);
+    final event = AnalyticsEvent.dailyBriefEntryPreviewed(
+      _selectedBrief.id,
+      briefEntry.id,
+      position,
+      briefEntry.type.name,
+    );
     _emitItemPreviewedEvent(briefEntry.id, event, visibility);
   }
 

@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/data/daily_brief/api/dto/brief_dto.dt.dart';
-import 'package:better_informed_mobile/data/daily_brief/api/dto/past_days_brief_dto.dt.dart';
+import 'package:better_informed_mobile/data/daily_brief/api/dto/briefs_wrapper_dto.dt.dart';
 
 abstract class DailyBriefApiDataSource {
-  Future<BriefDTO> currentBrief();
+  Future<BriefsWrapperDTO> currentBrief();
 
-  Future<List<PastDaysBriefDTO>> pastDaysBriefs();
+  Future<BriefDTO> pastBrief(DateTime dateTime);
 
-  Stream<BriefDTO?> currentBriefStream();
+  Stream<BriefsWrapperDTO?> currentBriefStream();
 }

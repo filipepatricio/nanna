@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/daily_brief/data/past_days_brief.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_past_days.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -16,7 +16,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
   const DailyBriefScrollableAppBar({
     required this.scrollController,
     required this.briefDate,
-    required this.pastDaysBriefs,
+    required this.pastDays,
     required this.cubit,
     required this.showCalendar,
     required this.showAppBarTitle,
@@ -25,7 +25,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
 
   final ScrollController scrollController;
   final DateTime briefDate;
-  final List<PastDaysBrief> pastDaysBriefs;
+  final BriefPastDays pastDays;
   final DailyBriefPageCubit cubit;
   final bool showCalendar;
   final bool showAppBarTitle;
@@ -69,7 +69,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
           briefDate: briefDate,
           isTitle: true,
           showCalendar: showCalendar,
-          showCalendarButton: pastDaysBriefs.isNotEmpty,
+          showCalendarButton: pastDays.days.isNotEmpty,
           onTap: () => cubit.toggleCalendar(!showCalendar),
         ),
       ),
@@ -89,7 +89,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
               briefDate: briefDate,
               isTitle: false,
               showCalendar: showCalendar,
-              showCalendarButton: pastDaysBriefs.isNotEmpty,
+              showCalendarButton: pastDays.days.isNotEmpty,
               onTap: () => cubit.toggleCalendar(!showCalendar),
             ),
           ),
