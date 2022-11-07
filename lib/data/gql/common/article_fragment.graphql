@@ -5,6 +5,7 @@
 # import 'package:better_informed_mobile/data/gql/common/category_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/expert_fragment.graphql';
 # import 'package:better_informed_mobile/data/gql/common/editorial_team_fragment.graphql';
+# import 'package:better_informed_mobile/data/gql/common/editor_fragment.graphql';
 
 fragment articleFragment on Article {
     __typename
