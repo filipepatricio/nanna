@@ -17,6 +17,7 @@ class Topic {
     required this.url,
     required this.curationInfo,
     required this.lastUpdatedAt,
+    required this.summary,
     required this.topicSummaryList,
     required this.publisherInformation,
     required this.heroImage,
@@ -32,6 +33,7 @@ class Topic {
   final String introduction;
   final String url;
   final CurationInfo curationInfo;
+  final String summary;
   final List<TopicSummary> topicSummaryList;
   final DateTime lastUpdatedAt;
   final TopicPublisherInformation publisherInformation;

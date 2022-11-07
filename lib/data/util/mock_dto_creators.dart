@@ -411,6 +411,7 @@ class MockDTO {
       _premiumArticleWithAudioEntry,
       _freeArticleEntry,
     ],
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     [
       _summaryCardLong,
       _summaryCardShort,
@@ -1205,6 +1206,7 @@ extension on TopicDTO {
     TopicPublisherInformationDTO? publisherInformation,
     ImageDTO? heroImage,
     List<EntryDTO>? entries,
+    String? summary,
     List<SummaryCardDTO>? summaryCards,
     bool? visited,
     CategoryDTO? category,
@@ -1221,6 +1223,7 @@ extension on TopicDTO {
       publisherInformation ?? this.publisherInformation,
       heroImage ?? this.heroImage,
       entries ?? this.entries,
+      summary ?? this.summary,
       summaryCards ?? this.summaryCards,
       visited ?? this.visited,
       category ?? this.category,

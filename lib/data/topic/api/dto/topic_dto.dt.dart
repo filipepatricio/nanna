@@ -22,6 +22,7 @@ class TopicDTO {
     this.publisherInformation,
     this.heroImage,
     this.entries,
+    this.summary,
     this.summaryCards,
     this.visited,
     this.category,
@@ -40,6 +41,7 @@ class TopicDTO {
   final TopicPublisherInformationDTO publisherInformation;
   final ImageDTO heroImage;
   final List<EntryDTO> entries;
+  final String summary;
   final List<SummaryCardDTO> summaryCards;
   final bool visited;
   @JsonKey(name: 'primaryCategory')

@@ -62,6 +62,8 @@ void main() {
       url: 'url',
       curationInfo: curationInfo,
       lastUpdatedAt: DateTime.utc(2021, 12, 23, 11, 38, 26).toLocal(),
+      summary:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       topicSummaryList: summaryCards,
       publisherInformation: publisherInformation,
       heroImage: heroImage,

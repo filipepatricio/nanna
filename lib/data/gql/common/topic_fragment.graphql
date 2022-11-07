@@ -8,6 +8,7 @@ fragment topicFragment on Topic {
     summaryCards{
         text
     }
+    summary
     entries {
         note
         style {
