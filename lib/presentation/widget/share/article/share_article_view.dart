@@ -74,7 +74,8 @@ class ShareArticleStickerView extends HookWidget implements BaseShareCompletable
             child: ShareArticleViewContent(
               article: article,
               publisherImage: publisherImage,
-              titleMaxLines: 10,
+              titleMaxLines: 8,
+              withInformedLogo: true,
             ),
           ),
         ),
