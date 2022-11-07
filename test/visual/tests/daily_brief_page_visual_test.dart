@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/daily_brief/data/brief_past_days.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
@@ -143,8 +144,8 @@ class FakeDailyBriefPageCubit extends Fake implements DailyBriefPageCubit {
 
 class FakeDailyBriefPageCubitVisited extends Fake implements DailyBriefPageCubit {
   final _state = DailyBriefPageState.idle(
-    currentBrief: TestData.currentBriefVisited,
-    pastDaysBriefs: [],
+    selectedBrief: TestData.currentBriefVisited,
+    pastDays: BriefPastDays([]),
     showCalendar: false,
     showAppBarTitle: false,
   );

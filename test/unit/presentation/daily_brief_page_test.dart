@@ -24,7 +24,7 @@ import '../unit_test_utils.dart';
 void main() {
   late MockTrackActivityUseCase trackActivityUseCase;
   late MockGetCurrentBriefUseCase getCurrentBriefUseCase;
-  late MockGetPastDaysBriesfUseCase getPastDaysBriesfUseCase;
+  late MockGetPastBriefUseCase getPastBriefUseCase;
   late MockIncomingPushDataRefreshStreamUseCase incomingPushDataRefreshStreamUseCase;
   late MockIsTutorialStepSeenUseCase isTutorialStepSeenUseCase;
   late MockSetTutorialStepSeenUseCase setTutorialStepSeenUseCase;
@@ -46,7 +46,7 @@ void main() {
   setUp(() {
     trackActivityUseCase = MockTrackActivityUseCase();
     getCurrentBriefUseCase = MockGetCurrentBriefUseCase();
-    getPastDaysBriesfUseCase = MockGetPastDaysBriesfUseCase();
+    getPastBriefUseCase = MockGetPastBriefUseCase();
     incomingPushDataRefreshStreamUseCase = MockIncomingPushDataRefreshStreamUseCase();
     isTutorialStepSeenUseCase = MockIsTutorialStepSeenUseCase();
     setTutorialStepSeenUseCase = MockSetTutorialStepSeenUseCase();
@@ -58,7 +58,7 @@ void main() {
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
-      getPastDaysBriesfUseCase,
+      getPastBriefUseCase,
       isTutorialStepSeenUseCase,
       setTutorialStepSeenUseCase,
       trackActivityUseCase,
@@ -71,10 +71,10 @@ void main() {
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});
-    when(getCurrentBriefUseCase.call()).thenAnswer((_) async => TestData.currentBrief);
-    when(getPastDaysBriesfUseCase.call()).thenAnswer((_) async => TestData.pastDaysBriefs);
+    when(getCurrentBriefUseCase.call()).thenAnswer((_) async => TestData.briefWrapper);
+    when(getPastBriefUseCase.call(TestData.pastDaysBriefs.days.first.date)).thenAnswer((_) async => TestData.pastBrief);
     when(getCurrentBriefUseCase.stream).thenAnswer((_) async* {
-      yield TestData.currentBrief;
+      yield TestData.briefWrapper;
     });
     when(getShouldUpdateBriefStreamUseCase.call()).thenAnswer((_) async* {});
     when(isTutorialStepSeenUseCase.call(any)).thenAnswer((_) async => true);

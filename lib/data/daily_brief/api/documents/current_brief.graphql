@@ -4,4 +4,8 @@ query currentBriefForStartupScreen {
     currentBrief {
         ...briefFragment
     }
+    getPastDaysBriefs {
+        date
+        hasBrief
+    }
 }

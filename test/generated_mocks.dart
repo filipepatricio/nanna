@@ -32,7 +32,7 @@ import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
-import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_days_briefs_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
@@ -99,7 +99,7 @@ const _classes = [
   SetTutorialStepSeenUseCase,
   TrackActivityUseCase,
   IncomingPushDataRefreshStreamUseCase,
-  GetPastDaysBriesfUseCase,
+  GetPastBriefUseCase,
   AudioPlaybackStateStreamUseCase,
   AudioPositionStreamUseCase,
   AudioPositionSeekUseCase,
