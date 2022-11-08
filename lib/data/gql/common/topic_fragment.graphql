@@ -5,9 +5,6 @@
 fragment topicFragment on Topic {
     __typename
     ...topicPreviewFragment
-    summaryCards{
-        text
-    }
     summary
     entries {
         note

@@ -38,6 +38,7 @@ class TopicView extends HookWidget {
   Widget build(BuildContext context) {
     final eventController = useEventTrackingController();
     final pageIndex = useState(0);
+    final topicSummary = topic.summary;
 
     return MultiSliver(
       children: [
@@ -62,21 +63,23 @@ class TopicView extends HookWidget {
                 const SizedBox(height: AppDimens.l),
                 PublisherLogoRow(topic: topic.asPreview),
                 const SizedBox(height: AppDimens.xxxl),
-                const InformedMarkdownBody(
-                  markdown: 'Topic _summary_',
-                  baseTextStyle: AppTypography.h0Medium,
-                  maxLines: 1,
-                ),
-                const SizedBox(height: AppDimens.l),
-                InformedMarkdownBody(
-                  markdown: topic.summary,
-                  baseTextStyle: AppTypography.b1Medium,
-                  paddingBuilders: <String, MarkdownPaddingBuilder>{
-                    'ul': ULPaddingBuilder(),
-                  },
-                  bulletPadding: const EdgeInsets.only(top: AppDimens.xs),
-                ),
-                const SizedBox(height: AppDimens.xxl),
+                if (topicSummary != null) ...[
+                  const InformedMarkdownBody(
+                    markdown: 'Topic _summary_',
+                    baseTextStyle: AppTypography.h0Medium,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: AppDimens.l),
+                  InformedMarkdownBody(
+                    markdown: topicSummary,
+                    baseTextStyle: AppTypography.b1Medium,
+                    paddingBuilders: <String, MarkdownPaddingBuilder>{
+                      'ul': ULPaddingBuilder(),
+                    },
+                    bulletPadding: const EdgeInsets.only(top: AppDimens.xs),
+                  ),
+                  const SizedBox(height: AppDimens.xxl),
+                ],
                 const InformedMarkdownBody(
                   markdown: 'Explore _curated articles_',
                   baseTextStyle: AppTypography.h0Medium,

@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/image/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
 
 class Topic {
   Topic({
@@ -18,7 +17,6 @@ class Topic {
     required this.curationInfo,
     required this.lastUpdatedAt,
     required this.summary,
-    required this.topicSummaryList,
     required this.publisherInformation,
     required this.heroImage,
     required this.entries,
@@ -33,8 +31,7 @@ class Topic {
   final String introduction;
   final String url;
   final CurationInfo curationInfo;
-  final String summary;
-  final List<TopicSummary> topicSummaryList;
+  final String? summary;
   final DateTime lastUpdatedAt;
   final TopicPublisherInformation publisherInformation;
   final Image heroImage;
@@ -42,7 +39,7 @@ class Topic {
   final bool visited;
   final Category category;
 
-  bool get hasSummary => topicSummaryList.isNotEmpty;
+  bool get hasSummary => summary != null;
 
   MediaItemArticle articleAt(int index) => entries[index].item as MediaItemArticle;
 

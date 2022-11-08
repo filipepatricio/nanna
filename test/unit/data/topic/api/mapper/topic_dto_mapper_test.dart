@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/entry.dart';
 import 'package:better_informed_mobile/domain/image/data/image.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_publisher_information.dart';
-import 'package:better_informed_mobile/domain/topic/data/topic_summary.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -15,7 +14,6 @@ import '../../../../../test_data.dart';
 void main() {
   late MockImageDTOMapper imageDTOMapper;
   late MockEntryDTOMapper entryDTOMapper;
-  late MockSummaryCardDTOMapper summaryCardDTOMapper;
   late MockTopicPublisherInformationDTOMapper topicPublisherInformationDTOMapper;
   late MockCurationInfoDTOMapper curationInfoDTOMapper;
   late TopicDTOMapper mapper;
@@ -24,14 +22,12 @@ void main() {
   setUp(() {
     imageDTOMapper = MockImageDTOMapper();
     entryDTOMapper = MockEntryDTOMapper();
-    summaryCardDTOMapper = MockSummaryCardDTOMapper();
     topicPublisherInformationDTOMapper = MockTopicPublisherInformationDTOMapper();
     curationInfoDTOMapper = MockCurationInfoDTOMapper();
     categoryDTOMapper = MockCategoryDTOMapper();
     mapper = TopicDTOMapper(
       imageDTOMapper,
       entryDTOMapper,
-      summaryCardDTOMapper,
       topicPublisherInformationDTOMapper,
       categoryDTOMapper,
       curationInfoDTOMapper,
@@ -45,11 +41,6 @@ void main() {
     final publisherInformation = FakeTopicPublisherInformation();
     final entry = FakeEntry();
     final entries = [entry, entry, entry];
-    final summaryCard = FakeSummaryCard();
-    final summaryCards = [
-      summaryCard,
-      summaryCard,
-    ];
     final heroImage = FakeImage();
 
     final expected = Topic(
@@ -63,8 +54,9 @@ void main() {
       curationInfo: curationInfo,
       lastUpdatedAt: DateTime.utc(2021, 12, 23, 11, 38, 26).toLocal(),
       summary:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      topicSummaryList: summaryCards,
+          '* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do onsectetur adipisci  elit, sed do nsectetur adipisci  elit, sed do \n'
+          '* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do onsectetur adipisci  elit, sed do nsectetur adipisci  elit, sed do \n'
+          '* Lorem ipsum dolor sit amet, consectetur adipisci  elit, sed do onsectetur adipisci  elit, sed do nsectetur adipisci  elit, sed do ',
       publisherInformation: publisherInformation,
       heroImage: heroImage,
       entries: entries,
@@ -75,7 +67,6 @@ void main() {
     when(curationInfoDTOMapper(dto.curationInfo)).thenAnswer((realInvocation) => curationInfo);
     when(topicPublisherInformationDTOMapper(any)).thenAnswer((realInvocation) => publisherInformation);
     when(entryDTOMapper(any)).thenAnswer((realInvocation) => entry);
-    when(summaryCardDTOMapper(any)).thenAnswer((realInvocation) => summaryCard);
     when(imageDTOMapper(dto.heroImage)).thenAnswer((realInvocation) => heroImage);
     when(categoryDTOMapper(dto.category)).thenAnswer((realInvocation) => TestData.category);
 
@@ -91,7 +82,6 @@ void main() {
           .having((preview) => preview.introduction, 'introduction', expected.introduction)
           .having((preview) => preview.url, 'url', expected.url)
           .having((preview) => preview.curationInfo, 'curationInfo', expected.curationInfo)
-          .having((preview) => preview.topicSummaryList, 'topicSummaryList', expected.topicSummaryList)
           .having((preview) => preview.entries, 'readingList', expected.entries)
           .having((preview) => preview.lastUpdatedAt, 'lastUpdatedAt', expected.lastUpdatedAt)
           .having((preview) => preview.publisherInformation, 'highlightedPublishers', expected.publisherInformation)
@@ -105,7 +95,5 @@ class FakeCurationInfo extends Fake implements CurationInfo {}
 class FakeImage extends Fake implements Image {}
 
 class FakeEntry extends Fake implements Entry {}
-
-class FakeSummaryCard extends Fake implements TopicSummary {}
 
 class FakeTopicPublisherInformation extends Fake implements TopicPublisherInformation {}
