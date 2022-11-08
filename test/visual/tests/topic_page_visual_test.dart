@@ -19,6 +19,10 @@ void main() {
       );
       await tester.matchGoldenFile('topic_page_(header)');
 
+      await tester.fling(find.byType(TopicPage), const Offset(0, -700), 100);
+      await tester.pumpAndSettle();
+      await tester.matchGoldenFile('topic_page_(summary)');
+
       await tester.fling(find.byType(TopicPage), const Offset(0, -4000), 100);
       await tester.pumpAndSettle();
       await tester.matchGoldenFile('topic_page_(articles)');
