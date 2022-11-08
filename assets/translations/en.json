@@ -257,6 +257,8 @@
     "label": "Deep Dive",
     "labelExpert": "Expert Deep Dive",
     "updated": "Updated {}",
+    "summaryTitle": "Topic _summary_",
+    "articlesTitle": "Explore _curated articles_",
     "owner": {
       "aboutThe": "About the",
       "editorialTeamTitle": "@:topic.owner.aboutThe editors",

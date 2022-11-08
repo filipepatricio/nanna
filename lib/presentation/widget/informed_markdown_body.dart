@@ -20,6 +20,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.shareTextCallback,
     this.markdownImageBuilder,
     this.useTextHighlight = true,
+    this.bulletPadding,
     Key? key,
   })  : selectable = false,
         selectionControllers = null,
@@ -38,6 +39,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.shareTextCallback,
     this.markdownImageBuilder,
     this.useTextHighlight = true,
+    this.bulletPadding,
     Key? key,
   })  : selectable = true,
         super(key: key);
@@ -55,6 +57,7 @@ class InformedMarkdownBody extends StatelessWidget {
   final ShareTextCallback? shareTextCallback;
   final SelectionControllerBundle? selectionControllers;
   final MarkdownImageBuilder? markdownImageBuilder;
+  final EdgeInsetsGeometry? bulletPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +76,7 @@ class InformedMarkdownBody extends StatelessWidget {
         listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s),
       ),
       paddingBuilders: paddingBuilders ?? <String, MarkdownPaddingBuilder>{},
-      bulletBuilder: (index, style) => const MarkdownBullet(),
+      bulletBuilder: (index, style) => MarkdownBullet(padding: bulletPadding),
       imageBuilder: markdownImageBuilder,
       richTextBuilder: (span, selectable, {textAlign, key}) {
         return selectable

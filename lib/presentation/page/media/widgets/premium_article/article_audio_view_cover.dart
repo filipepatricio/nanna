@@ -81,11 +81,10 @@ class _ArticleImageOverlay extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (hasImage) ...[
-                PublisherLogo.light(publisher: article.publisher),
-              ] else ...[
-                PublisherLogo.dark(publisher: article.publisher),
-              ]
+              if (hasImage)
+                PublisherLogo.light(publisher: article.publisher)
+              else
+                PublisherLogo.dark(publisher: article.publisher)
             ],
           ),
           const SizedBox(height: AppDimens.m),

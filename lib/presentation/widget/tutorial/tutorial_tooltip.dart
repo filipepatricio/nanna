@@ -53,16 +53,15 @@ class TutorialTooltip extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    if (tutorialIndex != null && tutorialLength != null) ...{
+                    if (tutorialIndex != null && tutorialLength != null)
                       Expanded(
                         child: InformedMarkdownBody(
                           markdown: '**${tutorialIndex! + 1}**/$tutorialLength',
                           baseTextStyle: AppTypography.b2Regular.copyWith(color: AppColors.textPrimary),
                         ),
                       )
-                    } else ...{
-                      const Spacer()
-                    },
+                    else
+                      const Spacer(),
                     TextButton(
                       onPressed: onDismiss,
                       child: Text(

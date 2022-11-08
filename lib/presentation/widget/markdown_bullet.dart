@@ -4,17 +4,22 @@ import 'package:flutter/material.dart';
 const _size = 6.0;
 
 class MarkdownBullet extends StatelessWidget {
-  const MarkdownBullet({Key? key}) : super(key: key);
+  const MarkdownBullet({Key? key, this.padding}) : super(key: key);
+
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        height: _size,
-        width: _size,
-        decoration: const BoxDecoration(
-          color: AppColors.black,
-          shape: BoxShape.circle,
+    return Padding(
+      padding: padding ?? EdgeInsets.zero,
+      child: Center(
+        child: Container(
+          height: _size,
+          width: _size,
+          decoration: const BoxDecoration(
+            color: AppColors.black,
+            shape: BoxShape.circle,
+          ),
         ),
       ),
     );
