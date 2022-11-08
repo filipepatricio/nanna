@@ -206,7 +206,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const b1Medium = TextStyle(
+  static const TextStyle b1Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
     fontSize: 18,

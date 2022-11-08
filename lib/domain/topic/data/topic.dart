@@ -39,8 +39,6 @@ class Topic {
   final bool visited;
   final Category category;
 
-  bool get hasSummary => summary != null;
-
   MediaItemArticle articleAt(int index) => entries[index].item as MediaItemArticle;
 
   TopicPreview get asPreview {

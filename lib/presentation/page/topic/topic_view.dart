@@ -64,8 +64,8 @@ class TopicView extends HookWidget {
                 PublisherLogoRow(topic: topic.asPreview),
                 const SizedBox(height: AppDimens.xxxl),
                 if (topicSummary != null) ...[
-                  const InformedMarkdownBody(
-                    markdown: 'Topic _summary_',
+                  InformedMarkdownBody(
+                    markdown: LocaleKeys.topic_summaryTitle.tr(),
                     baseTextStyle: AppTypography.h0Medium,
                     maxLines: 1,
                   ),
@@ -80,8 +80,8 @@ class TopicView extends HookWidget {
                   ),
                   const SizedBox(height: AppDimens.xxl),
                 ],
-                const InformedMarkdownBody(
-                  markdown: 'Explore _curated articles_',
+                InformedMarkdownBody(
+                  markdown: LocaleKeys.topic_articlesTitle.tr(),
                   baseTextStyle: AppTypography.h0Medium,
                   maxLines: 1,
                 ),
