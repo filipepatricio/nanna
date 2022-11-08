@@ -146,7 +146,7 @@ android {
             dimension "env"
 
             resValue "string", "app_name", "informed"
-            resValue "string", "app_link_host", "app.informed.so"
+            resValue "string", "app_link_host", "www.informed.so"
 
             if (propertyMap.containsKey('prod')) {
                 signingConfig signingConfigs.releaseProd
