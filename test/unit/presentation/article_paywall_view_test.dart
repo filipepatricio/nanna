@@ -38,12 +38,13 @@ void main() {
         getIt.registerFactory<GetArticlePaywallPreferredPlanUseCase>(() => getArticlePaywallPreferredPlanUseCase);
       },
       initialRoute: PlaceholderPageRoute(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: ArticlePaywallView(
-              article: article,
-              snackbarController: SnackbarController(),
-              child: Text(article.content.content),
+        child: SnackbarParentView(
+          child: Scaffold(
+            body: SingleChildScrollView(
+              child: ArticlePaywallView(
+                article: article,
+                child: Text(article.content.content),
+              ),
             ),
           ),
         ),
@@ -78,12 +79,13 @@ void main() {
         getIt.registerFactory<GetArticlePaywallPreferredPlanUseCase>(() => getArticlePaywallPreferredPlanUseCase);
       },
       initialRoute: PlaceholderPageRoute(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: ArticlePaywallView(
-              article: article,
-              snackbarController: SnackbarController(),
-              child: Text(article.content.content),
+        child: SnackbarParentView(
+          child: Scaffold(
+            body: SingleChildScrollView(
+              child: ArticlePaywallView(
+                article: article,
+                child: Text(article.content.content),
+              ),
             ),
           ),
         ),

@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
@@ -26,17 +27,17 @@ const _feedbackEmail = 'feedback@informed.so';
 class SettingsMainBody extends HookWidget {
   const SettingsMainBody({
     required this.cubit,
-    required this.snackbarController,
     required this.useSubscriptions,
     Key? key,
   }) : super(key: key);
 
   final SettingsMainCubit cubit;
-  final SnackbarController snackbarController;
   final bool useSubscriptions;
 
   @override
   Widget build(BuildContext context) {
+    final snackbarController = useSnackbarController();
+
     useCubitListener<SettingsMainCubit, SettingsMainState>(cubit, (cubit, state, context) {
       state.mapOrNull(
         sendingEmailError: (error) {
@@ -90,11 +91,11 @@ class SettingsMainBody extends HookWidget {
         const SizedBox(height: AppDimens.s),
         SettingsMainItem(
           label: LocaleKeys.settings_privacyPolicy.tr(),
-          onTap: () => _openInBrowser(policyPrivacyUri),
+          onTap: () => _openInBrowser(policyPrivacyUri, snackbarController),
         ),
         SettingsMainItem(
           label: LocaleKeys.settings_termsOfService.tr(),
-          onTap: () => _openInBrowser(termsOfServiceUri),
+          onTap: () => _openInBrowser(termsOfServiceUri, snackbarController),
         ),
         SettingsMainItem(
           label: LocaleKeys.settings_feedbackButton.tr(),
@@ -116,7 +117,7 @@ class SettingsMainBody extends HookWidget {
     );
   }
 
-  Future<void> _openInBrowser(String uri) async {
+  Future<void> _openInBrowser(String uri, SnackbarController snackbarController) async {
     await openInAppBrowser(
       uri,
       (error, stacktrace) {

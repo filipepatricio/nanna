@@ -16,7 +16,6 @@ class SettingsManageMyInterestsPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsManageMyInterestsCubit>();
     final state = useCubitBuilder<SettingsManageMyInterestsCubit, SettingsManageMyInterestsState>(cubit);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     useEffect(
       () {
@@ -31,11 +30,10 @@ class SettingsManageMyInterestsPage extends HookWidget {
         title: LocaleKeys.settings_manageMyInterestsTitle.tr(),
       ),
       body: SnackbarParentView(
-        controller: snackbarController,
+        audioPlayerResponsive: true,
         child: state.maybeWhen(
           loading: () => const Loader(),
           myInterestsSettingsLoaded: (categoryPreferences) => SettingsManageMyInterestsBody(
-            snackbarController: snackbarController,
             categoryPreferences: categoryPreferences,
             cubit: cubit,
           ),

@@ -31,14 +31,15 @@ void main() {
         );
       },
       initialRoute: PlaceholderPageRoute(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: ArticlePaywallView(
-              article: article,
-              snackbarController: SnackbarController(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: Text(shortText),
+        child: SnackbarParentView(
+          child: Scaffold(
+            body: SingleChildScrollView(
+              child: ArticlePaywallView(
+                article: article,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: Text(shortText),
+                ),
               ),
             ),
           ),
@@ -65,15 +66,16 @@ void main() {
         );
       },
       initialRoute: PlaceholderPageRoute(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            reverse: true,
-            child: ArticlePaywallView(
-              article: article,
-              snackbarController: SnackbarController(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: Text(article.content.content),
+        child: SnackbarParentView(
+          child: Scaffold(
+            body: SingleChildScrollView(
+              reverse: true,
+              child: ArticlePaywallView(
+                article: article,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: Text(article.content.content),
+                ),
               ),
             ),
           ),
@@ -102,15 +104,16 @@ void main() {
         );
       },
       initialRoute: PlaceholderPageRoute(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            reverse: true,
-            child: ArticlePaywallView(
-              article: article,
-              snackbarController: SnackbarController(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
-                child: Text(article.content.content),
+        child: SnackbarParentView(
+          child: Scaffold(
+            body: SingleChildScrollView(
+              reverse: true,
+              child: ArticlePaywallView(
+                article: article,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: Text(article.content.content),
+                ),
               ),
             ),
           ),

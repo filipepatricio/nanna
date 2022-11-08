@@ -3,7 +3,6 @@ import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 
@@ -60,28 +59,24 @@ class MoreFromSectionListItem extends StatelessWidget {
   factory MoreFromSectionListItem.article({
     required MediaItemArticle article,
     required VoidCallback onItemTap,
-    required SnackbarController snackbarController,
   }) =>
       MoreFromSectionListItem._(
         type: MoreFromSectionItemType.article,
         child: ArticleCover.list(
           article: article,
           onTap: onItemTap,
-          snackbarController: snackbarController,
         ),
       );
 
   factory MoreFromSectionListItem.topic({
     required TopicPreview topic,
     required VoidCallback onItemTap,
-    required SnackbarController snackbarController,
   }) =>
       MoreFromSectionListItem._(
         type: MoreFromSectionItemType.topic,
         child: TopicCover.big(
           topic: topic,
           onTap: onItemTap,
-          snackbarController: snackbarController,
         ),
       );
 

@@ -3,14 +3,12 @@ part of 'topic_cover.dart';
 class _TopicCoverBig extends StatelessWidget {
   const _TopicCoverBig({
     required this.topic,
-    required this.snackbarController,
     required this.onTap,
     this.onBookmarkTap,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final SnackbarController snackbarController;
   final VoidCallback? onTap;
   final VoidCallback? onBookmarkTap;
 
@@ -70,7 +68,6 @@ class _TopicCoverBig extends StatelessWidget {
             const SizedBox(height: AppDimens.s),
             _TopicCoverBar.big(
               topic: topic,
-              snackbarController: snackbarController,
               onBookmarkTap: onBookmarkTap,
             ),
           ],

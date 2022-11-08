@@ -40,7 +40,6 @@ class MediaItemPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<MediaItemCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     useEffect(
       () {
@@ -51,36 +50,37 @@ class MediaItemPage extends HookWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: InformedAnimatedSwitcher(
-        child: state.maybeMap(
-          loading: (data) => _LoadingContent(color: data.color),
-          idleFree: (data) => FreeArticleView(
-            article: data.header,
-            snackbarController: snackbarController,
-            briefId: briefId,
-            topicId: topicId,
+      body: SnackbarParentView(
+        audioPlayerResponsive: true,
+        child: InformedAnimatedSwitcher(
+          child: state.maybeMap(
+            loading: (data) => _LoadingContent(color: data.color),
+            idleFree: (data) => FreeArticleView(
+              article: data.header,
+              briefId: briefId,
+              topicId: topicId,
+            ),
+            idlePremium: (data) => PremiumArticleView(
+              article: data.article,
+              articleOutputMode: articleOutputMode,
+              briefId: briefId,
+              topicId: topicId,
+              topicSlug: topicSlug,
+            ),
+            error: (data) => _ErrorContent(
+              article: data.article,
+              onTryAgain: () {
+                cubit.initialize(article, slug, topicId, topicSlug, briefId);
+              },
+            ),
+            emptyError: (_) => _ErrorContent(
+              onTryAgain: () {
+                cubit.initialize(article, slug, topicId, topicSlug, briefId);
+              },
+            ),
+            geoblocked: (_) => const _ErrorGeoBlocked(),
+            orElse: Container.new,
           ),
-          idlePremium: (data) => PremiumArticleView(
-            article: data.article,
-            snackbarController: snackbarController,
-            articleOutputMode: articleOutputMode,
-            briefId: briefId,
-            topicId: topicId,
-            topicSlug: topicSlug,
-          ),
-          error: (data) => _ErrorContent(
-            article: data.article,
-            onTryAgain: () {
-              cubit.initialize(article, slug, topicId, topicSlug, briefId);
-            },
-          ),
-          emptyError: (_) => _ErrorContent(
-            onTryAgain: () {
-              cubit.initialize(article, slug, topicId, topicSlug, briefId);
-            },
-          ),
-          geoblocked: (_) => const _ErrorGeoBlocked(),
-          orElse: Container.new,
         ),
       ),
     );

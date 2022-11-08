@@ -16,7 +16,6 @@ class SettingsNotificationsPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsNotificationCubit>();
     final state = useCubitBuilder<SettingsNotificationCubit, SettingsNotificationsState>(cubit);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     useEffect(
       () {
@@ -31,11 +30,10 @@ class SettingsNotificationsPage extends HookWidget {
         title: LocaleKeys.settings_notifications.tr(),
       ),
       body: SnackbarParentView(
-        controller: snackbarController,
+        audioPlayerResponsive: true,
         child: state.maybeWhen(
           loading: () => const Loader(),
           notificationSettingsLoaded: (data) => SettingsNotificationsBody(
-            snackbarController: snackbarController,
             groups: data,
           ),
           orElse: () => const SizedBox.shrink(),

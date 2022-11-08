@@ -35,7 +35,7 @@ class SettingsSubscriptionPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsSubscriptionPageCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -65,6 +65,7 @@ class SettingsSubscriptionPage extends HookWidget {
         ),
       ),
       body: SnackbarParentView(
+        audioPlayerResponsive: true,
         controller: snackbarController,
         child: state.maybeWhen(
           loading: () => const Loader(),

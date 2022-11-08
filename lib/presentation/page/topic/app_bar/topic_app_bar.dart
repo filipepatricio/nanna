@@ -5,14 +5,12 @@ class _TopicAppBar extends HookWidget {
     required this.isScrolled,
     required this.topic,
     required this.cubit,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final ValueNotifier<bool> isScrolled;
   final Topic topic;
   final TopicPageCubit cubit;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +65,11 @@ class _TopicAppBar extends HookWidget {
                 topic: topic.asPreview,
                 briefId: cubit.briefId,
                 color: isScrolled.value ? AppColors.textPrimary : AppColors.white,
-                snackbarController: snackbarController,
               ),
               const SizedBox(width: AppDimens.s),
               ShareTopicButton(
                 key: const Key('share-topic-button'),
                 topic: topic.asPreview,
-                snackbarController: snackbarController,
                 iconColor: isScrolled.value ? AppColors.textPrimary : AppColors.white,
               ),
               const SizedBox(width: AppDimens.m),

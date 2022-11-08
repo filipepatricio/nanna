@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_v
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/types.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 
@@ -13,14 +12,12 @@ class BookmarkListTile extends StatelessWidget {
   const BookmarkListTile({
     required this.bookmark,
     required this.onRemoveBookmarkPressed,
-    required this.snackbarController,
     required this.cubit,
     Key? key,
   }) : super(key: key);
 
   final Bookmark bookmark;
   final OnRemoveBookmarkPressed onRemoveBookmarkPressed;
-  final SnackbarController snackbarController;
   final BookmarkListViewCubit cubit;
 
   @override
@@ -34,7 +31,6 @@ class BookmarkListTile extends StatelessWidget {
           ),
           child: bookmark.getContent(
             context,
-            snackbarController,
             () => onRemoveBookmarkPressed(bookmark),
           ),
         ),
@@ -47,7 +43,6 @@ class BookmarkListTile extends StatelessWidget {
 extension on Bookmark {
   Widget getContent(
     BuildContext context,
-    SnackbarController snackbarController,
     VoidCallback? onRemoveBookmarkCallback,
   ) {
     return data.map(
@@ -57,11 +52,9 @@ extension on Bookmark {
           MediaItemPageRoute(article: data.article),
         ),
         onBookmarkTap: onRemoveBookmarkCallback,
-        snackbarController: snackbarController,
       ),
       topic: (data) => TopicCover.big(
         topic: data.topic.asPreview,
-        snackbarController: snackbarController,
         onBookmarkTap: onRemoveBookmarkCallback,
         onTap: () => context.pushRoute(
           TopicPage(topicSlug: data.topic.slug),

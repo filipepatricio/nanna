@@ -5,18 +5,15 @@ import 'package:better_informed_mobile/presentation/page/explore/widget/explore_
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 
 class ArticleListAreaView extends StatelessWidget {
   const ArticleListAreaView({
     required this.area,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final ExploreContentAreaArticlesList area;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,6 @@ class ArticleListAreaView extends StatelessWidget {
                   (article) => ArticleCover.list(
                     article: article,
                     onTap: () => context.navigateToArticle(article),
-                    snackbarController: snackbarController,
                   ),
                 )
                 .expand(

@@ -6,12 +6,12 @@ import 'package:better_informed_mobile/presentation/page/settings/widgets/settin
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -21,7 +21,6 @@ class SettingsAccountBody extends HookWidget {
     required this.state,
     required this.originalData,
     required this.modifiedData,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
@@ -29,12 +28,12 @@ class SettingsAccountBody extends HookWidget {
   final SettingsAccountState state;
   final SettingsAccountData originalData;
   final SettingsAccountData modifiedData;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
     final isFirstNameFocused = useState(false);
     final isLastNameFocused = useState(false);
+    final snackbarController = useSnackbarController();
 
     useCubitListener<SettingsAccountCubit, SettingsAccountState>(cubit, (cubit, state, context) {
       state.whenOrNull(
