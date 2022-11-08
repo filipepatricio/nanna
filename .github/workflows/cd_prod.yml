@@ -103,7 +103,7 @@ jobs:
         env:
           GOOGLE_PLAY_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_CREDENTIALS }}
 
-      - name: Upload appbundle to internal testing
+      - name: Upload appbundle to closed testing
         uses: maierj/fastlane-action@v2.3.0
         with:
           lane: 'internal_play_store'
