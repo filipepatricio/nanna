@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_area_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_item_carousel_view.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -12,11 +11,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class OwnerTopics extends HookWidget {
   const OwnerTopics({
     required this.topics,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final List<TopicPreview> topics;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +33,6 @@ class OwnerTopics extends HookWidget {
           itemBuilder: (topic, _) => TopicCover.small(
             topic: topic,
             onTap: () => context.navigateToTopic(topic),
-            snackbarController: snackbarController,
           ),
           items: items,
           itemWidth: width,

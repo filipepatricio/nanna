@@ -4,7 +4,6 @@ class _ArticleCoverList extends ArticleCover {
   const _ArticleCoverList({
     required this.onTap,
     required this.article,
-    required this.snackbarController,
     required this.showNote,
     required this.showRecommendedBy,
     this.onBookmarkTap,
@@ -12,7 +11,6 @@ class _ArticleCoverList extends ArticleCover {
   }) : super._(key: key);
 
   final MediaItemArticle article;
-  final SnackbarController snackbarController;
   final bool showNote;
   final bool showRecommendedBy;
   final VoidCallback? onTap;
@@ -71,7 +69,6 @@ class _ArticleCoverList extends ArticleCover {
           const SizedBox(height: AppDimens.sl),
           ArticleMetadataRow(
             article: article,
-            snackbarController: snackbarController,
             onBookmarkTap: onBookmarkTap,
           ),
         ],

@@ -60,96 +60,96 @@ class TopicOwnerPage extends HookWidget {
       () => ModalScrollController.of(context) ?? ScrollController(keepScrollOffset: true),
     );
 
-    return SafeArea(
-      bottom: false,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppDimens.m)),
-        child: Material(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _ActionsBar(controller: scrollController, owner: owner),
-              Container(
-                color: AppColors.lightGrey,
-                height: AppDimens.one,
-              ),
-              Flexible(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: getPlatformScrollPhysics(),
-                  controller: scrollController,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: AppDimens.m),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                          child: CuratorAvatarBig(curator: owner),
-                        ),
-                        const SizedBox(height: AppDimens.m),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                          child: Text(
-                            owner.bio,
-                            softWrap: true,
-                            style: AppTypography.articleText,
-                          ),
-                        ),
-                        const SizedBox(height: AppDimens.s),
-                        if (owner is! EditorialTeamCurator) ...[
-                          InformedAnimatedSwitcher(
-                            duration: const Duration(milliseconds: 1000),
-                            child: state.maybeMap(
-                              idleExpert: (state) => state.topics.isEmpty
-                                  ? const SizedBox.shrink()
-                                  : OwnerTopics(
-                                      topics: state.topics,
-                                      snackbarController: snackbarController,
-                                    ),
-                              idleEditor: (state) => state.topics.isEmpty
-                                  ? const SizedBox.shrink()
-                                  : OwnerTopics(
-                                      topics: state.topics,
-                                      snackbarController: snackbarController,
-                                    ),
-                              orElse: () => const SizedBox.shrink(),
-                            ),
-                          ),
-                        ],
-                        if (owner is! ExpertCurator) ...[
+    return SnackbarParentView(
+      child: SafeArea(
+        bottom: false,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(AppDimens.m)),
+          child: Material(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _ActionsBar(controller: scrollController, owner: owner),
+                Container(
+                  color: AppColors.lightGrey,
+                  height: AppDimens.one,
+                ),
+                Flexible(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: getPlatformScrollPhysics(),
+                    controller: scrollController,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                           const SizedBox(height: AppDimens.m),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                            child: FilledButton.white(
-                              text: LocaleKeys.topic_howWeCurateContent_label.tr(),
-                              trailing: SvgPicture.asset(
-                                AppVectorGraphics.chevronNext,
-                                fit: BoxFit.scaleDown,
-                              ),
-                              withOutline: true,
-                              onTap: () {
-                                context.pushRoute(const HowDoWeCurateContentPageRoute());
-                              },
+                            child: CuratorAvatarBig(curator: owner),
+                          ),
+                          const SizedBox(height: AppDimens.m),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+                            child: Text(
+                              owner.bio,
+                              softWrap: true,
+                              style: AppTypography.articleText,
                             ),
                           ),
                           const SizedBox(height: AppDimens.s),
+                          if (owner is! EditorialTeamCurator) ...[
+                            InformedAnimatedSwitcher(
+                              duration: const Duration(milliseconds: 1000),
+                              child: state.maybeMap(
+                                idleExpert: (state) => state.topics.isEmpty
+                                    ? const SizedBox.shrink()
+                                    : OwnerTopics(
+                                        topics: state.topics,
+                                      ),
+                                idleEditor: (state) => state.topics.isEmpty
+                                    ? const SizedBox.shrink()
+                                    : OwnerTopics(
+                                        topics: state.topics,
+                                      ),
+                                orElse: () => const SizedBox.shrink(),
+                              ),
+                            ),
+                          ],
+                          if (owner is! ExpertCurator) ...[
+                            const SizedBox(height: AppDimens.m),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+                              child: FilledButton.white(
+                                text: LocaleKeys.topic_howWeCurateContent_label.tr(),
+                                trailing: SvgPicture.asset(
+                                  AppVectorGraphics.chevronNext,
+                                  fit: BoxFit.scaleDown,
+                                ),
+                                withOutline: true,
+                                onTap: () {
+                                  context.pushRoute(const HowDoWeCurateContentPageRoute());
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: AppDimens.s),
+                          ],
+                          if (owner is ExpertCurator && (owner as ExpertCurator).hasSocialMediaLinks) ...[
+                            const SizedBox(height: AppDimens.m),
+                            _SocialMediaLinks(
+                              cubit: cubit,
+                              owner: owner as ExpertCurator,
+                            ),
+                            const SizedBox(height: AppDimens.c),
+                          ],
                         ],
-                        if (owner is ExpertCurator && (owner as ExpertCurator).hasSocialMediaLinks) ...[
-                          const SizedBox(height: AppDimens.m),
-                          _SocialMediaLinks(
-                            cubit: cubit,
-                            owner: owner as ExpertCurator,
-                          ),
-                          const SizedBox(height: AppDimens.c),
-                        ],
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

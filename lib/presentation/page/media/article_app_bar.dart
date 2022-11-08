@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_svg/svg.dart';
 class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   const ArticleAppBar({
     required this.article,
-    required this.snackbarController,
     this.actionsBarColorModeNotifier,
     this.briefId,
     this.topicId,
@@ -23,7 +21,6 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final SnackbarController snackbarController;
   final ValueNotifier<ArticleActionsBarColorMode>? actionsBarColorModeNotifier;
   final String? briefId;
   final String? topicId;
@@ -74,7 +71,6 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
               alignment: Alignment.center,
               child: ShareArticleButton(
                 article: article,
-                snackbarController: snackbarController,
                 buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
               ),
             ),
@@ -87,7 +83,6 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
         topicId: topicId,
         briefId: briefId,
         color: AppColors.charcoal,
-        snackbarController: snackbarController,
       ),
     );
   }

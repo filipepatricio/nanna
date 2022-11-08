@@ -13,8 +13,8 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
@@ -24,7 +24,6 @@ enum ArticleActionsBarColorMode { custom, background }
 class PremiumArticleView extends HookWidget {
   const PremiumArticleView({
     required this.article,
-    required this.snackbarController,
     required this.articleOutputMode,
     this.topicSlug,
     this.topicId,
@@ -33,7 +32,6 @@ class PremiumArticleView extends HookWidget {
   }) : super(key: key);
 
   final Article article;
-  final SnackbarController snackbarController;
   final ArticleOutputMode articleOutputMode;
   final String? topicSlug;
   final String? topicId;
@@ -53,6 +51,7 @@ class PremiumArticleView extends HookWidget {
             : ArticleActionsBarColorMode.background,
       ),
     );
+    final snackbarController = useSnackbarController();
 
     useEffect(
       () {
@@ -115,54 +114,49 @@ class PremiumArticleView extends HookWidget {
       extendBodyBehindAppBar: true,
       appBar: ArticleAppBar(
         article: article.metadata,
-        snackbarController: snackbarController,
         briefId: briefId,
         topicId: topicId,
         actionsBarColorModeNotifier: actionsBarColorModeNotifier,
       ),
-      body: SnackbarParentView(
-        controller: snackbarController,
-        child: ScrollsToTop(
-          onScrollsToTop: (_) => mainController.animateToStart(),
-          child: PremiumArticleAudioCubitProvider(
-            article: article.metadata,
-            audioCubitBuilder: (audioCubit) => state.maybeMap(
-              idle: (state) => PageView(
-                physics: state.scrollPhysics,
-                controller: horizontalPageController,
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (page) {
-                  switch (page) {
-                    case 0:
-                      actionsBarColorModeNotifier.value =
-                          isScrolled.value ? ArticleActionsBarColorMode.background : ArticleActionsBarColorMode.custom;
-                      break;
-                    case 1:
-                      actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.background;
-                      break;
-                  }
-                },
-                children: [
-                  PremiumArticleReadView(
-                    cubit: cubit,
-                    mainController: mainController,
-                    snackbarController: snackbarController,
-                    onAudioBannerTap: () => horizontalPageController.animateToPage(
-                      ArticleOutputMode.audio.index,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.decelerate,
-                    ),
+      body: ScrollsToTop(
+        onScrollsToTop: (_) => mainController.animateToStart(),
+        child: PremiumArticleAudioCubitProvider(
+          article: article.metadata,
+          audioCubitBuilder: (audioCubit) => state.maybeMap(
+            idle: (state) => PageView(
+              physics: state.scrollPhysics,
+              controller: horizontalPageController,
+              scrollDirection: Axis.horizontal,
+              onPageChanged: (page) {
+                switch (page) {
+                  case 0:
+                    actionsBarColorModeNotifier.value =
+                        isScrolled.value ? ArticleActionsBarColorMode.background : ArticleActionsBarColorMode.custom;
+                    break;
+                  case 1:
+                    actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.background;
+                    break;
+                }
+              },
+              children: [
+                PremiumArticleReadView(
+                  cubit: cubit,
+                  mainController: mainController,
+                  onAudioBannerTap: () => horizontalPageController.animateToPage(
+                    ArticleOutputMode.audio.index,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.decelerate,
                   ),
-                  if (state.article.metadata.hasAudioVersion && state.article.metadata.availableInSubscription)
-                    PremiumArticleAudioView(
-                      article: article,
-                      cubit: audioCubit,
-                      enablePageSwipe: cubit.enablePageSwipe,
-                    ),
-                ],
-              ),
-              orElse: Container.new,
+                ),
+                if (state.article.metadata.hasAudioVersion && state.article.metadata.availableInSubscription)
+                  PremiumArticleAudioView(
+                    article: article,
+                    cubit: audioCubit,
+                    enablePageSwipe: cubit.enablePageSwipe,
+                  ),
+              ],
             ),
+            orElse: Container.new,
           ),
         ),
       ),

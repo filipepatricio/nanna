@@ -10,7 +10,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_markdown_bod
 import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_button/share_topic_button.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/image/topic_cover_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -25,7 +24,6 @@ enum TopicCoverType { big, small, bookmark }
 class TopicCover extends HookWidget {
   factory TopicCover.big({
     required TopicPreview topic,
-    required SnackbarController snackbarController,
     VoidCallback? onTap,
     VoidCallback? onBookmarkTap,
     Key? key,
@@ -36,12 +34,10 @@ class TopicCover extends HookWidget {
         topic: topic,
         onTap: onTap,
         onBookmarkTap: onBookmarkTap,
-        snackbarController: snackbarController,
       );
 
   factory TopicCover.small({
     required TopicPreview topic,
-    required SnackbarController snackbarController,
     VoidCallback? onTap,
     Key? key,
   }) =>
@@ -50,7 +46,6 @@ class TopicCover extends HookWidget {
         type: TopicCoverType.small,
         topic: topic,
         onTap: onTap,
-        snackbarController: snackbarController,
       );
 
   factory TopicCover.bookmark({required TopicPreview topic, Function()? onTap}) => TopicCover._(
@@ -62,7 +57,6 @@ class TopicCover extends HookWidget {
   const TopicCover._({
     required this.topic,
     required this.type,
-    this.snackbarController,
     this.onBookmarkTap,
     this.onTap,
     Key? key,
@@ -70,7 +64,6 @@ class TopicCover extends HookWidget {
 
   final TopicPreview topic;
   final TopicCoverType type;
-  final SnackbarController? snackbarController;
   final VoidCallback? onTap;
   final VoidCallback? onBookmarkTap;
 
@@ -80,13 +73,11 @@ class TopicCover extends HookWidget {
       case TopicCoverType.small:
         return _TopicCoverSmall(
           topic: topic,
-          snackbarController: snackbarController!,
           onTap: onTap,
         );
       case TopicCoverType.big:
         return _TopicCoverBig(
           topic: topic,
-          snackbarController: snackbarController!,
           onBookmarkTap: onBookmarkTap,
           onTap: onTap,
         );

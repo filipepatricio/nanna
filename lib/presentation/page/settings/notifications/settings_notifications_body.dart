@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -17,11 +16,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class SettingsNotificationsBody extends HookWidget {
   const SettingsNotificationsBody({
     required this.groups,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final List<NotificationPreferencesGroup> groups;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +52,6 @@ class SettingsNotificationsBody extends HookWidget {
                     .map(
                       (group) => _NotificationGroup(
                         group: group,
-                        snackbarController: snackbarController,
                       ),
                     )
                     .expand(
@@ -76,11 +72,9 @@ class SettingsNotificationsBody extends HookWidget {
 class _NotificationGroup extends StatelessWidget {
   const _NotificationGroup({
     required this.group,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final NotificationPreferencesGroup group;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +91,6 @@ class _NotificationGroup extends StatelessWidget {
           ...group.channels.map(
             (channel) => _NotificationChannel(
               channel: channel,
-              snackbarController: snackbarController,
             ),
           ),
         ],
@@ -109,11 +102,9 @@ class _NotificationGroup extends StatelessWidget {
 class _NotificationChannel extends StatelessWidget {
   const _NotificationChannel({
     required this.channel,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final NotificationChannel channel;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +118,10 @@ class _NotificationChannel extends StatelessWidget {
         trailingChildren: [
           NotificationSettingSwitch.squareBlack(
             channel: channel,
-            snackbarController: snackbarController,
             notificationType: NotificationType.push,
           ),
           NotificationSettingSwitch.squareBlack(
             channel: channel,
-            snackbarController: snackbarController,
             notificationType: NotificationType.email,
           ),
         ],

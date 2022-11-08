@@ -14,7 +14,6 @@ class SettingsAccountPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsAccountCubit>();
     final state = useCubitBuilder<SettingsAccountCubit, SettingsAccountState>(cubit);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     useEffect(
       () {
@@ -29,7 +28,7 @@ class SettingsAccountPage extends HookWidget {
         title: LocaleKeys.settings_account.tr(),
       ),
       body: SnackbarParentView(
-        controller: snackbarController,
+        audioPlayerResponsive: true,
         child: state.maybeMap(
           loading: (_) => const Loader(),
           idle: (data) => SettingsAccountBody(
@@ -37,14 +36,12 @@ class SettingsAccountPage extends HookWidget {
             state: state,
             modifiedData: data.data,
             originalData: data.original,
-            snackbarController: snackbarController,
           ),
           updating: (data) => SettingsAccountBody(
             cubit: cubit,
             state: state,
             modifiedData: data.data,
             originalData: data.original,
-            snackbarController: snackbarController,
           ),
           orElse: () => const SizedBox.shrink(),
         ),

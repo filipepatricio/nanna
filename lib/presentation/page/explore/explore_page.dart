@@ -32,13 +32,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ExplorePage extends HookWidget {
+  const ExplorePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<ExplorePageCubit>();
     final state = useCubitBuilder(cubit);
     final scrollController = useScrollController();
     final scrollControllerIdleOffset = useState(0.0);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     final searchViewCubit = useCubit<SearchViewCubit>();
     final searchTextEditingController = useTextEditingController();
@@ -86,7 +87,7 @@ class ExplorePage extends HookWidget {
                 orElse: () => cubit.loadExplorePageData,
               ),
               child: SnackbarParentView(
-                controller: snackbarController,
+                audioPlayerResponsive: true,
                 child: CustomScrollView(
                   keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   controller: scrollController,
@@ -108,12 +109,10 @@ class ExplorePage extends HookWidget {
                       initialLoading: (_) => const _LoadingSection(),
                       idle: (state) => _ItemList(
                         items: state.items,
-                        snackbarController: snackbarController,
                       ),
                       search: (_) => SearchView(
                         cubit: searchViewCubit,
                         scrollController: scrollController,
-                        snackbarController: snackbarController,
                       ),
                       searchHistory: (state) => SearchHistoryView(
                         explorePageCubit: cubit,
@@ -170,12 +169,10 @@ class _LoadingSection extends StatelessWidget {
 class _ItemList extends StatelessWidget {
   const _ItemList({
     required this.items,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final List<ExploreItem> items;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +185,6 @@ class _ItemList extends StatelessWidget {
           stream: (item) => _Area(
             area: item.area,
             orderIndex: index,
-            snackbarController: snackbarController,
           ),
         ),
         childCount: items.length,
@@ -202,13 +198,11 @@ class _Area extends HookWidget {
   const _Area({
     required this.area,
     required this.orderIndex,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final ExploreContentArea area;
   final int orderIndex;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -229,15 +223,12 @@ class _Area extends HookWidget {
           articles: (area) => ArticleAreaView(
             area: area,
             isHighlighted: area.isHighlighted,
-            snackbarController: snackbarController,
           ),
           articlesList: (area) => ArticleListAreaView(
             area: area,
-            snackbarController: snackbarController,
           ),
           smallTopics: (area) => SmallTopicsAreaView(
             area: area,
-            snackbarController: snackbarController,
           ),
           unknown: (_) => const SizedBox.shrink(),
         ),

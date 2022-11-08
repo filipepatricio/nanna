@@ -35,7 +35,7 @@ class ChangeSubscriptionPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<ChangeSubscriptionPageCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {

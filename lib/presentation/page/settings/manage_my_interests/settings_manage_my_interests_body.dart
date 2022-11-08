@@ -5,27 +5,27 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class SettingsManageMyInterestsBody extends HookWidget {
   const SettingsManageMyInterestsBody({
     required this.categoryPreferences,
-    required this.snackbarController,
     required this.cubit,
     Key? key,
   }) : super(key: key);
 
   final List<CategoryPreference> categoryPreferences;
-  final SnackbarController snackbarController;
   final SettingsManageMyInterestsCubit cubit;
 
   @override
   Widget build(BuildContext context) {
+    final snackbarController = useSnackbarController();
+
     useCubitListener<SettingsManageMyInterestsCubit, SettingsManageMyInterestsState>(cubit, (cubit, state, context) {
       state.whenOrNull(
         showMessage: (message) {
@@ -47,7 +47,6 @@ class SettingsManageMyInterestsBody extends HookWidget {
             .map(
               (data) => _CategoryItem(
                 categoryPreference: data,
-                snackbarController: snackbarController,
                 cubit: cubit,
                 onSwitch: (value) {
                   cubit.updatePreferredCategories(
@@ -71,14 +70,12 @@ class SettingsManageMyInterestsBody extends HookWidget {
 class _CategoryItem extends StatelessWidget {
   const _CategoryItem({
     required this.categoryPreference,
-    required this.snackbarController,
     required this.cubit,
     required this.onSwitch,
     Key? key,
   }) : super(key: key);
 
   final CategoryPreference categoryPreference;
-  final SnackbarController snackbarController;
   final SettingsManageMyInterestsCubit cubit;
   final Function(bool) onSwitch;
 

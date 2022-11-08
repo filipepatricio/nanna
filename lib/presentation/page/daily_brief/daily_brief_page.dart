@@ -79,7 +79,6 @@ class _DailyBriefPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -104,7 +103,7 @@ class _DailyBriefPage extends HookWidget {
             onRefresh: cubit.loadBriefs,
             color: AppColors.darkGrey,
             child: SnackbarParentView(
-              controller: snackbarController,
+              audioPlayerResponsive: true,
               child: CustomScrollView(
                 controller: scrollController,
                 physics: state.maybeMap(
@@ -162,7 +161,6 @@ class _DailyBriefPage extends HookWidget {
                       brief: state.selectedBrief,
                       tutorialCoachMark: tutorialCoachMark,
                       scrollController: scrollController,
-                      snackbarController: snackbarController,
                     ),
                     error: (_) => SliverFillRemaining(
                       child: Center(
@@ -215,7 +213,6 @@ class _IdleContent extends HookWidget {
     required this.brief,
     required this.tutorialCoachMark,
     required this.scrollController,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
@@ -223,7 +220,6 @@ class _IdleContent extends HookWidget {
   final Brief brief;
   final TutorialCoachMark tutorialCoachMark;
   final ScrollController scrollController;
-  final SnackbarController snackbarController;
 
   VoidCallback topicCardTutorialListener(ScrollController listScrollController, double topicCardTriggerPoint) {
     var isToShowMediaItemTutorialCoachMark = true;
@@ -321,12 +317,12 @@ class _IdleContent extends HookWidget {
               entries: (section) => _BriefSection(
                 title: section.title,
                 backgroundColor: section.backgroundColor,
-                children: _mapEntriesToCovers(section, firstTopic, index, snackbarController),
+                children: _mapEntriesToCovers(section, firstTopic, index),
               ),
               subsections: (section) => _BriefSection(
                 title: section.title,
                 backgroundColor: section.backgroundColor,
-                children: _mapSubsectionsToWidgets(section, firstTopic, index, snackbarController),
+                children: _mapSubsectionsToWidgets(section, firstTopic, index),
               ),
               unknown: (_) => const SizedBox.shrink(),
             ),
@@ -356,7 +352,6 @@ class _IdleContent extends HookWidget {
     BriefSectionWithEntries section,
     BriefEntry? firstTopic,
     int index,
-    SnackbarController snackbarController,
   ) sync* {
     final startingIndex = _calculateStartingIndexForSection(index);
 
@@ -370,7 +365,6 @@ class _IdleContent extends HookWidget {
       yield BriefEntryCover(
         briefEntry: entry,
         briefId: brief.id,
-        snackbarController: snackbarController,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
         onVisibilityChanged: (visibility) {
           if (entry == firstTopic && visibility.visibleFraction == 1) {
@@ -392,7 +386,6 @@ class _IdleContent extends HookWidget {
     BriefSectionWithSubsections section,
     BriefEntry? firstTopic,
     int sectionIndex,
-    SnackbarController snackbarController,
   ) sync* {
     for (int i = 0; i < section.subsections.length; i++) {
       final subsection = section.subsections[i];
@@ -405,7 +398,6 @@ class _IdleContent extends HookWidget {
           firstTopic,
           sectionIndex,
           i,
-          snackbarController,
         ),
       );
     }
@@ -417,7 +409,6 @@ class _IdleContent extends HookWidget {
     BriefEntry? firstTopic,
     int sectionIndex,
     int subsectionIndex,
-    SnackbarController snackbarController,
   ) sync* {
     final startingIndexWithoutSubsections = _calculateStartingIndexForSection(sectionIndex, subsectionIndex);
     final startingIndex = startingIndexWithoutSubsections +
@@ -434,7 +425,6 @@ class _IdleContent extends HookWidget {
       yield BriefEntryCover(
         briefEntry: entry,
         briefId: brief.id,
-        snackbarController: snackbarController,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
         onVisibilityChanged: (visibility) {
           if (entry == firstTopic) {

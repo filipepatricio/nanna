@@ -6,19 +6,16 @@ import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 
 class ArticleMetadataRow extends StatelessWidget {
   const ArticleMetadataRow({
     required this.article,
-    required this.snackbarController,
     this.onBookmarkTap,
     super.key,
   });
 
   final MediaItemArticle article;
-  final SnackbarController snackbarController;
   final VoidCallback? onBookmarkTap;
 
   @override
@@ -48,13 +45,11 @@ class ArticleMetadataRow extends StatelessWidget {
           children: [
             ShareArticleButton(
               article: article,
-              snackbarController: snackbarController,
               backgroundColor: AppColors.transparent,
             ),
             const SizedBox(width: AppDimens.s),
             BookmarkButton.article(
               article: article,
-              snackbarController: snackbarController,
               onTap: onBookmarkTap,
             ),
             if (article.hasAudioVersion) ...[

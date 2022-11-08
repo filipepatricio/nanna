@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,7 +13,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class RelatedContent extends HookWidget {
   const RelatedContent({
     required this.relatedContentItems,
-    required this.snackbarController,
     this.topicId,
     this.briefId,
     this.onItemTap,
@@ -22,7 +20,6 @@ class RelatedContent extends HookWidget {
   }) : super(key: key);
 
   final List<CategoryItem> relatedContentItems;
-  final SnackbarController snackbarController;
   final String? briefId;
   final String? topicId;
   final Function(CategoryItem)? onItemTap;
@@ -74,7 +71,6 @@ class RelatedContent extends HookWidget {
                                 briefId: briefId,
                                 topicId: topicId,
                                 width: tileWidth,
-                                snackbarController: snackbarController,
                               ),
                             ) ??
                             const SizedBox.shrink(),
@@ -83,7 +79,6 @@ class RelatedContent extends HookWidget {
                           topic: topic.topicPreview,
                           width: tileWidth,
                           briefId: briefId,
-                          snackbarController: snackbarController,
                         ),
                       ) ??
                       const SizedBox.shrink();
@@ -104,7 +99,6 @@ class _Article extends StatelessWidget {
     required this.article,
     required this.width,
     required this.onItemTap,
-    required this.snackbarController,
     this.briefId,
     this.topicId,
     Key? key,
@@ -115,7 +109,6 @@ class _Article extends StatelessWidget {
   final String? topicId;
   final double width;
   final VoidCallback onItemTap;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +116,6 @@ class _Article extends StatelessWidget {
       width: width,
       child: ArticleCover.small(
         article: article,
-        snackbarController: snackbarController,
         onTap: () {
           onItemTap();
           context.navigateToArticle(
@@ -142,7 +134,6 @@ class _Topic extends StatelessWidget {
     required this.topic,
     required this.width,
     required this.onItemTap,
-    required this.snackbarController,
     this.briefId,
     Key? key,
   }) : super(key: key);
@@ -151,7 +142,6 @@ class _Topic extends StatelessWidget {
   final String? briefId;
   final double width;
   final VoidCallback onItemTap;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +156,6 @@ class _Topic extends StatelessWidget {
             briefId: briefId,
           );
         },
-        snackbarController: snackbarController,
       ),
     );
   }

@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +17,12 @@ class TopicMediaItemsList extends HookWidget {
     required this.topic,
     required this.cubit,
     required this.eventController,
-    required this.snackbarController,
     this.mediaItemKey,
   });
 
   final Topic topic;
   final TopicPageCubit cubit;
   final GeneralEventTrackingController eventController;
-  final SnackbarController snackbarController;
   final GlobalKey? mediaItemKey;
 
   @override
@@ -59,7 +56,6 @@ class TopicMediaItemsList extends HookWidget {
                       mediaItemKey: index == 0 ? mediaItemKey : null,
                       entryStyle: entry.style,
                       article: item,
-                      snackbarController: snackbarController,
                       onTap: () => _navigateToArticle(context, index),
                     ),
                   ),
@@ -99,7 +95,6 @@ class _ArticleItemView extends HookWidget {
     required this.onTap,
     required this.article,
     required this.entryStyle,
-    required this.snackbarController,
     this.mediaItemKey,
     Key? key,
   }) : super(key: key);
@@ -107,7 +102,6 @@ class _ArticleItemView extends HookWidget {
   final VoidCallback onTap;
   final MediaItemArticle article;
   final EntryStyle entryStyle;
-  final SnackbarController snackbarController;
   final GlobalKey? mediaItemKey;
 
   @override
@@ -116,7 +110,6 @@ class _ArticleItemView extends HookWidget {
       entryStyle: entryStyle,
       article: article,
       mediaItemKey: mediaItemKey,
-      snackbarController: snackbarController,
       onTap: onTap,
     );
   }
@@ -128,14 +121,12 @@ class _ArticleCover extends StatelessWidget {
     required this.article,
     required this.mediaItemKey,
     required this.onTap,
-    required this.snackbarController,
   });
 
   final EntryStyle entryStyle;
   final MediaItemArticle article;
   final GlobalKey? mediaItemKey;
   final VoidCallback onTap;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +135,6 @@ class _ArticleCover extends StatelessWidget {
         return ArticleCover.large(
           article: article,
           onTap: onTap,
-          snackbarController: snackbarController,
           showNote: false,
           showRecommendedBy: false,
           key: mediaItemKey,
@@ -153,7 +143,6 @@ class _ArticleCover extends StatelessWidget {
         return ArticleCover.large(
           article: article,
           onTap: onTap,
-          snackbarController: snackbarController,
           showNote: false,
           showRecommendedBy: false,
           key: mediaItemKey,

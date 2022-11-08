@@ -4,13 +4,11 @@ class _ArticleCoverSmall extends ArticleCover {
   const _ArticleCoverSmall({
     required this.onTap,
     required this.article,
-    required this.snackbarController,
     Key? key,
   }) : super._(key: key);
 
   final VoidCallback? onTap;
   final MediaItemArticle article;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,6 @@ class _ArticleCoverSmall extends ArticleCover {
             ),
             _ArticleCoverSmallContent(
               article: article,
-              snackbarController: snackbarController,
             ),
           ],
         ),
@@ -41,12 +38,10 @@ class _ArticleCoverSmall extends ArticleCover {
 class _ArticleCoverSmallContent extends StatelessWidget {
   const _ArticleCoverSmallContent({
     required this.article,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +87,6 @@ class _ArticleCoverSmallContent extends StatelessWidget {
             const Spacer(),
             BookmarkButton.article(
               article: article,
-              snackbarController: snackbarController,
             ),
           ],
         ),

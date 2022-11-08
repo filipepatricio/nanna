@@ -14,7 +14,6 @@ class SettingsMainPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsMainCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
 
     useEffect(
       () {
@@ -30,11 +29,10 @@ class SettingsMainPage extends HookWidget {
         title: LocaleKeys.settings_settings.tr(),
       ),
       body: SnackbarParentView(
-        controller: snackbarController,
+        audioPlayerResponsive: true,
         child: state.maybeWhen(
           idle: (useSubscriptions) => SettingsMainBody(
             cubit: cubit,
-            snackbarController: snackbarController,
             useSubscriptions: useSubscriptions,
           ),
           loading: () => const Loader(),

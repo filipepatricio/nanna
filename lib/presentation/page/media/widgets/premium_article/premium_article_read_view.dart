@@ -13,7 +13,6 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -21,14 +20,12 @@ class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.cubit,
     required this.mainController,
-    required this.snackbarController,
     required this.onAudioBannerTap,
     Key? key,
   }) : super(key: key);
 
   final PremiumArticleViewCubit cubit;
   final ScrollController mainController;
-  final SnackbarController snackbarController;
   final VoidCallback onAudioBannerTap;
 
   final GlobalKey _articleContentKey = GlobalKey();
@@ -98,21 +95,20 @@ class PremiumArticleReadView extends HookWidget {
                         article: data.article,
                         articleHeaderKey: _articleHeaderKey,
                         articleContentKey: _articleContentKey,
-                        snackbarController: snackbarController,
                       ),
                     ),
                     if (data.otherTopicItems.isNotEmpty)
                       SliverToBoxAdapter(
                         child: ArticleMoreFromSection(
                           title: LocaleKeys.article_moreFromTopic.tr(args: [cubit.topicTitle]),
-                          items: data.otherTopicItems.buildWidgets(context, cubit, snackbarController),
+                          items: data.otherTopicItems.buildWidgets(context, cubit),
                         ),
                       ),
                     if (data.moreFromBriefItems.isNotEmpty)
                       SliverToBoxAdapter(
                         child: ArticleMoreFromSection(
                           title: LocaleKeys.article_otherBriefs.tr(),
-                          items: data.moreFromBriefItems.buildWidgets(context, cubit, snackbarController),
+                          items: data.moreFromBriefItems.buildWidgets(context, cubit),
                         ),
                       ),
                     if (data.relatedContentItems.isNotEmpty || data.featuredCategories.isNotEmpty)
@@ -125,7 +121,6 @@ class PremiumArticleReadView extends HookWidget {
                           relatedContentItems: data.relatedContentItems,
                           onRelatedContentItemTap: cubit.onRelatedContentItemTap,
                           onRelatedCategoryTap: cubit.onRelatedCategoryTap,
-                          snackbarController: snackbarController,
                         ),
                       ),
                     SliverToBoxAdapter(
@@ -223,13 +218,11 @@ extension on List<MediaItem> {
   List<Widget> buildWidgets(
     BuildContext context,
     PremiumArticleViewCubit cubit,
-    SnackbarController snackbarController,
   ) =>
       map<Widget>(
         (mediaItem) => mediaItem.map(
           article: (mediaItemArticle) => MoreFromSectionListItem.article(
             article: mediaItemArticle,
-            snackbarController: snackbarController,
             onItemTap: () {
               cubit.onOtherTopicItemTap(mediaItem);
               context.navigateToArticle(
@@ -248,14 +241,12 @@ extension on List<BriefEntryItem> {
   List<Widget> buildWidgets(
     BuildContext context,
     PremiumArticleViewCubit cubit,
-    SnackbarController snackbarController,
   ) =>
       map<Widget>(
         (briefEntryItem) => briefEntryItem.map(
           article: (briefItemArticle) => briefItemArticle.article.map(
             article: (mediaItemArticle) => MoreFromSectionListItem.article(
               article: mediaItemArticle,
-              snackbarController: snackbarController,
               onItemTap: () {
                 cubit.onMoreFromBriefItemTap(briefEntryItem);
                 context.navigateToArticle(
@@ -269,7 +260,6 @@ extension on List<BriefEntryItem> {
           ),
           topicPreview: (briefItemTopic) => MoreFromSectionListItem.topic(
             topic: briefItemTopic.topicPreview,
-            snackbarController: snackbarController,
             onItemTap: () {
               cubit.onMoreFromBriefItemTap(briefEntryItem);
               context.navigateToTopic(
