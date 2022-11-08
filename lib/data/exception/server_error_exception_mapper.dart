@@ -7,12 +7,15 @@ class ServerErrorExceptionMapper extends ExceptionMapper {
   bool isFitting(Object original) {
     if (original is OperationException) {
       final linkException = original.linkException;
-      return linkException is FormatException && (linkException as FormatException).message.contains('<html>');
+      if (linkException is ResponseFormatException) {
+        final originalException = linkException.originalException;
+        return originalException is FormatException && originalException.message.contains('<html>');
+      }
     }
 
     return false;
   }
 
   @override
-  Object map(Object original) => ServerErrorException();
+  Object map(Object original) => ServerErrorException(original);
 }

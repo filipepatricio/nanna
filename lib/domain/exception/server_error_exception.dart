@@ -1,1 +1,5 @@
-class ServerErrorException implements Exception {}
+class ServerErrorException implements Exception {
+  ServerErrorException(this.originalException);
+
+  final Object originalException;
+}
