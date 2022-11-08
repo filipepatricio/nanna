@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/subscription/settings_subscription_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_benefits.dart';

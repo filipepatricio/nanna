@@ -93,37 +93,44 @@
   },
   "subscription": {
     "title": {
-      "trial": "Your free trial with informed",
-      "standard": "Subscribe for _unlimited_ news access",
+      "trial": "Subscribe now",
+      "standard": "Subscribe to Premium",
       "article": "Subscribe for _unlimited_ access"
     },
     "benefit": {
       "access": "Unlimited news access",
-      "reporting": "Collection of thoughtful reporting",
-      "fresh": "Fresh news every day"
+      "fresh": "Fresh curations every day",
+      "read": "Read or listen to articles"
     },
     "restorePurchase": "Restore purchase",
-    "startYourTrial": "Now, start your trial to get full access today.",
-    "receiveAnEmail": "In {}: receive an email reminder that your free trial is ending.",
-    "youllBeCharged": "In {}: you’ll be charged for informed.",
+    "startYourTrial": "Now: start your free trial of Premium",
+    "receiveAnEmail": "In {}: get an email reminder that your trial ends soon",
+    "youllBeCharged": "In {}: you’ll be charged for informed",
     "viewAllPlansAction": "View all plans",
     "chargeInfo": {
-      "trial": "You will be charged only after the {} trial period.\nCancel anytime.",
+      "trial": "Cancel anytime during your {} trial and you won't be charged.",
       "standard": "Recurring billing · Cancel anytime"
     },
     "off": "{}% off",
     "subscribe": "Subscribe",
-    "description": "Read or listen to all of our curated articles. Cancel anytime during your trial.",
+    "description": "Read or listen to all of our curated articles.\nCancel anytime during your trial.",
     "planInfo": {
       "trial": "Free {} trial, then {} / year",
       "standard": "{} / year"
     },
-    "tryForFreeAction": "Try For Free",
+    "tryForFreeAction": "Try for free",
     "withXDaysFreeTrial": "with {} free trial",
-    "thanksForStartingTrial": "Thanks for starting your\n _free trial_",
-    "thanksForSubscribing": "Thanks for subscribing,\n you’re _awesome_",
-    "everythingIsReady": "Everything is ready to start enjoying informed unlimited access.",
-    "startReading": "Start Reading",
+    "success": {
+      "title": {
+        "trial": "You _free trial_ starts now",
+        "standard": "_Thank you_ for subscribing"
+      },
+      "body": {
+        "trial": "Thanks for subscribing and enjoy unlimited access to informed.",
+        "standard": "Enjoy unlimited access to informed."
+      }
+    },
+    "startReading": "Start reading",
     "membership": "Membership",
     "planIncludes": "Plan includes",
     "renewalDate": "Renewal date",
@@ -141,12 +148,12 @@
       "title": "Change _your plan_",
       "footer": "Your new plan starts on {}",
       "confirm": "Confirm change",
-      "currentPlan": "Current Plan",
-      "upcomingPlan": "Upcoming Plan"
+      "currentPlan": "Current plan",
+      "upcomingPlan": "Upcoming plan"
     },
     "settings": {
       "endsIn": "Your free trial ends in {} days",
-      "freeThrough": "Free through {}, then you'll be charged {} / {}. Cancel anytime"
+      "freeThrough": "On {}, you'll be charged {}. Cancel anytime before your trial ends"
     }
   },
   "settings": {
