@@ -77,7 +77,7 @@ void main() {
         find.byText(
           LocaleKeys.subscription_chargeInfo_trial.tr(
             args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.first.trialDays),
+              LocaleKeys.date_daySuffix.tr(args: ['${TestData.subscriptionPlansWithTrial.first.trialDays}']),
             ],
           ),
           skipOffstage: false,
@@ -90,7 +90,7 @@ void main() {
         find.byText(
           LocaleKeys.subscription_chargeInfo_trial.tr(
             args: [
-              LocaleKeys.date_day.plural(TestData.subscriptionPlansWithTrial.last.trialDays),
+              LocaleKeys.date_daySuffix.tr(args: ['${TestData.subscriptionPlansWithTrial.last.trialDays}']),
             ],
           ),
           skipOffstage: false,

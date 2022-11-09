@@ -39,15 +39,16 @@ class SubscriptionSuccessPage extends HookWidget {
             const SizedBox(height: AppDimens.l),
             InformedMarkdownBody(
               markdown: (trialMode
-                      ? LocaleKeys.subscription_thanksForStartingTrial
-                      : LocaleKeys.subscription_thanksForSubscribing)
+                      ? LocaleKeys.subscription_success_title_trial
+                      : LocaleKeys.subscription_success_title_standard)
                   .tr(),
               textAlignment: TextAlign.center,
               baseTextStyle: AppTypography.h1Medium,
             ),
             const SizedBox(height: AppDimens.s),
             Text(
-              LocaleKeys.subscription_everythingIsReady.tr(),
+              (trialMode ? LocaleKeys.subscription_success_body_trial : LocaleKeys.subscription_success_body_standard)
+                  .tr(),
               textAlign: TextAlign.center,
               style: AppTypography.b2Medium,
             ),

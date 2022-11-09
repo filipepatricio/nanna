@@ -57,14 +57,16 @@ class SubscriptionLinksFooter extends StatelessWidget {
       ],
     );
   }
+}
 
-  String _getChargeInfoText(SubscriptionPlan plan) {
-    if (plan.hasTrial) {
-      return LocaleKeys.subscription_chargeInfo_trial.tr(
-        args: [LocaleKeys.date_day.plural(subscriptionPlan.trialDays)],
-      );
-    } else {
-      return LocaleKeys.subscription_chargeInfo_standard.tr();
-    }
+String _getChargeInfoText(SubscriptionPlan plan) {
+  if (plan.hasTrial) {
+    return LocaleKeys.subscription_chargeInfo_trial.tr(
+      args: [
+        LocaleKeys.date_daySuffix.tr(args: ['${plan.trialDays}']),
+      ],
+    );
+  } else {
+    return LocaleKeys.subscription_chargeInfo_standard.tr();
   }
 }

@@ -43,7 +43,6 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
                     clock.now().add(Duration(days: subscription.remainingTrialDays)),
                   ),
                   subscription.plan.priceString,
-                  subscription.plan.type.period,
                 ],
               ),
               style: AppTypography.metadata1Medium.copyWith(color: AppColors.textGrey),
@@ -65,16 +64,5 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-extension on SubscriptionPlanType {
-  String get period {
-    switch (this) {
-      case SubscriptionPlanType.annual:
-        return LocaleKeys.date_year.tr();
-      case SubscriptionPlanType.monthly:
-        return LocaleKeys.date_month.tr();
-    }
   }
 }

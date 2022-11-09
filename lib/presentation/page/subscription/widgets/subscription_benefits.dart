@@ -17,8 +17,8 @@ class SubscriptionBenefits extends StatelessWidget {
       children: [
         ...[
           _SubscriptionBenefitLine(text: LocaleKeys.subscription_benefit_access.tr()),
-          _SubscriptionBenefitLine(text: LocaleKeys.subscription_benefit_reporting.tr()),
           _SubscriptionBenefitLine(text: LocaleKeys.subscription_benefit_fresh.tr()),
+          _SubscriptionBenefitLine(text: LocaleKeys.subscription_benefit_read.tr()),
         ].withDividers(
           divider: const SizedBox(height: AppDimens.m),
         )
