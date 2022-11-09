@@ -34,6 +34,7 @@ class PublisherLogo extends HookWidget {
         dimension: dimension,
         key: key,
       );
+
   final Publisher publisher;
   final informed.Image? image;
   final double dimension;
