@@ -64,7 +64,7 @@ class _TabBarIcon extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(bottom: AppDimens.s),
+      padding: const EdgeInsets.only(bottom: AppDimens.xxs),
       child: SvgPicture.asset(iconName, color: isActive ? AppColors.charcoal : AppColors.neutralGrey),
     );
   }

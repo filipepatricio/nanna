@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/tab_bar_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/tab_bar/widgets/tab_bar_icon.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -67,6 +69,14 @@ class _TabBar extends StatelessWidget {
       transitionOnUserGestures: true,
       child: _InformedAppBarShadow(
         child: BottomNavigationBar(
+          iconSize: AppDimens.l,
+          unselectedLabelStyle: AppTypography.metadata1Regular.copyWith(
+            height: 1.5,
+            color: AppColors.textGrey,
+          ),
+          selectedLabelStyle: AppTypography.metadata1Regular.copyWith(
+            height: 1.5,
+          ),
           items: [
             ...MainTab.values.map(
               (tab) => BottomNavigationBarItem(
