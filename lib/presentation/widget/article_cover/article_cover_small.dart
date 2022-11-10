@@ -53,20 +53,9 @@ class _ArticleCoverSmallContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: AppDimens.m),
-        SizedBox(
-          height: AppDimens.m,
-          child: ArticleDottedInfo(
-            article: article,
-            isLight: false,
-            showLogo: true,
-            showDate: false,
-            showReadTime: false,
-            color: AppColors.textGrey,
-            textStyle: AppTypography.caption1Medium.copyWith(height: 1.1),
-          ),
-        ),
-        const SizedBox(height: AppDimens.m),
+        const SizedBox(height: AppDimens.s),
+        PublisherRow(article: article),
+        const SizedBox(height: AppDimens.s),
         SizedBox(
           height: titleHeight,
           child: InformedMarkdownBody(

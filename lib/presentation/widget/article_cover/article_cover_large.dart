@@ -41,7 +41,7 @@ class _ArticleCoverLarge extends ArticleCover {
             ),
           ],
           const SizedBox(height: AppDimens.m),
-          PublisherRow(publisher: article.publisher),
+          PublisherRow(article: article),
           const SizedBox(height: AppDimens.s),
           Text(
             article.strippedTitle,

@@ -47,7 +47,7 @@ class _ArticleCoverList extends ArticleCover {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    PublisherRow(publisher: article.publisher),
+                    PublisherRow(article: article),
                     const SizedBox(height: AppDimens.xs),
                     Text(
                       article.strippedTitle,

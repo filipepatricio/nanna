@@ -1,29 +1,42 @@
-import 'package:better_informed_mobile/domain/article/data/publisher.dart';
+import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class PublisherRow extends StatelessWidget {
   const PublisherRow({
-    required this.publisher,
+    required this.article,
     super.key,
   });
 
-  final Publisher publisher;
+  final MediaItemArticle article;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        PublisherLogo.dark(
-          publisher: publisher,
-          dimension: AppDimens.ml,
-        ),
+        if (article.type == ArticleType.premium)
+          PublisherLogo.dark(
+            publisher: article.publisher,
+            dimension: AppDimens.ml,
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.only(right: AppDimens.s),
+            child: SvgPicture.asset(
+              AppVectorGraphics.arrowExternal,
+              width: AppDimens.l,
+              height: AppDimens.l,
+            ),
+          ),
         Expanded(
           child: Text(
-            publisher.name,
+            article.publisher.name,
             maxLines: 1,
             style: AppTypography.b3Regular.copyWith(
               color: AppColors.textGrey,
