@@ -26,7 +26,7 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
               icon: AppVectorGraphics.informedLogoGreen,
               title: LocaleKeys.subscription_premium.tr(),
               subtitle: null,
-              onTap: null,
+              onTap: () => context.pushRoute(const SubscriptionPageRoute()),
             ),
             const SizedBox(height: AppDimens.xl),
             Text(
