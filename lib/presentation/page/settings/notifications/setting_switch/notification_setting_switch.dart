@@ -6,9 +6,9 @@ import 'package:better_informed_mobile/presentation/page/settings/notifications/
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -47,7 +47,6 @@ class NotificationSettingSwitch extends HookWidget {
   const NotificationSettingSwitch({
     required this.channel,
     required this.notificationType,
-    required this.snackbarController,
     required this.type,
     Key? key,
   }) : super(key: key);
@@ -55,30 +54,25 @@ class NotificationSettingSwitch extends HookWidget {
   factory NotificationSettingSwitch.roundedGreen({
     required NotificationChannel channel,
     required NotificationType notificationType,
-    required SnackbarController snackbarController,
   }) =>
       NotificationSettingSwitch(
         channel: channel,
         notificationType: notificationType,
-        snackbarController: snackbarController,
         type: NotificationSwitchWidgetType.roundedGreen,
       );
 
   factory NotificationSettingSwitch.squareBlack({
     required NotificationChannel channel,
     required NotificationType notificationType,
-    required SnackbarController snackbarController,
   }) =>
       NotificationSettingSwitch(
         channel: channel,
         notificationType: notificationType,
-        snackbarController: snackbarController,
         type: NotificationSwitchWidgetType.squareBlack,
       );
 
   final NotificationChannel channel;
   final NotificationType notificationType;
-  final SnackbarController snackbarController;
   final NotificationSwitchWidgetType type;
 
   @override
@@ -86,6 +80,7 @@ class NotificationSettingSwitch extends HookWidget {
     final cubit = useCubit<NotificationSettingSwitchCubit>();
     final state = useCubitBuilder(cubit);
     final key = useMemoized(() => GlobalKey());
+    final snackbarController = useSnackbarController();
 
     useEffect(
       () {

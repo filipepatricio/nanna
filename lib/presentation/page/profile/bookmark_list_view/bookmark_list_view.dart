@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
@@ -18,7 +19,6 @@ import 'package:better_informed_mobile/presentation/widget/informed_animated_swi
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -55,7 +55,7 @@ class BookmarkListView extends HookWidget {
     );
     final state = useCubitBuilder(cubit);
 
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
+    final snackbarController = useSnackbarController();
 
     useCubitListener<BookmarkListViewCubit, BookmarkListViewState>(cubit, (cubit, state, context) {
       state.mapOrNull(
@@ -88,51 +88,45 @@ class BookmarkListView extends HookWidget {
         snackbarController.discardMessage();
       },
       key: const Key('bookmark_list'),
-      child: SnackbarParentView(
-        controller: snackbarController,
-        child: NextPageLoadExecutor(
-          enabled: state.shouldListen,
-          onNextPageLoad: cubit.loadNextPage,
-          scrollController: scrollController,
-          child: InformedAnimatedSwitcher(
-            child: state.maybeMap(
-              initial: (_) => const SizedBox.shrink(),
-              error: (_) => Center(
-                child: GeneralErrorView(
-                  title: LocaleKeys.common_error_title.tr(),
-                  content: LocaleKeys.common_error_body.tr(),
-                  retryCallback: cubit.loadNextPage,
-                ),
+      child: NextPageLoadExecutor(
+        enabled: state.shouldListen,
+        onNextPageLoad: cubit.loadNextPage,
+        scrollController: scrollController,
+        child: InformedAnimatedSwitcher(
+          child: state.maybeMap(
+            initial: (_) => const SizedBox.shrink(),
+            error: (_) => Center(
+              child: GeneralErrorView(
+                title: LocaleKeys.common_error_title.tr(),
+                content: LocaleKeys.common_error_body.tr(),
+                retryCallback: cubit.loadNextPage,
               ),
-              loading: (_) => const BookmarkLoadingView(),
-              empty: (_) => _BookmarkEmptyView(filter: filter),
-              idle: (state) => _Idle(
-                cubit: cubit,
-                bookmarks: state.bookmarks,
-                sortConfig: sortConfig,
-                scrollController: scrollController,
-                onSortConfigChanged: onSortConfigChanged,
-                snackbarController: snackbarController,
-              ),
-              loadMore: (state) => _Idle(
-                cubit: cubit,
-                bookmarks: state.bookmarks,
-                sortConfig: sortConfig,
-                scrollController: scrollController,
-                onSortConfigChanged: onSortConfigChanged,
-                snackbarController: snackbarController,
-                withLoader: true,
-              ),
-              allLoaded: (state) => _Idle(
-                cubit: cubit,
-                bookmarks: state.bookmarks,
-                sortConfig: sortConfig,
-                scrollController: scrollController,
-                onSortConfigChanged: onSortConfigChanged,
-                snackbarController: snackbarController,
-              ),
-              orElse: () => const SizedBox.shrink(),
             ),
+            loading: (_) => const BookmarkLoadingView(),
+            empty: (_) => _BookmarkEmptyView(filter: filter),
+            idle: (state) => _Idle(
+              cubit: cubit,
+              bookmarks: state.bookmarks,
+              sortConfig: sortConfig,
+              scrollController: scrollController,
+              onSortConfigChanged: onSortConfigChanged,
+            ),
+            loadMore: (state) => _Idle(
+              cubit: cubit,
+              bookmarks: state.bookmarks,
+              sortConfig: sortConfig,
+              scrollController: scrollController,
+              onSortConfigChanged: onSortConfigChanged,
+              withLoader: true,
+            ),
+            allLoaded: (state) => _Idle(
+              cubit: cubit,
+              bookmarks: state.bookmarks,
+              sortConfig: sortConfig,
+              scrollController: scrollController,
+              onSortConfigChanged: onSortConfigChanged,
+            ),
+            orElse: () => const SizedBox.shrink(),
           ),
         ),
       ),
@@ -147,7 +141,6 @@ class _Idle extends StatelessWidget {
     required this.sortConfig,
     required this.scrollController,
     required this.onSortConfigChanged,
-    required this.snackbarController,
     this.withLoader = false,
     Key? key,
   }) : super(key: key);
@@ -158,7 +151,6 @@ class _Idle extends StatelessWidget {
   final ScrollController scrollController;
   final bool withLoader;
   final OnSortConfigChanged onSortConfigChanged;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +165,6 @@ class _Idle extends StatelessWidget {
               onRemoveBookmarkPressed: (bookmark) {
                 cubit.removeBookmark(bookmark);
               },
-              snackbarController: snackbarController,
               cubit: cubit,
             ),
             childCount: bookmarks.length,

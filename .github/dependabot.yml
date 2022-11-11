@@ -7,28 +7,17 @@ updates:
     schedule:
       # Check for updates to GitHub Actions every week
       interval: 'weekly'
+      day: 'monday'
+      time: '07:00'
     target-branch: 'develop'
     labels:
       - 'merge'
       - 'dependencies'
     commit-message:
       prefix: 'feat'
-      include: 'scope'
     pull-request-branch-name:
       separator: '-'
     open-pull-requests-limit: 1
-
-  - package-ecosystem: 'pub'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
-    target-branch: 'develop'
-    labels:
-      - 'merge'
-      - 'dependencies'
-    commit-message:
-      prefix: 'feat'
-      include: 'scope'
-    pull-request-branch-name:
-      separator: '-'
-    open-pull-requests-limit: 1
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-patch']

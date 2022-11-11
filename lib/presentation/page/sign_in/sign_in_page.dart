@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_linkedin_button.dart';
@@ -111,7 +112,6 @@ class SignInPage extends HookWidget {
                   isEmailValid: state.emailCorrect,
                   keyboardVisible: visible,
                   emailController: emailController,
-                  snackbarController: snackbarController,
                 ),
                 orElse: () => const SizedBox.shrink(),
               ),

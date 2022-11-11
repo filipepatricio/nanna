@@ -3,7 +3,6 @@ part of 'article_cover.dart';
 class _ArticleCoverLarge extends ArticleCover {
   const _ArticleCoverLarge({
     required this.article,
-    required this.snackbarController,
     required this.onTap,
     required this.showNote,
     required this.showRecommendedBy,
@@ -12,7 +11,6 @@ class _ArticleCoverLarge extends ArticleCover {
 
   final MediaItemArticle article;
   final VoidCallback onTap;
-  final SnackbarController snackbarController;
   final bool showNote;
   final bool showRecommendedBy;
 
@@ -43,7 +41,7 @@ class _ArticleCoverLarge extends ArticleCover {
             ),
           ],
           const SizedBox(height: AppDimens.m),
-          PublisherRow(publisher: article.publisher),
+          PublisherRow(article: article),
           const SizedBox(height: AppDimens.s),
           Text(
             article.strippedTitle,
@@ -55,7 +53,6 @@ class _ArticleCoverLarge extends ArticleCover {
           const SizedBox(height: AppDimens.m),
           ArticleMetadataRow(
             article: article,
-            snackbarController: snackbarController,
           ),
         ],
       ),

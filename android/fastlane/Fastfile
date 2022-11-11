@@ -16,30 +16,32 @@
 default_platform(:android)
 
 platform :android do
-    desc "Submit to internal track in Google Play Store"
+    desc "Submit to closed testing track in Google Play Store"
     lane :internal_play_store do
       upload_to_play_store(
-        track: 'internal',
+        track: 'alpha',
         json_key: "../google_play_credentials.json",
         version_code: flutter_version()["version_code"],
         aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab',
         skip_upload_screenshots: true,
-        skip_upload_images: true,
-        release_status: 'draft'
+        skip_upload_changelogs: true,
+        skip_upload_metadata: true,
+        skip_upload_images: true
       )
     end
 
-    desc "Submit to internal track in Google Play Store - staging"
+    desc "Submit to closed testing track in Google Play Store - staging"
     lane :internal_play_store_staging do
       upload_to_play_store(
-        track: 'internal',
+        track: 'alpha',
         package_name: 'so.informed.staging',
         json_key: "../google_play_credentials.json",
         version_code: flutter_version()["version_code"],
         aab: '../build/app/outputs/bundle/stageRelease/app-stage-release.aab',
         skip_upload_screenshots: true,
-        skip_upload_images: true,
-        release_status: 'draft'
+        skip_upload_changelogs: true,
+        skip_upload_metadata: true,
+        skip_upload_images: true
       )
     end
 

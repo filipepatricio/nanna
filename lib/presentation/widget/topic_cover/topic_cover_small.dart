@@ -4,13 +4,11 @@ class _TopicCoverSmall extends StatelessWidget {
   const _TopicCoverSmall({
     required this.topic,
     required this.onTap,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
   final VoidCallback? onTap;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +55,6 @@ class _TopicCoverSmall extends StatelessWidget {
             const SizedBox(height: AppDimens.s),
             _TopicCoverBar.small(
               topic: topic,
-              snackbarController: snackbarController,
             ),
           ],
         ),

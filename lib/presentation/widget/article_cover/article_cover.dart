@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/article/article_dotted_info.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_metadata_row.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_no_image_view.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label.dart';
@@ -13,7 +12,6 @@ import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary
 import 'package:better_informed_mobile/presentation/widget/curation/curation_info_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_row.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,7 +30,6 @@ abstract class ArticleCover extends HookWidget {
 
   factory ArticleCover.large({
     required MediaItemArticle article,
-    required SnackbarController snackbarController,
     required VoidCallback onTap,
     bool showNote = false,
     bool showRecommendedBy = false,
@@ -40,7 +37,6 @@ abstract class ArticleCover extends HookWidget {
   }) {
     return _ArticleCoverLarge(
       article: article,
-      snackbarController: snackbarController,
       onTap: onTap,
       showNote: showNote,
       showRecommendedBy: showRecommendedBy,
@@ -50,13 +46,11 @@ abstract class ArticleCover extends HookWidget {
 
   factory ArticleCover.small({
     required MediaItemArticle article,
-    required SnackbarController snackbarController,
     required VoidCallback onTap,
     Key? key,
   }) {
     return _ArticleCoverSmall(
       article: article,
-      snackbarController: snackbarController,
       onTap: onTap,
       key: key,
     );
@@ -64,7 +58,6 @@ abstract class ArticleCover extends HookWidget {
 
   factory ArticleCover.list({
     required MediaItemArticle article,
-    required SnackbarController snackbarController,
     required VoidCallback onTap,
     bool showNote = false,
     bool showRecommendedBy = false,
@@ -73,7 +66,6 @@ abstract class ArticleCover extends HookWidget {
   }) {
     return _ArticleCoverList(
       article: article,
-      snackbarController: snackbarController,
       onTap: onTap,
       showNote: showNote,
       showRecommendedBy: showRecommendedBy,

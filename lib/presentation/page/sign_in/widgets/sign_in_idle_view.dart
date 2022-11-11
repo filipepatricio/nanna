@@ -6,14 +6,12 @@ class _SignInIdleView extends StatelessWidget {
     required this.keyboardVisible,
     required this.emailController,
     required this.cubit,
-    required this.snackbarController,
   });
 
   final bool isEmailValid;
   final bool keyboardVisible;
   final TextEditingController emailController;
   final SignInPageCubit cubit;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +89,7 @@ class _SignInIdleView extends StatelessWidget {
                 ),
                 const SizedBox(height: AppDimens.m),
               ] else ...[
-                _TermsPolicy(snackbarController: snackbarController),
+                const _TermsPolicy(),
                 const SizedBox(height: AppDimens.xl),
               ],
             ],

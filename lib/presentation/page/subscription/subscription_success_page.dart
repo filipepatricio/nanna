@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,15 +39,16 @@ class SubscriptionSuccessPage extends HookWidget {
             const SizedBox(height: AppDimens.l),
             InformedMarkdownBody(
               markdown: (trialMode
-                      ? LocaleKeys.subscription_thanksForStartingTrial
-                      : LocaleKeys.subscription_thanksForSubscribing)
+                      ? LocaleKeys.subscription_success_title_trial
+                      : LocaleKeys.subscription_success_title_standard)
                   .tr(),
               textAlignment: TextAlign.center,
               baseTextStyle: AppTypography.h1Medium,
             ),
             const SizedBox(height: AppDimens.s),
             Text(
-              LocaleKeys.subscription_everythingIsReady.tr(),
+              (trialMode ? LocaleKeys.subscription_success_body_trial : LocaleKeys.subscription_success_body_standard)
+                  .tr(),
               textAlign: TextAlign.center,
               style: AppTypography.b2Medium,
             ),

@@ -46,7 +46,6 @@ import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt
 import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
 import 'package:better_informed_mobile/data/subscription/dto/active_subscription_dto.dart';
 import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
@@ -411,10 +410,9 @@ class MockDTO {
       _premiumArticleWithAudioEntry,
       _freeArticleEntry,
     ],
-    [
-      _summaryCardLong,
-      _summaryCardShort,
-    ],
+    '* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do onsectetur adipisci  elit, sed do nsectetur adipisci  elit, sed do\n'
+        '* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do onsectetur adipisci  elit, sed do nsectetur adipisci  elit, sed do\n'
+        '* Lorem ipsum dolor sit amet, consectetur adipisci  elit, sed do onsectetur adipisci  elit, sed do nsectetur adipisci  elit, sed do',
     false,
     category,
   );
@@ -899,14 +897,6 @@ class MockDTO {
 
   static final _articleImageCloudinary = ArticleImageDTO.cloudinary('topics/pizza');
 
-  static final _summaryCardLong = SummaryCardDTO(
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip.\n **Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.** Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip nostrud.',
-  );
-
-  static final _summaryCardShort = SummaryCardDTO(
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. **Ut enim ad minim quis nostrud exercitation ullamco laboris nisi ut aliquip.**',
-  );
-
   static final relax = RelaxDTO('0/24 articles read', _mockedPillIcon, callToAction, 'Time to get _informed_');
 
   static final callToAction = CallToActionDTO('More stories on', 'Explore');
@@ -1205,7 +1195,7 @@ extension on TopicDTO {
     TopicPublisherInformationDTO? publisherInformation,
     ImageDTO? heroImage,
     List<EntryDTO>? entries,
-    List<SummaryCardDTO>? summaryCards,
+    String? summary,
     bool? visited,
     CategoryDTO? category,
   }) {
@@ -1221,7 +1211,7 @@ extension on TopicDTO {
       publisherInformation ?? this.publisherInformation,
       heroImage ?? this.heroImage,
       entries ?? this.entries,
-      summaryCards ?? this.summaryCards,
+      summary ?? this.summary,
       visited ?? this.visited,
       category ?? this.category,
     );

@@ -4,7 +4,6 @@ class _ArticleCoverList extends ArticleCover {
   const _ArticleCoverList({
     required this.onTap,
     required this.article,
-    required this.snackbarController,
     required this.showNote,
     required this.showRecommendedBy,
     this.onBookmarkTap,
@@ -12,7 +11,6 @@ class _ArticleCoverList extends ArticleCover {
   }) : super._(key: key);
 
   final MediaItemArticle article;
-  final SnackbarController snackbarController;
   final bool showNote;
   final bool showRecommendedBy;
   final VoidCallback? onTap;
@@ -35,7 +33,7 @@ class _ArticleCoverList extends ArticleCover {
           if (article.shouldShowArticleCoverNote && showNote) ...[
             InformedMarkdownBody(
               markdown: article.note!,
-              baseTextStyle: AppTypography.b2Regular.copyWith(),
+              baseTextStyle: AppTypography.b2Regular,
             ),
             const SizedBox(height: AppDimens.s),
           ],
@@ -49,11 +47,11 @@ class _ArticleCoverList extends ArticleCover {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    PublisherRow(publisher: article.publisher),
+                    PublisherRow(article: article),
                     const SizedBox(height: AppDimens.xs),
-                    Text(
-                      article.strippedTitle,
-                      style: AppTypography.articleSmallTitle,
+                    InformedMarkdownBody(
+                      markdown: article.title,
+                      baseTextStyle: AppTypography.articleSmallTitle,
                       maxLines: 3,
                     ),
                   ],
@@ -71,7 +69,6 @@ class _ArticleCoverList extends ArticleCover {
           const SizedBox(height: AppDimens.sl),
           ArticleMetadataRow(
             article: article,
-            snackbarController: snackbarController,
             onBookmarkTap: onBookmarkTap,
           ),
         ],

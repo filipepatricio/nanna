@@ -129,7 +129,6 @@ class _TopicIdleView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final snackbarController = useMemoized(() => SnackbarController());
     final scrollController = useScrollController(keepScrollOffset: true);
     final isShowingTutorialToast = useState(false);
     final isScrolled = useValueNotifier(false);
@@ -172,7 +171,6 @@ class _TopicIdleView extends HookWidget {
     return ScrollsToTop(
       onScrollsToTop: (_) => scrollController.animateToStart(),
       child: SnackbarParentView(
-        controller: snackbarController,
         child: Stack(
           children: [
             CustomScrollView(
@@ -188,7 +186,6 @@ class _TopicIdleView extends HookWidget {
                   topic: topic,
                   cubit: cubit,
                   scrollController: scrollController,
-                  snackbarController: snackbarController,
                   mediaItemKey: cubit.mediaItemKey,
                 ),
               ],
@@ -201,7 +198,6 @@ class _TopicIdleView extends HookWidget {
                 topic: topic,
                 cubit: cubit,
                 isScrolled: isScrolled,
-                snackbarController: snackbarController,
               ),
             ),
             ValueListenableBuilder<bool>(

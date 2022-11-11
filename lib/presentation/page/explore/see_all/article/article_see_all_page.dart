@@ -39,7 +39,6 @@ class ArticleSeeAllPage extends HookWidget {
     final cubit = useCubit<ArticleSeeAllPageCubit>();
     final state = useCubitBuilder<ArticleSeeAllPageCubit, ArticleSeeAllPageState>(cubit);
     final pageStorageKey = useMemoized(() => PageStorageKey(areaId));
-    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -56,7 +55,6 @@ class ArticleSeeAllPage extends HookWidget {
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: title),
       body: SnackbarParentView(
-        controller: snackbarController,
         child: AudioPlayerBannerWrapper(
           layout: AudioPlayerBannerLayout.column,
           child: NextPageLoadExecutor(
@@ -71,7 +69,6 @@ class ArticleSeeAllPage extends HookWidget {
                 state: state,
                 scrollController: scrollController,
                 pageStorageKey: pageStorageKey,
-                snackbarController: snackbarController,
               ),
             ),
           ),
@@ -87,14 +84,12 @@ class _Body extends StatelessWidget {
     required this.state,
     required this.scrollController,
     required this.pageStorageKey,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final String title;
   final ArticleSeeAllPageState state;
   final ScrollController scrollController;
   final PageStorageKey pageStorageKey;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +100,6 @@ class _Body extends StatelessWidget {
         pageStorageKey: pageStorageKey,
         articles: state.articles,
         scrollController: scrollController,
-        snackbarController: snackbarController,
         withLoader: false,
       ),
       loadingMore: (state) => _ArticleGrid(
@@ -113,7 +107,6 @@ class _Body extends StatelessWidget {
         pageStorageKey: pageStorageKey,
         articles: state.articles,
         scrollController: scrollController,
-        snackbarController: snackbarController,
         withLoader: true,
       ),
       allLoaded: (state) => _ArticleGrid(
@@ -121,7 +114,6 @@ class _Body extends StatelessWidget {
         pageStorageKey: pageStorageKey,
         articles: state.articles,
         scrollController: scrollController,
-        snackbarController: snackbarController,
         withLoader: false,
       ),
       orElse: () => const SizedBox.shrink(),
@@ -136,7 +128,6 @@ class _ArticleGrid extends StatelessWidget {
     required this.articles,
     required this.scrollController,
     required this.withLoader,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final String title;
@@ -144,7 +135,6 @@ class _ArticleGrid extends StatelessWidget {
   final List<ArticleWithBackground> articles;
   final ScrollController scrollController;
   final bool withLoader;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +155,6 @@ class _ArticleGrid extends StatelessWidget {
               itemBuilder: (context, index) => _GridItem(
                 article: articles[index],
                 index: index,
-                snackbarController: snackbarController,
               ),
             ),
           ),
@@ -180,12 +169,10 @@ class _GridItem extends StatelessWidget {
   const _GridItem({
     required this.article,
     required this.index,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
   final ArticleWithBackground article;
   final int index;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -193,12 +180,10 @@ class _GridItem extends StatelessWidget {
       image: (data) => ArticleCover.small(
         article: article.article,
         onTap: () => context.navigateToArticle(article.article),
-        snackbarController: snackbarController,
       ),
       color: (data) => ArticleCover.small(
         article: article.article,
         onTap: () => context.navigateToArticle(article.article),
-        snackbarController: snackbarController,
       ),
     );
   }

@@ -9,12 +9,12 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -31,14 +31,12 @@ class BookmarkButton extends HookWidget {
     Color color = AppColors.charcoal,
     String? topicId,
     String? briefId,
-    SnackbarController? snackbarController,
     double? iconSize,
     VoidCallback? onTap,
     Key? key,
   }) : this._(
           BookmarkTypeData.article(article.slug, article.id, topicId, briefId),
           color: color,
-          snackbarController: snackbarController,
           iconSize: iconSize,
           onTap: onTap,
           key: key,
@@ -48,14 +46,12 @@ class BookmarkButton extends HookWidget {
     required TopicPreview topic,
     Color color = AppColors.charcoal,
     String? briefId,
-    SnackbarController? snackbarController,
     double? iconSize,
     VoidCallback? onTap,
     Key? key,
   }) : this._(
           BookmarkTypeData.topic(topic.slug, topic.id, briefId),
           color: color,
-          snackbarController: snackbarController,
           iconSize: iconSize,
           onTap: onTap,
           key: key,
@@ -64,7 +60,6 @@ class BookmarkButton extends HookWidget {
   const BookmarkButton._(
     this._data, {
     required this.color,
-    this.snackbarController,
     this.iconSize,
     this.onTap,
     Key? key,
@@ -72,7 +67,6 @@ class BookmarkButton extends HookWidget {
 
   final BookmarkTypeData _data;
   final Color color;
-  final SnackbarController? snackbarController;
   final double? iconSize;
   final VoidCallback? onTap;
 
@@ -83,13 +77,14 @@ class BookmarkButton extends HookWidget {
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: _animationDuration),
     );
+    final snackbarController = useSnackbarController();
 
     useCubitListener<BookmarkButtonCubit, BookmarkButtonState>(
       cubit,
       (cubit, state, context) {
         state.mapOrNull(
           bookmarkAdded: (_) {
-            snackbarController?.showMessage(
+            snackbarController.showMessage(
               SnackbarMessage.simple(
                 message: tr(LocaleKeys.bookmark_addBookmarkSuccess),
                 type: SnackbarMessageType.positive,
@@ -97,7 +92,7 @@ class BookmarkButton extends HookWidget {
             );
           },
           bookmarkRemoved: (value) {
-            snackbarController?.showMessage(
+            snackbarController.showMessage(
               SnackbarMessage.simple(
                 message: tr(LocaleKeys.bookmark_removeBookmarkSuccess),
                 type: SnackbarMessageType.positive,

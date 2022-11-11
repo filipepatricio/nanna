@@ -8,27 +8,57 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
 
 typedef SnackbarMessageListener = Function(SnackbarMessage?);
 
 const _hiddenMessageBottomMargin = -140.0;
 const _messageAnimationDuration = Duration(milliseconds: 1300);
 const _dragMinDistance = 6.0;
+const _shownMessageDefaultBottomMargin = AppDimens.m;
 
 class SnackbarParentView extends HookWidget {
   const SnackbarParentView({
-    required this.controller,
     required this.child,
+    this.audioPlayerResponsive = false,
+    this.controller,
     Key? key,
   }) : super(key: key);
 
-  final SnackbarController controller;
+  final SnackbarController? controller;
+  final bool audioPlayerResponsive;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<SnackbarParentViewCubit>();
     final state = useCubitBuilder(cubit);
+    final memoizedController = useMemoized(
+      () => controller ?? SnackbarController(),
+      [controller],
+    );
+    final audioPlayerCubit = useCubit<AudioPlayerBannerCubit>(closeOnDispose: false);
+    final audioPlayerState = useCubitBuilder(audioPlayerCubit);
+
+    final showingPosition = useState(_shownMessageDefaultBottomMargin);
+
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
+    useEffect(
+      () {
+        final audioPlayerVisible = audioPlayerState.maybeMap(
+          visible: (_) => true,
+          orElse: () => false,
+        );
+
+        if (audioPlayerResponsive && audioPlayerVisible) {
+          showingPosition.value = _shownMessageDefaultBottomMargin + AppDimens.audioBannerHeight + bottomPadding;
+        } else {
+          showingPosition.value = _shownMessageDefaultBottomMargin;
+        }
+      },
+      [audioPlayerResponsive, audioPlayerState],
+    );
 
     useEffect(
       () {
@@ -40,45 +70,37 @@ class SnackbarParentView extends HookWidget {
           }
         }
 
-        controller._addListener(listener);
-        return () => controller._removeListener(listener);
+        memoizedController._addListener(listener);
+        return () => memoizedController._removeListener(listener);
       },
-      [controller],
+      [memoizedController],
     );
 
-    var showingPosition = AppDimens.m;
-
-    if (controller.audioPlayerResponsive) {
-      final audioPlayerCubit = useCubit<AudioPlayerBannerCubit>(closeOnDispose: false);
-      final audioPlayerState = useCubitBuilder(audioPlayerCubit);
-      audioPlayerState.maybeMap(
-        visible: (value) => showingPosition += AppDimens.audioBannerHeight + MediaQuery.of(context).padding.bottom,
-        orElse: () {},
-      );
-    }
-
-    return Stack(
-      children: [
-        child,
-        AnimatedPositioned(
-          left: AppDimens.l,
-          right: AppDimens.l,
-          bottom: state.isMessageVisible() ? showingPosition : _hiddenMessageBottomMargin,
-          duration: _messageAnimationDuration,
-          curve: Curves.elasticOut,
-          child: GestureDetector(
-            onVerticalDragUpdate: (details) {
-              if (_isDraggingDown(details) && details.delta.distance > _dragMinDistance) {
-                cubit.discardMessage();
-              }
-            },
-            child: SnackbarView(
-              message: state.nullableMessage,
-              dismissAction: cubit.discardMessage,
+    return Provider<SnackbarController>.value(
+      value: memoizedController,
+      child: Stack(
+        children: [
+          child,
+          AnimatedPositioned(
+            left: AppDimens.l,
+            right: AppDimens.l,
+            bottom: state.isMessageVisible() ? showingPosition.value : _hiddenMessageBottomMargin,
+            duration: _messageAnimationDuration,
+            curve: Curves.elasticOut,
+            child: GestureDetector(
+              onVerticalDragUpdate: (details) {
+                if (_isDraggingDown(details) && details.delta.distance > _dragMinDistance) {
+                  cubit.discardMessage();
+                }
+              },
+              child: SnackbarView(
+                message: state.nullableMessage,
+                dismissAction: cubit.discardMessage,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -88,9 +110,8 @@ class SnackbarParentView extends HookWidget {
 }
 
 class SnackbarController {
-  SnackbarController({this.audioPlayerResponsive = false});
+  SnackbarController();
 
-  final bool audioPlayerResponsive;
   final List<SnackbarMessageListener> _listeners = [];
 
   void showMessage(SnackbarMessage message) {

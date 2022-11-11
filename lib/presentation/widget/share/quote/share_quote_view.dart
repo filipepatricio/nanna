@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/presentation/style/app_raster_graphics.da
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/shadows.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/images.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_background_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view_content.dart';
@@ -13,6 +14,7 @@ import 'package:better_informed_mobile/presentation/widget/share/base_share_comp
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 
 const _stickerWidth = 480.0;
 const _stickerMaxHeight = 640.0;
@@ -86,7 +88,7 @@ class ShareQuoteStickerView extends HookWidget implements BaseShareCompletable {
                   child: ShareArticleViewContent(
                     article: article,
                     publisherImage: publisherImage,
-                    titleMaxLines: 4,
+                    titleMaxLines: 2,
                   ),
                 ),
                 const SizedBox(height: AppDimens.l),
@@ -102,6 +104,19 @@ class ShareQuoteStickerView extends HookWidget implements BaseShareCompletable {
                     ),
                   ),
                 ),
+                const SizedBox(height: AppDimens.xl),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: SvgPicture.asset(
+                      AppVectorGraphics.launcherLogoInformed,
+                      width: 140,
+                      height: 32,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppDimens.l),
               ],
             ),
           ),

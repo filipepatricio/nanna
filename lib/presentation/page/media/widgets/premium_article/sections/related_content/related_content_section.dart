@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_content.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 
 class RelatedContentSection extends StatelessWidget {
@@ -14,7 +13,6 @@ class RelatedContentSection extends StatelessWidget {
     required this.briefId,
     required this.relatedContentItems,
     required this.topicId,
-    required this.snackbarController,
     this.onRelatedContentItemTap,
     this.onRelatedCategoryTap,
     Key? key,
@@ -27,7 +25,6 @@ class RelatedContentSection extends StatelessWidget {
   final String? topicId;
   final void Function(CategoryItem)? onRelatedContentItemTap;
   final void Function(Category)? onRelatedCategoryTap;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +45,6 @@ class RelatedContentSection extends StatelessWidget {
               relatedContentItems: relatedContentItems,
               briefId: briefId,
               topicId: topicId,
-              snackbarController: snackbarController,
             ),
         ],
       ),

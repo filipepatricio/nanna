@@ -5,7 +5,6 @@ module.exports = {
     'scope-case': [2,'always','lower-case'],
     'header-full-stop': [2, 'never', '.'],
     'body-leading-blank': [2, 'always'],
-    'body-max-line-length': [2, 'always', 72],
     'body-case': [
         2,
         'always',

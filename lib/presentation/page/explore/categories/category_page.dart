@@ -32,7 +32,6 @@ class CategoryPage extends HookWidget {
     final scrollController = useScrollController();
     final cubit = useCubit<CategoryPageCubit>();
     final state = useCubitBuilder<CategoryPageCubit, CategoryPageState>(cubit);
-    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -49,7 +48,6 @@ class CategoryPage extends HookWidget {
     return Scaffold(
       appBar: FixedAppBar(scrollController: scrollController, title: category.name),
       body: SnackbarParentView(
-        controller: snackbarController,
         child: CustomScrollView(
           controller: scrollController,
           slivers: [
@@ -64,18 +62,18 @@ class CategoryPage extends HookWidget {
                   loading: (_) => const SliverToBoxAdapter(child: Loader()),
                   withPagination: (state) => ItemsGridView(
                     itemCount: state.items.length,
-                    itemBuilder: (context, index) => itemBuilder(context, index, state.items, snackbarController),
+                    itemBuilder: (context, index) => itemBuilder(context, index, state.items),
                     scrollController: scrollController,
                   ),
                   loadingMore: (state) => ItemsGridView(
                     itemCount: state.items.length,
-                    itemBuilder: (context, index) => itemBuilder(context, index, state.items, snackbarController),
+                    itemBuilder: (context, index) => itemBuilder(context, index, state.items),
                     scrollController: scrollController,
                     withLoader: true,
                   ),
                   allLoaded: (state) => ItemsGridView(
                     itemCount: state.items.length,
-                    itemBuilder: (context, index) => itemBuilder(context, index, state.items, snackbarController),
+                    itemBuilder: (context, index) => itemBuilder(context, index, state.items),
                     scrollController: scrollController,
                   ),
                   orElse: () => const SliverToBoxAdapter(),
@@ -95,18 +93,15 @@ class CategoryPage extends HookWidget {
     BuildContext context,
     int index,
     List<CategoryItem> items,
-    SnackbarController snackbarController,
   ) =>
       items[index].mapOrNull(
         article: (data) => ArticleCover.small(
           article: data.article,
           onTap: () => context.navigateToArticle(data.article),
-          snackbarController: snackbarController,
         ),
         topic: (data) => TopicCover.small(
           topic: data.topicPreview,
           onTap: () => context.navigateToTopic(data.topicPreview),
-          snackbarController: snackbarController,
         ),
       );
 }

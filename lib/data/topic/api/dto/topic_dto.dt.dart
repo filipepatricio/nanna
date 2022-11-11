@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart'
 import 'package:better_informed_mobile/data/common/dto/curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/dto/entry_dto.dt.dart';
 import 'package:better_informed_mobile/data/image/api/dto/image_dto.dt.dart';
-import 'package:better_informed_mobile/data/topic/api/dto/summary_card_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -22,7 +21,7 @@ class TopicDTO {
     this.publisherInformation,
     this.heroImage,
     this.entries,
-    this.summaryCards,
+    this.summary,
     this.visited,
     this.category,
   );
@@ -40,7 +39,7 @@ class TopicDTO {
   final TopicPublisherInformationDTO publisherInformation;
   final ImageDTO heroImage;
   final List<EntryDTO> entries;
-  final List<SummaryCardDTO> summaryCards;
+  final String? summary;
   final bool visited;
   @JsonKey(name: 'primaryCategory')
   final CategoryDTO category;

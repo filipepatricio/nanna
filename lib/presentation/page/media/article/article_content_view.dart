@@ -14,7 +14,6 @@ import 'package:better_informed_mobile/presentation/widget/article/article_dotte
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_floating_control_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view.dart';
-import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -24,14 +23,12 @@ class ArticleContentView extends HookWidget {
     required this.article,
     required this.articleContentKey,
     required this.articleHeaderKey,
-    required this.snackbarController,
     Key? key,
   }) : super(key: key);
 
   final Article article;
   final Key articleHeaderKey;
   final Key articleContentKey;
-  final SnackbarController snackbarController;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +52,6 @@ class ArticleContentView extends HookWidget {
             if (article.content.type == ArticleContentType.markdown)
               ArticlePaywallView(
                 article: article,
-                snackbarController: snackbarController,
                 child: ArticleContentMarkdown(
                   markdown: article.content.content,
                   shareTextCallback: (quote) {

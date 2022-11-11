@@ -31,7 +31,6 @@ import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_d
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_pill_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
-import 'package:better_informed_mobile/data/topic/api/mapper/summary_card_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
@@ -95,7 +94,6 @@ class TestData {
       _mediaItemMapper,
       EntryStyleDTOMapper(),
     ),
-    SummaryCardDTOMapper(),
     TopicPublisherInformationDTOMapper(
       PublisherDTOMapper(
         ImageDTOMapper(),

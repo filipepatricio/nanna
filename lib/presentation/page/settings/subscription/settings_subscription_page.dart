@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
-import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/subscription/settings_subscription_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/widgets/subscription_benefits.dart';
@@ -35,7 +34,7 @@ class SettingsSubscriptionPage extends HookWidget {
   Widget build(BuildContext context) {
     final cubit = useCubit<SettingsSubscriptionPageCubit>();
     final state = useCubitBuilder(cubit);
-    final snackbarController = useMemoized(() => SnackbarController(audioPlayerResponsive: true));
+    final snackbarController = useMemoized(() => SnackbarController());
 
     useEffect(
       () {
@@ -65,6 +64,7 @@ class SettingsSubscriptionPage extends HookWidget {
         ),
       ),
       body: SnackbarParentView(
+        audioPlayerResponsive: true,
         controller: snackbarController,
         child: state.maybeWhen(
           loading: () => const Loader(),
