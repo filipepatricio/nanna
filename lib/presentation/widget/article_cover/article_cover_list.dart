@@ -33,7 +33,7 @@ class _ArticleCoverList extends ArticleCover {
           if (article.shouldShowArticleCoverNote && showNote) ...[
             InformedMarkdownBody(
               markdown: article.note!,
-              baseTextStyle: AppTypography.b2Regular.copyWith(),
+              baseTextStyle: AppTypography.b2Regular,
             ),
             const SizedBox(height: AppDimens.s),
           ],
@@ -49,9 +49,9 @@ class _ArticleCoverList extends ArticleCover {
                   children: [
                     PublisherRow(article: article),
                     const SizedBox(height: AppDimens.xs),
-                    Text(
-                      article.strippedTitle,
-                      style: AppTypography.articleSmallTitle,
+                    InformedMarkdownBody(
+                      markdown: article.title,
+                      baseTextStyle: AppTypography.articleSmallTitle,
                       maxLines: 3,
                     ),
                   ],
