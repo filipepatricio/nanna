@@ -36,4 +36,14 @@ class UserRepositoryImpl implements UserRepository {
   Future<bool> deleteAccount() async {
     return (await _dataSource.deleteAccount()).successful;
   }
+
+  @override
+  Future<bool> followCategory(Category category) async {
+    return (await _dataSource.followCategory(category.id)).successful;
+  }
+
+  @override
+  Future<bool> unfollowCategory(Category category) async {
+    return (await _dataSource.unfollowCategory(category.id)).successful;
+  }
 }

@@ -10,4 +10,8 @@ abstract class UserRepository {
   Future<bool> updatePreferredCategories(List<Category> categories);
 
   Future<bool> deleteAccount();
+
+  Future<bool> followCategory(Category category);
+
+  Future<bool> unfollowCategory(Category category);
 }

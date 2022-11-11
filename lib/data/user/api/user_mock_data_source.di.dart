@@ -40,4 +40,10 @@ class UserMockDataSource implements UserDataSource {
 
   @override
   Future<SuccessfulResponseDTO> deleteAccount() async => SuccessfulResponseDTO(true);
+
+  @override
+  Future<SuccessfulResponseDTO> followCategory(String slug) async => SuccessfulResponseDTO(true);
+
+  @override
+  Future<SuccessfulResponseDTO> unfollowCategory(String slug) async => SuccessfulResponseDTO(true);
 }

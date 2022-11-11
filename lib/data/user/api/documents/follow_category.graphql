@@ -1,0 +1,5 @@
+mutation followCategory ($categoryId: UUID!){
+    preferCategory(categoryId: $categoryId) {
+        successful
+    }
+}

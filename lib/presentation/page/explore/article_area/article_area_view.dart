@@ -39,7 +39,6 @@ class ArticleAreaView extends HookWidget {
         ExploreAreaHeader(
           title: area.title,
           description: area.description,
-          isPreferred: area.isPreferred,
         ),
         const SizedBox(height: AppDimens.m),
         ExploreAreaItemCarouselView<MediaItemArticle>(

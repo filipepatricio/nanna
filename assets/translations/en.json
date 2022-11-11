@@ -27,7 +27,9 @@
       "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy ",
       "body": "This error has been reported.",
       "tryAgainLater": "👎 Oops, looks like something went wrong, please try again later!"
-    }
+    },
+    "follow": "Follow",
+    "following": "Following"
   },
   "social": {
     "instagram": "Instagram",

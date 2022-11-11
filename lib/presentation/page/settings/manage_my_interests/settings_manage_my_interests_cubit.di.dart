@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
 import 'package:better_informed_mobile/domain/categories/use_case/get_category_preferences_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/notify_brief_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/follow_category_use_case.di.dart';
+import 'package:better_informed_mobile/domain/user/use_case/unfollow_category_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/update_preferred_categories_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
@@ -19,11 +21,15 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
     this._getCategoryPreferencesUseCase,
     this._updatePreferredCategoriesUseCase,
     this._updateBriefNotifierUseCase,
+    this._followCategoryUseCase,
+    this._unfollowCategoryUseCase,
   ) : super(const SettingsManageMyInterestsState.loading());
 
   final GetCategoryPreferencesUseCase _getCategoryPreferencesUseCase;
   final UpdatePreferredCategoriesUseCase _updatePreferredCategoriesUseCase;
   final UpdateBriefNotifierUseCase _updateBriefNotifierUseCase;
+  final FollowCategoryUseCase _followCategoryUseCase;
+  final UnfollowCategoryUseCase _unfollowCategoryUseCase;
 
   final StreamController<bool> _updateBriefStreamController = StreamController();
   StreamSubscription? _shouldNotifyBriefUpdateSubscription;
@@ -67,6 +73,57 @@ class SettingsManageMyInterestsCubit extends Cubit<SettingsManageMyInterestsStat
 
       _updateBriefStreamController.sink.add(true);
       emit(SettingsManageMyInterestsState.myInterestsSettingsLoaded(categoryPreferences));
+    } catch (e, s) {
+      Fimber.e('Update preferred categories failed', ex: e, stacktrace: s);
+    }
+  }
+
+  Future<void> followCategory(CategoryPreference categoryPreference) async {
+    try {
+      final didUpdate = await _followCategoryUseCase(categoryPreference.category);
+
+      if (!didUpdate) {
+        emit(SettingsManageMyInterestsState.showMessage(LocaleKeys.common_error_body.tr()));
+
+        final categoryPreferences = await _getCategoryPreferencesUseCase();
+        emit(SettingsManageMyInterestsState.myInterestsSettingsLoaded(categoryPreferences));
+        return;
+      }
+
+      _updateBriefStreamController.sink.add(true);
+      state.mapOrNull(
+        myInterestsSettingsLoaded: (data) {
+          final categoriesPreferences =
+              data.categoryPreferences.map((e) => e == categoryPreference ? e.copyWith(isPreferred: true) : e).toList();
+          emit(SettingsManageMyInterestsState.myInterestsSettingsLoaded(categoriesPreferences));
+        },
+      );
+    } catch (e, s) {
+      Fimber.e('Update preferred categories failed', ex: e, stacktrace: s);
+    }
+  }
+
+  Future<void> unfollowCategory(CategoryPreference categoryPreference) async {
+    try {
+      final didUpdate = await _unfollowCategoryUseCase(categoryPreference.category);
+
+      if (!didUpdate) {
+        emit(SettingsManageMyInterestsState.showMessage(LocaleKeys.common_error_body.tr()));
+
+        final categoryPreferences = await _getCategoryPreferencesUseCase();
+        emit(SettingsManageMyInterestsState.myInterestsSettingsLoaded(categoryPreferences));
+        return;
+      }
+
+      _updateBriefStreamController.sink.add(true);
+      state.mapOrNull(
+        myInterestsSettingsLoaded: (data) {
+          final categoriesPreferences = data.categoryPreferences
+              .map((e) => e == categoryPreference ? e.copyWith(isPreferred: false) : e)
+              .toList();
+          emit(SettingsManageMyInterestsState.myInterestsSettingsLoaded(categoriesPreferences));
+        },
+      );
     } catch (e, s) {
       Fimber.e('Update preferred categories failed', ex: e, stacktrace: s);
     }

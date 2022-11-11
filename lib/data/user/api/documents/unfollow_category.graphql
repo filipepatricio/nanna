@@ -1,0 +1,5 @@
+mutation unfollowCategory ($categoryId: UUID!){
+    unpreferCategory(categoryId: $categoryId) {
+        successful
+    }
+}

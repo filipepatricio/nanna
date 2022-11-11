@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
@@ -43,24 +44,12 @@ class SettingsManageMyInterestsBody extends HookWidget {
       physics: getPlatformScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
       children: [
-        ...categoryPreferences
-            .map(
-              (data) => _CategoryItem(
-                categoryPreference: data,
-                cubit: cubit,
-                onSwitch: (value) {
-                  cubit.updatePreferredCategories(
-                    categoryPreferences.map((e) => e == data ? e.copyWith(isPreferred: value) : e).toList(),
-                  );
-                },
-              ),
-            )
-            .expand(
-              (element) => [
-                element,
-                const Divider(),
-              ],
-            ),
+        ...categoryPreferences.map(
+          (data) => _CategoryItem(
+            categoryPreference: data,
+            cubit: cubit,
+          ),
+        ),
         const AudioPlayerBannerPlaceholder(),
       ],
     );
@@ -71,18 +60,17 @@ class _CategoryItem extends StatelessWidget {
   const _CategoryItem({
     required this.categoryPreference,
     required this.cubit,
-    required this.onSwitch,
     Key? key,
   }) : super(key: key);
 
   final CategoryPreference categoryPreference;
   final SettingsManageMyInterestsCubit cubit;
-  final Function(bool) onSwitch;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+    return Container(
+      height: AppDimens.c,
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
       child: Row(
         children: [
           Container(
@@ -101,12 +89,74 @@ class _CategoryItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppDimens.xl),
-          Switch.adaptive(
-            value: categoryPreference.isPreferred,
-            activeColor: AppColors.black,
-            onChanged: onSwitch,
+          CategoryPreferenceFollowButton(
+            categoryPreference: categoryPreference,
+            onTap: () => categoryPreference.isPreferred
+                ? cubit.unfollowCategory(categoryPreference)
+                : cubit.followCategory(categoryPreference),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CategoryPreferenceFollowButton extends HookWidget {
+  const CategoryPreferenceFollowButton({
+    required this.categoryPreference,
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final CategoryPreference categoryPreference;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    // final isLoading = false;
+    final isPreferred = categoryPreference.isPreferred;
+    return
+        // isLoading ? Container(
+        //       height: AppDimens.m,
+        //       width: AppDimens.m,
+        //       child: Center(
+        //         child: CircularProgressIndicator(
+        //           color: AppColors.charcoal,
+        //           strokeWidth: AppDimens.xxs,
+        //         ),
+        //       ),
+        //     )
+        //   :
+        GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        height: AppDimens.xl,
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppDimens.s,
+          horizontal: AppDimens.m,
+        ),
+        decoration: BoxDecoration(
+          color: isPreferred ? AppColors.lightGrey : AppColors.charcoal,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(100),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Text(
+                isPreferred ? LocaleKeys.common_following.tr() : LocaleKeys.common_follow.tr(),
+                style: AppTypography.buttonBold.copyWith(
+                  color: isPreferred ? AppColors.textPrimary : AppColors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

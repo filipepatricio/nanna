@@ -1,7 +1,11 @@
 import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/delete_account.ast.gql.dart'
     as delete_account;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/follow_category.ast.gql.dart'
+    as follow_category;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/query_user.ast.gql.dart' as query_user;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/unfollow_category.ast.gql.dart'
+    as unfollow_category;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_preferred_categories.ast.gql.dart'
     as update_preferred_categories;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_user.ast.gql.dart' as update_user;
@@ -96,6 +100,48 @@ class UserGraphqlDataSource implements UserDataSource {
       result,
       (raw) => SuccessfulResponseDTO.fromJson(raw),
       rootKey: 'deleteAccount',
+    );
+
+    return dto ?? SuccessfulResponseDTO(false);
+  }
+
+  @override
+  Future<SuccessfulResponseDTO> followCategory(String id) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: follow_category.document,
+        operationName: follow_category.followCategory.name?.value,
+        variables: {
+          'categoryId': id,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => SuccessfulResponseDTO.fromJson(raw),
+      rootKey: 'preferCategory',
+    );
+
+    return dto ?? SuccessfulResponseDTO(false);
+  }
+
+  @override
+  Future<SuccessfulResponseDTO> unfollowCategory(String id) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: unfollow_category.document,
+        operationName: unfollow_category.unfollowCategory.name?.value,
+        variables: {
+          'categoryId': id,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => SuccessfulResponseDTO.fromJson(raw),
+      rootKey: 'unpreferCategory',
     );
 
     return dto ?? SuccessfulResponseDTO(false);
