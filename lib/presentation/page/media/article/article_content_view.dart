@@ -1,10 +1,8 @@
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/article/data/article_content_type.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_view.dart';
-import 'package:better_informed_mobile/presentation/page/media/content/article_content_html.dart';
 import 'package:better_informed_mobile/presentation/page/media/content/article_content_markdown.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -49,24 +47,19 @@ class ArticleContentView extends HookWidget {
           key: articleContentKey,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (article.content.type == ArticleContentType.markdown)
-              ArticlePaywallView(
-                article: article,
-                child: ArticleContentMarkdown(
-                  markdown: article.content.content,
-                  shareTextCallback: (quote) {
-                    showQuoteEditor(
-                      context,
-                      article.metadata,
-                      quote,
-                    );
-                  },
-                ),
-              )
-            else if (article.content.type == ArticleContentType.html)
-              ArticleContentHtml(
-                html: article.content.content,
+            ArticlePaywallView(
+              article: article,
+              child: ArticleContentMarkdown(
+                markdown: article.content.content,
+                shareTextCallback: (quote) {
+                  showQuoteEditor(
+                    context,
+                    article.metadata,
+                    quote,
+                  );
+                },
               ),
+            ),
             if (showCredits)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
