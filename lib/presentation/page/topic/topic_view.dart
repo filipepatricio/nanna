@@ -55,7 +55,7 @@ class TopicView extends HookWidget {
                 InformedMarkdownBody(
                   markdown: topic.introduction,
                   maxLines: 5,
-                  baseTextStyle: AppTypography.b1Medium,
+                  baseTextStyle: AppTypography.b2Regular,
                 ),
                 const SizedBox(height: AppDimens.l),
                 PublisherLogoRow(topic: topic.asPreview),
@@ -69,7 +69,7 @@ class TopicView extends HookWidget {
                   const SizedBox(height: AppDimens.l),
                   InformedMarkdownBody(
                     markdown: topicSummary,
-                    baseTextStyle: AppTypography.b1Medium,
+                    baseTextStyle: AppTypography.b2Regular,
                     paddingBuilders: <String, MarkdownPaddingBuilder>{
                       'ul': ULPaddingBuilder(),
                     },
