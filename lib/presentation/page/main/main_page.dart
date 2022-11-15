@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -77,8 +79,9 @@ class MainPage extends HookWidget {
   }
 
   void _navigateToPath(BuildContext context, String path) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async => await context.navigateNamedTo(
+    Future.delayed(
+      const Duration(milliseconds: 1),
+      () => context.navigateNamedTo(
         path,
         onFailure: (failure) => Fimber.e('Navigation to path - $path - failed', ex: failure),
       ),
