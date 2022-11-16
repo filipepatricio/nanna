@@ -80,7 +80,7 @@ class TopicView extends HookWidget {
                 InformedMarkdownBody(
                   markdown: LocaleKeys.topic_articlesTitle.tr(),
                   baseTextStyle: AppTypography.h0Medium,
-                  maxLines: 1,
+                  maxLines: 2,
                 ),
                 const SizedBox(height: AppDimens.xl),
               ],
