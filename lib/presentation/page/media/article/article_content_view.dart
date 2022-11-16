@@ -90,7 +90,7 @@ class _ArticleHeader extends StatelessWidget {
     final articleColor = article.category.color ?? AppColors.background;
 
     return Container(
-      color: article.hasImage ? articleColor : AppColors.background,
+      color: articleColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
