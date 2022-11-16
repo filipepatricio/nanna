@@ -46,8 +46,8 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Future<ActiveSubscription> getActiveSubscription() async {
-    final customer = await Purchases.getCustomerInfo();
+  Future<ActiveSubscription> getActiveSubscription([CustomerInfo? customerInfo]) async {
+    final customer = customerInfo ?? await Purchases.getCustomerInfo();
     final plans = await _getAllSubscriptionPlans();
 
     return _activeSubscriptionMapper(
@@ -79,15 +79,16 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
     if (await Purchases.isConfigured) {
       await Purchases.logIn(userId);
 
-      // Prefetches and caches available offerings
+      // Prefetches and caches available customer info and offerings
+      unawaited(Purchases.getCustomerInfo());
       unawaited(Purchases.getOfferings());
 
       Purchases.addCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
     }
   }
 
-  Future<void> _updateActiveSubscriptionStream(CustomerInfo info) async {
-    _activeSubscriptionStream.sink.add(await getActiveSubscription());
+  Future<void> _updateActiveSubscriptionStream(CustomerInfo customerInfo) async {
+    _activeSubscriptionStream.sink.add(await getActiveSubscription(customerInfo));
   }
 
   @override
