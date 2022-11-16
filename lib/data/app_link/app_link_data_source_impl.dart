@@ -1,18 +1,22 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:fimber/fimber.dart';
 import 'package:uni_links/uni_links.dart';
 
 class AppLinkDataSourceImpl implements AppLinkDataSource {
-  AppLinkDataSourceImpl._();
+  AppLinkDataSourceImpl._(this.appConfig);
+
+  final AppConfig appConfig;
+
   final StreamController<Uri> _appLinkStream = StreamController.broadcast();
 
   Uri? _initialRoute;
   StreamSubscription? _appLinkStreamSubscription;
 
-  static Future<AppLinkDataSourceImpl> create() async {
-    final dataSource = AppLinkDataSourceImpl._();
+  static Future<AppLinkDataSourceImpl> create(AppConfig appConfig) async {
+    final dataSource = AppLinkDataSourceImpl._(appConfig);
     await dataSource._initialize();
     return dataSource;
   }
@@ -25,7 +29,7 @@ class AppLinkDataSourceImpl implements AppLinkDataSource {
     }
 
     _appLinkStreamSubscription = uriLinkStream.listen((event) {
-      if (event != null) {
+      if (event != null && event.path != appConfig.appsFlyerLinkPath) {
         _appLinkStream.sink.add(event);
       }
     });

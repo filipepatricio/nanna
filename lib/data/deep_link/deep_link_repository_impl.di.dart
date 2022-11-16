@@ -15,7 +15,6 @@ class DeepLinkRepositoryImpl implements DeepLinkRepository {
 
   @override
   Stream<String> subscribeForDeepLink() async* {
-    _analyticsFacade.subscribeToAppsflyerDeepLink();
     final initialLink = _initialLinkHandled ? null : await _appLinkDataSource.getInitialAction();
 
     try {
@@ -33,5 +32,5 @@ class DeepLinkRepositoryImpl implements DeepLinkRepository {
           _analyticsFacade.deepLinkStream,
           _appLinkDataSource.listenForIncomingActions().map((uri) => uri.path),
         ],
-      ).distinct();
+      );
 }
