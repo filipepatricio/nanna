@@ -9,8 +9,6 @@ abstract class AnalyticsFacade {
 
   Future<String?> getAppsflyerId();
 
-  void subscribeToAppsflyerDeepLink();
-
   Stream<String> get deepLinkStream;
 
   Future<void> config(String writeKey);

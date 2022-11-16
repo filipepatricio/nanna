@@ -101,6 +101,10 @@ class MainCubit extends Cubit<MainState> {
   }
 
   MainState _handleNavigationAction(String path) {
+    if (path.isEmpty) {
+      return state;
+    }
+
     final uri = Uri.parse(path);
 
     if (uri.pathSegments.any((segment) => segment == magicLinkSegment)) {
