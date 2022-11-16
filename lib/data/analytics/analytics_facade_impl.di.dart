@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
 import 'package:launchdarkly_flutter_client_sdk/launchdarkly_flutter_client_sdk.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 @LazySingleton(as: AnalyticsFacade, env: liveEnvs)
@@ -23,7 +24,7 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
   final AppsflyerSdk _appsflyerSdk;
   final InstallAttributionPayloadMapper _installAttributionPayloadMapper;
 
-  var _deepLinkStream = StreamController<String>.broadcast();
+  StreamController<String> _deepLinkStream = BehaviorSubject<String>();
 
   @override
   Future<InstallAttributionPayload?> initializeAttribution() async {
@@ -34,16 +35,6 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
       completer.complete(_installAttributionPayloadMapper.from(dto.payload));
     });
 
-    await _appsflyerSdk.initSdk(
-      registerConversionDataCallback: true,
-      registerOnDeepLinkingCallback: true,
-    );
-
-    return completer.future.timeout(const Duration(seconds: 10), onTimeout: () => null);
-  }
-
-  @override
-  void subscribeToAppsflyerDeepLink() {
     _appsflyerSdk.onDeepLinking((deepLink) {
       if (deepLink.status == Status.FOUND) {
         final value = deepLink.deepLink?.deepLinkValue;
@@ -56,6 +47,13 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
 
       throw Exception('Error handling Appsflyer deeplink. Error ${deepLink.status}. Deeplink $deepLink');
     });
+
+    await _appsflyerSdk.initSdk(
+      registerConversionDataCallback: true,
+      registerOnDeepLinkingCallback: true,
+    );
+
+    return completer.future.timeout(const Duration(seconds: 10), onTimeout: () => null);
   }
 
   @override

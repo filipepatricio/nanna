@@ -123,6 +123,9 @@ android {
 
             resValue "string", "app_name", "informed dev"
             resValue "string", "app_link_host", "localhost"
+            resValue "string", "onelink_host", "localhost"
+            resValue "string", "onelink_custom_host", "localhost"
+            resValue "string", "onelink_custom_host", "/tHNA"
 
             if (propertyMap.containsKey('dev')) {
                 signingConfig signingConfigs.releaseDev
@@ -138,6 +141,9 @@ android {
 
             resValue "string", "app_name", "informed test"
             resValue "string", "app_link_host", "app.staging.informed.so"
+            resValue "string", "onelink_host", "informed-staging.onelink.me"
+            resValue "string", "onelink_custom_host", "get.staging.informed.so"
+            resValue "string", "onelink_path_prefix", "/tHNA"
 
             if (propertyMap.containsKey('stage')) {
                 signingConfig signingConfigs.releaseStage
@@ -151,6 +157,9 @@ android {
 
             resValue "string", "app_name", "informed"
             resValue "string", "app_link_host", "www.informed.so"
+            resValue "string", "onelink_host", "informed.onelink.me"
+            resValue "string", "onelink_custom_host", "get.informed.so"
+            resValue "string", "onelink_path_prefix", "/BHtj"
 
             if (propertyMap.containsKey('prod')) {
                 signingConfig signingConfigs.releaseProd

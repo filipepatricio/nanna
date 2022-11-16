@@ -19,9 +19,6 @@ class AnalyticsFacadeMock implements AnalyticsFacade {
   }
 
   @override
-  void subscribeToAppsflyerDeepLink() {}
-
-  @override
   Stream<String> get deepLinkStream => _deepLinkStream.stream;
 
   @override
