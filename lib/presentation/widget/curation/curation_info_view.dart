@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/common/data/curation_info.dart';
 import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
+import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -30,7 +32,7 @@ class CurationInfoView extends StatelessWidget {
 
     return ExpandTapWidget(
       tapPadding: const EdgeInsets.all(AppDimens.m),
-      onTap: onTap ?? () {},
+      onTap: onTap ?? () => context.pushRoute(TopicOwnerPageRoute(owner: curationInfo.curator)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
