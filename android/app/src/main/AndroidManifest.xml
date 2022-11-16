@@ -54,14 +54,14 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="get.informed.so" android:pathPrefix="/BHtj"/>
+                <data android:scheme="https" android:host="@string/onelink_host" android:pathPrefix="@string/onelink_path_prefix"/>
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="informed.onelink.me" android:pathPrefix="/BHtj"/>
+                <data android:scheme="https" android:host="@string/onelink_custom_host" android:pathPrefix="@string/onelink_path_prefix"/>
             </intent-filter>
         </activity>
 
