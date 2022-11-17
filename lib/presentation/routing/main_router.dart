@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/empty_router_widgets.dart';
+import 'package:better_informed_mobile/presentation/page/audio/audio_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
@@ -63,6 +64,10 @@ const mainPageRoute = CustomRoute(
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
     AutoRoute(path: '$articlePathSegment/:articleSlug', page: MediaItemPage),
     AutoRoute(page: CategoryPage),
+    CustomRoute(
+      page: AudioPage,
+      customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder,
+    )
   ],
 );
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 extension Finders on CommonFinders {
@@ -6,8 +7,23 @@ extension Finders on CommonFinders {
     String text, {
     bool exactMatch = false,
     bool skipOffstage = true,
-  }) =>
-      _ByTextFinder(text, exactMatch: exactMatch, skipOffstage: skipOffstage);
+  }) {
+    return _ByTextFinder(
+      text,
+      exactMatch: exactMatch,
+      skipOffstage: skipOffstage,
+    );
+  }
+
+  Finder bySvgAssetName(
+    String assetName, {
+    bool skipOffstage = true,
+  }) {
+    return _SvgFinder(
+      assetName,
+      skipOffstage: skipOffstage,
+    );
+  }
 }
 
 class _ByTextFinder extends MatchFinder {
@@ -38,6 +54,33 @@ class _ByTextFinder extends MatchFinder {
       }
       return plainText.contains(text) || plainText.contains(text.withZeroWidthSpaces);
     }
+    return false;
+  }
+}
+
+class _SvgFinder extends MatchFinder {
+  _SvgFinder(
+    this.assetName, {
+    bool skipOffstage = true,
+  }) : super(skipOffstage: skipOffstage);
+
+  final String assetName;
+
+  @override
+  String get description => 'svg asset $assetName';
+
+  @override
+  bool matches(Element candidate) {
+    final widget = candidate.widget;
+
+    if (widget is SvgPicture) {
+      final provider = widget.pictureProvider;
+
+      if (provider is ExactAssetPicture) {
+        return provider.assetName == assetName;
+      }
+    }
+
     return false;
   }
 }

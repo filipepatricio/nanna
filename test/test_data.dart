@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/data/article/api/mapper/article_dto_to_me
 import 'package:better_informed_mobile/data/article/api/mapper/article_kind_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_progress_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/article_type_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/article/api/mapper/audio_file_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_item_dto_mapper.di.dart';
@@ -37,6 +38,7 @@ import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_inf
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
+import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_position.dart';
 import 'package:better_informed_mobile/domain/categories/data/category.dart';
@@ -199,6 +201,8 @@ class TestData {
 
   static final _activeSubscriptionMapper = ActiveSubscriptionMapper(AppConfig.mock);
 
+  static final _audioFileMapper = AudioFileDTOMapper();
+
   static AudioItem get audioItem => AudioItem(
         id: TestData.premiumArticleWithAudio.id,
         slug: TestData.premiumArticleWithAudio.slug,
@@ -219,6 +223,8 @@ class TestData {
         content: _articleContentMapper(MockDTO.articleContentMarkdown),
       );
 
+  static AudioFile get audioFile => _audioFileMapper(MockDTO.audioFile);
+
   static MediaItemArticle get article => _mediaItemMapper(MockDTO.topic.entries.first.item) as MediaItemArticle;
 
   static MediaItemArticle get premiumArticleWithoutImage =>
@@ -226,6 +232,9 @@ class TestData {
 
   static MediaItemArticle get premiumArticleWithAudio =>
       _mediaItemMapper(MockDTO.premiumArticleWithAudio.asMediaItem) as MediaItemArticle;
+
+  static MediaItemArticle get premiumArticleWithAudioNoImage =>
+      _mediaItemMapper(MockDTO.premiumArticleWithAudioNoImage.asMediaItem) as MediaItemArticle;
 
   static MediaItemArticle get premiumArticleWithAudioAndLocked =>
       _mediaItemMapper(MockDTO.premiumArticleWithAudioLocked.asMediaItem) as MediaItemArticle;

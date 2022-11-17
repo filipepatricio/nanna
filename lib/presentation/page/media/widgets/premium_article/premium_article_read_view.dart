@@ -20,13 +20,11 @@ class PremiumArticleReadView extends HookWidget {
   PremiumArticleReadView({
     required this.cubit,
     required this.mainController,
-    required this.onAudioBannerTap,
     Key? key,
   }) : super(key: key);
 
   final PremiumArticleViewCubit cubit;
   final ScrollController mainController;
-  final VoidCallback onAudioBannerTap;
 
   final GlobalKey _articleContentKey = GlobalKey();
   final GlobalKey _articleHeaderKey = GlobalKey();
@@ -62,7 +60,6 @@ class PremiumArticleReadView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useAutomaticKeepAlive(wantKeepAlive: true);
     final state = useCubitBuilder(cubit);
     final readProgress = useMemoized(() => ValueNotifier(0.0));
     final maxHeight = useMemoized(
@@ -83,7 +80,6 @@ class PremiumArticleReadView extends HookWidget {
             ),
             child: AudioPlayerBannerWrapper(
               layout: AudioPlayerBannerLayout.stack,
-              onTap: onAudioBannerTap,
               child: Scrollbar(
                 controller: mainController,
                 child: CustomScrollView(
