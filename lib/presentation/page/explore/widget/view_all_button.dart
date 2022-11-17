@@ -19,7 +19,7 @@ class ViewAllButton extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.lightGrey,
-          borderRadius: BorderRadius.circular(AppDimens.smallImageCoverBorderRadius),
+          borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
         ),
         child: Center(
           child: Text(

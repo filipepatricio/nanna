@@ -28,7 +28,7 @@ class _TopicCoverBookmark extends HookWidget {
             dimension: coverSize,
             child: TopicCoverImage(
               topic: topic,
-              borderRadius: AppDimens.s,
+              borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
             ),
           ),
           const SizedBox(width: AppDimens.m),

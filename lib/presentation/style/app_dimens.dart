@@ -59,9 +59,6 @@ class AppDimens {
   /// 44.0
   static const settingsItemHeight = 44.0;
 
-  /// 4
-  static const buttonRadius = 4.0;
-
   /// 50
   static const buttonHeight = 50.0;
 
@@ -73,9 +70,6 @@ class AppDimens {
 
   /// 35
   static const logoHeight = 35.0;
-
-  /// 20
-  static const shareBottomSheetRadius = 20.0;
 
   /// 90
   static const calendarAppBar = 90.0;
@@ -151,9 +145,6 @@ class AppDimens {
   /// 322
   static const articleSmallImageCoverHeight = 322;
 
-  /// 2
-  static const smallImageCoverBorderRadius = 2.0;
-
   /// 45
   static const topicViewStackedCardsDividerHeight = 45.0;
 
@@ -165,9 +156,6 @@ class AppDimens {
 
   /// 32
   static const explorePillHeight = 32.0;
-
-  /// 32
-  static const explorePillRadius = 70.0;
 
   /// 32
   static const bookmarkIconSize = 32.0;
@@ -207,9 +195,24 @@ class AppDimens {
 
   static const customCheckboxIconSize = 17.0;
 
-  static const customCheckboxRadius = 4.0;
-
   static const pageHorizontalMargin = AppDimens.m;
 
   static const explorePageSectionBottomPadding = AppDimens.s;
+
+  // Radius
+
+  /// 4
+  static const defaultRadius = 4.0;
+
+  /// 8
+  static const modalRadius = 8.0;
+
+  /// 8
+  static const bottomSheetRadius = 16.0;
+
+  /// 2
+  static const iconRadius = 2.0;
+
+  /// 70
+  static const pillRadius = 70.0;
 }

@@ -30,7 +30,7 @@ class EmailInput extends StatelessWidget {
         enabledBorder: const OutlineInputBorder(borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(width: 1, color: AppColors.textPrimary),
-          borderRadius: BorderRadius.circular(AppDimens.buttonRadius),
+          borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),
       ),

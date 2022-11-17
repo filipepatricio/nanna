@@ -44,7 +44,7 @@ class OpenWebButton extends StatelessWidget {
             decoration: const BoxDecoration(
               color: AppColors.charcoal,
               borderRadius: BorderRadius.all(
-                Radius.circular(AppDimens.buttonRadius),
+                Radius.circular(AppDimens.defaultRadius),
               ),
             ),
             child: Row(

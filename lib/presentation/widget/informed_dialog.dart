@@ -132,7 +132,7 @@ class InformedDialog extends HookWidget {
         ),
         contentPadding: const EdgeInsets.all(AppDimens.l),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(AppDimens.modalRadius),
         ),
         children: [
           Column(

@@ -13,8 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-const _bottomSheetRadius = 10.0;
-
 Future<ShareOption?> showShareOptions(BuildContext context) {
   return showModalBottomSheet<ShareOption?>(
     context: context,
@@ -27,7 +25,7 @@ Future<ShareOption?> showShareOptions(BuildContext context) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(
-          _bottomSheetRadius,
+          AppDimens.bottomSheetRadius,
         ),
       ),
     ),

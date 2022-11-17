@@ -36,7 +36,7 @@ class SubscriptionCard extends HookWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: const BorderRadius.all(
-            Radius.circular(AppDimens.m),
+            Radius.circular(AppDimens.modalRadius),
           ),
           border: Border.all(color: AppColors.lightGrey),
         ),
@@ -127,7 +127,7 @@ class _IdleContent extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: const BorderRadius.all(
-            Radius.circular(AppDimens.s),
+            Radius.circular(AppDimens.modalRadius),
           ),
           child: SvgPicture.asset(
             icon,

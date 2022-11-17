@@ -81,7 +81,7 @@ class _Pill extends StatelessWidget {
       height: AppDimens.explorePillHeight,
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(AppDimens.explorePillRadius),
+        borderRadius: BorderRadius.circular(AppDimens.pillRadius),
         border: Border.all(
           color: AppColors.dividerGreyLight,
           width: 1,
@@ -141,7 +141,7 @@ class _StreamCell extends StatelessWidget {
       decoration: const BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.all(
-          Radius.circular(AppDimens.s),
+          Radius.circular(AppDimens.defaultRadius),
         ),
       ),
     );
