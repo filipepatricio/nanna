@@ -152,7 +152,8 @@ class _ArticleHeader extends StatelessWidget {
                           color: AppColors.black,
                           mode: AudioFloatingControlButtonMode.white,
                           imageHeight: AppDimens.xl,
-                          progressSize: AppDimens.zero,
+                          progressSize: AppDimens.xxl,
+                          showProgress: false,
                         ),
                       )
                   ],
