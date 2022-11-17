@@ -36,7 +36,7 @@ extension _NotificationSwitchTypeExtension on NotificationSwitchWidgetType {
   BorderRadiusGeometry? get borderRadius {
     switch (this) {
       case NotificationSwitchWidgetType.squareBlack:
-        return const BorderRadius.all(Radius.circular(AppDimens.customCheckboxRadius));
+        return const BorderRadius.all(Radius.circular(AppDimens.defaultRadius));
       default:
         return null;
     }

@@ -52,7 +52,7 @@ class SettingsInputItem extends HookWidget {
         enabledBorder: const OutlineInputBorder(borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(width: 1, color: AppColors.textPrimary),
-          borderRadius: BorderRadius.circular(AppDimens.buttonRadius),
+          borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
         ),
         contentPadding: const EdgeInsets.all(AppDimens.m),
         suffixIcon: isEditable && isFormFocused

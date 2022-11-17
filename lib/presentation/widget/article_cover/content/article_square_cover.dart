@@ -66,7 +66,7 @@ class _ArticleImageCover extends StatelessWidget {
 
     return SizedBox.expand(
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppDimens.smallImageCoverBorderRadius),
+        borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
         child: article.hasImage
             ? Stack(
                 children: [

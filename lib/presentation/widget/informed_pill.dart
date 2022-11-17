@@ -22,7 +22,7 @@ class InformedPill extends StatelessWidget {
         height: AppDimens.explorePillHeight,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(AppDimens.explorePillRadius),
+          borderRadius: BorderRadius.circular(AppDimens.pillRadius),
         ),
         padding: const EdgeInsets.symmetric(
           vertical: AppDimens.s,
