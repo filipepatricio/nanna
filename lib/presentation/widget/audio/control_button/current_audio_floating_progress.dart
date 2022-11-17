@@ -12,6 +12,7 @@ class CurrentAudioFloatingProgress extends HookWidget {
     required this.progress,
     required this.audioProgressType,
     required this.progressBarColor,
+    required this.showProgress,
     Key? key,
   }) : super(key: key);
 
@@ -19,6 +20,7 @@ class CurrentAudioFloatingProgress extends HookWidget {
   final double progress;
   final AudioProgressType audioProgressType;
   final Color progressBarColor;
+  final bool showProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +36,13 @@ class CurrentAudioFloatingProgress extends HookWidget {
                 strokeWidth: AppDimens.strokeAudioWidth(progressSize),
                 color: progressBarColor,
               )
-            : CircularProgressIndicator(
-                strokeWidth: AppDimens.strokeAudioWidth(progressSize),
-                color: progressBarColor,
-                value: audioProgressType == AudioProgressType.current ? state.progress.clamp(0, 1) : progress,
-              ),
+            : showProgress
+                ? CircularProgressIndicator(
+                    strokeWidth: AppDimens.strokeAudioWidth(progressSize),
+                    color: progressBarColor,
+                    value: audioProgressType == AudioProgressType.current ? state.progress.clamp(0, 1) : progress,
+                  )
+                : const SizedBox(),
       ),
     );
   }

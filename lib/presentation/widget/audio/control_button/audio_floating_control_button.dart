@@ -25,6 +25,7 @@ class AudioFloatingControlButton extends HookWidget {
     this.color = AppColors.background,
     this.mode = AudioFloatingControlButtonMode.colored,
     this.progressBarColor = AppColors.black,
+    this.showProgress = true,
     Key? key,
   }) : super(key: key);
 
@@ -35,6 +36,7 @@ class AudioFloatingControlButton extends HookWidget {
     this.color = AppColors.background,
     this.mode = AudioFloatingControlButtonMode.colored,
     this.progressBarColor = AppColors.black,
+    this.showProgress = true,
     Key? key,
   })  : article = null,
         super(key: key);
@@ -46,6 +48,7 @@ class AudioFloatingControlButton extends HookWidget {
   final Color color;
   final AudioFloatingControlButtonMode mode;
   final Color progressBarColor;
+  final bool showProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +128,7 @@ class AudioFloatingControlButton extends HookWidget {
               progress: state.progress,
               audioProgressType: state.audioProgressType,
               progressBarColor: progressBarColor,
+              showProgress: showProgress,
             ),
         ],
       ),
