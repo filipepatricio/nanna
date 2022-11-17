@@ -205,7 +205,7 @@ class _TopicIdleView extends HookWidget {
               valueListenable: isScrolled,
               builder: (context, scrolled, banner) => AnimatedPositioned(
                 duration: const Duration(milliseconds: 150),
-                bottom: scrolled ? 0 : -AppDimens.xxxc,
+                bottom: scrolled ? 0 : -(AppDimens.audioBannerHeight + MediaQuery.of(context).padding.bottom),
                 left: 0,
                 right: 0,
                 child: banner!,
