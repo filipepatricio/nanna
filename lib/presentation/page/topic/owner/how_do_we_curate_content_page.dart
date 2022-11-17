@@ -3,9 +3,13 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HowDoWeCurateContentPage extends HookWidget {
   const HowDoWeCurateContentPage({Key? key}) : super(key: key);
@@ -36,12 +40,12 @@ class HowDoWeCurateContentPage extends HookWidget {
                             style: AppTypography.h0Medium,
                           ),
                           const SizedBox(height: AppDimens.l),
-                          Text(
-                            LocaleKeys.topic_howWeCurateContent_text.tr(),
-                            softWrap: true,
-                            style: AppTypography.articleText.copyWith(
+                          InformedMarkdownBody(
+                            markdown: LocaleKeys.topic_howWeCurateContent_text.tr(),
+                            baseTextStyle: AppTypography.articleText.copyWith(
                               height: 1.75,
                             ),
+                            pPadding: const EdgeInsets.only(top: AppDimens.m),
                           ),
                           const SizedBox(height: AppDimens.xxl),
                         ],
@@ -66,15 +70,16 @@ class _ActionsBar extends HookWidget {
     return Container(
       height: kToolbarHeight + AppDimens.m,
       color: AppColors.background,
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(left: AppDimens.ml),
-        child: IconButton(
-          icon: const Icon(Icons.arrow_downward_rounded),
-          color: AppColors.black,
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.zero,
-          onPressed: () => context.popRoute(),
+        padding: const EdgeInsets.only(right: AppDimens.pageHorizontalMargin),
+        child: ExpandTapWidget(
+          onTap: () => context.popRoute(),
+          tapPadding: const EdgeInsets.all(AppDimens.s),
+          child: SvgPicture.asset(
+            AppVectorGraphics.close,
+            fit: BoxFit.scaleDown,
+          ),
         ),
       ),
     );
