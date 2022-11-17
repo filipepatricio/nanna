@@ -44,10 +44,22 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/magic"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/topics"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/articles"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/subscribe"/>
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/"/>
+                <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/magic"/>
+                <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/topics"/>
+                <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/articles"/>
+                <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/subscribe"/>
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
