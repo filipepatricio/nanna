@@ -18,7 +18,9 @@ class AppColors {
   static const Color limeGreen44 = Color(0x70BBF383);
   static const Color limeGreenDark = Color(0xff6AE476);
   static const Color charcoal = Color(0xFF252525);
+  static const Color charcoal00 = Color(0x00252525);
   static const Color charcoal20 = Color(0x33252525);
+  static const Color charcoal35 = Color(0x59252525);
   static const Color charcoal50 = Color(0x80252525);
   static const Color charcoal70 = Color(0xB3252525);
   static const Color linen = Color(0xffFCFAF8);
