@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
-const _bottomSheetRadius = 16.0;
-
 Future<void> showQuoteEditor(
   BuildContext context,
   MediaItemArticle article,
@@ -30,7 +28,7 @@ Future<void> showQuoteEditor(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(
-          _bottomSheetRadius,
+          AppDimens.bottomSheetRadius,
         ),
       ),
     ),

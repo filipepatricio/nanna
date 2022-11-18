@@ -32,7 +32,7 @@ class _TopicCoverBig extends StatelessWidget {
                   Positioned.fill(
                     child: TopicCoverImage(
                       topic: topic,
-                      borderRadius: AppDimens.smallImageCoverBorderRadius,
+                      borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
                     ),
                   ),
                   if (topic.curationInfo.curator is ExpertCurator)

@@ -49,7 +49,7 @@ class SubscriptionPlanCard extends HookWidget {
           decoration: BoxDecoration(
             border: Border.all(color: isSelected ? AppColors.charcoal : AppColors.lightGrey),
             borderRadius: const BorderRadius.all(
-              Radius.circular(AppDimens.m),
+              Radius.circular(AppDimens.modalRadius),
             ),
             color: isSelected ? AppColors.white : AppColors.lightGrey,
           ),
@@ -100,7 +100,7 @@ class SubscriptionPlanCard extends HookWidget {
                         horizontal: AppDimens.sl,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppDimens.m),
+                        borderRadius: BorderRadius.circular(AppDimens.pillRadius),
                         color: AppColors.limeGreen,
                       ),
                       child: Text(

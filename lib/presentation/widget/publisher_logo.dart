@@ -46,28 +46,31 @@ class PublisherLogo extends HookWidget {
 
     return publisherLogoId == null
         ? const SizedBox.shrink()
-        : Padding(
-            padding: const EdgeInsets.only(right: AppDimens.s),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: kIsTest
-                  ? Image.asset(
-                      publisherLogoId,
-                      width: _publisherLogoSize,
-                      height: _publisherLogoSize,
-                      fit: BoxFit.contain,
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: cloudinaryProvider
-                          .withPublicId(publisherLogoId)
-                          .transform()
-                          .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
-                          .fit()
-                          .generateNotNull(publisherLogoId, imageType: ImageType.png),
-                      width: dimension,
-                      height: dimension,
-                      fit: BoxFit.contain,
-                    ),
+        : ClipRRect(
+            borderRadius: BorderRadius.circular(AppDimens.iconRadius),
+            child: Padding(
+              padding: const EdgeInsets.only(right: AppDimens.s),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: kIsTest
+                    ? Image.asset(
+                        publisherLogoId,
+                        width: _publisherLogoSize,
+                        height: _publisherLogoSize,
+                        fit: BoxFit.contain,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: cloudinaryProvider
+                            .withPublicId(publisherLogoId)
+                            .transform()
+                            .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
+                            .fit()
+                            .generateNotNull(publisherLogoId, imageType: ImageType.png),
+                        width: dimension,
+                        height: dimension,
+                        fit: BoxFit.contain,
+                      ),
+              ),
             ),
           );
   }

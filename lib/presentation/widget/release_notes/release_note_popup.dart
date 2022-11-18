@@ -33,7 +33,7 @@ class ReleaseNotePopup extends StatelessWidget {
         child: ClipRRect(
           borderRadius: const BorderRadius.all(
             Radius.circular(
-              AppDimens.m,
+              AppDimens.modalRadius,
             ),
           ),
           child: Material(

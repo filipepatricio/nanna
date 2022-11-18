@@ -2,6 +2,9 @@
 #include "Generated.xcconfig"
 
 APP_DISPLAY_NAME=informed
-APP_LINKS_HOST=www.informed.so
+APP_LINKS_HOST=app.informed.so
+APP_LINKS_HOST_2=www.informed.so
+ONELINK_HOST=informed.onelink.me
+ONELINK_CUSTOM_HOST=get.informed.so
 SEGMENT_WRITE_KEY=Jp2reNsfGRxapvFlgmDYBsRJ2LA2TLSP
 FACEBOOK_APP_ID=525120512609664

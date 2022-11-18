@@ -136,7 +136,7 @@ class FilledButton extends StatelessWidget {
                 )
               : null,
           borderRadius: const BorderRadius.all(
-            Radius.circular(AppDimens.buttonRadius),
+            Radius.circular(AppDimens.defaultRadius),
           ),
         ),
         child: Row(

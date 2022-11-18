@@ -28,13 +28,24 @@ class _TopicCoverSmall extends StatelessWidget {
                     flex: 9,
                     child: TopicCoverImage(
                       topic: topic,
-                      borderRadius: AppDimens.smallImageCoverBorderRadius,
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(
+                          AppDimens.defaultRadius,
+                        ),
+                      ),
                     ),
                   ),
                   Expanded(
                     flex: 7,
-                    child: Container(
-                      color: topic.category.color,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: topic.category.color,
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(
+                            AppDimens.defaultRadius,
+                          ),
+                        ),
+                      ),
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),

@@ -42,9 +42,7 @@ class SnackbarView extends HookWidget {
       ),
       decoration: BoxDecoration(
         color: messageState.value?.backgroundColor,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppDimens.s),
-        ),
+        borderRadius: BorderRadius.circular(AppDimens.modalRadius),
         boxShadow: cardShadows,
       ),
       child: LayoutBuilder(

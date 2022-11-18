@@ -22,7 +22,7 @@ class ArticleNoImageView extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: color ?? AppColors.white,
-              borderRadius: BorderRadius.circular(AppDimens.buttonRadius),
+              borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
             ),
           ),
         ),
