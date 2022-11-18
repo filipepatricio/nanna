@@ -26,7 +26,7 @@ class TopicHeader extends HookWidget {
 
     return SizedBox(
       width: topicHeaderImageWidth,
-      height: topicHeaderImageHeight - (AppDimens.audioBannerHeight + MediaQuery.of(context).padding.bottom),
+      height: topicHeaderImageHeight,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [

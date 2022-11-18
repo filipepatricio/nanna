@@ -44,20 +44,10 @@ class SwitchAudioPopup extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.xl),
-          RichText(
+          Text(
+            LocaleKeys.audio_switchAudio_message.tr(),
             textAlign: TextAlign.center,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: tr(LocaleKeys.audio_switchAudio_title),
-                  style: AppTypography.b2Bold,
-                ),
-                TextSpan(
-                  text: tr(LocaleKeys.audio_switchAudio_info),
-                  style: AppTypography.b2Regular,
-                ),
-              ],
-            ),
+            style: AppTypography.b2Bold,
           ),
           const SizedBox(height: AppDimens.l),
           FilledButton.black(
