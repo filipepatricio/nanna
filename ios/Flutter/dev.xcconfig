@@ -3,5 +3,8 @@
 
 APP_DISPLAY_NAME=informed dev
 APP_LINKS_HOST=dev.informed.so
+APP_LINKS_HOST_2=www.staging.informed.so
+ONELINK_HOST=informed-staging.onelink.me
+ONELINK_CUSTOM_HOST=get.staging.informed.so
 SEGMENT_WRITE_KEY=jmJAkhCovDOdxwUqbDBgpFW4xWkpLUte
 FACEBOOK_APP_ID=345458011020663

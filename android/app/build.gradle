@@ -141,6 +141,7 @@ android {
 
             resValue "string", "app_name", "informed test"
             resValue "string", "app_link_host", "app.staging.informed.so"
+            resValue "string", "app_link_host_2", "www.staging.informed.so"
             resValue "string", "onelink_host", "informed-staging.onelink.me"
             resValue "string", "onelink_custom_host", "get.staging.informed.so"
             resValue "string", "onelink_path_prefix", "/tHNA"
@@ -156,7 +157,8 @@ android {
             dimension "env"
 
             resValue "string", "app_name", "informed"
-            resValue "string", "app_link_host", "www.informed.so"
+            resValue "string", "app_link_host", "app.informed.so"
+            resValue "string", "app_link_host_2", "www.informed.so"
             resValue "string", "onelink_host", "informed.onelink.me"
             resValue "string", "onelink_custom_host", "get.informed.so"
             resValue "string", "onelink_path_prefix", "/BHtj"
