@@ -201,16 +201,11 @@ class _TopicIdleView extends HookWidget {
                 isScrolled: isScrolled,
               ),
             ),
-            ValueListenableBuilder<bool>(
-              valueListenable: isScrolled,
-              builder: (context, scrolled, banner) => AnimatedPositioned(
-                duration: const Duration(milliseconds: 150),
-                bottom: scrolled ? 0 : -AppDimens.xxxc,
-                left: 0,
-                right: 0,
-                child: banner!,
-              ),
-              child: const AudioPlayerBannerShadow(
+            const Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: AudioPlayerBannerShadow(
                 child: AudioPlayerBanner(),
               ),
             ),
