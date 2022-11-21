@@ -353,10 +353,9 @@
   "audio": {
     "speed": "Speed {}",
     "switchAudio": {
-      "title": "This action will replace the current audio\n",
-      "info": "Are you sure you want to switch and start listening to a new article?",
-      "deny": "No, keep this one",
-      "approve": "Yes, play the new one"
+      "message": "Replace the current audio?",
+      "deny": "No, keep listening",
+      "approve": "Yes, replace"
     }
   },
   "releaseNotes": {
