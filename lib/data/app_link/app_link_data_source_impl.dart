@@ -23,13 +23,14 @@ class AppLinkDataSourceImpl implements AppLinkDataSource {
 
   Future<void> _initialize() async {
     try {
-      _initialRoute = await getInitialUri();
+      final initial = await getInitialUri();
+      _initialRoute = initial != null && _isNotForbidden(initial) ? initial : null;
     } catch (e, s) {
       Fimber.e('Getting initial link failed', ex: e, stacktrace: s);
     }
 
     _appLinkStreamSubscription = uriLinkStream.listen((event) {
-      if (event != null && event.path != appConfig.appsFlyerLinkPath) {
+      if (event != null && _isNotForbidden(event)) {
         _appLinkStream.sink.add(event);
       }
     });
@@ -48,4 +49,6 @@ class AppLinkDataSourceImpl implements AppLinkDataSource {
     await _appLinkStreamSubscription?.cancel();
     await _appLinkStream.close();
   }
+
+  bool _isNotForbidden(Uri event) => event.path != appConfig.appsFlyerLinkPath;
 }
