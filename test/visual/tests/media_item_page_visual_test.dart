@@ -59,19 +59,6 @@ void main() {
     await tester.matchGoldenFile();
   });
 
-  visualTest('${MediaItemPage}_(audio)', (tester) async {
-    await tester.startApp(
-      initialRoute: MainPageRoute(
-        children: [
-          MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
-        ],
-      ),
-    );
-    await tester.fling(find.byType(PremiumArticleView), const Offset(-2000, 0), 100);
-    await tester.pumpAndSettle();
-    await tester.matchGoldenFile();
-  });
-
   visualTest('${MediaItemPage}_(geoblocked)', (tester) async {
     await tester.startApp(
       initialRoute: MainPageRoute(children: [MediaItemPageRoute(slug: '')]),

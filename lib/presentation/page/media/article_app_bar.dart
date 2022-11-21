@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
@@ -63,7 +64,9 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
       builder: (context, bookmark) => ClipRect(
         child: InformedCupertinoAppBar(
           backgroundColor: animation.value,
-          backLabel: fromTopic ? LocaleKeys.topic_label.tr() : LocaleKeys.common_back.tr(),
+          leading: BackTextButton(
+            text: fromTopic ? LocaleKeys.topic_label.tr() : LocaleKeys.common_back.tr(),
+          ),
           actions: [
             bookmark!,
             const SizedBox(width: AppDimens.m),
