@@ -531,6 +531,11 @@ class MockDTO {
     hasAudioVersion: true,
     image: _articleImageCloudinary,
   );
+  static final premiumArticleWithAudioNoImage = premiumArticleWithoutImage.copyWith(
+    id: 'id-premium-audio',
+    slug: 'slug-premium-audio',
+    hasAudioVersion: true,
+  );
   static final premiumArticleWithAudioLocked = premiumArticle.copyWith(
     id: 'id-premium-audio',
     slug: 'slug-premium-audio-not-available',

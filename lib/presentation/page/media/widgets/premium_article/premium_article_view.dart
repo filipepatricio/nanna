@@ -4,8 +4,6 @@ import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_app_bar.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_cubit_provider.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
@@ -40,8 +38,6 @@ class PremiumArticleView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<PremiumArticleViewCubit>();
-    final state = useCubitBuilder(cubit);
-    final horizontalPageController = usePageController(initialPage: articleOutputMode.index);
     final mainController = useScrollController(keepScrollOffset: true);
     final isScrolled = useValueNotifier(false);
     final actionsBarColorModeNotifier = useMemoized(
@@ -120,44 +116,9 @@ class PremiumArticleView extends HookWidget {
       ),
       body: ScrollsToTop(
         onScrollsToTop: (_) => mainController.animateToStart(),
-        child: PremiumArticleAudioCubitProvider(
-          article: article.metadata,
-          audioCubitBuilder: (audioCubit) => state.maybeMap(
-            idle: (state) => PageView(
-              physics: state.scrollPhysics,
-              controller: horizontalPageController,
-              scrollDirection: Axis.horizontal,
-              onPageChanged: (page) {
-                switch (page) {
-                  case 0:
-                    actionsBarColorModeNotifier.value =
-                        isScrolled.value ? ArticleActionsBarColorMode.background : ArticleActionsBarColorMode.custom;
-                    break;
-                  case 1:
-                    actionsBarColorModeNotifier.value = ArticleActionsBarColorMode.background;
-                    break;
-                }
-              },
-              children: [
-                PremiumArticleReadView(
-                  cubit: cubit,
-                  mainController: mainController,
-                  onAudioBannerTap: () => horizontalPageController.animateToPage(
-                    ArticleOutputMode.audio.index,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.decelerate,
-                  ),
-                ),
-                if (state.article.metadata.hasAudioVersion && state.article.metadata.availableInSubscription)
-                  PremiumArticleAudioView(
-                    article: article,
-                    cubit: audioCubit,
-                    enablePageSwipe: cubit.enablePageSwipe,
-                  ),
-              ],
-            ),
-            orElse: Container.new,
-          ),
+        child: PremiumArticleReadView(
+          cubit: cubit,
+          mainController: mainController,
         ),
       ),
     );

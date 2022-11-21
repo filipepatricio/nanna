@@ -4,6 +4,7 @@ import 'tests/app_connectivity_dialog_visual_test.dart' as app_connectivity_dial
 import 'tests/app_update_dialog_visual_test.dart' as app_update_dialog_visual_test;
 import 'tests/article_paywall_view_visual_test.dart' as article_paywall_view_visual_test;
 import 'tests/articles_see_all_page_visual_test.dart' as articles_see_all_page_visual_test;
+import 'tests/audio_page_visual_test.dart' as audio_page_visual_test;
 import 'tests/category_page_visual_test.dart' as category_page_visual_test;
 import 'tests/change_subscription_page_visual_test.dart' as change_subscription_page_visual_test;
 import 'tests/daily_brief_page_visual_test.dart' as daily_brief_page_visual_test;
@@ -64,4 +65,5 @@ void main() {
   group('subscription_page_visual_test', subscription_page_visual_test.main);
   group('settings_subscription_page_visual_test', settings_subscription_page_visual_test.main);
   group('change_subscription_page_visual_test', change_subscription_page_visual_test.main);
+  group('audio_page_visual_test', audio_page_visual_test.main);
 }

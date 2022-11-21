@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/presentation/page/settings/main/settings_
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -25,7 +26,9 @@ class SettingsMainPage extends HookWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: InformedCupertinoAppBar(
-        backLabel: LocaleKeys.profile_title.tr(),
+        leading: BackTextButton(
+          text: LocaleKeys.profile_title.tr(),
+        ),
         title: LocaleKeys.settings_settings.tr(),
       ),
       body: SnackbarParentView(
