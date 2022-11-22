@@ -1,13 +1,12 @@
-import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
-import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
+import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:flutter/material.dart';
@@ -91,72 +90,8 @@ class _CategoryItem extends StatelessWidget {
           const SizedBox(width: AppDimens.xl),
           CategoryPreferenceFollowButton(
             categoryPreference: categoryPreference,
-            onTap: () => categoryPreference.isPreferred
-                ? cubit.unfollowCategory(categoryPreference)
-                : cubit.followCategory(categoryPreference),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CategoryPreferenceFollowButton extends HookWidget {
-  const CategoryPreferenceFollowButton({
-    required this.categoryPreference,
-    required this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  final CategoryPreference categoryPreference;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    // final isLoading = false;
-    final isPreferred = categoryPreference.isPreferred;
-    return
-        // isLoading ? Container(
-        //       height: AppDimens.m,
-        //       width: AppDimens.m,
-        //       child: Center(
-        //         child: CircularProgressIndicator(
-        //           color: AppColors.charcoal,
-        //           strokeWidth: AppDimens.xxs,
-        //         ),
-        //       ),
-        //     )
-        //   :
-        GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        height: AppDimens.xl,
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(
-          vertical: AppDimens.s,
-          horizontal: AppDimens.m,
-        ),
-        decoration: BoxDecoration(
-          color: isPreferred ? AppColors.lightGrey : AppColors.charcoal,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(100),
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Text(
-                isPreferred ? LocaleKeys.common_following.tr() : LocaleKeys.common_follow.tr(),
-                style: AppTypography.buttonBold.copyWith(
-                  color: isPreferred ? AppColors.textPrimary : AppColors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

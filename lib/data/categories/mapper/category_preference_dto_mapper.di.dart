@@ -1,7 +1,7 @@
-import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/mapper/category_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/mapper.dart';
-import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
+import 'package:better_informed_mobile/data/user/api/dto/category_preference_dto.dt.dart';
+import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

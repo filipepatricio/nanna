@@ -3,15 +3,18 @@ import 'package:better_informed_mobile/domain/categories/data/category_item.dt.d
 import 'package:better_informed_mobile/domain/categories/data/category_with_items.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/items_grid_view/items_grid_view.dart';
-import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
-import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
+import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -46,7 +49,20 @@ class CategoryPage extends HookWidget {
     );
 
     return Scaffold(
-      appBar: FixedAppBar(scrollController: scrollController, title: category.name),
+      appBar: InformedCupertinoAppBar(
+        leading: BackTextButton(
+          text: LocaleKeys.common_back.tr(),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: AppDimens.pageHorizontalMargin),
+            child: CategoryPreferenceFollowButton(
+              category: category,
+            ),
+          ),
+        ],
+        title: category.name,
+      ),
       body: SnackbarParentView(
         child: CustomScrollView(
           controller: scrollController,
