@@ -6,7 +6,10 @@ abstract class PurchasesRepository {
 
   Future<void> identify(String userId);
 
-  Future<void> linkWithAppsflyer(String appsflyerId);
+  Future<void> linkWithExternalServices(
+    String? appsflyerId,
+    String? facebookAnonymousId,
+  );
 
   Future<bool> hasActiveSubscription();
 

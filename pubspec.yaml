@@ -103,6 +103,7 @@ dependencies:
   dotted_line: 3.1.0
   collection: 1.16.0
   dart_code_metrics: 4.19.2
+  facebook_app_events: 0.18.1
 
 dev_dependencies:
   flutter_test:

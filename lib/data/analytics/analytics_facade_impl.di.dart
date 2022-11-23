@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:better_informed_mobile/data/analytics/dto/install_attribution_data_dto.dt.dart';
@@ -8,6 +9,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
 import 'package:launchdarkly_flutter_client_sdk/launchdarkly_flutter_client_sdk.dart';
@@ -18,10 +20,12 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 class AnalyticsFacadeImpl implements AnalyticsFacade {
   AnalyticsFacadeImpl(
     this._appsflyerSdk,
+    this._facebookAppEvents,
     this._installAttributionPayloadMapper,
   );
 
   final AppsflyerSdk _appsflyerSdk;
+  final FacebookAppEvents _facebookAppEvents;
   final InstallAttributionPayloadMapper _installAttributionPayloadMapper;
 
   StreamController<String> _deepLinkStream = BehaviorSubject<String>();
@@ -63,14 +67,22 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
   Future<String?> getAppsflyerId() => _appsflyerSdk.getAppsFlyerUID();
 
   @override
+  Future<String?> getFbAnonymousId() => _facebookAppEvents.getAnonymousId();
+
+  @override
   Future<void> config(String writeKey) async {
-    return await Segment.config(
-      options: SegmentConfig(
-        writeKey: writeKey,
-        trackApplicationLifecycleEvents: true,
-        amplitudeIntegrationEnabled: false,
-      ),
-    );
+    await _facebookAppEvents.setAutoLogAppEventsEnabled(false);
+
+    // App Lifecycle events are not being correctly tracked in iOS with Dart-based config - https://github.com/la-haus/flutter-segment/issues/26#issuecomment-1143557997
+    if (!Platform.isIOS) {
+      await Segment.config(
+        options: SegmentConfig(
+          writeKey: writeKey,
+          trackApplicationLifecycleEvents: true,
+          amplitudeIntegrationEnabled: false,
+        ),
+      );
+    }
   }
 
   @override
