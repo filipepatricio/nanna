@@ -48,9 +48,9 @@ class _ArticleFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilledButton.white(
+    return FilledButton.black(
       onTap: context.goToExplore,
-      text: LocaleKeys.explore_moreStoriesOnExplore.tr(),
+      text: LocaleKeys.explore_exploreNow.tr(),
     );
   }
 }

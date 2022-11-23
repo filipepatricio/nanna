@@ -51,19 +51,8 @@ class RelaxView extends StatelessWidget {
         break;
     }
 
-    return Container(
+    return Padding(
       padding: const EdgeInsets.all(AppDimens.xl),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppDimens.m),
-        color: () {
-          switch (type) {
-            case RelaxViewType.dailyBrief:
-              return AppColors.lightGrey;
-            case RelaxViewType.article:
-              return AppColors.lightGrey;
-          }
-        }(),
-      ),
       child: content,
     );
   }
