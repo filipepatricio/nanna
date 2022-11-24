@@ -51,13 +51,15 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<bool> followCategory(Category category) async {
-    return (await _dataSource.followCategory(category.id)).successful;
+  Future<CategoryPreference> followCategory(Category category) async {
+    final dto = await _dataSource.followCategory(category.id);
+    return _categoryPreferenceDTOMapper(dto);
   }
 
   @override
-  Future<bool> unfollowCategory(Category category) async {
-    return (await _dataSource.unfollowCategory(category.id)).successful;
+  Future<CategoryPreference> unfollowCategory(Category category) async {
+    final dto = await _dataSource.unfollowCategory(category.id);
+    return _categoryPreferenceDTOMapper(dto);
   }
 
   @override

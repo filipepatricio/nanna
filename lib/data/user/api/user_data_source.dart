@@ -14,9 +14,9 @@ abstract class UserDataSource {
 
   Future<SuccessfulResponseDTO> deleteAccount();
 
-  Future<SuccessfulResponseDTO> followCategory(String id);
+  Future<CategoryPreferenceDTO> followCategory(String id);
 
-  Future<SuccessfulResponseDTO> unfollowCategory(String id);
+  Future<CategoryPreferenceDTO> unfollowCategory(String id);
 
   Future<CategoryPreferenceDTO> getCategoryPreference(String id);
 }

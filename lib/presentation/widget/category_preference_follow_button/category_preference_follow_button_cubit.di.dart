@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/domain/user/use_case/follow_category_use_
 import 'package:better_informed_mobile/domain/user/use_case/get_category_preference_use_case.di.dart';
 import 'package:better_informed_mobile/domain/user/use_case/unfollow_category_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/category_preference_follow_button_state.dt.dart';
+import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:injectable/injectable.dart';
@@ -60,34 +60,22 @@ class CategoryPreferenceFollowButtonCubit extends Cubit<CategoryPreferenceFollow
 
   Future<void> followCategory(CategoryPreference categoryPreference) async {
     try {
-      final didUpdate = await _followCategoryUseCase(categoryPreference.category);
-
-      if (!didUpdate) {
-        emit(CategoryPreferenceFollowButtonState.showMessage(LocaleKeys.common_error_body.tr()));
-        return;
-      }
-
+      final updatedCategoryPreference = await _followCategoryUseCase(categoryPreference.category);
       _updateBriefStreamController.sink.add(true);
-      final newCategoryPreference = await _getCategoryPreferenceUseCase(categoryPreference.category);
-      emit(CategoryPreferenceFollowButtonState.categoryPreferenceLoaded(newCategoryPreference));
+      emit(CategoryPreferenceFollowButtonState.categoryPreferenceLoaded(updatedCategoryPreference));
     } catch (e, s) {
+      emit(CategoryPreferenceFollowButtonState.showMessage(LocaleKeys.common_generalError.tr()));
       Fimber.e('Update preferred categories failed', ex: e, stacktrace: s);
     }
   }
 
   Future<void> unfollowCategory(CategoryPreference categoryPreference) async {
     try {
-      final didUpdate = await _unfollowCategoryUseCase(categoryPreference.category);
-
-      if (!didUpdate) {
-        emit(CategoryPreferenceFollowButtonState.showMessage(LocaleKeys.common_error_body.tr()));
-        return;
-      }
-
+      final updatedCategoryPreference = await _unfollowCategoryUseCase(categoryPreference.category);
       _updateBriefStreamController.sink.add(true);
-      final newCategoryPreference = await _getCategoryPreferenceUseCase(categoryPreference.category);
-      emit(CategoryPreferenceFollowButtonState.categoryPreferenceLoaded(newCategoryPreference));
+      emit(CategoryPreferenceFollowButtonState.categoryPreferenceLoaded(updatedCategoryPreference));
     } catch (e, s) {
+      emit(CategoryPreferenceFollowButtonState.showMessage(LocaleKeys.common_generalError.tr()));
       Fimber.e('Update preferred categories failed', ex: e, stacktrace: s);
     }
   }

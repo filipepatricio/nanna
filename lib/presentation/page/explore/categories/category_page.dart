@@ -48,23 +48,23 @@ class CategoryPage extends HookWidget {
       orElse: () => false,
     );
 
-    return Scaffold(
-      appBar: InformedCupertinoAppBar(
-        leading: BackTextButton(
-          text: LocaleKeys.common_back.tr(),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: AppDimens.pageHorizontalMargin),
-            child: CategoryPreferenceFollowButton(
-              category: category,
-            ),
+    return SnackbarParentView(
+      child: Scaffold(
+        appBar: InformedCupertinoAppBar(
+          leading: BackTextButton(
+            text: LocaleKeys.common_back.tr(),
           ),
-        ],
-        title: category.name,
-      ),
-      body: SnackbarParentView(
-        child: CustomScrollView(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: AppDimens.pageHorizontalMargin),
+              child: CategoryPreferenceFollowButton(
+                category: category,
+              ),
+            ),
+          ],
+          title: category.name,
+        ),
+        body: CustomScrollView(
           controller: scrollController,
           slivers: [
             NextPageLoadExecutor(

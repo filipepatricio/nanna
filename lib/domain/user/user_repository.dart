@@ -14,9 +14,9 @@ abstract class UserRepository {
 
   Future<List<CategoryPreference>> getCategoryPreferences();
 
-  Future<bool> followCategory(Category category);
+  Future<CategoryPreference> followCategory(Category category);
 
-  Future<bool> unfollowCategory(Category category);
+  Future<CategoryPreference> unfollowCategory(Category category);
 
   Future<CategoryPreference> getCategoryPreference(Category category);
 }

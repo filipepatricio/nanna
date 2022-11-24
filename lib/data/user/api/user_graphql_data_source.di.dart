@@ -137,7 +137,7 @@ class UserGraphqlDataSource implements UserDataSource {
   }
 
   @override
-  Future<SuccessfulResponseDTO> followCategory(String id) async {
+  Future<CategoryPreferenceDTO> followCategory(String id) async {
     final result = await _client.mutate(
       MutationOptions(
         document: follow_category.document,
@@ -150,15 +150,16 @@ class UserGraphqlDataSource implements UserDataSource {
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) => SuccessfulResponseDTO.fromJson(raw),
+      (raw) => CategoryPreferenceDTO.fromJson(raw['updatedPreference'] as Map<String, dynamic>),
       rootKey: 'preferCategory',
     );
 
-    return dto ?? SuccessfulResponseDTO(false);
+    if (dto == null) throw Exception('Response for prefer category preference is null');
+    return dto;
   }
 
   @override
-  Future<SuccessfulResponseDTO> unfollowCategory(String id) async {
+  Future<CategoryPreferenceDTO> unfollowCategory(String id) async {
     final result = await _client.mutate(
       MutationOptions(
         document: unfollow_category.document,
@@ -171,11 +172,12 @@ class UserGraphqlDataSource implements UserDataSource {
 
     final dto = _responseResolver.resolve(
       result,
-      (raw) => SuccessfulResponseDTO.fromJson(raw),
+      (raw) => CategoryPreferenceDTO.fromJson(raw['updatedPreference'] as Map<String, dynamic>),
       rootKey: 'unpreferCategory',
     );
 
-    return dto ?? SuccessfulResponseDTO(false);
+    if (dto == null) throw Exception('Response for unprefer category preference is null');
+    return dto;
   }
 
   @override

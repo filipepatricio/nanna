@@ -1,5 +1,13 @@
+# import 'package:better_informed_mobile/data/gql/common/category_fragment.graphql';
+
 mutation unfollowCategory ($categoryId: UUID!){
     unpreferCategory(categoryId: $categoryId) {
         successful
+        updatedPreference{
+            isPreferred
+            category {
+                ...categoryFragment
+            }
+        }
     }
 }
