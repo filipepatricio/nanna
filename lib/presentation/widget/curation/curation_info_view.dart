@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/curation/curator_avatar_unknown.dart';
 import 'package:better_informed_mobile/presentation/widget/curator_image.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,8 @@ class CurationInfoView extends StatelessWidget {
       return const CuratorAvatarUnknown();
     }
 
-    return ExpandTapWidget(
+    return PaddingTapWidget(
+      alignment: AlignmentDirectional.centerStart,
       tapPadding: const EdgeInsets.all(AppDimens.m),
       onTap: onTap ?? () => context.pushRoute(TopicOwnerPageRoute(owner: curationInfo.curator)),
       child: Row(

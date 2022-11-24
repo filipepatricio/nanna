@@ -8,7 +8,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
@@ -190,7 +190,7 @@ class _IdleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpandTapWidget(
+    return PaddingTapWidget(
       onTap: () async {
         await HapticFeedback.mediumImpact();
         await animationController.forward();

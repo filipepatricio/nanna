@@ -9,6 +9,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dar
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/exception/brief_not_initialized_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
@@ -69,7 +70,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
   late BriefsWrapper _briefsWrapper;
-  late Brief _selectedBrief;
+  Brief? _selectedBrief;
 
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
@@ -125,14 +126,15 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   Future<void> _refetchBriefs() async {
-    final todaysBriefSelected = _selectedBrief == _briefsWrapper.currentBrief;
-
     _briefsWrapper = await _getCurrentBriefUseCase();
+    _selectedBrief ??= _briefsWrapper.currentBrief;
+
+    final todaysBriefSelected = _selectedBrief == _briefsWrapper.currentBrief;
 
     if (todaysBriefSelected) {
       _selectedBrief = _briefsWrapper.currentBrief;
     } else {
-      _selectedBrief = await _getPastDaysBriesfUseCase(_selectedBrief.date);
+      _selectedBrief = await _getPastDaysBriesfUseCase(_selectedBrief!.date);
     }
 
     _updateIdleState();
@@ -152,22 +154,27 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   void _updateIdleState({bool preCacheImages = false}) {
-    emit(
-      DailyBriefPageState.idle(
-        selectedBrief: _selectedBrief,
-        pastDays: _briefsWrapper.pastDays,
-        showCalendar: _shouldShowCalendar,
-        showAppBarTitle: _shouldShowAppBarTitle,
-      ),
-    );
-
-    if (preCacheImages) {
+    if (_selectedBrief != null) {
       emit(
-        DailyBriefPageState.preCacheImages(
-          briefEntryList: _briefsWrapper.currentBrief.allEntries,
+        DailyBriefPageState.idle(
+          selectedBrief: _selectedBrief!,
+          pastDays: _briefsWrapper.pastDays,
+          showCalendar: _shouldShowCalendar,
+          showAppBarTitle: _shouldShowAppBarTitle,
         ),
       );
+
+      if (preCacheImages) {
+        emit(
+          DailyBriefPageState.preCacheImages(
+            briefEntryList: _briefsWrapper.currentBrief.allEntries,
+          ),
+        );
+      }
+      return;
     }
+
+    throw BriefNotInitializedException();
   }
 
   void toggleCalendar(bool showCalendar) {
@@ -189,7 +196,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   Future<void> selectBrief(DateTime briefDate) async {
-    if (briefDate.isSameDateAs(_selectedBrief.date)) return;
+    final localSelectedBrief = _selectedBrief ?? _briefsWrapper.currentBrief;
+
+    if (briefDate.isSameDateAs(localSelectedBrief.date)) return;
 
     if (briefDate.isSameDateAs(_briefsWrapper.currentBrief.date)) {
       _selectedBrief = _briefsWrapper.currentBrief;
@@ -209,7 +218,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
     _trackActivityUseCase.trackEvent(
       AnalyticsEvent.calendarBriefSelected(
-        _selectedBrief.id,
+        _selectedBrief!.id,
         isTodaysBrief: _selectedBrief == _briefsWrapper.currentBrief,
       ),
     );
@@ -218,19 +227,29 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   }
 
   void trackRelaxPage() {
-    _trackActivityUseCase.trackEvent(
-      AnalyticsEvent.dailyBriefRelaxMessageViewed(_selectedBrief.id),
-    );
+    if (_selectedBrief != null) {
+      _trackActivityUseCase.trackEvent(
+        AnalyticsEvent.dailyBriefRelaxMessageViewed(_selectedBrief!.id),
+      );
+      return;
+    }
+
+    throw BriefNotInitializedException();
   }
 
   void trackBriefEntryPreviewed(BriefEntry briefEntry, int position, double visibility) {
-    final event = AnalyticsEvent.dailyBriefEntryPreviewed(
-      _selectedBrief.id,
-      briefEntry.id,
-      position,
-      briefEntry.type.name,
-    );
-    _emitItemPreviewedEvent(briefEntry.id, event, visibility);
+    if (_selectedBrief != null) {
+      final event = AnalyticsEvent.dailyBriefEntryPreviewed(
+        _selectedBrief!.id,
+        briefEntry.id,
+        position,
+        briefEntry.type.name,
+      );
+      _emitItemPreviewedEvent(briefEntry.id, event, visibility);
+      return;
+    }
+
+    throw BriefNotInitializedException();
   }
 
   void _emitItemPreviewedEvent(String id, AnalyticsEvent event, double visibility) {
