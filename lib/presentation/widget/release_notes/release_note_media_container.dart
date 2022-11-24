@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/domain/release_notes/data/release_note_me
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/release_notes/video_controls/release_note_video_controls.dart';
@@ -42,9 +42,9 @@ class ReleaseNoteMediaContainer extends HookWidget {
               else
                 _MediaView(media: releaseNote.media.first),
               Positioned(
-                top: AppDimens.m,
-                right: AppDimens.m,
-                child: ExpandTapWidget(
+                top: AppDimens.zero,
+                right: AppDimens.zero,
+                child: PaddingTapWidget(
                   onTap: () => context.popRoute(),
                   tapPadding: const EdgeInsets.all(AppDimens.l),
                   child: SvgPicture.asset(AppVectorGraphics.closeBackground),
