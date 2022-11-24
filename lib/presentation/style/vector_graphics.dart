@@ -39,7 +39,6 @@ class AppVectorGraphics {
   static const String notifications = 'assets/vector_graphics/notification.svg';
   static const String feedback = 'assets/vector_graphics/feedback_ic.svg';
   static const String star = 'assets/vector_graphics/star.svg';
-  static const String starFilled = 'assets/vector_graphics/star_filled.svg';
 
   static const String mail = 'assets/vector_graphics/mail_ic.svg';
   static const String googleSignIn = 'assets/vector_graphics/google_sign_in.svg';

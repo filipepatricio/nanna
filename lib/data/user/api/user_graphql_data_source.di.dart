@@ -1,10 +1,19 @@
 import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/delete_account.ast.gql.dart'
     as delete_account;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/follow_category.ast.gql.dart'
+    as follow_category;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/get_category_preference.ast.gql.dart'
+    as get_category_preference;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/get_category_preferences.ast.gql.dart'
+    as get_category_preferences;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/query_user.ast.gql.dart' as query_user;
+import 'package:better_informed_mobile/data/user/api/documents/__generated__/unfollow_category.ast.gql.dart'
+    as unfollow_category;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_preferred_categories.ast.gql.dart'
     as update_preferred_categories;
 import 'package:better_informed_mobile/data/user/api/documents/__generated__/update_user.ast.gql.dart' as update_user;
+import 'package:better_informed_mobile/data/user/api/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
@@ -62,6 +71,32 @@ class UserGraphqlDataSource implements UserDataSource {
   }
 
   @override
+  Future<List<CategoryPreferenceDTO>> getCategoryPreferences() async {
+    final result = await _client.query(
+      QueryOptions(
+        document: get_category_preferences.document,
+        operationName: get_category_preferences.getCategoryPreferences.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) {
+        final categoriesPreferenceRaw = raw['getCategoryPreferences'] as List<dynamic>;
+        final categoriesPreference = categoriesPreferenceRaw
+            .map((json) => CategoryPreferenceDTO.fromJson(json as Map<String, dynamic>))
+            .toList(growable: false);
+
+        return categoriesPreference;
+      },
+    );
+
+    if (dto == null) throw Exception('Response for category preferences is null');
+    return dto;
+  }
+
+  @override
   Future<SuccessfulResponseDTO> updatePreferredCategories(List<String> categoryIds) async {
     final result = await _client.mutate(
       MutationOptions(
@@ -99,5 +134,72 @@ class UserGraphqlDataSource implements UserDataSource {
     );
 
     return dto ?? SuccessfulResponseDTO(false);
+  }
+
+  @override
+  Future<CategoryPreferenceDTO> followCategory(String id) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: follow_category.document,
+        operationName: follow_category.followCategory.name?.value,
+        variables: {
+          'categoryId': id,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => CategoryPreferenceDTO.fromJson(raw['updatedPreference'] as Map<String, dynamic>),
+      rootKey: 'preferCategory',
+    );
+
+    if (dto == null) throw Exception('Response for prefer category preference is null');
+    return dto;
+  }
+
+  @override
+  Future<CategoryPreferenceDTO> unfollowCategory(String id) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: unfollow_category.document,
+        operationName: unfollow_category.unfollowCategory.name?.value,
+        variables: {
+          'categoryId': id,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => CategoryPreferenceDTO.fromJson(raw['updatedPreference'] as Map<String, dynamic>),
+      rootKey: 'unpreferCategory',
+    );
+
+    if (dto == null) throw Exception('Response for unprefer category preference is null');
+    return dto;
+  }
+
+  @override
+  Future<CategoryPreferenceDTO> getCategoryPreference(String id) async {
+    final result = await _client.query(
+      QueryOptions(
+        document: get_category_preference.document,
+        operationName: get_category_preference.getCategoryPreference.name?.value,
+        fetchPolicy: FetchPolicy.networkOnly,
+        variables: {
+          'categoryId': id,
+        },
+      ),
+    );
+
+    final dto = _responseResolver.resolve(
+      result,
+      (raw) => CategoryPreferenceDTO.fromJson(raw),
+      rootKey: 'getCategoryPreference',
+    );
+
+    if (dto == null) throw Exception('Response for category preference is null');
+    return dto;
   }
 }

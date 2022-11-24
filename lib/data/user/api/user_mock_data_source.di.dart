@@ -1,7 +1,9 @@
 import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/user/api/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/user_data_source.dart';
+import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/user/data/user.dart';
 import 'package:injectable/injectable.dart';
@@ -39,5 +41,17 @@ class UserMockDataSource implements UserDataSource {
       SuccessfulResponseDTO(true);
 
   @override
+  Future<List<CategoryPreferenceDTO>> getCategoryPreferences() async => MockDTO.categoryPreferences;
+
+  @override
   Future<SuccessfulResponseDTO> deleteAccount() async => SuccessfulResponseDTO(true);
+
+  @override
+  Future<CategoryPreferenceDTO> followCategory(String slug) async => MockDTO.categoryPreference;
+
+  @override
+  Future<CategoryPreferenceDTO> unfollowCategory(String slug) async => MockDTO.categoryPreference;
+
+  @override
+  Future<CategoryPreferenceDTO> getCategoryPreference(String id) async => MockDTO.categoryPreference;
 }

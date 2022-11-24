@@ -1,20 +1,16 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ExploreAreaHeader extends StatelessWidget {
   const ExploreAreaHeader({
     required this.title,
-    required this.isPreferred,
     this.description,
     Key? key,
   }) : super(key: key);
 
   final String title;
-  final bool isPreferred;
   final String? description;
 
   @override
@@ -34,7 +30,6 @@ class ExploreAreaHeader extends StatelessWidget {
                 title,
                 style: AppTypography.h2Medium,
               ),
-              if (isPreferred) SvgPicture.asset(AppVectorGraphics.starFilled),
             ],
           ),
           if (optDescription != null) ...[
