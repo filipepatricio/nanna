@@ -10,7 +10,7 @@ import 'package:better_informed_mobile/presentation/page/media/widgets/premium_a
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
@@ -41,7 +41,7 @@ void main() {
       );
       final bookmarkButton = find.descendant(
         of: find.byType(BookmarkButton),
-        matching: find.byType(ExpandTapWidget),
+        matching: find.byType(PaddingTapWidget),
       );
       expect(bookmarkButton, findsOneWidget);
 
@@ -72,7 +72,7 @@ void main() {
       );
       final bookmarkButton = find.descendant(
         of: find.byType(BookmarkButton),
-        matching: find.byType(ExpandTapWidget),
+        matching: find.byType(PaddingTapWidget),
       );
       expect(bookmarkButton, findsOneWidget);
 
