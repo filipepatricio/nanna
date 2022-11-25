@@ -28,9 +28,9 @@ class InitializeAttributionUseCase {
       Fimber.e('Attribution initialization failed', ex: e, stacktrace: s);
     } finally {
       final appsflyerId = await _analyticsRepository.getAppsflyerId();
-      if (appsflyerId != null) {
-        await _purchasesRepository.linkWithAppsflyer(appsflyerId);
-      }
+      final fbAnonymousId = await _analyticsRepository.getFbAnonymousId();
+
+      await _purchasesRepository.linkWithExternalServices(appsflyerId, fbAnonymousId);
     }
   }
 }
