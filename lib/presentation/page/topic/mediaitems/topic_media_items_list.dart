@@ -135,7 +135,7 @@ class _ArticleCover extends StatelessWidget {
         return ArticleCover.large(
           article: article,
           onTap: onTap,
-          showNote: false,
+          showNote: true,
           showRecommendedBy: false,
           key: mediaItemKey,
         );
@@ -143,7 +143,7 @@ class _ArticleCover extends StatelessWidget {
         return ArticleCover.large(
           article: article,
           onTap: onTap,
-          showNote: false,
+          showNote: true,
           showRecommendedBy: false,
           key: mediaItemKey,
         );
