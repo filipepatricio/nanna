@@ -69,4 +69,9 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   Future<void> precacheSubscriptionPlans() async {
     return;
   }
+
+  @override
+  Future<void> collectAppleSearchAdsAttributionData() async {
+    return;
+  }
 }

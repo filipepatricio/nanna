@@ -245,6 +245,10 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> collectAppleSearchAdsAttributionData() async =>
+      await Purchases.enableAdServicesAttributionTokenCollection();
 }
 
 extension on Offerings {
