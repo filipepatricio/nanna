@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/data/audio/audio_repository_mock.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_state.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_type_data.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
@@ -7,15 +6,11 @@ import 'package:better_informed_mobile/presentation/page/explore/categories/cate
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_audio_view.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/sections/related_content/related_categories.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button.dart';
-import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/audio_progress_bar.dart';
+import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
@@ -29,85 +24,6 @@ import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
 void main() {
-  testWidgets(
-    'media item page has not premium audio view if article doesnt have audio version',
-    (tester) async {
-      await tester.startApp(
-        initialRoute: MainPageRoute(
-          children: [
-            MediaItemPageRoute(slug: ''),
-          ],
-        ),
-      );
-      expect(find.byType(PremiumArticleView), findsOneWidget);
-      expect(find.byType(PremiumArticleAudioView), findsNothing);
-    },
-  );
-
-  testWidgets(
-    'media item page has premium audio view if article hasAudioVersion',
-    (tester) async {
-      await tester.startApp(
-        initialRoute: MainPageRoute(
-          children: [
-            MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
-          ],
-        ),
-      );
-
-      await tester.fling(find.byType(PremiumArticleView), const Offset(-2000, 0), 100);
-      await tester.pumpAndSettle();
-      expect(find.byType(PremiumArticleAudioView), findsOneWidget);
-    },
-  );
-
-  testWidgets(
-    'pressing play button changes the state',
-    (tester) async {
-      await tester.startApp(
-        initialRoute: MainPageRoute(
-          children: [
-            MediaItemPageRoute(slug: TestData.premiumArticleWithAudio.slug),
-          ],
-        ),
-      );
-      await tester.fling(find.byType(PremiumArticleView), const Offset(-2000, 0), 100);
-      await tester.pumpAndSettle();
-
-      final playButton = find.byType(AudioControlButton);
-      expect(playButton, findsOneWidget);
-      expect(
-        (tester
-                .widget<SvgPicture>(
-                  find.descendant(
-                    of: playButton,
-                    matching: find.byType(SvgPicture),
-                  ),
-                )
-                .pictureProvider as ExactAssetPicture)
-            .assetName,
-        AppVectorGraphics.playArrow,
-      );
-      await tester.tap(playButton);
-      await tester.pumpAndSettle();
-
-      final pauseButton = find.byType(AudioControlButton);
-      expect(pauseButton, findsOneWidget);
-      expect(
-        (tester
-                .widget<SvgPicture>(
-                  find.descendant(
-                    of: playButton,
-                    matching: find.byType(SvgPicture),
-                  ),
-                )
-                .pictureProvider as ExactAssetPicture)
-            .assetName,
-        AppVectorGraphics.pause,
-      );
-    },
-  );
-
   testWidgets(
     'article is not bookmarked',
     (tester) async {
@@ -125,7 +41,7 @@ void main() {
       );
       final bookmarkButton = find.descendant(
         of: find.byType(BookmarkButton),
-        matching: find.byType(ExpandTapWidget),
+        matching: find.byType(PaddingTapWidget),
       );
       expect(bookmarkButton, findsOneWidget);
 
@@ -156,7 +72,7 @@ void main() {
       );
       final bookmarkButton = find.descendant(
         of: find.byType(BookmarkButton),
-        matching: find.byType(ExpandTapWidget),
+        matching: find.byType(PaddingTapWidget),
       );
       expect(bookmarkButton, findsOneWidget);
 
@@ -270,30 +186,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(CategoryPage), findsOneWidget);
-    },
-  );
-
-  testWidgets(
-    'check if the audio position is properly loaded',
-    (tester) async {
-      await tester.startApp(
-        initialRoute: MainPageRoute(
-          children: [
-            MediaItemPageRoute(
-              article: TestData.premiumArticleWithAudio,
-            ),
-          ],
-        ),
-      );
-
-      await tester.fling(find.byType(PremiumArticleView), const Offset(-2000, 0), 100);
-      await tester.pumpAndSettle();
-
-      expect(find.byType(PremiumArticleAudioView), findsOneWidget);
-
-      final progressBar = tester.widget<ActiveProgressBar>(find.byType(ActiveProgressBar).first);
-
-      expect(progressBar.position.inSeconds, mockAudioPosition.inSeconds);
     },
   );
 }

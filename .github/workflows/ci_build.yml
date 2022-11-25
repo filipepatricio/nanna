@@ -96,6 +96,21 @@ jobs:
         if: success()
         run: echo "::set-output name=result::true"
 
+  dart_code_metrics:
+    name: Dart code metrics
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v3
+      - uses: dart-code-checker/dart-code-metrics-action@v3
+        with:
+          github_token: ${{ github.token }}
+          pull_request_comment: true
+          fatal_warnings: true
+
   code_lint_test:
     needs: [set_slack_id, changes, commit_lint]
     if: ${{ needs.changes.outputs.tests == 'true' || needs.changes.outputs.app == 'true' || needs.changes.outputs.android == 'true' || needs.changes.outputs.ios == 'true' }}

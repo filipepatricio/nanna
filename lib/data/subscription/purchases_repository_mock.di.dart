@@ -63,10 +63,15 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   }
 
   @override
-  Future<void> linkWithAppsflyer(String appsflyerId) async {}
+  Future<void> linkWithExternalServices(String? appsflyerId, String? facebookAnonymousId) async {}
 
   @override
   Future<void> precacheSubscriptionPlans() async {
+    return;
+  }
+
+  @override
+  Future<void> collectAppleSearchAdsAttributionData() async {
     return;
   }
 }

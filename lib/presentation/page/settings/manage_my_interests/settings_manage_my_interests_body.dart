@@ -1,12 +1,12 @@
-import 'package:better_informed_mobile/domain/categories/data/category_preference.dart';
+import 'package:better_informed_mobile/domain/user/data/category_preference.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
+import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:flutter/material.dart';
@@ -43,24 +43,12 @@ class SettingsManageMyInterestsBody extends HookWidget {
       physics: getPlatformScrollPhysics(),
       padding: const EdgeInsets.symmetric(vertical: AppDimens.l),
       children: [
-        ...categoryPreferences
-            .map(
-              (data) => _CategoryItem(
-                categoryPreference: data,
-                cubit: cubit,
-                onSwitch: (value) {
-                  cubit.updatePreferredCategories(
-                    categoryPreferences.map((e) => e == data ? e.copyWith(isPreferred: value) : e).toList(),
-                  );
-                },
-              ),
-            )
-            .expand(
-              (element) => [
-                element,
-                const Divider(),
-              ],
-            ),
+        ...categoryPreferences.map(
+          (data) => _CategoryItem(
+            categoryPreference: data,
+            cubit: cubit,
+          ),
+        ),
         const AudioPlayerBannerPlaceholder(),
       ],
     );
@@ -71,18 +59,17 @@ class _CategoryItem extends StatelessWidget {
   const _CategoryItem({
     required this.categoryPreference,
     required this.cubit,
-    required this.onSwitch,
     Key? key,
   }) : super(key: key);
 
   final CategoryPreference categoryPreference;
   final SettingsManageMyInterestsCubit cubit;
-  final Function(bool) onSwitch;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+    return Container(
+      height: AppDimens.c,
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
       child: Row(
         children: [
           Container(
@@ -101,10 +88,8 @@ class _CategoryItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppDimens.xl),
-          Switch.adaptive(
-            value: categoryPreference.isPreferred,
-            activeColor: AppColors.black,
-            onChanged: onSwitch,
+          CategoryPreferenceFollowButton(
+            categoryPreference: categoryPreference,
           ),
         ],
       ),

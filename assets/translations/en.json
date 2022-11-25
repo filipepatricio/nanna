@@ -27,7 +27,9 @@
       "noBrowser": "Oops, we're having trouble opening your browser automatically. Here is link for you to copy ",
       "body": "This error has been reported.",
       "tryAgainLater": "👎 Oops, looks like something went wrong, please try again later!"
-    }
+    },
+    "follow": "Follow",
+    "following": "Following"
   },
   "social": {
     "instagram": "Instagram",
@@ -287,7 +289,7 @@
   "explore": {
     "title": "Explore",
     "viewAll": "View All",
-    "moreStoriesOnExplore": "More stories on Explore"
+    "exploreNow": "Explore now"
   },
   "search": {
     "hint": "Search articles, deep dives, authors",
@@ -353,10 +355,9 @@
   "audio": {
     "speed": "Speed {}",
     "switchAudio": {
-      "title": "This action will replace the current audio\n",
-      "info": "Are you sure you want to switch and start listening to a new article?",
-      "deny": "No, keep this one",
-      "approve": "Yes, play the new one"
+      "message": "Replace the current audio?",
+      "deny": "No, keep listening",
+      "approve": "Yes, replace"
     }
   },
   "releaseNotes": {

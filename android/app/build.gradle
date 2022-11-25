@@ -123,9 +123,13 @@ android {
 
             resValue "string", "app_name", "informed dev"
             resValue "string", "app_link_host", "localhost"
+
             resValue "string", "onelink_host", "localhost"
             resValue "string", "onelink_custom_host", "localhost"
             resValue "string", "onelink_custom_host", "/tHNA"
+
+            resValue "string", "facebook_app_id", ""
+            resValue "string", "facebook_client_token", ""
 
             if (propertyMap.containsKey('dev')) {
                 signingConfig signingConfigs.releaseDev
@@ -142,9 +146,13 @@ android {
             resValue "string", "app_name", "informed test"
             resValue "string", "app_link_host", "app.staging.informed.so"
             resValue "string", "app_link_host_2", "www.staging.informed.so"
+
             resValue "string", "onelink_host", "informed-staging.onelink.me"
             resValue "string", "onelink_custom_host", "get.staging.informed.so"
             resValue "string", "onelink_path_prefix", "/tHNA"
+
+            resValue "string", "facebook_app_id", "1152910382298060"
+            resValue "string", "facebook_client_token", "7ad28f772522a2349c4968cb7211e7b4"
 
             if (propertyMap.containsKey('stage')) {
                 signingConfig signingConfigs.releaseStage
@@ -159,9 +167,14 @@ android {
             resValue "string", "app_name", "informed"
             resValue "string", "app_link_host", "app.informed.so"
             resValue "string", "app_link_host_2", "www.informed.so"
+
             resValue "string", "onelink_host", "informed.onelink.me"
             resValue "string", "onelink_custom_host", "get.informed.so"
             resValue "string", "onelink_path_prefix", "/BHtj"
+
+            resValue "string", "facebook_app_id", "345458011020663"
+            resValue "string", "facebook_client_token", "7ad28f772522a2349c4968cb7211e7b4"
+            
 
             if (propertyMap.containsKey('prod')) {
                 signingConfig signingConfigs.releaseProd

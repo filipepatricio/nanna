@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -29,7 +29,7 @@ class ReleaseNoteContentView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -58,9 +58,9 @@ class ReleaseNoteContentView extends StatelessWidget {
               ),
               if (showCloseButton) ...[
                 const SizedBox(width: AppDimens.m),
-                ExpandTapWidget(
+                PaddingTapWidget(
                   onTap: () => context.popRoute(),
-                  tapPadding: const EdgeInsets.all(AppDimens.l),
+                  tapPadding: const EdgeInsets.all(AppDimens.m),
                   child: SvgPicture.asset(AppVectorGraphics.closeBackground),
                 ),
               ],

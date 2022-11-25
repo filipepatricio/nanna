@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/presentation/page/settings/manage_my_inte
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_state.dt.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -26,7 +27,9 @@ class SettingsManageMyInterestsPage extends HookWidget {
 
     return Scaffold(
       appBar: InformedCupertinoAppBar(
-        backLabel: LocaleKeys.settings_settings.tr(),
+        leading: BackTextButton(
+          text: LocaleKeys.settings_settings.tr(),
+        ),
         title: LocaleKeys.settings_manageMyInterestsTitle.tr(),
       ),
       body: SnackbarParentView(

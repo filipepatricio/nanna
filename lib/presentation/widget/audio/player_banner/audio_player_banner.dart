@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/domain/article/data/article_output_mode.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -175,12 +174,17 @@ extension on AudioPlayerBannerState {
       notInitialized: (_) => null,
       visible: (state) =>
           onTap ??
-          () => AutoRouter.of(context).push(
-                MediaItemPageRoute(
-                  slug: state.audioItem.slug,
-                  articleOutputMode: ArticleOutputMode.audio,
+          () {
+            final articleDetails = state.article;
+            if (articleDetails != null) {
+              AutoRouter.of(context).push(
+                AudioPageRoute(
+                  article: articleDetails.metadata,
+                  audioFile: articleDetails.audioFile,
                 ),
-              ),
+              );
+            }
+          },
       hidden: (_) => null,
     );
   }

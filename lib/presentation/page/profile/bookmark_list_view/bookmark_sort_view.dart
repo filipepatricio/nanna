@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
-import 'package:better_informed_mobile/presentation/util/expand_tap_area/expand_tap_area.dart';
+import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -98,8 +98,9 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
                         style: AppTypography.b2Bold,
                       ),
                     ),
-                    ExpandTapWidget(
-                      tapPadding: const EdgeInsets.all(AppDimens.l),
+                    PaddingTapWidget(
+                      alignment: AlignmentDirectional.centerEnd,
+                      tapPadding: const EdgeInsets.all(AppDimens.m),
                       onTap: () => AutoRouter.of(context).root.pop(),
                       child: SvgPicture.asset(AppVectorGraphics.close),
                     ),

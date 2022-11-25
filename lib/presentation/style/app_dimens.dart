@@ -124,7 +124,8 @@ class AppDimens {
       MediaQuery.of(context).viewPadding.bottom;
 
   /// Full screen topic image height
-  static double topicViewHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height;
+  static double topicViewHeaderImageHeight(BuildContext context) =>
+      MediaQuery.of(context).size.height - (AppDimens.audioBannerHeight + MediaQuery.of(context).padding.bottom);
 
   /// Full screen topic image width
   static double topicViewHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width;

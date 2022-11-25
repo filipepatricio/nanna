@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/data/common/dto/successful_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/user/api/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_dto.dt.dart';
-
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 
 abstract class UserDataSource {
@@ -10,5 +10,13 @@ abstract class UserDataSource {
 
   Future<SuccessfulResponseDTO> updatePreferredCategories(List<String> categoryIds);
 
+  Future<List<CategoryPreferenceDTO>> getCategoryPreferences();
+
   Future<SuccessfulResponseDTO> deleteAccount();
+
+  Future<CategoryPreferenceDTO> followCategory(String id);
+
+  Future<CategoryPreferenceDTO> unfollowCategory(String id);
+
+  Future<CategoryPreferenceDTO> getCategoryPreference(String id);
 }

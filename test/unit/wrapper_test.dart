@@ -6,6 +6,8 @@ import 'data/auth/api/auth_repository_impl_test.dart' as auth_repository_impl_te
 import 'data/auth/api/refresh_token_service_test.dart' as refresh_token_service_test;
 import 'data/auth/app_link/auth_app_link_repository_impl_test.dart' as auth_app_link_repository_impl_test;
 import 'data/auth/app_link/magic_link_parser_test.dart' as magic_link_parser_test;
+import 'data/exception/common_exception_mapper_test.dart' as common_exception_mapper_test;
+import 'data/exception/unknown_exception_unwrap_mapper_test.dart' as unknown_exception_unwrap_mapper_test;
 import 'data/images/cloudinary_test.dart' as cloudinary_test;
 import 'data/networking/app_version_link/app_version_link_transformer_test.dart' as app_version_link_transformer_test;
 import 'data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
@@ -34,6 +36,7 @@ import 'domain/subscription/use_case/get_article_paywall_preferred_plan_use_case
 import 'presentation/app_connectivity_checker_test.dart' as app_connectivity_checker_test;
 import 'presentation/app_update_checker_test.dart' as app_update_checker_test;
 import 'presentation/article_paywall_view_test.dart' as article_paywall_view_test;
+import 'presentation/audio_page_test.dart' as audio_page_test;
 import 'presentation/daily_brief_page_test.dart' as daily_brief_page_test;
 import 'presentation/explore_page_test.dart' as explore_page_test;
 import 'presentation/main_page_test.dart' as main_page_test;
@@ -42,6 +45,7 @@ import 'presentation/sign_in_page_test.dart' as sign_in_page_test;
 import 'presentation/subscription_page_test.dart' as subscription_page_test;
 import 'presentation/topic_owner_page_test.dart' as topic_owner_page_test;
 import 'presentation/util/date_format_util_test.dart' as date_format_util_test;
+import 'presentation/widget/audio/audio_banner_test.dart' as audio_banner_test;
 import 'presentation/widget/audio/progress_bar/audio_progress_bar_cubit_test.dart' as audio_progress_bar_cubit_test;
 
 // All unit tests must be referenced here to be included in the CI workflow
@@ -62,6 +66,8 @@ void main() {
   group('should_refresh_validator_test', should_refresh_validator_test.main);
   group('cloudinary_test', cloudinary_test.main);
   group('active_subscription_mapper_test', active_subscription_mapper_test.main);
+  group('common_exception_mapper_test', common_exception_mapper_test.main);
+  group('unknown_exception_unwrap_mapper_test', unknown_exception_unwrap_mapper_test.main);
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);
@@ -91,4 +97,6 @@ void main() {
   group('audio_progress_bar_cubit_test', audio_progress_bar_cubit_test.main);
   group('subscription_page_test', subscription_page_test.main);
   group('article_paywall_view_test', article_paywall_view_test.main);
+  group('audio_page_test', audio_page_test.main);
+  group('audio_banner_test', audio_banner_test.main);
 }

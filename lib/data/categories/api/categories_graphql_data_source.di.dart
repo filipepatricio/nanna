@@ -1,15 +1,12 @@
 import 'package:better_informed_mobile/data/categories/api/categories_data_source.dart';
 import 'package:better_informed_mobile/data/categories/api/documents/__generated__/get_category.ast.gql.dart'
     as get_category;
-import 'package:better_informed_mobile/data/categories/api/documents/__generated__/get_category_preferences.ast.gql.dart'
-    as get_category_preferences;
 import 'package:better_informed_mobile/data/categories/api/documents/__generated__/get_featured_categories.ast.gql.dart'
     as get_featured_categories;
 import 'package:better_informed_mobile/data/categories/api/documents/__generated__/get_onboarding_categories.ast.gql.dart'
     as get_onboarding_categories;
 import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
-import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_with_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -46,32 +43,6 @@ class CategoriesGraphqlDataSource implements CategoriesDataSource {
     );
 
     if (dto == null) throw Exception('Response for onboarding categories is null');
-    return dto;
-  }
-
-  @override
-  Future<List<CategoryPreferenceDTO>> getCategoryPreferences() async {
-    final result = await _client.query(
-      QueryOptions(
-        document: get_category_preferences.document,
-        operationName: get_category_preferences.getCategoryPreferences.name?.value,
-        fetchPolicy: FetchPolicy.networkOnly,
-      ),
-    );
-
-    final dto = _responseResolver.resolve(
-      result,
-      (raw) {
-        final categoriesPreferenceRaw = raw['getCategoryPreferences'] as List<dynamic>;
-        final categoriesPreference = categoriesPreferenceRaw
-            .map((json) => CategoryPreferenceDTO.fromJson(json as Map<String, dynamic>))
-            .toList(growable: false);
-
-        return categoriesPreference;
-      },
-    );
-
-    if (dto == null) throw Exception('Response for category preferences is null');
     return dto;
   }
 

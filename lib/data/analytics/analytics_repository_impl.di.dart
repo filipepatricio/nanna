@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
@@ -24,10 +22,7 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
       return _analyticsFacade.disable();
     }
 
-    // App Lifecycle events are not being correctly tracked in iOS with Dart-based config - https://github.com/la-haus/flutter-segment/issues/26#issuecomment-1143557997
-    if (!Platform.isIOS) {
-      await _analyticsFacade.config(writeKey);
-    }
+    await _analyticsFacade.config(writeKey);
   }
 
   /// Deferred initialization of Appsflyer for its dependency on device's IDFA (we need to request permission first)
@@ -38,6 +33,9 @@ class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
   @override
   Future<String?> getAppsflyerId() => _analyticsFacade.getAppsflyerId();
+
+  @override
+  Future<String?> getFbAnonymousId() => _analyticsFacade.getFbAnonymousId();
 
   @override
   Future<void> identify(String userId, [String? method]) async {

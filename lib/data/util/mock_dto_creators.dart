@@ -14,7 +14,6 @@ import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.da
 import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';
-import 'package:better_informed_mobile/data/categories/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_with_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/common/dto/curation_info_dto.dt.dart';
 import 'package:better_informed_mobile/data/common/dto/curator_dto.dt.dart';
@@ -49,6 +48,7 @@ import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';
+import 'package:better_informed_mobile/data/user/api/dto/category_preference_dto.dt.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/entry_style.dart';
@@ -530,6 +530,11 @@ class MockDTO {
     slug: 'slug-premium-audio',
     hasAudioVersion: true,
     image: _articleImageCloudinary,
+  );
+  static final premiumArticleWithAudioNoImage = premiumArticleWithoutImage.copyWith(
+    id: 'id-premium-audio',
+    slug: 'slug-premium-audio',
+    hasAudioVersion: true,
   );
   static final premiumArticleWithAudioLocked = premiumArticle.copyWith(
     id: 'id-premium-audio',
