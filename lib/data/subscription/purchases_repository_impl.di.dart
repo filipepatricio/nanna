@@ -205,10 +205,20 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   @override
-  Future<void> linkWithAppsflyer(String appsflyerId) async {
+  Future<void> linkWithExternalServices(
+    String? appsflyerId,
+    String? facebookAnonymousId,
+  ) async {
     try {
       await Purchases.collectDeviceIdentifiers();
-      await Purchases.setAppsflyerID(appsflyerId);
+
+      if (appsflyerId != null) {
+        await Purchases.setAppsflyerID(appsflyerId);
+      }
+
+      if (facebookAnonymousId != null) {
+        await Purchases.setFBAnonymousID(facebookAnonymousId);
+      }
 
       return;
     } on PlatformException catch (e) {

@@ -43,4 +43,7 @@ class AnalyticsFacadeMock implements AnalyticsFacade {
 
   @override
   Future<void> disable() async {}
+
+  @override
+  Future<String?> getFbAnonymousId() async => null;
 }
