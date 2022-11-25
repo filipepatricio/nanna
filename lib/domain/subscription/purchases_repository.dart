@@ -25,5 +25,7 @@ abstract class PurchasesRepository {
 
   Future<void> precacheSubscriptionPlans();
 
+  Future<void> collectAppleSearchAdsAttributionData();
+
   void dispose();
 }

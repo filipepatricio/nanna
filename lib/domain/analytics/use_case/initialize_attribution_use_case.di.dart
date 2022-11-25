@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
@@ -27,6 +29,10 @@ class InitializeAttributionUseCase {
     } catch (e, s) {
       Fimber.e('Attribution initialization failed', ex: e, stacktrace: s);
     } finally {
+      if (Platform.isIOS) {
+        await _purchasesRepository.collectAppleSearchAdsAttributionData();
+      }
+
       final appsflyerId = await _analyticsRepository.getAppsflyerId();
       final fbAnonymousId = await _analyticsRepository.getFbAnonymousId();
 
