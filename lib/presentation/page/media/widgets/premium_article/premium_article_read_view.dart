@@ -42,15 +42,17 @@ class PremiumArticleReadView extends HookWidget {
     BuildContext context,
   ) {
     if (mainController.hasClients) {
-      final articleHeaderHeight = _getSize(_articleHeaderKey);
-      final articleFullHeight = articleHeaderHeight + _getSize(_articleContentKey);
-      final newProgress = mainController.offset / articleFullHeight;
-
       if (scrollInfo is ScrollUpdateNotification) {
-        readProgress.value = newProgress.isFinite ? newProgress : 0;
+        final articleHeaderHeight = _getSize(_articleHeaderKey);
+        final articleFullHeight = _getSize(_articleContentKey);
+        final fixedOffset = mainController.offset - articleHeaderHeight + MediaQuery.of(context).padding.top;
+        final newProgress = fixedOffset / articleFullHeight;
+
+        readProgress.value = newProgress.isFinite && !newProgress.isNegative ? newProgress : 0;
       }
 
       if (scrollInfo is ScrollEndNotification) {
+        final articleFullHeight = _getSize(_articleContentKey);
         cubit.updateScrollData(mainController.offset, articleFullHeight);
       }
     }
@@ -173,7 +175,7 @@ class _ArticleProgressBar extends HookWidget {
             value: value,
             backgroundColor: AppColors.transparent,
             valueColor: AlwaysStoppedAnimation(color ?? AppColors.pastelBlue),
-            minHeight: 2,
+            minHeight: 3,
           );
         },
       ),
