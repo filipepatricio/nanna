@@ -66,7 +66,7 @@ jobs:
       succeeded: ${{ steps.result.outputs.result }}
     steps:
       - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.6.0
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.6.0
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v3
@@ -120,7 +120,7 @@ jobs:
       succeeded: ${{ steps.result.outputs.result }}
     steps:
       - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.6.0
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
@@ -182,7 +182,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Cancel previous jobs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
@@ -239,7 +239,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: Cancel previous jobs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
