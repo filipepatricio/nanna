@@ -1412,7 +1412,7 @@ packages:
     source: hosted
     version: "5.0.0"
   platform:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: platform
       url: "https://pub.dartlang.org"
@@ -1482,7 +1482,7 @@ packages:
     source: hosted
     version: "0.2.0"
   retry:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: retry
       url: "https://pub.dartlang.org"
