@@ -23,8 +23,6 @@ class _TopicCoverBig extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CurationInfoView(curationInfo: topic.curationInfo),
-            const SizedBox(height: AppDimens.s),
             Expanded(
               child: Stack(
                 alignment: Alignment.bottomCenter,
@@ -35,14 +33,13 @@ class _TopicCoverBig extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
                     ),
                   ),
-                  if (topic.curationInfo.curator is ExpertCurator)
-                    Positioned(
-                      top: AppDimens.m,
-                      child: InformedPill(
-                        title: LocaleKeys.topic_labelExpert.tr(),
-                        color: AppColors.white,
-                      ),
+                  Positioned(
+                    top: AppDimens.m,
+                    child: InformedPill(
+                      title: LocaleKeys.topic_label.tr(),
+                      color: AppColors.white,
                     ),
+                  ),
                   Positioned(
                     left: AppDimens.xl,
                     right: AppDimens.xl,
@@ -51,12 +48,24 @@ class _TopicCoverBig extends StatelessWidget {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(AppDimens.m),
-                          child: Text(
-                            topic.strippedTitle,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            style: AppTypography.subH0Medium.copyWith(height: 1.25),
-                            overflow: TextOverflow.ellipsis,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: AppDimens.m),
+                              Text(
+                                topic.strippedTitle,
+                                maxLines: 3,
+                                textAlign: TextAlign.center,
+                                style: AppTypography.sansTitleLargeLausanne,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: AppDimens.m),
+                              Text(
+                                '${topic.curationInfo.byline} ${topic.curationInfo.curator.name}',
+                                style: AppTypography.sansTextSmallRegularLausanne.copyWith(
+                                  color: AppColors.textGrey.blendMultiply(topic.category.color ?? AppColors.white),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
