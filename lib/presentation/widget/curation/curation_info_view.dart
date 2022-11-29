@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 class CurationInfoView extends StatelessWidget {
   const CurationInfoView({
     required this.curationInfo,
+    this.hideLabel = false,
     this.shortLabel = false,
     this.onTap,
     Key? key,
@@ -22,6 +23,7 @@ class CurationInfoView extends StatelessWidget {
   final CurationInfo curationInfo;
 
   final bool shortLabel;
+  final bool hideLabel;
   final VoidCallback? onTap;
 
   @override
@@ -45,31 +47,34 @@ class CurationInfoView extends StatelessWidget {
             editorAvatar: AppVectorGraphics.editorialTeamAvatar,
           ),
           const SizedBox(width: AppDimens.s),
-          Expanded(
-            child: RichText(
-              text: TextSpan(
-                style: AppTypography.b3Regular.copyWith(
-                  height: 1,
-                  letterSpacing: 0,
-                  color: AppColors.darkerGrey,
-                ),
-                children: [
-                  if (!shortLabel) TextSpan(text: '${curationInfo.byline} '),
-                  TextSpan(
-                    text: curationInfo.curator.name,
-                    style: AppTypography.b3Regular.copyWith(
-                      height: 1,
-                      letterSpacing: 0,
-                      color: AppColors.textPrimary,
-                    ),
+          if (hideLabel)
+            const Spacer()
+          else
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  style: AppTypography.b3Regular.copyWith(
+                    height: 1,
+                    letterSpacing: 0,
+                    color: AppColors.darkerGrey,
                   ),
-                ],
+                  children: [
+                    if (!shortLabel) TextSpan(text: '${curationInfo.byline} '),
+                    TextSpan(
+                      text: curationInfo.curator.name,
+                      style: AppTypography.b3Regular.copyWith(
+                        height: 1,
+                        letterSpacing: 0,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+                softWrap: true,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              softWrap: true,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
         ],
       ),
     );

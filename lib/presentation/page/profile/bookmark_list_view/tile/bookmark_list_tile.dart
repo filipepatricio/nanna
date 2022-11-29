@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/types.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
@@ -24,17 +23,10 @@ class BookmarkListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: AppDimens.m),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppDimens.ml,
-          ),
-          child: bookmark.getContent(
-            context,
-            () => onRemoveBookmarkPressed(bookmark),
-          ),
+        bookmark.getContent(
+          context,
+          () => onRemoveBookmarkPressed(bookmark),
         ),
-        const SizedBox(height: AppDimens.m),
       ],
     );
   }
@@ -53,7 +45,7 @@ extension on Bookmark {
         ),
         onBookmarkTap: onRemoveBookmarkCallback,
       ),
-      topic: (data) => TopicCover.big(
+      topic: (data) => TopicCover.list(
         topic: data.topic.asPreview,
         onBookmarkTap: onRemoveBookmarkCallback,
         onTap: () => context.pushRoute(

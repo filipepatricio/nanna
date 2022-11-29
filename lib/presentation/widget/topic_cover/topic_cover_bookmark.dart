@@ -1,15 +1,17 @@
 part of 'topic_cover.dart';
 
-const _coverSizeToScreenWidthFactor = 0.26;
+const _coverSizeToScreenWidthFactor = 0.30;
 
-class _TopicCoverBookmark extends HookWidget {
-  const _TopicCoverBookmark({
+class _TopicCoverList extends HookWidget {
+  const _TopicCoverList({
     required this.onTap,
     required this.topic,
+    this.onBookmarkTap,
     Key? key,
   }) : super(key: key);
 
   final VoidCallback? onTap;
+  final VoidCallback? onBookmarkTap;
   final TopicPreview topic;
 
   @override
@@ -22,23 +24,41 @@ class _TopicCoverBookmark extends HookWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Row(
-        children: [
-          SizedBox.square(
-            dimension: coverSize,
-            child: TopicCoverImage(
-              topic: topic,
-              borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
-            ),
+      child: Container(
+        color: topic.category.color,
+        child: Padding(
+          padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: coverSize,
+                      child: _CoverContentBookmark(topic: topic),
+                    ),
+                  ),
+                  const SizedBox(width: AppDimens.m),
+                  SizedBox(
+                    width: coverSize,
+                    child: AspectRatio(
+                      aspectRatio: 110 / 100,
+                      child: TopicCoverImage(
+                        topic: topic,
+                        borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppDimens.s),
+              _TopicCoverBar.list(
+                topic: topic,
+                onBookmarkTap: onBookmarkTap,
+              ),
+            ],
           ),
-          const SizedBox(width: AppDimens.m),
-          Expanded(
-            child: SizedBox(
-              height: coverSize,
-              child: _CoverContentBookmark(topic: topic),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -54,27 +74,17 @@ class _CoverContentBookmark extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final coverSize = useMemoized(
-      () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
-      [MediaQuery.of(context).size],
-    );
-
     return SizedBox(
-      height: coverSize,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.max,
         children: [
-          const SizedBox(height: AppDimens.s),
-          CurationInfoView(
-            curationInfo: topic.curationInfo,
-            shortLabel: true,
-          ),
+          PublisherLogoRow(topic: topic),
           const SizedBox(height: AppDimens.s),
           InformedMarkdownBody(
             markdown: topic.title,
             maxLines: 3,
-            baseTextStyle: AppTypography.h5BoldSmall.copyWith(height: 1.25),
+            baseTextStyle: AppTypography.h4Medium.copyWith(height: 1.25),
           ),
         ],
       ),

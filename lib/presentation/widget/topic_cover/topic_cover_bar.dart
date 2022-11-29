@@ -19,6 +19,16 @@ class _TopicCoverBar extends StatelessWidget {
         onBookmarkTap: onBookmarkTap,
       );
 
+  factory _TopicCoverBar.list({
+    required TopicPreview topic,
+    VoidCallback? onBookmarkTap,
+  }) =>
+      _TopicCoverBar._(
+        type: TopicCoverType.list,
+        topic: topic,
+        onBookmarkTap: onBookmarkTap,
+      );
+
   const _TopicCoverBar._({
     required this.topic,
     required this.type,
@@ -41,6 +51,11 @@ class _TopicCoverBar extends StatelessWidget {
       case TopicCoverType.small:
         return _TopicCoverBarSmall(
           topic: topic,
+        );
+      case TopicCoverType.list:
+        return _TopicCoverBarBookmark(
+          topic: topic,
+          onBookmarkTap: onBookmarkTap,
         );
       default:
         return Container();
@@ -65,11 +80,46 @@ class _TopicCoverBarSmall extends StatelessWidget {
         Expanded(
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
-            shortLabel: true,
+            hideLabel: true,
           ),
         ),
         BookmarkButton.topic(
           topic: topic,
+        ),
+      ],
+    );
+  }
+}
+
+class _TopicCoverBarBookmark extends StatelessWidget {
+  const _TopicCoverBarBookmark({
+    required this.topic,
+    this.onBookmarkTap,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+  final VoidCallback? onBookmarkTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: CurationInfoView(
+            curationInfo: topic.curationInfo,
+            shortLabel: false,
+          ),
+        ),
+        ShareTopicButton(
+          topic: topic,
+        ),
+        const SizedBox(width: AppDimens.sl),
+        BookmarkButton.topic(
+          topic: topic,
+          onTap: onBookmarkTap,
         ),
       ],
     );
