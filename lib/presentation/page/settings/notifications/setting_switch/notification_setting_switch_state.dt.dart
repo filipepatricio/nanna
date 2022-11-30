@@ -16,4 +16,6 @@ class NotificationSettingSwitchState with _$NotificationSettingSwitchState {
   factory NotificationSettingSwitchState.idle(String name, bool value) = _NotificationSettingSwitchStateIdle;
 
   factory NotificationSettingSwitchState.generalError() = _NotificationSettingSwitchStateGeneralError;
+
+  factory NotificationSettingSwitchState.noPermissionError() = _NotificationSettingSwitchStateNoPermissionError;
 }

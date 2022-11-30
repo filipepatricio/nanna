@@ -63,15 +63,10 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
   Future<void> setOnboardingCompleted() async {
     await _requestTrackingPermissionUseCase();
     await _initializeAttributionUseCase();
-    await _requestNotificationPermission();
+    await _requestNotificationPermissionUseCase();
     _trackOnboardingCompleted();
     await _setOnboardingSeenUseCase();
     await _setPreferredCategories();
-  }
-
-  Future<void> _requestNotificationPermission() async {
-    final hasGivenPermission = await _requestNotificationPermissionUseCase.call();
-    if (hasGivenPermission) _trackPushNotificationConsentGiven();
   }
 
   Future<void> _setPreferredCategories() async {
@@ -90,10 +85,6 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
 
   void trackOnboardingSkipped() {
     _trackActivityUseCase.trackEvent(AnalyticsEvent.onboardingSkipped());
-  }
-
-  void _trackPushNotificationConsentGiven() {
-    _trackActivityUseCase.trackEvent(AnalyticsEvent.pushNotificationConsentGiven());
   }
 
   void _trackOnboardingCompleted() {

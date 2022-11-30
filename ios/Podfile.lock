@@ -3,6 +3,8 @@ PODS:
     - AnalyticsConnector (~> 1.0.0)
   - Analytics (4.1.6)
   - AnalyticsConnector (1.0.0)
+  - "app_settings (3.0.0+1)":
+    - Flutter
   - app_tracking_transparency (0.0.1):
     - Flutter
   - AppAuth (1.6.0):
@@ -222,6 +224,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - audio_service (from `.symlinks/plugins/audio_service/ios`)
@@ -298,6 +301,8 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
   app_tracking_transparency:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
   appsflyer_sdk:
@@ -381,6 +386,7 @@ SPEC CHECKSUMS:
   Amplitude: bff4ceaad2a79e908682134d75dc862960594ea6
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AnalyticsConnector: 4c386d5972ac9da86e22d668564dbbac97558754
+  app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
   appsflyer_sdk: 6d03341418c1acf261fdfde2eb27fdeaf04fa2c2
