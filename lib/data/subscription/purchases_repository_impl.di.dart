@@ -114,7 +114,10 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   Future<void> _updateActiveSubscriptionStream(CustomerInfo customerInfo) async {
-    _activeSubscriptionStream.sink.add(await getActiveSubscription(customerInfo));
+    final activeSubscription = await getActiveSubscription(customerInfo);
+    if (!_activeSubscriptionStream.isClosed) {
+      _activeSubscriptionStream.sink.add(activeSubscription);
+    }
   }
 
   @override
@@ -189,9 +192,9 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   @override
   void dispose() {
+    Purchases.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
     _activeSubscriptionStream.close();
     _activeSubscriptionStream = StreamController.broadcast();
-    Purchases.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
   }
 
   Future<List<SubscriptionPlan>> _getAllSubscriptionPlans() async {
