@@ -30,7 +30,7 @@ class RelatedCategories extends StatelessWidget {
         ),
         const SizedBox(height: AppDimens.m),
         SizedBox(
-          height: AppDimens.explorePillHeight,
+          height: AppDimens.explorePillHeight(context),
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),

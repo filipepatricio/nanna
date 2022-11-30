@@ -55,7 +55,7 @@ class _PillsArea extends StatelessWidget {
 
     return LoadingShimmer.defaultColor(
       child: SizedBox(
-        height: AppDimens.explorePillHeight,
+        height: AppDimens.explorePillHeight(context),
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           physics: const NeverScrollableScrollPhysics(),
@@ -78,7 +78,7 @@ class _Pill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppDimens.explorePillHeight,
+      height: AppDimens.explorePillHeight(context),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppDimens.pillRadius),
