@@ -137,6 +137,20 @@ class AnalyticsEvent with _$AnalyticsEvent {
         },
       );
 
+  factory AnalyticsEvent.articleShared(String articleId) => AnalyticsEvent._(
+        'ArticleShared',
+        {
+          'article_id': articleId,
+        },
+      );
+
+  factory AnalyticsEvent.topicShared(String topicId) => AnalyticsEvent._(
+        'TopicShared',
+        {
+          'topic_id': topicId,
+        },
+      );
+
   factory AnalyticsEvent.topicBookmarkAdded(String topicId, [String? briefId]) => AnalyticsEvent._(
         'TopicFollowed',
         {

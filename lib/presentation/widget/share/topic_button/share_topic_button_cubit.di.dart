@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/share/data/share_content.dt.dart';
 import 'package:better_informed_mobile/domain/share/data/share_options.dart';
 import 'package:better_informed_mobile/domain/share/use_case/share_content_use_case.di.dart';
@@ -17,10 +19,12 @@ class ShareTopicButtonCubit extends Cubit<ShareTopicButtonState> {
   ShareTopicButtonCubit(
     this._shareContentUseCase,
     this._shareViewImageGenerator,
+    this._trackActivityUseCase,
   ) : super(ShareTopicButtonState.idle);
 
   final ShareContentUseCase _shareContentUseCase;
   final ShareViewImageGenerator _shareViewImageGenerator;
+  final TrackActivityUseCase _trackActivityUseCase;
 
   Future<void> share(ShareOption? shareOption, TopicPreview topic) async {
     if (shareOption == null) return;
@@ -66,6 +70,7 @@ class ShareTopicButtonCubit extends Cubit<ShareTopicButtonState> {
     }
 
     await _shareContentUseCase(shareContent);
+    _trackActivityUseCase.trackEvent(AnalyticsEvent.topicShared(topic.id));
 
     emit(ShareTopicButtonState.idle);
   }
