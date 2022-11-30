@@ -6,6 +6,14 @@ const _fontFamilyIvarHeadline = 'IvarHeadline';
 const _fontFamilyLausanne = 'Lausanne';
 
 class AppTypography {
+  static const TextStyle serifTitleSmallIvar = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 20,
+    height: 1.1,
+    color: AppColors.textPrimary,
+  );
+
   static const TextStyle h1Headline = TextStyle(
     fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,
