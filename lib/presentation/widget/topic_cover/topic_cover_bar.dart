@@ -53,7 +53,7 @@ class _TopicCoverBar extends StatelessWidget {
           topic: topic,
         );
       case TopicCoverType.list:
-        return _TopicCoverBarBookmark(
+        return _TopicCoverBarList(
           topic: topic,
           onBookmarkTap: onBookmarkTap,
         );
@@ -91,8 +91,8 @@ class _TopicCoverBarSmall extends StatelessWidget {
   }
 }
 
-class _TopicCoverBarBookmark extends StatelessWidget {
-  const _TopicCoverBarBookmark({
+class _TopicCoverBarList extends StatelessWidget {
+  const _TopicCoverBarList({
     required this.topic,
     this.onBookmarkTap,
     Key? key,
@@ -113,10 +113,6 @@ class _TopicCoverBarBookmark extends StatelessWidget {
             shortLabel: false,
           ),
         ),
-        ShareTopicButton(
-          topic: topic,
-        ),
-        const SizedBox(width: AppDimens.sl),
         BookmarkButton.topic(
           topic: topic,
           onTap: onBookmarkTap,

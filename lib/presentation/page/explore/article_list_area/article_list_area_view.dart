@@ -26,42 +26,20 @@ class ArticleListAreaView extends StatelessWidget {
           title: area.title,
           description: area.description,
         ),
-        const SizedBox(height: AppDimens.m),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: area.articles
-                .map(
-                  (article) => ArticleCover.list(
-                    article: article,
-                    onTap: () => context.navigateToArticle(article),
-                  ),
-                )
-                .expand(
-                  (row) => [
-                    row,
-                    const _Separator(),
-                  ],
-                )
-                .take(area.articles.length * 2 - 1)
-                .toList(),
-          ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: area.articles
+              .map(
+                (article) => ArticleCover.list(
+                  article: article,
+                  onTap: () => context.navigateToArticle(article),
+                ),
+              )
+              .take(area.articles.length * 2 - 1)
+              .toList(),
         ),
         const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
       ],
-    );
-  }
-}
-
-class _Separator extends StatelessWidget {
-  const _Separator({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppDimens.m),
-      height: 1,
     );
   }
 }

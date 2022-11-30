@@ -22,24 +22,24 @@ class ArticleMoreFromSection extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppDimens.l, horizontal: AppDimens.m),
+          padding: const EdgeInsets.symmetric(
+            vertical: AppDimens.l,
+            horizontal: AppDimens.pageHorizontalMargin,
+          ),
           child: Text(
             title,
             style: AppTypography.h1Medium,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-          child: Column(
-            children: items
-                .expand(
-                  (element) => [
-                    element,
-                    if (items.last != element) const Divider(height: AppDimens.xl),
-                  ],
-                )
-                .toList(),
-          ),
+        Column(
+          children: items
+              .expand(
+                (element) => [
+                  element,
+                  if (items.last != element) const Divider(height: AppDimens.xl),
+                ],
+              )
+              .toList(),
         ),
         const SizedBox(height: AppDimens.l),
       ],
@@ -74,7 +74,7 @@ class MoreFromSectionListItem extends StatelessWidget {
   }) =>
       MoreFromSectionListItem._(
         type: MoreFromSectionItemType.topic,
-        child: TopicCover.big(
+        child: TopicCover.list(
           topic: topic,
           onTap: onItemTap,
         ),

@@ -252,7 +252,7 @@
       "action": "Ok"
     },
     "relatedContent": {
-      "exploreMoreCategories": "Explore More in These Categories",
+      "exploreMoreCategories": "Explore more in these categories",
       "cantGetEnough": "Can't get enough?",
       "thereAreManyMore": "There are many more stories you might like",
       "goToExplore": "Go to Explore",
@@ -260,7 +260,7 @@
       "relatedReads": "Related reads you might enjoy"
     },
     "otherBriefs": "More Articles and Deep Dives from Today",
-    "moreFromTopic": "More from ‘{}’",
+    "moreFromTopic": "More Articles in ‘{}’",
     "percentageRead": "{}% read"
   },
   "readingList": {

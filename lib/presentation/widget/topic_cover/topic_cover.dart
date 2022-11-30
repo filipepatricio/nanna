@@ -15,7 +15,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'topic_cover_bar.dart';
 part 'topic_cover_big.dart';
-part 'topic_cover_bookmark.dart';
+part 'topic_cover_list.dart';
 part 'topic_cover_small.dart';
 
 enum TopicCoverType { big, small, list }
