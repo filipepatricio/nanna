@@ -114,9 +114,10 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   Future<void> _updateActiveSubscriptionStream(CustomerInfo customerInfo) async {
+    final currentStream = _activeSubscriptionStream;
     final activeSubscription = await getActiveSubscription(customerInfo);
-    if (!_activeSubscriptionStream.isClosed) {
-      _activeSubscriptionStream.sink.add(activeSubscription);
+    if (!currentStream.isClosed) {
+      currentStream.sink.add(activeSubscription);
     }
   }
 
