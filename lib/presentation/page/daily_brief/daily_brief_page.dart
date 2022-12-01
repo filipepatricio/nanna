@@ -286,7 +286,13 @@ class _IdleContent extends HookWidget {
         },
         showTopicCardTutorialCoachMark: () => tutorialCoachMark.show(context: context, rootOverlay: true),
         skipTutorialCoachMark: (_) => tutorialCoachMark.skip(),
-        finishTutorialCoachMark: tutorialCoachMark.finish,
+        finishTutorialCoachMark: () {
+          try {
+            if (tutorialCoachMark.isShowing) {
+              tutorialCoachMark.finish();
+            }
+          } catch (_) {}
+        },
       );
     });
 
