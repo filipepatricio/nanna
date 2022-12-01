@@ -12,7 +12,6 @@ import 'package:better_informed_mobile/domain/subscription/mapper/active_subscri
 import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
@@ -38,13 +37,13 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   var _activeSubscriptionStream = StreamController<ActiveSubscription>.broadcast();
 
   Future<bool> _isFirstTimeSubscriber() async {
-    final customer = await Purchases.getCustomerInfo();
+    final customer = await _purchaseExceptionResolver.callWithResolver(Purchases.getCustomerInfo);
     return customer.entitlements.all[_config.revenueCatPremiumEntitlementId] == null;
   }
 
   @override
   Future<bool> hasActiveSubscription() async {
-    final customer = await Purchases.getCustomerInfo();
+    final customer = await _purchaseExceptionResolver.callWithResolver(Purchases.getCustomerInfo);
     return _hasPremiumEntitlement(customer);
   }
 
@@ -54,7 +53,8 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   @override
   Future<ActiveSubscription> getActiveSubscription([CustomerInfo? customerInfo]) async {
-    final customer = customerInfo ?? await Purchases.getCustomerInfo();
+    final customer =
+        customerInfo ?? await _purchaseExceptionResolver.callWithResolver<CustomerInfo>(Purchases.getCustomerInfo);
     final plans = await _getAllSubscriptionPlans();
 
     return _activeSubscriptionMapper(
@@ -68,7 +68,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<List<SubscriptionPlan>> getSubscriptionPlans({String offeringId = _currentOfferingKey}) async {
     try {
-      final offerings = await Purchases.getOfferings();
+      final offerings = await _purchaseExceptionResolver.callWithResolver(() => Purchases.getOfferings());
       final offering = offerings.getCurrentOrCustomOffering(offeringId);
       if (offering != null) {
         return _subscriptionPlanMapper.call(
@@ -80,12 +80,8 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
       }
 
       throw Exception('There is no $offeringId offering configured');
-    } on PlatformException catch (e) {
-      if (e.matchesNotConfiguredException) {
-        Fimber.e('Purchases not configured', ex: PurchasesNotConfiguredException());
-        return [];
-      }
-      rethrow;
+    } on PurchasesNotConfiguredException {
+      return [];
     }
   }
 
@@ -98,19 +94,11 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
       );
 
       // Prefetches and caches available customer info and offerings
-      unawaited(Purchases.getCustomerInfo());
-      unawaited(Purchases.getOfferings());
+      unawaited(_purchaseExceptionResolver.callWithResolver(Purchases.getCustomerInfo));
+      unawaited(_purchaseExceptionResolver.callWithResolver(Purchases.getOfferings));
 
       Purchases.addCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
-
-      return;
-    } on PlatformException catch (e) {
-      if (e.matchesNotConfiguredException) {
-        Fimber.e('Purchases not configured', ex: PurchasesNotConfiguredException());
-        return;
-      }
-      rethrow;
-    }
+    } on PurchasesNotConfiguredException catch (_) {}
   }
 
   Future<void> _updateActiveSubscriptionStream(CustomerInfo customerInfo) async {
@@ -129,14 +117,14 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
     if (apiKey != null) {
       final configuration = PurchasesConfiguration(apiKey);
-      await Purchases.configure(configuration);
+      await _purchaseExceptionResolver.callWithResolver(() => Purchases.configure(configuration));
     }
   }
 
   @override
   Future<bool> purchase(SubscriptionPlan plan, {String? oldProductId}) async {
     try {
-      final offerings = await Purchases.getOfferings();
+      final offerings = await _purchaseExceptionResolver.callWithResolver(Purchases.getOfferings);
       final offering = offerings.getCurrentOrCustomOffering(plan.offeringId);
 
       final package = offering?.availablePackages.firstWhereOrNull(
@@ -146,19 +134,18 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
         throw Exception('Selected package is not part of the ${plan.offeringId} offering. Id: ${plan.packageId}');
       }
 
-      final customer = await Purchases.purchasePackage(
-        package,
-        upgradeInfo: oldProductId != null // https://www.revenuecat.com/docs/managing-subscriptions#google-play
-            ? UpgradeInfo(oldProductId, prorationMode: ProrationMode.immediateWithTimeProration)
-            : null,
+      final customer = await _purchaseExceptionResolver.callWithResolver(
+        () => Purchases.purchasePackage(
+          package,
+          upgradeInfo: oldProductId != null // https://www.revenuecat.com/docs/managing-subscriptions#google-play
+              ? UpgradeInfo(oldProductId, prorationMode: ProrationMode.immediateWithTimeProration)
+              : null,
+        ),
       );
       return _hasPremiumEntitlement(customer);
+    } on PurchasesNotConfiguredException {
+      return false;
     } on PlatformException catch (e) {
-      if (e.matchesNotConfiguredException) {
-        Fimber.e('Purchases not configured', ex: PurchasesNotConfiguredException());
-        return false;
-      }
-
       if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.purchaseCancelledError) {
         return false;
       }
@@ -172,14 +159,11 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<bool> restorePurchase() async {
     try {
-      final customer = await Purchases.restorePurchases();
+      final customer = await _purchaseExceptionResolver.callWithResolver(Purchases.restorePurchases);
       return _hasPremiumEntitlement(customer);
+    } on PurchasesNotConfiguredException {
+      return false;
     } on PlatformException catch (e) {
-      if (e.matchesNotConfiguredException) {
-        Fimber.e('Purchases not configured', ex: PurchasesNotConfiguredException());
-        return false;
-      }
-
       if (PurchasesErrorHelper.getErrorCode(e) == PurchasesErrorCode.missingReceiptFileError) {
         return false;
       }
@@ -199,7 +183,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   Future<List<SubscriptionPlan>> _getAllSubscriptionPlans() async {
-    final offerings = await Purchases.getOfferings();
+    final offerings = await _purchaseExceptionResolver.callWithResolver(Purchases.getOfferings);
     final firstTimeSubscriber = await _isFirstTimeSubscriber();
     if (offerings.all.values.isEmpty) return [];
 
@@ -222,45 +206,28 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
     String? facebookAnonymousId,
   ) async {
     try {
-      await Purchases.collectDeviceIdentifiers();
+      await _purchaseExceptionResolver.callWithResolver(Purchases.collectDeviceIdentifiers);
 
       if (appsflyerId != null) {
-        await Purchases.setAppsflyerID(appsflyerId);
+        await _purchaseExceptionResolver.callWithResolver(() => Purchases.setAppsflyerID(appsflyerId));
       }
 
       if (facebookAnonymousId != null) {
-        await Purchases.setFBAnonymousID(facebookAnonymousId);
+        await _purchaseExceptionResolver.callWithResolver(() => Purchases.setFBAnonymousID(facebookAnonymousId));
       }
-
-      return;
-    } on PlatformException catch (e) {
-      if (e.matchesNotConfiguredException) {
-        Fimber.e('Purchases not configured', ex: PurchasesNotConfiguredException());
-        return;
-      }
-      rethrow;
-    }
+    } on PurchasesNotConfiguredException catch (_) {}
   }
 
   @override
   Future<void> precacheSubscriptionPlans() async {
     try {
-      await Purchases.getOfferings();
-
-      return;
-    } on PlatformException catch (e) {
-      if (e.matchesNotConfiguredException) {
-        Fimber.e('Purchases not configured', ex: PurchasesNotConfiguredException());
-        return;
-      }
-
-      rethrow;
-    }
+      await _purchaseExceptionResolver.callWithResolver(Purchases.getOfferings);
+    } on PurchasesNotConfiguredException catch (_) {}
   }
 
   @override
   Future<void> collectAppleSearchAdsAttributionData() async =>
-      await Purchases.enableAdServicesAttributionTokenCollection();
+      await _purchaseExceptionResolver.callWithResolver(Purchases.enableAdServicesAttributionTokenCollection);
 }
 
 extension on Offerings {
@@ -269,8 +236,4 @@ extension on Offerings {
 
     return getOffering(offeringId);
   }
-}
-
-extension MatchesConfigurationError on PlatformException {
-  bool get matchesNotConfiguredException => message?.contains('There is no singleton instance') ?? false;
 }
