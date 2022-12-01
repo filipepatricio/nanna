@@ -94,10 +94,6 @@ class _TopicCoverBarBig extends HookWidget {
       children: [
         PublisherLogoRow(topic: topic),
         const Spacer(),
-        ShareTopicButton(
-          topic: topic,
-        ),
-        const SizedBox(width: AppDimens.m),
         BookmarkButton.topic(
           topic: topic,
           onTap: onBookmarkTap,

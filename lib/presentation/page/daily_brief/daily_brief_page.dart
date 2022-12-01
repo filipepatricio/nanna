@@ -26,7 +26,6 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
@@ -37,6 +36,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
+part 'widgets/todays_brief_divider.dart';
 
 const _topicCardTutorialOffsetFromBottomFraction = 1.4;
 
@@ -307,14 +308,14 @@ class _IdleContent extends HookWidget {
 
     return MultiSliver(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppDimens.pageHorizontalMargin,
-            vertical: AppDimens.ml,
-          ),
-          child: _Greeting(
-            greeting: brief.greeting,
-            introduction: brief.introduction,
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin) +
+              const EdgeInsets.only(top: AppDimens.m, bottom: AppDimens.xl),
+          sliver: SliverToBoxAdapter(
+            child: _Greeting(
+              greeting: brief.greeting,
+              introduction: brief.introduction,
+            ),
           ),
         ),
         SliverList(
@@ -364,11 +365,10 @@ class _IdleContent extends HookWidget {
     for (int i = 0; i < section.entries.length; i++) {
       final entry = section.entries[i];
 
-      yield const InformedDivider(
-        padding: EdgeInsets.symmetric(vertical: AppDimens.m),
-      );
+      yield const SizedBox(height: AppDimens.l);
 
       yield BriefEntryCover(
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
         briefEntry: entry,
         briefId: brief.id,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
@@ -385,6 +385,13 @@ class _IdleContent extends HookWidget {
           }
         },
       );
+
+      if (i < section.entries.length - 1) {
+        yield const SizedBox(height: AppDimens.l);
+        yield const _TodaysBriefDivider.cover();
+      } else {
+        yield const SizedBox(height: AppDimens.xxl);
+      }
     }
   }
 
@@ -509,17 +516,21 @@ class _BriefSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: AppDimens.m),
-          InformedMarkdownBody(
-            markdown: title,
-            baseTextStyle: AppTypography.h0Medium,
+          const _TodaysBriefDivider.section(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+            child: InformedMarkdownBody(
+              markdown: title,
+              baseTextStyle: AppTypography.sansTitleLargeLausanne,
+            ),
           ),
-          const SizedBox(height: AppDimens.m),
-          ...children,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [...children],
+          ),
           const SizedBox(height: AppDimens.m),
         ],
       ),

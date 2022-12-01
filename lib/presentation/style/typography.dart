@@ -14,6 +14,22 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  static const TextStyle sansTitleLargeLausanne = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 28,
+    color: AppColors.textPrimary,
+    height: 1.1,
+  );
+
+  static const TextStyle sansTextSmallRegularLausanne = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 14,
+    color: AppColors.textPrimary,
+    height: 1.5,
+  );
+
   static const TextStyle h1Headline = TextStyle(
     fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,
