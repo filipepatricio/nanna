@@ -124,7 +124,7 @@ class BriefDate extends StatelessWidget {
         children: [
           Text(
             DateFormatUtil.currentBriefDate(briefDate),
-            style: isTitle ? AppTypography.h4Medium.copyWith(height: 2) : AppTypography.h0Regular,
+            style: isTitle ? AppTypography.h4Medium.copyWith(height: 2) : AppTypography.sansTitleLargeLausanne,
           ),
           Visibility(
             visible: showCalendarButton,
