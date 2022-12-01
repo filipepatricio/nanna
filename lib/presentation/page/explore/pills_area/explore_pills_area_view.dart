@@ -10,7 +10,6 @@ const _pillLines = 1;
 const _pillPadding = AppDimens.s;
 const _pillsTopPadding = AppDimens.zero;
 const _pillsBottomPadding = AppDimens.zero;
-const _pillsAreaHeight = AppDimens.explorePillHeight + _pillsTopPadding + _pillsBottomPadding;
 
 class ExplorePillsAreaView extends StatelessWidget {
   const ExplorePillsAreaView({
@@ -22,8 +21,10 @@ class ExplorePillsAreaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pillsAreaHeight = AppDimens.explorePillHeight(context) + _pillsTopPadding + _pillsBottomPadding;
+
     return SizedBox(
-      height: _pillsAreaHeight,
+      height: pillsAreaHeight,
       child: MasonryGridView.count(
         padding: const EdgeInsets.only(
           left: AppDimens.pageHorizontalMargin,

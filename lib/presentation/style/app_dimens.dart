@@ -156,7 +156,7 @@ class AppDimens {
   static double photoCaptionImageContainerHeight(BuildContext context) => MediaQuery.of(context).size.height * .65;
 
   /// 32
-  static const explorePillHeight = 32.0;
+  static double explorePillHeight(BuildContext context) => MediaQuery.of(context).textScaleFactor * 32;
 
   /// 32
   static const bookmarkIconSize = 32.0;
