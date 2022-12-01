@@ -3,12 +3,10 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 typedef OnWillPopFunction = Future<bool> Function();
 
@@ -34,23 +32,24 @@ class InformedDialog extends HookWidget {
 
   static String get deleteAccountDialogRouteName => 'DeleteAccountDialog';
 
-  static Future<void> showNoConnection(BuildContext context, {required OnWillPopFunction onWillPop}) {
+  static Future<void> showNoConnection(
+    BuildContext context, {
+    required OnWillPopFunction onWillPop,
+  }) {
     return show<void>(
       context,
       routeName: noConnectionDialogRouteName,
-      icon: SvgPicture.asset(
-        AppVectorGraphics.megaphone,
-        width: AppDimens.onboardingIconSize,
-        height: AppDimens.onboardingIconSize,
-        fit: BoxFit.contain,
-      ),
       title: LocaleKeys.noConnection_title.tr(),
       text: LocaleKeys.noConnection_body.tr(),
       onWillPop: onWillPop,
     );
   }
 
-  static Future<void> showAppUpdate(BuildContext context, {OnWillPopFunction? onWillPop, String? availableVersion}) {
+  static Future<void> showAppUpdate(
+    BuildContext context, {
+    required OnWillPopFunction onWillPop,
+    String? availableVersion,
+  }) {
     return show<void>(
       context,
       routeName: appUpdateDialogRouteName,
@@ -63,37 +62,39 @@ class InformedDialog extends HookWidget {
         buttonLabel: LocaleKeys.update_button.tr(),
         launchExternalApp: true,
       ),
-      onWillPop: onWillPop ?? () async => true,
+      onWillPop: onWillPop,
     );
   }
 
-  static Future<bool?> showDeleteAccount(BuildContext context) async => show<bool>(
-        context,
-        routeName: appUpdateDialogRouteName,
-        title: LocaleKeys.settings_deleteAccount_dialogTitle.tr(),
-        text: LocaleKeys.settings_deleteAccount_dialogBody.tr(),
-        dismissible: true,
-        action: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 6,
-              child: FilledButton.white(
-                text: LocaleKeys.common_cancel.tr(),
-                onTap: () => Navigator.of(context, rootNavigator: true).pop(false),
-              ),
+  static Future<bool?> showDeleteAccount(BuildContext context) async {
+    return show<bool>(
+      context,
+      routeName: deleteAccountDialogRouteName,
+      title: LocaleKeys.settings_deleteAccount_dialogTitle.tr(),
+      text: LocaleKeys.settings_deleteAccount_dialogBody.tr(),
+      dismissible: true,
+      action: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 6,
+            child: FilledButton.white(
+              text: LocaleKeys.common_cancel.tr(),
+              onTap: () => Navigator.of(context, rootNavigator: true).pop(false),
             ),
-            const Spacer(),
-            Expanded(
-              flex: 6,
-              child: FilledButton.red(
-                text: LocaleKeys.settings_deleteAccount_delete.tr(),
-                onTap: () => Navigator.of(context, rootNavigator: true).pop(true),
-              ),
+          ),
+          const Spacer(),
+          Expanded(
+            flex: 6,
+            child: FilledButton.red(
+              text: LocaleKeys.settings_deleteAccount_delete.tr(),
+              onTap: () => Navigator.of(context, rootNavigator: true).pop(true),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
   static Future<T?> show<T>(
     BuildContext context, {
