@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 
 typedef OnPurchasePressed = void Function(SubscriptionPlan plan);
 
+enum SubscriptionButtonContentType { lite, full }
+
 class SubscribeButton extends StatelessWidget {
   const SubscribeButton._({
     required this.plan,
+    required this.mode,
     required this.isLoading,
     required this.onPurchasePressed,
-    required this.mode,
+    this.contentType = SubscriptionButtonContentType.full,
     Key? key,
   }) : super(key: key);
 
@@ -18,11 +21,13 @@ class SubscribeButton extends StatelessWidget {
     required SubscriptionPlan plan,
     required bool isLoading,
     required OnPurchasePressed onPurchasePressed,
+    SubscriptionButtonContentType contentType = SubscriptionButtonContentType.full,
   }) =>
       SubscribeButton._(
         plan: plan,
         isLoading: isLoading,
         onPurchasePressed: onPurchasePressed,
+        contentType: contentType,
         mode: Brightness.light,
       );
 
@@ -30,26 +35,43 @@ class SubscribeButton extends StatelessWidget {
     required SubscriptionPlan plan,
     required bool isLoading,
     required OnPurchasePressed onPurchasePressed,
+    SubscriptionButtonContentType contentType = SubscriptionButtonContentType.full,
   }) =>
       SubscribeButton._(
         plan: plan,
         isLoading: isLoading,
         onPurchasePressed: onPurchasePressed,
+        contentType: contentType,
         mode: Brightness.dark,
       );
 
-  final Brightness mode;
   final SubscriptionPlan plan;
+  final Brightness mode;
   final bool isLoading;
   final OnPurchasePressed onPurchasePressed;
+  final SubscriptionButtonContentType contentType;
 
   @override
   Widget build(BuildContext context) {
-    final text = plan.hasTrial ? LocaleKeys.subscription_tryForFreeAction.tr() : LocaleKeys.subscription_subscribe.tr();
+    final text = plan.hasTrial && contentType == SubscriptionButtonContentType.full
+        ? LocaleKeys.subscription_button_trialText.tr(
+            args: [
+              LocaleKeys.date_daySuffix.tr(args: ['${plan.trialDays}']),
+            ],
+          )
+        : LocaleKeys.subscription_button_standard.tr();
 
     if (mode == Brightness.dark) {
       return FilledButton.black(
         text: text,
+        subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
+            ? LocaleKeys.subscription_button_trialSubtext.tr(
+                args: [
+                  plan.priceString,
+                  plan.periodString,
+                ],
+              )
+            : null,
         onTap: () => onPurchasePressed(plan),
         isLoading: isLoading,
       );
@@ -57,8 +79,20 @@ class SubscribeButton extends StatelessWidget {
 
     return FilledButton.green(
       text: text,
+      subtext: contentType == SubscriptionButtonContentType.full && plan.hasTrial
+          ? LocaleKeys.subscription_button_trialSubtext.tr(
+              args: [
+                plan.priceString,
+                plan.periodString,
+              ],
+            )
+          : null,
       onTap: () => onPurchasePressed(plan),
       isLoading: isLoading,
     );
   }
+}
+
+extension on SubscriptionPlan {
+  String get periodString => isAnnual ? LocaleKeys.date_year.tr() : LocaleKeys.date_month.tr();
 }

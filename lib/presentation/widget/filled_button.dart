@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class FilledButton extends StatelessWidget {
   const FilledButton._({
     required this.text,
+    this.subtext,
     this.isEnabled = true,
     this.onTap,
     this.fillColor = AppColors.limeGreen,
@@ -21,6 +22,7 @@ class FilledButton extends StatelessWidget {
 
   factory FilledButton.green({
     required String text,
+    String? subtext,
     bool isEnabled = true,
     bool isLoading = false,
     VoidCallback? onTap,
@@ -29,6 +31,7 @@ class FilledButton extends StatelessWidget {
   }) =>
       FilledButton._(
         text: text,
+        subtext: subtext,
         isEnabled: isEnabled,
         onTap: onTap,
         fillColor: AppColors.limeGreen,
@@ -42,6 +45,7 @@ class FilledButton extends StatelessWidget {
 
   factory FilledButton.black({
     required String text,
+    String? subtext,
     bool isEnabled = true,
     bool isLoading = false,
     VoidCallback? onTap,
@@ -50,6 +54,7 @@ class FilledButton extends StatelessWidget {
   }) =>
       FilledButton._(
         text: text,
+        subtext: subtext,
         isEnabled: isEnabled,
         onTap: onTap,
         fillColor: AppColors.charcoal,
@@ -63,6 +68,7 @@ class FilledButton extends StatelessWidget {
 
   factory FilledButton.red({
     required String text,
+    String? subtext,
     bool isEnabled = true,
     bool isLoading = false,
     VoidCallback? onTap,
@@ -71,6 +77,7 @@ class FilledButton extends StatelessWidget {
   }) =>
       FilledButton._(
         text: text,
+        subtext: subtext,
         isEnabled: isEnabled,
         onTap: onTap,
         fillColor: AppColors.carrotRed,
@@ -84,6 +91,7 @@ class FilledButton extends StatelessWidget {
 
   factory FilledButton.white({
     required String text,
+    String? subtext,
     VoidCallback? onTap,
     Widget? leading,
     Widget? trailing,
@@ -91,6 +99,7 @@ class FilledButton extends StatelessWidget {
   }) =>
       FilledButton._(
         text: text,
+        subtext: subtext,
         isEnabled: true,
         onTap: onTap,
         fillColor: AppColors.darkLinen,
@@ -104,6 +113,7 @@ class FilledButton extends StatelessWidget {
       );
 
   final String text;
+  final String? subtext;
   final bool isEnabled;
   final VoidCallback? onTap;
   final Color fillColor;
@@ -119,6 +129,11 @@ class FilledButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final leading = this.leading;
     final trailing = this.trailing;
+
+    final textStyle = (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(
+      color: isEnabled ? textColor : disableTextColor,
+    );
+
     return GestureDetector(
       onTap: isEnabled ? onTap : () => {},
       child: AnimatedContainer(
@@ -158,11 +173,27 @@ class FilledButton extends StatelessWidget {
                           leading,
                           const SizedBox(width: AppDimens.sl),
                         ],
-                        Text(
-                          text,
-                          style: AppTypography.buttonMedium.copyWith(
-                            color: isEnabled ? textColor : disableTextColor,
-                          ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              text,
+                              style: textStyle,
+                            ),
+                            if (subtext != null) ...[
+                              Padding(
+                                padding: const EdgeInsets.only(top: AppDimens.s),
+                                child: Text(
+                                  subtext!,
+                                  style: AppTypography.buttonRegular.copyWith(
+                                    color: isEnabled ? textColor : disableTextColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                         if (trailing != null) ...[
                           const SizedBox(width: AppDimens.sl),
