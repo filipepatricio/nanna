@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker_state.dt.dart';
@@ -11,11 +12,13 @@ class AppConnectivityChecker extends HookWidget {
     this.closeCubitOnDispose = false,
   });
 
-  final Widget child;
   final bool closeCubitOnDispose;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    final isMounted = useIsMounted();
+    final lifecycleState = useAppLifecycleState();
     final cubit = useCubit<AppConnectivityCheckerCubit>(closeOnDispose: closeCubitOnDispose);
 
     AppConnectivityCheckerState? currentState;
@@ -33,10 +36,13 @@ class AppConnectivityChecker extends HookWidget {
         state.maybeMap(
           notConnected: (newState) {
             currentState = newState;
-            return InformedDialog.showNoConnection(
-              context,
-              onWillPop: () async => await cubit.checkIsConnected(),
-            );
+            if ((isMounted() && lifecycleState == AppLifecycleState.resumed) || kIsTest) {
+              InformedDialog.showNoConnection(
+                context,
+                onWillPop: cubit.checkIsConnected,
+              );
+            }
+            return;
           },
           connected: (newState) {
             if (currentState == const AppConnectivityCheckerState.notConnected()) {
