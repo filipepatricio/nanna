@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/article/api/exception/article_blocked_by_subscription_exception_mapper.dart';
 import 'package:better_informed_mobile/data/article/api/exception/article_geoblocked_exception_mapper.dart';
 import 'package:better_informed_mobile/data/exception/exception_mapper_facade.dart';
 import 'package:injectable/injectable.dart';
@@ -8,6 +9,7 @@ class ArticleExceptionMapperFacade extends ExceptionMapperFacade {
       : super(
           [
             ArticleGeoblockedExceptionMapper(),
+            ArticleBlockedBySubscriptionExceptionMapper(),
           ],
         );
 }

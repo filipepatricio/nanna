@@ -56,6 +56,7 @@ class _PaywallTrialOption extends StatelessWidget {
                 plan: plan,
                 isLoading: isProcessing,
                 onPurchasePressed: onPurchasePressed,
+                contentType: SubscriptionButtonContentType.lite,
               ),
             ],
           ),

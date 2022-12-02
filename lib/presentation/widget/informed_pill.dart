@@ -19,7 +19,7 @@ class InformedPill extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: AppDimens.explorePillHeight,
+        height: AppDimens.explorePillHeight(context),
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(AppDimens.pillRadius),

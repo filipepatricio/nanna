@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/data/subscription/dto/active_subscription_dto.dart';
 import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
+import 'package:better_informed_mobile/data/subscription/exception/purchase_exception_resolver.di.dart';
+import 'package:better_informed_mobile/data/subscription/exception/purchase_server_exception.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/exception/purchases_not_configured_exception.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
@@ -15,6 +17,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:retry/retry.dart';
 
 const _currentOfferingKey = 'current';
 
@@ -24,11 +27,13 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
     this._config,
     this._subscriptionPlanMapper,
     this._activeSubscriptionMapper,
+    this._purchaseExceptionResolver,
   );
 
   final AppConfig _config;
   final SubscriptionPlanMapper _subscriptionPlanMapper;
   final ActiveSubscriptionMapper _activeSubscriptionMapper;
+  final PurchaseExceptionResolver _purchaseExceptionResolver;
 
   var _activeSubscriptionStream = StreamController<ActiveSubscription>.broadcast();
 
@@ -87,7 +92,10 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<void> identify(String userId) async {
     try {
-      await Purchases.logIn(userId);
+      await retry(
+        () => _purchaseExceptionResolver.callWithResolver(() => Purchases.logIn(userId)),
+        retryIf: (exception) => exception is PurchaseServerException,
+      );
 
       // Prefetches and caches available customer info and offerings
       unawaited(Purchases.getCustomerInfo());
@@ -106,7 +114,11 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   }
 
   Future<void> _updateActiveSubscriptionStream(CustomerInfo customerInfo) async {
-    _activeSubscriptionStream.sink.add(await getActiveSubscription(customerInfo));
+    final currentStream = _activeSubscriptionStream;
+    final activeSubscription = await getActiveSubscription(customerInfo);
+    if (!currentStream.isClosed) {
+      currentStream.sink.add(activeSubscription);
+    }
   }
 
   @override
@@ -181,9 +193,9 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   @override
   void dispose() {
+    Purchases.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
     _activeSubscriptionStream.close();
     _activeSubscriptionStream = StreamController.broadcast();
-    Purchases.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
   }
 
   Future<List<SubscriptionPlan>> _getAllSubscriptionPlans() async {

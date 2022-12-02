@@ -26,6 +26,7 @@ class ArticleContentMarkdown extends HookWidget {
         selectionControllers: SelectionControllerBundle(),
         baseTextStyle: AppTypography.articleText,
         strongTextStyle: AppTypography.articleTextBold,
+        headingTextStyle: AppTypography.serifTitleSmallIvar,
         shareTextCallback: shareTextCallback,
         useTextHighlight: false,
         paddingBuilders: <String, MarkdownPaddingBuilder>{

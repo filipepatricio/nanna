@@ -6,6 +6,30 @@ const _fontFamilyIvarHeadline = 'IvarHeadline';
 const _fontFamilyLausanne = 'Lausanne';
 
 class AppTypography {
+  static const TextStyle serifTitleSmallIvar = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 20,
+    height: 1.1,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle sansTitleLargeLausanne = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 28,
+    color: AppColors.textPrimary,
+    height: 1.1,
+  );
+
+  static const TextStyle sansTextSmallRegularLausanne = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 14,
+    color: AppColors.textPrimary,
+    height: 1.5,
+  );
+
   static const TextStyle h1Headline = TextStyle(
     fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,
@@ -331,6 +355,14 @@ class AppTypography {
 
   static const TextStyle buttonMedium = TextStyle(
     fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 16,
+    height: 1,
+    color: AppColors.textPrimary,
+  );
+
+  static const TextStyle buttonRegular = TextStyle(
+    fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
     fontSize: 16,
     height: 1,

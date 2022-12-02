@@ -72,6 +72,7 @@ class AppVectorGraphics {
   static const String chevronBack = 'assets/vector_graphics/chevron_back.svg';
   static const String chevronDown = 'assets/vector_graphics/chevron_down.svg';
   static const String noImage = 'assets/vector_graphics/no_image.svg';
+  static const String visitedCheckmark = 'assets/vector_graphics/read_checkmark.svg';
 
   static const String bookmarkFilled = 'assets/vector_graphics/bookmark_filled.svg';
   static const String bookmarkOutline = 'assets/vector_graphics/bookmark_outline.svg';

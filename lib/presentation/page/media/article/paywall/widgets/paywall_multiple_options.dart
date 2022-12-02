@@ -55,6 +55,7 @@ class _PaywallMultipleOptions extends HookWidget {
             plan: selectedPlan.value,
             isLoading: isProcessing,
             onPurchasePressed: onPurchasePressed,
+            contentType: SubscriptionButtonContentType.lite,
           ),
         ),
         const SizedBox(height: AppDimens.l),
