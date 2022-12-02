@@ -123,16 +123,24 @@ void main() {
       );
       expect(
         find.byWidgetPredicate(
-          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_subscribe.tr(),
+          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_button_standard.tr(),
         ),
         findsOneWidget,
       );
 
+      final lastPlan = (await useCase.call()).last;
       await tester.tap(find.byType(SubscriptionPlanCard).last);
       await tester.pumpAndSettle();
       expect(
         find.byWidgetPredicate(
-          (widget) => widget is FilledButton && widget.text == LocaleKeys.subscription_tryForFreeAction.tr(),
+          (widget) =>
+              widget is FilledButton &&
+              widget.text ==
+                  LocaleKeys.subscription_button_trialText.tr(
+                    args: [
+                      LocaleKeys.date_daySuffix.tr(args: ['${lastPlan.trialDays}']),
+                    ],
+                  ),
           skipOffstage: false,
         ),
         findsOneWidget,

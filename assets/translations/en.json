@@ -114,13 +114,17 @@
       "standard": "Recurring billing · Cancel anytime"
     },
     "off": "{}% off",
-    "subscribe": "Subscribe",
     "description": "Read or listen to all of our curated articles.\nCancel anytime during your trial.",
     "planInfo": {
       "trial": "Free {} trial, then {} / year",
       "standard": "{} / year"
     },
-    "tryForFreeAction": "Try for free",
+    "button": {
+      "trialText": "Start your free {} trial",
+      "trialSubtext": "then {} / {}",
+      "tryForFree": "Try for free",
+      "standard": "Subscribe"
+    },
     "withXDaysFreeTrial": "with {} free trial",
     "success": {
       "title": {
