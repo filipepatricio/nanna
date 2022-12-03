@@ -26,55 +26,52 @@ class _ArticleCoverList extends ArticleCover {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppDimens.m),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (article.shouldShowArticleCoverNote && showNote) ...[
-              InformedMarkdownBody(
-                markdown: article.note!,
-                baseTextStyle: AppTypography.b2Regular,
-              ),
-              const SizedBox(height: AppDimens.s),
-            ],
-            if (showRecommendedBy) CurationInfoView(curationInfo: article.curationInfo),
-            const SizedBox(height: AppDimens.m),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      PublisherRow(article: article),
-                      const SizedBox(height: AppDimens.xs),
-                      InformedMarkdownBody(
-                        markdown: article.title,
-                        baseTextStyle: AppTypography.articleSmallTitle,
-                        maxLines: 3,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: AppDimens.m),
-                _ArticleAspectRatioCover(
-                  article: article,
-                  coverColor: article.category.color,
-                  aspectRatio: _articleSmallCoverAspectRatio,
-                  width: coverWidth,
-                ),
-              ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (article.shouldShowArticleCoverNote && showNote) ...[
+            InformedMarkdownBody(
+              markdown: article.note!,
+              baseTextStyle: AppTypography.b2Regular,
             ),
-            const SizedBox(height: AppDimens.sl),
-            ArticleMetadataRow(
-              article: article,
-              onBookmarkTap: onBookmarkTap,
-            ),
+            const SizedBox(height: AppDimens.s),
           ],
-        ),
+          if (showRecommendedBy) CurationInfoView(curationInfo: article.curationInfo),
+          const SizedBox(height: AppDimens.m),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PublisherRow(article: article),
+                    const SizedBox(height: AppDimens.xs),
+                    InformedMarkdownBody(
+                      markdown: article.title,
+                      baseTextStyle: AppTypography.articleSmallTitle,
+                      maxLines: 3,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppDimens.m),
+              _ArticleAspectRatioCover(
+                article: article,
+                coverColor: article.category.color,
+                aspectRatio: _articleSmallCoverAspectRatio,
+                width: coverWidth,
+              ),
+            ],
+          ),
+          const SizedBox(height: AppDimens.sl),
+          ArticleMetadataRow(
+            article: article,
+            onBookmarkTap: onBookmarkTap,
+          ),
+        ],
       ),
     );
   }

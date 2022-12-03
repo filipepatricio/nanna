@@ -77,12 +77,13 @@ class _TopicCoverBarSmall extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          child: CurationInfoView(
-            curationInfo: topic.curationInfo,
-            hideLabel: true,
-          ),
+        CuratorImage(
+          curator: topic.curationInfo.curator,
+          imageWidth: AppDimens.avatarSize,
+          imageHeight: AppDimens.avatarSize,
+          editorAvatar: AppVectorGraphics.editorialTeamAvatar,
         ),
+        const Spacer(),
         BookmarkButton.topic(
           topic: topic,
         ),
