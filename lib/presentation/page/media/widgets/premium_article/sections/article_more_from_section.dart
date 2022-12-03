@@ -31,15 +31,18 @@ class ArticleMoreFromSection extends StatelessWidget {
             style: AppTypography.h1Medium,
           ),
         ),
-        Column(
-          children: items
-              .expand(
-                (element) => [
-                  element,
-                  if (items.last != element) const Divider(height: AppDimens.xl),
-                ],
-              )
-              .toList(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+          child: Column(
+            children: items
+                .expand(
+                  (element) => [
+                    element,
+                    if (items.last != element) const Divider(height: AppDimens.xl),
+                  ],
+                )
+                .toList(),
+          ),
         ),
         const SizedBox(height: AppDimens.l),
       ],

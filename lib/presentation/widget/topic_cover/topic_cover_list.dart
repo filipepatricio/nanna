@@ -25,7 +25,7 @@ class _TopicCoverList extends HookWidget {
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
+        padding: const EdgeInsets.symmetric(vertical: AppDimens.m),
         child: Column(
           children: [
             Row(

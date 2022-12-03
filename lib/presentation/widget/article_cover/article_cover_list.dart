@@ -27,7 +27,7 @@ class _ArticleCoverList extends ArticleCover {
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(AppDimens.pageHorizontalMargin),
+        padding: const EdgeInsets.symmetric(vertical: AppDimens.m),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
