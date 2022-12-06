@@ -14,6 +14,7 @@ import 'data/networking/should_refresh_validator_test.dart' as should_refresh_va
 import 'data/onboarding/onboarding_store_impl_test.dart' as onboarding_store_impl_test;
 import 'data/subscription/exception/purchase_exception_resolver_test.dart' as purchase_exception_resolver_test;
 import 'data/subscription/mapper/active_subscription_mapper_test.dart' as active_subscription_mapper_test;
+import 'data/subscription/purchase_repository_impl_test.dart' as purchase_repository_impl_test;
 import 'data/topic/api/mapper/topic_dto_mapper_test.dart' as topic_dto_mapper_test;
 import 'data/topic/api/mapper/topic_preview_dto_mapper_test.dart' as topic_preview_dto_mapper_test;
 import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
@@ -70,6 +71,7 @@ void main() {
   group('common_exception_mapper_test', common_exception_mapper_test.main);
   group('unknown_exception_unwrap_mapper_test', unknown_exception_unwrap_mapper_test.main);
   group('purchase_exception_resolver_test', purchase_exception_resolver_test.main);
+  group('purchase_repository_impl_test', purchase_repository_impl_test.main);
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);
