@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -156,6 +157,7 @@ class _CustomTextPainter extends HookWidget {
               selectionControls: createPlatformSpecific(
                 [
                   shareControlData(tr(LocaleKeys.common_share), shareCallback),
+                  if (Platform.isIOS) lookUpControlData(tr(LocaleKeys.common_lookUp)),
                 ],
               ),
               onSelectionChanged: (_, __) => selectionControllers?.unselectAllBut(controller.key),
@@ -237,11 +239,15 @@ class _CustomTextPainter extends HookWidget {
 }
 
 class _CustomHighlightTextPainter extends CustomPainter {
-  _CustomHighlightTextPainter(this.textPainter, this.offsets, this.highlightColor);
+  _CustomHighlightTextPainter(this.textPainter, this.offsets, this.highlightColor) : _paint = Paint() {
+    _paint.color = highlightColor;
+  }
 
   final TextPainter textPainter;
   final List<Offset> offsets;
   final Color highlightColor;
+
+  final Paint _paint;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -288,7 +294,7 @@ class _CustomHighlightTextPainter extends CustomPainter {
       ..lineTo(line.left + startPos - 3, line.height * 0.92 + _calculateBaselineOffset(line))
       ..close();
 
-    canvas.drawPath(path, Paint()..color = highlightColor);
+    canvas.drawPath(path, _paint);
   }
 
   double _calculateBaselineOffset(LineMetrics line) => line.baseline + line.descent - line.height;
