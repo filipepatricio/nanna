@@ -1,1 +1,0 @@
-class PurchasesNotConfiguredException implements Exception {}
