@@ -16,11 +16,13 @@ import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_map
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/mapper/onboarding_version_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/store/onboarding_database.dart';
+import 'package:better_informed_mobile/data/subscription/purchase_remote_data_source.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/app_info_data_source.di.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
@@ -42,6 +44,8 @@ import 'package:better_informed_mobile/domain/push_notification/use_case/incomin
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_remote_repository.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
+import 'package:better_informed_mobile/domain/subscription/mapper/active_subscription_mapper.di.dart';
+import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_preferred_subscription_plan_use_case.di.dart';
@@ -119,6 +123,10 @@ const _classes = [
   CategoryDTOMapper,
   DeepLinkRepository,
   CurationInfoDTOMapper,
+  AppConfig,
+  SubscriptionPlanMapper,
+  ActiveSubscriptionMapper,
+  PurchaseRemoteDataSource,
 ];
 
 @GenerateMocks(_classes)

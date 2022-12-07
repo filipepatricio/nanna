@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/exception/server_error_exception.dart';
 import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
+import 'package:better_informed_mobile/domain/subscription/exception/purchase_exception.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -15,13 +16,14 @@ abstract class ReportingTreeErrorFilter {
 class ReportingTreeErrorFilterController {
   final List<ReportingTreeErrorFilter> _filters = [
     _CubitClosedErrorFilter(),
-    _NoConnectionErrorFilter(),
     _FirebaseConnectionErrorFilter(),
     _SignInWithAppleAuthorizationErrorFilter(),
     _HttpExceptionErrorFilter(),
     _ErrorFilter<NoInternetConnectionException>(),
     _ErrorFilter<UnauthorizedException>(),
     _ErrorFilter<ServerErrorException>(),
+    _ErrorFilter<PurchaseNetworkException>(),
+    _ErrorFilter<SocketException>(),
   ];
 
   bool shouldFilterOut(dynamic error) {
@@ -33,13 +35,6 @@ class _CubitClosedErrorFilter implements ReportingTreeErrorFilter {
   @override
   bool filterOut(error) {
     return error is StateError && error.message == 'Cannot emit new states after calling close';
-  }
-}
-
-class _NoConnectionErrorFilter implements ReportingTreeErrorFilter {
-  @override
-  bool filterOut(error) {
-    return error is SocketException;
   }
 }
 
