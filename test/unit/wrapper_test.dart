@@ -7,11 +7,13 @@ import 'data/auth/api/refresh_token_service_test.dart' as refresh_token_service_
 import 'data/auth/app_link/auth_app_link_repository_impl_test.dart' as auth_app_link_repository_impl_test;
 import 'data/auth/app_link/magic_link_parser_test.dart' as magic_link_parser_test;
 import 'data/exception/common_exception_mapper_test.dart' as common_exception_mapper_test;
+import 'data/exception/firebase_exception_mapper_test.dart' as firebase_exception_mapper_test;
 import 'data/exception/unknown_exception_unwrap_mapper_test.dart' as unknown_exception_unwrap_mapper_test;
 import 'data/images/cloudinary_test.dart' as cloudinary_test;
 import 'data/networking/app_version_link/app_version_link_transformer_test.dart' as app_version_link_transformer_test;
 import 'data/networking/should_refresh_validator_test.dart' as should_refresh_validator_test;
 import 'data/onboarding/onboarding_store_impl_test.dart' as onboarding_store_impl_test;
+import 'data/push_notificaton/push_notification_repository_impl_test.dart' as push_notification_repository_impl_test;
 import 'data/subscription/exception/purchase_exception_resolver_test.dart' as purchase_exception_resolver_test;
 import 'data/subscription/mapper/active_subscription_mapper_test.dart' as active_subscription_mapper_test;
 import 'data/subscription/purchase_repository_impl_test.dart' as purchase_repository_impl_test;
@@ -72,6 +74,8 @@ void main() {
   group('unknown_exception_unwrap_mapper_test', unknown_exception_unwrap_mapper_test.main);
   group('purchase_exception_resolver_test', purchase_exception_resolver_test.main);
   group('purchase_repository_impl_test', purchase_repository_impl_test.main);
+  group('push_notification_repository_impl_test', push_notification_repository_impl_test.main);
+  group('firebase_exception_mapper_test', firebase_exception_mapper_test.main);
 
   // Domain
   group('get_current_release_note_use_case_test', get_current_release_note_use_case_test.main);
