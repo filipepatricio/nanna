@@ -23,7 +23,7 @@ env:
   RUBY_VERSION: '3.1'
 
 jobs:
-  deploy_android:
+  deploy_android_staging:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -125,7 +125,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
-  deploy_ios:
+  deploy_ios_staging:
     runs-on: macos-12
     timeout-minutes: 30
     steps:
