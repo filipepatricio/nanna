@@ -13,9 +13,16 @@ import 'package:better_informed_mobile/data/categories/mapper/category_dto_mappe
 import 'package:better_informed_mobile/data/common/mapper/curation_info_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/common/mapper/curator_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/daily_brief/api/mapper/entry_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/exception/firebase/firebase_exception_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/mapper/onboarding_version_entity_mapper.di.dart';
 import 'package:better_informed_mobile/data/onboarding/store/onboarding_database.dart';
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/api/mapper/registered_push_token_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/api/push_notification_api_data_source.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/push_notification_messenger.di.dart';
 import 'package:better_informed_mobile/data/subscription/purchase_remote_data_source.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/app_info_data_source.di.dart';
@@ -58,6 +65,7 @@ import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
 import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mockito/annotations.dart';
@@ -127,6 +135,14 @@ const _classes = [
   SubscriptionPlanMapper,
   ActiveSubscriptionMapper,
   PurchaseRemoteDataSource,
+  FirebaseMessaging,
+  PushNotificationApiDataSource,
+  IncomingPushDTOMapper,
+  PushNotificationMessenger,
+  RegisteredPushTokenDTOMapper,
+  NotificationPreferencesDTOMapper,
+  NotificationChannelDTOMapper,
+  FirebaseExceptionMapper,
 ];
 
 @GenerateMocks(_classes)
