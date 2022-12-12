@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:better_informed_mobile/data/exception/firebase/firebase_exception_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/registered_push_token_dto_mapper.di.dart';
@@ -15,8 +16,10 @@ import 'package:better_informed_mobile/domain/push_notification/incoming_push/da
 import 'package:better_informed_mobile/domain/push_notification/incoming_push/data/incoming_push_action.dt.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:fimber/fimber.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:injectable/injectable.dart';
+import 'package:retry/retry.dart';
 import 'package:rxdart/rxdart.dart';
 
 @LazySingleton(as: PushNotificationRepository, env: liveEnvs)
@@ -29,6 +32,7 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
     this._registeredPushTokenDTOMapper,
     this._notificationPreferencesDTOMapper,
     this._notificationChannelDTOMapper,
+    this._firebaseExceptionMapper,
   );
 
   final FirebaseMessaging _firebaseMessaging;
@@ -38,18 +42,24 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   final RegisteredPushTokenDTOMapper _registeredPushTokenDTOMapper;
   final NotificationPreferencesDTOMapper _notificationPreferencesDTOMapper;
   final NotificationChannelDTOMapper _notificationChannelDTOMapper;
+  final FirebaseExceptionMapper _firebaseExceptionMapper;
 
   StreamController<IncomingPush>? _incomingPushNotificationStream;
   StreamSubscription? _incomingPushSubscription;
 
   @override
   Future<RegisteredPushToken> registerToken() async {
-    final token = await _firebaseMessaging.getToken();
-    if (token == null) throw Exception('Could not register FCM token');
+    try {
+      final token = await retry(() => _firebaseMessaging.getToken(), retryIf: (e) => !kIsTest);
+      if (token == null) throw Exception('Could not register FCM token');
 
-    final dto = await _pushNotificationApiDataSource.registerToken(token);
+      final dto = await _pushNotificationApiDataSource.registerToken(token);
 
-    return _registeredPushTokenDTOMapper(dto);
+      return _registeredPushTokenDTOMapper(dto);
+    } on FirebaseException catch (e) {
+      _firebaseExceptionMapper.mapAndThrow(e);
+      rethrow;
+    }
   }
 
   @override

@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:better_informed_mobile/data/exception/firebase/firebase_authentication_exception.dart';
+import 'package:better_informed_mobile/data/exception/firebase/firebase_network_exception.dart';
 import 'package:better_informed_mobile/domain/exception/no_internet_connection_exception.dart';
 import 'package:better_informed_mobile/domain/exception/server_error_exception.dart';
 import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
 import 'package:better_informed_mobile/domain/subscription/exception/purchase_exception.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -16,7 +17,7 @@ abstract class ReportingTreeErrorFilter {
 class ReportingTreeErrorFilterController {
   final List<ReportingTreeErrorFilter> _filters = [
     _CubitClosedErrorFilter(),
-    _FirebaseConnectionErrorFilter(),
+    _FirebaseExceptionFilter(),
     _SignInWithAppleAuthorizationErrorFilter(),
     _HttpExceptionErrorFilter(),
     _ErrorFilter<NoInternetConnectionException>(),
@@ -50,23 +51,10 @@ class _SignInWithAppleAuthorizationErrorFilter implements ReportingTreeErrorFilt
   }
 }
 
-class _FirebaseConnectionErrorFilter implements ReportingTreeErrorFilter {
+class _FirebaseExceptionFilter implements ReportingTreeErrorFilter {
   @override
   bool filterOut(error) {
-    if (error is FirebaseException) {
-      final message = error.message;
-      if (message == null) return true;
-
-      return message.contains('Could not connect to the server') ||
-          message.contains('The Internet connection appears to be offline') ||
-          message.contains('The network connection was lost') ||
-          message.contains('International roaming is currently off') ||
-          message.contains('The request timed out') ||
-          message.contains('A data connection is not currently allowed') ||
-          message.contains('TOO_MANY_REGISTRATIONS') ||
-          message.contains('SERVICE_NOT_AVAILABLE');
-    }
-    return false;
+    return error is FirebaseNetworkException || error is FirebaseAuthenticationException;
   }
 }
 
