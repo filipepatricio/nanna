@@ -53,7 +53,7 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
-          subdirectory: 'android'
+          working-directory: 'android'
 
       - name: Setup Java
         uses: actions/setup-java@v1
@@ -141,7 +141,7 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
-          subdirectory: 'ios'
+          working-directory: 'ios'
 
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
