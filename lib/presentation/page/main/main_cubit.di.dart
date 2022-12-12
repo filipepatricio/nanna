@@ -58,13 +58,8 @@ class MainCubit extends Cubit<MainState> {
     _subscribeToDeepLinkStream();
     _subscribeToPaidSubscriptionChangeStream();
 
-    try {
-      await _maybeRegisterPushNotificationTokenUseCase();
-    } catch (e, s) {
-      Fimber.e('Push token registration failed', ex: e, stacktrace: s);
-    }
-
-    await _getReleaseNote();
+    unawaited(_maybeRegisterPushNotificationTokenUseCase());
+    unawaited(_getReleaseNote());
   }
 
   void _subscribeToPushNavigationStream() {

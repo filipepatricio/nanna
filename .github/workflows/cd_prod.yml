@@ -66,7 +66,7 @@ jobs:
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
         id: get-flutter-version
-        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+        uses: zgosalvez/github-actions-get-flutter-version-env@v2
 
       - name: Sets Flutter environment
         uses: subosito/flutter-action@v2.8.0
@@ -104,7 +104,7 @@ jobs:
           GOOGLE_PLAY_CREDENTIALS: ${{ secrets.GOOGLE_PLAY_CREDENTIALS }}
 
       - name: Upload appbundle to closed testing
-        uses: maierj/fastlane-action@v2.3.0
+        uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'internal_play_store'
           subdirectory: android
@@ -142,7 +142,7 @@ jobs:
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
         id: get-flutter-version
-        uses: zgosalvez/github-actions-get-flutter-version-env@v1
+        uses: zgosalvez/github-actions-get-flutter-version-env@v2
 
       - name: Sets up a Flutter environment for use in actions
         uses: subosito/flutter-action@v2.8.0
@@ -174,7 +174,7 @@ jobs:
         run: flutter build ios --config-only --release --no-codesign --dart-define=env=prod --flavor prod --build-number="$BUILD_NUMBER" --build-name="$VERSION_NUMBER" --bundle-sksl-path warmup.sksl.json
 
       - name: Deploy app to Testflight
-        uses: maierj/fastlane-action@v2.3.0
+        uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'closed_beta'
           subdirectory: ios
