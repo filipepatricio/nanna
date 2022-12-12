@@ -43,7 +43,7 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
-          subdirectory: 'android'
+          working-directory: 'android'
 
       - name: Setup Java
         uses: actions/setup-java@v1
@@ -145,7 +145,7 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
-          subdirectory: 'ios'
+          working-directory: 'ios'
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
