@@ -28,12 +28,7 @@ class PurchasesRepositoryMock implements PurchasesRepository {
   }
 
   @override
-  Future<void> identify(String userId) async {
-    return;
-  }
-
-  @override
-  Future<void> initialize() async {
+  Future<void> initialize(String userId) async {
     return;
   }
 
