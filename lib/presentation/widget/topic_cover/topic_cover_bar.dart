@@ -19,6 +19,16 @@ class _TopicCoverBar extends StatelessWidget {
         onBookmarkTap: onBookmarkTap,
       );
 
+  factory _TopicCoverBar.list({
+    required TopicPreview topic,
+    VoidCallback? onBookmarkTap,
+  }) =>
+      _TopicCoverBar._(
+        type: TopicCoverType.list,
+        topic: topic,
+        onBookmarkTap: onBookmarkTap,
+      );
+
   const _TopicCoverBar._({
     required this.topic,
     required this.type,
@@ -42,6 +52,11 @@ class _TopicCoverBar extends StatelessWidget {
         return _TopicCoverBarSmall(
           topic: topic,
         );
+      case TopicCoverType.list:
+        return _TopicCoverBarList(
+          topic: topic,
+          onBookmarkTap: onBookmarkTap,
+        );
       default:
         return Container();
     }
@@ -62,14 +77,46 @@ class _TopicCoverBarSmall extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        CuratorImage(
+          curator: topic.curationInfo.curator,
+          imageWidth: AppDimens.avatarSize,
+          imageHeight: AppDimens.avatarSize,
+          editorAvatar: AppVectorGraphics.editorialTeamAvatar,
+        ),
+        const Spacer(),
+        BookmarkButton.topic(
+          topic: topic,
+        ),
+      ],
+    );
+  }
+}
+
+class _TopicCoverBarList extends StatelessWidget {
+  const _TopicCoverBarList({
+    required this.topic,
+    this.onBookmarkTap,
+    Key? key,
+  }) : super(key: key);
+
+  final TopicPreview topic;
+  final VoidCallback? onBookmarkTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
         Expanded(
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
-            shortLabel: true,
+            shortLabel: false,
           ),
         ),
         BookmarkButton.topic(
           topic: topic,
+          onTap: onBookmarkTap,
         ),
       ],
     );

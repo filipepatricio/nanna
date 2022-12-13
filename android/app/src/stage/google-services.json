@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "225091758315-oibqca05c96sq4btkqfg3ugh50pb4bji.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "so.informed.staging",
+            "certificate_hash": "262818911c6481b84cbc6b0edb7047c23548b91f"
+          }
+        },
+        {
           "client_id": "225091758315-2cnim1h0dj3c1bv2jtrfv5n7m4100s0m.apps.googleusercontent.com",
           "client_type": 3
         }

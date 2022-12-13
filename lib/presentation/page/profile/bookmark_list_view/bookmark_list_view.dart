@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_v
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_list_tile.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -159,13 +160,22 @@ class _Idle extends StatelessWidget {
       slivers: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) => BookmarkListTile(
-              key: Key(bookmarks[index].id),
-              bookmark: bookmarks[index],
-              onRemoveBookmarkPressed: (bookmark) {
-                cubit.removeBookmark(bookmark);
-              },
-              cubit: cubit,
+            (context, index) => Column(
+              children: [
+                BookmarkListTile(
+                  key: Key(bookmarks[index].id),
+                  bookmark: bookmarks[index],
+                  onRemoveBookmarkPressed: (bookmark) {
+                    cubit.removeBookmark(bookmark);
+                  },
+                  cubit: cubit,
+                ),
+                if (index != (bookmarks.length - 1))
+                  const Divider(
+                    height: AppDimens.one,
+                    color: AppColors.dividerGrey,
+                  )
+              ],
             ),
             childCount: bookmarks.length,
           ),

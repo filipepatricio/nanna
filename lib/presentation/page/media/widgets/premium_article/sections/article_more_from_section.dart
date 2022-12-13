@@ -22,7 +22,10 @@ class ArticleMoreFromSection extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppDimens.l, horizontal: AppDimens.m),
+          padding: const EdgeInsets.symmetric(
+            vertical: AppDimens.l,
+            horizontal: AppDimens.pageHorizontalMargin,
+          ),
           child: Text(
             title,
             style: AppTypography.h1Medium,
@@ -74,7 +77,7 @@ class MoreFromSectionListItem extends StatelessWidget {
   }) =>
       MoreFromSectionListItem._(
         type: MoreFromSectionItemType.topic,
-        child: TopicCover.big(
+        child: TopicCover.list(
           topic: topic,
           onTap: onItemTap,
         ),

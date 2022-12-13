@@ -26,7 +26,6 @@ class ArticleListAreaView extends StatelessWidget {
           title: area.title,
           description: area.description,
         ),
-        const SizedBox(height: AppDimens.m),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           child: Column(
@@ -38,30 +37,12 @@ class ArticleListAreaView extends StatelessWidget {
                     onTap: () => context.navigateToArticle(article),
                   ),
                 )
-                .expand(
-                  (row) => [
-                    row,
-                    const _Separator(),
-                  ],
-                )
                 .take(area.articles.length * 2 - 1)
                 .toList(),
           ),
         ),
         const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
       ],
-    );
-  }
-}
-
-class _Separator extends StatelessWidget {
-  const _Separator({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppDimens.m),
-      height: 1,
     );
   }
 }

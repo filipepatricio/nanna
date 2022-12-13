@@ -22,20 +22,14 @@ class BookmarkListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: AppDimens.m),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppDimens.ml,
-          ),
-          child: bookmark.getContent(
-            context,
-            () => onRemoveBookmarkPressed(bookmark),
-          ),
-        ),
-        const SizedBox(height: AppDimens.m),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimens.pageHorizontalMargin,
+      ),
+      child: bookmark.getContent(
+        context,
+        () => onRemoveBookmarkPressed(bookmark),
+      ),
     );
   }
 }
@@ -53,7 +47,7 @@ extension on Bookmark {
         ),
         onBookmarkTap: onRemoveBookmarkCallback,
       ),
-      topic: (data) => TopicCover.big(
+      topic: (data) => TopicCover.list(
         topic: data.topic.asPreview,
         onBookmarkTap: onRemoveBookmarkCallback,
         onTap: () => context.pushRoute(
