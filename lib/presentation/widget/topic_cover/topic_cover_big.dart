@@ -28,7 +28,7 @@ class _TopicCoverBig extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 children: [
                   Positioned.fill(
-                    child: TopicCoverImage(
+                    child: TopicImage(
                       topic: topic,
                       borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
                     ),
@@ -59,12 +59,7 @@ class _TopicCoverBig extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: AppDimens.m),
-                              Text(
-                                '${topic.curationInfo.byline} ${topic.curationInfo.curator.name}',
-                                style: AppTypography.sansTextSmallRegularLausanne.copyWith(
-                                  color: AppColors.textGrey.blendMultiply(topic.category.color ?? AppColors.white),
-                                ),
-                              ),
+                              PublisherLogoRow(topic: topic),
                             ],
                           ),
                         ),
@@ -74,7 +69,7 @@ class _TopicCoverBig extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppDimens.s),
+            const SizedBox(height: AppDimens.l),
             _TopicCoverBar.big(
               topic: topic,
               onBookmarkTap: onBookmarkTap,

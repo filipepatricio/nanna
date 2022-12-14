@@ -16,6 +16,8 @@ class CurationInfoView extends StatelessWidget {
     required this.curationInfo,
     this.shortLabel = false,
     this.onTap,
+    this.style,
+    this.imageDimension = AppDimens.avatarSize,
     Key? key,
   }) : super(key: key);
 
@@ -23,6 +25,8 @@ class CurationInfoView extends StatelessWidget {
 
   final bool shortLabel;
   final VoidCallback? onTap;
+  final TextStyle? style;
+  final double imageDimension;
 
   @override
   Widget build(BuildContext context) {
@@ -40,28 +44,30 @@ class CurationInfoView extends StatelessWidget {
         children: [
           CuratorImage(
             curator: curationInfo.curator,
-            imageWidth: AppDimens.avatarSize,
-            imageHeight: AppDimens.avatarSize,
+            imageWidth: imageDimension,
+            imageHeight: imageDimension,
             editorAvatar: AppVectorGraphics.editorialTeamAvatar,
           ),
           const SizedBox(width: AppDimens.s),
           Expanded(
             child: RichText(
               text: TextSpan(
-                style: AppTypography.b3Regular.copyWith(
-                  height: 1,
-                  letterSpacing: 0,
-                  color: AppColors.darkerGrey,
-                ),
-                children: [
-                  if (!shortLabel) TextSpan(text: '${curationInfo.byline} '),
-                  TextSpan(
-                    text: curationInfo.curator.name,
-                    style: AppTypography.b3Regular.copyWith(
+                style: style ??
+                    AppTypography.b3Regular.copyWith(
                       height: 1,
                       letterSpacing: 0,
                       color: AppColors.darkerGrey,
                     ),
+                children: [
+                  if (!shortLabel) TextSpan(text: '${curationInfo.byline} '),
+                  TextSpan(
+                    text: curationInfo.curator.name,
+                    style: style ??
+                        AppTypography.b3Regular.copyWith(
+                          height: 1,
+                          letterSpacing: 0,
+                          color: AppColors.darkerGrey,
+                        ),
                   ),
                 ],
               ),

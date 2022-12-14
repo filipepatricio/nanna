@@ -1,42 +1,63 @@
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
-import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
-import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
+import 'package:better_informed_mobile/exports.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/topic_cover/image/topic_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class TopicCoverImage extends HookWidget {
+class TopicCoverImage extends StatelessWidget {
   const TopicCoverImage({
     required this.topic,
-    required this.borderRadius,
+    required this.size,
+    this.borderRadius = AppDimens.defaultRadius,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final BorderRadius borderRadius;
+  final double borderRadius;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final height = constraints.maxHeight;
-        final width = constraints.maxWidth;
-
-        return ClipRRect(
-          borderRadius: borderRadius,
-          child: CloudinaryImage(
-            publicId: topic.heroImage.publicId,
-            config: CloudinaryConfig(
-              height: height,
-              width: width,
-            ),
-            width: width,
-            height: height,
-            fit: BoxFit.cover,
-            alignment: Alignment.center,
-            testImage: AppRasterGraphics.testTopicHeroImage,
+    return Stack(
+      children: [
+        SizedBox.square(
+          dimension: size,
+          child: TopicImage(
+            topic: topic,
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
-        );
-      },
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: size * 0.25,
+              width: size * 0.7,
+              decoration: BoxDecoration(
+                color: topic.category.color,
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(
+                    AppDimens.defaultRadius,
+                  ),
+                ),
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
+                  child: Text(
+                    LocaleKeys.topic_label.tr(),
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: AppTypography.h4Regular.copyWith(height: 1.25),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

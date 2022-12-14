@@ -77,13 +77,14 @@ class _TopicCoverBarSmall extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CuratorImage(
-          curator: topic.curationInfo.curator,
-          imageWidth: AppDimens.avatarSize,
-          imageHeight: AppDimens.avatarSize,
-          editorAvatar: AppVectorGraphics.editorialTeamAvatar,
+        Expanded(
+          child: CurationInfoView(
+            curationInfo: topic.curationInfo,
+            shortLabel: true,
+            style: AppTypography.sansTextNanoRegularLausanne.copyWith(color: AppColors.neutralGrey),
+            imageDimension: AppDimens.smallAvatarSize,
+          ),
         ),
-        const Spacer(),
         BookmarkButton.topic(
           topic: topic,
         ),
@@ -112,6 +113,8 @@ class _TopicCoverBarList extends StatelessWidget {
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
             shortLabel: false,
+            style: AppTypography.sansTextNanoRegularLausanne.copyWith(color: AppColors.neutralGrey),
+            imageDimension: AppDimens.smallAvatarSize,
           ),
         ),
         BookmarkButton.topic(
@@ -136,11 +139,16 @@ class _TopicCoverBarBig extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        PublisherLogoRow(topic: topic),
-        const Spacer(),
+        Expanded(
+          child: CurationInfoView(
+            curationInfo: topic.curationInfo,
+            style: AppTypography.sansTextNanoRegularLausanne.copyWith(color: AppColors.neutralGrey),
+            imageDimension: AppDimens.smallAvatarSize,
+          ),
+        ),
         BookmarkButton.topic(
           topic: topic,
           onTap: onBookmarkTap,

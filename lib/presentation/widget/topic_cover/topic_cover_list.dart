@@ -33,49 +33,13 @@ class _TopicCoverList extends HookWidget {
                 Expanded(
                   child: SizedBox(
                     height: coverSize,
-                    child: _CoverContentBookmark(topic: topic),
+                    child: _CoverContentList(topic: topic),
                   ),
                 ),
                 const SizedBox(width: AppDimens.m),
-                Stack(
-                  children: [
-                    SizedBox.square(
-                      dimension: coverSize,
-                      child: TopicCoverImage(
-                        topic: topic,
-                        borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
-                      ),
-                    ),
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: coverSize * 0.3,
-                          width: coverSize * 0.7,
-                          decoration: BoxDecoration(
-                            color: topic.category.color,
-                            borderRadius: const BorderRadius.vertical(
-                              bottom: Radius.circular(
-                                AppDimens.defaultRadius,
-                              ),
-                            ),
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
-                              child: Text(
-                                LocaleKeys.topic_label.tr(),
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
-                                style: AppTypography.h4Regular.copyWith(height: 1.25),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                TopicCoverImage(
+                  topic: topic,
+                  size: coverSize,
                 ),
               ],
             ),
@@ -91,8 +55,8 @@ class _TopicCoverList extends HookWidget {
   }
 }
 
-class _CoverContentBookmark extends HookWidget {
-  const _CoverContentBookmark({
+class _CoverContentList extends HookWidget {
+  const _CoverContentList({
     required this.topic,
     Key? key,
   }) : super(key: key);

@@ -22,10 +22,26 @@ class AppTypography {
     height: 1.1,
   );
 
+  static const TextStyle sansTitleSmallMediumLausanne = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 20,
+    color: AppColors.textPrimary,
+    height: 1.1,
+  );
+
   static const TextStyle sansTextSmallRegularLausanne = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
     fontSize: 14,
+    color: AppColors.textPrimary,
+    height: 1.5,
+  );
+
+  static const TextStyle sansTextNanoRegularLausanne = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 12,
     color: AppColors.textPrimary,
     height: 1.5,
   );

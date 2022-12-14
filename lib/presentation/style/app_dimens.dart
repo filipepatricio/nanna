@@ -83,6 +83,9 @@ class AppDimens {
   /// 24
   static const avatarSize = 24.0;
 
+  /// 24
+  static const smallAvatarSize = 16.0;
+
   /// 64
   static const avatarSizeBig = 64.0;
 
@@ -102,7 +105,7 @@ class AppDimens {
   static const exploreArticleCarouselSmallCoverAspectRatio = 2.1;
 
   /// 1.65
-  static const exploreTopicCarouselSmallCoverAspectRatio = 1.3;
+  static const exploreTopicCarouselSmallCoverAspectRatio = 2.1;
 
   /// 0.50
   static const exploreTopicCellSizeFactor = 0.50;
@@ -216,4 +219,7 @@ class AppDimens {
 
   /// 70
   static const pillRadius = 70.0;
+
+  /// 20.0
+  static const publisherLogoSize = 20.0;
 }
