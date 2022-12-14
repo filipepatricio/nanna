@@ -27,7 +27,7 @@ class SignInWithLinkedinUseCase {
     await _authStore.save(authResult.authToken);
     await _userStore.setCurrentUserUuid(authResult.userUuid);
 
-    await _purchasesRepository.identify(authResult.userUuid);
+    await _purchasesRepository.initialize(authResult.userUuid);
     await _analyticsRepository.identify(
       authResult.userUuid,
       authResult.method,

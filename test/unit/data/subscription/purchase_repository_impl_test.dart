@@ -33,37 +33,37 @@ void main() {
   });
 
   group('initialize', () {
-    test('should call configure on purchaseRemoteDataSource with', () async {
-      when(appConfig.revenueCatKeyiOS).thenReturn('revenueCatKeyiOS');
-      when(appConfig.revenueCatKeyAndroid).thenReturn('revenueCatKeyAndroid');
-      when(purchaseRemoteDataSource.configure(any)).thenAnswer((_) async {});
-
-      await repository.initialize();
-
-      verify(purchaseRemoteDataSource.configure(any)).called(1);
-    });
-  });
-
-  group('identify', () {
     const userId = 'userId';
 
-    test('should call logIn and prefetch customer and offerings', () async {
-      final logInResult = LogInResult(
-        created: true,
-        customerInfo: _customerInfo(),
-      );
-
+    test('should call configure and prefetch customer and offerings (if configure was successful)', () async {
+      when(appConfig.revenueCatKeyiOS).thenReturn('revenueCatKeyiOS');
+      when(appConfig.revenueCatKeyAndroid).thenReturn('revenueCatKeyAndroid');
       when(purchaseRemoteDataSource.getCustomerInfo()).thenAnswer((_) async => _customerInfo());
       when(purchaseRemoteDataSource.getOfferings()).thenAnswer((_) async => const Offerings({}));
       when(purchaseRemoteDataSource.addCustomerInfoUpdateListener(any)).thenAnswer((_) async {});
-      when(purchaseRemoteDataSource.logIn(userId)).thenAnswer((_) async => logInResult);
+      when(purchaseRemoteDataSource.isConfigured).thenAnswer((_) async => true);
+      when(purchaseRemoteDataSource.configure(any, any)).thenAnswer((_) async {});
 
-      await repository.identify(userId);
+      await repository.initialize(userId);
 
-      verify(purchaseRemoteDataSource.logIn(userId)).called(1);
+      verify(purchaseRemoteDataSource.configure(any, any)).called(1);
       verify(purchaseRemoteDataSource.getCustomerInfo()).called(1);
       verify(purchaseRemoteDataSource.getOfferings()).called(1);
       verify(purchaseRemoteDataSource.addCustomerInfoUpdateListener(any)).called(1);
+    });
+
+    test('should call configure and not prefetch customer and offerings when not successful', () async {
+      when(appConfig.revenueCatKeyiOS).thenReturn('revenueCatKeyiOS');
+      when(appConfig.revenueCatKeyAndroid).thenReturn('revenueCatKeyAndroid');
+      when(purchaseRemoteDataSource.isConfigured).thenAnswer((_) async => false);
+      when(purchaseRemoteDataSource.configure(any, any)).thenAnswer((_) async {});
+
+      await repository.initialize(userId);
+
+      verify(purchaseRemoteDataSource.configure(any, any)).called(1);
+      verifyNever(purchaseRemoteDataSource.getCustomerInfo());
+      verifyNever(purchaseRemoteDataSource.getOfferings());
+      verifyNever(purchaseRemoteDataSource.addCustomerInfoUpdateListener(any));
     });
   });
 

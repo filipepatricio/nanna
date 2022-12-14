@@ -5,16 +5,18 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 @injectable
 class PurchaseRemoteDataSource {
-  PurchaseRemoteDataSource(this._purchaseExceptionResolver);
+  const PurchaseRemoteDataSource(this._purchaseExceptionResolver);
 
   final PurchaseExceptionResolver _purchaseExceptionResolver;
 
-  Future<void> configure(PurchasesConfiguration config) async {
+  Future<void> configure(String apiKey, String userId) async {
     await Purchases.setDebugLogsEnabled(kDebugMode);
 
-    final configuration = PurchasesConfiguration(config.apiKey);
+    final configuration = PurchasesConfiguration(apiKey)..appUserID = userId;
     await _purchaseExceptionResolver.callWithResolver(() => Purchases.configure(configuration));
   }
+
+  Future<bool> get isConfigured => Purchases.isConfigured;
 
   Future<CustomerInfo> getCustomerInfo() async {
     return _purchaseExceptionResolver.callWithResolver(Purchases.getCustomerInfo);
