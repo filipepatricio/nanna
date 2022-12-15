@@ -167,7 +167,13 @@
     "settings": "Settings",
     "profileHeader": "Profile",
     "account": "Account",
-    "notifications": "Notifications",
+    "notifications": {
+      "title": "Notifications",
+      "noPermissionSnackbarError": "Please first allow notifications before selecting which notifications you’d like to receive",
+      "noPermissionTitle": "Notifications are disabled",
+      "noPermissionContent": "Select allow to enable notifications in settings",
+      "noPermissionAction": "Allow"
+    },
     "email": "Email",
     "push": "Push",
     "manageMyInterests": "Manage my interests",

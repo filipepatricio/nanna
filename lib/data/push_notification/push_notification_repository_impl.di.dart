@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:better_informed_mobile/data/exception/firebase/firebase_exception_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.di.dart';
@@ -80,6 +81,17 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   }
 
   @override
+  Future<bool> shouldOpenNotificationsSettings() async {
+    final result = await _firebaseMessaging.getNotificationSettings();
+    return _shouldOpenSettings(result);
+  }
+
+  @override
+  Future<void> openNotificationsSettings() async {
+    return await AppSettings.openNotificationSettings();
+  }
+
+  @override
   Stream<IncomingPush> pushNotificationOpenStream() {
     if (_incomingPushNotificationStream != null) return _incomingPushNotificationStream!.stream;
 
@@ -98,6 +110,10 @@ class PushNotificationRepositoryImpl implements PushNotificationRepository {
   }
 
   bool _isAuthorized(NotificationSettings result) => result.authorizationStatus == AuthorizationStatus.authorized;
+
+  bool _shouldOpenSettings(NotificationSettings result) =>
+      result.authorizationStatus != AuthorizationStatus.authorized &&
+      result.authorizationStatus != AuthorizationStatus.notDetermined;
 
   @override
   Future<NotificationPreferences> getNotificationPreferences() async {
