@@ -137,10 +137,12 @@ class _NotificationChannel extends StatelessWidget {
           NotificationSettingSwitch.squareBlack(
             channel: channel,
             notificationType: NotificationType.push,
+            requiresPermission: true,
           ),
           NotificationSettingSwitch.squareBlack(
             channel: channel,
             notificationType: NotificationType.email,
+            requiresPermission: true,
           ),
         ],
       ),

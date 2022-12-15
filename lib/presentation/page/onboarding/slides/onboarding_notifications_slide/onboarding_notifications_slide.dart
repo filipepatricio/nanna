@@ -143,10 +143,12 @@ class _NotificationRow extends StatelessWidget {
             NotificationSettingSwitch.squareBlack(
               channel: channel,
               notificationType: NotificationType.push,
+              requiresPermission: false,
             ),
             NotificationSettingSwitch.squareBlack(
               channel: channel,
               notificationType: NotificationType.email,
+              requiresPermission: false,
             ),
           ],
         ),

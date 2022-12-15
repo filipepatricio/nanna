@@ -74,7 +74,7 @@ class FakeNotificationSettingSwitchCubit extends Fake implements NotificationSet
   Stream<NotificationSettingSwitchState> get stream => Stream.value(NotificationSettingSwitchState.generalError());
 
   @override
-  Future<void> initialize(_, __) async {}
+  Future<void> initialize(_, __, ___) async {}
 
   @override
   Future<void> close() async {}
