@@ -18,31 +18,31 @@ part 'topic_cover_large.dart';
 part 'topic_cover_medium.dart';
 part 'topic_cover_small.dart';
 
-enum TopicCoverType { large, medium, small }
+abstract class TopicCover extends HookWidget {
+  const TopicCover._({super.key}) : super();
 
-class TopicCover extends HookWidget {
   factory TopicCover.large({
     required TopicPreview topic,
     VoidCallback? onTap,
     Key? key,
   }) =>
-      TopicCover._(
-        key: key,
-        type: TopicCoverType.large,
+      _TopicCoverLarge(
         topic: topic,
         onTap: onTap,
+        key: key,
       );
 
   factory TopicCover.medium({
     required TopicPreview topic,
     VoidCallback? onTap,
     VoidCallback? onBookmarkTap,
+    Key? key,
   }) =>
-      TopicCover._(
-        type: TopicCoverType.medium,
+      _TopicCoverMedium(
         topic: topic,
         onTap: onTap,
         onBookmarkTap: onBookmarkTap,
+        key: key,
       );
 
   factory TopicCover.small({
@@ -50,45 +50,9 @@ class TopicCover extends HookWidget {
     VoidCallback? onTap,
     Key? key,
   }) =>
-      TopicCover._(
-        key: key,
-        type: TopicCoverType.small,
+      _TopicCoverSmall(
         topic: topic,
         onTap: onTap,
+        key: key,
       );
-
-  const TopicCover._({
-    required this.topic,
-    required this.type,
-    this.onBookmarkTap,
-    this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-  final TopicCoverType type;
-  final VoidCallback? onTap;
-  final VoidCallback? onBookmarkTap;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (type) {
-      case TopicCoverType.large:
-        return _TopicCoverLarge(
-          topic: topic,
-          onTap: onTap,
-        );
-      case TopicCoverType.medium:
-        return _TopicCoverMedium(
-          topic: topic,
-          onTap: onTap,
-          onBookmarkTap: onBookmarkTap,
-        );
-      case TopicCoverType.small:
-        return _TopicCoverSmall(
-          topic: topic,
-          onTap: onTap,
-        );
-    }
-  }
 }

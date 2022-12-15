@@ -1,11 +1,11 @@
 part of 'topic_cover.dart';
 
-class _TopicCoverLarge extends StatelessWidget {
+class _TopicCoverLarge extends TopicCover {
   const _TopicCoverLarge({
     required this.topic,
     required this.onTap,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
   final VoidCallback? onTap;

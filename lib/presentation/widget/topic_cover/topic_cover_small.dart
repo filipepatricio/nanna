@@ -1,19 +1,23 @@
 part of 'topic_cover.dart';
 
-class _TopicCoverSmall extends StatelessWidget {
+class _TopicCoverSmall extends TopicCover {
   const _TopicCoverSmall({
     required this.topic,
     required this.onTap,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final height = AppDimens.smallCardHeight(context);
+    final height = useMemoized(
+      () => AppDimens.smallCardHeight(context),
+      [MediaQuery.of(context).size],
+    );
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: SizedBox(
         height: height,

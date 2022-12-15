@@ -2,13 +2,13 @@ part of 'topic_cover.dart';
 
 const _coverSizeToScreenWidthFactor = 0.35;
 
-class _TopicCoverMedium extends HookWidget {
+class _TopicCoverMedium extends TopicCover {
   const _TopicCoverMedium({
     required this.onTap,
     required this.topic,
     this.onBookmarkTap,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final VoidCallback? onTap;
   final VoidCallback? onBookmarkTap;

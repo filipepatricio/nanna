@@ -15,7 +15,10 @@ class _ArticleCoverSmall extends ArticleCover {
     const titleMaxLines = 4;
     const titleStyle = AppTypography.serifTitleSmallIvar;
     final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
-    final height = AppDimens.smallCardHeight(context);
+    final height = useMemoized(
+      () => AppDimens.smallCardHeight(context),
+      [MediaQuery.of(context).size],
+    );
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,

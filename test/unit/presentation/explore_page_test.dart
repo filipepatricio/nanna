@@ -46,7 +46,7 @@ void main() {
 
       final topicCoverFinder = find.descendant(
         of: find.byType(SmallTopicsAreaView),
-        matching: find.byType(TopicCover),
+        matching: find.bySubtype<TopicCover>(),
       );
 
       expect(topicCoverFinder, findsNWidgets(3));

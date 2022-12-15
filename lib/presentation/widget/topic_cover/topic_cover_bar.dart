@@ -1,70 +1,43 @@
 part of 'topic_cover.dart';
 
-class _TopicCoverBar extends StatelessWidget {
+abstract class _TopicCoverBar extends StatelessWidget {
+  const _TopicCoverBar._({super.key}) : super();
+
   factory _TopicCoverBar.large({
     required TopicPreview topic,
+    Key? key,
   }) =>
-      _TopicCoverBar._(
-        type: TopicCoverType.large,
+      _TopicCoverBarLarge(
         topic: topic,
+        key: key,
       );
 
   factory _TopicCoverBar.medium({
     required TopicPreview topic,
     VoidCallback? onBookmarkTap,
+    Key? key,
   }) =>
-      _TopicCoverBar._(
-        type: TopicCoverType.medium,
+      _TopicCoverBarMedium(
         topic: topic,
         onBookmarkTap: onBookmarkTap,
+        key: key,
       );
 
   factory _TopicCoverBar.small({
     required TopicPreview topic,
-  }) =>
-      _TopicCoverBar._(
-        type: TopicCoverType.small,
-        topic: topic,
-      );
-
-  const _TopicCoverBar._({
-    required this.topic,
-    required this.type,
-    this.onBookmarkTap,
     Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-  final TopicCoverType type;
-  final VoidCallback? onBookmarkTap;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (type) {
-      case TopicCoverType.large:
-        return _TopicCoverBarLarge(
-          topic: topic,
-        );
-      case TopicCoverType.medium:
-        return _TopicCoverBarMedium(
-          topic: topic,
-          onBookmarkTap: onBookmarkTap,
-        );
-      case TopicCoverType.small:
-        return _TopicCoverBarSmall(
-          topic: topic,
-        );
-      default:
-        return Container();
-    }
-  }
+  }) =>
+      _TopicCoverBarSmall(
+        topic: topic,
+        key: key,
+      );
 }
 
-class _TopicCoverBarLarge extends StatelessWidget {
+class _TopicCoverBarLarge extends _TopicCoverBar {
   const _TopicCoverBarLarge({
     required this.topic,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
 
@@ -89,12 +62,12 @@ class _TopicCoverBarLarge extends StatelessWidget {
   }
 }
 
-class _TopicCoverBarMedium extends StatelessWidget {
+class _TopicCoverBarMedium extends _TopicCoverBar {
   const _TopicCoverBarMedium({
     required this.topic,
     this.onBookmarkTap,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
   final VoidCallback? onBookmarkTap;
@@ -122,11 +95,11 @@ class _TopicCoverBarMedium extends StatelessWidget {
   }
 }
 
-class _TopicCoverBarSmall extends StatelessWidget {
+class _TopicCoverBarSmall extends _TopicCoverBar {
   const _TopicCoverBarSmall({
     required this.topic,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
 
