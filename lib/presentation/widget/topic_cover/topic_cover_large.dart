@@ -12,13 +12,18 @@ class _TopicCoverLarge extends TopicCover {
 
   @override
   Widget build(BuildContext context) {
+    final coverWidth = useMemoized(
+      () => AppDimens.topicCardBigMaxWidth(context),
+      [MediaQuery.of(context).size],
+    );
+    final ownersNote = topic.ownersNote;
+
     return GestureDetector(
       onTap: onTap,
-      child: LimitedBox(
-        maxWidth: AppDimens.topicCardBigMaxWidth(context),
-        maxHeight: AppDimens.topicCardBigMaxHeight,
+      child: SizedBox.square(
+        dimension: coverWidth,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
@@ -67,7 +72,22 @@ class _TopicCoverLarge extends TopicCover {
                 ],
               ),
             ),
-            const SizedBox(height: AppDimens.l),
+            const SizedBox(height: AppDimens.m),
+            if (ownersNote != null) ...[
+              Container(
+                padding: const EdgeInsets.only(left: AppDimens.sl),
+                decoration: const BoxDecoration(
+                  border: Border(left: BorderSide(color: AppColors.limeGreen)),
+                ),
+                child: InformedMarkdownBody(
+                  markdown: ownersNote,
+                  baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
+                    color: AppColors.textGrey,
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppDimens.m),
+            ],
             _TopicCoverBar.large(
               topic: topic,
             ),

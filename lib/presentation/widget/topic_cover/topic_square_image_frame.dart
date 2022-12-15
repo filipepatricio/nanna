@@ -5,8 +5,8 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/image/topic_image.dart';
 import 'package:flutter/material.dart';
 
-class TopicCoverImage extends StatelessWidget {
-  const TopicCoverImage({
+class TopicSquareImageFrame extends StatelessWidget {
+  const TopicSquareImageFrame({
     required this.topic,
     required this.size,
     this.borderRadius = AppDimens.defaultRadius,

@@ -10,6 +10,7 @@ class TopicPreview {
     this.title,
     this.strippedTitle,
     this.introduction,
+    this.ownersNote,
     this.url,
     this.curationInfo,
     this.lastUpdatedAt,
@@ -25,6 +26,7 @@ class TopicPreview {
   final String title;
   final String strippedTitle;
   final String introduction;
+  final String? ownersNote;
   final String url;
   final CurationInfo curationInfo;
   final DateTime lastUpdatedAt;

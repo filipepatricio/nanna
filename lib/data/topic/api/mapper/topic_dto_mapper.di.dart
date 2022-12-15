@@ -33,6 +33,7 @@ class TopicDTOMapper implements Mapper<TopicDTO, Topic> {
       title: data.title,
       strippedTitle: data.strippedTitle,
       introduction: data.introduction,
+      ownersNote: data.ownersNote,
       url: data.url,
       curationInfo: _curationInfoDTOMapper(data.curationInfo),
       lastUpdatedAt: DateTime.parse(data.lastUpdatedAt).toLocal(),

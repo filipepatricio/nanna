@@ -145,7 +145,7 @@ void main() {
         matching: find.byText(MockDTO.callToAction.actionText),
       );
 
-      await tester.fling(find.bySubtype<TopicCover>().first, const Offset(0, -10000), 100);
+      await tester.fling(find.byType(DailyBriefPage), const Offset(0, -10000), 100);
 
       await tester.pumpAndSettle();
       expect(goToExploreLabelFinder, findsOneWidget);

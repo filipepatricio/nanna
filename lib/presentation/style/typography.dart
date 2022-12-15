@@ -24,6 +24,14 @@ class AppTypography {
     height: 1.1,
   );
 
+  static const TextStyle sansTitleMediumLausanne = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 24,
+    color: AppColors.textPrimary,
+    height: 1.1,
+  );
+
   static const TextStyle sansTitleSmallLausanne = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,

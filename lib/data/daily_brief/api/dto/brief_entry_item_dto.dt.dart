@@ -51,6 +51,7 @@ class BriefEntryItemDTO with _$BriefEntryItemDTO {
     String title,
     String strippedTitle,
     String introduction,
+    String? ownersNote,
     String url,
     CurationInfoDTO curationInfo,
     String lastUpdatedAt,

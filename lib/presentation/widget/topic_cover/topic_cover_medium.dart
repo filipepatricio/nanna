@@ -20,6 +20,7 @@ class _TopicCoverMedium extends TopicCover {
       () => AppDimens.coverSize(context, _coverSizeToScreenWidthFactor),
       [MediaQuery.of(context).size],
     );
+    final ownersNote = topic.ownersNote;
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -27,6 +28,7 @@ class _TopicCoverMedium extends TopicCover {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppDimens.m),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
@@ -37,13 +39,28 @@ class _TopicCoverMedium extends TopicCover {
                   ),
                 ),
                 const SizedBox(width: AppDimens.m),
-                TopicCoverImage(
+                TopicSquareImageFrame(
                   topic: topic,
                   size: coverSize,
                 ),
               ],
             ),
-            const SizedBox(height: AppDimens.sl),
+            const SizedBox(height: AppDimens.m),
+            if (ownersNote != null) ...[
+              Container(
+                padding: const EdgeInsets.only(left: AppDimens.sl),
+                decoration: const BoxDecoration(
+                  border: Border(left: BorderSide(color: AppColors.limeGreen)),
+                ),
+                child: InformedMarkdownBody(
+                  markdown: ownersNote,
+                  baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
+                    color: AppColors.textGrey,
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppDimens.l),
+            ],
             _TopicCoverBar.medium(
               topic: topic,
               onBookmarkTap: onBookmarkTap,
@@ -73,7 +90,7 @@ class _CoverContentList extends HookWidget {
           InformedMarkdownBody(
             markdown: topic.title,
             maxLines: 3,
-            baseTextStyle: AppTypography.h2Medium.copyWith(height: 1.25),
+            baseTextStyle: AppTypography.sansTitleMediumLausanne.copyWith(height: 1.25),
           ),
           const SizedBox(height: AppDimens.sl),
           PublisherLogoRow(topic: topic),

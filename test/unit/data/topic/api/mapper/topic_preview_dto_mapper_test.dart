@@ -42,6 +42,7 @@ void main() {
       'Lorem ipsum **dolor sit** amet, consectetur adip',
       'Lorem ipsum dolor sit amet, consectetur adip',
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       'url',
       curationInfo,
       DateTime.utc(2021, 12, 23, 11, 38, 26).toLocal(),

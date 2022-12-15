@@ -26,7 +26,7 @@ class _TopicCoverSmall extends TopicCover {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TopicCoverImage(
+              TopicSquareImageFrame(
                 topic: topic,
                 size: constraints.maxWidth,
               ),
