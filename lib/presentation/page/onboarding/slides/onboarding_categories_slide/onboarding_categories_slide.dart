@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_categories_slide/onboarding_categories_slide_cubit.di.dart';
@@ -41,7 +43,7 @@ class OnboardingCategoriesSlide extends StatelessWidget {
         Expanded(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final rows = constraints.maxHeight ~/ (_tileSize + _tileSpacing);
+              final rows = max(constraints.maxHeight ~/ (_tileSize + _tileSpacing), 1);
               return _MainContent(rows: rows);
             },
           ),
