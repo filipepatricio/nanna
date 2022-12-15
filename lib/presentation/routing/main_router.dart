@@ -30,9 +30,17 @@ import 'package:better_informed_mobile/presentation/routing/custom_route/fade_pa
 import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
 
 const magicLinkSegment = 'magic';
-const topicsPathSegment = 'topics';
-const articlePathSegment = 'articles';
-const subscribePathSegment = 'subscribe';
+
+const todayTabPath = 'todays_topics';
+const exploreTabPath = 'explore';
+const profileTabPath = 'profile';
+
+const topicsPath = 'topics';
+const articlePath = 'articles';
+const subscribePath = 'subscribe';
+const unsubscribeNotificationsPath = 'unsubscribe';
+const settingsPath = 'settings';
+const notificationsPath = 'notifications';
 
 @AdaptiveAutoRouter(
   routes: [
@@ -50,11 +58,15 @@ const mainPageRoute = CustomRoute(
   durationInMilliseconds: 0,
   children: [
     dashboardTabRouter,
-    RedirectRoute(path: '', redirectTo: topicsPathSegment),
-    AutoRoute(path: '$topicsPathSegment/:topicSlug', page: TopicPage, name: 'TopicPage'),
+    RedirectRoute(path: '', redirectTo: topicsPath),
+    AutoRoute(
+      path: '$topicsPath/:topicSlug',
+      name: 'TopicPage',
+      page: TopicPage,
+    ),
     CustomRoute(page: TopicOwnerPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(
-      path: subscribePathSegment,
+      path: subscribePath,
       page: SubscriptionPage,
       customRouteBuilder: modalBottomSheetPageRouteBuilder,
     ),
@@ -62,12 +74,14 @@ const mainPageRoute = CustomRoute(
     CustomRoute(page: SubscriptionSuccessPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: HowDoWeCurateContentPage, customRouteBuilder: modalBottomSheetPageRouteBuilder),
     CustomRoute(page: PhotoCaptionPage, customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder),
-    AutoRoute(path: '$articlePathSegment/:articleSlug', page: MediaItemPage),
+    AutoRoute(path: '$articlePath/:articleSlug', page: MediaItemPage),
     AutoRoute(page: CategoryPage),
     CustomRoute(
       page: AudioPage,
       customRouteBuilder: modalFullScreenBottomSheetPageRouteBuilder,
-    )
+    ),
+    AutoRoute(path: settingsPath, page: SettingsMainPage),
+    AutoRoute(path: notificationsPath, page: SettingsNotificationsPage),
   ],
 );
 
@@ -77,7 +91,7 @@ const dashboardTabRouter = CustomRoute(
   durationInMilliseconds: 0,
   children: [
     AutoRoute(
-      path: 'todays_topics',
+      path: todayTabPath,
       name: 'DailyBriefTabGroupRouter',
       page: EmptyRouterPage,
       children: [
@@ -85,7 +99,7 @@ const dashboardTabRouter = CustomRoute(
       ],
     ),
     AutoRoute(
-      path: 'explore',
+      path: exploreTabPath,
       name: 'ExploreTabGroupRouter',
       page: EmptyRouterPage,
       children: [
@@ -96,18 +110,18 @@ const dashboardTabRouter = CustomRoute(
       ],
     ),
     AutoRoute(
-      path: 'profile',
+      path: profileTabPath,
       name: 'ProfileTabGroupRouter',
       page: EmptyRouterPage,
       children: [
         AutoRoute(path: '', page: ProfilePage, initial: true),
-        AutoRoute(page: SettingsMainPage),
-        AutoRoute(page: SettingsNotificationsPage),
+        AutoRoute(path: settingsPath, page: SettingsMainPage),
+        AutoRoute(path: notificationsPath, page: SettingsNotificationsPage),
         AutoRoute(page: SettingsAccountPage),
         AutoRoute(page: SettingsManageMyInterestsPage),
         AutoRoute(page: SettingsSubscriptionPage),
       ],
     ),
-    RedirectRoute(path: '', redirectTo: topicsPathSegment),
+    RedirectRoute(path: '', redirectTo: topicsPath),
   ],
 );

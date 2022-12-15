@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dar
 import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
@@ -51,6 +52,18 @@ void main() {
     expect(find.byType(DailyBriefPage), findsOneWidget);
   });
 
+  testWidgets('unsubscribe link navigates to notifications settings', (tester) async {
+    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/unsubscribe'));
+
+    await tester.startApp(
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+      },
+    );
+
+    expect(find.byType(SettingsNotificationsPage), findsOneWidget);
+  });
+
   testWidgets('article link navigates to article page', (tester) async {
     when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/articles/slug'));
 
@@ -97,6 +110,18 @@ void main() {
     await tester.tap(find.byType(BackTextButton));
     await tester.pumpAndSettle();
     expect(find.byType(DailyBriefPage), findsOneWidget);
+  });
+
+  testWidgets('subscribe link navigates to subscription page', (tester) async {
+    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/subscribe'));
+
+    await tester.startApp(
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+      },
+    );
+
+    expect(find.byType(SubscriptionPage), findsOneWidget);
   });
 
   testWidgets('subscribe deep link navigates to subscription page', (tester) async {
