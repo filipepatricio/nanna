@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/push_notification/data/notification_channel.dt.dart';
+import 'package:better_informed_mobile/domain/push_notification/use_case/has_notification_permission_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/set_channel_email_setting_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/set_channel_push_setting_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/setting_switch/notification_setting_switch_state.dt.dart';
@@ -12,22 +13,24 @@ class NotificationSettingSwitchCubit extends Cubit<NotificationSettingSwitchStat
   NotificationSettingSwitchCubit(
     this._setChannelPushSettingUseCase,
     this._setChannelEmailSettingUseCase,
+    this._hasNotificationPermissionUseCase,
   ) : super(NotificationSettingSwitchState.notInitialized());
 
   final SetChannelPushSettingUseCase _setChannelPushSettingUseCase;
   final SetChannelEmailSettingUseCase _setChannelEmailSettingUseCase;
+  final HasNotificationPermissionUseCase _hasNotificationPermissionUseCase;
 
   late NotificationType _notificationType;
   late NotificationChannel _channel;
 
-  void initialize(NotificationChannel channel, NotificationType notificationType) {
+  Future<void> initialize(NotificationChannel channel, NotificationType notificationType) async {
     _notificationType = notificationType;
     _channel = channel;
-    emit(NotificationSettingSwitchState.idle(_channel.name, _getValue()));
+    emit(NotificationSettingSwitchState.idle(_channel.name, await _getValue()));
   }
 
   Future<void> changeSetting(bool value) async {
-    emit(NotificationSettingSwitchState.processing(_channel.name, _getValue()));
+    emit(NotificationSettingSwitchState.processing(_channel.name, await _getValue()));
 
     try {
       _channel = await _updateChannel(value);
@@ -36,13 +39,13 @@ class NotificationSettingSwitchCubit extends Cubit<NotificationSettingSwitchStat
       emit(NotificationSettingSwitchState.generalError());
     }
 
-    emit(NotificationSettingSwitchState.idle(_channel.name, _getValue()));
+    emit(NotificationSettingSwitchState.idle(_channel.name, await _getValue()));
   }
 
-  bool _getValue() {
+  Future<bool> _getValue() async {
     switch (_notificationType) {
       case NotificationType.push:
-        return _channel.pushEnabled;
+        return _channel.pushEnabled && await _hasNotificationPermissionUseCase();
       case NotificationType.email:
         return _channel.emailEnabled;
     }
@@ -51,7 +54,12 @@ class NotificationSettingSwitchCubit extends Cubit<NotificationSettingSwitchStat
   Future<NotificationChannel> _updateChannel(bool value) async {
     switch (_notificationType) {
       case NotificationType.push:
-        return _setChannelPushSettingUseCase(_channel, value);
+        if (await _hasNotificationPermissionUseCase()) {
+          return _setChannelPushSettingUseCase(_channel, value);
+        }
+
+        emit(NotificationSettingSwitchState.noPermissionError());
+        return _channel;
       case NotificationType.email:
         return _setChannelEmailSettingUseCase(_channel, value);
     }

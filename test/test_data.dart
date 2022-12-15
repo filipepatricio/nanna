@@ -32,6 +32,9 @@ import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_d
 import 'package:better_informed_mobile/data/explore/api/mapper/explore_content_pill_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/article_image_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_group_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
@@ -50,6 +53,7 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_past_days.d
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
+import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/mapper/active_subscription_mapper.di.dart';
@@ -203,6 +207,12 @@ class TestData {
 
   static final _audioFileMapper = AudioFileDTOMapper();
 
+  static final _notificationPreferencesDTOMapper = NotificationPreferencesDTOMapper(
+    NotificationPreferencesGroupDTOMapper(
+      NotificationChannelDTOMapper(),
+    ),
+  );
+
   static AudioItem get audioItem => AudioItem(
         id: TestData.premiumArticleWithAudio.id,
         slug: TestData.premiumArticleWithAudio.slug,
@@ -282,4 +292,7 @@ class TestData {
       _subscriptionPlanMapper(MockDTO.offeringWithoutTrial);
 
   static String? get freeArticlesLeftWarning => MockDTO.updateArticleProgressResponseWarning.freeArticlesLeftWarning;
+
+  static NotificationPreferences get notificationPreferences =>
+      _notificationPreferencesDTOMapper(MockDTO.notificationPreferences);
 }

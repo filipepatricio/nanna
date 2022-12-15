@@ -8,6 +8,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
+import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,9 +17,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class SettingsNotificationsBody extends HookWidget {
   const SettingsNotificationsBody({
     required this.groups,
+    this.onRequestPermissionTap,
     Key? key,
   }) : super(key: key);
+
   final List<NotificationPreferencesGroup> groups;
+  final VoidCallback? onRequestPermissionTap;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +34,28 @@ class SettingsNotificationsBody extends HookWidget {
           sliver: SliverList(
             delegate: SliverChildListDelegate(
               [
+                if (onRequestPermissionTap != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(AppDimens.m),
+                    decoration: const BoxDecoration(
+                      color: AppColors.lightGrey,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(AppDimens.s),
+                      ),
+                    ),
+                    child: GeneralErrorView(
+                      title: LocaleKeys.settings_notifications_noPermissionTitle.tr(),
+                      content: LocaleKeys.settings_notifications_noPermissionContent.tr(),
+                      action: LocaleKeys.settings_notifications_noPermissionAction.tr(),
+                      retryCallback: onRequestPermissionTap,
+                    ),
+                  ),
+                  const SizedBox(height: AppDimens.l),
+                ],
                 const SizedBox(height: AppDimens.l),
                 NotificationHeaderContainer(
                   startWidget: Text(
-                    LocaleKeys.settings_notifications.tr(),
+                    LocaleKeys.settings_notifications_title.tr(),
                     style: AppTypography.h4Bold.copyWith(height: 1),
                   ),
                   trailingChildren: [
@@ -50,9 +72,7 @@ class SettingsNotificationsBody extends HookWidget {
                 const SizedBox(height: AppDimens.l),
                 ...groups
                     .map(
-                      (group) => _NotificationGroup(
-                        group: group,
-                      ),
+                      (group) => _NotificationGroup(group: group),
                     )
                     .expand(
                       (element) => [element, const SizedBox(height: AppDimens.l)],
@@ -89,9 +109,7 @@ class _NotificationGroup extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.m),
           ...group.channels.map(
-            (channel) => _NotificationChannel(
-              channel: channel,
-            ),
+            (channel) => _NotificationChannel(channel: channel),
           ),
         ],
       ),

@@ -25,20 +25,30 @@ class SettingsNotificationsPage extends HookWidget {
       [cubit],
     );
 
+    useOnAppLifecycleStateChange(
+      (previous, current) {
+        if (current == AppLifecycleState.resumed) {
+          cubit.initialize();
+        }
+      },
+    );
+
     return Scaffold(
       appBar: InformedCupertinoAppBar(
         leading: BackTextButton(
           text: LocaleKeys.settings_settings.tr(),
         ),
-        title: LocaleKeys.settings_notifications.tr(),
+        title: LocaleKeys.settings_notifications_title.tr(),
       ),
       body: SnackbarParentView(
         audioPlayerResponsive: true,
         child: state.maybeWhen(
           loading: () => const Loader(),
-          notificationSettingsLoaded: (data) => SettingsNotificationsBody(
+          noPermission: (data) => SettingsNotificationsBody(
             groups: data,
+            onRequestPermissionTap: cubit.requestPermission,
           ),
+          notificationSettingsLoaded: (data) => SettingsNotificationsBody(groups: data),
           orElse: () => const SizedBox.shrink(),
         ),
       ),
