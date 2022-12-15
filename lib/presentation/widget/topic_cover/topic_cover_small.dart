@@ -16,7 +16,7 @@ class _TopicCoverSmall extends StatelessWidget {
       onTap: onTap,
       child: LayoutBuilder(
         builder: (context, constraints) => Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TopicCoverImage(
@@ -29,7 +29,7 @@ class _TopicCoverSmall extends StatelessWidget {
             InformedMarkdownBody(
               markdown: topic.title,
               maxLines: 3,
-              baseTextStyle: AppTypography.sansTitleSmallMediumLausanne.copyWith(height: 1.25),
+              baseTextStyle: AppTypography.sansTitleSmallLausanne.copyWith(height: 1.25),
             ),
             const Spacer(),
             _TopicCoverBar.small(

@@ -12,12 +12,16 @@ class _ArticleCoverSmall extends ArticleCover {
 
   @override
   Widget build(BuildContext context) {
+    const titleMaxLines = 4;
+    const titleStyle = AppTypography.serifTitleSmallIvar;
+    final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: LayoutBuilder(
         builder: (context, constraints) => Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _ArticleSquareCover(
@@ -25,61 +29,35 @@ class _ArticleCoverSmall extends ArticleCover {
               coverColor: article.category.color,
               dimension: constraints.maxWidth,
             ),
-            _ArticleCoverSmallContent(
-              article: article,
+            const SizedBox(height: AppDimens.sl),
+            PublisherRow(article: article),
+            const SizedBox(height: AppDimens.sl),
+            SizedBox(
+              height: titleHeight,
+              child: InformedMarkdownBody(
+                maxLines: titleMaxLines,
+                markdown: article.title,
+                highlightColor: AppColors.transparent,
+                baseTextStyle: titleStyle,
+              ),
+            ),
+            const Spacer(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ArticleTimeReadLabel(
+                  finished: article.finished,
+                  timeToRead: article.timeToRead,
+                ),
+                const Spacer(),
+                BookmarkButton.article(
+                  article: article,
+                ),
+              ],
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ArticleCoverSmallContent extends StatelessWidget {
-  const _ArticleCoverSmallContent({
-    required this.article,
-    Key? key,
-  }) : super(key: key);
-
-  final MediaItemArticle article;
-
-  @override
-  Widget build(BuildContext context) {
-    const titleMaxLines = 4;
-    const titleStyle = AppTypography.articleSmallTitle;
-    final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const SizedBox(height: AppDimens.s),
-        PublisherRow(article: article),
-        const SizedBox(height: AppDimens.s),
-        SizedBox(
-          height: titleHeight,
-          child: InformedMarkdownBody(
-            maxLines: titleMaxLines,
-            markdown: article.title,
-            highlightColor: AppColors.transparent,
-            baseTextStyle: titleStyle,
-          ),
-        ),
-        const SizedBox(height: AppDimens.xs),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ArticleTimeReadLabel(
-              finished: article.finished,
-              timeToRead: article.timeToRead,
-            ),
-            const Spacer(),
-            BookmarkButton.article(
-              article: article,
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

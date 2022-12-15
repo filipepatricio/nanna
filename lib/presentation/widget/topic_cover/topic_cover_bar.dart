@@ -81,7 +81,7 @@ class _TopicCoverBarSmall extends StatelessWidget {
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
             shortLabel: true,
-            style: AppTypography.sansTextNanoRegularLausanne.copyWith(color: AppColors.neutralGrey),
+            style: AppTypography.sansTextNanoLausanne.copyWith(color: AppColors.neutralGrey),
             imageDimension: AppDimens.smallAvatarSize,
           ),
         ),
@@ -113,7 +113,7 @@ class _TopicCoverBarList extends StatelessWidget {
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
             shortLabel: false,
-            style: AppTypography.sansTextNanoRegularLausanne.copyWith(color: AppColors.neutralGrey),
+            style: AppTypography.sansTextNanoLausanne.copyWith(color: AppColors.neutralGrey),
             imageDimension: AppDimens.smallAvatarSize,
           ),
         ),
@@ -145,7 +145,7 @@ class _TopicCoverBarBig extends HookWidget {
         Expanded(
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
-            style: AppTypography.sansTextNanoRegularLausanne.copyWith(color: AppColors.neutralGrey),
+            style: AppTypography.sansTextNanoLausanne.copyWith(color: AppColors.neutralGrey),
             imageDimension: AppDimens.smallAvatarSize,
           ),
         ),

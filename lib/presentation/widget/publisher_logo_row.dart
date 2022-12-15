@@ -35,7 +35,7 @@ class PublisherLogoRow extends HookWidget {
             Text(
               remainingPublishersIndicator,
               textAlign: TextAlign.start,
-              style: AppTypography.sansTextSmallRegularLausanne.copyWith(
+              style: AppTypography.sansTextSmallLausanne.copyWith(
                 color: mode == Brightness.dark ? AppColors.darkerGrey : AppColors.white,
                 height: 1.2,
               ),
