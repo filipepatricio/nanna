@@ -15,47 +15,51 @@ class _ArticleCoverSmall extends ArticleCover {
     const titleMaxLines = 4;
     const titleStyle = AppTypography.serifTitleSmallIvar;
     final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
+    final height = AppDimens.smallCardHeight(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: LayoutBuilder(
-        builder: (context, constraints) => Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _ArticleSquareCover(
-              article: article,
-              coverColor: article.category.color,
-              dimension: constraints.maxWidth,
-            ),
-            const SizedBox(height: AppDimens.sl),
-            PublisherRow(article: article),
-            const SizedBox(height: AppDimens.sl),
-            SizedBox(
-              height: titleHeight,
-              child: InformedMarkdownBody(
-                maxLines: titleMaxLines,
-                markdown: article.title,
-                highlightColor: AppColors.transparent,
-                baseTextStyle: titleStyle,
+      child: SizedBox(
+        height: height,
+        child: LayoutBuilder(
+          builder: (context, constraints) => Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _ArticleSquareCover(
+                article: article,
+                coverColor: article.category.color,
+                dimension: constraints.maxWidth,
               ),
-            ),
-            const Spacer(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ArticleTimeReadLabel(
-                  finished: article.finished,
-                  timeToRead: article.timeToRead,
+              const SizedBox(height: AppDimens.sl),
+              PublisherRow(article: article),
+              const SizedBox(height: AppDimens.sl),
+              SizedBox(
+                height: titleHeight,
+                child: InformedMarkdownBody(
+                  maxLines: titleMaxLines,
+                  markdown: article.title,
+                  highlightColor: AppColors.transparent,
+                  baseTextStyle: titleStyle,
                 ),
-                const Spacer(),
-                BookmarkButton.article(
-                  article: article,
-                ),
-              ],
-            ),
-          ],
+              ),
+              const Spacer(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ArticleTimeReadLabel(
+                    finished: article.finished,
+                    timeToRead: article.timeToRead,
+                  ),
+                  const Spacer(),
+                  BookmarkButton.article(
+                    article: article,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

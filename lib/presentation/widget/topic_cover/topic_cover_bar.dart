@@ -1,32 +1,30 @@
 part of 'topic_cover.dart';
 
 class _TopicCoverBar extends StatelessWidget {
+  factory _TopicCoverBar.large({
+    required TopicPreview topic,
+  }) =>
+      _TopicCoverBar._(
+        type: TopicCoverType.large,
+        topic: topic,
+      );
+
+  factory _TopicCoverBar.medium({
+    required TopicPreview topic,
+    VoidCallback? onBookmarkTap,
+  }) =>
+      _TopicCoverBar._(
+        type: TopicCoverType.medium,
+        topic: topic,
+        onBookmarkTap: onBookmarkTap,
+      );
+
   factory _TopicCoverBar.small({
     required TopicPreview topic,
   }) =>
       _TopicCoverBar._(
         type: TopicCoverType.small,
         topic: topic,
-      );
-
-  factory _TopicCoverBar.big({
-    required TopicPreview topic,
-    VoidCallback? onBookmarkTap,
-  }) =>
-      _TopicCoverBar._(
-        type: TopicCoverType.big,
-        topic: topic,
-        onBookmarkTap: onBookmarkTap,
-      );
-
-  factory _TopicCoverBar.list({
-    required TopicPreview topic,
-    VoidCallback? onBookmarkTap,
-  }) =>
-      _TopicCoverBar._(
-        type: TopicCoverType.list,
-        topic: topic,
-        onBookmarkTap: onBookmarkTap,
       );
 
   const _TopicCoverBar._({
@@ -43,8 +41,12 @@ class _TopicCoverBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case TopicCoverType.big:
-        return _TopicCoverBarBig(
+      case TopicCoverType.large:
+        return _TopicCoverBarLarge(
+          topic: topic,
+        );
+      case TopicCoverType.medium:
+        return _TopicCoverBarMedium(
           topic: topic,
           onBookmarkTap: onBookmarkTap,
         );
@@ -52,19 +54,14 @@ class _TopicCoverBar extends StatelessWidget {
         return _TopicCoverBarSmall(
           topic: topic,
         );
-      case TopicCoverType.list:
-        return _TopicCoverBarList(
-          topic: topic,
-          onBookmarkTap: onBookmarkTap,
-        );
       default:
         return Container();
     }
   }
 }
 
-class _TopicCoverBarSmall extends StatelessWidget {
-  const _TopicCoverBarSmall({
+class _TopicCoverBarLarge extends StatelessWidget {
+  const _TopicCoverBarLarge({
     required this.topic,
     Key? key,
   }) : super(key: key);
@@ -74,13 +71,12 @@ class _TopicCoverBarSmall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
-            shortLabel: true,
             style: AppTypography.sansTextNanoLausanne.copyWith(color: AppColors.neutralGrey),
             imageDimension: AppDimens.smallAvatarSize,
           ),
@@ -93,8 +89,8 @@ class _TopicCoverBarSmall extends StatelessWidget {
   }
 }
 
-class _TopicCoverBarList extends StatelessWidget {
-  const _TopicCoverBarList({
+class _TopicCoverBarMedium extends StatelessWidget {
+  const _TopicCoverBarMedium({
     required this.topic,
     this.onBookmarkTap,
     Key? key,
@@ -126,32 +122,30 @@ class _TopicCoverBarList extends StatelessWidget {
   }
 }
 
-class _TopicCoverBarBig extends HookWidget {
-  const _TopicCoverBarBig({
+class _TopicCoverBarSmall extends StatelessWidget {
+  const _TopicCoverBarSmall({
     required this.topic,
-    this.onBookmarkTap,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
+            shortLabel: true,
             style: AppTypography.sansTextNanoLausanne.copyWith(color: AppColors.neutralGrey),
             imageDimension: AppDimens.smallAvatarSize,
           ),
         ),
         BookmarkButton.topic(
           topic: topic,
-          onTap: onBookmarkTap,
         ),
       ],
     );

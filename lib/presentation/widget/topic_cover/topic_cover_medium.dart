@@ -2,8 +2,8 @@ part of 'topic_cover.dart';
 
 const _coverSizeToScreenWidthFactor = 0.35;
 
-class _TopicCoverList extends HookWidget {
-  const _TopicCoverList({
+class _TopicCoverMedium extends HookWidget {
+  const _TopicCoverMedium({
     required this.onTap,
     required this.topic,
     this.onBookmarkTap,
@@ -44,7 +44,7 @@ class _TopicCoverList extends HookWidget {
               ],
             ),
             const SizedBox(height: AppDimens.sl),
-            _TopicCoverBar.list(
+            _TopicCoverBar.medium(
               topic: topic,
               onBookmarkTap: onBookmarkTap,
             ),

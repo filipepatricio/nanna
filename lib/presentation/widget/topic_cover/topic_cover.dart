@@ -14,22 +14,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 part 'topic_cover_bar.dart';
-part 'topic_cover_big.dart';
-part 'topic_cover_list.dart';
+part 'topic_cover_large.dart';
+part 'topic_cover_medium.dart';
 part 'topic_cover_small.dart';
 
-enum TopicCoverType { big, small, list }
+enum TopicCoverType { large, medium, small }
 
 class TopicCover extends HookWidget {
-  factory TopicCover.big({
+  factory TopicCover.large({
     required TopicPreview topic,
     VoidCallback? onTap,
-    VoidCallback? onBookmarkTap,
     Key? key,
   }) =>
       TopicCover._(
         key: key,
-        type: TopicCoverType.big,
+        type: TopicCoverType.large,
+        topic: topic,
+        onTap: onTap,
+      );
+
+  factory TopicCover.medium({
+    required TopicPreview topic,
+    VoidCallback? onTap,
+    VoidCallback? onBookmarkTap,
+  }) =>
+      TopicCover._(
+        type: TopicCoverType.medium,
         topic: topic,
         onTap: onTap,
         onBookmarkTap: onBookmarkTap,
@@ -45,18 +55,6 @@ class TopicCover extends HookWidget {
         type: TopicCoverType.small,
         topic: topic,
         onTap: onTap,
-      );
-
-  factory TopicCover.list({
-    required TopicPreview topic,
-    VoidCallback? onTap,
-    VoidCallback? onBookmarkTap,
-  }) =>
-      TopicCover._(
-        type: TopicCoverType.list,
-        topic: topic,
-        onTap: onTap,
-        onBookmarkTap: onBookmarkTap,
       );
 
   const TopicCover._({
@@ -75,22 +73,21 @@ class TopicCover extends HookWidget {
   @override
   Widget build(BuildContext context) {
     switch (type) {
+      case TopicCoverType.large:
+        return _TopicCoverLarge(
+          topic: topic,
+          onTap: onTap,
+        );
+      case TopicCoverType.medium:
+        return _TopicCoverMedium(
+          topic: topic,
+          onTap: onTap,
+          onBookmarkTap: onBookmarkTap,
+        );
       case TopicCoverType.small:
         return _TopicCoverSmall(
           topic: topic,
           onTap: onTap,
-        );
-      case TopicCoverType.big:
-        return _TopicCoverBig(
-          topic: topic,
-          onBookmarkTap: onBookmarkTap,
-          onTap: onTap,
-        );
-      case TopicCoverType.list:
-        return _TopicCoverList(
-          topic: topic,
-          onTap: onTap,
-          onBookmarkTap: onBookmarkTap,
         );
     }
   }

@@ -109,26 +109,17 @@ class CategoryPage extends HookWidget {
     BuildContext context,
     int index,
     List<CategoryItem> items,
-  ) {
-    final width = MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor;
-    final height = width * AppDimens.exploreTopicCarouselSmallCoverAspectRatio;
-    return items[index].mapOrNull(
-      article: (data) => SizedBox(
-        height: height,
-        child: ArticleCover.small(
+  ) =>
+      items[index].mapOrNull(
+        article: (data) => ArticleCover.small(
           article: data.article,
           onTap: () => context.navigateToArticle(data.article),
         ),
-      ),
-      topic: (data) => SizedBox(
-        height: height,
-        child: TopicCover.small(
+        topic: (data) => TopicCover.small(
           topic: data.topicPreview,
           onTap: () => context.navigateToTopic(data.topicPreview),
         ),
-      ),
-    );
-  }
+      );
 }
 
 extension on BuildContext {

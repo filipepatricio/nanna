@@ -17,7 +17,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 part 'article_cover_large.dart';
-part 'article_cover_list.dart';
+part 'article_cover_medium.dart';
 part 'article_cover_small.dart';
 part 'content/article_square_cover.dart';
 
@@ -44,6 +44,24 @@ abstract class ArticleCover extends HookWidget {
     );
   }
 
+  factory ArticleCover.medium({
+    required MediaItemArticle article,
+    required VoidCallback onTap,
+    bool showNote = false,
+    bool showRecommendedBy = false,
+    VoidCallback? onBookmarkTap,
+    Key? key,
+  }) {
+    return _ArticleCoverMedium(
+      article: article,
+      onTap: onTap,
+      showNote: showNote,
+      showRecommendedBy: showRecommendedBy,
+      onBookmarkTap: onBookmarkTap,
+      key: key,
+    );
+  }
+
   factory ArticleCover.small({
     required MediaItemArticle article,
     required VoidCallback onTap,
@@ -52,24 +70,6 @@ abstract class ArticleCover extends HookWidget {
     return _ArticleCoverSmall(
       article: article,
       onTap: onTap,
-      key: key,
-    );
-  }
-
-  factory ArticleCover.list({
-    required MediaItemArticle article,
-    required VoidCallback onTap,
-    bool showNote = false,
-    bool showRecommendedBy = false,
-    VoidCallback? onBookmarkTap,
-    Key? key,
-  }) {
-    return _ArticleCoverList(
-      article: article,
-      onTap: onTap,
-      showNote: showNote,
-      showRecommendedBy: showRecommendedBy,
-      onBookmarkTap: onBookmarkTap,
       key: key,
     );
   }

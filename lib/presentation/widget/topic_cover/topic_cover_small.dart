@@ -12,30 +12,34 @@ class _TopicCoverSmall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = AppDimens.smallCardHeight(context);
     return GestureDetector(
       onTap: onTap,
-      child: LayoutBuilder(
-        builder: (context, constraints) => Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TopicCoverImage(
-              topic: topic,
-              size: constraints.maxWidth,
-            ),
-            const SizedBox(height: AppDimens.sl),
-            PublisherLogoRow(topic: topic),
-            const SizedBox(height: AppDimens.sl),
-            InformedMarkdownBody(
-              markdown: topic.title,
-              maxLines: 3,
-              baseTextStyle: AppTypography.sansTitleSmallLausanne.copyWith(height: 1.25),
-            ),
-            const Spacer(),
-            _TopicCoverBar.small(
-              topic: topic,
-            ),
-          ],
+      child: SizedBox(
+        height: height,
+        child: LayoutBuilder(
+          builder: (context, constraints) => Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TopicCoverImage(
+                topic: topic,
+                size: constraints.maxWidth,
+              ),
+              const SizedBox(height: AppDimens.sl),
+              PublisherLogoRow(topic: topic),
+              const SizedBox(height: AppDimens.sl),
+              InformedMarkdownBody(
+                markdown: topic.title,
+                maxLines: 3,
+                baseTextStyle: AppTypography.sansTitleSmallLausanne.copyWith(height: 1.25),
+              ),
+              const Spacer(),
+              _TopicCoverBar.small(
+                topic: topic,
+              ),
+            ],
+          ),
         ),
       ),
     );

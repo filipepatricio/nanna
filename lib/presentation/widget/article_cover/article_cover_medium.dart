@@ -1,7 +1,7 @@
 part of 'article_cover.dart';
 
-class _ArticleCoverList extends ArticleCover {
-  const _ArticleCoverList({
+class _ArticleCoverMedium extends ArticleCover {
+  const _ArticleCoverMedium({
     required this.onTap,
     required this.article,
     required this.showNote,

@@ -104,6 +104,12 @@ class AppDimens {
   /// 1.65
   static const exploreArticleCarouselSmallCoverAspectRatio = 2.1;
 
+  static double smallCardWidth(BuildContext context) =>
+      MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor;
+
+  static double smallCardHeight(BuildContext context) =>
+      smallCardWidth(context) * AppDimens.exploreTopicCarouselSmallCoverAspectRatio;
+
   /// 1.65
   static const exploreTopicCarouselSmallCoverAspectRatio = 2.1;
 
