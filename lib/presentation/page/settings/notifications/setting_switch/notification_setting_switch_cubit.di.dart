@@ -22,10 +22,16 @@ class NotificationSettingSwitchCubit extends Cubit<NotificationSettingSwitchStat
 
   late NotificationType _notificationType;
   late NotificationChannel _channel;
+  late bool _requiresPermission;
 
-  Future<void> initialize(NotificationChannel channel, NotificationType notificationType) async {
+  Future<void> initialize(
+    NotificationChannel channel,
+    NotificationType notificationType,
+    bool requiresPermission,
+  ) async {
     _notificationType = notificationType;
     _channel = channel;
+    _requiresPermission = requiresPermission;
     emit(NotificationSettingSwitchState.idle(_channel.name, await _getValue()));
   }
 
@@ -45,7 +51,7 @@ class NotificationSettingSwitchCubit extends Cubit<NotificationSettingSwitchStat
   Future<bool> _getValue() async {
     switch (_notificationType) {
       case NotificationType.push:
-        return _channel.pushEnabled && await _hasNotificationPermissionUseCase();
+        return _channel.pushEnabled && (!_requiresPermission || await _hasNotificationPermissionUseCase());
       case NotificationType.email:
         return _channel.emailEnabled;
     }
@@ -54,7 +60,7 @@ class NotificationSettingSwitchCubit extends Cubit<NotificationSettingSwitchStat
   Future<NotificationChannel> _updateChannel(bool value) async {
     switch (_notificationType) {
       case NotificationType.push:
-        if (await _hasNotificationPermissionUseCase()) {
+        if (!_requiresPermission || await _hasNotificationPermissionUseCase()) {
           return _setChannelPushSettingUseCase(_channel, value);
         }
 
