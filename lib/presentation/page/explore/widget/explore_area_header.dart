@@ -28,7 +28,7 @@ class ExploreAreaHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTypography.h2Medium,
+                style: AppTypography.sansTitleLargeLausanne,
               ),
             ],
           ),
