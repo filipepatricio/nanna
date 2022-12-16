@@ -2,8 +2,10 @@ import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_p
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
+import 'package:injectable/injectable.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+@injectable
 class AppleCredentialDataSource implements OAuthCredentialProviderDataSource {
   @override
   Future<OAuthUserDTO> fetchOAuthUser() async {

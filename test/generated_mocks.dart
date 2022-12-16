@@ -5,6 +5,8 @@ import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/dto/auth_token_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/auth/api/mapper/auth_token_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/auth/api/mapper/login_response_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/apple_credential_data_source.di.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/google_credential_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/linkedin/linkedin_credential_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
@@ -143,6 +145,8 @@ const _classes = [
   NotificationPreferencesDTOMapper,
   NotificationChannelDTOMapper,
   FirebaseExceptionMapper,
+  AppleCredentialDataSource,
+  GoogleCredentialDataSource,
 ];
 
 @GenerateMocks(_classes)

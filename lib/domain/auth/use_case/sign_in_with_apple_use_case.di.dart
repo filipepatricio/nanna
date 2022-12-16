@@ -6,8 +6,8 @@ import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class SignInWithMagicLinkTokenUseCase {
-  SignInWithMagicLinkTokenUseCase(
+class SignInWithAppleUseCase {
+  SignInWithAppleUseCase(
     this._authRepository,
     this._authStore,
     this._analyticsRepository,
@@ -21,8 +21,8 @@ class SignInWithMagicLinkTokenUseCase {
   final UserStore _userStore;
   final PurchasesRepository _purchasesRepository;
 
-  Future<void> call(String token) async {
-    final authResult = await _authRepository.signInWithMagicLinkToken(token);
+  Future<void> call() async {
+    final authResult = await _authRepository.signInWithApple();
 
     await _authStore.save(authResult.authToken);
     await _userStore.setCurrentUserUuid(authResult.userUuid);

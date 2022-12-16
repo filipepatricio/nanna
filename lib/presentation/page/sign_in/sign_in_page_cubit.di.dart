@@ -4,7 +4,8 @@ import 'package:better_informed_mobile/domain/analytics/use_case/initialize_attr
 import 'package:better_informed_mobile/domain/auth/auth_exception.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/send_magic_link_use_case.di.dart';
-import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_default_provider_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_apple_use_case.di.dart';
+import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_google_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_linkedin_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/sign_in_with_magic_link_token_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/use_case/subscribe_for_magic_link_token_use_case.di.dart';
@@ -23,7 +24,8 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   SignInPageCubit(
     this._isEmailValidUseCase,
     this._sendMagicLinkUseCase,
-    this._signInWithDefaultProviderUseCase,
+    this._signInWithAppleUseCase,
+    this._signInWithGoogleUseCase,
     this._subscribeForMagicLinkTokenUseCase,
     this._signInWithMagicLinkTokenUseCase,
     this._isOnboardingSeenUseCase,
@@ -34,7 +36,8 @@ class SignInPageCubit extends Cubit<SignInPageState> {
 
   final IsEmailValidUseCase _isEmailValidUseCase;
   final SendMagicLinkUseCase _sendMagicLinkUseCase;
-  final SignInWithDefaultProviderUseCase _signInWithDefaultProviderUseCase;
+  final SignInWithAppleUseCase _signInWithAppleUseCase;
+  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
   final SubscribeForMagicLinkTokenUseCase _subscribeForMagicLinkTokenUseCase;
   final SignInWithMagicLinkTokenUseCase _signInWithMagicLinkTokenUseCase;
   final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
@@ -86,9 +89,14 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     }
   }
 
-  Future<void> signInWithPlatformProvider() async {
+  Future<void> signInWithApple() async {
     emit(SignInPageState.processing());
-    await _signInWithOAuthProvider(_signInWithDefaultProviderUseCase);
+    await _signInWithOAuthProvider(_signInWithAppleUseCase);
+  }
+
+  Future<void> signInWithGoogle() async {
+    emit(SignInPageState.processing());
+    await _signInWithOAuthProvider(_signInWithGoogleUseCase);
   }
 
   void closeMagicLinkView() {
