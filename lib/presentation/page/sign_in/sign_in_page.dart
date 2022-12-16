@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_urls.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/sign_in/magic_link_view.dart';
@@ -12,8 +13,9 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
+import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_apple_button.dart';
+import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_google_button.dart';
 import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_linkedin_button.dart';
-import 'package:better_informed_mobile/presentation/widget/provider_sign_in_button/sign_in_with_provider_view.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/gestures.dart';
