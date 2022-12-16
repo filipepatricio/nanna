@@ -33,10 +33,11 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = AppColors.of(context).backgroundPrimary;
     final animationController = useAnimationController(duration: const Duration(milliseconds: 150));
     final animation = ColorTween(
-      begin: article.hasImage ? (article.category.color ?? AppColors.background) : AppColors.background,
-      end: AppColors.background95,
+      begin: article.hasImage ? (article.category.color ?? backgroundColor) : backgroundColor,
+      end: backgroundColor,
     ).chain(CurveTween(curve: Curves.easeIn)).animate(animationController);
 
     useEffect(
@@ -85,7 +86,6 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
         article: article,
         topicId: topicId,
         briefId: briefId,
-        color: AppColors.charcoal,
       ),
     );
   }

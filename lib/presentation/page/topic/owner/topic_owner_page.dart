@@ -71,7 +71,7 @@ class TopicOwnerPage extends HookWidget {
               children: [
                 _ActionsBar(controller: scrollController, owner: owner),
                 Container(
-                  color: AppColors.lightGrey,
+                  color: AppColors.of(context).borderPrimary,
                   height: AppDimens.one,
                 ),
                 Flexible(
@@ -121,16 +121,15 @@ class TopicOwnerPage extends HookWidget {
                             const SizedBox(height: AppDimens.m),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                              child: FilledButton.white(
+                              child: FilledButton.secondary(
+                                context: context,
                                 text: LocaleKeys.topic_howWeCurateContent_label.tr(),
                                 trailing: SvgPicture.asset(
                                   AppVectorGraphics.chevronNext,
                                   fit: BoxFit.scaleDown,
                                 ),
                                 withOutline: true,
-                                onTap: () {
-                                  context.pushRoute(const HowDoWeCurateContentPageRoute());
-                                },
+                                onTap: () => context.pushRoute(const HowDoWeCurateContentPageRoute()),
                               ),
                             ),
                             const SizedBox(height: AppDimens.s),
@@ -201,7 +200,7 @@ class _ActionsBar extends HookWidget {
 
     return Container(
       height: kToolbarHeight,
-      color: AppColors.background,
+      color: AppColors.of(context).backgroundPrimary,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -311,7 +310,7 @@ class _SocialMediaIcon extends StatelessWidget {
         padding: const EdgeInsets.only(right: AppDimens.l),
         child: SvgPicture.asset(
           icon,
-          color: AppColors.socialNetworksIcon,
+          color: Theme.of(context).iconTheme.color,
         ),
       ),
     );

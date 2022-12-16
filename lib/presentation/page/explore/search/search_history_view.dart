@@ -45,7 +45,7 @@ class SearchHistoryView extends HookWidget {
                           children: [
                             SvgPicture.asset(
                               AppVectorGraphics.search,
-                              color: AppColors.textPrimary,
+                              color: Theme.of(context).iconTheme.color,
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),

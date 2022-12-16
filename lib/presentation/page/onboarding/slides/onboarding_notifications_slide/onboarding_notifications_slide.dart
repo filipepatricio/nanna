@@ -63,16 +63,16 @@ class _IdleContent extends StatelessWidget {
           NotificationHeaderContainer(
             startWidget: Text(
               LocaleKeys.onboarding_headerSlideThree.tr(),
-              style: AppTypography.b3Medium.copyWith(color: AppColors.textGrey),
+              style: AppTypography.b3Medium.copyWith(color: AppColors.of(context).textSecondary),
             ),
             trailingChildren: [
               Text(
                 LocaleKeys.onboarding_notifications_push.tr(),
-                style: AppTypography.b3Medium.copyWith(color: AppColors.charcoal),
+                style: AppTypography.b3Medium,
               ),
               Text(
                 LocaleKeys.onboarding_notifications_email.tr(),
-                style: AppTypography.b3Medium.copyWith(color: AppColors.charcoal),
+                style: AppTypography.b3Medium,
               ),
             ],
           ),
@@ -107,7 +107,9 @@ class _IdleContent extends StatelessWidget {
                     const SizedBox(height: AppDimens.s),
                     Text(
                       LocaleKeys.onboarding_tracking_info.tr(),
-                      style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
+                      style: AppTypography.b2Regular.copyWith(
+                        color: AppColors.of(context).textSecondary,
+                      ),
                     ),
                   ],
                 ],
@@ -155,7 +157,9 @@ class _NotificationRow extends StatelessWidget {
         const SizedBox(height: AppDimens.s),
         Text(
           channel.description,
-          style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
+          style: AppTypography.b2Regular.copyWith(
+            color: AppColors.of(context).textSecondary,
+          ),
         ),
       ],
     );

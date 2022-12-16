@@ -10,11 +10,11 @@ const _logoWidth = 270.0;
 class Loader extends StatelessWidget {
   const Loader({
     Key? key,
-    this.color = AppColors.darkGrey,
+    this.color,
     this.strokeWidth = 4.0,
   }) : super(key: key);
 
-  final Color color;
+  final Color? color;
   final double strokeWidth;
 
   @override
@@ -23,7 +23,7 @@ class Loader extends StatelessWidget {
       child: CircularProgressIndicator(
         value: kIsTest ? .5 : null,
         strokeWidth: strokeWidth,
-        valueColor: AlwaysStoppedAnimation(color),
+        valueColor: AlwaysStoppedAnimation(color ?? AppColors.of(context).borderTertiary),
       ),
     );
   }

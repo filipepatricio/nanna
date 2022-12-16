@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/app_connectivity_checker/app_connectivity_checker.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
@@ -44,7 +43,6 @@ class EntryPage extends HookWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: AppConnectivityChecker(
         closeCubitOnDispose: true,
         child: state.maybeMap(

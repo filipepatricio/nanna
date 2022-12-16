@@ -1,16 +1,15 @@
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class InformedCloseButton extends StatelessWidget {
   const InformedCloseButton({
-    this.color = AppColors.textPrimary,
+    this.color,
     this.onPressed,
     super.key,
   });
 
-  final Color color;
+  final Color? color;
   final VoidCallback? onPressed;
 
   @override
@@ -20,7 +19,7 @@ class InformedCloseButton extends StatelessWidget {
         onTap: onPressed ?? () => Navigator.pop(context),
         child: SvgPicture.asset(
           AppVectorGraphics.close,
-          color: color,
+          color: color ?? Theme.of(context).iconTheme.color,
         ),
       ),
     );

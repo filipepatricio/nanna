@@ -14,6 +14,7 @@ class _TopicAppBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = AppColors.of(context).backgroundPrimary;
     final title = topic.curationInfo.curator.maybeMap(
       expert: (_) => LocaleKeys.topic_labelExpert.tr(),
       orElse: () => LocaleKeys.topic_label.tr(),
@@ -21,7 +22,7 @@ class _TopicAppBar extends HookWidget {
     final animationController = useAnimationController(duration: const Duration(milliseconds: 150));
     final backgroundColorAnimation = ColorTween(
       begin: AppColors.transparent,
-      end: AppColors.background95,
+      end: backgroundColor,
     ).chain(CurveTween(curve: Curves.easeIn)).animate(animationController);
 
     void updateAppBar() {
@@ -50,27 +51,27 @@ class _TopicAppBar extends HookWidget {
             centerTitle: true,
             titleSpacing: AppDimens.s,
             backgroundColor: backgroundColorAnimation.value,
-            leading: BackTextButton(color: isScrolled.value ? AppColors.textPrimary : AppColors.white),
+            leading: BackTextButton(color: isScrolled.value ? null : AppColors.of(context).blackWhiteSecondary),
             leadingWidth: AppDimens.xxc,
             title: Text(
               isScrolled.value ? topic.strippedTitle : title,
               style: AppTypography.h4Medium.copyWith(
                 fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
                 height: 1.11,
-                color: isScrolled.value ? AppColors.textPrimary : AppColors.white,
+                color: isScrolled.value ? null : AppColors.of(context).blackWhiteSecondary,
               ),
             ),
             actions: [
               BookmarkButton.topic(
                 topic: topic.asPreview,
                 briefId: cubit.briefId,
-                color: isScrolled.value ? AppColors.textPrimary : AppColors.white,
+                color: isScrolled.value ? null : AppColors.of(context).blackWhiteSecondary,
               ),
               const SizedBox(width: AppDimens.s),
               ShareTopicButton(
                 key: const Key('share-topic-button'),
                 topic: topic.asPreview,
-                iconColor: isScrolled.value ? AppColors.textPrimary : AppColors.white,
+                iconColor: isScrolled.value ? null : AppColors.of(context).blackWhiteSecondary,
               ),
               const SizedBox(width: AppDimens.m),
             ],

@@ -50,12 +50,14 @@ class _TopicCoverMedium extends TopicCover {
               Container(
                 padding: const EdgeInsets.only(left: AppDimens.sl),
                 decoration: const BoxDecoration(
-                  border: Border(left: BorderSide(color: AppColors.limeGreen)),
+                  border: Border(
+                    left: BorderSide(color: AppColors.brandAccent),
+                  ),
                 ),
                 child: InformedMarkdownBody(
                   markdown: ownersNote,
                   baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
-                    color: AppColors.textGrey,
+                    color: AppColors.of(context).textSecondary,
                   ),
                 ),
               ),

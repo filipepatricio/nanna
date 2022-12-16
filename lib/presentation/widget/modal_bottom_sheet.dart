@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,6 @@ class ModalBottomSheet extends StatelessWidget {
         child: ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(AppDimens.m)),
           child: Scaffold(
-            backgroundColor: AppColors.background,
             body: SnackbarParentView(
               controller: snackbarController,
               child: Padding(
@@ -42,7 +40,7 @@ class ModalBottomSheet extends StatelessWidget {
                       padding: const EdgeInsets.only(left: AppDimens.l),
                       child: IconButton(
                         icon: SvgPicture.asset(AppVectorGraphics.close),
-                        color: AppColors.black,
+                        color: Theme.of(context).iconTheme.color,
                         alignment: Alignment.centerLeft,
                         padding: EdgeInsets.zero,
                         onPressed: context.popRoute,

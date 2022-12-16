@@ -85,7 +85,6 @@ class SignInPage extends HookWidget {
             padding: const EdgeInsets.only(left: AppDimens.m + AppDimens.xxs),
             child: IconButton(
               icon: const Icon(Icons.close_rounded),
-              color: AppColors.textPrimary,
               highlightColor: AppColors.transparent,
               splashColor: AppColors.transparent,
               alignment: Alignment.centerLeft,
@@ -99,7 +98,7 @@ class SignInPage extends HookWidget {
         ),
       ),
       body: Container(
-        color: AppColors.background,
+        color: AppColors.of(context).backgroundPrimary,
         child: KeyboardVisibilityBuilder(
           builder: (context, visible) => AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),

@@ -29,7 +29,7 @@ class _ArticleHeadline extends StatelessWidget {
         InformedMarkdownBody(
           markdown: "_${LocaleKeys.article_relatedContent_cantGetEnough.tr()}_",
           baseTextStyle: AppTypography.h2Medium,
-          highlightColor: AppColors.limeGreen,
+          highlightColor: AppColors.brandAccent,
           textAlignment: TextAlign.center,
         ),
         const SizedBox(height: AppDimens.sl),
@@ -48,7 +48,8 @@ class _ArticleFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilledButton.black(
+    return FilledButton.primary(
+      context: context,
       onTap: context.goToExplore,
       text: LocaleKeys.explore_exploreNow.tr(),
     );

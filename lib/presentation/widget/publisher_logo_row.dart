@@ -21,6 +21,10 @@ class PublisherLogoRow extends HookWidget {
   Widget build(BuildContext context) {
     final publishers = topic.publisherInformation.highlightedPublishers;
     final remainingPublishersIndicator = topic.publisherInformation.remainingPublishersIndicator;
+    final textColor = (mode == Brightness.dark ? AppColors.light : AppColors.dark)
+        .textSecondary
+        .blendMultiply(backgroundColor: topic.category.color);
+
     return SizedBox(
       height: AppDimens.publisherLogoSize,
       child: Row(
@@ -37,9 +41,7 @@ class PublisherLogoRow extends HookWidget {
               remainingPublishersIndicator,
               textAlign: TextAlign.start,
               style: AppTypography.sansTextSmallLausanne.copyWith(
-                color: mode == Brightness.dark
-                    ? AppColors.darkerGrey.blendMultiply(backgroundColor: topic.category.color)
-                    : AppColors.white,
+                color: textColor,
                 height: 1.2,
               ),
             ),

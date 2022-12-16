@@ -21,7 +21,7 @@ class ArticleNoImageView extends StatelessWidget {
         SizedBox.expand(
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: color ?? AppColors.white,
+              color: color ?? AppColors.of(context).blackWhiteSecondary,
               borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
             ),
           ),
@@ -31,7 +31,7 @@ class ArticleNoImageView extends StatelessWidget {
             child: Center(
               child: SvgPicture.asset(
                 AppVectorGraphics.locker,
-                color: AppColors.charcoal,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           )
@@ -40,7 +40,7 @@ class ArticleNoImageView extends StatelessWidget {
             child: Center(
               child: SvgPicture.asset(
                 AppVectorGraphics.noImage,
-                color: AppColors.charcoal,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),

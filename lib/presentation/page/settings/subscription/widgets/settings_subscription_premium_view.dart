@@ -19,11 +19,6 @@ class _SettingsSubscriptionPremiumView extends StatelessWidget {
           physics: getPlatformScrollPhysics(),
           children: [
             const SizedBox(height: AppDimens.l),
-            Text(
-              LocaleKeys.subscription_membership.tr(),
-              style: AppTypography.h4Bold,
-            ),
-            const SizedBox(height: AppDimens.l),
             _ChangeSubscriptionCard(
               icon: AppVectorGraphics.informedLogoGreen,
               title: LocaleKeys.subscription_premium.tr(),
@@ -33,7 +28,9 @@ class _SettingsSubscriptionPremiumView extends StatelessWidget {
             const SizedBox(height: AppDimens.xl),
             Text(
               LocaleKeys.subscription_planIncludes.tr(),
-              style: AppTypography.subH1Medium.copyWith(color: AppColors.settingsHeader),
+              style: AppTypography.subH1Medium.copyWith(
+                color: AppColors.of(context).textTertiary,
+              ),
             ),
             const SizedBox(height: AppDimens.ml),
             const SubscriptionBenefits(),
@@ -41,7 +38,9 @@ class _SettingsSubscriptionPremiumView extends StatelessWidget {
             if (subscription.expirationDate != null) ...[
               Text(
                 (subscription.willRenew ? LocaleKeys.subscription_renewalDate : LocaleKeys.subscription_endDate).tr(),
-                style: AppTypography.subH1Medium.copyWith(color: AppColors.settingsHeader),
+                style: AppTypography.subH1Medium.copyWith(
+                  color: AppColors.of(context).textTertiary,
+                ),
               ),
               const SizedBox(height: AppDimens.ml),
               Text(
@@ -49,9 +48,7 @@ class _SettingsSubscriptionPremiumView extends StatelessWidget {
                 style: AppTypography.subH1Medium,
               ),
             ],
-            const SizedBox(height: AppDimens.l),
-            const InformedDivider(),
-            const SizedBox(height: AppDimens.l),
+            const SizedBox(height: AppDimens.xxl),
             if (subscription.manageSubscriptionURL.isNotEmpty) ...[
               LinkLabel(
                 label: LocaleKeys.subscription_cancelSubscription.tr(),

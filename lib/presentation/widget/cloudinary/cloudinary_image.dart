@@ -13,7 +13,7 @@ export 'cloudinary_config.dart';
 
 const _fadeDuration = Duration(milliseconds: 200);
 
-enum DarkeningMode { none, solid, gradient }
+enum DarkeningMode { none, solid }
 
 class CloudinaryImage extends HookWidget {
   const CloudinaryImage({
@@ -43,14 +43,7 @@ class CloudinaryImage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final darkeningDecoration = BoxDecoration(
-      color: darkeningMode == DarkeningMode.solid ? AppColors.black40 : null,
-      gradient: darkeningMode == DarkeningMode.gradient
-          ? const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [AppColors.black10, AppColors.black40, AppColors.black40],
-            )
-          : null,
+      color: darkeningMode == DarkeningMode.solid ? AppColors.overlay : null,
     );
 
     if (kIsTest) {
@@ -81,7 +74,7 @@ class CloudinaryImage extends HookWidget {
         foregroundDecoration: darkeningDecoration,
       ),
       errorWidget: (_, __, ___) => Container(
-        color: AppColors.black40,
+        color: AppColors.overlay,
         width: width,
         height: height,
       ),

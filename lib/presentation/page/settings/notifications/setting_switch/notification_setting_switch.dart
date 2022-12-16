@@ -15,12 +15,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 enum NotificationSwitchWidgetType { roundedGreen, squareBlack }
 
 extension _NotificationSwitchTypeExtension on NotificationSwitchWidgetType {
-  Color get activeColor {
+  Color activeColor(BuildContext context) {
     switch (this) {
       case NotificationSwitchWidgetType.roundedGreen:
-        return AppColors.limeGreenDark;
+        return AppColors.of(context).buttonAccentBackground;
       case NotificationSwitchWidgetType.squareBlack:
-        return AppColors.charcoal;
+        return AppColors.of(context).buttonPrimaryBackground;
     }
   }
 
@@ -147,9 +147,9 @@ class _Processing extends StatelessWidget {
         height: AppDimens.l,
         width: AppDimens.l,
         padding: const EdgeInsets.all(AppDimens.one),
-        child: const Loader(
+        child: Loader(
           strokeWidth: 2.0,
-          color: AppColors.dividerGreyLight,
+          color: AppColors.of(context).borderPrimary,
         ),
       ),
     );
@@ -187,11 +187,11 @@ class _Idle extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: type.boxShape,
                 borderRadius: type.borderRadius,
-                color: value ? type.activeColor : AppColors.transparent,
+                color: value ? type.activeColor(context) : AppColors.transparent,
                 border: Border.fromBorderSide(
                   BorderSide(
                     width: 2.0,
-                    color: value ? type.activeColor : AppColors.dividerGreyLight,
+                    color: value ? type.activeColor(context) : AppColors.of(context).borderPrimary,
                   ),
                 ),
               ),
@@ -199,7 +199,7 @@ class _Idle extends StatelessWidget {
                 key: switchKey,
                 value: value,
                 shape: const CircleBorder(),
-                activeColor: type.activeColor,
+                activeColor: type.activeColor(context),
                 visualDensity: VisualDensity.compact,
                 onChanged: (value) => onChange(value!),
               ),

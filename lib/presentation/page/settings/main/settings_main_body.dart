@@ -61,7 +61,9 @@ class SettingsMainBody extends HookWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: Text(
             LocaleKeys.settings_profileHeader.tr(),
-            style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+            style: AppTypography.subH1Bold.copyWith(
+              color: AppColors.of(context).textTertiary,
+            ),
           ),
         ),
         const SizedBox(height: AppDimens.s),
@@ -85,7 +87,9 @@ class SettingsMainBody extends HookWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
           child: Text(
             LocaleKeys.settings_aboutHeader.tr(),
-            style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+            style: AppTypography.subH1Bold.copyWith(
+              color: AppColors.of(context).textTertiary,
+            ),
           ),
         ),
         const SizedBox(height: AppDimens.s),
@@ -108,8 +112,8 @@ class SettingsMainBody extends HookWidget {
         ),
         SettingsMainItem(
           label: LocaleKeys.common_signOut.tr(),
-          onTap: () => cubit.signOut(),
-          fontColor: AppColors.darkerGrey,
+          onTap: cubit.signOut,
+          fontColor: AppColors.of(context).textSecondary,
         ),
         const _VersionBox(),
         const AudioPlayerBannerPlaceholder(),
@@ -129,23 +133,20 @@ class SettingsMainBody extends HookWidget {
   void _showEmailErrorMessage(SnackbarController controller) {
     controller.showMessage(
       SnackbarMessage.custom(
-        message: RichText(
-          text: TextSpan(
+        message: Text.rich(
+          TextSpan(
             children: [
               TextSpan(
                 text: LocaleKeys.settings_feedbackMailError.tr(),
-                style: AppTypography.b2Regular.copyWith(color: AppColors.white),
+                style: AppTypography.b2Regular.copyWith(color: AppColors.stateTextSecondary),
               ),
               TextSpan(
                 text: _feedbackEmail,
                 style: AppTypography.b2Regular.copyWith(
-                  color: AppColors.white,
+                  color: AppColors.stateTextSecondary,
                   decoration: TextDecoration.underline,
                 ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    _copyEmailToClipboard(controller);
-                  },
+                recognizer: TapGestureRecognizer()..onTap = () => _copyEmailToClipboard(controller),
               ),
             ],
           ),

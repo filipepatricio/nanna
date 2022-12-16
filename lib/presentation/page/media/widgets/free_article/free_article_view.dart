@@ -143,7 +143,7 @@ class _PageLoadProgressBar extends StatelessWidget {
         return LinearProgressIndicator(
           value: pageLoadingProgress.value,
           backgroundColor: AppColors.transparent,
-          valueColor: const AlwaysStoppedAnimation(AppColors.limeGreen),
+          valueColor: const AlwaysStoppedAnimation(AppColors.brandAccent),
           minHeight: 3,
         );
       },

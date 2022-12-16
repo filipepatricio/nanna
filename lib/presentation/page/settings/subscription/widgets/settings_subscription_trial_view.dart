@@ -19,11 +19,6 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
           physics: getPlatformScrollPhysics(),
           children: [
             const SizedBox(height: AppDimens.l),
-            Text(
-              LocaleKeys.subscription_membership.tr(),
-              style: AppTypography.h4Bold,
-            ),
-            const SizedBox(height: AppDimens.l),
             _ChangeSubscriptionCard(
               icon: AppVectorGraphics.informedLogoGreen,
               title: LocaleKeys.subscription_trial.tr(),
@@ -45,11 +40,9 @@ class _SettingsSubscriptionTrialView extends StatelessWidget {
                   subscription.plan.priceString,
                 ],
               ),
-              style: AppTypography.metadata1Medium.copyWith(color: AppColors.textGrey),
+              style: AppTypography.metadata1Medium.copyWith(color: AppColors.of(context).textSecondary),
             ),
-            const SizedBox(height: AppDimens.l),
-            const InformedDivider(),
-            const SizedBox(height: AppDimens.l),
+            const SizedBox(height: AppDimens.xxl),
             if (subscription.manageSubscriptionURL.isNotEmpty) ...[
               LinkLabel(
                 label: LocaleKeys.subscription_cancelSubscription.tr(),

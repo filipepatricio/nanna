@@ -17,12 +17,10 @@ class SettingsInputItem extends HookWidget {
     this.onTap,
     this.isFormFocused = false,
     this.onSubmitted,
-    this.initialInput,
     this.textCapitalization,
   });
   final TextEditingController controller;
   final String label;
-  final String? initialInput;
   final bool isEditable;
   final bool isFormFocused;
   final Function(String inputText) onChanged;
@@ -41,17 +39,22 @@ class SettingsInputItem extends HookWidget {
       controller: controller,
       onChanged: (value) => onChanged(value),
       style: AppTypography.b2Regular.copyWith(
-        color: isEditable ? AppColors.textPrimary : AppColors.neutralGrey,
+        color: isEditable ? AppColors.of(context).textPrimary : AppColors.of(context).textTertiary,
       ),
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColors.lightGrey,
+        fillColor: AppColors.of(context).backgroundSecondary,
         hintText: label,
-        hintStyle: AppTypography.b2Regular.copyWith(color: AppColors.textGrey),
+        hintStyle: AppTypography.b2Regular.copyWith(
+          color: AppColors.of(context).textSecondary,
+        ),
         enabledBorder: const OutlineInputBorder(borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(width: 1, color: AppColors.textPrimary),
+          borderSide: BorderSide(
+            width: 1,
+            color: AppColors.of(context).borderSecondary,
+          ),
           borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
         ),
         contentPadding: const EdgeInsets.all(AppDimens.m),
@@ -76,9 +79,7 @@ class SettingsInputItem extends HookWidget {
       onSubmitted: (value) {
         onSubmitted?.call();
       },
-      onTap: () {
-        onTap?.call();
-      },
+      onTap: onTap,
     );
   }
 }

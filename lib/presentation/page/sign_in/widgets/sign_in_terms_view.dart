@@ -9,9 +9,11 @@ class _TermsPolicy extends HookWidget {
   Widget build(BuildContext context) {
     final snackbarController = useSnackbarController();
 
-    return RichText(
-      text: TextSpan(
-        style: AppTypography.metadata1Regular.copyWith(color: AppColors.neutralGrey),
+    return Text.rich(
+      TextSpan(
+        style: AppTypography.metadata1Regular.copyWith(
+          color: AppColors.of(context).textTertiary,
+        ),
         children: [
           TextSpan(text: LocaleKeys.signIn_consentParts_info.tr()),
           TextSpan(
@@ -19,7 +21,6 @@ class _TermsPolicy extends HookWidget {
             style: AppTypography.metadata1Regular.copyWith(
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
-              color: AppColors.charcoal,
             ),
             recognizer: TapGestureRecognizer()..onTap = () => _openInBrowser(termsOfServiceUri, snackbarController),
           ),
@@ -29,7 +30,6 @@ class _TermsPolicy extends HookWidget {
             style: AppTypography.metadata1Regular.copyWith(
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
-              color: AppColors.charcoal,
             ),
             recognizer: TapGestureRecognizer()..onTap = () => _openInBrowser(policyPrivacyUri, snackbarController),
           ),

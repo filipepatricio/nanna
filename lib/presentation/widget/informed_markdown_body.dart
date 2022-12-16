@@ -15,7 +15,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.headingTextStyle,
     this.pPadding,
     this.maxLines,
-    this.highlightColor = AppColors.limeGreen,
+    this.highlightColor = AppColors.brandAccent,
     this.textAlignment = TextAlign.start,
     this.paddingBuilders,
     this.shareTextCallback,
@@ -35,7 +35,7 @@ class InformedMarkdownBody extends StatelessWidget {
     this.headingTextStyle,
     this.pPadding,
     this.maxLines,
-    this.highlightColor = AppColors.limeGreen,
+    this.highlightColor = AppColors.brandAccent,
     this.textAlignment = TextAlign.start,
     this.paddingBuilders,
     this.shareTextCallback,
@@ -64,6 +64,11 @@ class InformedMarkdownBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final baseStyle = baseTextStyle.withPrimaryColorIfNull(context);
+    final headingStyle = headingTextStyle?.withPrimaryColorIfNull(context);
+    final strongStyle =
+        strongTextStyle?.withPrimaryColorIfNull(context) ?? baseStyle.copyWith(fontWeight: FontWeight.bold);
+
     return MarkdownBody(
       data: markdown,
       selectable: selectable,
@@ -72,16 +77,16 @@ class InformedMarkdownBody extends StatelessWidget {
         [md.EmojiSyntax(), ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes],
       ),
       styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-        p: baseTextStyle,
+        p: baseStyle,
         pPadding: pPadding,
-        h1: headingTextStyle,
-        h2: headingTextStyle,
-        h3: headingTextStyle,
-        h4: headingTextStyle,
-        h5: headingTextStyle,
-        h6: headingTextStyle,
-        strong: strongTextStyle ?? baseTextStyle.copyWith(fontWeight: FontWeight.bold),
-        listBullet: baseTextStyle,
+        h1: headingStyle,
+        h2: headingStyle,
+        h3: headingStyle,
+        h4: headingStyle,
+        h5: headingStyle,
+        h6: headingStyle,
+        strong: strongStyle,
+        listBullet: baseStyle,
         listBulletPadding: const EdgeInsets.symmetric(vertical: AppDimens.s),
       ),
       paddingBuilders: paddingBuilders ?? <String, MarkdownPaddingBuilder>{},
@@ -109,4 +114,10 @@ class InformedMarkdownBody extends StatelessWidget {
       },
     );
   }
+}
+
+extension on TextStyle {
+  TextStyle withPrimaryColorIfNull(BuildContext context) => copyWith(
+        color: color ?? AppColors.of(context).textPrimary,
+      );
 }

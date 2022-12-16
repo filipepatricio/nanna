@@ -86,8 +86,11 @@ class _ArticleHeader extends StatelessWidget {
     final articleImage = article.image;
 
     final author = article.author;
-    final metadataStyle = AppTypography.systemText.copyWith(height: 1.5);
-    final articleColor = article.category.color ?? AppColors.background;
+    final articleColor = article.category.color ?? AppColors.of(context).backgroundPrimary;
+    final metadataStyle = AppTypography.systemText.copyWith(
+      height: 1.5,
+      color: AppColors.categoriesTextSecondary,
+    );
 
     return Container(
       color: articleColor,
@@ -106,7 +109,6 @@ class _ArticleHeader extends StatelessWidget {
                 const SizedBox(height: AppDimens.l),
                 ArticleDottedInfo(
                   article: article,
-                  isLight: false,
                   showDate: false,
                   showReadTime: false,
                   textStyle: AppTypography.metadata1Medium,
@@ -134,7 +136,6 @@ class _ArticleHeader extends StatelessWidget {
                           ],
                           ArticleDottedInfo(
                             article: article,
-                            isLight: false,
                             showPublisher: false,
                             showLogo: false,
                             textStyle: metadataStyle,
@@ -149,7 +150,7 @@ class _ArticleHeader extends StatelessWidget {
                         child: AudioFloatingControlButton(
                           article: article,
                           elevation: 0,
-                          color: AppColors.black,
+                          color: AppColors.stateTextPrimary,
                           mode: AudioFloatingControlButtonMode.white,
                           imageHeight: AppDimens.xl,
                           progressSize: AppDimens.xxl,
@@ -170,7 +171,7 @@ class _ArticleHeader extends StatelessWidget {
                 width: AppDimens.articleHeaderImageWidth(context),
                 child: ArticleImage(
                   image: articleImage,
-                  cardColor: AppColors.background,
+                  cardColor: AppColors.of(context).backgroundPrimary,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -195,7 +196,7 @@ class _Credits extends StatelessWidget {
       data: credits,
       styleSheet: MarkdownStyleSheet(
         p: AppTypography.articleTextRegular.copyWith(
-          color: AppColors.textGrey,
+          color: AppColors.of(context).textSecondary,
           fontStyle: FontStyle.italic,
         ),
       ),

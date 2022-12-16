@@ -16,8 +16,8 @@ class MarkdownBullet extends StatelessWidget {
         child: Container(
           height: _size,
           width: _size,
-          decoration: const BoxDecoration(
-            color: AppColors.black,
+          decoration: BoxDecoration(
+            color: AppColors.of(context).textPrimary,
             shape: BoxShape.circle,
           ),
         ),

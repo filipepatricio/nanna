@@ -37,9 +37,9 @@ class SettingsNotificationsBody extends HookWidget {
                 if (onRequestPermissionTap != null) ...[
                   Container(
                     padding: const EdgeInsets.all(AppDimens.m),
-                    decoration: const BoxDecoration(
-                      color: AppColors.lightGrey,
-                      borderRadius: BorderRadius.all(
+                    decoration: BoxDecoration(
+                      color: AppColors.of(context).buttonSecondaryFrame,
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(AppDimens.s),
                       ),
                     ),
@@ -105,7 +105,9 @@ class _NotificationGroup extends StatelessWidget {
         children: [
           Text(
             group.name,
-            style: AppTypography.subH1Bold.copyWith(color: AppColors.settingsHeader),
+            style: AppTypography.subH1Bold.copyWith(
+              color: AppColors.of(context).textTertiary,
+            ),
           ),
           const SizedBox(height: AppDimens.m),
           ...group.channels.map(

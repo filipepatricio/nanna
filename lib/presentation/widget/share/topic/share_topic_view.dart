@@ -70,7 +70,7 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
             padding: const EdgeInsets.all(AppDimens.xl),
             margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: topic.category.color ?? AppColors.background,
+              color: topic.category.color ?? AppColors.of(context).backgroundPrimary,
               borderRadius: BorderRadius.circular(4),
               boxShadow: cardShadows,
             ),
@@ -109,9 +109,9 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                       : ClipOval(child: topicOwnerImage),
                 ),
                 const SizedBox(height: AppDimens.m),
-                RichText(
+                Text.rich(
                   textAlign: TextAlign.center,
-                  text: TextSpan(
+                  TextSpan(
                     style: AppTypography.b1Regular.copyWith(fontSize: 24, height: 1),
                     children: [
                       TextSpan(

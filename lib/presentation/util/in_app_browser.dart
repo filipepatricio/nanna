@@ -45,23 +45,20 @@ Future<void> _openWithAnyApp(String uri, OpenInAppBrowserErrorCallback? onError)
 
 SnackbarMessage _browserErrorMessage(String uri, SnackbarController snackbarController) {
   return SnackbarMessage.custom(
-    message: RichText(
-      text: TextSpan(
+    message: Text.rich(
+      TextSpan(
         children: [
           TextSpan(
-            text: tr(LocaleKeys.common_error_noBrowser),
-            style: AppTypography.b2Regular.copyWith(color: AppColors.white),
+            text: LocaleKeys.common_error_noBrowser.tr(),
+            style: AppTypography.b2Regular.copyWith(color: AppColors.stateTextSecondary),
           ),
           TextSpan(
             text: uri,
             style: AppTypography.b2Regular.copyWith(
-              color: AppColors.white,
+              color: AppColors.stateTextSecondary,
               decoration: TextDecoration.underline,
             ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                _copyUriToClipboard(uri, snackbarController);
-              },
+            recognizer: TapGestureRecognizer()..onTap = () => _copyUriToClipboard(uri, snackbarController),
           ),
         ],
       ),

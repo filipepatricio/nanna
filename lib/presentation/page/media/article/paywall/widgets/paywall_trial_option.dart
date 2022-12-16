@@ -31,11 +31,13 @@ class _PaywallTrialOption extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(AppDimens.l),
           decoration: BoxDecoration(
-            color: AppColors.white,
+            color: AppColors.of(context).blackWhiteSecondary,
             borderRadius: const BorderRadius.all(
               Radius.circular(AppDimens.m),
             ),
-            border: Border.all(color: AppColors.lightGrey),
+            border: Border.all(
+              color: AppColors.of(context).borderPrimary,
+            ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -69,6 +71,7 @@ class _PaywallTrialOption extends StatelessWidget {
             onTap: () => AutoRouter.of(context).push(const SubscriptionPageRoute()),
           ),
         ),
+        const SizedBox(height: AppDimens.xs),
       ],
     );
   }

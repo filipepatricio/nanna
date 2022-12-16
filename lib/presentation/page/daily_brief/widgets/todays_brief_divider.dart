@@ -11,12 +11,9 @@ class _TodaysBriefDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: _height,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            AppColors.lightGrey,
-            AppColors.darkLinen,
-          ],
+          colors: AppColors.of(context).shadowDividerColors,
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),

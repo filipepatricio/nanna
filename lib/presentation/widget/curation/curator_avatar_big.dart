@@ -12,12 +12,10 @@ import 'package:flutter/material.dart';
 class CuratorAvatarBig extends StatelessWidget {
   const CuratorAvatarBig({
     required this.curator,
-    this.mode = Brightness.dark,
     Key? key,
   }) : super(key: key);
 
   final Curator curator;
-  final Brightness mode;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +39,7 @@ class CuratorAvatarBig extends StatelessWidget {
             children: [
               Text(
                 curator.name,
-                style: AppTypography.h2Medium.copyWith(
-                  color: mode == Brightness.light ? AppColors.white : null,
-                ),
+                style: AppTypography.h2Medium,
                 overflow: TextOverflow.ellipsis,
                 softWrap: true,
                 maxLines: 1,
@@ -51,7 +47,7 @@ class CuratorAvatarBig extends StatelessWidget {
               Text(
                 curator.expertise,
                 style: AppTypography.b3Regular.copyWith(
-                  color: AppColors.darkGrey,
+                  color: AppColors.of(context).textSecondary,
                   height: 1.5,
                 ),
               ),
