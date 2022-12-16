@@ -62,7 +62,7 @@ class ArticleContentView extends HookWidget {
             ),
             if (showCredits)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
+                padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
                 child: _Credits(credits: article.metadata.credits),
               ),
             const SizedBox(height: AppDimens.xxc),

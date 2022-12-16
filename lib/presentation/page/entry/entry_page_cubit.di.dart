@@ -9,7 +9,6 @@ import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_
 import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
-import 'package:better_informed_mobile/domain/subscription/use_case/identify_purchases_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page_state.dt.dart';
 import 'package:bloc/bloc.dart';
@@ -30,7 +29,6 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     this._getOnboardingCategoriesUseCase,
     this._identifyAnalyticsUserUseCase,
     this._initializePurchasesUseCase,
-    this._identifyPurchasesUserUseCase,
   ) : super(EntryPageState.idle());
 
   final IsSignedInUseCase _isSignedInUseCase;
@@ -42,7 +40,6 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   final GetOnboardingCategoriesUseCase _getOnboardingCategoriesUseCase;
   final IdentifyAnalyticsUserUseCase _identifyAnalyticsUserUseCase;
   final InitializePurchasesUseCase _initializePurchasesUseCase;
-  final IdentifyPurchasesUserUseCase _identifyPurchasesUserUseCase;
 
   bool? _isConnectionAvailable;
 
@@ -67,7 +64,6 @@ class EntryPageCubit extends Cubit<EntryPageState> {
 
   Future<void> _initialize() async {
     await _saveReleaseNoteIfFirstRunUseCase();
-    await _initializePurchasesUseCase()._withTimeout('Purchases configuration timeout');
 
     final signedIn = await _isSignedInUseCase();
 
@@ -94,7 +90,7 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     try {
       await _initializeFeatureFlagsUseCase();
       await _identifyAnalyticsUserUseCase()._withTimeout('Identyfying user for analytics timeout');
-      await _identifyPurchasesUserUseCase()._withTimeout('Identyfying user for purchases timeout');
+      await _initializePurchasesUseCase()._withTimeout('Identyfying user for purchases timeout');
     } on UnauthorizedException {
       emit(EntryPageState.notSignedIn());
       return;

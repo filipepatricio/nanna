@@ -25,24 +25,26 @@ class MainPage extends HookWidget {
         tokenExpired: (_) => _onTokenExpiredEvent(context),
         navigate: (navigate) {
           WidgetsBinding.instance.addPostFrameCallback(
-            (_) async => await _closeWebView().then(
-              (_) {
-                _resetNestedRouters();
-                _navigateToPath(context, navigate.path);
-              },
-            ),
+            (_) async {
+              await _closeWebView();
+              _resetNestedRouters();
+              await Future.delayed(const Duration(milliseconds: 1));
+              // ignore: use_build_context_synchronously
+              await _navigateToPath(context, navigate.path);
+            },
           );
         },
         multiNavigate: (navigate) {
           WidgetsBinding.instance.addPostFrameCallback(
-            (_) async => await _closeWebView().then(
-              (_) {
-                _resetNestedRouters();
-                for (final path in navigate.path) {
-                  _navigateToPath(context, path);
-                }
-              },
-            ),
+            (_) async {
+              await _closeWebView();
+              _resetNestedRouters();
+              await Future.delayed(const Duration(milliseconds: 1));
+              for (final path in navigate.path) {
+                // ignore: use_build_context_synchronously
+                await _navigateToPath(context, path);
+              }
+            },
           );
         },
         showReleaseNote: (state) => ReleaseNotePopup.show(
@@ -78,13 +80,10 @@ class MainPage extends HookWidget {
     if (!kIsTest) await closeInAppWebView();
   }
 
-  void _navigateToPath(BuildContext context, String path) {
-    Future.delayed(
-      const Duration(milliseconds: 1),
-      () => context.navigateNamedTo(
-        path,
-        onFailure: (failure) => Fimber.e('Navigation to path - $path - failed', ex: failure),
-      ),
+  Future<void> _navigateToPath(BuildContext context, String path) async {
+    await context.navigateNamedTo(
+      path,
+      onFailure: (failure) => Fimber.e('Navigation to path - $path - failed', ex: failure),
     );
   }
 }

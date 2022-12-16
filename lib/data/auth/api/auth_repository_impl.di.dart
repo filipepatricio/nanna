@@ -1,5 +1,7 @@
 import 'package:better_informed_mobile/data/auth/api/auth_api_data_source.dart';
 import 'package:better_informed_mobile/data/auth/api/mapper/login_response_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/apple_credential_data_source.di.dart';
+import 'package:better_informed_mobile/data/auth/api/provider/google_credential_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/linkedin/linkedin_credential_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/oauth_credential_provider_data_source.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart';
@@ -13,13 +15,16 @@ import 'package:injectable/injectable.dart';
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(
     this._apiDataSource,
-    this._oAuthPlatformSignInDataSource,
+    this._googleCredentialDataSource,
+    this._appleCredentialDataSource,
     this._freshLink,
     this._loginResponseDTOMapper,
     this._linkedinCredentialDataSource,
   );
+
   final AuthApiDataSource _apiDataSource;
-  final OAuthCredentialProviderDataSource _oAuthPlatformSignInDataSource;
+  final GoogleCredentialDataSource _googleCredentialDataSource;
+  final AppleCredentialDataSource _appleCredentialDataSource;
   final FreshLink<OAuth2Token> _freshLink;
   final LoginResponseDTOMapper _loginResponseDTOMapper;
   final LinkedinCredentialDataSource _linkedinCredentialDataSource;
@@ -30,16 +35,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<AuthResult> signInWithDefaultProvider() async {
-    final oAuthToken = await _oAuthPlatformSignInDataSource.fetchOAuthUser();
-    final result = await _apiDataSource.signInWithProvider(
-      oAuthToken.token,
-      oAuthToken.provider,
-      oAuthToken.user,
-    );
-    final response = _loginResponseDTOMapper(result);
+  Future<AuthResult> signInWithGoogle() async {
+    final oAuthToken = await _googleCredentialDataSource.fetchOAuthUser();
+    return await _finishOAuthSignIn(oAuthToken);
+  }
 
-    return AuthResult(response.tokens, oAuthToken.provider, response.user.uuid);
+  @override
+  Future<AuthResult> signInWithApple() async {
+    final oAuthToken = await _appleCredentialDataSource.fetchOAuthUser();
+    return await _finishOAuthSignIn(oAuthToken);
   }
 
   @override
@@ -73,5 +77,16 @@ class AuthRepositoryImpl implements AuthRepository {
         .distinct((prev, next) => prev == next)
         .where((event) => event == AuthenticationStatus.unauthenticated)
         .map((event) => Fimber.d('Token has been revoked.'));
+  }
+
+  Future<AuthResult> _finishOAuthSignIn(OAuthUserDTO oAuthToken) async {
+    final result = await _apiDataSource.signInWithProvider(
+      oAuthToken.token,
+      oAuthToken.provider,
+      oAuthToken.user,
+    );
+    final response = _loginResponseDTOMapper(result);
+
+    return AuthResult(response.tokens, oAuthToken.provider, response.user.uuid);
   }
 }

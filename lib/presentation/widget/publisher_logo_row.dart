@@ -32,7 +32,7 @@ class PublisherLogoRow extends HookWidget {
             remainingPublishersIndicator,
             textAlign: TextAlign.start,
             style: AppTypography.b2Regular.copyWith(
-              color: mode == Brightness.dark ? AppColors.textPrimary : AppColors.white,
+              color: mode == Brightness.dark ? AppColors.darkerGrey : AppColors.white,
               height: 1.2,
             ),
           ),

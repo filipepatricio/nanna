@@ -52,6 +52,8 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+          working-directory: 'android'
 
       - name: Setup Java
         uses: actions/setup-java@v1
@@ -107,7 +109,7 @@ jobs:
         uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'internal_play_store'
-          subdirectory: android
+          subdirectory: 'android'
 
       - name: Slack Notification
         uses: 8398a7/action-slack@v3
@@ -138,6 +140,8 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+          working-directory: 'ios'
 
       # Your pubspec.yaml file must contain the Flutter version under the environment:flutter: key.
       - name: Get Flutter version from pubspec.yaml
@@ -177,7 +181,7 @@ jobs:
         uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'closed_beta'
-          subdirectory: ios
+          subdirectory: 'ios'
         env:
           ITC_TEAM_ID: '${{ secrets.ITC_TEAM_ID }}'
           DEVELOPER_PORTAL_TEAM_ID: '${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}'

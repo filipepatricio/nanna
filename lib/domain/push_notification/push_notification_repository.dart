@@ -12,6 +12,10 @@ abstract class PushNotificationRepository {
 
   Future<bool> requestPermission();
 
+  Future<bool> shouldOpenNotificationsSettings();
+
+  Future<void> openNotificationsSettings();
+
   Stream<IncomingPush> pushNotificationOpenStream();
 
   Future<NotificationPreferences> getNotificationPreferences();

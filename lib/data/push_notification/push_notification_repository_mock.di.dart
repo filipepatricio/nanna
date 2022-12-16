@@ -12,16 +12,17 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: PushNotificationRepository, env: mockEnvs)
 class PushNotificationRepositoryMock implements PushNotificationRepository {
-  PushNotificationRepositoryMock(
+  const PushNotificationRepositoryMock(
     this._pushNotificationApiDataSource,
     this._notificationPreferencesDTOMapper,
     this._notificationChannelDTOMapper,
   );
+
   final PushNotificationApiDataSource _pushNotificationApiDataSource;
   final NotificationPreferencesDTOMapper _notificationPreferencesDTOMapper;
   final NotificationChannelDTOMapper _notificationChannelDTOMapper;
 
-  final pushToken = 'pushToken';
+  static const pushToken = 'pushToken';
 
   @override
   Future<RegisteredPushToken> registerToken() async {
@@ -29,24 +30,22 @@ class PushNotificationRepositoryMock implements PushNotificationRepository {
   }
 
   @override
-  Future<String> getCurrentToken() async {
-    return pushToken;
-  }
+  Future<String> getCurrentToken() async => pushToken;
 
   @override
-  Future<bool> hasPermission() async {
-    return false;
-  }
+  Future<bool> hasPermission() async => true;
 
   @override
-  Future<bool> requestPermission() async {
-    return true;
-  }
+  Future<bool> requestPermission() async => true;
 
   @override
-  Stream<IncomingPush> pushNotificationOpenStream() {
-    return const Stream.empty();
-  }
+  Future<void> openNotificationsSettings() async {}
+
+  @override
+  Future<bool> shouldOpenNotificationsSettings() async => false;
+
+  @override
+  Stream<IncomingPush> pushNotificationOpenStream() => const Stream.empty();
 
   @override
   Future<NotificationPreferences> getNotificationPreferences() async {

@@ -60,7 +60,7 @@ class CurationInfoView extends StatelessWidget {
                     style: AppTypography.b3Regular.copyWith(
                       height: 1,
                       letterSpacing: 0,
-                      color: AppColors.textPrimary,
+                      color: AppColors.darkerGrey,
                     ),
                   ),
                 ],

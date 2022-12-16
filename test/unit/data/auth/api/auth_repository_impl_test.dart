@@ -7,7 +7,8 @@ import '../../../../generated_mocks.mocks.dart';
 
 void main() {
   late MockAuthApiDataSource authApiDataSource;
-  late MockOAuthCredentialProviderDataSource oAuthSignInDataSource;
+  late MockGoogleCredentialDataSource googleCredentialProviderDataSource;
+  late MockAppleCredentialDataSource appleCredentialDataSource;
   late MockFreshLink<OAuth2Token> freshLink;
   late MockLoginResponseDTOMapper loginDtoMapper;
   late MockLinkedinCredentialDataSource linkedinCredentialDataSource;
@@ -15,14 +16,16 @@ void main() {
 
   setUp(() {
     authApiDataSource = MockAuthApiDataSource();
-    oAuthSignInDataSource = MockOAuthCredentialProviderDataSource();
+    googleCredentialProviderDataSource = MockGoogleCredentialDataSource();
+    appleCredentialDataSource = MockAppleCredentialDataSource();
     freshLink = MockFreshLink();
     loginDtoMapper = MockLoginResponseDTOMapper();
     linkedinCredentialDataSource = MockLinkedinCredentialDataSource();
 
     repository = AuthRepositoryImpl(
       authApiDataSource,
-      oAuthSignInDataSource,
+      googleCredentialProviderDataSource,
+      appleCredentialDataSource,
       freshLink,
       loginDtoMapper,
       linkedinCredentialDataSource,

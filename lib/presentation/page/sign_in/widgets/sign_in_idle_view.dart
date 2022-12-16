@@ -41,8 +41,12 @@ class _SignInIdleView extends StatelessWidget {
                         ),
                         if (!keyboardVisible) ...[
                           const SizedBox(height: AppDimens.xxl),
-                          SignInWithProviderView(onSignInTap: () => cubit.signInWithPlatformProvider()),
+                          SignInWithGoogleButton(onTap: () => cubit.signInWithGoogle()),
                           const SizedBox(height: AppDimens.m),
+                          if (kIsAppleDevice) ...[
+                            SignInWithAppleButton(onTap: () => cubit.signInWithApple()),
+                            const SizedBox(height: AppDimens.m),
+                          ],
                           SignInWithLinkedInButton(onTap: () => cubit.signInWithLinkedin()),
                           const SizedBox(height: AppDimens.l),
                           Row(

@@ -37,28 +37,26 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   Stream<ActiveSubscription> get activeSubscriptionStream => _activeSubscriptionStream.stream.distinct();
 
   @override
-  Future<void> initialize() async {
-    final apiKey = kIsAppleDevice ? _config.revenueCatKeyiOS : _config.revenueCatKeyAndroid;
-
-    if (apiKey != null) {
-      final configuration = PurchasesConfiguration(apiKey);
-      await _purchaseRemoteDataSource.configure(configuration);
-    }
-  }
-
-  @override
-  Future<void> identify(String userId) async {
+  Future<void> initialize(String userId) async {
     try {
       await retry(
-        () => _purchaseRemoteDataSource.logIn(userId),
+        () async {
+          final apiKey = kIsAppleDevice ? _config.revenueCatKeyiOS : _config.revenueCatKeyAndroid;
+
+          if (apiKey != null) {
+            await _purchaseRemoteDataSource.configure(apiKey, userId);
+          }
+        },
         retryIf: _shouldRetry,
       );
 
-      // Prefetches and caches available customer info and offerings
-      unawaited(_purchaseRemoteDataSource.getCustomerInfo());
-      unawaited(_purchaseRemoteDataSource.getOfferings());
+      if (await _purchaseRemoteDataSource.isConfigured) {
+        // Prefetches and caches available customer info and offerings
+        unawaited(_purchaseRemoteDataSource.getCustomerInfo());
+        unawaited(_purchaseRemoteDataSource.getOfferings());
 
-      _purchaseRemoteDataSource.addCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
+        _purchaseRemoteDataSource.addCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
+      }
     } on PurchaseConfigurationException catch (_) {}
   }
 

@@ -7,9 +7,13 @@ part 'settings_notifications_state.dt.freezed.dart';
 @Freezed(toJson: false)
 class SettingsNotificationsState with _$SettingsNotificationsState {
   @Implements<BuildState>()
-  factory SettingsNotificationsState.loading() = SettingsNotificationsStateLoading;
+  factory SettingsNotificationsState.loading() = _SettingsNotificationsStateLoading;
+
+  @Implements<BuildState>()
+  factory SettingsNotificationsState.noPermission(List<NotificationPreferencesGroup> groups) =
+      _SettingsNotificationsStateNoPermission;
 
   @Implements<BuildState>()
   factory SettingsNotificationsState.notificationSettingsLoaded(List<NotificationPreferencesGroup> groups) =
-      SettingsNotificationsStateLoaded;
+      _SettingsNotificationsStateLoaded;
 }

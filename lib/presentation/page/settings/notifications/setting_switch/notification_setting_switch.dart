@@ -48,32 +48,38 @@ class NotificationSettingSwitch extends HookWidget {
     required this.channel,
     required this.notificationType,
     required this.type,
+    required this.requiresPermission,
     Key? key,
   }) : super(key: key);
 
   factory NotificationSettingSwitch.roundedGreen({
     required NotificationChannel channel,
     required NotificationType notificationType,
+    required bool requiresPermission,
   }) =>
       NotificationSettingSwitch(
         channel: channel,
         notificationType: notificationType,
         type: NotificationSwitchWidgetType.roundedGreen,
+        requiresPermission: requiresPermission,
       );
 
   factory NotificationSettingSwitch.squareBlack({
     required NotificationChannel channel,
     required NotificationType notificationType,
+    required bool requiresPermission,
   }) =>
       NotificationSettingSwitch(
         channel: channel,
         notificationType: notificationType,
         type: NotificationSwitchWidgetType.squareBlack,
+        requiresPermission: requiresPermission,
       );
 
   final NotificationChannel channel;
   final NotificationType notificationType;
   final NotificationSwitchWidgetType type;
+  final bool requiresPermission;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +90,7 @@ class NotificationSettingSwitch extends HookWidget {
 
     useEffect(
       () {
-        cubit.initialize(channel, notificationType);
+        cubit.initialize(channel, notificationType, requiresPermission);
       },
       [cubit],
     );
@@ -93,14 +99,18 @@ class NotificationSettingSwitch extends HookWidget {
       cubit,
       (cubit, state, context) {
         state.mapOrNull(
-          generalError: (_) {
-            snackbarController.showMessage(
-              SnackbarMessage.simple(
-                message: LocaleKeys.common_error_tryAgainLater.tr(),
-                type: SnackbarMessageType.negative,
-              ),
-            );
-          },
+          generalError: (_) => snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: LocaleKeys.common_error_tryAgainLater.tr(),
+              type: SnackbarMessageType.negative,
+            ),
+          ),
+          noPermissionError: (_) => snackbarController.showMessage(
+            SnackbarMessage.simple(
+              message: LocaleKeys.settings_notifications_noPermissionSnackbarError.tr(),
+              type: SnackbarMessageType.negative,
+            ),
+          ),
         );
       },
     );

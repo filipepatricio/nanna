@@ -6,14 +6,15 @@ import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class SignInWithDefaultProviderUseCase {
-  SignInWithDefaultProviderUseCase(
+class SignInWithGoogleUseCase {
+  SignInWithGoogleUseCase(
     this._authRepository,
     this._authStore,
     this._analyticsRepository,
     this._userStore,
     this._purchasesRepository,
   );
+
   final AuthRepository _authRepository;
   final AuthStore _authStore;
   final AnalyticsRepository _analyticsRepository;
@@ -21,12 +22,12 @@ class SignInWithDefaultProviderUseCase {
   final PurchasesRepository _purchasesRepository;
 
   Future<void> call() async {
-    final authResult = await _authRepository.signInWithDefaultProvider();
+    final authResult = await _authRepository.signInWithGoogle();
 
     await _authStore.save(authResult.authToken);
     await _userStore.setCurrentUserUuid(authResult.userUuid);
 
-    await _purchasesRepository.identify(authResult.userUuid);
+    await _purchasesRepository.initialize(authResult.userUuid);
     await _analyticsRepository.identify(
       authResult.userUuid,
       authResult.method,

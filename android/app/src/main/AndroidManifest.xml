@@ -50,6 +50,7 @@
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/topics"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/articles"/>
                 <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/subscribe"/>
+                <data android:scheme="https" android:host="@string/app_link_host" android:pathPrefix="/unsubscribe"/>
             </intent-filter>
 
             <intent-filter android:autoVerify="true">
@@ -61,6 +62,7 @@
                 <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/topics"/>
                 <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/articles"/>
                 <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/subscribe"/>
+                <data android:scheme="https" android:host="@string/app_link_host_2" android:pathPrefix="/unsubscribe"/>
             </intent-filter>
 
             <intent-filter android:autoVerify="true">

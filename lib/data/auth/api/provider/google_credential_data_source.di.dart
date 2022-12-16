@@ -3,7 +3,9 @@ import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart'
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class GoogleCredentialDataSource implements OAuthCredentialProviderDataSource {
   @override
   Future<OAuthUserDTO> fetchOAuthUser() async {

@@ -106,17 +106,34 @@ class MainCubit extends Cubit<MainState> {
       return MainState.navigate(const MainPageRoute().path);
     }
 
-    final articleIndex = uri.pathSegments.indexOf(articlePathSegment);
+    if (uri.pathSegments.any((segment) => segment == unsubscribeNotificationsPath)) {
+      return MainState.multiNavigate(
+        [
+          const MainPageRoute().path,
+          const ProfileTabGroupRouter().path,
+          const SettingsMainPageRoute().path,
+          const SettingsNotificationsPageRoute().path,
+        ],
+      );
+    }
+
+    final articleIndex = uri.pathSegments.indexOf(articlePath);
 
     if (articleIndex > 0) {
       final topicSlug = _findTopicSlug(path);
 
       if (topicSlug != null) {
-        final topicSegment = '${const MainPageRoute().path}/${uri.pathSegments.take(max(0, articleIndex)).join('/')}';
-        final articleSegment = '${const MainPageRoute().path}/${uri.pathSegments.skip(max(0, articleIndex)).join('/')}';
+        final topicSegment = uri.pathSegments.take(max(0, articleIndex)).join('/');
+        final articleSegment = uri.pathSegments.skip(max(0, articleIndex)).join('/');
 
         final articleUri = Uri(path: articleSegment, queryParameters: {'topicSlug': topicSlug});
-        return MainState.multiNavigate([topicSegment, articleUri.toString()]);
+
+        return MainState.multiNavigate([
+          const MainPageRoute().path,
+          const DailyBriefTabGroupRouter().path,
+          topicSegment,
+          articleUri.toString(),
+        ]);
       }
     }
 
@@ -125,7 +142,7 @@ class MainCubit extends Cubit<MainState> {
 
   String? _findTopicSlug(String path) {
     final uri = Uri.parse(path);
-    final topicsSegment = uri.pathSegments.firstWhere((segment) => segment == topicsPathSegment, orElse: () => '');
+    final topicsSegment = uri.pathSegments.firstWhere((segment) => segment == topicsPath, orElse: () => '');
     final topicSegmentIndex = uri.pathSegments.indexOf(topicsSegment);
 
     if (topicSegmentIndex != -1 && uri.pathSegments.length > topicSegmentIndex + 1) {

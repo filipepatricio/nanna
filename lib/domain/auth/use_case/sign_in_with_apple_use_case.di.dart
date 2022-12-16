@@ -6,8 +6,8 @@ import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class SignInWithLinkedinUseCase {
-  SignInWithLinkedinUseCase(
+class SignInWithAppleUseCase {
+  SignInWithAppleUseCase(
     this._authRepository,
     this._authStore,
     this._analyticsRepository,
@@ -22,7 +22,7 @@ class SignInWithLinkedinUseCase {
   final PurchasesRepository _purchasesRepository;
 
   Future<void> call() async {
-    final authResult = await _authRepository.signInWithLinkedin();
+    final authResult = await _authRepository.signInWithApple();
 
     await _authStore.save(authResult.authToken);
     await _userStore.setCurrentUserUuid(authResult.userUuid);
