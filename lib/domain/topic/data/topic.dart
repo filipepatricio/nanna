@@ -13,6 +13,7 @@ class Topic {
     required this.title,
     required this.strippedTitle,
     required this.introduction,
+    required this.ownersNote,
     required this.url,
     required this.curationInfo,
     required this.lastUpdatedAt,
@@ -29,6 +30,7 @@ class Topic {
   final String title;
   final String strippedTitle;
   final String introduction;
+  final String? ownersNote;
   final String url;
   final CurationInfo curationInfo;
   final String? summary;
@@ -48,6 +50,7 @@ class Topic {
       title,
       strippedTitle,
       introduction,
+      ownersNote,
       url,
       curationInfo,
       lastUpdatedAt,

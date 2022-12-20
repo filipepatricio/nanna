@@ -31,7 +31,7 @@ class CategoryDot extends StatelessWidget {
         const SizedBox(width: _spacing),
         Text(
           category.name,
-          style: AppTypography.sansTextSmallRegularLausanne.copyWith(
+          style: AppTypography.sansTextSmallLausanne.copyWith(
             color: AppColors.textGrey,
           ),
           textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false),

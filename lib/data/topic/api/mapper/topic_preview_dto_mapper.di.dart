@@ -29,6 +29,7 @@ class TopicPreviewDTOMapper implements Mapper<TopicPreviewDTO, TopicPreview> {
       data.title,
       data.strippedTitle,
       data.introduction,
+      data.ownersNote,
       data.url,
       _curationInfoDTOMapper(data.curationInfo),
       DateTime.parse(data.lastUpdatedAt).toLocal(),

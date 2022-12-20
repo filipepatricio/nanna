@@ -122,7 +122,7 @@ void main() {
 
       final topicCoverFinder = find.descendant(
         of: find.byType(DailyBriefPage),
-        matching: find.byType(TopicCover),
+        matching: find.bySubtype<TopicCover>(),
       );
 
       await tester.ensureVisible(topicCoverFinder.first);
@@ -145,7 +145,7 @@ void main() {
         matching: find.byText(MockDTO.callToAction.actionText),
       );
 
-      await tester.fling(find.byType(TopicCover).first, const Offset(0, -10000), 100);
+      await tester.fling(find.byType(DailyBriefPage), const Offset(0, -10000), 100);
 
       await tester.pumpAndSettle();
       expect(goToExploreLabelFinder, findsOneWidget);

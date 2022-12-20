@@ -32,7 +32,7 @@ class ArticleListAreaView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: area.articles
                 .map(
-                  (article) => ArticleCover.list(
+                  (article) => ArticleCover.medium(
                     article: article,
                     onTap: () => context.navigateToArticle(article),
                   ),

@@ -1,26 +1,29 @@
 part of 'topic_cover.dart';
 
-class _TopicCoverBig extends StatelessWidget {
-  const _TopicCoverBig({
+class _TopicCoverLarge extends TopicCover {
+  const _TopicCoverLarge({
     required this.topic,
     required this.onTap,
-    this.onBookmarkTap,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
   final VoidCallback? onTap;
-  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
+    final coverWidth = useMemoized(
+      () => AppDimens.topicCardBigMaxWidth(context),
+      [MediaQuery.of(context).size],
+    );
+    final ownersNote = topic.ownersNote;
+
     return GestureDetector(
       onTap: onTap,
-      child: LimitedBox(
-        maxWidth: AppDimens.topicCardBigMaxWidth(context),
-        maxHeight: AppDimens.topicCardBigMaxHeight,
+      child: SizedBox.square(
+        dimension: coverWidth,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
@@ -28,7 +31,7 @@ class _TopicCoverBig extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 children: [
                   Positioned.fill(
-                    child: TopicCoverImage(
+                    child: TopicImage(
                       topic: topic,
                       borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
                     ),
@@ -59,12 +62,7 @@ class _TopicCoverBig extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: AppDimens.m),
-                              Text(
-                                '${topic.curationInfo.byline} ${topic.curationInfo.curator.name}',
-                                style: AppTypography.sansTextSmallRegularLausanne.copyWith(
-                                  color: AppColors.textGrey.blendMultiply(topic.category.color ?? AppColors.white),
-                                ),
-                              ),
+                              PublisherLogoRow(topic: topic),
                             ],
                           ),
                         ),
@@ -74,10 +72,24 @@ class _TopicCoverBig extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppDimens.s),
-            _TopicCoverBar.big(
+            const SizedBox(height: AppDimens.m),
+            if (ownersNote != null) ...[
+              Container(
+                padding: const EdgeInsets.only(left: AppDimens.sl),
+                decoration: const BoxDecoration(
+                  border: Border(left: BorderSide(color: AppColors.limeGreen)),
+                ),
+                child: InformedMarkdownBody(
+                  markdown: ownersNote,
+                  baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
+                    color: AppColors.textGrey,
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppDimens.m),
+            ],
+            _TopicCoverBar.large(
               topic: topic,
-              onBookmarkTap: onBookmarkTap,
             ),
           ],
         ),

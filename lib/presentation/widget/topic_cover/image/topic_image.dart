@@ -4,8 +4,8 @@ import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class TopicCoverImage extends HookWidget {
-  const TopicCoverImage({
+class TopicImage extends HookWidget {
+  const TopicImage({
     required this.topic,
     required this.borderRadius,
     Key? key,

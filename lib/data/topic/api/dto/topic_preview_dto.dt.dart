@@ -14,6 +14,7 @@ class TopicPreviewDTO {
     this.title,
     this.strippedTitle,
     this.introduction,
+    this.ownersNote,
     this.url,
     this.curationInfo,
     this.lastUpdatedAt,
@@ -31,6 +32,7 @@ class TopicPreviewDTO {
   final String title;
   final String strippedTitle;
   final String introduction;
+  final String? ownersNote;
   final String url;
   final CurationInfoDTO curationInfo;
   final String lastUpdatedAt;

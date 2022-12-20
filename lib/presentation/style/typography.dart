@@ -6,6 +6,7 @@ const _fontFamilyIvarHeadline = 'IvarHeadline';
 const _fontFamilyLausanne = 'Lausanne';
 
 class AppTypography {
+  // Serif Title
   static const TextStyle serifTitleSmallIvar = TextStyle(
     fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyIvarHeadline,
@@ -14,6 +15,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
+  // Sans Title
   static const TextStyle sansTitleLargeLausanne = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: _fontFamilyLausanne,
@@ -22,7 +24,24 @@ class AppTypography {
     height: 1.1,
   );
 
-  static const TextStyle sansTextSmallRegularLausanne = TextStyle(
+  static const TextStyle sansTitleMediumLausanne = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 24,
+    color: AppColors.textPrimary,
+    height: 1.1,
+  );
+
+  static const TextStyle sansTitleSmallLausanne = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 20,
+    color: AppColors.textPrimary,
+    height: 1.1,
+  );
+
+  // Sans Text
+  static const TextStyle sansTextSmallLausanne = TextStyle(
     fontWeight: FontWeight.w400,
     fontFamily: _fontFamilyLausanne,
     fontSize: 14,
@@ -30,6 +49,15 @@ class AppTypography {
     height: 1.5,
   );
 
+  static const TextStyle sansTextNanoLausanne = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamilyLausanne,
+    fontSize: 12,
+    color: AppColors.textPrimary,
+    height: 1.5,
+  );
+
+  // Deprecated
   static const TextStyle h1Headline = TextStyle(
     fontWeight: FontWeight.w600,
     fontFamily: _fontFamilyLausanne,

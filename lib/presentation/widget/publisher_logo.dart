@@ -9,8 +9,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const _publisherLogoSize = 20.0;
-
 class PublisherLogo extends HookWidget {
   const PublisherLogo._({
     required this.publisher,
@@ -19,7 +17,11 @@ class PublisherLogo extends HookWidget {
     Key? key,
   }) : super(key: key);
 
-  factory PublisherLogo.dark({required Publisher publisher, double dimension = _publisherLogoSize, Key? key}) =>
+  factory PublisherLogo.dark({
+    required Publisher publisher,
+    double dimension = AppDimens.publisherLogoSize,
+    Key? key,
+  }) =>
       PublisherLogo._(
         publisher: publisher,
         image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoDark) : publisher.darkLogo,
@@ -27,7 +29,11 @@ class PublisherLogo extends HookWidget {
         key: key,
       );
 
-  factory PublisherLogo.light({required Publisher publisher, double dimension = _publisherLogoSize, Key? key}) =>
+  factory PublisherLogo.light({
+    required Publisher publisher,
+    double dimension = AppDimens.publisherLogoSize,
+    Key? key,
+  }) =>
       PublisherLogo._(
         publisher: publisher,
         image: kIsTest ? informed.Image(publicId: AppRasterGraphics.testPublisherLogoLight) : publisher.lightLogo,
@@ -49,21 +55,21 @@ class PublisherLogo extends HookWidget {
         : ClipRRect(
             borderRadius: BorderRadius.circular(AppDimens.iconRadius),
             child: Padding(
-              padding: const EdgeInsets.only(right: AppDimens.s),
+              padding: const EdgeInsets.only(right: AppDimens.xs),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: kIsTest
                     ? Image.asset(
                         publisherLogoId,
-                        width: _publisherLogoSize,
-                        height: _publisherLogoSize,
+                        width: dimension,
+                        height: dimension,
                         fit: BoxFit.contain,
                       )
                     : CachedNetworkImage(
                         imageUrl: cloudinaryProvider
                             .withPublicId(publisherLogoId)
                             .transform()
-                            .width(DimensionUtil.getPhysicalPixelsAsInt(_publisherLogoSize, context))
+                            .width(DimensionUtil.getPhysicalPixelsAsInt(dimension, context))
                             .fit()
                             .generateNotNull(publisherLogoId, imageType: ImageType.png),
                         width: dimension,
