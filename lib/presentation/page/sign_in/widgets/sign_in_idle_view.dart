@@ -88,7 +88,7 @@ class _SignInIdleView extends StatelessWidget {
               if (keyboardVisible) ...[
                 FilledButton.black(
                   isEnabled: isEmailValid,
-                  text: LocaleKeys.common_signUp.tr(),
+                  text: LocaleKeys.common_continue.tr(),
                   onTap: () => cubit.sendMagicLink(),
                 ),
                 const SizedBox(height: AppDimens.m),

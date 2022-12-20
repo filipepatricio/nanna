@@ -5,7 +5,6 @@
     "next": "Next",
     "back": "Back",
     "signOut": "Sign out",
-    "signUp": "Sign up",
     "cancel": "Cancel",
     "generalError": "Something went wrong.\nTry again later.",
     "seeAll": "See All",
@@ -208,7 +207,7 @@
     "welcome": "Welcome to informed ",
     "unauthorized": "This link has expired. Please type in your email again to get a new one",
     "header": {
-      "signIn": "Sign up now to access world-class journalism from premium publishers, curated by editors & experts.",
+      "signIn": "Sign up or log in below to access world-class journalism from premium publishers, curated by editors & experts.",
       "magicLinkOne": "_Check your mail!_",
       "magicLinkTwo": "We've sent you a magic link to {}"
     },
