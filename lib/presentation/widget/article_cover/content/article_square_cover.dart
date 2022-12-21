@@ -80,7 +80,7 @@ class _ArticleImageCover extends StatelessWidget {
                       child: Center(
                         child: SvgPicture.asset(
                           AppVectorGraphics.locker,
-                          color: AppColors.white,
+                          color: AppColors.stateTextSecondary,
                         ),
                       ),
                     ),

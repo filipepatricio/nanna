@@ -26,7 +26,7 @@ class CurrentAudioProgressBar extends HookWidget {
     return RepaintBoundary(
       child: LinearProgressIndicator(
         value: state.progress,
-        color: state.progressColor,
+        color: state.progressColor(context),
         backgroundColor: AppColors.transparent,
         minHeight: AppDimens.xxs,
       ),

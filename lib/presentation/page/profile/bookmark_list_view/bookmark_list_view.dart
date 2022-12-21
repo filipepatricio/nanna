@@ -8,7 +8,6 @@ import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_v
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_loading_view.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_list_tile.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -170,11 +169,7 @@ class _Idle extends StatelessWidget {
                   },
                   cubit: cubit,
                 ),
-                if (index != (bookmarks.length - 1))
-                  const Divider(
-                    height: AppDimens.one,
-                    color: AppColors.dividerGrey,
-                  )
+                if (index != (bookmarks.length - 1)) const Divider(height: AppDimens.one)
               ],
             ),
             childCount: bookmarks.length,

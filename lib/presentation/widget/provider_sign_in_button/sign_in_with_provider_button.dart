@@ -24,7 +24,7 @@ class SignInWithProviderButton extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             width: 1.5,
-            color: AppColors.lightGrey,
+            color: AppColors.of(context).borderPrimary,
           ),
           borderRadius: const BorderRadius.all(
             Radius.circular(AppDimens.defaultRadius),

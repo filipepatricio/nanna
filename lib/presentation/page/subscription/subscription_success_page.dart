@@ -55,7 +55,8 @@ class SubscriptionSuccessPage extends HookWidget {
             const SizedBox(height: AppDimens.l),
             SizedBox(
               width: double.infinity,
-              child: FilledButton.black(
+              child: FilledButton.primary(
+                context: context,
                 text: LocaleKeys.subscription_startReading.tr(),
                 onTap: context.popRoute,
               ),

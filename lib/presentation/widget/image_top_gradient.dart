@@ -12,8 +12,8 @@ class ImageTopGradient extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.charcoal35,
-            AppColors.charcoal00,
+            AppColors.overlay,
+            AppColors.transparent,
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

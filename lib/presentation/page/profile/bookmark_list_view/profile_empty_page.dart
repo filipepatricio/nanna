@@ -18,9 +18,9 @@ class _BookmarkEmptyView extends StatelessWidget {
         children: [
           SvgPicture.asset(AppVectorGraphics.bookmarkOutline),
           const SizedBox(height: AppDimens.m),
-          RichText(
+          Text.rich(
             textAlign: TextAlign.center,
-            text: TextSpan(
+            TextSpan(
               children: [
                 TextSpan(
                   text: tr(LocaleKeys.profile_emptyPage_title),
@@ -35,7 +35,8 @@ class _BookmarkEmptyView extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.xl),
           Center(
-            child: FilledButton.black(
+            child: FilledButton.primary(
+              context: context,
               text: filter.buttonText,
               onTap: () => AutoRouter.of(context).navigate(
                 const ExploreTabGroupRouter(

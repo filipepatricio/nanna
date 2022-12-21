@@ -69,8 +69,8 @@ class AudioPlayerBanner extends HookWidget {
             onTap: state.getOnTap(context, onTap),
             child: Container(
               height: height,
-              decoration: const BoxDecoration(
-                color: AppColors.background,
+              decoration: BoxDecoration(
+                color: AppColors.of(context).backgroundPrimary,
               ),
               child: Stack(
                 children: [
@@ -147,10 +147,10 @@ class _AudioControlButton extends StatelessWidget {
       child: FittedBox(
         child: state.maybeMap(
           visible: (state) {
-            return const AudioFloatingControlButton.forCurrentAudio(
+            return AudioFloatingControlButton.forCurrentAudio(
               elevation: 0,
               progressSize: AppDimens.audioControlButtonSize,
-              color: AppColors.lightGrey,
+              color: AppColors.of(context).backgroundSecondary,
             );
           },
           orElse: () {},

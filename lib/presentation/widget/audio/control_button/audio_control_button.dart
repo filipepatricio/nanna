@@ -60,13 +60,13 @@ class AudioControlButton extends HookWidget {
       width: AppDimens.audioViewControlButtonSize,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppDimens.audioViewControlButtonSize / 2),
-        color: AppColors.black.withAlpha(state.imageAlpha),
+        color: AppColors.of(context).blackWhitePrimary.withAlpha(state.imageAlpha),
       ),
       child: IconButton(
         onPressed: state.getAction(cubit),
         icon: SvgPicture.asset(
           state.imagePath,
-          color: AppColors.white,
+          color: AppColors.of(context).blackWhiteSecondary,
           height: AppDimens.audioViewControlButtonSize,
         ),
       ),

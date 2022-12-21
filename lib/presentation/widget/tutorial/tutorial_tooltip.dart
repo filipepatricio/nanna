@@ -46,7 +46,7 @@ class TutorialTooltip extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: AppDimens.s),
                   child: InformedMarkdownBody(
                     markdown: text,
-                    baseTextStyle: AppTypography.b2Regular.copyWith(color: AppColors.textPrimary),
+                    baseTextStyle: AppTypography.b2Regular,
                   ),
                 ),
                 Row(
@@ -57,7 +57,7 @@ class TutorialTooltip extends StatelessWidget {
                       Expanded(
                         child: InformedMarkdownBody(
                           markdown: '**${tutorialIndex! + 1}**/$tutorialLength',
-                          baseTextStyle: AppTypography.b2Regular.copyWith(color: AppColors.textPrimary),
+                          baseTextStyle: AppTypography.b2Regular,
                         ),
                       )
                     else
@@ -66,7 +66,7 @@ class TutorialTooltip extends StatelessWidget {
                       onPressed: onDismiss,
                       child: Text(
                         dismissButtonText,
-                        style: AppTypography.h4Bold.copyWith(color: AppColors.textPrimary),
+                        style: AppTypography.h4Bold,
                       ),
                     )
                   ],

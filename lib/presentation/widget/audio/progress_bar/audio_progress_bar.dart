@@ -70,15 +70,17 @@ class ActiveProgressBar extends StatelessWidget {
       child: ProgressBar(
         progress: position,
         total: totalDuration,
-        progressBarColor: AppColors.textPrimary,
-        baseBarColor: AppColors.grey,
+        progressBarColor: AppColors.of(context).textPrimary,
+        baseBarColor: AppColors.of(context).backgroundSecondary,
         bufferedBarColor: AppColors.transparent,
-        thumbColor: AppColors.textPrimary,
+        thumbColor: AppColors.of(context).textPrimary,
         barHeight: _barHeight,
         thumbRadius: _thumbRadius,
         thumbGlowRadius: _thumbGlowRadius,
         timeLabelLocation: TimeLabelLocation.sides,
-        timeLabelTextStyle: AppTypography.timeLabelText,
+        timeLabelTextStyle: AppTypography.timeLabelText.copyWith(
+          color: AppColors.of(context).textPrimary,
+        ),
         onSeek: cubit.seek,
       ),
     );
@@ -98,8 +100,8 @@ class InactiveProgressBar extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(_barHeight),
         child: LinearProgressIndicator(
-          color: AppColors.black,
-          backgroundColor: AppColors.dividerGreyLight,
+          color: AppColors.of(context).borderTertiary,
+          backgroundColor: AppColors.of(context).backgroundSecondary,
           minHeight: _barHeight,
           value: progress,
         ),
@@ -118,9 +120,9 @@ class LoadingProgressBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(_barHeight),
-        child: const LinearProgressIndicator(
-          color: AppColors.black,
-          backgroundColor: AppColors.dividerGreyLight,
+        child: LinearProgressIndicator(
+          color: AppColors.of(context).borderTertiary,
+          backgroundColor: AppColors.of(context).backgroundSecondary,
           minHeight: _barHeight,
         ),
       ),

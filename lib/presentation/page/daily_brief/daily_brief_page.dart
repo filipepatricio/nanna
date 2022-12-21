@@ -102,7 +102,7 @@ class _DailyBriefPage extends HookWidget {
           duration: const Duration(milliseconds: 250),
           child: RefreshIndicator(
             onRefresh: cubit.loadBriefs,
-            color: AppColors.darkGrey,
+            color: AppColors.of(context).iconPrimary,
             child: SnackbarParentView(
               audioPlayerResponsive: true,
               child: CustomScrollView(
@@ -579,7 +579,7 @@ class _Greeting extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(left: AppDimens.sl),
       decoration: const BoxDecoration(
-        border: Border(left: BorderSide(color: AppColors.limeGreen)),
+        border: Border(left: BorderSide(color: AppColors.brandAccent)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -588,7 +588,7 @@ class _Greeting extends StatelessWidget {
           InformedMarkdownBody(
             markdown: greeting.headline,
             baseTextStyle: AppTypography.b2Medium.copyWith(
-              color: AppColors.textGrey,
+              color: AppColors.of(context).textSecondary,
               height: 1,
             ),
           ),

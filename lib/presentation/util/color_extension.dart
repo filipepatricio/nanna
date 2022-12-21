@@ -1,10 +1,8 @@
 import 'dart:ui';
 
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-
 extension ColorExt on Color {
   Color blendMultiply({Color? backgroundColor}) {
-    final bgColor = backgroundColor ?? AppColors.white;
+    final bgColor = backgroundColor ?? const Color(0xFFFFFFFF); //white by default
     final r = red * bgColor.red ~/ 255;
     final g = green * bgColor.green ~/ 255;
     final b = blue * bgColor.blue ~/ 255;

@@ -28,7 +28,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  SystemChrome.setSystemUIOverlayStyle(AppTheme.systemUIOverlayStyleDark);
+  SystemChrome.setSystemUIOverlayStyle(InformedTheme.systemUIOverlayStyleDark);
 
   final environment = _getEnvironment();
 

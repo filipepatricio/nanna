@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_v
 import 'package:better_informed_mobile/presentation/page/profile/profile_filter_tab_bar.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
@@ -34,7 +33,6 @@ class ProfilePage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.background,
         automaticallyImplyLeading: false,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         centerTitle: true,

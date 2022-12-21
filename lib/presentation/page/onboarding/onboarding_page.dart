@@ -8,7 +8,6 @@ import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboa
 import 'package:better_informed_mobile/presentation/page/onboarding/slides/onboarding_publishers_slide.dart';
 import 'package:better_informed_mobile/presentation/style/app_animation.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -57,7 +56,6 @@ class OnboardingPage extends HookWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         top: false,
         child: Column(
@@ -100,12 +98,10 @@ class OnboardingPage extends HookWidget {
                       ),
                       const Spacer(),
                       if (isLastPage)
-                        FilledButton.black(
+                        FilledButton.primary(
+                          context: context,
                           text: LocaleKeys.common_continue.tr(),
-                          onTap: () => _navigateToMainPage(
-                            context,
-                            cubit,
-                          ),
+                          onTap: () => _navigateToMainPage(context, cubit),
                         )
                       else
                         _NextPageButton(

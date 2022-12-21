@@ -49,7 +49,6 @@ class MediaItemPage extends HookWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SnackbarParentView(
         audioPlayerResponsive: true,
         child: InformedAnimatedSwitcher(

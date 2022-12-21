@@ -18,13 +18,15 @@ class ViewAllButton extends StatelessWidget {
       onTap: onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.lightGrey,
+          color: AppColors.of(context).backgroundSecondary,
           borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
         ),
         child: Center(
           child: Text(
             LocaleKeys.explore_viewAll.tr(),
-            style: AppTypography.b3Medium.copyWith(color: AppColors.darkerGrey),
+            style: AppTypography.b3Medium.copyWith(
+              color: AppColors.of(context).textSecondary,
+            ),
             textAlign: TextAlign.center,
           ),
         ),

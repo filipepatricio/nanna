@@ -95,11 +95,11 @@ extension AudioProgressBarStateExtension on AudioProgressBarState {
     );
   }
 
-  Color get progressColor {
+  Color progressColor(BuildContext context) {
     return map(
-      initial: (_) => AppColors.charcoal70,
-      inactive: (_) => AppColors.charcoal70,
-      active: (_) => AppColors.textPrimary,
+      initial: (_) => AppColors.of(context).backgroundSecondary,
+      inactive: (_) => AppColors.of(context).backgroundSecondary,
+      active: (_) => AppColors.of(context).textPrimary,
     );
   }
 }

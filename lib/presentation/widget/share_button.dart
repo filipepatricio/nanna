@@ -23,7 +23,7 @@ class ShareButton extends StatelessWidget {
         child: Center(
           child: SvgPicture.asset(
             AppVectorGraphics.share,
-            color: iconColor,
+            color: iconColor ?? Theme.of(context).iconTheme.color,
           ),
         ),
       ),

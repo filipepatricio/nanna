@@ -47,11 +47,13 @@ class SubscriptionPlanCard extends HookWidget {
           duration: animationsDuration,
           padding: const EdgeInsets.all(AppDimens.m),
           decoration: BoxDecoration(
-            border: Border.all(color: isSelected ? AppColors.charcoal : AppColors.lightGrey),
+            border: Border.all(
+              color: isSelected ? AppColors.of(context).borderTertiary : AppColors.of(context).borderPrimary,
+            ),
             borderRadius: const BorderRadius.all(
               Radius.circular(AppDimens.modalRadius),
             ),
-            color: isSelected ? AppColors.white : AppColors.lightGrey,
+            color: isSelected ? AppColors.of(context).blackWhiteSecondary : AppColors.of(context).backgroundSecondary,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -60,13 +62,17 @@ class SubscriptionPlanCard extends HookWidget {
               if (isCurrent) ...[
                 Text(
                   LocaleKeys.subscription_change_currentPlan.tr(),
-                  style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
+                  style: AppTypography.b2Regular.copyWith(
+                    color: AppColors.of(context).textSecondary,
+                  ),
                 ),
                 const SizedBox(height: AppDimens.s),
               ] else if (isNextPlan) ...[
                 Text(
                   LocaleKeys.subscription_change_upcomingPlan.tr(),
-                  style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
+                  style: AppTypography.b2Regular.copyWith(
+                    color: AppColors.of(context).textSecondary,
+                  ),
                 ),
                 const SizedBox(height: AppDimens.s),
               ],
@@ -81,7 +87,9 @@ class SubscriptionPlanCard extends HookWidget {
               if (plan.hasTrial) ...[
                 Text(
                   plan.description,
-                  style: AppTypography.b2Regular.copyWith(color: AppColors.darkerGrey),
+                  style: AppTypography.b2Regular.copyWith(
+                    color: AppColors.of(context).textSecondary,
+                  ),
                 ),
                 const SizedBox(height: AppDimens.xs),
               ],
@@ -101,7 +109,7 @@ class SubscriptionPlanCard extends HookWidget {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppDimens.pillRadius),
-                        color: AppColors.limeGreen,
+                        color: AppColors.of(context).buttonAccentBackground,
                       ),
                       child: Text(
                         LocaleKeys.subscription_off.tr(args: [('${plan.discountPercentage}')]),

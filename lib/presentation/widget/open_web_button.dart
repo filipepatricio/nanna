@@ -41,9 +41,9 @@ class OpenWebButton extends StatelessWidget {
           padding: padding,
           child: Container(
             height: AppDimens.buttonHeight,
-            decoration: const BoxDecoration(
-              color: AppColors.charcoal,
-              borderRadius: BorderRadius.all(
+            decoration: BoxDecoration(
+              color: AppColors.of(context).buttonPrimaryBackground,
+              borderRadius: const BorderRadius.all(
                 Radius.circular(AppDimens.defaultRadius),
               ),
             ),
@@ -60,7 +60,9 @@ class OpenWebButton extends StatelessWidget {
                 ],
                 Text(
                   buttonLabel,
-                  style: AppTypography.buttonBold.copyWith(color: AppColors.white),
+                  style: AppTypography.buttonBold.copyWith(
+                    color: AppColors.of(context).buttonPrimaryText,
+                  ),
                 ),
               ],
             ),

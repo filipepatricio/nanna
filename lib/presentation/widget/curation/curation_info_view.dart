@@ -50,13 +50,13 @@ class CurationInfoView extends StatelessWidget {
           ),
           const SizedBox(width: AppDimens.s),
           Expanded(
-            child: RichText(
-              text: TextSpan(
+            child: Text.rich(
+              TextSpan(
                 style: style ??
                     AppTypography.b3Regular.copyWith(
                       height: 1,
                       letterSpacing: 0,
-                      color: AppColors.darkerGrey,
+                      color: AppColors.of(context).textSecondary,
                     ),
                 children: [
                   if (!shortLabel) TextSpan(text: '${curationInfo.byline} '),
@@ -66,7 +66,7 @@ class CurationInfoView extends StatelessWidget {
                         AppTypography.b3Regular.copyWith(
                           height: 1,
                           letterSpacing: 0,
-                          color: AppColors.darkerGrey,
+                          color: AppColors.of(context).textSecondary,
                         ),
                   ),
                 ],

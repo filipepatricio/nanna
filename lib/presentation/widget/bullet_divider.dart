@@ -9,8 +9,8 @@ class BulletDivider extends StatelessWidget {
     return Container(
       width: 4,
       height: 4,
-      decoration: const BoxDecoration(
-        color: AppColors.textGrey,
+      decoration: BoxDecoration(
+        color: AppColors.of(context).textSecondary,
         shape: BoxShape.circle,
       ),
     );

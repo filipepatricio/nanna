@@ -81,7 +81,7 @@ class ExplorePage extends HookWidget {
         child: Stack(
           children: [
             RefreshIndicator(
-              color: AppColors.darkGrey,
+              color: AppColors.of(context).iconPrimary,
               onRefresh: state.maybeMap(
                 search: (_) => searchViewCubit.refresh,
                 orElse: () => cubit.loadExplorePageData,

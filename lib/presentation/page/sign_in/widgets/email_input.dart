@@ -24,12 +24,12 @@ class EmailInput extends StatelessWidget {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColors.lightGrey,
+        fillColor: AppColors.of(context).backgroundSecondary,
         hintText: LocaleKeys.signIn_emailLabel.tr(),
-        hintStyle: AppTypography.b2Regular.copyWith(color: AppColors.textGrey),
+        hintStyle: AppTypography.b2Regular.copyWith(color: AppColors.of(context).textSecondary),
         enabledBorder: const OutlineInputBorder(borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(width: 1, color: AppColors.textPrimary),
+          borderSide: BorderSide(width: 1, color: AppColors.of(context).borderSecondary),
           borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: AppDimens.m, vertical: AppDimens.m),

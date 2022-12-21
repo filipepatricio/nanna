@@ -15,6 +15,7 @@ class GeneralErrorView extends StatelessWidget {
     Key? key,
   })  : action = action ?? LocaleKeys.common_tryAgain.tr(),
         super(key: key);
+
   final String title;
   final String content;
   final String action;
@@ -33,9 +34,9 @@ class GeneralErrorView extends StatelessWidget {
           SvgPicture.asset(svg),
           const SizedBox(height: AppDimens.l),
         ],
-        RichText(
+        Text.rich(
           textAlign: TextAlign.center,
-          text: TextSpan(
+          TextSpan(
             children: [
               TextSpan(
                 text: '$title\n',
@@ -52,11 +53,10 @@ class GeneralErrorView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
           child: retryCallback != null
-              ? FilledButton.black(
+              ? FilledButton.primary(
+                  context: context,
                   text: action,
-                  onTap: () {
-                    retryCallback?.call();
-                  },
+                  onTap: retryCallback,
                 )
               : const SizedBox.shrink(),
         ),
