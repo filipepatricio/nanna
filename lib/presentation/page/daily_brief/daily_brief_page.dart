@@ -25,13 +25,13 @@ import 'package:better_informed_mobile/presentation/util/markdown_util.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/owners_note_container.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
-import 'package:better_informed_mobile/presentation/widget/todays_brief_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -386,10 +386,10 @@ class _IdleContent extends HookWidget {
         },
       );
 
-      if (i < section.entries.length - 1) {
-        yield const SizedBox(height: AppDimens.l);
-        yield const CardDivider.cover();
-      } else {
+      yield const SizedBox(height: AppDimens.l);
+      yield const CardDivider.cover();
+
+      if (i == section.entries.length - 1) {
         yield const SizedBox(height: AppDimens.xxl);
       }
     }

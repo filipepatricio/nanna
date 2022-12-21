@@ -9,7 +9,7 @@ class PipeDivider extends StatelessWidget {
     return Container(
       width: 1,
       height: 14,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.of(context).textSecondary,
         shape: BoxShape.rectangle,
       ),

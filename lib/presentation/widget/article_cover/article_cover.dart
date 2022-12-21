@@ -13,7 +13,6 @@ import 'package:better_informed_mobile/presentation/widget/curation/curation_inf
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/owners_note_container.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_row.dart';
-import 'package:better_informed_mobile/presentation/widget/todays_brief_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';

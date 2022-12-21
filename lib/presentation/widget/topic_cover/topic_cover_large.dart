@@ -12,86 +12,80 @@ class _TopicCoverLarge extends TopicCover {
 
   @override
   Widget build(BuildContext context) {
-    final coverWidth = useMemoized(
-      () => AppDimens.topicCardBigMaxWidth(context),
-      [MediaQuery.of(context).size],
-    );
     final ownersNote = topic.ownersNote;
 
     return GestureDetector(
       onTap: onTap,
-      child: SizedBox(
-        width: coverWidth,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox.square(
-              dimension: coverWidth,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Positioned.fill(
-                    child: TopicImage(
-                      topic: topic,
-                      borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
-                    ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AspectRatio(
+            aspectRatio: 1 / 1,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned.fill(
+                  child: TopicImage(
+                    topic: topic,
+                    borderRadius: BorderRadius.circular(AppDimens.defaultRadius),
                   ),
-                  Positioned(
-                    top: AppDimens.m,
-                    child: InformedPill(
-                      title: LocaleKeys.topic_label.tr(),
-                      color: AppColors.of(context).buttonSecondaryFrame,
-                    ),
+                ),
+                Positioned(
+                  top: AppDimens.m,
+                  child: InformedPill(
+                    title: LocaleKeys.topic_label.tr(),
+                    color: AppColors.of(context).buttonSecondaryFrame,
                   ),
-                  Positioned(
-                    left: AppDimens.xl,
-                    right: AppDimens.xl,
-                    child: Container(
-                      color: topic.category.color,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppDimens.m),
-                          child: Column(
-                            children: [
-                              const SizedBox(height: AppDimens.m),
-                              Text(
-                                topic.strippedTitle,
-                                maxLines: 3,
-                                textAlign: TextAlign.center,
-                                style: AppTypography.sansTitleLargeLausanne.copyWith(
-                                  color: AppColors.light.textPrimary,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                ),
+                Positioned(
+                  left: AppDimens.xl,
+                  right: AppDimens.xl,
+                  bottom: AppDimens.zero,
+                  child: Container(
+                    color: topic.category.color,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppDimens.m),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: AppDimens.m),
+                            Text(
+                              topic.strippedTitle,
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                              style: AppTypography.sansTitleLargeLausanne.copyWith(
+                                color: AppColors.light.textPrimary,
                               ),
-                              const SizedBox(height: AppDimens.m),
-                              PublisherLogoRow(topic: topic),
-                            ],
-                          ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: AppDimens.m),
+                            PublisherLogoRow(topic: topic),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppDimens.m),
+          if (ownersNote != null) ...[
+            OwnersNoteContainer(
+              child: InformedMarkdownBody(
+                markdown: ownersNote,
+                baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
+                  color: AppColors.of(context).textSecondary,
+                ),
               ),
             ),
             const SizedBox(height: AppDimens.m),
-            if (ownersNote != null) ...[
-              OwnersNoteContainer(
-                child: InformedMarkdownBody(
-                  markdown: ownersNote,
-                  baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
-                    color: AppColors.of(context).textSecondary,
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppDimens.m),
-            ],
-            _TopicCoverBar.large(
-              topic: topic,
-            ),
           ],
-        ),
+          _TopicCoverBar.large(
+            topic: topic,
+          ),
+        ],
       ),
     );
   }

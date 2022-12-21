@@ -50,7 +50,8 @@ class _ArticleCoverLarge extends ArticleCover {
                 children: [
                   InformedMarkdownBody(
                     markdown: article.note!,
-                    baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(color: AppColors.textGrey),
+                    baseTextStyle:
+                        AppTypography.sansTextSmallLausanne.copyWith(color: AppColors.of(context).textSecondary),
                   ),
                   if (showRecommendedBy) ...[
                     const SizedBox(height: AppDimens.xs),

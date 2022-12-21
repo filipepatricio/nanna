@@ -15,7 +15,7 @@ enum BriefEntryStyleType {
   @JsonValue('ARTICLE_CARD')
   articleCardLarge,
   @JsonValue('SMALL_ARTICLE_ITEM')
-  articleCardSmall,
+  articleCardMedium,
   @JsonValue('TOPIC_CARD')
   topicCard
 }

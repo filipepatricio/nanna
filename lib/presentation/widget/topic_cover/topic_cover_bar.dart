@@ -52,6 +52,7 @@ class _TopicCoverBarLarge extends _TopicCoverBar {
             curationInfo: topic.curationInfo,
             style: AppTypography.sansTextNanoLausanne.copyWith(
               color: AppColors.of(context).textTertiary,
+              height: 1,
             ),
             imageDimension: AppDimens.smallAvatarSize,
           ),
@@ -86,6 +87,7 @@ class _TopicCoverBarMedium extends _TopicCoverBar {
             shortLabel: false,
             style: AppTypography.sansTextNanoLausanne.copyWith(
               color: AppColors.of(context).textTertiary,
+              height: 1,
             ),
             imageDimension: AppDimens.smallAvatarSize,
           ),
@@ -119,6 +121,7 @@ class _TopicCoverBarSmall extends _TopicCoverBar {
             shortLabel: true,
             style: AppTypography.sansTextNanoLausanne.copyWith(
               color: AppColors.of(context).textTertiary,
+              height: 1,
             ),
             imageDimension: AppDimens.smallAvatarSize,
           ),

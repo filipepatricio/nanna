@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
+import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
@@ -169,7 +170,7 @@ class _Idle extends StatelessWidget {
                   },
                   cubit: cubit,
                 ),
-                if (index != (bookmarks.length - 1)) const Divider(height: AppDimens.one)
+                if (index != (bookmarks.length - 1)) const CardDivider.cover()
               ],
             ),
             childCount: bookmarks.length,

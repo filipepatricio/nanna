@@ -77,7 +77,7 @@ class _ArticleCoverMedium extends ArticleCover {
               child: InformedMarkdownBody(
                 markdown: articleNote,
                 baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
-                  color: AppColors.textGrey,
+                  color: AppColors.of(context).textSecondary,
                 ),
               ),
             ),
@@ -89,7 +89,6 @@ class _ArticleCoverMedium extends ArticleCover {
             onBookmarkTap: onBookmarkTap,
           ),
           const SizedBox(height: AppDimens.l),
-          const CardDivider.cover(),
         ],
       ),
     );

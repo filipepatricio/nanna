@@ -18,7 +18,6 @@ class AppTypography {
     fontFamily: _fontFamilyIvarHeadline,
     fontSize: 26,
     height: 1.1,
-    color: AppColors.textPrimary,
   );
 
   // Sans Title
