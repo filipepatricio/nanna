@@ -72,7 +72,7 @@ class _TabBar extends StatelessWidget {
           iconSize: AppDimens.l,
           unselectedLabelStyle: AppTypography.metadata1Regular.copyWith(
             height: 1.5,
-            color: AppColors.textGrey,
+            color: AppColors.of(context).textSecondary,
           ),
           selectedLabelStyle: AppTypography.metadata1Regular.copyWith(
             height: 1.5,
@@ -109,7 +109,7 @@ class _InformedAppBarShadow extends StatelessWidget {
       decoration: const BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: AppColors.black04,
+            color: AppColors.shadow04,
             blurRadius: 4,
             offset: Offset(0, -1),
           ),

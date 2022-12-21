@@ -5,7 +5,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
@@ -28,7 +27,7 @@ const _animationDuration = 100;
 class BookmarkButton extends HookWidget {
   BookmarkButton.article({
     required MediaItemArticle article,
-    Color color = AppColors.charcoal,
+    Color? color,
     String? topicId,
     String? briefId,
     double? iconSize,
@@ -44,7 +43,7 @@ class BookmarkButton extends HookWidget {
 
   BookmarkButton.topic({
     required TopicPreview topic,
-    Color color = AppColors.charcoal,
+    Color? color,
     String? briefId,
     double? iconSize,
     VoidCallback? onTap,
@@ -59,14 +58,14 @@ class BookmarkButton extends HookWidget {
 
   const BookmarkButton._(
     this._data, {
-    required this.color,
+    this.color,
     this.iconSize,
     this.onTap,
     Key? key,
   }) : super(key: key);
 
   final BookmarkTypeData _data;
-  final Color color;
+  final Color? color;
   final double? iconSize;
   final VoidCallback? onTap;
 
@@ -116,6 +115,8 @@ class BookmarkButton extends HookWidget {
       [cubit, _data],
     );
 
+    final iconColor = color ?? Theme.of(context).iconTheme.color!;
+
     return ScaleTransition(
       scale: kIsTest
           ? const AlwaysStoppedAnimation(1.0)
@@ -133,15 +134,15 @@ class BookmarkButton extends HookWidget {
             child: InformedAnimatedSwitcher(
               duration: const Duration(milliseconds: _animationDuration),
               child: state.maybeMap(
-                initializing: (_) => _Loader(color: color),
+                initializing: (_) => _Loader(color: iconColor),
                 idle: (state) => _IdleButton(
                   cubit: cubit,
                   state: state.state,
-                  color: color,
+                  color: iconColor,
                   animationController: animationController,
                   onTap: onTap,
                 ),
-                switching: (state) => _Loader(color: color),
+                switching: (state) => _Loader(color: iconColor),
                 orElse: () => const SizedBox.shrink(),
               ),
             ),

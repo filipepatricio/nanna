@@ -16,8 +16,8 @@ class _PaywallBackgroundFade extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                AppColors.background.withOpacity(0.0),
-                AppColors.background,
+                AppColors.of(context).backgroundPrimary.withOpacity(0.0),
+                AppColors.of(context).backgroundPrimary,
               ],
               stops: const [
                 0.0,

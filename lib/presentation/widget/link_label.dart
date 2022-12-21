@@ -1,4 +1,3 @@
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -24,10 +23,7 @@ class LinkLabel extends StatelessWidget {
       onTap: onTap,
       child: Text(
         label,
-        style: style.copyWith(
-          color: AppColors.charcoal,
-          decoration: decoration,
-        ),
+        style: style.copyWith(decoration: decoration),
         textAlign: align,
       ),
     );

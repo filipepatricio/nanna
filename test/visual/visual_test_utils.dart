@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -44,7 +43,7 @@ class TestConfig {
 
   factory TestConfig.withDevices(List<Device> devices) => TestConfig._(devices: devices);
 
-  factory TestConfig.autoHeight() => const TestConfig._(autoHeight: true, devices: []);
+  factory TestConfig.autoHeight() => const TestConfig._(autoHeight: true, devices: defaultDevices);
 
   static const unitTesting = TestConfig._();
 
@@ -125,6 +124,7 @@ extension StartAppExtension on WidgetTester {
       InformedApp(
         mainRouter: mainRouter,
         getIt: getIt,
+        themeMode: ThemeMode.light,
       ),
       // pumpWidgetBuilder by default adds it's own MaterialApp over child we pass, this code disables it
       wrapper: (widget) => widget,
@@ -183,10 +183,11 @@ extension StartAppExtension on WidgetTester {
     }
     _matchGoldenFileCalled = true;
     final fileName = fileNamePrefix;
+
     await multiScreenGolden(
       this,
       fileName,
-      devices: _autoHeight ? null : _selectedDevices,
+      devices: _selectedDevices,
       autoHeight: _autoHeight,
     );
   }

@@ -17,11 +17,14 @@ class InformedApp extends HookWidget {
   const InformedApp({
     required this.getIt,
     this.mainRouter,
+    //TODO: Change to [ThemeMode.system] when dark mode work is ready
+    this.themeMode = ThemeMode.light,
     Key? key,
   }) : super(key: key);
 
   final GetIt getIt;
   final MainRouter? mainRouter;
+  final ThemeMode themeMode;
 
   Widget responsiveBuilder(Widget? child) => ResponsiveWrapper.builder(
         child,
@@ -61,7 +64,9 @@ class InformedApp extends HookWidget {
                 debugShowCheckedModeBanner: false,
                 routeInformationParser: router.defaultRouteParser(),
                 routerDelegate: router.delegate(),
-                theme: AppTheme.mainTheme,
+                theme: InformedTheme.light,
+                darkTheme: InformedTheme.dark,
+                themeMode: themeMode,
                 builder: (context, child) {
                   return NoScrollGlow(
                     child: responsiveBuilder(child),
@@ -94,7 +99,9 @@ class InformedApp extends HookWidget {
                   SentryNavigatorObserver(),
                 ],
               ),
-              theme: AppTheme.mainTheme,
+              theme: InformedTheme.light,
+              darkTheme: InformedTheme.dark,
+              themeMode: themeMode,
               builder: (context, child) {
                 return NoScrollGlow(
                   child: responsiveBuilder(child),

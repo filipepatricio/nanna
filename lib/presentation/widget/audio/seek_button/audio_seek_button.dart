@@ -66,7 +66,7 @@ class _RewindButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: AppDimens.s),
       icon: SvgPicture.asset(
         AppVectorGraphics.skipBack10Seconds,
-        color: state.imageColor,
+        color: state.imageColor(context),
         height: AppDimens.audioViewControlButtonSize / 2,
       ),
     );
@@ -90,7 +90,7 @@ class _FastForwardButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: AppDimens.s),
       icon: SvgPicture.asset(
         AppVectorGraphics.skipForward10Seconds,
-        color: state.imageColor,
+        color: state.imageColor(context),
         height: AppDimens.audioViewControlButtonSize / 2,
       ),
     );
@@ -105,10 +105,10 @@ extension on AudioSeekButtonState {
     );
   }
 
-  Color get imageColor {
+  Color imageColor(BuildContext context) {
     return map(
-      disabled: (_) => AppColors.textGrey,
-      enabled: (_) => AppColors.textPrimary,
+      disabled: (_) => AppColors.of(context).iconSecondary,
+      enabled: (_) => AppColors.of(context).iconPrimary,
     );
   }
 }

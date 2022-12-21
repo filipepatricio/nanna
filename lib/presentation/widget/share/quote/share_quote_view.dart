@@ -69,7 +69,7 @@ class ShareQuoteStickerView extends HookWidget implements BaseShareCompletable {
           child: Container(
             margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: article.category.color ?? AppColors.background,
+              color: article.category.color ?? AppColors.of(context).backgroundPrimary,
               borderRadius: BorderRadius.circular(4),
               boxShadow: cardShadows,
             ),
@@ -95,7 +95,7 @@ class ShareQuoteStickerView extends HookWidget implements BaseShareCompletable {
                 Container(
                   margin: const EdgeInsets.only(left: AppDimens.l),
                   padding: const EdgeInsets.all(AppDimens.l),
-                  color: AppColors.background,
+                  color: AppColors.of(context).backgroundPrimary,
                   child: Text(
                     '“$quote”',
                     style: AppTypography.articleTextRegular.copyWith(

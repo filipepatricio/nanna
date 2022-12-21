@@ -52,7 +52,8 @@ class _ChangeSubscriptionPlansView extends HookWidget {
                 ValueListenableBuilder<SubscriptionPlan>(
                   valueListenable: selectedPlanNotifier,
                   builder: (context, selectedPlan, _) {
-                    return FilledButton.black(
+                    return FilledButton.primary(
+                      context: context,
                       text: LocaleKeys.subscription_change_confirm.tr(),
                       onTap: cubit.purchase,
                       isEnabled: currentPlan?.productId != selectedPlan.productId &&
@@ -153,7 +154,7 @@ class _ExpirationDateFooter extends StatelessWidget {
         args: [DateFormatUtil.formatShortMonthNameDay(expirationDate)],
       ),
       textAlign: TextAlign.center,
-      style: AppTypography.metadata1Medium.copyWith(color: AppColors.textGrey),
+      style: AppTypography.metadata1Medium.copyWith(color: AppColors.of(context).textSecondary),
     );
   }
 }

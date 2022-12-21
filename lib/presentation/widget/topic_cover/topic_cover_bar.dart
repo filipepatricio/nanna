@@ -50,7 +50,9 @@ class _TopicCoverBarLarge extends _TopicCoverBar {
         Expanded(
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
-            style: AppTypography.sansTextNanoLausanne.copyWith(color: AppColors.neutralGrey),
+            style: AppTypography.sansTextNanoLausanne.copyWith(
+              color: AppColors.of(context).textTertiary,
+            ),
             imageDimension: AppDimens.smallAvatarSize,
           ),
         ),
@@ -82,7 +84,9 @@ class _TopicCoverBarMedium extends _TopicCoverBar {
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
             shortLabel: false,
-            style: AppTypography.sansTextNanoLausanne.copyWith(color: AppColors.neutralGrey),
+            style: AppTypography.sansTextNanoLausanne.copyWith(
+              color: AppColors.of(context).textTertiary,
+            ),
             imageDimension: AppDimens.smallAvatarSize,
           ),
         ),
@@ -113,7 +117,9 @@ class _TopicCoverBarSmall extends _TopicCoverBar {
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
             shortLabel: true,
-            style: AppTypography.sansTextNanoLausanne.copyWith(color: AppColors.neutralGrey),
+            style: AppTypography.sansTextNanoLausanne.copyWith(
+              color: AppColors.of(context).textTertiary,
+            ),
             imageDimension: AppDimens.smallAvatarSize,
           ),
         ),

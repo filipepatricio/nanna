@@ -57,11 +57,11 @@ class ArticleImage extends HookWidget {
                 ),
               ),
               foregroundDecoration: BoxDecoration(
-                color: darkeningMode == DarkeningMode.solid ? AppColors.black40 : null,
+                color: darkeningMode == DarkeningMode.solid ? AppColors.overlay : null,
               ),
             ),
             errorWidget: (_, __, ___) => Container(
-              color: cardColor ?? AppColors.black40,
+              color: cardColor ?? AppColors.overlay,
               width: width,
               height: height,
             ),

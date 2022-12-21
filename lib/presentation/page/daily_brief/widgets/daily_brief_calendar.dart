@@ -42,7 +42,7 @@ class DailyBriefCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: isFloating ? 1.0 : 0.0,
-      color: AppColors.background,
+      color: AppColors.of(context).backgroundPrimary,
       child: AnimatedContainer(
         height: isVisible ? AppDimens.calendarAppBar : AppDimens.zero,
         width: double.infinity,
@@ -108,14 +108,16 @@ class _CalendarItem extends HookWidget {
     BoxDecoration? itemDecoration() {
       if (type.value == _CalendarItemType.selected) {
         return BoxDecoration(
-          color: AppColors.charcoal,
+          color: AppColors.of(context).buttonPrimaryBackground,
           borderRadius: BorderRadius.circular(AppDimens.c),
         );
       }
 
       if (type.value == _CalendarItemType.current) {
         return BoxDecoration(
-          border: Border.all(color: AppColors.limeGreen),
+          border: Border.all(
+            color: AppColors.of(context).buttonAccentBackground,
+          ),
           borderRadius: BorderRadius.circular(AppDimens.c),
         );
       }
@@ -149,7 +151,7 @@ class _CalendarItem extends HookWidget {
       onTap: type.value == _CalendarItemType.disable ? null : onTap,
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          AppColors.textGrey,
+          AppColors.of(context).textSecondary,
           type.value == _CalendarItemType.disable ? BlendMode.srcIn : BlendMode.dst,
         ),
         child: SingleChildScrollView(
@@ -175,7 +177,7 @@ class _CalendarItem extends HookWidget {
                   DateFormat(DateFormat.DAY).format(pastDay.date),
                   style: type.value == _CalendarItemType.selected
                       ? AppTypography.h4Bold.copyWith(
-                          color: AppColors.white,
+                          color: AppColors.of(context).buttonPrimaryText,
                           height: AppDimens.zero,
                         )
                       : AppTypography.b2Medium.copyWith(

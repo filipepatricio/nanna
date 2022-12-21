@@ -23,11 +23,11 @@ class _ChangeSubscriptionCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppDimens.m),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: AppColors.of(context).blackWhiteSecondary,
           borderRadius: const BorderRadius.all(
             Radius.circular(AppDimens.m),
           ),
-          border: Border.all(color: AppColors.lightGrey),
+          border: Border.all(color: AppColors.of(context).borderPrimary),
         ),
         child: Row(
           children: [
@@ -61,7 +61,6 @@ class _ChangeSubscriptionCard extends StatelessWidget {
               const Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: AppDimens.m,
-                color: AppColors.charcoal,
               ),
           ],
         ),

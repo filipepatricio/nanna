@@ -10,13 +10,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class BackTextButton extends StatelessWidget {
   const BackTextButton({
     this.text,
-    this.color = AppColors.textPrimary,
+    this.color,
     this.onPressed,
     super.key,
   });
 
   final String? text;
-  final Color color;
+  final Color? color;
   final VoidCallback? onPressed;
 
   @override
@@ -32,14 +32,14 @@ class BackTextButton extends StatelessWidget {
           const SizedBox(width: AppDimens.xs),
           SvgPicture.asset(
             AppVectorGraphics.chevronBack,
-            color: color,
+            color: color ?? Theme.of(context).iconTheme.color,
           ),
           Flexible(
             child: Text(
               label,
               style: AppTypography.b2Regular.copyWith(
+                color: color ?? AppColors.of(context).textPrimary,
                 height: 1.11,
-                color: color,
               ),
               overflow: TextOverflow.ellipsis,
             ),

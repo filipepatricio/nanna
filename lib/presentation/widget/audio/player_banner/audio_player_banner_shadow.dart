@@ -25,7 +25,7 @@ class AudioPlayerBannerShadow extends HookWidget {
           ...state.maybeMap(
             visible: (_) => [
               const BoxShadow(
-                color: AppColors.shadowColor,
+                color: AppColors.shadow20,
                 offset: Offset.zero,
                 blurRadius: 1.0,
                 spreadRadius: 0,

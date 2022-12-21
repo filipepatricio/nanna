@@ -11,14 +11,14 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -53,15 +53,11 @@ class SettingsSubscriptionPage extends HookWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        centerTitle: false,
-        titleSpacing: 0.0,
-        title: Text(
-          LocaleKeys.settings_settings.tr(),
-          style: AppTypography.subH1Medium,
+      appBar: InformedCupertinoAppBar(
+        leading: BackTextButton(
+          text: LocaleKeys.settings_settings.tr(),
         ),
+        title: LocaleKeys.subscription_membership.tr(),
       ),
       body: SnackbarParentView(
         audioPlayerResponsive: true,

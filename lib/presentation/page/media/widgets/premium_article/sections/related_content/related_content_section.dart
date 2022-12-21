@@ -29,7 +29,7 @@ class RelatedContentSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.background,
+      color: AppColors.of(context).backgroundPrimary,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

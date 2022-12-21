@@ -39,7 +39,7 @@ class PublisherRow extends StatelessWidget {
             article.publisher.name,
             maxLines: 1,
             style: AppTypography.b3Regular.copyWith(
-              color: AppColors.textGrey,
+              color: AppColors.of(context).textSecondary,
               height: 1.5,
             ),
             overflow: TextOverflow.ellipsis,

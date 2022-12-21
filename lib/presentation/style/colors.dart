@@ -1,73 +1,182 @@
 import 'package:flutter/material.dart';
 
+/// Idea here is: we don't need to reference colors by their actual name.
+///
+/// We can reference them by their role. With [AppColors.of(context)] if theme-based colors, or as static if foundational colors
+///
+/// Foundation colors https://www.figma.com/file/PE9wsgj0OsQiYBta0Jt4Xq/Foundation?node-id=2499%3A975&t=6Z2J1FsLHokIzySd-0
 class AppColors {
-  const AppColors._();
+  const AppColors._({
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.textTertiary,
+    required this.backgroundPrimary,
+    required this.backgroundSecondary,
+    required this.iconPrimary,
+    required this.iconSecondary,
+    required this.borderPrimary,
+    required this.borderSecondary,
+    required this.borderTertiary,
+    required this.buttonPrimaryBackground,
+    required this.buttonPrimaryText,
+    required this.buttonPrimaryBackgroundDisabled,
+    required this.buttonSecondaryBackground,
+    required this.buttonSecondaryText,
+    required this.buttonSecondaryFrame,
+    required this.buttonAccentBackground,
+    required this.buttonAccentText,
+    required this.shadowDividerColors,
+    required this.blackWhitePrimary,
+    required this.blackWhiteSecondary,
+  });
+
+  static AppColors of(BuildContext context) {
+    switch (Theme.of(context).brightness) {
+      case Brightness.dark:
+        return dark;
+      case Brightness.light:
+        return light;
+    }
+  }
+
+  static const light = AppColors._(
+    textPrimary: brandPrimary,
+    textSecondary: _darkerGrey,
+    textTertiary: _neutralGrey,
+    backgroundPrimary: brandSecondary,
+    backgroundSecondary: _lightGrey,
+    iconPrimary: brandPrimary,
+    iconSecondary: _neutralGrey,
+    borderPrimary: _lightGrey,
+    borderSecondary: _neutralGrey,
+    borderTertiary: brandPrimary,
+    buttonPrimaryBackground: brandPrimary,
+    buttonPrimaryText: _white,
+    buttonPrimaryBackgroundDisabled: _darkerGrey,
+    buttonSecondaryBackground: brandSecondary,
+    buttonSecondaryText: brandPrimary,
+    buttonSecondaryFrame: _lightGrey,
+    buttonAccentBackground: brandAccent,
+    buttonAccentText: brandPrimary,
+    blackWhitePrimary: _black,
+    blackWhiteSecondary: _white,
+    shadowDividerColors: [_lightGrey, brandSecondary],
+  );
+
+  static const dark = AppColors._(
+    textPrimary: brandSecondary,
+    textSecondary: _lightGrey,
+    textTertiary: _neutralGrey,
+    backgroundPrimary: brandPrimary,
+    backgroundSecondary: _darkerGrey,
+    iconPrimary: brandSecondary,
+    iconSecondary: _neutralGrey,
+    borderPrimary: _lightGrey,
+    borderSecondary: _neutralGrey,
+    borderTertiary: brandSecondary,
+    buttonPrimaryBackground: brandSecondary,
+    buttonPrimaryText: brandPrimary,
+    buttonPrimaryBackgroundDisabled: _darkerGrey,
+    buttonSecondaryBackground: brandPrimary,
+    buttonSecondaryText: brandSecondary,
+    buttonSecondaryFrame: _lightGrey,
+    buttonAccentBackground: brandAccent,
+    buttonAccentText: brandPrimary,
+    blackWhitePrimary: _white,
+    blackWhiteSecondary: _black,
+    shadowDividerColors: [_darkCharcoal, brandPrimary],
+  );
+
+  final Color textPrimary;
+  final Color textSecondary;
+  final Color textTertiary;
+  final Color backgroundPrimary;
+  final Color backgroundSecondary;
+  final Color iconPrimary;
+  final Color iconSecondary;
+  final Color borderPrimary;
+  final Color borderSecondary;
+  final Color borderTertiary;
+  final Color buttonPrimaryBackground;
+  final Color buttonPrimaryText;
+  final Color buttonPrimaryBackgroundDisabled;
+  final Color buttonSecondaryBackground;
+  final Color buttonSecondaryText;
+  final Color buttonSecondaryFrame;
+  final Color buttonAccentBackground;
+  final Color buttonAccentText;
+  final Color blackWhitePrimary;
+  final Color blackWhiteSecondary;
+  final List<Color> shadowDividerColors;
 
   // How to set opacity in Hex https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
 
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color white50 = Color(0x80FFFFFF);
-  static const Color white70 = Color(0xB3FFFFFF);
-  static const Color black = Color(0xFF000000);
-  static const Color black04 = Color(0x0A000000);
-  static const Color black05 = Color(0x0D000000);
-  static const Color black10 = Color(0x1A000000);
-  static const Color black20 = Color(0x33000000);
-  static const Color black40 = Color(0x66000000);
-  static const Color limeGreen = Color(0xFFC7F860);
-  static const Color limeGreen44 = Color(0x70BBF383);
-  static const Color limeGreenDark = Color(0xff6AE476);
-  static const Color charcoal = Color(0xFF252525);
-  static const Color charcoal00 = Color(0x00252525);
-  static const Color charcoal20 = Color(0x33252525);
-  static const Color charcoal35 = Color(0x59252525);
-  static const Color charcoal50 = Color(0x80252525);
-  static const Color charcoal70 = Color(0xB3252525);
-  static const Color linen = Color(0xffFCFAF8);
-  static const Color darkLinen = Color(0xFFF8F8F7);
-  static const Color darkLinen95 = Color(0xF2F8F8F7);
-  static const Color darkLinen90 = Color(0xE6F8F8F7);
-  static const Color darkLinen50 = Color(0x80F8F8F7);
+  /// charcoal
+  static const Color brandPrimary = Color(0xFF252525);
+
+  ///darkLinen
+  static const Color brandSecondary = Color(0xFFF8F8F7);
+
+  /// limeGreen
+  static const Color brandAccent = Color(0xFFC7F860);
+
+  /// charcoal 40%
+  static const Color overlay = Color(0x66252525);
+
+  /// black 20%
+  static const Color shadow20 = Color(0x33000000);
+
+  /// black 4%
+  static const Color shadow04 = Color(0x0A000000);
+
+  /// _white 0%
   static const Color transparent = Color(0x00000000);
-  static const Color transparentWhite = Color(0x00FFFFFF);
-  static const Color blue = Color(0xff4579FF);
-  static const Color grey = Color(0xffe7e7e7);
-  static const Color lightGrey = Color(0xffEEEEEC);
-  static const Color neutralGrey = Color(0xFF989898);
-  static const Color rose = Color(0xffF3E5F4);
-  static const Color pastelBlue = Color(0xff72A1FD);
-  static const Color pastelGreen = Color(0xffE4F1E2);
-  static const Color darkGrey = Color(0xff6B7280);
-  static const Color darkerGrey = Color(0xff5F5F5F);
-  static const Color carrotRed = Color(0xFFF15147);
-  static const Color successGreen = Color(0xff439E5C);
-  static const Color peach = Color(0xffF2E8E7);
-  static const Color blueSelected = Color(0xff0099FF);
 
-  static const Color background = darkLinen;
-  static const Color background95 = darkLinen95;
-  static const Color background90 = darkLinen90;
-  static const Color background50 = darkLinen50;
-  static const Color textPrimary = charcoal;
-  static const Color textGrey = darkerGrey;
+  static const Color stateTextPrimary = _black;
+  static const Color stateTextSecondary = _white;
+  static const Color stateBackgroundError = Color(0xFFF15147);
+  static const Color stateBackgroundWarning = Color(0xFFFFF495);
+  static const Color stateBackgroundSuccess = Color(0xFF439E5C);
 
-  static const Color snackBarPositive = successGreen;
-  static const Color snackBarNegative = carrotRed;
-  static const Color snackBarInformative = white;
+  static const Color categoriesTextSecondary = _darkerGrey;
+  static const Color categoriesBackgroundShowMeEverything = _white;
 
-  static const Color shadowLinenColor = Color(0x336B6346);
-  static const Color shadowColor = Color(0x1f000000);
-
-  static const Color settingsHeader = neutralGrey;
-  static const Color settingsIcon = Color(0xff898A8D);
-
-  static const Color socialNetworksIcon = charcoal;
-
-  static const Color dividerGrey = Color(0xffD1D5DB);
-  static const Color dividerGreyLight = lightGrey;
-
-  static const Color textSelectionColor = Color(0xFFBBF383);
+  static const Color snackBarPositive = stateBackgroundSuccess;
+  static const Color snackBarNegative = stateBackgroundError;
+  static const Color snackBarInformative = _white;
 
   static const String shareBackgroundTopColor = "#FFFFFF";
   static const String shareBackgroundBottomColor = "#FFFFFF";
+
+  static const Color _black = Color(0xFF000000);
+  static const Color _white = Color(0xFFFFFFFF);
+  static const Color _darkCharcoal = Color(0xFF121212);
+  static const Color _darkerGrey = Color(0xFF5F5F5F);
+  static const Color _neutralGrey = Color(0xFF989898);
+  static const Color _lightGrey = Color(0xFFEEEEEC);
+
+  static MaterialColor getMaterialColorFromColor(Color color) {
+    final colorShades = {
+      50: _getShade(color, value: 0.5),
+      100: _getShade(color, value: 0.4),
+      200: _getShade(color, value: 0.3),
+      300: _getShade(color, value: 0.2),
+      400: _getShade(color, value: 0.1),
+      500: color,
+      600: _getShade(color, value: 0.1, darker: true),
+      700: _getShade(color, value: 0.15, darker: true),
+      800: _getShade(color, value: 0.2, darker: true),
+      900: _getShade(color, value: 0.25, darker: true),
+    };
+    return MaterialColor(color.value, colorShades);
+  }
+
+  static Color _getShade(Color color, {bool darker = false, double value = .1}) {
+    assert(value >= 0 && value <= 1);
+
+    final hsl = HSLColor.fromColor(color);
+    final hslDark = hsl.withLightness((darker ? (hsl.lightness - value) : (hsl.lightness + value)).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
+  }
 }

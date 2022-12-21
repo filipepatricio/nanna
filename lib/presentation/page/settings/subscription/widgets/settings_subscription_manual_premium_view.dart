@@ -17,11 +17,6 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
           physics: getPlatformScrollPhysics(),
           children: [
             const SizedBox(height: AppDimens.l),
-            Text(
-              LocaleKeys.subscription_membership.tr(),
-              style: AppTypography.h4Bold,
-            ),
-            const SizedBox(height: AppDimens.l),
             _ChangeSubscriptionCard(
               icon: AppVectorGraphics.informedLogoGreen,
               title: LocaleKeys.subscription_premium.tr(),
@@ -31,7 +26,9 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
             const SizedBox(height: AppDimens.xl),
             Text(
               LocaleKeys.subscription_planIncludes.tr(),
-              style: AppTypography.subH1Medium.copyWith(color: AppColors.settingsHeader),
+              style: AppTypography.subH1Medium.copyWith(
+                color: AppColors.of(context).textTertiary,
+              ),
             ),
             const SizedBox(height: AppDimens.ml),
             const SubscriptionBenefits(),
@@ -39,7 +36,9 @@ class _SettingsSubscriptionManualPremiumView extends StatelessWidget {
             if (subscription.expirationDate != null) ...[
               Text(
                 LocaleKeys.subscription_endDate.tr(),
-                style: AppTypography.subH1Medium.copyWith(color: AppColors.settingsHeader),
+                style: AppTypography.subH1Medium.copyWith(
+                  color: AppColors.of(context).textTertiary,
+                ),
               ),
               const SizedBox(height: AppDimens.ml),
               Text(

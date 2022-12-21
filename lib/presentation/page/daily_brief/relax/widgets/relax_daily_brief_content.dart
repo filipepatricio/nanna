@@ -22,7 +22,7 @@ class _DailyBriefContent extends StatelessWidget {
         Text(
           relax.message,
           style: AppTypography.b2Regular.copyWith(
-            color: AppColors.darkerGrey,
+            color: AppColors.of(context).textSecondary,
           ),
           textAlign: TextAlign.center,
         ),
@@ -58,7 +58,7 @@ class _DailyBriefHeadline extends HookWidget {
           InformedMarkdownBody(
             markdown: relax.headline,
             baseTextStyle: AppTypography.h2Medium,
-            highlightColor: AppColors.limeGreen,
+            highlightColor: AppColors.brandAccent,
             textAlignment: TextAlign.center,
           ),
         ],
@@ -78,7 +78,8 @@ class _DailyBriefFooter extends StatelessWidget {
     final actionText = callToAction.actionText;
 
     return preText != null
-        ? FilledButton.black(
+        ? FilledButton.primary(
+            context: context,
             text: "$preText $actionText",
             onTap: context.goToExplore,
           )

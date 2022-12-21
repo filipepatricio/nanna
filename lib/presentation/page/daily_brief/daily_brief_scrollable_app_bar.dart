@@ -55,9 +55,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
     );
 
     return SliverAppBar(
-      backgroundColor: AppColors.background,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
-      shadowColor: AppColors.black40,
       pinned: true,
       centerTitle: true,
       elevation: showCalendar ? 0 : 1.0,
@@ -76,7 +74,7 @@ class DailyBriefScrollableAppBar extends HookWidget {
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Container(
-          color: AppColors.background,
+          color: AppColors.of(context).backgroundPrimary,
           padding: EdgeInsets.only(
             top: topPadding + AppDimens.sl,
             left: AppDimens.pageHorizontalMargin,
@@ -138,7 +136,7 @@ class BriefDate extends StatelessWidget {
                 duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
                 child: SvgPicture.asset(
                   AppVectorGraphics.chevronDown,
-                  color: AppColors.textPrimary,
+                  color: Theme.of(context).iconTheme.color,
                   height: isTitle ? AppDimens.m : AppDimens.l,
                 ),
               ),

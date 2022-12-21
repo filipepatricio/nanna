@@ -162,9 +162,9 @@ class _CustomTextPainter extends HookWidget {
               ),
               onSelectionChanged: (_, __) => selectionControllers?.unselectAllBut(controller.key),
             )
-          : RichText(
+          : Text.rich(
+              TextSpan(children: spansWithoutDecoration),
               maxLines: maxLines,
-              text: TextSpan(children: spansWithoutDecoration),
               overflow: maxLines != null ? TextOverflow.ellipsis : TextOverflow.clip,
               textAlign: textAlign,
             ),

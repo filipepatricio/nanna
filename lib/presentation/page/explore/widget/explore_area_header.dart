@@ -37,7 +37,7 @@ class ExploreAreaHeader extends StatelessWidget {
             Text(
               optDescription,
               style: AppTypography.subH1Medium.copyWith(
-                color: AppColors.textGrey,
+                color: AppColors.of(context).textSecondary,
                 height: 1.3,
               ),
             ),

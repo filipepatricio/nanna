@@ -28,12 +28,10 @@ class SliverSearchAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: AppColors.background,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
-      shadowColor: AppColors.black40,
       pinned: true,
       centerTitle: false,
-      elevation: 1.0,
+      elevation: 0,
       expandedHeight: AppDimens.appBarHeight,
       titleSpacing: AppDimens.pageHorizontalMargin,
       actions: [
@@ -105,7 +103,7 @@ class _SearchBar extends HookWidget {
     return Container(
       height: AppDimens.searchBarHeight,
       decoration: BoxDecoration(
-        color: AppColors.lightGrey,
+        color: AppColors.of(context).backgroundSecondary,
         borderRadius: BorderRadius.circular(AppDimens.xs),
       ),
       child: TextFormField(
@@ -113,19 +111,19 @@ class _SearchBar extends HookWidget {
         autofocus: false,
         focusNode: searchTextFieldFocusNode,
         cursorHeight: AppDimens.sl,
-        cursorColor: AppColors.charcoal,
+        cursorColor: AppColors.of(context).textPrimary,
         textInputAction: TextInputAction.search,
         autocorrect: false,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: LocaleKeys.search_hint.tr(),
           hintStyle: AppTypography.b2Medium.copyWith(
-            color: AppColors.textGrey,
+            color: AppColors.of(context).textSecondary,
             height: 1.05,
           ),
           prefixIcon: SvgPicture.asset(
             AppVectorGraphics.search,
-            color: AppColors.charcoal,
+            color: Theme.of(context).iconTheme.color,
             fit: BoxFit.scaleDown,
           ),
           suffixIcon: query.value.isNotEmpty
@@ -142,10 +140,7 @@ class _SearchBar extends HookWidget {
                 )
               : const SizedBox.shrink(),
         ),
-        style: AppTypography.b2Medium.copyWith(
-          color: AppColors.charcoal,
-          height: 1,
-        ),
+        style: AppTypography.b2Medium.copyWith(height: 1),
         onFieldSubmitted: (query) {
           if (searchViewCubit.shouldTriggerSearch(query)) {
             searchViewCubit.submitSearchPhrase(query);
@@ -201,7 +196,7 @@ class _CancelButton extends HookWidget {
                   child: Text(
                     LocaleKeys.common_cancel.tr(),
                     style: AppTypography.h4Medium.copyWith(
-                      color: AppColors.textGrey,
+                      color: AppColors.of(context).textSecondary,
                       height: 1.1,
                     ),
                   ),

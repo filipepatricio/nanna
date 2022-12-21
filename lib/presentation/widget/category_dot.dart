@@ -32,7 +32,7 @@ class CategoryDot extends StatelessWidget {
         Text(
           category.name,
           style: AppTypography.sansTextSmallLausanne.copyWith(
-            color: AppColors.textGrey,
+            color: AppColors.of(context).textTertiary,
           ),
           textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false),
         ),

@@ -7,7 +7,6 @@ import 'package:better_informed_mobile/presentation/page/media/article_app_bar.d
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_read_view.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/premium_article_view_state.dt.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
@@ -84,7 +83,7 @@ class PremiumArticleView extends HookWidget {
                   AutoSizeText(
                     data.message,
                     maxLines: 2,
-                    style: AppTypography.b2Regular.copyWith(color: AppColors.textPrimary),
+                    style: AppTypography.b2Regular,
                   ),
                   GestureDetector(
                     onTap: () => context.pushRoute(const SubscriptionPageRoute()),
@@ -92,7 +91,6 @@ class PremiumArticleView extends HookWidget {
                       LocaleKeys.subscription_snackbar_link.tr(),
                       maxLines: 1,
                       style: AppTypography.b2Bold.copyWith(
-                        color: AppColors.textPrimary,
                         decoration: TextDecoration.underline,
                       ),
                     ),

@@ -23,11 +23,11 @@ class PhotoCaptionPage extends HookWidget {
     final imageHeight = MediaQuery.of(context).size.height;
     final imageCaption = cloudinaryImage.caption;
     return Scaffold(
-      backgroundColor: AppColors.textPrimary,
+      backgroundColor: AppColors.dark.backgroundPrimary,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.close_rounded),
-          color: AppColors.white,
+          color: AppColors.of(context).blackWhiteSecondary,
           highlightColor: AppColors.transparent,
           splashColor: AppColors.transparent,
           alignment: Alignment.center,
@@ -45,7 +45,7 @@ class PhotoCaptionPage extends HookWidget {
             Container(
               width: AppDimens.photoCaptionImageContainerWidth(context),
               height: AppDimens.photoCaptionImageContainerHeight(context),
-              color: AppColors.textPrimary,
+              color: AppColors.dark.backgroundPrimary,
               child: CloudinaryImage(
                 publicId: cloudinaryImage.publicId,
                 config: CloudinaryConfig(
@@ -65,7 +65,7 @@ class PhotoCaptionPage extends HookWidget {
                   markdown: imageCaption,
                   baseTextStyle: AppTypography.metadata1Regular.copyWith(
                     height: 1.4,
-                    color: AppColors.white,
+                    color: AppColors.of(context).blackWhiteSecondary,
                   ),
                 ),
               ),

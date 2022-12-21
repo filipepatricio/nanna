@@ -40,7 +40,7 @@ class _TopicCoverLarge extends TopicCover {
                     top: AppDimens.m,
                     child: InformedPill(
                       title: LocaleKeys.topic_label.tr(),
-                      color: AppColors.white,
+                      color: AppColors.of(context).buttonSecondaryFrame,
                     ),
                   ),
                   Positioned(
@@ -58,7 +58,9 @@ class _TopicCoverLarge extends TopicCover {
                                 topic.strippedTitle,
                                 maxLines: 3,
                                 textAlign: TextAlign.center,
-                                style: AppTypography.sansTitleLargeLausanne,
+                                style: AppTypography.sansTitleLargeLausanne.copyWith(
+                                  color: AppColors.light.textPrimary,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: AppDimens.m),
@@ -77,12 +79,14 @@ class _TopicCoverLarge extends TopicCover {
               Container(
                 padding: const EdgeInsets.only(left: AppDimens.sl),
                 decoration: const BoxDecoration(
-                  border: Border(left: BorderSide(color: AppColors.limeGreen)),
+                  border: Border(
+                    left: BorderSide(color: AppColors.brandAccent),
+                  ),
                 ),
                 child: InformedMarkdownBody(
                   markdown: ownersNote,
                   baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
-                    color: AppColors.textGrey,
+                    color: AppColors.of(context).textSecondary,
                   ),
                 ),
               ),
