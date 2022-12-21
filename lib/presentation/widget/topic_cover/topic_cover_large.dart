@@ -20,13 +20,14 @@ class _TopicCoverLarge extends TopicCover {
 
     return GestureDetector(
       onTap: onTap,
-      child: SizedBox.square(
-        dimension: coverWidth,
+      child: SizedBox(
+        width: coverWidth,
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
+            SizedBox.square(
+              dimension: coverWidth,
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
