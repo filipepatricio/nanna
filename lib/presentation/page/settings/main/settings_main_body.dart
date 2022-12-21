@@ -70,17 +70,22 @@ class SettingsMainBody extends HookWidget {
         SettingsMainItem(
           label: LocaleKeys.settings_account.tr(),
           icon: AppVectorGraphics.account,
-          onTap: () => AutoRouter.of(context).push(const SettingsAccountPageRoute()),
+          onTap: () => context.pushRoute(const SettingsAccountPageRoute()),
         ),
         SettingsMainItem(
           label: LocaleKeys.settings_notifications_title.tr(),
           icon: AppVectorGraphics.notifications,
-          onTap: () => AutoRouter.of(context).push(const SettingsNotificationsPageRoute()),
+          onTap: () => context.pushRoute(const SettingsNotificationsPageRoute()),
+        ),
+        SettingsMainItem(
+          label: LocaleKeys.settings_appearance_title.tr(),
+          icon: AppVectorGraphics.image,
+          onTap: () => context.pushRoute(const SettingsAppearancePageRoute()),
         ),
         SettingsMainItem(
           label: LocaleKeys.settings_manageMyInterests.tr(),
           icon: AppVectorGraphics.star,
-          onTap: () => AutoRouter.of(context).push(const SettingsManageMyInterestsPageRoute()),
+          onTap: () => context.pushRoute(const SettingsManageMyInterestsPageRoute()),
         ),
         const SizedBox(height: AppDimens.xl),
         Padding(

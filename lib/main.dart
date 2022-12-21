@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/data/util/reporting_tree_error_filter.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.di.dart';
@@ -40,6 +41,8 @@ Future<void> main() async {
 
   await Hive.initFlutter();
 
+  final currentThemeMode = await AdaptiveTheme.getThemeMode();
+
   final filterController = getIt<ReportingTreeErrorFilterController>();
   await SentryFlutter.init(
     (options) => options
@@ -62,6 +65,7 @@ Future<void> main() async {
           saveLocale: true,
           child: InformedApp(
             getIt: getIt,
+            themeMode: currentThemeMode,
             mainRouter: kDebugMode ? MainRouter() : null,
           ),
         ),
