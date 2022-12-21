@@ -22,7 +22,7 @@ part 'article_cover_small.dart';
 part 'content/article_square_cover.dart';
 
 const _coverSizeToScreenWidthFactor = 0.27;
-const _articleLargeCoverAspectRatio = 343 / 218;
+const _articleLargeCoverAspectRatio = 343 / 228;
 const _articleSmallCoverAspectRatio = 120 / 100;
 
 abstract class ArticleCover extends HookWidget {

@@ -23,14 +23,6 @@ class _ArticleCoverLarge extends ArticleCover {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (article.shouldShowArticleCoverNote && showNote) ...[
-            InformedMarkdownBody(
-              markdown: article.note!,
-              baseTextStyle: AppTypography.b2Regular.copyWith(),
-            ),
-            const SizedBox(height: AppDimens.sl),
-          ],
-          if (showRecommendedBy) CurationInfoView(curationInfo: article.curationInfo),
           if (article.hasImage) ...[
             const SizedBox(height: AppDimens.m),
             _ArticleAspectRatioCover(
@@ -51,6 +43,28 @@ class _ArticleCoverLarge extends ArticleCover {
             ),
           ),
           const SizedBox(height: AppDimens.m),
+          if (article.shouldShowArticleCoverNote && showNote) ...[
+            Container(
+              padding: const EdgeInsets.only(left: AppDimens.sl),
+              decoration: const BoxDecoration(
+                border: Border(left: BorderSide(color: AppColors.limeGreen)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InformedMarkdownBody(
+                    markdown: article.note!,
+                    baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(color: AppColors.textGrey),
+                  ),
+                  if (showRecommendedBy) ...[
+                    const SizedBox(height: AppDimens.xs),
+                    CurationInfoView(curationInfo: article.curationInfo),
+                  ]
+                ],
+              ),
+            ),
+            const SizedBox(height: AppDimens.m),
+          ],
           ArticleMetadataRow(
             article: article,
           ),

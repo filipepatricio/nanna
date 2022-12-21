@@ -29,7 +29,7 @@ class ArticleMetadataRow extends StatelessWidget {
             if (!article.finished) ...[
               CategoryDot(category: article.category),
               const SizedBox(width: AppDimens.s),
-              const BulletDivider(),
+              const PipeDivider(),
               const SizedBox(width: AppDimens.s),
             ],
             ArticleTimeReadLabel(
