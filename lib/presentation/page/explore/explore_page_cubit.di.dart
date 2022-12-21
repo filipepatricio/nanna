@@ -53,10 +53,20 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   Future<void> initialize() async {
     emit(ExplorePageState.initialLoading());
 
-    _exploreContentSubscription =
-        _getExploreContentUseCase.highlightedContentStream.listen(_processAndEmitExploreContent);
+    _exploreContentSubscription = _getExploreContentUseCase.highlightedContentStream.listen((content) async {
+      final idleState = await _processAndEmitExploreContent(content);
+      state.maybeMap(
+        search: (_) => {},
+        searchHistory: (_) => {},
+        orElse: () => emit(idleState),
+      );
+    });
 
-    _shouldUpdateExploreSubscription = _getShouldUpdateExploreStreamUseCase().listen((_) => loadExplorePageData());
+    _shouldUpdateExploreSubscription = _getShouldUpdateExploreStreamUseCase().listen((_) {
+      state.mapOrNull(
+        idle: (_) => loadExplorePageData(),
+      );
+    });
 
     try {
       await _showTutorialSnackBar();
@@ -77,10 +87,11 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   Future<void> _fetchExploreContent() async {
     final exploreContent = await _getExploreContentUseCase();
-    await _processAndEmitExploreContent(exploreContent);
+    final idleState = await _processAndEmitExploreContent(exploreContent);
+    emit(idleState);
   }
 
-  Future<void> _processAndEmitExploreContent(ExploreContent exploreContent) async {
+  Future<ExplorePageState> _processAndEmitExploreContent(ExploreContent exploreContent) async {
     final categories = await _getFeaturedCategoriesUseCase();
     _latestIdleState = ExplorePageState.idle(
       [
@@ -90,8 +101,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
         ...exploreContent.areas.map(ExploreItem.stream).toList(),
       ],
     );
-
-    emit(_latestIdleState);
+    return _latestIdleState;
   }
 
   Future<void> _showTutorialSnackBar() async {
