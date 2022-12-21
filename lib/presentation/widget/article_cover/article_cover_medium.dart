@@ -23,6 +23,8 @@ class _ArticleCoverMedium extends ArticleCover {
       [MediaQuery.of(context).size],
     );
 
+    final articleNote = article.note;
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -30,6 +32,7 @@ class _ArticleCoverMedium extends ArticleCover {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const SizedBox(height: AppDimens.l),
           if (article.shouldShowArticleCoverNote && showNote) ...[
             InformedMarkdownBody(
               markdown: article.note!,
@@ -37,8 +40,10 @@ class _ArticleCoverMedium extends ArticleCover {
             ),
             const SizedBox(height: AppDimens.s),
           ],
-          if (showRecommendedBy) CurationInfoView(curationInfo: article.curationInfo),
-          const SizedBox(height: AppDimens.m),
+          if (showRecommendedBy) ...[
+            CurationInfoView(curationInfo: article.curationInfo),
+            const SizedBox(height: AppDimens.m),
+          ],
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,11 +53,11 @@ class _ArticleCoverMedium extends ArticleCover {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     PublisherRow(article: article),
-                    const SizedBox(height: AppDimens.xs),
+                    const SizedBox(height: AppDimens.sl),
                     InformedMarkdownBody(
                       markdown: article.title,
-                      baseTextStyle: AppTypography.articleSmallTitle,
-                      maxLines: 3,
+                      baseTextStyle: AppTypography.serifTitleLargeIvar,
+                      maxLines: 4,
                     ),
                   ],
                 ),
@@ -66,11 +71,25 @@ class _ArticleCoverMedium extends ArticleCover {
               ),
             ],
           ),
+          if (articleNote != null) ...[
+            const SizedBox(height: AppDimens.m),
+            OwnersNoteContainer(
+              child: InformedMarkdownBody(
+                markdown: articleNote,
+                baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
+                  color: AppColors.textGrey,
+                ),
+              ),
+            ),
+            const SizedBox(height: AppDimens.sl)
+          ],
           const SizedBox(height: AppDimens.sl),
           ArticleMetadataRow(
             article: article,
             onBookmarkTap: onBookmarkTap,
           ),
+          const SizedBox(height: AppDimens.l),
+          const CardDivider.cover(),
         ],
       ),
     );

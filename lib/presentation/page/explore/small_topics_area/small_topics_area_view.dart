@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/page/explore/widget/explore_
 import 'package:better_informed_mobile/presentation/page/explore/widget/explore_area_item_carousel_view.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/widget/todays_brief_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -51,6 +52,7 @@ class SmallTopicsAreaView extends HookWidget {
           onViewAllTap: () => _navigateToSeeAll(context),
         ),
         const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
+        const CardDivider.cover(),
       ],
     );
   }

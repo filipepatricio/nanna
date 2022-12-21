@@ -44,11 +44,7 @@ class _ArticleCoverLarge extends ArticleCover {
           ),
           const SizedBox(height: AppDimens.m),
           if (article.shouldShowArticleCoverNote && showNote) ...[
-            Container(
-              padding: const EdgeInsets.only(left: AppDimens.sl),
-              decoration: const BoxDecoration(
-                border: Border(left: BorderSide(color: AppColors.limeGreen)),
-              ),
+            OwnersNoteContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -26,6 +26,7 @@ class ArticleListAreaView extends StatelessWidget {
           title: area.title,
           description: area.description,
         ),
+        const SizedBox(height: AppDimens.l),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
           child: Column(

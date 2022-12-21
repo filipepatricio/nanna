@@ -13,6 +13,14 @@ class AppTypography {
     height: 1.1,
   );
 
+  static const TextStyle serifTitleLargeIvar = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamilyIvarHeadline,
+    fontSize: 26,
+    height: 1.1,
+    color: AppColors.textPrimary,
+  );
+
   // Sans Title
   static const TextStyle sansTitleLargeLausanne = TextStyle(
     fontWeight: FontWeight.w500,

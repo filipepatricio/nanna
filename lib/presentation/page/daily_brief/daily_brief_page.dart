@@ -27,17 +27,17 @@ import 'package:better_informed_mobile/presentation/widget/audio/player_banner/a
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/owners_note_container.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
+import 'package:better_informed_mobile/presentation/widget/todays_brief_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-
-part 'widgets/todays_brief_divider.dart';
 
 const _topicCardTutorialOffsetFromBottomFraction = 1.4;
 
@@ -388,7 +388,7 @@ class _IdleContent extends HookWidget {
 
       if (i < section.entries.length - 1) {
         yield const SizedBox(height: AppDimens.l);
-        yield const _TodaysBriefDivider.cover();
+        yield const CardDivider.cover();
       } else {
         yield const SizedBox(height: AppDimens.xxl);
       }
@@ -519,7 +519,7 @@ class _BriefSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const _TodaysBriefDivider.section(),
+          const CardDivider.section(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
             child: InformedMarkdownBody(
@@ -576,11 +576,7 @@ class _Greeting extends StatelessWidget {
   Widget build(BuildContext context) {
     final intro = introduction;
 
-    return Container(
-      padding: const EdgeInsets.only(left: AppDimens.sl),
-      decoration: const BoxDecoration(
-        border: Border(left: BorderSide(color: AppColors.brandAccent)),
-      ),
+    return OwnersNoteContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,

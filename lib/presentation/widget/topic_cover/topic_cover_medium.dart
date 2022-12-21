@@ -47,13 +47,7 @@ class _TopicCoverMedium extends TopicCover {
             ),
             const SizedBox(height: AppDimens.m),
             if (ownersNote != null) ...[
-              Container(
-                padding: const EdgeInsets.only(left: AppDimens.sl),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    left: BorderSide(color: AppColors.brandAccent),
-                  ),
-                ),
+              OwnersNoteContainer(
                 child: InformedMarkdownBody(
                   markdown: ownersNote,
                   baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
