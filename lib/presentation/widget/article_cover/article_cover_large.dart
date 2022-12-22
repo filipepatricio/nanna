@@ -33,13 +33,20 @@ class _ArticleCoverLarge extends ArticleCover {
             ),
           ],
           const SizedBox(height: AppDimens.m),
-          PublisherRow(article: article),
-          const SizedBox(height: AppDimens.s),
-          Text(
-            article.strippedTitle,
-            style: AppTypography.articleTitle.copyWith(
-              fontSize: 26,
-              letterSpacing: 0.02,
+          ArticleProgressOpacity(
+            article: article,
+            child: Column(
+              children: [
+                PublisherRow(article: article),
+                const SizedBox(height: AppDimens.s),
+                Text(
+                  article.strippedTitle,
+                  style: AppTypography.articleTitle.copyWith(
+                    fontSize: 26,
+                    letterSpacing: 0.02,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: AppDimens.m),

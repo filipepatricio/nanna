@@ -187,15 +187,15 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio.asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
+                _briefEntryStyleArticleMediumItem,
               ),
               BriefEntryDTO(
                 _freeArticleWithoutNote.asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
+                _briefEntryStyleArticleMediumItem,
               ),
               BriefEntryDTO(
                 _freeArticle.asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
+                _briefEntryStyleArticleMediumItem,
               ),
               ..._briefEntriesArticlesList,
             ],
@@ -231,15 +231,15 @@ class MockDTO {
   static final _briefEntriesArticlesList = [
     BriefEntryDTO(
       premiumArticle.asBriefEntryItem,
-      _briefEntryStyleArticleSmallItem,
+      _briefEntryStyleArticleMediumItem,
     ),
     BriefEntryDTO(
       premiumArticleWithAudio.asBriefEntryItem,
-      _briefEntryStyleArticleSmallItem,
+      _briefEntryStyleArticleMediumItem,
     ),
     BriefEntryDTO(
       _freeArticle.asBriefEntryItem,
-      _briefEntryStyleArticleSmallItem,
+      _briefEntryStyleArticleMediumItem,
     ),
   ];
 
@@ -259,37 +259,37 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
-                    .copyWith(progressState: ArticleProgressState.inProgress)
+                    .copyWith(progressState: ArticleProgressState.finished)
                     .asBriefEntryItem,
                 _briefEntryStyleArticleLarge,
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
-              ),
-              BriefEntryDTO(
-                premiumArticleWithoutNoteWithAudio
-                    .copyWith(progressState: ArticleProgressState.finished)
-                    .asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
-              ),
-              BriefEntryDTO(
-                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
+                _briefEntryStyleArticleMediumItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
                     .copyWith(progressState: ArticleProgressState.inProgress)
                     .asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
+                _briefEntryStyleArticleMediumItem,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
+                _briefEntryStyleArticleMediumItem,
+              ),
+              BriefEntryDTO(
+                premiumArticleWithoutNoteWithAudio
+                    .copyWith(progressState: ArticleProgressState.inProgress)
+                    .asBriefEntryItem,
+                _briefEntryStyleArticleMediumItem,
               ),
               BriefEntryDTO(
                 premiumArticle.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
+                _briefEntryStyleArticleMediumItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNote.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
-                _briefEntryStyleArticleSmallItem,
+                _briefEntryStyleArticleMediumItem,
               ),
             ],
           ),
@@ -332,7 +332,7 @@ class MockDTO {
     null,
     BriefEntryStyleType.topicCard,
   );
-  static final _briefEntryStyleArticleSmallItem = BriefEntryStyleDTO(
+  static final _briefEntryStyleArticleMediumItem = BriefEntryStyleDTO(
     '#F2E8E7',
     BriefEntryStyleType.articleCardMedium,
   );
@@ -382,7 +382,7 @@ class MockDTO {
     [
       SearchResultDTO.topic(topicPreview),
       SearchResultDTO.article(_freeArticle),
-      SearchResultDTO.article(_freeArticle),
+      SearchResultDTO.article(_freeArticle.copyWith(progressState: ArticleProgressState.finished)),
       SearchResultDTO.topic(topicPreview),
     ],
   );
@@ -592,7 +592,7 @@ class MockDTO {
   static final categoryItemList = [
     CategoryItemDTO.topic(topicPreview),
     CategoryItemDTO.article(_freeArticle),
-    CategoryItemDTO.article(_freeArticle),
+    CategoryItemDTO.article(_freeArticle.copyWith(progressState: ArticleProgressState.finished)),
     CategoryItemDTO.topic(topicPreview),
   ];
 
@@ -709,9 +709,9 @@ class MockDTO {
     false,
     true,
     [
-      premiumArticle.copyWith(progressState: ArticleProgressState.inProgress),
-      _freeArticle.copyWith(progressState: ArticleProgressState.inProgress),
       premiumArticle.copyWith(progressState: ArticleProgressState.finished),
+      _freeArticle.copyWith(progressState: ArticleProgressState.inProgress),
+      premiumArticle.copyWith(progressState: ArticleProgressState.inProgress),
       _freeArticle.copyWith(progressState: ArticleProgressState.finished),
       premiumArticle.copyWith(progressState: ArticleProgressState.finished),
     ],

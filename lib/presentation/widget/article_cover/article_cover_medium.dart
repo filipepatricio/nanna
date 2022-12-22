@@ -48,18 +48,21 @@ class _ArticleCoverMedium extends ArticleCover {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    PublisherRow(article: article),
-                    const SizedBox(height: AppDimens.sl),
-                    InformedMarkdownBody(
-                      markdown: article.title,
-                      baseTextStyle: AppTypography.serifTitleLargeIvar,
-                      maxLines: 4,
-                    ),
-                  ],
+                child: ArticleProgressOpacity(
+                  article: article,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      PublisherRow(article: article),
+                      const SizedBox(height: AppDimens.sl),
+                      InformedMarkdownBody(
+                        markdown: article.title,
+                        baseTextStyle: AppTypography.serifTitleLargeIvar,
+                        maxLines: 4,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(width: AppDimens.m),

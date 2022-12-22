@@ -36,15 +36,22 @@ class _ArticleCoverSmall extends ArticleCover {
                 dimension: constraints.maxWidth,
               ),
               const SizedBox(height: AppDimens.sl),
-              PublisherRow(article: article),
-              const SizedBox(height: AppDimens.sl),
-              SizedBox(
-                height: titleHeight,
-                child: InformedMarkdownBody(
-                  maxLines: titleMaxLines,
-                  markdown: article.title,
-                  highlightColor: AppColors.transparent,
-                  baseTextStyle: titleStyle,
+              ArticleProgressOpacity(
+                article: article,
+                child: Column(
+                  children: [
+                    PublisherRow(article: article),
+                    const SizedBox(height: AppDimens.sl),
+                    SizedBox(
+                      height: titleHeight,
+                      child: InformedMarkdownBody(
+                        maxLines: titleMaxLines,
+                        markdown: article.title,
+                        highlightColor: AppColors.transparent,
+                        baseTextStyle: titleStyle,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const Spacer(),
