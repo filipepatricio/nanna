@@ -53,20 +53,18 @@ class CurationInfoView extends StatelessWidget {
             child: Text.rich(
               TextSpan(
                 style: style ??
-                    AppTypography.b3Regular.copyWith(
+                    AppTypography.sansTextSmallLausanne.copyWith(
+                      color: AppColors.of(context).textTertiary,
                       height: 1,
-                      letterSpacing: 0,
-                      color: AppColors.of(context).textSecondary,
                     ),
                 children: [
                   if (!shortLabel) TextSpan(text: '${curationInfo.byline} '),
                   TextSpan(
                     text: curationInfo.curator.name,
                     style: style ??
-                        AppTypography.b3Regular.copyWith(
+                        AppTypography.sansTextSmallLausanne.copyWith(
+                          color: AppColors.of(context).textTertiary,
                           height: 1,
-                          letterSpacing: 0,
-                          color: AppColors.of(context).textSecondary,
                         ),
                   ),
                 ],

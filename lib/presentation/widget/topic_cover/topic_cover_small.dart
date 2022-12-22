@@ -35,7 +35,7 @@ class _TopicCoverSmall extends TopicCover {
               const SizedBox(height: AppDimens.sl),
               InformedMarkdownBody(
                 markdown: topic.title,
-                maxLines: 3,
+                maxLines: 4,
                 baseTextStyle: AppTypography.sansTitleSmallLausanne.copyWith(height: 1.25),
               ),
               const Spacer(),

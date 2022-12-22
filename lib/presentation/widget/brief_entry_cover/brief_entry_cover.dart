@@ -55,7 +55,7 @@ class BriefEntryCover extends HookWidget {
                   ),
                   unknown: (_) => const SizedBox(),
                 );
-              case BriefEntryStyleType.articleCardSmall:
+              case BriefEntryStyleType.articleCardMedium:
                 return data.article.map(
                   article: (article) {
                     if (article.hasImage) {

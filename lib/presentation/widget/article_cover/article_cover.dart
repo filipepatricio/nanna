@@ -7,10 +7,12 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_metadata_row.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_no_image_view.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label.dart';
+import 'package:better_informed_mobile/presentation/widget/article_progress_opacity.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/curation/curation_info_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/owners_note_container.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,9 +23,9 @@ part 'article_cover_medium.dart';
 part 'article_cover_small.dart';
 part 'content/article_square_cover.dart';
 
-const _coverSizeToScreenWidthFactor = 0.27;
-const _articleLargeCoverAspectRatio = 343 / 218;
-const _articleSmallCoverAspectRatio = 120 / 100;
+const _coverSizeToScreenWidthFactor = 0.35;
+const _articleLargeCoverAspectRatio = 343 / 228;
+const _articleSmallCoverAspectRatio = 128 / 128;
 
 abstract class ArticleCover extends HookWidget {
   const ArticleCover._({super.key}) : super();
@@ -47,8 +49,8 @@ abstract class ArticleCover extends HookWidget {
   factory ArticleCover.medium({
     required MediaItemArticle article,
     required VoidCallback onTap,
-    bool showNote = false,
-    bool showRecommendedBy = false,
+    bool showNote = true,
+    bool showRecommendedBy = true,
     VoidCallback? onBookmarkTap,
     Key? key,
   }) {
@@ -71,6 +73,39 @@ abstract class ArticleCover extends HookWidget {
       article: article,
       onTap: onTap,
       key: key,
+    );
+  }
+}
+
+class _ArticlesNote extends StatelessWidget {
+  const _ArticlesNote({
+    required this.article,
+    required this.showRecommendedBy,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+  final bool showRecommendedBy;
+
+  @override
+  Widget build(BuildContext context) {
+    return OwnersNoteContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InformedMarkdownBody(
+            markdown: article.note!,
+            baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(color: AppColors.of(context).textSecondary),
+          ),
+          if (showRecommendedBy) ...[
+            const SizedBox(height: AppDimens.xs),
+            CurationInfoView(
+              curationInfo: article.curationInfo,
+              imageDimension: AppDimens.smallAvatarSize,
+            ),
+          ]
+        ],
+      ),
     );
   }
 }

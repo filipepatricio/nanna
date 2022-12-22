@@ -5,6 +5,7 @@ import 'package:better_informed_mobile/presentation/page/explore/widget/explore_
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:flutter/material.dart';
 
 class ArticleListAreaView extends StatelessWidget {
@@ -26,22 +27,33 @@ class ArticleListAreaView extends StatelessWidget {
           title: area.title,
           description: area.description,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: area.articles
-                .map(
-                  (article) => ArticleCover.medium(
-                    article: article,
-                    onTap: () => context.navigateToArticle(article),
-                  ),
-                )
-                .take(area.articles.length * 2 - 1)
-                .toList(),
-          ),
+        const SizedBox(height: AppDimens.l),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: area.articles
+              .asMap()
+              .entries
+              .map((e) {
+                final index = e.key;
+                final article = e.value;
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+                      child: ArticleCover.medium(
+                        article: article,
+                        onTap: () => context.navigateToArticle(article),
+                      ),
+                    ),
+                    if (index != (area.articles.length - 1)) const CardDivider.cover(),
+                  ],
+                );
+              })
+              .take(area.articles.length * 2 - 1)
+              .toList(),
         ),
         const SizedBox(height: AppDimens.explorePageSectionBottomPadding),
+        const CardDivider.cover(),
       ],
     );
   }

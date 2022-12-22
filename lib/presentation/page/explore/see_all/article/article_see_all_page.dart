@@ -143,7 +143,10 @@ class _ArticleGrid extends StatelessWidget {
       key: pageStorageKey,
       slivers: [
         SliverPadding(
-          padding: const EdgeInsets.all(AppDimens.l),
+          padding: const EdgeInsets.symmetric(
+            vertical: AppDimens.l,
+            horizontal: AppDimens.pageHorizontalMargin,
+          ),
           sliver: SliverToBoxAdapter(
             child: AlignedGridView.count(
               physics: const BottomBouncingScrollPhysics(),
