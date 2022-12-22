@@ -23,8 +23,6 @@ class _ArticleCoverMedium extends ArticleCover {
       [MediaQuery.of(context).size],
     );
 
-    final articleNote = article.note;
-
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -33,17 +31,6 @@ class _ArticleCoverMedium extends ArticleCover {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.l),
-          if (article.shouldShowArticleCoverNote && showNote) ...[
-            InformedMarkdownBody(
-              markdown: article.note!,
-              baseTextStyle: AppTypography.b2Regular,
-            ),
-            const SizedBox(height: AppDimens.s),
-          ],
-          if (showRecommendedBy) ...[
-            CurationInfoView(curationInfo: article.curationInfo),
-            const SizedBox(height: AppDimens.m),
-          ],
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -74,17 +61,9 @@ class _ArticleCoverMedium extends ArticleCover {
               ),
             ],
           ),
-          if (articleNote != null) ...[
+          if (article.shouldShowArticleCoverNote && showNote) ...[
             const SizedBox(height: AppDimens.m),
-            OwnersNoteContainer(
-              child: InformedMarkdownBody(
-                markdown: articleNote,
-                baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
-                  color: AppColors.of(context).textSecondary,
-                ),
-              ),
-            ),
-            const SizedBox(height: AppDimens.sl)
+            _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
           ],
           const SizedBox(height: AppDimens.sl),
           ArticleMetadataRow(

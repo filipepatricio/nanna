@@ -51,22 +51,7 @@ class _ArticleCoverLarge extends ArticleCover {
           ),
           const SizedBox(height: AppDimens.m),
           if (article.shouldShowArticleCoverNote && showNote) ...[
-            OwnersNoteContainer(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InformedMarkdownBody(
-                    markdown: article.note!,
-                    baseTextStyle:
-                        AppTypography.sansTextSmallLausanne.copyWith(color: AppColors.of(context).textSecondary),
-                  ),
-                  if (showRecommendedBy) ...[
-                    const SizedBox(height: AppDimens.xs),
-                    CurationInfoView(curationInfo: article.curationInfo),
-                  ]
-                ],
-              ),
-            ),
+            _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
             const SizedBox(height: AppDimens.m),
           ],
           ArticleMetadataRow(

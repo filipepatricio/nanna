@@ -49,8 +49,8 @@ abstract class ArticleCover extends HookWidget {
   factory ArticleCover.medium({
     required MediaItemArticle article,
     required VoidCallback onTap,
-    bool showNote = false,
-    bool showRecommendedBy = false,
+    bool showNote = true,
+    bool showRecommendedBy = true,
     VoidCallback? onBookmarkTap,
     Key? key,
   }) {
@@ -73,6 +73,39 @@ abstract class ArticleCover extends HookWidget {
       article: article,
       onTap: onTap,
       key: key,
+    );
+  }
+}
+
+class _ArticlesNote extends StatelessWidget {
+  const _ArticlesNote({
+    required this.article,
+    required this.showRecommendedBy,
+    Key? key,
+  }) : super(key: key);
+
+  final MediaItemArticle article;
+  final bool showRecommendedBy;
+
+  @override
+  Widget build(BuildContext context) {
+    return OwnersNoteContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InformedMarkdownBody(
+            markdown: article.note!,
+            baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(color: AppColors.of(context).textSecondary),
+          ),
+          if (showRecommendedBy) ...[
+            const SizedBox(height: AppDimens.xs),
+            CurationInfoView(
+              curationInfo: article.curationInfo,
+              imageDimension: AppDimens.smallAvatarSize,
+            ),
+          ]
+        ],
+      ),
     );
   }
 }
