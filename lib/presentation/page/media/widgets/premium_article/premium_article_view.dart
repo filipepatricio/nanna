@@ -97,7 +97,7 @@ class PremiumArticleView extends HookWidget {
                   ),
                 ],
               ),
-              type: SnackbarMessageType.informative,
+              type: SnackbarMessageType.subscription,
             ),
           ),
         );

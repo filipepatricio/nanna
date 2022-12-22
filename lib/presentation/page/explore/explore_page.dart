@@ -28,7 +28,6 @@ import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dar
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ExplorePage extends HookWidget {
@@ -98,7 +97,7 @@ class ExplorePage extends HookWidget {
                   ),
                   slivers: [
                     state.maybeMap(
-                      error: (_) => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
+                      error: (_) => const SliverAppBar(),
                       orElse: () => SliverSearchAppBar(
                         explorePageCubit: cubit,
                         searchTextEditingController: searchTextEditingController,

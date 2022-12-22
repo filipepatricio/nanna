@@ -49,7 +49,7 @@ class SettingsNotificationsPage extends HookWidget {
             onRequestPermissionTap: cubit.requestPermission,
           ),
           notificationSettingsLoaded: (data) => SettingsNotificationsBody(groups: data),
-          orElse: () => const SizedBox.shrink(),
+          orElse: SizedBox.shrink,
         ),
       ),
     );

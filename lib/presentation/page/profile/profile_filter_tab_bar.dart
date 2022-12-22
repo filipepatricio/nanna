@@ -40,6 +40,7 @@ class ProfileFilterTabBar extends StatelessWidget {
         },
         controller: controller,
         indicatorSize: TabBarIndicatorSize.label,
+        indicatorColor: AppColors.of(context).textPrimary,
         isScrollable: true,
         unselectedLabelStyle: AppTypography.h4Medium,
         labelStyle: AppTypography.h4Medium,

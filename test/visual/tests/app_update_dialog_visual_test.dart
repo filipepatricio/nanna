@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker.dart';
 import 'package:better_informed_mobile/presentation/widget/update_app_enforcer/app_update_checker_cubit.di.dart';
 
@@ -9,6 +10,7 @@ void main() {
     final AppUpdateCheckerCubit cubit = FakeAppUpdateCheckerCubit();
 
     await tester.startApp(
+      initialRoute: const EmptyPageRoute(),
       dependencyOverride: (getIt) async {
         getIt.registerFactory<AppUpdateCheckerCubit>(() => cubit);
       },

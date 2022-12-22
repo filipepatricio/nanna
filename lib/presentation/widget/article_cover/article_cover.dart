@@ -12,11 +12,11 @@ import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookm
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/curation/curation_info_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/owners_note_container.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 part 'article_cover_large.dart';
 part 'article_cover_medium.dart';

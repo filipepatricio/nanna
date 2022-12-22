@@ -20,7 +20,6 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_mes
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -79,7 +78,6 @@ class SignInPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
         leading: state.maybeMap(
           magicLink: (_) => Padding(
             padding: const EdgeInsets.only(left: AppDimens.m + AppDimens.xxs),

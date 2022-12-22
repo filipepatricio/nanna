@@ -26,7 +26,7 @@ class EmailInput extends StatelessWidget {
         filled: true,
         fillColor: AppColors.of(context).backgroundSecondary,
         hintText: LocaleKeys.signIn_emailLabel.tr(),
-        hintStyle: AppTypography.b2Regular.copyWith(color: AppColors.of(context).textSecondary),
+        hintStyle: AppTypography.b2Regular.copyWith(color: AppColors.of(context).textTertiary),
         enabledBorder: const OutlineInputBorder(borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(width: 1, color: AppColors.of(context).borderSecondary),

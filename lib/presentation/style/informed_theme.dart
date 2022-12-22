@@ -45,7 +45,7 @@ class InformedTheme {
           modalBackgroundColor: colors.backgroundPrimary,
         ),
         iconTheme: IconThemeData(color: colors.iconPrimary),
-        tabBarTheme: TabBarTheme(
+        tabBarTheme: baseData.tabBarTheme.copyWith(
           labelColor: colors.textPrimary,
           unselectedLabelColor: colors.textTertiary,
         ),

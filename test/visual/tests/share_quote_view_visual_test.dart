@@ -10,22 +10,6 @@ void main() {
       'Cum sociis natoque penatibus et ma...';
 
   visualTest(
-    ShareQuoteStickerView,
-    (tester) async {
-      await tester.startApp(
-        initialRoute: PlaceholderPageRoute(
-          child: ShareQuoteStickerView(
-            quote: quote,
-            article: TestData.article,
-          ),
-        ),
-      );
-      await tester.matchGoldenFile();
-    },
-    testConfig: TestConfig.withDevices([shareSticker]),
-  );
-
-  visualTest(
     ShareQuoteCombinedView,
     (tester) async {
       await tester.startApp(

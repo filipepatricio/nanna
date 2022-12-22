@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/domain/share/data/share_options.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_options/share_options_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ShareButton extends StatelessWidget {
   const ShareButton({
@@ -21,7 +21,7 @@ class ShareButton extends StatelessWidget {
       child: SizedBox.square(
         dimension: 32.0,
         child: Center(
-          child: SvgPicture.asset(
+          child: InformedSvg(
             AppVectorGraphics.share,
             color: iconColor ?? Theme.of(context).iconTheme.color,
           ),

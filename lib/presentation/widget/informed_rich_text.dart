@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:better_informed_mobile/exports.dart' hide TextDirection;
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/custom_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/selection_controller_bundle.dart';
 import 'package:better_informed_mobile/presentation/util/string_util.dart';
@@ -228,7 +229,10 @@ class _CustomTextPainter extends HookWidget {
   TextSpan _modifyHighlightedText(TextSpan span) {
     return TextSpan(
       text: span.text,
-      style: span.style?.copyWith(fontStyle: FontStyle.normal),
+      style: span.style?.copyWith(
+        fontStyle: FontStyle.normal,
+        color: AppColors.brandPrimary,
+      ),
     );
   }
 

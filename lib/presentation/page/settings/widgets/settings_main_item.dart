@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SettingsMainItem extends StatelessWidget {
   const SettingsMainItem({
@@ -33,7 +33,7 @@ class SettingsMainItem extends StatelessWidget {
               style: AppTypography.b2Medium.copyWith(height: 2, color: fontColor),
             ),
             if (icon != null)
-              SvgPicture.asset(
+              InformedSvg(
                 icon,
                 width: AppDimens.l,
                 height: AppDimens.l,

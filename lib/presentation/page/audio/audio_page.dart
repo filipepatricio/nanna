@@ -16,12 +16,12 @@ import 'package:better_informed_mobile/presentation/widget/audio/speed_button/au
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/image_top_gradient.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_close_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 part 'widget/audio_components_view.dart';
 part 'widget/audio_page_app_bar.dart';

@@ -3,8 +3,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SubscriptionBenefits extends StatelessWidget {
   const SubscriptionBenefits({Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ class _SubscriptionBenefitLine extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SvgPicture.asset(AppVectorGraphics.checkmark),
+        const InformedSvg(AppVectorGraphics.checkmark),
         const SizedBox(width: AppDimens.s),
         Text(
           text,

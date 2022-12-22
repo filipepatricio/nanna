@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class InformedCloseButton extends StatelessWidget {
   const InformedCloseButton({
@@ -17,7 +17,7 @@ class InformedCloseButton extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: onPressed ?? () => Navigator.pop(context),
-        child: SvgPicture.asset(
+        child: InformedSvg(
           AppVectorGraphics.close,
           color: color ?? Theme.of(context).iconTheme.color,
         ),

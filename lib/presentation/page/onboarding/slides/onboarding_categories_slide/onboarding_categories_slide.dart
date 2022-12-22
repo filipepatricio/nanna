@@ -149,6 +149,7 @@ class _SelectableCard extends StatelessWidget {
             style: AppTypography.b3Medium.copyWith(
               height: 1.2,
               letterSpacing: 0,
+              color: AppColors.categoriesTextPrimary,
             ),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,

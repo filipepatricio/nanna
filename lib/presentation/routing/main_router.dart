@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/empty_router_widgets.dart';
 import 'package:better_informed_mobile/presentation/page/audio/audio_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
+import 'package:better_informed_mobile/presentation/page/empty_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
@@ -49,6 +50,7 @@ const notificationsPath = 'notifications';
     AutoRoute(page: SignInPage),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
+    AutoRoute(page: EmptyPage),
   ],
 )
 class $MainRouter {}

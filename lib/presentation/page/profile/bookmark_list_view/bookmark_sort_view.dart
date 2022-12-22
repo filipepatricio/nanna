@@ -8,8 +8,8 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_divider.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 const _borderRadius = 10.0;
 
@@ -56,7 +56,7 @@ class BookmarkSortView extends StatelessWidget {
           if (newConfig != null) onSortConfigChange(newConfig.type);
         }
       },
-      child: SvgPicture.asset(
+      child: InformedSvg(
         AppVectorGraphics.sort,
         color: enabled ? AppColors.of(context).iconPrimary : AppColors.of(context).iconSecondary,
         fit: BoxFit.scaleDown,
@@ -102,7 +102,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
                       alignment: AlignmentDirectional.centerEnd,
                       tapPadding: const EdgeInsets.all(AppDimens.m),
                       onTap: () => AutoRouter.of(context).root.pop(),
-                      child: SvgPicture.asset(AppVectorGraphics.close),
+                      child: const InformedSvg(AppVectorGraphics.close),
                     ),
                   ],
                 ),
@@ -122,10 +122,11 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
                             ),
                             const Spacer(),
                             if (config == entry.value)
-                              SvgPicture.asset(
+                              const InformedSvg(
                                 AppVectorGraphics.done,
                                 height: AppDimens.l,
                                 width: AppDimens.l,
+                                colored: false,
                               )
                             else
                               const SizedBox.shrink(),

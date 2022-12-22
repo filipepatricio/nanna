@@ -60,7 +60,10 @@ class _TopicCoverLarge extends TopicCover {
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: AppDimens.m),
-                            PublisherLogoRow(topic: topic),
+                            PublisherLogoRow(
+                              topic: topic,
+                              blendWithBackground: true,
+                            ),
                           ],
                         ),
                       ),

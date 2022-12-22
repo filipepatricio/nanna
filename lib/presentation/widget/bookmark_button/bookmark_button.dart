@@ -12,12 +12,12 @@ import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 const _loaderSize = 16.0;
 const _loaderStroke = 2.0;
@@ -208,13 +208,13 @@ class _IdleButton extends StatelessWidget {
 }
 
 extension on BookmarkState {
-  SvgPicture icon(Color color) {
+  Widget icon(Color color) {
     return map(
-      bookmarked: (_) => SvgPicture.asset(
+      bookmarked: (_) => InformedSvg(
         AppVectorGraphics.bookmarkFilled,
         color: color,
       ),
-      notBookmarked: (_) => SvgPicture.asset(
+      notBookmarked: (_) => InformedSvg(
         AppVectorGraphics.bookmarkOutline,
         color: color,
       ),

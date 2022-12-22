@@ -15,11 +15,11 @@ import 'package:better_informed_mobile/presentation/widget/curation/curator_avat
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TopicOwnerPage extends HookWidget {
@@ -124,7 +124,7 @@ class TopicOwnerPage extends HookWidget {
                               child: FilledButton.secondary(
                                 context: context,
                                 text: LocaleKeys.topic_howWeCurateContent_label.tr(),
-                                trailing: SvgPicture.asset(
+                                trailing: const InformedSvg(
                                   AppVectorGraphics.chevronNext,
                                   fit: BoxFit.scaleDown,
                                 ),
@@ -216,9 +216,10 @@ class _ActionsBar extends HookWidget {
             child: PaddingTapWidget(
               onTap: () => context.popRoute(),
               tapPadding: const EdgeInsets.all(AppDimens.m),
-              child: SvgPicture.asset(
+              child: const InformedSvg(
                 AppVectorGraphics.closeBackground,
                 fit: BoxFit.scaleDown,
+                colored: false,
               ),
             ),
           ),
@@ -308,7 +309,7 @@ class _SocialMediaIcon extends StatelessWidget {
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.only(right: AppDimens.l),
-        child: SvgPicture.asset(
+        child: InformedSvg(
           icon,
           color: Theme.of(context).iconTheme.color,
         ),

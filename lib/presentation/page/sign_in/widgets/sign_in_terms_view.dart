@@ -21,6 +21,7 @@ class _TermsPolicy extends HookWidget {
             style: AppTypography.metadata1Regular.copyWith(
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
+              color: AppColors.of(context).textSecondary,
             ),
             recognizer: TapGestureRecognizer()..onTap = () => _openInBrowser(termsOfServiceUri, snackbarController),
           ),
@@ -30,6 +31,7 @@ class _TermsPolicy extends HookWidget {
             style: AppTypography.metadata1Regular.copyWith(
               fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
+              color: AppColors.of(context).textSecondary,
             ),
             recognizer: TapGestureRecognizer()..onTap = () => _openInBrowser(policyPrivacyUri, snackbarController),
           ),

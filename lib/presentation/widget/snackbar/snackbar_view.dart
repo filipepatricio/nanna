@@ -33,7 +33,7 @@ class SnackbarView extends HookWidget {
       [message],
     );
 
-    final backgroundColor = messageState.value?.backgroundColor ?? AppColors.snackBarInformative;
+    final backgroundColor = messageState.value?.backgroundColor(context) ?? AppColors.snackBarInformative;
     final textColor = useMemoized(
       () => backgroundColor.computeLuminance() > 0.5 ? AppColors.stateTextPrimary : AppColors.stateTextSecondary,
       [backgroundColor],
@@ -102,7 +102,7 @@ class SnackbarView extends HookWidget {
 }
 
 extension on SnackbarMessage {
-  Color get backgroundColor {
+  Color backgroundColor(BuildContext context) {
     switch (type) {
       case SnackbarMessageType.positive:
         return AppColors.snackBarPositive;
@@ -110,6 +110,8 @@ extension on SnackbarMessage {
         return AppColors.snackBarNegative;
       case SnackbarMessageType.informative:
         return AppColors.snackBarInformative;
+      case SnackbarMessageType.subscription:
+        return AppColors.of(context).blackWhiteSecondary;
     }
   }
 

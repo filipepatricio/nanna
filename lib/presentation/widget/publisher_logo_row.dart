@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/color_extension.dart';
+import 'package:better_informed_mobile/presentation/util/theme_util.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,20 +11,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class PublisherLogoRow extends HookWidget {
   const PublisherLogoRow({
     required this.topic,
-    this.mode = Brightness.dark,
+    this.blendWithBackground = false,
     Key? key,
   }) : super(key: key);
 
   final TopicPreview topic;
-  final Brightness mode;
+  final bool blendWithBackground;
 
   @override
   Widget build(BuildContext context) {
     final publishers = topic.publisherInformation.highlightedPublishers;
     final remainingPublishersIndicator = topic.publisherInformation.remainingPublishersIndicator;
-    final textColor = (mode == Brightness.dark ? AppColors.light : AppColors.dark)
-        .textSecondary
-        .blendMultiply(backgroundColor: topic.category.color);
 
     return SizedBox(
       height: AppDimens.publisherLogoSize,
@@ -32,16 +30,18 @@ class PublisherLogoRow extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ...publishers.map(
-            (publisher) => mode == Brightness.dark
-                ? PublisherLogo.dark(publisher: publisher)
-                : PublisherLogo.light(publisher: publisher),
+            (publisher) => Theme.of(context).isDark
+                ? PublisherLogo.light(publisher: publisher)
+                : PublisherLogo.dark(publisher: publisher),
           ),
           if (remainingPublishersIndicator != null)
             Text(
               remainingPublishersIndicator,
               textAlign: TextAlign.start,
               style: AppTypography.sansTextSmallLausanne.copyWith(
-                color: textColor,
+                color: AppColors.of(context).textSecondary.blendMultiply(
+                      backgroundColor: blendWithBackground ? topic.category.color : null,
+                    ),
                 height: 1.2,
               ),
             ),

@@ -4,9 +4,9 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class PublisherRow extends StatelessWidget {
   const PublisherRow({
@@ -28,10 +28,11 @@ class PublisherRow extends StatelessWidget {
         else
           Padding(
             padding: const EdgeInsets.only(right: AppDimens.s),
-            child: SvgPicture.asset(
+            child: InformedSvg(
               AppVectorGraphics.arrowExternal,
               width: AppDimens.l,
               height: AppDimens.l,
+              color: AppColors.of(context).textSecondary,
             ),
           ),
         Expanded(
