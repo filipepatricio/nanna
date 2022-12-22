@@ -168,10 +168,10 @@
     "account": "Account",
     "notifications": {
       "title": "Notifications",
-      "noPermissionSnackbarError": "Please first allow notifications before selecting which notifications you’d like to receive",
+      "noPermissionSnackbarError": "You'll need to enable notifications on your device to edit this",
       "noPermissionTitle": "Notifications are disabled",
-      "noPermissionContent": "Select allow to enable notifications in settings",
-      "noPermissionAction": "Allow"
+      "noPermissionContent": "Enable notifications to stay informed.",
+      "noPermissionAction": "Enable"
     },
     "email": "Email",
     "push": "Push",
