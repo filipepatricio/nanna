@@ -95,7 +95,7 @@ class CategoryPreferenceFollowButton extends HookWidget {
                   style: AppTypography.buttonBold.copyWith(
                     color: state.categoryPreference.isPreferred
                         ? AppColors.of(context).buttonSecondaryText
-                        : AppColors.of(context).buttonSecondaryText,
+                        : AppColors.of(context).buttonPrimaryText,
                   ),
                 ),
               ),
