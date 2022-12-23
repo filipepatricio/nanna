@@ -577,7 +577,15 @@ class MockDTO {
     id: 'id',
     slug: 'politics',
     icon: _mockedPillIcon,
-    color: "#E3BEE9",
+    color: '#E3BEE9',
+  );
+
+  static const category2 = CategoryDTO(
+    name: 'Tech',
+    id: 'id-tech',
+    slug: 'tech',
+    icon: _mockedPillIcon,
+    color: '#F2E8E7',
   );
 
   static final categoryWithItems = CategoryWithItemsDTO(
@@ -585,7 +593,7 @@ class MockDTO {
     id: 'id',
     slug: 'politics',
     icon: _mockedPillIcon,
-    color: "#E3BEE9",
+    color: '#E3BEE9',
     items: categoryItemList,
   );
 
@@ -633,14 +641,20 @@ class MockDTO {
 
   // CategoryPreference
 
-  static const categoryPreference = CategoryPreferenceDTO(
+  static const categoryPreferenceFollowing = CategoryPreferenceDTO(
     isPreferred: true,
     category: MockDTO.category,
+  );
+
+  static const categoryPreference = CategoryPreferenceDTO(
+    isPreferred: false,
+    category: MockDTO.category2,
   );
 
   // CategoryPreferencesResponseDTO
 
   static final categoryPreferences = <CategoryPreferenceDTO>[
+    MockDTO.categoryPreferenceFollowing,
     MockDTO.categoryPreference,
   ];
 
