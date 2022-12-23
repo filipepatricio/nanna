@@ -34,11 +34,13 @@ class SubscriptionCard extends HookWidget {
       child: Container(
         padding: const EdgeInsets.all(AppDimens.m),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: AppColors.of(context).blackWhiteSecondary,
           borderRadius: const BorderRadius.all(
             Radius.circular(AppDimens.modalRadius),
           ),
-          border: Border.all(color: AppColors.lightGrey),
+          border: Border.all(
+            color: AppColors.of(context).borderPrimary,
+          ),
         ),
         child: AnimatedSize(
           duration: const Duration(milliseconds: 100),
@@ -145,7 +147,6 @@ class _IdleContent extends StatelessWidget {
         const Icon(
           Icons.arrow_forward_ios_rounded,
           size: AppDimens.m,
-          color: AppColors.charcoal,
         ),
       ],
     );

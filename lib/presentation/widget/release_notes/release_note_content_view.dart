@@ -36,9 +36,9 @@ class ReleaseNoteContentView extends StatelessWidget {
                   vertical: AppDimens.xs,
                   horizontal: AppDimens.s,
                 ),
-                decoration: const BoxDecoration(
-                  color: AppColors.lightGrey,
-                  borderRadius: BorderRadius.all(
+                decoration: BoxDecoration(
+                  color: AppColors.of(context).borderPrimary,
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(70),
                   ),
                 ),
@@ -46,7 +46,7 @@ class ReleaseNoteContentView extends StatelessWidget {
                   children: [
                     Text(
                       LocaleKeys.releaseNotes_updateLabel.tr(),
-                      style: AppTypography.caption1Regular.copyWith(color: AppColors.black),
+                      style: AppTypography.caption1Regular,
                     ),
                   ],
                 ),
@@ -54,7 +54,9 @@ class ReleaseNoteContentView extends StatelessWidget {
               const Spacer(),
               Text(
                 DateFormatUtil.formatFullMonthNameDayYear(releaseNote.date),
-                style: AppTypography.b3Medium.copyWith(color: AppColors.neutralGrey),
+                style: AppTypography.b3Medium.copyWith(
+                  color: AppColors.of(context).textTertiary,
+                ),
               ),
               if (showCloseButton) ...[
                 const SizedBox(width: AppDimens.m),
@@ -74,7 +76,7 @@ class ReleaseNoteContentView extends StatelessWidget {
           const SizedBox(height: AppDimens.s),
           Text(
             releaseNote.content,
-            style: AppTypography.b2Medium.copyWith(color: AppColors.textGrey),
+            style: AppTypography.b2Medium.copyWith(color: AppColors.of(context).textSecondary),
           ),
         ],
       ),

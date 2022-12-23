@@ -112,7 +112,7 @@ void main() {
         () async {
           await tester.startApp();
 
-          await tester.fling(find.byType(BriefEntryCover).first, const Offset(0, -20000), 100);
+          await tester.fling(find.byType(DailyBriefPage).first, const Offset(0, -20000), 100);
           await tester.pumpAndSettle();
 
           await tester.tapAt(tester.getCenter(find.byType(AnimatedRotation).last));

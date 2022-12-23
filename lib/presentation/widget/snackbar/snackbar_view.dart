@@ -33,6 +33,12 @@ class SnackbarView extends HookWidget {
       [message],
     );
 
+    final backgroundColor = messageState.value?.backgroundColor ?? AppColors.snackBarInformative;
+    final textColor = useMemoized(
+      () => backgroundColor.computeLuminance() > 0.5 ? AppColors.stateTextPrimary : AppColors.stateTextSecondary,
+      [backgroundColor],
+    );
+
     return Container(
       padding: const EdgeInsets.fromLTRB(
         innerPadding,
@@ -41,31 +47,36 @@ class SnackbarView extends HookWidget {
         innerPadding,
       ),
       decoration: BoxDecoration(
-        color: messageState.value?.backgroundColor,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(AppDimens.modalRadius),
         boxShadow: cardShadows,
       ),
-      child: LayoutBuilder(
-        builder: (context, constraints) => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: _maxHeight,
-                maxWidth: constraints.maxWidth - 2 * innerPadding,
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          textTheme: Theme.of(context).textTheme.apply(bodyColor: textColor),
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: _maxHeight,
+                  maxWidth: constraints.maxWidth - 2 * innerPadding,
+                ),
+                child: messageState.value?.content(textColor),
               ),
-              child: messageState.value?.content,
-            ),
-            if (messageState.value != null) ...[
-              buildSnackbarAction(messageState.value!),
-            ]
-          ],
+              if (messageState.value != null) ...[
+                buildSnackbarAction(messageState.value!, textColor),
+              ]
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget buildSnackbarAction(SnackbarMessage message) {
+  Widget buildSnackbarAction(SnackbarMessage message, Color textColor) {
     return message.map(
       simple: (message) {
         if (message.action == null) {
@@ -79,7 +90,7 @@ class SnackbarView extends HookWidget {
           child: Text(
             message.action!.label,
             style: AppTypography.h4ExtraBold.copyWith(
-              color: AppColors.white,
+              color: textColor,
               decoration: TextDecoration.underline,
             ),
           ),
@@ -102,18 +113,16 @@ extension on SnackbarMessage {
     }
   }
 
-  Widget get content {
+  Widget content(Color textColor) {
     return map(
       simple: (simple) {
         return AutoSizeText(
           simple.message,
           maxLines: 2,
-          style: AppTypography.b2Regular.copyWith(color: AppColors.white),
+          style: AppTypography.b2Regular.copyWith(color: textColor),
         );
       },
-      custom: (custom) {
-        return custom.message;
-      },
+      custom: (custom) => custom.message,
     );
   }
 }

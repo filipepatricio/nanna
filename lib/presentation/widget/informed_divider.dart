@@ -15,7 +15,7 @@ class InformedDivider extends StatelessWidget {
       padding: padding,
       child: Container(
         height: 1.0,
-        color: AppColors.dividerGreyLight,
+        color: AppColors.of(context).borderSecondary,
       ),
     );
   }

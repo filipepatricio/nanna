@@ -16,14 +16,14 @@ class _Timeline extends StatelessWidget {
 
     final labelStyle = AppTypography.subH1Regular.copyWith(
       height: 1.4,
-      color: AppColors.darkerGrey,
+      color: AppColors.of(context).textSecondary,
     );
 
     return Column(
       children: [
         Stack(
           children: [
-            const Positioned(
+            Positioned(
               top: dotSize * .5,
               bottom: dotSize * .5,
               left: (dotSize - dottedTimelineWidth) * .5,
@@ -32,10 +32,10 @@ class _Timeline extends StatelessWidget {
                 lineLength: double.infinity,
                 lineThickness: dottedTimelineWidth,
                 dashLength: dottedTimelineWidth,
-                dashColor: AppColors.neutralGrey,
+                dashColor: AppColors.of(context).borderSecondary,
                 dashRadius: dottedTimelineWidth,
                 dashGapLength: AppDimens.xs,
-                dashGapColor: AppColors.background,
+                dashGapColor: AppColors.of(context).backgroundPrimary,
               ),
             ),
             Column(
@@ -50,7 +50,7 @@ class _Timeline extends StatelessWidget {
                       child: Icon(
                         Icons.circle,
                         size: dotSize,
-                        color: AppColors.limeGreen,
+                        color: AppColors.brandAccent,
                       ),
                     ),
                     Flexible(
@@ -147,10 +147,10 @@ class _OutlinedDot extends StatelessWidget {
         width: size * .75,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: AppColors.linen,
+          color: AppColors.of(context).blackWhiteSecondary,
           border: Border.all(
             width: 1,
-            color: AppColors.neutralGrey,
+            color: AppColors.of(context).borderSecondary,
           ),
         ),
       ),

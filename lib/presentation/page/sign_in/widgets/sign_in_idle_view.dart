@@ -54,19 +54,22 @@ class _SignInIdleView extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Container(
-                                  height: 1,
-                                  color: AppColors.lightGrey,
+                                  height: AppDimens.one,
+                                  color: AppColors.of(context).borderPrimary,
                                   margin: const EdgeInsets.only(right: AppDimens.s),
                                 ),
                               ),
                               Text(
                                 tr(LocaleKeys.signIn_orContinue),
-                                style: AppTypography.b3Medium.copyWith(color: AppColors.darkGrey, height: 1),
+                                style: AppTypography.b3Medium.copyWith(
+                                  color: AppColors.of(context).textTertiary,
+                                  height: 1,
+                                ),
                               ),
                               Expanded(
                                 child: Container(
-                                  height: 1,
-                                  color: AppColors.lightGrey,
+                                  height: AppDimens.one,
+                                  color: AppColors.of(context).borderPrimary,
                                   margin: const EdgeInsets.only(left: AppDimens.s),
                                 ),
                               ),
@@ -86,10 +89,11 @@ class _SignInIdleView extends StatelessWidget {
                 ),
               ),
               if (keyboardVisible) ...[
-                FilledButton.black(
+                FilledButton.primary(
+                  context: context,
                   isEnabled: isEmailValid,
-                  text: LocaleKeys.common_signUp.tr(),
-                  onTap: () => cubit.sendMagicLink(),
+                  text: LocaleKeys.common_continue.tr(),
+                  onTap: cubit.sendMagicLink,
                 ),
                 const SizedBox(height: AppDimens.m),
               ] else ...[

@@ -1,7 +1,6 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_body.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
@@ -24,7 +23,6 @@ class SettingsMainPage extends HookWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: InformedCupertinoAppBar(
         leading: BackTextButton(
           text: LocaleKeys.profile_title.tr(),

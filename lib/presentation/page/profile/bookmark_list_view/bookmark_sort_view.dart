@@ -58,7 +58,7 @@ class BookmarkSortView extends StatelessWidget {
       },
       child: SvgPicture.asset(
         AppVectorGraphics.sort,
-        color: enabled ? AppColors.black : AppColors.textGrey,
+        color: enabled ? AppColors.of(context).iconPrimary : AppColors.of(context).iconSecondary,
         fit: BoxFit.scaleDown,
         height: AppDimens.l,
         width: AppDimens.l,
@@ -81,7 +81,7 @@ class _BookmarkSortOptionBottomSheet extends StatelessWidget {
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(_borderRadius),
       ),
-      color: AppColors.background,
+      color: AppColors.of(context).backgroundPrimary,
       child: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

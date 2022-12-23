@@ -24,7 +24,7 @@ Future<void> showQuoteEditor(
         MediaQuery.of(context).size.height,
       ),
     ),
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.of(context).backgroundPrimary,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(

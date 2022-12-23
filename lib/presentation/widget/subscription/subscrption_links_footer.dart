@@ -30,7 +30,7 @@ class SubscriptionLinksFooter extends StatelessWidget {
         Text(
           _getChargeInfoText(subscriptionPlan),
           textAlign: TextAlign.center,
-          style: AppTypography.metadata1Medium.copyWith(color: AppColors.textGrey),
+          style: AppTypography.metadata1Medium.copyWith(color: AppColors.of(context).textSecondary),
         ),
         const SizedBox(height: AppDimens.m),
         Row(

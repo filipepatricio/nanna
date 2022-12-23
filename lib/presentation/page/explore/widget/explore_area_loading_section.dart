@@ -1,5 +1,4 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:flutter/material.dart';
 
@@ -80,12 +79,10 @@ class _Pill extends StatelessWidget {
     return Container(
       height: AppDimens.explorePillHeight(context),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(AppDimens.pillRadius),
-        border: Border.all(
-          color: AppColors.dividerGreyLight,
-          width: 1,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(AppDimens.pillRadius),
         ),
+        border: Border.all(width: 1),
       ),
       padding: const EdgeInsets.symmetric(
         vertical: AppDimens.sl,
@@ -139,7 +136,6 @@ class _StreamCell extends StatelessWidget {
       width: size,
       height: size * 2,
       decoration: const BoxDecoration(
-        color: AppColors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(AppDimens.defaultRadius),
         ),

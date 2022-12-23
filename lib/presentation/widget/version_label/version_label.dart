@@ -26,7 +26,7 @@ class VersionLabel extends HookWidget {
     return Text(
       'v$state',
       style: AppTypography.systemText.copyWith(
-        color: AppColors.textGrey,
+        color: AppColors.of(context).textSecondary,
       ),
       textAlign: TextAlign.center,
     );

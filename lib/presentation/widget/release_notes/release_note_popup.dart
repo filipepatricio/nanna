@@ -37,7 +37,7 @@ class ReleaseNotePopup extends StatelessWidget {
             ),
           ),
           child: Material(
-            color: AppColors.background,
+            color: AppColors.of(context).backgroundPrimary,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

@@ -12,7 +12,6 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
-import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
@@ -51,9 +50,7 @@ class CategoryPage extends HookWidget {
     return SnackbarParentView(
       child: Scaffold(
         appBar: InformedCupertinoAppBar(
-          leading: BackTextButton(
-            text: LocaleKeys.common_back.tr(),
-          ),
+          title: category.name,
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: AppDimens.pageHorizontalMargin),
@@ -62,7 +59,6 @@ class CategoryPage extends HookWidget {
               ),
             ),
           ],
-          title: category.name,
         ),
         body: CustomScrollView(
           controller: scrollController,

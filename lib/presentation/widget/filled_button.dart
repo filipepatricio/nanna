@@ -6,13 +6,12 @@ import 'package:flutter/material.dart';
 class FilledButton extends StatelessWidget {
   const FilledButton._({
     required this.text,
+    required this.fillColor,
+    required this.disableColor,
+    required this.textColor,
     this.subtext,
     this.isEnabled = true,
     this.onTap,
-    this.fillColor = AppColors.limeGreen,
-    this.disableColor = AppColors.limeGreen,
-    this.textColor = AppColors.textPrimary,
-    this.disableTextColor = AppColors.charcoal50,
     this.isLoading = false,
     this.leading,
     this.trailing,
@@ -20,7 +19,8 @@ class FilledButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  factory FilledButton.green({
+  factory FilledButton.accent({
+    required BuildContext context,
     required String text,
     String? subtext,
     bool isEnabled = true,
@@ -34,16 +34,16 @@ class FilledButton extends StatelessWidget {
         subtext: subtext,
         isEnabled: isEnabled,
         onTap: onTap,
-        fillColor: AppColors.limeGreen,
-        disableColor: AppColors.limeGreen,
-        textColor: AppColors.textPrimary,
-        disableTextColor: AppColors.charcoal50,
+        fillColor: AppColors.of(context).buttonAccentBackground,
+        disableColor: AppColors.of(context).buttonAccentBackground,
+        textColor: AppColors.of(context).buttonAccentText,
         isLoading: isLoading,
         leading: leading,
         trailing: trailing,
       );
 
-  factory FilledButton.black({
+  factory FilledButton.primary({
+    required BuildContext context,
     required String text,
     String? subtext,
     bool isEnabled = true,
@@ -57,16 +57,15 @@ class FilledButton extends StatelessWidget {
         subtext: subtext,
         isEnabled: isEnabled,
         onTap: onTap,
-        fillColor: AppColors.charcoal,
-        disableColor: AppColors.darkerGrey,
-        textColor: AppColors.white,
-        disableTextColor: AppColors.neutralGrey,
+        fillColor: AppColors.of(context).buttonPrimaryBackground,
+        disableColor: AppColors.of(context).buttonPrimaryBackgroundDisabled,
+        textColor: AppColors.of(context).buttonPrimaryText,
         isLoading: isLoading,
         leading: leading,
         trailing: trailing,
       );
 
-  factory FilledButton.red({
+  factory FilledButton.negative({
     required String text,
     String? subtext,
     bool isEnabled = true,
@@ -80,16 +79,16 @@ class FilledButton extends StatelessWidget {
         subtext: subtext,
         isEnabled: isEnabled,
         onTap: onTap,
-        fillColor: AppColors.carrotRed,
-        disableColor: AppColors.carrotRed,
-        textColor: AppColors.white,
-        disableTextColor: AppColors.white50,
+        fillColor: AppColors.stateBackgroundError,
+        disableColor: AppColors.stateBackgroundError,
+        textColor: AppColors.stateTextSecondary,
         isLoading: isLoading,
         leading: leading,
         trailing: trailing,
       );
 
-  factory FilledButton.white({
+  factory FilledButton.secondary({
+    required BuildContext context,
     required String text,
     String? subtext,
     VoidCallback? onTap,
@@ -102,10 +101,9 @@ class FilledButton extends StatelessWidget {
         subtext: subtext,
         isEnabled: true,
         onTap: onTap,
-        fillColor: AppColors.darkLinen,
-        disableColor: AppColors.darkLinen,
-        textColor: AppColors.charcoal,
-        disableTextColor: AppColors.neutralGrey,
+        fillColor: AppColors.of(context).buttonSecondaryBackground,
+        disableColor: AppColors.of(context).buttonSecondaryBackground,
+        textColor: AppColors.of(context).buttonSecondaryText,
         isLoading: false,
         leading: leading,
         trailing: trailing,
@@ -119,7 +117,6 @@ class FilledButton extends StatelessWidget {
   final Color fillColor;
   final Color disableColor;
   final Color textColor;
-  final Color disableTextColor;
   final bool isLoading;
   final Widget? leading;
   final Widget? trailing;
@@ -130,12 +127,11 @@ class FilledButton extends StatelessWidget {
     final leading = this.leading;
     final trailing = this.trailing;
 
-    final textStyle = (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(
-      color: isEnabled ? textColor : disableTextColor,
-    );
+    final textStyle =
+        (subtext != null ? AppTypography.buttonBold : AppTypography.buttonMedium).copyWith(color: textColor);
 
     return GestureDetector(
-      onTap: isEnabled ? onTap : () => {},
+      onTap: isEnabled ? onTap : () {},
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(
@@ -146,7 +142,7 @@ class FilledButton extends StatelessWidget {
           color: isEnabled ? fillColor : disableColor,
           border: withOutline
               ? Border.all(
-                  color: AppColors.lightGrey,
+                  color: AppColors.of(context).borderPrimary,
                   width: 1.0,
                 )
               : null,
@@ -154,55 +150,56 @@ class FilledButton extends StatelessWidget {
             Radius.circular(AppDimens.defaultRadius),
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: isLoading
-                  ? SizedBox(
-                      height: AppDimens.m,
-                      width: AppDimens.m,
-                      child: CircularProgressIndicator(color: textColor, strokeWidth: AppDimens.xxs),
-                    )
-                  : Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        if (leading != null) ...[
-                          leading,
-                          const SizedBox(width: AppDimens.sl),
-                        ],
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              text,
-                              style: textStyle,
-                            ),
-                            if (subtext != null) ...[
-                              Padding(
-                                padding: const EdgeInsets.only(top: AppDimens.s),
-                                child: Text(
-                                  subtext!,
-                                  style: AppTypography.buttonRegular.copyWith(
-                                    color: isEnabled ? textColor : disableTextColor,
+        child: Opacity(
+          opacity: isEnabled ? 1.0 : 0.5,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: isLoading
+                    ? SizedBox(
+                        height: AppDimens.m,
+                        width: AppDimens.m,
+                        child: CircularProgressIndicator(color: textColor, strokeWidth: AppDimens.xxs),
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          if (leading != null) ...[
+                            leading,
+                            const SizedBox(width: AppDimens.sl),
+                          ],
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                text,
+                                style: textStyle,
+                              ),
+                              if (subtext != null) ...[
+                                Padding(
+                                  padding: const EdgeInsets.only(top: AppDimens.s),
+                                  child: Text(
+                                    subtext!,
+                                    style: AppTypography.buttonRegular.copyWith(color: textColor),
                                   ),
                                 ),
-                              ),
+                              ],
                             ],
+                          ),
+                          if (trailing != null) ...[
+                            const SizedBox(width: AppDimens.sl),
+                            trailing,
                           ],
-                        ),
-                        if (trailing != null) ...[
-                          const SizedBox(width: AppDimens.sl),
-                          trailing,
                         ],
-                      ],
-                    ),
-            ),
-          ],
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );

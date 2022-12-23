@@ -4,25 +4,26 @@ class _AudioPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AudioPageAppBar({
     required this.article,
     required this.isLight,
-  }) : iconsColor = isLight ? AppColors.white : AppColors.textPrimary;
+  });
 
   final MediaItemArticle article;
   final bool isLight;
-  final Color iconsColor;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = (isLight ? AppColors.dark : AppColors.light).iconPrimary;
+
     return AppBar(
       systemOverlayStyle: isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       backgroundColor: AppColors.transparent,
-      leading: InformedCloseButton(color: iconsColor),
+      leading: InformedCloseButton(color: iconColor),
       actions: [
         BookmarkButton.article(
           article: article,
-          color: iconsColor,
+          color: iconColor,
         ),
         const SizedBox(width: AppDimens.m),
         Align(
@@ -31,7 +32,7 @@ class _AudioPageAppBar extends StatelessWidget implements PreferredSizeWidget {
             article: article,
             buttonBuilder: (context) => SvgPicture.asset(
               AppVectorGraphics.share,
-              color: iconsColor,
+              color: iconColor,
             ),
           ),
         ),

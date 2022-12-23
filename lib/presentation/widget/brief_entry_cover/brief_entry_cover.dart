@@ -55,11 +55,11 @@ class BriefEntryCover extends HookWidget {
                   ),
                   unknown: (_) => const SizedBox(),
                 );
-              case BriefEntryStyleType.articleCardSmall:
+              case BriefEntryStyleType.articleCardMedium:
                 return data.article.map(
                   article: (article) {
                     if (article.hasImage) {
-                      return ArticleCover.list(
+                      return ArticleCover.medium(
                         article: article,
                         onTap: () async {
                           await context.navigateToArticle(
@@ -94,7 +94,7 @@ class BriefEntryCover extends HookWidget {
             switch (style.type) {
               case BriefEntryStyleType.topicCard:
                 return item.maybeMap(
-                  topicPreview: (data) => TopicCover.big(
+                  topicPreview: (data) => TopicCover.large(
                     key: topicCardKey,
                     topic: data.topicPreview,
                     onTap: () async {

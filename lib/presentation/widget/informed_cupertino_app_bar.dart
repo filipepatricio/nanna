@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 class InformedCupertinoAppBar extends StatelessWidget implements ObstructingPreferredSizeWidget {
   const InformedCupertinoAppBar({
     this.brightness = Brightness.light,
-    this.leading = const BackTextButton(),
+    this.leading,
     this.title,
     this.backgroundColor,
     this.actions,
     super.key,
   });
 
-  final Widget leading;
+  final Widget? leading;
   final Brightness brightness;
   final String? title;
   final Color? backgroundColor;
@@ -30,18 +30,19 @@ class InformedCupertinoAppBar extends StatelessWidget implements ObstructingPref
       height: double.infinity,
       child: CupertinoNavigationBar(
         transitionBetweenRoutes: false,
-        backgroundColor: backgroundColor ?? AppColors.background,
+        backgroundColor: backgroundColor ?? AppColors.of(context).backgroundPrimary,
         border: null,
         padding: const EdgeInsetsDirectional.only(
           start: AppDimens.xs,
         ),
         brightness: brightness,
-        leading: leading,
+        leading: leading ?? const BackTextButton(),
         middle: title == null
             ? null
             : Text(
                 title,
                 style: AppTypography.h4Medium.copyWith(
+                  color: AppColors.of(context).textPrimary,
                   fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
                   height: 1.11,
                 ),

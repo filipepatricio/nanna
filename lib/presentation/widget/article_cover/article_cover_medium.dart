@@ -1,7 +1,7 @@
 part of 'article_cover.dart';
 
-class _ArticleCoverList extends ArticleCover {
-  const _ArticleCoverList({
+class _ArticleCoverMedium extends ArticleCover {
+  const _ArticleCoverMedium({
     required this.onTap,
     required this.article,
     required this.showNote,
@@ -30,31 +30,26 @@ class _ArticleCoverList extends ArticleCover {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (article.shouldShowArticleCoverNote && showNote) ...[
-            InformedMarkdownBody(
-              markdown: article.note!,
-              baseTextStyle: AppTypography.b2Regular,
-            ),
-            const SizedBox(height: AppDimens.s),
-          ],
-          if (showRecommendedBy) CurationInfoView(curationInfo: article.curationInfo),
-          const SizedBox(height: AppDimens.m),
+          const SizedBox(height: AppDimens.l),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    PublisherRow(article: article),
-                    const SizedBox(height: AppDimens.xs),
-                    InformedMarkdownBody(
-                      markdown: article.title,
-                      baseTextStyle: AppTypography.articleSmallTitle,
-                      maxLines: 3,
-                    ),
-                  ],
+                child: ArticleProgressOpacity(
+                  article: article,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      PublisherRow(article: article),
+                      const SizedBox(height: AppDimens.sl),
+                      InformedMarkdownBody(
+                        markdown: article.title,
+                        baseTextStyle: AppTypography.serifTitleLargeIvar,
+                        maxLines: 4,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(width: AppDimens.m),
@@ -66,11 +61,16 @@ class _ArticleCoverList extends ArticleCover {
               ),
             ],
           ),
+          if (article.shouldShowArticleCoverNote && showNote) ...[
+            const SizedBox(height: AppDimens.m),
+            _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
+          ],
           const SizedBox(height: AppDimens.sl),
           ArticleMetadataRow(
             article: article,
             onBookmarkTap: onBookmarkTap,
           ),
+          const SizedBox(height: AppDimens.l),
         ],
       ),
     );

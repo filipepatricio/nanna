@@ -53,12 +53,12 @@ class CategoryPreferenceFollowButton extends HookWidget {
     );
 
     return state.maybeMap(
-      loading: (_) => const SizedBox(
+      loading: (_) => SizedBox(
         height: AppDimens.m,
         width: AppDimens.m,
         child: Center(
           child: CircularProgressIndicator(
-            color: AppColors.charcoal,
+            color: AppColors.of(context).iconPrimary,
             strokeWidth: AppDimens.xxs,
           ),
         ),
@@ -75,7 +75,9 @@ class CategoryPreferenceFollowButton extends HookWidget {
             horizontal: AppDimens.m,
           ),
           decoration: BoxDecoration(
-            color: state.categoryPreference.isPreferred ? AppColors.lightGrey : AppColors.charcoal,
+            color: state.categoryPreference.isPreferred
+                ? AppColors.of(context).buttonSecondaryFrame
+                : AppColors.of(context).buttonPrimaryBackground,
             borderRadius: const BorderRadius.all(
               Radius.circular(100),
             ),
@@ -91,7 +93,9 @@ class CategoryPreferenceFollowButton extends HookWidget {
                       ? LocaleKeys.common_following.tr()
                       : LocaleKeys.common_follow.tr(),
                   style: AppTypography.buttonBold.copyWith(
-                    color: state.categoryPreference.isPreferred ? AppColors.textPrimary : AppColors.white,
+                    color: state.categoryPreference.isPreferred
+                        ? AppColors.of(context).buttonSecondaryText
+                        : AppColors.of(context).buttonPrimaryText,
                   ),
                 ),
               ),

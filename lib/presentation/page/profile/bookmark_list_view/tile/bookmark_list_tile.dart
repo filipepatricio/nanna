@@ -40,14 +40,14 @@ extension on Bookmark {
     VoidCallback? onRemoveBookmarkCallback,
   ) {
     return data.map(
-      article: (data) => ArticleCover.list(
+      article: (data) => ArticleCover.medium(
         article: data.article,
         onTap: () => context.pushRoute(
           MediaItemPageRoute(article: data.article),
         ),
         onBookmarkTap: onRemoveBookmarkCallback,
       ),
-      topic: (data) => TopicCover.list(
+      topic: (data) => TopicCover.medium(
         topic: data.topic.asPreview,
         onBookmarkTap: onRemoveBookmarkCallback,
         onTap: () => context.pushRoute(

@@ -3,8 +3,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
-import 'package:better_informed_mobile/presentation/widget/bullet_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/category_dot.dart';
+import 'package:better_informed_mobile/presentation/widget/pipe_divider.dart';
 import 'package:flutter/material.dart';
 
 class ArticleMetadataRow extends StatelessWidget {
@@ -29,7 +29,7 @@ class ArticleMetadataRow extends StatelessWidget {
             if (!article.finished) ...[
               CategoryDot(category: article.category),
               const SizedBox(width: AppDimens.s),
-              const BulletDivider(),
+              const PipeDivider(),
               const SizedBox(width: AppDimens.s),
             ],
             ArticleTimeReadLabel(

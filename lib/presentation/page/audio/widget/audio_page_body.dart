@@ -12,6 +12,10 @@ class _AudioPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final credits = audioFile.credits;
+    final metadataStyle = AppTypography.metadata1Medium.copyWith(
+      color: AppColors.of(context).textSecondary,
+      height: 1.12,
+    );
 
     return SafeArea(
       top: false,
@@ -20,25 +24,16 @@ class _AudioPageBody extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (article.hasImage)
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return ArticleAudioViewCover(
-                    article: article,
-                    height: constraints.maxHeight,
-                    width: constraints.maxWidth,
-                    shouldShowTimeToRead: false,
-                  );
-                },
-              ),
-            )
-          else
-            Expanded(
-              child: Container(
-                color: article.category.color,
-              ),
-            ),
+          Expanded(
+            child: article.hasImage
+                ? ArticleImage(
+                    image: article.image!,
+                    cardColor: article.category.color,
+                  )
+                : Container(
+                    color: article.category.color,
+                  ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
             child: Column(
@@ -47,12 +42,10 @@ class _AudioPageBody extends StatelessWidget {
                 const SizedBox(height: AppDimens.ml),
                 ArticleDottedInfo(
                   article: article,
-                  isLight: false,
                   showLogo: true,
                   showReadTime: false,
                   showDate: false,
-                  textStyle: _metadataStyle,
-                  color: _metadataStyle.color,
+                  textStyle: metadataStyle,
                   centerContent: true,
                 ),
                 const SizedBox(height: AppDimens.s),
@@ -68,16 +61,14 @@ class _AudioPageBody extends StatelessWidget {
                   Text(
                     credits,
                     textAlign: TextAlign.center,
-                    style: _metadataStyle.copyWith(
-                      height: 1.6,
+                    style: metadataStyle.copyWith(
                       fontStyle: FontStyle.italic,
+                      height: 1.6,
                     ),
                   ),
                 ],
                 const SizedBox(height: AppDimens.xl),
-                AudioProgressBar(
-                  article: article,
-                ),
+                AudioProgressBar(article: article),
                 const SizedBox(height: AppDimens.xl),
                 _AudioComponentsView(article: article),
                 const SizedBox(height: AppDimens.xl),

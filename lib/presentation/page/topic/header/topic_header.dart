@@ -65,7 +65,6 @@ class TopicHeader extends HookWidget {
                   const SizedBox(height: AppDimens.m),
                   UpdatedLabel(
                     dateTime: topic.lastUpdatedAt,
-                    mode: Brightness.dark,
                     fontSize: 16,
                   ),
                 ],

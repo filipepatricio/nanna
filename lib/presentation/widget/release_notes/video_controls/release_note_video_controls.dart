@@ -85,7 +85,7 @@ class _Overlay extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          color: AppColors.charcoal20,
+          color: AppColors.overlay,
         ),
         child: Center(
           child: GestureDetector(
@@ -94,12 +94,13 @@ class _Overlay extends StatelessWidget {
             },
             child: Container(
               padding: const EdgeInsets.all(AppDimens.l),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.white,
+                color: AppColors.of(context).buttonSecondaryBackground,
               ),
               child: SvgPicture.asset(
                 state.playing ? AppVectorGraphics.pause : AppVectorGraphics.playArrow,
+                color: AppColors.of(context).buttonSecondaryText,
               ),
             ),
           ),

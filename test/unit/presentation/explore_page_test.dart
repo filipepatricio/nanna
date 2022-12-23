@@ -10,6 +10,7 @@ import 'package:better_informed_mobile/presentation/page/explore/widget/view_all
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ void main() {
 
       final topicCoverFinder = find.descendant(
         of: find.byType(SmallTopicsAreaView),
-        matching: find.byType(TopicCover),
+        matching: find.bySubtype<TopicCover>(),
       );
 
       expect(topicCoverFinder, findsNWidgets(3));
@@ -108,6 +109,28 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(TextFormField));
       expect(find.byType(ExplorePage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'can search results, enter article, go back and see search view',
+    (tester) async {
+      await tester.startApp(initialRoute: const ExploreTabGroupRouter());
+      expect(find.byType(SearchHistoryView), findsNothing);
+      await tester.enterText(find.byType(TextFormField), 'world');
+      await tester.pumpAndSettle();
+      await tester.testTextInput.receiveAction(TextInputAction.search);
+      await tester.pumpAndSettle();
+      expect(find.byType(SearchView), findsOneWidget);
+      final articleCoverFinder = find.descendant(
+        of: find.byType(SearchView),
+        matching: find.bySubtype<ArticleCover>(),
+      );
+      await tester.tap(articleCoverFinder.first);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(SearchView), findsOneWidget);
     },
   );
 }

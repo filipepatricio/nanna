@@ -128,13 +128,18 @@ class _SelectableCard extends StatelessWidget {
     return AnimatedContainer(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(AppDimens.defaultRadius)),
-        border: isSelected ? Border.all(color: AppColors.charcoal, width: 1.5) : null,
+        border: isSelected
+            ? Border.all(
+                color: AppColors.of(context).borderTertiary,
+                width: 1.5,
+              )
+            : null,
       ),
       width: _tileSize,
       height: _tileSize,
       duration: const Duration(milliseconds: _onboardingTopicCardAnimDurationMs),
       child: CupertinoButton(
-        color: color ?? AppColors.white,
+        color: color ?? AppColors.categoriesBackgroundShowMeEverything,
         borderRadius: const BorderRadius.all(Radius.circular(AppDimens.defaultRadius)),
         padding: EdgeInsets.zero,
         onPressed: onPressed,

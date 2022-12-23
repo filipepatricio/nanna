@@ -36,14 +36,14 @@ class InfoToast extends StatelessWidget {
             },
             child: Container(
               padding: const EdgeInsets.all(AppDimens.m),
-              decoration: const BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.all(
+              decoration: BoxDecoration(
+                color: AppColors.of(context).blackWhiteSecondary,
+                borderRadius: const BorderRadius.all(
                   Radius.circular(AppDimens.s),
                 ),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
-                    color: AppColors.shadowColor,
+                    color: AppColors.shadow20,
                     offset: Offset(0.0, 2.0),
                     blurRadius: 10.0,
                     spreadRadius: 0.0,
@@ -56,9 +56,7 @@ class InfoToast extends StatelessWidget {
                 children: [
                   InformedMarkdownBody(
                     markdown: text,
-                    baseTextStyle: AppTypography.b2Medium.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
+                    baseTextStyle: AppTypography.b2Medium,
                   ),
                   const SizedBox(height: AppDimens.m),
                   TextButton(
@@ -73,9 +71,7 @@ class InfoToast extends StatelessWidget {
                     ),
                     child: Text(
                       LocaleKeys.common_gotIt.tr(),
-                      style: AppTypography.b2Regular.copyWith(
-                        color: AppColors.textPrimary,
-                      ),
+                      style: AppTypography.b2Regular,
                     ),
                   ),
                 ],

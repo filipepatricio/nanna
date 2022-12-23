@@ -30,6 +30,7 @@ fragment topicPreviewFragment on Topic {
         }
     }
     introduction
+    ownersNote
     publisherInformation{
         highlightedPublishers {
             ...publisherFragment

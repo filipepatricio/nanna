@@ -67,7 +67,6 @@ class SettingsAccountBody extends HookWidget {
               SettingsInputItem(
                 controller: nameController,
                 label: LocaleKeys.settings_firstName.tr(),
-                initialInput: originalData.firstName,
                 isEditable: true,
                 isFormFocused: isFirstNameFocused.value,
                 validator: (_) => modifiedData.firstNameValidator,
@@ -84,7 +83,6 @@ class SettingsAccountBody extends HookWidget {
               SettingsInputItem(
                 controller: lastNameController,
                 label: LocaleKeys.settings_lastName.tr(),
-                initialInput: originalData.lastName,
                 isEditable: true,
                 isFormFocused: isLastNameFocused.value,
                 validator: (_) => modifiedData.lastNameValidator,
@@ -101,7 +99,6 @@ class SettingsAccountBody extends HookWidget {
               SettingsInputItem(
                 controller: emailController,
                 label: LocaleKeys.settings_emailAddress.tr(),
-                initialInput: originalData.email,
                 isEditable: false,
                 validator: (_) => modifiedData.emailValidator,
                 onChanged: cubit.updateEmail,
@@ -112,7 +109,8 @@ class SettingsAccountBody extends HookWidget {
               AnimatedOpacity(
                 opacity: 1.0,
                 duration: const Duration(milliseconds: 250),
-                child: FilledButton.black(
+                child: FilledButton.primary(
+                  context: context,
                   text: LocaleKeys.settings_save.tr(),
                   onTap: () => _onSaveButtonTap(isFirstNameFocused, isLastNameFocused),
                   isEnabled: cubit.formsAreValid(),

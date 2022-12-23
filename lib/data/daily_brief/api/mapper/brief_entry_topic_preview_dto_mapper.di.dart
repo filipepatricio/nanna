@@ -30,6 +30,7 @@ class BriefEntryTopicPreviewDTOMapper implements Mapper<BriefEntryItemDTO, Topic
         data.title,
         data.strippedTitle,
         data.introduction,
+        data.ownersNote,
         data.url,
         _curationInfoDTOMapper(data.curationInfo),
         DateTime.parse(data.lastUpdatedAt).toLocal(),

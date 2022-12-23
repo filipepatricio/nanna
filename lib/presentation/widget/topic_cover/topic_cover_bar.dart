@@ -1,89 +1,62 @@
 part of 'topic_cover.dart';
 
-class _TopicCoverBar extends StatelessWidget {
+abstract class _TopicCoverBar extends StatelessWidget {
+  const _TopicCoverBar._({super.key}) : super();
+
+  factory _TopicCoverBar.large({
+    required TopicPreview topic,
+    Key? key,
+  }) =>
+      _TopicCoverBarLarge(
+        topic: topic,
+        key: key,
+      );
+
+  factory _TopicCoverBar.medium({
+    required TopicPreview topic,
+    VoidCallback? onBookmarkTap,
+    Key? key,
+  }) =>
+      _TopicCoverBarMedium(
+        topic: topic,
+        onBookmarkTap: onBookmarkTap,
+        key: key,
+      );
+
   factory _TopicCoverBar.small({
     required TopicPreview topic,
-  }) =>
-      _TopicCoverBar._(
-        type: TopicCoverType.small,
-        topic: topic,
-      );
-
-  factory _TopicCoverBar.big({
-    required TopicPreview topic,
-    VoidCallback? onBookmarkTap,
-  }) =>
-      _TopicCoverBar._(
-        type: TopicCoverType.big,
-        topic: topic,
-        onBookmarkTap: onBookmarkTap,
-      );
-
-  factory _TopicCoverBar.list({
-    required TopicPreview topic,
-    VoidCallback? onBookmarkTap,
-  }) =>
-      _TopicCoverBar._(
-        type: TopicCoverType.list,
-        topic: topic,
-        onBookmarkTap: onBookmarkTap,
-      );
-
-  const _TopicCoverBar._({
-    required this.topic,
-    required this.type,
-    this.onBookmarkTap,
     Key? key,
-  }) : super(key: key);
-
-  final TopicPreview topic;
-  final TopicCoverType type;
-  final VoidCallback? onBookmarkTap;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (type) {
-      case TopicCoverType.big:
-        return _TopicCoverBarBig(
-          topic: topic,
-          onBookmarkTap: onBookmarkTap,
-        );
-      case TopicCoverType.small:
-        return _TopicCoverBarSmall(
-          topic: topic,
-        );
-      case TopicCoverType.list:
-        return _TopicCoverBarList(
-          topic: topic,
-          onBookmarkTap: onBookmarkTap,
-        );
-      default:
-        return Container();
-    }
-  }
+  }) =>
+      _TopicCoverBarSmall(
+        topic: topic,
+        key: key,
+      );
 }
 
-class _TopicCoverBarSmall extends StatelessWidget {
-  const _TopicCoverBarSmall({
+class _TopicCoverBarLarge extends _TopicCoverBar {
+  const _TopicCoverBarLarge({
     required this.topic,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CuratorImage(
-          curator: topic.curationInfo.curator,
-          imageWidth: AppDimens.avatarSize,
-          imageHeight: AppDimens.avatarSize,
-          editorAvatar: AppVectorGraphics.editorialTeamAvatar,
+        Expanded(
+          child: CurationInfoView(
+            curationInfo: topic.curationInfo,
+            style: AppTypography.sansTextNanoLausanne.copyWith(
+              color: AppColors.of(context).textTertiary,
+              height: 1,
+            ),
+            imageDimension: AppDimens.smallAvatarSize,
+          ),
         ),
-        const Spacer(),
         BookmarkButton.topic(
           topic: topic,
         ),
@@ -92,12 +65,12 @@ class _TopicCoverBarSmall extends StatelessWidget {
   }
 }
 
-class _TopicCoverBarList extends StatelessWidget {
-  const _TopicCoverBarList({
+class _TopicCoverBarMedium extends _TopicCoverBar {
+  const _TopicCoverBarMedium({
     required this.topic,
     this.onBookmarkTap,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
   final VoidCallback? onBookmarkTap;
@@ -112,6 +85,11 @@ class _TopicCoverBarList extends StatelessWidget {
           child: CurationInfoView(
             curationInfo: topic.curationInfo,
             shortLabel: false,
+            style: AppTypography.sansTextNanoLausanne.copyWith(
+              color: AppColors.of(context).textTertiary,
+              height: 1,
+            ),
+            imageDimension: AppDimens.smallAvatarSize,
           ),
         ),
         BookmarkButton.topic(
@@ -123,15 +101,13 @@ class _TopicCoverBarList extends StatelessWidget {
   }
 }
 
-class _TopicCoverBarBig extends HookWidget {
-  const _TopicCoverBarBig({
+class _TopicCoverBarSmall extends _TopicCoverBar {
+  const _TopicCoverBarSmall({
     required this.topic,
-    this.onBookmarkTap,
     Key? key,
-  }) : super(key: key);
+  }) : super._(key: key);
 
   final TopicPreview topic;
-  final VoidCallback? onBookmarkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -139,11 +115,19 @@ class _TopicCoverBarBig extends HookWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        PublisherLogoRow(topic: topic),
-        const Spacer(),
+        Expanded(
+          child: CurationInfoView(
+            curationInfo: topic.curationInfo,
+            shortLabel: true,
+            style: AppTypography.sansTextNanoLausanne.copyWith(
+              color: AppColors.of(context).textTertiary,
+              height: 1,
+            ),
+            imageDimension: AppDimens.smallAvatarSize,
+          ),
+        ),
         BookmarkButton.topic(
           topic: topic,
-          onTap: onBookmarkTap,
         ),
       ],
     );

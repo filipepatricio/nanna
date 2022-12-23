@@ -63,7 +63,7 @@ class ShareArticleStickerView extends HookWidget implements BaseShareCompletable
           child: Container(
             padding: const EdgeInsets.all(AppDimens.l),
             decoration: BoxDecoration(
-              color: article.category.color ?? AppColors.background,
+              color: article.category.color ?? AppColors.of(context).backgroundPrimary,
               borderRadius: BorderRadius.circular(4),
             ),
             constraints: const BoxConstraints(

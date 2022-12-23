@@ -83,6 +83,9 @@ class AppDimens {
   /// 24
   static const avatarSize = 24.0;
 
+  /// 24
+  static const smallAvatarSize = 16.0;
+
   /// 64
   static const avatarSizeBig = 64.0;
 
@@ -101,8 +104,14 @@ class AppDimens {
   /// 1.65
   static const exploreArticleCarouselSmallCoverAspectRatio = 2.1;
 
+  static double smallCardWidth(BuildContext context) =>
+      MediaQuery.of(context).size.width * AppDimens.exploreTopicCarouselSmallCoverWidthFactor;
+
+  static double smallCardHeight(BuildContext context) =>
+      smallCardWidth(context) * AppDimens.exploreTopicCarouselSmallCoverAspectRatio;
+
   /// 1.65
-  static const exploreTopicCarouselSmallCoverAspectRatio = 1.3;
+  static const exploreTopicCarouselSmallCoverAspectRatio = 2.1;
 
   /// 0.50
   static const exploreTopicCellSizeFactor = 0.50;
@@ -216,4 +225,7 @@ class AppDimens {
 
   /// 70
   static const pillRadius = 70.0;
+
+  /// 20.0
+  static const publisherLogoSize = 20.0;
 }

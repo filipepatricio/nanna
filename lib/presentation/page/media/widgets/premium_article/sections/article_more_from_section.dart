@@ -65,7 +65,7 @@ class MoreFromSectionListItem extends StatelessWidget {
   }) =>
       MoreFromSectionListItem._(
         type: MoreFromSectionItemType.article,
-        child: ArticleCover.list(
+        child: ArticleCover.medium(
           article: article,
           onTap: onItemTap,
         ),
@@ -77,7 +77,7 @@ class MoreFromSectionListItem extends StatelessWidget {
   }) =>
       MoreFromSectionListItem._(
         type: MoreFromSectionItemType.topic,
-        child: TopicCover.list(
+        child: TopicCover.medium(
           topic: topic,
           onTap: onItemTap,
         ),

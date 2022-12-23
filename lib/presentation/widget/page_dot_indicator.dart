@@ -129,7 +129,7 @@ class _Dot extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.charcoal.withOpacity(alpha),
+        color: AppColors.of(context).iconPrimary.withOpacity(alpha),
       ),
     );
   }

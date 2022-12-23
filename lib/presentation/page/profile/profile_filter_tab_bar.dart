@@ -29,7 +29,7 @@ class ProfileFilterTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(
+      data: Theme.of(context).copyWith(
         splashColor: AppColors.transparent,
         highlightColor: AppColors.transparent,
       ),
@@ -43,9 +43,6 @@ class ProfileFilterTabBar extends StatelessWidget {
         isScrollable: true,
         unselectedLabelStyle: AppTypography.h4Medium,
         labelStyle: AppTypography.h4Medium,
-        labelColor: AppColors.textPrimary,
-        unselectedLabelColor: AppColors.neutralGrey,
-        indicatorColor: AppColors.textPrimary,
         indicatorWeight: _tabIndicatorWeight,
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.s),
         labelPadding: const EdgeInsets.symmetric(horizontal: AppDimens.m),

@@ -78,7 +78,8 @@ class InformedDialog extends HookWidget {
         children: [
           Expanded(
             flex: 6,
-            child: FilledButton.white(
+            child: FilledButton.secondary(
+              context: context,
               text: LocaleKeys.common_cancel.tr(),
               onTap: () => Navigator.of(context, rootNavigator: true).pop(false),
             ),
@@ -86,7 +87,7 @@ class InformedDialog extends HookWidget {
           const Spacer(),
           Expanded(
             flex: 6,
-            child: FilledButton.red(
+            child: FilledButton.negative(
               text: LocaleKeys.settings_deleteAccount_delete.tr(),
               onTap: () => Navigator.of(context, rootNavigator: true).pop(true),
             ),
@@ -111,7 +112,7 @@ class InformedDialog extends HookWidget {
         context: context,
         useRootNavigator: true,
         barrierDismissible: dismissible,
-        barrierColor: AppColors.black40,
+        barrierColor: AppColors.overlay,
         routeSettings: RouteSettings(name: routeName),
         builder: (context) => InformedDialog._(
           title: title,
@@ -153,7 +154,9 @@ class InformedDialog extends HookWidget {
                 const SizedBox(height: AppDimens.l),
                 Text(
                   secondaryText!,
-                  style: AppTypography.b2Regular.copyWith(color: AppColors.neutralGrey),
+                  style: AppTypography.b2Regular.copyWith(
+                    color: AppColors.of(context).textTertiary,
+                  ),
                 ),
               ],
               if (action != null) ...[

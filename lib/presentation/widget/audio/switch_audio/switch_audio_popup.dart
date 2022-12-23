@@ -1,6 +1,5 @@
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ Future<bool> showSwitchAudioPopup(BuildContext context) async {
         MediaQuery.of(context).size.height,
       ),
     ),
-    backgroundColor: AppColors.background,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(
@@ -50,12 +48,14 @@ class SwitchAudioPopup extends StatelessWidget {
             style: AppTypography.b2Bold,
           ),
           const SizedBox(height: AppDimens.l),
-          FilledButton.black(
+          FilledButton.primary(
+            context: context,
             text: tr(LocaleKeys.audio_switchAudio_deny),
             onTap: () => Navigator.pop(context, false),
           ),
           const SizedBox(height: AppDimens.m),
-          FilledButton.white(
+          FilledButton.secondary(
+            context: context,
             text: LocaleKeys.audio_switchAudio_approve.tr(),
             withOutline: true,
             onTap: () => Navigator.pop(context, true),

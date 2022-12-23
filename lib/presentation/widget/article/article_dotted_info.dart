@@ -6,14 +6,14 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 const _publisherMaxWidthRatio = 0.5;
 
 class ArticleDottedInfo extends StatelessWidget {
   const ArticleDottedInfo({
     required this.article,
-    required this.isLight,
+    this.mode = Brightness.dark,
     this.showPublisher = true,
     this.showLogo = true,
     this.showDate = true,
@@ -31,7 +31,7 @@ class ArticleDottedInfo extends StatelessWidget {
         super(key: key);
 
   final MediaItemArticle article;
-  final bool isLight;
+  final Brightness mode;
   final bool showPublisher;
   final bool showLogo;
   final bool showDate;
@@ -44,7 +44,9 @@ class ArticleDottedInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mainColor = color ?? (isLight ? AppColors.white : AppColors.black);
+    final darkMode = mode == Brightness.dark;
+
+    final mainColor = color ?? (darkMode ? null : AppColors.of(context).blackWhiteSecondary);
     final finalTextStyle = textStyle.copyWith(color: mainColor);
     final timeToRead = article.timeToRead;
     final publicationDate = article.publicationDate;
@@ -79,10 +81,10 @@ class ArticleDottedInfo extends StatelessWidget {
                 mainAxisSize: renderInTwoRows ? MainAxisSize.max : MainAxisSize.min,
                 children: [
                   if (showLogo) ...[
-                    if (isLight)
-                      PublisherLogo.light(publisher: article.publisher)
+                    if (darkMode)
+                      PublisherLogo.dark(publisher: article.publisher)
                     else
-                      PublisherLogo.dark(publisher: article.publisher),
+                      PublisherLogo.light(publisher: article.publisher),
                   ],
                   Flexible(
                     child: Text(

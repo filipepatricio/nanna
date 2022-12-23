@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/page/audio/cubit/audio_page_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/page/media/widgets/premium_article/article_audio_view_cover.dart';
+import 'package:better_informed_mobile/presentation/page/media/article/article_image.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -26,11 +26,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 part 'widget/audio_components_view.dart';
 part 'widget/audio_page_app_bar.dart';
 part 'widget/audio_page_body.dart';
-
-final _metadataStyle = AppTypography.metadata1Medium.copyWith(
-  color: AppColors.black,
-  height: 1.12,
-);
 
 class AudioPage extends HookWidget {
   const AudioPage({
@@ -60,7 +55,6 @@ class AudioPage extends HookWidget {
 
     return SnackbarParentView(
       child: Scaffold(
-        backgroundColor: AppColors.background,
         body: Stack(
           children: [
             _AudioPageBody(

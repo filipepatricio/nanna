@@ -25,7 +25,7 @@ class AudioIconButton extends HookWidget {
       child: AudioFloatingControlButton(
         article: article,
         elevation: 0,
-        color: AppColors.lightGrey,
+        color: AppColors.of(context).backgroundSecondary,
         imageHeight: height * _iconHeightImagePercentage,
         progressSize: height,
       ),

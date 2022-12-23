@@ -312,7 +312,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       TargetFocus(
         identify: DailyBriefPageTutorialCoachMarkStep.topicCard.key,
         keyTarget: firstTopicKey,
-        color: AppColors.shadowColor,
+        color: AppColors.overlay,
         enableTargetTab: false,
         pulseVariation: Tween(begin: 1.0, end: 1.0),
         contents: [
