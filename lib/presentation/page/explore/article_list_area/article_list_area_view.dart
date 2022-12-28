@@ -38,12 +38,9 @@ class ArticleListAreaView extends StatelessWidget {
                 final article = e.value;
                 return Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                      child: ArticleCover.medium(
-                        article: article,
-                        onTap: () => context.navigateToArticle(article),
-                      ),
+                    ArticleCover.medium(
+                      article: article,
+                      onTap: () => context.navigateToArticle(article),
                     ),
                     if (index != (area.articles.length - 1)) const CardDivider.cover(),
                   ],
