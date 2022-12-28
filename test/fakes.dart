@@ -48,6 +48,9 @@ class FakeAppUpdateCheckerCubit extends Fake implements AppUpdateCheckerCubit {
       );
 
   @override
+  Future<void> trackAppUpdateDialogShown() async {}
+
+  @override
   Future<void> close() async {}
 }
 

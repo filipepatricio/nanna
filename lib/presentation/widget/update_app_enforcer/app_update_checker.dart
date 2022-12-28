@@ -25,11 +25,14 @@ class AppUpdateChecker extends HookWidget {
       cubit,
       (cubit, state, context) {
         state.maybeMap(
-          needsUpdate: (state) => InformedDialog.showAppUpdate(
-            context,
-            availableVersion: state.availableVersion,
-            onWillPop: () async => !(await cubit.shouldUpdate()),
-          ),
+          needsUpdate: (state) {
+            cubit.trackAppUpdateDialogShown();
+            return InformedDialog.showAppUpdate(
+              context,
+              availableVersion: state.availableVersion,
+              onWillPop: () async => !(await cubit.shouldUpdate()),
+            );
+          },
           orElse: () {},
         );
       },
