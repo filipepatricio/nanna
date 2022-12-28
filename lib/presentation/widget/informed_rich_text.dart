@@ -98,9 +98,10 @@ class _CustomTextPainter extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final underlined = useMemoized(
-      () => _computeUnderlinedOffsets().toList(growable: false),
-      [size, spans],
+      () => _computeUnderlinedOffsets(textScaleFactor).toList(growable: false),
+      [size, spans, textScaleFactor],
     );
 
     final textPainter = useMemoized(
@@ -110,13 +111,14 @@ class _CustomTextPainter extends HookWidget {
           text: TextSpan(children: spans),
           textAlign: textAlign,
           maxLines: maxLines,
+          textScaleFactor: textScaleFactor,
         );
 
         textPainter.layout(maxWidth: size.maxWidth);
 
         return textPainter;
       },
-      [underlined],
+      [underlined, textScaleFactor],
     );
 
     final spansWithoutDecoration = useMemoized(
@@ -172,7 +174,7 @@ class _CustomTextPainter extends HookWidget {
     );
   }
 
-  Iterable<Offset> _computeUnderlinedOffsets() sync* {
+  Iterable<Offset> _computeUnderlinedOffsets(double textScaleFactor) sync* {
     final computedSpans = <InlineSpan>[];
 
     for (final span in spans) {
@@ -184,6 +186,7 @@ class _CustomTextPainter extends HookWidget {
           text: TextSpan(children: startSpans),
           textAlign: textAlign,
           maxLines: maxLines,
+          textScaleFactor: textScaleFactor,
         );
         startWidth.layout(maxWidth: size.maxWidth);
         final startPosition = _computeTextWidth(startWidth);
@@ -195,6 +198,7 @@ class _CustomTextPainter extends HookWidget {
           text: TextSpan(children: computedSpans),
           textAlign: textAlign,
           maxLines: maxLines,
+          textScaleFactor: textScaleFactor,
         );
         endWidth.layout(maxWidth: size.maxWidth);
         final endPosition = _computeTextWidth(endWidth);
