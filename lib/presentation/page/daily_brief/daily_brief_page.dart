@@ -363,11 +363,7 @@ class _IdleContent extends HookWidget {
 
     for (int i = 0; i < section.entries.length; i++) {
       final entry = section.entries[i];
-
-      yield const SizedBox(height: AppDimens.l);
-
       yield BriefEntryCover(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
         briefEntry: entry,
         briefId: brief.id,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
@@ -385,11 +381,8 @@ class _IdleContent extends HookWidget {
         },
       );
 
-      yield const SizedBox(height: AppDimens.l);
-      yield const CardDivider.cover();
-
-      if (i == section.entries.length - 1) {
-        yield const SizedBox(height: AppDimens.xxl);
+      if (i < section.entries.length - 1) {
+        yield const CardDivider.cover();
       }
     }
   }
@@ -530,7 +523,6 @@ class _BriefSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [...children],
           ),
-          const SizedBox(height: AppDimens.m),
         ],
       ),
     );

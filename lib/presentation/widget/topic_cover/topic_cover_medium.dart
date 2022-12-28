@@ -22,11 +22,14 @@ class _TopicCoverMedium extends TopicCover {
     );
     final ownersNote = topic.ownersNote;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppDimens.m),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimens.pageHorizontalMargin,
+        vertical: AppDimens.l,
+      ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

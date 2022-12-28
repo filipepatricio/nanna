@@ -1,10 +1,11 @@
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/material.dart';
 
 class CardDivider extends StatelessWidget {
-  const CardDivider.cover() : _height = 8.0;
+  const CardDivider.cover() : _height = AppDimens.s;
 
-  const CardDivider.section() : _height = 32.0;
+  const CardDivider.section() : _height = AppDimens.xl;
 
   final double _height;
 

@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,6 @@ class ArticleMoreFromSection extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: AppDimens.l,
             horizontal: AppDimens.pageHorizontalMargin,
           ),
           child: Text(
@@ -31,18 +31,15 @@ class ArticleMoreFromSection extends StatelessWidget {
             style: AppTypography.h1Medium,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.m),
-          child: Column(
-            children: items
-                .expand(
-                  (element) => [
-                    element,
-                    if (items.last != element) const Divider(height: AppDimens.xl),
-                  ],
-                )
-                .toList(),
-          ),
+        Column(
+          children: items
+              .expand(
+                (element) => [
+                  element,
+                  if (items.last != element) const CardDivider.cover(),
+                ],
+              )
+              .toList(),
         ),
         const SizedBox(height: AppDimens.l),
       ],
