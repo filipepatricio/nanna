@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_style
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ class BriefEntryCover extends HookWidget {
     required this.briefId,
     this.topicCardKey,
     this.onVisibilityChanged,
-    this.padding,
     Key? key,
   }) : super(key: key);
 
@@ -25,93 +23,89 @@ class BriefEntryCover extends HookWidget {
   final String briefId;
   final GlobalKey? topicCardKey;
   final Function(VisibilityInfo)? onVisibilityChanged;
-  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     final item = briefEntry.item;
     final style = briefEntry.style;
 
-    return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(vertical: AppDimens.sl),
-      child: VisibilityDetector(
-        key: Key(briefEntry.id),
-        onVisibilityChanged: onVisibilityChanged,
-        child: item.map(
-          article: (data) {
-            switch (style.type) {
-              case BriefEntryStyleType.articleCardLarge:
-                return data.article.map(
-                  article: (article) => ArticleCover.large(
-                    article: article,
-                    onTap: () async {
-                      await context.navigateToArticle(
-                        article: article,
-                        briefId: briefId,
-                      );
-                    },
-                    showNote: true,
-                    showRecommendedBy: true,
-                  ),
-                  unknown: (_) => const SizedBox(),
-                );
-              case BriefEntryStyleType.articleCardMedium:
-                return data.article.map(
-                  article: (article) {
-                    if (article.hasImage) {
-                      return ArticleCover.medium(
-                        article: article,
-                        onTap: () async {
-                          await context.navigateToArticle(
-                            article: article,
-                            briefId: briefId,
-                          );
-                        },
-                        showNote: true,
-                        showRecommendedBy: true,
-                      );
-                    } else {
-                      return ArticleCover.large(
-                        article: article,
-                        onTap: () async {
-                          await context.navigateToArticle(
-                            article: article,
-                            briefId: briefId,
-                          );
-                        },
-                        showNote: true,
-                        showRecommendedBy: true,
-                      );
-                    }
+    return VisibilityDetector(
+      key: Key(briefEntry.id),
+      onVisibilityChanged: onVisibilityChanged,
+      child: item.map(
+        article: (data) {
+          switch (style.type) {
+            case BriefEntryStyleType.articleCardLarge:
+              return data.article.map(
+                article: (article) => ArticleCover.large(
+                  article: article,
+                  onTap: () async {
+                    await context.navigateToArticle(
+                      article: article,
+                      briefId: briefId,
+                    );
                   },
-                  unknown: (_) => const SizedBox(),
-                );
-              default:
-                return const SizedBox();
-            }
-          },
-          topicPreview: (data) {
-            switch (style.type) {
-              case BriefEntryStyleType.topicCard:
-                return item.maybeMap(
-                  topicPreview: (data) => TopicCover.large(
-                    key: topicCardKey,
-                    topic: data.topicPreview,
-                    onTap: () async {
-                      await context.navigateToTopic(
-                        topicPreview: data.topicPreview,
-                        briefId: briefId,
-                      );
-                    },
-                  ),
-                  orElse: () => const SizedBox.shrink(),
-                );
-              default:
-                return const SizedBox();
-            }
-          },
-          unknown: (_) => const SizedBox(),
-        ),
+                  showNote: true,
+                  showRecommendedBy: true,
+                ),
+                unknown: (_) => const SizedBox(),
+              );
+            case BriefEntryStyleType.articleCardMedium:
+              return data.article.map(
+                article: (article) {
+                  if (article.hasImage) {
+                    return ArticleCover.medium(
+                      article: article,
+                      onTap: () async {
+                        await context.navigateToArticle(
+                          article: article,
+                          briefId: briefId,
+                        );
+                      },
+                      showNote: true,
+                      showRecommendedBy: true,
+                    );
+                  } else {
+                    return ArticleCover.large(
+                      article: article,
+                      onTap: () async {
+                        await context.navigateToArticle(
+                          article: article,
+                          briefId: briefId,
+                        );
+                      },
+                      showNote: true,
+                      showRecommendedBy: true,
+                    );
+                  }
+                },
+                unknown: (_) => const SizedBox(),
+              );
+            default:
+              return const SizedBox();
+          }
+        },
+        topicPreview: (data) {
+          switch (style.type) {
+            case BriefEntryStyleType.topicCard:
+              return item.maybeMap(
+                topicPreview: (data) => TopicCover.large(
+                  key: topicCardKey,
+                  topic: data.topicPreview,
+                  onTap: () async {
+                    await context.navigateToTopic(
+                      topicPreview: data.topicPreview,
+                      briefId: briefId,
+                    );
+                  },
+                ),
+                orElse: () => const SizedBox.shrink(),
+              );
+            default:
+              return const SizedBox();
+          }
+        },
+        unknown: (_) => const SizedBox(),
       ),
     );
   }

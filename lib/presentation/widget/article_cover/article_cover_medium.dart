@@ -23,55 +23,59 @@ class _ArticleCoverMedium extends ArticleCover {
       [MediaQuery.of(context).size],
     );
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: AppDimens.l),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ArticleProgressOpacity(
-                  article: article,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      PublisherRow(article: article),
-                      const SizedBox(height: AppDimens.sl),
-                      InformedMarkdownBody(
-                        markdown: article.title,
-                        baseTextStyle: AppTypography.serifTitleLargeIvar,
-                        maxLines: 4,
-                      ),
-                    ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimens.pageHorizontalMargin,
+        vertical: AppDimens.l,
+      ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ArticleProgressOpacity(
+                    article: article,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        PublisherRow(article: article),
+                        const SizedBox(height: AppDimens.sl),
+                        InformedMarkdownBody(
+                          markdown: article.title,
+                          baseTextStyle: AppTypography.serifTitleLargeIvar,
+                          maxLines: 4,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: AppDimens.m),
-              _ArticleAspectRatioCover(
-                article: article,
-                coverColor: article.category.color,
-                aspectRatio: _articleSmallCoverAspectRatio,
-                width: coverWidth,
-              ),
+                const SizedBox(width: AppDimens.m),
+                _ArticleAspectRatioCover(
+                  article: article,
+                  coverColor: article.category.color,
+                  aspectRatio: _articleSmallCoverAspectRatio,
+                  width: coverWidth,
+                ),
+              ],
+            ),
+            if (article.shouldShowArticleCoverNote && showNote) ...[
+              const SizedBox(height: AppDimens.m),
+              _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
             ],
-          ),
-          if (article.shouldShowArticleCoverNote && showNote) ...[
-            const SizedBox(height: AppDimens.m),
-            _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
+            const SizedBox(height: AppDimens.sl),
+            ArticleMetadataRow(
+              article: article,
+              onBookmarkTap: onBookmarkTap,
+            ),
           ],
-          const SizedBox(height: AppDimens.sl),
-          ArticleMetadataRow(
-            article: article,
-            onBookmarkTap: onBookmarkTap,
-          ),
-          const SizedBox(height: AppDimens.l),
-        ],
+        ),
       ),
     );
   }
