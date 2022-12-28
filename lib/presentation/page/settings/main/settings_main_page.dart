@@ -36,7 +36,7 @@ class SettingsMainPage extends HookWidget {
             cubit: cubit,
             useSubscriptions: useSubscriptions,
           ),
-          loading: () => const Loader(),
+          loading: Loader.new,
           orElse: Container.new,
         ),
       ),

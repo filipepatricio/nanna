@@ -9,12 +9,14 @@ class SettingsMainItem extends StatelessWidget {
     required this.onTap,
     this.icon,
     this.fontColor,
+    this.iconColor,
   });
 
   final String label;
   final String? icon;
   final VoidCallback onTap;
   final Color? fontColor;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class SettingsMainItem extends StatelessWidget {
                 width: AppDimens.l,
                 height: AppDimens.l,
                 fit: BoxFit.contain,
+                color: iconColor,
               )
           ],
         ),
