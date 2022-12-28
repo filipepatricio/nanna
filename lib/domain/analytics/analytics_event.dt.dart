@@ -301,6 +301,18 @@ class AnalyticsEvent with _$AnalyticsEvent {
       );
 
   factory AnalyticsEvent.purchaseRestored() => AnalyticsEvent._('PurchaseRestored');
+
+  factory AnalyticsEvent.appUpdateDialogShown({
+    required String currentVersion,
+    required String? availableVersion,
+  }) =>
+      AnalyticsEvent._(
+        'AppUpdateDialogShown',
+        {
+          'current_version': currentVersion,
+          'available_version': availableVersion,
+        },
+      );
 }
 
 extension on BookmarkSortConfigName {
