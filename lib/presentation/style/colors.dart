@@ -76,7 +76,7 @@ class AppColors {
     borderTertiary: brandSecondary,
     buttonPrimaryBackground: brandSecondary,
     buttonPrimaryText: brandPrimary,
-    buttonPrimaryBackgroundDisabled: _darkerGrey,
+    buttonPrimaryBackgroundDisabled: brandSecondary,
     buttonSecondaryBackground: brandPrimary,
     buttonSecondaryText: brandSecondary,
     buttonSecondaryFrame: _lightGrey,
@@ -138,6 +138,7 @@ class AppColors {
   static const Color stateBackgroundWarning = Color(0xFFFFF495);
   static const Color stateBackgroundSuccess = Color(0xFF439E5C);
 
+  static const Color categoriesTextPrimary = brandPrimary;
   static const Color categoriesTextSecondary = _darkerGrey;
   static const Color categoriesBackgroundShowMeEverything = _white;
 

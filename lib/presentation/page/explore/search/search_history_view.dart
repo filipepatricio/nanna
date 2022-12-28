@@ -4,9 +4,9 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SearchHistoryView extends HookWidget {
   const SearchHistoryView({
@@ -43,7 +43,7 @@ class SearchHistoryView extends HookWidget {
                         color: AppColors.transparent,
                         child: Row(
                           children: [
-                            SvgPicture.asset(
+                            InformedSvg(
                               AppVectorGraphics.search,
                               color: Theme.of(context).iconTheme.color,
                             ),
@@ -61,9 +61,11 @@ class SearchHistoryView extends HookWidget {
                   ),
                   GestureDetector(
                     onTap: () => explorePageCubit.removeSearchHistoryQuery(query),
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppDimens.s),
-                      child: SvgPicture.asset(AppVectorGraphics.close),
+                    child: const Padding(
+                      padding: EdgeInsets.all(AppDimens.s),
+                      child: InformedSvg(
+                        AppVectorGraphics.close,
+                      ),
                     ),
                   ),
                 ],

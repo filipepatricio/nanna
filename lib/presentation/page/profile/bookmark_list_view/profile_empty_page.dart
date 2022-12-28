@@ -16,7 +16,7 @@ class _BookmarkEmptyView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(AppVectorGraphics.bookmarkOutline),
+          const InformedSvg(AppVectorGraphics.bookmarkOutline),
           const SizedBox(height: AppDimens.m),
           Text.rich(
             textAlign: TextAlign.center,

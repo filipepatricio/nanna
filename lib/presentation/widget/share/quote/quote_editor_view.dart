@@ -6,11 +6,11 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/share/quote/quote_editor_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/share/share_options/share_option_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 Future<void> showQuoteEditor(
   BuildContext context,
@@ -81,7 +81,10 @@ class QuoteEditorView extends HookWidget {
                 const Spacer(),
                 GestureDetector(
                   onTap: () => AutoRouter.of(context).pop(),
-                  child: SvgPicture.asset(AppVectorGraphics.closeBackground),
+                  child: const InformedSvg(
+                    AppVectorGraphics.closeBackground,
+                    colored: false,
+                  ),
                 ),
               ],
             ),

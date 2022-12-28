@@ -23,7 +23,6 @@ class AppVectorGraphics {
   static const String editorialTeamAvatarBig = 'assets/vector_graphics/editorial_team_avatar_big.svg';
 
   static const String launcherLogoInformed = 'assets/vector_graphics/launcher_logo_informed.svg';
-  static const String informedLogoDark = 'assets/vector_graphics/informed_logo_dark_ic.svg';
   static const String informedLogoGreen = 'assets/vector_graphics/informed_logo_green.svg';
 
   static const String share = 'assets/vector_graphics/share.svg';

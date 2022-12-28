@@ -7,8 +7,8 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ReleaseNoteContentView extends StatelessWidget {
   const ReleaseNoteContentView({
@@ -34,21 +34,17 @@ class ReleaseNoteContentView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: AppDimens.xs,
-                  horizontal: AppDimens.s,
+                  horizontal: AppDimens.sl,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.of(context).borderPrimary,
+                  color: AppColors.of(context).backgroundSecondary,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(70),
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Text(
-                      LocaleKeys.releaseNotes_updateLabel.tr(),
-                      style: AppTypography.caption1Regular,
-                    ),
-                  ],
+                child: Text(
+                  LocaleKeys.releaseNotes_updateLabel.tr(),
+                  style: AppTypography.caption1Regular,
                 ),
               ),
               const Spacer(),
@@ -63,7 +59,10 @@ class ReleaseNoteContentView extends StatelessWidget {
                 PaddingTapWidget(
                   onTap: () => context.popRoute(),
                   tapPadding: const EdgeInsets.all(AppDimens.m),
-                  child: SvgPicture.asset(AppVectorGraphics.closeBackground),
+                  child: const InformedSvg(
+                    AppVectorGraphics.closeBackground,
+                    colored: false,
+                  ),
                 ),
               ],
             ],

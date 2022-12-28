@@ -6,13 +6,13 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:better_informed_mobile/presentation/widget/release_notes/video_controls/release_note_video_controls.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:video_player/video_player.dart';
 
 class ReleaseNoteMediaContainer extends HookWidget {
@@ -47,7 +47,10 @@ class ReleaseNoteMediaContainer extends HookWidget {
                 child: PaddingTapWidget(
                   onTap: () => context.popRoute(),
                   tapPadding: const EdgeInsets.all(AppDimens.l),
-                  child: SvgPicture.asset(AppVectorGraphics.closeBackground),
+                  child: const InformedSvg(
+                    AppVectorGraphics.closeBackground,
+                    colored: false,
+                  ),
                 ),
               ),
             ],

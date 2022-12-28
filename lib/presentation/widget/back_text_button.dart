@@ -4,8 +4,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BackTextButton extends StatelessWidget {
   const BackTextButton({
@@ -30,7 +30,7 @@ class BackTextButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(width: AppDimens.xs),
-          SvgPicture.asset(
+          InformedSvg(
             AppVectorGraphics.chevronBack,
             color: color ?? Theme.of(context).iconTheme.color,
           ),

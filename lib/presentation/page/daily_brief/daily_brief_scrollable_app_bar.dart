@@ -6,11 +6,10 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 class DailyBriefScrollableAppBar extends HookWidget {
   const DailyBriefScrollableAppBar({
@@ -55,7 +54,6 @@ class DailyBriefScrollableAppBar extends HookWidget {
     );
 
     return SliverAppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
       pinned: true,
       centerTitle: true,
       elevation: showCalendar ? 0 : 1.0,
@@ -134,7 +132,7 @@ class BriefDate extends StatelessWidget {
               child: AnimatedRotation(
                 turns: showCalendar ? 0.5 : 1,
                 duration: const Duration(milliseconds: AppAnimation.calendarBriefDuration),
-                child: SvgPicture.asset(
+                child: InformedSvg(
                   AppVectorGraphics.chevronDown,
                   color: Theme.of(context).iconTheme.color,
                   height: isTitle ? AppDimens.m : AppDimens.l,

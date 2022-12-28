@@ -33,14 +33,17 @@ Future<void> createVisualChangesReport() async {
   await reportDir.create();
   final imagePrefixes = <String>{};
   for (final testImage in goldenImages) {
-    imagePrefixes.add(testImage.name.split('.')[0]);
+    imagePrefixes.add(testImage.name.basePart);
   }
   print('creating report for prefixes: ${imagePrefixes.join(',')}');
 
   for (final prefix in imagePrefixes) {
     final goldenImagesWithPrefix =
-        goldenImages.where((image) => image.name.startsWith(prefix)).map((image) => image.name).toList();
-    goldenImagesWithPrefix.sort((a, b) => b.compareTo(a));
+        goldenImages.where((image) => image.name.basePart == prefix).map((image) => image.name).toList();
+
+    goldenImagesWithPrefix.sort((a, b) => b.modePart.compareTo(a.modePart));
+    goldenImagesWithPrefix.sort((a, b) => b.devicePart.compareTo(a.devicePart));
+
     await printAndExec(
       'convert',
       [
@@ -63,12 +66,13 @@ Future<String> exec(String executable, List<String> arguments, {String? workingD
   if (processResult.exitCode != 0) {
     throw Exception(
       '''
-${commandLine(executable, arguments)}
-failed with exit code ${processResult.exitCode}
-stdout:
-${indent(processResult.stdout as String)}
-stderr:
-${indent(processResult.stderr as String)}''',
+      ${commandLine(executable, arguments)}
+      failed with exit code ${processResult.exitCode}
+      stdout:
+      ${indent(processResult.stdout as String)}
+      stderr:
+      ${indent(processResult.stderr as String)}
+      ''',
     );
   }
   return (processResult.stdout as String).trim();
@@ -87,4 +91,10 @@ String indent(String s) => s.split('\n').map((line) => '    $line').join('\n');
 
 extension NameExtension on FileSystemEntity {
   String get name => path.substring(path.lastIndexOf('/') + 1);
+}
+
+extension ImageFileParts on String {
+  String get basePart => split('.').first;
+  String get modePart => split('.')[1];
+  String get devicePart => split('.')[2];
 }

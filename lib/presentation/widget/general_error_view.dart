@@ -2,8 +2,8 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class GeneralErrorView extends StatelessWidget {
   GeneralErrorView({
@@ -31,7 +31,7 @@ class GeneralErrorView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (svg != null) ...[
-          SvgPicture.asset(svg),
+          InformedSvg(svg),
           const SizedBox(height: AppDimens.l),
         ],
         Text.rich(

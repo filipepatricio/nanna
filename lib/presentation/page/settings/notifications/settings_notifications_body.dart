@@ -38,7 +38,7 @@ class SettingsNotificationsBody extends HookWidget {
                   Container(
                     padding: const EdgeInsets.all(AppDimens.m),
                     decoration: BoxDecoration(
-                      color: AppColors.of(context).buttonSecondaryFrame,
+                      color: AppColors.of(context).backgroundSecondary,
                       borderRadius: const BorderRadius.all(
                         Radius.circular(AppDimens.s),
                       ),

@@ -13,45 +13,6 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(
-    '${ArticlePaywallView}_(with_short_article)',
-    (tester) async {
-      final article = Article(
-        metadata: TestData.premiumArticleWithAudioAndLocked,
-        content: TestData.fullArticle.content,
-      );
-
-      await tester.startApp(
-        dependencyOverride: (getIt) async {
-          getIt.registerFactory<GetArticlePaywallPreferredPlanUseCase>(
-            () => FakeGetArticlePaywallPreferredPlanUseCase(
-              ArticlePaywallSubscriptionPlanPack.singleTrial(TestData.subscriptionPlansWithTrial.first),
-            ),
-          );
-        },
-        initialRoute: PlaceholderPageRoute(
-          child: SnackbarParentView(
-            child: Scaffold(
-              body: SingleChildScrollView(
-                child: ArticlePaywallView(
-                  article: article,
-                  child: ArticleContentMarkdown(
-                    markdown: article.shortText,
-                    shareTextCallback: (_) {},
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-
-      await tester.pumpAndSettle();
-      await tester.matchGoldenFile();
-    },
-    testConfig: TestConfig.autoHeight(),
-  );
-
-  visualTest(
     '${ArticlePaywallView}_(trial)',
     (tester) async {
       final article = Article(

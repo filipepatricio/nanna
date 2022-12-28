@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/topic/data/topic_preview.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/image/topic_image.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,10 @@ class TopicSquareImageFrame extends StatelessWidget {
                     LocaleKeys.topic_label.tr(),
                     maxLines: 1,
                     textAlign: TextAlign.center,
-                    style: AppTypography.h4Regular.copyWith(height: 1.25),
+                    style: AppTypography.h4Regular.copyWith(
+                      height: 1.25,
+                      color: AppColors.categoriesTextPrimary,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

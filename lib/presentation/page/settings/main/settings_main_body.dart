@@ -113,9 +113,16 @@ class SettingsMainBody extends HookWidget {
         SettingsMainItem(
           label: LocaleKeys.common_signOut.tr(),
           onTap: cubit.signOut,
-          fontColor: AppColors.of(context).textSecondary,
+          fontColor: AppColors.of(context).textTertiary,
         ),
-        const _VersionBox(),
+        const SizedBox(height: AppDimens.xl),
+        const Padding(
+          padding: EdgeInsets.only(left: AppDimens.l),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: VersionLabel(),
+          ),
+        ),
         const AudioPlayerBannerPlaceholder(),
       ],
     );
@@ -162,27 +169,6 @@ class SettingsMainBody extends HookWidget {
       SnackbarMessage.simple(
         message: LocaleKeys.profile_emailCopied.tr(),
         type: SnackbarMessageType.positive,
-      ),
-    );
-  }
-}
-
-class _VersionBox extends StatelessWidget {
-  const _VersionBox();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: EdgeInsets.only(left: AppDimens.l),
-        child: SizedBox(
-          height: 54,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: VersionLabel(),
-          ),
-        ),
       ),
     );
   }

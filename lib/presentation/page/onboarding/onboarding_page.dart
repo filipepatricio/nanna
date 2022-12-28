@@ -13,10 +13,10 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/page_dot_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 final List<Widget> _pageList = [
   const OnboardingPublishersSlide(),
@@ -174,7 +174,7 @@ class _NextPageButton extends StatelessWidget {
           curve: Curves.easeIn,
         );
       },
-      icon: SvgPicture.asset(
+      icon: const InformedSvg(
         AppVectorGraphics.fullArrowRight,
         fit: BoxFit.contain,
       ),

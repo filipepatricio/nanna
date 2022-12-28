@@ -2,11 +2,11 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CuratorImage extends HookWidget {
   const CuratorImage({
@@ -53,8 +53,9 @@ class CuratorImage extends HookWidget {
                 height: imageHeight,
               ),
             )
-          : SvgPicture.asset(
+          : InformedSvg(
               curator is ExpertCurator ? AppVectorGraphics.expertAvatar : editorAvatar,
+              colored: false,
               width: imageWidth,
               height: imageHeight,
             ),

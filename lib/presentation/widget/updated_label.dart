@@ -10,12 +10,15 @@ class UpdatedLabel extends StatelessWidget {
     this.fontSize = 14,
     this.textStyle = AppTypography.systemText,
     this.withPrefix = true,
-    Key? key,
-  }) : super(key: key);
+    this.color,
+    super.key,
+  });
+
   final DateTime dateTime;
   final double? fontSize;
   final TextStyle textStyle;
   final bool withPrefix;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +31,7 @@ class UpdatedLabel extends StatelessWidget {
       style: textStyle.copyWith(
         height: 1,
         fontSize: fontSize,
+        color: color,
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,10 @@ class InformedPill extends StatelessWidget {
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: AppTypography.b3Regular.copyWith(height: 1.1),
+          style: AppTypography.b3Regular.copyWith(
+            color: AppColors.categoriesTextPrimary,
+            height: 1.1,
+          ),
         ),
       ),
     );

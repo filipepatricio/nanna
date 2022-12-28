@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ShareOptionItem extends StatelessWidget {
   const ShareOptionItem({
@@ -33,7 +33,7 @@ class ShareOptionItem extends StatelessWidget {
               ),
             ),
             if (svg != null) ...[
-              SvgPicture.asset(
+              InformedSvg(
                 svg,
                 width: AppDimens.l,
                 height: AppDimens.l,
