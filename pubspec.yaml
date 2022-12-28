@@ -107,6 +107,7 @@ dependencies:
   retry: 3.1.0
   platform: 3.1.0
   app_settings: 4.1.8
+  adaptive_theme: 3.1.1
 
 dev_dependencies:
   flutter_test:
