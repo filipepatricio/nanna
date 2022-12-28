@@ -16,48 +16,53 @@ class _ArticleCoverLarge extends ArticleCover {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (article.hasImage) ...[
-            const SizedBox(height: AppDimens.m),
-            _ArticleAspectRatioCover(
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimens.pageHorizontalMargin,
+        vertical: AppDimens.l,
+      ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (article.hasImage) ...[
+              _ArticleAspectRatioCover(
+                article: article,
+                coverColor: article.category.color,
+                aspectRatio: _articleLargeCoverAspectRatio,
+                width: double.infinity,
+              ),
+              const SizedBox(height: AppDimens.m),
+            ],
+            ArticleProgressOpacity(
               article: article,
-              coverColor: article.category.color,
-              aspectRatio: _articleLargeCoverAspectRatio,
-              width: double.infinity,
-            ),
-          ],
-          const SizedBox(height: AppDimens.m),
-          ArticleProgressOpacity(
-            article: article,
-            child: Column(
-              children: [
-                PublisherRow(article: article),
-                const SizedBox(height: AppDimens.s),
-                Text(
-                  article.strippedTitle,
-                  style: AppTypography.articleTitle.copyWith(
-                    fontSize: 26,
-                    letterSpacing: 0.02,
+              child: Column(
+                children: [
+                  PublisherRow(article: article),
+                  const SizedBox(height: AppDimens.s),
+                  Text(
+                    article.strippedTitle,
+                    style: AppTypography.articleTitle.copyWith(
+                      fontSize: 26,
+                      letterSpacing: 0.02,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: AppDimens.m),
-          if (article.shouldShowArticleCoverNote && showNote) ...[
-            _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
             const SizedBox(height: AppDimens.m),
+            if (article.shouldShowArticleCoverNote && showNote) ...[
+              _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
+              const SizedBox(height: AppDimens.m),
+            ],
+            ArticleMetadataRow(
+              article: article,
+            ),
           ],
-          ArticleMetadataRow(
-            article: article,
-          ),
-        ],
+        ),
       ),
     );
   }

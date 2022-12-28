@@ -5,8 +5,8 @@ import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dar
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
+import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/track/general_event_tracker/general_event_tracker.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
@@ -36,36 +36,35 @@ class TopicMediaItemsList extends HookWidget {
       [topic],
     );
 
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            final entry = topic.entries[index];
-            return entry.item.map(
-              article: (item) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: AppDimens.xl),
-                  child: ViewVisibilityNotifier(
-                    detectorKey: Key(item.slug),
-                    onVisible: () {
-                      _trackReadingListBrowse(index);
-                    },
-                    borderFraction: 0.6,
-                    child: _ArticleItemView(
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final entry = topic.entries[index];
+          return entry.item.map(
+            article: (item) {
+              return ViewVisibilityNotifier(
+                detectorKey: Key(item.slug),
+                onVisible: () {
+                  _trackReadingListBrowse(index);
+                },
+                borderFraction: 0.6,
+                child: Column(
+                  children: [
+                    _ArticleItemView(
                       mediaItemKey: index == 0 ? mediaItemKey : null,
                       entryStyle: entry.style,
                       article: item,
                       onTap: () => _navigateToArticle(context, index),
                     ),
-                  ),
-                );
-              },
-              unknown: (_) => const SizedBox.shrink(),
-            );
-          },
-          childCount: entryList.length,
-        ),
+                    if (index < entryList.length - 1) const CardDivider.cover(),
+                  ],
+                ),
+              );
+            },
+            unknown: (_) => const SizedBox.shrink(),
+          );
+        },
+        childCount: entryList.length,
       ),
     );
   }
