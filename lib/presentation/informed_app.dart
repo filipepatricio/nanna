@@ -26,8 +26,15 @@ class InformedApp extends HookWidget {
   final MainRouter? mainRouter;
   final AdaptiveThemeMode? themeMode;
 
-  Widget responsiveBuilder(Widget? child) => ResponsiveWrapper.builder(
-        child,
+  Widget responsiveBuilder(MediaQueryData mediaQuery, Widget? child) => ResponsiveWrapper.builder(
+        // Override textScaleFactor from device settings
+        child!,
+        mediaQueryData: mediaQuery.copyWith(
+          textScaleFactor: mediaQuery.textScaleFactor.clamp(
+            DeviceType.small.scaleFactor,
+            DeviceType.tablet.scaleFactor,
+          ),
+        ),
         maxWidth: AppDimens.maxWidth,
         minWidth: AppDimens.minWidth,
         defaultScale: true,
@@ -74,8 +81,9 @@ class InformedApp extends HookWidget {
                     routeInformationParser: router.defaultRouteParser(),
                     routerDelegate: router.delegate(),
                     builder: (context, child) {
+                      final mediaQuery = MediaQuery.of(context);
                       return NoScrollGlow(
-                        child: responsiveBuilder(child),
+                        child: responsiveBuilder(mediaQuery, child),
                       );
                     },
                   );
@@ -115,8 +123,9 @@ class InformedApp extends HookWidget {
                     ],
                   ),
                   builder: (context, child) {
+                    final mediaQuery = MediaQuery.of(context);
                     return NoScrollGlow(
-                      child: responsiveBuilder(child),
+                      child: responsiveBuilder(mediaQuery, child),
                     );
                   },
                 );
