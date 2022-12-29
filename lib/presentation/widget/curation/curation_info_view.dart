@@ -53,7 +53,7 @@ class CurationInfoView extends StatelessWidget {
             child: Text.rich(
               TextSpan(
                 style: style ??
-                    AppTypography.sansTextSmallLausanne.copyWith(
+                    AppTypography.sansTextNanoLausanne.copyWith(
                       color: AppColors.of(context).textTertiary,
                       height: 1,
                     ),
@@ -62,7 +62,7 @@ class CurationInfoView extends StatelessWidget {
                   TextSpan(
                     text: curationInfo.curator.name,
                     style: style ??
-                        AppTypography.sansTextSmallLausanne.copyWith(
+                        AppTypography.sansTextNanoLausanne.copyWith(
                           color: AppColors.of(context).textTertiary,
                           height: 1,
                         ),
