@@ -39,6 +39,7 @@ class _ArticleCoverSmall extends ArticleCover {
               ArticleProgressOpacity(
                 article: article,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     PublisherRow(article: article),
                     const SizedBox(height: AppDimens.sl),
