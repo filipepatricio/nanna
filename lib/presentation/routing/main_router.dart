@@ -33,13 +33,18 @@ import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
 
 const magicLinkSegment = 'magic';
 
+/// Tabs
 const todayTabPath = 'todays_topics';
 const exploreTabPath = 'explore';
 const profileTabPath = 'profile';
+const tabsPaths = [todayTabPath, exploreTabPath, profileTabPath];
 
+/// Main
 const topicsPath = 'topics';
 const articlePath = 'articles';
 const subscribePath = 'subscribe';
+
+/// Settings
 const unsubscribeNotificationsPath = 'unsubscribe';
 const settingsPath = 'settings';
 const notificationsPath = 'notifications';
@@ -86,6 +91,7 @@ const mainPageRoute = CustomRoute(
     ),
     AutoRoute(path: settingsPath, page: SettingsMainPage),
     AutoRoute(path: notificationsPath, page: SettingsNotificationsPage),
+    AutoRoute(path: appearancePath, page: SettingsAppearancePage),
   ],
 );
 
