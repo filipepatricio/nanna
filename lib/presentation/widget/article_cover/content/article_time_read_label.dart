@@ -24,7 +24,7 @@ class ArticleTimeReadLabel extends StatelessWidget {
               const SizedBox(width: AppDimens.s),
               Text(
                 LocaleKeys.article_read.tr(),
-                style: AppTypography.sansTextSmallLausanne.copyWith(
+                style: AppTypography.sansTextNanoLausanne.copyWith(
                   color: AppColors.of(context).textTertiary,
                 ),
                 textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false),
@@ -36,7 +36,7 @@ class ArticleTimeReadLabel extends StatelessWidget {
                 ? const SizedBox()
                 : Text(
                     LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
-                    style: AppTypography.sansTextSmallLausanne.copyWith(
+                    style: AppTypography.sansTextNanoLausanne.copyWith(
                       color: AppColors.of(context).textTertiary,
                     ),
                     textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false),
