@@ -137,6 +137,16 @@ class MainCubit extends Cubit<MainState> {
       }
     }
 
+    final finalPath = path.split('/');
+    if (tabsPaths.toSet().intersection(finalPath.toSet()).isNotEmpty) {
+      return MainState.multiNavigate(
+        [
+          const MainPageRoute().path,
+          ...finalPath,
+        ],
+      );
+    }
+
     return MainState.navigate(const MainPageRoute().path + path);
   }
 
