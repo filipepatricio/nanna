@@ -296,10 +296,10 @@ class _CustomHighlightTextPainter extends CustomPainter {
 
   void _paintHighlight(double startPos, LineMetrics line, double endPos, Canvas canvas) {
     final path = Path()
-      ..moveTo(line.left + startPos - 5, line.height * 0.3 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + endPos + 3, line.height * 0.35 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + endPos + 5, line.height * 0.95 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + startPos - 3, line.height * 0.92 + _calculateBaselineOffset(line))
+      ..moveTo(line.left + startPos - 2, line.height * 0.15 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + endPos + 2, line.height * 0.15 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + endPos + 2, line.height * 0.95 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + startPos - 2, line.height * 0.95 + _calculateBaselineOffset(line))
       ..close();
 
     canvas.drawPath(path, _paint);
