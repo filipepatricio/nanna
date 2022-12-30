@@ -28,9 +28,9 @@ class TutorialTooltip extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DecoratedBox(
-          decoration: const BoxDecoration(
-            color: AppColors.snackBarInformative,
-            borderRadius: BorderRadius.all(
+          decoration: BoxDecoration(
+            color: AppColors.of(context).blackWhiteSecondary,
+            borderRadius: const BorderRadius.all(
               Radius.circular(AppDimens.m),
             ),
             boxShadow: cardShadows,
@@ -41,7 +41,7 @@ class TutorialTooltip extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: AppDimens.s),
                   child: InformedMarkdownBody(

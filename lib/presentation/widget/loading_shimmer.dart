@@ -5,7 +5,7 @@ import 'package:shimmer/shimmer.dart';
 
 class LoadingShimmer extends StatelessWidget {
   const LoadingShimmer({
-    required this.mainColor,
+    this.mainColor,
     this.baseColor,
     this.enabled = true,
     this.child,
@@ -29,7 +29,6 @@ class LoadingShimmer extends StatelessWidget {
     Widget? child,
     Key? key,
   }) : this(
-          mainColor: AppColors.brandSecondary,
           enabled: enabled,
           padding: padding,
           height: height,
@@ -39,7 +38,7 @@ class LoadingShimmer extends StatelessWidget {
           key: key,
         );
 
-  final Color mainColor;
+  final Color? mainColor;
   final Color? baseColor;
   final bool enabled;
   final EdgeInsets padding;
@@ -50,22 +49,19 @@ class LoadingShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseColorSolved = baseColor ?? AppColors.of(context).borderPrimary;
+    final mainColorSolved = mainColor ?? AppColors.of(context).shadowDividerColors[0];
+    final baseColorSolved = baseColor ?? AppColors.of(context).shadowDividerColors[1];
 
     return child != null
         ? Shimmer.fromColors(
             enabled: enabled && !kIsTest,
             direction: ShimmerDirection.ltr,
             baseColor: baseColorSolved,
-            highlightColor: mainColor,
+            highlightColor: mainColorSolved,
             child: child!,
           )
         : ClipRRect(
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                radius,
-              ),
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(radius)),
             child: Container(
               padding: padding,
               height: height,
@@ -74,8 +70,12 @@ class LoadingShimmer extends StatelessWidget {
                 enabled: enabled && !kIsTest,
                 direction: ShimmerDirection.ltr,
                 baseColor: baseColorSolved,
-                highlightColor: mainColor,
-                child: Container(color: baseColor),
+                highlightColor: mainColorSolved,
+                child: Container(
+                  color: mainColorSolved,
+                  height: height,
+                  width: width,
+                ),
               ),
             ),
           );

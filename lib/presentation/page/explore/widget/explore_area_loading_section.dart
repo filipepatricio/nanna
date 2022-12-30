@@ -42,53 +42,37 @@ class _PillsArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final row = Row(
       children: const [
-        _Pill(width: 50),
-        SizedBox(width: AppDimens.s),
-        _Pill(width: 50),
-        SizedBox(width: AppDimens.s),
-        _Pill(width: 50),
-        SizedBox(width: AppDimens.s),
-        _Pill(width: 50),
+        _Pill(),
+        SizedBox(width: AppDimens.m),
+        _Pill(),
+        SizedBox(width: AppDimens.m),
+        _Pill(),
+        SizedBox(width: AppDimens.m),
+        _Pill(),
       ],
     );
 
-    return LoadingShimmer.defaultColor(
-      child: SizedBox(
-        height: AppDimens.explorePillHeight(context),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-          physics: const NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          child: row,
-        ),
+    return SizedBox(
+      height: AppDimens.explorePillHeight(context),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+        physics: const NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: row,
       ),
     );
   }
 }
 
 class _Pill extends StatelessWidget {
-  const _Pill({
-    required this.width,
-    Key? key,
-  }) : super(key: key);
-
-  final double width;
+  const _Pill();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return LoadingShimmer.defaultColor(
+      width: AppDimens.xxxc * 1.5,
       height: AppDimens.explorePillHeight(context),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppDimens.pillRadius),
-        ),
-        border: Border.all(width: 1),
-      ),
-      padding: const EdgeInsets.symmetric(
-        vertical: AppDimens.sl,
-        horizontal: AppDimens.l,
-      ),
-      child: SizedBox(width: width),
+      radius: AppDimens.pillRadius,
     );
   }
 }
@@ -100,23 +84,21 @@ class _StreamArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width * AppDimens.exploreTopicCellSizeFactor;
 
-    return LoadingShimmer.defaultColor(
-      child: SizedBox(
-        height: size,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-          physics: const NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          children: [
-            _StreamCell(size: size),
-            const SizedBox(width: AppDimens.m),
-            _StreamCell(size: size),
-            const SizedBox(width: AppDimens.m),
-            _StreamCell(size: size),
-            const SizedBox(width: AppDimens.m),
-            _StreamCell(size: size),
-          ],
-        ),
+    return SizedBox(
+      height: size,
+      child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+        physics: const NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        children: [
+          _StreamCell(size: size),
+          const SizedBox(width: AppDimens.m),
+          _StreamCell(size: size),
+          const SizedBox(width: AppDimens.m),
+          _StreamCell(size: size),
+          const SizedBox(width: AppDimens.m),
+          _StreamCell(size: size),
+        ],
       ),
     );
   }
@@ -132,14 +114,10 @@ class _StreamCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return LoadingShimmer.defaultColor(
       width: size,
       height: size * 2,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(AppDimens.defaultRadius),
-        ),
-      ),
+      radius: AppDimens.defaultRadius,
     );
   }
 }
