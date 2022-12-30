@@ -7,10 +7,10 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SubscriptionCard extends HookWidget {
   const SubscriptionCard({
@@ -47,7 +47,6 @@ class SubscriptionCard extends HookWidget {
           child: state.map(
             loading: (_) => const _LoadingContent(),
             free: (data) => _IdleContent(
-              icon: AppVectorGraphics.informedLogoGreen,
               typeLabel: LocaleKeys.subscription_free.tr(),
               callToActionLabel: Text(
                 LocaleKeys.subscription_goPremium.tr(),
@@ -55,7 +54,6 @@ class SubscriptionCard extends HookWidget {
               ),
             ),
             trial: (data) => _IdleContent(
-              icon: AppVectorGraphics.informedLogoGreen,
               typeLabel: LocaleKeys.subscription_trial.tr(),
               callToActionLabel: Text(
                 LocaleKeys.subscription_endsIn.tr(
@@ -65,7 +63,6 @@ class SubscriptionCard extends HookWidget {
               ),
             ),
             premium: (data) => _IdleContent(
-              icon: AppVectorGraphics.informedLogoGreen,
               typeLabel: LocaleKeys.subscription_premium.tr(),
               callToActionLabel: Text(
                 LocaleKeys.subscription_membership.tr(),
@@ -87,20 +84,21 @@ class _LoadingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: const [
         LoadingShimmer.defaultColor(
           child: ClipRRect(
-            borderRadius: const BorderRadius.all(
+            borderRadius: BorderRadius.all(
               Radius.circular(AppDimens.s),
             ),
-            child: SvgPicture.asset(
+            child: InformedSvg(
               AppVectorGraphics.informedLogoGreen,
+              colored: false,
               height: AppDimens.xxxl,
             ),
           ),
         ),
-        const SizedBox(width: AppDimens.m),
-        const Expanded(
+        SizedBox(width: AppDimens.m),
+        Expanded(
           child: LoadingShimmer.defaultColor(
             height: 20,
             radius: AppDimens.m,
@@ -113,13 +111,11 @@ class _LoadingContent extends StatelessWidget {
 
 class _IdleContent extends StatelessWidget {
   const _IdleContent({
-    required this.icon,
     required this.typeLabel,
     required this.callToActionLabel,
     Key? key,
   }) : super(key: key);
 
-  final String icon;
   final String typeLabel;
   final Widget callToActionLabel;
 
@@ -127,12 +123,13 @@ class _IdleContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.all(
+        const ClipRRect(
+          borderRadius: BorderRadius.all(
             Radius.circular(AppDimens.modalRadius),
           ),
-          child: SvgPicture.asset(
-            icon,
+          child: InformedSvg(
+            AppVectorGraphics.informedLogoGreen,
+            colored: false,
             height: AppDimens.xxxl,
           ),
         ),

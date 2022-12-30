@@ -35,9 +35,10 @@ class _ChangeSubscriptionCard extends StatelessWidget {
               borderRadius: const BorderRadius.all(
                 Radius.circular(AppDimens.s),
               ),
-              child: SvgPicture.asset(
+              child: InformedSvg(
                 icon,
                 height: AppDimens.xxxl,
+                colored: false,
               ),
             ),
             const SizedBox(width: AppDimens.m),

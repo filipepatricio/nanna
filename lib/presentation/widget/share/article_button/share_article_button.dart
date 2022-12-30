@@ -15,13 +15,13 @@ class ShareArticleButton extends HookWidget {
   const ShareArticleButton({
     required this.article,
     this.buttonBuilder,
-    this.backgroundColor,
+    this.color,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final WidgetBuilder? buttonBuilder;
-  final Color? backgroundColor;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class ShareArticleButton extends HookWidget {
             cubit: cubit,
             article: article,
             buttonBuilder: buttonBuilder,
-            backgroundColor: backgroundColor,
+            color: color,
           ),
         ),
         if (state == ShareArticleButtonState.processing)
@@ -72,13 +72,13 @@ class _Button extends StatelessWidget {
     required this.cubit,
     required this.article,
     required this.buttonBuilder,
-    required this.backgroundColor,
+    required this.color,
     Key? key,
   }) : super(key: key);
 
   final MediaItemArticle article;
   final WidgetBuilder? buttonBuilder;
-  final Color? backgroundColor;
+  final Color? color;
   final ShareArticleButtonCubit cubit;
 
   @override
@@ -87,6 +87,7 @@ class _Button extends StatelessWidget {
 
     if (builder == null) {
       return ShareButton(
+        iconColor: color,
         onTap: (shareOption) => cubit.share(shareOption, article),
       );
     } else {

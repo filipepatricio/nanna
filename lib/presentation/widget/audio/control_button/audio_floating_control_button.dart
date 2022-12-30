@@ -10,9 +10,9 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/audio_control_button_state_ext.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/control_button/current_audio_floating_progress.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/switch_audio/switch_audio_popup.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 enum AudioFloatingControlButtonMode { white, colored }
 
@@ -98,7 +98,7 @@ class AudioFloatingControlButton extends HookWidget {
           ? RoundedRectangleBorder(
               side: BorderSide(
                 color: mode == AudioFloatingControlButtonMode.colored
-                    ? AppColors.of(context).borderPrimary
+                    ? AppColors.of(context).backgroundSecondary
                     : AppColors.of(context).blackWhiteSecondary,
               ),
               borderRadius: BorderRadius.circular(AppDimens.xl),
@@ -115,12 +115,12 @@ class AudioFloatingControlButton extends HookWidget {
               padding: EdgeInsets.only(
                 left: state.imagePath.contains('play') ? AppDimens.xxs : AppDimens.zero,
               ),
-              child: SvgPicture.asset(
+              child: InformedSvg(
                 state.imagePath,
                 height: imageHeight,
                 color: mode == AudioFloatingControlButtonMode.colored
                     ? AppColors.of(context).iconPrimary.withAlpha(state.imageAlpha)
-                    : AppColors.of(context).blackWhiteSecondary,
+                    : AppColors.stateTextSecondary,
               ),
             ),
           ),

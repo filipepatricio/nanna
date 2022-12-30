@@ -17,7 +17,7 @@ class SnackbarMessage with _$SnackbarMessage {
   }) = _SnackbarMessageCustom;
 }
 
-enum SnackbarMessageType { positive, negative, informative }
+enum SnackbarMessageType { positive, negative, informative, subscription }
 
 class SnackbarAction {
   SnackbarAction({

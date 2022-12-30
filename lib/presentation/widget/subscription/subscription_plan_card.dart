@@ -113,7 +113,10 @@ class SubscriptionPlanCard extends HookWidget {
                       ),
                       child: Text(
                         LocaleKeys.subscription_off.tr(args: [('${plan.discountPercentage}')]),
-                        style: AppTypography.b2Regular.copyWith(height: 1),
+                        style: AppTypography.b2Regular.copyWith(
+                          height: 1,
+                          color: AppColors.of(context).buttonAccentText,
+                        ),
                       ),
                     ),
                 ],

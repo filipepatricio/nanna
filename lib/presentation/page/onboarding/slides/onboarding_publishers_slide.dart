@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:better_informed_mobile/presentation/util/theme_util.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPublishersSlide extends StatelessWidget {
@@ -31,7 +31,9 @@ class OnboardingPublishersSlide extends StatelessWidget {
                 left: AppDimens.zero,
                 right: AppDimens.zero,
                 child: Image.asset(
-                  AppRasterGraphics.onboardingPublishers,
+                  Theme.of(context).isDark
+                      ? AppRasterGraphics.onboardingPublishersDark
+                      : AppRasterGraphics.onboardingPublishers,
                   alignment: Alignment.topCenter,
                   fit: BoxFit.cover,
                 ),

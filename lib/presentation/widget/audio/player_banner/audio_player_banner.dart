@@ -9,9 +9,9 @@ import 'package:better_informed_mobile/presentation/widget/audio/control_button/
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_state.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/progress_bar/current_audio_progress_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 class AudioPlayerBanner extends HookWidget {
   const AudioPlayerBanner({
@@ -102,12 +102,10 @@ class AudioPlayerBanner extends HookWidget {
                             _AudioControlButton(state: state),
                             GestureDetector(
                               behavior: HitTestBehavior.opaque,
-                              onTap: () => cubit.stop(),
-                              child: Padding(
-                                padding: const EdgeInsets.all(AppDimens.s + AppDimens.xs),
-                                child: SvgPicture.asset(
-                                  AppVectorGraphics.close,
-                                ),
+                              onTap: cubit.stop,
+                              child: const Padding(
+                                padding: EdgeInsets.all(AppDimens.s + AppDimens.xs),
+                                child: InformedSvg(AppVectorGraphics.close),
                               ),
                             ),
                           ],
@@ -147,10 +145,9 @@ class _AudioControlButton extends StatelessWidget {
       child: FittedBox(
         child: state.maybeMap(
           visible: (state) {
-            return AudioFloatingControlButton.forCurrentAudio(
+            return const AudioFloatingControlButton.forCurrentAudio(
               elevation: 0,
               progressSize: AppDimens.audioControlButtonSize,
-              color: AppColors.of(context).backgroundSecondary,
             );
           },
           orElse: () {},

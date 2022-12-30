@@ -3,9 +3,9 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class MagicLinkContent extends StatelessWidget {
   const MagicLinkContent({
@@ -24,9 +24,9 @@ class MagicLinkContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: AppDimens.m),
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
-              child: SvgPicture.asset(
+              child: InformedSvg(
                 AppVectorGraphics.launcherLogoInformed,
                 width: AppDimens.logoWidth,
                 height: AppDimens.logoHeight,

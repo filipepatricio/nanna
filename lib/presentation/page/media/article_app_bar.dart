@@ -7,10 +7,10 @@ import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   const ArticleAppBar({
@@ -35,9 +35,14 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final backgroundColor = AppColors.of(context).backgroundPrimary;
     final animationController = useAnimationController(duration: const Duration(milliseconds: 150));
-    final animation = ColorTween(
-      begin: article.hasImage ? (article.category.color ?? backgroundColor) : backgroundColor,
+    final backgroundColorAnimation = ColorTween(
+      begin: article.category.color ?? backgroundColor,
       end: backgroundColor,
+    ).chain(CurveTween(curve: Curves.easeIn)).animate(animationController);
+
+    final foregroundColorAnimation = ColorTween(
+      begin: AppColors.categoriesTextPrimary,
+      end: AppColors.of(context).textPrimary,
     ).chain(CurveTween(curve: Curves.easeIn)).animate(animationController);
 
     useEffect(
@@ -61,31 +66,35 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
     );
 
     return AnimatedBuilder(
-      animation: animation,
-      builder: (context, bookmark) => ClipRect(
+      animation: backgroundColorAnimation,
+      builder: (context, _) => ClipRect(
         child: InformedCupertinoAppBar(
-          backgroundColor: animation.value,
+          backgroundColor: backgroundColorAnimation.value,
           leading: BackTextButton(
+            color: foregroundColorAnimation.value,
             text: fromTopic ? LocaleKeys.topic_label.tr() : LocaleKeys.common_back.tr(),
           ),
           actions: [
-            bookmark!,
+            BookmarkButton.article(
+              article: article,
+              topicId: topicId,
+              briefId: briefId,
+              color: foregroundColorAnimation.value,
+            ),
             const SizedBox(width: AppDimens.m),
             Align(
               alignment: Alignment.center,
               child: ShareArticleButton(
                 article: article,
-                buttonBuilder: (context) => SvgPicture.asset(AppVectorGraphics.share),
+                buttonBuilder: (context) => InformedSvg(
+                  AppVectorGraphics.share,
+                  color: foregroundColorAnimation.value,
+                ),
               ),
             ),
             const SizedBox(width: AppDimens.ml),
           ],
         ),
-      ),
-      child: BookmarkButton.article(
-        article: article,
-        topicId: topicId,
-        briefId: briefId,
       ),
     );
   }

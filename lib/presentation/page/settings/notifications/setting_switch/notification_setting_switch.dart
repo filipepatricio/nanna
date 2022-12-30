@@ -200,6 +200,7 @@ class _Idle extends StatelessWidget {
                 value: value,
                 shape: const CircleBorder(),
                 activeColor: type.activeColor(context),
+                checkColor: AppColors.of(context).buttonPrimaryText,
                 visualDensity: VisualDensity.compact,
                 onChanged: (value) => onChange(value!),
               ),

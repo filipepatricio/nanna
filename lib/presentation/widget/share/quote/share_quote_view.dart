@@ -8,13 +8,13 @@ import 'package:better_informed_mobile/presentation/style/shadows.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/images.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_background_view.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article/share_article_view_content.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 const _stickerWidth = 480.0;
 const _stickerMaxHeight = 640.0;
@@ -105,14 +105,15 @@ class ShareQuoteStickerView extends HookWidget implements BaseShareCompletable {
                   ),
                 ),
                 const SizedBox(height: AppDimens.xl),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
                   child: Align(
                     alignment: Alignment.centerRight,
-                    child: SvgPicture.asset(
+                    child: InformedSvg(
                       AppVectorGraphics.launcherLogoInformed,
                       width: 140,
                       height: 32,
+                      color: AppColors.categoriesTextPrimary,
                     ),
                   ),
                 ),

@@ -3,6 +3,8 @@ import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dar
 import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/appearance/settings_appearance_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
@@ -62,6 +64,42 @@ void main() {
     );
 
     expect(find.byType(SettingsNotificationsPage), findsOneWidget);
+  });
+
+  testWidgets('profile settings link navigates to settings', (tester) async {
+    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/profile/settings'));
+
+    await tester.startApp(
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+      },
+    );
+
+    expect(find.byType(SettingsMainPage), findsOneWidget);
+  });
+
+  testWidgets('profile appearance link navigates to appearance settings', (tester) async {
+    when(appLinkDataSource.getInitialAction())
+        .thenAnswer((_) async => Uri.parse('http://informed/profile/settings/appearance'));
+
+    await tester.startApp(
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+      },
+    );
+
+    expect(find.byType(SettingsAppearancePage), findsOneWidget);
+  });
+  testWidgets('base settings link navigates to settings', (tester) async {
+    when(appLinkDataSource.getInitialAction()).thenAnswer((_) async => Uri.parse('http://informed/settings'));
+
+    await tester.startApp(
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<AppLinkDataSource>(() => appLinkDataSource);
+      },
+    );
+
+    expect(find.byType(SettingsMainPage), findsOneWidget);
   });
 
   testWidgets('article link navigates to article page', (tester) async {

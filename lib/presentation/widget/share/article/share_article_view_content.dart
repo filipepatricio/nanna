@@ -1,10 +1,11 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ShareArticleViewContent extends StatelessWidget {
   const ShareArticleViewContent({
@@ -39,6 +40,7 @@ class ShareArticleViewContent extends StatelessWidget {
               child: Text(
                 article.publisher.name,
                 style: AppTypography.b1Medium.copyWith(
+                  color: AppColors.categoriesTextPrimary,
                   height: 1,
                   fontSize: 24,
                   fontWeight: FontWeight.lerp(
@@ -55,6 +57,7 @@ class ShareArticleViewContent extends StatelessWidget {
         Text(
           article.strippedTitle,
           style: AppTypography.articleQuote.copyWith(
+            color: AppColors.categoriesTextPrimary,
             fontSize: 36,
             height: 1.1,
             fontWeight: FontWeight.lerp(
@@ -75,6 +78,7 @@ class ShareArticleViewContent extends StatelessWidget {
               ],
             ),
             style: AppTypography.b1Regular.copyWith(
+              color: AppColors.categoriesTextPrimary,
               fontSize: 24,
               height: 1,
             ),
@@ -82,14 +86,15 @@ class ShareArticleViewContent extends StatelessWidget {
         ],
         if (withInformedLogo) ...[
           const SizedBox(height: AppDimens.xxl),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
             child: Align(
               alignment: Alignment.centerRight,
-              child: SvgPicture.asset(
+              child: InformedSvg(
                 AppVectorGraphics.launcherLogoInformed,
                 width: 140,
                 height: 32,
+                color: AppColors.categoriesTextPrimary,
               ),
             ),
           ),

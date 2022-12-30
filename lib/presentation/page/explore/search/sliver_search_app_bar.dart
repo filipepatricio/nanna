@@ -6,12 +6,11 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SliverSearchAppBar extends StatelessWidget {
   const SliverSearchAppBar({
@@ -28,7 +27,6 @@ class SliverSearchAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
       pinned: true,
       centerTitle: false,
       elevation: 0,
@@ -121,7 +119,7 @@ class _SearchBar extends HookWidget {
             color: AppColors.of(context).textSecondary,
             height: 1.05,
           ),
-          prefixIcon: SvgPicture.asset(
+          prefixIcon: InformedSvg(
             AppVectorGraphics.search,
             color: Theme.of(context).iconTheme.color,
             fit: BoxFit.scaleDown,
@@ -132,8 +130,9 @@ class _SearchBar extends HookWidget {
                     searchTextEditingController.clear();
                     FocusScope.of(context).requestFocus(searchTextFieldFocusNode);
                   },
-                  child: SvgPicture.asset(
+                  child: InformedSvg(
                     AppVectorGraphics.clearText,
+                    color: AppColors.of(context).textSecondary,
                     height: AppDimens.xs,
                     fit: BoxFit.scaleDown,
                   ),

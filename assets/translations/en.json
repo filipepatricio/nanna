@@ -181,10 +181,6 @@
     "privacyPolicy": "Privacy Policy",
     "termsAndConditions": "Terms & Conditions",
     "termsOfService": "Terms of Service",
-    "newsUpdates": "News Updates",
-    "newDailyBrief": "NewDailyBrief",
-    "productUpdates": "Product Updates",
-    "newFeatures": "New features & improvements",
     "firstName": "First name",
     "lastName": "Last name",
     "emailAddress": "Email address",
@@ -201,6 +197,13 @@
       "dialogTitle": "Are you sure?",
       "dialogBody": "If you delete your account you will lose all your saved data and preferences",
       "delete": "Delete"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "theme": "Theme",
+      "dark": "Dark",
+      "light": "Light",
+      "auto": "Auto"
     }
   },
   "signIn": {
@@ -371,6 +374,6 @@
     }
   },
   "releaseNotes": {
-    "updateLabel": "Product Updates"
+    "updateLabel": "Product update"
   }
 }

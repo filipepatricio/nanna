@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/topic/mediaitems/topic_media_items_list.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/curation/curation_info_view.dart';
@@ -47,6 +48,10 @@ class TopicView extends HookWidget {
                 const SizedBox(height: AppDimens.m),
                 CurationInfoView(
                   curationInfo: topic.curationInfo,
+                  style: AppTypography.sansTextSmallLausanne.copyWith(
+                    color: AppColors.of(context).textSecondary,
+                    height: 1,
+                  ),
                   onTap: () => context.pushRoute(
                     TopicOwnerPageRoute(owner: topic.curationInfo.curator, fromTopicSlug: topic.slug),
                   ),

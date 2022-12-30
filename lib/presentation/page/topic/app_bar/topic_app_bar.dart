@@ -51,27 +51,27 @@ class _TopicAppBar extends HookWidget {
             centerTitle: true,
             titleSpacing: AppDimens.s,
             backgroundColor: backgroundColorAnimation.value,
-            leading: BackTextButton(color: isScrolled.value ? null : AppColors.of(context).blackWhiteSecondary),
+            leading: BackTextButton(color: isScrolled.value ? null : AppColors.stateTextSecondary),
             leadingWidth: AppDimens.xxc,
             title: Text(
               isScrolled.value ? topic.strippedTitle : title,
               style: AppTypography.h4Medium.copyWith(
                 fontWeight: FontWeight.lerp(FontWeight.w500, FontWeight.w600, 0.5),
                 height: 1.11,
-                color: isScrolled.value ? null : AppColors.of(context).blackWhiteSecondary,
+                color: isScrolled.value ? null : AppColors.stateTextSecondary,
               ),
             ),
             actions: [
               BookmarkButton.topic(
                 topic: topic.asPreview,
                 briefId: cubit.briefId,
-                color: isScrolled.value ? null : AppColors.of(context).blackWhiteSecondary,
+                color: isScrolled.value ? null : AppColors.stateTextSecondary,
               ),
               const SizedBox(width: AppDimens.s),
               ShareTopicButton(
                 key: const Key('share-topic-button'),
                 topic: topic.asPreview,
-                iconColor: isScrolled.value ? null : AppColors.of(context).blackWhiteSecondary,
+                iconColor: isScrolled.value ? null : AppColors.stateTextSecondary,
               ),
               const SizedBox(width: AppDimens.m),
             ],

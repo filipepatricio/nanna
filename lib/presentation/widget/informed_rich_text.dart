@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:better_informed_mobile/exports.dart' hide TextDirection;
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/custom_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/selection_controller_bundle.dart';
 import 'package:better_informed_mobile/presentation/util/string_util.dart';
@@ -97,9 +98,10 @@ class _CustomTextPainter extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final underlined = useMemoized(
-      () => _computeUnderlinedOffsets().toList(growable: false),
-      [size, spans],
+      () => _computeUnderlinedOffsets(textScaleFactor).toList(growable: false),
+      [size, spans, textScaleFactor],
     );
 
     final textPainter = useMemoized(
@@ -109,13 +111,14 @@ class _CustomTextPainter extends HookWidget {
           text: TextSpan(children: spans),
           textAlign: textAlign,
           maxLines: maxLines,
+          textScaleFactor: textScaleFactor,
         );
 
         textPainter.layout(maxWidth: size.maxWidth);
 
         return textPainter;
       },
-      [underlined],
+      [underlined, textScaleFactor],
     );
 
     final spansWithoutDecoration = useMemoized(
@@ -171,7 +174,7 @@ class _CustomTextPainter extends HookWidget {
     );
   }
 
-  Iterable<Offset> _computeUnderlinedOffsets() sync* {
+  Iterable<Offset> _computeUnderlinedOffsets(double textScaleFactor) sync* {
     final computedSpans = <InlineSpan>[];
 
     for (final span in spans) {
@@ -183,6 +186,7 @@ class _CustomTextPainter extends HookWidget {
           text: TextSpan(children: startSpans),
           textAlign: textAlign,
           maxLines: maxLines,
+          textScaleFactor: textScaleFactor,
         );
         startWidth.layout(maxWidth: size.maxWidth);
         final startPosition = _computeTextWidth(startWidth);
@@ -194,6 +198,7 @@ class _CustomTextPainter extends HookWidget {
           text: TextSpan(children: computedSpans),
           textAlign: textAlign,
           maxLines: maxLines,
+          textScaleFactor: textScaleFactor,
         );
         endWidth.layout(maxWidth: size.maxWidth);
         final endPosition = _computeTextWidth(endWidth);
@@ -228,7 +233,10 @@ class _CustomTextPainter extends HookWidget {
   TextSpan _modifyHighlightedText(TextSpan span) {
     return TextSpan(
       text: span.text,
-      style: span.style?.copyWith(fontStyle: FontStyle.normal),
+      style: span.style?.copyWith(
+        fontStyle: FontStyle.normal,
+        color: AppColors.brandPrimary,
+      ),
     );
   }
 
@@ -288,10 +296,10 @@ class _CustomHighlightTextPainter extends CustomPainter {
 
   void _paintHighlight(double startPos, LineMetrics line, double endPos, Canvas canvas) {
     final path = Path()
-      ..moveTo(line.left + startPos - 5, line.height * 0.3 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + endPos + 3, line.height * 0.35 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + endPos + 5, line.height * 0.95 + _calculateBaselineOffset(line))
-      ..lineTo(line.left + startPos - 3, line.height * 0.92 + _calculateBaselineOffset(line))
+      ..moveTo(line.left + startPos - 2, line.height * 0.15 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + endPos + 2, line.height * 0.15 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + endPos + 2, line.height * 0.95 + _calculateBaselineOffset(line))
+      ..lineTo(line.left + startPos - 2, line.height * 0.95 + _calculateBaselineOffset(line))
       ..close();
 
     canvas.drawPath(path, _paint);

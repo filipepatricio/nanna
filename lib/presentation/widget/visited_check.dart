@@ -1,6 +1,6 @@
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class VisitedCheck extends StatelessWidget {
   const VisitedCheck({
@@ -9,8 +9,9 @@ class VisitedCheck extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
+    return const InformedSvg(
       AppVectorGraphics.visitedCheckmark,
+      colored: false,
     );
   }
 }

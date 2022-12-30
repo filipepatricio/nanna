@@ -12,9 +12,6 @@ class _ArticleCoverSmall extends ArticleCover {
 
   @override
   Widget build(BuildContext context) {
-    const titleMaxLines = 4;
-    const titleStyle = AppTypography.serifTitleSmallIvar;
-    final titleHeight = AppDimens.textHeight(style: titleStyle, maxLines: titleMaxLines);
     final height = useMemoized(
       () => AppDimens.smallCardHeight(context),
       [MediaQuery.of(context).size],
@@ -36,25 +33,24 @@ class _ArticleCoverSmall extends ArticleCover {
                 dimension: constraints.maxWidth,
               ),
               const SizedBox(height: AppDimens.sl),
-              ArticleProgressOpacity(
-                article: article,
-                child: Column(
-                  children: [
-                    PublisherRow(article: article),
-                    const SizedBox(height: AppDimens.sl),
-                    SizedBox(
-                      height: titleHeight,
-                      child: InformedMarkdownBody(
-                        maxLines: titleMaxLines,
+              Expanded(
+                child: ArticleProgressOpacity(
+                  article: article,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      PublisherRow(article: article),
+                      const SizedBox(height: AppDimens.sl),
+                      InformedMarkdownBody(
+                        maxLines: 4,
                         markdown: article.title,
                         highlightColor: AppColors.transparent,
-                        baseTextStyle: titleStyle,
+                        baseTextStyle: AppTypography.serifTitleSmallIvar,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              const Spacer(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

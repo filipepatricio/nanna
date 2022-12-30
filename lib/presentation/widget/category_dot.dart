@@ -9,10 +9,12 @@ const _spacing = 6.0;
 class CategoryDot extends StatelessWidget {
   const CategoryDot({
     required this.category,
+    this.labelColor,
     super.key,
   });
 
   final Category category;
+  final Color? labelColor;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +27,14 @@ class CategoryDot extends StatelessWidget {
           width: _dotSize,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: category.color,
+            color: category.color ?? AppColors.categoriesBackgroundShowMeEverything,
           ),
         ),
         const SizedBox(width: _spacing),
         Text(
           category.name,
-          style: AppTypography.sansTextSmallLausanne.copyWith(
-            color: AppColors.of(context).textTertiary,
+          style: AppTypography.sansTextNanoLausanne.copyWith(
+            color: labelColor ?? AppColors.of(context).textTertiary,
           ),
           textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false),
         ),

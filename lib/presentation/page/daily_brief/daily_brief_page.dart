@@ -34,7 +34,6 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
 import 'package:better_informed_mobile/presentation/widget/track/view_visibility_notifier/view_visibility_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -154,7 +153,7 @@ class _DailyBriefPage extends HookWidget {
                         isInLoadingState: true,
                       ),
                     ),
-                    orElse: () => const SliverAppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
+                    orElse: SliverAppBar.new,
                   ),
                   state.maybeMap(
                     idle: (state) => _IdleContent(
@@ -364,11 +363,7 @@ class _IdleContent extends HookWidget {
 
     for (int i = 0; i < section.entries.length; i++) {
       final entry = section.entries[i];
-
-      yield const SizedBox(height: AppDimens.l);
-
       yield BriefEntryCover(
-        padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
         briefEntry: entry,
         briefId: brief.id,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
@@ -386,11 +381,8 @@ class _IdleContent extends HookWidget {
         },
       );
 
-      yield const SizedBox(height: AppDimens.l);
-      yield const CardDivider.cover();
-
-      if (i == section.entries.length - 1) {
-        yield const SizedBox(height: AppDimens.xxl);
+      if (i < section.entries.length - 1) {
+        yield const CardDivider.cover();
       }
     }
   }
@@ -531,7 +523,6 @@ class _BriefSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [...children],
           ),
-          const SizedBox(height: AppDimens.m),
         ],
       ),
     );

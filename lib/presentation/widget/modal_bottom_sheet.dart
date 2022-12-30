@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet({
@@ -39,7 +39,7 @@ class ModalBottomSheet extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: AppDimens.l),
                       child: IconButton(
-                        icon: SvgPicture.asset(AppVectorGraphics.close),
+                        icon: const InformedSvg(AppVectorGraphics.close),
                         color: Theme.of(context).iconTheme.color,
                         alignment: Alignment.centerLeft,
                         padding: EdgeInsets.zero,

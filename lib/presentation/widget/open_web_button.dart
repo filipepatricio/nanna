@@ -2,9 +2,9 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OpenWebButton extends StatelessWidget {
@@ -51,7 +51,7 @@ class OpenWebButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (withIcon) ...[
-                  SvgPicture.asset(
+                  const InformedSvg(
                     AppVectorGraphics.openWeb,
                     fit: BoxFit.contain,
                     height: AppDimens.m,

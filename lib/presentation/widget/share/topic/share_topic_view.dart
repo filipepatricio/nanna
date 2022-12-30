@@ -10,11 +10,11 @@ import 'package:better_informed_mobile/presentation/style/shadows.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cloudinary.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/share/base_share_completable.dart';
 import 'package:better_informed_mobile/presentation/widget/share/image_load_resolver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 
 const _stickerWidth = 480.0;
 const _stickerMaxHeight = 640.0;
@@ -86,6 +86,7 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                 Text(
                   topic.strippedTitle,
                   style: AppTypography.h1Headline.copyWith(
+                    color: AppColors.categoriesTextPrimary,
                     fontSize: 64,
                     height: 1.1,
                     fontWeight: FontWeight.lerp(
@@ -101,10 +102,11 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                 const SizedBox(height: AppDimens.xl),
                 Center(
                   child: topicOwnerImage == null
-                      ? SvgPicture.asset(
+                      ? const InformedSvg(
                           AppVectorGraphics.editorialTeamAvatar,
                           width: 64,
                           height: 64,
+                          colored: false,
                         )
                       : ClipOval(child: topicOwnerImage),
                 ),
@@ -112,16 +114,23 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                 Text.rich(
                   textAlign: TextAlign.center,
                   TextSpan(
-                    style: AppTypography.b1Regular.copyWith(fontSize: 24, height: 1),
+                    style: AppTypography.h2Regular.copyWith(
+                      color: AppColors.categoriesTextPrimary,
+                      height: 1,
+                    ),
                     children: [
                       TextSpan(
                         text: topic.curationInfo.byline,
+                        style: AppTypography.h2Regular.copyWith(
+                          color: AppColors.categoriesTextPrimary,
+                          height: 1,
+                        ),
                       ),
                       const TextSpan(text: ' '),
                       TextSpan(
                         text: topic.curationInfo.curator.name,
-                        style: AppTypography.b1Regular.copyWith(
-                          fontSize: 24,
+                        style: AppTypography.h2Regular.copyWith(
+                          color: AppColors.categoriesTextPrimary,
                           height: 1,
                           fontWeight: FontWeight.lerp(
                             FontWeight.w500,
@@ -147,20 +156,21 @@ class ShareTopicStickerView extends HookWidget implements BaseShareCompletable {
                         ],
                       ),
                       style: AppTypography.b1Regular.copyWith(
-                        fontSize: 20,
                         height: 1,
+                        color: AppColors.categoriesTextPrimary,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: AppDimens.xxl),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppDimens.l),
                   child: Center(
-                    child: SvgPicture.asset(
+                    child: InformedSvg(
                       AppVectorGraphics.launcherLogoInformed,
                       width: 140,
                       height: 32,
+                      color: AppColors.categoriesTextPrimary,
                     ),
                   ),
                 ),

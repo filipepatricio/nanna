@@ -76,9 +76,9 @@ class _ArticleImageCover extends StatelessWidget {
                     darkeningMode: darkeningMode,
                   ),
                   if (article.locked)
-                    Positioned.fill(
+                    const Positioned.fill(
                       child: Center(
-                        child: SvgPicture.asset(
+                        child: InformedSvg(
                           AppVectorGraphics.locker,
                           color: AppColors.stateTextSecondary,
                         ),

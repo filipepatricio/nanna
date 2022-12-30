@@ -1,6 +1,7 @@
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/app_raster_graphics.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
 import 'package:better_informed_mobile/presentation/widget/image_top_gradient.dart';
@@ -58,7 +59,7 @@ class TopicHeader extends HookWidget {
                 children: [
                   InformedMarkdownBody(
                     markdown: topic.title,
-                    baseTextStyle: AppTypography.h1Headline,
+                    baseTextStyle: AppTypography.h1Headline.copyWith(color: AppColors.categoriesTextPrimary),
                     textAlignment: TextAlign.center,
                     maxLines: 5,
                   ),
@@ -66,6 +67,7 @@ class TopicHeader extends HookWidget {
                   UpdatedLabel(
                     dateTime: topic.lastUpdatedAt,
                     fontSize: 16,
+                    color: AppColors.categoriesTextPrimary,
                   ),
                 ],
               ),

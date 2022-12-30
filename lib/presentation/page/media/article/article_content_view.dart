@@ -111,12 +111,15 @@ class _ArticleHeader extends StatelessWidget {
                   article: article,
                   showDate: false,
                   showReadTime: false,
+                  color: AppColors.categoriesTextPrimary,
                   textStyle: AppTypography.metadata1Medium,
                 ),
                 const SizedBox(height: AppDimens.m),
                 InformedMarkdownBody(
                   markdown: article.title,
-                  baseTextStyle: AppTypography.articleH0SemiBold,
+                  baseTextStyle: AppTypography.articleH0SemiBold.copyWith(
+                    color: AppColors.categoriesTextPrimary,
+                  ),
                   highlightColor: AppColors.transparent,
                 ),
                 const SizedBox(height: AppDimens.xl),

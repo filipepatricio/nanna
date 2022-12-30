@@ -1,9 +1,10 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/restart_app_widget.dart';
 import 'package:better_informed_mobile/presentation/routing/observers/main_navigation_observer.di.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/app_theme.dart';
+import 'package:better_informed_mobile/presentation/style/informed_theme.dart';
 import 'package:better_informed_mobile/presentation/util/device_type.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:flutter/material.dart';
@@ -16,18 +17,24 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 class InformedApp extends HookWidget {
   const InformedApp({
     required this.getIt,
+    this.themeMode,
     this.mainRouter,
-    //TODO: Change to [ThemeMode.system] when dark mode work is ready
-    this.themeMode = ThemeMode.light,
     Key? key,
   }) : super(key: key);
 
   final GetIt getIt;
   final MainRouter? mainRouter;
-  final ThemeMode themeMode;
+  final AdaptiveThemeMode? themeMode;
 
-  Widget responsiveBuilder(Widget? child) => ResponsiveWrapper.builder(
-        child,
+  Widget responsiveBuilder(MediaQueryData mediaQuery, Widget? child) => ResponsiveWrapper.builder(
+        // Override textScaleFactor from device settings
+        child!,
+        mediaQueryData: mediaQuery.copyWith(
+          textScaleFactor: mediaQuery.textScaleFactor.clamp(
+            DeviceType.small.scaleFactor,
+            DeviceType.tablet.scaleFactor,
+          ),
+        ),
         maxWidth: AppDimens.maxWidth,
         minWidth: AppDimens.minWidth,
         defaultScale: true,
@@ -52,6 +59,8 @@ class InformedApp extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final initialThemeMode = themeMode ?? AdaptiveThemeMode.system;
+
     if (kIsTest) {
       return Provider.value(
         value: getIt,
@@ -60,16 +69,23 @@ class InformedApp extends HookWidget {
             builder: (context) {
               final MainRouter router = mainRouter ?? MainRouter();
 
-              return MaterialApp.router(
-                debugShowCheckedModeBanner: false,
-                routeInformationParser: router.defaultRouteParser(),
-                routerDelegate: router.delegate(),
-                theme: InformedTheme.light,
-                darkTheme: InformedTheme.dark,
-                themeMode: themeMode,
-                builder: (context, child) {
-                  return NoScrollGlow(
-                    child: responsiveBuilder(child),
+              return AdaptiveTheme(
+                light: InformedTheme.light,
+                dark: InformedTheme.dark,
+                initial: initialThemeMode,
+                builder: (lightTheme, darkTheme) {
+                  return MaterialApp.router(
+                    debugShowCheckedModeBanner: false,
+                    theme: lightTheme,
+                    darkTheme: darkTheme,
+                    routeInformationParser: router.defaultRouteParser(),
+                    routerDelegate: router.delegate(),
+                    builder: (context, child) {
+                      final mediaQuery = MediaQuery.of(context);
+                      return NoScrollGlow(
+                        child: responsiveBuilder(mediaQuery, child),
+                      );
+                    },
                   );
                 },
               );
@@ -86,25 +102,32 @@ class InformedApp extends HookWidget {
           builder: (context) {
             final MainRouter router = mainRouter ?? MainRouter();
 
-            return MaterialApp.router(
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              routeInformationParser: router.defaultRouteParser(),
-              routerDelegate: router.delegate(
-                navigatorObservers: () => [
-                  // To solve issue with Hero animations in tab navigation - https://github.com/Milad-Akarie/auto_route_library/issues/418#issuecomment-997704836
-                  HeroController(),
-                  getIt<MainNavigationObserver>(),
-                  SentryNavigatorObserver(),
-                ],
-              ),
-              theme: InformedTheme.light,
-              darkTheme: InformedTheme.dark,
-              themeMode: themeMode,
-              builder: (context, child) {
-                return NoScrollGlow(
-                  child: responsiveBuilder(child),
+            return AdaptiveTheme(
+              light: InformedTheme.light,
+              dark: InformedTheme.dark,
+              initial: initialThemeMode,
+              builder: (lightTheme, darkTheme) {
+                return MaterialApp.router(
+                  localizationsDelegates: context.localizationDelegates,
+                  supportedLocales: context.supportedLocales,
+                  locale: context.locale,
+                  theme: lightTheme,
+                  darkTheme: darkTheme,
+                  routeInformationParser: router.defaultRouteParser(),
+                  routerDelegate: router.delegate(
+                    navigatorObservers: () => [
+                      // To solve issue with Hero animations in tab navigation - https://github.com/Milad-Akarie/auto_route_library/issues/418#issuecomment-997704836
+                      HeroController(),
+                      getIt<MainNavigationObserver>(),
+                      SentryNavigatorObserver(),
+                    ],
+                  ),
+                  builder: (context, child) {
+                    final mediaQuery = MediaQuery.of(context);
+                    return NoScrollGlow(
+                      child: responsiveBuilder(mediaQuery, child),
+                    );
+                  },
                 );
               },
             );

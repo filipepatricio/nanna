@@ -5,10 +5,10 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/padding_tap_widget.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HowDoWeCurateContentPage extends HookWidget {
   const HowDoWeCurateContentPage({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class HowDoWeCurateContentPage extends HookWidget {
                 alignment: AlignmentDirectional.center,
                 onTap: () => context.popRoute(),
                 tapPadding: const EdgeInsets.all(AppDimens.l),
-                child: SvgPicture.asset(
+                child: const InformedSvg(
                   AppVectorGraphics.close,
                   fit: BoxFit.scaleDown,
                 ),

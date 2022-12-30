@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -58,6 +59,7 @@ late String _defaultGoldenFileName;
 late bool _autoHeight;
 bool _matchGoldenFileCalled = false;
 bool _defaultGoldenFileNameUsed = false;
+AdaptiveThemeMode themeMode = AdaptiveThemeMode.dark;
 
 void visualTest(
   Object widgetTypeOrDescription,
@@ -109,7 +111,7 @@ void visualTest(
 }
 
 extension StartAppExtension on WidgetTester {
-  Future<MainRouter> startApp<T extends Object>({
+  Future<void> startApp<T extends Object>({
     PageRouteInfo initialRoute = defaultInitialRoute,
     DependencyOverrideCallback? dependencyOverride,
   }) async {
@@ -124,7 +126,7 @@ extension StartAppExtension on WidgetTester {
       InformedApp(
         mainRouter: mainRouter,
         getIt: getIt,
-        themeMode: ThemeMode.light,
+        themeMode: themeMode,
       ),
       // pumpWidgetBuilder by default adds it's own MaterialApp over child we pass, this code disables it
       wrapper: (widget) => widget,
@@ -142,7 +144,7 @@ extension StartAppExtension on WidgetTester {
 
     await loadImages();
 
-    return mainRouter;
+    return;
   }
 
   Future<void> loadImages() async {
@@ -182,7 +184,8 @@ extension StartAppExtension on WidgetTester {
       fileNamePrefix = _defaultGoldenFileName;
     }
     _matchGoldenFileCalled = true;
-    final fileName = fileNamePrefix;
+    // TODO: Just add theme name to file name when enabling dark mode goldens comparison
+    final fileName = "$fileNamePrefix${themeMode.isDark ? '.${themeMode.name}' : ''}";
 
     await multiScreenGolden(
       this,

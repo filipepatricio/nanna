@@ -202,7 +202,7 @@ class MockDTO {
           ),
           BriefSectionDTO.subsections(
             'Personalised content',
-            '#F2E8E7',
+            null,
             [
               BriefSubsectionDTO(
                 title: 'Crypto',
@@ -254,7 +254,7 @@ class MockDTO {
                 _briefEntryStyleTopic,
               ),
               BriefEntryDTO(
-                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
                 _briefEntryStyleArticleLarge,
               ),
               BriefEntryDTO(
@@ -269,17 +269,17 @@ class MockDTO {
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
-                    .copyWith(progressState: ArticleProgressState.inProgress)
+                    .copyWith(progressState: ArticleProgressState.finished)
                     .asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
               ),
               BriefEntryDTO(
-                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.inProgress).asBriefEntryItem,
+                premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
-                    .copyWith(progressState: ArticleProgressState.inProgress)
+                    .copyWith(progressState: ArticleProgressState.finished)
                     .asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
               ),

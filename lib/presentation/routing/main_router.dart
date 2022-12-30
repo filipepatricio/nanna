@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/empty_router_widgets.dart';
 import 'package:better_informed_mobile/presentation/page/audio/audio_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
+import 'package:better_informed_mobile/presentation/page/empty_page.dart';
 import 'package:better_informed_mobile/presentation/page/entry/entry_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page.dart';
 import 'package:better_informed_mobile/presentation/page/explore/explore_page.dart';
@@ -13,6 +14,7 @@ import 'package:better_informed_mobile/presentation/page/onboarding/onboarding_p
 import 'package:better_informed_mobile/presentation/page/photo_caption/photo_caption_page.dart';
 import 'package:better_informed_mobile/presentation/page/profile/profile_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/account/settings_account_page.dart';
+import 'package:better_informed_mobile/presentation/page/settings/appearance/settings_appearance_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/main/settings_main_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/manage_my_interests/settings_manage_my_interests_page.dart';
 import 'package:better_informed_mobile/presentation/page/settings/notifications/settings_notifications_page.dart';
@@ -31,16 +33,22 @@ import 'package:better_informed_mobile/presentation/util/placeholder_page.dart';
 
 const magicLinkSegment = 'magic';
 
+/// Tabs
 const todayTabPath = 'todays_topics';
 const exploreTabPath = 'explore';
 const profileTabPath = 'profile';
+const tabsPaths = [todayTabPath, exploreTabPath, profileTabPath];
 
+/// Main
 const topicsPath = 'topics';
 const articlePath = 'articles';
 const subscribePath = 'subscribe';
+
+/// Settings
 const unsubscribeNotificationsPath = 'unsubscribe';
 const settingsPath = 'settings';
 const notificationsPath = 'notifications';
+const appearancePath = 'appearance';
 
 @AdaptiveAutoRouter(
   routes: [
@@ -49,6 +57,7 @@ const notificationsPath = 'notifications';
     AutoRoute(page: SignInPage),
     mainPageRoute,
     CustomRoute(page: PlaceholderPage, durationInMilliseconds: 0),
+    AutoRoute(page: EmptyPage),
   ],
 )
 class $MainRouter {}
@@ -82,6 +91,7 @@ const mainPageRoute = CustomRoute(
     ),
     AutoRoute(path: settingsPath, page: SettingsMainPage),
     AutoRoute(path: notificationsPath, page: SettingsNotificationsPage),
+    AutoRoute(path: appearancePath, page: SettingsAppearancePage),
   ],
 );
 
@@ -117,6 +127,7 @@ const dashboardTabRouter = CustomRoute(
         AutoRoute(path: '', page: ProfilePage, initial: true),
         AutoRoute(path: settingsPath, page: SettingsMainPage),
         AutoRoute(path: notificationsPath, page: SettingsNotificationsPage),
+        AutoRoute(path: appearancePath, page: SettingsAppearancePage),
         AutoRoute(page: SettingsAccountPage),
         AutoRoute(page: SettingsManageMyInterestsPage),
         AutoRoute(page: SettingsSubscriptionPage),
