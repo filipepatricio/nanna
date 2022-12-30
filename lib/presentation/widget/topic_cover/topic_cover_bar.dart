@@ -120,7 +120,7 @@ class _TopicCoverBarSmall extends _TopicCoverBar {
             curationInfo: topic.curationInfo,
             shortLabel: true,
             style: AppTypography.sansTextNanoLausanne.copyWith(
-              color: AppColors.of(context).textTertiary,
+              color: AppColors.of(context).textSecondary,
               height: 1,
             ),
             imageDimension: AppDimens.smallAvatarSize,

@@ -54,7 +54,7 @@ class CurationInfoView extends StatelessWidget {
               TextSpan(
                 style: style ??
                     AppTypography.sansTextNanoLausanne.copyWith(
-                      color: AppColors.of(context).textTertiary,
+                      color: AppColors.of(context).textSecondary,
                       height: 1,
                     ),
                 children: [
@@ -63,7 +63,7 @@ class CurationInfoView extends StatelessWidget {
                     text: curationInfo.curator.name,
                     style: style ??
                         AppTypography.sansTextNanoLausanne.copyWith(
-                          color: AppColors.of(context).textTertiary,
+                          color: AppColors.of(context).textSecondary,
                           height: 1,
                         ),
                   ),
