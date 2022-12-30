@@ -102,6 +102,10 @@ class _ArticlesNote extends StatelessWidget {
             CurationInfoView(
               curationInfo: article.curationInfo,
               imageDimension: AppDimens.smallAvatarSize,
+              style: AppTypography.sansTextNanoLausanne.copyWith(
+                color: AppColors.of(context).textTertiary,
+                height: 1,
+              ),
             ),
           ]
         ],

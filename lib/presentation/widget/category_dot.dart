@@ -9,10 +9,12 @@ const _spacing = 6.0;
 class CategoryDot extends StatelessWidget {
   const CategoryDot({
     required this.category,
+    this.labelColor,
     super.key,
   });
 
   final Category category;
+  final Color? labelColor;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CategoryDot extends StatelessWidget {
         Text(
           category.name,
           style: AppTypography.sansTextNanoLausanne.copyWith(
-            color: AppColors.of(context).textTertiary,
+            color: labelColor ?? AppColors.of(context).textTertiary,
           ),
           textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false),
         ),
