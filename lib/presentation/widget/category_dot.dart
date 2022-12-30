@@ -25,7 +25,7 @@ class CategoryDot extends StatelessWidget {
           width: _dotSize,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: category.color,
+            color: category.color ?? AppColors.categoriesBackgroundShowMeEverything,
           ),
         ),
         const SizedBox(width: _spacing),
