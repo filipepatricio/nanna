@@ -31,7 +31,7 @@ class ArticleContentView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final showCredits = useMemoized(
-      () => article.metadata.credits.isNotEmpty && article.metadata.availableInSubscription,
+      () => article.content.credits.isNotEmpty && article.metadata.availableInSubscription,
       [article],
     );
 
@@ -63,7 +63,7 @@ class ArticleContentView extends HookWidget {
             if (showCredits)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-                child: _Credits(credits: article.metadata.credits),
+                child: _Credits(credits: article.content.credits),
               ),
             const SizedBox(height: AppDimens.xxc),
           ],

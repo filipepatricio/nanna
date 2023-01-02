@@ -8,5 +8,6 @@ class ArticleContent with _$ArticleContent {
   factory ArticleContent({
     required ArticleContentType type,
     required String content,
+    required String credits,
   }) = _ArticleContent;
 }

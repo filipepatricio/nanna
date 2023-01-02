@@ -18,7 +18,6 @@ fragment articleFragment on Article {
     title
     strippedTitle
     note
-    credits
     type
     kind {
         ...kindFragment
