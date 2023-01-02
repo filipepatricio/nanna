@@ -46,7 +46,7 @@ class BriefEntryCover extends HookWidget {
                     );
                   },
                   showNote: true,
-                  showRecommendedBy: true,
+                  showRecommendedBy: false,
                 ),
                 unknown: (_) => const SizedBox(),
               );
@@ -63,7 +63,7 @@ class BriefEntryCover extends HookWidget {
                         );
                       },
                       showNote: true,
-                      showRecommendedBy: true,
+                      showRecommendedBy: false,
                     );
                   } else {
                     return ArticleCover.large(
@@ -75,7 +75,7 @@ class BriefEntryCover extends HookWidget {
                         );
                       },
                       showNote: true,
-                      showRecommendedBy: true,
+                      showRecommendedBy: false,
                     );
                   }
                 },

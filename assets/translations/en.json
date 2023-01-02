@@ -77,6 +77,11 @@
       "dateRd": "rd",
       "dateTh": "th"
     },
+    "dummyEditorialTeamCurationInfo": {
+      "byLine": "Curated by",
+      "name": "informed",
+      "bio": "We are a group of dedicated journalists who have written for a variety of respected publications and bring decades of combined experience. Although we have different backgrounds, we believe in a common cause: breaking through filter bubbles and providing readers with the facts and variety of perspectives they need to understand a complex world."
+    },
     "justSec": "Just a sec...",
     "loading": "We’re loading your brief",
     "readingList": "Reading list",
