@@ -53,6 +53,9 @@ type Article {
   """The main image"""
   image: CloudinaryImage @deprecated(reason: "Deprecated in favour of the ArticleImage union type")
 
+  """Should the note be collapsible accordeon"""
+  isNoteCollapsible: Boolean!
+
   """The article's kind"""
   kind: ArticleKind
 
@@ -373,6 +376,8 @@ interface BriefSection {
 
 """Call to action message to be displayed in a StatusMessage"""
 type CallToActionLink {
+  """Relative deep link path e.g. /explore"""
+  actionLink: String
   actionText: String!
   preText: String
 }
@@ -753,6 +758,7 @@ type RootMutationType {
 
   """Mark category with given id as non-preferred"""
   unpreferCategory(categoryId: UUID!): UpdatePreferredCategoriesResponse
+  unsubscribeFromEmailChannel(channelId: String!, email: String!, token: String!): UnsubscriptionResult
 
   """Update position in seconds of article audio for the current user"""
   updateArticleAudioPosition(
@@ -807,6 +813,9 @@ type RootQueryType {
 
   """A category"""
   getCategory(id: String, slug: String): Category
+
+  """Returns category preference of the user by the given id"""
+  getCategoryPreference(id: UUID!): CategoryPreference
 
   """Returns Category preferences of user"""
   getCategoryPreferences: [CategoryPreference]
@@ -972,8 +981,11 @@ type Topic {
   """All categories of topic"""
   categories: [Category]
 
+  """Information about content of topic"""
+  contentMeta: TopicContentMeta!
+
   """The cover image"""
-  coverImage: CloudinaryImage!
+  coverImage: CloudinaryImage! @deprecated(reason: "It should no longer be used")
 
   """Info about the curator of the topic"""
   curationInfo: CurationInfo!
@@ -1015,7 +1027,7 @@ type Topic {
   progressState: TopicProgressState!
 
   """Information about publishers of topic articles"""
-  publisherInformation: TopicPublisherInformation!
+  publisherInformation: TopicPublisherInformation! @deprecated(reason: "Use contentMeta field instead")
 
   """The reading list relevant for this topic"""
   readingList: ReadingList!
@@ -1043,6 +1055,15 @@ type Topic {
 
   """Does the topic have no new content for the user"""
   visited: Boolean!
+}
+
+"""Information about topic"""
+type TopicContentMeta {
+  """Publishers to show with icons"""
+  highlightedPublishers: [Publisher]
+
+  """Text to display near publisher icons"""
+  text: String
 }
 
 """An entry in the topic"""
@@ -1115,6 +1136,12 @@ type TopicsExploreArea implements ExploreArea {
   topics(pagination: PaginationInput): [Topic]!
 }
 
+"""Payload returning from unsubscription from a channel"""
+type UnsubscriptionResult {
+  errorMessage: String
+  successful: Boolean!
+}
+
 """Response for article progress mutation"""
 type UpdateArticleProgressResponse {
   """
@@ -1122,12 +1149,14 @@ type UpdateArticleProgressResponse {
   """
   freeArticlesLeftWarning: String
   progress: ArticleProgress
+  progressState: ArticleProgressState!
   successful: Boolean!
 }
 
-"""Response for updatePreferredCategories mutation"""
+"""Response for updating preferred categories"""
 type UpdatePreferredCategoriesResponse {
   successful: Boolean!
+  updatedPreference: CategoryPreference
 }
 
 """User meta information"""

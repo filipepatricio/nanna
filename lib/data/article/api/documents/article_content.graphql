@@ -4,5 +4,6 @@ query articleContent($slug: String!) {
             content
             markupLanguage
         }
+        credits
     }
 }

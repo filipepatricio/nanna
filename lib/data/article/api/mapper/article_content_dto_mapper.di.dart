@@ -12,8 +12,9 @@ class ArticleContentDTOMapper implements Mapper<ArticleContentDTO, ArticleConten
   @override
   ArticleContent call(ArticleContentDTO data) {
     return ArticleContent(
-      type: _articleContentTypeDTOMapper(data.markupLanguage),
-      content: data.content,
+      type: _articleContentTypeDTOMapper(data.text.markupLanguage),
+      content: data.text.content,
+      credits: data.credits,
     );
   }
 }
