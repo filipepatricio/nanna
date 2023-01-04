@@ -11,6 +11,7 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
 import 'package:better_informed_mobile/presentation/util/snackbar_util.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
@@ -44,7 +45,10 @@ class ArticlePaywallView extends HookWidget {
 
     useCubitListener<ArticlePaywallCubit, ArticlePaywallState>(cubit, (cubit, state, context) {
       state.mapOrNull(
+        restoringPurchase: (_) => InformedDialog.showRestorePurchase(context),
+        purchaseSuccess: (_) => InformedDialog.removeRestorePurchase(context),
         generalError: (_) {
+          InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: LocaleKeys.common_error_tryAgainLater.tr(),

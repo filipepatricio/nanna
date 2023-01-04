@@ -54,6 +54,7 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
 
   Future<void> restore() async {
     try {
+      emit(ArticlePaywallState.restoringPurchase());
       final successful = await _restorePurchaseUseCase();
 
       if (successful) {
