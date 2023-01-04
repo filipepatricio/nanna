@@ -13,6 +13,7 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
 import 'package:better_informed_mobile/presentation/util/types.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
@@ -46,10 +47,15 @@ class ChangeSubscriptionPage extends HookWidget {
 
     useCubitListener<ChangeSubscriptionPageCubit, ChangeSubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        success: () => AutoRouter.of(context).replace(
-          SubscriptionSuccessPageRoute(trialMode: false),
-        ),
+        restoringPurchase: () => InformedDialog.showRestorePurchase(context),
+        success: () {
+          InformedDialog.removeRestorePurchase(context);
+          AutoRouter.of(context).replace(
+            SubscriptionSuccessPageRoute(trialMode: false),
+          );
+        },
         generalError: () {
+          InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
             SnackbarMessage.simple(
               message: LocaleKeys.common_error_tryAgainLater.tr(),

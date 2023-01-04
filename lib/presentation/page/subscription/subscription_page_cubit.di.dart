@@ -65,6 +65,7 @@ class SubscriptionPageCubit extends Cubit<SubscriptionPageState> {
 
   Future<void> restorePurchase() async {
     try {
+      emit(const SubscriptionPageState.restoringPurchase());
       final successful = await _restorePurchaseUseCase();
       if (!successful) {
         emit(const SubscriptionPageState.idle());
