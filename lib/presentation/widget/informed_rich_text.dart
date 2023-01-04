@@ -235,7 +235,7 @@ class _CustomTextPainter extends HookWidget {
       text: span.text,
       style: span.style?.copyWith(
         fontStyle: FontStyle.normal,
-        color: AppColors.brandPrimary,
+        color: AppColors.light.textPrimary,
       ),
     );
   }
