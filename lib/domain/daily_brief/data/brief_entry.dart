@@ -23,6 +23,16 @@ class BriefEntry {
       );
 
   bool get isTopic => type == BriefEntryType.topic;
+
+  BriefEntry copyWith({
+    BriefEntryItem? item,
+    BriefEntryStyle? style,
+  }) {
+    return BriefEntry(
+      item: item ?? this.item,
+      style: style ?? this.style,
+    );
+  }
 }
 
 enum BriefEntryType {

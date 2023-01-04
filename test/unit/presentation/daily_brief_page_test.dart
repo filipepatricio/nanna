@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/general/get_should_update_article_progress_state_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page_state.dt.dart';
@@ -34,6 +35,7 @@ void main() {
   late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
   late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
   late DailyBriefPageCubit dailyBriefPageCubit;
+  late GetShouldUpdateArticleProgressStateUseCase getShouldUpdateArticleProgressStateUseCase;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(
@@ -55,6 +57,7 @@ void main() {
     isOnboardingPaywallSeenUseCase = MockIsOnboardingPaywallSeenUseCase();
     hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
     setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
+    getShouldUpdateArticleProgressStateUseCase = MockGetShouldUpdateArticleProgressStateUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -68,6 +71,7 @@ void main() {
       isOnboardingPaywallSeenUseCase,
       hasActiveSubscriptionUseCase,
       setOnboardingPaywallSeenUseCase,
+      getShouldUpdateArticleProgressStateUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});

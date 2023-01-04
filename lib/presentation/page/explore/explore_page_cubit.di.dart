@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_explore_content_use_case.di.dart';
 import 'package:better_informed_mobile/domain/explore/use_case/get_should_update_explore_stream_use_case.di.dart';
+import 'package:better_informed_mobile/domain/general/get_should_update_article_progress_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/get_search_history_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/use_case/remove_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -26,6 +28,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
     this._getSearchHistoryUseCase,
     this._removeSearchHistoryQueryUseCase,
     this._getShouldUpdateExploreStreamUseCase,
+    this._getShouldUpdateArticleProgressStateUseCase,
   ) : super(ExplorePageState.initialLoading());
 
   final GetExploreContentUseCase _getExploreContentUseCase;
@@ -33,6 +36,7 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
   final GetShouldUpdateExploreStreamUseCase _getShouldUpdateExploreStreamUseCase;
+  final GetShouldUpdateArticleProgressStateUseCase _getShouldUpdateArticleProgressStateUseCase;
 
   final GetSearchHistoryUseCase _getSearchHistoryUseCase;
   final RemoveSearchHistoryQueryUseCase _removeSearchHistoryQueryUseCase;
@@ -42,11 +46,13 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
 
   StreamSubscription? _exploreContentSubscription;
   StreamSubscription? _shouldUpdateExploreSubscription;
+  StreamSubscription? _shouldUpdateArticleProgressStateSubscription;
 
   @override
   Future<void> close() async {
     await _exploreContentSubscription?.cancel();
     await _shouldUpdateExploreSubscription?.cancel();
+    await _shouldUpdateArticleProgressStateSubscription?.cancel();
     await super.close();
   }
 
@@ -68,12 +74,45 @@ class ExplorePageCubit extends Cubit<ExplorePageState> {
       );
     });
 
+    _shouldUpdateArticleProgressStateSubscription =
+        _getShouldUpdateArticleProgressStateUseCase().listen((updatedArticle) {
+      state.mapOrNull(
+        idle: (state) {
+          final updatedItems = updateItems(state.items, updatedArticle);
+          emit(state.copyWith(items: updatedItems));
+        },
+      );
+    });
+
     try {
       await _showTutorialSnackBar();
     } catch (e, s) {
       Fimber.e('Loading explore area failed', ex: e, stacktrace: s);
       emit(ExplorePageState.error());
     }
+  }
+
+  List<ExploreItem> updateItems(List<ExploreItem> items, MediaItemArticle updatedArticle) {
+    return items.map((element) {
+      final updatedElement = element.mapOrNull(
+        stream: (item) {
+          final updatedArea = item.area.mapOrNull(
+            articles: (area) {
+              final updatedArticles =
+                  area.articles.map((article) => article.id == updatedArticle.id ? updatedArticle : article).toList();
+              return area.copyWith(articles: updatedArticles);
+            },
+            articlesList: (area) {
+              final updatedArticles =
+                  area.articles.map((article) => article.id == updatedArticle.id ? updatedArticle : article).toList();
+              return area.copyWith(articles: updatedArticles);
+            },
+          );
+          return updatedArea == null ? item : item.copyWith(area: updatedArea);
+        },
+      );
+      return updatedElement ?? element;
+    }).toList();
   }
 
   Future<void> loadExplorePageData() async {

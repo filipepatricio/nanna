@@ -5,4 +5,11 @@ class Bookmark {
 
   final String id;
   final BookmarkData data;
+
+  Bookmark copyWith({String? id, BookmarkData? data}) {
+    return Bookmark(
+      id ?? this.id,
+      data ?? this.data,
+    );
+  }
 }

@@ -61,4 +61,40 @@ class Topic {
       category,
     );
   }
+
+  Topic copyWith({
+    String? id,
+    String? slug,
+    String? title,
+    String? strippedTitle,
+    String? introduction,
+    String? ownersNote,
+    String? url,
+    CurationInfo? curationInfo,
+    String? summary,
+    DateTime? lastUpdatedAt,
+    TopicPublisherInformation? publisherInformation,
+    Image? heroImage,
+    List<Entry>? entries,
+    bool? visited,
+    Category? category,
+  }) {
+    return Topic(
+      id: id ?? this.id,
+      slug: slug ?? this.slug,
+      title: title ?? this.title,
+      strippedTitle: strippedTitle ?? this.strippedTitle,
+      introduction: introduction ?? this.introduction,
+      ownersNote: ownersNote ?? this.ownersNote,
+      url: url ?? this.url,
+      curationInfo: curationInfo ?? this.curationInfo,
+      summary: summary ?? this.summary,
+      lastUpdatedAt: lastUpdatedAt ?? this.lastUpdatedAt,
+      publisherInformation: publisherInformation ?? this.publisherInformation,
+      heroImage: heroImage ?? this.heroImage,
+      entries: entries ?? this.entries,
+      visited: visited ?? this.visited,
+      category: category ?? this.category,
+    );
+  }
 }

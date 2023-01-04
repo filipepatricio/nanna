@@ -6,11 +6,13 @@ import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/brief_not_initialized_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
+import 'package:better_informed_mobile/domain/general/get_should_update_article_progress_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
@@ -43,7 +45,7 @@ final firstTopicKey = GlobalKey();
 class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   DailyBriefPageCubit(
     this._getCurrentBriefUseCase,
-    this._getPastDaysBriesfUseCase,
+    this._getPastDaysBriefUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._trackActivityUseCase,
@@ -53,10 +55,11 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     this._isOnboardingPaywallSeenUseCase,
     this._hasActiveSubscriptionUseCase,
     this._setOnboardingPaywallSeenUseCase,
+    this._getShouldUpdateArticleProgressStateUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
-  final GetPastBriefUseCase _getPastDaysBriesfUseCase;
+  final GetPastBriefUseCase _getPastDaysBriefUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
@@ -66,6 +69,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final IsOnboardingPaywallSeenUseCase _isOnboardingPaywallSeenUseCase;
   final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
   final SetOnboardingPaywallSeenUseCase _setOnboardingPaywallSeenUseCase;
+  final GetShouldUpdateArticleProgressStateUseCase _getShouldUpdateArticleProgressStateUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -75,6 +79,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   StreamSubscription? _dataRefreshSubscription;
   StreamSubscription? _currentBriefSubscription;
   StreamSubscription? _shouldUpdateBriefSubscription;
+  StreamSubscription? _shouldUpdateArticleProgressStateSubscription;
 
   List<TargetFocus> targets = <TargetFocus>[];
 
@@ -88,6 +93,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     await _dataRefreshSubscription?.cancel();
     await _currentBriefSubscription?.cancel();
     await _shouldUpdateBriefSubscription?.cancel();
+    await _shouldUpdateArticleProgressStateSubscription?.cancel();
     await _trackItemController.close();
     await super.close();
   }
@@ -107,6 +113,16 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
     _shouldUpdateBriefSubscription = _getShouldUpdateBriefStreamUseCase().listen((_) => _refetchBriefs());
 
+    _shouldUpdateArticleProgressStateSubscription =
+        _getShouldUpdateArticleProgressStateUseCase().listen((updatedArticle) {
+      final selectedBrief = _selectedBrief;
+      if (selectedBrief != null) {
+        final updatedBrief = updateBrief(selectedBrief, updatedArticle);
+        _selectedBrief = updatedBrief;
+        _updateIdleState(preCacheImages: true);
+      }
+    });
+
     _initializeItemPreviewTracker();
 
     if (await _shouldUsePaidSubscriptionsUseCase()) {
@@ -115,6 +131,62 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
         emit(DailyBriefPageState.showPaywall());
       }
     }
+  }
+
+  Brief updateBrief(Brief brief, MediaItemArticle updatedArticle) {
+    final updatedSections = brief.sections
+        .map(
+          (section) => section.map(
+            entries: (sectionWithEntries) {
+              final updatedEntries = sectionWithEntries.entries.map(
+                (entry) {
+                  final updatedItem = entry.item.mapOrNull(
+                    article: (item) {
+                      final newArticle = item.article.map(
+                        article: (article) {
+                          return article.id == updatedArticle.id ? updatedArticle : article;
+                        },
+                        unknown: (unknown) => unknown,
+                      );
+                      return item.copyWith(article: newArticle);
+                    },
+                  );
+                  return entry.copyWith(item: updatedItem);
+                },
+              ).toList();
+              return sectionWithEntries.copyWith(entries: updatedEntries);
+            },
+            subsections: (sectionWithSubsections) {
+              final updatedSubsections = sectionWithSubsections.subsections.map(
+                (subsection) {
+                  final updatedEntries = subsection.entries.map(
+                    (entry) {
+                      final updatedItem = entry.item.mapOrNull(
+                        article: (item) {
+                          final newArticle = item.article.map(
+                            article: (article) {
+                              return article.id == updatedArticle.id ? updatedArticle : article;
+                            },
+                            unknown: (unknown) => unknown,
+                          );
+                          return item.copyWith(article: newArticle);
+                        },
+                      );
+                      return entry.copyWith(item: updatedItem);
+                    },
+                  ).toList();
+                  return subsection.copyWith(entries: updatedEntries);
+                },
+              ).toList();
+              return sectionWithSubsections.copyWith(subsections: updatedSubsections);
+            },
+            unknown: (unknown) {
+              return unknown;
+            },
+          ),
+        )
+        .toList();
+    return brief.copyWith(sections: updatedSections);
   }
 
   Future<void> initializeTutorialSnackBar() async {
@@ -134,7 +206,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     if (todaysBriefSelected) {
       _selectedBrief = _briefsWrapper.currentBrief;
     } else {
-      _selectedBrief = await _getPastDaysBriesfUseCase(_selectedBrief!.date);
+      _selectedBrief = await _getPastDaysBriefUseCase(_selectedBrief!.date);
     }
 
     _updateIdleState();
@@ -213,7 +285,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
         ),
       );
 
-      _selectedBrief = await _getPastDaysBriesfUseCase(briefDate);
+      _selectedBrief = await _getPastDaysBriefUseCase(briefDate);
     }
 
     _trackActivityUseCase.trackEvent(

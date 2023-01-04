@@ -4,6 +4,7 @@ mutation updateArticleContentProgress($slug: String!, $progress: Int!) {
   updateArticleContentProgress(slug: $slug, progress: $progress) {
     successful
     freeArticlesLeftWarning
+    progressState
     progress{
         ...progressFragment
     }

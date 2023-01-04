@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
-import 'package:better_informed_mobile/domain/article/use_case/get_article_read_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
@@ -13,6 +10,8 @@ import 'package:better_informed_mobile/domain/bookmark/data/bookmark_sort.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/add_bookmark_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/get_bookmark_change_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/use_case/remove_bookmark_use_case.di.dart';
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/general/get_should_update_article_progress_state_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_page_loader.di.dart';
 import 'package:better_informed_mobile/presentation/util/pagination/pagination_engine.dart';
@@ -29,7 +28,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     this._removeBookmarkUseCase,
     this._addBookmarkUseCase,
     this._trackActivityUseCase,
-    this._getArticleReadProgressUseCase,
+    this._getShouldUpdateArticleProgressStateUseCase,
   ) : super(BookmarkListViewState.initial());
 
   final BookmarkPaginationEngineProvider _bookmarkPaginationEngineProvider;
@@ -37,15 +36,17 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   final RemoveBookmarkUseCase _removeBookmarkUseCase;
   final AddBookmarkUseCase _addBookmarkUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
-  final GetArticleReadProgressUseCase _getArticleReadProgressUseCase;
+  final GetShouldUpdateArticleProgressStateUseCase _getShouldUpdateArticleProgressStateUseCase;
 
   late PaginationEngine<Bookmark> _paginationEngine;
 
-  StreamSubscription? _notifierSubscription;
+  StreamSubscription? _bookmarkChangeNotifierSubscription;
+  StreamSubscription? _shouldUpdateArticleProgressStateSubscription;
 
   @override
   Future<void> close() {
-    _notifierSubscription?.cancel();
+    _bookmarkChangeNotifierSubscription?.cancel();
+    _shouldUpdateArticleProgressStateSubscription?.cancel();
     return super.close();
   }
 
@@ -61,6 +62,37 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     }
 
     _registerBookmarkChangeNotification(filter, sort, order);
+
+    _shouldUpdateArticleProgressStateSubscription =
+        _getShouldUpdateArticleProgressStateUseCase().listen((updatedArticle) {
+      state.mapOrNull(
+        idle: (state) {
+          final updatedResults = updateBookmarks(state.bookmarks, updatedArticle);
+          emit(state.copyWith(bookmarks: updatedResults));
+        },
+        loadMore: (state) {
+          final updatedResults = updateBookmarks(state.bookmarks, updatedArticle);
+          emit(state.copyWith(bookmarks: updatedResults));
+        },
+        allLoaded: (state) {
+          final updatedResults = updateBookmarks(state.bookmarks, updatedArticle);
+          emit(state.copyWith(bookmarks: updatedResults));
+        },
+      );
+    });
+  }
+
+  List<Bookmark> updateBookmarks(List<Bookmark> bookmarks, MediaItemArticle updatedArticle) {
+    return bookmarks.map((element) {
+      final updatedData = element.data.mapOrNull(
+        article: (result) {
+          if (result.article.id == updatedArticle.id) {
+            return result.copyWith(article: updatedArticle);
+          }
+        },
+      );
+      return element.copyWith(data: updatedData);
+    }).toList();
   }
 
   Future<void> loadNextPage() async {
@@ -159,7 +191,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   }
 
   void _registerBookmarkChangeNotification(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) {
-    _notifierSubscription = _getBookmarkChangeStreamUseCase()
+    _bookmarkChangeNotifierSubscription = _getBookmarkChangeStreamUseCase()
         .debounceTime(const Duration(seconds: 1))
         .switchMap((event) => _reloadOnChangeNotification(event, filter, sort, order))
         .listen(_handlePaginationState);
@@ -225,14 +257,6 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
 
       if (cover != null) yield cover;
     }
-  }
-
-  ArticleProgress? getCurrentReadProgress(BookmarkData bookmarkData) {
-    return bookmarkData.mapOrNull(
-      article: (data) => data.article.progress.copyWith(
-        contentProgress: _getArticleReadProgressUseCase(data.article),
-      ),
-    );
   }
 }
 

@@ -6,5 +6,5 @@ part 'free_article_view_state.dt.freezed.dart';
 @Freezed(toJson: false)
 class FreeArticleViewState with _$FreeArticleViewState {
   @Implements<BuildState>()
-  const factory FreeArticleViewState.idle() = _FreeArticleViewStateIDle;
+  const factory FreeArticleViewState.idle() = _FreeArticleViewStateIdle;
 }

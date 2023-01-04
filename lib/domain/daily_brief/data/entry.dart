@@ -10,4 +10,16 @@ class Entry {
   final String? note;
   final MediaItem item;
   final EntryStyle style;
+
+  Entry copyWith({
+    String? note,
+    MediaItem? item,
+    EntryStyle? style,
+  }) {
+    return Entry(
+      note: note ?? this.note,
+      item: item ?? this.item,
+      style: style ?? this.style,
+    );
+  }
 }
