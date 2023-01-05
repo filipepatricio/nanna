@@ -33,22 +33,4 @@ class Brief {
       )
       .whereType<BriefEntry>()
       .toList();
-
-  Brief copyWith({
-    String? id,
-    Headline? greeting,
-    BriefIntroduction? introduction,
-    DateTime? date,
-    List<BriefSection>? sections,
-    Relax? relax,
-  }) {
-    return Brief(
-      id: id ?? this.id,
-      greeting: greeting ?? this.greeting,
-      introduction: introduction ?? this.introduction,
-      date: date ?? this.date,
-      sections: sections ?? this.sections,
-      relax: relax ?? this.relax,
-    );
-  }
 }

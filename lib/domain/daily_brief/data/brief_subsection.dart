@@ -8,14 +8,4 @@ class BriefSubsection {
 
   final String title;
   final List<BriefEntry> entries;
-
-  BriefSubsection copyWith({
-    String? title,
-    List<BriefEntry>? entries,
-  }) {
-    return BriefSubsection(
-      title: title ?? this.title,
-      entries: entries ?? this.entries,
-    );
-  }
 }

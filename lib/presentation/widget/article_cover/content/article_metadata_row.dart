@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label/article_time_read_label.dart';
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/category_dot.dart';
@@ -36,10 +36,7 @@ class ArticleMetadataRow extends StatelessWidget {
               const PipeDivider(),
               const SizedBox(width: AppDimens.s),
             ],
-            ArticleTimeReadLabel(
-              finished: article.finished,
-              timeToRead: article.timeToRead,
-            ),
+            ArticleTimeReadLabel(article: article),
           ],
         ),
         const Spacer(),

@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/general/get_should_update_article_progress_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_visited_use_case.di.dart';
@@ -26,7 +22,6 @@ class TopicPageCubit extends Cubit<TopicPageState> {
     this._getTopicBySlugUseCase,
     this._trackActivityUseCase,
     this._markTopicAsVisitedUseCase,
-    this._getShouldUpdateArticleProgressStateUseCase,
   ) : super(TopicPageState.loading());
 
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
@@ -34,7 +29,6 @@ class TopicPageCubit extends Cubit<TopicPageState> {
   final GetTopicBySlugUseCase _getTopicBySlugUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final MarkTopicAsVisitedUseCase _markTopicAsVisitedUseCase;
-  final GetShouldUpdateArticleProgressStateUseCase _getShouldUpdateArticleProgressStateUseCase;
 
   late Topic _topic;
   late String? _briefId;
@@ -43,14 +37,6 @@ class TopicPageCubit extends Cubit<TopicPageState> {
 
   List<TargetFocus> targets = <TargetFocus>[];
   final mediaItemKey = GlobalKey();
-
-  StreamSubscription? _shouldUpdateArticleProgressStateSubscription;
-
-  @override
-  Future<void> close() async {
-    await _shouldUpdateArticleProgressStateSubscription?.cancel();
-    await super.close();
-  }
 
   Future<void> initializeWithSlug(String slug, String? briefId) async {
     emit(TopicPageState.loading());
@@ -77,33 +63,7 @@ class TopicPageCubit extends Cubit<TopicPageState> {
 
     _trackActivityUseCase.trackPage(AnalyticsPage.topic(_topic.id, _briefId));
 
-    _shouldUpdateArticleProgressStateSubscription =
-        _getShouldUpdateArticleProgressStateUseCase().listen((updatedArticle) {
-      state.maybeMap(
-        idle: (state) {
-          final updatedTopic = updateTopic(state.topic, updatedArticle);
-          emit(state.copyWith(topic: updatedTopic));
-        },
-        orElse: () {},
-      );
-    });
-
     emit(TopicPageState.idle(_topic));
-  }
-
-  Topic updateTopic(Topic topic, MediaItemArticle updatedArticle) {
-    final updatedEntries = topic.entries.map(
-      (entry) {
-        final updatedItem = entry.item.map(
-          article: (article) {
-            return article.id == updatedArticle.id ? updatedArticle : article;
-          },
-          unknown: (unknown) => unknown,
-        );
-        return entry.copyWith(item: updatedItem);
-      },
-    ).toList();
-    return topic.copyWith(entries: updatedEntries);
   }
 
   Future<void> initializeTutorialStep() async {

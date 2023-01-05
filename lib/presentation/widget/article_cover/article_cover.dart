@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_metadata_row.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_no_image_view.dart';
-import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label/article_time_read_label.dart';
 import 'package:better_informed_mobile/presentation/widget/article_progress_opacity.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';

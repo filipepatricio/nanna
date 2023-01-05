@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/general/get_should_update_article_progress_state_use_case.di.dart';
 import 'package:better_informed_mobile/domain/search/data/search_result.dt.dart';
 import 'package:better_informed_mobile/domain/search/use_case/add_search_history_query_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/search/search_view_loader.di.dart';
@@ -21,13 +19,10 @@ class SearchViewCubit extends Cubit<SearchViewState> {
     this._searchPaginationEngineProvider,
     this._addSearchHistoryQueryUseCase,
     this._trackActivityUseCase,
-    this._getShouldUpdateArticleProgressStateUseCase,
   ) : super(SearchViewState.initial());
 
   final AddSearchHistoryQueryUseCase _addSearchHistoryQueryUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
-  final GetShouldUpdateArticleProgressStateUseCase _getShouldUpdateArticleProgressStateUseCase;
-
   final SearchPaginationEngineProvider _searchPaginationEngineProvider;
   late PaginationEngine<SearchResult> _paginationEngine;
   late String _query;
@@ -36,48 +31,15 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   StreamController? _nextPageStreamController = StreamController.broadcast();
   StreamSubscription? _querySubscription;
   StreamSubscription? _nextPageSubscription;
-  StreamSubscription? _shouldUpdateArticleProgressStateSubscription;
 
   Future<void> initialize() async {
     await _initializeQueryController();
-
-    _shouldUpdateArticleProgressStateSubscription =
-        _getShouldUpdateArticleProgressStateUseCase().listen((updatedArticle) {
-      state.mapOrNull(
-        idle: (state) {
-          final updatedResults = updateResults(state.results, updatedArticle);
-          emit(state.copyWith(results: updatedResults));
-        },
-        loadMore: (state) {
-          final updatedResults = updateResults(state.results, updatedArticle);
-          emit(state.copyWith(results: updatedResults));
-        },
-        allLoaded: (state) {
-          final updatedResults = updateResults(state.results, updatedArticle);
-          emit(state.copyWith(results: updatedResults));
-        },
-      );
-    });
-  }
-
-  List<SearchResult> updateResults(List<SearchResult> results, MediaItemArticle updatedArticle) {
-    return results.map((element) {
-      final updatedElement = element.mapOrNull(
-        article: (result) {
-          if (result.article.id == updatedArticle.id) {
-            return result.copyWith(article: updatedArticle);
-          }
-        },
-      );
-      return updatedElement ?? element;
-    }).toList();
   }
 
   @override
   Future<void> close() async {
     await _querySubscription?.cancel();
     await _nextPageSubscription?.cancel();
-    await _shouldUpdateArticleProgressStateSubscription?.cancel();
     await _queryStreamController?.close();
     await _nextPageStreamController?.close();
     return super.close();

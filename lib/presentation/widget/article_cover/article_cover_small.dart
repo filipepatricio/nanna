@@ -54,14 +54,9 @@ class _ArticleCoverSmall extends ArticleCover {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ArticleTimeReadLabel(
-                    finished: article.finished,
-                    timeToRead: article.timeToRead,
-                  ),
+                  ArticleTimeReadLabel(article: article),
                   const Spacer(),
-                  BookmarkButton.article(
-                    article: article,
-                  ),
+                  BookmarkButton.article(article: article),
                 ],
               ),
             ],
