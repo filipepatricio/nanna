@@ -6,7 +6,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: GraphQLFreshLinkFactory, env: liveEnvs)
+@LazySingleton(as: GraphQLFreshLinkFactory, env: defaultEnvs)
 class GraphQLFreshLinkFactoryImpl implements GraphQLFreshLinkFactory {
   GraphQLFreshLinkFactoryImpl(
     this._refreshTokenService,

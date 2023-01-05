@@ -74,6 +74,13 @@
       "args": ["--flavor", "prod", "--dart-define=env=prod"]
     },
     {
+      "name": "prod-integration-test",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "args": ["--flavor", "prod", "--dart-define=env=integration"]
+    },
+    {
       "name": "prod-profile",
       "request": "launch",
       "type": "dart",

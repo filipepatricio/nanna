@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 const _hiveBoxName = 'subscriptionBox';
 const _onboardingPaywallKey = 'onboardingPaywall';
 
-@LazySingleton(as: SubscriptionDatabase, env: liveEnvs)
+@LazySingleton(as: SubscriptionDatabase, env: defaultEnvs)
 class SubscriptionHiveDatabase implements SubscriptionDatabase {
   Future<Box<dynamic>> _openUserBox(String userUuid, String hiveBoxName) async {
     final box = await Hive.openBox('${userUuid}_$hiveBoxName');

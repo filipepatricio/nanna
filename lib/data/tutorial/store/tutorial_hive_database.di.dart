@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 
 const _hiveBoxName = 'tutorialBox';
 
-@LazySingleton(as: TutorialDatabase, env: liveEnvs)
+@LazySingleton(as: TutorialDatabase, env: defaultEnvs)
 class TutorialHiveDatabase implements TutorialDatabase {
   Future<Box<dynamic>> _openUserBox(String userUuid, String hiveBoxName) async {
     final box = await Hive.openBox('${userUuid}_$hiveBoxName');

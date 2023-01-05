@@ -4,20 +4,20 @@ name: UI changes
 # and than add to our job condition "if: github.event.pull_request.merged == true"
 
 on:
-  # workflow_dispatch:
-  # pull_request:
-  #   branches: [develop]
-  #   paths-ignore:
-  #     - '**.yaml'
-  #     - 'analysis_options.yaml'
-  #     - 'commitlint.config.js'
-  #     - '**/README.md'
-  #     - 'scripts/**'
-  #     - '.vscode/**'
-  #     - '.github/**'
-  #     - '.idea/**'
-  #     - '.fvm/**'
-  #     - '.dart_tool/**'
+  workflow_dispatch:
+  pull_request:
+    branches: [develop]
+    paths-ignore:
+      - '**.yaml'
+      - 'analysis_options.yaml'
+      - 'commitlint.config.js'
+      - '**/README.md'
+      - 'scripts/**'
+      - '.vscode/**'
+      - '.github/**'
+      - '.idea/**'
+      - '.fvm/**'
+      - '.dart_tool/**'
 
 jobs:
   changes:

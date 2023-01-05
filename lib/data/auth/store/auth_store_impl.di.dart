@@ -10,7 +10,7 @@ import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-@LazySingleton(as: AuthStore, env: liveEnvs)
+@LazySingleton(as: AuthStore, env: defaultEnvs)
 class AuthStoreImpl implements AuthStore {
   AuthStoreImpl(
     this._freshLink,

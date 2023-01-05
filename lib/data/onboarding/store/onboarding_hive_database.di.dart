@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 const _hiveBoxName = 'onboardingBox';
 const _onboardingKey = 'onboardingKey';
 
-@LazySingleton(as: OnboardingDatabase, env: liveEnvs)
+@LazySingleton(as: OnboardingDatabase, env: defaultEnvs)
 class OnboardingHiveDatabase implements OnboardingDatabase {
   Future<Box<dynamic>> _openUserBox(String userUuid, String hiveBoxName) async {
     final box = await Hive.openBox('${userUuid}_$hiveBoxName');

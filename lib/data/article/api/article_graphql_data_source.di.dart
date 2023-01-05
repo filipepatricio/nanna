@@ -31,7 +31,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: ArticleApiDataSource, env: liveEnvs)
+@LazySingleton(as: ArticleApiDataSource, env: defaultEnvs)
 class ArticleGraphqlDataSource implements ArticleApiDataSource {
   ArticleGraphqlDataSource(
     this._client,

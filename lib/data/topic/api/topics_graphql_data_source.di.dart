@@ -17,7 +17,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: TopicsApiDataSource, env: liveEnvs)
+@LazySingleton(as: TopicsApiDataSource, env: defaultEnvs)
 class TopicsGraphqlDataSource implements TopicsApiDataSource {
   TopicsGraphqlDataSource(this._client, this._responseResolver);
   final GraphQLClient _client;

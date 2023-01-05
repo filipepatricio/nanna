@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/domain/networking/connectivity_repository
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: ConnectivityRepository, env: liveEnvs)
+@LazySingleton(as: ConnectivityRepository, env: defaultEnvs)
 class ConnectivityRepositoryImpl implements ConnectivityRepository {
   @override
   Future<bool> hasInternetConnection() async {

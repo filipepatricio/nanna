@@ -2,14 +2,8 @@ name: CI Integration tests
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'feature/inf-1664-create-basic-integration-test-for-nanna'
-  pull_request:
-    branches: [main]
-  # schedule:
-  # Always set hour in UTC timezone
-  # - cron: "0 21 * * THU"
+  schedule:
+  - cron: "0 21 * * THU"
 
 env:
   JAVA_VERSION: "12.x"
@@ -17,67 +11,67 @@ env:
   ACCESS_TOKEN: ${{ secrets.FIREBASE_TEST_LAB_API_ACCESS_TOKEN_PROD }}
 
 jobs:
-  # test_android:
-  #   name: Test Android
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 30
-  #   steps:
-  #     - name: Cancel previous jobs
-  #       uses: styfle/cancel-workflow-action@0.11.0
-  #       with:
-  #         access_token: ${{ github.token }}
+  test_android:
+    name: Test Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Cancel previous jobs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
 
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  #     - name: Get Flutter version
-  #       id: get-flutter-version
-  #       uses: zgosalvez/github-actions-get-flutter-version-env@v2
+      - name: Get Flutter version
+        id: get-flutter-version
+        uses: zgosalvez/github-actions-get-flutter-version-env@v2
 
-  #     - name: Setup
-  #       uses: subosito/flutter-action@v2.8.0
-  #       with:
-  #         flutter-version: ${{ steps.get-flutter-version.outputs.version }}
-  #         cache: true
+      - name: Setup
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: ${{ steps.get-flutter-version.outputs.version }}
+          cache: true
 
-  #     - name: Build
-  #       run: |
-  #         flutter pub get
-  #         flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
-  #         flutter pub run build_runner build --delete-conflicting-outputs
+      - name: Build
+        run: |
+          flutter pub get
+          flutter pub run easy_localization:generate --source-dir ./assets/translations -f keys -o local_keys.g.dart
+          flutter pub run build_runner build --delete-conflicting-outputs
 
-  #     - name: Decrypt Android keys
-  #       run: sh ./.github/scripts/decrypt_android_secrets.sh
-  #       env:
-  #         ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+      - name: Decrypt Android keys
+        run: sh ./.github/scripts/decrypt_android_secrets.sh
+        env:
+          ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
 
-  #     - name: Build Android apks
-  #       run: sh ./.github/scripts/gen_android_int_test.sh
+      - name: Build Android apks
+        run: sh ./.github/scripts/gen_android_int_test.sh
 
-  #     - name: Run tests on Test Lab
-  #       uses: actions-hub/gcloud@master
-  #       env:
-  #         PROJECT_ID: frontend-production-328408
-  #         APPLICATION_CREDENTIALS: ${{secrets.FIREBASE_TEST_LAB_SERVICE_ACCOUNT_CREDENTIALS}}
-  #       with:
-  #         args: firebase test android run --type=instrumentation --app="build/app/outputs/apk/prod/debug/app-prod-debug.apk" --test="build/app/outputs/apk/androidTest/prod/debug/app-prod-debug-androidTest.apk" --device=model=oriole,orientation=portrait,version=32 --timeout=5m --results-dir=test-results
+      - name: Run tests on Test Lab
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: frontend-production-328408
+          APPLICATION_CREDENTIALS: ${{secrets.FIREBASE_TEST_LAB_SERVICE_ACCOUNT_CREDENTIALS}}
+        with:
+          args: firebase test android run --type=instrumentation --app="build/app/outputs/apk/prod/debug/app-prod-debug.apk" --test="build/app/outputs/apk/androidTest/prod/debug/app-prod-debug-androidTest.apk" --device=model=oriole,orientation=portrait,version=32 --timeout=5m --results-dir=test-results
 
-      # - name: Slack message android tests failed
-      #   if: failure()
-      #   uses: 8398a7/action-slack@v3
-      #   with:
-      #     icon_emoji: ":x:"
-      #     job_name: Integration Test - Android
-      #     status: ${{ job.status }}
-      #     fields: repo,author,job,took,workflow,pullRequest
-      #     if_mention: "failure"
-      #     channel: "C03HLNW54EN"
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
-      #     MATRIX_CONTEXT: ${{ toJson(matrix) }}
+      - name: Slack message android tests failed
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          icon_emoji: ":x:"
+          job_name: Integration Test - Android
+          status: ${{ job.status }}
+          fields: repo,author,job,took,workflow,pullRequest
+          if_mention: "failure"
+          channel: "C03HLNW54EN"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
 
-  test_ios:
-    name: Test iOS
+  build_ios_test:
+    name: Build iOS tests
     runs-on: macos-12
     outputs:
       succeeded: ${{ steps.result.outputs.result }}
@@ -152,24 +146,50 @@ jobs:
         env:
           TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
 
-      - name: Run tests on Test Lab
-        uses: actions-hub/gcloud@master
-        env:
-          PROJECT_ID: frontend-production-328408
-          APPLICATION_CREDENTIALS: ${{secrets.FIREBASE_TEST_LAB_SERVICE_ACCOUNT_CREDENTIALS}}
+      - name: Upload tests as artifact
+        uses: actions/upload-artifact@v3
         with:
-          args: firebase test ios run --test="build/ios_integ/Build/Products/ios_tests.zip" --timeout=5m --device model=iphone13pro,orientation=portrait --results-dir=results
+          name: ios-tests
+          path: build/ios_integ/Build/Products/ios_tests.zip
+          if-no-files-found: error
 
-      # - name: Slack message iOS app building failed
-      #   if: failure()
-      #   uses: 8398a7/action-slack@v3
-      #   with:
-      #     icon_emoji: ':x:'
-      #     job_name: Integration test - iOS
-      #     status: ${{ job.status }}
-      #     fields: repo,author,job,took,workflow,pullRequest
-      #     if_mention: 'failure'
-      #     channel: 'C03HLNW54EN'
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
-      #     MATRIX_CONTEXT: ${{ toJson(matrix) }}
+      - name: Slack message iOS app building failed
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          icon_emoji: ':x:'
+          job_name: Integration test - iOS
+          status: ${{ job.status }}
+          fields: repo,author,job,took,workflow,pullRequest
+          if_mention: 'failure'
+          channel: 'C03HLNW54EN'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASES_CHANNEL_WEBHOOK_URL }}
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+
+  test_ios:
+    name: Test iOS
+    needs: [build_ios_test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Download tests artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: ios-tests
+
+    - name: Delete tests artifact
+      uses: geekyeggo/delete-artifact@v2
+      with:
+        name: ios-tests
+
+    - name: Run tests on Test Lab
+      uses: actions-hub/gcloud@master
+      env:
+        PROJECT_ID: frontend-production-328408
+        APPLICATION_CREDENTIALS: ${{secrets.FIREBASE_TEST_LAB_SERVICE_ACCOUNT_CREDENTIALS}}
+      with:
+        args: firebase test ios run --test="ios_tests.zip" --timeout=5m --device=model=iphone13pro,version=15.7 --results-dir=results
