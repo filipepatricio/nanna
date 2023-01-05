@@ -23,6 +23,8 @@ class _ArticleCoverMedium extends ArticleCover {
       [MediaQuery.of(context).size],
     );
 
+    final articleNote = article.note;
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimens.pageHorizontalMargin,
@@ -65,9 +67,13 @@ class _ArticleCoverMedium extends ArticleCover {
                 ),
               ],
             ),
-            if (article.shouldShowArticleCoverNote && showNote) ...[
+            if (articleNote != null && article.shouldShowArticleCoverNote && showNote) ...[
               const SizedBox(height: AppDimens.m),
-              _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
+              OwnersNote(
+                note: articleNote,
+                showRecommendedBy: showRecommendedBy,
+                curationInfo: article.curationInfo,
+              ),
             ],
             const SizedBox(height: AppDimens.sl),
             ArticleMetadataRow(

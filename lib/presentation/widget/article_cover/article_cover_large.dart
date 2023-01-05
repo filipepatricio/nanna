@@ -16,6 +16,7 @@ class _ArticleCoverLarge extends ArticleCover {
 
   @override
   Widget build(BuildContext context) {
+    final articleNote = article.note;
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimens.pageHorizontalMargin,
@@ -55,8 +56,12 @@ class _ArticleCoverLarge extends ArticleCover {
               ),
             ),
             const SizedBox(height: AppDimens.m),
-            if (article.shouldShowArticleCoverNote && showNote) ...[
-              _ArticlesNote(article: article, showRecommendedBy: showRecommendedBy),
+            if (articleNote != null && article.shouldShowArticleCoverNote && showNote) ...[
+              OwnersNote(
+                note: articleNote,
+                showRecommendedBy: showRecommendedBy,
+                curationInfo: article.curationInfo,
+              ),
               const SizedBox(height: AppDimens.m),
             ],
             ArticleMetadataRow(

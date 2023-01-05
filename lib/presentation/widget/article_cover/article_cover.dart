@@ -10,10 +10,9 @@ import 'package:better_informed_mobile/presentation/widget/article_cover/content
 import 'package:better_informed_mobile/presentation/widget/article_progress_opacity.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/cloudinary/cloudinary_image.dart';
-import 'package:better_informed_mobile/presentation/widget/curation/curation_info_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
-import 'package:better_informed_mobile/presentation/widget/owners_note_container.dart';
+import 'package:better_informed_mobile/presentation/widget/owners_note.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -73,43 +72,6 @@ abstract class ArticleCover extends HookWidget {
       article: article,
       onTap: onTap,
       key: key,
-    );
-  }
-}
-
-class _ArticlesNote extends StatelessWidget {
-  const _ArticlesNote({
-    required this.article,
-    required this.showRecommendedBy,
-    Key? key,
-  }) : super(key: key);
-
-  final MediaItemArticle article;
-  final bool showRecommendedBy;
-
-  @override
-  Widget build(BuildContext context) {
-    return OwnersNoteContainer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InformedMarkdownBody(
-            markdown: article.note!,
-            baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(color: AppColors.of(context).textSecondary),
-          ),
-          if (showRecommendedBy) ...[
-            const SizedBox(height: AppDimens.xs),
-            CurationInfoView(
-              curationInfo: article.curationInfo,
-              imageDimension: AppDimens.smallAvatarSize,
-              style: AppTypography.sansTextNanoLausanne.copyWith(
-                color: AppColors.of(context).textTertiary,
-                height: 1,
-              ),
-            ),
-          ]
-        ],
-      ),
     );
   }
 }

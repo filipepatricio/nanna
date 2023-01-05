@@ -50,15 +50,8 @@ class _TopicCoverMedium extends TopicCover {
             ),
             const SizedBox(height: AppDimens.m),
             if (ownersNote != null) ...[
-              OwnersNoteContainer(
-                child: InformedMarkdownBody(
-                  markdown: ownersNote,
-                  baseTextStyle: AppTypography.sansTextSmallLausanne.copyWith(
-                    color: AppColors.of(context).textSecondary,
-                  ),
-                ),
-              ),
-              const SizedBox(height: AppDimens.l),
+              OwnersNote(note: ownersNote),
+              const SizedBox(height: AppDimens.m),
             ],
             _TopicCoverBar.medium(
               topic: topic,
