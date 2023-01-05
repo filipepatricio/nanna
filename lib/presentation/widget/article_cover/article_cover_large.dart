@@ -16,7 +16,17 @@ class _ArticleCoverLarge extends ArticleCover {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = useCubit<ArticleCoverCubit>();
+    final state = useCubitBuilder(cubit);
     final articleNote = article.note;
+
+    useEffect(
+      () {
+        cubit.initialize(article);
+      },
+      [cubit, article],
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimens.pageHorizontalMargin,
@@ -39,7 +49,7 @@ class _ArticleCoverLarge extends ArticleCover {
               const SizedBox(height: AppDimens.m),
             ],
             ArticleProgressOpacity(
-              article: article,
+              article: state.map(initializing: (_) => article, idle: (state) => state.article),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -65,7 +75,7 @@ class _ArticleCoverLarge extends ArticleCover {
               const SizedBox(height: AppDimens.m),
             ],
             ArticleMetadataRow(
-              article: article,
+              article: state.map(initializing: (_) => article, idle: (state) => state.article),
             ),
           ],
         ),

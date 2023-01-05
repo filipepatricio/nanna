@@ -24,6 +24,15 @@ class _ArticleCoverMedium extends ArticleCover {
     );
 
     final articleNote = article.note;
+    final cubit = useCubit<ArticleCoverCubit>();
+    final state = useCubitBuilder(cubit);
+
+    useEffect(
+      () {
+        cubit.initialize(article);
+      },
+      [cubit, article],
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -42,7 +51,7 @@ class _ArticleCoverMedium extends ArticleCover {
               children: [
                 Expanded(
                   child: ArticleProgressOpacity(
-                    article: article,
+                    article: state.map(initializing: (_) => article, idle: (state) => state.article),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -77,7 +86,7 @@ class _ArticleCoverMedium extends ArticleCover {
             ],
             const SizedBox(height: AppDimens.sl),
             ArticleMetadataRow(
-              article: article,
+              article: state.map(initializing: (_) => article, idle: (state) => state.article),
               onBookmarkTap: onBookmarkTap,
             ),
           ],

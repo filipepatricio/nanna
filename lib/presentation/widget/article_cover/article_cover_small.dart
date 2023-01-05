@@ -17,6 +17,16 @@ class _ArticleCoverSmall extends ArticleCover {
       [MediaQuery.of(context).size],
     );
 
+    final cubit = useCubit<ArticleCoverCubit>();
+    final state = useCubitBuilder(cubit);
+
+    useEffect(
+      () {
+        cubit.initialize(article);
+      },
+      [cubit, article],
+    );
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -35,7 +45,7 @@ class _ArticleCoverSmall extends ArticleCover {
               const SizedBox(height: AppDimens.sl),
               Expanded(
                 child: ArticleProgressOpacity(
-                  article: article,
+                  article: state.map(initializing: (_) => article, idle: (state) => state.article),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -54,7 +64,9 @@ class _ArticleCoverSmall extends ArticleCover {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ArticleTimeReadLabel(article: article),
+                  ArticleTimeReadLabel(
+                    article: state.map(initializing: (_) => article, idle: (state) => state.article),
+                  ),
                   const Spacer(),
                   BookmarkButton.article(article: article),
                 ],
