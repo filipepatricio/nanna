@@ -55,11 +55,11 @@ class SubscriptionPage extends HookWidget {
             SubscriptionSuccessPageRoute(trialMode: trialMode),
           );
         },
-        generalError: () {
+        generalError: (message) {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: LocaleKeys.common_error_tryAgainLater.tr(),
+              message: message ?? LocaleKeys.common_error_tryAgainLater.tr(),
               type: SnackbarMessageType.negative,
             ),
           );

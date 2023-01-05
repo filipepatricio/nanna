@@ -109,6 +109,7 @@
       "fresh": "Fresh curations every day",
       "read": "Read or listen to articles"
     },
+    "restoringPurchaseError": "There are no purchases to restore associated to this account",
     "restoringPurchase": "Restoring purchase",
     "restorePurchase": "Restore purchase",
     "startYourTrial": "Now: start your free trial of Premium",
