@@ -19,5 +19,5 @@ class SubscriptionPageState with _$SubscriptionPageState {
 
   const factory SubscriptionPageState.restoringPurchase() = _SubscriptionPageStateRestoringPurchase;
 
-  const factory SubscriptionPageState.generalError() = _SubscriptionPageStateGeneralError;
+  const factory SubscriptionPageState.generalError([String? message]) = _SubscriptionPageStateGeneralError;
 }

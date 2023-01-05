@@ -44,14 +44,14 @@ class ArticlePaywallView extends HookWidget {
     final snackbarController = useSnackbarController();
 
     useCubitListener<ArticlePaywallCubit, ArticlePaywallState>(cubit, (cubit, state, context) {
-      state.mapOrNull(
-        restoringPurchase: (_) => InformedDialog.showRestorePurchase(context),
-        purchaseSuccess: (_) => InformedDialog.removeRestorePurchase(context),
-        generalError: (_) {
+      state.whenOrNull(
+        restoringPurchase: () => InformedDialog.showRestorePurchase(context),
+        purchaseSuccess: () => InformedDialog.removeRestorePurchase(context),
+        generalError: (message) {
           InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: LocaleKeys.common_error_tryAgainLater.tr(),
+              message: message ?? LocaleKeys.common_error_tryAgainLater.tr(),
               type: SnackbarMessageType.negative,
             ),
           );
