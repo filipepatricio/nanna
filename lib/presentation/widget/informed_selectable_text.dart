@@ -1,5 +1,7 @@
+import 'dart:math';
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -237,16 +239,97 @@ class TextSpanEditingController extends TextEditingController {
   final Key key;
   final TextSpan _textSpan;
 
+  final Color _selectedTextColor = AppColors.light.textPrimary;
+
   @override
   TextSpan buildTextSpan({
     required BuildContext context,
     required bool withComposing,
     TextStyle? style,
   }) {
-    // This does not care about composing.
+    final selection = value.selection;
+
+    if (_isSomethingSelected(selection)) {
+      final spans = <InlineSpan>[];
+      int position = 0;
+
+      for (final span in _textSpan.children ?? <InlineSpan>[]) {
+        if (span is TextSpan) {
+          final text = span.toPlainText();
+          final textLength = text.length;
+
+          final hasStartBreakPoint = position < selection.start && textLength + position > selection.start;
+          final hasEndBreakPoint = position < selection.end && textLength + position > selection.end;
+          final fullyFitsInSelection = position >= selection.start && position + textLength <= selection.end;
+
+          if (hasStartBreakPoint && hasEndBreakPoint) {
+            spans.add(_getSpanBeforeSelection(selection, position, textLength, text, span));
+            spans.add(_getSpanOfSelectedPart(selection, position, textLength, text, span));
+            spans.add(_getSpanAfterSelection(selection, position, textLength, text, span));
+          } else if (hasStartBreakPoint) {
+            spans.add(_getSpanBeforeSelection(selection, position, textLength, text, span));
+            spans.add(_getSpanOfSelectedPart(selection, position, textLength, text, span));
+          } else if (hasEndBreakPoint) {
+            spans.add(_getSpanOfSelectedPart(selection, position, textLength, text, span));
+            spans.add(_getSpanAfterSelection(selection, position, textLength, text, span));
+          } else if (fullyFitsInSelection) {
+            spans.add(
+              TextSpan(
+                text: text,
+                style: span.style?.copyWith(color: _selectedTextColor),
+              ),
+            );
+          } else {
+            spans.add(span);
+          }
+
+          position += textLength;
+        } else {
+          spans.add(span);
+        }
+      }
+
+      return TextSpan(
+        style: _textSpan.style,
+        children: spans,
+      );
+    }
+
+    return _textSpan;
+  }
+
+  bool _isSomethingSelected(TextSelection selection) => selection.isValid && !selection.isCollapsed;
+
+  TextSpan _getSpanBeforeSelection(TextSelection selection, int position, int textLength, String text, TextSpan span) {
+    const start = 0;
+    final end = selection.start - position;
+    final beforeText = text.substring(start, end);
+
     return TextSpan(
-      style: style,
-      children: <TextSpan>[_textSpan],
+      text: beforeText,
+      style: span.style,
+    );
+  }
+
+  TextSpan _getSpanAfterSelection(TextSelection selection, int position, int textLength, String text, TextSpan span) {
+    final start = selection.end - position;
+    final end = textLength;
+    final afterText = text.substring(start, end);
+
+    return TextSpan(
+      text: afterText,
+      style: span.style,
+    );
+  }
+
+  TextSpan _getSpanOfSelectedPart(TextSelection selection, int position, int textLength, String text, TextSpan span) {
+    final start = max(selection.start - position, 0);
+    final end = min(selection.end - position, textLength);
+    final inText = text.substring(start, end);
+
+    return TextSpan(
+      text: inText,
+      style: span.style?.copyWith(color: _selectedTextColor),
     );
   }
 }
