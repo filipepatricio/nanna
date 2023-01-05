@@ -5,10 +5,10 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_state.dt.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
+import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
@@ -17,7 +17,6 @@ import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_par
 import 'package:better_informed_mobile/presentation/widget/topic_cover/topic_cover.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TopicsSeeAllPage extends HookWidget {
   const TopicsSeeAllPage({
@@ -27,6 +26,7 @@ class TopicsSeeAllPage extends HookWidget {
     this.topics,
     Key? key,
   }) : super(key: key);
+
   final String areaId;
   final String title;
   final List<TopicPreview>? topics;
@@ -85,6 +85,7 @@ class _Body extends StatelessWidget {
     required this.pageStorageKey,
     Key? key,
   }) : super(key: key);
+
   final String title;
   final TopicsSeeAllPageState state;
   final ScrollController scrollController;
@@ -94,42 +95,36 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return state.maybeMap(
       loading: (_) => const Loader(),
-      withPagination: (state) => _TopicGrid(
-        title: title,
+      withPagination: (state) => _TopicList(
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
-        withLoader: false,
       ),
-      loadingMore: (state) => _TopicGrid(
-        title: title,
+      loadingMore: (state) => _TopicList(
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
         withLoader: true,
       ),
-      allLoaded: (state) => _TopicGrid(
-        title: title,
+      allLoaded: (state) => _TopicList(
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
-        withLoader: false,
       ),
       orElse: () => const SizedBox.shrink(),
     );
   }
 }
 
-class _TopicGrid extends StatelessWidget {
-  const _TopicGrid({
-    required this.title,
+class _TopicList extends StatelessWidget {
+  const _TopicList({
     required this.pageStorageKey,
     required this.topics,
     required this.scrollController,
-    required this.withLoader,
+    this.withLoader = false,
     Key? key,
   }) : super(key: key);
-  final String title;
+
   final PageStorageKey pageStorageKey;
   final List<TopicPreview> topics;
   final ScrollController scrollController;
@@ -140,45 +135,31 @@ class _TopicGrid extends StatelessWidget {
     return CustomScrollView(
       key: pageStorageKey,
       controller: scrollController,
+      physics: const BottomBouncingScrollPhysics(),
       slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.all(AppDimens.l),
-          sliver: SliverToBoxAdapter(
-            child: AlignedGridView.count(
-              physics: const BottomBouncingScrollPhysics(),
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              itemCount: topics.length,
-              crossAxisSpacing: AppDimens.l,
-              mainAxisSpacing: AppDimens.m,
-              itemBuilder: (context, index) => _GridItem(
-                topic: topics[index],
-              ),
-            ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final topic = topics[index];
+
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TopicCover.medium(
+                    topic: topic,
+                    onTap: () => context.pushRoute(
+                      TopicPage(topicSlug: topic.slug),
+                    ),
+                  ),
+                  const CardDivider.cover()
+                ],
+              );
+            },
+            childCount: topics.length,
           ),
         ),
         SeeAllLoadMoreIndicator(show: withLoader),
       ],
-    );
-  }
-}
-
-class _GridItem extends StatelessWidget {
-  const _GridItem({
-    required this.topic,
-    Key? key,
-  }) : super(key: key);
-  final TopicPreview topic;
-
-  @override
-  Widget build(BuildContext context) {
-    return TopicCover.small(
-      topic: topic,
-      onTap: () => context.pushRoute(
-        TopicPage(
-          topicSlug: topic.slug,
-        ),
-      ),
     );
   }
 }
