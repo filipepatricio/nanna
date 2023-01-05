@@ -1,5 +1,5 @@
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
-import 'package:better_informed_mobile/domain/audio/exception/file_access_expired.dart';
+import 'package:better_informed_mobile/domain/audio/exception/audio_file_access_expired_exception.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/prepare_audio_track_use_case.di.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -52,7 +52,7 @@ void main() {
     );
     when(audioRepository.prepareItem(any, audioFile, article)).thenAnswer((invocation) async {
       if (invocationCounter++ == 0) {
-        throw FileAccessExpired();
+        throw AudioFileAccessExpiredException();
       }
     });
 

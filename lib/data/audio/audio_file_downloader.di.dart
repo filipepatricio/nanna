@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:better_informed_mobile/domain/audio/exception/file_access_expired.dart';
+import 'package:better_informed_mobile/domain/audio/exception/audio_file_access_expired_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,7 +12,7 @@ class AudioFileDownloader {
 
     if (result != HttpStatus.ok) {
       if (result == HttpStatus.forbidden) {
-        throw FileAccessExpired();
+        throw AudioFileAccessExpiredException();
       } else if (result != HttpStatus.ok) {
         throw Exception('Loading audio file ${args.file} failed with code $result');
       }

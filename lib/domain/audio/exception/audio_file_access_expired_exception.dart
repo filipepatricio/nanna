@@ -1,0 +1,1 @@
+class AudioFileAccessExpiredException implements Exception {}

@@ -4,6 +4,8 @@ import 'package:audio_service/audio_service.dart';
 import 'package:better_informed_mobile/data/audio/handler/current_audio_item_dto.dt.dart';
 import 'package:better_informed_mobile/data/audio/handler/informed_base_audio_handler.dart';
 import 'package:better_informed_mobile/data/audio/handler/playback_state_extension.dart';
+import 'package:better_informed_mobile/domain/audio/exception/audio_file_loading_exception.dart';
+import 'package:better_informed_mobile/domain/audio/exception/unknown_audio_file_duration_exception.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -40,15 +42,19 @@ class InformedAudioHandler extends InformedBaseAudioHandler with SeekHandler {
 
   @override
   Future<Duration> open(String path) async {
-    final duration = await _audioPlayer.setFilePath(path);
-    if (duration == null) throw Exception('Unknown audio file duration: $path');
+    try {
+      final duration = await _audioPlayer.setFilePath(path);
+      if (duration == null) throw AudioFileUnknownDurationException(path);
 
-    await _registerPlaybackEventListener();
+      await _registerPlaybackEventListener();
 
-    mediaItem.add(mediaItem.value?.copyWith(duration: duration));
-    playbackState.add(PlaybackStateExtension.getLoaded(duration));
+      mediaItem.add(mediaItem.value?.copyWith(duration: duration));
+      playbackState.add(PlaybackStateExtension.getLoaded(duration));
 
-    return duration;
+      return duration;
+    } on PlayerInterruptedException catch (e) {
+      throw AudioFileLoadingException(path, e.message);
+    }
   }
 
   @override
