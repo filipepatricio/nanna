@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/article/data/article_content.dt.dart';
-import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
 import 'package:better_informed_mobile/domain/article/data/audio_file.dart';
 import 'package:better_informed_mobile/domain/article/data/reading_banner.dart';
+import 'package:better_informed_mobile/domain/article/data/update_article_progress_response.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
@@ -19,7 +19,7 @@ abstract class ArticleRepository {
 
   Future<List<BriefEntryItem>> getOtherBriefEntries(String articleSlug, String briefId);
 
-  Future<ArticleProgress> trackReadingProgress(String articleSlug, int progress);
+  Future<UpdateArticleProgressResponse> trackReadingProgress(String articleSlug, int progress);
 
   void trackAudioPosition(String articleSlug, int position, [int? duration]);
 

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 
 @singleton
-class ShouldRefreshVisitStateNotifier {
+class ShouldRefreshPageNotifier {
   final StreamController<bool> _changeStream = StreamController.broadcast();
 
   Stream<bool> get stream => _changeStream.stream;

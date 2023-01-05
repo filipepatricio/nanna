@@ -896,6 +896,7 @@ class MockDTO {
       // contentProgress
       10,
     ),
+    ArticleProgressState.inProgress,
     null,
   );
 
@@ -908,6 +909,7 @@ class MockDTO {
       // contentProgress
       10,
     ),
+    ArticleProgressState.inProgress,
     'This is your last free article this month.',
   );
 

@@ -4,6 +4,8 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
+import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
+import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_metadata_row.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_no_image_view.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/content/article_time_read_label.dart';
