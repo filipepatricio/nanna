@@ -51,18 +51,15 @@ class SearchView extends HookWidget {
         idle: (state) => ItemsGridView(
           itemCount: state.results.length,
           itemBuilder: (context, index) => itemBuilder(context, index, state.results),
-          scrollController: scrollController,
         ),
         loadMore: (state) => ItemsGridView(
           itemCount: state.results.length,
           itemBuilder: (context, index) => itemBuilder(context, index, state.results),
-          scrollController: scrollController,
           withLoader: true,
         ),
         allLoaded: (state) => ItemsGridView(
           itemCount: state.results.length,
           itemBuilder: (context, index) => itemBuilder(context, index, state.results),
-          scrollController: scrollController,
         ),
         orElse: () => const SliverToBoxAdapter(),
       ),

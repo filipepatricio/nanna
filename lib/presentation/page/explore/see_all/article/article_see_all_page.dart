@@ -6,11 +6,11 @@ import 'package:better_informed_mobile/presentation/page/explore/see_all/article
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_see_all_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/article/article_with_background.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
+import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
@@ -18,7 +18,6 @@ import 'package:better_informed_mobile/presentation/widget/physics/bottom_bounci
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ArticleSeeAllPage extends HookWidget {
   const ArticleSeeAllPage({
@@ -28,6 +27,7 @@ class ArticleSeeAllPage extends HookWidget {
     this.entries,
     Key? key,
   }) : super(key: key);
+
   final String areaId;
   final String title;
   final List<MediaItemArticle>? entries;
@@ -86,6 +86,7 @@ class _Body extends StatelessWidget {
     required this.pageStorageKey,
     Key? key,
   }) : super(key: key);
+
   final String title;
   final ArticleSeeAllPageState state;
   final ScrollController scrollController;
@@ -95,42 +96,36 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return state.maybeMap(
       loading: (_) => const Loader(),
-      withPagination: (state) => _ArticleGrid(
-        title: title,
+      withPagination: (state) => _ArticleList(
         pageStorageKey: pageStorageKey,
         articles: state.articles,
         scrollController: scrollController,
-        withLoader: false,
       ),
-      loadingMore: (state) => _ArticleGrid(
-        title: title,
+      loadingMore: (state) => _ArticleList(
         pageStorageKey: pageStorageKey,
         articles: state.articles,
         scrollController: scrollController,
         withLoader: true,
       ),
-      allLoaded: (state) => _ArticleGrid(
-        title: title,
+      allLoaded: (state) => _ArticleList(
         pageStorageKey: pageStorageKey,
         articles: state.articles,
         scrollController: scrollController,
-        withLoader: false,
       ),
       orElse: () => const SizedBox.shrink(),
     );
   }
 }
 
-class _ArticleGrid extends StatelessWidget {
-  const _ArticleGrid({
-    required this.title,
+class _ArticleList extends StatelessWidget {
+  const _ArticleList({
     required this.pageStorageKey,
     required this.articles,
     required this.scrollController,
-    required this.withLoader,
+    this.withLoader = false,
     Key? key,
   }) : super(key: key);
-  final String title;
+
   final PageStorageKey pageStorageKey;
   final List<ArticleWithBackground> articles;
   final ScrollController scrollController;
@@ -139,55 +134,37 @@ class _ArticleGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      controller: scrollController,
       key: pageStorageKey,
+      controller: scrollController,
+      physics: const BottomBouncingScrollPhysics(),
       slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppDimens.l,
-            horizontal: AppDimens.pageHorizontalMargin,
-          ),
-          sliver: SliverToBoxAdapter(
-            child: AlignedGridView.count(
-              physics: const BottomBouncingScrollPhysics(),
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              crossAxisSpacing: AppDimens.l,
-              mainAxisSpacing: AppDimens.m,
-              itemCount: articles.length,
-              itemBuilder: (context, index) => _GridItem(
-                article: articles[index],
-                index: index,
-              ),
-            ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final article = articles[index];
+
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  article.map(
+                    image: (data) => ArticleCover.medium(
+                      article: article.article,
+                      onTap: () => context.navigateToArticle(article.article),
+                    ),
+                    color: (data) => ArticleCover.medium(
+                      article: article.article,
+                      onTap: () => context.navigateToArticle(article.article),
+                    ),
+                  ),
+                  const CardDivider.cover(),
+                ],
+              );
+            },
+            childCount: articles.length,
           ),
         ),
         SeeAllLoadMoreIndicator(show: withLoader),
       ],
-    );
-  }
-}
-
-class _GridItem extends StatelessWidget {
-  const _GridItem({
-    required this.article,
-    required this.index,
-    Key? key,
-  }) : super(key: key);
-  final ArticleWithBackground article;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return article.map(
-      image: (data) => ArticleCover.small(
-        article: article.article,
-        onTap: () => context.navigateToArticle(article.article),
-      ),
-      color: (data) => ArticleCover.small(
-        article: article.article,
-        onTap: () => context.navigateToArticle(article.article),
-      ),
     );
   }
 }
