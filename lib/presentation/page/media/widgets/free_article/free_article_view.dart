@@ -52,7 +52,7 @@ class FreeArticleView extends HookWidget {
 
     useEffect(
       () {
-        cubit.init(article.slug);
+        cubit.init(article);
       },
       [cubit],
     );

@@ -45,7 +45,6 @@ class MediaItemDTOMapper implements Mapper<MediaItemDTO, MediaItem> {
           title: data.title,
           strippedTitle: data.strippedTitle,
           note: data.note,
-          credits: data.credits,
           timeToRead: data.timeToRead,
           type: _articleTypeDTOMapper(data.type),
           kind: kind != null ? _articleKindDTOMapper(kind) : null,

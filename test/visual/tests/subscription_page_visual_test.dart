@@ -1,8 +1,11 @@
+import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/get_subscription_plans_use_case.di.dart';
+import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
+import 'package:better_informed_mobile/presentation/widget/link_label.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-import '../../fakes.dart';
 import '../../test_data.dart';
 import '../visual_test_utils.dart';
 
@@ -22,4 +25,39 @@ void main() {
     );
     await tester.matchGoldenFile();
   });
+
+  visualTest('${SubscriptionPage}_(restore_purchase)', (tester) async {
+    final useCase = FakeRestorePurchaseUseCase();
+    await tester.startApp(
+      dependencyOverride: (getIt) async {
+        getIt.registerFactory<RestorePurchaseUseCase>(() => useCase);
+      },
+      initialRoute: const SubscriptionPageRoute(),
+    );
+
+    final widgetFinder = find.byWidgetPredicate(
+      (widget) => widget is LinkLabel && widget.label == LocaleKeys.subscription_restorePurchase.tr(),
+    );
+
+    await tester.dragUntilVisible(widgetFinder, find.byType(SubscriptionPage), const Offset(0, -100));
+    await tester.pumpAndSettle();
+    await tester.tap(widgetFinder);
+    await tester.pumpAndSettle();
+
+    await tester.matchGoldenFile();
+  });
+}
+
+class FakeGetSubscriptionPlansUseCase extends Fake implements GetSubscriptionPlansUseCase {
+  FakeGetSubscriptionPlansUseCase(this.plans);
+
+  final List<SubscriptionPlan> plans;
+
+  @override
+  Future<List<SubscriptionPlan>> call() async => plans;
+}
+
+class FakeRestorePurchaseUseCase extends Fake implements RestorePurchaseUseCase {
+  @override
+  Future<bool> call() async => false;
 }

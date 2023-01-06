@@ -70,6 +70,7 @@ import 'package:better_informed_mobile/domain/util/network_cache_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fresh_graphql/fresh_graphql.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:mockito/annotations.dart';
 import 'package:purchases_flutter/object_wrappers.dart';
 
@@ -147,6 +148,7 @@ const _classes = [
   FirebaseExceptionMapper,
   AppleCredentialDataSource,
   GoogleCredentialDataSource,
+  AudioPlayer,
 ];
 
 @GenerateMocks(_classes)

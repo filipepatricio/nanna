@@ -17,5 +17,7 @@ class SubscriptionPageState with _$SubscriptionPageState {
   @Implements<BuildState>()
   const factory SubscriptionPageState.success({required bool withTrial}) = _SubscriptionPageStateSuccess;
 
-  const factory SubscriptionPageState.generalError() = _SubscriptionPageStateGeneralError;
+  const factory SubscriptionPageState.restoringPurchase() = _SubscriptionPageStateRestoringPurchase;
+
+  const factory SubscriptionPageState.generalError([String? message]) = _SubscriptionPageStateGeneralError;
 }

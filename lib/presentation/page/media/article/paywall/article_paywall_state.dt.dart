@@ -24,5 +24,7 @@ class ArticlePaywallState with _$ArticlePaywallState {
 
   factory ArticlePaywallState.purchaseSuccess() = _ArticlePaywallStatePurchaseSuccess;
 
-  factory ArticlePaywallState.generalError() = _ArticlePaywallStateGeneralError;
+  factory ArticlePaywallState.restoringPurchase() = _ArticlePaywallStateRestoringPurchase;
+
+  factory ArticlePaywallState.generalError([String? message]) = _ArticlePaywallStateGeneralError;
 }

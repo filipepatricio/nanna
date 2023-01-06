@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/data/audio_item.dt.dart';
-import 'package:better_informed_mobile/domain/audio/exception/file_access_expired.dart';
+import 'package:better_informed_mobile/domain/audio/exception/audio_file_access_expired_exception.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:injectable/injectable.dart';
 
@@ -34,7 +34,7 @@ class PrepareArticleAudioTrackUseCase {
 
     try {
       await _audioRepository.prepareItem(item, audioFile, article);
-    } on FileAccessExpired catch (_) {
+    } on AudioFileAccessExpiredException catch (_) {
       final audioFile = await _articleRepository.getArticleAudioFile(
         article.slug,
         true,

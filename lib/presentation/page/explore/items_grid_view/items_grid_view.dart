@@ -10,14 +10,12 @@ class ItemsGridView extends StatelessWidget {
   const ItemsGridView({
     required this.itemCount,
     required this.itemBuilder,
-    required this.scrollController,
     this.withLoader = false,
     Key? key,
   }) : super(key: key);
 
   final int itemCount;
   final NullableIndexedWidgetBuilder itemBuilder;
-  final ScrollController scrollController;
   final bool withLoader;
 
   @override

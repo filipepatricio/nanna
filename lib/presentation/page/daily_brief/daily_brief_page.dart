@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/common/data/curation_info.dart';
+import 'package:better_informed_mobile/domain/common/data/curator.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_introduction.dart';
@@ -26,9 +28,10 @@ import 'package:better_informed_mobile/presentation/util/scroll_controller_utils
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
 import 'package:better_informed_mobile/presentation/widget/brief_entry_cover/brief_entry_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
+import 'package:better_informed_mobile/presentation/widget/curation/curation_info_view.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
-import 'package:better_informed_mobile/presentation/widget/owners_note_container.dart';
+import 'package:better_informed_mobile/presentation/widget/owners_note.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:better_informed_mobile/presentation/widget/toasts/toast_util.dart';
@@ -566,7 +569,13 @@ class _Greeting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intro = introduction;
-
+    final dummyEditorialTeamCurationInfo = CurationInfo(
+      LocaleKeys.dailyBrief_dummyEditorialTeamCurationInfo_byLine.tr(),
+      Curator.editorialTeam(
+        name: LocaleKeys.dailyBrief_dummyEditorialTeamCurationInfo_name.tr(),
+        bio: LocaleKeys.dailyBrief_dummyEditorialTeamCurationInfo_bio.tr(),
+      ),
+    );
     return OwnersNoteContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -593,6 +602,15 @@ class _Greeting extends StatelessWidget {
               ),
             ),
           ],
+          const SizedBox(height: AppDimens.xs),
+          CurationInfoView(
+            curationInfo: dummyEditorialTeamCurationInfo,
+            imageDimension: AppDimens.smallAvatarSize,
+            style: AppTypography.sansTextNanoLausanne.copyWith(
+              color: AppColors.of(context).textTertiary,
+              height: 1,
+            ),
+          ),
         ],
       ),
     );

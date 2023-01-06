@@ -3,6 +3,7 @@ import 'package:better_informed_mobile/domain/subscription/data/subscription_pla
 import 'package:better_informed_mobile/domain/subscription/use_case/get_article_paywall_preferred_plan_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/restore_purchase_use_case.di.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article/paywall/article_paywall_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
@@ -54,6 +55,7 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
 
   Future<void> restore() async {
     try {
+      emit(ArticlePaywallState.restoringPurchase());
       final successful = await _restorePurchaseUseCase();
 
       if (successful) {
@@ -67,7 +69,7 @@ class ArticlePaywallCubit extends Cubit<ArticlePaywallState> {
         ex: e,
         stacktrace: s,
       );
-      emit(ArticlePaywallState.generalError());
+      emit(ArticlePaywallState.generalError(LocaleKeys.subscription_restoringPurchaseError.tr()));
     }
   }
 

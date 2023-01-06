@@ -12,6 +12,7 @@ import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
 import 'package:better_informed_mobile/presentation/util/types.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/modal_bottom_sheet.dart';
@@ -47,13 +48,18 @@ class SubscriptionPage extends HookWidget {
 
     useCubitListener<SubscriptionPageCubit, SubscriptionPageState>(cubit, (cubit, state, context) {
       state.whenOrNull(
-        success: (trialMode) => AutoRouter.of(context).replace(
-          SubscriptionSuccessPageRoute(trialMode: trialMode),
-        ),
-        generalError: () {
+        restoringPurchase: () => InformedDialog.showRestorePurchase(context),
+        success: (trialMode) {
+          InformedDialog.removeRestorePurchase(context);
+          AutoRouter.of(context).replace(
+            SubscriptionSuccessPageRoute(trialMode: trialMode),
+          );
+        },
+        generalError: (message) {
+          InformedDialog.removeRestorePurchase(context);
           snackbarController.showMessage(
             SnackbarMessage.simple(
-              message: LocaleKeys.common_error_tryAgainLater.tr(),
+              message: message ?? LocaleKeys.common_error_tryAgainLater.tr(),
               type: SnackbarMessageType.negative,
             ),
           );

@@ -24,7 +24,6 @@ class MediaItemDTO with _$MediaItemDTO {
     String title,
     String strippedTitle,
     String? note,
-    String credits,
     ArticleTypeDTO type,
     ArticleKindDTO? kind,
     String? publicationDate,

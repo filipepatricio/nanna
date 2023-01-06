@@ -4,6 +4,7 @@ import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
+import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/open_web_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,7 +14,7 @@ typedef OnWillPopFunction = Future<bool> Function();
 class InformedDialog extends HookWidget {
   const InformedDialog._({
     required this.title,
-    required this.text,
+    this.text,
     this.secondaryText,
     this.action,
     this.onWillPop,
@@ -21,7 +22,7 @@ class InformedDialog extends HookWidget {
   }) : super(key: key);
 
   final String title;
-  final String text;
+  final String? text;
   final String? secondaryText;
   final Widget? action;
   final OnWillPopFunction? onWillPop;
@@ -31,6 +32,8 @@ class InformedDialog extends HookWidget {
   static String get appUpdateDialogRouteName => 'AppUpdateDialog';
 
   static String get deleteAccountDialogRouteName => 'DeleteAccountDialog';
+
+  static String get restorePurchaseDialogRouteName => 'RestorePurchaseDialog';
 
   static Future<void> showNoConnection(
     BuildContext context, {
@@ -97,11 +100,20 @@ class InformedDialog extends HookWidget {
     );
   }
 
+  static Future<void> showRestorePurchase(BuildContext context) {
+    return show<void>(
+      context,
+      routeName: restorePurchaseDialogRouteName,
+      title: LocaleKeys.subscription_restoringPurchase.tr(),
+      action: const Loader(strokeWidth: 2),
+    );
+  }
+
   static Future<T?> show<T>(
     BuildContext context, {
     required String title,
-    required String text,
     required String routeName,
+    String? text,
     bool dismissible = false,
     Widget? icon,
     String? secondaryText,
@@ -122,6 +134,12 @@ class InformedDialog extends HookWidget {
           onWillPop: onWillPop,
         ),
       );
+
+  static void removeRestorePurchase(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).popUntil(
+      (route) => route.settings.name != restorePurchaseDialogRouteName,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,11 +163,13 @@ class InformedDialog extends HookWidget {
                 title,
                 style: AppTypography.h0Medium,
               ),
-              const SizedBox(height: AppDimens.m),
-              Text(
-                text,
-                style: AppTypography.b2Regular,
-              ),
+              if (text != null) ...[
+                const SizedBox(height: AppDimens.m),
+                Text(
+                  text!,
+                  style: AppTypography.b2Regular,
+                ),
+              ],
               if (secondaryText != null) ...[
                 const SizedBox(height: AppDimens.l),
                 Text(

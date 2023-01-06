@@ -36,10 +36,7 @@ class ArticleMetadataRow extends StatelessWidget {
               const PipeDivider(),
               const SizedBox(width: AppDimens.s),
             ],
-            ArticleTimeReadLabel(
-              finished: article.finished,
-              timeToRead: article.timeToRead,
-            ),
+            ArticleTimeReadLabel(article: article),
           ],
         ),
         const Spacer(),

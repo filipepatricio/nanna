@@ -19,7 +19,6 @@ class MainNavigationObserver extends AutoRouterObserver {
   @override
   void didPop(Route route, Route? previousRoute) {
     switch (route.settings.name) {
-      case MediaItemPageRoute.name:
       case TopicPage.name:
       case SubscriptionPageRoute.name:
       case SubscriptionSuccessPageRoute.name:

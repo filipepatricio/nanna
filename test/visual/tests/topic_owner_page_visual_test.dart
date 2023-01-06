@@ -6,19 +6,6 @@ import '../visual_test_utils.dart';
 
 void main() {
   visualTest(
-    TopicOwnerPage,
-    (tester) async {
-      await tester.startApp(
-        initialRoute: TopicOwnerPageRoute(
-          owner: TestData.topic.curationInfo.curator,
-          fromTopicSlug: TestData.topic.slug,
-        ),
-      );
-      await tester.matchGoldenFile();
-    },
-  );
-
-  visualTest(
     '${TopicOwnerPage}_(full_height)',
     (tester) async {
       await tester.startApp(

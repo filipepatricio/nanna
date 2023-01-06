@@ -4,7 +4,7 @@ import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart'
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/article.dt.dart';
-import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
+import 'package:better_informed_mobile/domain/article/data/update_article_progress_response.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_free_articles_left_warning_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_other_brief_entries_use_case.di.dart';
@@ -16,6 +16,7 @@ import 'package:better_informed_mobile/domain/categories/data/category_item.dt.d
 import 'package:better_informed_mobile/domain/categories/use_case/get_featured_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry_item.dt.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/domain/general/update_article_progress_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/precache_subscription_plans_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/get_topic_by_slug_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_scroll_data.dt.dart';
@@ -39,6 +40,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
     this._getArticleUseCase,
     this._getFreeArticlesLeftWarningStreamUseCase,
     this._precacheSubscriptionPlansUseCase,
+    this._updateArticleProgressStateNotifierUseCase,
   ) : super(const PremiumArticleViewState.initial());
 
   final TrackActivityUseCase _trackActivityUseCase;
@@ -51,6 +53,7 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   final GetArticleUseCase _getArticleUseCase;
   final GetFreeArticlesLeftWarningStreamUseCase _getFreeArticlesLeftWarningStreamUseCase;
   final PrecacheSubscriptionPlansUseCase _precacheSubscriptionPlansUseCase;
+  final UpdateArticleProgressStateNotifierUseCase _updateArticleProgressStateNotifierUseCase;
 
   final moreFromBriefItems = <BriefEntryItem>[];
   final otherTopicItems = <MediaItem>[];
@@ -66,9 +69,9 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
   late String? _topicTitle;
   late NeatPeriodicTaskScheduler? _readingProgressTrackingScheduler;
 
-  ArticleProgress? _articleProgress;
+  UpdateArticleProgressResponse? _updateArticleProgressResponse;
 
-  ArticleProgress? get articleProgress => _articleProgress;
+  UpdateArticleProgressResponse? get updateArticleProgressResponse => _updateArticleProgressResponse;
   String? get topicId => _topicId;
   String? get briefId => _briefId;
   String get topicTitle {
@@ -193,8 +196,16 @@ class PremiumArticleViewCubit extends Cubit<PremiumArticleViewState> {
 
   Future<void> trackReadingProgress() async {
     final progress = (scrollData.progress * 100).toInt().clamp(1, 100);
-    if (_currentFullArticle.metadata.availableInSubscription && progress > (_articleProgress?.contentProgress ?? 0)) {
-      _articleProgress = await _trackArticleReadingProgressUseCase.call(_currentFullArticle.metadata.slug, progress);
+    if (_currentFullArticle.metadata.availableInSubscription &&
+        progress > (_updateArticleProgressResponse?.progress.contentProgress ?? 0)) {
+      final updateArticleProgressResponse =
+          await _trackArticleReadingProgressUseCase.call(_currentFullArticle.metadata.slug, progress);
+      _updateArticleProgressResponse = updateArticleProgressResponse;
+
+      final updatedArticle =
+          _currentFullArticle.metadata.copyWith(progressState: updateArticleProgressResponse.progressState);
+
+      _updateArticleProgressStateNotifierUseCase(updatedArticle);
     }
     return;
   }
