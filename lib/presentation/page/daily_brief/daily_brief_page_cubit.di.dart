@@ -43,7 +43,7 @@ final firstTopicKey = GlobalKey();
 class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   DailyBriefPageCubit(
     this._getCurrentBriefUseCase,
-    this._getPastDaysBriesfUseCase,
+    this._getPastDaysBriefUseCase,
     this._isTutorialStepSeenUseCase,
     this._setTutorialStepSeenUseCase,
     this._trackActivityUseCase,
@@ -56,7 +56,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
-  final GetPastBriefUseCase _getPastDaysBriesfUseCase;
+  final GetPastBriefUseCase _getPastDaysBriefUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
   final IsTutorialStepSeenUseCase _isTutorialStepSeenUseCase;
   final SetTutorialStepSeenUseCase _setTutorialStepSeenUseCase;
@@ -134,7 +134,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     if (todaysBriefSelected) {
       _selectedBrief = _briefsWrapper.currentBrief;
     } else {
-      _selectedBrief = await _getPastDaysBriesfUseCase(_selectedBrief!.date);
+      _selectedBrief = await _getPastDaysBriefUseCase(_selectedBrief!.date);
     }
 
     _updateIdleState();
@@ -213,7 +213,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
         ),
       );
 
-      _selectedBrief = await _getPastDaysBriesfUseCase(briefDate);
+      _selectedBrief = await _getPastDaysBriefUseCase(briefDate);
     }
 
     _trackActivityUseCase.trackEvent(

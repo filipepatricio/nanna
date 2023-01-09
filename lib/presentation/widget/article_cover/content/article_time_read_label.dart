@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -7,17 +8,15 @@ import 'package:flutter/material.dart';
 
 class ArticleTimeReadLabel extends StatelessWidget {
   const ArticleTimeReadLabel({
-    required this.finished,
-    required this.timeToRead,
+    required this.article,
     Key? key,
   }) : super(key: key);
 
-  final bool finished;
-  final int? timeToRead;
+  final MediaItemArticle article;
 
   @override
   Widget build(BuildContext context) {
-    return finished
+    return article.finished
         ? Row(
             children: [
               const VisitedCheck(),
@@ -32,10 +31,10 @@ class ArticleTimeReadLabel extends StatelessWidget {
             ],
           )
         : Container(
-            child: timeToRead == null
+            child: article.timeToRead == null
                 ? const SizedBox()
                 : Text(
-                    LocaleKeys.article_readMinutes.tr(args: [timeToRead.toString()]),
+                    LocaleKeys.article_readMinutes.tr(args: [article.timeToRead.toString()]),
                     style: AppTypography.sansTextNanoLausanne.copyWith(
                       color: AppColors.of(context).textSecondary,
                     ),

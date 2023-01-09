@@ -2,10 +2,7 @@ import 'dart:async';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
-import 'package:better_informed_mobile/domain/article/data/article_progress.dart';
-import 'package:better_informed_mobile/domain/article/use_case/get_article_read_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
-import 'package:better_informed_mobile/domain/bookmark/data/bookmark_data.dt.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_filter.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_order.dart';
@@ -29,7 +26,6 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
     this._removeBookmarkUseCase,
     this._addBookmarkUseCase,
     this._trackActivityUseCase,
-    this._getArticleReadProgressUseCase,
   ) : super(BookmarkListViewState.initial());
 
   final BookmarkPaginationEngineProvider _bookmarkPaginationEngineProvider;
@@ -37,15 +33,14 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   final RemoveBookmarkUseCase _removeBookmarkUseCase;
   final AddBookmarkUseCase _addBookmarkUseCase;
   final TrackActivityUseCase _trackActivityUseCase;
-  final GetArticleReadProgressUseCase _getArticleReadProgressUseCase;
 
   late PaginationEngine<Bookmark> _paginationEngine;
 
-  StreamSubscription? _notifierSubscription;
+  StreamSubscription? _bookmarkChangeNotifierSubscription;
 
   @override
   Future<void> close() {
-    _notifierSubscription?.cancel();
+    _bookmarkChangeNotifierSubscription?.cancel();
     return super.close();
   }
 
@@ -159,7 +154,7 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
   }
 
   void _registerBookmarkChangeNotification(BookmarkFilter filter, BookmarkSort sort, BookmarkOrder order) {
-    _notifierSubscription = _getBookmarkChangeStreamUseCase()
+    _bookmarkChangeNotifierSubscription = _getBookmarkChangeStreamUseCase()
         .debounceTime(const Duration(seconds: 1))
         .switchMap((event) => _reloadOnChangeNotification(event, filter, sort, order))
         .listen(_handlePaginationState);
@@ -225,14 +220,6 @@ class BookmarkListViewCubit extends Cubit<BookmarkListViewState> {
 
       if (cover != null) yield cover;
     }
-  }
-
-  ArticleProgress? getCurrentReadProgress(BookmarkData bookmarkData) {
-    return bookmarkData.mapOrNull(
-      article: (data) => data.article.progress.copyWith(
-        contentProgress: _getArticleReadProgressUseCase(data.article),
-      ),
-    );
   }
 }
 
