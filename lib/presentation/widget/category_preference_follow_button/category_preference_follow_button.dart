@@ -76,7 +76,7 @@ class CategoryPreferenceFollowButton extends HookWidget {
           ),
           decoration: BoxDecoration(
             color: state.categoryPreference.isPreferred
-                ? AppColors.of(context).buttonSecondaryBackground
+                ? AppColors.of(context).backgroundSecondary
                 : AppColors.of(context).buttonPrimaryBackground,
             borderRadius: const BorderRadius.all(
               Radius.circular(100),
