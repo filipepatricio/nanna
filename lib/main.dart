@@ -97,8 +97,10 @@ String _getEnvironment() {
       return Environment.test;
     case 'prod':
       return Environment.prod;
-    case 'integration':
-      return integrationTestName;
+    case 'integration_stage':
+      return integrationStageTestName;
+    case 'integration_prod':
+      return integrationProdTestName;
     default:
       throw Exception('Unknown environment type: $env');
   }

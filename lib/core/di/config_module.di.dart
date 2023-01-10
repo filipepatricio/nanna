@@ -18,9 +18,13 @@ abstract class ConfigModule {
   @singleton
   AppConfig get prodEnv => AppConfig.prod;
 
-  @Environment(integrationTestName)
+  @Environment(integrationStageTestName)
   @singleton
-  AppConfig get integrationTestEnv => AppConfig.prod;
+  AppConfig get integrationStageEnv => AppConfig.stage;
+
+  @Environment(integrationProdTestName)
+  @singleton
+  AppConfig get integrationProdEnv => AppConfig.prod;
 
   @Environment(mockName)
   @singleton
@@ -38,7 +42,7 @@ abstract class ConfigModule {
   @Singleton(as: LogTree)
   SentryReportingTree get stagingLogTree;
 
-  @Environment(integrationTestName)
+  @Environment(integrationProdTestName)
   @singleton
   LogTree get integrationTestLogTree => DebugTree(useColors: true);
 
