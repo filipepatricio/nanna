@@ -12,7 +12,16 @@ Future<void> main(List<String> args) async {
   try {
     await getBaselineGoldens();
     print('> Running golden image tests ...');
-    final flutterTestResult = await Process.run('make', ['visual_tests_report']);
+    final flutterTestResult = await Process.run(
+      'flutter',
+      [
+        'test',
+        'test/visual/wrapper_test.dart',
+        'test/visual/wrapper_dark_test.dart',
+        '--reporter',
+        'json',
+      ],
+    );
     if (flutterTestResult.exitCode == 0) {
       print('✓ Done: No visual changes');
     } else {
@@ -304,12 +313,13 @@ Future<String> exec(String executable, List<String> arguments, {String? workingD
   if (processResult.exitCode != 0) {
     throw Exception(
       '''
-${commandLine(executable, arguments)}
-failed with exit code ${processResult.exitCode}
-stdout:
-${indent(processResult.stdout as String)}
-stderr:
-${indent(processResult.stderr as String)}''',
+      ${commandLine(executable, arguments)}
+      failed with exit code ${processResult.exitCode}
+      stdout:
+      ${indent(processResult.stdout as String)}
+      stderr:
+      ${indent(processResult.stderr as String)}
+      ''',
     );
   }
   return (processResult.stdout as String).trim();
