@@ -12,8 +12,7 @@ Future<void> main(List<String> args) async {
   try {
     await getBaselineGoldens();
     print('> Running golden image tests ...');
-    final flutterTestResult =
-        await Process.run('flutter', ['test', '--reporter', 'json', 'test/visual/wrapper_test.dart']);
+    final flutterTestResult = await Process.run('make', ['visual_tests_report']);
     if (flutterTestResult.exitCode == 0) {
       print('✓ Done: No visual changes');
     } else {

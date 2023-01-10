@@ -38,13 +38,14 @@ unit_tests:
 fvm_unit_tests:
 	-fvm flutter test test/unit/wrapper_test.dart
 
+visual_tests_report:
+	-flutter test test/visual/wrapper_test.dart test/visual/wrapper_dark_test.dart --reporter json
+
 update_goldens:
-	-flutter test test/visual/wrapper_test.dart --update-goldens
-	-flutter test test/visual/wrapper_dark_test.dart --update-goldens
+	-flutter test test/visual/wrapper_test.dart test/visual/wrapper_dark_test.dart --update-goldens
 
 fvm_update_goldens:
-	-fvm flutter test test/visual/wrapper_test.dart --update-goldens
-	-fvm flutter test test/visual/wrapper_dark_test.dart --update-goldens
+	-fvm flutter test test/visual/wrapper_test.dart test/visual/wrapper_dark_test.dart --update-goldens
 
 screens_report:
 	dart scripts/screens_report.dart

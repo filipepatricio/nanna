@@ -184,8 +184,7 @@ extension StartAppExtension on WidgetTester {
       fileNamePrefix = _defaultGoldenFileName;
     }
     _matchGoldenFileCalled = true;
-    // TODO: Just add theme name to file name when enabling dark mode goldens comparison
-    final fileName = "$fileNamePrefix${themeMode.isDark ? '.${themeMode.name}' : ''}";
+    final fileName = '$fileNamePrefix.${themeMode.name}';
 
     await multiScreenGolden(
       this,
