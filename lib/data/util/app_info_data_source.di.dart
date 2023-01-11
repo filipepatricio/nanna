@@ -30,7 +30,7 @@ class AppInfoDataSource {
   Future<bool> shouldUpdate() async {
     try {
       await _upgrader.initialize();
-      return _upgrader.shouldDisplayUpgrade();
+      return _upgrader.shouldDisplayUpgrade() && _upgrader.belowMinAppVersion();
     } catch (_) {
       return false;
     }
