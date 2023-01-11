@@ -22,7 +22,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: UserDataSource, env: liveEnvs)
+@LazySingleton(as: UserDataSource, env: defaultEnvs)
 class UserGraphqlDataSource implements UserDataSource {
   UserGraphqlDataSource(this._client, this._responseResolver);
   final GraphQLClient _client;

@@ -5,6 +5,8 @@ import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/data/util/reporting_tree_error_filter.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/domain/auth/auth_store.dart';
+import 'package:better_informed_mobile/domain/auth/data/auth_token.dart';
 import 'package:better_informed_mobile/domain/language/language_code.dart';
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/informed_app.dart';
@@ -36,6 +38,7 @@ Future<void> main() async {
   final getIt = await configureDependencies(environment);
 
   final appConfig = getIt.get<AppConfig>();
+  await _setupAccessToken(getIt);
   _setupFimber(getIt);
   await _setupAnalytics(getIt);
 
@@ -94,7 +97,25 @@ String _getEnvironment() {
       return Environment.test;
     case 'prod':
       return Environment.prod;
+    case 'integration_stage':
+      return integrationStageTestName;
+    case 'integration_prod':
+      return integrationProdTestName;
     default:
       throw Exception('Unknown environment type: $env');
   }
+}
+
+Future<void> _setupAccessToken(GetIt getIt) async {
+  const accessToken = String.fromEnvironment('accessToken');
+
+  if (accessToken.isEmpty) return;
+
+  final authStore = getIt.get<AuthStore>();
+  final token = AuthToken(
+    accessToken: accessToken,
+    refreshToken: '',
+  );
+
+  await authStore.save(token);
 }

@@ -12,11 +12,11 @@ abstract class AudioModule {
   AudioPlayer get audioPlayer => AudioPlayer();
 
   @preResolve
-  @LazySingleton(env: liveEnvs)
+  @LazySingleton(env: defaultEnvs)
   Future<AudioSession> get audioSession => AudioSession.instance;
 
   @preResolve
-  @LazySingleton(env: liveEnvs)
+  @LazySingleton(env: defaultEnvs)
   Future<InformedBaseAudioHandler> getAudioHandler(
     AudioPlayer player,
     AudioSession audioSession,

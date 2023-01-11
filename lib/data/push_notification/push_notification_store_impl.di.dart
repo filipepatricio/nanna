@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/domain/push_notification/data/registered_
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: PushNotificationStore, env: liveEnvs)
+@LazySingleton(as: PushNotificationStore, env: defaultEnvs)
 class PushNotificationStoreImpl implements PushNotificationStore {
   PushNotificationStoreImpl(this._database, this._entityMapper);
   final PushNotificationDatabase _database;

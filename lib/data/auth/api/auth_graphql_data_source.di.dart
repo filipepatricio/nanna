@@ -10,7 +10,7 @@ import 'package:better_informed_mobile/domain/auth/data/sign_in_credentials.dart
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AuthApiDataSource, env: liveEnvs)
+@LazySingleton(as: AuthApiDataSource, env: defaultEnvs)
 class AuthGraphqlDataSource implements AuthApiDataSource {
   AuthGraphqlDataSource(@Named('unauthorized') this._client, this._responseResolver);
   final GraphQLClient _client;

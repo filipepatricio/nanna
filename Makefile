@@ -38,6 +38,13 @@ unit_tests:
 fvm_unit_tests:
 	-fvm flutter test test/unit/wrapper_test.dart
 
+fvm_integration_tests:
+ifdef accessToken
+	-fvm flutter drive --driver=test_driver/integration_test.dart --target=integration_test/main_test.dart --flavor stage --dart-define=env=integration_stage --dart-define=accessToken=$(accessToken)
+else
+	@echo Error: missing accessToken parameter
+endif
+
 visual_tests_report:
 	-flutter test test/visual/wrapper_test.dart test/visual/wrapper_dark_test.dart --reporter json
 
@@ -64,6 +71,7 @@ graphql_schema:
 
 start_app_sksl:
 	fvm flutter run --profile --cache-sksl --flavor prod --dart-define=env=prod
+
 
 
 $(MAKE_CACHE_DIR):

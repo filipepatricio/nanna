@@ -1,8 +1,9 @@
 import 'package:better_informed_mobile/data/release_notes/store/release_notes_store.dart';
+import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/release_notes/release_notes_local_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: ReleaseNotesLocalRepository)
+@LazySingleton(as: ReleaseNotesLocalRepository, env: [...liveEnvs, ...mockEnvs])
 class ReleaseNotesLocalRepositoryImpl implements ReleaseNotesLocalRepository {
   ReleaseNotesLocalRepositoryImpl(this._store);
 

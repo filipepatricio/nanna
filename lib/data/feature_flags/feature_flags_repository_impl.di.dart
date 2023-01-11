@@ -24,7 +24,7 @@ const _rootRouteFlagDefaultValue = '';
 const _paywallFlag = 'paywall';
 const _paywallFlagDefaultValue = 'current';
 
-@LazySingleton(as: FeaturesFlagsRepository, env: liveEnvs)
+@LazySingleton(as: FeaturesFlagsRepository, env: defaultEnvs)
 class FeatureFlagsRepositoryImpl implements FeaturesFlagsRepository {
   FeatureFlagsRepositoryImpl(this._config);
 

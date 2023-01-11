@@ -29,11 +29,15 @@ flutter_ios_podfile_setup
 
 target 'Runner' do
   pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.6.0'
-
+  
   use_frameworks!
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
 end
 
 post_install do |installer|
@@ -58,6 +62,7 @@ post_install do |installer|
 end
 
 target 'ImageNotification' do
-  use_frameworks!
   pod 'Firebase/Messaging'
+  
+  use_frameworks!
 end
