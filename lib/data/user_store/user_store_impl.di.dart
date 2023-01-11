@@ -3,7 +3,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: UserStore, env: liveEnvs)
+@LazySingleton(as: UserStore, env: defaultEnvs)
 class UserStoreImpl implements UserStore {
   UserStoreImpl(this._database);
   final UserDatabase _database;

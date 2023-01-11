@@ -14,7 +14,7 @@ const _socialShareOptions = {
   'whatsapp': ShareOption.whatsapp,
 };
 
-@LazySingleton(as: ShareRepository, env: liveEnvs)
+@LazySingleton(as: ShareRepository, env: defaultEnvs)
 class ShareRepositoryImpl implements ShareRepository {
   @override
   Future<List<ShareOption>> getShareOptions() async {

@@ -15,7 +15,7 @@ import 'package:fimber/fimber.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: DailyBriefApiDataSource, env: liveEnvs)
+@LazySingleton(as: DailyBriefApiDataSource, env: defaultEnvs)
 class DailyBriefGraphqlDataSource implements DailyBriefApiDataSource {
   DailyBriefGraphqlDataSource(this._client, this._responseResolver);
 

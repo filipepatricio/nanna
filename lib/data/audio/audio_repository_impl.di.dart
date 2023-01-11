@@ -15,7 +15,7 @@ import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-@LazySingleton(as: AudioRepository, env: liveEnvs)
+@LazySingleton(as: AudioRepository, env: defaultEnvs)
 class AudioRepositoryImpl implements AudioRepository {
   AudioRepositoryImpl(
     this._audioHandler,

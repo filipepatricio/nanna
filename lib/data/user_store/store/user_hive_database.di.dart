@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 const _hiveBoxName = 'userBox';
 const _userKey = 'userKey';
 
-@LazySingleton(as: UserDatabase, env: liveEnvs)
+@LazySingleton(as: UserDatabase, env: defaultEnvs)
 class UserHiveDatabase implements UserDatabase {
   @override
   Future<void> clearCurrentUserUuid() async {

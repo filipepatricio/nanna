@@ -9,6 +9,8 @@ abstract class DataSourceModule {
   @dev
   @test
   @prod
+  @Environment(integrationProdTestName)
+  @Environment(integrationStageTestName)
   @preResolve
   //Have to manage the AppLinkDataSource setup like this because of its static async factory method
   Future<AppLinkDataSource> getAppLinkDataSource(AppConfig appConfig) => AppLinkDataSourceImpl.create(appConfig);

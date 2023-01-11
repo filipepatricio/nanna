@@ -167,18 +167,15 @@ class _ArticleHeader extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.xl),
           if (articleImage != null)
-            Align(
-              alignment: Alignment.centerRight,
-              child: SizedBox(
-                height: AppDimens.articleHeaderImageHeight(context),
-                width: AppDimens.articleHeaderImageWidth(context),
-                child: ArticleImage(
-                  image: articleImage,
-                  cardColor: AppColors.of(context).backgroundPrimary,
-                  fit: BoxFit.cover,
-                ),
+            Container(
+              height: MediaQuery.of(context).size.width - AppDimens.pageHorizontalMargin,
+              padding: const EdgeInsets.only(left: AppDimens.pageHorizontalMargin),
+              child: ArticleImage(
+                image: articleImage,
+                cardColor: AppColors.of(context).backgroundPrimary,
+                fit: BoxFit.cover,
               ),
-            )
+            ),
         ],
       ),
     );

@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 const _searchHistoryKey = 'searchHistoryKey';
 const _hiveBoxName = 'searchBox';
 
-@LazySingleton(as: SearchDatabase, env: liveEnvs)
+@LazySingleton(as: SearchDatabase, env: defaultEnvs)
 class SearchHiveDatabase implements SearchDatabase {
   Future<Box<dynamic>> _openUserBox(String userUuid, String hiveBoxName) async {
     final box = await Hive.openBox('${userUuid}_$hiveBoxName');

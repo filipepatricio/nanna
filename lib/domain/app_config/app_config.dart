@@ -6,10 +6,18 @@ import 'package:injectable/injectable.dart';
 const _environmentArgHost = 'host';
 
 const mockName = 'mock';
+const integrationProdTestName = 'integration_prod_test';
+const integrationStageTestName = 'integration_stage_test';
 
 const liveEnvs = [Environment.dev, Environment.test, Environment.prod];
 
+const integrationTestEnvs = [integrationProdTestName, integrationStageTestName];
+
+const defaultEnvs = [...liveEnvs, ...integrationTestEnvs];
+
 const mockEnvs = [mockName];
+
+const testEnvs = [...mockEnvs, ...integrationTestEnvs];
 
 bool kIsAppleDevice = Platform.isIOS;
 

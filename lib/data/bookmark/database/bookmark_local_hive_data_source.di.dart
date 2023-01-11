@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 const _box = 'bookmark_sort';
 const _key = 'entity';
 
-@LazySingleton(as: BookmarkLocalDataSource, env: liveEnvs)
+@LazySingleton(as: BookmarkLocalDataSource, env: defaultEnvs)
 class BookmarkLocalHiveDataSource implements BookmarkLocalDataSource {
   @override
   Future<BookmarkSortConfigNameEntity?> loadBookmarkSortConfig() async {
