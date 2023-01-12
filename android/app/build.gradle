@@ -62,7 +62,7 @@ android {
             // Make sure to onl build Flutter supported architectures
             abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
         }
-        
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -130,6 +130,7 @@ android {
             resValue "string", "onelink_host", "localhost"
             resValue "string", "onelink_custom_host", "localhost"
             resValue "string", "onelink_path_prefix", "/tHNA"
+            resValue "string", "onelink_path_prefix_2", "/FtMU"
 
             resValue "string", "facebook_app_id", ""
             resValue "string", "facebook_client_token", ""
@@ -153,6 +154,7 @@ android {
             resValue "string", "onelink_host", "informed-staging.onelink.me"
             resValue "string", "onelink_custom_host", "get.staging.informed.so"
             resValue "string", "onelink_path_prefix", "/tHNA"
+            resValue "string", "onelink_path_prefix_2", "/FtMU"
 
             resValue "string", "facebook_app_id", "1152910382298060"
             resValue "string", "facebook_client_token", "7ad28f772522a2349c4968cb7211e7b4"
@@ -193,7 +195,7 @@ flutter {
     source '../..'
 }
 
-dependencies {    
+dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.android.gms:play-services-ads-identifier:18.0.1"
 
