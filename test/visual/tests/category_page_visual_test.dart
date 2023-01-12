@@ -9,7 +9,10 @@ void main() {
     await tester.startApp(
       initialRoute: ExploreTabGroupRouter(
         children: [
-          CategoryPageRoute(category: TestData.categoryWithItems),
+          CategoryPageRoute(
+            category: TestData.categoryWithItems,
+            openedFrom: 'Explore',
+          ),
         ],
       ),
     );
