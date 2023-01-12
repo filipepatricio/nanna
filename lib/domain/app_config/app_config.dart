@@ -39,7 +39,7 @@ class AppConfig {
     this.revenueCatKeyiOS,
     this.revenueCatKeyAndroid,
     this.revenueCatPremiumEntitlementId,
-    this.appsFlyerLinkPath,
+    this.appsFlyerLinkPath = const [],
   });
 
   final String name;
@@ -56,7 +56,7 @@ class AppConfig {
   final String? revenueCatKeyiOS;
   final String? revenueCatKeyAndroid;
   final String? revenueCatPremiumEntitlementId;
-  final String? appsFlyerLinkPath;
+  final List<String> appsFlyerLinkPath;
 
   static const dev = AppConfig._(
     name: Environment.dev,
@@ -104,7 +104,7 @@ class AppConfig {
     revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
     revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
     revenueCatPremiumEntitlementId: 'premium',
-    appsFlyerLinkPath: '/tHNA',
+    appsFlyerLinkPath: ['/tHNA'],
   );
 
   static const prod = AppConfig._(
@@ -122,6 +122,6 @@ class AppConfig {
     revenueCatKeyiOS: 'appl_vbotzvGRlvvfVSpOPubjlvxDApQ',
     revenueCatKeyAndroid: 'goog_jUdAAFYAkEzYinZAmOWysZPVOut',
     revenueCatPremiumEntitlementId: 'premium',
-    appsFlyerLinkPath: '/BHtj',
+    appsFlyerLinkPath: ['/BHtj', '/FtMU'],
   );
 }

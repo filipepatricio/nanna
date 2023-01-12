@@ -174,10 +174,11 @@ android {
             resValue "string", "onelink_host", "informed.onelink.me"
             resValue "string", "onelink_custom_host", "get.informed.so"
             resValue "string", "onelink_path_prefix", "/BHtj"
+            resValue "string", "onelink_path_prefix_2", "/FtMU"
 
             resValue "string", "facebook_app_id", "345458011020663"
             resValue "string", "facebook_client_token", "7ad28f772522a2349c4968cb7211e7b4"
-            
+
 
             if (propertyMap.containsKey('prod')) {
                 signingConfig signingConfigs.releaseProd
