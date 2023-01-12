@@ -7,14 +7,15 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/categories/category_page_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_placeholder.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
 import 'package:better_informed_mobile/presentation/widget/category_preference_follow_button/category_preference_follow_button.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_sliver_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
@@ -27,10 +28,12 @@ import 'package:sliver_tools/sliver_tools.dart';
 class CategoryPage extends HookWidget {
   const CategoryPage({
     required this.category,
+    required this.openedFrom,
     Key? key,
   }) : super(key: key);
 
   final CategoryWithItems category;
+  final String openedFrom;
 
   @override
   Widget build(BuildContext context) {
@@ -52,21 +55,28 @@ class CategoryPage extends HookWidget {
 
     return SnackbarParentView(
       child: Scaffold(
-        appBar: InformedCupertinoAppBar(
-          title: category.name,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: AppDimens.pageHorizontalMargin),
-              child: CategoryPreferenceFollowButton(
-                category: category,
-              ),
-            ),
-          ],
-        ),
         body: CustomScrollView(
           physics: const BottomBouncingScrollPhysics(),
           controller: scrollController,
           slivers: [
+            InformedSliverCupertinoAppBar(
+              leading: BackTextButton(
+                color: AppColors.light.textPrimary,
+                text: openedFrom,
+              ),
+              title: category.name,
+              expanded: Theme(
+                data: Theme.of(context).copyWith(brightness: Brightness.light),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: CategoryPreferenceFollowButton(
+                    category: category,
+                  ),
+                ),
+              ),
+              backgroundColor: category.color,
+              textColor: AppColors.light.textPrimary,
+            ),
             NextPageLoadExecutor(
               enabled: shouldListen,
               onNextPageLoad: cubit.loadNextPage,

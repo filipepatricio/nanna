@@ -5,11 +5,14 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/see_all_load_more_indicator.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/explore/see_all/topics/topics_see_all_page_state.dt.dart';
+import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/scroll_controller_utils.dart';
 import 'package:better_informed_mobile/presentation/widget/audio/player_banner/audio_player_banner_wrapper.dart';
+import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/card_divider.dart';
-import 'package:better_informed_mobile/presentation/widget/fixed_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_sliver_cupertino_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/next_page_load_executor.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/bottom_bouncing_physics.dart';
@@ -52,7 +55,6 @@ class TopicsSeeAllPage extends HookWidget {
     );
 
     return Scaffold(
-      appBar: FixedAppBar(scrollController: scrollController, title: title),
       body: SnackbarParentView(
         child: AudioPlayerBannerWrapper(
           layout: AudioPlayerBannerLayout.column,
@@ -93,25 +95,27 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return state.maybeMap(
-      loading: (_) => const Loader(),
+    return state.map(
+      loading: (_) => _LoadingView(title: title),
       withPagination: (state) => _TopicList(
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
+        title: title,
       ),
       loadingMore: (state) => _TopicList(
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
+        title: title,
         withLoader: true,
       ),
       allLoaded: (state) => _TopicList(
         pageStorageKey: pageStorageKey,
         topics: state.topics,
         scrollController: scrollController,
+        title: title,
       ),
-      orElse: () => const SizedBox.shrink(),
     );
   }
 }
@@ -121,6 +125,7 @@ class _TopicList extends StatelessWidget {
     required this.pageStorageKey,
     required this.topics,
     required this.scrollController,
+    required this.title,
     this.withLoader = false,
     Key? key,
   }) : super(key: key);
@@ -128,6 +133,7 @@ class _TopicList extends StatelessWidget {
   final PageStorageKey pageStorageKey;
   final List<TopicPreview> topics;
   final ScrollController scrollController;
+  final String title;
   final bool withLoader;
 
   @override
@@ -137,6 +143,7 @@ class _TopicList extends StatelessWidget {
       controller: scrollController,
       physics: const BottomBouncingScrollPhysics(),
       slivers: [
+        _AppBar(title: title),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
@@ -160,6 +167,49 @@ class _TopicList extends StatelessWidget {
         ),
         SeeAllLoadMoreIndicator(show: withLoader),
       ],
+    );
+  }
+}
+
+class _LoadingView extends StatelessWidget {
+  const _LoadingView({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      physics: const BottomBouncingScrollPhysics(),
+      slivers: [
+        _AppBar(title: title),
+        const SliverPadding(
+          padding: EdgeInsets.symmetric(vertical: AppDimens.m),
+          sliver: SliverToBoxAdapter(
+            child: Loader(),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AppBar extends StatelessWidget {
+  const _AppBar({
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return InformedSliverCupertinoAppBar(
+      leading: BackTextButton(
+        color: AppColors.light.textPrimary,
+        text: tr(LocaleKeys.explore_title),
+      ),
+      title: title,
+      backgroundColor: AppColors.of(context).buttonAccentBackground,
+      textColor: AppColors.light.textPrimary,
     );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:better_informed_mobile/domain/categories/data/category_with_items.dart';
+import 'package:better_informed_mobile/generated/local_keys.g.dart';
 import 'package:better_informed_mobile/presentation/routing/main_router.gr.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -45,6 +47,7 @@ class ExplorePillsAreaView extends StatelessWidget {
             onTap: () => AutoRouter.of(context).push(
               CategoryPageRoute(
                 category: category,
+                openedFrom: tr(LocaleKeys.explore_title),
               ),
             ),
           );
