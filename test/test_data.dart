@@ -35,6 +35,9 @@ import 'package:better_informed_mobile/data/image/api/mapper/image_dto_mapper.di
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_channel_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/push_notification/api/mapper/notification_preferences_group_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_action_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/incoming_push_dto_mapper.di.dart';
+import 'package:better_informed_mobile/data/push_notification/incoming_push/mapper/push_notification_message_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_preview_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
@@ -54,11 +57,13 @@ import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dar
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
 import 'package:better_informed_mobile/domain/explore/data/explore_content.dart';
 import 'package:better_informed_mobile/domain/push_notification/data/notification_preferences.dart';
+import 'package:better_informed_mobile/domain/push_notification/incoming_push/data/incoming_push.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/mapper/active_subscription_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/topic/data/topic.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class TestData {
   const TestData._();
@@ -213,6 +218,12 @@ class TestData {
     ),
   );
 
+  static final _remoteMessageToIncomingPushDTOMapper = RemoteMessageToIncomingPushDTOMapper();
+
+  static final _incomingPushDTOMapper = IncomingPushDTOMapper(
+    IncomingPushActionDTOMapper(),
+  );
+
   static AudioItem get audioItem => AudioItem(
         id: TestData.premiumArticleWithAudio.id,
         slug: TestData.premiumArticleWithAudio.slug,
@@ -295,4 +306,37 @@ class TestData {
 
   static NotificationPreferences get notificationPreferences =>
       _notificationPreferencesDTOMapper(MockDTO.notificationPreferences);
+
+  static final articleRemoteMessage = RemoteMessage(
+    data: {
+      'actions': '[{"args":{"path":"/articles/${article.slug}"},"type":"navigate_to"}]',
+      'meta': '{}',
+    },
+  );
+
+  static final topicRemoteMessage = RemoteMessage(
+    data: {
+      'actions': '[{"args":{"path":"/topics/${topic.slug}"},"type":"navigate_to"}]',
+      'meta': '{}',
+    },
+  );
+
+  static final articleTopicRemoteMessage = RemoteMessage(
+    data: {
+      'actions': '[{"args":{"path":"/topics/${topic.slug}/articles/${article.slug}"},"type":"navigate_to"}]',
+      'meta': '{}',
+    },
+  );
+
+  static IncomingPush get articlePushNotification => _incomingPushDTOMapper.call(
+        _remoteMessageToIncomingPushDTOMapper.call(articleRemoteMessage),
+      );
+
+  static IncomingPush get topicPushNotification => _incomingPushDTOMapper.call(
+        _remoteMessageToIncomingPushDTOMapper.call(topicRemoteMessage),
+      );
+
+  static IncomingPush get articleTopicPushNotification => _incomingPushDTOMapper.call(
+        _remoteMessageToIncomingPushDTOMapper.call(articleTopicRemoteMessage),
+      );
 }

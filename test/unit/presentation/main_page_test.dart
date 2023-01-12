@@ -1,5 +1,7 @@
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
+import 'package:better_informed_mobile/domain/push_notification/data/registered_push_token.dart';
+import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/exports.dart' hide TopicPage;
 import 'package:better_informed_mobile/presentation/page/daily_brief/daily_brief_page.dart';
 import 'package:better_informed_mobile/presentation/page/media/media_item_page.dart';
@@ -9,6 +11,7 @@ import 'package:better_informed_mobile/presentation/page/settings/notifications/
 import 'package:better_informed_mobile/presentation/page/subscription/subscription_page.dart';
 import 'package:better_informed_mobile/presentation/page/topic/topic_page.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
+import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -18,13 +21,19 @@ import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
 void main() {
+  late MockPushNotificationRepository pushNotificationRepository;
   late MockAppLinkDataSource appLinkDataSource;
   late MockDeepLinkRepository deepLinkRepository;
 
   setUp(() {
     appLinkDataSource = MockAppLinkDataSource();
     deepLinkRepository = MockDeepLinkRepository();
+    pushNotificationRepository = MockPushNotificationRepository();
+
     when(appLinkDataSource.listenForIncomingActions()).thenAnswer((_) => const Stream.empty());
+    when(pushNotificationRepository.registerToken()).thenAnswer(
+      (_) async => RegisteredPushToken(token: '000-000', updatedAt: clock.now()),
+    );
   });
 
   testWidgets('topic link navigates to topic page', (tester) async {
@@ -172,5 +181,61 @@ void main() {
     );
 
     expect(find.byType(SubscriptionPage), findsOneWidget);
+  });
+
+  group('handles incoming push navigation', () {
+    testWidgets('article', (tester) async {
+      when(pushNotificationRepository.pushNotificationOpenStream()).thenAnswer(
+        (_) => Stream.value(TestData.articlePushNotification),
+      );
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PushNotificationRepository>(() => pushNotificationRepository);
+        },
+      );
+
+      expect(find.byType(MediaItemPage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(DailyBriefPage), findsOneWidget);
+    });
+
+    testWidgets('topic', (tester) async {
+      when(pushNotificationRepository.pushNotificationOpenStream()).thenAnswer(
+        (_) => Stream.value(TestData.topicPushNotification),
+      );
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PushNotificationRepository>(() => pushNotificationRepository);
+        },
+      );
+
+      expect(find.byType(TopicPage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(DailyBriefPage), findsOneWidget);
+    });
+
+    testWidgets('article topic', (tester) async {
+      when(pushNotificationRepository.pushNotificationOpenStream()).thenAnswer(
+        (_) => Stream.value(TestData.articleTopicPushNotification),
+      );
+
+      await tester.startApp(
+        dependencyOverride: (getIt) async {
+          getIt.registerFactory<PushNotificationRepository>(() => pushNotificationRepository);
+        },
+      );
+
+      expect(find.byType(MediaItemPage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(TopicPage), findsOneWidget);
+      await tester.tap(find.byType(BackTextButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(DailyBriefPage), findsOneWidget);
+    });
   });
 }
