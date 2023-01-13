@@ -56,7 +56,7 @@ class HowDoWeCurateContentPage extends HookWidget {
                           InformedMarkdownBody(
                             markdown: LocaleKeys.topic_howWeCurateContent_text.tr(),
                             baseTextStyle: AppTypography.articleText.copyWith(
-                              height: 1.75,
+                              height: 1.5,
                             ),
                             pPadding: const EdgeInsets.only(top: AppDimens.m),
                           ),
