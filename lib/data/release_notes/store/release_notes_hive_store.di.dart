@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 
 const _boxName = 'releaseNotesBox';
 
-@LazySingleton(as: ReleaseNotesStore, env: liveEnvs)
+@LazySingleton(as: ReleaseNotesStore, env: defaultEnvs)
 class ReleaseNotesHiveStore implements ReleaseNotesStore {
   @override
   Future<bool> hasVersion(String version) async {

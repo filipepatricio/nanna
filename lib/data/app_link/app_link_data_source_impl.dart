@@ -50,5 +50,5 @@ class AppLinkDataSourceImpl implements AppLinkDataSource {
     await _appLinkStream.close();
   }
 
-  bool _isNotForbidden(Uri event) => event.path != appConfig.appsFlyerLinkPath;
+  bool _isNotForbidden(Uri event) => !appConfig.appsFlyerLinkPath.contains(event.path);
 }

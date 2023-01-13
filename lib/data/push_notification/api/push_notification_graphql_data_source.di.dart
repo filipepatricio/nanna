@@ -14,7 +14,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: PushNotificationApiDataSource, env: liveEnvs)
+@LazySingleton(as: PushNotificationApiDataSource, env: defaultEnvs)
 class PushNotificationGraphqlDataSource implements PushNotificationApiDataSource {
   PushNotificationGraphqlDataSource(this._client, this._responseResolver);
   final GraphQLClient _client;

@@ -20,7 +20,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: BookmarkDataSource, env: liveEnvs)
+@Injectable(as: BookmarkDataSource, env: defaultEnvs)
 class BookmarkGraphqlDataSource implements BookmarkDataSource {
   BookmarkGraphqlDataSource(this._client, this._responseResolver);
 

@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/domain/analytics/data/install_attribution
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AnalyticsRepository, env: mockEnvs)
+@LazySingleton(as: AnalyticsRepository, env: testEnvs)
 class AnalyticsRepositoryMock implements AnalyticsRepository {
   @override
   Future<void> initialize() async {

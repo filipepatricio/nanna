@@ -394,6 +394,14 @@ So, until this is automated, the steps to achieve this are:
 
 More functionality to come for this feature!
 
+## Integration tests
+
+To run integration test locally you can use following command:
+- `make accessToken="accessToken" fvm_integration_tests`
+
+It will pass existing accessToken as parameter so app will be signed in - same as it does on CI/CD machine.
+You can find more information and alternate options to run tests locally here: https://github.com/flutter/flutter/tree/main/packages/integration_test#firebase-test-lab
+
 ## Performance Monitoring
 
 We are using Sentry to monitor app's performance online. 2 fronts:

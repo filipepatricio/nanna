@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/data/analytics/incoming_push_analytics_service.di.dart';
 import 'package:better_informed_mobile/data/app_link/app_link_data_source.dart';
 import 'package:better_informed_mobile/data/article/api/mapper/publisher_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/audio/mapper/audio_item_mapper.di.dart';
@@ -149,6 +150,7 @@ const _classes = [
   AppleCredentialDataSource,
   GoogleCredentialDataSource,
   AudioPlayer,
+  IncomingPushAnalyticsService,
 ];
 
 @GenerateMocks(_classes)

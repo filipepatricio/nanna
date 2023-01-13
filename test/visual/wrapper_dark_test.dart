@@ -37,7 +37,9 @@ import 'visual_test_utils.dart';
 // All visual tests must be referenced here to be included in the CI and Screens report workflows
 
 void main() {
-  themeMode = AdaptiveThemeMode.dark;
+  setUp(() {
+    themeMode = AdaptiveThemeMode.dark;
+  });
   group('switch_audio_popup_visual_test', switch_audio_popup_visual_test.main);
   group('article_paywall_view_visual_test', article_paywall_view_visual_test.main);
   group('app_update_dialog_visual_test', app_update_dialog_visual_test.main);

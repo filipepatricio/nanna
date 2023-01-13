@@ -9,7 +9,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/io_client.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AuthGraphQLClientFactory, env: liveEnvs)
+@LazySingleton(as: AuthGraphQLClientFactory, env: defaultEnvs)
 class AuthGraphQLClientFactoryImpl implements AuthGraphQLClientFactory {
   AuthGraphQLClientFactoryImpl(
     this._config,

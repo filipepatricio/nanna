@@ -13,7 +13,7 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: CategoriesDataSource, env: liveEnvs)
+@Injectable(as: CategoriesDataSource, env: defaultEnvs)
 class CategoriesGraphqlDataSource implements CategoriesDataSource {
   const CategoriesGraphqlDataSource(
     this._client,

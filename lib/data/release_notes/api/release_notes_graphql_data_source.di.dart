@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 
 const _rootKey = 'releaseNote';
 
-@LazySingleton(as: ReleaseNotesDataSource, env: liveEnvs)
+@LazySingleton(as: ReleaseNotesDataSource, env: defaultEnvs)
 class ReleaseNotesGraphqlDataSource implements ReleaseNotesDataSource {
   ReleaseNotesGraphqlDataSource(
     @Named('releaseNotes') this._gqlClient,

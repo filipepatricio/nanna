@@ -7,7 +7,7 @@ import 'package:better_informed_mobile/domain/analytics/data/install_attribution
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AnalyticsFacade, env: mockEnvs)
+@LazySingleton(as: AnalyticsFacade, env: testEnvs)
 class AnalyticsFacadeMock implements AnalyticsFacade {
   AnalyticsFacadeMock();
 

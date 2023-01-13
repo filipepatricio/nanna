@@ -6,10 +6,18 @@ import 'package:injectable/injectable.dart';
 const _environmentArgHost = 'host';
 
 const mockName = 'mock';
+const integrationProdTestName = 'integration_prod_test';
+const integrationStageTestName = 'integration_stage_test';
 
 const liveEnvs = [Environment.dev, Environment.test, Environment.prod];
 
+const integrationTestEnvs = [integrationProdTestName, integrationStageTestName];
+
+const defaultEnvs = [...liveEnvs, ...integrationTestEnvs];
+
 const mockEnvs = [mockName];
+
+const testEnvs = [...mockEnvs, ...integrationTestEnvs];
 
 bool kIsAppleDevice = Platform.isIOS;
 
@@ -31,7 +39,7 @@ class AppConfig {
     this.revenueCatKeyiOS,
     this.revenueCatKeyAndroid,
     this.revenueCatPremiumEntitlementId,
-    this.appsFlyerLinkPath,
+    this.appsFlyerLinkPath = const [],
   });
 
   final String name;
@@ -48,7 +56,7 @@ class AppConfig {
   final String? revenueCatKeyiOS;
   final String? revenueCatKeyAndroid;
   final String? revenueCatPremiumEntitlementId;
-  final String? appsFlyerLinkPath;
+  final List<String> appsFlyerLinkPath;
 
   static const dev = AppConfig._(
     name: Environment.dev,
@@ -96,7 +104,7 @@ class AppConfig {
     revenueCatKeyiOS: 'appl_lmbriZAQhIhAfDEMDIcCyaRwZjD',
     revenueCatKeyAndroid: 'goog_KvJYjAuvczWsabJAOxFZeVCLRnA',
     revenueCatPremiumEntitlementId: 'premium',
-    appsFlyerLinkPath: '/tHNA',
+    appsFlyerLinkPath: ['/tHNA'],
   );
 
   static const prod = AppConfig._(
@@ -114,6 +122,6 @@ class AppConfig {
     revenueCatKeyiOS: 'appl_vbotzvGRlvvfVSpOPubjlvxDApQ',
     revenueCatKeyAndroid: 'goog_jUdAAFYAkEzYinZAmOWysZPVOut',
     revenueCatPremiumEntitlementId: 'premium',
-    appsFlyerLinkPath: '/BHtj',
+    appsFlyerLinkPath: ['/BHtj', '/FtMU'],
   );
 }

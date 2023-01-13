@@ -37,11 +37,6 @@ class TopicSquareImageFrame extends StatelessWidget {
               width: size * 0.7,
               decoration: BoxDecoration(
                 color: topic.category.color,
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(
-                    AppDimens.defaultRadius,
-                  ),
-                ),
               ),
               child: Center(
                 child: Padding(

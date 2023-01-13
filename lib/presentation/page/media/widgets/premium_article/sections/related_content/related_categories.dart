@@ -43,6 +43,7 @@ class RelatedCategories extends StatelessWidget {
                 context.navigateTo(
                   CategoryPageRoute(
                     category: featuredCategories[index].asCategoryWithItems(),
+                    openedFrom: tr(LocaleKeys.article_label),
                   ),
                 );
               },
