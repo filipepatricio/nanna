@@ -48,6 +48,7 @@ import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_up
 import 'package:better_informed_mobile/domain/deep_link/deep_link_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/should_use_paid_subscriptions_use_case.di.dart';
+import 'package:better_informed_mobile/domain/general/update_article_progress_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/push_notification/use_case/incoming_push_data_refresh_stream_use_case.di.dart';
@@ -151,6 +152,7 @@ const _classes = [
   GoogleCredentialDataSource,
   AudioPlayer,
   IncomingPushAnalyticsService,
+  UpdateArticleProgressStateNotifierUseCase,
 ];
 
 @GenerateMocks(_classes)
