@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/general/get_should_update_article_progress_state_use_case.di.dart';
+import 'package:better_informed_mobile/domain/general/get_article_read_state_stream_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/widget/article_cover/article_cover_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -12,7 +12,7 @@ class ArticleCoverCubit extends Cubit<ArticleCoverState> {
     this._getShouldUpdateArticleProgressStateUseCase,
   ) : super(ArticleCoverState.initializing());
 
-  final GetShouldUpdateArticleProgressStateUseCase _getShouldUpdateArticleProgressStateUseCase;
+  final GetArticleReadStateStreamUseCase _getShouldUpdateArticleProgressStateUseCase;
 
   late MediaItemArticle _article;
 
@@ -28,11 +28,9 @@ class ArticleCoverCubit extends Cubit<ArticleCoverState> {
     _article = article;
     emit(ArticleCoverState.idle(_article));
     _shouldUpdateArticleProgressStateSubscription =
-        _getShouldUpdateArticleProgressStateUseCase().listen((updatedArticle) {
-      if (_article.id == updatedArticle.id) {
-        _article = updatedArticle;
-        emit(ArticleCoverState.idle(_article));
-      }
+        _getShouldUpdateArticleProgressStateUseCase(_article.id).listen((updatedArticle) {
+      _article = updatedArticle;
+      emit(ArticleCoverState.idle(_article));
     });
   }
 }
