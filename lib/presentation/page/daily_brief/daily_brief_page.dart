@@ -82,6 +82,7 @@ class _DailyBriefPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
+    final cloudinaryProvider = useCloudinaryProvider();
 
     useEffect(
       () {
@@ -93,6 +94,16 @@ class _DailyBriefPage extends HookWidget {
     useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, _) {
       state.whenOrNull(
         showPaywall: () => context.pushRoute(const SubscriptionPageRoute()),
+        preCacheImages: (briefEntryList) {
+          final mediaQuery = MediaQuery.maybeOf(context);
+          if (mediaQuery != null) {
+            precacheBriefFullScreenImages(
+              context,
+              cloudinaryProvider,
+              briefEntryList,
+            );
+          }
+        },
       );
     });
 
@@ -248,7 +259,6 @@ class _IdleContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isShowingTutorialToast = useState(false);
-    final cloudinaryProvider = useCloudinaryProvider();
 
     useEffect(
       () {
@@ -259,17 +269,6 @@ class _IdleContent extends HookWidget {
 
     useCubitListener<DailyBriefPageCubit, DailyBriefPageState>(cubit, (cubit, state, _) {
       state.whenOrNull(
-        preCacheImages: (briefEntryList) {
-          final mediaQuery = MediaQuery.maybeOf(context);
-
-          if (mediaQuery != null) {
-            precacheBriefFullScreenImages(
-              context,
-              cloudinaryProvider,
-              briefEntryList,
-            );
-          }
-        },
         shouldShowTopicCardTutorialCoachMark: () {
           final topicCardTriggerPoint =
               scrollController.offset + AppDimens.appBarHeight * _topicCardTutorialOffsetFromBottomFraction;

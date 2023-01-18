@@ -140,10 +140,11 @@ class AppDimens {
   static double topicViewHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
   /// Full screen article image height
-  static double articleHeaderImageHeight(BuildContext context) => MediaQuery.of(context).size.height * .8;
+  static double articleHeaderImageHeight(BuildContext context) => articleHeaderImageWidth(context);
 
   /// Full screen article image width
-  static double articleHeaderImageWidth(BuildContext context) => MediaQuery.of(context).size.width - AppDimens.m;
+  static double articleHeaderImageWidth(BuildContext context) =>
+      MediaQuery.of(context).size.width - pageHorizontalMargin;
 
   /// The smallest value from 75% of screen height and 500
   static double topicViewMediaItemMaxHeight(BuildContext context) => min(MediaQuery.of(context).size.height * .75, 500);

@@ -168,7 +168,7 @@ class _ArticleHeader extends StatelessWidget {
           const SizedBox(height: AppDimens.xl),
           if (articleImage != null)
             Container(
-              height: MediaQuery.of(context).size.width - AppDimens.pageHorizontalMargin,
+              height: AppDimens.articleHeaderImageHeight(context),
               padding: const EdgeInsets.only(left: AppDimens.pageHorizontalMargin),
               child: ArticleImage(
                 image: articleImage,
