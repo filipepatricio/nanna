@@ -33,6 +33,8 @@ void main() {
   late MockIsOnboardingPaywallSeenUseCase isOnboardingPaywallSeenUseCase;
   late MockHasActiveSubscriptionUseCase hasActiveSubscriptionUseCase;
   late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
+  late MockMarkTopicAsSeenUseCase markTopicAsSeenUseCase;
+  late MockMarkArticleAsSeenUseCase markArticleAsSeenUseCase;
   late DailyBriefPageCubit dailyBriefPageCubit;
 
   final entry = TestData.currentBrief.allEntries.first;
@@ -55,6 +57,8 @@ void main() {
     isOnboardingPaywallSeenUseCase = MockIsOnboardingPaywallSeenUseCase();
     hasActiveSubscriptionUseCase = MockHasActiveSubscriptionUseCase();
     setOnboardingPaywallSeenUseCase = MockSetOnboardingPaywallSeenUseCase();
+    markTopicAsSeenUseCase = MockMarkTopicAsSeenUseCase();
+    markArticleAsSeenUseCase = MockMarkArticleAsSeenUseCase();
 
     dailyBriefPageCubit = DailyBriefPageCubit(
       getCurrentBriefUseCase,
@@ -68,6 +72,8 @@ void main() {
       isOnboardingPaywallSeenUseCase,
       hasActiveSubscriptionUseCase,
       setOnboardingPaywallSeenUseCase,
+      markArticleAsSeenUseCase,
+      markTopicAsSeenUseCase,
     );
 
     when(trackActivityUseCase.trackEvent(event)).thenAnswer((_) {});

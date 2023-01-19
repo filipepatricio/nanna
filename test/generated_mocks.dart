@@ -38,6 +38,7 @@ import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/mark_article_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/article/use_case/save_article_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
@@ -75,6 +76,7 @@ import 'package:better_informed_mobile/domain/synchronization/use_case/save_sync
 import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_with_remote_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/save_topic_locally_use_case.di.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
@@ -173,6 +175,8 @@ const _classes = [
   SynchronizableRepository,
   SynchronizeWithRemoteUsecase,
   SaveSynchronizableItemUseCase,
+  MarkTopicAsSeenUseCase,
+  MarkArticleAsSeenUseCase
 ];
 
 @GenerateMocks(_classes)

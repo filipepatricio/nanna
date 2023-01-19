@@ -18,6 +18,12 @@ class BriefEntry {
         orElse: () => '',
       );
 
+  String get slug => item.maybeMap(
+        article: (data) => data.article.maybeMap(article: (data) => data.slug, orElse: () => ''),
+        topicPreview: (data) => data.topicPreview.slug,
+        orElse: () => '',
+      );
+
   BriefEntryType get type => item.maybeMap(
         article: (data) => BriefEntryType.article,
         topicPreview: (data) => BriefEntryType.topic,

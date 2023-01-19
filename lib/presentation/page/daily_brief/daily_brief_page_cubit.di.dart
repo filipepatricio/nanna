@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/mark_article_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_entry.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/brief_wrapper.dart';
@@ -15,6 +16,7 @@ import 'package:better_informed_mobile/domain/push_notification/use_case/incomin
 import 'package:better_informed_mobile/domain/subscription/use_case/has_active_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/data/tutorial_coach_mark_steps_extension.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_coach_mark_steps.dart';
 import 'package:better_informed_mobile/domain/tutorial/tutorial_steps.dart';
@@ -33,8 +35,8 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-const _minVisibilityToTrack = 0.9;
-const _trackEventTotalBufferTime = Duration(seconds: 1);
+const _minVisibilityToTrack = 0.95;
+const _trackEventTotalBufferTime = Duration(seconds: 2);
 const _trackEventBufferTime = Duration(milliseconds: 100);
 final _requiredEventsCount = _trackEventTotalBufferTime.inMilliseconds / _trackEventBufferTime.inMilliseconds;
 final firstTopicKey = GlobalKey();
@@ -53,6 +55,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
     this._isOnboardingPaywallSeenUseCase,
     this._hasActiveSubscriptionUseCase,
     this._setOnboardingPaywallSeenUseCase,
+    this._markArticleAsSeenUseCase,
+    this._markTopicAsSeenUseCase,
   ) : super(DailyBriefPageState.loading());
 
   final GetCurrentBriefUseCase _getCurrentBriefUseCase;
@@ -66,6 +70,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   final IsOnboardingPaywallSeenUseCase _isOnboardingPaywallSeenUseCase;
   final HasActiveSubscriptionUseCase _hasActiveSubscriptionUseCase;
   final SetOnboardingPaywallSeenUseCase _setOnboardingPaywallSeenUseCase;
+  final MarkArticleAsSeenUseCase _markArticleAsSeenUseCase;
+  final MarkTopicAsSeenUseCase _markTopicAsSeenUseCase;
 
   final StreamController<_ItemVisibilityEvent> _trackItemController = StreamController();
 
@@ -245,22 +251,22 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
         position,
         briefEntry.type.name,
       );
-      _emitItemPreviewedEvent(briefEntry.id, event, visibility);
+      _emitItemPreviewedEvent(briefEntry, event, visibility);
       return;
     }
 
     throw BriefNotInitializedException();
   }
 
-  void _emitItemPreviewedEvent(String id, AnalyticsEvent event, double visibility) {
-    final visibilityEvent = _ItemVisibilityEvent(id, visibility > _minVisibilityToTrack, event);
+  void _emitItemPreviewedEvent(BriefEntry entry, AnalyticsEvent event, double visibility) {
+    final visibilityEvent = _ItemVisibilityEvent(entry, visibility > _minVisibilityToTrack, event);
     if (!isClosed) _trackItemController.add(visibilityEvent);
   }
 
   void _initializeItemPreviewTracker() {
     _trackItemController.stream
         .groupBy(
-          (event) => event.id,
+          (event) => event.entry.id,
           durationSelector: (grouped) => grouped.debounceTime(_trackEventTotalBufferTime * 2),
         )
         .flatMap(
@@ -281,11 +287,31 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
               .where((queue) => queue.expand((events) => events).every((event) => event.visible))
               .where((queue) => queue.isNotEmpty)
               .where((queue) => queue.expand((events) => events).isNotEmpty)
-              .map((queue) => queue.expand((events) => events).first.event)
+              .map((queue) => queue.expand((events) => events).first)
               .distinct(),
         )
         .distinct()
-        .listen((event) => _trackActivityUseCase.trackEvent(event));
+        .listen((item) {
+      _markEntryAsSeen(item.entry);
+      _trackActivityUseCase.trackEvent(item.event);
+    });
+  }
+
+  Future<void> _markEntryAsSeen(BriefEntry entry) async {
+    if (entry.isNew) {
+      final isMarkedAsSeen = await entry.item.mapOrNull(
+        article: (_) async {
+          print('remove article ${entry.slug} new tag');
+          return _markArticleAsSeenUseCase.call(entry.slug);
+        },
+        topicPreview: (_) async {
+          print('remove topic ${entry.slug} new tag');
+          return _markTopicAsSeenUseCase.call(entry.slug);
+        },
+      );
+      //TODO: handle isMarkedAsSeen
+      print(isMarkedAsSeen);
+    }
   }
 
   Future<void> initializeTutorialCoachMark() async {
@@ -363,9 +389,9 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 }
 
 class _ItemVisibilityEvent {
-  _ItemVisibilityEvent(this.id, this.visible, this.event);
+  _ItemVisibilityEvent(this.entry, this.visible, this.event);
 
-  final String id;
+  final BriefEntry entry;
   final bool visible;
   final AnalyticsEvent event;
 }

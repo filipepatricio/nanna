@@ -40,6 +40,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 const _topicCardTutorialOffsetFromBottomFraction = 1.4;
 
@@ -256,6 +257,25 @@ class _IdleContent extends HookWidget {
     return listScrollController.offset >= topicCardTriggerPoint && !listScrollController.position.outOfRange;
   }
 
+  void _onBriefEntryVisibilityChanged(
+    VisibilityInfo visibility,
+    BriefEntry entry,
+    BriefEntry? firstTopic,
+    int startingIndex,
+    int i,
+  ) {
+    if (entry == firstTopic) {
+      cubit.initializeTutorialCoachMark();
+    }
+    if (!kIsTest) {
+      cubit.trackBriefEntryPreviewed(
+        entry,
+        startingIndex + i,
+        visibility.visibleFraction,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isShowingTutorialToast = useState(false);
@@ -370,16 +390,7 @@ class _IdleContent extends HookWidget {
         briefId: brief.id,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
         onVisibilityChanged: (visibility) {
-          if (entry == firstTopic && visibility.visibleFraction == 1) {
-            cubit.initializeTutorialCoachMark();
-          }
-          if (!kIsTest) {
-            cubit.trackBriefEntryPreviewed(
-              entry,
-              startingIndex + i,
-              visibility.visibleFraction,
-            );
-          }
+          _onBriefEntryVisibilityChanged(visibility, entry, firstTopic, startingIndex, i);
         },
       );
 
@@ -434,16 +445,7 @@ class _IdleContent extends HookWidget {
         briefId: brief.id,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
         onVisibilityChanged: (visibility) {
-          if (entry == firstTopic) {
-            cubit.initializeTutorialCoachMark();
-          }
-          if (!kIsTest) {
-            cubit.trackBriefEntryPreviewed(
-              entry,
-              startingIndex + i,
-              visibility.visibleFraction,
-            );
-          }
+          _onBriefEntryVisibilityChanged(visibility, entry, firstTopic, startingIndex, i);
         },
       );
     }

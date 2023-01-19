@@ -127,4 +127,10 @@ class ArticleRepositoryImpl implements ArticleRepository {
     _freeArticlesLeftWarningStream.close();
     _freeArticlesLeftWarningStream = StreamController<String>.broadcast();
   }
+
+  @override
+  Future<bool> markArticleAsSeen(String slug) async {
+    final dto = await _articleDataSource.markArticleAsSeen(slug);
+    return dto.successful;
+  }
 }
