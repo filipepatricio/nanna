@@ -14,38 +14,53 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainPage extends HookWidget {
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
+  final _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<MainCubit>();
+    final previousAppState = useValueNotifier<AppLifecycleState?>(null);
+
+    useOnAppLifecycleStateChange((previous, current) {
+      if (current == AppLifecycleState.resumed) previousAppState.value = previous;
+    });
 
     useCubitListener<MainCubit, MainState>(cubit, (cubit, state, context) {
       state.maybeMap(
         tokenExpired: (_) => _onTokenExpiredEvent(context),
-        navigate: (navigate) {
-          WidgetsBinding.instance.addPostFrameCallback(
-            (_) async {
-              await _closeWebView();
-              _resetNestedRouters();
-              await Future.delayed(const Duration(milliseconds: 1));
-              // ignore: use_build_context_synchronously
-              await _navigateToPath(context, navigate.path);
-            },
-          );
+        navigate: (navigate) async {
+          if (previousAppState.value == null) {
+            await Future.delayed(const Duration(milliseconds: 250));
+            // ignore: use_build_context_synchronously
+            await _navigateToPath(context, navigate.path);
+            return;
+          }
+
+          await _closeWebView();
+          _resetNestedRouters();
+
+          await Future.delayed(const Duration(milliseconds: 250));
+          // ignore: use_build_context_synchronously
+          await _navigateToPath(context, navigate.path);
         },
-        multiNavigate: (navigate) {
-          WidgetsBinding.instance.addPostFrameCallback(
-            (_) async {
-              await _closeWebView();
-              _resetNestedRouters();
-              await Future.delayed(const Duration(milliseconds: 1));
-              for (final path in navigate.path) {
-                // ignore: use_build_context_synchronously
-                await _navigateToPath(context, path);
-              }
-            },
-          );
+        multiNavigate: (navigate) async {
+          if (previousAppState.value == null) {
+            await Future.delayed(const Duration(milliseconds: 250));
+            for (final path in navigate.path) {
+              // ignore: use_build_context_synchronously
+              await _navigateToPath(context, path);
+            }
+            return;
+          }
+
+          await _closeWebView();
+          _resetNestedRouters();
+
+          await Future.delayed(const Duration(milliseconds: 250));
+          for (final path in navigate.path) {
+            // ignore: use_build_context_synchronously
+            await _navigateToPath(context, path);
+          }
         },
         showReleaseNote: (state) => ReleaseNotePopup.show(
           context: context,
@@ -63,9 +78,7 @@ class MainPage extends HookWidget {
       [cubit],
     );
 
-    return AutoRouter(
-      navigatorKey: _navigatorKey,
-    );
+    return AutoRouter(navigatorKey: _navigatorKey);
   }
 
   void _onTokenExpiredEvent(BuildContext context) {
