@@ -18,9 +18,7 @@ class InitializeAttributionUseCase {
   final FeaturesFlagsRepository _featuresFlagsRepository;
   final PurchasesRepository _purchasesRepository;
 
-  Future<void> call() async => _initialize().ignore();
-
-  Future<void> _initialize() async {
+  Future<void> call() async {
     try {
       final attribution = await _analyticsRepository.initializeAttribution();
       if (attribution != null) {
