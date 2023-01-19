@@ -28,6 +28,7 @@ class BriefEntryCover extends HookWidget {
   Widget build(BuildContext context) {
     final item = briefEntry.item;
     final style = briefEntry.style;
+    final isNew = briefEntry.isNew;
 
     return VisibilityDetector(
       key: Key(briefEntry.id),
@@ -45,6 +46,7 @@ class BriefEntryCover extends HookWidget {
                       briefId: briefId,
                     );
                   },
+                  isNew: isNew,
                   showNote: true,
                   showRecommendedBy: false,
                 ),
@@ -62,6 +64,7 @@ class BriefEntryCover extends HookWidget {
                           briefId: briefId,
                         );
                       },
+                      isNew: isNew,
                       showNote: true,
                       showRecommendedBy: false,
                     );
@@ -74,6 +77,7 @@ class BriefEntryCover extends HookWidget {
                           briefId: briefId,
                         );
                       },
+                      isNew: isNew,
                       showNote: true,
                       showRecommendedBy: false,
                     );
@@ -92,6 +96,7 @@ class BriefEntryCover extends HookWidget {
                 topicPreview: (data) => TopicCover.large(
                   key: topicCardKey,
                   topic: data.topicPreview,
+                  isNew: isNew,
                   onTap: () async {
                     await context.navigateToTopic(
                       topicPreview: data.topicPreview,

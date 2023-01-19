@@ -5,18 +5,21 @@ import 'package:better_informed_mobile/presentation/widget/article_cover/content
 import 'package:better_informed_mobile/presentation/widget/audio_icon.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/category_dot.dart';
+import 'package:better_informed_mobile/presentation/widget/new_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/pipe_divider.dart';
 import 'package:flutter/material.dart';
 
 class ArticleMetadataRow extends StatelessWidget {
   const ArticleMetadataRow({
     required this.article,
+    required this.isNew,
     this.onBookmarkTap,
     super.key,
   });
 
   final MediaItemArticle article;
   final VoidCallback? onBookmarkTap;
+  final bool isNew;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,10 @@ class ArticleMetadataRow extends StatelessWidget {
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
+            if (isNew) ...[
+              const NewTag(),
+              const SizedBox(width: AppDimens.s),
+            ],
             if (!article.finished) ...[
               CategoryDot(
                 category: article.category,

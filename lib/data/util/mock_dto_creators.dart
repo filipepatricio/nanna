@@ -177,26 +177,38 @@ class MockDTO {
               BriefEntryDTO(
                 topic.asBriefEntryItem,
                 _briefEntryStyleTopic,
+                //isNew
+                true,
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.asBriefEntryItem,
                 _briefEntryStyleArticleLarge,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio.asBriefEntryItem,
                 _briefEntryStyleArticleLarge,
+                //isNew
+                true,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio.asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 _freeArticleWithoutNote.asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                true,
               ),
               BriefEntryDTO(
                 _freeArticle.asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                false,
               ),
               ..._briefEntriesArticlesList,
             ],
@@ -222,6 +234,8 @@ class MockDTO {
               BriefEntryDTO(
                 topicWithUnknownOwner.asBriefEntryItem,
                 _briefEntryStyleTopic,
+                //isNew
+                true,
               ),
               ..._briefEntriesArticlesList,
             ],
@@ -233,14 +247,20 @@ class MockDTO {
     BriefEntryDTO(
       premiumArticle.asBriefEntryItem,
       _briefEntryStyleArticleMediumItem,
+      //isNew
+      false,
     ),
     BriefEntryDTO(
       premiumArticleWithAudio.asBriefEntryItem,
       _briefEntryStyleArticleMediumItem,
+      //isNew
+      true,
     ),
     BriefEntryDTO(
       _freeArticle.asBriefEntryItem,
       _briefEntryStyleArticleMediumItem,
+      //isNew
+      false,
     ),
   ];
 
@@ -253,44 +273,62 @@ class MockDTO {
               BriefEntryDTO(
                 topic.copyWith(visited: true).asBriefEntryItem,
                 _briefEntryStyleTopic,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
                 _briefEntryStyleArticleLarge,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
                     .copyWith(progressState: ArticleProgressState.finished)
                     .asBriefEntryItem,
                 _briefEntryStyleArticleLarge,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
                     .copyWith(progressState: ArticleProgressState.finished)
                     .asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticleWithAudio.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNoteWithAudio
                     .copyWith(progressState: ArticleProgressState.finished)
                     .asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticle.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                false,
               ),
               BriefEntryDTO(
                 premiumArticleWithoutNote.copyWith(progressState: ArticleProgressState.finished).asBriefEntryItem,
                 _briefEntryStyleArticleMediumItem,
+                //isNew
+                false,
               ),
             ],
           ),

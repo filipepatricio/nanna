@@ -7,6 +7,7 @@ import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookm
 import 'package:better_informed_mobile/presentation/widget/curation/curation_info_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_pill.dart';
+import 'package:better_informed_mobile/presentation/widget/new_tag.dart';
 import 'package:better_informed_mobile/presentation/widget/owners_note.dart';
 import 'package:better_informed_mobile/presentation/widget/publisher_logo_row.dart';
 import 'package:better_informed_mobile/presentation/widget/topic_cover/image/topic_image.dart';
@@ -24,23 +25,27 @@ abstract class TopicCover extends HookWidget {
 
   factory TopicCover.large({
     required TopicPreview topic,
+    bool isNew = false,
     VoidCallback? onTap,
     Key? key,
   }) =>
       _TopicCoverLarge(
         topic: topic,
         onTap: onTap,
+        isNew: isNew,
         key: key,
       );
 
   factory TopicCover.medium({
     required TopicPreview topic,
+    bool isNew = false,
     VoidCallback? onTap,
     VoidCallback? onBookmarkTap,
     Key? key,
   }) =>
       _TopicCoverMedium(
         topic: topic,
+        isNew: isNew,
         onTap: onTap,
         onBookmarkTap: onBookmarkTap,
         key: key,

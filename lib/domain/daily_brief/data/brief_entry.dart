@@ -5,10 +5,12 @@ class BriefEntry {
   const BriefEntry({
     required this.item,
     required this.style,
+    required this.isNew,
   });
 
   final BriefEntryItem item;
   final BriefEntryStyle style;
+  final bool isNew;
 
   String get id => item.maybeMap(
         article: (data) => data.article.maybeMap(article: (data) => data.id, orElse: () => ''),

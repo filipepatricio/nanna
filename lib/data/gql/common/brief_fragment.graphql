@@ -48,6 +48,7 @@ fragment briefFragment on Brief {
 
 fragment briefEntryFragment on BriefEntry {
   __typename
+  isNew
   style {
     backgroundColor
     type
