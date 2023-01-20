@@ -17,7 +17,7 @@ import 'package:retry/retry.dart';
 
 const currentOfferingKey = 'current';
 
-@LazySingleton(as: PurchasesRepository, env: liveEnvs)
+@Singleton(as: PurchasesRepository, env: liveEnvs)
 class PurchasesRepositoryImpl implements PurchasesRepository {
   PurchasesRepositoryImpl(
     this._config,
@@ -39,6 +39,8 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   @override
   Future<void> initialize(String userId) async {
     try {
+      _purchaseRemoteDataSource.addReadyForPromotedProductPurchaseListener(_promotedProductPurchaseListener);
+
       await retry(
         () async {
           final apiKey = kIsAppleDevice ? _config.revenueCatKeyiOS : _config.revenueCatKeyAndroid;
@@ -142,10 +144,10 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
 
   @override
   void dispose() {
-    Purchases.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
     _activeSubscriptionStream.close();
     _activeSubscriptionStream = StreamController.broadcast();
     _purchaseRemoteDataSource.removeCustomerInfoUpdateListener(_updateActiveSubscriptionStream);
+    _purchaseRemoteDataSource.removeReadyForPromotedProductPurchaseListener(_promotedProductPurchaseListener);
   }
 
   @override
@@ -185,6 +187,18 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
       currentStream.sink.add(activeSubscription);
     }
   }
+
+  Future<void> _promotedProductPurchaseListener(
+    String productID,
+    Future<PromotedPurchaseResult> Function() startPurchase,
+  ) async =>
+      await _purchaseRemoteDataSource.callWithResolver(
+        () async {
+          final result = await startPurchase();
+          await _updateActiveSubscriptionStream(result.customerInfo);
+          return;
+        },
+      );
 
   Future<List<SubscriptionPlan>> _getAllSubscriptionPlans() async {
     final offerings = await _purchaseRemoteDataSource.getOfferings();
