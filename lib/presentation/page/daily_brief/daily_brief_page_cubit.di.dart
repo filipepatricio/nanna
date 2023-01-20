@@ -95,8 +95,8 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
   Future<void> initialize() async {
     await loadBriefs();
 
-    _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((currentBrief) {
-      _briefsWrapper = currentBrief;
+    _currentBriefSubscription = _getCurrentBriefUseCase.stream.listen((currentBriefWrapper) {
+      _briefsWrapper = currentBriefWrapper;
       _updateIdleState(preCacheImages: true);
     });
 
@@ -167,7 +167,7 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
       if (preCacheImages) {
         emit(
           DailyBriefPageState.preCacheImages(
-            briefEntryList: _briefsWrapper.currentBrief.allEntries,
+            briefEntryList: _selectedBrief!.allEntries,
           ),
         );
       }

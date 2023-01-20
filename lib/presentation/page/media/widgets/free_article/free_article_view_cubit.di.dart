@@ -2,7 +2,6 @@ import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/data/update_article_progress_response.dart';
 import 'package:better_informed_mobile/domain/article/use_case/track_article_reading_progress_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
-import 'package:better_informed_mobile/domain/general/update_article_progress_state_notifier_use_case.di.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/free_article/free_article_view_state.dt.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -12,11 +11,9 @@ import 'package:neat_periodic_task/neat_periodic_task.dart';
 class FreeArticleViewCubit extends Cubit<FreeArticleViewState> {
   FreeArticleViewCubit(
     this._trackArticleReadingProgressUseCase,
-    this._updateArticleProgressStateNotifierUseCase,
   ) : super(const FreeArticleViewState.idle());
 
   final TrackArticleReadingProgressUseCase _trackArticleReadingProgressUseCase;
-  final UpdateArticleProgressStateNotifierUseCase _updateArticleProgressStateNotifierUseCase;
 
   int? _maxScrollOffset;
   int _progress = 1;
@@ -62,12 +59,8 @@ class FreeArticleViewCubit extends Cubit<FreeArticleViewState> {
   }
 
   Future<void> _trackReadingProgress() async {
-    final updateArticleProgressResponse = await _trackArticleReadingProgressUseCase(_article.slug, _progress);
-    _updateArticleProgressResponse = _updateArticleProgressResponse;
-
-    final updatedArticle = _article.copyWith(progressState: updateArticleProgressResponse.progressState);
-
-    _updateArticleProgressStateNotifierUseCase(updatedArticle);
+    final updateArticleProgressResponse = await _trackArticleReadingProgressUseCase(_article, _progress);
+    _updateArticleProgressResponse = updateArticleProgressResponse;
   }
 
   @override

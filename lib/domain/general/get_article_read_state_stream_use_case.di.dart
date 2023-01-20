@@ -3,10 +3,12 @@ import 'package:better_informed_mobile/domain/general/article_read_state_notifie
 import 'package:injectable/injectable.dart';
 
 @injectable
-class UpdateArticleProgressStateNotifierUseCase {
-  const UpdateArticleProgressStateNotifierUseCase(this._notifier);
+class GetArticleReadStateStreamUseCase {
+  GetArticleReadStateStreamUseCase(this._notifier);
 
   final ArticleReadStateNotifier _notifier;
 
-  void call(MediaItemArticle article) => _notifier.notify(article);
+  Stream<MediaItemArticle> call(String articleId) {
+    return _notifier.stream.where((event) => event.id == articleId);
+  }
 }

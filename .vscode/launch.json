@@ -45,22 +45,14 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": [
-        "--flavor",
-        "stage",
-        "--dart-define=env=stage"
-      ]
+      "args": ["--flavor", "stage", "--dart-define=env=stage"]
     },
     {
       "name": "stage-integration-test",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": [
-        "--flavor",
-        "stage",
-        "--dart-define=env=integration_stage"
-      ]
+      "args": ["--flavor", "stage", "--dart-define=env=integration_stage"]
     },
     {
       "name": "stage-profile",
@@ -79,33 +71,21 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
-      "args": [
-        "--flavor",
-        "stage",
-        "--dart-define=env=stage"
-      ]
+      "args": ["--flavor", "stage", "--dart-define=env=stage"]
     },
     {
       "name": "prod",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": [
-        "--flavor",
-        "prod",
-        "--dart-define=env=prod"
-      ]
+      "args": ["--flavor", "prod", "--dart-define=env=prod"]
     },
     {
       "name": "prod-integration-test",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": [
-        "--flavor",
-        "prod",
-        "--dart-define=env=integration_prod"
-      ]
+      "args": ["--flavor", "prod", "--dart-define=env=integration_prod"]
     },
     {
       "name": "prod-profile",
@@ -124,37 +104,23 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
-      "args": [
-        "--flavor",
-        "prod",
-        "--dart-define=env=prod",
-        "--cache-sksl"
-      ]
+      "args": ["--flavor", "prod", "--dart-define=env=prod", "--cache-sksl"]
     },
     {
       "name": "prod-release",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release",
-      "args": [
-        "--flavor",
-        "prod",
-        "--dart-define=env=prod"
-      ]
+      "args": ["--flavor", "prod", "--dart-define=env=prod"]
     },
     {
       "name": "Golden",
       "request": "launch",
       "type": "dart",
       "codeLens": {
-        "for": [
-          "run-test",
-          "run-test-file"
-        ]
+        "for": ["run-test", "run-test-file"]
       },
-      "args": [
-        "--update-goldens"
-      ]
+      "args": ["--update-goldens"]
     }
   ]
 }
