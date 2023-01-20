@@ -48,6 +48,15 @@ class MediaItemPage extends HookWidget {
       [cubit],
     );
 
+    useEffect(
+      () => () {
+        final imageCache = PaintingBinding.instance.imageCache;
+        imageCache.clear();
+        imageCache.clearLiveImages();
+      },
+      [],
+    );
+
     return Scaffold(
       body: SnackbarParentView(
         audioPlayerResponsive: true,

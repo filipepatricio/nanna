@@ -7,19 +7,25 @@ import 'package:mockito/mockito.dart';
 import '../../../../generated_mocks.mocks.dart';
 
 void main() {
-  late MockBookmarkRepository repository;
+  late MockBookmarkRepository bookmarkRepository;
+  late MockBookmarkLocalRepository bookmarkLocalRepository;
   late MockAnalyticsRepository analyticsRepository;
   late MockBookmarkChangeNotifier bookmarkChangeNotifier;
+  late MockSaveBookmarkedMediaItemUseCase saveBookmarkedMediaItemUseCase;
   late SwitchBookmarkStateUseCase useCase;
 
   setUp(() {
-    repository = MockBookmarkRepository();
+    bookmarkRepository = MockBookmarkRepository();
+    bookmarkLocalRepository = MockBookmarkLocalRepository();
     analyticsRepository = MockAnalyticsRepository();
     bookmarkChangeNotifier = MockBookmarkChangeNotifier();
+    saveBookmarkedMediaItemUseCase = MockSaveBookmarkedMediaItemUseCase();
     useCase = SwitchBookmarkStateUseCase(
-      repository,
+      bookmarkRepository,
+      bookmarkLocalRepository,
       analyticsRepository,
       bookmarkChangeNotifier,
+      saveBookmarkedMediaItemUseCase,
     );
   });
 
@@ -32,14 +38,18 @@ void main() {
       final state = BookmarkState.notBookmarked();
       final expected = BookmarkState.bookmarked(id);
 
-      when(repository.bookmarkArticle(slug)).thenAnswer((_) async => BookmarkState.bookmarked(id));
+      when(bookmarkRepository.bookmarkArticle(slug)).thenAnswer((_) async => BookmarkState.bookmarked(id));
+      when(saveBookmarkedMediaItemUseCase.usingBookmarkType(type, id))
+          .thenAnswer((realInvocation) => Future.delayed(const Duration(seconds: 10), () => null));
 
-      final actual = await useCase(type, state);
+      final actual = await useCase(type, state).timeout(const Duration(seconds: 1));
 
       expect(actual, expected);
 
-      verifyNever(repository.bookmarkTopic(any));
-      verifyNever(repository.removeBookmark(any));
+      verifyNever(bookmarkRepository.bookmarkTopic(any));
+      verifyNever(bookmarkRepository.removeBookmark(any));
+      verifyNever(bookmarkLocalRepository.deleteBookmark(id));
+      verify(saveBookmarkedMediaItemUseCase.usingBookmarkType(type, id));
     });
 
     test('it unbookmarks when bookmarked', () async {
@@ -50,14 +60,16 @@ void main() {
       final state = BookmarkState.bookmarked(id);
       final expected = BookmarkState.notBookmarked();
 
-      when(repository.removeBookmark(id)).thenAnswer((_) async => BookmarkState.notBookmarked());
+      when(bookmarkRepository.removeBookmark(id)).thenAnswer((_) async => BookmarkState.notBookmarked());
 
       final actual = await useCase(type, state);
 
       expect(actual, expected);
 
-      verifyNever(repository.bookmarkArticle(any));
-      verifyNever(repository.bookmarkTopic(any));
+      verifyNever(bookmarkRepository.bookmarkArticle(any));
+      verifyNever(bookmarkRepository.bookmarkTopic(any));
+      verifyNever(saveBookmarkedMediaItemUseCase.usingBookmarkType(any, any));
+      verify(bookmarkLocalRepository.deleteBookmark(id));
     });
   });
 
@@ -70,14 +82,18 @@ void main() {
       final state = BookmarkState.notBookmarked();
       final expected = BookmarkState.bookmarked(id);
 
-      when(repository.bookmarkTopic(slug)).thenAnswer((_) async => BookmarkState.bookmarked(id));
+      when(bookmarkRepository.bookmarkTopic(slug)).thenAnswer((_) async => BookmarkState.bookmarked(id));
+      when(saveBookmarkedMediaItemUseCase.usingBookmarkType(type, id))
+          .thenAnswer((realInvocation) => Future.delayed(const Duration(seconds: 10), () => null));
 
-      final actual = await useCase(type, state);
+      final actual = await useCase(type, state).timeout(const Duration(seconds: 1));
 
       expect(actual, expected);
 
-      verifyNever(repository.bookmarkArticle(any));
-      verifyNever(repository.removeBookmark(any));
+      verifyNever(bookmarkRepository.bookmarkArticle(any));
+      verifyNever(bookmarkRepository.removeBookmark(any));
+      verifyNever(bookmarkLocalRepository.deleteBookmark(id));
+      verify(saveBookmarkedMediaItemUseCase.usingBookmarkType(type, id));
     });
 
     test('it unbookmarks when bookmarked', () async {
@@ -88,14 +104,16 @@ void main() {
       final state = BookmarkState.bookmarked(id);
       final expected = BookmarkState.notBookmarked();
 
-      when(repository.removeBookmark(id)).thenAnswer((_) async => BookmarkState.notBookmarked());
+      when(bookmarkRepository.removeBookmark(id)).thenAnswer((_) async => BookmarkState.notBookmarked());
 
       final actual = await useCase(type, state);
 
       expect(actual, expected);
 
-      verifyNever(repository.bookmarkArticle(any));
-      verifyNever(repository.bookmarkTopic(any));
+      verifyNever(bookmarkRepository.bookmarkArticle(any));
+      verifyNever(bookmarkRepository.bookmarkTopic(any));
+      verifyNever(saveBookmarkedMediaItemUseCase.usingBookmarkType(any, any));
+      verify(bookmarkLocalRepository.deleteBookmark(id));
     });
   });
 }

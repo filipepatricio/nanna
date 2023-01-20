@@ -23,7 +23,11 @@ import 'domain/article/use_case/track_article_reading_progress_use_case_test.dar
     as track_article_reading_progress_use_case_test;
 import 'domain/audio/audio_progress_tracker_test.dart' as audio_progress_tracker_test;
 import 'domain/audio/prepare_audio_track_use_case_test.dart' as prepare_audio_track_use_case_test;
+import 'domain/bookmark/use_case/add_bookmark_use_case_test.dart' as add_bookmark_use_case_test;
 import 'domain/bookmark/use_case/get_bookmark_state_use_case_test.dart' as get_bookmark_state_use_case_test;
+import 'domain/bookmark/use_case/remove_bookmark_use_case_test.dart' as remove_bookmark_use_case_test;
+import 'domain/bookmark/use_case/save_bookmarked_media_item_use_case_test.dart'
+    as save_bookmarked_media_item_use_case_test;
 import 'domain/bookmark/use_case/switch_bookmark_state_use_case_test.dart' as switch_bookmark_state_use_case_test;
 import 'domain/feature_flags/use_case/use_paid_subscription_change_stream_use_case_test.dart'
     as use_paid_subscription_change_stream_use_case_test;
@@ -96,6 +100,9 @@ void main() {
   group('use_paid_subscription_change_stream_use_case_test', use_paid_subscription_change_stream_use_case_test.main);
   group('track_article_reading_progress_use_case_test', track_article_reading_progress_use_case_test.main);
   group('article_read_state_notifier_test', article_read_state_notifier_test.main);
+  group('add_bookmark_use_case_test', add_bookmark_use_case_test.main);
+  group('remove_bookmark_use_case_test', remove_bookmark_use_case_test.main);
+  group('save_bookmarked_media_item_use_case_test', save_bookmarked_media_item_use_case_test.main);
 
   // Presentation
   group('app_connectivity_checker_test', app_connectivity_checker_test.main);
