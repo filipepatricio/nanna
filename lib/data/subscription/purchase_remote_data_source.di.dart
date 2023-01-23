@@ -72,6 +72,10 @@ class PurchaseRemoteDataSource {
     return _purchaseExceptionResolver.callWithResolver(callback);
   }
 
+  Future<void> redeemOfferCode() async {
+    await _purchaseExceptionResolver.callWithResolver(Purchases.presentCodeRedemptionSheet);
+  }
+
   void addCustomerInfoUpdateListener(Function(CustomerInfo info) callback) {
     Purchases.addCustomerInfoUpdateListener(callback);
   }
