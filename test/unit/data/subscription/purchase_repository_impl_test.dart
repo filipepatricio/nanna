@@ -16,17 +16,20 @@ void main() {
   late MockSubscriptionPlanMapper subscriptionPlanMapper;
   late MockActiveSubscriptionMapper activeSubscriptionMapper;
   late MockPurchaseRemoteDataSource purchaseRemoteDataSource;
+  late MockAnalyticsFacade analyticsFacade;
 
   setUp(() {
     appConfig = MockAppConfig();
     subscriptionPlanMapper = MockSubscriptionPlanMapper();
     activeSubscriptionMapper = MockActiveSubscriptionMapper();
     purchaseRemoteDataSource = MockPurchaseRemoteDataSource();
+    analyticsFacade = MockAnalyticsFacade();
     repository = PurchasesRepositoryImpl(
       appConfig,
       subscriptionPlanMapper,
       activeSubscriptionMapper,
       purchaseRemoteDataSource,
+      analyticsFacade,
     );
 
     when(appConfig.revenueCatPremiumEntitlementId).thenReturn(_premiumEntitlementId);

@@ -313,6 +313,8 @@ class AnalyticsEvent with _$AnalyticsEvent {
           'available_version': availableVersion,
         },
       );
+
+  factory AnalyticsEvent.promotedProductPurchaseStarted() => AnalyticsEvent._('PromotedProductPurchaseStarted');
 }
 
 extension on BookmarkSortConfigName {

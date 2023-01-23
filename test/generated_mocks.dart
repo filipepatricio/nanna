@@ -30,6 +30,7 @@ import 'package:better_informed_mobile/data/subscription/purchase_remote_data_so
 import 'package:better_informed_mobile/data/topic/api/mapper/topic_publisher_information_dto_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/app_info_data_source.di.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_use_case.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
@@ -153,6 +154,7 @@ const _classes = [
   AudioPlayer,
   IncomingPushAnalyticsService,
   UpdateArticleProgressStateNotifierUseCase,
+  AnalyticsFacade,
 ];
 
 @GenerateMocks(_classes)
