@@ -75,8 +75,8 @@ import 'package:better_informed_mobile/domain/synchronization/synchronizable_rep
 import 'package:better_informed_mobile/domain/synchronization/use_case/save_synchronizable_item_use_case.di.dart';
 import 'package:better_informed_mobile/domain/synchronization/use_case/synchronize_with_remote_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
-import 'package:better_informed_mobile/domain/topic/use_case/save_topic_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/topic/use_case/mark_topic_as_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/save_topic_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
