@@ -40,34 +40,36 @@ void precacheBriefFullScreenImages(
   CloudinaryImageProvider cloudinaryProvider,
   List<BriefEntry> entries,
 ) {
-  for (final entry in entries) {
-    entry.item.mapOrNull(
-      article: (article) {
-        final articleImageHeight = AppDimens.articleHeaderImageHeight(context);
-        final articleImageWidth = AppDimens.articleHeaderImageWidth(context);
+  if (!kIsTest) {
+    for (final entry in entries) {
+      entry.item.mapOrNull(
+        article: (article) {
+          final articleImageHeight = AppDimens.articleHeaderImageHeight(context);
+          final articleImageWidth = AppDimens.articleHeaderImageWidth(context);
 
-        final config = CloudinaryConfig(width: articleImageWidth, height: articleImageHeight);
+          final config = CloudinaryConfig(width: articleImageWidth, height: articleImageHeight);
 
-        article.article.mapOrNull(
-          article: (article) {
-            if (article.type == ArticleType.premium) {
-              final articleImageUrl = article.imageUrl;
-              if (articleImageUrl.isNotEmpty) {
-                final url = config.applyAndGenerateUrl(context, articleImageUrl, cloudinaryProvider);
-                precacheImage(CachedNetworkImageProvider(url), context);
+          article.article.mapOrNull(
+            article: (article) {
+              if (article.type == ArticleType.premium) {
+                final articleImageUrl = article.imageUrl;
+                if (articleImageUrl.isNotEmpty) {
+                  final url = config.applyAndGenerateUrl(context, articleImageUrl, cloudinaryProvider);
+                  precacheImage(CachedNetworkImageProvider(url), context);
+                }
               }
-            }
-          },
-        );
-      },
-      topicPreview: (topic) {
-        final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
-        final topicHeaderImageWidth = AppDimens.topicViewHeaderImageWidth(context);
-        final config = CloudinaryConfig(width: topicHeaderImageWidth, height: topicHeaderImageHeight);
-        final publicId = topic.topicPreview.heroImage.publicId;
-        final url = config.applyAndGenerateUrl(context, publicId, cloudinaryProvider);
-        precacheImage(CachedNetworkImageProvider(url), context);
-      },
-    );
+            },
+          );
+        },
+        topicPreview: (topic) {
+          final topicHeaderImageHeight = AppDimens.topicViewHeaderImageHeight(context);
+          final topicHeaderImageWidth = AppDimens.topicViewHeaderImageWidth(context);
+          final config = CloudinaryConfig(width: topicHeaderImageWidth, height: topicHeaderImageHeight);
+          final publicId = topic.topicPreview.heroImage.publicId;
+          final url = config.applyAndGenerateUrl(context, publicId, cloudinaryProvider);
+          precacheImage(CachedNetworkImageProvider(url), context);
+        },
+      );
+    }
   }
 }
