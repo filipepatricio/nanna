@@ -22,6 +22,7 @@ import '../../test_data.dart';
 import '../unit_test_utils.dart';
 
 void main() {
+  late DailyBriefPageCubit dailyBriefPageCubit;
   late MockTrackActivityUseCase trackActivityUseCase;
   late MockGetCurrentBriefUseCase getCurrentBriefUseCase;
   late MockGetPastBriefUseCase getPastBriefUseCase;
@@ -35,7 +36,6 @@ void main() {
   late MockSetOnboardingPaywallSeenUseCase setOnboardingPaywallSeenUseCase;
   late MockMarkTopicAsSeenUseCase markTopicAsSeenUseCase;
   late MockMarkArticleAsSeenUseCase markArticleAsSeenUseCase;
-  late DailyBriefPageCubit dailyBriefPageCubit;
 
   final entry = TestData.currentBrief.allEntries.first;
   final event = AnalyticsEvent.dailyBriefEntryPreviewed(

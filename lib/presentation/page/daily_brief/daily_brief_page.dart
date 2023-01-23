@@ -386,10 +386,10 @@ class _IdleContent extends HookWidget {
     for (int i = 0; i < section.entries.length; i++) {
       final entry = section.entries[i];
       yield BriefEntryCover(
-        briefEntry: entry,
+        entry: entry,
         briefId: brief.id,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
-        onVisibilityChanged: (visibility) {
+        onVisibilityChanged: (visibility, entry) {
           _onBriefEntryVisibilityChanged(visibility, entry, firstTopic, startingIndex, i);
         },
       );
@@ -441,10 +441,10 @@ class _IdleContent extends HookWidget {
       final entry = subsection.entries[i];
 
       yield BriefEntryCover(
-        briefEntry: entry,
+        entry: entry,
         briefId: brief.id,
         topicCardKey: entry == firstTopic ? firstTopicKey : null,
-        onVisibilityChanged: (visibility) {
+        onVisibilityChanged: (visibility, entry) {
           _onBriefEntryVisibilityChanged(visibility, entry, firstTopic, startingIndex, i);
         },
       );

@@ -35,8 +35,8 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-const _minVisibilityToTrack = 0.95;
-const _trackEventTotalBufferTime = Duration(seconds: 2);
+const _minVisibilityToTrack = 0.9;
+const _trackEventTotalBufferTime = Duration(seconds: 1);
 const _trackEventBufferTime = Duration(milliseconds: 100);
 final _requiredEventsCount = _trackEventTotalBufferTime.inMilliseconds / _trackEventBufferTime.inMilliseconds;
 final firstTopicKey = GlobalKey();
@@ -299,18 +299,14 @@ class DailyBriefPageCubit extends Cubit<DailyBriefPageState> {
 
   Future<void> _markEntryAsSeen(BriefEntry entry) async {
     if (entry.isNew) {
-      final isMarkedAsSeen = await entry.item.mapOrNull(
+      await entry.item.mapOrNull(
         article: (_) async {
-          print('remove article ${entry.slug} new tag');
-          return _markArticleAsSeenUseCase.call(entry.slug);
+          await _markArticleAsSeenUseCase.call(entry);
         },
         topicPreview: (_) async {
-          print('remove topic ${entry.slug} new tag');
-          return _markTopicAsSeenUseCase.call(entry.slug);
+          await _markTopicAsSeenUseCase.call(entry);
         },
       );
-      //TODO: handle isMarkedAsSeen
-      print(isMarkedAsSeen);
     }
   }
 

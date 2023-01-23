@@ -1,8 +1,8 @@
 import 'package:better_informed_mobile/data/auth/api/refresh_token_service.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
+import 'package:better_informed_mobile/domain/article/use_case/article_read_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
-import 'package:better_informed_mobile/domain/general/article_read_state_notifier.di.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
