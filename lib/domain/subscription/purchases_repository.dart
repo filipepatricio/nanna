@@ -25,5 +25,7 @@ abstract class PurchasesRepository {
 
   Future<void> collectAppleSearchAdsAttributionData();
 
+  Future<void> redeemOfferCode();
+
   void dispose();
 }

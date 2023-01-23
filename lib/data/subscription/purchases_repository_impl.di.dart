@@ -180,6 +180,11 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
     await _purchaseRemoteDataSource.enableAdServicesAttributionTokenCollection();
   }
 
+  @override
+  Future<void> redeemOfferCode() async {
+    await _purchaseRemoteDataSource.redeemOfferCode();
+  }
+
   Future<void> _updateActiveSubscriptionStream(CustomerInfo customerInfo) async {
     final currentStream = _activeSubscriptionStream;
     final activeSubscription = await getActiveSubscription(customerInfo);

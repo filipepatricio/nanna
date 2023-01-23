@@ -65,4 +65,7 @@ class PurchaseRepositoryIntegrationMock implements PurchasesRepository {
   Future<bool> restorePurchase() async {
     return false;
   }
+
+  @override
+  Future<void> redeemOfferCode() async {}
 }
