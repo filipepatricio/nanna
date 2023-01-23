@@ -1,7 +1,7 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 String get platformStoreLink {
-  if (Platform.isAndroid) {
+  if (defaultTargetPlatform == TargetPlatform.android) {
     return 'market://details?id=so.informed';
   }
 

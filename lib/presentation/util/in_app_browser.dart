@@ -1,10 +1,10 @@
-import 'dart:io';
-
 import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
+import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_message.dt.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +28,7 @@ void showBrowserError(String uri, SnackbarController controller) {
 }
 
 Future<void> _openWithCustomTabs(String uri, OpenInAppBrowserErrorCallback? onError) async {
-  if (Platform.isIOS) {
+  if (defaultTargetPlatform.isApple) {
     await _openWithAnyApp(uri, onError);
   } else {
     await custom_tabs.launch(uri);

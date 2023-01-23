@@ -2,7 +2,9 @@ import 'dart:math';
 import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:better_informed_mobile/presentation/style/colors.dart';
+import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -118,7 +120,7 @@ class _InformedSelectableTextState extends State<InformedSelectableText>
     }
     _lastSeenTextSelection = selection;
 
-    if (Theme.of(context).platform == TargetPlatform.iOS && cause == SelectionChangedCause.longPress) {
+    if (defaultTargetPlatform.isApple && cause == SelectionChangedCause.longPress) {
       _editableText?.bringIntoView(selection.base);
     }
   }
@@ -164,7 +166,7 @@ class _InformedSelectableTextState extends State<InformedSelectableText>
     Offset? cursorOffset;
     Radius? cursorRadius;
 
-    if (theme.platform == TargetPlatform.iOS) {
+    if (defaultTargetPlatform.isApple) {
       final cupertinoTheme = CupertinoTheme.of(context);
       forcePressEnabled = true;
       textSelectionControls = widget.selectionControls ?? cupertinoTextSelectionControls;
@@ -370,13 +372,10 @@ class _SelectableTextSelectionGestureDetectorBuilder extends TextSelectionGestur
   void onSingleTapUp(TapUpDetails details) {
     editableText.hideToolbar();
     if (delegate.selectionEnabled) {
-      switch (Theme.of(_state.context).platform) {
-        case TargetPlatform.iOS:
-          renderEditable.selectWordEdge(cause: SelectionChangedCause.tap);
-          break;
-        default:
-          renderEditable.selectPosition(cause: SelectionChangedCause.tap);
-          break;
+      if (defaultTargetPlatform.isApple) {
+        renderEditable.selectWordEdge(cause: SelectionChangedCause.tap);
+      } else {
+        renderEditable.selectPosition(cause: SelectionChangedCause.tap);
       }
     }
   }
