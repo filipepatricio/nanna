@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:better_informed_mobile/data/auth/api/provider/linkedin/authorization_state_generator.di.dart';
 import 'package:better_informed_mobile/data/auth/api/provider/linkedin/linkedin_user_data_source.di.dart';
@@ -9,6 +8,8 @@ import 'package:better_informed_mobile/data/auth/api/provider/provider_dto.dart'
 import 'package:better_informed_mobile/data/user/api/dto/user_meta_dto.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/auth/data/exceptions.dart';
+import 'package:better_informed_mobile/presentation/util/platform_util.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
@@ -66,7 +67,7 @@ class LinkedinCredentialDataSource implements OAuthCredentialProviderDataSource 
   }
 
   Future<Uri> _redirect(Uri authUri) async {
-    if (Platform.isAndroid) {
+    if (defaultTargetPlatform.isAndroid) {
       try {
         final redirect = await FlutterWebAuth.authenticate(
           url: authUri.toString(),

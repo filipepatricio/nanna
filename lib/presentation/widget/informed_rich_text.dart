@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:better_informed_mobile/exports.dart' hide TextDirection;
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/custom_hooks.dart';
+import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:better_informed_mobile/presentation/util/selection_controller_bundle.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_selectable_text.dart';
 import 'package:better_informed_mobile/presentation/widget/text_selection_controls/platform_text_selection_controls.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide SelectableText;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -125,7 +125,7 @@ class _CustomTextPainter extends HookWidget {
             selectionControls: createPlatformSpecific(
               [
                 shareControlData(tr(LocaleKeys.common_share), shareCallback),
-                if (Platform.isIOS) lookUpControlData(tr(LocaleKeys.common_lookUp)),
+                if (defaultTargetPlatform.isApple) lookUpControlData(tr(LocaleKeys.common_lookUp)),
               ],
             ),
             onSelectionChanged: (_, __) => selectionControllers?.unselectAllBut(controller.key),

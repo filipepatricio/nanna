@@ -71,6 +71,13 @@ class SubscriptionPlansView extends HookWidget {
                     );
                   },
                 ),
+                if (defaultTargetPlatform.isApple) ...[
+                  const SizedBox(height: AppDimens.m),
+                  LinkLabel(
+                    label: LocaleKeys.subscription_redeemCode.tr(),
+                    onTap: cubit.redeemOfferCode,
+                  ),
+                ],
                 const SizedBox(height: AppDimens.m),
               ],
             ),
