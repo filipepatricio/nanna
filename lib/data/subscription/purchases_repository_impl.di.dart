@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:better_informed_mobile/data/subscription/dto/active_subscription_dto.dart';
 import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
 import 'package:better_informed_mobile/data/subscription/purchase_remote_data_source.di.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
+import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
@@ -24,12 +26,14 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
     this._subscriptionPlanMapper,
     this._activeSubscriptionMapper,
     this._purchaseRemoteDataSource,
+    this._analyticsFacade,
   );
 
   final AppConfig _config;
   final SubscriptionPlanMapper _subscriptionPlanMapper;
   final ActiveSubscriptionMapper _activeSubscriptionMapper;
   final PurchaseRemoteDataSource _purchaseRemoteDataSource;
+  final AnalyticsFacade _analyticsFacade;
 
   var _activeSubscriptionStream = StreamController<ActiveSubscription>.broadcast();
 
@@ -199,6 +203,7 @@ class PurchasesRepositoryImpl implements PurchasesRepository {
   ) async =>
       await _purchaseRemoteDataSource.callWithResolver(
         () async {
+          unawaited(_analyticsFacade.event(AnalyticsEvent.promotedProductPurchaseStarted()));
           final result = await startPurchase();
           await _updateActiveSubscriptionStream(result.customerInfo);
           return;
