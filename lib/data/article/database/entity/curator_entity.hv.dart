@@ -6,33 +6,23 @@ part 'curator_entity.hv.g.dart';
 
 @HiveType(typeId: HiveTypes.curatorEntity)
 class CuratorEntity {
-  CuratorEntity(
-    this._expert,
-    this._editor,
-    this._editorialTeam,
-    this._unknown,
-  );
+  CuratorEntity({
+    CuratorExpertEntity? expert,
+    CuratorEditorEntity? editor,
+    CuratorEditorialTeamEntity? editorialTeam,
+    CuratorUnknownEntity? unknown,
+  })  : _expert = expert,
+        _editor = editor,
+        _editorialTeam = editorialTeam,
+        _unknown = unknown;
 
-  CuratorEntity.expert(this._expert)
-      : _editor = null,
-        _editorialTeam = null,
-        _unknown = null;
+  CuratorEntity.expert(CuratorExpertEntity expert) : this(expert: expert);
 
-  CuratorEntity.editor(this._editor)
-      : _expert = null,
-        _editorialTeam = null,
-        _unknown = null;
+  CuratorEntity.editor(CuratorEditorEntity editor) : this(editor: editor);
 
-  CuratorEntity.editorialTeam(this._editorialTeam)
-      : _expert = null,
-        _editor = null,
-        _unknown = null;
+  CuratorEntity.editorialTeam(CuratorEditorialTeamEntity editorialTeam) : this(editorialTeam: editorialTeam);
 
-  CuratorEntity.unknown()
-      : _unknown = CuratorUnknownEntity(),
-        _expert = null,
-        _editor = null,
-        _editorialTeam = null;
+  CuratorEntity.unknown() : this(unknown: CuratorUnknownEntity());
 
   T map<T>({
     required T Function(CuratorExpertEntity expert) expert,

@@ -28,9 +28,7 @@ class ArticleImageEntityMapper extends BidirectionalMapper<ArticleImageEntity, A
         );
       },
       unknown: (image) {
-        return ArticleImageEntity.unknown(
-          ArticleUnknownImageEntity(),
-        );
+        return ArticleImageEntity.unknown();
       },
     );
   }
