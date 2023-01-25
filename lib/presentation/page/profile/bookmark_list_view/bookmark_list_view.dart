@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_loading_view.dart';
+import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/free_user_banner.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_list_tile.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -25,7 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-part 'profile_empty_page.dart';
+part 'bookmark_empty_page.dart';
 
 typedef OnSortConfigChanged = Function(BookmarkSortConfigName configName);
 
@@ -35,6 +36,7 @@ class BookmarkListView extends HookWidget {
     required this.sortConfigName,
     required this.onSortConfigChanged,
     required this.scrollController,
+    required this.hasActiveSubscription,
     Key? key,
   })  : sortConfig = bookmarkConfigMap[sortConfigName]!,
         super(key: key);
@@ -44,6 +46,7 @@ class BookmarkListView extends HookWidget {
   final BookmarkSortConfigName sortConfigName;
   final BookmarkSortConfig sortConfig;
   final OnSortConfigChanged onSortConfigChanged;
+  final bool hasActiveSubscription;
 
   @override
   Widget build(BuildContext context) {
@@ -103,14 +106,18 @@ class BookmarkListView extends HookWidget {
                 retryCallback: cubit.loadNextPage,
               ),
             ),
-            loading: (_) => const BookmarkLoadingView(),
-            empty: (_) => _BookmarkEmptyView(filter: filter),
+            loading: (_) => BookmarkLoadingView(hasActiveSubscription: hasActiveSubscription),
+            empty: (state) => _BookmarkEmptyView(
+              hasActiveSubscription: hasActiveSubscription,
+              filter: filter,
+            ),
             idle: (state) => _Idle(
               cubit: cubit,
               bookmarks: state.bookmarks,
               sortConfig: sortConfig,
               scrollController: scrollController,
               onSortConfigChanged: onSortConfigChanged,
+              hasActiveSubscription: hasActiveSubscription,
             ),
             loadMore: (state) => _Idle(
               cubit: cubit,
@@ -118,6 +125,7 @@ class BookmarkListView extends HookWidget {
               sortConfig: sortConfig,
               scrollController: scrollController,
               onSortConfigChanged: onSortConfigChanged,
+              hasActiveSubscription: hasActiveSubscription,
               withLoader: true,
             ),
             allLoaded: (state) => _Idle(
@@ -126,6 +134,7 @@ class BookmarkListView extends HookWidget {
               sortConfig: sortConfig,
               scrollController: scrollController,
               onSortConfigChanged: onSortConfigChanged,
+              hasActiveSubscription: hasActiveSubscription,
             ),
             orElse: () => const SizedBox.shrink(),
           ),
@@ -142,6 +151,7 @@ class _Idle extends StatelessWidget {
     required this.sortConfig,
     required this.scrollController,
     required this.onSortConfigChanged,
+    required this.hasActiveSubscription,
     this.withLoader = false,
     Key? key,
   }) : super(key: key);
@@ -152,12 +162,20 @@ class _Idle extends StatelessWidget {
   final ScrollController scrollController;
   final bool withLoader;
   final OnSortConfigChanged onSortConfigChanged;
+  final bool hasActiveSubscription;
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: scrollController,
       slivers: [
+        if (!hasActiveSubscription)
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
+              child: FreeUserBanner(),
+            ),
+          ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) => Column(

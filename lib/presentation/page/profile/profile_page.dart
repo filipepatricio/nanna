@@ -76,6 +76,7 @@ class ProfilePage extends HookWidget {
                     key: ValueKey(state.version),
                     scrollController: scrollController,
                     filter: state.filter,
+                    hasActiveSubscription: state.hasActiveSubscription,
                     sortConfigName: state.sortConfigName,
                     onSortConfigChanged: (sortConfig) => cubit.changeSortConfig(sortConfig),
                   ),

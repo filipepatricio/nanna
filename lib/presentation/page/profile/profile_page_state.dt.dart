@@ -13,7 +13,8 @@ class ProfilePageState with _$ProfilePageState {
   @Implements<BuildState>()
   factory ProfilePageState.idle(
     BookmarkFilter filter,
-    BookmarkSortConfigName sortConfigName, [
+    BookmarkSortConfigName sortConfigName,
+    bool hasActiveSubscription, [
     @Default(0) int version,
   ]) = _ProfilePageStateIdle;
 
