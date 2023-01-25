@@ -12,6 +12,7 @@ class PublisherDTO {
   );
 
   factory PublisherDTO.fromJson(Map<String, dynamic> json) => _$PublisherDTOFromJson(json);
+
   final String name;
   final ImageDTO? darkLogo;
   final ImageDTO? lightLogo;

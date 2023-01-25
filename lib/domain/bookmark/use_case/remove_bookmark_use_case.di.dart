@@ -1,5 +1,6 @@
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_repository.dart';
+import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark.dart';
 import 'package:better_informed_mobile/domain/bookmark/data/bookmark_event.dart';
@@ -11,16 +12,19 @@ import 'package:injectable/injectable.dart';
 class RemoveBookmarkUseCase {
   RemoveBookmarkUseCase(
     this._bookmarkRepository,
+    this._bookmarkLocalRepository,
     this._analyticsRepository,
     this._profileBookmarkChangeNotifier,
   );
 
   final BookmarkRepository _bookmarkRepository;
+  final BookmarkLocalRepository _bookmarkLocalRepository;
   final AnalyticsRepository _analyticsRepository;
   final ProfileBookmarkChangeNotifier _profileBookmarkChangeNotifier;
 
   Future<void> call(Bookmark bookmark) async {
     final bookmarkState = await _bookmarkRepository.removeBookmark(bookmark.id);
+    await _bookmarkLocalRepository.deleteBookmark(bookmark.id);
 
     bookmark.data.mapOrNull(
       article: (data) {

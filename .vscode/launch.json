@@ -91,7 +91,7 @@
       "name": "prod-profile",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release",
+      "flutterMode": "profile",
       "args": [
         "--flavor",
         "prod",

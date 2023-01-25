@@ -36,13 +36,17 @@ import 'package:better_informed_mobile/domain/analytics/use_case/track_activity_
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/article/article_repository.dart';
 import 'package:better_informed_mobile/domain/article/use_case/get_article_audio_progress_use_case.di.dart';
+import 'package:better_informed_mobile/domain/article/use_case/save_article_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/audio_repository.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_playback_state_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_position_seek_use_case.di.dart';
 import 'package:better_informed_mobile/domain/audio/use_case/audio_position_stream_use_case.di.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_change_notifier.di.dart';
+import 'package:better_informed_mobile/domain/bookmark/bookmark_local_repository.dart';
 import 'package:better_informed_mobile/domain/bookmark/bookmark_remote_repository.dart';
+import 'package:better_informed_mobile/domain/bookmark/profile_bookmark_change_notifier.di.dart';
+import 'package:better_informed_mobile/domain/bookmark/use_case/save_bookmarked_media_item_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_current_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_past_brief_use_case.di.dart';
 import 'package:better_informed_mobile/domain/daily_brief/use_case/get_should_update_brief_stream_use_case.di.dart';
@@ -66,6 +70,8 @@ import 'package:better_informed_mobile/domain/subscription/use_case/has_active_s
 import 'package:better_informed_mobile/domain/subscription/use_case/is_onboarding_paywall_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/purchase_subscription_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/set_onboarding_paywall_seen_use_case.di.dart';
+import 'package:better_informed_mobile/domain/topic/topics_repository.dart';
+import 'package:better_informed_mobile/domain/topic/use_case/save_topic_locally_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/is_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/tutorial/use_case/set_tutorial_step_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
@@ -155,6 +161,12 @@ const _classes = [
   IncomingPushAnalyticsService,
   UpdateArticleProgressStateNotifierUseCase,
   AnalyticsFacade,
+  SaveBookmarkedMediaItemUseCase,
+  BookmarkLocalRepository,
+  ProfileBookmarkChangeNotifier,
+  TopicsRepository,
+  SaveArticleLocallyUseCase,
+  SaveTopicLocallyUseCase,
 ];
 
 @GenerateMocks(_classes)

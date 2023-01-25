@@ -9,9 +9,9 @@ import 'package:better_informed_mobile/data/article/api/dto/audio_file_dto.dt.da
 import 'package:better_informed_mobile/data/article/api/dto/publisher_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/topic_media_items_dto.dt.dart';
 import 'package:better_informed_mobile/data/article/api/dto/update_article_progress_response_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_data_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_data_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_list_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/categories_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_dto.dt.dart';
 import 'package:better_informed_mobile/data/categories/dto/category_item_dto.dt.dart';

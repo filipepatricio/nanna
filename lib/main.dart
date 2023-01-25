@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:better_informed_mobile/core/database/hive_initializer.dart';
 import 'package:better_informed_mobile/core/di/di_config.dart';
 import 'package:better_informed_mobile/data/util/reporting_tree_error_filter.di.dart';
 import 'package:better_informed_mobile/domain/analytics/use_case/initialize_analytics_use_case.di.dart';
@@ -16,7 +17,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -35,14 +35,13 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
 
+  await initializeHive();
   final getIt = await configureDependencies(environment);
 
   final appConfig = getIt.get<AppConfig>();
   await _setupAccessToken(getIt);
   _setupFimber(getIt);
   await _setupAnalytics(getIt);
-
-  await Hive.initFlutter();
 
   final currentThemeMode = await AdaptiveTheme.getThemeMode();
 
