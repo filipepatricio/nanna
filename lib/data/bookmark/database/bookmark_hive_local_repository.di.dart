@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:better_informed_mobile/data/bookmark/database/entity/bookmark_entity.hv.dart';
 import 'package:better_informed_mobile/data/bookmark/database/entity/bookmark_sort_config_name_entity.dart';
 import 'package:better_informed_mobile/data/bookmark/database/mapper/bookmark_entity_mapper.di.dart';
@@ -56,20 +58,21 @@ class BookmarkHiveLocalRepository implements BookmarkLocalRepository {
 
   @override
   Future<void> deleteBookmark(String id) async {
-    await _bookmarkBox.delete(id);
+    // await _bookmarkBox.delete(id);
   }
 
   @override
   Future<Bookmark?> loadBookmark(String id) async {
-    final entity = await _bookmarkBox.get(id);
-    if (entity == null) return null;
+    // final entity = await _bookmarkBox.get(id);
+    // if (entity == null) return null;
 
-    return _bookmarkEntityMapper.to(entity);
+    // return _bookmarkEntityMapper.to(entity);
+    return null;
   }
 
   @override
   Future<void> saveBookmark(Bookmark bookmark) async {
-    final entity = _bookmarkEntityMapper.from(bookmark);
-    await _bookmarkBox.put(entity.id, entity);
+    // final entity = _bookmarkEntityMapper.from(bookmark);
+    // await _bookmarkBox.put(entity.id, entity);
   }
 }
