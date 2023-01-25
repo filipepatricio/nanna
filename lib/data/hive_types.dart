@@ -35,4 +35,5 @@ class HiveTypes {
   static const int bookmarkDataEntity = 31;
   static const int synchronizableArticleEntity = 32;
   static const int synchronizableTopicEntity = 33;
+  static const int userEntity = 34;
 }

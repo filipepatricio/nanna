@@ -6,6 +6,7 @@ import 'package:better_informed_mobile/domain/general/article_read_state_notifie
 import 'package:better_informed_mobile/domain/push_notification/push_notification_repository.dart';
 import 'package:better_informed_mobile/domain/push_notification/push_notification_store.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
+import 'package:better_informed_mobile/domain/user/user_local_repository.dart';
 import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -21,6 +22,7 @@ class SignOutUseCase {
     this._userStore,
     this._purchasesRepository,
     this._articleRepository,
+    this._userLocalRepository,
     this._getIt,
   );
   final AuthStore _authStore;
@@ -31,6 +33,7 @@ class SignOutUseCase {
   final UserStore _userStore;
   final PurchasesRepository _purchasesRepository;
   final ArticleRepository _articleRepository;
+  final UserLocalRepository _userLocalRepository;
   final GetIt _getIt;
 
   Future<void> call() async {
@@ -39,6 +42,7 @@ class SignOutUseCase {
     _purchasesRepository.dispose();
     _articleRepository.dispose();
 
+    await _userLocalRepository.deleteUser();
     await _pushNotificationStore.clear();
     await _authStore.delete();
     await _userStore.clearCurrentUserUuid();

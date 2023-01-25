@@ -5,6 +5,7 @@ class User {
     required this.lastName,
     required this.email,
   });
+
   final String uuid;
   final String firstName;
   final String lastName;

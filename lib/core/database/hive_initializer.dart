@@ -23,6 +23,7 @@ import 'package:better_informed_mobile/data/topic/database/entity/synchronizable
 import 'package:better_informed_mobile/data/topic/database/entity/topic_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/entity/topic_entry_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/entity/topic_publisher_information_entity.hv.dart';
+import 'package:better_informed_mobile/data/user/database/entity/user_entity.hv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> initializeHive() async {
@@ -60,4 +61,5 @@ Future<void> initializeHive() async {
   Hive.registerAdapter(TopicPublisherInformationEntityAdapter());
   Hive.registerAdapter(SynchronizableArticleEntityAdapter());
   Hive.registerAdapter(SynchronizableTopicEntityAdapter());
+  Hive.registerAdapter(UserEntityAdapter());
 }
