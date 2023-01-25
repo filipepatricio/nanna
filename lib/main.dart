@@ -35,14 +35,13 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
 
+  await initializeHive();
   final getIt = await configureDependencies(environment);
 
   final appConfig = getIt.get<AppConfig>();
   await _setupAccessToken(getIt);
   _setupFimber(getIt);
   await _setupAnalytics(getIt);
-
-  await initializeHive();
 
   final currentThemeMode = await AdaptiveTheme.getThemeMode();
 
