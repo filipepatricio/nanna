@@ -62,37 +62,35 @@ class InformedApp extends HookWidget {
     final initialThemeMode = themeMode ?? AdaptiveThemeMode.system;
 
     if (kIsTest) {
-      return AppConnectivityChecker(
-        child: Provider.value(
-          value: getIt,
-          child: RestartAppWidget(
-            child: AppConnectivityChecker(
-              child: Builder(
-                builder: (context) {
-                  final MainRouter router = mainRouter ?? MainRouter();
+      return Provider.value(
+        value: getIt,
+        child: RestartAppWidget(
+          child: AppConnectivityChecker(
+            child: Builder(
+              builder: (context) {
+                final MainRouter router = mainRouter ?? MainRouter();
 
-                  return AdaptiveTheme(
-                    light: InformedTheme.light,
-                    dark: InformedTheme.dark,
-                    initial: initialThemeMode,
-                    builder: (lightTheme, darkTheme) {
-                      return MaterialApp.router(
-                        debugShowCheckedModeBanner: false,
-                        theme: lightTheme,
-                        darkTheme: darkTheme,
-                        routeInformationParser: router.defaultRouteParser(),
-                        routerDelegate: router.delegate(),
-                        builder: (context, child) {
-                          final mediaQuery = MediaQuery.of(context);
-                          return NoScrollGlow(
-                            child: responsiveBuilder(mediaQuery, child),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
+                return AdaptiveTheme(
+                  light: InformedTheme.light,
+                  dark: InformedTheme.dark,
+                  initial: initialThemeMode,
+                  builder: (lightTheme, darkTheme) {
+                    return MaterialApp.router(
+                      debugShowCheckedModeBanner: false,
+                      theme: lightTheme,
+                      darkTheme: darkTheme,
+                      routeInformationParser: router.defaultRouteParser(),
+                      routerDelegate: router.delegate(),
+                      builder: (context, child) {
+                        final mediaQuery = MediaQuery.of(context);
+                        return NoScrollGlow(
+                          child: responsiveBuilder(mediaQuery, child),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
             ),
           ),
         ),

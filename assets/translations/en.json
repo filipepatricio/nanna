@@ -326,6 +326,11 @@
       "topics": "Deep Dives",
       "articles": "Articles"
     },
+    "banner": {
+      "title": "Take every article with you, wherever you go.",
+      "body": "Subscribe to informed and every article you save is downloaded to your device for offline reading.",
+      "action": "See plans"
+    },
     "emptyPage": {
       "title": "Nothing saved yet\n",
       "noAll": "When you save an article or Deep Dive, you'll find it here.",
@@ -365,7 +370,7 @@
     }
   },
   "noConnection": {
-    "title": "No Connection",
+    "banner": "No internet connection",
     "body": "You seem to be offline. Please check your network connection to load content",
     "snackbar": {
       "message": "You’re offline",

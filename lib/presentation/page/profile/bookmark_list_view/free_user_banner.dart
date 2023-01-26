@@ -23,15 +23,19 @@ class FreeUserBanner extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Take every article with you, wherever you go.',
+              LocaleKeys.profile_banner_title.tr(),
               textAlign: TextAlign.center,
-              style: AppTypography.serifTitleLargeIvar.copyWith(color: AppColors.stateTextPrimary),
+              style: AppTypography.serifTitleLargeIvar.copyWith(
+                color: AppColors.stateTextPrimary,
+              ),
             ),
             const SizedBox(height: AppDimens.m),
             Text(
-              'Subscribe to informed and every article you save is downloaded to your device for offline reading.',
+              LocaleKeys.profile_banner_body.tr(),
               textAlign: TextAlign.center,
-              style: AppTypography.sansTextSmallLausanne.copyWith(color: AppColors.stateTextPrimary),
+              style: AppTypography.sansTextSmallLausanne.copyWith(
+                color: AppColors.stateTextPrimary,
+              ),
             ),
             const SizedBox(height: AppDimens.m),
             Padding(
@@ -40,7 +44,7 @@ class FreeUserBanner extends StatelessWidget {
                 fillColor: AppColors.brandPrimary,
                 disableColor: AppColors.brandPrimary,
                 textColor: AppColors.brandSecondary,
-                text: 'See plans',
+                text: LocaleKeys.profile_banner_action.tr(),
                 onTap: () => context.pushRoute(const SubscriptionPageRoute()),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
@@ -20,7 +21,7 @@ class NoConnectionBanner extends HookWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.all(AppDimens.s),
       child: Center(
         child: Text(
-          'No internet connection',
+          LocaleKeys.noConnection_banner.tr(),
           style: AppTypography.sansTextNanoLausanne.copyWith(height: 1),
         ),
       ),
