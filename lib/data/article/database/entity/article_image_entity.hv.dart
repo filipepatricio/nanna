@@ -6,19 +6,23 @@ part 'article_image_entity.hv.g.dart';
 
 @HiveType(typeId: HiveTypes.articleImageEntity)
 class ArticleImageEntity {
-  ArticleImageEntity({
-    ArticleCloudinaryImageEntity? cloudinary,
-    ArticleRemoteImageEntity? remote,
-    ArticleUnknownImageEntity? unknown,
-  })  : _cloudinary = cloudinary,
-        _remote = remote,
-        _unknown = unknown;
+  ArticleImageEntity(
+    this._cloudinary,
+    this._remote,
+    this._unknown,
+  );
 
-  ArticleImageEntity.cloudinary(ArticleCloudinaryImageEntity cloudinary) : this(cloudinary: cloudinary);
+  ArticleImageEntity.cloudinary(this._cloudinary)
+      : _remote = null,
+        _unknown = null;
 
-  ArticleImageEntity.remote(ArticleRemoteImageEntity remote) : this(remote: remote);
+  ArticleImageEntity.remote(this._remote)
+      : _cloudinary = null,
+        _unknown = null;
 
-  ArticleImageEntity.unknown() : this(unknown: ArticleUnknownImageEntity());
+  ArticleImageEntity.unknown(this._unknown)
+      : _cloudinary = null,
+        _remote = null;
 
   T map<T>({
     required T Function(ArticleCloudinaryImageEntity cloudinary) cloudinary,
