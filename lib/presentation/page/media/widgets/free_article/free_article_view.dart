@@ -1,4 +1,5 @@
 import 'package:better_informed_mobile/domain/daily_brief/data/media_item.dt.dart';
+import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/media/article_app_bar.dart';
 import 'package:better_informed_mobile/presentation/page/media/widgets/free_article/free_article_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
@@ -61,6 +62,7 @@ class FreeArticleView extends HookWidget {
       appBar: ArticleAppBar(
         article: article,
         topicId: topicId,
+        isConnected: context.watch<IsConnected>(),
       ),
       body: Stack(
         alignment: Alignment.bottomCenter,

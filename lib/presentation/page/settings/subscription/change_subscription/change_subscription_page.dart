@@ -11,7 +11,6 @@ import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/util/date_format_util.dart';
 import 'package:better_informed_mobile/presentation/util/in_app_browser.dart';
 import 'package:better_informed_mobile/presentation/util/iterable_utils.dart';
-import 'package:better_informed_mobile/presentation/util/types.dart';
 import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_dialog.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_markdown_body.dart';

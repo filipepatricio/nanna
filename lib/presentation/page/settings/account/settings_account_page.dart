@@ -5,7 +5,7 @@ import 'package:better_informed_mobile/presentation/page/settings/account/settin
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loader.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,8 @@ class SettingsAccountPage extends HookWidget {
     );
 
     return Scaffold(
-      appBar: InformedCupertinoAppBar(
+      appBar: InformedAppBar(
+        isConnected: context.watch<IsConnected>(),
         leading: BackTextButton(
           text: LocaleKeys.settings_settings.tr(),
         ),
@@ -49,8 +50,17 @@ class SettingsAccountPage extends HookWidget {
           ),
           error: (value) => Center(
             child: GeneralErrorView(
-              title: value.title,
-              content: value.message,
+              title: LocaleKeys.common_error_title.tr(),
+              content: LocaleKeys.common_error_body.tr(),
+              retryCallback: () {
+                cubit.initialize();
+              },
+            ),
+          ),
+          offline: (value) => Center(
+            child: GeneralErrorView(
+              title: LocaleKeys.noConnection_error_title.tr(),
+              content: LocaleKeys.noConnection_error_message.tr(),
               retryCallback: () {
                 cubit.initialize();
               },

@@ -10,7 +10,7 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/snackbar/snackbar_parent_view.dart';
 import 'package:fimber/fimber.dart';
@@ -107,7 +107,7 @@ class _LoadingContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: const InformedCupertinoAppBar(
+      appBar: const InformedAppBar(
         backgroundColor: AppColors.transparent,
       ),
       body: color != null
@@ -144,7 +144,7 @@ class _ErrorContent extends StatelessWidget {
     final article = this.article;
 
     return Scaffold(
-      appBar: const InformedCupertinoAppBar(),
+      appBar: const InformedAppBar(),
       body: Padding(
         padding: const EdgeInsets.only(bottom: AppDimens.xxxc),
         child: Center(
@@ -168,7 +168,7 @@ class _ErrorGeoBlocked extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const InformedCupertinoAppBar(),
+      appBar: const InformedAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppDimens.l),
         child: GeneralErrorView(

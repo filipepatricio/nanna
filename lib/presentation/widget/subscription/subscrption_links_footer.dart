@@ -4,7 +4,6 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/util/types.dart';
 import 'package:better_informed_mobile/presentation/widget/link_label.dart';
 import 'package:flutter/material.dart';
 

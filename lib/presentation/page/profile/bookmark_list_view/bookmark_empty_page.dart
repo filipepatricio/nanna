@@ -46,7 +46,7 @@ class _BookmarkEmptyView extends StatelessWidget {
                 ),
                 const SizedBox(height: AppDimens.xl),
                 Center(
-                  child: FilledButton.primary(
+                  child: InformedFilledButton.primary(
                     context: context,
                     text: filter.buttonText,
                     onTap: () => AutoRouter.of(context).navigate(

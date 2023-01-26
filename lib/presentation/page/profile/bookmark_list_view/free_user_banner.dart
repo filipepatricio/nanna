@@ -36,7 +36,7 @@ class FreeUserBanner extends StatelessWidget {
             const SizedBox(height: AppDimens.m),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppDimens.c),
-              child: FilledButton.color(
+              child: InformedFilledButton.color(
                 fillColor: AppColors.brandPrimary,
                 disableColor: AppColors.brandPrimary,
                 textColor: AppColors.brandSecondary,

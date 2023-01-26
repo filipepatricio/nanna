@@ -18,7 +18,7 @@ import 'package:better_informed_mobile/presentation/widget/back_text_button.dart
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
 import 'package:better_informed_mobile/presentation/widget/general_error_view.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_animated_switcher.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:better_informed_mobile/presentation/widget/physics/platform_scroll_physics.dart';
 import 'package:better_informed_mobile/presentation/widget/share/topic_button/share_topic_button.dart';
@@ -90,7 +90,7 @@ class _TopicPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: state.maybeMap(
         idle: (_) => null,
-        orElse: () => InformedCupertinoAppBar(
+        orElse: () => InformedAppBar(
           backgroundColor: state.maybeMap(loading: (_) => AppColors.transparent, orElse: () => null),
         ),
       ),

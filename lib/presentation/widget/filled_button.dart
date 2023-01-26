@@ -110,7 +110,7 @@ class InformedFilledButton extends StatelessWidget {
         withOutline: withOutline,
       );
 
-  factory FilledButton.color({
+  factory InformedFilledButton.color({
     required String text,
     required Color fillColor,
     required Color disableColor,
@@ -122,7 +122,7 @@ class InformedFilledButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
   }) =>
-      FilledButton._(
+      InformedFilledButton._(
         text: text,
         subtext: subtext,
         isEnabled: isEnabled,

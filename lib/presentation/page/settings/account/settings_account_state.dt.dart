@@ -18,7 +18,10 @@ class SettingsAccountState with _$SettingsAccountState {
       SettingsAccountStateUpdating;
 
   @Implements<BuildState>()
-  const factory SettingsAccountState.error(String title, String message) = SettingsAccountStateError;
+  const factory SettingsAccountState.error() = SettingsAccountStateError;
+
+  @Implements<BuildState>()
+  const factory SettingsAccountState.offline() = SettingsAccountStateOffline;
 
   const factory SettingsAccountState.showMessage(String message) = SettingsAccountStateShowMessage;
 }

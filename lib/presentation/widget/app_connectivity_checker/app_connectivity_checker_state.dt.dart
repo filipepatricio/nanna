@@ -8,5 +8,6 @@ class AppConnectivityCheckerState with _$AppConnectivityCheckerState {
   @Implements<BuildState>()
   factory AppConnectivityCheckerState.connected() = _AppConnectivityCheckerStateIdle;
 
+  @Implements<BuildState>()
   const factory AppConnectivityCheckerState.notConnected() = _AppConnectivityCheckerStateNoConnection;
 }

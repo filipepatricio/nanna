@@ -6,8 +6,9 @@ import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/widget/back_text_button.dart';
 import 'package:better_informed_mobile/presentation/widget/bookmark_button/bookmark_button.dart';
-import 'package:better_informed_mobile/presentation/widget/informed_cupertino_app_bar.dart';
+import 'package:better_informed_mobile/presentation/widget/informed_app_bar/informed_app_bar.dart';
 import 'package:better_informed_mobile/presentation/widget/informed_svg.dart';
+import 'package:better_informed_mobile/presentation/widget/no_connection_banner/no_connection_banner.dart';
 import 'package:better_informed_mobile/presentation/widget/share/article_button/share_article_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -18,6 +19,7 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
     this.actionsBarColorModeNotifier,
     this.briefId,
     this.topicId,
+    this.isConnected = true,
     Key? key,
   }) : super(key: key);
 
@@ -25,11 +27,14 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
   final ValueNotifier<ArticleActionsBarColorMode>? actionsBarColorModeNotifier;
   final String? briefId;
   final String? topicId;
+  final bool isConnected;
 
   bool get fromTopic => topicId != null;
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(
+        kToolbarHeight + (isConnected ? 0 : NoConnectionBanner.appBarHeight),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +73,8 @@ class ArticleAppBar extends HookWidget implements PreferredSizeWidget {
     return AnimatedBuilder(
       animation: backgroundColorAnimation,
       builder: (context, _) => ClipRect(
-        child: InformedCupertinoAppBar(
+        child: InformedAppBar(
+          isConnected: isConnected,
           backgroundColor: backgroundColorAnimation.value,
           leading: BackTextButton(
             color: foregroundColorAnimation.value,
