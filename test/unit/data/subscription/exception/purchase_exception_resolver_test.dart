@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/subscription/exception/purchase_exception_resolver.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/exception/purchase_exception_resolver.di.dart';
 import 'package:better_informed_mobile/domain/subscription/exception/purchase_exception.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

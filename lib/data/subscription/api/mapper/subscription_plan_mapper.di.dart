@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:better_informed_mobile/data/mapper.dart';
-import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
+import 'package:better_informed_mobile/data/subscription/api/dto/offering_dto.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';

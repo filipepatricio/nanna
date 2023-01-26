@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/data/subscription/purchases_repository_impl.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/purchases_repository_impl.di.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:flutter_test/flutter_test.dart';

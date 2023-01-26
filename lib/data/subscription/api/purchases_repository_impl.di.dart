@@ -1,16 +1,16 @@
 import 'dart:async';
 
-import 'package:better_informed_mobile/data/subscription/dto/active_subscription_dto.dart';
-import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
-import 'package:better_informed_mobile/data/subscription/purchase_remote_data_source.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/dto/active_subscription_dto.dart';
+import 'package:better_informed_mobile/data/subscription/api/dto/offering_dto.dart';
+import 'package:better_informed_mobile/data/subscription/api/mapper/active_subscription_mapper.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_plan_mapper.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/purchase_remote_data_source.di.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_event.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
 import 'package:better_informed_mobile/domain/subscription/exception/purchase_exception.dart';
-import 'package:better_informed_mobile/domain/subscription/mapper/active_subscription_mapper.di.dart';
-import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
