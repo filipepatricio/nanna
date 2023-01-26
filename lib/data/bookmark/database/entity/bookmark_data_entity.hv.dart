@@ -7,15 +7,11 @@ part 'bookmark_data_entity.hv.g.dart';
 
 @HiveType(typeId: HiveTypes.bookmarkDataEntity)
 class BookmarkDataEntity {
-  BookmarkDataEntity({
-    ArticleHeaderEntity? article,
-    TopicEntity? topic,
-  })  : _article = article,
-        _topic = topic;
+  BookmarkDataEntity(this._article, this._topic);
 
-  BookmarkDataEntity.article(ArticleHeaderEntity article) : this(article: article);
+  BookmarkDataEntity.article(this._article) : _topic = null;
 
-  BookmarkDataEntity.topic(TopicEntity topic) : this(topic: topic);
+  BookmarkDataEntity.topic(this._topic) : _article = null;
 
   @HiveField(0)
   final ArticleHeaderEntity? _article;

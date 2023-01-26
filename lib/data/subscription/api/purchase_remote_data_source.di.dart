@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:better_informed_mobile/data/subscription/exception/purchase_exception_resolver.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/exception/purchase_exception_resolver.di.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';

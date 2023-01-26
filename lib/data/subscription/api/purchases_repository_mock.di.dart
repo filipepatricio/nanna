@@ -1,9 +1,9 @@
+import 'package:better_informed_mobile/data/subscription/api/mapper/active_subscription_mapper.di.dart';
+import 'package:better_informed_mobile/data/subscription/api/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:better_informed_mobile/domain/subscription/data/active_subscription.dt.dart';
 import 'package:better_informed_mobile/domain/subscription/data/subscription_plan.dart';
-import 'package:better_informed_mobile/domain/subscription/mapper/active_subscription_mapper.di.dart';
-import 'package:better_informed_mobile/domain/subscription/mapper/subscription_plan_mapper.di.dart';
 import 'package:better_informed_mobile/domain/subscription/purchases_repository.dart';
 import 'package:injectable/injectable.dart';
 

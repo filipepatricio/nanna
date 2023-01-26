@@ -16,6 +16,9 @@ import 'package:better_informed_mobile/data/article/database/entity/publisher_en
 import 'package:better_informed_mobile/data/article/database/entity/synchronizable_article_entity.hv.dart';
 import 'package:better_informed_mobile/data/bookmark/database/entity/bookmark_data_entity.hv.dart';
 import 'package:better_informed_mobile/data/bookmark/database/entity/bookmark_entity.hv.dart';
+import 'package:better_informed_mobile/data/subscription/database/entity/active_subscription_entity.hv.dart';
+import 'package:better_informed_mobile/data/subscription/database/entity/subscription_plan_entity.hv.dart';
+import 'package:better_informed_mobile/data/subscription/database/entity/subscription_plan_type_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/entity/entry_style_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/entity/entry_style_type_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/entity/media_item_entity.hv.dart';
@@ -24,7 +27,7 @@ import 'package:better_informed_mobile/data/topic/database/entity/topic_entity.h
 import 'package:better_informed_mobile/data/topic/database/entity/topic_entry_entity.hv.dart';
 import 'package:better_informed_mobile/data/topic/database/entity/topic_publisher_information_entity.hv.dart';
 import 'package:better_informed_mobile/data/user/database/entity/user_entity.hv.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_flutter/adapters.dart';
 
 Future<void> initializeHive() async {
   await Hive.initFlutter();
@@ -62,4 +65,11 @@ Future<void> initializeHive() async {
   Hive.registerAdapter(SynchronizableArticleEntityAdapter());
   Hive.registerAdapter(SynchronizableTopicEntityAdapter());
   Hive.registerAdapter(UserEntityAdapter());
+  Hive.registerAdapter(ActiveSubscriptionEntityAdapter());
+  Hive.registerAdapter(ActiveSubscriptionFreeEntityAdapter());
+  Hive.registerAdapter(ActiveSubscriptionTrialEntityAdapter());
+  Hive.registerAdapter(ActiveSubscriptionPremiumEntityAdapter());
+  Hive.registerAdapter(ActiveSubscriptionManualPremiumEntityAdapter());
+  Hive.registerAdapter(SubscriptionPlanEntityAdapter());
+  Hive.registerAdapter(SubscriptionPlanTypeEntityAdapter());
 }

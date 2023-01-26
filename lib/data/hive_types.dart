@@ -36,4 +36,11 @@ class HiveTypes {
   static const int synchronizableArticleEntity = 32;
   static const int synchronizableTopicEntity = 33;
   static const int userEntity = 34;
+  static const int activeSubscriptionEntity = 35;
+  static const int activeSubscriptionFreeEntity = 36;
+  static const int activeSubscriptionTrialEntity = 37;
+  static const int activeSubscriptionPremiumEntity = 38;
+  static const int activeSubscriptionManualPremiumEntity = 39;
+  static const int subscriptionPlanEntity = 40;
+  static const int subscriptionPlanTypeEntity = 41;
 }

@@ -44,8 +44,8 @@ import 'package:better_informed_mobile/data/release_notes/dto/release_note_dto.d
 import 'package:better_informed_mobile/data/release_notes/dto/release_note_media_dto.dt.dart';
 import 'package:better_informed_mobile/data/search/api/dto/search_content_dto.dt.dart';
 import 'package:better_informed_mobile/data/search/api/dto/search_result_dto.dt.dart';
-import 'package:better_informed_mobile/data/subscription/dto/active_subscription_dto.dart';
-import 'package:better_informed_mobile/data/subscription/dto/offering_dto.dart';
+import 'package:better_informed_mobile/data/subscription/api/dto/active_subscription_dto.dart';
+import 'package:better_informed_mobile/data/subscription/api/dto/offering_dto.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_preview_dto.dt.dart';
 import 'package:better_informed_mobile/data/topic/api/dto/topic_publisher_information_dto.dt.dart';

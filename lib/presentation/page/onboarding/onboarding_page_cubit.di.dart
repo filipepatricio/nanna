@@ -62,7 +62,7 @@ class OnboardingPageCubit extends Cubit<OnboardingPageState> {
 
   Future<void> setOnboardingCompleted() async {
     await _requestTrackingPermissionUseCase();
-    await _initializeAttributionUseCase();
+    _initializeAttributionUseCase().ignore();
     await _requestNotificationPermissionUseCase();
     _trackOnboardingCompleted();
     await _setOnboardingSeenUseCase();
