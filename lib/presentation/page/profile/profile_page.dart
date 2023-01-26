@@ -20,6 +20,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 part 'profile_page_app_bar.dart';
 
 class ProfilePage extends HookWidget {
+  const ProfilePage();
+
   @override
   Widget build(BuildContext context) {
     final cubit = useCubit<ProfilePageCubit>();

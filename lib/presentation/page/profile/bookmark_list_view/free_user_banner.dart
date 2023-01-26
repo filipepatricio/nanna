@@ -1,10 +1,4 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:better_informed_mobile/exports.dart';
-import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
-import 'package:better_informed_mobile/presentation/style/colors.dart';
-import 'package:better_informed_mobile/presentation/style/typography.dart';
-import 'package:better_informed_mobile/presentation/widget/filled_button.dart';
-import 'package:flutter/material.dart';
+part of 'bookmark_list_view.dart';
 
 class FreeUserBanner extends StatelessWidget {
   const FreeUserBanner({super.key});
@@ -12,7 +6,12 @@ class FreeUserBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppDimens.m),
+      padding: const EdgeInsets.fromLTRB(
+        AppDimens.pageHorizontalMargin,
+        AppDimens.m,
+        AppDimens.pageHorizontalMargin,
+        AppDimens.zero,
+      ),
       child: Container(
         padding: const EdgeInsets.all(AppDimens.l),
         decoration: const BoxDecoration(

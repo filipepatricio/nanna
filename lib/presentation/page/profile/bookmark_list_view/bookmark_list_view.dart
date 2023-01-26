@@ -6,9 +6,9 @@ import 'package:better_informed_mobile/exports.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_cubit.di.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_list_view_state.dt.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/bookmark_loading_view.dart';
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/free_user_banner.dart';
 import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/tile/bookmark_list_tile.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
+import 'package:better_informed_mobile/presentation/style/colors.dart';
 import 'package:better_informed_mobile/presentation/style/typography.dart';
 import 'package:better_informed_mobile/presentation/style/vector_graphics.dart';
 import 'package:better_informed_mobile/presentation/util/cubit_hooks.dart';
@@ -27,6 +27,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 part 'bookmark_empty_page.dart';
+part 'free_user_banner.dart';
 
 typedef OnSortConfigChanged = Function(BookmarkSortConfigName configName);
 
@@ -88,56 +89,55 @@ class BookmarkListView extends HookWidget {
     );
 
     return VisibilityDetector(
-      onVisibilityChanged: (_) {
-        snackbarController.discardMessage();
-      },
+      onVisibilityChanged: (_) => snackbarController.discardMessage(),
       key: const Key('bookmark_list'),
       child: NextPageLoadExecutor(
         enabled: state.shouldListen,
         onNextPageLoad: cubit.loadNextPage,
         scrollController: scrollController,
-        child: InformedAnimatedSwitcher(
-          child: state.maybeMap(
-            initial: (_) => const SizedBox.shrink(),
-            error: (_) => Center(
-              child: GeneralErrorView(
-                title: LocaleKeys.common_error_title.tr(),
-                content: LocaleKeys.common_error_body.tr(),
-                retryCallback: cubit.loadNextPage,
+        child: Column(
+          children: [
+            if (!hasActiveSubscription) const FreeUserBanner(),
+            Expanded(
+              child: InformedAnimatedSwitcher(
+                child: state.maybeMap(
+                  initial: (_) => const SizedBox.shrink(),
+                  error: (_) => Center(
+                    child: GeneralErrorView(
+                      title: LocaleKeys.common_error_title.tr(),
+                      content: LocaleKeys.common_error_body.tr(),
+                      retryCallback: cubit.loadNextPage,
+                    ),
+                  ),
+                  loading: (_) => const BookmarkLoadingView(),
+                  empty: (state) => _BookmarkEmptyView(filter: filter),
+                  idle: (state) => _Idle(
+                    cubit: cubit,
+                    bookmarks: state.bookmarks,
+                    sortConfig: sortConfig,
+                    scrollController: scrollController,
+                    onSortConfigChanged: onSortConfigChanged,
+                  ),
+                  loadMore: (state) => _Idle(
+                    cubit: cubit,
+                    bookmarks: state.bookmarks,
+                    sortConfig: sortConfig,
+                    scrollController: scrollController,
+                    onSortConfigChanged: onSortConfigChanged,
+                    withLoader: true,
+                  ),
+                  allLoaded: (state) => _Idle(
+                    cubit: cubit,
+                    bookmarks: state.bookmarks,
+                    sortConfig: sortConfig,
+                    scrollController: scrollController,
+                    onSortConfigChanged: onSortConfigChanged,
+                  ),
+                  orElse: () => const SizedBox.shrink(),
+                ),
               ),
             ),
-            loading: (_) => BookmarkLoadingView(hasActiveSubscription: hasActiveSubscription),
-            empty: (state) => _BookmarkEmptyView(
-              hasActiveSubscription: hasActiveSubscription,
-              filter: filter,
-            ),
-            idle: (state) => _Idle(
-              cubit: cubit,
-              bookmarks: state.bookmarks,
-              sortConfig: sortConfig,
-              scrollController: scrollController,
-              onSortConfigChanged: onSortConfigChanged,
-              hasActiveSubscription: hasActiveSubscription,
-            ),
-            loadMore: (state) => _Idle(
-              cubit: cubit,
-              bookmarks: state.bookmarks,
-              sortConfig: sortConfig,
-              scrollController: scrollController,
-              onSortConfigChanged: onSortConfigChanged,
-              hasActiveSubscription: hasActiveSubscription,
-              withLoader: true,
-            ),
-            allLoaded: (state) => _Idle(
-              cubit: cubit,
-              bookmarks: state.bookmarks,
-              sortConfig: sortConfig,
-              scrollController: scrollController,
-              onSortConfigChanged: onSortConfigChanged,
-              hasActiveSubscription: hasActiveSubscription,
-            ),
-            orElse: () => const SizedBox.shrink(),
-          ),
+          ],
         ),
       ),
     );
@@ -151,10 +151,8 @@ class _Idle extends StatelessWidget {
     required this.sortConfig,
     required this.scrollController,
     required this.onSortConfigChanged,
-    required this.hasActiveSubscription,
     this.withLoader = false,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final BookmarkListViewCubit cubit;
   final List<Bookmark> bookmarks;
@@ -162,20 +160,12 @@ class _Idle extends StatelessWidget {
   final ScrollController scrollController;
   final bool withLoader;
   final OnSortConfigChanged onSortConfigChanged;
-  final bool hasActiveSubscription;
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: scrollController,
       slivers: [
-        if (!hasActiveSubscription)
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-              child: FreeUserBanner(),
-            ),
-          ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) => Column(

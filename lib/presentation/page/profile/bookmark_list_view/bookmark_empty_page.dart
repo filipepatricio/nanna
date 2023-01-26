@@ -3,22 +3,14 @@ part of 'bookmark_list_view.dart';
 class _BookmarkEmptyView extends StatelessWidget {
   const _BookmarkEmptyView({
     required this.filter,
-    required this.hasActiveSubscription,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final BookmarkFilter filter;
-  final bool hasActiveSubscription;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (!hasActiveSubscription)
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppDimens.pageHorizontalMargin),
-            child: FreeUserBanner(),
-          ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppDimens.xl),

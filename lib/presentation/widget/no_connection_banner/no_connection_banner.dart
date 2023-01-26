@@ -22,7 +22,10 @@ class NoConnectionBanner extends HookWidget implements PreferredSizeWidget {
       child: Center(
         child: Text(
           LocaleKeys.noConnection_banner.tr(),
-          style: AppTypography.sansTextNanoLausanne.copyWith(height: 1),
+          style: AppTypography.sansTextNanoLausanne.copyWith(
+            color: AppColors.stateTextSecondary,
+            height: 1,
+          ),
         ),
       ),
     );

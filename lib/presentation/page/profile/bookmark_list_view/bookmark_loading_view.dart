@@ -1,15 +1,9 @@
-import 'package:better_informed_mobile/presentation/page/profile/bookmark_list_view/free_user_banner.dart';
 import 'package:better_informed_mobile/presentation/style/app_dimens.dart';
 import 'package:better_informed_mobile/presentation/widget/loading_shimmer.dart';
 import 'package:flutter/material.dart';
 
 class BookmarkLoadingView extends StatelessWidget {
-  const BookmarkLoadingView({
-    this.hasActiveSubscription = true,
-    super.key,
-  });
-
-  final bool hasActiveSubscription;
+  const BookmarkLoadingView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +23,6 @@ class BookmarkLoadingView extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          const FreeUserBanner(),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [

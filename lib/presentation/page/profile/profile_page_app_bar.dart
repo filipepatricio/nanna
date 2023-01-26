@@ -19,7 +19,6 @@ class _ProfilePageAppBar extends StatelessWidget implements PreferredSizeWidget 
       automaticallyImplyLeading: false,
       centerTitle: true,
       titleSpacing: AppDimens.zero,
-      toolbarHeight: kToolbarHeight,
       title: ProfileFilterTabBar(
         controller: tabController,
         onChange: cubit.changeFilter,
