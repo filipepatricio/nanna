@@ -13,7 +13,7 @@ class AppConnectivityCheckerCubit extends Cubit<AppConnectivityCheckerState> {
 
   final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
 
-  bool? _isConnected;
+  late bool _isConnected;
 
   StreamSubscription? _connectionStateSubscription;
 
@@ -24,10 +24,13 @@ class AppConnectivityCheckerCubit extends Cubit<AppConnectivityCheckerState> {
   }
 
   Future<void> initialize() async {
+    _isConnected = await _isInternetConnectionAvailableUseCase();
+    if (!_isConnected) emit(const AppConnectivityCheckerState.notConnected());
+
     _connectionStateSubscription = _isInternetConnectionAvailableUseCase.stream.listen((isConnectionAvailable) {
       if (_isConnected != isConnectionAvailable) {
         _isConnected = isConnectionAvailable;
-        _updateConnectionState(_isConnected!);
+        _updateConnectionState(_isConnected);
       }
     });
   }
@@ -37,11 +40,11 @@ class AppConnectivityCheckerCubit extends Cubit<AppConnectivityCheckerState> {
 
     if (_isConnected != isConnected) {
       _isConnected = isConnected;
-      _updateConnectionState(_isConnected!);
-      return _isConnected!;
+      _updateConnectionState(_isConnected);
+      return _isConnected;
     }
 
-    return _isConnected!;
+    return _isConnected;
   }
 
   void _updateConnectionState(bool isConnected) {
