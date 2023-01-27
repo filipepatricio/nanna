@@ -1,7 +1,7 @@
 import 'package:better_informed_mobile/data/feature_flags/data/feature_flag_data.dt.dart';
 import 'package:better_informed_mobile/domain/auth/auth_store.dart';
 import 'package:better_informed_mobile/domain/feature_flags/feature_flags_repository.dart';
-import 'package:better_informed_mobile/domain/user/user_repository.dart';
+import 'package:better_informed_mobile/domain/user/use_case/get_user_use_case.di.dart';
 import 'package:better_informed_mobile/domain/util/app_info_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -9,14 +9,14 @@ import 'package:injectable/injectable.dart';
 class InitializeFeatureFlagsUseCase {
   InitializeFeatureFlagsUseCase(
     this._authStore,
-    this._userRepository,
     this._featuresFlagsRepository,
     this._appInfoRepository,
+    this._getUserUseCase,
   );
   final AuthStore _authStore;
-  final UserRepository _userRepository;
   final FeaturesFlagsRepository _featuresFlagsRepository;
   final AppInfoRepository _appInfoRepository;
+  final GetUserUseCase _getUserUseCase;
 
   Future<void> call() async {
     final tokenData = await _authStore.accessTokenData();
@@ -27,7 +27,7 @@ class InitializeFeatureFlagsUseCase {
       var firstName = tokenData.lastName;
 
       if (email == null || firstName == null || lastName == null) {
-        final user = await _userRepository.getUser();
+        final user = await _getUserUseCase();
         email = user.email;
         firstName = user.firstName;
         lastName = user.lastName;

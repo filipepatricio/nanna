@@ -4,6 +4,7 @@ class ArticleProgress {
     required this.audioProgress,
     required this.contentProgress,
   });
+
   final int audioPosition;
   final int audioProgress;
   final int contentProgress;

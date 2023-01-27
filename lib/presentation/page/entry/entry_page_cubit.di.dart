@@ -6,7 +6,6 @@ import 'package:better_informed_mobile/domain/auth/use_case/is_signed_in_use_cas
 import 'package:better_informed_mobile/domain/categories/use_case/get_onboarding_categories_use_case.di.dart';
 import 'package:better_informed_mobile/domain/exception/unauthorized_exception.dart';
 import 'package:better_informed_mobile/domain/feature_flags/use_case/initialize_feature_flags_use_case.di.dart';
-import 'package:better_informed_mobile/domain/networking/use_case/is_internet_connection_available_use_case.di.dart';
 import 'package:better_informed_mobile/domain/onboarding/use_case/is_onboarding_seen_use_case.di.dart';
 import 'package:better_informed_mobile/domain/release_notes/use_case/save_release_note_if_first_run_use_case.di.dart';
 import 'package:better_informed_mobile/domain/subscription/use_case/initialize_purchases_use_case.di.dart';
@@ -25,7 +24,6 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     this._initializeAttributionUseCase,
     this._isOnboardingSeenUseCase,
     this._saveReleaseNoteIfFirstRunUseCase,
-    this._isInternetConnectionAvailableUseCase,
     this._getOnboardingCategoriesUseCase,
     this._identifyAnalyticsUserUseCase,
     this._initializePurchasesUseCase,
@@ -36,18 +34,12 @@ class EntryPageCubit extends Cubit<EntryPageState> {
   final InitializeAttributionUseCase _initializeAttributionUseCase;
   final IsOnboardingSeenUseCase _isOnboardingSeenUseCase;
   final SaveReleaseNoteIfFirstRunUseCase _saveReleaseNoteIfFirstRunUseCase;
-  final IsInternetConnectionAvailableUseCase _isInternetConnectionAvailableUseCase;
   final GetOnboardingCategoriesUseCase _getOnboardingCategoriesUseCase;
   final IdentifyAnalyticsUserUseCase _identifyAnalyticsUserUseCase;
   final InitializePurchasesUseCase _initializePurchasesUseCase;
 
-  bool? _isConnectionAvailable;
-
-  StreamSubscription? _connectionStateSubscription;
-
   @override
   Future<void> close() async {
-    await _connectionStateSubscription?.cancel();
     await super.close();
   }
 
@@ -73,20 +65,9 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     }
 
     await _initializeSignedInUser();
-
-    await _connectionStateSubscription?.cancel();
-    _connectionStateSubscription = _isInternetConnectionAvailableUseCase.stream.listen((isConnectionAvailable) {
-      _isConnectionAvailable = isConnectionAvailable;
-      _initializeSignedInUser();
-    });
   }
 
   Future<void> _initializeSignedInUser() async {
-    _isConnectionAvailable ??= await _isInternetConnectionAvailableUseCase()._withTimeout('Connectivity check timeout');
-    if (!_isConnectionAvailable!) return;
-
-    await _connectionStateSubscription?.cancel();
-
     try {
       await _initializeFeatureFlagsUseCase();
       await _identifyAnalyticsUserUseCase()._withTimeout('Identyfying user for analytics timeout');
@@ -97,14 +78,13 @@ class EntryPageCubit extends Cubit<EntryPageState> {
     }
 
     final onboardingSeen = await _isOnboardingSeenUseCase();
-    if (onboardingSeen) {
-      await _initializeAttributionUseCase();
-    } else {
+    if (!onboardingSeen) {
       await _preFetchCategories();
       emit(EntryPageState.onboarding());
       return;
     }
 
+    _initializeAttributionUseCase().ignore();
     emit(EntryPageState.alreadySignedIn());
   }
 

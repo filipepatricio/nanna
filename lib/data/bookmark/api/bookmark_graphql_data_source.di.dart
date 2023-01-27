@@ -9,12 +9,12 @@ import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__
 import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__/remove_bookmark.ast.gql.dart'
     as remove_bookmark;
 import 'package:better_informed_mobile/data/bookmark/api/documents/__generated__/topic_id.ast.gql.dart' as topic_id;
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_filter_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_id_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_order_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_sort_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/update_bookmark_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_filter_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_id_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_order_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_sort_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/update_bookmark_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/graphql_response_resolver.di.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

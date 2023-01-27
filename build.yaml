@@ -13,8 +13,8 @@ targets:
             - lib/presentation/routing/main_router.dart
       hive_generator:hive_generator:
         generate_for:
-          exclude:
-            - '*'
+          include:
+            - lib/data/**.hv.dart
       freezed:freezed:
         generate_for:
           include:

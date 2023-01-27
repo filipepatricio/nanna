@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:better_informed_mobile/data/analytics/dto/install_attribution_data_dto.dt.dart';
@@ -9,7 +8,9 @@ import 'package:better_informed_mobile/domain/analytics/analytics_facade.dart';
 import 'package:better_informed_mobile/domain/analytics/analytics_page.dt.dart';
 import 'package:better_informed_mobile/domain/analytics/data/install_attribution_payload.dt.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
+import 'package:better_informed_mobile/presentation/util/platform_util.dart';
 import 'package:facebook_app_events/facebook_app_events.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_segment/flutter_segment.dart';
 import 'package:injectable/injectable.dart';
 import 'package:launchdarkly_flutter_client_sdk/launchdarkly_flutter_client_sdk.dart';
@@ -74,7 +75,7 @@ class AnalyticsFacadeImpl implements AnalyticsFacade {
     await _facebookAppEvents.setAutoLogAppEventsEnabled(false);
 
     // App Lifecycle events are not being correctly tracked in iOS with Dart-based config - https://github.com/la-haus/flutter-segment/issues/26#issuecomment-1143557997
-    if (!Platform.isIOS) {
+    if (!defaultTargetPlatform.isApple) {
       await Segment.config(
         options: SegmentConfig(
           writeKey: writeKey,

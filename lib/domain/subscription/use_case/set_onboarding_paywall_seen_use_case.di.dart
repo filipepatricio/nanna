@@ -1,4 +1,4 @@
-import 'package:better_informed_mobile/domain/subscription/store/subscription_store.dart';
+import 'package:better_informed_mobile/domain/subscription/subscription_local_repository.dart';
 import 'package:better_informed_mobile/domain/user_store/user_store.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,7 +8,7 @@ class SetOnboardingPaywallSeenUseCase {
     this._subscriptionStore,
     this._userStore,
   );
-  final SubscriptionStore _subscriptionStore;
+  final SubscriptionLocalRepository _subscriptionStore;
   final UserStore _userStore;
 
   Future<void> call() async {

@@ -1,10 +1,10 @@
 import 'package:better_informed_mobile/data/bookmark/api/bookmark_data_source.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_filter_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_id_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_list_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_order_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/bookmark_sort_dto.dt.dart';
-import 'package:better_informed_mobile/data/bookmark/dto/update_bookmark_response_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_filter_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_id_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_list_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_order_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/bookmark_sort_dto.dt.dart';
+import 'package:better_informed_mobile/data/bookmark/api/dto/update_bookmark_response_dto.dt.dart';
 import 'package:better_informed_mobile/data/util/mock_dto_creators.dart';
 import 'package:better_informed_mobile/domain/app_config/app_config.dart';
 import 'package:injectable/injectable.dart';

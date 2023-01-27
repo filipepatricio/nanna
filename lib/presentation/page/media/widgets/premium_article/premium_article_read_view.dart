@@ -86,7 +86,6 @@ class PremiumArticleReadView extends HookWidget {
                 controller: mainController,
                 child: CustomScrollView(
                   controller: mainController,
-                  physics: const ClampingScrollPhysics(),
                   slivers: [
                     SliverToBoxAdapter(
                       child: ArticleContentView(

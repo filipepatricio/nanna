@@ -10,6 +10,7 @@ class AudioFileDTO {
   );
 
   factory AudioFileDTO.fromJson(Map<String, dynamic> json) => _$AudioFileDTOFromJson(json);
+
   final String url;
   final String? credits;
 }
